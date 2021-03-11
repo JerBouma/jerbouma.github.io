@@ -3,8 +3,8 @@ permalink:        pretty
 
 # Setup
 title:            Jeroen Bouma
-description:      'An overview of all my projects and thoughts'
-basurl:           /
+description:      "An overview of all my projects and thoughts"
+basurl:           "/"
 
 author:
   name:           'Jeroen Bouma'
