@@ -4,7 +4,7 @@ permalink:        pretty
 # Setup
 title:            Jeroen Bouma
 description:      'An overview of all my projects and thoughts'
-basurl:           http://jerbouma.github.io/
+basurl:           /
 
 author:
   name:           'Jeroen Bouma'
