@@ -2,9 +2,8 @@
 permalink:        pretty
 
 # Setup
-title:            Jeroen Bouma's Portfolio
-tagline:          'A Jekyll theme'
-description:      'An overview of all my project and thoughts'
+title:            Jeroen Bouma
+description:      'An overview of all my projects and thoughts'
 
 author:
   name:           'Jeroen Bouma'
