@@ -10,7 +10,7 @@ multiple companies or do a sector analysis.
 See a visualisation of the data on my
 [Fundamentals Quantifier website](https://github.com/JerBouma/FundamentalsQuantifier).
 
-![FundamentalAnalysis](/_images/FundamentalAnalysis.png)
+![FundamentalAnalysis](\_images\FundamentalAnalysis.png)
 
 ## Functions
 Here you can find a list of the available functions within this package separated per module. 
