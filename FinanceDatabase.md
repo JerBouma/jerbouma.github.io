@@ -131,7 +131,7 @@ companies that currently lack enough assets to cover their liabilities (quick ra
 enough assets (quick ratio > 1). Both too low and too high could make you wonder whether the company adequately 
 manages its assets.
 
-![FinanceDatabase](_images/United_States_Airlines_QuickRatio.png)
+![FinanceDatabase](/_images/United_States_Airlines_QuickRatio.png)
 
 ### Silicon Valley's Market Cap
 If I want to understand which listed technology companies exist in Silicon Valley, I can collect all equities of 
@@ -187,7 +187,7 @@ This results in the graph displayed below which separates the small companies fr
 this does not include _all_ technology companies in Silicon Valley because most are not listed or are not included 
 in the database of the FundamentalAnalysis package.
 
-![FinanceDatabase](_images/Silicon_Valley_Technology_MarketCap.png)
+![FinanceDatabase](/_images/Silicon_Valley_Technology_MarketCap.png)
 
 ### Core Selection ETFs
 Sometimes, Excel simply offers the best solution if you want compare a range of ETFs quickly. Therefore, another 
@@ -212,18 +212,18 @@ tickers.to_excel('core_selection_tickers.xlsx', index=None, header=None)
 If you open the Excel file created you see the following lay-out (which corresponds to the lay-out accepted 
 by the program):
 
-![ThePassiveInvestor](_images/ThePassiveInvestor_Excel.PNG)
+![ThePassiveInvestor](/_images/ThePassiveInvestor_Excel.PNG)
 
 Then I open ThePassiveInvestor program and use the Excel as input. The first input is the Excel that you want to 
 be filled with input from your tickers (created by the program). The second input is the file you created above.
 
-![ThePassiveInvestor](_images/ThePassiveInvestor_Program.PNG)
+![ThePassiveInvestor](/_images/ThePassiveInvestor_Program.PNG)
 
 When you run the program it starts collecting data on each ticker and fills the Excel with data. After the program 
 is finished you are able to find an Excel that looks very much like the GIF you see below. With this data you can 
 get an indication whether the ETF is what you are looking for.
 
-![ThePassiveInvestor](_images/ThePassiveInvestor_GIF.gif)
+![ThePassiveInvestor](/_images/ThePassiveInvestor_GIF.gif)
 
 ## Q&A
 
