@@ -229,7 +229,7 @@ get an indication whether the ETF is what you are looking for.
 
 - **How did you get your data?**
     - Please check the [Methodology](https://github.com/JerBouma/FinanceDatabase/tree/master/Methodology).
-- **Is there support for <insert_country>?**
+- **Is there support for my country?**
     - Yes, most likely there is as the database includes 109 countries. Please check 
     [here](https://github.com/JerBouma/FinanceDatabase/tree/master/Database/Equities/Countries).
 - **When I collect data via yfinance I notice that not all tickers return output, why is that?**
