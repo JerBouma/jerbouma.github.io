@@ -15,8 +15,6 @@ GOOGLEFINANCE, your investments' value is updated every 10-15 minutes. git It th
 positions and understanding the overall country, sector and tactical allocation of your portfolio. Below a detailed
 explanation is given for each (not hidden) tab.
 
-
-
 ### Portfolio
 
 This tab gives a total overview of all input on the other tabs mentioned here. It gives you a complete understanding of
