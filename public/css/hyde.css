@@ -248,3 +248,10 @@ a.sidebar-nav-item:focus {
 .theme-base-0f .related-posts li a:hover {
   color: #8f5536;
 }
+
+/* Custom Code added by JerBouma */
+@media (max-width: 767px) {
+    #ProfilePicture {
+        visibility: none;
+    }
+}
