@@ -1,6 +1,7 @@
 ---
 layout: post
 title: When Should You Invest?
+github: Yes
 ---
 
 ![WhenShouldYouInvest](https://jerbouma.github.io/public/post_images/WhenShouldYouInvest.jfif)
