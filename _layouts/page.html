@@ -3,10 +3,16 @@ layout: default
 ---
 
 <div class="row">
-    <div class="col-md-6">
-         {{ content }}
+    <div class="col-md-6" markdown="1">
+        <div class="page">
+            <h1 class="page-title">{{ page.title }}</h1>
+            {{ content }}
+        </div>
     </div>
-    <div class="col-md-6">
-        {{ content }}
+    <div class="col-md-6" markdown="1">
+        <div class="page">
+            <h1 class="page-title">{{ page.title }}</h1>
+            {{ content }}
+        </div>
     </div>
 </div>

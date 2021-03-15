@@ -261,5 +261,6 @@ p {clear: left;}
 }
 
 /* Columns */
-.col-md-6 {
+.row {
+ display: none;
 }
