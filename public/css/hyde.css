@@ -261,10 +261,18 @@ p {clear: left;}
 }
 
 /* Columns */
-.row {
- display: flex;
+.column {
+  float: left;
+  padding: 10px;
+
+ .left {
+  width: 25%;
+}
+.right {
+  width: 75%;
 }
 
-.column {
-  flex: 50%;
-}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
