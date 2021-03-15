@@ -141,34 +141,6 @@ a.sidebar-nav-item:focus {
   }
 }
 
-/* Container 2
- *
- * Align the contents of the site above the proper threshold with some margin-fu
- * with a 25%-wide `.sidebar`.
- */
-
-.content_2 {
-  padding-top:    4rem;
-  padding-bottom: 4rem;
-}
-
-@media (min-width: 48em) {
-  .content_2 {
-    max-width: 38rem;
-    margin-left: 80rem;
-    margin-right: 2rem;
-  }
-}
-
-@media (min-width: 64em) {
-  .content_2 {
-    margin-left: 80rem;
-    margin-right: 4rem;
-  }
-}
-
-
-
 /*
  * Reverse layout
  *
