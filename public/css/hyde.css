@@ -141,13 +141,11 @@ a.sidebar-nav-item:focus {
   }
 }
 
-.content_new {
-  padding-top:    4rem;
-  padding-bottom: 4rem;
+.row {
   display: flex;
 }
 
-.content_new_2 {
+.column {
   flex: 50%;
 }
 
