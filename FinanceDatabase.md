@@ -1,11 +1,10 @@
 ---
 layout: page
 title: Finance Database
----
-
-[![Finance Database GitHub stats](
+myvar1: [![Finance Database GitHub stats](
 https://github-readme-stats.vercel.app/api/pin?username=jerbouma&repo=FinanceDatabase)](
 https://github.com/JerBouma/FinanceDatabase)
+---
 
 As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to 
 understand what type of companies or ETFs are available is incredibly challenging with there being millions of
