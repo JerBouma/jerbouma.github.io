@@ -1,7 +1,6 @@
 ---
 layout: post
 title: When Should You Invest?
-subtitle: A Study on the effect of Market Timing and Emotional Investing
 ---
 
 ![WhenShouldYouInvest](public/post_images/WhenShouldYouInvest.jfif)
