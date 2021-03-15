@@ -268,10 +268,12 @@ p {clear: left;}
 
 .right {
   width: 25%;
+  max-width: 100%;
 }
 
  .left {
   width: 75%;
+  max-width: 100%;
 }
 
 .row:after {
