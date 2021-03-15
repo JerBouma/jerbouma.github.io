@@ -141,13 +141,10 @@ a.sidebar-nav-item:focus {
   }
 }
 
-.row {
-  display: flex;
-}
+p, pre {float: left; width: 50%;}
+.container {width: 100%;}
+p {clear: left;}
 
-.column {
-  flex: 50%;
-}
 
 /*
  * Reverse layout

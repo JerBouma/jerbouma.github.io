@@ -3,17 +3,15 @@ layout: page
 title: Finance Database
 ---
 
-{: .row}
-{: .column}
-[![Finance Database GitHub stats](
+<pre>[![Finance Database GitHub stats](
 https://github-readme-stats.vercel.app/api/pin?username=jerbouma&repo=FinanceDatabase)](
-https://github.com/JerBouma/FinanceDatabase)
-{: .columns}
-As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to 
+https://github.com/JerBouma/FinanceDatabase)</pre>
+
+<p>As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to 
 understand what type of companies or ETFs are available is incredibly challenging with there being millions of
 companies amd derivatives available on the market. Sure, the most traded companies and ETFs can quickly be found
 simply because they are known to the public (for example, Microsoft, Tesla, S&P500 ETF or an All-World ETF). However, 
-what else is out there is often unknown.
+what else is out there is often unknown.</p>
 
 **This database tries to solve that**. It features 180.000+ symbols containing Equities, ETFs, Funds, Indices, Futures, 
 Options, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors,
