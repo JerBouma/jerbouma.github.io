@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Investments Tracker
+github: hi
 ---
 Do you know how your investments hold up against the overall market? Do your deviations from the market actually make a
 positive difference? Are you aware how much exposure you have to each sector and each country? What about the tactical

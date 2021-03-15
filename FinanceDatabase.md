@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Finance Database
-sidebar: Look at me! I am a sidebar!
+github: FinanceDatabase
 ---
 
 As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to 

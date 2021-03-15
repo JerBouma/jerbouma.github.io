@@ -2,7 +2,7 @@
 layout: default
 ---
 
-{% if page.sidebar == null %}
+{% if page.github == null %}
 <div class="page">
     <h1 class="page-title">{{ page.title }}</h1>
     {{ content }}
@@ -18,9 +18,10 @@ layout: default
         </div>
     </div>
     <div class="col-sm-3">
+        {% assign github_repo = { % {{ "https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=" |
+        append: {{ page.github} } }} % }
         <a href="https://github.com/anuraghazra/github-readme-stats">
-            <img align="center"
-                 src="https://github-readme-stats.vercel.app/api/pin/?username=anuraghazra&repo=github-readme-stats"/>
+            <img align="center" src="{{ github_repo }}">
         </a>
     </div>
 </div>

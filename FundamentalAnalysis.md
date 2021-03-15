@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Fundamental Analysis
+github: FundamentalAnalysis
 ---
 
 This package collects fundamentals and detailed company stock data from a large group of companies (13.000+)

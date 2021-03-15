@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Fundamentals Quantifier
+github: FundamentalsQuantifier
 ---
 The Fundamentals Quantifier is a tool that allows you to visually compare the fundamentals 
 of over 6,000 companies. You can filter the companies based on Sector and/or Industry. Thereby, it is possible
