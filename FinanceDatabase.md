@@ -3,7 +3,7 @@ layout: page
 title: Finance Database
 ---
 
-{:class=.content_new_2}
+{:.class=.content_new_2}
 [![Finance Database GitHub stats](
 https://github-readme-stats.vercel.app/api/pin?username=jerbouma&repo=FinanceDatabase)](
 https://github.com/JerBouma/FinanceDatabase)
