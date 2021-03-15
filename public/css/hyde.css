@@ -262,5 +262,9 @@ p {clear: left;}
 
 /* Columns */
 .row {
- display: none;
+ display: flex;
+}
+
+.column {
+  flex: 50%;
 }
