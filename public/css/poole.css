@@ -240,7 +240,7 @@ input[type=checkbox] {
   display: none;
 }
 
-input[type=checkbox]:checked ~ label > img {
+input[type=checkbox]:checked {
   transform: scale(2);
   cursor: zoom-out;
 }
