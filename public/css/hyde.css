@@ -261,6 +261,10 @@ p {clear: left;}
 }
 
 /* Columns */
+* {
+  box-sizing: border-box;
+}
+
 .column {
   float: left;
   padding: 10px;
