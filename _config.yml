@@ -15,6 +15,3 @@ paginate:         5
 
 github:
   repo:           https://github.com/JerBouma/jerbouma.github.io
-
-kramdown:
-  parse_block_html: true
