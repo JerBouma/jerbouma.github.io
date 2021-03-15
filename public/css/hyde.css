@@ -259,15 +259,3 @@ p {clear: left;}
         display: none;
     }
 }
-
-/* Columns */
-
- .grid {
-  display: flex;
- }
-.col-1-2 {
-  flex: 1;
-}
-.col-1-2:last-child {
-  margin-left: 20px;
-}
