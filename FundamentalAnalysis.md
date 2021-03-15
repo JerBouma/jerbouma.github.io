@@ -1,9 +1,13 @@
 ---
 layout: page
 title: Fundamental Analysis
-sidebar: <p>[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=anuraghazra&repo=github-readme-stats)](https://github.com/anuraghazra/github-readme-stats)
-</p>
+sidebar: <a href="https://github.com/anuraghazra/github-readme-stats">
+  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=anuraghazra&repo=github-readme-stats" />
+</a>
 ---
+
+
+
 This package collects fundamentals and detailed company stock data from a large group of companies (13.000+)
 from FinancialModelingPrep and uses Yahoo Finance to obtain stock data for any financial instrument. It allows
 the user to do most of the essential fundamental analysis. It also gives the possibility to quickly compare
