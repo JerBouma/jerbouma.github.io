@@ -248,8 +248,8 @@ a.sidebar-nav-item:focus {
 }
 
 /* Custom Code added by JerBouma */
-@media (max-width: 1000px) {
-    #ProfilePicture {
+@media (max-width: 500px) {
+    img#ProfilePicture {
         display: none;
     }
 }
