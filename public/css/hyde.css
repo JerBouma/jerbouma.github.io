@@ -248,7 +248,7 @@ a.sidebar-nav-item:focus {
 }
 
 /* Custom Code added by JerBouma */
-@media (max-width: 767px) {
+@media (max-width: 1000px) {
     #ProfilePicture {
         display: none;
     }
