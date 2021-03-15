@@ -2,15 +2,15 @@
 layout: page
 title: Investments Tracker
 ---
-Do you know how your investments hold up against the overall market? Do your deviations from the market actually 
-make a positive difference? Are you aware how much exposure you have to each sector and each country? What about the 
-tactical and strategic weights, yearly and total returns from both your portfolio and other indices? If the question is 
-No to any of these questions, this spreadsheet will really help you elevate your investments!
+Do you know how your investments hold up against the overall market? Do your deviations from the market actually make a
+positive difference? Are you aware how much exposure you have to each sector and each country? What about the tactical
+and strategic weights, yearly and total returns from both your portfolio and other indices? If the question is No to any
+of these questions, this spreadsheet will really help you elevate your investments!
 
-![Investments Tracker](public/page_images/InvestmentsTracker.png)
+[![Investments Tracker](https://jerbouma.github.io/public/page_images/InvestmentsTracker.png)](https://jerbouma.github.io/public/page_images/InvestmentsTracker.png)
 
 The spreadsheet allow you to input your investment choices and track them accordingly. Due to the function
-GOOGLEFINANCE, your investments' value is updated every 10-15 minutes. It therefore is very adequate for tracking your
+GOOGLEFINANCE, your investments' value is updated every 10-15 minutes. git It therefore is very adequate for tracking your
 positions and understanding the overall country, sector and tactical allocation of your portfolio. Below a detailed
 explanation is given for each (not hidden) tab.
 

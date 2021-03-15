@@ -229,20 +229,9 @@ blockquote p:last-child {
 
 img {
   display: block;
-  transition: transform 0.25s ease;
-  cursor: zoom-in;
   max-width: 100%;
   margin: 0 0 1rem;
   border-radius: 5px;
-}
-
-input[type=checkbox] {
-  display: none;
-}
-
-input[type=checkbox]:checked {
-  transform: scale(2);
-  cursor: zoom-out;
 }
 
 /* Tables */
