@@ -234,6 +234,13 @@ img {
   border-radius: 5px;
 }
 
+/* Custom Code added by JerBouma */
+@media (max-width: 650px) {
+  img#ProfilePicture {
+    display: none !important
+  }
+}
+
 /* Tables */
 table {
   margin-bottom: 1rem;

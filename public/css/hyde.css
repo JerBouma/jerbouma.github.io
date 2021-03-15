@@ -247,12 +247,6 @@ a.sidebar-nav-item:focus {
   color: #8f5536;
 }
 
-/* Custom Code added by JerBouma */
-@media (max-width: 650px) {
-  img#ProfilePicture {
-    display: none !important
-  }
-}
 
 /* Rows & Columns */
 .row {
