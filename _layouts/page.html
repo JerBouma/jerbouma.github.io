@@ -18,7 +18,7 @@ layout: default
         </div>
     </div>
     <div class="col-sm-3">
-        {% capture github_repo %}"https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo="{{ page.github }}{% endcapture %}
+        {% capture github_repo %}https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo={{ page.github }}{% endcapture %}
         <a href="https://github.com/anuraghazra/github-readme-stats">
             <img align="center" src="{{ github_repo }}">
         </a>
