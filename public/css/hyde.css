@@ -259,3 +259,7 @@ p {clear: left;}
         display: none;
     }
 }
+
+/* Columns */
+.col-md-6 {
+}
