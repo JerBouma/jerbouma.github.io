@@ -2,9 +2,11 @@
 layout: page
 title: Finance Database
 ---
+
+{:class=.content_new_2}
 [![Finance Database GitHub stats](
 https://github-readme-stats.vercel.app/api/pin?username=jerbouma&repo=FinanceDatabase)](
-https://github.com/JerBouma/FinanceDatabase){:class=.content_new_2}
+https://github.com/JerBouma/FinanceDatabase)
 
 {:.class=.content_new}
 As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to 
