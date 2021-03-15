@@ -265,10 +265,12 @@ p {clear: left;}
 .column {
   float: left;
   padding: 10px;
+}
 
  .left {
   width: 25%;
 }
+
 .right {
   width: 75%;
 }
@@ -277,3 +279,4 @@ p {clear: left;}
   content: "";
   display: table;
   clear: both;
+}
