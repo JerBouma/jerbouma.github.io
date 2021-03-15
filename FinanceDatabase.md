@@ -12,7 +12,7 @@ what else is out there is often unknown.
 Options, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors,
 industries, types of investments and much more.
 
-![FinanceDatabase](public/page_images/FinanceDatabase.png)
+<div class="image"><input type="checkbox"><img src=public/page_images/FinanceDatabase.png></div>
 
 The aim of this database is explicitly _not_ to provide up-to-date fundamentals or stock data as those can be obtained 
 with ease (with the help of this database) by using [yfinance](https://github.com/ranaroussi/yfinance), 
