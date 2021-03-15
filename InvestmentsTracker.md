@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Investments Tracker
-github: hi
+investments_tracker: Yes
 ---
 Do you know how your investments hold up against the overall market? Do your deviations from the market actually make a
 positive difference? Are you aware how much exposure you have to each sector and each country? What about the tactical
@@ -15,8 +15,7 @@ GOOGLEFINANCE, your investments' value is updated every 10-15 minutes. git It th
 positions and understanding the overall country, sector and tactical allocation of your portfolio. Below a detailed
 explanation is given for each (not hidden) tab.
 
-**To obtain your own copy, find the latest release
-[here](https://github.com/JerBouma/InvestmentSpreadsheet/releases)**
+
 
 ### Portfolio
 

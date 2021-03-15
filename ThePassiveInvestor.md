@@ -1,6 +1,7 @@
 ---
 layout: page
 title: The Passive Investor
+github: ThePassiveInvestor
 ---
 **Theories and research about the stock market have stated that the semi-strong form of market efficiency seems to
 hold.** This means that all public information is accurately reflected in the price of an financial instrument. This

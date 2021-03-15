@@ -3,11 +3,22 @@ layout: default
 ---
 
 {% if page.github == null %}
-<div class="page">
-    <h1 class="page-title">{{ page.title }}</h1>
-    {{ content }}
+<div class="row">
+    <div class="col-sm-8">
+        <div class="page">
+            <h1 class="page-title">{{ page.title }}</h1>
+            {{ content }}
+        </div>
+    </div>
+    <div class="col-sm-4">
+        {% if page.investments_tracker == null %}
+        <p></p>
+        {% else %}
+        <b>To obtain your own copy, find the latest release <a
+                href="https://github.com/JerBouma/InvestmentSpreadsheet/releases">here</a></b>
+        {% endif %}
+    </div>
 </div>
-
 
 {% else %}
 <div class="row">
@@ -18,7 +29,8 @@ layout: default
         </div>
     </div>
     <div class="col-sm-4">
-        {% capture github_stats %}https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo={{ page.github }}{% endcapture %}
+        {% capture github_stats %}https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo={{ page.github
+        }}{% endcapture %}
         {% capture github_repo %}https://github.com/jerbouma/{{ page.github }}{% endcapture %}
         <a href="{{ github_repo }}"><img align="center" src="{{ github_stats }}"></a>
     </div>
