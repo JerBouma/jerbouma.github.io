@@ -8,11 +8,11 @@ companies amd derivatives available on the market. Sure, the most traded compani
 simply because they are known to the public (for example, Microsoft, Tesla, S&P500 ETF or an All-World ETF). However, 
 what else is out there is often unknown.
 
+![FinanceDatabase](https://jerbouma.github.io/public/images/FinanceDatabase.png)
+
 **This database tries to solve that**. It features 180.000+ symbols containing Equities, ETFs, Funds, Indices, Futures, 
 Options, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors,
 industries, types of investments and much more.
-
-![FinanceDatabase](https://jerbouma.github.io/public/images/FinanceDatabase.png)
 
 The aim of this database is explicitly _not_ to provide up-to-date fundamentals or stock data as those can be obtained 
 with ease (with the help of this database) by using [yfinance](https://github.com/ranaroussi/yfinance), 
