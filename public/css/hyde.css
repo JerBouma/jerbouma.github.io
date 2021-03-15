@@ -264,15 +264,14 @@ p {clear: left;}
 
 .column {
   float: left;
-  padding: 10px;
-}
-
- .left {
-  width: 75%;
 }
 
 .right {
   width: 25%;
+}
+
+ .left {
+  width: 75%;
 }
 
 .row:after {
