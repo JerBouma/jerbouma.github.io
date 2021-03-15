@@ -252,6 +252,6 @@ a.sidebar-nav-item:focus {
 /* Custom Code added by JerBouma */
 @media (max-width: 767px) {
     #ProfilePicture {
-        visibility: none;
+        display: none;
     }
 }
