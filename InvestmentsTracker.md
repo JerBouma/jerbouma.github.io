@@ -47,7 +47,7 @@ doing that day.
 * Comparison between the portfolio, a matching portfolio (the benchmark) and user-selected indices
 * The returns of the portfolio and the benchmark over the years
 
-![Portfolio](public/page_images/Portfolio.png)
+[![Portfolio](https://jerbouma.github.io/public/page_images/Portfolio.png)](https://jerbouma.github.io/public/page_images/Portfolio.png)
 
 ### Orderbook
 
@@ -60,7 +60,7 @@ orders to this overview.
 * Accurate tracking of orders made that are aggregated on the Portfolio tab
 * Allows the Portfolio Tab not to become cluttered when you invest frequently in the same fund
 
-![Orderbook](public/page_images/Orderbook.png)
+[![Orderbook](https://jerbouma.github.io/public/page_images/Orderbook.png)](https://jerbouma.github.io/public/page_images/Orderbook.png)
 
 ### Dividends & Costs
 
@@ -73,7 +73,7 @@ the Portfolio tab.
 * On this tab you can include any dividends and costs other than transactions costs (i.e. broker fees). This has a
   similar structure to that of the Orderbook tab.
 
-![Dividends&Costs](public/page_images/Dividend&Costs.png)
+[![Dividends&Costs](https://jerbouma.github.io/public/page_images/Dividend&Costs.png)](https://jerbouma.github.io/public/page_images/Dividend&Costs.png)
 
 ### Country Holdings
 
@@ -88,7 +88,7 @@ instrument.
 * The tab to accurately depict the country diversification displayed on the Portfolio tab
 * Modifications on a hidden tab are made to correctly weight the diversification (based on amount bought)
 
-![CountryHoldings](public/page_images/CountryHoldings.png)
+[![CountryHoldings](https://jerbouma.github.io/public/page_images/CountryHoldings.png)](https://jerbouma.github.io/public/page_images/CountryHoldings.png)
 
 ### Sector Holdings
 
@@ -101,7 +101,7 @@ weighted by how much you have allocated to each financial instrument.
 * The tab used to accurately depict the sector diversification displayed on the Portfolio tab;
 * Modifications on a hidden tab are made to correctly weight the diversification (based on amount bought).
 
-![SectorHoldings](public/page_images/SectorHoldings.png)
+[![SectorHoldings](https://jerbouma.github.io/public/page_images/SectorHoldings.png)](https://jerbouma.github.io/public/page_images/SectorHoldings.png)
 
 ### Settings
 
@@ -120,6 +120,4 @@ rebalancing strategy.
 * Year returns that display your yearly return over the last 7 years (or any earlier period);
 * Strategic weights you wish to rebalance to which the spreadsheet gives input on.
 
-![Info&Settings](public/page_images/Info&Settings.png)
-
-
+[![Info&Settings](https://jerbouma.github.io/public/page_images/Info&Settings.png)](https://jerbouma.github.io/public/page_images/Info&Settings.png)

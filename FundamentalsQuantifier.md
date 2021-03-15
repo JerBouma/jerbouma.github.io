@@ -6,7 +6,7 @@ The Fundamentals Quantifier is a tool that allows you to visually compare the fu
 of over 6,000 companies. You can filter the companies based on Sector and/or Industry. Thereby, it is possible
 to make a selection of companies that are closely related to each other making comparison a valuable insight.
 
-![FundamentalsQuantifier](public/page_images/FundamentalsQuantifier.PNG)
+[![FundamentalsQuantifier](https://jerbouma.github.io/public/page_images/FundamentalsQuantifier.PNG)](https://jerbouma.github.io/public/page_images/FundamentalsQuantifier.PNG)
 
 **Check out the website here [https://fundamentals-quantifier.herokuapp.com/](
 https://fundamentals-quantifier.herokuapp.com/)**

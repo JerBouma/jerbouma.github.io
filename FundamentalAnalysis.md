@@ -10,7 +10,7 @@ multiple companies or do a sector analysis.
 See a visualisation of the data on my
 [Fundamentals Quantifier website](https://jerbouma.github.io/FundamentalsQuantifier/).
 
-![FundamentalAnalysis](public/page_images/FundamentalAnalysis.png)
+[![FundamentalAnalysis](https://jerbouma.github.io/public/page_images/FundamentalAnalysis.png)](https://jerbouma.github.io/public/page_images/FundamentalAnalysis.png)
 
 ## Functions
 Here you can find a list of the available functions within this package separated per module. 

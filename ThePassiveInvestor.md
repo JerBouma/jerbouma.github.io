@@ -21,7 +21,7 @@ underlying stocks (i.e. High Yield, Super Dividends, Equal Weighted). This is qu
 
 With this program, I wish to make investment decisions easier to make and manage.
 
-![ThePassiveInvestor](public/page_images/programExample.png)
+[![ThePassiveInvestor](https://jerbouma.github.io/public/page_images/programExample.png)](https://jerbouma.github.io/public/page_images/programExample.png)
 
 ## Set-Up / Installation
 
@@ -82,4 +82,4 @@ equity investing is not considered Passive Investing.
 An example of the output can be found in the GIF below. This depicts several ETFs collected
 from [the Top ETFs according to Yahoo Finance](https://finance.yahoo.com/etfs).
 
-![ThePassiveInvestor](public/page_images/outputExample.gif)
+[![ThePassiveInvestor](https://jerbouma.github.io/public/page_images/outputExample.gif)](https://jerbouma.github.io/public/page_images/outputExample.gif)
