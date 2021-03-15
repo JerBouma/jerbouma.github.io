@@ -141,9 +141,15 @@ a.sidebar-nav-item:focus {
   }
 }
 
-p, pre {float: left; width: 50%;}
-.container {width: 100%;}
-p {clear: left;}
+left-side, right-side {
+  float: left; width: 50%;
+}
+.container {
+  width: 100%;
+}
+left-side {
+  clear: left;
+}
 
 
 /*
