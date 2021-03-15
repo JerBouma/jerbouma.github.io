@@ -1,83 +1,254 @@
-# The Passive Investor
+---
+layout: page
+title: Finance Database
+---
+As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to 
+understand what type of companies or ETFs are available is incredibly challenging with there being millions of
+companies amd derivatives available on the market. Sure, the most traded companies and ETFs can quickly be found
+simply because they are known to the public (for example, Microsoft, Tesla, S&P500 ETF or an All-World ETF). However, 
+what else is out there is often unknown.
 
-**Theories and research about the stock market have stated that the semi-strong form of market efficiency seems to
-hold.** This means that all public information is accurately reflected in the price of an financial instrument. This
-makes the job of a portfolio manager primarily managing the desired risk appetite of the client and not explicitly
-trying to outperform the market. This fact in combination with Finance professionals all around the world looking for
-that 'edge' to make their investment decisions as profitable as possible, makes it so the average joe can not compete.
+**This database tries to solve that**. It features 180.000+ symbols containing Equities, ETFs, Funds, Indices, Futures, 
+Options, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors,
+industries, types of investments and much more.
 
-**Therefore, the term 'Passive Investing' is often coined around.** This refers to buying funds
-(either ETFs or Mutual Funds) that follow the index (i.e. S&P 500, Dow Jones Index) or a broad market
-(Developed Markets, MSCI World) for diversification benefits. This means that a sudden decrease in performance of one
-stock within the index does not (on average) lead to a significant decline in the index as a whole. This allows the
-holder to spend limited time monitoring his holdings, therefore the term 'Passive'.
+The aim of this database is explicitly _not_ to provide up-to-date fundamentals or stock data as those can be obtained 
+with ease (with the help of this database) by using [yfinance](https://github.com/ranaroussi/yfinance), 
+[FundamentalAnalysis](https://github.com/JerBouma/FundamentalAnalysis) or 
+[ThePassiveInvestor](https://github.com/JerBouma/ThePassiveInvestor).  Instead, it gives insights into the products 
+that exist in each country, industry and sector and gives the most essential information about each product. With 
+this information, you can analyse specific areas of the financial world and/or find a product that is hard to find. 
+See for examples on how you can combine this database, and the earlier mentioned packages the section 
+[Examples](#Examples).
 
-With a large increase in ETFs available (over 5,000 in 2020), it can become difficult to make the best choice in what
-you wish to invest. There are many different providers (iShares, Vanguard, Invesco) as well as with changes to the
-underlying stocks (i.e. High Yield, Super Dividends, Equal Weighted). This is quickly reflected when looking for a S&P
-500 ETF as there are over 20 different ETFs available.
+Some key statistics of the database:
 
-With this program, I wish to make investment decisions easier to make and manage.
+| Product           | Quantity  | Sectors   | Industries    | Countries | Exchanges |
+| ----------------- | --------- | --------- | ------------- | --------- | --------- |
+| Equities          | 84.091    | 16        | 262           | 109       | 79        |
+| ETFs              | 15.892    | 268*      | 88*           | 100**     | 44        |
+| Funds             | 34.947    | 857*      | 416*          | 100**     | 25        |
 
-![ThePassiveInvestor](public/page_images/programExample.png)
+| Product           | Quantity  | Exchanges |
+| ----------------- | --------- | --------- |
+| Indices           | 24.548    | 62        |
+| Currencies        | 2.529     | 2         |
+| Cryptocurrencies  | 3.624     | 1         |
+| Options           | 13.819    | 1         |
+| Futures           | 1.173     | 7         |
+| Money Markets     | 1.384     | 2         |
 
-## Set-Up / Installation
+\* These numbers refer to families (iShares, Vanguard) and categories (World Stock, Real Estate) respectively.  
+\** This is an estimation. Obtaining the country distribution can only be done by collecting data on the underlying 
+or by manual search.
 
-Installing the program and running an analysis:
+## Usage
+To access the database you can download the entire repository, but I strongly recommend making use of the package 
+closely attached to the database. It allows you to select specific json files as well as search through collected
+data with a specific query.
 
-1. Download the most recent release [here](https://github.com/JerBouma/ThePassiveInvestor/releases).
-2. Unpack the ZIP file to your prefered location and run the file "ThePassiveInvestor.exe"
-3. Go to the [FinanceDatabase](https://github.com/JerBouma/FinanceDatabase) and search the database for your preferred
-   tickers. Then, place the tickers in an Excel sheet with the tickers listed vertically. See the example on the page of
-   the FinanceDatabase.
-    * You can also use the Yahoo Finance Screener ([ETFs](https://finance.yahoo.com/screener/etf/new)
-      or [Mutual Funds](https://finance.yahoo.com/screener/mutualfund/new)), select your preferences and click
-      "Find ETFs". Then you can copy the URL.
-    * You can also use 'Quote Lookup' ([example](https://finance.yahoo.com/lookup/etf?s=developed%20markets))
-    * You can also use your own Excel file that has the tickers listed vertically.
-4. Open the program, enter your save location (i.e. C:/Documents/DevelopedMarketsETF.xlsx) and input the URL or
-   Excelfile you decided to use in Step 2. Note that you <u>do not</u> have to create an Excel file, the program does
-   this for you. However, it does not create folders.
-5. Run the program, this takes less than a minute to complete.
-6. Analyse the Excelfile created
+You can install the package with the following steps:
+1. `pip install FinanceDatabase`
+    - Alternatively, download the 'Searcher' directory.
+2. (within Python) `import FinanceDatabase as fd`
 
-## Functionality
+The package has the following functions:
+- `show_options(product, equities_selection=None)` - gives all available options from the functions below per 
+  product (i.e. Equities, Funds) which then can be used to collect data. You can select a sub selection of 
+  equities by entering 'countries', 'sectors' or 'industries' for equities_selection.
+- `select_cryptocurrencies(cryptocurrency=None)` - with no input gives all cryptocurrencies, with input gives 
+the cryptocurrency of choice.
+- `select_currencies(currency=None)` - with no input gives all currencies, with input gives 
+the currency of choice.
+- `select_etfs(category=None)` - with no input gives all etfs, with input gives all etfs of a 
+specific category.
+- `select_equities(country=None, sector=None, industry=None)` - with no input gives all equities, with input 
+gives all equities of a country, sector, industry or a combination of the three.
+- `select_funds(category=None)` - with no input gives all funds, with input gives all funds of a 
+specific category.
+- `select_indices(market=None)` - with no input gives all indices, with input gives all indices of a 
+specific market which usually refers to indices in a specific country (like de_market gives DAX).
+- `select_other(product)` - gives either all Futures, all Moneymarkets or all Options.
+- `search_products(database, query, search='summary', case_sensitive=False, new_database=None)` - with input 
+  from the above functions, this function searches for specific values (i.e. the query 'sustainable') in 
+  one of the keys of the dictionary (which is by default the summary). It also has the option to enable 
+  case-sensitive searching which is off by default.
+  
+For additional information about each function you can use the build-in help function of Python. For 
+example `help(show_options)` returns a general description, the possible input parameters and what is returned 
+as output.
 
-The program is able to output an overview of each fund on a separate sheet. In this overview the following data is
-shown:
+For users of the broker **DeGiro**, you are able to find data on the tickers found in the 
+[Commission Free ETFs](https://www.degiro.ie/data/pdf/ie/commission-free-etfs-list.pdf) list by selecting either 
+`core_selection_degiro_filled` (all data) or `core_selection_degiro_filtered` (filtered by summary) as category 
+when using the function `select_etfs`.
 
-* The title of the fund
-* A summary about the fund's purpose/goal
-* Sector Holdings (% in each sector)
-* Company Holdings (top 10 companies with highest %)
-* Risk Statistics (several measures of risk)
-    * Displayed in 3, 5 and 10 years
-    * Alpha
-    * Beta
-    * Mean Annual Return
-    * R Squared
-    * Standard Deviation
-    * Sharpe Ratio
-    * Treynor Ratio
-* Characteristics of the instrument
-    * Inception date (start of fund)
-    * Category
-    * Total assets
-    * Currency
-    * Net Asset Value
-    * Latest close price
-* Morningstar Style Box (style of the fund)
-* Last five annual returns
-* Graph depicting the adjusted close prices over the last 10 years
-* Last 10 years of adjusted close prices for all Tickers (hidden sheet)
+## Examples
+This section gives a few examples of the possibilities with this package. These are merely a few of the things you
+can do with the package. **As you can obtain a wide range of symbols, pretty much any 
+package that requires symbols should work.**
 
-The input should either be an Excel File (with solely tickers in it) or via Yahoo Finance's ETF or Mutual Fund
-Screener (see [here](https://finance.yahoo.com/screener/etf/new)
-and [here](https://finance.yahoo.com/screener/mutualfund/new)). Note that the program <i>can not</i>
-handle stocks, bonds or anything else that is not a fund. This is because the data used is only available for funds and
-equity investing is not considered Passive Investing.
+### United States' Airlines
+If I wish to obtain all companies within the United States listed under 'Airlines' I can write the 
+following code:
+````
+import FinanceDatabase as fd
 
-An example of the output can be found in the GIF below. This depicts several ETFs collected
-from [the Top ETFs according to Yahoo Finance](https://finance.yahoo.com/etfs).
+airlines_us = fd.select_equities(country='United States', industry='Airlines')
+````
+Then, I can use packages like [yfinance](https://github.com/ranaroussi/yfinance) to quickly collect data from 
+Yahoo Finance for each symbol in the industry like this:
+````
+from yfinance.utils import get_json
+from yfinance import download
 
-![ThePassiveInvestor](public/page_images/outputExample.gif)
+airlines_us_fundamentals = {}
+for symbol in airlines_us:
+    airlines_us_fundamentals[symbol] = get_json("https://finance.yahoo.com/quote/" + symbol)
+
+airlines_us_stock_data = download(list(airlines_us))
+```` 
+With a few lines of code, I have collected all data from a specific industry within the United States. From here on 
+you can compare pretty much any key statistic, fundamental- and stock data. For example, let's plot a simple bar 
+chart that gives insights in the Quick Ratios (indicator of the overall financial strength or weakness of a company):
+````
+import matplotlib.pyplot as plt
+
+for symbol in airlines_us_fundamentals:
+    quick_ratio = airlines_us_fundamentals[symbol]['financialData']['quickRatio']
+    long_name = airlines_us_fundamentals[symbol]['quoteType']['longName']
+
+    if quick_ratio is None:
+        continue
+
+    plt.barh(long_name, quick_ratio)
+
+plt.tight_layout()
+plt.show()
+``````
+Which results in the graph displayed below (as of the 3rd of February 2021). From this graph you can identify 
+companies that currently lack enough assets to cover their liabilities (quick ratio < 1), and those that do have 
+enough assets (quick ratio > 1). Both too low and too high could make you wonder whether the company adequately 
+manages its assets.
+
+![FinanceDatabase](public/images/United_States_Airlines_QuickRatio.png)
+
+### Silicon Valley's Market Cap
+If I want to understand which listed technology companies exist in Silicon Valley, I can collect all equities of 
+the sector 'Technology' and then filter based on city to obtain all listed technology companies in 'Silicon Valley'. 
+The city 'San Jose' is where Silicon Valley is located. I remove all tickers with a dot since they refer to 
+different markets.
+````
+import FinanceDatabase as fd
+
+all_technology_companies = fd.select_equities(sector='Technology')
+silicon_valley = fd.search_products(all_technology_companies, query='San Jose', search='city')
+
+for ticker in silicon_valley.copy():
+    if '.' in ticker:
+        del silicon_valley[ticker]
+````
+Then I start collecting data with the [FundamentalAnalysis](https://github.com/JerBouma/FundamentalAnalysis) package. 
+Here I collect the key metrics which include 57 different metrics (ranging from PE ratios to Market Cap).
+````
+import FundamentalAnalysis as fa
+
+API_KEY = "YOUR API KEY HERE"
+data_set = {}
+for ticker in silicon_valley:
+    try:
+        data_set[ticker] = fa.key_metrics(ticker, API_KEY, period='annual')
+    except Exception:
+        continue
+````
+Then I make a selection based on the last 5 years and filter by market cap to compare the companies in terms of size
+with each other. This also causes companies that have not been listed for 5 years to be filtered out of my dataset.
+Lastly, I plot the data.
+````
+import pandas as pd
+import matplotlib.pyplot as plt
+
+years = ['2016', '2017', '2018', '2019', '2020']
+market_cap = pd.DataFrame(index=years)
+for ticker in data_set:
+    try:
+        data_years = []
+        for year in years:
+            data_years.append(data_set[ticker].loc['marketCap'][year])
+        market_cap[all_technology_companies[ticker]['short_name']] = data_years
+    except Exception:
+        continue
+
+market_cap_plot = market_cap.plot.bar(stacked=True, rot=0, colormap='Spectral')
+market_cap_plot.legend(prop={'size': 5.25})
+plt.show()
+````
+This results in the graph displayed below which separates the small companies from the large companies. Note that 
+this does not include _all_ technology companies in Silicon Valley because most are not listed or are not included 
+in the database of the FundamentalAnalysis package.
+
+![FinanceDatabase](public/images/Silicon_Valley_Technology_MarketCap.png)
+
+### Core Selection ETFs
+Sometimes, Excel simply offers the best solution if you want compare a range of ETFs quickly. Therefore, another 
+option is to use my program [ThePassiveInvestor](https://github.com/JerBouma/ThePassiveInvestor). The goal of 
+this program is to quickly compare a large selection of ETFs by collecting their most important attributes 
+(i.e. holdings, return, volatility, tracking error).
+
+As I invest with DeGiro, a great start for me would be by collecting all ETFs that are listed within the Core 
+Selection (commission free) list of my broker with the following code (or manually obtain them from the json file):
+````
+import FinanceDatabase as fd
+
+core_selection = fd.select_etfs("core_selection_degiro_filtered")
+````
+Then I convert the keys of the core_selection into a Series and send it to Excel without index and header.
+````
+import pandas as pd
+
+tickers = pd.Series(core_selection.keys())
+tickers.to_excel('core_selection_tickers.xlsx', index=None, header=None)
+````
+If you open the Excel file created you see the following lay-out (which corresponds to the lay-out accepted 
+by the program):
+
+![ThePassiveInvestor](public/images/ThePassiveInvestor_Excel.PNG)
+
+Then I open ThePassiveInvestor program and use the Excel as input. The first input is the Excel that you want to 
+be filled with input from your tickers (created by the program). The second input is the file you created above.
+
+![ThePassiveInvestor](public/images/ThePassiveInvestor_Program.PNG)
+
+When you run the program it starts collecting data on each ticker and fills the Excel with data. After the program 
+is finished you are able to find an Excel that looks very much like the GIF you see below. With this data you can 
+get an indication whether the ETF is what you are looking for.
+
+![ThePassiveInvestor](public/images/ThePassiveInvestor_GIF.gif)
+
+## Q&A
+
+- **How did you get your data?**
+    - Please check the [Methodology](https://github.com/JerBouma/FinanceDatabase/tree/master/Methodology).
+- **Is there support for my country?**
+    - Yes, most likely there is as the database includes 109 countries. Please check 
+    [here](https://github.com/JerBouma/FinanceDatabase/tree/master/Database/Equities/Countries).
+- **When I collect data via yfinance I notice that not all tickers return output, why is that?**
+    - Some tickers are merely holdings of companies and therefore do not really have any data attached to them. 
+      Therefore, it makes sense that not all tickers return data. If you are still in doubt, search the ticker on 
+      Google to see if there is really no data available.
+- **How frequently does the Database get updated?**
+    - I aim at doing this every few months. The database does not have to get updated frequently because the data 
+      collected is only general information. For example, a Sector name hardly changes and companies do not tend to 
+      move to another country every few months. Therefore, the data should stay up to date for several months. 
+      *If you wish to contribute to updating the database then that is much appreciated. Please check the 
+      [Methodology](https://github.com/JerBouma/FinanceDatabase/tree/master/Methodology) for guidance on how.*
+- **Do your sector and industry names use the same naming convention as GIC sector**?
+    - Not entirely but very similar, it's based on Yahoo Finance's sectors and industries. See industries and 
+      sectors. Perhaps a future adjustment could be to make them aligned with GICS.
+
+## Contribution
+Projects are bound to have (small) errors and can always be improved. Therefore, I highly encourage you to submit 
+issues and create pull requests to improve the package.
+
+The last update to the database is the 3rd of February 2021. I always accept Pull Requests every few months 
+to keep the database up to date. Extending the amount of tickers and data is also much appreciated.

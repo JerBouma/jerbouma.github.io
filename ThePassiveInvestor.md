@@ -1,11 +1,12 @@
-# The Passive Investor
-
+---
+layout: page
+title: The Passive Investor
+---
 **Theories and research about the stock market have stated that the semi-strong form of market efficiency seems to
-hold.**
-This means that all public information is accurately reflected in the price of an financial instrument. This makes the
-job of a portfolio manager primarily managing the desired risk appetite of the client and not explicitly trying to
-outperform the market. This fact in combination with Finance professionals all around the world looking for that 'edge'
-to make their investment decisions as profitable as possible, makes it so the average joe can not compete.
+hold.** This means that all public information is accurately reflected in the price of an financial instrument. This
+makes the job of a portfolio manager primarily managing the desired risk appetite of the client and not explicitly
+trying to outperform the market. This fact in combination with Finance professionals all around the world looking for
+that 'edge' to make their investment decisions as profitable as possible, makes it so the average joe can not compete.
 
 **Therefore, the term 'Passive Investing' is often coined around.** This refers to buying funds
 (either ETFs or Mutual Funds) that follow the index (i.e. S&P 500, Dow Jones Index) or a broad market
@@ -20,52 +21,29 @@ underlying stocks (i.e. High Yield, Super Dividends, Equal Weighted). This is qu
 
 With this program, I wish to make investment decisions easier to make and manage.
 
-![](public/page_images/programExample.png)
+![ThePassiveInvestor](public/page_images/programExample.png)
 
 ## Set-Up / Installation
 
 Installing the program and running an analysis:
 
 1. Download the most recent release [here](https://github.com/JerBouma/ThePassiveInvestor/releases).
-    * If you have Python you can also download the repository and run program.py.
 2. Unpack the ZIP file to your prefered location and run the file "ThePassiveInvestor.exe"
-3. Use the Yahoo Finance Screener ([ETFs](https://finance.yahoo.com/screener/etf/new)
-   or [Mutual Funds](https://finance.yahoo.com/screener/mutualfund/new)), select your preferences and click
-   "Find ETFs". Then you can copy the URL.
+3. Go to the [FinanceDatabase](https://github.com/JerBouma/FinanceDatabase) and search the database for your preferred
+   tickers. Then, place the tickers in an Excel sheet with the tickers listed vertically. See the example on the page of
+   the FinanceDatabase.
+    * You can also use the Yahoo Finance Screener ([ETFs](https://finance.yahoo.com/screener/etf/new)
+      or [Mutual Funds](https://finance.yahoo.com/screener/mutualfund/new)), select your preferences and click
+      "Find ETFs". Then you can copy the URL.
     * You can also use 'Quote Lookup' ([example](https://finance.yahoo.com/lookup/etf?s=developed%20markets))
-    * You can also use an Excel file that has the tickers listed vertically.
-3. Open the program, enter your save location (i.e. C:/Documents/DevelopedMarketsETF.xlsx) and input the URL or
+    * You can also use your own Excel file that has the tickers listed vertically.
+4. Open the program, enter your save location (i.e. C:/Documents/DevelopedMarketsETF.xlsx) and input the URL or
    Excelfile you decided to use in Step 2. Note that you <u>do not</u> have to create an Excel file, the program does
    this for you. However, it does not create folders.
-4. Run the program, this takes less than a minute to complete.
-5. Analyse the Excelfile created
-
-If you have made an investment decision, you can now use the Spreadsheet:
-
-1. Download your own
-   version [here](https://docs.google.com/spreadsheets/d/1Mo7o67UpwCxbn9OB7iAX8rrUpoqDMXWWpR3L22RHcAw/edit?usp=sharing) (
-   File > Make a copy)
-2. Enter your order on the Orderdata tab
-3. Copy the Sector Holdings Mix (as found in the Excelfile created by the Program) to the Sector Holdings tab.
-    * The Sector Holdings can change over time but the general allocation will hold. However, it might be interesting to
-      run the program every few months (or once a year) to update the Sector Holdings.
-4. Enter the ticker on the Portfolio tab to be able to monitor your holdings adequately.
-
-In case you wish to use the Mobile View tab to monitor your investments on your phone:
-
-1. File > Publish to the Web > Only Mobile View tab
-2. Copy and bookmark the link obtained
-3. Open the link on your mobile phone
-    * Recommended: in Chrome, select 'Add to Chromescreen' for easy access
-4. Expand columns accordingly to fill the screen
-    * See example [on my phone](Images/exampleMobileView.png) or
-      [live version](https://docs.google.com/spreadsheets/d/e/2PACX-1vSti0XnP10tE0lfX_f2mDIwPytj0xgXedjEfskJp5DMfygMJ600nEZdeaDUZWXz-t03CYrv8K-u7F1r/pubhtml?gid=1365265627&single=true)
+5. Run the program, this takes less than a minute to complete.
+6. Analyse the Excelfile created
 
 ## Functionality
-
-In this section a brief overview and instruction is given on the program as well as the spreadsheet.
-
-### The Program
 
 The program is able to output an overview of each fund on a seperate sheet. In this overview the following data is
 shown:
@@ -104,95 +82,4 @@ equity investing is not considered Passive Investing.
 An example of the output can be found in the GIF below. This depicts several ETFs collected
 from [the Top ETFs according to Yahoo Finance](https://finance.yahoo.com/etfs).
 
-![](public/page_images/outputExample.gif)
-
-### The Spreadsheet
-
-The spreadsheet allow you to input your investment choices and track them accordingly. Due to the function
-GOOGLEFINANCE, your investments' value is updated every few minutes. The spreadsheet uses data as input from what the
-program creates, but can also be used independently. It features the following.
-
-* Portfolio Tab
-    * Display information about:
-        * Amount bought
-        * Purchase date
-        * Recent price
-        * Bought price
-        * Additional costs
-        * Total invested
-        * Recent value
-        * Return (in % and €)
-        * YTD trendline
-        * Weight in the portfolio
-        * Days
-    * Recent changes in value of the Indices and Currency exchanges and their trends
-    * Comparison between portfolio and indices as benchmarks
-    * Accurate input on diversification
-* Orderbook Tab
-    * Accurate tracking of orders made that are aggregated on the Portfolio tab
-    * Allows the Portfolio Tab not to become cluttered when you invest frequently in the same fund
-* Sector Holdings tab
-    * Is used to accurately depict the diversification displayed on the portfolio tab
-    * Data can be obtained from the output from the program's created excelfile
-    * Modifications on a hidden tab are made to correctly weight the diversification (based on amount bought)
-* Mobile View tab
-    * Created to be bookmarked to quickly track holdings on a mobile phone
-    * Requires the tab to be 'Published to the Web' and then bookmarked. Columns can be shifted to match screensize.
-
-To see a live example and to obtain an empty copy see below:
-
-* [Live example](https://docs.google.com/spreadsheets/d/1Lss8VY6XDFChidh8pzyQ7-RQhL37m9Vu_wyL6YJ8sz8/edit?usp=sharing)
-* [Empty version](https://docs.google.com/spreadsheets/d/1Mo7o67UpwCxbn9OB7iAX8rrUpoqDMXWWpR3L22RHcAw/edit?usp=sharing)
-
-You can create a copy of the empty version for personal use.
-
-An example of the Portfolio tab can be found below:
-![](public/page_images/SpreadsheetExample.PNG)
-
-## Contribution
-
-Projects are bound to have (small) errors and can always be improved. Therefore, I highly encourage you to submit issues
-and create pull requests to improve the program and/or the spreadsheet.
-
-If you wish to test the packaging, you can do so by:
-
-1. Clone/Download this repository.
-2. Open CMD/PowerShell/Terminal in folder.
-3. install dependencies: ```pip install -r requirements.txt```
-
-### Run/Develop
-
-Run the following command:
-
-- ```python program.py```
-
-### Build
-
-Installation:
-
-- Windows:
-    - ```pyinstaller --add-data="images;images" --icon=images\iconICO.ico --name=ThePassiveInvestor program.py```
-- MacOS/Linux:
-    - ```pyinstaller --add-data="images:images" --icon=images/iconICO.ico --name=ThePassiveInvestor --windowed program.py```
-
-Open the 'dist' folder and the 'ThePassiveInvestor' folder, run exe/app. Or:
-
-- Windows:
-    - CMD:
-        - ```start dist\ThePassiveInvestor\ThePassiveInvestor.exe```
-    - PowerShell:
-        - ```dist\ThePassiveInvestor\ThePassiveInvestor.exe```
-- MacOS
-    - ```open dist/ThePassiveInvestor.app```
-
-## Troubleshooting
-
-The following issue is known:
-
-- <b>Error pyi_rth_certifi</b>: include the files found in the folder "SSL" to the main directory of the program.
-  Alternatively, download the latest release which fixes this issue.
-
-## Disclaimer
-
-While the program allows you to make financial decisions more easily, it explicitely <i>does not</i> make the decisions
-for you. Therefore, these decisions remain your own and I am not responsible for any losses (or gains) made.
+![ThePassiveInvestor](public/page_images/outputExample.gif)
