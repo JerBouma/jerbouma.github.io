@@ -2,11 +2,11 @@
 layout: page
 title: Finance Database
 ---
-<p class='content_new_2'>[![Finance Database GitHub stats](
+[![Finance Database GitHub stats](
 https://github-readme-stats.vercel.app/api/pin?username=jerbouma&repo=FinanceDatabase)](
-https://github.com/JerBouma/FinanceDatabase)</p>
+https://github.com/JerBouma/FinanceDatabase){:class=.content_new_2}
 
-<p class="content_new">
+{:.class=.content_new}
 As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to 
 understand what type of companies or ETFs are available is incredibly challenging with there being millions of
 companies amd derivatives available on the market. Sure, the most traded companies and ETFs can quickly be found
