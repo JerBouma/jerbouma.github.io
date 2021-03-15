@@ -1,6 +1,8 @@
 ---
-layout: post title: When Should You Invest?
+layout: post
+title: When Should You Invest?
 ---
+
 ![WhenShouldYouInvest](public/post_images/WhenShouldYouInvest.jfif)
 
 When I see the stock market go down, I ask myself frequently if I should invest before it goes up again. I asked myself
@@ -16,8 +18,8 @@ strategy.<sup>[1](#Footnote1)</sup> With this theory in hand, what does this mea
 
 Here is where Python comes into the play. I simulated two methods that invest $100,- every month over a 10-year period
 in the largest indices according
-to [Yahoo Finance](https://medium.com/r?url=https%3A%2F%2Ffinance.yahoo.com%2Fworld-indices) <sup>[2](#Footnote2)</sup>. These two methods
-are:
+to [Yahoo Finance](https://medium.com/r?url=https%3A%2F%2Ffinance.yahoo.com%2Fworld-indices) <sup>[2](#Footnote2)</sup>.
+These two methods are:
 
 1. **Same Day**: invest on the same day every month, simulated for the 1st day of the month until the 28th (to prevent
    not investing in February).
@@ -40,13 +42,14 @@ you will end up with a return of about 16.5%. Now let’s have a look at the med
 
 One thing that you can see right away is the increase in variability. Whereas the choices between the Same Day Method
 would only result in a small change, investing systematically at the wrong moments could penalise your returns by up to
-2.3%. While the potential returns are higher (up to 18%) the median return is the same as the Same Day method. <sup>[3](#Footnote3)</sup> 
+2.3%. While the potential returns are higher (up to 18%) the median return is the same as the Same Day
+method. <sup>[3](#Footnote3)</sup>
 
 Therefore, since it is impossible to time the market (gain more than average), the average investor would gain about the
 same return whether he or she invests completely random or on the same date each month. **Of course there are going to
 be investors that are right (or wrong) more than average but this does not violate the conclusion. This is because with
 enough investors, there is always someone who does better on average by pure chance just like there is always someone
-that wins the lottery.** <sup>[4](#Footnote4)</sup> 
+that wins the lottery.** <sup>[4](#Footnote4)</sup>
 
 ## Emotional Investing
 
@@ -60,7 +63,7 @@ discipline that studies the irrationality of an investor.
 A great example is.. myself. I currently work in the Finance domain and have a Master’s in Finance as well. Of course I
 am better than the average investor right?! Wrong. My degree and experience do not make me an exception to the concept
 of Market Timing as numerous studies have shown that even Investment Managers are not able to time the market
-correctly.<sup>[1](#Footnote1)</sup> 
+correctly.<sup>[1](#Footnote1)</sup>
 
 Falling for behavioural biases like overreaction, tendency to buy high and sell low, herding behaviour and the optimism
 bias causes you to gain lower returns than you would have gotten if you remained rational. Even when you understand that
