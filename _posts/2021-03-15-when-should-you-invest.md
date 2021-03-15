@@ -31,12 +31,12 @@ First, let’s start off by looking at the returns of investing on the same day 
 in the data, I use the median returns instead of the average returns. Note that it doesn’t matter how much return is
 made but only how much more (or less) is made compared to the Random Days method.
 
-![WhenShouldYouInvest](images/Month Days Graph.png)
+![WhenShouldYouInvest](_posts/images/Month Days Graph.png)
 
 As you can see it matters very little on what day you invest as the variability is very small (about 0.5%). On average
 you will end up with a return of about 16.5%. Now let’s have a look at the median returns for the Random Days method.
 
-![WhenShouldYouInvest](images/Random Days Graph.png)
+![WhenShouldYouInvest](_posts/images/Random Days Graph.png)
 
 One thing that you can see right away is the increase in variability. Whereas the choices between the Same Day Method
 would only result in a small change, investing systematically at the wrong moments could penalise your returns by up to
@@ -56,7 +56,7 @@ https://blog.prototypr.io/it-wont-happen-to-me-438e59d5ad42). This means that
 you believe that you are able to gain more than average returns because you are not the “average investor”. This touches
 strongly on Behavioural Finance, the discipline that studies the irrationality of an investor.
 
-![WhenShouldYouInvest](images/Sheep.jfif)
+![WhenShouldYouInvest](_posts/images/Sheep.jfif)
 
 A great example is.. myself. I currently work in the Finance domain and have a Master’s in Finance as well. Of course I
 am better than the average investor right?! Wrong. My degree and experience do not make me an exception to the concept
