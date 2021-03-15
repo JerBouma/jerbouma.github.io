@@ -8,7 +8,7 @@ the user to do most of the essential fundamental analysis. It also gives the pos
 multiple companies or do a sector analysis.
 
 See a visualisation of the data on my
-[Fundamentals Quantifier website](https://github.com/JerBouma/FundamentalsQuantifier).
+[Fundamentals Quantifier website](https://jerbouma.github.io/FundamentalsQuantifier/).
 
 ![FundamentalAnalysis](public/images/FundamentalAnalysis.png)
 
