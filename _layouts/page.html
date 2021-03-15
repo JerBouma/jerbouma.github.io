@@ -2,6 +2,10 @@
 layout: default
 ---
 
+{% if page.myvar1 %}
+    <p>{{ page.myvar1 }}</p>
+{% endif %}
+
 <div class="page">
   <h1 class="page-title">{{ page.title }}</h1>
   {{ content }}

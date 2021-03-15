@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Finance Database
+myvar1:
 ---
 
 As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to 
