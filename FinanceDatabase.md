@@ -2,6 +2,11 @@
 layout: page
 title: Finance Database
 ---
+<p class='content_new_2'>[![Finance Database GitHub stats](
+https://github-readme-stats.vercel.app/api/pin?username=jerbouma&repo=FinanceDatabase)](
+https://github.com/JerBouma/FinanceDatabase)</p>
+
+<p class="content_new">
 As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to 
 understand what type of companies or ETFs are available is incredibly challenging with there being millions of
 companies amd derivatives available on the market. Sure, the most traded companies and ETFs can quickly be found
@@ -253,4 +258,4 @@ Projects are bound to have (small) errors and can always be improved. Therefore,
 issues and create pull requests to improve the package [here](https://github.com/JerBouma/FinanceDatabase).
 
 The last update to the database is the 3rd of February 2021. I always accept Pull Requests every few months 
-to keep the database up to date. Extending the amount of tickers and data is also much appreciated.
+to keep the database up to date. Extending the amount of tickers and data is also much appreciated.</p>
