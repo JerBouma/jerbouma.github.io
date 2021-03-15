@@ -1,6 +1,7 @@
 ---
 layout: post
 title: When Should You Invest?
+subtitle: A Study on the effect of Market Timing and Emotional Investing
 ---
 
 ![WhenShouldYouInvest](public/post_images/WhenShouldYouInvest.jfif)
@@ -17,8 +18,7 @@ that it is impossible to time the market in such a way that you profit more than
 strategy.<sup>[1](#Footnote1)</sup> With this theory in hand, what does this mean for the average investor?
 
 Here is where Python comes into the play. I simulated two methods that invest $100,- every month over a 10-year period
-in the largest indices according
-to [Yahoo Finance](https://medium.com/r?url=https%3A%2F%2Ffinance.yahoo.com%2Fworld-indices) <sup>[2](#Footnote2)</sup>.
+in the largest indices according to [Yahoo Finance](https://finance.yahoo.com/world-indices) <sup>[2](#Footnote2)</sup>.
 These two methods are:
 
 1. **Same Day**: invest on the same day every month, simulated for the 1st day of the month until the 28th (to prevent
@@ -66,10 +66,11 @@ of Market Timing as numerous studies have shown that even Investment Managers ar
 correctly.<sup>[1](#Footnote1)</sup>
 
 Falling for behavioural biases like overreaction, tendency to buy high and sell low, herding behaviour and the optimism
-bias causes you to gain lower returns than you would have gotten if you remained rational. Even when you understand that
-these biases exists, you will still fall for them. Therefore, while the results of the two methods in a rational world
-are the same, the influence of your own decisions causes you to gain a lower return on average if you attempt to invest
-randomly or make an effort to time the market.
+bias causes you to gain lower returns than you would have gotten if you
+remained [rational](https://www.thebalance.com/why-average-investors-earn-below-average-market-returns-2388519). Even
+when you understand that these biases exists, you will still fall for them. Therefore, while the results of the two
+methods in a rational world are the same, the influence of your own decisions causes you to gain a lower return on
+average if you attempt to invest randomly or make an effort to time the market.
 
 ### So when should you invest? On the same day every month.
 
