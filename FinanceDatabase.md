@@ -1,7 +1,9 @@
 ---
 layout: page
 title: Finance Database
-myvar1:
+sidebar:[![Finance Database GitHub stats](
+https://github-readme-stats.vercel.app/api/pin?username=jerbouma&repo=FinanceDatabase)](
+https://github.com/JerBouma/FinanceDatabase)
 ---
 
 As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to 

@@ -1,9 +1,6 @@
 ---
 layout: page
 title: Investments Tracker
-myvar1:[![Finance Database GitHub stats](
-https://github-readme-stats.vercel.app/api/pin?username=jerbouma&repo=FinanceDatabase)](
-https://github.com/JerBouma/FinanceDatabase)
 ---
 Do you know how your investments hold up against the overall market? Do your deviations from the market actually make a
 positive difference? Are you aware how much exposure you have to each sector and each country? What about the tactical
