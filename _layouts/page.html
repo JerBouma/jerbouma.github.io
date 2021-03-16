@@ -14,8 +14,14 @@ layout: default
         {% if page.investments_tracker == null %}
         <p></p>
         {% else %}
+        <h2>Obtain Spreadsheet</h2>
         <b>To obtain your own copy, find the latest release <a
-                href="https://github.com/JerBouma/InvestmentSpreadsheet/releases">here</a></b>
+                href="https://docs.google.com/spreadsheets/d/1ykxFx-2F3Uy9HKgZ8V1AKyVB2Nd47RaJAYNc_Tfdk_4/edit?usp=sharing">here</a></b>.
+
+        <p>Then, go to "File" and select "Make a copy" to obtain your own version.</p>
+
+        <p>To find the Development version, which I use as template to test new features, and all earlier version, check
+            <a href="https://drive.google.com/drive/folders/10MiXu9N5UcXLYhfPWkqWmxzPsXxQji0W?usp=sharing">here</a>.</p>
         {% endif %}
     </div>
 </div>
@@ -29,7 +35,9 @@ layout: default
         </div>
     </div>
     <div class="col-sm-4">
-        {% capture github_stats %}https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&include_all_commits=true&show_icons=true&repo={{ page.github
+        {% capture github_stats
+        %}https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&include_all_commits=true&show_icons=true&repo={{
+        page.github
         }}{% endcapture %}
         {% capture github_repo %}https://github.com/jerbouma/{{ page.github }}{% endcapture %}
         <a href="{{ github_repo }}"><img align="center" src="{{ github_stats }}"></a>
