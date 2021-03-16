@@ -1,8 +1,7 @@
 ---
 layout: page
 title: Fundamental Analysis
-description: Fully-fledged Fundamental Analysis package capable of collecting 20+ years of Company Profiles, 
-Financial Statements, Ratios and Stock Data of 13.000+ companies.
+description: Fully-fledged Fundamental Analysis package capable of collecting 20+ years of Company Profiles, Financial Statements, Ratios and Stock Data of 13.000+ companies.
 github: FundamentalAnalysis
 ---
 

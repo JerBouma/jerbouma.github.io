@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Investments Tracker
+description: Spreadsheets that can be used by Retail Investors to monitor investment decisions and country, sector and strategic allocations.
 investments_tracker: Yes
 ---
 Do you know how your investments hold up against the overall market? Do you know if you would have been better off 

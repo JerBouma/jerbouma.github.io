@@ -1,8 +1,7 @@
 ---
 layout: page
 title: The Passive Investor
-description: Passive Investing for the Average Joe. With this program, I wish to make investment decisions easier 
-to make and manage.
+description: Passive Investing for the Average Joe. With this program, I wish to make investment decisions easier to make and manage.
 github: ThePassiveInvestor
 ---
 **Theories and research about the stock market have stated that the semi-strong form of market efficiency seems to
