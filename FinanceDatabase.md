@@ -1,6 +1,8 @@
 ---
 layout: page
 title: Finance Database
+description: This is a database of 180.000+ symbols containing Equities, ETFs, Funds, Indices, Futures, Options, 
+Currencies, Cryptocurrencies and Money Markets.
 github: FinanceDatabase
 ---
 
