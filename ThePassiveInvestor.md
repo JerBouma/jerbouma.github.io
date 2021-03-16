@@ -16,8 +16,8 @@ stock within the index does not (on average) lead to a significant decline in th
 holder to spend limited time monitoring his holdings, therefore the term 'Passive'.
 
 With a large increase in ETFs available (over 5,000 in 2020), it can become difficult to make the best choice in what
-you wish to invest. There are many different providers (iShares, Vanguard, Invesco) as well as with changes to the
-underlying stocks (i.e. High Yield, Super Dividends, Equal Weighted). This is quickly reflected when looking for a S&P
+you wish to invest. There are many providers (iShares, Vanguard, Invesco) as well as with changes to the
+underlying stocks (i.e. High Yield, Super Dividends, Equal Weighted). This is quickly reflected when looking for an S&P
 500 ETF as there are over 20 different ETFs available.
 
 With this program, I wish to make investment decisions easier to make and manage.
@@ -68,7 +68,7 @@ shown:
     * Total assets
     * Currency
     * Net Asset Value
-    * Latest close price
+    * The latest close price
 * Morningstar Style Box (style of the fund)
 * Last five annual returns
 * Graph depicting the adjusted close prices over the last 10 years
