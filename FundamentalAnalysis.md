@@ -5,22 +5,27 @@ description: Fully-fledged Fundamental Analysis package capable of collecting 20
 github: FundamentalAnalysis
 ---
 
-This package collects fundamentals and detailed company stock data from a large group of companies (13.000+)
+This package collects fundamentals and detailed company stock data from a large group of companies (20.000+)
 from FinancialModelingPrep and uses Yahoo Finance to obtain stock data for any financial instrument. It allows
 the user to do most of the essential fundamental analysis. It also gives the possibility to quickly compare
 multiple companies or do a sector analysis.
 
-See a visualisation of the data on my
-[Fundamentals Quantifier website](https://jerbouma.github.io/FundamentalsQuantifier/).
+To find symbols of specific sectors and/or industries have a look at my [Finance Database](https://github.com/JerBouma/FinanceDatabase) or 
+see a visualisation of the data on my [Fundamentals Quantifier website](https://github.com/JerBouma/FundamentalsQuantifier).
 
 [![FundamentalAnalysis](https://jerbouma.github.io/public/page_images/FundamentalAnalysis.png)](https://jerbouma.github.io/public/page_images/FundamentalAnalysis.png)
+[![](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Donate-brightgreen?logo=buymeacoffee)](https://www.buymeacoffee.com/jerbouma)
+[![](https://img.shields.io/github/issues/jerbouma/fundamentalanalysis)](https://github.com/JerBouma/FundamentalAnalysis/issues)
+[![](https://img.shields.io/github/issues-pr/JerBouma/fundamentalanalysis?color=yellow)](https://github.com/JerBouma/FundamentalAnalysis/pulls)
+[![](https://img.shields.io/pypi/v/fundamentalanalysis)](https://pypi.org/project/FundamentalAnalysis/)
+[![](https://img.shields.io/pypi/dm/fundamentalanalysis)](https://pypi.org/project/FundamentalAnalysis/)
 
 ## Functions
 Here you can find a list of the available functions within this package separated per module. 
 - **details**
     - `available companies` - shows the complete list of companies that are available for fundamental data
-    gathering including current price and the exchange the company is listed on. This is an extensive list with
-    well over 13.000 companies.
+    gathering including current price, and the exchange the company is listed on. This is an extensive list with
+    well over 20.000 companies.
     - `profile` - gives information about, among other things, the industry, sector exchange
     and company description.
     - `quote` - provides actual information about the company which is, among other things, the day high,
@@ -71,8 +76,8 @@ obtain a _free_ API Key. Note that these keys are limited to 250 requests per ac
 4. Obtain the API Key as found [here](https://financialmodelingprep.com/developer/docs/)
 4. Start using this package.
 
-When you run out of requests (250), you have to upgrade to a Premium version or create a new account. Note that I am
-in no way affiliated with FinancialModellingPrep and will never be.
+When you run out of daily requests (250), you have to upgrade to a Premium version. Note that I am in no way 
+affiliated with FinancialModellingPrep and never will be.
 
 ## Example
 
@@ -142,3 +147,8 @@ To find companies belonging to a specific sector or industry, please have a look
 [here](https://github.com/JerBouma/FundamentalsQuantifier/tree/master/data). Alternatively, you can have a 
 look at the [Fundamentals Quantifier](https://fundamentals-quantifier.herokuapp.com/), a website that I have written
 to visually compare any selection of companies.
+
+## Contribution
+I highly appreciate Pull Requests and Issues Reports as they can greatly improve the package.
+
+<a href="https://www.buymeacoffee.com/jerbouma" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
