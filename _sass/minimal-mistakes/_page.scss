@@ -6,6 +6,7 @@
   @include clearfix;
   margin-left: auto;
   margin-right: auto;
+  padding-top: $masthead-height;
   padding-left: 1em;
   padding-right: 1em;
   -webkit-animation: $intro-transition;
@@ -20,6 +21,7 @@
 }
 
 body {
+  padding: 85px 0 0;  // padding-top equal to masthead height or greater
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -113,7 +115,7 @@ body {
   p,
   li,
   dl {
-    font-size: 1em;
+    font-size: 0.8em;
   }
 
   /* paragraph indents */
@@ -575,4 +577,83 @@ body {
       padding-right: 0;
     }
   }
+}
+
+/*
+   Columns
+   ========================================================================== */
+
+.ten-column {
+  float: left;
+  width: 10%;
+  padding-left: 5%;
+  }
+
+.twenty-column-left {
+  float: left;
+  width: 20%;
+  }
+
+.twenty-column-right {
+  float: left;
+  width: 20%;
+  padding-left: 5%;
+  }
+
+.thirty-column {
+  float: left;
+  width: 30%;
+  padding-left: 5%;
+  }
+
+.fourty-column {
+  float: left;
+  width: 40%;
+  padding-left: 5%;
+  }
+.fifty-column-right {
+  float: left;
+  width: 50%;
+  padding-left: 5%;
+  }
+
+.fifty-column-left {
+  float: left;
+  width: 50%;
+  }
+
+.sixty-column {
+  float: left;
+  width: 60%;
+  }
+
+.seventy-column {
+  float: left;
+  width: 70%;
+  }
+
+.eighty-column-left {
+  float: left;
+  width: 80%;
+  }
+
+.eighty-column-right {
+  float: left;
+  width: 80%;
+  padding-left: 5%;
+  }
+
+.ninety-column {
+  float: left;
+  width: 90%;
+  }
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.testimoninals {
+  border-radius: 50%;
 }
