@@ -9,6 +9,10 @@
 .sidebar {
   @include clearfix();
   padding-top: $masthead-height;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
   // @include breakpoint(max-width $large) {
   //   /* fix z-index order of follow links */
   //   position: relative;
