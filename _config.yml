@@ -27,6 +27,7 @@ repository               : "JerBouma/jerbouma.github.io"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : "/assets/images/default/cv.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
+github                   : [metadata]
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:
@@ -197,7 +198,7 @@ sass:
 
 # Outputting
 permalink: /:categories/:title/
-paginate: 5 # amount of posts to show
+# paginate: 5 # amount of posts to show
 paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
