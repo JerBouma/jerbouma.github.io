@@ -7,7 +7,7 @@ redirect_from:
   - /about
 classes: wide
 ---
-My name is Jeroen Bouma, a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:target="_blank"} which is one of the largest Dutch insurance companies with over €60 billion assets under management (AUM). Within this role I am responsible for analysing the profitability and investment risks, perform sensitivity analysis on both assets and liabilities and develop new and existing financial models to better understand the relationship between risk and return working closely with a variety of financial analysts.
+My name is Jeroen Bouma and I work as a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:target="_blank"} which is one of the largest Dutch insurance companies with over €60 billion assets under management (AUM). Within this role I am responsible for analysing the profitability and investment risks, perform sensitivity analysis on both assets and liabilities and develop new and existing financial models to better understand the relationship between risk and return working closely with a variety of financial analysts.
 
 I've ended up at A.S.R. after having worked at [OpenBB](https://openbb.co/){:target="_blank"}, an open-source company revolutionizing the way investment research is done and [PGGM](https://www.pggm.nl/en/){:target="_blank"}, one of the largest pension funds in the Netherlands with well over €300 billion AUM.  All three have one thing in common which characterises myself as well: combining (advanced) Python modelling with Quantitative Finance.
 
