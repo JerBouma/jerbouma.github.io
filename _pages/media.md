@@ -41,7 +41,7 @@ Therefore, I did four presentations for Master students at the campus. My goal w
 
 <div class="row">
 <div markdown="1" class="fifty-column-left">
-Within this webinar I explored how to do financial due dilligence with the OpenBB Terminal which erquires an examination of financial records before entering into a proposed transaction with another party.
+Within this webinar I explored how to do financial due diligence with the OpenBB Terminal which erquires an examination of financial records before entering into a proposed transaction with another party.
 
 Within this webinar I explored the main revenue streams, historical stock prices, dividends and stock splits, understand management, ownership and market capitalization, revenue and profit margins and future expectations.
 </div>

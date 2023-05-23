@@ -21,9 +21,9 @@ title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : &name "Jeroen Bouma"
 description              : &description "With Experience and Education in the areas of (Quantitative) Finance and Economics (BEc), my ambition is to continuously improve in the fields of Quant Finance and Python Programming"
-url                      : https://jerbouma2.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+url                      : https://jerbouma.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
-repository               : "JerBouma/jerbouma2.github.io"
+repository               : "JerBouma/jerbouma.github.io"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : "/assets/images/default/cv.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
