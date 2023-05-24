@@ -1,6 +1,7 @@
 ---
-title: "Contact"
-excerpt: "How to reach out to me"
+title: Contact
+excerpt: I am always open to discuss financial theory, getting involved in new financial (Python) projects or general discussions. If you are interested in supporting my projects and work, consider buying me a coffee. You can reach out to me or support me via the following channels.
+description: I am always open to discuss financial theory, getting involved in new financial (Python) projects or general discussions. If you are interested in supporting my projects and work, consider buying me a coffee. You can reach out to me or support me via the following channels.
 author_profile: true
 permalink: /contact
 redirect_from:

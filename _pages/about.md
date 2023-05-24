@@ -1,6 +1,7 @@
 ---
-title: "About Me"
-excerpt: "An introduction about me and my experiences"
+title: About Me
+excerpt: My name is Jeroen Bouma and I work as a Financial Risk Analyst at ASR which is one of the largest Dutch insurance companies with over €60 billion assets under management (AUM). Within this role I am responsible for analysing the profitability and investment risks and develop new and existing financial models. As I've seen many models and calculations being repeated internally several times within financial firms, I am a big advocate for open-source in which individuals and firms no longer need to rely on proprietary models.
+description: My name is Jeroen Bouma and I work as a Financial Risk Analyst at ASR which is one of the largest Dutch insurance companies with over €60 billion assets under management (AUM). Within this role I am responsible for analysing the profitability and investment risks and develop new and existing financial models. As I've seen many models and calculations being repeated internally several times within financial firms, I am a big advocate for open-source in which individuals and firms no longer need to rely on proprietary models.
 author_profile: true
 permalink: /
 redirect_from:

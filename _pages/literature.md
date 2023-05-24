@@ -1,7 +1,8 @@
 ---
 permalink: /literature
 title: Literature
-description: On this page you are able to find all the major projects I maintain and/or are currently actively developing.
+excerpt: This is my Notion page in which I store most of the literature I read that interests me. This is mostly on topics related to investing, economics and behavioural finance. Within this Notion page, I try to always include a public link if you would like to access the document to read more about it.
+description: This is my Notion page in which I store most of the literature I read that interests me. This is mostly on topics related to investing, economics and behavioural finance. Within this Notion page, I try to always include a public link if you would like to access the document to read more about it.
 classes: wide
 ---
 

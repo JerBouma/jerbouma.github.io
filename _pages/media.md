@@ -1,6 +1,7 @@
 ---
-title: "Talks"
-excerpt: "All (social) media and talks featuring myself"
+title: Talks
+excerpt: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
+description: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
 author_profile: true
 permalink: /talks
 redirect_from:

@@ -17,11 +17,11 @@ minimal_mistakes_skin    : "contrast" # "air", "aqua", "contrast", "dark", "dirt
 # Site Settings
 locale                   : "en-GB"
 title                    : "Jeroen Bouma"
-title_separator          : "-"
+title_separator          : "|"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : &name "Jeroen Bouma"
-description              : &description "With Experience and Education in the areas of (Quantitative) Finance and Economics (BEc), my ambition is to continuously improve in the fields of Quant Finance and Python Programming"
-url                      : https://jerbouma.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+description              : &description "The personal website of Jeroen Bouma featuring my resume, GitHub projects, talks, and Financial literature list."
+url                      : "https://www.jeroenbouma.com/" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "JerBouma/jerbouma.github.io"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
@@ -59,7 +59,7 @@ reCaptcha:
   secret                 :
 atom_feed:
   path                   : # blank (default) uses feed.xml
-  hide                   : # true, false (default)
+  hide                   : true
 search                   : # true, false (default)
 search_full_content      : # true, false (default)
 search_provider          : # lunr (default), algolia, google
@@ -87,19 +87,21 @@ facebook:
   username               :
   app_id                 :
   publisher              :
-og_image                 : # Open Graph/Twitter default site image
+og_image                 : "/assets/images/default/bio-photo.jpg"
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
   type                   : # Person or Organization (defaults to Person)
   name                   : # If the user or organization name differs from the site's name
   links: # An array of links to social media profiles
+    - "https://www.linkedin.com/in/boumajeroen/"
+    - "https://github.com/JerBouma"
 
 # Analytics
 analytics:
-  provider               : false # false (default), "google", "google-universal", "google-gtag", "custom"
+  provider               : "google"
   google:
-    tracking_id          :
+    tracking_id          : "G-MPWCCCJM4Z"
     anonymize_ip         : # true, false (default)
 
 

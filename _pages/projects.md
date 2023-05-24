@@ -1,11 +1,12 @@
 ---
 permalink: /projects
 title: Projects
-description: On this page you are able to find all the major projects I maintain and/or are currently actively developing.
+excerpt: Much of the Finance theory I have learned, I apply within Python which I have spend thousands of hours developing in. This is in the fields of Data Science & Machine Learning, Fundamental, Algorithmic and Technical Analysis, GUIs and web-based dashboards as well as various other topics. On this page you are able to find all major Python projects I am actively maintaining.
+description: Much of the Finance theory I have learned, I apply within Python which I have spend thousands of hours developing in. This is in the fields of Data Science & Machine Learning, Fundamental, Algorithmic and Technical Analysis, GUIs and web-based dashboards as well as various other topics. On this page you are able to find all major Python projects I am actively maintaining.
 classes: wide
 ---
 
-Much of the Finance theory I have learned, I apply within Python which I have spend thousands of hours developing in. This is in the fields of Data Science & Machine Learning, Fundamental, Algorithmic and Technical Analysis, GUIs and web-based dashboards as well as various other topics.
+Much of the Finance theory I have learned, I apply within Python which I have spend thousands of hours developing in. This is in the fields of Data Science & Machine Learning, Fundamental, Algorithmic and Technical Analysis, GUIs and web-based dashboards as well as various other topics. On this page you are able to find all major Python projects I am actively maintaining.
 
 ## Finance Database
 
