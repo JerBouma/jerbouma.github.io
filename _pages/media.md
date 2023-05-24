@@ -7,6 +7,7 @@ redirect_from:
   - /media
   - /videos
 classes: wide
+layout: videos
 ---
 
 All of my talks, both personal and professional, are included here.
@@ -20,7 +21,9 @@ I gave two presentations at the University of Loughborough and for the Universit
 These presentations were meant to enlighten students about the OpenBB Terminal and what OpenBB wants to achieve in the near future. This recording was done at the University of Warwick in collaboration with the Warwick Finance Society.
 </div>
 <div markdown="1" class="fifty-column-right">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/bSAlfrW1ikw?controls=1&start=13" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div class="embed-youtube" data-video-id="bSAlfrW1ikw">
+  <div class="embed-youtube-play"></div>
+</div>
 </div>
 </div>
 
@@ -28,7 +31,9 @@ These presentations were meant to enlighten students about the OpenBB Terminal a
 
 <div class="row">
 <div markdown="1" class="fifty-column-left">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/itU3QwcWFOE?controls=1&start=37" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div class="embed-youtube" data-video-id="itU3QwcWFOE">
+  <div class="embed-youtube-play"></div>
+</div>
 </div>
 <div markdown="1" class="fifty-column-right">
 I got approached by Utrecht University whether I'd be interested in providing a guest lecture to Finance students taking a workshop on Python. Being an alumni myself and enthusiastic about Python, I couldn't let this opportunity pass to return back to my former University.
@@ -41,12 +46,14 @@ Therefore, I did four presentations for Master students at the campus. My goal w
 
 <div class="row">
 <div markdown="1" class="fifty-column-left">
-Within this webinar I explored how to do financial due diligence with the OpenBB Terminal which erquires an examination of financial records before entering into a proposed transaction with another party.
+Within this webinar I explored how to do financial due diligence with the OpenBB Terminal which requires an examination of financial records before entering into a proposed transaction with another party.
 
 Within this webinar I explored the main revenue streams, historical stock prices, dividends and stock splits, understand management, ownership and market capitalization, revenue and profit margins and future expectations.
 </div>
 <div markdown="1" class="fifty-column-right">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Bq7aLH4HY8Y?controls=1&start=49" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div class="embed-youtube" data-video-id="Bq7aLH4HY8Y">
+  <div class="embed-youtube-play"></div>
+</div>
 </div>
 </div>
 
@@ -54,7 +61,9 @@ Within this webinar I explored the main revenue streams, historical stock prices
 
 <div class="row">
 <div markdown="1" class="fifty-column-left">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/IbtILCinPrs?controls=1&start=79" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>.
+<div class="embed-youtube" data-video-id="IbtILCinPrs">
+  <div class="embed-youtube-play"></div>
+</div>
 </div>
 <div markdown="1" class="fifty-column-right">
 Within this webinar I gave an introduction to the OpenBB Terminal to serve as a getting started guide for novice users of the OpenBB ecosystem.
@@ -72,7 +81,9 @@ As part of my initative present OpenBB to students and professors, I've been int
 The goal was to give a clear overview of some of the capabilities of the OpenBB Terminal and explain to the students how they can use the OpenBB Terminal for their market and investment reports.
 </div>
 <div markdown="1" class="fifty-column-right">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/HLead2WTnIs?controls=1&start=12" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div class="embed-youtube" data-video-id="HLead2WTnIs">
+  <div class="embed-youtube-play"></div>
+</div>
 </div>
 </div>
 
@@ -80,7 +91,9 @@ The goal was to give a clear overview of some of the capabilities of the OpenBB 
 
 <div class="row">
 <div markdown="1" class="fifty-column-left">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_4dQs_q_Jtk?controls=1&start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div class="embed-youtube" data-video-id="_4dQs_q_Jtk">
+  <div class="embed-youtube-play"></div>
+</div>
 </div>
 <div markdown="1" class="fifty-column-right">
 Within this webinar, OpenBB introduced the OpenBB Terminal 3.0. This includes the addition of interactive tables and graphs, a brand new fixed income menu written by myself and many new back-end improvements.
@@ -98,6 +111,8 @@ The OpenBB Terminal 2.0 was introduced to an audience of over 1300 of our users 
 The event featured Didier Lopes, Founder & CEO at OpenBB, Jeroen Bouma, Product Manager at OpenBB, Minh Hoang, Product Manager at OpenBB, and Martin Bufi, Sr. Engineer at OpenBB, as speakers.
 </div>
 <div markdown="1" class="fifty-column-right">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/W9r2joPZOOw?controls=1&start=842" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div class="embed-youtube" data-video-id="W9r2joPZOOw">
+  <div class="embed-youtube-play"></div>
+</div>
 </div>
 </div>
