@@ -12,25 +12,25 @@ classes: wide
 
 My name is Jeroen Bouma and I work as a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:target="_blank"} which is one of the largest Dutch insurance companies with over €60 billion assets under management (AUM). Within this role I am responsible for analysing the profitability and investment risks, perform sensitivity analysis on both assets and liabilities and develop new and existing financial models to better understand the relationship between risk and return working closely with a variety of financial analysts.
 
-<div class="about-row">
+<div class="about-row display-about-bio-image">
 <div markdown="1" class="about-buttons-column">
 
-[View Resume](/resume){: .btn .btn--info}
+[View <br /> Resume](/resume){: .btn .btn--info .display-about-bio-image}
 
 </div>
 <div markdown="1" class="about-buttons-column">
 
-[Explore Projects](/projects){: .btn .btn--info}
+[Explore <br /> Projects](/projects){: .btn .btn--info .display-about-bio-image}
 
 </div>
 <div markdown="1" class="about-buttons-column">
 
-[Watch Talks](/talks){: .btn .btn--info} 
+[Watch <br /> Talks](/talks){: .btn .btn--info .display-about-bio-image} 
 
 </div>
 <div markdown="1" class="about-buttons-column">
 
-[Read Literature](/literature){: .btn .btn--info}
+[Read <br /> Literature](/literature){: .btn .btn--info .display-about-bio-image}
 
 </div>
 </div>
