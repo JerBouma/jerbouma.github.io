@@ -6,6 +6,7 @@
   @include clearfix;
   margin-left: auto;
   margin-right: auto;
+  padding-top: $masthead-height;
   padding-left: 1em;
   padding-right: 1em;
   -webkit-animation: $intro-transition;
@@ -655,4 +656,34 @@ body {
 
 .testimoninals {
   border-radius: 50%;
+}
+
+.about-row {
+  content: "";
+  text-align: center;
+}
+
+.about-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.about-buttons-column {
+  display: inline-block;
+  width: 20%; 
+  }
+
+.about-bio-image {
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+@media (min-width: 767px) {
+  .display-about-bio-image {
+    display: none;
+  }
 }
