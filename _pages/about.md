@@ -1,7 +1,7 @@
 ---
 title: About Me
-excerpt: My name is Jeroen Bouma and I work as a Financial Risk Analyst at ASR which is one of the largest Dutch insurance companies with over €60 billion assets under management (AUM). Within this role I am responsible for analysing the profitability and investment risks and develop new and existing financial models. As I've seen many models and calculations being repeated internally several times within financial firms, I am a big advocate for open-source in which individuals and firms no longer need to rely on proprietary models.
-description: My name is Jeroen Bouma and I work as a Financial Risk Analyst at ASR which is one of the largest Dutch insurance companies with over €60 billion assets under management (AUM). Within this role I am responsible for analysing the profitability and investment risks and develop new and existing financial models. As I've seen many models and calculations being repeated internally several times within financial firms, I am a big advocate for open-source in which individuals and firms no longer need to rely on proprietary models.
+excerpt: I'm Jeroen Bouma, a Financial Risk Analyst at A.S.R, one of the largest Dutch insurance companies with over €60 billion AUM. My responsibilities include analyzing profitability, assessing investment risks, conducting sensitivity analysis on assets and liabilities, and developing financial models to understand the risk-return relationship. I collaborate closely with a diverse team of financial analysts.
+description: I enjoy working in the intersection between Python modelling and Quantitative Finance. On this website you can find my open-source projects and career path. 
 author_profile: true
 permalink: /
 redirect_from:
@@ -12,7 +12,7 @@ layout: home
 
 ![Bio Image](/assets/images/default/bio-photo.jpg){: .about-bio-image .display-about-bio-image}
 
-My name is Jeroen Bouma and I work as a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:target="_blank"} which is one of the largest Dutch insurance companies with over €60 billion assets under management (AUM). Within this role I am responsible for analysing the profitability and investment risks, perform sensitivity analysis on both assets and liabilities and develop new and existing financial models to better understand the relationship between risk and return working closely with a variety of financial analysts.
+I'm Jeroen Bouma, a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:target="_blank"}, one of the largest Dutch insurance companies with over €60 billion AUM. My responsibilities include analyzing profitability, assessing investment risks, conducting sensitivity analysis on assets and liabilities, and developing financial models to understand the risk-return relationship. I collaborate closely with a diverse team of financial analysts.
 
 <div class="about-row display-about-bio-image">
 <div markdown="1" class="about-buttons-column">
@@ -37,16 +37,21 @@ My name is Jeroen Bouma and I work as a Financial Risk Analyst at [A.S.R.](https
 </div>
 </div>
 
-I've ended up at A.S.R. after having worked at [OpenBB](https://openbb.co/){:target="_blank"}, an open-source company revolutionizing the way investment research is done and [PGGM](https://www.pggm.nl/en/){:target="_blank"}, one of the largest pension funds in the Netherlands with well over €300 billion AUM.  All three have one thing in common which characterises myself as well: combining (advanced) Python modelling with Quantitative Finance.
 
-On this website, you are able to find a detailed resume including testimonials, my Python projects related to financial theory, all talks and videos that I’ve been a part of and lastly a complete list of literature that I’ve read to better understand the financial world.
+I joined A.S.R. after working at [OpenBB](https://openbb.co/){:target="_blank"}, an innovative open-source company transforming investment research, and [PGGM](https://www.pggm.nl/en/){:target="_blank"}, a prominent Dutch pension fund managing over €300 billion. What ties these experiences together, and reflects my own passion, is the incorporation of (advanced) Python modeling within Quantitative Finance.
+
+I thrive in the realm where advanced financial modeling meets makings sense of the financial markets. The financial world is primarily shaped by human behavior and often driven by emotions rather than rationality. As predicting the future is incredibly challenging, if not impossible, and investment approaches needing to rely on current and past observations, it opens up room for extensive discussions around assumptions, input for econometric models, and interpretation of their model's output. This intersection captivates me the most and has been a consistent theme throughout my academic and professional journey.
+
+This website offers a comprehensive resume with testimonials, my open-source Python projects related to financial theory, recorded talks and videos I've participated in, and a complete list of literature I've studied to enhance my understanding of the financial world.
+
+<hr>
 
 <div class="testimonial-slider">
 <div class="testimonial-slide">
 <div class="testimonial-content">
 
 <div class="read-more-buttons" markdown="1">
-<img src="/assets/images/testimonials/SriChilukuri.jpeg" alt="SriChilukuri">
+<img src="/assets/images/testimonials/SriChilukuri.jpeg" alt="SriChilukuri" class='testimoninals'>
 
 [Read More](/resume){: .btn .btn--info}
 </div>
@@ -64,7 +69,7 @@ On this website, you are able to find a detailed resume including testimonials, 
 <div class="testimonial-content">
 
 <div class="read-more-buttons" markdown="1">
-<img src="/assets/images/testimonials/LuukvanBenthem.jpeg" alt="LuukvanBenthem">
+<img src="/assets/images/testimonials/LuukvanBenthem.jpeg" alt="LuukvanBenthem" class='testimoninals'>
 
 [Read More](/resume){: .btn .btn--info}
 </div>
@@ -81,7 +86,7 @@ On this website, you are able to find a detailed resume including testimonials, 
 <div class="testimonial-content">
 
 <div class="read-more-buttons" markdown="1">
-<img src="/assets/images/testimonials/PascalJanssen.jpeg" alt="PascalJanssen">
+<img src="/assets/images/testimonials/PascalJanssen.jpeg" alt="PascalJanssen" class='testimoninals'>
 
 [Read More](/resume){: .btn .btn--info}
 </div>

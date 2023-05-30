@@ -163,11 +163,18 @@ pre {
 /* horizontal rule */
 
 hr {
-  display: block;
-  margin: 1em 0;
   border: 0;
-  border-top: 1px solid $border-color;
+  height: 1px;
+  background: #333;
+  background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }
+
+// hr {
+//   display: block;
+//   margin: 1em 0;
+//   border: 0;
+//   border-top: 1px solid $border-color;
+// }
 
 /* lists */
 

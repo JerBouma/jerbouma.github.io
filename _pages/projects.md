@@ -8,8 +8,6 @@ classes: wide
 
 When I first laid my hands on Python back in University I instantly felt like this an amazing tool with many uses in the financial world and that's exactly why I've spend thousands of hours programming in this language whether it is related to internal models like at A.S.R. and PGGM or right in the open through open-source (as also can be seen on this page). As I've seen many models and calculations being repeated internally several times within financial firms, I am a big advocate for open-source in which individuals and firms no longer need to rely on proprietary models.
 
-In terms of (Quantitative) Finance, I enjoy working in the intersection between advanced financial modelling and making (qualitative) sense of the market and where it is heading. The financial world is controlled mostly by the behaviour of humans, history has shown time after time that we are not rational at all and are much more controller by emotions than we realise. Next to that, it is (nearly) impossible to predict the future. Whatever investment approach you are applying, it can only be based on current and past observations. This leaves plenty of room for discussion between the assumptions and therefore the input for econometric models as well as how to interpret the output of the model. This intersection is what I enjoy the most which has been the recurring theme in both my time at university and my professional career.
-
 ## Finance Database
 
 <div class="row">
@@ -23,6 +21,9 @@ The aim of this database is explicitly not to provide up-to-date fundamentals or
 <div markdown="1" class="fourty-column">
 <img src="https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg">
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=financedatabase)](https://github.com/jerbouma/financedatabase){:target="_blank"}
+
+[![PyPi Version](https://img.shields.io/pypi/v/financedatabase)](https://pypi.org/project/financedatabase/)
+[![PyPi Downloads](https://img.shields.io/pypi/dm/financedatabase)](https://pypi.org/project/financedatabase/)
 </div>
 </div>
 
@@ -39,6 +40,9 @@ To find symbols of specific sectors and/or industries have a look at my Finance 
 <div markdown="1" class="fourty-column">
 <img src="https://raw.githubusercontent.com/JerBouma/FundamentalAnalysis/master/images/FundamentalAnalysis.png">
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=fundamentalanalysis)](https://github.com/jerbouma/fundamentalanalysis){:target="_blank"}
+
+[![PyPi Version](https://img.shields.io/pypi/v/fundamentalanalysis)](https://pypi.org/project/FundamentalAnalysis/)
+[![PyPi Downloads](https://img.shields.io/pypi/dm/fundamentalanalysis)](https://pypi.org/project/FundamentalAnalysis/)
 </div>
 </div>
 
@@ -55,6 +59,9 @@ This is quickly reflected when looking for a S&P 500 ETF as there are over 20 di
 <div markdown="1" class="fourty-column">
 <img src="https://raw.githubusercontent.com/JerBouma/ThePassiveInvestor/master/Images/outputExample.gif">
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=thepassiveinvestor)](https://github.com/jerbouma/thepassiveinvestor){:target="_blank"}
+
+[![PyPi Version](https://img.shields.io/pypi/v/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/)
+[![PyPi Downloads](https://img.shields.io/pypi/dm/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/)
 </div>
 </div>
 
@@ -71,5 +78,8 @@ I have been part of this company and till this day I am one of the main contribu
 <div markdown="1" class="fourty-column">
 <img src="https://github.com/OpenBB-finance/OpenBBTerminal/raw/develop/images/openbb_gradient.png">
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=OpenBB-finance&repo=OpenBBTerminal)](https://github.com/openbb-finance/openbbterminal){:target="_blank"}
+
+[![PyPi Version](https://img.shields.io/pypi/v/openbb)](https://pypi.org/project/openbb/)
+[![PyPi Downloads](https://img.shields.io/pypi/dm/openbb)](https://pypi.org/project/openbb/)
 </div>
 </div>

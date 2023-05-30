@@ -98,7 +98,7 @@ Quantitative track with courses in Investment Management, Advanced Econometrics,
 </div>
 </div>
 
-**Hanze University of Applied Sciences— Bachelor of Economics (BEc)** 
+**Hanze University of Applied Sciences — Bachelor of Economics (BEc)** 
 
 September 2013 - July 2017
 
@@ -141,7 +141,7 @@ View all of these testimoninals on my LinkedIn profile as well as found [here](h
 *Jeroen has been a delight to work with. With his expertise in investment research and “can do” attitude, he quickly transformed himself into an excellent product marketing manager at OpenBB. In fact, I would not hesitate to say that he was often the lone sane voice in helping steer the heavily engineering-centric company in the right business direction. His leadership of the highly successful OpenBB Terminal 2.0 launch event in November 2022 and the company's ongoing go-to-market (GTM) push into Academia are testaments to his newly acquired product marketing skills as well as his overall professionalism. Jeroen has my highest recommendation and I look forward to working with him again in the future.*
 </div>
 <div markdown="1" class="twenty-column-right">
-<img src="assets/images/resume/SriChilukuri.jpeg" class='testimoninals'>
+<img src="assets/images/testimonials/SriChilukuri.jpeg" class='testimoninals'>
 </div>
 </div>
 
@@ -152,7 +152,7 @@ View all of these testimoninals on my LinkedIn profile as well as found [here](h
 *Jeroen joined our team just at the right time. As we were considering a full redevelopment of our ALM model, Jeroen's knowledge of Python first greatly helped us in the decision process. In the implementation phase Jeroen played a key role on the development of the technical side of the model. Meanwhile he did a good job at educating our team on these new topics and providing good documentation. Working together with Jeroen was a pleasure. First of all he's a nice guy, Furthermore he provided an alternative way of thinking and working that was new for us and helped us innovate and work more efficiently. Over time I learned a lot from Jeroen which I'm very thankful for!*
 </div>
 <div markdown="1" class="twenty-column-right">
-<img src="assets/images/resume/LuukvanBenthem.jpeg" class='testimoninals'>
+<img src="assets/images/testimonials/LuukvanBenthem.jpeg" class='testimoninals'>
 </div>
 </div>
 
@@ -163,6 +163,6 @@ View all of these testimoninals on my LinkedIn profile as well as found [here](h
 *(Written in Dutch) Jeroen is zeer bedreven in alle facetten van programmeren in Python. Zijn kennis en ervaring op het gebied van Python hebben een grote meerwaarde geleverd voor mijn afdeling. Jeroen is scherp als het aankomt op het juist implementeren van code in Python. Daarnaast is hij ook bedreven in het draaiend krijgen en houden van Python op werkplekken en de ondersteuning die hierbij nodig is. Hij is gedreven om altijd verbeteringen aan te brengen en handmatige processen te automatiseren. Jeroen werkt zeer gestructureerd en is met een positieve insteek bezig met zijn eigen ontwikkeling en hoe hij zelf beter kan worden in het vakgebied. Al met al een fijne collega!*
 </div>
 <div markdown="1" class="twenty-column-right">
-<img src="assets/images/resume/PascalJanssen.jpeg" class='testimoninals'>
+<img src="assets/images/testimonials/PascalJanssen.jpeg" class='testimoninals'>
 </div>
 </div>
