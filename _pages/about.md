@@ -13,7 +13,7 @@ layout: home
 
 # About Me
 
-I'm Jeroen Bouma, a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:target="_blank"}, one of the largest Dutch insurance companies with over €60 billion AUM. I analyze profitability and investment risks in different risk frameworks (Solvency II and internal models), providing insights into portfolio sensitivities and their relationship with liabilities, assess the impact of month-to-month changes and contribute to the development of Python models for improved valuation and financial risk measurement.
+I'm Jeroen Bouma, a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:target="_blank"}, one of the largest Dutch insurance companies with over €60 billion AUM. I analyze profitability and investment risks in different risk frameworks (Solvency II and internal models), provide insights into portfolio sensitivities and their relationship with liabilities, assess the impact of month-to-month changes and contribute to the development of Python models for improved valuation and financial risk measurement.
 
 <div class="about-row display-about-bio-image">
 <div markdown="1" class="about-buttons-column">

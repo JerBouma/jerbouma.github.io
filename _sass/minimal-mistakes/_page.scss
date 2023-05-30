@@ -682,6 +682,15 @@ body {
   width: 50%;
 }
 
+@media (max-width: 767px) {
+  .mobile-max-column-width {
+    float: none;
+    width: 100%;
+    padding-left: 0%;
+  }
+}
+
+
 @media (min-width: 767px) {
   .display-about-bio-image {
     display: none;

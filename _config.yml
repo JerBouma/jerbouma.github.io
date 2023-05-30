@@ -109,7 +109,7 @@ analytics:
 author:
   name             : "Jeroen Bouma"
   avatar           : "/assets/images/default/bio-photo.jpg"
-  bio              : "With Experience and Education in the areas of (Quantitative) Finance and Economics (BEc), my ambition is to continuously improve in the fields of Quant Finance and Python Programming"
+  bio              : "With Experience and Education in the areas of (Quantitative) Finance and Economics, my ambition is to continuously improve in the fields of Quant Finance and Python Programming"
   location         : "Financial Risk Analyst at A.S.R."
   email            : "jer.bouma@gmail.com"
   links:
@@ -279,10 +279,3 @@ defaults:
     values:
       layout: single
       author_profile: true
-
-carousels:
-  - images: 
-    - image: /assets/images/default/bio-photo.jpg
-    - image: /assets/images/default/bio-photo.jpg
-    - image: /assets/images/default/bio-photo.jpg
-    - image: /assets/images/default/bio-photo.jpg
