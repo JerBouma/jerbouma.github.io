@@ -44,6 +44,19 @@ All of this comes together within my current role as Financial Risk Analyst at A
 
 ## Experience
 
+**A.S.R. — Financial Risk Analyst**
+
+June 2023 – Present
+
+<div class="row">
+<div markdown="1" class="eighty-column-left">
+As a Financial Risk Analyst, I analyze profitability and investment risks in different risk frameworks (Solvency II and internal models), providing insights into portfolio sensitivities and their relationship with liabilities, assess the impact of month-to-month changes and contribute to the development of Python models for improved valuation and financial risk measurement.
+</div>
+<div markdown="1" class="twenty-column-right">
+<img src="assets/images/resume/asr.png"> 
+</div>
+</div>
+
 **OpenBB — Product Manager**
 
 February 2022 – June 2023
@@ -133,6 +146,16 @@ Centered around the Scrum methodology and leading a team as Product Owner. Find 
 
 View all of these testimoninals on my LinkedIn profile as well as found [here](https://www.linkedin.com/in/boumajeroen/).
 
+**[Minh Hoang](https://www.linkedin.com/in/minhhoang95/) - Product Manager at OpenBB**
+
+<div class="row">
+<div markdown="1" class="eighty-column-left">
+*I highly recommend Jeroen as an asset in any organization. Jeroen led and executed OpenBB's go-to-market initiatives, including Academia, with exceptional skill. It is not easy to find Jeroen's combination of solid finance knowledge and Programming knowledge. On top of that, he consistently demonstrates a strong work ethic and a drive to achieve outstanding results.*
+</div>
+<div markdown="1" class="twenty-column-right">
+<img src="assets/images/testimonials/MinhHoang.jpeg" class='testimoninals'>
+</div>
+</div>
 
 **[Sri Chilukuri](https://www.linkedin.com/in/srichilukuri/) - Vice President of Product Marketing at OpenBB**
 

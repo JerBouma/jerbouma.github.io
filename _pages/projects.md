@@ -6,7 +6,7 @@ description: Much of the Finance theory I have learned, I apply within Python wh
 classes: wide
 ---
 
-When I first laid my hands on Python back in University I instantly felt like this an amazing tool with many uses in the financial world and that's exactly why I've spend thousands of hours programming in this language whether it is related to internal models like at A.S.R. and PGGM or right in the open through open-source (as also can be seen on this page). As I've seen many models and calculations being repeated internally several times within financial firms, I am a big advocate for open-source in which individuals and firms no longer need to rely on proprietary models.
+When I discovered Python during my time in University, I was immediately captivated by its incredible versatility in the financial domain. Since then, I have devoted countless hours to programming in this language, whether it's developing internal models for companies like A.S.R. and PGGM or contributing to open-source projects (as demonstrated on this page). Witnessing the repetition of models and calculations within financial institutions has made me a strong advocate for open-source, as it liberates individuals and firms from relying solely on proprietary models.
 
 ## Finance Database
 
@@ -71,7 +71,7 @@ This is quickly reflected when looking for a S&P 500 ETF as there are over 20 di
 <div markdown="1" class="sixty-column">
 OpenBB Terminal provides a modern Python-based integrated environment for investment research, that allows an average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
 
-I have been part of this company and till this day I am one of the main contributors to the package having solely designed much of the economy, fixed-income, fundamental analysis and ecoometrics menus.
+I have been part of this company for over a year and I am one of the main contributors to the package having solely designed much of the economy, fixed-income, fundamental analysis and ecoometrics menus.
 
 [View this Project](https://github.com/openbb-finance/openbbterminal){: .btn .btn--info}{:target="_blank"}
 </div>

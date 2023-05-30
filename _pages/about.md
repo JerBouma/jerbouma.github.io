@@ -12,7 +12,7 @@ layout: home
 
 ![Bio Image](/assets/images/default/bio-photo.jpg){: .about-bio-image .display-about-bio-image}
 
-I'm Jeroen Bouma, a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:target="_blank"}, one of the largest Dutch insurance companies with over €60 billion AUM. My responsibilities include analyzing profitability, assessing investment risks, conducting sensitivity analysis on assets and liabilities, and developing financial models to understand the risk-return relationship. I collaborate closely with a diverse team of financial analysts.
+I'm Jeroen Bouma, a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:target="_blank"}, one of the largest Dutch insurance companies with over €60 billion AUM. I analyze profitability and investment risks in different risk frameworks (Solvency II and internal models), providing insights into portfolio sensitivities and their relationship with liabilities, assess the impact of month-to-month changes and contribute to the development of Python models for improved valuation and financial risk measurement.
 
 <div class="about-row display-about-bio-image">
 <div markdown="1" class="about-buttons-column">
@@ -51,6 +51,24 @@ This website offers a comprehensive resume with testimonials, my open-source Pyt
 <div class="testimonial-content">
 
 <div class="read-more-buttons" markdown="1">
+<img src="/assets/images/testimonials/MinhHoang.jpeg" alt="MinhHoang" class='testimoninals'>
+
+[Read More](/resume){: .btn .btn--info}
+</div>
+
+<div class="testimonial-text" markdown="1">
+
+**Minh Hoang - Product Manager at OpenBB**
+
+*I highly recommend Jeroen as an asset in any organization. Jeroen led and executed OpenBB's go-to-market initiatives, including Academia, with exceptional skill. It is not easy to find Jeroen's combination of solid finance knowledge and Programming knowledge. On top of that, he consistently demonstrates a strong work ethic and a drive to achieve outstanding results.*
+</div>
+</div>
+</div>
+
+<div class="testimonial-slide">
+<div class="testimonial-content">
+
+<div class="read-more-buttons" markdown="1">
 <img src="/assets/images/testimonials/SriChilukuri.jpeg" alt="SriChilukuri" class='testimoninals'>
 
 [Read More](/resume){: .btn .btn--info}
@@ -77,7 +95,7 @@ This website offers a comprehensive resume with testimonials, my open-source Pyt
 
 **Luuk van Benthem - Senior ALM Adviseur at PGGM**
 
-*Jeroen joined our team just at the right time. As we were considering a full redevelopment of our ALM model, Jeroen's knowledge of Python first greatly helped us in the decision process. In the implementation phase Jeroen played a key role on the development of the technical side of the model. Working together with Jeroen was a pleasure. First of all he's a nice guy, Furthermore he provided an alternative way of thinking and working that was new for us and helped us innovate and work more efficiently. Over time I learned a lot from Jeroen which I'm very thankful for!*
+*Jeroen joined our team just at the right time. As we were considering a full redevelopment of our ALM model, Jeroen's knowledge of Python first greatly helped us in the decision process. In the implementation phase Jeroen played a key role on the development of the technical side of the model. Furthermore he provided an alternative way of thinking and working that was new for us and helped us innovate and work more efficiently. Over time I learned a lot from Jeroen which I'm very thankful for!*
 </div>
 </div>
 </div>
@@ -98,9 +116,4 @@ This website offers a comprehensive resume with testimonials, my open-source Pyt
 </div>
 </div>
 </div>
-</div>
-
-<div class="carousel-buttons">
-<a class="carousel-btn carousel-btn-prev" href="#"></a>
-<a class="carousel-btn carousel-btn-next" href="#"></a>
 </div>
