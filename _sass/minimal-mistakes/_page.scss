@@ -747,3 +747,86 @@ body {
 .embed-youtube .embed-youtube-play:hover {
   background-color: #f00;
 }
+
+/*
+   Testimonials Carousel
+   ========================================================================== */
+
+.testimonial-slider {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.testimonial-slide {
+  width: 100%;
+  display: none;
+  height: auto;
+}
+
+.testimonial-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.testimonial-content img {
+  max-width: 100px;
+  height: auto;
+}
+
+.testimonial-text {
+  margin-left: 20px;
+}
+
+.read-more-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+@media (max-width: 767px) {
+  .testimonial-content img {
+    display: none;
+  }
+  .read-more-buttons {
+    display: none;
+  }
+  .testimonial-text {
+    margin-left: 0px;
+  }
+}
+
+.carousel-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.carousel-btn {
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.carousel-btn::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-style: solid;
+  border-width: 2px 2px 0 0;
+  transform: rotate(-45deg);
+  margin: auto;
+}
+
+.carousel-btn-prev::before {
+  transform: rotate(225deg);
+}
+
+.carousel-btn-next::before {
+  transform: rotate(45deg);
+}

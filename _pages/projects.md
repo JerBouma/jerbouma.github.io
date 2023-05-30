@@ -6,7 +6,9 @@ description: Much of the Finance theory I have learned, I apply within Python wh
 classes: wide
 ---
 
-Much of the Finance theory I have learned, I apply within Python which I have spend thousands of hours developing in. This is in the fields of Data Science & Machine Learning, Fundamental, Algorithmic and Technical Analysis, GUIs and web-based dashboards as well as various other topics. On this page you are able to find all major Python projects I am actively maintaining.
+When I first laid my hands on Python back in University I instantly felt like this an amazing tool with many uses in the financial world and that's exactly why I've spend thousands of hours programming in this language whether it is related to internal models like at A.S.R. and PGGM or right in the open through open-source (as also can be seen on this page). As I've seen many models and calculations being repeated internally several times within financial firms, I am a big advocate for open-source in which individuals and firms no longer need to rely on proprietary models.
+
+In terms of (Quantitative) Finance, I enjoy working in the intersection between advanced financial modelling and making (qualitative) sense of the market and where it is heading. The financial world is controlled mostly by the behaviour of humans, history has shown time after time that we are not rational at all and are much more controller by emotions than we realise. Next to that, it is (nearly) impossible to predict the future. Whatever investment approach you are applying, it can only be based on current and past observations. This leaves plenty of room for discussion between the assumptions and therefore the input for econometric models as well as how to interpret the output of the model. This intersection is what I enjoy the most which has been the recurring theme in both my time at university and my professional career.
 
 ## Finance Database
 

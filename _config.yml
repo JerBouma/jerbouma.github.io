@@ -279,3 +279,10 @@ defaults:
     values:
       layout: single
       author_profile: true
+
+carousels:
+  - images: 
+    - image: /assets/images/default/bio-photo.jpg
+    - image: /assets/images/default/bio-photo.jpg
+    - image: /assets/images/default/bio-photo.jpg
+    - image: /assets/images/default/bio-photo.jpg
