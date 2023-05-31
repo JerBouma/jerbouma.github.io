@@ -39,9 +39,6 @@ All of this comes together within my current role as Financial Risk Analyst at A
 </div>
 </div>
 
-[![Jeroen Bouma's GitHub stats](https://github-readme-stats.vercel.app/api?username=JerBouma&show_icons=true&theme=graywhite&include_all_commits=true&count_private=true&hide=contribs)](https://github.com/JerBouma)
-
-
 ## Experience
 
 **A.S.R. — Financial Risk Analyst**

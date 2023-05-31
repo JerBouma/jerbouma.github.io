@@ -5,8 +5,15 @@ excerpt: Much of the Finance theory I have learned, I apply within Python which 
 description: Much of the Finance theory I have learned, I apply within Python which I have spend thousands of hours developing in. This is in the fields of Data Science & Machine Learning, Fundamental, Algorithmic and Technical Analysis, GUIs and web-based dashboards as well as various other topics. On this page you are able to find all major Python projects I am actively maintaining.
 classes: wide
 ---
-
+<div class="row">
+<div markdown="1" class="sixty-column mobile-max-column-width" markdown="1">
 When I discovered Python during my time in University, I was immediately captivated by its incredible versatility in the financial domain. Since then, I have devoted countless hours to programming in this language, whether it's developing internal models for companies like A.S.R. and PGGM or contributing to open-source projects (as demonstrated on this page). Witnessing the repetition of models and calculations within financial institutions has made me a strong advocate for open-source, as it liberates individuals and firms from relying solely on proprietary models.
+</div>
+<div markdown="1" class="fourty-column mobile-max-column-width" markdown="1">
+
+[![Jeroen Bouma's GitHub stats](https://github-readme-stats.vercel.app/api?username=JerBouma&show_icons=true&theme=graywhite&include_all_commits=true&count_private=true&hide=contribs)](https://github.com/JerBouma){:target="_blank"}
+</div>
+</div>
 
 ## Finance Database
 

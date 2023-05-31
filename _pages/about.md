@@ -52,7 +52,7 @@ This website offers a comprehensive resume with testimonials, my open-source Pyt
 <div class="testimonial-content">
 
 <div class="read-more-buttons" markdown="1">
-<img src="/assets/images/testimonials/MinhHoang.jpeg" alt="MinhHoang" class='testimoninals'>
+<a href="/resume"><img src="/assets/images/testimonials/MinhHoang.jpeg" alt="MinhHoang" class='testimoninals'></a>
 
 [Read More](/resume){: .btn .btn--info}
 </div>
@@ -70,7 +70,7 @@ This website offers a comprehensive resume with testimonials, my open-source Pyt
 <div class="testimonial-content">
 
 <div class="read-more-buttons" markdown="1">
-<img src="/assets/images/testimonials/SriChilukuri.jpeg" alt="SriChilukuri" class='testimoninals'>
+<a href="/resume"><img src="/assets/images/testimonials/SriChilukuri.jpeg" alt="SriChilukuri" class='testimoninals'></a>
 
 [Read More](/resume){: .btn .btn--info}
 </div>
@@ -88,7 +88,7 @@ This website offers a comprehensive resume with testimonials, my open-source Pyt
 <div class="testimonial-content">
 
 <div class="read-more-buttons" markdown="1">
-<img src="/assets/images/testimonials/LuukvanBenthem.jpeg" alt="LuukvanBenthem" class='testimoninals'>
+<a href="/resume"><img src="/assets/images/testimonials/LuukvanBenthem.jpeg" alt="LuukvanBenthem" class='testimoninals'></a>
 
 [Read More](/resume){: .btn .btn--info}
 </div>
@@ -105,7 +105,7 @@ This website offers a comprehensive resume with testimonials, my open-source Pyt
 <div class="testimonial-content">
 
 <div class="read-more-buttons" markdown="1">
-<img src="/assets/images/testimonials/PascalJanssen.jpeg" alt="PascalJanssen" class='testimoninals'>
+<a href="/resume"><img src="/assets/images/testimonials/PascalJanssen.jpeg" alt="PascalJanssen" class='testimoninals'></a>
 
 [Read More](/resume){: .btn .btn--info}
 </div>
@@ -118,5 +118,3 @@ This website offers a comprehensive resume with testimonials, my open-source Pyt
 </div>
 </div>
 </div>
-
-[View Testimonials](/resume#testimonials){: .btn .btn--info .display-about-bio-image}
