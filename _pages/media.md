@@ -11,7 +11,7 @@ classes: wide
 layout: videos
 ---
 
-Discover a collection of talks I've done in the past. This includes presentations at unviersities, webinars, launch events that talk about the role of Python within the financial industry and innovative new projects.
+Discover a collection of talks I've done. This includes presentations at universities, webinars, launch events that talk about the role of Python within the financial industry and innovative new projects.
 
 ## Revolutionizing The Way Investment Research Is Done
 
