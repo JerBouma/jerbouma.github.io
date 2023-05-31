@@ -47,7 +47,7 @@ June 2023 – Present
 
 <div class="row">
 <div markdown="1" class="eighty-column-left">
-As a Financial Risk Analyst, I analyze profitability and investment risks in different risk frameworks (Solvency II and internal models), providing insights into portfolio sensitivities and their relationship with liabilities, assess the impact of month-to-month changes and contribute to the development of Python models for improved valuation and financial risk measurement.
+As a Financial Risk Analyst, I analyze profitability and investment risks in different risk frameworks (Solvency II and internal models), provide insights into portfolio sensitivities and their relationship with liabilities, assess the impact of month-to-month changes and contribute to the development of Python models for improved valuation and financial risk measurement.
 </div>
 <div markdown="1" class="twenty-column-right">
 <img src="assets/images/resume/asr.png"> 
