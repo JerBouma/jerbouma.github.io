@@ -26,7 +26,7 @@ The aim of this database is explicitly not to provide up-to-date fundamentals or
 [View this Project](https://github.com/jerbouma/financedatabase){: .btn .btn--info}{:target="_blank"}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<img src="https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg">
+<a href="https://github.com/jerbouma/financedatabase"><img src="https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg"></a>
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=financedatabase)](https://github.com/jerbouma/financedatabase){:target="_blank"}
 
 [![PyPi Version](https://img.shields.io/pypi/v/financedatabase)](https://pypi.org/project/financedatabase/)
@@ -34,22 +34,22 @@ The aim of this database is explicitly not to provide up-to-date fundamentals or
 </div>
 </div>
 
-## Fundamental Analysis
+## Finance Toolkit
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
-This package collects fundamentals and detailed company stock data from a large group of companies (20.000+) from FinancialModelingPrep and uses Yahoo Finance to obtain stock data for any financial instrument. It allows the user to do most of the essential fundamental analysis. It also gives the possibility to quickly compare multiple companies or do a sector analysis.
+This package is an open-source toolkit in which all relevant financial ratios (50+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
 
-To find symbols of specific sectors and/or industries have a look at my Finance Database, a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets
+The Finance Toolkit is complimented very well with the Finance Database and by utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
 
-[View this Project](https://github.com/jerbouma/fundamentalanalysis){: .btn .btn--info}{:target="_blank"}
+[View this Project](https://github.com/jerbouma/financetoolkit){: .btn .btn--info}{:target="_blank"}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<img src="https://raw.githubusercontent.com/JerBouma/FundamentalAnalysis/master/images/FundamentalAnalysis.png">
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=fundamentalanalysis)](https://github.com/jerbouma/fundamentalanalysis){:target="_blank"}
+<a href="https://github.com/jerbouma/financetoolkit"><img src="https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg"></a>
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=financetoolkit)](https://github.com/jerbouma/financetoolkit){:target="_blank"}
 
-[![PyPi Version](https://img.shields.io/pypi/v/fundamentalanalysis)](https://pypi.org/project/FundamentalAnalysis/)
-[![PyPi Downloads](https://img.shields.io/pypi/dm/fundamentalanalysis)](https://pypi.org/project/FundamentalAnalysis/)
+[![PyPi Version](https://img.shields.io/pypi/v/financetoolkit)](https://pypi.org/project/financetoolkit/)
+[![PyPi Downloads](https://img.shields.io/pypi/dm/financetoolkit)](https://pypi.org/project/financetoolkit/)
 </div>
 </div>
 
@@ -64,7 +64,7 @@ This is quickly reflected when looking for a S&P 500 ETF as there are over 20 di
 [View this Project](https://github.com/jerbouma/thepassiveinvestor){: .btn .btn--info}{:target="_blank"}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<img src="https://raw.githubusercontent.com/JerBouma/ThePassiveInvestor/master/Images/outputExample.gif">
+<a href="https://github.com/jerbouma/thepassiveinvestor"><img src="https://raw.githubusercontent.com/JerBouma/ThePassiveInvestor/master/Images/outputExample.gif"></a>
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=thepassiveinvestor)](https://github.com/jerbouma/thepassiveinvestor){:target="_blank"}
 
 [![PyPi Version](https://img.shields.io/pypi/v/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/)
@@ -83,7 +83,7 @@ I have been part of this company for over a year and I am one of the main contri
 [View this Project](https://github.com/openbb-finance/openbbterminal){: .btn .btn--info}{:target="_blank"}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<img src="https://github.com/OpenBB-finance/OpenBBTerminal/raw/develop/images/openbb_gradient.png">
+<a href="https://github.com/openbb-finance/openbbterminal"><img src="https://github.com/OpenBB-finance/OpenBBTerminal/raw/develop/images/openbb_gradient.png"></a>
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=OpenBB-finance&repo=OpenBBTerminal)](https://github.com/openbb-finance/openbbterminal){:target="_blank"}
 
 [![PyPi Version](https://img.shields.io/pypi/v/openbb)](https://pypi.org/project/openbb/)
