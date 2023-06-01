@@ -143,6 +143,23 @@ Centered around the Scrum methodology and leading a team as Product Owner. Find 
 
 View all of these testimoninals on my LinkedIn profile as well as found [here](https://www.linkedin.com/in/boumajeroen/).
 
+**[Didier Lopes](https://www.linkedin.com/in/didier-lopes/) - CEO at OpenBB**
+
+<div class="row">
+<div markdown="1" class="eighty-column-left">
+*On the 13th of October 2021, I recieved an email from Jeroen about adding one of his finance GitHub packages to the OpenBB Terminal (then Gamestonk Terminal). After digging into his open source projects and his achievements I was very impressed. When we had a chat regarding how to work together, I offered him a job on the spot. Jeroen was at the intersection of finance, programming and open source - which is a combination that is very hard to find - even today (almost 2 years later).*
+
+*Jeroen ended up joining us a few months after that inital meeting. He started in the role of Product Manager where he helped drive the direction of the OpenBB Terminal, not only from a product perspective but also joining the development team. Menus such as economy, portfolio, econometrics, fixed income are Jeroen’s legacy and they wouldn’t have the quality they have today without Jeroen’s financial theory knowledge - ultimately, the team saw Jeroen as the go-to person when financial theory was involved.*
+
+*More recently, Jeroen shifted to the role of Product Marketing Manager so that he could focus on the go-to market and showing users (through documentation, webinars, videos) how they could use OpenBB products for real use cases. In addition, he led OpenBB’s academia motion, and created presentations such as “The Greek Government Debt Crisis”, “Performing Financial Due Diligence” and “The Influence of the Central Bank” which used OpenBB for research and were presented at different universities in the UK and Netherlands.*
+
+*Apart from his financial expertise, I always admired Jeroen’s work ethic and organization skills. As a startup founder, you want people on your team that get shit done, and Jeroen was one of those people. I never had to worry with a task not being done, or being done late. If anything, he always went above and beyond. I highly recommend Jeroen.*
+</div>
+<div markdown="1" class="twenty-column-right">
+<img src="assets/images/testimonials/DidierLopes.jpeg" class='testimoninals'>
+</div>
+</div>
+
 **[Minh Hoang](https://www.linkedin.com/in/minhhoang95/) - Product Manager at OpenBB**
 
 <div class="row">

@@ -117,4 +117,21 @@ This website offers a comprehensive resume with testimonials, my open-source Pyt
 </div>
 </div>
 </div>
+
+<div class="testimonial-slide">
+<div class="testimonial-content">
+
+<div class="read-more-buttons" markdown="1">
+<a href="/resume"><img src="/assets/images/testimonials/DidierLopes.jpeg" alt="PascalJanssen" class='testimoninals'></a>
+
+[Read More](/resume){: .btn .btn--info}
+</div>
+<div class="testimonial-text" markdown="1">
+
+**Didier Lopes - CEO at OpenBB**
+
+*When we had a chat regarding how to work together, I offered him a job on the spot. Jeroen is at the intersection of finance and programming - which is a combination that is very hard to find - even today. I always admired Jeroen’s work ethic and organization skills. As a startup founder, you want people on your team that get shit done. Jeroen was one of those people. I never had to worry with a task not being done, or being done late. If anything, he always went above and beyond. I highly recommend Jeroen.*
+</div>
+</div>
+</div>
 </div>
