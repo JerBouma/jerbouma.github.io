@@ -17,7 +17,7 @@ Discover a collection of talks I've done. This includes presentations at univers
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-I gave two presentations at the University of Loughborough and for the University of Warwick and it was very rewarding to see the amount of interest from students as both sessions had well over a 100 students present.
+I gave two presentations at the University of Loughborough and for the University of Warwick. It was very rewarding to see the amount of interest from students as both sessions had well over 100 students present.
 
 These presentations were meant to enlighten students about the OpenBB Terminal and what OpenBB wants to achieve in the near future. This recording was done at the University of Warwick in collaboration with the Warwick Finance Society.
 </div>
@@ -34,7 +34,7 @@ These presentations were meant to enlighten students about the OpenBB Terminal a
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 I got approached by Utrecht University whether I'd be interested in providing a guest lecture to Finance students taking a workshop on Python. Being an alumni myself and enthusiastic about Python, I couldn't let this opportunity pass to return back to my former University.
 
-Therefore, I did four presentations for Master students at the campus. My goal with these presentations was to enlighten the students to take Python seriously for their careers within the financial sector, explaining the practical application with personal experience.
+Therefore, I did four presentations for nearly a hundred Master students at the campus. My goal with these presentations was to enlighten the students to take Python seriously for their careers within the financial sector, explaining the practical application with personal experience.
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 <div class="embed-youtube" data-video-id="itU3QwcWFOE">
@@ -77,7 +77,7 @@ Within this webinar I went over the installation process, the general structure,
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-As part of my initative present OpenBB to students and professors, I've been introducing the OpenBB Terminal to the students at Athens University in which I go over the structure, the basics and two use-cases.
+As part of my initative to present OpenBB to students and professors, I've been introducing the OpenBB Terminal to the students at Athens University in which I go over the structure, the basics and two use-cases.
 
 The goal was to give a clear overview of some of the capabilities of the OpenBB Terminal and explain to the students how they can use the OpenBB Terminal for their market and investment reports.
 </div>
@@ -107,7 +107,7 @@ This is another step in becoming the next generation financial data and analytic
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-The OpenBB Terminal 2.0 was introduced to an audience of over 1300 of our users and partners at a virtual event focused on the future of investment research.
+The OpenBB Terminal 2.0 was introduced to an audience of over 1300 of the users and partners at a virtual event focused on the future of investment research.
 
 The event featured Didier Lopes, Founder & CEO at OpenBB, Jeroen Bouma, Product Manager at OpenBB, Minh Hoang, Product Manager at OpenBB, and Martin Bufi, Sr. Engineer at OpenBB, as speakers.
 </div>
