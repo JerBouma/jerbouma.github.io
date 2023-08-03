@@ -27,7 +27,7 @@ The Finance Toolkit is complimented very well with the Finance Database and by u
 [View this Project](/projects/financetoolkit){: .btn .btn--info}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="financetoolkit"><img src="https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg" width="400"></a>
+<a href="/projects/financetoolkit"><img src="https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg" width="400"></a>
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=financetoolkit)](/projects/financetoolkit)
 
 [![PyPi Version](https://img.shields.io/pypi/v/financetoolkit)](/projects/financetoolkit)
