@@ -110,7 +110,7 @@ This gives you a DataFrame with the following information:
 
 As you can imagine, looking at such a specific selection only yields a few results but picking the entire sector `Materials` would have returned 403 different companies (which excludes exchanges other than the United States).
 
-## Searching the database extensively
+### Searching the database extensively
 All asset classes have the capability to search each column with `search`, for example `equities.search()`. Through how this functionality is developed you can define multiple columns and search throughoutly. For example:
 
 ```python
@@ -131,7 +131,7 @@ Which returns a selection of the DataFrame that matches all criteria.
 | BASFY    | BASF SE                                     | USD        | Materials              | Materials                     | Chemicals          | PNK        | us_market | Germany   |     nan | Ludwigshafen am Rhein |     67056 | http://www.basf.com       | Large Cap    |
 | BDRFF    | Beiersdorf Aktiengesellschaft               | USD        | Consumer Staples       | Household & Personal Products | Household Products | PNK        | us_market | Germany   |     nan | Hamburg               |     20245 | http://www.beiersdorf.com | Large Cap    |
 
-## Storing the database at a different location
+### Storing the database at a different location
 If you wish to store the database at a different location (for example your own Fork) you can do so with the variable 
 `base_url` which you can find in each of the asset classes. An example would be:
 - `fd.Equities(base_url=<YOUR URL>)`
@@ -140,12 +140,12 @@ You can also store the database locally and point to your local location with th
 `use_local_location` to True. An example would be:
 - `fd.Equities(base_url=<YOUR PATH>, use_local_location=True)`
 
-# Examples
+## Examples
 This section gives a few examples of the possibilities with this package. These are merely a few of the things you
 can do with the package. **As you can obtain a wide range of symbols, pretty much any 
 package that requires symbols should work.**
 
-## Companies in the Netherlands
+### Companies in the Netherlands
 I want to see how many companies exist in each sector in the Netherlands. Let's count all companies with the 
 following code, I skip a sector when it has no data and also do not include companies that are not categorized:
 
@@ -184,7 +184,7 @@ This results in the following graph which gives an indication which sectors are 
 
 ![FinanceDatabase](https://user-images.githubusercontent.com/46355364/221589281-e233dfa0-cbfc-46d2-b4b8-e8dbd16e2652.png)
 
-## Technical Analysis of Biotech ETFs
+### Technical Analysis of Biotech ETFs
 With the help of [ta](https://github.com/bukosabino/ta) and [yfinance](https://github.com/ranaroussi/yfinance) I can 
 quickly perform a basic technical analysis on a group of ETFs categorized by the FinanceDatabase. I start by 
 searching the database for ETFs related to Health and then make a subselection by searching, in the collected database, 
@@ -253,7 +253,7 @@ about Bollinger Bands [here](https://www.investopedia.com/terms/b/bollingerbands
 
 ![FinanceDatabase](https://user-images.githubusercontent.com/46355364/221589951-bce2de36-9458-4a6f-b3ed-2383f01bed0b.png)
 
-## Perform a Dupont Analysis on Railroad Companies
+### Perform a Dupont Analysis on Railroad Companies
 In case I want to look into the Railroad companies in the United States that are marked as "Large Cap", I can use the following:
 
 ````python
@@ -304,7 +304,7 @@ dupont_analysis.loc[: , 'Return on Equity', :].T.plot(
 
 ![FinanceDatabase - FinanceToolkit - Return on Equity](https://github.com/JerBouma/FinanceDatabase/assets/46355364/f66e0dc7-c9fc-4385-9b74-0f4bb635af48)
 
-# Questions & Answers
+## Questions & Answers
 In this section you can find answers to commonly asked questions. In case the answer to your question is not here, 
 consider creating an [Issue](https://github.com/JerBouma/FinanceDatabase/issues).
 
@@ -324,7 +324,7 @@ consider creating an [Issue](https://github.com/JerBouma/FinanceDatabase/issues)
 - **How does the database handle changes to companies over time - like symbol/exchange migration, mergers, bankruptcies, or symbols getting reused?**
     - For the American Exchanges, every Sunday the database automatically updates based on [this repository](https://github.com/rreichel3/US-Stock-Symbols). It also automatically checks if there were any market cap changes and converts assets accordingly. On purpose, most tickers are not removed even after becoming delisted. This is because it can be still of value for research to look into companies that no longer exist. When it comes to further automisation, this is what you usually pay a hefty fee for, think of Bloomberg at over $25.000 a year. Instead of requiring you to pay, this database is meant to be a community-driven project in which you help in identifiyng these companies. As news about migrations, mergers, bankruptcies and similar occur outside of the American exchanges it is up to the community to identify these and/or users to look into writing scripts that help with this. It is important to note that the vast majority of companies do not change as rapidly that this database becomes irrelevant before it is identified, e.g. a company like Facebook changing to META has already been updated. Furthermore, even though a company goes bankrupt, the old ticker is still relevant when it comes to historic data before the bankruptcy.
     
-# User Contributions
+## User Contributions
 
 This section is meant to thank those that contributed to the project. Looking to contribute as well? Have a look [here](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md).
 
