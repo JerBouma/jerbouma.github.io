@@ -5,7 +5,7 @@ author_profile: true
 permalink: /
 redirect_from:
   - /about
-classes: wide
+classes: wide-sidebar
 layout: home
 ---
 

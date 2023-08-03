@@ -557,7 +557,7 @@ body {
    Wide Pages
    ========================================================================== */
 
-.wide {
+.wide-sidebar {
   .page {
     @include breakpoint($large) {
       padding-right: 0;
@@ -565,6 +565,31 @@ body {
 
     @include breakpoint($x-large) {
       padding-right: 0;
+    }
+  }
+
+  .page__related {
+    @include breakpoint($large) {
+      padding-right: 0;
+    }
+
+    @include breakpoint($x-large) {
+      padding-right: 0;
+    }
+  }
+}
+  
+.wide-no-sidebar {
+  .page {
+    @include breakpoint($large) {
+      padding-right: 0;
+      float:right;
+      width: 100%;
+    }
+
+    @include breakpoint($x-large) {
+      padding-right: 0;
+      width: 100%;
     }
   }
 

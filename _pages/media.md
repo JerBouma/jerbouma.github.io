@@ -7,7 +7,8 @@ permalink: /talks
 redirect_from:
   - /media
   - /videos
-classes: wide
+classes: wide-no-sidebar
+author_profile: false
 layout: videos
 ---
 
