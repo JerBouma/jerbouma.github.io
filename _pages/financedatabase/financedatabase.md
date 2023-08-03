@@ -109,3 +109,226 @@ This gives you a DataFrame with the following information:
 | ACNE     | Alice Consolidated Mines, Inc.      | USD        | Materials | Materials        | Metals & Mining | PNK        | us_market | United States | ID      | Wallace         | 83873-0469 | nan                                | nan          |
 
 As you can imagine, looking at such a specific selection only yields a few results but picking the entire sector `Materials` would have returned 403 different companies (which excludes exchanges other than the United States).
+
+## Searching the database extensively
+All asset classes have the capability to search each column with `search`, for example `equities.search()`. Through how this functionality is developed you can define multiple columns and search throughoutly. For example:
+
+```python
+# Collect all Equities Database
+equities = fd.Equities()
+
+# Search Multiple Columns
+equities.search(summary='automotive', currency='USD', country='Germany')
+```
+
+Which returns a selection of the DataFrame that matches all criteria. 
+
+| symbol   | name                                        | currency   | sector                 | industry_group                | industry           | exchange   | market    | country   |   state | city                  |   zipcode | website                   | market_cap   |
+|:---------|:--------------------------------------------|:-----------|:-----------------------|:------------------------------|:-------------------|:-----------|:----------|:----------|--------:|:----------------------|----------:|:--------------------------|:-------------|
+| AFRMF    | Alphaform AG                                | USD        | Industrials            | Capital Goods                 | Machinery          | PNK        | us_market | Germany   |     nan | Feldkirchen           |     85622 | nan                       | Nano Cap     |
+| AUUMF    | Aumann AG                                   | USD        | Industrials            | Capital Goods                 | Machinery          | PNK        | us_market | Germany   |     nan | Beelen                |     48361 | http://www.aumann.com     | Micro Cap    |
+| BAMXF    | Bayerische Motoren Werke Aktiengesellschaft | USD        | Consumer Discretionary | Automobiles & Components      | Automobiles        | PNK        | us_market | Germany   |     nan | Munich                |     80788 | http://www.bmwgroup.com   | Large Cap    |
+| BASFY    | BASF SE                                     | USD        | Materials              | Materials                     | Chemicals          | PNK        | us_market | Germany   |     nan | Ludwigshafen am Rhein |     67056 | http://www.basf.com       | Large Cap    |
+| BDRFF    | Beiersdorf Aktiengesellschaft               | USD        | Consumer Staples       | Household & Personal Products | Household Products | PNK        | us_market | Germany   |     nan | Hamburg               |     20245 | http://www.beiersdorf.com | Large Cap    |
+
+## Storing the database at a different location
+If you wish to store the database at a different location (for example your own Fork) you can do so with the variable 
+`base_url` which you can find in each of the asset classes. An example would be:
+- `fd.Equities(base_url=<YOUR URL>)`
+
+You can also store the database locally and point to your local location with the variable `base_url` and by setting
+`use_local_location` to True. An example would be:
+- `fd.Equities(base_url=<YOUR PATH>, use_local_location=True)`
+
+# Examples
+This section gives a few examples of the possibilities with this package. These are merely a few of the things you
+can do with the package. **As you can obtain a wide range of symbols, pretty much any 
+package that requires symbols should work.**
+
+## Companies in the Netherlands
+I want to see how many companies exist in each sector in the Netherlands. Let's count all companies with the 
+following code, I skip a sector when it has no data and also do not include companies that are not categorized:
+
+````python
+import financedatabase as fd
+
+equities = fd.Equities()
+
+equities_per_sector_netherlands = {}
+
+for sector in equities.options(selection='sector', country='Netherlands'):
+    try:
+        equities_per_sector_netherlands[sector] = len(equities.select(country='Netherlands', sector=sector))
+    except ValueError as error:
+        print(error)
+````
+
+Lastly, I plot the data in a pie chart and add some formatting to make the pie chart look a bit nicer:
+
+````python
+import matplotlib.pyplot as plt
+
+legend, values = zip(*equities_per_sector_netherlands.items())
+
+colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'tab:blue', 'tab:orange', 'tab:gray',
+          'lightcoral', 'yellow', 'saddlebrown', 'lightblue', 'olive']
+plt.pie(values, labels=legend, colors=colors,
+        wedgeprops={'linewidth': 0.5, 'edgecolor': 'white'})
+plt.title('Companies per sector in the Netherlands')
+plt.tight_layout()
+
+plt.show()
+````
+
+This results in the following graph which gives an indication which sectors are dominant within The Netherlands. Of course this is a mere example and to truly understand the importance of certain companies for the Netherlands, you would need to know market cap of each sector as well including demographics.
+
+![FinanceDatabase](https://user-images.githubusercontent.com/46355364/221589281-e233dfa0-cbfc-46d2-b4b8-e8dbd16e2652.png)
+
+## Technical Analysis of Biotech ETFs
+With the help of [ta](https://github.com/bukosabino/ta) and [yfinance](https://github.com/ranaroussi/yfinance) I can 
+quickly perform a basic technical analysis on a group of ETFs categorized by the FinanceDatabase. I start by 
+searching the database for ETFs related to Health and then make a subselection by searching, in the collected database, 
+for biotech-related ETFs:
+
+````python
+import financedatabase as fd
+
+etfs = fd.ETFs()
+
+health_care_etfs_in_biotech = etfs.search(category='Health Care', summary='biotech')
+````
+
+Then, I collect stock data on each ticker and remove tickers that have no data in my chosen period. The period I have 
+chosen shows the initial impact of the Coronacrisis on the financial markets.
+
+````python
+import yfinance as yf
+
+tickers = list(health_care_etfs_in_biotech.index)
+
+stock_data_biotech = yf.download(tickers, start="2020-01-01", end="2020-06-01")['Adj Close']
+stock_data_biotech = stock_data_biotech.dropna(axis='columns')
+````
+
+Next up I initialise subplots and loop over all collected tickers. Here, I create a new temporary DataFrame that I fill 
+with the adjusted close prices of the ticker as well as the Bollinger Bands. Then I plot the data in one of 
+the subplots.
+
+````python
+import pandas as pd
+from ta.volatility import BollingerBands
+import matplotlib.pyplot as plt
+
+figure, axis = plt.subplots(4, 3)
+row = 0
+column = 0
+
+for ticker in stock_data_biotech.columns:
+    data_plot = pd.DataFrame(stock_data_biotech[ticker])
+    name = health_care_etfs_in_biotech.loc[health_care_etfs_in_biotech.index == ticker, 'name'].iloc[0]
+
+    indicator_bb = BollingerBands(close=stock_data_biotech[ticker], window=20, window_dev=2)
+
+    data_plot['bb_bbm'] = indicator_bb.bollinger_mavg()
+    data_plot['bb_bbh'] = indicator_bb.bollinger_hband()
+    data_plot['bb_bbl'] = indicator_bb.bollinger_lband()
+
+    axis[row, column].plot(data_plot)
+    axis[row, column].set_title(name, fontsize=6)
+    axis[row, column].set_xticks([])
+    axis[row, column].set_yticks([])
+
+    column += 1
+    if column == 3:
+        row += 1
+        column = 0
+        
+figure.suptitle('Technical Analysis of Biotech ETFs during Coronacrisis')
+figure.tight_layout()
+````
+
+This leads to the following graph which gives an indication whether Biotech ETFs were oversold or overbought and 
+how this effect is neutralised (to some degree) in the months after. Read more 
+about Bollinger Bands [here](https://www.investopedia.com/terms/b/bollingerbands.asp).
+
+![FinanceDatabase](https://user-images.githubusercontent.com/46355364/221589951-bce2de36-9458-4a6f-b3ed-2383f01bed0b.png)
+
+## Perform a Dupont Analysis on Railroad Companies
+In case I want to look into the Railroad companies in the United States that are marked as "Large Cap", I can use the following:
+
+````python
+import financedatabase as fd
+
+equities = fd.Equities()
+
+railroad = equities.search(industry='Road & Rail',
+                           country='United States',
+                           market_cap='Large Cap',
+                           exclude_exchanges=True)
+````
+
+Wiuth this information in hand, I can now start collecting data with the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit) package. This can be anything from balance sheet, cash flow and income statements to 50+ financial ratios, enterprise values and historical data. Here I initalize the FinanceToolkit with the tickers as found in the FinanceDatabase.
+
+````python
+from financetoolkit import Toolkit
+
+API_KEY = "YOUR_FMP_API_KEY"
+data_set = {}
+
+companies = Toolkit(list(railroad.index), API_KEY)
+````
+
+Then, as a demonstration, I can obtain all balance sheet statements for all companies that are marked as Large Cap Railroad companies in the United States.
+
+````python
+companies.get_balance_sheet_statement()
+````
+![FinanceDatabase - FinanceToolkit - Balance Sheet Statements](https://github.com/JerBouma/FinanceDatabase/assets/46355364/c93a80cf-cdee-484f-839f-0a9455b6fbf8)
+
+With the data from the FinanceToolkit, it is now possible to execute a Dupont analysis on all companies. This shows the power of being able to combine a large database with a toolkit that allows you to do proper financial research.
+
+````python
+companies.models.get_extended_dupont_analysis()
+````
+
+![FinanceDatabase - FinanceToolkit - Dupont Analysis](https://github.com/JerBouma/FinanceDatabase/assets/46355364/8478c6ee-a2fe-429d-b66e-5fedbfa9aeef)
+
+As you can imagine, it isn't too difficult to then plot a metric like Return on Equity (RoE) for all companies.
+
+````python
+dupont_analysis = companies.models.get_extended_dupont_analysis()
+
+dupont_analysis.loc[: , 'Return on Equity', :].T.plot(
+    title='Return on Equity (RoE) for Railroad Companies in the United States')
+````
+
+![FinanceDatabase - FinanceToolkit - Return on Equity](https://github.com/JerBouma/FinanceDatabase/assets/46355364/f66e0dc7-c9fc-4385-9b74-0f4bb635af48)
+
+# Questions & Answers
+In this section you can find answers to commonly asked questions. In case the answer to your question is not here, 
+consider creating an [Issue](https://github.com/JerBouma/FinanceDatabase/issues).
+
+- **How is the data obtained?**
+    - The data is an aggregation of a variety of sources. The rule that I hold with high regard is that all data needs to be entirely publicly available. Any data that requires API key access or requires a paid tier is never included in this database. Data that you are being charged for is often owned and mainted by the company you have a subscription at and therefore publicly sharing this information online is against their Terms of Service (ToS). However, data that is publicly available can freely be shared (read more about this subject [here](https://techcrunch.com/2022/04/18/web-scraping-legal-court/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAJRZe3F6wCbuO_n8PJ9JtAHpOY4dF2gA_tO0gJF2PhfWUueUcRQataJwNS9FZlp9rH8f8_aiCBfA2v7wlHyXyVLUfMrca4kq0_m6CYSvK7eMk9zuEhnXJOvE0lrHWXSPTtL-lHP8UJD4SyWTpQ2BnCNx-kv3mG7GGn_G_3SGVvhP)) especially since this database will never cost any money.
+- **What categorization method is used?**
+    - The categorization for Equities is based on a loose approximation of GICS. No actual data is collected from this source and this database merely tries to reflect the sectors and industries as best as possible. This is completely done through manual curation. The actual datasets as curated by MSCI has not been used in the development of any part of this database and remains the most up to date, paid, solution. Other categorizations are entirely developed by the author and can freely be changed.
+- **How can I contribute?**
+    - Please see the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md). Thank you!
+- **How can I find out which countries, sectors and/or industries exists within the database without needing to check the database manually?**
+    - For this you can use the ``options`` function from the package attached to this database. Furthermore, it is also possible to use `equities = fd.Equities()` and then use `equities.options(selection='country')` or specific further with `equities.options(selection='sector', country='United States')`. Please see 
+    [this example](#companies-in-the-netherlands)
+- **When I try collect data I notice that not all tickers return output, why is that?**
+    - Some tickers are merely holdings of companies and therefore do not really have any data attached to them. 
+      Therefore, it makes sense that not all tickers return data. If you are still in doubt, search the ticker on 
+      Google to see if there is really no data available. If you can't find anything about the ticker, consider updating the database by visiting the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md).
+- **How does the database handle changes to companies over time - like symbol/exchange migration, mergers, bankruptcies, or symbols getting reused?**
+    - For the American Exchanges, every Sunday the database automatically updates based on [this repository](https://github.com/rreichel3/US-Stock-Symbols). It also automatically checks if there were any market cap changes and converts assets accordingly. On purpose, most tickers are not removed even after becoming delisted. This is because it can be still of value for research to look into companies that no longer exist. When it comes to further automisation, this is what you usually pay a hefty fee for, think of Bloomberg at over $25.000 a year. Instead of requiring you to pay, this database is meant to be a community-driven project in which you help in identifiyng these companies. As news about migrations, mergers, bankruptcies and similar occur outside of the American exchanges it is up to the community to identify these and/or users to look into writing scripts that help with this. It is important to note that the vast majority of companies do not change as rapidly that this database becomes irrelevant before it is identified, e.g. a company like Facebook changing to META has already been updated. Furthermore, even though a company goes bankrupt, the old ticker is still relevant when it comes to historic data before the bankruptcy.
+    
+# User Contributions
+
+This section is meant to thank those that contributed to the project. Looking to contribute as well? Have a look [here](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md).
+
+| User              | Contribution |
+| ----------------- | ------------ | 
+| [nindogo](https://github.com/nindogo)        | Introduced a variety of new equities from the Nairobi Securities Exchange and introduced the country Kenya into the dataset. |
+| [colin99d](https://github.com/colin99d)        | Helped in the conversion of the Finance Database package to Object-Orientated, making the code much more efficient. |
