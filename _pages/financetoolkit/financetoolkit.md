@@ -97,7 +97,7 @@ This returns the following output for `profitability_ratios.loc['AAPL]`. Omittin
 | EBT to EBIT Ratio                           | 0.957448 | 0.948408 | 0.958936 | 0.976353 | 0.975982 |
 | EBIT to Revenue                             | 0.286688 | 0.26641  | 0.254864 | 0.305759 | 0.309473 |
 
-Find a variety of How-To Guides for the FinanceToolkit here:
+## How-To Guides for the FinanceToolkit
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
