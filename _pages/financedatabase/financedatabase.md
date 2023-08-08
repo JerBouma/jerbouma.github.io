@@ -5,6 +5,8 @@ excerpt: The Finance Database features 300.000+ symbols containing Equities, ETF
 description: The Finance Database features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
 classes: wide-no-sidebar
 author_profile: false
+redirect_from:
+  - /financedatabase
 ---
 
 <div class="row">

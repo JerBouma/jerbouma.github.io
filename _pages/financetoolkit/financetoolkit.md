@@ -5,6 +5,8 @@ excerpt: This is an open-source toolkit in which all relevant financial ratios (
 description: This is an open-source toolkit in which all relevant financial ratios (50+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
 classes: wide-no-sidebar
 author_profile: false
+redirect_from:
+  - /financetoolkit
 ---
 
 While browsing a variety of websites, I kept finding that the same financial metric can greatly vary per source and so do the financial statements reported while little information is given how the metric was calculated.
@@ -66,6 +68,16 @@ The Finance Toolkit offers a comprehensive set of tools designed to empower user
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 
+### Visit the Code Documentation
+
+Besides the practical examples, there exists a fully fledged documentation of the code. This documentation contains a description of each function, its parameters and an example. This allows you to quickly find the function you are looking for and understand how to use it.
+
+[Visit the Code Documentation](/projects/financetoolkit/docs){: .btn .btn--warning}
+
+</div>
+</div>
+<div markdown="1" class="fifty-column-left mobile-max-column-width">
+
 ### The Finance Database and the Finance Toolkit
 
 This Notebooks demonstrates how to use the Finance Toolkit with the Finance Database to perform a complete financial analysis. Through the Finance Database you are able to find companies that are in the same country, sector and industry as the company you are analysing. This allows you to perform a complete competitive analysis with the help of the Finance Toolkit.
@@ -73,10 +85,9 @@ This Notebooks demonstrates how to use the Finance Toolkit with the Finance Data
 [Open the Notebook](/projects/financetoolkit/finance-database){: .btn .btn--info}
 
 </div>
-</div>
 
 <div class="row">
-<div markdown="1" class="fifty-column-left mobile-max-column-width">
+<div markdown="1" class="fifty-column-right mobile-max-column-width">
 
 ### Defining Custom Ratios
 
@@ -86,7 +97,8 @@ The Finance Toolkit has an abundance of financial ratios, however it could be th
 
 
 </div>
-<div markdown="1" class="fifty-column-right mobile-max-column-width">
+</div>
+<div markdown="1" class="fifty-column-left mobile-max-column-width">
 
 ### Calling Functions Directly
 
@@ -95,10 +107,9 @@ If you possess your own dataset or a particular use-case in mind, there might ar
 [Open the Notebook](/projects/financetoolkit/functional-toolkit){: .btn .btn--info}
 
 </div>
-</div>
 
 <div class="row">
-<div markdown="1" class="fifty-column-left mobile-max-column-width">
+<div markdown="1" class="fifty-column-right mobile-max-column-width">
 
 ### Using External Dataset
 

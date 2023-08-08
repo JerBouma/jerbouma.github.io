@@ -50,6 +50,7 @@ body {
   }
 
   .page__inner-wrap {
+    scroll-padding-top: 4rem;
     float: left;
     margin-top: 1em;
     margin-left: 0;
@@ -88,6 +89,12 @@ body {
   font-family: $global-font-family;
   font-size: $type-size-4;
 }
+
+.page__content h2::before {
+  content: " ";
+  margin-top: -80px;
+  height: 80px;
+  display: block; }
 
 .page__content {
   h2 {
@@ -629,6 +636,12 @@ body {
   float: left;
   width: 30%;
   padding-left: 5%;
+  }
+
+.thirty-three-column {
+  float: left;
+  width: 33%;
+  padding-right: 5%;
   }
 
 .fourty-column {

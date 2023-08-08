@@ -8,6 +8,8 @@
 
 .breadcrumbs {
   @include clearfix;
+  padding-right: 0;
+  width: 100%;
   margin: 0 auto;
   max-width: 100%;
   padding-left: 1em;
@@ -21,6 +23,10 @@
   @include breakpoint($x-large) {
     max-width: $x-large;
   }
+
+  /* Adjust alignment of content */
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Vertically center content */
 
   ol {
     padding: 0;

@@ -18,26 +18,184 @@ I am strongly analytical, have a keen sense of long-term investment strategy and
 Furthermore, throughout the last several years I’ve spent thousands of hours developing in Python in the areas of quantitative and statistical modelling, and data science. Find all of my currently active open-source projects inside the <a href="/projects">projects page</a> which include the Finance Database and Financial Toolkit with both well over 1.000 GitHub Stars as well as the OpenBB Terminal in which I am one of the leading contributors with major contributions in the area of fundamental analysis, economics, fixed income and econometrics.
 
 All of this comes together within my current role as Financial Risk Analyst at A.S.R, one of the largest insurance companies in the Netherlands. Within this role, I am responsible for much of the financial modelling related to the investment strategy and will manage models that keep the balance sheets of A.S.R. in check. In doing so, I work closely with a range of (equity) analysts and have biweekly analysts calls to discuss market conditions.
+
 </div>
+
 <div markdown="1" class="thirty-column">
 
-|-----------------|-----------------|
-| Skill           | Expertise       |
-|-----------------|-----------------|
-| MS Excel        | ★★★★★           |
-| Python          | ★★★★★           |
-| Git             | ★★★★★           |
-| SQL             | ★★★★☆           |
-| MATLAB          | ★★★★☆           |
-| CSS3 & HTML5    | ★★★★☆           |
-| Excel VBA       | ★★★☆☆           |
-| R Studio        | ★★★☆☆           |
-| Shell           | ★★★☆☆           |
-| Linux           | ★★★☆☆           |
-|-----------------|-----------------|
+<img src="assets/images/default/bio-photo.jpg" class='testimoninals'>
 
 </div>
 </div>
+
+## Skills
+
+This section includes all my skills and the level of proficiency I have in each of them. I am first and foremost someone with strong Financial education and experience but I also have a strong background in programming and data science. This combination of skills is what makes me unique and allows me to work on a wide range of projects. Hover over each skill to read more about my experience with each.
+
+<div class="row">
+<div markdown="1" class="thirty-three-column">
+
+<div class="skill">
+  <div class="skill-name">MS Excel</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 100%;">
+    <div class="tooltip">
+        <b>MS Excel</b> is the bread and butter for most financial analysis and is strongly embeded in my work and personal projects both through analysis and as data storage. A great example is the Finance Database that relies on compressed CSVs to store data and allow for easy adjustments where needed.
+    </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div markdown="1" class="thirty-three-column">
+
+<div class="skill">
+  <div class="skill-name">Python</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 100%;"></div>
+    <div class="tooltip">
+        <b>Python</b> is my main programming language which I have invested thousands of hours in by now. I have used it for a wide range of applications ranging from actuarial models, financial analysis, data science, web development, machine learning and much more. This is distributed evenly between institutional and personal projects.
+    </div>
+  </div>
+</div>
+</div>
+<div markdown="1" class="thirty-three-column">
+
+<div class="skill">
+  <div class="skill-name">Git</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 90%;"></div>
+    <div class="tooltip">
+      <b>Git</b> goes hand in hand with any programming language and is a tool I use on a daily basis. I have used it for both personal and institutional projects and have a strong understanding of how to use it in a team setting as well. Next to that, I also got used to using linters such as Black, Ruff, Mypy, Pylint and Bandit to ensure code quality as well as set up automatic testing through GitHub Actions and Azure Pipelines.
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div markdown="1" class="thirty-three-column">
+
+<div class="skill">
+  <div class="skill-name">SQL</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 80%;">
+    <div class="tooltip">
+      I've obtained experience with <b>SQL</b> through several channels. First and foremost, I got used to using it through Google Spreadsheets as a way to query larger datasets. Later on, I also got to use it with Metabase to parse large datasets. Lastly, I've used it in Python to explore creating queries from the Finance Database.
+    </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div markdown="1" class="thirty-three-column">
+
+<div class="skill">
+  <div class="skill-name">MATLAB</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 70%;"></div>
+    <div class="tooltip">
+        Both in college and during my time at PGGM, <b>MATLAB</b> was used. I've learned how to read and write code as PGGM was expanding its ALM model and later on transition it to Python. This allowed me to really understand the language and understand the advantages it has over other languages.
+    </div>
+  </div>
+</div>
+</div>
+<div markdown="1" class="thirty-three-column">
+
+<div class="skill">
+  <div class="skill-name">Excel VBA</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 70%;"></div>
+    <div class="tooltip">
+        Through my career I've seen the reliance on <b>Excel VBA</b> and therefore ensured I know the basics of how the read and write the language to supercharge Excel files where needed. This is especially useful for automating tasks and creating custom functions.
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div markdown="1" class="thirty-three-column">
+
+<div class="skill">
+  <div class="skill-name">R Studio</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 60%;">
+    <div class="tooltip">
+        Being proficient in Python, made getting the hang of <b>R Studio</b> relatively straight forward. It also was the basis of some financial courses during college. Even though I don't use it as much anymore, it remains an easy to pick up language for me.
+    </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div markdown="1" class="thirty-three-column">
+
+<div class="skill visible">
+  <div class="skill-name">CS33 & HTML</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 60%;"></div>
+    <div class="tooltip">
+        I used to own a Web Design firm in which I got most of my <b>CS33 & HTML</b> experience from. Next to that, this website is a great consistent refresher on everything CSS and HTML. I also greatly value this experience because of how throughly it is embeded in other programs making it much easier for me to work with those.
+    </div>
+  </div>
+</div>
+</div>
+<div markdown="1" class="thirty-three-column">
+
+<div class="skill">
+  <div class="skill-name">JavaScript</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 60%;"></div>
+    <div class="tooltip">
+        This website is my main experience with <b>JavaScript</b>. I've learned it while designing much of the content as found here. A great example are the docs of the Finance Toolkit that are automatically generated based on JavaScript and collecting from files found on GitHub.
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div markdown="1" class="thirty-three-column">
+
+<div class="skill">
+  <div class="skill-name">Azure Ecosystem</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 80%;">
+    <div class="tooltip">
+      Through my time at PGGM and ASR I got the hang of the Azure Ecosystem which includes Azure DevOps, Azure Pipelines, Azure Artifacts and Azure Machine Learning. This helped me in maintaining models through Azure DevOps and testing them adequately through Azure Pipelines in which I push the models to Azure Artifacts. Lastly, I've then used Azure Machine Learning to deploy models to production.
+    </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div markdown="1" class="thirty-three-column">
+<div class="skill">
+  <div class="skill-name">GitHub Ecosystem</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 60%;"></div>
+    <div class="tooltip">
+      All of my open-source projects, like Finance Database and Finance Toolkit are hosted on the <b>GitHub Ecosysyem</b>. I've gotten very familiar with GitHub and how to work with GitHub Actions to automate workflows. Given my time at OpenBB, I've also really gotten the hang of how to organize projects on GitHub, define automatic tests and setting up a proper branch policy structure.
+    </div>
+  </div>
+</div>
+</div>
+
+<div markdown="1" class="thirty-three-column">
+
+<div class="skill visible">
+  <div class="skill-name">PowerBI</div>
+  <div class="progress-container">
+    <div class="progress-bar" style="width: 70%;"></div>
+    <div class="tooltip">
+      I have a good understanding how to work with <b>PowerBI</b> to visualize data. This is especially useful when working with large datasets and wanting to create a dashboard to visualize the data. I've used it to create dashboards for ASR as the models produced datasets that far exceeded what Excel would be able to handle.
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
 
 ## Experience
 

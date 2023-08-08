@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/themes/prism.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-python.min.js"></script>
+    <style>
+      .code-block {
+        background-color: #f4f4f4;
+        padding: 0px;
+        margin: 0;
+        font-family: "Courier New", monospace;
+        white-space: pre-wrap !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content"></div>
+
+    <script>
+      function fetchAndDisplayDocstrings(fileUrl) {
+        fetch(fileUrl)
+          .then(response => response.json())
+          .then(data => {
+            const fileContent = atob(data.content); // Decode base64-encoded content
+
+            var renderer = new marked.Renderer();
+            var realTableCellRenderer = renderer.tablecell
+            renderer.tablecell = function(content, flags){
+                flags.align = null;
+                return realTableCellRenderer(content, flags)
+            }
+
+            const functionsWithDocstrings = [];
+            const functionMatches = fileContent.match(
+              /def\s+(\w+)\([\s\S]*?\"\"\"([\s\S]*?)\"\"\"/g
+            );
+
+            if (functionMatches) {
+              functionMatches.forEach(match => {
+                const [_, functionName, docstring] = match.match(
+                  /def\s+(\w+)\([\s\S]*?\"\"\"([\s\S]*?)\"\"\"/
+                );
+
+                // Extract example code block
+                const exampleCodeMatch = docstring.match(/```python([\s\S]*?)```/s);
+                const exampleCode = exampleCodeMatch ? exampleCodeMatch[1] : '';
+
+                // Extract example result
+                const exampleResultMatch = docstring.match(/Which returns:[\s\S]*$/);
+                const exampleResult = exampleResultMatch ? exampleResultMatch[0] : '';
+
+                // Remove example code block from docstring
+                const cleanedDocstringWithoutCode= docstring.replace(/```python([\s\S]*?)```/s, '');
+                const cleanedDocstringWithoutTable = cleanedDocstringWithoutCode.replace(/Which returns:[\s\S]*$/, '');
+
+                functionsWithDocstrings.push({ functionName, cleanedDocstringWithoutTable, exampleCode, exampleResult});
+              });
+            }
+
+            const contentElement = document.getElementById('content');
+
+            functionsWithDocstrings.forEach(({ functionName }) => {
+              contentElement.innerHTML += `<a href="#${functionName}">${functionName}</a><br>`;
+            });
+
+            functionsWithDocstrings.forEach(({ functionName, cleanedDocstringWithoutTable, exampleCode, exampleResult}) => {
+              const cleanedDocstring2 = cleanedDocstringWithoutTable.replace(/\n/g, '<br>');
+              const cleanedDocstring3 = cleanedDocstring2.replace(`Args:`, '**Args:**');
+              const cleanedDocstring4 = cleanedDocstring3.replace(`Raises:`, '**Raises:**');
+              const cleanedDocstring5 = cleanedDocstring4.replace(`Returns:`, '**Returns:**');
+
+              const parsedDocstring = marked.parse(`${cleanedDocstring5}`);
+              const parsedDocstringCleaned = parsedDocstring.replace(/(<br>\s*){3,}/g, '<br>');
+
+              contentElement.innerHTML += `<h2 id=${functionName}>${functionName}</h2><a class="header-link" href="#${functionName}" title="Permalink">`;
+              contentElement.innerHTML += marked.parse(`${parsedDocstringCleaned}`);
+              
+              if (exampleCode) {
+                contentElement.innerHTML += `<pre class="code-block"><code class="language-python">${exampleCode.replace(/^[ \t]+/gm, '')}</code></pre>`;
+              }
+
+              if (exampleResult) {
+                exampleResult2 = exampleResult.replace('Which returns:', '')
+                contentElement.innerHTML += `<p>Which returns:</p>`;
+                contentElement.innerHTML += marked.parse(exampleResult2.replace(/^\s+|\s+$/gm, ''))
+              }
+            });
+
+            Prism.highlightAll();
+          })
+          .catch(error => console.error('Error fetching file content:', error));
+      }
+      // Get the URL from the page's front matter
+      const fileUrl = '{{ page.file_url }}';
+      fetchAndDisplayDocstrings(fileUrl);
+    </script>
+  </body>
+</html>
