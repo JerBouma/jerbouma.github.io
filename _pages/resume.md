@@ -6,8 +6,10 @@ author_profile: true
 permalink: /resume
 redirect_from:
   - /cv
-classes: wide-no-sidebar
+classes: wide-sidebar
 author_profile: false
+sidebar:
+  nav: "resume"
 ---
 
 <div class="row">
@@ -163,7 +165,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 80%;">
     <div class="tooltip">
-      Through my time at PGGM and ASR I got the hang of the Azure Ecosystem which includes Azure DevOps, Azure Pipelines, Azure Artifacts and Azure Machine Learning. This helped me in maintaining models through Azure DevOps and testing them adequately through Azure Pipelines in which I push the models to Azure Artifacts. Lastly, I've then used Azure Machine Learning to deploy models to production.
+      Through my time at PGGM and ASR I got the hang of the <b>Azure Ecosystem</b> which includes Azure DevOps, Azure Pipelines, Azure Artifacts and Azure Machine Learning. This helped me in maintaining models through Azure DevOps and testing them adequately through Azure Pipelines in which I push the models to Azure Artifacts. Lastly, I've then used Azure Machine Learning to deploy models to production.
     </div>
     </div>
   </div>

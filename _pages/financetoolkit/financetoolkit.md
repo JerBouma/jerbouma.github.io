@@ -3,32 +3,25 @@ permalink: /projects/financetoolkit
 title: Finance Toolkit
 excerpt: This is an open-source toolkit in which all relevant financial ratios (50+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
 description: This is an open-source toolkit in which all relevant financial ratios (50+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
-classes: wide-no-sidebar
+classes: wide-sidebar
 author_profile: false
 redirect_from:
   - /financetoolkit
+sidebar:
+  nav: "financetoolkit"
 ---
 
 While browsing a variety of websites, I kept finding that the same financial metric can greatly vary per source and so do the financial statements reported while little information is given how the metric was calculated.
 
 For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is reported to be 28.93 (Stockopedia), 32.05 (Morningstar), 32.66 (Macrotrends), 33.09 (Finance Charts), 33.66 (Y Charts), 33.67 (Wall Street Journal), 33.80 (Yahoo Finance) and 34.4 (Companies Market Cap). All of these calculations are correct, however the method applied varies leading to different results. Therefore, collecting data from multiple sources can lead to wrong interpretation of the results given that one source could be applying a different calculation method than another. And that is, if it is even freely available. Often the calculation is hidden behind a paid subscription.
 
-<div class="row">
-<div markdown="1" class="fifty-column-left mobile-max-column-width">
-
 **This is why I designed the FinanceToolkit**, this is an open-source toolkit in which all relevant financial ratios (50+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
 
 The Finance Toolkit is complimented very well with the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase), a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
 
-</div>
-<div markdown="1" class="fifty-column-right mobile-max-column-width">
-
 <p align="center">
     <img src="https://github.com/JerBouma/FinanceToolkit/blob/main/examples/Finance%20Toolkit%20-%206.%20Video%20Demo.gif?raw=true" alt="Finance Toolkit Illustration" width="100%" onerror="this.style.display = 'none'"/>
 </p>
-
-</div>
-</div>
 
 ## Installation
 
@@ -111,7 +104,7 @@ If you possess your own dataset or a particular use-case in mind, there might ar
 <div class="row">
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 
-### Using External Dataset
+### Using External Datasets
 
 The Finance Toolkit has the ability to leverage custom datasets from any data provider as well. This makes it possible to work with your preferred data and not be limited to the data source the Finance Toolkit currently provides.
 
@@ -167,7 +160,7 @@ This returns the following output for `profitability_ratios.loc['AAPL]`. Omittin
 | EBT to EBIT Ratio                           | 0.957448 | 0.948408 | 0.958936 | 0.976353 | 0.975982 |
 | EBIT to Revenue                             | 0.286688 | 0.26641  | 0.254864 | 0.305759 | 0.309473 |
 
-## Defining Custom Ratios
+## Working with Custom Ratios
 
 The Finance Toolkit has an abundance of financial ratios, however it could be that you are looking for a specific ratio that is currently not provided. First and foremost, I encourage to [create a Pull Request](https://github.com/JerBouma/FinanceToolkit/pulls) to add these ratios in but there is also an option to add custom ratios as follows. This feature was designed by [sword134](https://github.com/sword134). Find a Notebook example [here](https://www.jeroenbouma.com/projects/financetoolkit/custom-ratios).
 
@@ -207,7 +200,7 @@ Below you can find the custom ratios from GOOGL which has been selected with `.l
 | Quick Ratio Total         | 1.55744     | 1.48575     | 1.4703     | 1.43704     |
 | WC / Net Income           | 7.19842     | 7.00932     | 6.1877     | 4.95857     |
 
-## Calling Functions Directly
+## Accessing Functions Directly
 
 It also possible to call any ratio or model directly as shown below. This allows access to 50+ ratios with custom data. Also see [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/functional-toolkit).
 
