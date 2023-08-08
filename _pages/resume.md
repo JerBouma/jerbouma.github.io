@@ -42,7 +42,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 100%;">
     <div class="tooltip">
-        <b>MS Excel</b> is the bread and butter for most financial analysis and is strongly embeded in my work and personal projects both through analysis and as data storage. A great example is the Finance Database that relies on compressed CSVs to store data and allow for easy adjustments where needed.
+        <b>MS Excel</b> is the bread and butter for most financial analysis and is strongly embedded in my work and personal projects both through analysis and as data storage. A great example is the Finance Database that relies on compressed CSVs to store data and allow for easy adjustments where needed.
     </div>
     </div>
   </div>
@@ -138,7 +138,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 60%;"></div>
     <div class="tooltip">
-        I used to own a Web Design firm in which I got most of my <b>CS33 & HTML</b> experience from. Next to that, this website is a great consistent refresher on everything CSS and HTML. I also greatly value this experience because of how throughly it is embeded in other programs making it much easier for me to work with those.
+        I used to own a Web Design firm in which I got most of my <b>CS33 & HTML</b> experience from. Next to that, this website is a great consistent refresher on everything CSS and HTML. I also greatly value this experience because of how thoroughly it is embedded in other programs making it much easier for me to work with those.
     </div>
   </div>
 </div>
@@ -307,9 +307,9 @@ View all of these testimoninals on my LinkedIn profile as well as found [here](h
 
 <div class="row">
 <div markdown="1" class="eighty-column-left">
-*On the 13th of October 2021, I recieved an email from Jeroen about adding one of his finance GitHub packages to the OpenBB Terminal (then Gamestonk Terminal). After digging into his open source projects and his achievements I was very impressed. When we had a chat regarding how to work together, I offered him a job on the spot. Jeroen was at the intersection of finance, programming and open source - which is a combination that is very hard to find - even today (almost 2 years later).*
+*On the 13th of October 2021, I received an email from Jeroen about adding one of his finance GitHub packages to the OpenBB Terminal (then Gamestonk Terminal). After digging into his open source projects and his achievements I was very impressed. When we had a chat regarding how to work together, I offered him a job on the spot. Jeroen was at the intersection of finance, programming and open source - which is a combination that is very hard to find - even today (almost 2 years later).*
 
-*Jeroen ended up joining us a few months after that inital meeting. He started in the role of Product Manager where he helped drive the direction of the OpenBB Terminal, not only from a product perspective but also joining the development team. Menus such as economy, portfolio, econometrics, fixed income are Jeroen’s legacy and they wouldn’t have the quality they have today without Jeroen’s financial theory knowledge - ultimately, the team saw Jeroen as the go-to person when financial theory was involved.*
+*Jeroen ended up joining us a few months after that initial meeting. He started in the role of Product Manager where he helped drive the direction of the OpenBB Terminal, not only from a product perspective but also joining the development team. Menus such as economy, portfolio, econometrics, fixed income are Jeroen’s legacy and they wouldn’t have the quality they have today without Jeroen’s financial theory knowledge - ultimately, the team saw Jeroen as the go-to person when financial theory was involved.*
 
 *More recently, Jeroen shifted to the role of Product Marketing Manager so that he could focus on the go-to market and showing users (through documentation, webinars, videos) how they could use OpenBB products for real use cases. In addition, he led OpenBB’s academia motion, and created presentations such as “The Greek Government Debt Crisis”, “Performing Financial Due Diligence” and “The Influence of the Central Bank” which used OpenBB for research and were presented at different universities in the UK and Netherlands.*
 
