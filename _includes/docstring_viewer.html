@@ -60,10 +60,6 @@
 
             const contentElement = document.getElementById('content');
 
-            functionsWithDocstrings.forEach(({ functionName }) => {
-              contentElement.innerHTML += `<a href="#${functionName}">${functionName}</a><br>`;
-            });
-
             functionsWithDocstrings.forEach(({ functionName, cleanedDocstringWithoutTable, exampleCode, exampleResult}) => {
               const cleanedDocstring2 = cleanedDocstringWithoutTable.replace(/\n/g, '<br>');
               const cleanedDocstring3 = cleanedDocstring2.replace(`Args:`, '**Args:**');

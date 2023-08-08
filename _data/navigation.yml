@@ -12,11 +12,30 @@ main:
     url: /literature
   - title: "Contact"
     url: /contact
-  # - title: "About"
-  #   url: https://mmistakes.github.io/minimal-mistakes/about/
-  # - title: "Sample Posts"
-  #   url: /year-archive/
-  # - title: "Sample Collections"
-  #   url: /collection-archive/
-  # - title: "Sitemap"
-  #   url: /sitemap/
+financetoolkit-toolkit-docs:
+  - title: "Toolkit Docs"
+    children:
+      - title: "Initalization"
+        url: /projects/financetoolkit/docs/toolkit#__init__
+      - title: "Ratios Module"
+        url: /projects/financetoolkit/docs/toolkit#ratios
+      - title: "Models Module"
+        url: /projects/financetoolkit/docs/toolkit#models
+      - title: "Profiles"
+        url: /projects/financetoolkit/docs/toolkit#get_profile
+      - title: "Quotes"
+        url: /projects/financetoolkit/docs/toolkit#get_quote
+      - title: "Enterprise Values"
+        url: /projects/financetoolkit/docs/toolkit#get_enterprise
+      - title: "Ratings"
+        url: /projects/financetoolkit/docs/toolkit#get_rating
+      - title: "Historical Data"
+        url: /projects/financetoolkit/docs/toolkit#get_historical_data
+      - title: "Balance Sheet Statements"
+        url: /projects/financetoolkit/docs/toolkit#get_balance_sheet_statement
+      - title: "Income Sheet Statements"
+        url: /projects/financetoolkit/docs/toolkit#get_income_statement
+      - title: "Cash Flow Statements"
+        url: /projects/financetoolkit/docs/toolkit#get_cash_flow_statement
+      - title: "Statistics Statements"
+        url: /projects/financetoolkit/docs/toolkit#get_statistics_statement
