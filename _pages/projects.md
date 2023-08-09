@@ -16,7 +16,7 @@ When I discovered Python during my time in University, I was immediately captiva
 </div>
 </div>
 
-## Finance Toolkit
+## [Finance Toolkit](/projects/financetoolkit)
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
@@ -35,7 +35,7 @@ The Finance Toolkit is complimented very well with the Finance Database and by u
 </div>
 </div>
 
-## Finance Database
+## [Finance Database](/projects/financedatabase)
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
@@ -54,7 +54,7 @@ The aim of this database is explicitly not to provide up-to-date fundamentals or
 </div>
 </div>
 
-## The Passive Investor
+## [The Passive Investor](https://github.com/JerBouma/ThePassiveInvestor){:target="_blank"}
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
@@ -73,7 +73,7 @@ This is quickly reflected when looking for a S&P 500 ETF as there are over 20 di
 </div>
 </div>
 
-## OpenBB Terminal
+## [OpenBB Terminal](https://github.com/openbb-finance/openbbterminal){:target="_blank"}
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">

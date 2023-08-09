@@ -90,7 +90,19 @@ body {
   font-size: $type-size-4;
 }
 
+.page__content h1::before {
+  content: " ";
+  margin-top: -80px;
+  height: 80px;
+  display: block; }
+
 .page__content h2::before {
+  content: " ";
+  margin-top: -80px;
+  height: 80px;
+  display: block; }
+
+.page__content h3::before {
   content: " ";
   margin-top: -80px;
   height: 80px;

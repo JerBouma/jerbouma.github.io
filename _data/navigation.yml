@@ -47,19 +47,19 @@ financetoolkit:
     url: /projects/financetoolkit#using-the-finance-toolkit
     children:
       - title: Using the Finance Toolkit
-        url: /projects/financetoolkit#using-the-finance-toolkit
+        url: /projects/financetoolkit/#using-the-finance-toolkit
       - title: Working with Custom Ratios
-        url: /projects/financetoolkit#working-with-custom-ratios
+        url: /projects/financetoolkit/#working-with-custom-ratios
       - title: Accessing Functions Directly
-        url: /projects/financetoolkit#accessing-functions-directly
+        url: /projects/financetoolkit/#accessing-functions-directly
       - title: Working with other Datasets
-        url: /projects/financetoolkit#working-with-other-datasets
+        url: /projects/financetoolkit/#working-with-other-datasets
   - title: "Code Documentation"
     url: /projects/financetoolkit/docs
 
 financetoolkit-docs:
   - title: "Toolkit Module"
-    url: /projects/financetoolkit/docs#toolkit-module
+    url: /projects/financetoolkit/docs#Toolkit-Module
     children:
       - title: "Ratios Module"
         url: /projects/financetoolkit/docs#ratios
@@ -84,7 +84,7 @@ financetoolkit-docs:
       - title: "Statistics Statements"
         url: /projects/financetoolkit/docs#get_statistics_statement
   - title: "Ratios Module"
-    url: /projects/financetoolkit/docs#ratios-module
+    url: /projects/financetoolkit/docs#Ratios-Module
     children:
       - title: liquidity ratios
         url: /projects/financetoolkit/docs#collect_liquidity_ratios
@@ -233,7 +233,7 @@ financetoolkit-docs:
       - title: ev to ebit
         url: /projects/financetoolkit/docs#get_ev_to_ebit
   - title: "Models Module"
-    url: /projects/financetoolkit/docs#models
+    url: /projects/financetoolkit/docs#Models-Module
     children:
       - title: DuPont Analysis
         url:  /projects/financetoolkit/docs#get_dupont_analysis

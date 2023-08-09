@@ -60,7 +60,7 @@
 
             const contentElement = document.getElementById('content');
 
-            contentElement.innerHTML += marked.parse(title);
+            contentElement.innerHTML += marked.parse(`<h2 id=${title.replace(' ', '-')}>${title}</h2><a class="header-link" href="#${title.replace(' ', '-')}" title="Permalink">`);
             contentElement.innerHTML += marked.parse(description);
 
             functionsWithDocstrings.forEach(({ functionName, cleanedDocstringWithoutTable, exampleCode, exampleResult}) => {
@@ -72,7 +72,7 @@
               const parsedDocstring = marked.parse(`${cleanedDocstring5}`);
               const parsedDocstringCleaned = parsedDocstring.replace(/(<br>\s*){3,}/g, '<br>');
 
-              contentElement.innerHTML += `<h2 id=${functionName}>${functionName}</h2><a class="header-link" href="#${functionName}" title="Permalink">`;
+              contentElement.innerHTML += `<h3 id=${functionName}>${functionName}</h2><a class="header-link" href="#${functionName}" title="Permalink">`;
               contentElement.innerHTML += marked.parse(`${parsedDocstringCleaned}`);
               
               if (exampleCode) {
