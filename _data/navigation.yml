@@ -47,13 +47,13 @@ financetoolkit:
     url: /projects/financetoolkit#using-the-finance-toolkit
     children:
       - title: Using the Finance Toolkit
-        url: /projects/financetoolkit/#using-the-finance-toolkit
+        url: /projects/financetoolkit#using-the-finance-toolkit
       - title: Working with Custom Ratios
-        url: /projects/financetoolkit/#working-with-custom-ratios
+        url: /projects/financetoolkit#working-with-custom-ratios
       - title: Accessing Functions Directly
-        url: /projects/financetoolkit/#accessing-functions-directly
+        url: /projects/financetoolkit#accessing-functions-directly
       - title: Working with other Datasets
-        url: /projects/financetoolkit/#working-with-other-datasets
+        url: /projects/financetoolkit#working-with-other-datasets
   - title: "Code Documentation"
     url: /projects/financetoolkit/docs
 
