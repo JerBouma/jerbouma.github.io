@@ -6,15 +6,6 @@ main:
     url: /resume
   - title: "Projects"
     url: /projects
-    sublinks:
-      - title: "Finance Toolkit"
-        url: /projects/financetoolkit
-      - title: "Finance Database"
-        url: /projects/financedatabase
-      - title: "The Passive Investor"
-        url: https://github.com/JerBouma/ThePassiveInvestor
-      - title: "OpenBB Terminal"
-        url: https://github.com/openbb-finance/openbbterminal
   - title: "Talks"
     url: /talks
   - title: "Literature"
@@ -63,7 +54,6 @@ financedatabase:
     url: /projects/financedatabase#questions--answers
   - title: "User Contributions"
     url: /projects/financedatabase#user-contributions
-
 financetoolkit:
   - title: Introduction
     url: /projects/financetoolkit
@@ -278,3 +268,19 @@ financetoolkit-docs:
         url:  /projects/financetoolkit/docs#get_dupont_analysis
       - title: Extended DuPont Analysis
         url:  /projects/financetoolkit/docs#get_extended_dupont_analysis
+thepassiveinvestor:
+  - title: "Introduction"
+    url: /projects/thepassiveinvestor
+  - title: "Installation"
+    url: /projects/thepassiveinvestor#installation
+  - title: "Functionality"
+    url: /projects/thepassiveinvestor#functionality
+  - title: "Using the Passive Investor"
+    url: /projects/thepassiveinvestor#using-the-passive-investor
+    children:
+      - title: "Obtaining ETF Data"
+        url: /projects/thepassiveinvestor#using-the-passive-investor
+      - title: "Compare ETFs"
+        url: /projects/thepassiveinvestor#compare-etfs
+      - title: "Generate an ETF Report"
+        url: /projects/thepassiveinvestor#generate-an-etf-report

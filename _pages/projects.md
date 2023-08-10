@@ -30,8 +30,8 @@ The Finance Toolkit is complimented very well with the Finance Database and by u
 <a href="/projects/financetoolkit"><img src="https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg" width="400"></a>
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=financetoolkit)](/projects/financetoolkit)
 
-[![PyPi Version](https://img.shields.io/pypi/v/financetoolkit)](/projects/financetoolkit)
-[![PyPi Downloads](https://img.shields.io/pypi/dm/financetoolkit)](/projects/financetoolkit)
+[![PyPi Version](https://img.shields.io/pypi/v/financetoolkit)](https://pypi.org/project/financetoolkit/){:target="_blank"}
+[![PyPi Downloads](https://img.shields.io/pypi/dm/financetoolkit)](https://pypi.org/project/financetoolkit/){:target="_blank"}
 </div>
 </div>
 
@@ -49,12 +49,12 @@ The aim of this database is explicitly not to provide up-to-date fundamentals or
 <a href="/projects/financedatabase"><img src="https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg" width="400"></a>
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=financedatabase)](/projects/financedatabase)
 
-[![PyPi Version](https://img.shields.io/pypi/v/financedatabase)](/projects/financedatabase)
-[![PyPi Downloads](https://img.shields.io/pypi/dm/financedatabase)](/projects/financedatabase)
+[![PyPi Version](https://img.shields.io/pypi/v/financedatabase)](https://pypi.org/project/financedatabase/){:target="_blank"}
+[![PyPi Downloads](https://img.shields.io/pypi/dm/financedatabase)](https://pypi.org/project/financedatabase/){:target="_blank"}
 </div>
 </div>
 
-## [The Passive Investor](https://github.com/JerBouma/ThePassiveInvestor){:target="_blank"}
+## [The Passive Investor](/projects/thepassiveinvestor){:target="_blank"}
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
@@ -62,32 +62,32 @@ With a large increase in ETFs available, it can become difficult to make the bes
 
 This is quickly reflected when looking for a S&P 500 ETF as there are over 20 different ETFs available. With this package, I wish to make investment decisions easier to make and manage.
 
-[View this Project](https://github.com/jerbouma/thepassiveinvestor){: .btn .btn--info}{:target="_blank"}
+[View this Project](/projects/thepassiveinvestor){: .btn .btn--info}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="https://github.com/jerbouma/thepassiveinvestor"><img src="https://raw.githubusercontent.com/JerBouma/ThePassiveInvestor/master/Images/outputExample.gif" width="400"></a>
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=thepassiveinvestor)](https://github.com/jerbouma/thepassiveinvestor){:target="_blank"}
+<a href="/projects/thepassiveinvestor"><img src="https://raw.githubusercontent.com/JerBouma/ThePassiveInvestor/master/Images/outputExample.gif" width="400"></a>
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=thepassiveinvestor)](/projects/thepassiveinvestor)
 
-[![PyPi Version](https://img.shields.io/pypi/v/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/)
-[![PyPi Downloads](https://img.shields.io/pypi/dm/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/)
+[![PyPi Version](https://img.shields.io/pypi/v/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/){:target="_blank"}
+[![PyPi Downloads](https://img.shields.io/pypi/dm/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/){:target="_blank"}
 </div>
 </div>
 
-## [OpenBB Terminal](https://github.com/openbb-finance/openbbterminal){:target="_blank"}
+## [OpenBB Terminal](/projects/openbbterminal)
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
 OpenBB Terminal provides a modern Python-based integrated environment for investment research, that allows an average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
 
-I have been part of this company for over a year and I am one of the main contributors to the package having solely designed much of the economy, fixed-income, fundamental analysis and ecoometrics menus.
+During my time at OpenBB, I have made major code contributions to get the OpenBB Terminal in the shape it currently is. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. This led to much of the currently in place functionality. The OpenBB Terminal is a CLI based platform that democratises access to investment research. It is a platform that is meant to be used by both professional and non-professional investors. The [Finance Database](/projects/financedatabase) is part of this project and is crucial for finding and selecting companies that match the user's criteria.
 
-[View this Project](https://github.com/openbb-finance/openbbterminal){: .btn .btn--info}{:target="_blank"}
+[View this Project](/projects/openbbterminal){: .btn .btn--info}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="https://github.com/openbb-finance/openbbterminal"><img src="https://github.com/OpenBB-finance/OpenBBTerminal/raw/develop/images/openbb_gradient.png" width="400"></a>
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=OpenBB-finance&repo=OpenBBTerminal)](https://github.com/openbb-finance/openbbterminal){:target="_blank"}
+<a href="/projects/openbbterminal"><img src="https://github.com/OpenBB-finance/OpenBBTerminal/raw/develop/images/openbb_gradient.png" width="400"></a>
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=OpenBB-finance&repo=OpenBBTerminal)](/projects/openbbterminal)
 
-[![PyPi Version](https://img.shields.io/pypi/v/openbb)](https://pypi.org/project/openbb/)
-[![PyPi Downloads](https://img.shields.io/pypi/dm/openbb)](https://pypi.org/project/openbb/)
+[![PyPi Version](https://img.shields.io/pypi/v/openbb)](https://pypi.org/project/openbb/){:target="_blank"}
+[![PyPi Downloads](https://img.shields.io/pypi/dm/openbb)](https://pypi.org/project/openbb/){:target="_blank"}
 </div>
 </div>

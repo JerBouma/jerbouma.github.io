@@ -2,6 +2,18 @@
    BASE ELEMENTS
    ========================================================================== */
 
+@media screen and (max-width: 480px) {
+  .show-on-desktop {
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: 480px) {
+  .show-on-mobile {
+    display: none !important;
+  }
+}
+
 html {
   /* sticky footer fix */
   position: relative;
