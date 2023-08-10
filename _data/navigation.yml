@@ -6,6 +6,15 @@ main:
     url: /resume
   - title: "Projects"
     url: /projects
+    sublinks:
+      - title: "Finance Toolkit"
+        url: /projects/financetoolkit
+      - title: "Finance Database"
+        url: /projects/financedatabase
+      - title: "The Passive Investor"
+        url: https://github.com/JerBouma/ThePassiveInvestor
+      - title: "OpenBB Terminal"
+        url: https://github.com/openbb-finance/openbbterminal
   - title: "Talks"
     url: /talks
   - title: "Literature"
@@ -25,6 +34,36 @@ resume:
     url: /resume#certifications
   - title: "Testimonials"
     url: /resume#testimonials
+financedatabase:
+  - title: "Introduction"
+    url: /projects/financedatabase
+  - title: "Installation"
+    url: /projects/financedatabase#installation
+  - title: "Example Notebook"
+    url: /projects/financedatabase/getting-started
+  - title: "Using the Finance Database"
+    url: /projects/financedatabase#using-the-finance-database
+    children:
+      - title: "Getting Started"
+        url: /projects/financedatabase#using-the-finance-database
+      - title: "Searching the Database"
+        url: /projects/financedatabase#searching-the-database-extensively
+      - title: "Remote and Local Storing"
+        url: /projects/financedatabase#storing-the-database-at-a-different-location
+  - title: "Examples"
+    url: /projects/financedatabase#examples
+    children:
+      - title: "Categorizing Companies in the Netherlands"
+        url: /projects/financedatabase#companies-in-the-netherlands
+      - title: "Technical Analysis of Biotech ETFs"
+        url: /projects/financedatabase#technical-analysis-of-biotech-etfs
+      - title: "Perform a Dupont Analysis on Railroad Companies"
+        url: /projects/financedatabase#perform-a-dupont-analysis-on-railroad-companies
+  - title: "Questions & Answers"
+    url: /projects/financedatabase#questions--answers
+  - title: "User Contributions"
+    url: /projects/financedatabase#user-contributions
+
 financetoolkit:
   - title: Introduction
     url: /projects/financetoolkit

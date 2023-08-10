@@ -3,10 +3,12 @@ permalink: /projects/financedatabase
 title: Finance Database
 excerpt: The Finance Database features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
 description: The Finance Database features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
-classes: wide-no-sidebar
+classes: wide-sidebar
 author_profile: false
 redirect_from:
   - /financedatabase
+sidebar:
+  nav: "financedatabase"
 ---
 
 <div class="row">
@@ -36,19 +38,27 @@ The aim of this database is explicitly _not_ to provide up-to-date fundamentals 
 | Indices           | 91.183    | 64 Exchanges          |
 | Money Markets     | 1.367     | 3 Exchanges           |
 
-</div>
-</div>
-
 The Finance Database is used within:
 
-<a href="https://openbb.co/"><img src="https://user-images.githubusercontent.com/46355364/229621010-bba16cc4-de85-4921-9d75-b30393aaf74b.png" width="300px" height="100px"></a><a href="https://app.noteable.io/f/242bc47d-9c85-4a30-b6e5-d7d201f6e2d6/Finance+Database.ipynb"><img src="https://user-images.githubusercontent.com/46355364/229618778-2c5f1369-77d5-4fa9-abd1-e79d324a861a.png" width="300px" height="100px"></a>
+<a href="https://openbb.co/" target="_blank"><img src="https://user-images.githubusercontent.com/46355364/229621010-bba16cc4-de85-4921-9d75-b30393aaf74b.png" width="300px" height="100px"></a><a href="https://app.noteable.io/f/242bc47d-9c85-4a30-b6e5-d7d201f6e2d6/Finance+Database.ipynb" target="_blank"><img src="https://user-images.githubusercontent.com/46355364/229618778-2c5f1369-77d5-4fa9-abd1-e79d324a861a.png" width="300px" height="100px"></a>
+
+</div>
+</div>
 
 ## Installation
 The package `financedatabase` allows you to select specific CSV files as well as search through collected data with a specific query.
 
 You can install the package with the following steps:
-1. `pip install financedatabase`
-2. (within Python) `import financedatabase as fd`
+
+```bash
+pip install financedatabase
+```
+
+Then within Python:
+
+```python
+import financedatabase as fd
+```
 
 ## Using the Finance Database
 This section explains in detail how the database can be queried with the related `financedatabase` package, also see the Jupyter Notebook in which you can run the examples also demonstrated here.
@@ -269,7 +279,7 @@ railroad = equities.search(industry='Road & Rail',
                            exclude_exchanges=True)
 ````
 
-Wiuth this information in hand, I can now start collecting data with the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit) package. This can be anything from balance sheet, cash flow and income statements to 50+ financial ratios, enterprise values and historical data. Here I initialize the FinanceToolkit with the tickers as found in the FinanceDatabase.
+Wiuth this information in hand, I can now start collecting data with the [FinanceToolkit](/projects/financetoolkit) package. This can be anything from balance sheet, cash flow and income statements to 50+ financial ratios, enterprise values and historical data. Here I initialize the FinanceToolkit with the tickers as found in the FinanceDatabase.
 
 ````python
 from financetoolkit import Toolkit
