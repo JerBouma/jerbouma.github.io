@@ -5,12 +5,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-python.min.js"></script>
     <style>
-      .code-block {
-        background-color: #f4f4f4;
-        padding: 0px;
-        margin: 0;
-        font-family: "Courier New", monospace;
-        white-space: pre-wrap !important;
+      .custom-style {
+        white-space: break-spaces !important;
+        padding: 0em 1em 1em 1em !important;
       }
     </style>
   </head>
@@ -76,7 +73,7 @@
               contentElement.innerHTML += marked.parse(`${parsedDocstringCleaned}`);
               
               if (exampleCode) {
-                contentElement.innerHTML += `<pre class="code-block"><code class="language-python">${exampleCode.replace(/^[ \t]+/gm, '')}</code></pre>`;
+                contentElement.innerHTML += `<pre class=custom-style><code class="language-python custom-style"">${exampleCode.replace(/^[ \t]+/gm, '')}</code></pre>`;
               }
 
               if (exampleResult) {
