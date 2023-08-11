@@ -115,6 +115,8 @@ financetoolkit-docs:
   - title: "Ratios Module"
     url: /projects/financetoolkit/docs#Ratios-Module
     children:
+      - title: all ratios
+        url: /projects/financetoolkit/docs#collect_all_ratios
       - title: liquidity ratios
         url: /projects/financetoolkit/docs#collect_liquidity_ratios
       - title: profitability ratios
