@@ -15,4 +15,4 @@ I've led many of the now in place initatives presenting the software at multiple
 
 Discover some of my code contributions (with over 250 commits and millions of code additions) by clicking the image below.
 
-<a href="https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=author%3AJerBouma+sort%3Acomments-desc" target="_blank"><img width="1512" alt="image" src="https://github.com/JerBouma/jerbouma.github.io/assets/46355364/b2fa3e34-63c2-4ad6-b2f3-b249f489983e"></a>
+<a href="https://github.com/OpenBB-finance/OpenBBTerminal/pulls?q=is%3Apr+is%3Aclosed+author%3AJerBouma+sort%3Acomments-desc" target="_blank"><img width="1512" alt="image" src="https://github.com/JerBouma/jerbouma.github.io/assets/46355364/b2fa3e34-63c2-4ad6-b2f3-b249f489983e"></a>
