@@ -11,24 +11,26 @@ sidebar:
   nav: "financedatabase"
 ---
 
-<div class="row">
-<div markdown="1" class="fifty-column-left mobile-max-column-width">
 
 As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to understand what type of companies or ETFs are available is incredibly challenging with there being millions of companies and derivatives available on the market. Sure, the most traded companies and ETFs can quickly be found simply because they are known to the public (for example, Microsoft, Tesla, S&P500 ETF or an All-World ETF). However, what else is out there is often unknown.
 
 **This database tries to solve that**. It features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
 
-The aim of this database is explicitly _not_ to provide up-to-date fundamentals or stock data as those can be obtained with ease (with the help of this database) by using the [FinanceToolkit](/projects/FinanceToolkit). Instead, it gives insights into the products that exist in each country, industry and sector and gives the most essential information about each product. With this information, you can analyse specific areas of the financial world and/or find a product that is hard to find.
+The aim of this database is explicitly _not_ to provide up-to-date fundamentals or stock data as those can be obtained with ease (with the help of this database) by using the [FinanceToolkit](/projects/financetoolkit). Instead, it gives insights into the products that exist in each country, industry and sector and gives the most essential information about each product. With this information, you can analyse specific areas of the financial world and/or find a product that is hard to find.
 
 
-</div>
-<div markdown="1" class="fifty-column-right mobile-max-column-width">
+<div class="row">
+<div markdown="1" class="fifty-column-left mobile-max-column-width">
+
 
 | Product           | Quantity   | Sectors    | Industries    | Countries | Exchanges |
 | ----------------- | ---------- | ---------- | ------------- | --------- | --------- |
 | Equities          | 158.429    | 12         | 63            | 111       | 83        | 
 | ETFs              | 36.786     | 295        | 22            | 111       | 53        |
 | Funds             | 57.881     | 1541       | 52            | 111       | 34        |
+
+</div>
+<div markdown="1" class="fifty-column-right mobile-max-column-width">
 
 
 | Product           | Quantity  | Category              |
@@ -38,12 +40,15 @@ The aim of this database is explicitly _not_ to provide up-to-date fundamentals 
 | Indices           | 91.183    | 64 Exchanges          |
 | Money Markets     | 1.367     | 3 Exchanges           |
 
-The Finance Database is used within:
-
-<a href="https://openbb.co/" target="_blank"><img src="https://user-images.githubusercontent.com/46355364/229621010-bba16cc4-de85-4921-9d75-b30393aaf74b.png" width="300px" height="100px"></a><a href="https://app.noteable.io/f/242bc47d-9c85-4a30-b6e5-d7d201f6e2d6/Finance+Database.ipynb" target="_blank"><img src="https://user-images.githubusercontent.com/46355364/229618778-2c5f1369-77d5-4fa9-abd1-e79d324a861a.png" width="300px" height="100px"></a>
-
 </div>
 </div>
+
+The Finance Database is used within or referenced by:
+
+<a href="https://openbb.co/" target="_blank"><img src="https://user-images.githubusercontent.com/46355364/229621010-bba16cc4-de85-4921-9d75-b30393aaf74b.png" width="300px" height="100px"></a><a href="https://app.noteable.io/f/242bc47d-9c85-4a30-b6e5-d7d201f6e2d6/Finance+Database.ipynb" target="_blank"><img src="https://user-images.githubusercontent.com/46355364/229618778-2c5f1369-77d5-4fa9-abd1-e79d324a861a.png" width="300px" height="100px"></a><a href="https://app.noteable.io/f/242bc47d-9c85-4a30-b6e5-d7d201f6e2d6/Finance+Database.ipynb" target="_blank">
+<a href="https://algotrading101.com/learn/financedatabase-python-guide/"  target="_blank"><img src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/eb050357-599f-44be-835f-8647a29a8eee" width="300px" height="100px"></a>
+<a href="https://twitter.com/pyquantnews/status/1576185955677077504?lang=en" target="_blank"><img src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/e1d0779c-a0ad-4c4c-8e34-45c01635a9c2" width="300px" height="100px"></a>
+<a href="https://alpha2phi.medium.com/investment-analysis-finance-database-61f47ecfe7ca" target="_blank"><img src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/03397b64-af70-4ef7-831f-499e91cf66bd" width="300px" height="100px"></a>
 
 ## Installation
 The package `financedatabase` allows you to select specific CSV files as well as search through collected data with a specific query.
@@ -321,7 +326,7 @@ In this section you can find answers to commonly asked questions. In case the an
 consider creating an [Issue](https://github.com/JerBouma/FinanceDatabase/issues).
 
 - **How is the data obtained?**
-    - The data is an aggregation of a variety of sources. The rule that I hold with high regard is that all data needs to be entirely publicly available. Any data that requires API key access or requires a paid tier is never included in this database. Data that you are being charged for is often owned and mainted by the company you have a subscription at and therefore publicly sharing this information online is against their Terms of Service (ToS). However, data that is publicly available can freely be shared (read more about this subject [here](https://techcrunch.com/2022/04/18/web-scraping-legal-court/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAJRZe3F6wCbuO_n8PJ9JtAHpOY4dF2gA_tO0gJF2PhfWUueUcRQataJwNS9FZlp9rH8f8_aiCBfA2v7wlHyXyVLUfMrca4kq0_m6CYSvK7eMk9zuEhnXJOvE0lrHWXSPTtL-lHP8UJD4SyWTpQ2BnCNx-kv3mG7GGn_G_3SGVvhP)) especially since this database will never cost any money.
+    - The data is an aggregation of a variety of sources. The rule that I hold with high regard is that all data needs to be entirely publicly available. Any data that requires API key access or requires a paid tier is never included in this database. Data that you are being charged for is often owned and maintained by the company you have a subscription at and therefore publicly sharing this information online is against their Terms of Service (ToS). However, data that is publicly available can freely be shared (read more about this subject [here](https://techcrunch.com/2022/04/18/web-scraping-legal-court/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAJRZe3F6wCbuO_n8PJ9JtAHpOY4dF2gA_tO0gJF2PhfWUueUcRQataJwNS9FZlp9rH8f8_aiCBfA2v7wlHyXyVLUfMrca4kq0_m6CYSvK7eMk9zuEhnXJOvE0lrHWXSPTtL-lHP8UJD4SyWTpQ2BnCNx-kv3mG7GGn_G_3SGVvhP)) especially since this database will never cost any money.
 - **What categorization method is used?**
     - The categorization for Equities is based on a loose approximation of GICS. No actual data is collected from this source and this database merely tries to reflect the sectors and industries as best as possible. This is completely done through manual curation. The actual datasets as curated by MSCI has not been used in the development of any part of this database and remains the most up to date, paid, solution. Other categorizations are entirely developed by the author and can freely be changed.
 - **How can I contribute?**
