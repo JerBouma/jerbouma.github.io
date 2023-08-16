@@ -25,11 +25,15 @@ The Finance Toolkit is complimented very well with the [Finance Database 🌎](/
 
 ## Installation
 
+Before installation, consider starring the project on GitHub which helps others to find the project as well. **Click the image to visit the repository and Star the project.**
+
+<a href="https://github.com/JerBouma/FinanceToolkit" target="_blank"><img width="1415" alt="image" src="https://github.com/JerBouma/FinanceToolkit/assets/46355364/014109fe-0c68-47d4-99bd-217c69dcea8d">
+
 To install the FinanceToolkit it simply requires the following:
 
-```
+```bash
 pip install financetoolkit
-````
+```
 
 Then within Python use:
 

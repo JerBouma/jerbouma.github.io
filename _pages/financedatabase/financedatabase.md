@@ -11,7 +11,6 @@ sidebar:
   nav: "financedatabase"
 ---
 
-
 As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to understand what type of companies or ETFs are available is incredibly challenging with there being millions of companies and derivatives available on the market. Sure, the most traded companies and ETFs can quickly be found simply because they are known to the public (for example, Microsoft, Tesla, S&P500 ETF or an All-World ETF). However, what else is out there is often unknown.
 
 **This database tries to solve that**. It features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
@@ -48,12 +47,15 @@ The Finance Database is used within or referenced by:
 <a href="https://openbb.co/" target="_blank"><img src="https://user-images.githubusercontent.com/46355364/229621010-bba16cc4-de85-4921-9d75-b30393aaf74b.png" width="300px" height="100px"></a><a href="https://app.noteable.io/f/242bc47d-9c85-4a30-b6e5-d7d201f6e2d6/Finance+Database.ipynb" target="_blank"><img src="https://user-images.githubusercontent.com/46355364/229618778-2c5f1369-77d5-4fa9-abd1-e79d324a861a.png" width="300px" height="100px"></a><a href="https://algotrading101.com/learn/financedatabase-python-guide/" target="_blank"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/260734449-eb050357-599f-44be-835f-8647a29a8eee.jpg" width="300px" height="100px"></a><a href="https://twitter.com/pyquantnews/status/1576185955677077504?lang=en" target="_blank"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/260736777-e1d0779c-a0ad-4c4c-8e34-45c01635a9c2.png" width="300px" height="100px"></a><a href="https://alpha2phi.medium.com/investment-analysis-finance-database-61f47ecfe7ca" target="_blank"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/260736010-03397b64-af70-4ef7-831f-499e91cf66bd.png" width="300px" height="100px"></a>
 
 ## Installation
-The package `financedatabase` allows you to select specific CSV files as well as search through collected data with a specific query.
 
-You can install the package with the following steps:
+Before installation, consider starring the project on GitHub which helps others to find the project as well. **Click the image to visit the repository and Star the project.**
+
+<a href="https://github.com/JerBouma/FinanceDatabase" target="_blank"><img width="1353" alt="image" src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/4132edde-72f9-4e32-adfe-8872207f46ff">
+
+To install the FinanceDatabase it simply requires the following:
 
 ```bash
-pip install financedatabase
+pip install financedatabase -U
 ```
 
 Then within Python:

@@ -1,7 +1,7 @@
 ---
 permalink: /projects/financedatabase/getting-started
-excerpt: Demonstrates how to use the Finance Toolkit with the Finance Database to perform a complete financial analysis. Through the Finance Database you are able to find companies that are in the same country, sector and industry as the company you are analysing. This allows you to perform a complete competitive analysis with the help of the Finance Toolkit.
-description: Demonstrates how to use the Finance Toolkit with the Finance Database to perform a complete financial analysis. Through the Finance Database you are able to find companies that are in the same country, sector and industry as the company you are analysing. This allows you to perform a complete competitive analysis with the help of the Finance Toolkit.
+excerpt: This notebook demonstrates how to use the FinanceDatabase to look into companies and filter through them accordingly.
+description: This notebook demonstrates how to use the FinanceDatabase to look into companies and filter through them accordingly.
 classes: wide-no-sidebar
 author_profile: false
 ---

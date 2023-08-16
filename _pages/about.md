@@ -1,6 +1,6 @@
 ---
-excerpt: I'm Jeroen Bouma, a Financial Risk Analyst at A.S.R, one of the largest Dutch insurance companies with over €60 billion AUM. My responsibilities include analyzing profitability, assessing investment risks, conducting sensitivity analysis on assets and liabilities, and developing financial models to understand the risk-return relationship. I collaborate closely with a diverse team of financial analysts.
-description: I enjoy working in the intersection between Python modelling and Quantitative Finance. On this website you can find my open-source projects and career path. 
+excerpt: I'm Jeroen Bouma, a Financial Risk Analyst at A.S.R, one of the largest Dutch insurance companies with over €120 billion AUM. This website offers a comprehensive resume with testimonials, my open-source Python projects related to financial theory, recorded talks and videos I've participated in, and a complete list of literature I've studied to enhance my understanding of the financial world.
+description:  I'm Jeroen Bouma, a Financial Risk Analyst at A.S.R, one of the largest Dutch insurance companies with over €120 billion AUM. This website offers a comprehensive resume with testimonials, my open-source Python projects related to financial theory, recorded talks and videos I've participated in, and a complete list of literature I've studied to enhance my understanding of the financial world.
 author_profile: true
 permalink: /
 redirect_from:

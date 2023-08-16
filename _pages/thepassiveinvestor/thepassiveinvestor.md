@@ -24,7 +24,7 @@ An example of the output can be found in the GIF below. This depicts several ETF
 
 The package can be installed via the following commands:
 
-```
+```bash
 pip install thepassiveinvestor
 ```
 
