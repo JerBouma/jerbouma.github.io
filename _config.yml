@@ -20,7 +20,7 @@ title                    : "Jeroen Bouma"
 title_separator          : "|"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Jeroen Bouma"
-description              : "I enjoy working in the intersection between Python modelling and Quantitative Finance. On this website you can find my open-source projects and career path."
+description              : I'm Jeroen Bouma, a Financial Risk Analyst at A.S.R and Python Enthusiast. This website is dedicated to my open-source Python projects, resume and more."
 url                      : "https://www.jeroenbouma.com/" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "JerBouma/jerbouma.github.io"
@@ -208,7 +208,7 @@ sass:
 permalink: /:categories/:title/
 # paginate: 5 # amount of posts to show
 paginate_path: /page:num/
-timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: Europe/Amsterdam
 
 
 # Plugins (previously gems:)
