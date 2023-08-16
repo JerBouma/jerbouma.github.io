@@ -283,7 +283,7 @@ railroad = equities.search(industry='Road & Rail',
                            exclude_exchanges=True)
 ````
 
-Wiuth this information in hand, I can now start collecting data with the [FinanceToolkit](/projects/financetoolkit) package. This can be anything from balance sheet, cash flow and income statements to 50+ financial ratios, enterprise values and historical data. Here I initialize the FinanceToolkit with the tickers as found in the FinanceDatabase.
+With this information in hand, I can now start collecting data with the [FinanceToolkit](/projects/financetoolkit) package. This can be anything from balance sheet, cash flow and income statements to 50+ financial ratios, enterprise values and historical data. Here I initialize the FinanceToolkit with the tickers as found in the FinanceDatabase.
 
 ````python
 from financetoolkit import Toolkit
