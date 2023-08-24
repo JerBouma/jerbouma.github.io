@@ -25,7 +25,7 @@ The Finance Toolkit is complimented very well with the [Finance Database 🌎](/
 
 ## Installation
 
-Before installation, consider starring the project on GitHub which helps others to find the project as well. **Click the image to visit the repository and Star the project.**
+Before installation, consider starring the project on GitHub which helps others find the project as well. **Click the image to visit the repository and Star the project.**
 
 <a href="https://github.com/JerBouma/FinanceToolkit" target="_blank"><img width="1415" alt="image" src="https://github.com/JerBouma/FinanceToolkit/assets/46355364/014109fe-0c68-47d4-99bd-217c69dcea8d">
 
@@ -47,7 +47,7 @@ ___
 <p><b><div align="center">Obtain an API Key from FinancialModelingPrep <a href="https://site.financialmodelingprep.com/developer/docs/pricing/jeroen/">here</a>.</div></b></p>
 ___
 
-Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time I have chosen FinancialModelingPrep as a source as I find it to be the most transparent, reliable and at an affordable price. I have yet to find a platform offering such low prices for the amount of data offered. When you notice that the data is inaccurate or have any other issue related to the data, note that I simply provide the means to access this data and I am not responsible for the accuracy of the data itself. For this, use [their contact form](https://site.financialmodelingprep.com/contact) or provide the data yourself. 
+Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time. I have chosen FinancialModelingPrep as a source as I find it to be the most transparent, reliable and at an affordable price. I have yet to find a platform offering such low prices for the amount of data offered. When you notice that the data is inaccurate or have any other issue related to the data, note that I simply provide the means to access this data and I am not responsible for the accuracy of the data itself. For this, use [their contact form](https://site.financialmodelingprep.com/contact) or provide the data yourself. 
 
 ## How-To Guides for the FinanceToolkit
 
@@ -99,7 +99,7 @@ The Finance Toolkit has an abundance of financial ratios, however it could be th
 
 ### Calling Functions Directly
 
-If you possess your own dataset or a particular use-case in mind, there might arise a need to directly call a specific function. This Notebook illustrates the process of accomplishing this.
+If you possess your own financial statements data or have a different particular use-case in mind, it could be that you wish to directly use the functions in the FinanceToolkit. This Notebook illustrates the process of accomplishing this.
 
 [Open the Notebook](/projects/financetoolkit/functional-toolkit){: .btn .btn--info}
 
@@ -110,7 +110,7 @@ If you possess your own dataset or a particular use-case in mind, there might ar
 
 ### Using External Datasets
 
-The Finance Toolkit has the ability to leverage custom datasets from any data provider as well. This makes it possible to work with your preferred data and not be limited to the data source the Finance Toolkit currently provides.
+The Finance Toolkit has the ability to leverage custom datasets from any data provider as well. This makes it possible to work with your preferred data and not be limited to the data source the Finance Toolkit currently provides. With this, it is possible to work with datasets from Yahoo Finance, OpenBB, Quandl, EODH, Bloomberg and much more.
 
 [Open the Notebook](/projects/financetoolkit/external-datasets){: .btn .btn--info}
 
@@ -119,15 +119,28 @@ The Finance Toolkit has the ability to leverage custom datasets from any data pr
 
 ## Using the Finance Toolkit
 
-A basic example of how to initialise the Finance Toolkit is shown below, also see [this notebook](projects/financetoolkit/getting-started) for a detailed Getting Started guide as well as [this notebook](/projects/financetoolkit/finance-database) that includes the [Finance Database 🌎](/projects/financedatabase) and a proper financial analysis.
+Within this package the following things are included:
+
+- Company profiles (`get_profile`), including country, sector, ISIN and general characteristics (from FinancialModelingPrep)
+- Company quotes (`get_quote`), including 52 week highs and lows, volume metrics and current shares outstanding (from FinancialModelingPrep)
+- Company ratings (`get_rating`), based on key indicators like PE and DE ratios (from FinancialModelingPrep)
+- Historical market data (`get_historical_data`), which can be retrieved on a daily, weekly, monthly and yearly basis. This includes OHLC, dividends, returns, cumulative returns and volatility calculations for each corresponding period. (from Yahoo Finance)
+- Treasury Rates (`get_treasury_data`) for several months and several years over the last 3 months which allows yield curves to be constructed (from FinancialModelingPrep)
+- Analyst Estimates (`get_analyst_estimates`) that show the expected EPS and Revenue from the past and future from a range of analysts (from FinancialModelingPrep)
+- Earnings Calendar (`get_earnings_calendar`) which shows the exact dates earnings are released in the past and in the future including expectations (from FinancialModelingPrep)
+- Revenue Geographic Segmentation (`get_revenue_geographic_segmentation`) which shows the revenue per company from each country and Revenue Product Segmentation (`get_revenue_product_segmenttion`) which shows the revenue per company from each product (from FinancialModelingPrep)
+- Balance Sheet Statements (`get_balance_sheet_statement`), Income Statements (`get_income_statement`), Cash Flow Statements (`get_cash_flow_statement`) and Statistics Statement (`get_statistics_statement`), obtainable from FinancialModelingPrep or the source of your choosing through custom input. These functions are accompanied with a normalization function so that for any source, the same ratio analysis can be performed. Please see [this Jupyter Notebook](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets) that explains how to use a custom source.
+- Efficiency ratios (`ratios.collect_efficiency_ratios`), liquidity ratios (`ratios.collect_liquidity_ratios`), profitability ratios (`ratios._collect_profitability_ratios`), solvency ratios (`ratios.collect_solvency_ratios`) and valuation ratios (`ratios.collect_valuation_ratios`) functionality that automatically calculates the most important ratios based on the inputted balance sheet, income and cash flow statements. Any of the underlying ratios can also be called individually such as `ratios.get_return_on_equity`. Next to that, it is also possible to input your own custom ratios (`ratios.collect_custom_ratios`). See also [this Notebook](https://www.jeroenbouma.com/projects/financetoolkit/custom-ratios) or [this section](#defining-custom-ratios) for more information.
+- Models like DUPONT analysis (`models.get_extended_dupont_analysis`) or Enterprise Breakdown (`models.get_enterprise_value_breakdown`) that can be used to perform in-depth financial analysis through a single function. These functions combine much of the functionality throughout the Toolkit to provide advanced calculations. 
+
+The dependencies of the package are on purpose *very slim* so that it will work well with any combination of packages and not result in conflicts. I've also been careful with my selection in which I leave out functionality like technical analysis in which [ta-lib](https://ta-lib.org/) does an excellent job as well as portfolio attribution and optimisation in which [Riskfolio-lib](https://riskfolio-lib.readthedocs.io/en/latest/index.html) shines.
+
+A basic example of how to initialise the Finance Toolkit is shown below, also see [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/getting-started) for a detailed Getting Started guide as well as [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/finance-database) that includes the [Finance Database 🌎](https://www.jeroenbouma.com/projects/financedatabase) and a proper financial analysis.
 
 ````python
 from financetoolkit import Toolkit
 
 companies = Toolkit(['AAPL', 'MSFT'], api_key="FMP_KEY", start_date='2017-12-31')
-
-# an Enterprise example
-enterprise = companies.get_enterprise()
 
 # a Historical example
 historical_data = companies.get_historical_data()
@@ -137,6 +150,9 @@ balance_sheet_statement = companies.get_balance_sheet_statement()
 
 # a Ratios example
 profitability_ratios = companies.ratios.collect_profitability_ratios()
+
+# a Models example
+extended_dupont_analysis = companies.models.get_extended_dupont_analysis()
 
 # Show the profitability ratios for Apple
 profitability_ratios.loc['AAPL']
@@ -166,17 +182,28 @@ This returns the following output for `profitability_ratios.loc['AAPL]`. Omittin
 
 ## Working with Custom Ratios
 
-The Finance Toolkit has an abundance of financial ratios, however it could be that you are looking for a specific ratio that is currently not provided. First and foremost, I encourage to [create a Pull Request](https://github.com/JerBouma/FinanceToolkit/pulls) to add these ratios in but there is also an option to add custom ratios as follows. This feature was designed by [sword134](https://github.com/sword134). Find a Notebook example [here](/projects/financetoolkit/custom-ratios).
+The Finance Toolkit has an abundance of financial ratios, however it could be that you are looking for a specific ratio that is currently not provided. First and foremost, I encourage you to [create a Pull Request](https://github.com/JerBouma/FinanceToolkit/pulls) to add these ratios in but there is also an option to add custom ratios as follows. Find a Notebook example [here](https://www.jeroenbouma.com/projects/financetoolkit/custom-ratios).
 
-Define how each custom ratio needs to be calculated. This follows the structure `Name of Ratio`: `Financial Statement Item * Financial Statement Item`. Note that you adhere to the normalization files naming. This can be viewed relatively easy by initializing the Toolkit and running for example `get_balance_sheet_statement`.
+Define how each custom ratio needs to be calculated. This can be any of the following structures:
+
+- **Simple operations such as:** `'Quick Assets': 'Cash and Short Term Investments + Accounts Receivable'`
+- **Working with multiple operations:** `'Cash Op Expenses':'Cost of Goods Sold + Selling, General and Administrative Expenses - Depreciation and Amortization'`,
+- **Using curly brackets:** `'WC / Net Income as %': '(Working Capital / Net Income) * 100'`,
+- **Defining a criteria:** `'Large Revenues': 'Revenue > 1000000000'`,
+- **Using actual numbers:**  `'Daily Cash Op Expenses': 'Cash Op Expenses / 365'`,
+- **Combining earlier defined formulas:** `'Defensive Interval':'Quick Assets / Daily Cash Op Expenses'`
+
+Not that it is important you follow the NAME - FORMULA format and that you adhere to the normalization files naming. This can be viewed relatively easy by initializing the Toolkit and running for example `get_balance_sheet_statement`.
 
 ```python
 custom_ratios = {
-    'WC / Net Income': 'Working Capital / Net Income',
-    'Net Income / Total Assets': 'Net Income / Total Assets',
-    'Current Assets Inventory': 'Total Current Assets - Inventory',
-    'Quick Ratio Current': 'Current Assets Inventory / Total Current Liabilities',
-    'Quick Ratio Total': 'Current Assets Inventory / Total Liabilities'
+    'WC / Net Income as %': '(Working Capital / Net Income) * 100',
+    'Large Revenues': 'Revenue > 1000000000',
+    'Quick Assets': 'Cash and Short Term Investments + Accounts Receivable',
+    'Cash Op Expenses':'Cost of Goods Sold + Selling, General and Administrative Expenses '
+    '- Depreciation and Amortization',
+    'Daily Cash Op Expenses': 'Cash Op Expenses / 365',
+    'Defensive Interval':'Quick Assets / Daily Cash Op Expenses'
 }
 ```
 
@@ -187,26 +214,58 @@ from financetoolkit import Toolkit
 
 # Initialize the Finance Toolkit
 companies = Toolkit(
-    ["AAPL", "MSFT", "GOOGL", "AMZN"], api_key=API_KEY, start_date="2022-08-10",
+    ["AAPL", "MSFT", "GOOGL", "AMZN"], api_key="FMP_KEY", start_date="2022-08-10",
     custom_ratios=custom_ratios, quarterly=True
 )
+
+# Obtain the custom ratios
+companies.ratios.collect_custom_ratios()
 ```
 
-By then running `ratios.collect_custom_ratios` it automatically calculates the given ratios. Note the ratios 'Quick Ratio Current' and 'Quick Ratio Total' which rely on an earlier defined ratio ('Current Assets Inventory'). This is an example of how you can create a custom ratio based on another custom ratio.
+By then running `ratios.collect_custom_ratios` it automatically calculates the given ratios. Note the ratios `Daily Cash Op Expenses` and `Defensive Interval` which rely on an earlier defined ratio (`Cash Op Expenses`). This is an example of how you can create a custom ratio based on another custom ratio.
 
-Below you can find the custom ratios from GOOGL which has been selected with `.loc['GOOGL]`. The Notebook as found [here](/projects/financetoolkit/getting-started) shows the full output.
+Below you can find the custom ratios from AMZN (Amazon) which has been selected with `.loc['AMZN]`. The Notebook as found [here](https://www.jeroenbouma.com/projects/financetoolkit/getting-started) shows the full output.
 
-|                           |      2022Q3 |      2022Q4 |     2023Q1 |      2023Q2 |
-|:--------------------------|------------:|------------:|-----------:|------------:|
-| Current Assets Inventory  | 1.62953e+11 | 1.62125e+11 | 1.5967e+11 | 1.66557e+11 |
-| Net Income / Total Assets | 0.0388271   | 0.037299    | 0.0407344  | 0.0479527   |
-| Quick Ratio Current       | 2.46977     | 2.33947     | 2.31896    | 2.14334     |
-| Quick Ratio Total         | 1.55744     | 1.48575     | 1.4703     | 1.43704     |
-| WC / Net Income           | 7.19842     | 7.00932     | 6.1877     | 4.95857     |
+|                        |         2022Q4 |         2023Q1 |         2023Q2 |   2023Q3 |
+|:-----------------------|---------------:|---------------:|---------------:|---------:|
+| Cash Op Expenses       |    2.1856e+10  |    1.9972e+10  |    2.1322e+10  |      nan |
+| Daily Cash Op Expenses |    5.98795e+07 |    5.47178e+07 |    5.84164e+07 |      nan |
+| Defensive Interval     | 2260.22        | 2592.34        | 2738.1         |      nan |
+| Large Revenues         |    1           |    1           |    1           |        0 |
+| Quick Assets           |    1.35341e+11 |    1.41847e+11 |    1.5995e+11  |      nan |
+| WC / Net Income as %   |  463.349       |  427.335       |  398.924       |      nan |
 
-## Accessing Functions Directly
+In case you forgot a ratio or would like to insert new ratios, you can directly pass the custom_ratios dictionary to the function.
 
-It also possible to call any ratio or model directly as shown below. This allows access to 50+ ratios with custom data. Also see [this notebook](/projects/financetoolkit/functional-toolkit).
+```python
+new_custom_ratios = {
+    'WC / Net Income': 'Working Capital / Net Income',
+    'Low Revenues': 'Revenue < 1000000000',
+    'Quick Assets': 'Cash and Short Term Investments + Accounts Receivable',
+    'Cash Op Expenses':'Cost of Goods Sold + Selling, General and Administrative Expenses '
+    '- Depreciation and Amortization',
+    'Monthly Cash Op Expenses': 'Cash Op Expenses / 30',
+    'Defensive Interval':'Quick Assets / Monthly Cash Op Expenses'
+}
+
+# Return the new ratios by passing the dictionary into the function
+companies.ratios.collect_custom_ratios(custom_ratios_dict=new_custom_ratios)
+```
+
+Which returns the following for GOOGL (Google):
+
+|                          |        2022Q3 |       2022Q4 |        2023Q1 |        2023Q2 |   2023Q3 |
+|:-------------------------|--------------:|-------------:|--------------:|--------------:|---------:|
+| Cash Op Expenses         |   3.6925e+10  |   4.2495e+10 |   3.6722e+10  |   3.7896e+10  |      nan |
+| Defensive Interval       | 123.847       | 108.733      | 123.472       | 124.395       |      nan |
+| Low Revenues             |   0           |   0          |   0           |   0           |        0 |
+| Monthly Cash Op Expenses |   1.23083e+09 |   1.4165e+09 |   1.22407e+09 |   1.2632e+09  |      nan |
+| Quick Assets             |   1.52435e+11 |   1.5402e+11 |   1.51138e+11 |   1.57136e+11 |      nan |
+| WC / Net Income          |   7.19842     |   7.00932    |   6.1877      |   4.95857     |      nan |
+
+## Calling Functions Directly
+
+It also possible to call any ratio or model directly as shown below. This allows access to 50+ ratios with custom data. Also see [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/functional-toolkit).
 
 ```python
 import pandas as pd
@@ -252,7 +311,7 @@ This returns the following table which closely resembles a proper Dupont analysi
 
 ## Working with other Datasets
 
-The Finance Toolkit has the ability to leverage custom datasets from any data provider as well. This makes it possible to work with your preferred data and not be limited to the data source the Finance Toolkit currently provides. A detailed example can be found [here](/projects/financetoolkit/external-datasets) but to get started see the code below.
+The Finance Toolkit has the ability to leverage custom datasets from any data provider as well. This makes it possible to work with your preferred data and not be limited to the data source the Finance Toolkit currently provides. A detailed example can be found [here](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets) but to get started see the code below.
 
 ```python
 from financetoolkit import Toolkit
@@ -263,7 +322,7 @@ companies = Toolkit(['AAPL', 'MSFT'])
 # Copy the normalization files
 companies.get_normalization_files()
 ```
-This copies over three files, `balance.csv`, `income.csv` and `cash.csv` which will contain a structure like the following:
+This copies over three files, `balance.csv`, `income.csv`, `cash.csv` and `statistics.csv` (not required) which will contain a structure like the following:
 
 ![Normalization Format](https://github.com/JerBouma/FinanceToolkit/assets/46355364/ea4ebf87-1a27-4c40-a1fb-40d0eb0634bc)
 
@@ -271,14 +330,31 @@ By replacing the first column with the names from your dataset (e.g. replace `ca
 
 As an example:
 
-![Dataset Example](https://github.com/JerBouma/FinanceToolkit/assets/46355364/fe0e3db0-3e88-41d2-a355-5f68110fdcf3)
+![Dataset Example](https://github.com/JerBouma/FinanceToolkit/assets/46355364/c2fb69d9-d599-4ba4-8163-e69abc164e88)
 
 If you have individual DataFrames for each company, you can do the following which will return the DataFrame structure that is required:
 
 ```python
 from financetoolkit.base import helpers
 
-balance_grouped = helpers.combine_dataframes({'AAPL': balance_apple, 'MSFT': balance_msft})
+balance_sheets = helpers.combine_dataframes(
+    {
+        "TSLA": tsla_balance,
+        "GOOGL": googl_balance,
+    },
+)
+income_statements = helpers.combine_dataframes(
+    {
+        "TSLA": tsla_income,
+        "GOOGL": googl_income,
+    },
+)
+cash_flow_statements = helpers.combine_dataframes(
+    {
+        "TSLA": tsla_cash,
+        "GOOGL": googl_cash
+    },
+)
 ```
 
 Once all of this is set-up you can feed this information to the Toolkit and use the Toolkit as normally.
@@ -287,17 +363,18 @@ Once all of this is set-up you can feed this information to the Toolkit and use 
 
 # Initialize the Toolkit
 companies = Toolkit(
-    tickers=['AAPL', 'MSFT'],
-    balance=balance_grouped,
-    income=income_grouped,
-    cash=cash_grouped,
-    format_location="FOLDER_PATH",
-    reverse_dates=False) # Put this to True in case dates are descending
+    tickers=["TSLA", "GOOGL"],
+    balance=balance_sheets,
+    income=income_statements,
+    cash=cash_flow_statements,
+    format_location="examples/external_datasets",
+    reverse_dates=True, # Important when the dates are descending
+) 
 
 # Return all Ratios
 companies.ratios.collect_all_ratios()
 ```
 
-This will return all financial ratios that can be collected based on the provided data and the format.
+This will return all financial ratios that can be collected based on the provided data and the format. See [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets) to understand how to work with actual datasets.
 
-![Output of Result](https://github.com/JerBouma/FinanceToolkit/assets/46355364/2a995430-b8d8-4236-892c-edb47042d6af)
+![Output of Result](https://github.com/JerBouma/FinanceToolkit/assets/46355364/4ce78cb1-1d37-4f71-ac53-4186cb8b1abf)

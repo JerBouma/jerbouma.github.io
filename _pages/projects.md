@@ -31,7 +31,7 @@ The Finance Toolkit is complimented very well with the Finance Database and by u
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=financetoolkit)](/projects/financetoolkit)
 
 [![PyPi Version](https://img.shields.io/pypi/v/financetoolkit)](https://pypi.org/project/financetoolkit/){:target="_blank"}
-[![PyPi Downloads](https://img.shields.io/pypi/dm/financetoolkit)](https://pypi.org/project/financetoolkit/){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/financetoolkit/month)](https://pepy.tech/project/financetoolkit){:target="_blank"}
 </div>
 </div>
 
@@ -50,7 +50,7 @@ The aim of this database is explicitly not to provide up-to-date fundamentals or
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=financedatabase)](/projects/financedatabase)
 
 [![PyPi Version](https://img.shields.io/pypi/v/financedatabase)](https://pypi.org/project/financedatabase/){:target="_blank"}
-[![PyPi Downloads](https://img.shields.io/pypi/dm/financedatabase)](https://pypi.org/project/financedatabase/){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/financedatabase/month)](https://pepy.tech/project/financedatabase){:target="_blank"}
 </div>
 </div>
 
@@ -69,7 +69,7 @@ This is quickly reflected when looking for a S&P 500 ETF as there are over 20 di
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=thepassiveinvestor)](/projects/thepassiveinvestor)
 
 [![PyPi Version](https://img.shields.io/pypi/v/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/){:target="_blank"}
-[![PyPi Downloads](https://img.shields.io/pypi/dm/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/thepassiveinvestor/month)](https://pepy.tech/project/thepassiveinvestor){:target="_blank"}
 </div>
 </div>
 
@@ -88,6 +88,6 @@ During my time at OpenBB, I have made major code contributions to get the OpenBB
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=OpenBB-finance&repo=OpenBBTerminal)](/projects/openbbterminal)
 
 [![PyPi Version](https://img.shields.io/pypi/v/openbb)](https://pypi.org/project/openbb/){:target="_blank"}
-[![PyPi Downloads](https://img.shields.io/pypi/dm/openbb)](https://pypi.org/project/openbb/){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/openbb/month)](https://pepy.tech/project/openbb){:target="_blank"}
 </div>
 </div>

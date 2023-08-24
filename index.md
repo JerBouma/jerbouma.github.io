@@ -1,15 +1,14 @@
 ---
 author_profile: true
-permalink: /
 redirect_from:
   - /about
 classes: wide-sidebar
 layout: home
+title: About Me
+description: I'm Jeroen Bouma, a Financial Risk Analyst at A.S.R and Python Enthusiast. This website is dedicated to my open-source Python projects, resume and more.
 ---
 
 ![Bio Image](/assets/images/default/bio-photo.jpg){: .about-bio-image .display-about-bio-image}
-
-# About Me
 
 I'm Jeroen Bouma, a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:target="_blank"}, one of the largest Dutch insurance companies with over €120 billion AUM. I analyze profitability and investment risks in different risk frameworks (Solvency II and internal models), provide insights into portfolio sensitivities and their relationship with liabilities, assess the impact of month-to-month changes and offer a major contribution to the development of Python models for improved valuation and financial risk measurement.
 

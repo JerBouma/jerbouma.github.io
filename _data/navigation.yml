@@ -98,12 +98,20 @@ financetoolkit-docs:
         url: /projects/financetoolkit/docs#get_profile
       - title: "Quotes"
         url: /projects/financetoolkit/docs#get_quote
-      - title: "Enterprise Values"
-        url: /projects/financetoolkit/docs#get_enterprise
       - title: "Ratings"
         url: /projects/financetoolkit/docs#get_rating
+      - title: "Analyst Estimates"
+        url: /projects/financetoolkit/docs#get_analyst_estimates
+      - title: "Earnings Calendar"
+        url: /projects/financetoolkit/docs#get_earnings_calendar
+      - title: "Revenue Geographic Segmentation"
+        url: /projects/financetoolkit/docs#get_revenue_geographic_segmentation
+      - title: "Revenue Product Segmentation"
+        url: /projects/financetoolkit/docs#get_revenue_product_segmentation
       - title: "Historical Data"
         url: /projects/financetoolkit/docs#get_historical_data
+      - title: "Treasury Rates"
+        url: /projects/financetoolkit/docs#get_treasury_data
       - title: "Balance Sheet Statements"
         url: /projects/financetoolkit/docs#get_balance_sheet_statement
       - title: "Income Sheet Statements"
@@ -115,153 +123,153 @@ financetoolkit-docs:
   - title: "Ratios Module"
     url: /projects/financetoolkit/docs#Ratios-Module
     children:
-      - title: all ratios
+      - title: All Ratios
         url: /projects/financetoolkit/docs#collect_all_ratios
-      - title: liquidity ratios
+      - title: Liquidity Ratios
         url: /projects/financetoolkit/docs#collect_liquidity_ratios
-      - title: profitability ratios
+      - title: Profitability Ratios
         url: /projects/financetoolkit/docs#collect_profitability_ratios
-      - title: solvency ratios
+      - title: Solvency Ratios
         url: /projects/financetoolkit/docs#collect_solvency_ratios
-      - title: valuation ratios
+      - title: Valuation Ratios
         url: /projects/financetoolkit/docs#collect_valuation_ratios
-      - title: custom ratios
+      - title: Custom Ratios
         url: /projects/financetoolkit/docs#collect_custom_ratios
-      - title: asset turnover ratio
+      - title: Asset Turnover Ratio
         url: /projects/financetoolkit/docs#get_asset_turnover_ratio
-      - title: inventory turnover ratio
+      - title: Inventory Turnover Ratio
         url: /projects/financetoolkit/docs#get_inventory_turnover_ratio
-      - title: days of inventory outstanding
+      - title: Days of Inventory Outstanding
         url: /projects/financetoolkit/docs#get_days_of_inventory_outstanding
-      - title: days of sales outstanding
+      - title: Days of Sales Outstanding
         url: /projects/financetoolkit/docs#get_days_of_sales_outstanding
-      - title: operating cycle
+      - title: Operating Cycle
         url: /projects/financetoolkit/docs#get_operating_cycle
-      - title: accounts payables turnover ratio
+      - title: Accounts Payables Turnover Ratio
         url: /projects/financetoolkit/docs#get_accounts_payables_turnover_ratio
-      - title: days of accounts payable outstanding
+      - title: Days of Accounts Payable Outstanding
         url: /projects/financetoolkit/docs#get_days_of_accounts_payable_outstanding
-      - title: cash conversion cycle
+      - title: Cash Conversion Cycle
         url: /projects/financetoolkit/docs#get_cash_conversion_cycle
-      - title: receivables turnover
+      - title: Receivables Turnover
         url: /projects/financetoolkit/docs#get_receivables_turnover
-      - title: sga to revenue ratio
+      - title: SGA to Revenue Ratio
         url: /projects/financetoolkit/docs#get_sga_to_revenue_ratio
-      - title: fixed asset turnover
+      - title: Fixed Asset Turnover
         url: /projects/financetoolkit/docs#get_fixed_asset_turnover
-      - title: operating ratio
+      - title: Operating Ratio
         url: /projects/financetoolkit/docs#get_operating_ratio
-      - title: current ratio
+      - title: Current Ratio
         url: /projects/financetoolkit/docs#get_current_ratio
-      - title: quick ratio
+      - title: Quick Ratio
         url: /projects/financetoolkit/docs#get_quick_ratio
-      - title: cash ratio
+      - title: Cash Ratio
         url: /projects/financetoolkit/docs#get_cash_ratio
-      - title: working capital
+      - title: Working Capital
         url: /projects/financetoolkit/docs#get_working_capital
-      - title: operating cash flow ratio
+      - title: Operating Cash Flow Ratio
         url: /projects/financetoolkit/docs#get_operating_cash_flow_ratio
-      - title: operating cash flow sales ratio
+      - title: Operating Cash Flow Sales Ratio
         url: /projects/financetoolkit/docs#get_operating_cash_flow_sales_ratio
-      - title: short term coverage ratio
+      - title: Short Term Coverage Ratio
         url: /projects/financetoolkit/docs#get_short_term_coverage_ratio
-      - title: gross margin
+      - title: Gross Margin
         url: /projects/financetoolkit/docs#get_gross_margin
-      - title: operating margin
+      - title: Operating Margin
         url: /projects/financetoolkit/docs#get_operating_margin
-      - title: net profit margin
+      - title: Net Profit Margin
         url: /projects/financetoolkit/docs#get_net_profit_margin
-      - title: interest burden ratio
+      - title: Interest Burden Ratio
         url: /projects/financetoolkit/docs#get_interest_burden_ratio
-      - title: income before tax profit margin
+      - title: Income Before Tax Profit Margin
         url: /projects/financetoolkit/docs#get_income_before_tax_profit_margin
-      - title: effective tax rate
+      - title: Effective Tax Rate
         url: /projects/financetoolkit/docs#get_effective_tax_rate
-      - title: return on assets
+      - title: Return on Assets (RoA)
         url: /projects/financetoolkit/docs#get_return_on_assets
-      - title: return on equity
+      - title: Return on Equity (RoE)
         url: /projects/financetoolkit/docs#get_return_on_equity
-      - title: return on invested capital
+      - title: Return on Invested Capital (RoIC)
         url: /projects/financetoolkit/docs#get_return_on_invested_capital
-      - title: income quality ratio
+      - title: Income Quality Ratio
         url: /projects/financetoolkit/docs#get_income_quality_ratio
-      - title: return on tangible assets
+      - title: Return on Tangible Assets (RoTA)
         url: /projects/financetoolkit/docs#get_return_on_tangible_assets
-      - title: return on capital employed
+      - title: Return on Capital Employed (RoCE)
         url: /projects/financetoolkit/docs#get_return_on_capital_employed
-      - title: net income per ebt
+      - title: Net Income per EBT
         url: /projects/financetoolkit/docs#get_net_income_per_ebt
-      - title: free cash flow operating cash flow ratio
+      - title: Free Cash Flow Operating Cash Flow Ratio
         url: /projects/financetoolkit/docs#get_free_cash_flow_operating_cash_flow_ratio
-      - title: tax burden ratio
+      - title: Tax Burden Ratio
         url: /projects/financetoolkit/docs#get_tax_burden_ratio
       - title: EBT to EBIT
         url: /projects/financetoolkit/docs#get_EBT_to_EBIT
-      - title: EBIT to revenue
+      - title: EBIT to Revenue
         url: /projects/financetoolkit/docs#get_EBIT_to_revenue
-      - title: debt to assets ratio
+      - title: Debt to Assets Ratio
         url: /projects/financetoolkit/docs#get_debt_to_assets_ratio
-      - title: debt to equity ratio
+      - title: Debt to Equity Ratio
         url: /projects/financetoolkit/docs#get_debt_to_equity_ratio
-      - title: interest coverage ratio
+      - title: Interest Coverage Ratio
         url: /projects/financetoolkit/docs#get_interest_coverage_ratio
-      - title: equity multiplier
+      - title: Equity Multiplier
         url: /projects/financetoolkit/docs#get_equity_multiplier
-      - title: debt service coverage ratio
+      - title: Debt Service Coverage Ratio
         url: /projects/financetoolkit/docs#get_debt_service_coverage_ratio
-      - title: free cash flow yield
+      - title: Free Cash Flow Yield
         url: /projects/financetoolkit/docs#get_free_cash_flow_yield
-      - title: net debt to ebitda ratio
+      - title: Net Debt to EBITDA Ratio
         url: /projects/financetoolkit/docs#get_net_debt_to_ebitda_ratio
-      - title: cash flow coverage ratio
+      - title: Cash Flow Coverage Ratio
         url: /projects/financetoolkit/docs#get_cash_flow_coverage_ratio
-      - title: capex coverage ratio
+      - title: CAPEX Coverage Ratio
         url: /projects/financetoolkit/docs#get_capex_coverage_ratio
-      - title: capex dividend coverage ratio
+      - title: CAPEX Dividend Coverage Ratio
         url: /projects/financetoolkit/docs#get_capex_dividend_coverage_ratio
-      - title: earnings per share
+      - title: Earnings per Share (EPS)
         url: /projects/financetoolkit/docs#get_earnings_per_share
-      - title: earnings per share growth
-        url: /projects/financetoolkit/docs#get_earnings_per_share_growth
-      - title: revenue per share
+      - title: Revenue per Share (RPS)
         url: /projects/financetoolkit/docs#get_revenue_per_share
-      - title: price earnings ratio
+      - title: Price Earnings Ratio (PE)
         url: /projects/financetoolkit/docs#get_price_earnings_ratio
-      - title: price to earnings growth ratio
+      - title: Price to Earnings Growth Ratio (PEG)
         url: /projects/financetoolkit/docs#get_price_to_earnings_growth_ratio
-      - title: book value per share
+      - title: Book Value per Share
         url: /projects/financetoolkit/docs#get_book_value_per_share
-      - title: price to book ratio
+      - title: Price to Book Ratio (PB)
         url: /projects/financetoolkit/docs#get_price_to_book_ratio
-      - title: interest debt per share
+      - title: Interest Debt per Share
         url: /projects/financetoolkit/docs#get_interest_debt_per_share
-      - title: capex per share
+      - title: CAPEX per Share
         url: /projects/financetoolkit/docs#get_capex_per_share
-      - title: dividend yield
+      - title: Dividend Yield
         url: /projects/financetoolkit/docs#get_dividend_yield
-      - title: price to cash flow ratio
+      - title: Weighted Dividend Yield
+        url: /projects/financetoolkit/docs#get_weighted_dividend_yield
+      - title: Price to Cash Flow Ratio (P/CF)
         url: /projects/financetoolkit/docs#get_price_to_cash_flow_ratio
-      - title: price to free cash flow ratio
+      - title: Price to Free Cash Flow Ratio (P/FCF)
         url: /projects/financetoolkit/docs#get_price_to_free_cash_flow_ratio
-      - title: market cap
+      - title: Market Capitalization
         url: /projects/financetoolkit/docs#get_market_cap
-      - title: enterprise value
+      - title: Enterprise Value
         url: /projects/financetoolkit/docs#get_enterprise_value
-      - title: ev to sales ratio
+      - title: EV to Sales Ratio
         url: /projects/financetoolkit/docs#get_ev_to_sales_ratio
-      - title: ev to ebitda ratio
+      - title: EV to EBITDA  Ratio
         url: /projects/financetoolkit/docs#get_ev_to_ebitda_ratio
-      - title: ev to operating cashflow ratio
+      - title: EV to Operating Cashflow Ratio
         url: /projects/financetoolkit/docs#get_ev_to_operating_cashflow_ratio
-      - title: earnings yield
+      - title: Earnings Yield
         url: /projects/financetoolkit/docs#get_earnings_yield
-      - title: payout ratio
+      - title: Payout Ratio
         url: /projects/financetoolkit/docs#get_payout_ratio
-      - title: tangible asset value
+      - title: Tangible Asset Value
         url: /projects/financetoolkit/docs#get_tangible_asset_value
-      - title: net current asset value
+      - title: Net Current Asset Value
         url: /projects/financetoolkit/docs#get_net_current_asset_value
-      - title: ev to ebit
+      - title: EV to EBIT
         url: /projects/financetoolkit/docs#get_ev_to_ebit
   - title: "Models Module"
     url: /projects/financetoolkit/docs#Models-Module
@@ -270,6 +278,8 @@ financetoolkit-docs:
         url:  /projects/financetoolkit/docs#get_dupont_analysis
       - title: Extended DuPont Analysis
         url:  /projects/financetoolkit/docs#get_extended_dupont_analysis
+      - title: Enterprise Value Breakdown
+        url:  /projects/financetoolkit/docs#get_enterprise_value_breakdown
 thepassiveinvestor:
   - title: "Introduction"
     url: /projects/thepassiveinvestor
