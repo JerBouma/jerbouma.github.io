@@ -32,7 +32,7 @@ All of this comes together within my current role as Financial Risk Analyst at A
 
 ## Skills
 
-This section includes all my skills and the level of proficiency I have in each of them. I am first and foremost someone with strong Financial education and experience but I also have a strong background in programming and data science. This combination of skills is what makes me unique and allows me to work on a wide range of projects. Hover over each skill to read more about my experience with each.
+This section includes all my skills and the level of proficiency I have in each of them. I am first and foremost a Financial professional with proper education but I also have a strong background in programming and data science. This combination of skills is what makes me unique and allows me to work on a wide range of projects ranging from actuarial models to portfolio analysis tools to data science projects.
 
 <div class="row">
 <div markdown="1" class="thirty-three-column">
@@ -176,7 +176,7 @@ This section includes all my skills and the level of proficiency I have in each 
 <div class="skill">
   <div class="skill-name">GitHub Ecosystem</div>
   <div class="progress-container">
-    <div class="progress-bar" style="width: 60%;"></div>
+    <div class="progress-bar" style="width: 80%;"></div>
     <div class="tooltip">
       All of my open-source projects, like Finance Database and Finance Toolkit are hosted on the <b>GitHub Ecosysyem</b>. I've gotten very familiar with GitHub and how to work with GitHub Actions to automate workflows. Given my time at OpenBB, I've also really gotten the hang of how to organize projects on GitHub, define automatic tests and setting up a proper branch policy structure.
     </div>

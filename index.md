@@ -3,9 +3,9 @@ author_profile: true
 redirect_from:
   - /about
 classes: wide-sidebar
-layout: home
 title: About Me
-description: I'm Jeroen Bouma, a Financial Risk Analyst at A.S.R and Python Enthusiast. This website is dedicated to my open-source Python projects, resume and more.
+layout: home
+excerpt: I'm Jeroen Bouma, a Financial Risk Analyst at A.S.R and Python Enthusiast. This website is dedicated to my open-source Python projects, resume and more.
 ---
 
 ![Bio Image](/assets/images/default/bio-photo.jpg){: .about-bio-image .display-about-bio-image}

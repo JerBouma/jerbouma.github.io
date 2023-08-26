@@ -129,9 +129,9 @@ footer:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/JerBouma"
-    - label: "Buy Me A Coffee"
+    - label: "Sponsor Me"
       icon: "fas fa-fw fa-coffee"
-      url: "https://www.buymeacoffee.com/jerbouma"
+      url: "https://github.com/sponsors/JerBouma"
 
 # Reading Files
 include:
@@ -221,7 +221,6 @@ whitelist:
   - jekyll-gist
   - jekyll-feed
   - jekyll-include-cache
-
 
 # Archives
 #  Type
