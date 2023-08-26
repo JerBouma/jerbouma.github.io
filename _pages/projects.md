@@ -54,7 +54,7 @@ The aim of this database is explicitly not to provide up-to-date fundamentals or
 </div>
 </div>
 
-## [The Passive Investor](/projects/thepassiveinvestor){:target="_blank"}
+## [The Passive Investor](/projects/thepassiveinvestor)
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
