@@ -65,6 +65,7 @@
               const cleanedDocstring3 = cleanedDocstring2.replace(`Args:`, '**Args:**');
               const cleanedDocstring4 = cleanedDocstring3.replace(`Raises:`, '**Raises:**');
               const cleanedDocstring5 = cleanedDocstring4.replace(`Returns:`, '**Returns:**');
+              const cleanedDocstring6 = cleanedDocstring5.replace(`Notes:`, '**Notes:**');
 
               const parsedDocstring = marked.parse(`${cleanedDocstring5}`);
               const parsedDocstringCleaned = parsedDocstring.replace(/(<br>\s*){3,}/g, '<br>');

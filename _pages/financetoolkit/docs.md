@@ -28,3 +28,8 @@ description='The Ratios Module contains over 50+ ratios that can be used to anal
 fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/base/models_controller.py'
 title='Models Module'
 description='The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.' %}
+
+{% include docstring_viewer.html
+fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/base/technicals_controller.py'
+title='Technicals Module'
+description='The Technicals Module contains nearly 50 Technical Indicators that can be used to analyse companies. These ratios are divided into 3 categories: breadth, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.' %}
