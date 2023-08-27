@@ -67,7 +67,7 @@
               const cleanedDocstring5 = cleanedDocstring4.replace(`Returns:`, '**Returns:**');
               const cleanedDocstring6 = cleanedDocstring5.replace(`Notes:`, '**Notes:**');
 
-              const parsedDocstring = marked.parse(`${cleanedDocstring5}`);
+              const parsedDocstring = marked.parse(`${cleanedDocstring6}`);
               const parsedDocstringCleaned = parsedDocstring.replace(/(<br>\s*){3,}/g, '<br>');
 
               contentElement.innerHTML += `<h3 id=${functionName}>${functionName}</h2><a class="header-link" href="#${functionName}" title="Permalink">`;

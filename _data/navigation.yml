@@ -280,6 +280,79 @@ financetoolkit-docs:
         url:  /projects/financetoolkit/docs#get_extended_dupont_analysis
       - title: Enterprise Value Breakdown
         url:  /projects/financetoolkit/docs#get_enterprise_value_breakdown
+  - title: "Technicals Module"
+    url: /projects/financetoolkit/docs#Technicals-Module
+    children:
+      - title: All Indicators
+        url: /projects/financetoolkit/docs#collect_all_indicators
+      - title: Breadth Indicators
+        url: /projects/financetoolkit/docs#collect_breadth_indicators
+      - title: Momentum Indicators
+        url: /projects/financetoolkit/docs#collect_momentum_indicators
+      - title: Overlap Indicators
+        url: /projects/financetoolkit/docs#collect_overlap_indicators
+      - title: Volatility Indicators
+        url: /projects/financetoolkit/docs#collect_volatility_indicators
+      - title: McClellan Oscillator
+        url: /projects/financetoolkit/docs#get_mcclellan_oscillator
+      - title: Advancers/Decliners Ratio
+        url: /projects/financetoolkit/docs#get_advancers_decliners
+      - title: Money Flow Index
+        url: /projects/financetoolkit/docs#get_money_flow_index
+      - title: Williams %R
+        url: /projects/financetoolkit/docs#get_williams_percent_r
+      - title: Aroon Indicator
+        url: /projects/financetoolkit/docs#get_aroon_indicator
+      - title: Commodity Channel Index
+        url: /projects/financetoolkit/docs#get_commodity_channel_index
+      - title: Relative Vigor Index
+        url: /projects/financetoolkit/docs#get_relative_vigor_index
+      - title: Force Index
+        url: /projects/financetoolkit/docs#get_force_index
+      - title: Ultimate Oscillator
+        url: /projects/financetoolkit/docs#get_ultimate_oscillator
+      - title: Percentage Price Oscillator
+        url: /projects/financetoolkit/docs#get_percentage_price_oscillator
+      - title: Detrended Price Oscillator
+        url: /projects/financetoolkit/docs#get_detrended_price_oscillator
+      - title: Average Directional Index (ADX)
+        url: /projects/financetoolkit/docs#get_average_directional_index
+      - title: Chande Momentum Oscillator (CMO)
+        url: /projects/financetoolkit/docs#get_chande_momentum_oscillator
+      - title: Ichimoku Cloud
+        url: /projects/financetoolkit/docs#get_ichimoku_cloud
+      - title: Stochastic Oscillator
+        url: /projects/financetoolkit/docs#get_stochastic_oscillator
+      - title: Moving Average Convergence Divergence (MACD)
+        url: /projects/financetoolkit/docs#get_moving_average_convergence_divergence
+      - title: Relative Strength Index (RSI)
+        url: /projects/financetoolkit/docs#get_relative_strength_index
+      - title: Balance of Power (BOP)
+        url: /projects/financetoolkit/docs#get_balance_of_power
+      - title: Simple Moving Average (SMA)
+        url: /projects/financetoolkit/docs#get_moving_average
+      - title: Exponential Moving Average (EMA)
+        url: /projects/financetoolkit/docs#get_exponential_moving_average
+      - title: Double Exponential Moving Average (DEMA)
+        url: /projects/financetoolkit/docs#get_double_exponential_moving_average
+      - title: Triple Exponential Moving Average (TRIX)
+        url: /projects/financetoolkit/docs#get_trix
+      - title: Bollinger Bands
+        url: /projects/financetoolkit/docs#get_bollinger_bands
+      - title: Triangular Moving Average (TMA)
+        url: /projects/financetoolkit/docs#get_triangular_moving_average
+      - title: True Range (TR)
+        url: /projects/financetoolkit/docs#get_true_range
+      - title: Average True Range (ATR)
+        url: /projects/financetoolkit/docs#get_average_true_range
+      - title: Keltners Channels
+        url: /projects/financetoolkit/docs#get_keltner_channels
+      - title: On-Balance Volume (OBV)
+        url: /projects/financetoolkit/docs#get_on_balance_volume
+      - title: Accumulation/Distribution Line (ADL)
+        url: /projects/financetoolkit/docs#get_accumulation_distribution_line
+      - title: Chaikin Oscillator
+        url: /projects/financetoolkit/docs#get_chaikin_oscillator
 thepassiveinvestor:
   - title: "Introduction"
     url: /projects/thepassiveinvestor
