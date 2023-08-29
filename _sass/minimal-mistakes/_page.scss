@@ -597,6 +597,13 @@ body {
     }
   }
 }
+
+.no-title {
+  .page__title {
+    display: none;
+  }
+}
+  
   
 .wide-no-sidebar {
   .page {

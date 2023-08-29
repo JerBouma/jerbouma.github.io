@@ -15,7 +15,7 @@
     <div id="content"></div>
 
     <script>
-      function fetchAndDisplayDocstrings(fileUrl, title, description) {
+      function fetchAndDisplayDocstrings(fileUrl) {
         fetch(fileUrl)
           .then(response => response.json())
           .then(data => {
@@ -57,17 +57,15 @@
 
             const contentElement = document.getElementById('content');
 
-            contentElement.innerHTML += marked.parse(`<h2 id=${title.replace(' ', '-')}>${title}</h2><a class="header-link" href="#${title.replace(' ', '-')}" title="Permalink">`);
-            contentElement.innerHTML += marked.parse(description);
-
             functionsWithDocstrings.forEach(({ functionName, cleanedDocstringWithoutTable, exampleCode, exampleResult}) => {
               const cleanedDocstring2 = cleanedDocstringWithoutTable.replace(/\n/g, '<br>');
-              const cleanedDocstring3 = cleanedDocstring2.replace(`Args:`, '**Args:**');
-              const cleanedDocstring4 = cleanedDocstring3.replace(`Raises:`, '**Raises:**');
-              const cleanedDocstring5 = cleanedDocstring4.replace(`Returns:`, '**Returns:**');
-              const cleanedDocstring6 = cleanedDocstring5.replace(`Notes:`, '**Notes:**');
+              const cleanedDocstring3 = cleanedDocstring2.replace(/\w+ \([^)]+\):/g, match => `<u>${match}</u>`);
+              const cleanedDocstring4 = cleanedDocstring3.replace(`Args:`, '**Args:**');
+              const cleanedDocstring5 = cleanedDocstring4.replace(`Raises:`, '**Raises:**');
+              const cleanedDocstring6 = cleanedDocstring5.replace(`Returns:`, '**Returns:**');
+              const cleanedDocstring7 = cleanedDocstring6.replace(`Notes:`, '**Notes:**');
 
-              const parsedDocstring = marked.parse(`${cleanedDocstring6}`);
+              const parsedDocstring = marked.parse(`${cleanedDocstring7}`);
               const parsedDocstringCleaned = parsedDocstring.replace(/(<br>\s*){3,}/g, '<br>');
 
               contentElement.innerHTML += `<h3 id=${functionName}>${functionName}</h2><a class="header-link" href="#${functionName}" title="Permalink">`;
@@ -89,7 +87,7 @@
           .catch(error => console.error('Error fetching file content:', error));
       }
       // Get the URL from the page's front matter
-      fetchAndDisplayDocstrings('{{ include.fileUrl }}', '{{ include.title }}', '{{ include.description }}');
+      fetchAndDisplayDocstrings('{{ include.fileUrl }}');
     </script>
   </body>
 </html>

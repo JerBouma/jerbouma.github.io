@@ -1,8 +1,8 @@
 ---
 permalink: /projects/financetoolkit
 title: Finance Toolkit
-excerpt: This is an open-source toolkit in which all relevant financial ratios (50+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
-description: This is an open-source toolkit in which all relevant financial ratios (50+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+excerpt: This is an open-source toolkit in which 100+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+description: This is an open-source toolkit in which 100+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
 classes: wide-sidebar
 author_profile: false
 redirect_from:
@@ -15,7 +15,7 @@ While browsing a variety of websites, I kept finding that the same financial met
 
 For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is reported to be 28.93 (Stockopedia), 32.05 (Morningstar), 32.66 (Macrotrends), 33.09 (Finance Charts), 33.66 (Y Charts), 33.67 (Wall Street Journal), 33.80 (Yahoo Finance) and 34.4 (Companies Market Cap). All of these calculations are correct, however the method applied varies leading to different results. Therefore, collecting data from multiple sources can lead to wrong interpretation of the results given that one source could be applying a different calculation method than another. And that is, if it is even freely available. Often the calculation is hidden behind a paid subscription.
 
-**This is why I designed the FinanceToolkit**, this is an open-source toolkit in which all relevant financial ratios (50+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+**This is why I designed the FinanceToolkit**, this is an open-source toolkit in which 100+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
 
 The Finance Toolkit is complimented very well with the [Finance Database 🌎](/projects/financedatabase), a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
 
@@ -86,7 +86,7 @@ This Notebooks demonstrates how to use the Finance Toolkit with the Finance Data
 <div class="row">
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 
-### Defining Custom Ratios
+### Creating Custom Ratios
 
 The Finance Toolkit has an abundance of financial ratios, however it could be that you are looking for a specific ratio that is currently not provided. First and foremost, I encourage you to [create a Pull Request](https://github.com/JerBouma/FinanceToolkit/pulls) to add these ratios in but there is also an option to add custom ratios as follows. This feature was designed by [sword134](https://github.com/sword134).
 
@@ -117,7 +117,14 @@ The Finance Toolkit has the ability to leverage custom datasets from any data pr
 </div>
 </div>
 
-## Using the Finance Toolkit
+# Basic Usage
+
+This section explains in detail how the Finance Toolkit can utilitised effectively. Also see the Jupyter Notebook in which you can run the examples also demonstrated here.
+
+___ 
+
+<b><div align="center">Find a variety of How-To Guides including Code Documentation for the FinanceToolkit <a href="https://www.jeroenbouma.com/projects/financetoolkit">here</a>.</div></b>
+___
 
 Within this package the following things are included:
 
@@ -132,8 +139,11 @@ Within this package the following things are included:
 - Balance Sheet Statements (`get_balance_sheet_statement`), Income Statements (`get_income_statement`), Cash Flow Statements (`get_cash_flow_statement`) and Statistics Statement (`get_statistics_statement`), obtainable from FinancialModelingPrep or the source of your choosing through custom input. These functions are accompanied with a normalization function so that for any source, the same ratio analysis can be performed. Please see [this Jupyter Notebook](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets) that explains how to use a custom source.
 - Efficiency ratios (`ratios.collect_efficiency_ratios`), liquidity ratios (`ratios.collect_liquidity_ratios`), profitability ratios (`ratios._collect_profitability_ratios`), solvency ratios (`ratios.collect_solvency_ratios`) and valuation ratios (`ratios.collect_valuation_ratios`) functionality that automatically calculates the most important ratios based on the inputted balance sheet, income and cash flow statements. Any of the underlying ratios can also be called individually such as `ratios.get_return_on_equity`. Next to that, it is also possible to input your own custom ratios (`ratios.collect_custom_ratios`). See also [this Notebook](https://www.jeroenbouma.com/projects/financetoolkit/custom-ratios) or [this section](#defining-custom-ratios) for more information.
 - Models like DUPONT analysis (`models.get_extended_dupont_analysis`) or Enterprise Breakdown (`models.get_enterprise_value_breakdown`) that can be used to perform in-depth financial analysis through a single function. These functions combine much of the functionality throughout the Toolkit to provide advanced calculations. 
+- Technical indicators like Relative Strength Index (`technicals.get_relative_strength_index`),  Exponential Moving Average (`models.get_exponential_moving_average`) and Bollinger Bands (`technicals.get_bollinger_bands`) that can be used to perform in-depth momentum and trend analysis. These functions allow for the calculation of technical indicators based on the historical market data.
 
 The dependencies of the package are on purpose *very slim* so that it will work well with any combination of packages and not result in conflicts. I've also been careful with my selection in which I leave out functionality like technical analysis in which [ta-lib](https://ta-lib.org/) does an excellent job as well as portfolio attribution and optimisation in which [Riskfolio-lib](https://riskfolio-lib.readthedocs.io/en/latest/index.html) shines.
+
+## Using the Finance Toolkit
 
 A basic example of how to initialise the Finance Toolkit is shown below, also see [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/getting-started) for a detailed Getting Started guide as well as [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/finance-database) that includes the [Finance Database 🌎](https://www.jeroenbouma.com/projects/financedatabase) and a proper financial analysis.
 
@@ -153,6 +163,9 @@ profitability_ratios = companies.ratios.collect_profitability_ratios()
 
 # a Models example
 extended_dupont_analysis = companies.models.get_extended_dupont_analysis()
+
+# a Technical example
+relative_strength_index = companies.technicals.get_relative_strength_index()
 
 # Show the profitability ratios for Apple
 profitability_ratios.loc['AAPL']
@@ -180,7 +193,7 @@ This returns the following output for `profitability_ratios.loc['AAPL]`. Omittin
 | EBT to EBIT Ratio                           | 0.957448 | 0.948408 | 0.958936 | 0.976353 | 0.975982 |
 | EBIT to Revenue                             | 0.286688 | 0.26641  | 0.254864 | 0.305759 | 0.309473 |
 
-## Working with Custom Ratios
+## Defining Custom Ratios
 
 The Finance Toolkit has an abundance of financial ratios, however it could be that you are looking for a specific ratio that is currently not provided. First and foremost, I encourage you to [create a Pull Request](https://github.com/JerBouma/FinanceToolkit/pulls) to add these ratios in but there is also an option to add custom ratios as follows. Find a Notebook example [here](https://www.jeroenbouma.com/projects/financetoolkit/custom-ratios).
 
@@ -263,9 +276,10 @@ Which returns the following for GOOGL (Google):
 | Quick Assets             |   1.52435e+11 |   1.5402e+11 |   1.51138e+11 |   1.57136e+11 |      nan |
 | WC / Net Income          |   7.19842     |   7.00932    |   6.1877      |   4.95857     |      nan |
 
+
 ## Calling Functions Directly
 
-It also possible to call any ratio or model directly as shown below. This allows access to 50+ ratios with custom data. Also see [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/functional-toolkit).
+It also possible to call any ratio or model directly as shown below. This allows access to 100+ ratios and indicators with custom data. Also see [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/functional-toolkit).
 
 ```python
 import pandas as pd

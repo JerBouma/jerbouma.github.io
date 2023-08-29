@@ -62,11 +62,11 @@ financetoolkit:
   - title: "How to Guides"
     url: /projects/financetoolkit#how-to-guides-for-the-financetoolkit
     children:
-      - title: "Getting Started"
+      - title: Getting Started
         url: /projects/financetoolkit/getting-started
       - title: Working with the Finance Database
         url: /projects/financetoolkit/finance-database
-      - title: Defining Custom Ratios
+      - title: Creating Custom Ratios
         url: /projects/financetoolkit/custom-ratios
       - title: Calling Functions Directly
         url: /projects/financetoolkit/functional-toolkit
@@ -87,272 +87,297 @@ financetoolkit:
     url: /projects/financetoolkit/docs
 
 financetoolkit-docs:
-  - title: "Toolkit Module"
-    url: /projects/financetoolkit/docs#Toolkit-Module
+  - title: Finance Toolkit
     children:
-      - title: "Ratios Module"
-        url: /projects/financetoolkit/docs#ratios
-      - title: "Models Module"
-        url: /projects/financetoolkit/docs#models
-      - title: "Profiles"
-        url: /projects/financetoolkit/docs#get_profile
-      - title: "Quotes"
-        url: /projects/financetoolkit/docs#get_quote
-      - title: "Ratings"
-        url: /projects/financetoolkit/docs#get_rating
-      - title: "Analyst Estimates"
-        url: /projects/financetoolkit/docs#get_analyst_estimates
-      - title: "Earnings Calendar"
-        url: /projects/financetoolkit/docs#get_earnings_calendar
-      - title: "Revenue Geographic Segmentation"
-        url: /projects/financetoolkit/docs#get_revenue_geographic_segmentation
-      - title: "Revenue Product Segmentation"
-        url: /projects/financetoolkit/docs#get_revenue_product_segmentation
-      - title: "Historical Data"
-        url: /projects/financetoolkit/docs#get_historical_data
-      - title: "Treasury Rates"
-        url: /projects/financetoolkit/docs#get_treasury_data
-      - title: "Balance Sheet Statements"
-        url: /projects/financetoolkit/docs#get_balance_sheet_statement
-      - title: "Income Sheet Statements"
-        url: /projects/financetoolkit/docs#get_income_statement
-      - title: "Cash Flow Statements"
-        url: /projects/financetoolkit/docs#get_cash_flow_statement
-      - title: "Statistics Statements"
-        url: /projects/financetoolkit/docs#get_statistics_statement
-  - title: "Ratios Module"
-    url: /projects/financetoolkit/docs#Ratios-Module
+    - title: "Ratios Module"
+      url: /projects/financetoolkit/docs#ratios
+    - title: "Models Module"
+      url: /projects/financetoolkit/docs#models
+    - title: "Technicals Module"
+      url: /projects/financetoolkit/docs#technicals
+    - title: "Profiles"
+      url: /projects/financetoolkit/docs#get_profile
+    - title: "Quotes"
+      url: /projects/financetoolkit/docs#get_quote
+    - title: "Ratings"
+      url: /projects/financetoolkit/docs#get_rating
+    - title: "Analyst Estimates"
+      url: /projects/financetoolkit/docs#get_analyst_estimates
+    - title: "Earnings Calendar"
+      url: /projects/financetoolkit/docs#get_earnings_calendar
+    - title: "Revenue Geographic Segmentation"
+      url: /projects/financetoolkit/docs#get_revenue_geographic_segmentation
+    - title: "Revenue Product Segmentation"
+      url: /projects/financetoolkit/docs#get_revenue_product_segmentation
+    - title: "Historical Data"
+      url: /projects/financetoolkit/docs#get_historical_data
+    - title: "Treasury Rates"
+      url: /projects/financetoolkit/docs#get_treasury_data
+    - title: "Balance Sheet Statements"
+      url: /projects/financetoolkit/docs#get_balance_sheet_statement
+    - title: "Income Sheet Statements"
+      url: /projects/financetoolkit/docs#get_income_statement
+    - title: "Cash Flow Statements"
+      url: /projects/financetoolkit/docs#get_cash_flow_statement
+    - title: "Statistics Statements"
+      url: /projects/financetoolkit/docs#get_statistics_statement
+  - title: Ratios Documentation
+    url: /projects/financetoolkit/docs/ratios
+  - title: Models Documentation
+    url: /projects/financetoolkit/docs/models
+  - title: Technicals Documentation
+    url: /projects/financetoolkit/docs/technicals
+
+financetoolkit-docs-ratios:
+  - title: All Ratios
+    url: /projects/financetoolkit/docs/ratios#collect_all_ratios
+  - title: Custom Ratios
+    url: /projects/financetoolkit/docs/ratios#collect_custom_ratios
+  - title: Efficiency Ratios
     children:
-      - title: All Ratios
-        url: /projects/financetoolkit/docs#collect_all_ratios
-      - title: Liquidity Ratios
-        url: /projects/financetoolkit/docs#collect_liquidity_ratios
-      - title: Profitability Ratios
-        url: /projects/financetoolkit/docs#collect_profitability_ratios
-      - title: Solvency Ratios
-        url: /projects/financetoolkit/docs#collect_solvency_ratios
-      - title: Valuation Ratios
-        url: /projects/financetoolkit/docs#collect_valuation_ratios
-      - title: Custom Ratios
-        url: /projects/financetoolkit/docs#collect_custom_ratios
+      - title: All Efficiency Ratios
+        url: /projects/financetoolkit/docs/ratios#collect_efficiency_ratios
       - title: Asset Turnover Ratio
-        url: /projects/financetoolkit/docs#get_asset_turnover_ratio
+        url: /projects/financetoolkit/docs/ratios#get_asset_turnover_ratio
       - title: Inventory Turnover Ratio
-        url: /projects/financetoolkit/docs#get_inventory_turnover_ratio
+        url: /projects/financetoolkit/docs/ratios#get_inventory_turnover_ratio
       - title: Days of Inventory Outstanding
-        url: /projects/financetoolkit/docs#get_days_of_inventory_outstanding
+        url: /projects/financetoolkit/docs/ratios#get_days_of_inventory_outstanding
       - title: Days of Sales Outstanding
-        url: /projects/financetoolkit/docs#get_days_of_sales_outstanding
+        url: /projects/financetoolkit/docs/ratios#get_days_of_sales_outstanding
       - title: Operating Cycle
-        url: /projects/financetoolkit/docs#get_operating_cycle
+        url: /projects/financetoolkit/docs/ratios#get_operating_cycle
       - title: Accounts Payables Turnover Ratio
-        url: /projects/financetoolkit/docs#get_accounts_payables_turnover_ratio
+        url: /projects/financetoolkit/docs/ratios#get_accounts_payables_turnover_ratio
       - title: Days of Accounts Payable Outstanding
-        url: /projects/financetoolkit/docs#get_days_of_accounts_payable_outstanding
+        url: /projects/financetoolkit/docs/ratios#get_days_of_accounts_payable_outstanding
       - title: Cash Conversion Cycle
-        url: /projects/financetoolkit/docs#get_cash_conversion_cycle
+        url: /projects/financetoolkit/docs/ratios#get_cash_conversion_cycle
       - title: Receivables Turnover
-        url: /projects/financetoolkit/docs#get_receivables_turnover
+        url: /projects/financetoolkit/docs/ratios#get_receivables_turnover
       - title: SGA to Revenue Ratio
-        url: /projects/financetoolkit/docs#get_sga_to_revenue_ratio
+        url: /projects/financetoolkit/docs/ratios#get_sga_to_revenue_ratio
       - title: Fixed Asset Turnover
-        url: /projects/financetoolkit/docs#get_fixed_asset_turnover
+        url: /projects/financetoolkit/docs/ratios#get_fixed_asset_turnover
       - title: Operating Ratio
-        url: /projects/financetoolkit/docs#get_operating_ratio
+        url: /projects/financetoolkit/docs/ratios#get_operating_ratio
+  - title: Liquidity Ratios
+    children:
+      - title: All Liquidity Ratios
+        url: /projects/financetoolkit/docs/ratios#collect_liquidity_ratios
       - title: Current Ratio
-        url: /projects/financetoolkit/docs#get_current_ratio
+        url: /projects/financetoolkit/docs/ratios#get_current_ratio
       - title: Quick Ratio
-        url: /projects/financetoolkit/docs#get_quick_ratio
+        url: /projects/financetoolkit/docs/ratios#get_quick_ratio
       - title: Cash Ratio
-        url: /projects/financetoolkit/docs#get_cash_ratio
+        url: /projects/financetoolkit/docs/ratios#get_cash_ratio
       - title: Working Capital
-        url: /projects/financetoolkit/docs#get_working_capital
+        url: /projects/financetoolkit/docs/ratios#get_working_capital
       - title: Operating Cash Flow Ratio
-        url: /projects/financetoolkit/docs#get_operating_cash_flow_ratio
+        url: /projects/financetoolkit/docs/ratios#get_operating_cash_flow_ratio
       - title: Operating Cash Flow Sales Ratio
-        url: /projects/financetoolkit/docs#get_operating_cash_flow_sales_ratio
+        url: /projects/financetoolkit/docs/ratios#get_operating_cash_flow_sales_ratio
       - title: Short Term Coverage Ratio
-        url: /projects/financetoolkit/docs#get_short_term_coverage_ratio
+        url: /projects/financetoolkit/docs/ratios#get_short_term_coverage_ratio
+  - title: Profitability Ratios
+    children:
+      - title: All Profitability Ratios
+        url: /projects/financetoolkit/docs/ratios#collect_profitability_ratios
       - title: Gross Margin
-        url: /projects/financetoolkit/docs#get_gross_margin
+        url: /projects/financetoolkit/docs/ratios#get_gross_margin
       - title: Operating Margin
-        url: /projects/financetoolkit/docs#get_operating_margin
+        url: /projects/financetoolkit/docs/ratios#get_operating_margin
       - title: Net Profit Margin
-        url: /projects/financetoolkit/docs#get_net_profit_margin
+        url: /projects/financetoolkit/docs/ratios#get_net_profit_margin
       - title: Interest Burden Ratio
-        url: /projects/financetoolkit/docs#get_interest_burden_ratio
+        url: /projects/financetoolkit/docs/ratios#get_interest_burden_ratio
       - title: Income Before Tax Profit Margin
-        url: /projects/financetoolkit/docs#get_income_before_tax_profit_margin
+        url: /projects/financetoolkit/docs/ratios#get_income_before_tax_profit_margin
       - title: Effective Tax Rate
-        url: /projects/financetoolkit/docs#get_effective_tax_rate
+        url: /projects/financetoolkit/docs/ratios#get_effective_tax_rate
       - title: Return on Assets (RoA)
-        url: /projects/financetoolkit/docs#get_return_on_assets
+        url: /projects/financetoolkit/docs/ratios#get_return_on_assets
       - title: Return on Equity (RoE)
-        url: /projects/financetoolkit/docs#get_return_on_equity
+        url: /projects/financetoolkit/docs/ratios#get_return_on_equity
       - title: Return on Invested Capital (RoIC)
-        url: /projects/financetoolkit/docs#get_return_on_invested_capital
+        url: /projects/financetoolkit/docs/ratios#get_return_on_invested_capital
       - title: Income Quality Ratio
-        url: /projects/financetoolkit/docs#get_income_quality_ratio
+        url: /projects/financetoolkit/docs/ratios#get_income_quality_ratio
       - title: Return on Tangible Assets (RoTA)
-        url: /projects/financetoolkit/docs#get_return_on_tangible_assets
+        url: /projects/financetoolkit/docs/ratios#get_return_on_tangible_assets
       - title: Return on Capital Employed (RoCE)
-        url: /projects/financetoolkit/docs#get_return_on_capital_employed
+        url: /projects/financetoolkit/docs/ratios#get_return_on_capital_employed
       - title: Net Income per EBT
-        url: /projects/financetoolkit/docs#get_net_income_per_ebt
+        url: /projects/financetoolkit/docs/ratios#get_net_income_per_ebt
       - title: Free Cash Flow Operating Cash Flow Ratio
-        url: /projects/financetoolkit/docs#get_free_cash_flow_operating_cash_flow_ratio
+        url: /projects/financetoolkit/docs/ratios#get_free_cash_flow_operating_cash_flow_ratio
       - title: Tax Burden Ratio
-        url: /projects/financetoolkit/docs#get_tax_burden_ratio
+        url: /projects/financetoolkit/docs/ratios#get_tax_burden_ratio
       - title: EBT to EBIT
-        url: /projects/financetoolkit/docs#get_EBT_to_EBIT
+        url: /projects/financetoolkit/docs/ratios#get_EBT_to_EBIT
       - title: EBIT to Revenue
-        url: /projects/financetoolkit/docs#get_EBIT_to_revenue
+        url: /projects/financetoolkit/docs/ratios#get_EBIT_to_revenue
+  - title: Solvency Ratios
+    children:
+      - title: All Solvency Ratios
+        url: /projects/financetoolkit/docs/ratios#collect_solvency_ratios
       - title: Debt to Assets Ratio
-        url: /projects/financetoolkit/docs#get_debt_to_assets_ratio
+        url: /projects/financetoolkit/docs/ratios#get_debt_to_assets_ratio
       - title: Debt to Equity Ratio
-        url: /projects/financetoolkit/docs#get_debt_to_equity_ratio
+        url: /projects/financetoolkit/docs/ratios#get_debt_to_equity_ratio
       - title: Interest Coverage Ratio
-        url: /projects/financetoolkit/docs#get_interest_coverage_ratio
+        url: /projects/financetoolkit/docs/ratios#get_interest_coverage_ratio
       - title: Equity Multiplier
-        url: /projects/financetoolkit/docs#get_equity_multiplier
+        url: /projects/financetoolkit/docs/ratios#get_equity_multiplier
       - title: Debt Service Coverage Ratio
-        url: /projects/financetoolkit/docs#get_debt_service_coverage_ratio
+        url: /projects/financetoolkit/docs/ratios#get_debt_service_coverage_ratio
       - title: Free Cash Flow Yield
-        url: /projects/financetoolkit/docs#get_free_cash_flow_yield
+        url: /projects/financetoolkit/docs/ratios#get_free_cash_flow_yield
       - title: Net Debt to EBITDA Ratio
-        url: /projects/financetoolkit/docs#get_net_debt_to_ebitda_ratio
+        url: /projects/financetoolkit/docs/ratios#get_net_debt_to_ebitda_ratio
       - title: Cash Flow Coverage Ratio
-        url: /projects/financetoolkit/docs#get_cash_flow_coverage_ratio
+        url: /projects/financetoolkit/docs/ratios#get_cash_flow_coverage_ratio
       - title: CAPEX Coverage Ratio
-        url: /projects/financetoolkit/docs#get_capex_coverage_ratio
+        url: /projects/financetoolkit/docs/ratios#get_capex_coverage_ratio
       - title: CAPEX Dividend Coverage Ratio
-        url: /projects/financetoolkit/docs#get_capex_dividend_coverage_ratio
+        url: /projects/financetoolkit/docs/ratios#get_capex_dividend_coverage_ratio
+  - title: Valuation Ratios
+    children:
+      - title: All Valuation Ratios
+        url: /projects/financetoolkit/docs/ratios#collect_valuation_ratios
       - title: Earnings per Share (EPS)
-        url: /projects/financetoolkit/docs#get_earnings_per_share
+        url: /projects/financetoolkit/docs/ratios#get_earnings_per_share
       - title: Revenue per Share (RPS)
-        url: /projects/financetoolkit/docs#get_revenue_per_share
+        url: /projects/financetoolkit/docs/ratios#get_revenue_per_share
       - title: Price Earnings Ratio (PE)
-        url: /projects/financetoolkit/docs#get_price_earnings_ratio
+        url: /projects/financetoolkit/docs/ratios#get_price_earnings_ratio
       - title: Price to Earnings Growth Ratio (PEG)
-        url: /projects/financetoolkit/docs#get_price_to_earnings_growth_ratio
+        url: /projects/financetoolkit/docs/ratios#get_price_to_earnings_growth_ratio
       - title: Book Value per Share
-        url: /projects/financetoolkit/docs#get_book_value_per_share
+        url: /projects/financetoolkit/docs/ratios#get_book_value_per_share
       - title: Price to Book Ratio (PB)
-        url: /projects/financetoolkit/docs#get_price_to_book_ratio
+        url: /projects/financetoolkit/docs/ratios#get_price_to_book_ratio
       - title: Interest Debt per Share
-        url: /projects/financetoolkit/docs#get_interest_debt_per_share
+        url: /projects/financetoolkit/docs/ratios#get_interest_debt_per_share
       - title: CAPEX per Share
-        url: /projects/financetoolkit/docs#get_capex_per_share
+        url: /projects/financetoolkit/docs/ratios#get_capex_per_share
       - title: Dividend Yield
-        url: /projects/financetoolkit/docs#get_dividend_yield
+        url: /projects/financetoolkit/docs/ratios#get_dividend_yield
       - title: Weighted Dividend Yield
-        url: /projects/financetoolkit/docs#get_weighted_dividend_yield
+        url: /projects/financetoolkit/docs/ratios#get_weighted_dividend_yield
       - title: Price to Cash Flow Ratio (P/CF)
-        url: /projects/financetoolkit/docs#get_price_to_cash_flow_ratio
+        url: /projects/financetoolkit/docs/ratios#get_price_to_cash_flow_ratio
       - title: Price to Free Cash Flow Ratio (P/FCF)
-        url: /projects/financetoolkit/docs#get_price_to_free_cash_flow_ratio
+        url: /projects/financetoolkit/docs/ratios#get_price_to_free_cash_flow_ratio
       - title: Market Capitalization
-        url: /projects/financetoolkit/docs#get_market_cap
+        url: /projects/financetoolkit/docs/ratios#get_market_cap
       - title: Enterprise Value
-        url: /projects/financetoolkit/docs#get_enterprise_value
+        url: /projects/financetoolkit/docs/ratios#get_enterprise_value
       - title: EV to Sales Ratio
-        url: /projects/financetoolkit/docs#get_ev_to_sales_ratio
+        url: /projects/financetoolkit/docs/ratios#get_ev_to_sales_ratio
       - title: EV to EBITDA  Ratio
-        url: /projects/financetoolkit/docs#get_ev_to_ebitda_ratio
+        url: /projects/financetoolkit/docs/ratios#get_ev_to_ebitda_ratio
       - title: EV to Operating Cashflow Ratio
-        url: /projects/financetoolkit/docs#get_ev_to_operating_cashflow_ratio
+        url: /projects/financetoolkit/docs/ratios#get_ev_to_operating_cashflow_ratio
       - title: Earnings Yield
-        url: /projects/financetoolkit/docs#get_earnings_yield
+        url: /projects/financetoolkit/docs/ratios#get_earnings_yield
       - title: Payout Ratio
-        url: /projects/financetoolkit/docs#get_payout_ratio
+        url: /projects/financetoolkit/docs/ratios#get_payout_ratio
       - title: Tangible Asset Value
-        url: /projects/financetoolkit/docs#get_tangible_asset_value
+        url: /projects/financetoolkit/docs/ratios#get_tangible_asset_value
       - title: Net Current Asset Value
-        url: /projects/financetoolkit/docs#get_net_current_asset_value
+        url: /projects/financetoolkit/docs/ratios#get_net_current_asset_value
       - title: EV to EBIT
-        url: /projects/financetoolkit/docs#get_ev_to_ebit
-  - title: "Models Module"
-    url: /projects/financetoolkit/docs#Models-Module
+        url: /projects/financetoolkit/docs/ratios#get_ev_to_ebit
+
+financetoolkit-docs-models:
+  - title: DuPont Analysis
+    url:  /projects/financetoolkit/docs/models#get_dupont_analysis
+  - title: Extended DuPont Analysis
+    url:  /projects/financetoolkit/docs/models#get_extended_dupont_analysis
+  - title: Enterprise Value Breakdown
+    url:  /projects/financetoolkit/docs/models#get_enterprise_value_breakdown
+
+financetoolkit-docs-technicals:
+  - title: All Indicators
+    url: /projects/financetoolkit/docs/technicals#collect_all_indicators
+  - title: Breadth Indicators
     children:
-      - title: DuPont Analysis
-        url:  /projects/financetoolkit/docs#get_dupont_analysis
-      - title: Extended DuPont Analysis
-        url:  /projects/financetoolkit/docs#get_extended_dupont_analysis
-      - title: Enterprise Value Breakdown
-        url:  /projects/financetoolkit/docs#get_enterprise_value_breakdown
-  - title: "Technicals Module"
-    url: /projects/financetoolkit/docs#Technicals-Module
-    children:
-      - title: All Indicators
-        url: /projects/financetoolkit/docs#collect_all_indicators
-      - title: Breadth Indicators
-        url: /projects/financetoolkit/docs#collect_breadth_indicators
-      - title: Momentum Indicators
-        url: /projects/financetoolkit/docs#collect_momentum_indicators
-      - title: Overlap Indicators
-        url: /projects/financetoolkit/docs#collect_overlap_indicators
-      - title: Volatility Indicators
-        url: /projects/financetoolkit/docs#collect_volatility_indicators
+      - title: All Breadth Indicators
+        url: /projects/financetoolkit/docs/technicals#collect_breadth_indicators
       - title: McClellan Oscillator
-        url: /projects/financetoolkit/docs#get_mcclellan_oscillator
+        url: /projects/financetoolkit/docs/technicals#get_mcclellan_oscillator
       - title: Advancers/Decliners Ratio
-        url: /projects/financetoolkit/docs#get_advancers_decliners
-      - title: Money Flow Index
-        url: /projects/financetoolkit/docs#get_money_flow_index
-      - title: Williams %R
-        url: /projects/financetoolkit/docs#get_williams_percent_r
-      - title: Aroon Indicator
-        url: /projects/financetoolkit/docs#get_aroon_indicator
-      - title: Commodity Channel Index
-        url: /projects/financetoolkit/docs#get_commodity_channel_index
-      - title: Relative Vigor Index
-        url: /projects/financetoolkit/docs#get_relative_vigor_index
-      - title: Force Index
-        url: /projects/financetoolkit/docs#get_force_index
-      - title: Ultimate Oscillator
-        url: /projects/financetoolkit/docs#get_ultimate_oscillator
-      - title: Percentage Price Oscillator
-        url: /projects/financetoolkit/docs#get_percentage_price_oscillator
-      - title: Detrended Price Oscillator
-        url: /projects/financetoolkit/docs#get_detrended_price_oscillator
-      - title: Average Directional Index (ADX)
-        url: /projects/financetoolkit/docs#get_average_directional_index
-      - title: Chande Momentum Oscillator (CMO)
-        url: /projects/financetoolkit/docs#get_chande_momentum_oscillator
-      - title: Ichimoku Cloud
-        url: /projects/financetoolkit/docs#get_ichimoku_cloud
-      - title: Stochastic Oscillator
-        url: /projects/financetoolkit/docs#get_stochastic_oscillator
-      - title: Moving Average Convergence Divergence (MACD)
-        url: /projects/financetoolkit/docs#get_moving_average_convergence_divergence
-      - title: Relative Strength Index (RSI)
-        url: /projects/financetoolkit/docs#get_relative_strength_index
-      - title: Balance of Power (BOP)
-        url: /projects/financetoolkit/docs#get_balance_of_power
-      - title: Simple Moving Average (SMA)
-        url: /projects/financetoolkit/docs#get_moving_average
-      - title: Exponential Moving Average (EMA)
-        url: /projects/financetoolkit/docs#get_exponential_moving_average
-      - title: Double Exponential Moving Average (DEMA)
-        url: /projects/financetoolkit/docs#get_double_exponential_moving_average
-      - title: Triple Exponential Moving Average (TRIX)
-        url: /projects/financetoolkit/docs#get_trix
-      - title: Bollinger Bands
-        url: /projects/financetoolkit/docs#get_bollinger_bands
-      - title: Triangular Moving Average (TMA)
-        url: /projects/financetoolkit/docs#get_triangular_moving_average
-      - title: True Range (TR)
-        url: /projects/financetoolkit/docs#get_true_range
-      - title: Average True Range (ATR)
-        url: /projects/financetoolkit/docs#get_average_true_range
-      - title: Keltners Channels
-        url: /projects/financetoolkit/docs#get_keltner_channels
+        url: /projects/financetoolkit/docs/technicals#get_advancers_decliners
       - title: On-Balance Volume (OBV)
-        url: /projects/financetoolkit/docs#get_on_balance_volume
+        url: /projects/financetoolkit/docs/technicals#get_on_balance_volume
       - title: Accumulation/Distribution Line (ADL)
-        url: /projects/financetoolkit/docs#get_accumulation_distribution_line
+        url: /projects/financetoolkit/docs/technicals#get_accumulation_distribution_line
       - title: Chaikin Oscillator
-        url: /projects/financetoolkit/docs#get_chaikin_oscillator
+        url: /projects/financetoolkit/docs/technicals#get_chaikin_oscillator
+  - title: Momentum Indicators
+    children:
+      - title: All Momentum Indicators
+        url: /projects/financetoolkit/docs/technicals#collect_momentum_indicators
+      - title: Money Flow Index
+        url: /projects/financetoolkit/docs/technicals#get_money_flow_index
+      - title: Williams %R
+        url: /projects/financetoolkit/docs/technicals#get_williams_percent_r
+      - title: Aroon Indicator
+        url: /projects/financetoolkit/docs/technicals#get_aroon_indicator
+      - title: Commodity Channel Index
+        url: /projects/financetoolkit/docs/technicals#get_commodity_channel_index
+      - title: Relative Vigor Index
+        url: /projects/financetoolkit/docs/technicals#get_relative_vigor_index
+      - title: Force Index
+        url: /projects/financetoolkit/docs/technicals#get_force_index
+      - title: Ultimate Oscillator
+        url: /projects/financetoolkit/docs/technicals#get_ultimate_oscillator
+      - title: Percentage Price Oscillator
+        url: /projects/financetoolkit/docs/technicals#get_percentage_price_oscillator
+      - title: Detrended Price Oscillator
+        url: /projects/financetoolkit/docs/technicals#get_detrended_price_oscillator
+      - title: Average Directional Index (ADX)
+        url: /projects/financetoolkit/docs/technicals#get_average_directional_index
+      - title: Chande Momentum Oscillator (CMO)
+        url: /projects/financetoolkit/docs/technicals#get_chande_momentum_oscillator
+      - title: Ichimoku Cloud
+        url: /projects/financetoolkit/docs/technicals#get_ichimoku_cloud
+      - title: Stochastic Oscillator
+        url: /projects/financetoolkit/docs/technicals#get_stochastic_oscillator
+      - title: Moving Average Convergence Divergence (MACD)
+        url: /projects/financetoolkit/docs/technicals#get_moving_average_convergence_divergence
+      - title: Relative Strength Index (RSI)
+        url: /projects/financetoolkit/docs/technicals#get_relative_strength_index
+      - title: Balance of Power (BOP)
+        url: /projects/financetoolkit/docs/technicals#get_balance_of_power
+  - title: Overlap Indicators
+    children:
+      - title: All Overlap Indicators
+        url: /projects/financetoolkit/docs/technicals#collect_overlap_indicators
+      - title: Simple Moving Average (SMA)
+        url: /projects/financetoolkit/docs/technicals#get_moving_average
+      - title: Exponential Moving Average (EMA)
+        url: /projects/financetoolkit/docs/technicals#get_exponential_moving_average
+      - title: Double Exponential Moving Average (DEMA)
+        url: /projects/financetoolkit/docs/technicals#get_double_exponential_moving_average
+      - title: Triple Exponential Moving Average (TRIX)
+        url: /projects/financetoolkit/docs/technicals#get_trix
+      - title: Triangular Moving Average (TMA)
+        url: /projects/financetoolkit/docs/technicals#get_triangular_moving_average
+  - title: Volatility Indicators
+    children:
+      - title: All Volatility Indicators
+        url: /projects/financetoolkit/docs/technicals#collect_volatility_indicators
+      - title: True Range (TR)
+        url: /projects/financetoolkit/docs/technicals#get_true_range
+      - title: Average True Range (ATR)
+        url: /projects/financetoolkit/docs/technicals#get_average_true_range
+      - title: Keltners Channels
+        url: /projects/financetoolkit/docs/technicals#get_keltner_channels
+      - title: Bollinger Bands
+        url: /projects/financetoolkit/docs/technicals#get_bollinger_bands
+
 thepassiveinvestor:
   - title: "Introduction"
     url: /projects/thepassiveinvestor
