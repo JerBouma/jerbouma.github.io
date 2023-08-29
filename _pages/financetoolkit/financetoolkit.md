@@ -119,11 +119,11 @@ The Finance Toolkit has the ability to leverage custom datasets from any data pr
 
 # Basic Usage
 
-This section explains in detail how the Finance Toolkit can utilitised effectively. Also see the Jupyter Notebook in which you can run the examples also demonstrated here.
+This section explains in detail how the Finance Toolkit can utilitised effectively. Also see the Jupyter Notebooks in which you can run the examples also demonstrated here.
 
 ___ 
 
-<b><div align="center">Find a variety of How-To Guides including Code Documentation for the FinanceToolkit <a href="https://www.jeroenbouma.com/projects/financetoolkit">here</a>.</div></b>
+<p><b><div align="center">Find a variety of How-To Guides including Code Documentation for the FinanceToolkit <a href="https://www.jeroenbouma.com/projects/financetoolkit">here</a>.</div></b></p>
 ___
 
 Within this package the following things are included:
@@ -141,7 +141,7 @@ Within this package the following things are included:
 - Models like DUPONT analysis (`models.get_extended_dupont_analysis`) or Enterprise Breakdown (`models.get_enterprise_value_breakdown`) that can be used to perform in-depth financial analysis through a single function. These functions combine much of the functionality throughout the Toolkit to provide advanced calculations. 
 - Technical indicators like Relative Strength Index (`technicals.get_relative_strength_index`),  Exponential Moving Average (`models.get_exponential_moving_average`) and Bollinger Bands (`technicals.get_bollinger_bands`) that can be used to perform in-depth momentum and trend analysis. These functions allow for the calculation of technical indicators based on the historical market data.
 
-The dependencies of the package are on purpose *very slim* so that it will work well with any combination of packages and not result in conflicts. I've also been careful with my selection in which I leave out functionality like technical analysis in which [ta-lib](https://ta-lib.org/) does an excellent job as well as portfolio attribution and optimisation in which [Riskfolio-lib](https://riskfolio-lib.readthedocs.io/en/latest/index.html) shines.
+The dependencies of the package are on purpose *very slim* so that it will work well with any combination of packages and not result in conflicts.
 
 ## Using the Finance Toolkit
 
@@ -165,33 +165,121 @@ profitability_ratios = companies.ratios.collect_profitability_ratios()
 extended_dupont_analysis = companies.models.get_extended_dupont_analysis()
 
 # a Technical example
-relative_strength_index = companies.technicals.get_relative_strength_index()
-
-# Show the profitability ratios for Apple
-profitability_ratios.loc['AAPL']
+bollinger_bands = companies.technicals.get_bollinger_bands()
 ````
 
-This returns the following output for `profitability_ratios.loc['AAPL]`. Omitting `.loc['AAPL']` will return the result for both AAPL and MSFT.
+For each object, it returns a multi-index in which both Apple and Microsoft are presented. For this example, I've selected just Apple to keep things organized but in essence it can be any list of tickers (no limit). The filtering is done through using `.loc['AAPL']` and `.xs('AAPL', level=1, axis=1)` based on whether it's fundamental data or historical data respectively.
 
+### Historical Data
 
-|                                             |     2018 |     2019 |     2020 |     2021 |     2022 |
-|:--------------------------------------------|---------:|---------:|---------:|---------:|---------:|
-| Gross Margin                                | 0.383437 | 0.378178 | 0.382332 | 0.417794 | 0.433096 |
-| Operating Margin                            | 0.26694  | 0.24572  | 0.241473 | 0.297824 | 0.302887 |
-| Net Profit Margin                           | 0.224142 | 0.212381 | 0.209136 | 0.258818 | 0.253096 |
-| Interest Burden Ratio                       | 1.02828  | 1.02827  | 1.01211  | 1.00237  | 0.997204 |
-| Income Before Tax Profit Margin             | 0.274489 | 0.252666 | 0.244398 | 0.298529 | 0.30204  |
-| Effective Tax Rate                          | 0.183422 | 0.159438 | 0.144282 | 0.133023 | 0.162045 |
-| Return on Assets (ROA)                      | 0.162775 | 0.16323  | 0.177256 | 0.269742 | 0.282924 |
-| Return on Equity (ROE)                      | 0.555601 | 0.610645 | 0.878664 | 1.50071  | 1.96959  |
-| Return on Invested Capital (ROIC)           | 0.269858 | 0.293721 | 0.344126 | 0.503852 | 0.562645 |
-| Return on Capital Employed (ROCE)           | 0.305968 | 0.297739 | 0.320207 | 0.495972 | 0.613937 |
-| Return on Tangible Assets                   | 0.555601 | 0.610645 | 0.878664 | 1.50071  | 1.96959  |
-| Income Quality Ratio                        | 1.30073  | 1.25581  | 1.4052   | 1.09884  | 1.22392  |
-| Net Income per EBT                          | 0.816578 | 0.840562 | 0.855718 | 0.866977 | 0.837955 |
-| Free Cash Flow to Operating Cash Flow Ratio | 0.828073 | 0.848756 | 0.909401 | 0.893452 | 0.912338 |
-| EBT to EBIT Ratio                           | 0.957448 | 0.948408 | 0.958936 | 0.976353 | 0.975982 |
-| EBIT to Revenue                             | 0.286688 | 0.26641  | 0.254864 | 0.305759 | 0.309473 |
+Obtain historical data on a daily, weekly, monthly or yearly basis. This includes OHLC, volumes, dividends, returns, cumulative returns and volatility calculations for each corresponding period.
+
+| Date       |    Open |    High |     Low |   Close |   Adj Close |      Volume |   Dividends |       Return |   Volatility |   Excess Return |   Excess Volatility |   Cumulative Return |
+|:-----------|--------:|--------:|--------:|--------:|------------:|------------:|------------:|-------------:|-------------:|----------------:|--------------------:|--------------------:|
+| 2018-01-02 | 42.54   | 43.075  | 42.315  | 43.065  |     40.7765 | 1.02224e+08 |           0 |  0           |    0.0203524 |     -0.00674528 |           0.0231223 |            1        |
+| 2018-01-03 | 43.1325 | 43.6375 | 42.99   | 43.0575 |     40.7694 | 1.18072e+08 |           0 | -0.000173997 |    0.0203524 |     -0.024644   |           0.0231223 |            0.999826 |
+| 2018-01-04 | 43.135  | 43.3675 | 43.02   | 43.2575 |     40.9588 | 8.97384e+07 |           0 |  0.00464441  |    0.0203524 |     -0.0198856  |           0.0231223 |            1.00447  |
+| 2018-01-05 | 43.36   | 43.8425 | 43.2625 | 43.75   |     41.4251 | 9.464e+07   |           0 |  0.0113856   |    0.0203524 |     -0.0133744  |           0.0231223 |            1.01591  |
+| 2018-01-08 | 43.5875 | 43.9025 | 43.4825 | 43.5875 |     41.2713 | 8.22712e+07 |           0 | -0.00371412  |    0.0203524 |     -0.0285141  |           0.0231223 |            1.01213  |
+
+### Financial Statements
+
+Obtain a Balance Sheet Statement on an annual or quarterly basis. This can also be an income statement (`companies.get_income_statement()`) or cash flow statement (`companies.get_cash_flow_statement()`).
+
+|                                          |         2018 |         2019 |         2020 |        2021 |         2022 |
+|:-----------------------------------------|-------------:|-------------:|-------------:|------------:|-------------:|
+| Cash and Cash Equivalents                |  2.5913e+10  |  4.8844e+10  |  3.8016e+10  | 3.494e+10   |  2.3646e+10  |
+| Short Term Investments                   |  4.0388e+10  |  5.1713e+10  |  5.2927e+10  | 2.7699e+10  |  2.4658e+10  |
+| Cash and Short Term Investments          |  6.6301e+10  |  1.00557e+11 |  9.0943e+10  | 6.2639e+10  |  4.8304e+10  |
+| Accounts Receivable                      |  4.8995e+10  |  4.5804e+10  |  3.7445e+10  | 5.1506e+10  |  6.0932e+10  |
+| Inventory                                |  3.956e+09   |  4.106e+09   |  4.061e+09   | 6.58e+09    |  4.946e+09   |
+| Other Current Assets                     |  1.2087e+10  |  1.2352e+10  |  1.1264e+10  | 1.4111e+10  |  2.1223e+10  |
+| Total Current Assets                     |  1.31339e+11 |  1.62819e+11 |  1.43713e+11 | 1.34836e+11 |  1.35405e+11 |
+| Property, Plant and Equipment            |  4.1304e+10  |  3.7378e+10  |  3.6766e+10  | 3.944e+10   |  4.2117e+10  |
+| Goodwill                                 |  0           |  0           |  0           | 0           |  0           |
+| Intangible Assets                        |  0           |  0           |  0           | 0           |  0           |
+| Long Term Investments                    |  1.70799e+11 |  1.05341e+11 |  1.00887e+11 | 1.27877e+11 |  1.20805e+11 |
+| Tax Assets                               |  0           |  0           |  0           | 0           |  0           |
+| Other Fixed Assets                       |  2.2283e+10  |  3.2978e+10  |  4.2522e+10  | 4.8849e+10  |  5.4428e+10  |
+| Fixed Assets                             |  2.34386e+11 |  1.75697e+11 |  1.80175e+11 | 2.16166e+11 |  2.1735e+11  |
+| Other Assets                             |  0           |  0           |  0           | 0           |  0           |
+| Total Assets                             |  3.65725e+11 |  3.38516e+11 |  3.23888e+11 | 3.51002e+11 |  3.52755e+11 |
+| Accounts Payable                         |  5.5888e+10  |  4.6236e+10  |  4.2296e+10  | 5.4763e+10  |  6.4115e+10  |
+| Short Term Debt                          |  2.0748e+10  |  1.624e+10   |  1.3769e+10  | 1.5613e+10  |  2.111e+10   |
+| Tax Payables                             |  0           |  0           |  0           | 0           |  0           |
+| Deferred Revenue                         |  7.543e+09   |  5.522e+09   |  6.643e+09   | 7.612e+09   |  7.912e+09   |
+| Other Current Liabilities                |  3.2687e+10  |  3.772e+10   |  4.2684e+10  | 4.7493e+10  |  6.0845e+10  |
+| Total Current Liabilities                |  1.16866e+11 |  1.05718e+11 |  1.05392e+11 | 1.25481e+11 |  1.53982e+11 |
+| Long Term Debt                           |  9.3735e+10  |  9.1807e+10  |  9.8667e+10  | 1.09106e+11 |  9.8959e+10  |
+| Deferred Revenue Non Current             |  2.797e+09   |  0           |  0           | 0           |  0           |
+| Deferred Tax Liabilities                 |  4.26e+08    |  0           |  0           | 0           |  0           |
+| Other Non Current Liabilities            |  4.4754e+10  |  5.0503e+10  |  5.449e+10   | 5.3325e+10  |  4.9142e+10  |
+| Total Non Current Liabilities            |  1.41712e+11 |  1.4231e+11  |  1.53157e+11 | 1.62431e+11 |  1.48101e+11 |
+| Other Liabilities                        |  0           |  0           |  0           | 0           |  0           |
+| Capital Lease Obligations                |  0           |  0           |  0           | 0           |  0           |
+| Total Liabilities                        |  2.58578e+11 |  2.48028e+11 |  2.58549e+11 | 2.87912e+11 |  3.02083e+11 |
+| Preferred Stock                          |  0           |  0           |  0           | 0           |  0           |
+| Common Stock                             |  4.0201e+10  |  4.5174e+10  |  5.0779e+10  | 5.7365e+10  |  6.4849e+10  |
+| Retained Earnings                        |  7.04e+10    |  4.5898e+10  |  1.4966e+10  | 5.562e+09   | -3.068e+09   |
+| Accumulated Other Comprehensive Income   | -3.454e+09   | -5.84e+08    | -4.06e+08    | 1.63e+08    | -1.1109e+10  |
+| Other Total Shareholder Equity           |  0           |  0           |  0           | 0           |  0           |
+| Total Shareholder Equity                 |  1.07147e+11 |  9.0488e+10  |  6.5339e+10  | 6.309e+10   |  5.0672e+10  |
+| Total Equity                             |  1.07147e+11 |  9.0488e+10  |  6.5339e+10  | 6.309e+10   |  5.0672e+10  |
+| Total Liabilities and Shareholder Equity |  3.65725e+11 |  3.38516e+11 |  3.23888e+11 | 3.51002e+11 |  3.52755e+11 |
+| Minority Interest                        |  0           |  0           |  0           | 0           |  0           |
+| Total Liabilities and Equity             |  3.65725e+11 |  3.38516e+11 |  3.23888e+11 | 3.51002e+11 |  3.52755e+11 |
+| Total Investments                        |  2.11187e+11 |  1.57054e+11 |  1.53814e+11 | 1.55576e+11 |  1.45463e+11 |
+| Total Debt                               |  1.14483e+11 |  1.08047e+11 |  1.12436e+11 | 1.24719e+11 |  1.20069e+11 |
+| Net Debt                                 |  8.857e+10   |  5.9203e+10  |  7.442e+10   | 8.9779e+10  |  9.6423e+10  |
+
+### Financial Ratios
+
+Get Profitability Ratios based on the inputted balance sheet, income and cash flow statements. This can be any of the 50+ ratios within the `ratios` module. The `get_` functions show a single ratio whereas the `collect_` functions show an aggregation of multiple ratios.
+
+|                                             |     2018 |    2019 |    2020 |    2021 |    2022 |
+|:--------------------------------------------|---------:|--------:|--------:|--------:|--------:|
+| Gross Margin                                |   0.3834 |  0.3782 |  0.3823 |  0.4178 |  0.4331 |
+| Operating Margin                            |   0.2669 |  0.2457 |  0.2415 |  0.2978 |  0.3029 |
+| Net Profit Margin                           |   0.2241 |  0.2124 |  0.2091 |  0.2588 |  0.2531 |
+| Interest Coverage Ratio                     |  25.2472 | 21.3862 | 26.921  | 45.4567 | 44.538  |
+| Income Before Tax Profit Margin             |   0.2745 |  0.2527 |  0.2444 |  0.2985 |  0.302  |
+| Effective Tax Rate                          |   0.1834 |  0.1594 |  0.1443 |  0.133  |  0.162  |
+| Return on Assets (ROA)                      |   0.1628 |  0.1632 |  0.1773 |  0.2697 |  0.2829 |
+| Return on Equity (ROE)                      | nan      |  0.5592 |  0.7369 |  1.4744 |  1.7546 |
+| Return on Invested Capital (ROIC)           |   0.2699 |  0.2937 |  0.3441 |  0.5039 |  0.5627 |
+| Return on Capital Employed (ROCE)           |   0.306  |  0.2977 |  0.3202 |  0.496  |  0.6139 |
+| Return on Tangible Assets                   |   0.5556 |  0.6106 |  0.8787 |  1.5007 |  1.9696 |
+| Income Quality Ratio                        |   1.3007 |  1.2558 |  1.4052 |  1.0988 |  1.2239 |
+| Net Income per EBT                          |   0.8166 |  0.8406 |  0.8557 |  0.867  |  0.838  |
+| Free Cash Flow to Operating Cash Flow Ratio |   0.8281 |  0.8488 |  0.9094 |  0.8935 |  0.9123 |
+| EBT to EBIT Ratio                           |   0.9574 |  0.9484 |  0.9589 |  0.9764 |  0.976  |
+| EBIT to Revenue                             |   0.2867 |  0.2664 |  0.2549 |  0.3058 |  0.3095 |
+| Sharpe Ratio                                |  -0.1859 |  3.2954 |  1.7484 |  1.378  | -0.6998 |
+
+### Financial Models
+
+Get an Extended DuPont Analysis based on the inputted balance sheet, income and cash flow statements. This can also be for example an Enterprise Value Breakdown (`companies.models.get_enterprise_value_breakdown()`).
+
+|                         |     2017 |   2018 |   2019 |   2020 |   2021 |   2022 |
+|:------------------------|---------:|-------:|-------:|-------:|-------:|-------:|
+| Interest Burden Ratio   |   0.9572 | 0.9725 | 0.9725 | 0.988  | 0.9976 | 1.0028 |
+| Tax Burden Ratio        |   0.7882 | 0.8397 | 0.8643 | 0.8661 | 0.869  | 0.8356 |
+| Operating Profit Margin |   0.2796 | 0.2745 | 0.2527 | 0.2444 | 0.2985 | 0.302  |
+| Asset Turnover          | nan      | 0.7168 | 0.7389 | 0.8288 | 1.0841 | 1.1206 |
+| Equity Multiplier       | nan      | 3.0724 | 3.5633 | 4.2509 | 5.255  | 6.1862 |
+| Return on Equity        | nan      | 0.4936 | 0.5592 | 0.7369 | 1.4744 | 1.7546 |
+
+### Technical Indicators
+
+Get Bollinger Bands based on the historical market data. This can be any of the 30+ technical indicators within the `technicals` module. The `get_` functions show a single indicator whereas the `collect_` functions show an aggregation of multiple indicators.
+
+| Date       |   Lower Band |   Middle Band |   Upper Band |
+|:-----------|-------------:|--------------:|-------------:|
+| 2023-08-22 |      170.336 |       178.524 |      186.712 |
+| 2023-08-23 |      173.376 |       177.824 |      182.272 |
+| 2023-08-24 |      173.56  |       177.441 |      181.322 |
+| 2023-08-25 |      173.56  |       177.441 |      181.323 |
+| 2023-08-28 |      173.486 |       177.486 |      181.487 |
 
 ## Defining Custom Ratios
 
