@@ -26,4 +26,4 @@ author_profile: false
     }
 </style>
 
-<iframe name="iframe1" id="iframe1" src="https://nbviewer.org/github/JerBouma/FinanceDatabase/blob/main/examples.ipynb" frameborder="0"></iframe>
+<iframe name="iframe1" id="iframe1" src="https://nbviewer.org/github/JerBouma/FinanceDatabase/blob/main/examples/FInance%20Database%20-%201.%20Getting%20Started.ipynb" frameborder="0"></iframe>

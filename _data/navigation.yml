@@ -30,13 +30,24 @@ financedatabase:
     url: /projects/financedatabase
   - title: "Installation"
     url: /projects/financedatabase#installation
-  - title: "Example Notebook"
-    url: /projects/financedatabase/getting-started
-  - title: "Using the Finance Database"
+  - title: "How to Guides"
+    url: /projects/financedatabase#how-to-guides-for-the-financedatabase
+    children:
+      - title: Getting Started
+        url: /projects/financedatabase/getting-started
+      - title: Categorizing Dutch Stocks
+        url: /projects/financedatabase/querying-netherlands
+      - title: Dupont Analysis on Railroad Companies
+        url: /projects/financedatabase/dupont-analysis
+      - title: Technical Analysis of Biotech ETFs
+        url: /projects/financedatabase/technical-analysis
+  - title: Quick Start
     url: /projects/financedatabase#using-the-finance-database
     children:
-      - title: "Getting Started"
+      - title: Using the Finance Database
         url: /projects/financedatabase#using-the-finance-database
+      - title: Collection Information from the Database
+        url: /projects/financedatabase#collecting-information-from-the-database
       - title: "Searching the Database"
         url: /projects/financedatabase#searching-the-database-extensively
       - title: "Remote and Local Storing"
@@ -44,12 +55,12 @@ financedatabase:
   - title: "Examples"
     url: /projects/financedatabase#examples
     children:
-      - title: "Categorizing Companies in the Netherlands"
+      - title: Categorize Companies
         url: /projects/financedatabase#companies-in-the-netherlands
-      - title: "Technical Analysis of Biotech ETFs"
-        url: /projects/financedatabase#technical-analysis-of-biotech-etfs
-      - title: "Perform a Dupont Analysis on Railroad Companies"
+      - title: Perform a Dupont Analysis
         url: /projects/financedatabase#perform-a-dupont-analysis-on-railroad-companies
+      - title: Apply Technical Analysis
+        url: /projects/financedatabase#/#technical-analysis-of-biotech-etfs
   - title: "Questions & Answers"
     url: /projects/financedatabase#questions--answers
   - title: "User Contributions"
