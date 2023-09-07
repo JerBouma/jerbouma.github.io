@@ -16,4 +16,4 @@ The Models module is meant to execute well-known models such as DUPONT and the D
 
 If you are looking for documentation regarding the toolkit, ratios and technicals, please have a look at the [Toolkit](/projects/financetoolkit/docs), [Ratios](/projects/financetoolkit/docs/ratios) and [Technicals](/projects/financetoolkit/docs/technicals) pages.
 
-{% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/base/models_controller.py' %}
+{% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/base/models/models_controller.py' %}

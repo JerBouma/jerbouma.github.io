@@ -16,4 +16,4 @@ The Technicals Module contains 30+ Technical Indicators that can be used to anal
 
 If you are looking for documentation regarding the toolkit, ratios and models, please have a look at the [Toolkit](/projects/financetoolkit/docs), [Ratios](/projects/financetoolkit/docs/ratios) and [Models](/projects/financetoolkit/docs/models) pages.
 
-{% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/base/technicals_controller.py' %}
+{% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/base/technicals/technicals_controller.py' %}

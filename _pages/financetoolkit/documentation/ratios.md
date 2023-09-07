@@ -15,4 +15,4 @@ The Ratios Module contains over 50+ ratios that can be used to analyse companies
 
 If you are looking for documentation regarding the toolkit, models and technicals, please have a look at the [Toolkit](/projects/financetoolkit/docs), [Models](/projects/financetoolkit/docs/models) and [Technicals](/projects/financetoolkit/docs/technicals) pages.
 
-{% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/base/ratios_controller.py' %}
+{% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/base/ratios/ratios_controller.py' %}
