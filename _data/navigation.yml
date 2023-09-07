@@ -106,6 +106,10 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#models
     - title: "Technicals Module"
       url: /projects/financetoolkit/docs#technicals
+    - title: "Risk Module"
+      url: /projects/financetoolkit/docs#risk
+    - title: "Performance Module"
+      url: /projects/financetoolkit/docs#performance
     - title: "Profiles"
       url: /projects/financetoolkit/docs#get_profile
     - title: "Quotes"
@@ -138,6 +142,10 @@ financetoolkit-docs:
     url: /projects/financetoolkit/docs/models
   - title: Technicals Documentation
     url: /projects/financetoolkit/docs/technicals
+  - title: Risk Documentation
+    url: /projects/financetoolkit/docs/risk
+  - title: Performance Documentation
+    url: /projects/financetoolkit/docs/performance
 
 financetoolkit-docs-ratios:
   - title: All Ratios
@@ -388,6 +396,28 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_keltner_channels
       - title: Bollinger Bands
         url: /projects/financetoolkit/docs/technicals#get_bollinger_bands
+
+financetoolkit-docs-risk:
+  - title: Value at Risk (VaR)
+    url:  /projects/financetoolkit/docs/risk#get_value_at_risk
+  - title: Conditional Value at Risk (cVaR)
+    url:  /projects/financetoolkit/docs/risk#get_conditional_value_at_risk
+  - title: Maximum Drawdown (MDD)
+    url:  /projects/financetoolkit/docs/risk#get_maximum_drawdown
+  - title: Skewness
+    url:  /projects/financetoolkit/docs/risk#get_skewness
+  - title: Kurtosis
+    url:  /projects/financetoolkit/docs/risk#get_kurtosis
+
+financetoolkit-docs-performance:
+  - title: Beta
+    url:  /projects/financetoolkit/docs/performance#get_beta
+  - title: Capital Asset Pricing Model (CAPM)
+    url:  /projects/financetoolkit/docs/performance#get_capital_asset_pricing_model
+  - title: Sharpe Ratio
+    url:  /projects/financetoolkit/docs/performance#get_sharpe_ratio
+  - title: Sortino Ratio
+    url:  /projects/financetoolkit/docs/performance#get_sortino_ratio
 
 thepassiveinvestor:
   - title: "Introduction"

@@ -39,6 +39,14 @@
                   /def\s+(\w+)\([\s\S]*?\"\"\"([\s\S]*?)\"\"\"/
                 );
 
+                // Description
+                const descriptionMatch = docstring.match(/([^]*?)(?:Args:|As an example:|$)/s);
+                const description = descriptionMatch ? descriptionMatch[1] : '';
+                
+                // Arguments
+                const argumentsMatch = docstring.match(/(Args:.*?)(```python|$)/s);
+                const arguments = argumentsMatch ? argumentsMatch[1] : '';
+
                 // Extract example code block
                 const exampleCodeMatch = docstring.match(/```python([\s\S]*?)```/s);
                 const exampleCode = exampleCodeMatch ? exampleCodeMatch[1] : '';
@@ -51,25 +59,37 @@
                 const cleanedDocstringWithoutCode= docstring.replace(/```python([\s\S]*?)```/s, '');
                 const cleanedDocstringWithoutTable = cleanedDocstringWithoutCode.replace(/Which returns:[\s\S]*$/, '');
 
-                functionsWithDocstrings.push({ functionName, cleanedDocstringWithoutTable, exampleCode, exampleResult});
+                functionsWithDocstrings.push({ functionName, description, arguments, exampleCode, exampleResult});
               });
             }
 
             const contentElement = document.getElementById('content');
 
-            functionsWithDocstrings.forEach(({ functionName, cleanedDocstringWithoutTable, exampleCode, exampleResult}) => {
-              const cleanedDocstring2 = cleanedDocstringWithoutTable.replace(/\n/g, '<br>');
-              const cleanedDocstring3 = cleanedDocstring2.replace(/\w+ \([^)]+\):/g, match => `<u>${match}</u>`);
-              const cleanedDocstring4 = cleanedDocstring3.replace(`Args:`, '**Args:**');
-              const cleanedDocstring5 = cleanedDocstring4.replace(`Raises:`, '**Raises:**');
-              const cleanedDocstring6 = cleanedDocstring5.replace(`Returns:`, '**Returns:**');
-              const cleanedDocstring7 = cleanedDocstring6.replace(`Notes:`, '**Notes:**');
+            functionsWithDocstrings.forEach(({ functionName, description, arguments, exampleCode, exampleResult}) => {
+              const formattedDescription = description
+              .trim()
+              .split('\n')
+              .map(paragraph => paragraph.trim())
+              .join('\n');
 
-              const parsedDocstring = marked.parse(`${cleanedDocstring7}`);
-              const parsedDocstringCleaned = parsedDocstring.replace(/(<br>\s*){3,}/g, '<br>');
+              const formattedArguments = arguments
+              .trim()
+              .split('\n')
+              .map(paragraph => paragraph.trim())
+              .join('\n')
+              .replace(/\n/g, '<br>')
+              .replace(/Args:/g, '**Args:**')
+              .replace(/Raises:/g, '**Raises:**')
+              .replace(/Returns:/g, '**Returns:**')
+              .replace(/Notes:/g, '**Notes:**')
+              .replace(/\w+ \([^)]+\):/g, match => `<u>${match}</u>`);
 
               contentElement.innerHTML += `<h3 id=${functionName}>${functionName}</h2><a class="header-link" href="#${functionName}" title="Permalink">`;
-              contentElement.innerHTML += marked.parse(`${parsedDocstringCleaned}`);
+              contentElement.innerHTML += marked.parse(`${formattedDescription}`);
+
+              if (formattedArguments) {
+                contentElement.innerHTML += marked.parse(`${formattedArguments}`)
+              }
               
               if (exampleCode) {
                 contentElement.innerHTML += `<pre class=custom-style><code class="language-python custom-style"">${exampleCode.replace(/^[ \t]+/gm, '')}</code></pre>`;
