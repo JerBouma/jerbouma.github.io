@@ -42,25 +42,16 @@ financedatabase:
       - title: Technical Analysis of Biotech ETFs
         url: /projects/financedatabase/technical-analysis
   - title: Quick Start
-    url: /projects/financedatabase#using-the-finance-database
+    url: /projects/financedatabase#basic-usage
     children:
       - title: Using the Finance Database
-        url: /projects/financedatabase#using-the-finance-database
+        url: /projects/financedatabase#basic-usage
       - title: Collection Information from the Database
         url: /projects/financedatabase#collecting-information-from-the-database
       - title: "Searching the Database"
         url: /projects/financedatabase#searching-the-database-extensively
       - title: "Remote and Local Storing"
         url: /projects/financedatabase#storing-the-database-at-a-different-location
-  - title: "Examples"
-    url: /projects/financedatabase#examples
-    children:
-      - title: Categorize Companies
-        url: /projects/financedatabase#companies-in-the-netherlands
-      - title: Perform a Dupont Analysis
-        url: /projects/financedatabase#perform-a-dupont-analysis-on-railroad-companies
-      - title: Apply Technical Analysis
-        url: /projects/financedatabase#/#technical-analysis-of-biotech-etfs
   - title: "Questions & Answers"
     url: /projects/financedatabase#questions--answers
   - title: "User Contributions"
@@ -83,17 +74,6 @@ financetoolkit:
         url: /projects/financetoolkit/functional-toolkit
       - title: Using External Datasets
         url: /projects/financetoolkit/external-datasets
-  - title: Quick Start
-    url: /projects/financetoolkit#using-the-finance-toolkit
-    children:
-      - title: Using the Finance Toolkit
-        url: /projects/financetoolkit#using-the-finance-toolkit
-      - title: Working with Custom Ratios
-        url: /projects/financetoolkit#working-with-custom-ratios
-      - title: Accessing Functions Directly
-        url: /projects/financetoolkit#accessing-functions-directly
-      - title: Working with other Datasets
-        url: /projects/financetoolkit#working-with-other-datasets
   - title: "Code Documentation"
     url: /projects/financetoolkit/docs
 
