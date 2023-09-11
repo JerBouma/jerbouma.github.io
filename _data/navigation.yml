@@ -74,6 +74,10 @@ financetoolkit:
         url: /projects/financetoolkit/functional-toolkit
       - title: Using External Datasets
         url: /projects/financetoolkit/external-datasets
+  - title: "Functionality"
+    url: /projects/financetoolkit#functionality
+  - title: "Basic Usage"
+    url: /projects/financetoolkit#basic-usage
   - title: "Code Documentation"
     url: /projects/financetoolkit/docs
 
@@ -382,8 +386,12 @@ financetoolkit-docs-risk:
     url:  /projects/financetoolkit/docs/risk#get_value_at_risk
   - title: Conditional Value at Risk (cVaR)
     url:  /projects/financetoolkit/docs/risk#get_conditional_value_at_risk
+  - title: Entropic Value at Risk (eVaR)
+    url:  /projects/financetoolkit/docs/risk#get_entropic_value_at_risk
   - title: Maximum Drawdown (MDD)
     url:  /projects/financetoolkit/docs/risk#get_maximum_drawdown
+  - title: Ulcer Index (UI)
+    url:  /projects/financetoolkit/docs/risk#get_ulcer_index
   - title: Skewness
     url:  /projects/financetoolkit/docs/risk#get_skewness
   - title: Kurtosis
@@ -394,10 +402,24 @@ financetoolkit-docs-performance:
     url:  /projects/financetoolkit/docs/performance#get_beta
   - title: Capital Asset Pricing Model (CAPM)
     url:  /projects/financetoolkit/docs/performance#get_capital_asset_pricing_model
+  - title: Alpha
+    url:  /projects/financetoolkit/docs/performance#get_alpha
+  - title: Jensen's Alpha
+    url:  /projects/financetoolkit/docs/performance#get_jensens_alpha
+  - title: Treynor Ratio
+    url:  /projects/financetoolkit/docs/performance#get_treynor_ratio
   - title: Sharpe Ratio
     url:  /projects/financetoolkit/docs/performance#get_sharpe_ratio
   - title: Sortino Ratio
     url:  /projects/financetoolkit/docs/performance#get_sortino_ratio
+  - title: Ulcer Performance Index (UPI)
+    url:  /projects/financetoolkit/docs/performance#get_ulcer_performance_index
+  - title: M2 Ratio
+    url:  /projects/financetoolkit/docs/performance#get_m2_ratio
+  - title: Tracking Error
+    url:  /projects/financetoolkit/docs/performance#get_tracking_error
+  - title: Information Ratio
+    url:  /projects/financetoolkit/docs/performance#get_information_ratio
 
 thepassiveinvestor:
   - title: "Introduction"
