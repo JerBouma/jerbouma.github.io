@@ -300,6 +300,10 @@ financetoolkit-docs-models:
     url:  /projects/financetoolkit/docs/models#get_extended_dupont_analysis
   - title: Enterprise Value Breakdown
     url:  /projects/financetoolkit/docs/models#get_enterprise_value_breakdown
+  - title: Weighted Average Cost of Capital (WACC)
+    url:  /projects/financetoolkit/docs/models#get_weighted_average_cost_of_capital
+  - title: Intrinsic Valuation
+    url:  /projects/financetoolkit/docs/models#get_intrinsic_valuation
 
 financetoolkit-docs-technicals:
   - title: All Indicators
