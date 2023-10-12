@@ -19,7 +19,7 @@ I am strongly analytical, have a keen sense of long-term investment strategy and
 
 Furthermore, throughout the last several years I’ve spent thousands of hours developing in Python in the areas of quantitative and statistical modelling, and data science. Find all of my currently active open-source projects inside the <a href="/projects">projects page</a> which include the Finance Database and Financial Toolkit with both well over 1.000 GitHub Stars as well as the OpenBB Terminal in which I am one of the leading contributors with major contributions in the area of fundamental analysis, economics, fixed income and econometrics.
 
-All of this comes together within my current role as Financial Risk Analyst at A.S.R, one of the largest insurance companies in the Netherlands. Within this role, I am responsible for much of the financial modelling related to the investment strategy and will manage models that keep the balance sheets of A.S.R. in check. In doing so, I work closely with a range of (equity) analysts and have biweekly analysts calls to discuss market conditions.
+All of this comes together within my current role as Financial Risk Analyst at A.S.R, one of the largest insurance companies in the Netherlands. Within this role, I analyze profitability and investment risks in different risk frameworks (Solvency II and internal models), provide insights into portfolio sensitivities and their relationship with liabilities, assess the impact of month-to-month changes and contribute to the development of Python models for improved valuation and financial risk measurement.
 
 </div>
 
