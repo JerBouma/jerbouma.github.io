@@ -447,3 +447,19 @@ thepassiveinvestor:
         url: /projects/thepassiveinvestor#compare-etfs
       - title: "Generate an ETF Report"
         url: /projects/thepassiveinvestor#generate-an-etf-report
+
+personalfinance:
+  - title: "Introduction"
+    url: /projects/personalfinance
+  - title: "Installation"
+    url: /projects/personalfinance#installation
+  - title: "How to Guides"
+    url: /projects/personalfinance#how-to-guides-for-personalfinance
+    children:
+      - title: Getting Started
+        url: /projects/personalfinance/getting-started
+      - title: Using your Own Files
+        url: /projects/financedatabase/querying-netherlands
+      - title: Dupont Analysis on Railroad Companies
+        url: /projects/financedatabase/using-your-files
+  - title: "Functionality"
