@@ -54,14 +54,14 @@ This section contains a list of How-To guides for Personal Finance These guides 
 
 ### Getting Started with Personal Finance
 
-This notebook demonstrates an example how to use Personal Finance to understand what the application offers and how you can leverage it for your own personal finance.
+This notebook demonstrates an example how to use Personal Finance to understand what the application offers and how you can leverage it for your own personal finance. It helps in understanding how the package is created and how you can use it both in Python and Excel.
 
 [Open the Notebook](/projects/personalfinance/getting-started){: .btn .btn--info}
 
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 
-### Using your Own Files with Personal Finance
+### Managing your Personal Finances
 
 This notebook explains in detail how to use your own transaction files to manage your personal finances. It explains in detail how to use the configuration file and how you can leverage the created datasets to gain insights in your prsonal finances.
 

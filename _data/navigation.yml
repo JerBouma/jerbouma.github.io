@@ -456,10 +456,9 @@ personalfinance:
   - title: "How to Guides"
     url: /projects/personalfinance#how-to-guides-for-personalfinance
     children:
-      - title: Getting Started
+      - title: Getting Started with Personal Finance
         url: /projects/personalfinance/getting-started
-      - title: Using your Own Files
-        url: /projects/financedatabase/querying-netherlands
-      - title: Dupont Analysis on Railroad Companies
-        url: /projects/financedatabase/using-your-files
+      - title: Managing your Personal Finances
+        url: /projects/personalfinance/using-your-files
   - title: "Functionality"
+    url: /projects/personalfinance#getting-started
