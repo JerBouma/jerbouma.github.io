@@ -66,10 +66,10 @@ To assist in not needing to get *exact* matches, the package makes use of the [L
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
 <a href="/projects/personalfinance"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" width="400"></a>
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=personalfinance)](/projects/financedatabase)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=personalfinance)](/projects/personalfinance)
 
 [![PyPi Version](https://img.shields.io/pypi/v/personalfinance)](https://pypi.org/project/financedatabase/){:target="_blank"}
-[![PYPI Downloads](https://static.pepy.tech/badge/personalfinance/month)](https://pepy.tech/project/financedatabase){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/personalfinance/month)](https://pepy.tech/project/personalfinance){:target="_blank"}
 </div>
 </div>
 
