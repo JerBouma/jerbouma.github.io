@@ -110,6 +110,8 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#get_revenue_product_segmentation
     - title: "Historical Data"
       url: /projects/financetoolkit/docs#get_historical_data
+    - title: "Dividend Calendar"
+      url: /projects/financetoolkit/docs#get_dividend_calendar
     - title: "Treasury Rates"
       url: /projects/financetoolkit/docs#get_treasury_data
     - title: "Balance Sheet Statements"

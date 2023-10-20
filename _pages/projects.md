@@ -60,7 +60,7 @@ The aim of this database is explicitly not to provide up-to-date fundamentals or
 <div markdown="1" class="sixty-column mobile-max-column-width">
 With PersonalFinance I want to make it easier to manage your personal finance. Through defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you.
 
-To assist in not needing to get *exact* matches, the package makes use of the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) to determine how similar two strings are. There is a limited amount of Mumbo Jumbo going on here on purpose so that it still becomes logical why it is categorised as such.
+To assist in not needing to get *exact* matches, the package makes use of the Levenshtein distance to determine how similar two strings are. There is a limited amount of Mumbo Jumbo going on here on purpose so that it still becomes logical why it is categorised as such.
 
 [View this Project](/projects/personalfinance){: .btn .btn--info}
 </div>
