@@ -112,6 +112,8 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#get_historical_data
     - title: "Dividend Calendar"
       url: /projects/financetoolkit/docs#get_dividend_calendar
+    - title: "ESG Scores"
+      url: /projects/financetoolkit/docs#get_esg_scores
     - title: "Treasury Rates"
       url: /projects/financetoolkit/docs#get_treasury_data
     - title: "Balance Sheet Statements"
@@ -306,6 +308,10 @@ financetoolkit-docs-models:
     url:  /projects/financetoolkit/docs/models#get_weighted_average_cost_of_capital
   - title: Intrinsic Valuation
     url:  /projects/financetoolkit/docs/models#get_intrinsic_valuation
+  - title: Altman Z-Score
+    url:  /projects/financetoolkit/docs/models#get_altman_z_score
+  - title: Piotroski Score
+    url:  /projects/financetoolkit/docs/models#get_piotroski_score
 
 financetoolkit-docs-technicals:
   - title: All Indicators
@@ -432,6 +438,8 @@ financetoolkit-docs-performance:
     url:  /projects/financetoolkit/docs/performance#get_tracking_error
   - title: Information Ratio
     url:  /projects/financetoolkit/docs/performance#get_information_ratio
+  - title: Compound Growth Rate
+    url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
 
 thepassiveinvestor:
   - title: "Introduction"
