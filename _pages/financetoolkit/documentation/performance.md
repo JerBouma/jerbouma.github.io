@@ -15,4 +15,4 @@ The Performance module is meant to calculate important performance metrics such 
 
 If you are looking for documentation regarding the toolkit, ratios, models, technicals and risk, please have a look at the [Toolkit](/projects/financetoolkit/docs), [Ratios](/projects/financetoolkit/docs/ratios), [Models](/projects/financetoolkit/docs/models), [Technicals](/projects/financetoolkit/docs/technicals) and [Risk](/projects/financetoolkit/docs/risk) pages.
 
-{% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/base/performance/performance_controller.py' %}
+{% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/performance/performance_controller.py' %}

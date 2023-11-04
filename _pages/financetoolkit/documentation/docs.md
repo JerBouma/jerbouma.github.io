@@ -18,5 +18,5 @@ The Toolkit Module is meant to be a collection of useful functions that collect 
 
 If you are looking for documentation regarding the ratios, technical indicators, models, risk metrics and performance metrics, please have a look at the [Ratios](/projects/financetoolkit/docs/ratios), [Technicals](/projects/financetoolkit/docs/technicals), [Models](/projects/financetoolkit/docs/models), [Risk](/projects/financetoolkit/docs/risk) and [Performance](/projects/financetoolkit/docs/performance) pages.
 
-{% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/base/toolkit_controller.py' %}
+{% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/toolkit_controller.py' %}
 
