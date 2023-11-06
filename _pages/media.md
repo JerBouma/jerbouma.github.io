@@ -22,6 +22,9 @@ On this page, you will find a collection of my experiences and contributions wit
 I have participated in the Utrecht University's Finance Hackathon as a jury member. The 100+ Finance students had the entire day to come up with Robo Advisor by using Python based on a large dataset of investment instruments. The challenge of this assignment was finding the right balance between quantitative analysis, thinking about the investor's profile and applying proven investment theory which meant maximizing for Sharpe Ratio was not at all efficient.
 
 Throughout this day I've coached several teams in how to apply financial theory within Python and what made sense given the dataset. It was very interesting to see the different approaches students made from applying portfolio optimization to cherry picking just a few assets. All in all, a great event and I'm looking forward to the next one!
+
+[Read More](https://www.linkedin.com/feed/update/urn:li:activity:7127300810450853888/){: .btn .btn--info target="_blank"}
+
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 <div class="image-grid">
