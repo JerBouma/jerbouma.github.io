@@ -4,8 +4,12 @@
 
 form {
   margin: 0 0 5px 0;
-  padding: 1em;
-  background-color: $form-background-color;
+  background-color: $info-color;
+  font-family: $global-font-family;
+  font-size: $type-size-6;
+  padding: 10px;
+  color: white;
+  border-radius: 15px;
 
   fieldset {
     margin-bottom: 5px;
@@ -59,7 +63,7 @@ textarea {
 label {
   display: block;
   margin-bottom: 0.25em;
-  color: $text-color;
+  color: white;
   cursor: pointer;
 
   small {
@@ -139,6 +143,14 @@ input[type="submit"] {
   height: auto;
   cursor: pointer;
   *overflow: visible;
+  background-color: white;
+  color: $text-color;
+  padding: 5px 25px 5px 25px;
+}
+
+input[type="submit"]:hover {
+  background-color: black;
+  color: white;
 }
 
 select,

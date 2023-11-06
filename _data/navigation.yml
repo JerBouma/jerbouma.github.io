@@ -6,8 +6,8 @@ main:
     url: /resume
   - title: "Projects"
     url: /projects
-  - title: "Talks"
-    url: /talks
+  - title: "Activities"
+    url: /activities
   - title: "Literature"
     url: /literature
   - title: "Contact"

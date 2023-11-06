@@ -358,8 +358,8 @@ input[type="submit"],
 }
 
 /*
-  Progress Bars
-*/
+  Tooltips
+  ========================================================================== */
 
 .skill {
   margin-bottom: 20px;
@@ -396,39 +396,56 @@ input[type="submit"],
   z-index: 100; /* Ensure the tooltip is on top */
 }
 
-  /* Tooltip styles */
-  .skill:hover .tooltip {
-    opacity: 1;
-    transform: translate(-50%, -80%) scale(1);
-    z-index: 100; /* Ensure the tooltip is on top */
-  }
+.skill:hover .tooltip {
+  opacity: 1;
+  transform: translate(-50%, -80%) scale(1);
+  z-index: 100; /* Ensure the tooltip is on top */
+}
 
-  .progress-container:hover .tooltip {
-    opacity: 1;
-    transform: translate(-50%, -70%) scale(1);
-    z-index: 100; /* Ensure the tooltip is on top */
-  }
+.progress-container:hover .tooltip {
+  opacity: 1;
+  transform: translate(-50%, -70%) scale(1);
+  z-index: 100; /* Ensure the tooltip is on top */
+}
 
-  .tooltip {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -70%) scale(0.9);
-    padding: 10px 20px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    border-radius: 10px;
-    font-size: 16px;
-    opacity: 0;
-    transition: opacity 0.3s, transform 0.3s;
-    pointer-events: none;
-    width: 400px; /* Adjust the max-width as needed */
+.tooltip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%) scale(0.9);
+  padding: 10px 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 10px;
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+  width: 400px; /* Adjust the max-width as needed */
 
-  }
+}
 
-/* Mobile-friendly styles */
 @media screen and (max-width: 768px) {
   .tooltip {
     display: None; /* Adjust the max-width for smaller screens */
   }
+}
+
+/*
+   Image Grids
+   ========================================================================== */
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.grid-item {
+  text-align: center;
+}
+
+.grid-item img {
+  max-width: 100%;
+  height: auto;
 }
