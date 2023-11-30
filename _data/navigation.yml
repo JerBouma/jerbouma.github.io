@@ -6,10 +6,10 @@ main:
     url: /resume
   - title: "Projects"
     url: /projects
-  - title: "Activities"
-    url: /activities
-  - title: "Literature"
-    url: /literature
+  - title: "Modelling"
+    url: /modelling
+  - title: "Appearances"
+    url: /appearances
   - title: "Contact"
     url: /contact
 resume:
@@ -472,3 +472,61 @@ personalfinance:
         url: /projects/personalfinance/using-your-files
   - title: "Functionality"
     url: /projects/personalfinance#getting-started
+
+modelling:
+  - title: "Introduction"
+    url: /modelling
+  - title: "Getting Started"
+    url: /modelling/getting-started
+    children:
+      - title: "Learning the Basics"
+        url: /modelling/getting-started#learning-the-basics
+      - title: "Installing and Working with Python"
+        url: /modelling/getting-started#installing-and-working-with-python
+      - title: "The Next Steps"
+        url: /modelling/getting-started#the-next-steps
+  - title: 'Setting up your Project'
+    url: /modelling/setting-up-your-project
+    children:
+      - title: Managing your Project
+        url: /modelling/setting-up-your-project#managing-your-project
+      - title: Directory Structure
+        url: /modelling/setting-up-your-project#directory-structure
+      - title: Dependency Management
+        url: /modelling/setting-up-your-project#dependency-management
+      - title: Setting up Linters
+        url: /modelling/setting-up-your-project#setting-up-linters
+      - title: Creating a Git Workflow
+        url: /modelling/setting-up-your-project#creating-a-git-workflow
+      - title: Adding Git Exceptions
+        url: /modelling/setting-up-your-project#adding-git-exceptions
+  - title: "Structure your Model"
+    url: /modelling/structure-your-model
+    children:
+      - title: "The Data Layer"
+        url: /modelling/structure-your-model#the-data-layer
+      - title: "The Visualization Layer"
+        url: /modelling/structure-your-model#the-visualization-layer
+      - title: "The Controlling Layer"
+        url: /modelling/structure-your-model#the-controlling-layer
+      - title: "The Supportive Layer"
+        url: /modelling/structure-your-model#the-supportive-layer
+      - title: "Combining Everything"
+        url: /modelling/structure-your-model#combining-everything
+  - title: "Build your Model"
+    url: /modelling/build-your-model
+    children:
+      - title: "Default Styling (PEP8)"
+        url: /modelling/build-your-model#default-styling
+      - title: "Naming Conventions"
+        url: /modelling/build-your-model#naming-conventions
+      - title: "Applying Typing"
+        url: modelling/build-your-model#applying-typing
+      - title: "Writing Docstrings"
+        url: /modelling/build-your-model#writing-docstrings
+      - title: "Creating Documentation"
+        url: /modelling/build-your-model#creating-documentation
+  - title: "Test your Model"
+    url: /modelling/test-your-model
+
+
