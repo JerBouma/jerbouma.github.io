@@ -11,7 +11,7 @@ redirect_from:
 
 During my time at OpenBB, I have made major code contributions to get the OpenBB Terminal in the shape it currently is. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. This led to much of the currently in place functionality. The OpenBB Terminal is a CLI based platform that democratises access to investment research. It is a platform that is meant to be used by both professional and non-professional investors. The [Finance Database](/projects/financedatabase) is part of this project and is crucial for finding and selecting companies that match the user's criteria.
 
-I've led many of the now in place initatives presenting the software at multiple universities in Europe (as seen on the [talks](/talks) page as well) and was the source of information when it came to financial theory which includes portfolio attribution and optimization and stock and economic analysis. This also led to several Powerpoint presentations that have been presented at webinars and conferences. 
+I've led many of the now in place initatives presenting the software at multiple universities in Europe (as seen on the [Appearances](/appearances) page as well) and was the source of information when it came to financial theory which includes portfolio attribution and optimization and stock and economic analysis. This also led to several Powerpoint presentations that have been presented at webinars and conferences. 
 
 Discover some of my code contributions (with over 250 commits and millions of code additions) by clicking the image below.
 

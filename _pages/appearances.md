@@ -1,10 +1,11 @@
 ---
-title: Activities
+title: Appearances
 excerpt: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
 description: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
 author_profile: true
-permalink: /activities
+permalink: /appearances
 redirect_from:
+  - /activities
   - /talks
   - /media
   - /videos
@@ -13,7 +14,7 @@ author_profile: false
 layout: videos
 ---
 
-On this page, you will find a collection of my experiences and contributions within the finance and technology sectors. I had the privilege of serving as a jury member in the Utrecht University's Finance Hackathon, where students were challenged to create a Robo Advisor using Python. Additionally, I delivered presentations at universities, introducing the OpenBB Terminal and highlighting the role of Python in the financial industry. These experiences reflect my commitment to sharing knowledge and insights within the finance and technology domains, making this page a valuable resource for those interested in these fields. **Interested in partnering with me? Reach out via the [Contact page](/contact)!**
+On this page, you will find a collection of my experiences and contributions within the finance and technology sectors. I had the privilege of serving as a jury member in the Utrecht University's Finance Hackathon, where students were challenged to create a Robo Advisor using Python. Additionally, I delivered presentations at universities, introducing the OpenBB Terminal and highlighting the role of Python in the financial industry. These experiences reflect my commitment to sharing knowledge and insights within the finance and technology domains, making this page a valuable resource for those interested in these fields. **Interested in partnering with me? Reach out via the [contact page](/contact)!**
 
 ## Guiding Students in the Utrecht University's Hackathon
 
@@ -32,16 +33,16 @@ I strongly believe in that the importance of Python in the financial industry wi
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 <div class="image-grid">
   <div class="grid-item">
-    <img src="/assets/images/activities/hackathon/DSC06281.jpg" alt="Hackathon Utrecht University">
+    <img src="/assets/images/appearances/hackathon/DSC06281.jpg" alt="Hackathon Utrecht University">
   </div>
   <div class="grid-item">
-    <img src="/assets/images/activities/hackathon/DSC06385.jpg" alt="Hackathon Utrecht University">
+    <img src="/assets/images/appearances/hackathon/DSC06385.jpg" alt="Hackathon Utrecht University">
   </div>
   <div class="grid-item">
-    <img src="/assets/images/activities/hackathon/DSC06451.jpg" alt="Hackathon Utrecht University">
+    <img src="/assets/images/appearances/hackathon/DSC06451.jpg" alt="Hackathon Utrecht University">
   </div>
   <div class="grid-item">
-    <img src="/assets/images/activities/hackathon/DSC06491.jpg" alt="Hackathon Utrecht University">
+    <img src="/assets/images/appearances/hackathon/DSC06491.jpg" alt="Hackathon Utrecht University">
   </div>
 </div>
 </div>
