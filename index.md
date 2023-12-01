@@ -25,12 +25,12 @@ I'm Jeroen Bouma, a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:
 </div>
 <div markdown="1" class="about-buttons-column">
 
-[Watch <br /> Talks](/talks){: .btn .btn--info .display-about-bio-image} 
+[Learn <br /> Modelling](/modelling){: .btn .btn--info .display-about-bio-image}
 
 </div>
 <div markdown="1" class="about-buttons-column">
 
-[Read <br /> Literature](/literature){: .btn .btn--info .display-about-bio-image}
+[Watch <br /> Talks](/talks){: .btn .btn--info .display-about-bio-image} 
 
 </div>
 </div>
