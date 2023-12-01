@@ -1,7 +1,7 @@
 ---
 title: Structure your Model
-excerpt: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
-description: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
+excerpt: Learn to structure your financial model with MVC pattern. Code in Python, manage dependencies, and follow clear separation of concerns.
+description: Learn to structure your financial model with MVC pattern. Code in Python, manage dependencies, and follow clear separation of concerns.
 author_profile: true
 permalink: /modelling/structure-your-model
 classes: wide-sidebar

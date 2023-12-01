@@ -1,7 +1,7 @@
 ---
 title: Financial Modelling with Python
-excerpt: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
-description: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
+excerpt: Explore Financial Modeling with Python, develop robust models, avoid pitfalls, and learn from practical experience for professional insights.
+description: Explore Financial Modeling with Python, develop robust models, avoid pitfalls, and learn from practical experience for professional insights.
 author_profile: true
 permalink: /modelling/introduction
 classes: wide-sidebar

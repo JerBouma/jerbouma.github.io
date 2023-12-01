@@ -1,7 +1,7 @@
 ---
 title: Setting up your Project
-excerpt: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
-description: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
+excerpt: Master setting up financial models in Python. Explore project management, directory structure, dependency management, Git workflow, and exceptions.
+description: Master setting up financial models in Python. Explore project management, directory structure, dependency management, Git workflow, and exceptions.
 author_profile: true
 permalink: /modelling/setting-up-your-project
 classes: wide-sidebar

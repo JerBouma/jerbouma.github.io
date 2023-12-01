@@ -1,7 +1,7 @@
 ---
 title: Test your Model
-excerpt: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
-description: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
+excerpt: Explore model testing with Pytest. Set up tests mirroring model structure, ensuring accurate results through data recording and comparison. 
+description: Explore model testing with Pytest. Set up tests mirroring model structure, ensuring accurate results through data recording and comparison.
 author_profile: true
 permalink: /modelling/test-your-model
 classes: wide-sidebar

@@ -1,7 +1,7 @@
 ---
 title: Getting Started with Python
-excerpt: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
-description: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
+excerpt: Embark on your Python journey! From basics to project ideas, learn with Kaggle, build Financial Models, and manage projects with tips on Git and code editors.
+description: Embark on your Python journey! From basics to project ideas, learn with Kaggle, build Financial Models, and manage projects with tips on Git and code editors. 
 author_profile: true
 permalink: /modelling/getting-started
 classes: wide-sidebar

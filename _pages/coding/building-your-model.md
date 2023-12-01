@@ -1,7 +1,7 @@
 ---
 title: Build your Model
-excerpt: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
-description: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
+excerpt: Build robust financial models with modular programming, styling, and PEP8 conventions.
+description: Build robust financial models with modular programming, styling, and PEP8 conventions.
 author_profile: true
 permalink: /modelling/build-your-model
 classes: wide-sidebar
