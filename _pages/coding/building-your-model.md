@@ -234,9 +234,9 @@ def get_capital_asset_pricing_model(
 
 Besides styling and docstrings, documentation is actually pretty important if you want to share your code with others. This is where [Sphinx](https://www.sphinx-doc.org/en/master/){: target="_blank"} comes in. Sphinx is a tool that makes it easy to create intelligent and beautiful documentation for Python projects (or other documents consisting of multiple reStructuredText or Markdown files).
 
-This is not the only approach to create documentation. There are other tools such as [MkDocs](https://www.mkdocs.org/){: target="_blank"} and [Read the Docs](https://readthedocs.org/){: target="_blank"} which are also widely used. See below the documentation of the [Finance Toolkit](/projects/financetoolkit/docs/){: target="_blank"} as an example. This uses custom JavaScript but the result is similar to that what you can achieve with Sphinx.
+This is not the only approach to create documentation. There are other tools such as [MkDocs](https://www.mkdocs.org/){: target="_blank"} and [Read the Docs](https://readthedocs.org/){: target="_blank"} which are also widely used. See below the documentation of the [Finance Toolkit](/projects/financetoolkit/docs){: target="_blank"} as an example. This uses custom JavaScript but the result is similar to that what you can achieve with Sphinx.
 
-[![Alt text](/assets/images/modelling/build-your-model/image-2.png)](/projects/financetoolkit/docs/){: target="_blank"}
+[![Alt text](/assets/images/modelling/build-your-model/image-2.png)](/projects/financetoolkit/docs){: target="_blank"}
 
 Documentation shouldn't just be about describing each individual function. It should also feature Jupyter Notebooks demonstrating use-cases. This helps in understanding the logic behind the model and for what it could be used. This should be saved in an "examples" folder as also shown in [Structure your Model](/modelling/structure-your-model). E.g. see below a snippet of the Getting Started Notebook from the [Finance Toolkit](/projects/financetoolkit/getting-started){: target="_blank"}.
 

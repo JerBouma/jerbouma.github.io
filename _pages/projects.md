@@ -16,6 +16,10 @@ When I discovered Python during my time in University, I was immediately captiva
 </div>
 </div>
 
+{: .notice--info}
+**Looking to get into Financial Modelling?**<br>
+Have a look at my [in-depth guide on Financial Modelling with Python](/modelling/introduction){: target="_blank"} which goes over the basics, setting up a project, structure, build and test a financial model. The purpose with this guide is to share my findings over the years and common mistakes that I've found both in open-source and proprietary models.
+
 ## [Finance Toolkit](/projects/financetoolkit)
 
 <div class="row">

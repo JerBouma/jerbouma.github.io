@@ -1,5 +1,5 @@
 ---
-title: Modelling Introduction
+title: Financial Modelling with Python
 excerpt: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
 description: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
 author_profile: true
@@ -7,6 +7,7 @@ permalink: /modelling/introduction
 classes: wide-sidebar
 redirect_from:
   - /modelling
+  - /literature
 author_profile: false
 sidebar:
   nav: "modelling"
