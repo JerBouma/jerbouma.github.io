@@ -13,6 +13,6 @@ sidebar:
 ---
 The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
 
-If you are looking for documentation regarding the toolkit, models, technicals, risk and performance, please have a look at the [Toolkit](/projects/financetoolkit/docs), [Models](/projects/financetoolkit/docs/models), [Technicals](/projects/financetoolkit/docs/technicals), [Risk](/projects/financetoolkit/docs/risk) and [Performance](/projects/financetoolkit/docs/performance) pages.
+If you are looking for documentation regarding the toolkit, models, technicals, risk, performance and economics, please have a look at the [Toolkit](/projects/financetoolkit/docs), [Models](/projects/financetoolkit/docs/models), [Technicals](/projects/financetoolkit/docs/technicals), [Risk](/projects/financetoolkit/docs/risk), [Performance](/projects/financetoolkit/docs/performance)  and [Economics](/projects/financetoolkit/docs/economics) pages.
 
 {% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/ratios/ratios_controller.py' %}

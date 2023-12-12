@@ -94,6 +94,8 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#risk
     - title: "Performance Module"
       url: /projects/financetoolkit/docs#performance
+    - title: "Economics Module"
+      url: /projects/financetoolkit/docs#economics
     - title: "Profiles"
       url: /projects/financetoolkit/docs#get_profile
     - title: "Quotes"
@@ -134,6 +136,8 @@ financetoolkit-docs:
     url: /projects/financetoolkit/docs/risk
   - title: Performance Documentation
     url: /projects/financetoolkit/docs/performance
+  - title: Economics Documentation
+    url: /projects/financetoolkit/docs/economics
 
 financetoolkit-docs-ratios:
   - title: All Ratios
@@ -394,52 +398,92 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_bollinger_bands
 
 financetoolkit-docs-risk:
-  - title: Value at Risk (VaR)
-    url:  /projects/financetoolkit/docs/risk#get_value_at_risk
-  - title: Conditional Value at Risk (cVaR)
-    url:  /projects/financetoolkit/docs/risk#get_conditional_value_at_risk
-  - title: Entropic Value at Risk (eVaR)
-    url:  /projects/financetoolkit/docs/risk#get_entropic_value_at_risk
-  - title: Maximum Drawdown (MDD)
-    url:  /projects/financetoolkit/docs/risk#get_maximum_drawdown
-  - title: Ulcer Index (UI)
-    url:  /projects/financetoolkit/docs/risk#get_ulcer_index
-  - title: Skewness
-    url:  /projects/financetoolkit/docs/risk#get_skewness
-  - title: Kurtosis
-    url:  /projects/financetoolkit/docs/risk#get_kurtosis
+  - title: Risk
+    children:
+    - title: Value at Risk (VaR)
+      url:  /projects/financetoolkit/docs/risk#get_value_at_risk
+    - title: Conditional Value at Risk (cVaR)
+      url:  /projects/financetoolkit/docs/risk#get_conditional_value_at_risk
+    - title: Entropic Value at Risk (eVaR)
+      url:  /projects/financetoolkit/docs/risk#get_entropic_value_at_risk
+    - title: Maximum Drawdown (MDD)
+      url:  /projects/financetoolkit/docs/risk#get_maximum_drawdown
+    - title: Ulcer Index (UI)
+      url:  /projects/financetoolkit/docs/risk#get_ulcer_index
+    - title: GARCH Volatilty Model
+      url:  /projects/financetoolkit/docs/risk#get_garch
+    - title: GARCH Volatilty Forecast
+      url:  /projects/financetoolkit/docs/risk#get_garch_forecast
+    - title: Skewness
+      url:  /projects/financetoolkit/docs/risk#get_skewness
+    - title: Kurtosis
+      url:  /projects/financetoolkit/docs/risk#get_kurtosis
 
 financetoolkit-docs-performance:
-  - title: Beta
-    url:  /projects/financetoolkit/docs/performance#get_beta
-  - title: Capital Asset Pricing Model (CAPM)
-    url:  /projects/financetoolkit/docs/performance#get_capital_asset_pricing_model
-  - title: Factor Asset Correlations
-    url:  /projects/financetoolkit/docs/performance#get_factor_asset_correlations
-  - title: Factor Correlations
-    url:  /projects/financetoolkit/docs/performance#get_factor_correlations
-  - title: Fama and French Model (FF)
-    url:  /projects/financetoolkit/docs/performance#get_fama_and_french_model
-  - title: Alpha
-    url:  /projects/financetoolkit/docs/performance#get_alpha
-  - title: Jensen's Alpha
-    url:  /projects/financetoolkit/docs/performance#get_jensens_alpha
-  - title: Treynor Ratio
-    url:  /projects/financetoolkit/docs/performance#get_treynor_ratio
-  - title: Sharpe Ratio
-    url:  /projects/financetoolkit/docs/performance#get_sharpe_ratio
-  - title: Sortino Ratio
-    url:  /projects/financetoolkit/docs/performance#get_sortino_ratio
-  - title: Ulcer Performance Index (UPI)
-    url:  /projects/financetoolkit/docs/performance#get_ulcer_performance_index
-  - title: M2 Ratio
-    url:  /projects/financetoolkit/docs/performance#get_m2_ratio
-  - title: Tracking Error
-    url:  /projects/financetoolkit/docs/performance#get_tracking_error
-  - title: Information Ratio
-    url:  /projects/financetoolkit/docs/performance#get_information_ratio
-  - title: Compound Growth Rate
-    url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
+  - title: Performance
+    children:
+    - title: Beta
+      url:  /projects/financetoolkit/docs/performance#get_beta
+    - title: Capital Asset Pricing Model (CAPM)
+      url:  /projects/financetoolkit/docs/performance#get_capital_asset_pricing_model
+    - title: Factor Asset Correlations
+      url:  /projects/financetoolkit/docs/performance#get_factor_asset_correlations
+    - title: Factor Correlations
+      url:  /projects/financetoolkit/docs/performance#get_factor_correlations
+    - title: Fama and French Model (FF)
+      url:  /projects/financetoolkit/docs/performance#get_fama_and_french_model
+    - title: Alpha
+      url:  /projects/financetoolkit/docs/performance#get_alpha
+    - title: Jensen's Alpha
+      url:  /projects/financetoolkit/docs/performance#get_jensens_alpha
+    - title: Treynor Ratio
+      url:  /projects/financetoolkit/docs/performance#get_treynor_ratio
+    - title: Sharpe Ratio
+      url:  /projects/financetoolkit/docs/performance#get_sharpe_ratio
+    - title: Sortino Ratio
+      url:  /projects/financetoolkit/docs/performance#get_sortino_ratio
+    - title: Ulcer Performance Index (UPI)
+      url:  /projects/financetoolkit/docs/performance#get_ulcer_performance_index
+    - title: M2 Ratio
+      url:  /projects/financetoolkit/docs/performance#get_m2_ratio
+    - title: Tracking Error
+      url:  /projects/financetoolkit/docs/performance#get_tracking_error
+    - title: Information Ratio
+      url:  /projects/financetoolkit/docs/performance#get_information_ratio
+    - title: Compound Growth Rate
+      url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
+
+financetoolkit-docs-economics:
+  - title: Economics
+    children:
+    - title: Gross Domestic Product (GDP)
+      url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product
+    - title: Gross Domestic Product Growth
+      url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product_growth
+    - title: Gross Domestic Product Forecast
+      url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product_forecast
+    - title: Consumer Confidence Index
+      url:  /projects/financetoolkit/docs/economics#get_consumer_confidence_index
+    - title: Business Confidence Index
+      url:  /projects/financetoolkit/docs/economics#get_business_confidence_index
+    - title: Consumer Price Index (CPI)
+      url:  /projects/financetoolkit/docs/economics#get_consumer_price_index
+    - title: Producer Price Index (PPI)
+      url:  /projects/financetoolkit/docs/economics#get_producer_price_index
+    - title: House Prices
+      url:  /projects/financetoolkit/docs/economics#get_house_prices
+    - title: Rent Prices
+      url:  /projects/financetoolkit/docs/economics#get_rent_prices
+    - title: Unemployment Rates
+      url:  /projects/financetoolkit/docs/economics#get_unemployment_rate
+    - title: Long Term Interest Rate
+      url:  /projects/financetoolkit/docs/economics#get_long_term_interest_rate
+    - title: Short Term Interest Rate
+      url:  /projects/financetoolkit/docs/economics#get_short_term_interest_rate
+    - title: Purchasing Power Parity (PPP)
+      url:  /projects/financetoolkit/docs/economics#get_purchasing_power_parity
+    - title: Exchange Rates
+      url:  /projects/financetoolkit/docs/economics#get_exchange_rates
 
 thepassiveinvestor:
   - title: "Introduction"

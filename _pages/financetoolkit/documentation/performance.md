@@ -13,6 +13,6 @@ sidebar:
 ---
 The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, R-Squared and more.
 
-If you are looking for documentation regarding the toolkit, ratios, models, technicals and risk, please have a look at the [Toolkit](/projects/financetoolkit/docs), [Ratios](/projects/financetoolkit/docs/ratios), [Models](/projects/financetoolkit/docs/models), [Technicals](/projects/financetoolkit/docs/technicals) and [Risk](/projects/financetoolkit/docs/risk) pages.
+If you are looking for documentation regarding the toolkit, ratios, models, technicals, risk and economics, please have a look at the [Toolkit](/projects/financetoolkit/docs), [Ratios](/projects/financetoolkit/docs/ratios), [Models](/projects/financetoolkit/docs/models), [Technicals](/projects/financetoolkit/docs/technicals), [Risk](/projects/financetoolkit/docs/risk) and [Economics](/projects/financetoolkit/docs/economics) pages.
 
 {% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/performance/performance_controller.py' %}
