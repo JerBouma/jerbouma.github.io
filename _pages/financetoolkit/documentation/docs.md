@@ -16,7 +16,7 @@ This page includes all the documentation for the Finance Toolkit. Each functiona
 
 The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These is historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
 
-If you are looking for documentation regarding the ratios, technical indicators, models, risk metrics and performance metrics, please have a look at the [Ratios](/projects/financetoolkit/docs/ratios), [Technicals](/projects/financetoolkit/docs/technicals), [Models](/projects/financetoolkit/docs/models), [Risk](/projects/financetoolkit/docs/risk) and [Performance](/projects/financetoolkit/docs/performance) pages.
+If you are looking for documentation regarding the ratios, technical indicators, models, risk metrics and performance metrics, please have a look at the [Ratios](/projects/financetoolkit/docs/ratios), [Technicals](/projects/financetoolkit/docs/technicals), [Models](/projects/financetoolkit/docs/models), [Risk](/projects/financetoolkit/docs/risk), [Performance](/projects/financetoolkit/docs/performance) and [Economics](/projects/financetoolkit/docs/economics) pages.
 
 {% include docstring_viewer.html fileUrl='https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/toolkit_controller.py' %}
 

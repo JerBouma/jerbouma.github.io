@@ -454,7 +454,7 @@ financetoolkit-docs-performance:
       url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
 
 financetoolkit-docs-economics:
-  - title: Economics
+  - title: Economy
     children:
     - title: Gross Domestic Product (GDP)
       url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product
@@ -474,16 +474,94 @@ financetoolkit-docs-economics:
       url:  /projects/financetoolkit/docs/economics#get_house_prices
     - title: Rent Prices
       url:  /projects/financetoolkit/docs/economics#get_rent_prices
-    - title: Unemployment Rates
-      url:  /projects/financetoolkit/docs/economics#get_unemployment_rate
+    - title: Share Prices
+      url:  /projects/financetoolkit/docs/economics#get_share_prices
+  - title: Finance
+    children:
     - title: Long Term Interest Rate
       url:  /projects/financetoolkit/docs/economics#get_long_term_interest_rate
     - title: Short Term Interest Rate
       url:  /projects/financetoolkit/docs/economics#get_short_term_interest_rate
+    - title: Narrow Money (M1)
+      url: /projects/financetoolkit/docs/economics#get_narrow_and_broad_money
+    - title: Broad Money (M3)
+      url: /projects/financetoolkit/docs/economics#get_narrow_and_broad_money
     - title: Purchasing Power Parity (PPP)
       url:  /projects/financetoolkit/docs/economics#get_purchasing_power_parity
     - title: Exchange Rates
       url:  /projects/financetoolkit/docs/economics#get_exchange_rates
+  - title: Central Banks
+    children:
+    - title: Main Refinancing Operations (ECB)
+      url: /projects/financetoolkit/docs/economics#get_european_central_bank_rates
+    - title: Marginal Lending Facility (ECB)
+      url: /projects/financetoolkit/docs/economics#get_european_central_bank_rates
+    - title: Deposit Facility (ECB)
+      url: /projects/financetoolkit/docs/economics#get_european_central_bank_rates
+    - title: Effective Federal Funds Rate (FED)
+      url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
+    - title: Overnight Bank Funding Rate (FED)
+      url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
+    - title: Tri-Party General Collateral Rate (FED)
+      url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
+    - title: Broad General Collateral Rate (FED)
+      url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
+    - title: Secured Overnight Financing Rate (FED)
+      url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
+  - title: Environment
+    children:
+      - title: Renewable Energy as % of Total Energy
+        url: /projects/financetoolkit/docs/economics#get_renewable_energy
+      - title: Environmental Tax as % of GDP
+        url: /projects/financetoolkit/docs/economics#get_environmental_tax
+      - title: Greenhouse Gas Emissions
+        url: /projects/financetoolkit/docs/economics#get_greenhouse_emissions
+      - title: Crude Oil Production
+        url: /projects/financetoolkit/docs/economics#get_crude_oil_production
+      - title: Crude Oil Prices
+        url: /projects/financetoolkit/docs/economics#get_crude_oil_prices
+  - title: Government
+    children:
+      - title: Deficit as % of GDP
+        url: /projects/financetoolkit/docs/economics#get_government_statistics
+      - title: Revenue as % of GDP
+        url: /projects/financetoolkit/docs/economics#get_government_statistics
+      - title: Spending as % of GDP
+        url: /projects/financetoolkit/docs/economics#get_government_statistics
+      - title: Debt as % of GDP
+        url: /projects/financetoolkit/docs/economics#get_government_statistics
+      - title: Financial Wealth as % of GDP
+        url: /projects/financetoolkit/docs/economics#get_government_statistics
+      - title: Production Costs as % of GDP
+        url: /projects/financetoolkit/docs/economics#get_government_statistics
+      - title: Central Government Spending
+        url: /projects/financetoolkit/docs/economics#get_central_government_spending
+      - title: Trust in Government
+        url: /projects/financetoolkit/docs/economics#get_trust_in_government
+  - title: Jobs
+    children:
+      - title: Unemployment Rates
+        url:  /projects/financetoolkit/docs/economics#get_unemployment_rate
+      - title: Labour Productivity
+        url:  /projects/financetoolkit/docs/economics#get_labour_productivity
+      - title: Income Inequality
+        url:  /projects/financetoolkit/docs/economics#get_income_inequality
+  - title: Society
+    children:
+      - title: Population
+        url: /projects/financetoolkit/docs/economics#get_population_statistics
+      - title: Young Population
+        url: /projects/financetoolkit/docs/economics#get_population_statistics
+      - title: Working Age Population
+        url: /projects/financetoolkit/docs/economics#get_population_statistics
+      - title: Elderly Population
+        url: /projects/financetoolkit/docs/economics#get_population_statistics
+      - title: Fertility Rates
+        url: /projects/financetoolkit/docs/economics#get_population_  statistics
+      - title: Old-Age Dependency Ratio
+        url: /projects/financetoolkit/docs/economics#get_population_statistics
+      - title: Poverty Rate
+        url: /projects/financetoolkit/docs/economics#get_poverty_rate
 
 thepassiveinvestor:
   - title: "Introduction"
