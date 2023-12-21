@@ -557,7 +557,7 @@ financetoolkit-docs-economics:
       - title: Elderly Population
         url: /projects/financetoolkit/docs/economics#get_population_statistics
       - title: Fertility Rates
-        url: /projects/financetoolkit/docs/economics#get_population_  statistics
+        url: /projects/financetoolkit/docs/economics#get_population_statistics
       - title: Old-Age Dependency Ratio
         url: /projects/financetoolkit/docs/economics#get_population_statistics
       - title: Poverty Rate
