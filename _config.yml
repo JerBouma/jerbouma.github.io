@@ -96,6 +96,7 @@ social:
   links: # An array of links to social media profiles
     - "https://www.linkedin.com/in/boumajeroen/"
     - "https://github.com/JerBouma"
+    - "https://twitter.com/JerBouma"
 
 # Analytics
 analytics:
@@ -116,6 +117,9 @@ author:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/boumajeroen/"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter"
+      url: "https://twitter.com/JerBouma"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/JerBouma"
@@ -126,6 +130,9 @@ footer:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/boumajeroen/"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter"
+      url: "https://twitter.com/JerBouma"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/JerBouma"

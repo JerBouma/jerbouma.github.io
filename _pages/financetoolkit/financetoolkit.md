@@ -15,9 +15,9 @@ While browsing a variety of websites, I kept finding that the same financial met
 
 For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is reported to be 28.93 (Stockopedia), 32.05 (Morningstar), 32.66 (Macrotrends), 33.09 (Finance Charts), 33.66 (Y Charts), 33.67 (Wall Street Journal), 33.80 (Yahoo Finance) and 34.4 (Companies Market Cap). All of these calculations are correct, however the method applied varies leading to different results. Therefore, collecting data from multiple sources can lead to wrong interpretation of the results given that one source could be applying a different calculation method than another. And that is, if it is even freely available. Often the calculation is hidden behind a paid subscription.
 
-**This is why I designed the FinanceToolkit**, this is an open-source toolkit in which all relevant financial ratios ([130+](#available-metrics)), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation.py)). This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+**This is why I designed the FinanceToolkit**, this is an open-source toolkit in which all relevant financial ratios ([150+](#available-metrics)), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py)). This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
 
-The Finance Toolkit not only supports Equities. Even for Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities and more, the Finance Toolkit can be used to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
+The Finance Toolkit not only supports Equities. Even for Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities, Key Economic Indicators and more, the Finance Toolkit can be used to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
 
 The Finance Toolkit is complimented very well with the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase), a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
 
@@ -25,11 +25,11 @@ The Finance Toolkit is complimented very well with the [Finance Database 🌎](h
     <img src="https://github.com/JerBouma/FinanceToolkit/blob/main/examples/Finance%20Toolkit%20-%206.%20Video%20Demo.gif?raw=true" alt="Finance Toolkit Illustration" width="100%" onerror="this.style.display = 'none'"/>
 </p>
 
-# Installation
+## Installation
 
 Before installation, consider starring the project on GitHub which helps others find the project as well. 
 
-<a href="https://github.com/JerBouma/FinanceToolkit" target="_blank"><img width="1415" alt="image" src="https://github.com/JerBouma/FinanceToolkit/assets/46355364/014109fe-0c68-47d4-99bd-217c69dcea8d"></a>
+<a href="https://github.com/JerBouma/FinanceToolkit" target="_blank"><img width="1415" alt="image" src="https://github.com/JerBouma/FinanceToolkit/assets/46355364/014109fe-0c68-47d4-99bd-217c69dcea8d" target="_blank"></a>
 
 To install the FinanceToolkit it simply requires the following:
 
@@ -51,7 +51,7 @@ To be able to get started, you need to obtain an API Key from FinancialModelingP
 
 ___ 
 
-<div align="center"><b>Obtain an API Key from FinancialModelingPrep <a href="https://www.jeroenbouma.com/fmp">here</a>.</b></div>
+<p align="center"><b>Obtain an API Key from FinancialModelingPrep <a href="https://www.jeroenbouma.com/fmp" target="_blank">here</a>.</b></p>
 ___
 
 Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time. I have chosen FinancialModelingPrep as a source as I find it to be the most transparent, reliable and at an affordable price. I have yet to find a platform offering such low prices for the amount of data offered. When you notice that the data is inaccurate or have any other issue related to the data, note that I simply provide the means to access this data and I am not responsible for the accuracy of the data itself. For this, use [their contact form](https://site.financialmodelingprep.com/contact) or provide the data yourself. 
@@ -129,10 +129,10 @@ The Finance Toolkit has the ability to leverage custom datasets from any data pr
 The Finance Toolkit features the following functionality, also see [Basic Usage](#basic-usage) to see some of these functions in action:
 
 - **Company profiles** (`get_profile`), including country, sector, ISIN and general characteristics (from FinancialModelingPrep)
-- **Company quotes** (`get_quote`), inclufding 52 week highs and lows, volume metrics and current shares outstanding (from FinancialModelingPrep)
+- **Company quotes** (`get_quote`), including 52 week highs and lows, volume metrics and current shares outstanding (from FinancialModelingPrep)
 - **Company ratings** (`get_rating`), based on key indicators like PE and DE ratios (from FinancialModelingPrep)
 - **Historical market data** (`get_historical_data`), which can be retrieved on a daily, weekly, monthly, quarterly and yearly basis. This includes OHLC, dividends, returns, cumulative returns and volatility calculations for each corresponding period. (from FinancialModelingPrep or Yahoo Finance)
-- **Treasury Rates** (`get_treasury_data`) for several months and several years over the last 3 months which allows yield curves to be constructed (from FinancialModelingPrep or Yahoo Finance)
+- **Treasury Rates** (`get_treasury_data`) for several months and several years that can serve as risk-free rate (from Yahoo Finance)
 - **Dividends Calendar** (`get_dividend_calendar`) which shows the (adjusted) dividend and the the related record, payment and declaration dates (from FinancialModelingPrep)
 - **Analyst Estimates** (`get_analyst_estimates`) that show the expected EPS and Revenue from the past and future from a range of analysts (from FinancialModelingPrep)
 - **Earnings Calendar**(`get_earnings_calendar`) which shows the exact dates earnings are released in the past and in the future including expectations (from FinancialModelingPrep)
@@ -144,6 +144,7 @@ The Finance Toolkit features the following functionality, also see [Basic Usage]
 - **Performance metrics** like Jensens Alpha (`performance.get_jensens_alpha`),  Capital Asset Pricing Model (CAPM) (`performance.get_capital_asset_pricing_model`) and (Rolling) Sharpe Ratio (`performance.get_sharpe_ratio`) that can be used to understand how each company is performing versus the benchmark and compared to each other.
 - **Risk metrics** like Value at Risk (`risk.get_value_at_risk`) and Conditional Value at Risk (`risk.get_conditional_value_at_risk`) that can be used to understand the risk profile of each company and how it compares to the benchmark.
 - **Technical indicators** like Relative Strength Index (`technicals.get_relative_strength_index`),  Exponential Moving Average (`technicals.get_exponential_moving_average`) and Bollinger Bands (`technicals.get_bollinger_bands`) that can be used to perform in-depth momentum and trend analysis. These functions allow for the calculation of technical indicators based on the historical market data.
+- **Key Economic Indicators** like Gross Domestic Product (GDP) (`economics.get_gross_domestic_product`), Consumer Price Index (CPI) (`economics.get_consumer_price_index`) and Federal Funds Rate (FED) (`economics.get_federal_reserve_rates`) that can be used to analyse over 60 different countries. Based on these indicators, it is possible to understand the economic landscape of each country and whether companies within these countries are a great fit for your portfolio.
 
 The dependencies of the package are on purpose *very slim* so that it will work well with any combination of packages and not result in conflicts.
 
@@ -179,13 +180,16 @@ value_at_risk = companies.risk.get_value_at_risk(period="weekly")
 
 # a Technical example
 ichimoku_cloud = companies.technicals.get_ichimoku_cloud()
+
+# an Economics example
+unemployment_rates = companies.economics.get_unemployment_rate()
 ````
 
-Generally, the functions return a DataFrame with a multi-index in which all tickers, in this case Apple and Microsoft, are presented. To keep things manageable for this README, I've selected just Apple but in essence it can be any list of tickers (no limit). The filtering is done through using `.loc['AAPL']` and `.xs('AAPL', level=1, axis=1)` based on whether it's fundamental data or historical data respectively.
+Generally, the functions return a DataFrame with a multi-index in which all tickers, in this case Apple and Microsoft, are presented. To keep things manageable for this README, I select just Apple but in essence the list of tickers can be endless as I've seen DataFrames with thousands of tickers. The filtering is done through `.loc['AAPL']` and `.xs('AAPL', level=1, axis=1)` based on whether it's fundamental data or historical data respectively.
 
 ### Obtaining Historical Data
 
-Obtain historical data on a daily, weekly, monthly or yearly basis. This includes OHLC, volumes, dividends, returns, cumulative returns and volatility calculations for each corresponding period. For example, the historical data for Apple is shown below.
+Obtain historical data on a daily, weekly, monthly or yearly basis. This includes OHLC, volumes, dividends, returns, cumulative returns and volatility calculations for each corresponding period. For example, the a portion of the historical data for Apple is shown below.
 
 | date       |    Open |    High |     Low |   Close |   Adj Close |      Volume |   Dividends |   Return |   Volatility |   Excess Return |   Excess Volatility |   Cumulative Return |
 |:-----------|--------:|--------:|--------:|--------:|------------:|------------:|------------:|---------:|-------------:|----------------:|--------------------:|--------------------:|
@@ -267,7 +271,7 @@ And below the correlations with each factor are plotted over time for both Apple
 
 ### Obtaining Risk Metrics
 
-Get the Value at Risk for each quarter. Here, the days within each quarter are considered for the Value at Risk. This makes it so that you can understand within each period what is the expected Value at Risk (VaR) which can again be any period but also based on distributions such as Historical, Gaussian, Student-t, Cornish-Fisher.
+Get the Value at Risk for each week. Here, the days within each week are considered for the Value at Risk. This makes it so that you can understand within each period what is the expected Value at Risk (VaR) which can again be any period but also based on distributions such as Historical, Gaussian, Student-t, Cornish-Fisher.
 
 |                       |    AAPL |    MSFT |   Benchmark |
 |:----------------------|--------:|--------:|------------:|
@@ -296,3 +300,281 @@ Get the Ichimoku Cloud parameters based on the historical market data. This can 
 And below the Ichimoku Cloud parameters are plotted for Apple and Microsoft side-by-side.
 
 ![Technicals](https://github.com/JerBouma/FinanceToolkit/assets/46355364/1ced5b34-2410-4206-8ddf-bb053bcb21b2)
+
+### Understanding Key Economic Indicators
+
+Get insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and 3-month and 10-year Government Interest Rates. This is done through the `economics` module and can be used as a standalone module as well by using `from financetoolkit import Economics`. For example see a selection of the countries below:
+
+<div class="row">
+<div markdown="1" class="fifty-column-left">
+
+|      |   Colombia |   United States |   Sweden |   Japan |   Germany |
+|:-----|-----------:|----------------:|---------:|--------:|----------:|
+| 2017 |     0.093  |          0.0435 |   0.0686 |  0.0281 |    0.0357 |
+| 2018 |     0.0953 |          0.039  |   0.0648 |  0.0244 |    0.0321 |
+| 2019 |     0.1037 |          0.0367 |   0.0691 |  0.0235 |    0.0298 |
+| 2020 |     0.1586 |          0.0809 |   0.0848 |  0.0278 |    0.0362 |
+| 2021 |     0.1381 |          0.0537 |   0.0889 |  0.0282 |    0.0358 |
+| 2022 |     0.1122 |          0.0365 |   0.0748 |  0.026  |    0.0307 |
+
+</div>
+
+<div markdown="1" class="fifty-column-right">
+
+![Economics](https://github.com/JerBouma/FinanceToolkit/assets/46355364/bb44bd4e-07a1-4ecf-a4eb-7fc09a960930)
+
+</div>
+</div>
+
+## Available Metrics
+
+The Finance Toolkit has the ability to calculate 150+ financial metrics. The following list shows all of the available metrics. Note that the Finance Toolkit is not limited to these ratios and indicators as it is possible to add custom ratios as well. See [this Notebook](https://www.jeroenbouma.com/projects/financetoolkit/custom-ratios) for more information.
+
+Each ratio and indicator has a corresponding function that can be called directly for example `ratios.get_return_on_equity` or `technicals.get_relative_strength_index`.
+
+### Financial Ratios
+
+The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.  **Find the documentation [here](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios) which includes an explanation about the ratio, the parameters and an example.**
+
+All of these ratios can be calculated based on (lagged) growth as well as trailing (e.g. TTM) metrics. This is embedded in all ratios as well as the financial statements themselves which means it is possible to calculate revenue growth and 12-month (TTM) Price-to-Earnings with the parameters `growth=True` and `trailing=4` respectively. Note that trailing is based on periods therefore TTM can only be calculated by setting `quarterly=True` in the Toolkit initialization.
+
+#### Efficiency Ratios ⚙️
+- Asset Turnover Ratio
+- Inventory Turnover Ratio
+- Days of Inventory Outstanding
+- Days of Sales Outstanding
+- Operating Cycle
+- Accounts Payables Turnover Ratio
+- Days of Accounts Payable Outstanding
+- Cash Conversion Cycle
+- Receivables Turnover
+- SGA to Revenue Ratio
+- Fixed Asset Turnover
+- Operating Ratio
+
+#### Liquidity Ratios 💧
+- Current Ratio
+- Quick Ratio
+- Cash Ratio
+- Working Capital
+- Operating Cash Flow Ratio
+- Operating Cash Flow Sales Ratio
+- Short Term Coverage Ratio
+
+#### Profitability Ratios 💰
+- Gross Margin
+- Operating Margin
+- Net Profit Margin
+- Interest Burden Ratio
+- Income Before Tax Profit Margin
+- Effective Tax Rate
+- Return on Assets (RoA)
+- Return on Equity (RoE)
+- Return on Invested Capital (RoIC)
+- Income Quality Ratio
+- Return on Tangible Assets (RoTA)
+- Return on Capital Employed (RoCE)
+- Net Income per EBT
+- Free Cash Flow Operating Cash Flow Ratio
+- Tax Burden Ratio
+- EBT to EBIT
+- EBIT to Revenue
+
+#### Solvency Ratios 🪨
+- Debt to Assets Ratio
+- Debt to Equity Ratio
+- Interest Coverage Ratio
+- Equity Multiplier
+- Debt Service Coverage Ratio
+- Free Cash Flow Yield
+- Net Debt to EBITDA Ratio
+- Cash Flow Coverage Ratio
+- CAPEX Coverage Ratio
+- CAPEX Dividend Coverage Ratio
+
+#### Valuation Ratios ⚖️
+- Earnings per Share (EPS)
+- Revenue per Share (RPS)
+- Price Earnings Ratio (PE)
+- Price to Earnings Growth Ratio (PEG)
+- Book Value per Share
+- Price to Book Ratio (PB)
+- Interest Debt per Share
+- CAPEX per Share
+- Dividend Yield
+- Weighted Dividend Yield
+- Price to Cash Flow Ratio (P/CF)
+- Price to Free Cash Flow Ratio (P/FCF)
+- Market Capitalization
+- Enterprise Value
+- EV to Sales Ratio
+- EV to EBITDA Ratio
+- EV to Operating Cashflow Ratio
+- EV to EBIT
+- Earnings Yield
+- Payout Ratio
+- Tangible Asset Value
+- Net Current Asset Value
+
+### Financial Models
+
+The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module. **Find the documentation [here](https://www.jeroenbouma.com/projects/financetoolkit/docs/models) which includes an explanation about the model, the parameters and an example.**
+
+- DuPont Analysis
+- Extended DuPont Analysis
+- Enterprise Value Breakdown
+- Weighted Average Cost of Capital (WACC)
+- Intrinsic Valuation
+- Altman Z-Score
+- Piotroski F-Score
+
+### Performance Metrics
+
+The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, Factor Models and more. **Find the documentation [here](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance) which includes an explanation about the performance metrics, the parameters and an example.**
+
+- Alpha
+- Jensen's Alpha 
+- Beta
+- Capital Asset Pricing Model (CAPM)
+- Factor Asset Correlations
+- Factor Correlations
+- Fama-French 5 Factor Model (FF)
+- Treynor Ratio
+- Sharpe Ratio
+- Sortino Ratio
+- Ulcer Performance Index (UPI)
+- M2 Ratio
+- Tracking Error
+- Information Error
+- Compound Annual Growth Rate (CAGR)
+
+### Risk Metrics
+
+The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, Beta, GARCH, EWMA and more. **Find the documentation [here](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk) which includes an explanation about the risk metrics, the parameters and an example.**
+
+- Value at Risk (VaR) with distributions Historical, Gaussian, Student-t, Cornish-Fisher.
+- Conditional Value at Risk (cVaR) with distributions Historical, Gaussian, Laplace, Logistic.
+- Entropic Value at Risk (eVaR) with a Gaussian distribution. 
+- GARCH (Generalized Autoregressive Conditional Heteroskedasticity) with Forecasting
+- Ulcer Index (UI)
+- Maximum Drawdown (MDD)
+- Skewness
+- Kurtosis
+
+### Technical Indicators
+
+The Technicals Module contains 30+ Technical Indicators that can be used to analyse companies. These ratios are divided into 4 categories which are breadth, momentum, overlap and volatility. Each indicator is calculated using the data from the Toolkit module. **Find the documentation [here](https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals) which includes an explanation about the indicator, the parameters and an example.**
+
+#### Breadth Indicators 💨
+- McClellan Oscillator
+- Advancers/Decliners Ratio
+- On-Balance Volume (OBV)
+- Accumulation/Distribution Line (ADL)
+- Chaikin Oscillator
+
+#### Momentum Indicators ⏱️
+- Money Flow Index
+- Williams %R
+- Aroon Indicator
+- Commodity Channel Index
+- Relative Vigor Index
+- Force Index
+- Ultimate Oscillator
+- Percentage Price Oscillator
+- Detrended Price Oscillator
+- Average Directional Index (ADX)
+- Chande Momentum Oscillator (CMO)
+- Ichimoku Cloud
+- Stochastic Oscillator
+- Moving Average Convergence Divergence (MACD)
+- Relative Strength Index (RSI)
+- Balance of Power (BOP)
+
+#### Overlap Indicators 🌈
+- Simple Moving Average (SMA)
+- Exponential Moving Average (EMA)
+- Double Exponential Moving Average (DEMA)
+- Triple Exponential Moving Average (TRIX)
+- Triangular Moving Average (TMA)
+
+#### Volatility Indicators ⚠️
+- True Range (TR)
+- Average True Range (ATR)
+- Keltners Channels
+- Bollinger Bands
+
+### Key Economic Indicators
+
+The Economics Module contains a variety of Key Economic Indicators that help in understanding the health and performance of more than 60 different countries. This module can be called directly via the Toolkit but also separately if desired through `from financetoolkit import Economics`. **Find the documentation [here](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics) which includes an explanation about each indicator, the parameters and an example.**
+
+#### Economy 💵
+- Gross Domestic Product (GDP) including Growth and Forecasts
+- Consumer Confidence Index (CCI)
+- Business Confidence Index (BCI)
+- Composite Leading Indicator (CLI)
+- Consumer Price Index (CPI)
+- Producer Price Index (PPI)
+- House and Rent Prices
+- Share Prices
+
+#### Finance 💹
+- Long Term Interest Rates (10 year)
+- Short Term Interest Rates (3 month)
+- Narrow Money (M1)
+- Broad Money (M3)
+- Purchasing Power Parity (PPP)
+- Exchange Rates
+
+#### Central Banks 🏦
+- Main Refinancing Operations (ECB)
+- Marginal Lending Facility (ECB)
+- Deposit Facility (ECB)
+- Effective Federal Funds Rate (FED)
+- Overnight Bank Funding Rate (FED)
+- Tri-Party General Collateral Rate (FED)
+- Broad General Collateral Rate (FED)
+- Secured Overnight Financing Rate (FED)
+
+#### Environment 💚
+- Renewable Energy as % of Total Energy
+- Environmental Tax as % of GDP
+- Greenhouse Gas Emissions
+- Crude Oil Production and Prices
+
+#### Government 🏛️
+- Deficit as % of GDP
+- Revenue as % of GDP
+- Spending as % of GDP
+- Debt as % of GDP
+- Financial Wealth as % of GDP
+- Production Costs as % of GDP
+- Central Spending based on the System of National accounts (SNA)
+- Trust in Government
+
+#### Jobs 🗂️
+- Unemployment Rates
+- Labour Productivity
+- Income Inequality
+
+#### Society 👪
+- Population
+- Young Population
+- Working Age Population
+- Elderly Population
+- Fertility Rates
+- Old-Age Dependency Ratio
+- Poverty Rate
+
+## Contributing
+First off all, thank you for taking the time to contribute (or at least read the Contributing Guidelines)! 🚀
+
+___ 
+
+<p align="center"><b>Find the Contributing Guidelines <a href="https://github.com/JerBouma/FinanceToolkit/blob/main/CONTRIBUTING.md" target="_blank">here</a>.</b></p>
+___
+
+The goal of the Finance Toolkit is to make any type of financial calculation as transparent and efficient as possible. I want to make these type of calculations as accessible to anyone as possible and seeing how many websites exists that do the same thing (but instead you have to pay) gave me plenty of reasons to work on this.
+
+If you'd like to support my efforts, either help me out by contributing to the package or [Sponsor Me](https://github.com/sponsors/JerBouma).
+
+[![Star History Chart](https://api.star-history.com/svg?repos=JerBouma/FinanceToolkit&type=Date)](https://star-history.com/#JerBouma/FinanceToolkit&Date)

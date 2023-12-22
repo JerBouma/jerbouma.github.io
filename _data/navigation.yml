@@ -78,8 +78,75 @@ financetoolkit:
     url: /projects/financetoolkit#functionality
   - title: "Basic Usage"
     url: /projects/financetoolkit#basic-usage
-  - title: "Code Documentation"
-    url: /projects/financetoolkit/docs
+    children:
+      - title: Historical Data
+        url: /projects/financetoolkit#obtaining-historical-data
+      - title: Financial Statements
+        url: /projects/financetoolkit#obtaining-financial-statements
+      - title: Financial Ratios
+        url: /projects/financetoolkit#obtaining-financial-ratios
+      - title: Financial Models
+        url: /projects/financetoolkit#obtaining-financial-models
+      - title: Performance Metrics
+        url: /projects/financetoolkit#obtaining-performance-metrics
+      - title: Risk Metrics
+        url: /projects/financetoolkit#obtaining-risk-metrics
+      - title: Technical Indicators
+        url: /projects/financetoolkit#obtaining-technical-indicators
+      - title: Key Economic Indicators
+        url: /projects/financetoolkit#understanding-key-economic-indicators
+  - title: Available Metrics
+    url: /projects/financetoolkit#available-metrics
+    children:
+      - title: Financial Ratios
+        url: /projects/financetoolkit#financial-ratios
+        children:
+          - title: Efficiency Ratios
+            url: /projects/financetoolkit#efficiency-ratios-%EF%B8%8F
+          - title: Liquidity Ratios
+            url: /projects/financetoolkit#liquidity-ratios-
+          - title: Profitability Ratios
+            url: /projects/financetoolkit#profitability-ratios-
+          - title: Solvency Ratios
+            url: /projects/financetoolkit#solvency-ratios-
+          - title: Valuation Ratios
+            url: /projects/financetoolkit#valuation-ratios-%EF%B8%8F
+      - title: Financial Models
+        url: /projects/financetoolkit#financial-models
+      - title: Performance Metrics
+        url: /projects/financetoolkit#performance-metrics
+      - title: Risk Metrics
+        url: /projects/financetoolkit#risk-metrics
+      - title: Technical Indicators
+        url: /projects/financetoolkit#technical-indicators
+        children:
+          - title: Breadth Indicators
+            url: /projects/financetoolkit#breadth-indicators-
+          - title: Momentum Indicators
+            url: /projects/financetoolkit#momentum-indicators-%EF%B8%8F
+          - title: Overlap Indicators
+            url: /projects/financetoolkit#overlap-indicators-
+          - title: Volatility Indicators
+            url: /projects/financetoolkit#volatility-indicators-%EF%B8%8F
+      - title: Key Economic Indicators
+        url: /projects/financetoolkit#key-economic-indicators
+        children:
+          - title: Economy
+            url: /projects/financetoolkit#economy-
+          - title: Finance
+            url: /projects/financetoolkit#finance-
+          - title: Central Banks
+            url: /projects/financetoolkit#central-banks-
+          - title: Environment
+            url: /projects/financetoolkit#environment-
+          - title: Government
+            url: /projects/financetoolkit#government-%EF%B8%8F
+          - title: Jobs
+            url: /projects/financetoolkit#jobs-%EF%B8%8F
+          - title: Society
+            url: /projects/financetoolkit#society-
+  - title: Contributing
+    url: /projects/financetoolkit#contributing
 
 financetoolkit-docs:
   - title: Finance Toolkit
