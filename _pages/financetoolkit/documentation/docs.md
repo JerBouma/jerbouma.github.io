@@ -21,18 +21,6 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-Then within Python use:
-
-{% include code_header.html %}
-{% highlight python %}
-from financetoolkit import Toolkit
-
-companies = Toolkit(
-    tickers=['GOOGL', 'MSFT', 'AMZN'],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-)
-{% endhighlight %}
-
 The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These is historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
 
 If you are looking for documentation regarding the ratios, technical indicators, models, risk metrics and performance metrics, please have a look below:

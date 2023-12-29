@@ -21,18 +21,6 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-Then within Python use:
-
-{% include code_header.html %}
-{% highlight python %}
-from financetoolkit import Toolkit
-
-companies = Toolkit(
-    tickers=['GOOGL', 'MSFT', 'AMZN'],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-)
-{% endhighlight %}
-
 If you are looking for documentation regarding the toolkit, models, ratios, technicals, risk and performance, please have a look below:
 
 <div style="display: flex; justify-content: space-between;">
