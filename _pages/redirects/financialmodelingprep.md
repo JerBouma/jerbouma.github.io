@@ -11,3 +11,8 @@ redirect_from:
 ---
 
 <meta http-equiv="Refresh" content="0; url=https://intelligence.financialmodelingprep.com/pricing-plans?couponCode=jeroen" />
+
+*You will be redirected to Financial Modeling Prep, please wait..
+
+In case you are not redirected within 5 seconds, please visit the following the page: [https://intelligence.financialmodelingprep.com/pricing-plans?couponCode=jeroen](https://intelligence.financialmodelingprep.com/pricing-plans?couponCode=jeroen)
+
