@@ -88,7 +88,8 @@ def create_markdown_file(file_url: str, header: str, location: str):
         markdown_content += f'{function_info["description"]}\n\n'
 
         if function_info["arguments"]:
-            markdown_content += function_info["arguments"].replace("Args:", "**Args:**")
+            markdown_content += (function_info["arguments"]).replace(
+                "Args:", "**Args:**").replace("Raises:", "**Raises:**").replace("Returns:", "**Returns:**").replace("Notes:", "**Notes:**")
             markdown_content += "\n"
 
         if function_info["example_code"]:
@@ -120,7 +121,7 @@ layout: single
 redirect_from:
 - /docs
 sidebar:
-  nav: "financetoolkit-docs"
+    nav: "financetoolkit-docs"
 ---
 
 This page includes all the documentation for the Finance Toolkit,an open-source toolkit in which all relevant financial ratios (150+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
@@ -130,18 +131,6 @@ To install the FinanceToolkit it simply requires the following:
 {% include code_header.html %}
 {% highlight bash %}
 pip install financetoolkit -U
-{% endhighlight %}
-
-Then within Python use:
-
-{% include code_header.html %}
-{% highlight python %}
-from financetoolkit import Toolkit
-
-companies = Toolkit(
-    tickers=['GOOGL', 'MSFT', 'AMZN'],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-)
 {% endhighlight %}
 
 The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These is historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
@@ -179,12 +168,19 @@ permalink: /projects/financetoolkit/docs/ratios
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /ratios
+    - /ratios
 sidebar:
-  nav: "financetoolkit-docs-ratios"
+    nav: "financetoolkit-docs-ratios"
 ---
 
 The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
+
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
 
 If you are looking for documentation regarding the toolkit, models, technicals, risk, performance and economics, please have a look below:
 
@@ -218,12 +214,19 @@ permalink: /projects/financetoolkit/docs/models
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /models
+    - /models
 sidebar:
-  nav: "financetoolkit-docs-models"
+    nav: "financetoolkit-docs-models"
 ---
 
 The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
+
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
 
 If you are looking for documentation regarding the toolkit, ratios, technicals, risk, performance and economics, please have a look below:
 
@@ -257,12 +260,19 @@ permalink: /projects/financetoolkit/docs/technicals
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /technicals
+    - /technicals
 sidebar:
-  nav: "financetoolkit-docs-technicals"
+    nav: "financetoolkit-docs-technicals"
 ---
 
 The Technicals Module contains 30+ Technical Indicators that can be used to analyse companies. These ratios are divided into 4 categories which are breadth, momentum, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
+
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
 
 If you are looking for documentation regarding the toolkit, ratios, models, risk, performance and economics, please have a look below:
 
@@ -288,7 +298,6 @@ create_markdown_file(
 
 # Create the Risk page
 markdown_content = """---
----
 title: Risk
 excerpt: The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
 description: The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
@@ -297,11 +306,18 @@ permalink: /projects/financetoolkit/docs/risk
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /ratios
+    - /ratios
 sidebar:
-  nav: "financetoolkit-docs-risk"
+    nav: "financetoolkit-docs-risk"
 ---
 The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
+
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
 
 If you are looking for documentation regarding the toolkit, ratios, models, technicals, performance and economics, please have a look below:
 
@@ -335,11 +351,18 @@ permalink: /projects/financetoolkit/docs/performance
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /ratios
+    - /ratios
 sidebar:
-  nav: "financetoolkit-docs-performance"
+    nav: "financetoolkit-docs-performance"
 ---
 The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, R-Squared and more.
+
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
 
 If you are looking for documentation regarding the toolkit, ratios, models, technicals, risk and economics, please have a look below:
 
@@ -373,12 +396,19 @@ permalink: /projects/financetoolkit/docs/economics
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /economics
+    - /economics
 sidebar:
-  nav: "financetoolkit-docs-economics"
+    nav: "financetoolkit-docs-economics"
 ---
 
 The Economics module gives insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and 3-month and 10-year Government Interest Rates. This is done through the economics module and can be used as a standalone module as well.
+
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
 
 If you are looking for documentation regarding the toolkit, models, ratios, technicals, risk and performance, please have a look below:
 
@@ -400,4 +430,4 @@ create_markdown_file(
     file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/economics/economics_controller.py",
     header=markdown_content,
     location="_pages/financetoolkit/documentation/economics.md",
-)
+) 

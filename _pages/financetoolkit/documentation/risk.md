@@ -7,9 +7,9 @@ permalink: /projects/financetoolkit/docs/risk
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /ratios
+    - /ratios
 sidebar:
-  nav: "financetoolkit-docs-risk"
+    nav: "financetoolkit-docs-risk"
 ---
 The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
 
@@ -101,10 +101,10 @@ The VaR is calculated as the quantile of the return distribution, representing t
  - <u>distribution (str):</u> The distribution to use for the VaR calculations (historic, gaussian, cf
  or studentt). Defaults to "historic".
 
- Returns:
+ **Returns:**
  pd.Series: VaR values with time as the index.
 
- Notes:
+ **Notes:**
  - The method retrieves historical return data based on the specified `period` and calculates VaR for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of VaR values using the specified `lag`.
@@ -158,10 +158,10 @@ The CVaR is calculated as the expected loss given that the loss threshold (VaR) 
  - <u>distribution (str):</u> The distribution to use for the CVaR calculations (historic, gaussian, studentt, laplace
  or logistic). Defaults to "historic".
 
- Returns:
+ **Returns:**
  pd.Series: CVaR values with time as the index.
 
- Notes:
+ **Notes:**
  - The method retrieves historical return data based on the specified `period` and calculates CVaR for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of CVaR values using the specified `lag`.
@@ -213,10 +213,10 @@ The EVaR is calculated as the upper bound of VaR and CVaR with a given confidenc
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series: EVaR values with time as the index.
 
- Notes:
+ **Notes:**
  - The method retrieves historical return data based on the specified `period` and calculates EVaR for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of EVaR values using the specified `lag`.
@@ -266,10 +266,10 @@ Maximum Drawdown (MDD) is a risk management metric that quantifies the largest h
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series: Maximum Drawdown values with time as the index.
 
- Notes:
+ **Notes:**
  - The method retrieves historical return data based on the specified `period` and calculates MMD for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of MMD values using the specified `lag`.
@@ -319,10 +319,10 @@ Ulcer Index = SQRT(SUM[(Pn / Highest High)^2] / n)
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the UI values over time. Defaults to False.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series: UI values with time as the index.
 
- Notes:
+ **Notes:**
  - The method retrieves historical return data based on the specified `period` and calculates UI for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of VaR values using the specified `lag`.
@@ -372,10 +372,10 @@ GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic 
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the GARCH values over time. Defaults to False.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame | pd.Series: GARCH values
 
- Notes:
+ **Notes:**
  - The method retrieves historical return data based on the specified `period` and calculates GARCH for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of GARCH values using the specified `lag`.
@@ -435,10 +435,10 @@ For more:
  False.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame | pd.Series: sigma_2 forecast values
 
- Notes:
+ **Notes:**
  - The method retrieves historical return data based on the specified `period` and calculates the sigma_2
  forecast for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the forecasted simga_2 values using
@@ -487,10 +487,10 @@ Skewness is a statistical measure used in finance to assess the asymmetry in the
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series: CVaR values with time as the index.
 
- Notes:
+ **Notes:**
  - The method retrieves historical return data based on the specified `period` and calculates Skew for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of VaR values using the specified `lag`.
@@ -534,10 +534,10 @@ Kurtosis is a statistical measure used in finance to evaluate the shape of the p
  efaults to False.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series: CVaR values with time as the index.
 
- Notes:
+ **Notes:**
  - The method retrieves historical return data based on the specified `period` and calculates VaR for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of VaR values using the specified `lag`.

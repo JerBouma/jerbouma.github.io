@@ -7,9 +7,9 @@ permalink: /projects/financetoolkit/docs/technicals
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /technicals
+    - /technicals
 sidebar:
-  nav: "financetoolkit-docs-technicals"
+    nav: "financetoolkit-docs-technicals"
 ---
 
 The Technicals Module contains 30+ Technical Indicators that can be used to analyse companies. These ratios are divided into 4 categories which are breadth, momentum, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
@@ -89,10 +89,10 @@ Calculates all Technical Indicators based on the data provided.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Technical indicators calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates various types of technical indicators for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
  using the specified `lag`.
@@ -122,10 +122,10 @@ Calculates and collects various breadth indicators based on the provided data.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Breadth indicators calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates various breadth indicators for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
  using the specified `lag`.
@@ -166,10 +166,10 @@ McClellan Oscillator = EMA(Advancers)
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: McClellan Oscillator values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the McClellan Oscillator for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -206,10 +206,10 @@ Advancers/Decliners = Advancers / Decliners
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Advancers/Decliners ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the Advancers/Decliners ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -248,10 +248,10 @@ OBV = Previous OBV + Current Volume if Close > Previous Close
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: On-Balance Volume values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates On-Balance Volume
  for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the OBV using the specified `lag`.
@@ -287,10 +287,10 @@ ADL = Previous ADL + Current ADL
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Accumulation/Distribution Line values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates the
  Accumulation/Distribution Line for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the Accumulation/Distribution Line
@@ -337,10 +337,10 @@ Chaikin Oscillator = EMA(short
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Chaikin Oscillator values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates the
  Chaikin Oscillator for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the Chaikin Oscillator
@@ -373,10 +373,10 @@ Calculates and collects various momentum indicators based on the provided data.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Momentum indicators calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates various momentum indicators for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
  using the specified `lag`.
@@ -415,10 +415,10 @@ MFI = 100
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Money Flow Index (MFI) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the MFI values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -461,10 +461,10 @@ Williams %R = (Highest High
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Williams %R values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the Williams %R values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -502,11 +502,11 @@ Aroon Up = ((Number of periods)
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  Tuple[pd.Series, pd.Series] or Tuple[pd.DataFrame, pd.DataFrame]:
  Aroon Indicator values for the upward and downward trends.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the Aroon Indicator values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -548,10 +548,10 @@ CCI = (Typical Price
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Commodity Channel Index (CCI) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the CCI values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -590,10 +590,10 @@ RVI = SMA(Upward Change) / (SMA(Upward Change) + SMA(Downward Change))
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Relative Vigor Index (RVI) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the RVI values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -633,10 +633,10 @@ Force Index = SMA(Periods) * (Close
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Force Index values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the Force Index values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -682,10 +682,10 @@ Ultimate Oscillator = 100 * ((4 * SMA(Periods)) / (SMA(Periods) + SMA(Periods) +
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Ultimate Oscillator values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the Ultimate Oscillator values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -730,10 +730,10 @@ PPO = ((Long
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Percentage Price Oscillator (PPO) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the PPO values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -775,10 +775,10 @@ DPO = Close
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Detrended Price Oscillator (DPO) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the DPO values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -817,10 +817,10 @@ ADX = SMA(DMI) / (SMA(DMI) + SMA(DMI))
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame or pd.Series: Average Directional Index (ADX) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the ADX values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -860,10 +860,10 @@ CMO = ((Sum of Upward Change)
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Chande Momentum Oscillator values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the Chande Momentum Oscillator values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -904,12 +904,12 @@ Conversion Line = (Highest High + Lowest Low) / 2
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  Tuple[pd.Series, pd.Series, pd.Series, pd.Series] or
  Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
  Conversion Line, Base Line, Lead Span A, and Lead Span B values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the Ichimoku Cloud values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
@@ -955,11 +955,11 @@ The formula is a follows:
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  Tuple[pd.Series, pd.Series] or Tuple[pd.DataFrame, pd.DataFrame]:
  %K line and %D line values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the Stochastic Oscillator values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the %K and %D values
@@ -1008,11 +1008,11 @@ The formula is a follows:
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  Tuple[pd.DataFrame, pd.DataFrame] or Tuple[pd.Series, pd.Series]:
  MACD line and signal line values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates
  the MACD and signal line values for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the MACD and signal values
@@ -1051,11 +1051,11 @@ RSI = 100
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame or pd.Series:
  Relative Strength Index (RSI) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates the
  RSI for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the RSI
@@ -1094,11 +1094,11 @@ BOP = (Close
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame or pd.Series:
  Balance of Power (BOP) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates the
  BOP for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the BOP
@@ -1132,10 +1132,10 @@ Calculates and collects various overlap
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Overlap-based indicators calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates several overlap-based indicators for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
  using the specified `lag`.
@@ -1173,11 +1173,11 @@ MA = (Sum of Prices) / (Number of Prices)
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame or pd.Series:
  Moving Average (MA) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates the
  MA for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the MA
@@ -1217,11 +1217,11 @@ EMA = (Close
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame or pd.Series:
  Exponential Moving Average (EMA) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates the
  EMA for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the EMA
@@ -1261,11 +1261,11 @@ EMA = (Close
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame or pd.Series:
  Double Exponential Moving Average (DEMA) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates the
  DEMA for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the DEMA
@@ -1311,11 +1311,11 @@ The formula is a follows:
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame or pd.Series:
  Trix values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates the
  Trix for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the Trix
@@ -1360,11 +1360,11 @@ The formula is a follows:
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame] or Tuple[pd.Series, pd.Series, pd.Series]:
  Bollinger Bands (upper, middle, lower).
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates the
  Bollinger Bands for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the Bollinger Bands
@@ -1403,10 +1403,10 @@ TMA = SMA(SMA(Close, Window), Window)
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Triangular Moving Average values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates the
  Triangular Moving Average for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the Triangular Moving Average
@@ -1439,10 +1439,10 @@ Calculates and collects various volatility indicators based on the provided data
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Volatility indicators calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates several volatility-based indicators for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the indicator values
  using the specified `lag`.
@@ -1481,10 +1481,10 @@ TR = max(high
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: True Range values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates the
  True Range for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the True Range
@@ -1526,7 +1526,7 @@ The formula is a follows:
  If an integer is provided, all ATR values are lagged by the same number of periods.
  If a list of integers is provided, each ATR value is lagged by the corresponding number of periods.
 
- Returns:
+ **Returns:**
  pd.Series: ATR values or ATR growth rate (if growth is True).
  A pandas Series containing the calculated Average True Range values or growth rate for each period.
 
@@ -1537,7 +1537,7 @@ The formula is a follows:
  2. Calculate the Average True Range (ATR) over the specified window:
  - ATR = EMA(TR, window), where EMA is the Exponential Moving Average.
 
- Notes:
+ **Notes:**
  - ATR values are typically used to assess the volatility and potential price movement of an asset.
  - A higher ATR value indicates higher volatility, while a lower ATR value suggests lower volatility.
 
@@ -1589,10 +1589,10 @@ The formula is a follows:
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
  Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame or Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]: Keltner Channels (upper, middle, lower).
 
- Notes:
+ **Notes:**
  - The method retrieves historical data based on the specified `period` and calculates Keltner Channels
  for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the channels using the specified `lag`.

@@ -7,9 +7,9 @@ permalink: /projects/financetoolkit/docs/ratios
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /ratios
+    - /ratios
 sidebar:
-  nav: "financetoolkit-docs-ratios"
+    nav: "financetoolkit-docs-ratios"
 ---
 
 The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
@@ -98,10 +98,10 @@ Calculates and collects all ratios based on the provided data.
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Ratios calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates various ratios for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
  using the specified `lag`.
@@ -131,10 +131,10 @@ Note that any of the following characters are considered as operators: +,
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Custom ratios calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates various custom ratios for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
  using the specified `lag`.
@@ -187,10 +187,10 @@ Calculates and collects all Efficiency Ratios based on the provided data.
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.Series or pd.DataFrame: Efficiency ratios calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates various efficiency ratios for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
  using the specified `lag`.
@@ -222,10 +222,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.Series: Asset turnover ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the asset turnover ratio
  for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -258,10 +258,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.Series: Inventory turnover ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the inventory turnover ratio
  for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -295,10 +295,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Days sales in inventory ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the DSI ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -332,10 +332,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Days of sales outstanding ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the DSO ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -369,10 +369,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Operating cycle ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the operating cycle ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -405,10 +405,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Accounts payable turnover ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the accounts payable turnover ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -442,10 +442,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Days payables outstanding (DPO) ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the DPO ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -480,10 +480,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Cash Conversion Cycle (CCC) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the CCC for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the CCC values using the specified `lag`.
 
@@ -513,10 +513,10 @@ The formula is as follows:
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
- Returns:
+ **Returns:**
  pd.DataFrame: Receivables turnover ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the receivables turnover ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
@@ -548,10 +548,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: SG&A to revenue ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the SG&A to revenue ratio for
  each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -584,10 +584,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Fixed Asset Turnover ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the Fixed Asset Turnover ratio
  for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -620,10 +620,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Operating ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the operating ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -649,10 +649,10 @@ Calculates and collects all Liquidity Ratios based on the provided data.
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Liquidity ratios calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates various liquidity ratios for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
  using the specified `lag`.
@@ -687,10 +687,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Current ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the current ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -727,10 +727,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Quick ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the quick ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -764,10 +764,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Cash ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the cash ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -802,10 +802,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Working capital values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the working capital for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the working capital
@@ -839,10 +839,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Operating cash flow ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the operating cash flow ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -875,10 +875,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Operating cash flow to sales ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the operating cash flow to sales ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -937,10 +937,10 @@ Calculates and collects all Profitability Ratios based on the provided data.
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Profitability ratios calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates various profitability ratios for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
  using the specified `lag`.
@@ -973,10 +973,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Gross margin ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the gross margin ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -1009,10 +1009,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Operating margin ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the operating margin ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -1045,10 +1045,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Net profit margin ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the net profit margin ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -1083,10 +1083,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Interest Coverage Ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the Interest Coverage Ratio for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -1121,10 +1121,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Pretax Profit Margin values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the Pretax Profit Margin for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -1158,10 +1158,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Effective tax rate values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the effective tax rate for each
  asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -1194,10 +1194,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Return on assets (ROA) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ROA for each asset in the
  Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -1232,10 +1232,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Return on equity (ROE) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ROE for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1266,10 +1266,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Return on invested capital (ROIC) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ROIC for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1300,10 +1300,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Income quality ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the income quality ratio for each asset
  in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
@@ -1335,10 +1335,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Return on tangible assets (ROTA) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ROTA for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1370,10 +1370,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Return on capital employed (ROCE) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ROCE for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1404,10 +1404,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Net income per earnings before taxes (EBT) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the net income per EBT for each asset in
  the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using
@@ -1440,10 +1440,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Free cash flow to operating cash flow ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1474,10 +1474,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Tax burden ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1508,10 +1508,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: EBT to EBIT ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1542,10 +1542,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: EBIT to Revenue ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1570,10 +1570,10 @@ Calculates and collects all Solvency Ratios based on the provided data.
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Solvency ratios calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates various solvency ratios for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
  using the specified `lag`.
@@ -1605,10 +1605,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Debt to assets ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1639,10 +1639,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Debt to equity ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1673,10 +1673,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Interest coverage ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1707,10 +1707,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Equity multiplier values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1741,10 +1741,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Debt service coverage ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1776,10 +1776,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Free cash flow yield ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1810,10 +1810,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Net debt to EBITDA ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1844,10 +1844,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Cash flow coverage ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1878,10 +1878,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Capital expenditure coverage ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1912,10 +1912,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Dividend paid and capex coverage ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -1941,10 +1941,10 @@ Calculates and collects all Valuation Ratios based on the provided data.
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Valuation ratios calculated based on the specified parameters.
 
- Notes:
+ **Notes:**
  - The method calculates various valuation ratios for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values
  using the specified `lag`.
@@ -1980,10 +1980,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Earnings per share (EPS) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the EPS for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the EPS values using the specified `lag`.
 
@@ -2017,10 +2017,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Revenue per share values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the revenue per share for each asset in
  the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the revenue per share values
@@ -2055,10 +2055,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Price earnings ratio (P/E) values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the P/E ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the P/E ratio values using the specified `lag`.
 
@@ -2095,10 +2095,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Price earnings to growth (PEG) ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the PEG ratio for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the PEG ratio values using the specified `lag`.
 
@@ -2131,10 +2131,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Book value per share values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the book value per share for each asset
  in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the book value per share values
@@ -2168,10 +2168,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Price to book ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the price to book ratio for each asset
  in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the price to book ratio values
@@ -2205,10 +2205,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Interest debt per share values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the interest debt per share ratio for each asset
  in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the interest debt per share values
@@ -2242,10 +2242,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Capex per share values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the capex per share ratio for each asset
  in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the capex per share values
@@ -2279,10 +2279,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Dividend yield values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the dividend yield ratio for each asset
  in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the dividend yield values
@@ -2316,10 +2316,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Weighted dividend yield values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the weighted dividend yield ratio for each asset
  in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the weighted dividend yield values
@@ -2353,10 +2353,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Price to cash flow ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the price to cash flow ratio for each asset
  in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the price to cash flow ratio values
@@ -2390,10 +2390,10 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Price to free cash flow ratio values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the price to free cash flow ratio for each asset
  in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the price to free cash flow ratio values
@@ -2427,7 +2427,7 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Market capitalization values.
 
  As an example:
@@ -2457,7 +2457,7 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Enterprise Value values.
 
  As an example:
@@ -2488,7 +2488,7 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: EV to Sales Ratio values.
 
  As an example:
@@ -2519,7 +2519,7 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: EV to EBITDA Ratio values.
 
  As an example:
@@ -2550,7 +2550,7 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: EV to Operating Cash Flow Ratio values.
 
  As an example:
@@ -2582,7 +2582,7 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Earnings Yield Ratio values.
 
  As an example:
@@ -2612,7 +2612,7 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Payout Ratio values.
 
  As an example:
@@ -2642,7 +2642,7 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Tangible Asset Value values.
 
  As an example:
@@ -2673,7 +2673,7 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Net Current Asset Value values.
 
  As an example:
@@ -2702,7 +2702,7 @@ The formula is as follows:
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Enterprise Value over EBIT values.
 
  As an example:

@@ -7,9 +7,9 @@ permalink: /projects/financetoolkit/docs/economics
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /economics
+    - /economics
 sidebar:
-  nav: "financetoolkit-docs-economics"
+    nav: "financetoolkit-docs-economics"
 ---
 
 The Economics module gives insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and 3-month and 10-year Government Interest Rates. This is done through the economics module and can be used as a standalone module as well.
@@ -89,7 +89,7 @@ See definition: [https://data.oecd.org/gdp/gross
  - <u>per_capita (bool, optional):</u> Whether to return the per capita data or the total data.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Gross Domestic Product
 
  As an example:
@@ -130,7 +130,7 @@ See definition: [https://data.oecd.org/gdp/quarterly
  - <u>quarterly (bool, optional):</u> Whether to return the quarterly data or the annual data.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Gross Domestic Product growth rates.
 
  As an example:
@@ -177,7 +177,7 @@ See definition: [https://data.oecd.org/gdp/real
  - <u>long_term (bool, optional):</u> Whether to return the long term forecast or the short term forecast.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Gross Domestic Product forecast growth rates.
 
  As an example:
@@ -221,7 +221,7 @@ See definition: [https://data.oecd.org/leadind/consumer
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Consumer Confidence Index.
 
  As an example:
@@ -267,7 +267,7 @@ See definition: [https://data.oecd.org/leadind/business
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Business Confidence Index.
 
  As an example:
@@ -312,7 +312,7 @@ See definition: [https://data.oecd.org/leadind/composite
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Composite Leading Indicator.
 
  As an example:
@@ -359,7 +359,7 @@ See definition: [https://data.oecd.org/price/inflation
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Consumer Price Index.
 
  As an example:
@@ -409,7 +409,7 @@ See definition: [https://data.oecd.org/price/producer
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Consumer Price Index.
 
  As an example:
@@ -461,7 +461,7 @@ See definition: [https://data.oecd.org/price/housing
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the House Prices.
 
  As an example:
@@ -506,7 +506,7 @@ See definition: [https://data.oecd.org/price/housing
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the House Prices.
 
  As an example:
@@ -553,7 +553,7 @@ See definition: [https://data.oecd.org/unemp/unemployment
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Unemployment Rate.
 
  As an example:
@@ -605,7 +605,7 @@ See definition: [https://data.oecd.org/interest/long
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Long Term Interest Rate.
 
  As an example:
@@ -658,7 +658,7 @@ See definition: [https://data.oecd.org/interest/short
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Short Term Interest Rate.
 
  As an example:
@@ -708,7 +708,7 @@ See definition: [https://data.oecd.org/conversion/purchasing
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Purchasing Power Parity.
 
  As an example:
@@ -749,7 +749,7 @@ See definition: [https://data.oecd.org/conversion/exchange
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Exchange Rates.
 
  As an example:
@@ -802,7 +802,7 @@ See source: [https://data.ecb.europa.eu/main
  - <u>rate (str, optional):</u> The rate to return. Defaults to None, which returns all rates.
  Choose between 'refinancing', 'lending' or 'deposit'.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the ECB rates.
 
  As an example:
@@ -883,7 +883,7 @@ See source: [https://www.newyorkfed.org/markets/reference
 **Args:**
  - <u>rate (str):</u> The rate to return. Defaults to 'EFFR' (Effective Federal Funds Rate).
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Federal Reserve rates including the rate,
  percentiles, volume and upper and lower bounds.
 
@@ -935,7 +935,7 @@ See definition: [https://data.oecd.org/price/share
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Exchange Rates.
 
  As an example:
@@ -986,7 +986,7 @@ See definition: [https://data.oecd.org/lprdty/gdp
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Exchange Rates.
 
  As an example:
@@ -1057,7 +1057,7 @@ See definition: [https://data.oecd.org/pop/population.htm](https://data.oecd.org
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Population Statistics.
 
  As an example:
@@ -1109,7 +1109,7 @@ See definition: [https://data.oecd.org/inequality/income
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Population Statistics.
 
  As an example:
@@ -1165,7 +1165,7 @@ See definition: [https://data.oecd.org/inequality/poverty
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Poverty Rates.
 
  As an example:
@@ -1211,7 +1211,7 @@ See definition: [https://data.oecd.org/money/broad
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Narrow and Broad Money.
 
  As an example:
@@ -1269,7 +1269,7 @@ See definition: [https://data.oecd.org/gga/general
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Government Statistics.
 
  As an example:
@@ -1337,7 +1337,7 @@ See definition: [https://data.oecd.org/gga/central
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Central Government Spending.
 
  As an example:
@@ -1385,7 +1385,7 @@ See definition: [https://data.oecd.org/gga/trust
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Trust in Government.
 
  As an example:
@@ -1441,7 +1441,7 @@ See definition: [https://data.oecd.org/energy/renewable
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Renewable Energy Percentage.
 
  As an example:
@@ -1494,7 +1494,7 @@ See definition: [https://data.oecd.org/energy/crude
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Crude Oil Production.
 
  As an example:
@@ -1552,7 +1552,7 @@ See definition: [https://data.oecd.org/energy/crude
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Crude Oil Prices.
 
  As an example:
@@ -1604,7 +1604,7 @@ See definition: [https://data.oecd.org/envpolicy/environmental
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Environmental Tax.
 
  As an example:
@@ -1666,7 +1666,7 @@ See definition: [https://data.oecd.org/air/air
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the Environmental Tax.
 
  As an example:

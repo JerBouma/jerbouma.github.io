@@ -7,9 +7,9 @@ permalink: /projects/financetoolkit/docs/performance
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /ratios
+    - /ratios
 sidebar:
-  nav: "financetoolkit-docs-performance"
+    nav: "financetoolkit-docs-performance"
 ---
 The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, R-Squared and more.
 
@@ -93,10 +93,10 @@ See definition: [https://en.wikipedia.org/wiki/Beta_(finance)](https://en.wikipe
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Beta values.
 
- Notes:
+ **Notes:**
  - Daily Beta is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
  not give any useful insights.
  - The method retrieves historical data and calculates the Beta for each asset in the Toolkit instance.
@@ -145,10 +145,10 @@ See definition: [https://en.wikipedia.org/wiki/Capital_asset_pricing_model](http
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: CAPM values.
 
- Notes:
+ **Notes:**
  - Daily CAPM is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
  not give any useful insights.
  - The method retrieves historical data and calculates the CAPM for each asset in the Toolkit instance.
@@ -183,7 +183,7 @@ However, since the results are closely related and tend to point into the same d
  Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Factor Asset Correlations.
 
  As an example:
@@ -221,7 +221,7 @@ Optionally, it is also possible to see the correlation between the risk
  - <u>exclude_risk_free (bool, optional):</u> Whether to exclude the risk-free rate from the results. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Factor Correlations.
 
  As an example:
@@ -282,10 +282,10 @@ What is relevant to look at is the influence these factors have on each stock an
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratio values. Defaults to False.
  - <u>lag (int or list of int, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Fama and French 5 Factor model scores for the specified assets.
 
- Notes:
+ **Notes:**
  - The dataset from Fama and French is not always fully up to date. Therefore, some periods could be excluded.
  - Daily Fama and French results is not an option as it would attempt to do a linear regression on a
  single data point which will not give any meaningful results.
@@ -324,10 +324,10 @@ See definition: [https://en.wikipedia.org/wiki/Alpha_(finance)](https://en.wikip
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Alpha values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the Alpha for each asset in the Toolkit instance.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
@@ -364,10 +364,10 @@ See definition: [https://en.wikipedia.org/wiki/Jensen%27s_alpha](https://en.wiki
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Jensen's Alpha values.
 
- Notes:
+ **Notes:**
  - Daily Jensen's Alpha is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
  not give any useful insights.
  - The method retrieves historical data and calculates the CAPM for each asset in the Toolkit instance.
@@ -407,10 +407,10 @@ See definition: [https://en.wikipedia.org/wiki/Treynor_ratio](https://en.wikiped
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Treynor Ratio values.
 
- Notes:
+ **Notes:**
  - Daily Treynor Ratio is not an option as the standard deviation for 1 day is close to zero. Therefore,
  it does not give any useful insights.
  - The method retrieves historical data and calculates the TR for each asset in the Toolkit instance.
@@ -462,10 +462,10 @@ See definition: [https://en.wikipedia.org/wiki/Sharpe_ratio](https://en.wikipedi
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Sharpe ratio values.
 
- Notes:
+ **Notes:**
  - Daily Sharpe Ratio is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
  not give any useful insights.
  - The method retrieves historical data and calculates the Sharpe ratio for each asset in the Toolkit instance.
@@ -512,10 +512,10 @@ See definition: [https://en.wikipedia.org/wiki/Sortino_ratio](https://en.wikiped
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Sortino ratio values.
 
- Notes:
+ **Notes:**
  - Daily Sortino Ratio is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
  not give any useful insights.
  - The method retrieves historical data and calculates the Sortino ratio for each asset in the Toolkit instance.
@@ -546,10 +546,10 @@ It can be used to compare volatilities in different stocks or show stocks go int
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Ulcer Performance Index values.
 
- Notes:
+ **Notes:**
  - The method retrieves historical data and calculates the UPI for each asset in the Toolkit instance.
  - The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
@@ -588,10 +588,10 @@ See definition: [https://en.wikipedia.org/wiki/Modigliani_risk
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: M2 ratio values.
 
- Notes:
+ **Notes:**
  - Daily M2 is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
  not give any useful insights.
  - The method retrieves historical data and calculates the M2 for each asset in the Toolkit instance.
@@ -626,10 +626,10 @@ See definition: [https://en.wikipedia.org/wiki/Tracking_error](https://en.wikipe
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Tracking error values.
 
- Notes:
+ **Notes:**
  - Daily Tracking Error is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
  not give any useful insights.
  - The method retrieves historical data and calculates the TE for each asset in the Toolkit instance.
@@ -670,10 +670,10 @@ See definition: [https://en.wikipedia.org/wiki/Information_ratio](https://en.wik
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: Information ratio values.
 
- Notes:
+ **Notes:**
  - Daily Information Ratio is not an option as the standard deviation for 1 day is close to zero.
  Therefore, it does not give any useful insights.
  - The method retrieves historical data and calculates the IR for each asset in the Toolkit instance.
@@ -705,11 +705,11 @@ The formula is as follows:
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. If not provided,
  the function will use the default rounding value set in the class instance.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the CGR for each period. The DataFrame has the periods
  as the index and the CGR values as the column.
 
- Notes:
+ **Notes:**
  - When verifying the calculation, note that rounding applies and it could be slightly off because of that
  This is mostly noticeable when looking at the Compound Daily Growth Rate. Adjust the rounding with the
  rounding parameter accordingly to get a more precise figure.

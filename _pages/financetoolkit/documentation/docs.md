@@ -9,7 +9,7 @@ layout: single
 redirect_from:
 - /docs
 sidebar:
-  nav: "financetoolkit-docs"
+    nav: "financetoolkit-docs"
 ---
 
 This page includes all the documentation for the Finance Toolkit,an open-source toolkit in which all relevant financial ratios (150+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
@@ -406,10 +406,10 @@ Get the rating of the specified tickers. These scores and recommendations are ca
 **Args:**
  - <u>limit (int):</u> The number of results to return. Defaults to 100.
 
- Raises:
+ **Raises:**
  ValueError: If an API key is not defined for FinancialModelingPrep.
 
- Returns:
+ **Returns:**
  pd.DataFrame: The stock rating information for the specified tickers.
 
  As an example:
@@ -448,7 +448,7 @@ Note that this information requires a Premium FMP subscription.
  - <u>lag (int | str):</u> Defines the number of periods to lag the growth data by.
  - <u>trailing (int):</u> Defines whether to select a trailing period. E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pandas.DataFrame: The analyst estimates for the specified tickers.
 
  As an example:
@@ -499,7 +499,7 @@ Note that this information requires a Premium FMP subscription.
  - <u>actual_dates (bool):</u> Defines whether to return the actual dates or the corresponding quarters.
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 
- Returns:
+ **Returns:**
  pd.DataFrame: The earnings calendar for the specified tickers.
 
  As an example:
@@ -538,7 +538,7 @@ Note that this information requires a Premium FMP subscription.
 **Args:**
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 
- Returns:
+ **Returns:**
  pd.DataFrame: The revenue by geographic segmentation for the specified tickers.
 
  As an example:
@@ -574,7 +574,7 @@ Note that this information requires a Premium FMP subscription.
 **Args:**
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 
- Returns:
+ **Returns:**
  pd.DataFrame: The revenue by product segmentation for the specified tickers.
 
  As an example:
@@ -644,10 +644,10 @@ Important to note is that when an api_key is included in the Toolkit initializat
  - <u>show_ticker_seperation (bool, optional):</u> A boolean representing whether to show which tickers
  acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance.
 
- Raises:
+ **Raises:**
  ValueError: If an invalid value is specified for period.
 
- Returns:
+ **Returns:**
  pandas.DataFrame: The historical data for the specified tickers.
 
  As an example:
@@ -692,7 +692,7 @@ If a company does not pay any dividend, the function will mention that it was no
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
  - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 
- Returns:
+ **Returns:**
  pd.DataFrame: The earnings calendar for the specified tickers.
 
  As an example:
@@ -741,7 +741,7 @@ ESG scores provide investors with a holistic view of a company's sustainability 
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
  - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 
- Returns:
+ **Returns:**
  pd.DataFrame: The ESG scores for the specified tickers.
 
  As an example:
@@ -817,7 +817,7 @@ Retrieve daily, weekly, monthly, quarterly or yearly treasury data. This can be 
  to True to prevent holes in the dataset. This is especially relevant for
  technical indicators.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A DataFrame containing the treasury data.
 
  As an example:
@@ -865,10 +865,10 @@ Important to note is that when an api_key is included in the Toolkit initializat
  - <u>show_ticker_seperation (bool, optional):</u> A boolean representing whether to show which tickers
  acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance.
 
- Raises:
+ **Raises:**
  ValueError: If an invalid value is specified for period.
 
- Returns:
+ **Returns:**
  pandas.DataFrame: The historical exchange rate data.
 
  As an example:
@@ -909,7 +909,7 @@ Retrieves the balance sheet statement financial data for the company(s) from the
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A pandas DataFrame with the retrieved balance sheet statement data.
 
  As an example:
@@ -985,7 +985,7 @@ Retrieves the income statement financial data for the company(s) from the specif
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A pandas DataFrame with the retrieved income statement data.
 
  As an example:
@@ -1046,7 +1046,7 @@ Retrieves the cash flow statement financial data for the company(s) from the spe
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A pandas DataFrame with the retrieved cash flow statement data.
 
  As an example:
@@ -1106,7 +1106,7 @@ Note that this also obtains the balance sheet statement at the same time given t
  - <u>limit (int):</u> Defines the maximum years or quarters to obtain.
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 
- Returns:
+ **Returns:**
  pd.DataFrame: A pandas DataFrame with the retrieved statistics statement data.
 
  As an example:
@@ -1139,5 +1139,5 @@ Copies the normalization files to a folder based on path. By default, this is th
 **Args:**
  - <u>path (str, optional):</u> The path where to save the files to.
 
- Returns:
+ **Returns:**
  Three csv files saved to the desired location.

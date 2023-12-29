@@ -7,9 +7,9 @@ permalink: /projects/financetoolkit/docs/models
 classes: wide-sidebar
 layout: single
 redirect_from:
-  - /models
+    - /models
 sidebar:
-  nav: "financetoolkit-docs-models"
+    nav: "financetoolkit-docs-models"
 ---
 
 The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
@@ -91,11 +91,11 @@ The formula is as follows:
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: DataFrame containing Dupont analysis results, including Profit Margin, Asset
  Turnover, Financial Leverage, and the calculated ROE values.
 
- Notes:
+ **Notes:**
  - The Profit Margin is the ratio of Net Income to Total Revenue, indicating the percentage of
  revenue that translates into profit.
  - Asset Turnover measures the efficiency of a company's use of its assets to generate sales
@@ -133,11 +133,11 @@ The formula is as follows:
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: DataFrame containing Extended Dupont analysis results, including Profit Margin, Asset Turnover,
  Financial Leverage, ROA, Total Asset Turnover, and the calculated ROE values.
 
- Notes:
+ **Notes:**
  - The Profit Margin is the ratio of Net Income to Total Revenue, indicating the percentage of
  revenue that translates into profit.
  - Asset Turnover measures the efficiency of a company's use of its assets to generate
@@ -184,10 +184,10 @@ This breakdown is displayed in a DataFrame for each company and includes the opt
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: DataFrame containing the Enterprise Value breakdown, including the calculated components.
 
- Notes:
+ **Notes:**
  - All the inputs must be in the same currency and unit for accurate calculations.
  - The Enterprise Value is an important metric used for valuation and investment analysis.
  - A positive Enterprise Value indicates that the company is financed primarily by equity and has excess cash.
@@ -240,11 +240,11 @@ Total Market Value of Capital (V): The total market value of capital is the sum 
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: DataFrame containing Dupont analysis results, including Profit Margin, Asset
  Turnover, Financial Leverage, and the calculated ROE values.
 
- Notes:
+ **Notes:**
  - The Cost of Equity is approximated with the Capital Asset Pricing Model (CAPM).
  - The Market Value of Debt is approximated as the Total Debt.
 
@@ -290,10 +290,10 @@ The formula is as follows:
  and "Capital Expenditure".
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
- Returns:
+ **Returns:**
  pd.DataFrame: DataFrame containing the intrinsic value for each ticker.
 
- Notes:
+ **Notes:**
  - The results are highly dependent on the input. Therefore, think carefully about each input parameter to
  ensure the results are accurate (given your beliefs)
 
@@ -340,10 +340,10 @@ The Altman Z
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: DataFrame containing the Altman Z-Score and its components.
 
- Notes:
+ **Notes:**
  - The Altman Z-Score is a financial metric used to predict the likelihood of a company going bankrupt.
  - The Z-Score is calculated using several financial ratios, including working capital to total assets,
  retained earnings to total assets, earnings before interest and taxes (EBIT) to total assets, market value
@@ -396,7 +396,7 @@ Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financia
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
  - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- Returns:
+ **Returns:**
  pd.DataFrame: DataFrame containing the Piotroski F-Score and its components.
 
  As an example:

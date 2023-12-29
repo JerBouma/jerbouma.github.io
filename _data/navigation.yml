@@ -167,11 +167,11 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#performance
     - title: "Economics Module"
       url: /projects/financetoolkit/docs#economics
-    - title: "Profiles"
+    - title: "Company Profiles"
       url: /projects/financetoolkit/docs#get_profile
-    - title: "Quotes"
+    - title: "Current Quotes"
       url: /projects/financetoolkit/docs#get_quote
-    - title: "Ratings"
+    - title: "Ratings and Recommendations"
       url: /projects/financetoolkit/docs#get_rating
     - title: "Analyst Estimates"
       url: /projects/financetoolkit/docs#get_analyst_estimates
