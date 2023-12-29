@@ -47,70 +47,51 @@ See for more information on all of this, the following link: [https://www.jeroen
 
  - <u>tickers (str or list):</u> A string or a list of strings containing the company ticker(s). E.g. 'TSLA' or 'MSFT'
  Find the tickers on a variety of websites or via the FinanceDatabase: [https://github.com/JerBouma/financedatabase](https://github.com/JerBouma/financedatabase){:target="_blank"}
-
  - <u>api_key (str):</u> An API key from FinancialModelingPrep. Obtain one here: [https://www.jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}
-
  - <u>start_date (str):</u> A string containing the start date of the data. This needs to be formatted as YYYY-MM-DD.
  The default is today minus 10 years which can be freely changed to extend the period.
-
  - <u>end_date (str):</u> A string containing the end date of the data. This needs to be formatted as YYYY-MM-DD.
  The default is today which can be freely changed to extend the period.
-
  - <u>quarterly (bool):</u> A boolean indicating whether to collect quarterly data. This defaults to False and thus
  collects yearly financial statements. Note that historical data can still be collected for
  any period and interval.
-
  - <u>risk_free_rate (str):</u> A string containing the risk free rate. This can be 13w, 5y, 10y or 30y. This is
  based on the US Treasury Yields and is used to calculate various ratios and Excess Returns.
-
  - <u>benchmark_ticker (str):</u> A string containing the benchmark ticker. Defaults to SPY (S&P 500). This is
  meant to calculate ratios and indicators such as the CAPM and Jensen's Alpha but also serves as purpose to
  give insights in the performance of a stock compared to a benchmark.
-
  - <u>historical_source (str):</u> A string containing the historical source. This can be either FinancialModelingPrep
  or YahooFinance. Defaults to FinancialModelingPrep. It is automatically defined if you enter an API Key from
  FinancialModelingPrep. You can overwrite this by filling this parameter. Note that for the Free plan the amount
  of historical data is limited to 5 years. If you want to collect more data, you need to upgrade to a paid plan.
-
  - <u>check_asset_class (bool):</u> Whether to check if the asset class will work for the function you are trying to
  execute. Defaults to None. If you are trying to execute a function that requires a specific asset class, this
  will raise an error if the asset class is not correct. If you set this to False, it will simply make an attempt
  to collect data but could lead to confusing results. The parameter is built in to limit the API calls as it
  needs to acquire the data from Yahoo Finance. It is turned on when the amount of tickers are < 20 and turned
  off when the amount of tickers is higher than 20. Can be overridden when you set it to True or False.
-
  - <u>custom_ratios (dict):</u> A dictionary containing custom ratios. This is meant to define your own ratios. See
  the following Notebook how to set this up: [https://www.jeroenbouma.com/projects/financetoolkit/custom-ratios](https://www.jeroenbouma.com/projects/financetoolkit/custom-ratios){:target="_blank"}
-
  - <u>historical (pd.DataFrame):</u> A DataFrame containing historical data. This is a custom dataset only relevant if
  you are looking to use custom data. See for more information the following Notebook:
  [https://www.jeroenbouma.com/projects/financetoolkit/external-datasets](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets){:target="_blank"}
-
  - <u>balance (pd.DataFrame):</u> A DataFrame containing balance sheet data. This is a custom dataset only
  relevant if you are looking to use custom data. See for more information the notebook as mentioned at historical.
-
  - <u>cash (pd.DataFrame):</u> A DataFrame containing cash flow statement data. This is a custom dataset only
  relevant if you are looking to use custom data. See for more information the notebook as mentioned at historical.
-
  - <u>format_location (str):</u> A string containing the location of the normalization files.
-
  - <u>convert_currency (bool):</u> A boolean indicating whether to convert the currency of the financial statements to
  match that of the related historical data. This is an important conversion when comparing the financial
  statements between each ticker as well as for calculations that are done with the historical data.
  If you are using a Free plan from FinancialModelingPrep, this will be set to False.
  If you are using a Premium plan from FinancialModelingPrep, this will be set to True. Defaults to None
  and can thus be overridden.
-
  - <u>reverse_dates (bool):</u> A boolean indicating whether to reverse the dates in the financial statements.
-
  - <u>rounding (int):</u> An integer indicating the number of decimals to round the results to.
-
  - <u>remove_invalid_tickers (bool):</u> A boolean indicating whether to remove invalid tickers. Defaults to False.
-
  - <u>sleep_timer (bool):</u> Whether to set a sleep timer when the rate limit is reached. Note that this only works
  if you have a Premium subscription (Starter or higher) from FinancialModelingPrep. Defaults to None which
  means it is determined by the model (Free plan = False, Premium plan = True).
-
  - <u>progress_bar (bool):</u> Whether to enable the progress bar when ticker amount is over 10. Defaults to True.
 
  As an example:

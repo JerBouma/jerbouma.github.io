@@ -82,7 +82,6 @@ Which returns:
  | Free Cash Flow to Operating Cash Flow Ratio | 0.828073 | 0.848756 | 0.909401 | 0.893452 | 0.912338 |
  | EBT to EBIT Ratio | 0.957448 | 0.948408 | 0.958936 | 0.976353 | 0.975982 |
  | EBIT to Revenue | 0.286688 | 0.26641 | 0.254864 | 0.305759 | 0.309473 |
- ```
 
 ## collect_all_ratios
 Calculates and collects all ratios based on the provided data.
@@ -213,7 +212,8 @@ The asset turnover ratio is calculated by dividing the company's net sales (reve
 
 The formula is as follows:
 
-Asset Turnover Ratio = Net Sales / Average Total Assets
+
+- Asset Turnover Ratio = Net Sales / Average Total Assets
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -248,7 +248,8 @@ The inventory turnover ratio is calculated by dividing the cost of goods sold (C
 
 The formula is as follows:
 
-Inventory Turnover Ratio = Cost of Goods Sold / Average Inventory
+
+- Inventory Turnover Ratio = Cost of Goods Sold / Average Inventory
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -283,7 +284,8 @@ The days sales in inventory ratio (DSI) is calculated by dividing the average in
 
 The formula is as follows:
 
-Days Sales in Inventory Ratio = (Average Inventory / Cost of Goods Sold) * Days
+
+- Days Sales in Inventory Ratio = (Average Inventory / Cost of Goods Sold) * Days
 
 **Args:**
  - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
@@ -319,7 +321,8 @@ The days of sales outstanding (DSO) ratio is calculated by dividing the accounts
 
 The formula is as follows:
 
-Days of Sales Outstanding Ratio = (Accounts Receivable / Total Credit Sales) * Days
+
+- Days of Sales Outstanding Ratio = (Accounts Receivable / Total Credit Sales) * Days
 
 **Args:**
  - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
@@ -355,7 +358,8 @@ The operating cycle represents the total time required to purchase inventory, co
 
 The formula is as follows:
 
-Operating Cycle Ratio = Days of Sales in Inventory + Days of Sales Outstanding
+
+- Operating Cycle Ratio = Days of Sales in Inventory + Days of Sales Outstanding
 
 **Args:**
  - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
@@ -391,7 +395,8 @@ The accounts payable turnover ratio indicates how many times, on average, a comp
 
 The formula is as follows:
 
-Accounts Payable Turnover Ratio = Cost of Goods Sold / Average Accounts Payable
+
+- Accounts Payable Turnover Ratio = Cost of Goods Sold / Average Accounts Payable
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -426,7 +431,8 @@ The days payables outstanding (DPO) ratio is used to assess how efficiently a co
 
 The formula is as follows:
 
-Days Payables Outstanding = (Average Accounts Payable / Cost of Goods Sold) * Days
+
+- Days Payables Outstanding = (Average Accounts Payable / Cost of Goods Sold) * Days
 
 **Args:**
  - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
@@ -462,7 +468,8 @@ The Cash Conversion Cycle (CCC) is an important measure of a company's liquidity
 
 The formula is as follows:
 
-Cash Conversion Cycle = Days of Sales in Inventory + Days of Sales Outstanding 
+
+- Cash Conversion Cycle = Days of Sales in Inventory + Days of Sales Outstanding 
 - Days of Accounts Payable Outstanding
 
 **Args:**
@@ -497,7 +504,8 @@ The receivables turnover ratio is an important measure of how well a company man
 
 The formula is as follows:
 
-Receivables Turnover Ratio = Net Credit Sales / Average Accounts Receivable
+
+- Receivables Turnover Ratio = Net Credit Sales / Average Accounts Receivable
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -530,7 +538,8 @@ The SG&A to revenue ratio is calculated by dividing the total SG&A expenses by t
 
 The formula is as follows:
 
-SG&A to Revenue Ratio = SG&A Expenses / Revenue
+
+- SG&A to Revenue Ratio = SG&A Expenses / Revenue
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -565,7 +574,8 @@ The Fixed Asset Turnover ratio is calculated by dividing the company's net sales
 
 The formula is as follows:
 
-Fixed Asset Turnover Ratio = Net Sales / Average Fixed Assets
+
+- Fixed Asset Turnover Ratio = Net Sales / Average Fixed Assets
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -600,7 +610,8 @@ The operating ratio is calculated by dividing the company's operating expenses b
 
 The formula is as follows:
 
-Operating Ratio = (Operating Expenses + Cost of Goods Sold) / Revenue
+
+- Operating Ratio = (Operating Expenses + Cost of Goods Sold) / Revenue
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -666,7 +677,8 @@ The current ratio is calculated by dividing a company's current assets by its cu
 
 The formula is as follows:
 
-Current Ratio = Current Assets / Current Liabilities
+
+- Current Ratio = Current Assets / Current Liabilities
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -705,7 +717,8 @@ The quick ratio is calculated by subtracting inventory from current assets and t
 
 The formula is as follows:
 
-Quick Ratio = (Cash and Cash Equivalents + Short Term Investments + Accounts Receivable) / Current Liabilities
+
+- Quick Ratio = (Cash and Cash Equivalents + Short Term Investments + Accounts Receivable) / Current Liabilities
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -741,7 +754,8 @@ The cash ratio is calculated by dividing the sum of cash and cash equivalents by
 
 The formula is as follows:
 
-Cash Ratio = (Cash and Cash Equivalents + Short Term Investments) / Current Liabilities
+
+- Cash Ratio = (Cash and Cash Equivalents + Short Term Investments) / Current Liabilities
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -777,7 +791,8 @@ The working capital is calculated by subtracting total current liabilities from 
 
 The formula is as follows:
 
-Working Capital = Current Assets 
+
+- Working Capital = Current Assets 
 - Current Liabilities
 
 **Args:**
@@ -814,7 +829,8 @@ The operating cash flow ratio is calculated by dividing operating cash flow by c
 
 The formula is as follows:
 
-Operating Cash Flow Ratio = Cash Flow from Operations / Current Liabilities
+
+- Operating Cash Flow Ratio = Cash Flow from Operations / Current Liabilities
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -849,7 +865,8 @@ The operating cash flow to sales ratio is calculated by dividing operating cash 
 
 The formula is as follows:
 
-Operating Cash Flow to Sales Ratio = Cash Flow from Operations / Revenue
+
+- Operating Cash Flow to Sales Ratio = Cash Flow from Operations / Revenue
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -889,7 +906,8 @@ The short
 
 The formula is as follows:
 
-Short Term Coverage Ratio = Cash Flow from Operations / (Accounts Receivable + Inventory 
+
+- Short Term Coverage Ratio = Cash Flow from Operations / (Accounts Receivable + Inventory 
 - Accounts Payable)
 
 **Args:**
@@ -944,7 +962,8 @@ The gross margin ratio is calculated by subtracting the cost of goods sold (COGS
 
 The formula is as follows:
 
-Gross Margin Ratio = (Revenue 
+
+- Gross Margin Ratio = (Revenue 
 - Cost of Goods Sold) / Revenue
 
 **Args:**
@@ -980,7 +999,8 @@ The operating margin ratio is calculated by subtracting the operating expenses f
 
 The formula is as follows:
 
-Operating Margin Ratio = Operating Income / Revenue
+
+- Operating Margin Ratio = Operating Income / Revenue
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1015,7 +1035,8 @@ The net profit margin ratio is calculated by dividing the net income by the tota
 
 The formula is as follows:
 
-Net Profit Margin Ratio = Net Income / Revenue
+
+- Net Profit Margin Ratio = Net Income / Revenue
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1052,7 +1073,8 @@ The Interest Coverage Ratio is calculated by dividing the earnings before intere
 
 The formula is as follows:
 
-Interest Coverage Ratio = EBIT (or Operating Income) / Interest Expenses
+
+- Interest Coverage Ratio = EBIT (or Operating Income) / Interest Expenses
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1089,7 +1111,8 @@ The Pretax Profit Margin is calculated by dividing the pre
 
 The formula is as follows:
 
-Pretax Profit Margin = Income Before Tax / Revenue
+
+- Pretax Profit Margin = Income Before Tax / Revenue
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1125,7 +1148,8 @@ The effective tax rate is calculated by dividing the income tax expense by the p
 
 The formula is as follows:
 
-Effective Tax Rate = Income Tax Expense / Income Before Tax
+
+- Effective Tax Rate = Income Tax Expense / Income Before Tax
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1160,7 +1184,8 @@ The return on assets is calculated by dividing the net income by the average tot
 
 The formula is as follows:
 
-Return on Assets = Net Income / Average Total Assets
+
+- Return on Assets = Net Income / Average Total Assets
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1197,7 +1222,8 @@ ROE provides insight into the company's ability to generate profits from the inv
 
 The formula is as follows:
 
-Return on Equity = Net Income / Average Shareholders' Equity (or Total Equity)
+
+- Return on Equity = Net Income / Average Shareholders' Equity (or Total Equity)
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1230,7 +1256,8 @@ The return on invested capital is calculated by dividing the net operating profi
 
 The formula is as follows:
 
-Return on Invested Capital = Net Operating Profit After Taxes / Average Invested Capital
+
+- Return on Invested Capital = Net Operating Profit After Taxes / Average Invested Capital
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1263,7 +1290,8 @@ The income quality ratio provides insights into the quality of a company's repor
 
 The formula is as follows:
 
-Income Quality Ratio = Cash Flow from Operations / Net Income
+
+- Income Quality Ratio = Cash Flow from Operations / Net Income
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1297,7 +1325,8 @@ The return on tangible assets (ROTA) provides insights into the efficiency with 
 
 The formula is as follows:
 
-Return on Tangible Assets = Net Income / Average Tangible Assets
+
+- Return on Tangible Assets = Net Income / Average Tangible Assets
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1330,7 +1359,8 @@ Return on capital employed (ROCE) is a crucial financial metric that evaluates t
 
 The formula is as follows:
 
-Return on Capital Employed = EBIT / (Total Assets 
+
+- Return on Capital Employed = EBIT / (Total Assets 
 - Current Liabilities)
 
 **Args:**
@@ -1364,7 +1394,8 @@ The net income per earnings before taxes (EBT) ratio helps evaluate the extent t
 
 The formula is as follows:
 
-Net Income per EBT = Net Income / Income Before Tax
+
+- Net Income per EBT = Net Income / Income Before Tax
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1399,7 +1430,8 @@ The free cash flow to operating cash flow ratio helps assess how well a company'
 
 The formula is as follows:
 
-Free Cash Flow to Operating Cash Flow Ratio = Free Cash Flow / Cash Flow from Operations
+
+- Free Cash Flow to Operating Cash Flow Ratio = Free Cash Flow / Cash Flow from Operations
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1432,7 +1464,8 @@ The tax burden ratio measures the portion of a company's earnings that is paid a
 
 The formula is as follows:
 
-Tax Burden Ratio = Net Income / Income Before Tax
+
+- Tax Burden Ratio = Net Income / Income Before Tax
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1465,7 +1498,8 @@ The EBT to EBIT ratio measures the proportion of a company's earnings that is ge
 
 The formula is as follows:
 
-EBT to EBIT = (Net Income + Income Tax Expense) / (Net Income + Income Tax Expense + Interest Expense)
+
+- EBT to EBIT = (Net Income + Income Tax Expense) / (Net Income + Income Tax Expense + Interest Expense)
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1498,7 +1532,8 @@ The EBIT to Revenue ratio measures the company's ability to generate profit from
 
 The formula is as follows:
 
-EBIT to Revenue = EBIT / Revenue
+
+- EBIT to Revenue = EBIT / Revenue
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1560,7 +1595,8 @@ This ratio, also known as the Debt Ratio, indicates the percentage of a company'
 
 The formula is as follows:
 
-Debt to Assets Ratio = Total Debt / Total Assets
+
+- Debt to Assets Ratio = Total Debt / Total Assets
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1593,7 +1629,8 @@ The debt to equity ratio, also known as the D/E ratio, indicates the relative co
 
 The formula is as follows:
 
-Debt to Equity Ratio = Total Debt / Total Equity
+
+- Debt to Equity Ratio = Total Debt / Total Equity
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1626,7 +1663,8 @@ The interest coverage ratio evaluates a company's ability to meet its interest o
 
 The formula is as follows:
 
-Interest Coverage Ratio = Operating Income / (Interest Expense + Depreciation and Amortization)
+
+- Interest Coverage Ratio = Operating Income / (Interest Expense + Depreciation and Amortization)
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1659,7 +1697,8 @@ The equity multiplier helps assess the financial leverage of a company by indica
 
 The formula is as follows:
 
-Equity Multiplier = Average Total Assets / Average Total Equity
+
+- Equity Multiplier = Average Total Assets / Average Total Equity
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1692,7 +1731,8 @@ The debt service coverage ratio provides insights into a company's ability to me
 
 The formula is as follows:
 
-Debt Service Coverage Ratio = Operating Income / Total Current Liabilities
+
+- Debt Service Coverage Ratio = Operating Income / Total Current Liabilities
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1725,7 +1765,8 @@ The free cash flow yield ratio is a measure of how efficiently a company generat
 
 The formula is as follows:
 
-Free Cash Flow Yield Ratio = Free Cash Flow / Market Capitalization
+
+- Free Cash Flow Yield Ratio = Free Cash Flow / Market Capitalization
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares for market capitalization. Defaults to True.
@@ -1759,7 +1800,8 @@ The net debt to EBITDA ratio is a measure of a company's ability to manage its d
 
 The formula is as follows:
 
-Net Debt to EBITDA Ratio = Net Debt / EBITDA
+
+- Net Debt to EBITDA Ratio = Net Debt / EBITDA
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1792,7 +1834,8 @@ The cash flow coverage ratio assesses a company's ability to meet its debt oblig
 
 The formula is as follows:
 
-Cash Flow Coverage Ratio = Cash Flow from Operations / Total Debt
+
+- Cash Flow Coverage Ratio = Cash Flow from Operations / Total Debt
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1825,7 +1868,8 @@ The capex coverage ratio evaluates a company's ability to fund its capital expen
 
 The formula is as follows:
 
-Capital Expenditure Coverage Ratio = Cash Flow from Operations / Capital Expenditure
+
+- Capital Expenditure Coverage Ratio = Cash Flow from Operations / Capital Expenditure
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1858,7 +1902,8 @@ The capex dividend coverage ratio assesses whether a company's cash flow from op
 
 The formula is as follows:
 
-Dividend Paid and Capital Expenditure Coverage Ratio = Cash Flow from Operations / (Capital Expenditure + Dividends Paid)
+
+- Dividend Paid and Capital Expenditure Coverage Ratio = Cash Flow from Operations / (Capital Expenditure + Dividends Paid)
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1922,7 +1967,8 @@ The earnings per share (EPS) is a widely used financial metric that helps invest
 
 The formula is as follows:
 
-Earnings per Share (EPS) = (Net Income 
+
+- Earnings per Share (EPS) = (Net Income 
 - Preferred Dividends Paid) / Weighted Average Shares
 
 **Args:**
@@ -1960,7 +2006,8 @@ The revenue per share is an important metric that provides insight into a compan
 
 The formula is as follows:
 
-Revenue per Share = Revenue / Weighted Average (Diluted) Shares
+
+- Revenue per Share = Revenue / Weighted Average (Diluted) Shares
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -1996,7 +2043,8 @@ The price earnings ratio is a widely used valuation metric that helps investors 
 
 The formula is as follows:
 
-Price Earnings Ratio (P/E) = Share Price / Earnings per Share (EPS)
+
+- Price Earnings Ratio (P/E) = Share Price / Earnings per Share (EPS)
 
 **Args:**
  - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
@@ -2035,7 +2083,8 @@ The price
 
 The formula is as follows:
 
-Price Earnings to Growth Ratio (PEG) = Price Earnings Ratio (P/E) / Earnings per Share Growth
+
+- Price Earnings to Growth Ratio (PEG) = Price Earnings Ratio (P/E) / Earnings per Share Growth
 
 **Args:**
  - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
@@ -2070,7 +2119,8 @@ The book value per share is a fundamental valuation metric that reflects the net
 
 The formula is as follows:
 
-Book Value per Share = (Total Shareholder Equity 
+
+- Book Value per Share = (Total Shareholder Equity 
 - Preferred Stock) / Weighted Average (Diluted) Shares
 
 **Args:**
@@ -2107,7 +2157,8 @@ The price to book ratio is a key valuation metric that helps investors assess wh
 
 The formula is as follows:
 
-Price to Book Ratio = Share Price / Book Value per Share
+
+- Price to Book Ratio = Share Price / Book Value per Share
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2143,7 +2194,8 @@ The interest debt per share ratio provides insight into how much interest a comp
 
 The formula is as follows:
 
-Interest Debt per Share = (Interest Expense / Total Debt) / Weighted Average (Diluted) Shares
+
+- Interest Debt per Share = (Interest Expense / Total Debt) / Weighted Average (Diluted) Shares
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2179,7 +2231,8 @@ The capex per share ratio provides insight into how much capital a company inves
 
 The formula is as follows:
 
-CAPEX per Share = Capital Expenditure / Weighted Average (Diluted) Shares
+
+- CAPEX per Share = Capital Expenditure / Weighted Average (Diluted) Shares
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2216,7 +2269,8 @@ The dividend yield ratio is used by investors to assess the income potential of 
 
 The formula is as follows:
 
-Dividend Yield = Dividends per Share / Share Price
+
+- Dividend Yield = Dividends per Share / Share Price
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -2251,7 +2305,8 @@ This dividend yield ratio takes into account the (diluted) weighted average shar
 
 The formula is as follows:
 
-Weighted Dividend Yield = Dividends Paid / Weighted Average (Diluted) Shares * Share Price
+
+- Weighted Dividend Yield = Dividends Paid / Weighted Average (Diluted) Shares * Share Price
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2287,7 +2342,8 @@ The price to cash flow ratio is a key valuation metric that helps investors asse
 
 The formula is as follows:
 
-Price to Cash Flow Ratio = Share Price / Cash Flow from Operations per Share
+
+- Price to Cash Flow Ratio = Share Price / Cash Flow from Operations per Share
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2323,7 +2379,8 @@ This ratio provides insight into how the market values a company's ability to ge
 
 The formula is as follows:
 
-Price to Free Cash Flow Ratio = Market Cap / Free Cash Flow
+
+- Price to Free Cash Flow Ratio = Market Cap / Free Cash Flow
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2359,7 +2416,8 @@ Market capitalization, often referred to as "market cap," is the total value of 
 
 The formula is as follows:
 
-Market Capitalization = Share Price * Weighted Average (Diluted) Shares
+
+- Market Capitalization = Share Price * Weighted Average (Diluted) Shares
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2387,7 +2445,8 @@ Calculates the Enterprise Value (EV) of a company. The Enterprise Value (EV) is 
 
 The formula is as follows:
 
-Enterprise Value = Market Capitalization + Total Debt + Minority Interest + Preferred Equity 
+
+- Enterprise Value = Market Capitalization + Total Debt + Minority Interest + Preferred Equity 
 - Cash and Cash Equivalents
 
 **Args:**
@@ -2418,7 +2477,8 @@ This ratio compares the enterprise value (EV) to the total revenue generated by 
 
 The formula is as follows:
 
-Enterprise Value to Sales Ratio = Enterprise Value / Total Revenue
+
+- Enterprise Value to Sales Ratio = Enterprise Value / Total Revenue
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2448,7 +2508,8 @@ This ratio helps investors understand how many times the enterprise value exceed
 
 The formula is as follows:
 
-Enterprise Value to EBITDA Ratio = Enterprise Value / EBITDA
+
+- Enterprise Value to EBITDA Ratio = Enterprise Value / EBITDA
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2478,7 +2539,8 @@ The ratio is a valuation metric that helps investors assess the company's valuat
 
 The formula is as follows:
 
-Enterprise Value to Operating Cash Flow Ratio = Enterprise Value / Operating Cash Flow
+
+- Enterprise Value to Operating Cash Flow Ratio = Enterprise Value / Operating Cash Flow
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2508,7 +2570,8 @@ The earnings yield ratio is a valuation metric that provides insights into how m
 
 The formula is as follows:
 
-Earnings Yield Ratio = Earnings per Share / Share Price
+
+- Earnings Yield Ratio = Earnings per Share / Share Price
 
 **Args:**
  - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
@@ -2539,7 +2602,8 @@ The payout ratio is a financial metric that helps investors assess the portion o
 
 The formula is as follows:
 
-Payout Ratio = Dividends per Share / Earnings per Share
+
+- Payout Ratio = Dividends per Share / Earnings per Share
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -2566,7 +2630,8 @@ Calculate the tangible asset value, a financial metric that represents the total
 
 The formula is as follows:
 
-Tangible Asset Value = Total Assets 
+
+- Tangible Asset Value = Total Assets 
 - Total Liabilities 
 - Goodwill
 
@@ -2597,7 +2662,8 @@ Calculate the net current asset value, a financial metric that represents the to
 
 The formula is as follows:
 
-Net Current Asset Value = Total Current Assets 
+
+- Net Current Asset Value = Total Current Assets 
 - Total Current Liabilities
 
 **Args:**
@@ -2625,7 +2691,8 @@ Calculate the enterprise value over earnings before interest and taxes (EBIT) ra
 
 The formula is as follows:
 
-Enterprise Value to EBIT Ratio = Enterprise Value / EBIT
+
+- Enterprise Value to EBIT Ratio = Enterprise Value / EBIT
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.

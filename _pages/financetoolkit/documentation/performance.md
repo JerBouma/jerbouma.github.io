@@ -131,7 +131,8 @@ The Capital Asset Pricing Model (CAPM) is a widely used financial model that hel
 
 The formula is as follows:
 
-Capital Asset Pricing Model = Risk Free Rate + Beta * (Benchmark Returns 
+
+- Capital Asset Pricing Model = Risk Free Rate + Beta * (Benchmark Returns 
 - Risk Free Rate)
 
 See definition: [https://en.wikipedia.org/wiki/Capital_asset_pricing_model](https://en.wikipedia.org/wiki/Capital_asset_pricing_model){:target="_blank"}
@@ -392,6 +393,7 @@ The Treynor Ratio, also known as Treynor's Measure or the Reward
 The formula is as follows:
 
 
+- 
 - Treynor Ratio = (Portfolio's Return 
 - Risk
 -Free Rate) / Portfolio Beta
