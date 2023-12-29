@@ -71,9 +71,23 @@
 
     &.emoji {
       width: 20px;
-      height: 20px;
+      height: 20px; 
     }
   }
+}
+
+.sidebar__top {
+  position: fixed;
+  bottom: 1.5em;
+  right: 2em;
+  z-index: 10;
+  opacity: 0.3;
+  transition: opacity 0.5s;
+}
+
+.sidebar__top:hover {
+  opacity: 1.0;
+  transition: opacity 0.5s;
 }
 
 .sidebar__right {

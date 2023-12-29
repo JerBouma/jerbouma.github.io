@@ -62,14 +62,23 @@ atom_feed:
   hide                   : true
 search                   : # true, false (default)
 search_full_content      : # true, false (default)
-search_provider          : # lunr (default), algolia, google
+search_provider          : algolia # lunr (default), algolia, google
 lunr:
   search_within_pages    : # true, false (default)
 algolia:
-  application_id         : # YOUR_APPLICATION_ID
-  index_name             : # YOUR_INDEX_NAME
-  search_only_api_key    : # YOUR_SEARCH_ONLY_API_KEY
-  powered_by             : # true (default), false
+  application_id         : HIVML6LDM1 # YOUR_APPLICATION_ID
+  index_name             : FinanceToolkit # YOUR_INDEX_NAME
+  search_only_api_key    : 7235c7187748faa8c4d04c19127da368 # YOUR_SEARCH_ONLY_API_KEY
+  powered_by             : false # true (default), false
+  files_to_exclude       : 
+    - index.md
+    - _pages/*.md
+    - _pages/coding/*.md
+    - _pages/financedatabase/*.md
+    - _pages/financetoolkit/financetoolkit.md
+    - _pages/openbbterminal/*.md
+    - _pages/personalfinance/*.md
+    - _pages/thepassiveinvestor/*.md
 google:
   search_engine_id       : # YOUR_SEARCH_ENGINE_ID
   instant_search         : # false (default), true
@@ -223,7 +232,6 @@ plugins:
   - jekyll-gist
   - jekyll-feed
   - jekyll-include-cache
-  - jekyll-mermaid
 
 # mimic GitHub Pages with --safe
 whitelist:

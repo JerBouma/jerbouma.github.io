@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "JeroenBouma"
+version = "1.0.0"
+description = "Personal Website of Jeroen Bouma"
+license = "MIT"
+authors = ["Jeroen Bouma"]
+readme = "README.md"
+homepage = "https://www.jeroenbouma.com/"
+repository = "https://github.com/JerBouma/jerbouma.github.io"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = [
+    "Finance",
+    "Toolkit",
+    "Financial",
+    "Analysis",
+    "Fundamental",
+    "Technical",
+    "Quantitative",
+    "Database",
+    "Equities",
+    "Currencies",
+    "Economics",
+    "ETFs",
+    "Funds",
+    "Indices",
+    "Moneymarkets",
+    "Commodities"
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10, <3.13"
+pandas = {extras = ["computation", "performance", "plot"], version = "^2.1.0"}
+requests = "^2.31.0"
+
+[build-system]
+requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.codespell]
+ignore-words-list = 'te,hsi,amplitud,nam,tha'
+skip = '*.json,./.git,pyproject.toml,poetry.lock,examples'

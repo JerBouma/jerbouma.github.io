@@ -214,7 +214,7 @@ figure {
   -webkit-box-align: start;
   align-items: flex-start;
   flex-wrap: wrap;
-  margin: 2em 0;
+  margin: 0 0;
 
   img,
   iframe,
@@ -448,4 +448,28 @@ input[type="submit"],
 .grid-item img {
   max-width: 100%;
   height: auto;
+}
+
+/*
+  Code Block
+  ========================================================================== */
+.code-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+.copy-code-button {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    grid-column-gap: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px 8px;
+    color: rgb(31, 35, 40);
+    background-color: rgb(246, 248, 250);
+    margin-top: 10px !important;
+    position: absolute;
+    border: none;
+    z-index: 100;
 }

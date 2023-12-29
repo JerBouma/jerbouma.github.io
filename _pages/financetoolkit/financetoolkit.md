@@ -33,20 +33,23 @@ Before installation, consider starring the project on GitHub which helps others 
 
 To install the FinanceToolkit it simply requires the following:
 
-```
+{% include code_header.html %}
+{% highlight bash %}
 pip install financetoolkit -U
-````
+{% endhighlight %}
 
 Then within Python use:
 
-```python
+{% include code_header.html %}
+{% highlight python %}
 from financetoolkit import Toolkit
 
 companies = Toolkit(
     tickers=['GOOGL', 'MSFT', 'AMZN'],
     api_key="FINANCIAL_MODELING_PREP_KEY",
 )
-```
+{% endhighlight %}
+
 To be able to get started, you need to obtain an API Key from FinancialModelingPrep. This is used to gain access to 30+ years of financial statement both annually and quarterly. Note that the Free plan is limited to 250 requests each day, 5 years of data and only features companies listed on US exchanges.
 
 ___ 
@@ -155,11 +158,11 @@ This section is an introduction to the Finance Toolkit. Also see [this notebook]
 
 A basic example of how to use the Finance Toolkit is shown below.
 
-
-````python
+{% include code_header.html %}
+{% highlight python %}
 from financetoolkit import Toolkit
 
-companies = Toolkit(["AAPL", "MSFT"], api_key=API_KEY, start_date="2017-12-31")
+companies = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2017-12-31")
 
 # a Historical example
 historical_data = companies.get_historical_data()
@@ -184,7 +187,7 @@ ichimoku_cloud = companies.technicals.get_ichimoku_cloud()
 
 # an Economics example
 unemployment_rates = companies.economics.get_unemployment_rate()
-````
+{% endhighlight %}
 
 Generally, the functions return a DataFrame with a multi-index in which all tickers, in this case Apple and Microsoft, are presented. To keep things manageable for this README, I select just Apple but in essence the list of tickers can be endless as I've seen DataFrames with thousands of tickers. The filtering is done through `.loc['AAPL']` and `.xs('AAPL', level=1, axis=1)` based on whether it's fundamental data or historical data respectively.
 

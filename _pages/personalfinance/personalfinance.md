@@ -31,17 +31,19 @@ Before installation, consider starring the project on GitHub which helps others 
 
 To install the PersonalFinance it simply requires the following:
 
-```
+{% include code_header.html %}
+{% highlight bash %}
 pip install personalfinance -U
-```
+{% endhighlight %}
 
 Then to use the features within Python use:
 
-```python
+{% include code_header.html %}
+{% highlight python %}
 from personalfinance import Cashflow
 
 cashflow = Cashflow()
-```
+{% endhighlight %}
 
 This will generate the configuration file for you to use which you can supply again by using `configuration_file='cashflow.yaml'`. See below for more information about each capability and what you can do with this file.
 

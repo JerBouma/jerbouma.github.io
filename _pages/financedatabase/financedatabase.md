@@ -45,15 +45,17 @@ Before installation, consider starring the project on GitHub which helps others 
 
 To install the FinanceDatabase it simply requires the following:
 
-```
+{% include code_header.html %}
+{% highlight bash %}
 pip install financedatabase -U
-```
+{% endhighlight %}
 
 Then within Python use:
 
-```python
+{% include code_header.html %}
+{% highlight python %}
 import financedatabase as fd
-```
+{% endhighlight %}
 
 ## How-To Guides for the FinanceDatabase
 
@@ -106,7 +108,8 @@ This section explains in detail how the database can be queried with the related
 
 Same methods apply to all other asset classes as well. Columns may vary.
 
-```python
+{% include code_header.html %}
+{% highlight python %}
 import financedatabase as fd
 
 # Initialize the Equities database
@@ -134,7 +137,7 @@ equities_usa_consumer_electronics = equities.select(country="United States", ind
 equities_large_biotech = equities.search(
     summary="biotech", market_cap=["Large Cap", "Mega Cap"]
 )
-```
+{% endhighlight %}
 
 Scroll down below for a more elaborate explanation and detailed examples.
 
@@ -144,7 +147,8 @@ Please see the Jupyter Notebook for an elaborate explanation of each asset class
 
 As an example for Equities, If you wish to collect data from all equities you can use the following:
 
-```python
+{% include code_header.html %}
+{% highlight python %}
 import financedatabase as fd
 
 # Initialize the Equities database
@@ -152,7 +156,7 @@ equities = fd.Equities()
 
 # Obtain all data available excluding international exchanges
 equities.select()
-```
+{% endhighlight %}
 
 Which returns the following DataFrame:
 
@@ -210,15 +214,17 @@ select(country: str = '', sector: str = '', industry: str = '', exclude_exchange
 
 As an example, we can use `equities.options` to obtain specific country, sector and industry options. For we can acquire all industries within the sector `Basic Materials` within the `United States`. This allows us to look at a specific industry in the United States in detail. 
 
-```python
+{% include code_header.html %}
+{% highlight python %}
 industry_options = equities.options(selection='industry', country="United States", sector="Materials")
-```
+{% endhighlight %}
 
 So with this information in hand, I can now query the industry `Metals & Mining` as follows:
 
-```python
+{% include code_header.html %}
+{% highlight python %}
 metals_and_mining_companies_usa = equities.select(country="United States", sector="Materials", industry="Metals & Mining")
-```
+{% endhighlight %}
 
 This gives you a DataFrame with the following information:
 
@@ -235,13 +241,14 @@ As you can imagine, looking at such a specific selection only yields a few resul
 ## Searching the database extensively
 All asset classes have the capability to search each column with `search`, for example `equities.search()`. Through how this functionality is developed you can define multiple columns and search throughoutly. For example:
 
-```python
+{% include code_header.html %}
+{% highlight python %}
 # Collect all Equities Database
 equities = fd.Equities()
 
 # Search Multiple Columns
 equities.search(summary='automotive', currency='USD', country='Germany')
-```
+{% endhighlight %}
 
 Which returns a selection of the DataFrame that matches all criteria. 
 
