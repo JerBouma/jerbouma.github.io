@@ -12,14 +12,33 @@ sidebar:
   nav: "financetoolkit-docs"
 ---
 
-This page includes all the documentation for the Finance Toolkit. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
+This page includes all the documentation for the Finance Toolkit,an open-source toolkit in which all relevant financial ratios (150+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
+
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
+
+Then within Python use:
+
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+companies = Toolkit(
+    tickers=['GOOGL', 'MSFT', 'AMZN'],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+)
+{% endhighlight %}
 
 The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These is historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
 
 If you are looking for documentation regarding the ratios, technical indicators, models, risk metrics and performance metrics, please have a look below:
 
 <div style="display: flex; justify-content: space-between;">
-    <a href="/projects/financetoolkit/docs" class="btn btn--warning" style="flex: 1;margin-right:5px">Docs</a>
+    <a href="/projects/financetoolkit/docs" class="btn btn--warning" style="flex: 1;margin-right:5px">Toolkit</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
@@ -27,6 +46,7 @@ If you are looking for documentation regarding the ratios, technical indicators,
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
 </div>
+
 
 {% include algolia.html %}
 

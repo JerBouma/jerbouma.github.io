@@ -14,7 +14,36 @@ sidebar:
 
 The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
 
-If you are looking for documentation regarding the toolkit, ratios, technicals, risk, performance and economics, please have a look at the [Toolkit](/projects/financetoolkit/docs), [Ratios](/projects/financetoolkit/docs/ratios), [Technicals](/projects/financetoolkit/docs/technicals), [Risk](/projects/financetoolkit/docs/risk), [Performance](/projects/financetoolkit/docs/performance) and [Economics](/projects/financetoolkit/docs/economics) pages.
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
+
+Then within Python use:
+
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+companies = Toolkit(
+    tickers=['GOOGL', 'MSFT', 'AMZN'],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+)
+{% endhighlight %}
+
+If you are looking for documentation regarding the toolkit, ratios, technicals, risk, performance and economics, please have a look below:
+
+<div style="display: flex; justify-content: space-between;">
+    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
+    <a href="/projects/financetoolkit/docs/models" class="btn btn--warning" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
+    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
+    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
+</div>
 
 {% include algolia.html %}
 

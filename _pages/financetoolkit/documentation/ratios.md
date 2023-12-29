@@ -14,7 +14,36 @@ sidebar:
 
 The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
 
-If you are looking for documentation regarding the toolkit, models, technicals, risk, performance and economics, please have a look at the [Toolkit](/projects/financetoolkit/docs), [Models](/projects/financetoolkit/docs/models), [Technicals](/projects/financetoolkit/docs/technicals), [Risk](/projects/financetoolkit/docs/risk), [Performance](/projects/financetoolkit/docs/performance)  and [Economics](/projects/financetoolkit/docs/economics) pages.
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
+
+Then within Python use:
+
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+companies = Toolkit(
+    tickers=['GOOGL', 'MSFT', 'AMZN'],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+)
+{% endhighlight %}
+
+If you are looking for documentation regarding the toolkit, models, technicals, risk, performance and economics, please have a look below:
+
+<div style="display: flex; justify-content: space-between;">
+    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--warning" style="flex: 1;margin-right:5px">Ratios</a>
+    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
+    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
+    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
+</div>
 
 {% include algolia.html %}
 
