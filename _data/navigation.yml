@@ -151,6 +151,8 @@ financetoolkit:
     url: /projects/financetoolkit#contributing
 
 financetoolkit-docs:
+  - title: <p class="btn btn--x-large btn--info">Back to Homepage<p>
+    url: /projects/financetoolkit
   - title: Finance Toolkit
     children:
     - title: "Ratios Module"
@@ -209,7 +211,7 @@ financetoolkit-docs:
     url: /projects/financetoolkit/docs/economics
 
 financetoolkit-docs-ratios:
-  - title: <p class="btn btn--x-large btn--warning">Back to Homepage<p>
+  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
   - title: All Ratios
     url: /projects/financetoolkit/docs/ratios#collect_all_ratios
@@ -373,7 +375,7 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_ev_to_ebit
 
 financetoolkit-docs-models:
-  - title: <p class="btn btn--x-large btn--warning">Back to Homepage<p>
+  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
   - title: Models
     children:
@@ -393,7 +395,7 @@ financetoolkit-docs-models:
         url:  /projects/financetoolkit/docs/models#get_piotroski_score
 
 financetoolkit-docs-technicals:
-  - title: <p class="btn btn--x-large btn--warning">Back to Homepage<p>
+  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
   - title: All Indicators
     url: /projects/financetoolkit/docs/technicals#collect_all_indicators
@@ -475,7 +477,7 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_bollinger_bands
 
 financetoolkit-docs-risk:
-  - title: <p class="btn btn--x-large btn--warning">Back to Homepage<p>
+  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
   - title: Risk
     children:
@@ -499,7 +501,7 @@ financetoolkit-docs-risk:
       url:  /projects/financetoolkit/docs/risk#get_kurtosis
 
 financetoolkit-docs-performance:
-  - title: <p class="btn btn--x-large btn--warning">Back to Homepage<p>
+  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
   - title: Performance
     children:
@@ -535,7 +537,7 @@ financetoolkit-docs-performance:
       url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
 
 financetoolkit-docs-economics:
-  - title: <p class="btn btn--x-large btn--warning">Back to Homepage<p>
+  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
   - title: Economy
     children:

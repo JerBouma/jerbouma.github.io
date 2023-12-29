@@ -16,7 +16,17 @@ This page includes all the documentation for the Finance Toolkit. Each functiona
 
 The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These is historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
 
-If you are looking for documentation regarding the ratios, technical indicators, models, risk metrics and performance metrics, please have a look at the [Ratios](/projects/financetoolkit/docs/ratios), [Technicals](/projects/financetoolkit/docs/technicals), [Models](/projects/financetoolkit/docs/models), [Risk](/projects/financetoolkit/docs/risk), [Performance](/projects/financetoolkit/docs/performance) and [Economics](/projects/financetoolkit/docs/economics) pages.
+If you are looking for documentation regarding the ratios, technical indicators, models, risk metrics and performance metrics, please have a look below:
+
+<div style="display: flex; justify-content: space-between;">
+    <a href="/projects/financetoolkit/docs" class="btn btn--warning" style="flex: 1;margin-right:5px">Docs</a>
+    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
+    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
+    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
+    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
+</div>
 
 {% include algolia.html %}
 
