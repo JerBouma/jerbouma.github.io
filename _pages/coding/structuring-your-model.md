@@ -356,6 +356,6 @@ Which returns the growth of the Gross Margin leveraging the same financial state
 
 
 
-Once you have done these steps it's time to start build your model. Visit [Build your Model](/modelling/build-your-model) to continue!
+Once you have done these steps it's time to start building your model. Visit [Build your Model](/modelling/build-your-model) to continue!
 
 [Build your Model](/modelling/build-your-model){: .btn .btn--info .btn--large .align-center}

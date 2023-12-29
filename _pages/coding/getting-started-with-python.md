@@ -102,6 +102,6 @@ Once you got the hang of working with Python, you can start utilising the follow
 2. **Create a public or private project on a platform like [GitHub](https://github.com/){: target="_blank"}.** This is a platform where 100+ million developers come together to contribute to the open-source community and manage Git repositories (e.g. my own [here](https://github.com/JerBouma/FinanceToolkit){: target="_blank"}). A platform often used within companies is Azure DevOps or BitBucket which shares similar functionality. See a guide about GitHub [here](https://docs.github.com/en/get-started/quickstart/hello-world){: target="_blank"}.
 3. **Download [Git](https://git-scm.com/){: target="_blank"} to version control your project.** Through `git add`, `git commit -m Initial Commit` and `git push` you can create a version history making it possible to understand how the project has evolved and, possibly, revert changes that shouldn't have been made. Using Git is extremely important and on the other pages I assume you have this setup.
 
-Once you have done these steps it's time to start set up your project. Visit [Setting up your Project](/modelling/setting-up-your-project) to continue!
+Once you have done these steps it's time to start setting up your project. Visit [Setting up your Project](/modelling/setting-up-your-project) to continue!
 
 [Setting up your Project](/modelling/setting-up-your-project){: .btn .btn--info .btn--large .align-center}
