@@ -10,24 +10,15 @@ sidebar:
   nav: "modelling"
 ---
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.0/dist/mermaid.min.js"></script>
-
 A financial model can have multiple purposes. It can be as simple as the aggregation of data to a more complex model which includes forecasting and scenario analysis. In any case, the model should be built in such a way that it is easy to understand, maintain and extend. This is where the concept of modular programming comes in which is the approach as found in [Structure your Model](/modelling/structure-your-model). For more examples of this method and inspiration how to build your own model please have a look at the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"}, [Finance Database](https://github.com/JerBouma/FinanceDatabase){:, target="_blank"}, [OpenBB Terminal](https://github.com/OpenBB-finance/OpenBBTerminal){: target="_blank"}, [yfinance](https://github.com/ranaroussi/yfinance){: target="_blank"} and [Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){: target="_blank"}.
 
-<div class="mermaid">
-flowchart LR;
-classDef boxfont fill:#3b9cba,stroke-width:0px,color:white,radius:20px,font-weight:bold;
-classDef currentfont fill:#d67f05,stroke-width:0px,color:white,radius:20px,font-weight:bold;
-
-Step0[<a href="/modelling/introduction" style="color:white;text-decoration:none">Introduction</a>]:::boxfont --> Step1[<a href="/modelling/getting-started" style="color:white;text-decoration:none">Getting Started</a>]:::boxfont
-
-Step1[<a href="/modelling/getting-started" style="color:white;text-decoration:none">Getting Started</a>] --> Step2[<a href="/modelling/setting-up-your-project" style="color:white;text-decoration:none">Setting up your Project</a>]:::boxfont
-
-Step2[<a href="/modelling/setting-up-your-project" style="color:white;text-decoration:none">Setting up your Project</a>] -->  Step3[<a href="/modelling/structure-your-model" style="color:white;text-decoration:none">Structure your Model</a>]:::boxfont
-
-Step3[<a href="/modelling/structure-your-model" style="color:white;text-decoration:none">Structure your Model</a>] --> Step4[<a href="/modelling/build-your-model" style="color:white;text-decoration:none">Build your Model</a>]:::currentfont
-
-Step4[<a href="/modelling/build-your-model" style="color:white;text-decoration:none">Build your Model</a>] <--> Step5[<a href="/modelling/test-your-model" style="color:white;text-decoration:none">Test your Model</a>]:::boxfont
+<div style="display: flex; justify-content: space-between;margin-bottom:10px">
+    <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
+    <a href="/modelling/getting-started" class="btn btn--info" style="flex: 1;margin-right:5px">Getting Started</a>
+    <a href="/modelling/setting-up-your-project" class="btn btn--info" style="flex: 1;margin-right:5px">Setting up your Project</a>
+    <a href="/modelling/structure-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Structure your Model</a>
+    <a href="/modelling/build-your-model" class="btn btn--warning" style="flex: 1;margin-right:5px">Build your Model</a>
+    <a href="/modelling/test-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Test your Model</a>
 </div>
 
 Whatever the purpose of your model is, the following styling and coding guidelines should be applied to take out the subjective nature of coding. Applying a style guide will ensure that all code is written in the same way and therefore is easier to read and maintain. This is especially important when working with multiple developers on the same codebase but also when colleagues move teams and need to understand new models. 

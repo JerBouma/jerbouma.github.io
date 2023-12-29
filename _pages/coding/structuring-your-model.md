@@ -14,20 +14,13 @@ sidebar:
 
 To understand how to structure a model, the following guidelines are given. These guidelines are meant to be used as a reference and are not meant to be followed strictly. The most important thing is that the model is structured in a way that is understandable and maintainable.
 
-<div class="mermaid">
-flowchart LR;
-classDef boxfont fill:#3b9cba,stroke-width:0px,color:white,radius:20px,font-weight:bold;
-classDef currentfont fill:#d67f05,stroke-width:0px,color:white,radius:20px,font-weight:bold;
-
-Step0[<a href="/modelling/introduction" style="color:white;text-decoration:none">Introduction</a>]:::boxfont --> Step1[<a href="/modelling/getting-started" style="color:white;text-decoration:none">Getting Started</a>]:::boxfont
-
-Step1[<a href="/modelling/getting-started" style="color:white;text-decoration:none">Getting Started</a>] --> Step2[<a href="/modelling/setting-up-your-project" style="color:white;text-decoration:none">Setting up your Project</a>]:::boxfont
-
-Step2[<a href="/modelling/setting-up-your-project" style="color:white;text-decoration:none">Setting up your Project</a>] -->  Step3[<a href="/modelling/structure-your-model" style="color:white;text-decoration:none">Structure your Model</a>]:::currentfont
-
-Step3[<a href="/modelling/structure-your-model" style="color:white;text-decoration:none">Structure your Model</a>] --> Step4[<a href="/modelling/build-your-model" style="color:white;text-decoration:none">Build your Model</a>]:::boxfont
-
-Step4[<a href="/modelling/build-your-model" style="color:white;text-decoration:none">Build your Model</a>] <--> Step5[<a href="/modelling/test-your-model" style="color:white;text-decoration:none">Test your Model</a>]:::boxfont
+<div style="display: flex; justify-content: space-between;margin-bottom:10px">
+    <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
+    <a href="/modelling/getting-started" class="btn btn--info" style="flex: 1;margin-right:5px">Getting Started</a>
+    <a href="/modelling/setting-up-your-project" class="btn btn--info" style="flex: 1;margin-right:5px">Setting up your Project</a>
+    <a href="/modelling/structure-your-model" class="btn btn--warning" style="flex: 1;margin-right:5px">Structure your Model</a>
+    <a href="/modelling/build-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Build your Model</a>
+    <a href="/modelling/test-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Test your Model</a>
 </div>
 
 The preferred logic of creating a model is the **Model, View and Controller (MVC)** pattern. This is a pattern in software design commonly used to implement user interfaces, data, and controlling logic. It emphasizes a separation between the software's business logic and display. This "separation of concerns" provides for a better division of labor and improved maintenance. Models and Views should be able to function on their own whereas Controllers are reliant on either a Model or a combination of Models and Views. Note that there are many variations of this infrastructure (see [here](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller#See_also){: target="_blank"}) but all of them return to the same core principles.

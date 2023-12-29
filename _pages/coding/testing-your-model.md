@@ -14,20 +14,13 @@ sidebar:
 
 As defined in [Setting up your Project](/modelling/setting-up-your-project), the model should always include a `tests` folder. This utilizes [Pytest](https://docs.pytest.org/en/){: target="_blank"} to run tests. The tests should be structured in the same way as the model. And is a duplication of the model in terms of structure. The only difference is that each individual module will have `test_` in front so that Pytest can recognize the file as a test.
 
-<div class="mermaid">
-flowchart LR;
-classDef boxfont fill:#3b9cba,stroke-width:0px,color:white,radius:20px,font-weight:bold;
-classDef currentfont fill:#d67f05,stroke-width:0px,color:white,radius:20px,font-weight:bold;
-
-Step0[<a href="/modelling/introduction" style="color:white;text-decoration:none">Introduction</a>]:::boxfont --> Step1[<a href="/modelling/getting-started" style="color:white;text-decoration:none">Getting Started</a>]:::boxfont
-
-Step1[<a href="/modelling/getting-started" style="color:white;text-decoration:none">Getting Started</a>] --> Step2[<a href="/modelling/setting-up-your-project" style="color:white;text-decoration:none">Setting up your Project</a>]:::boxfont
-
-Step2[<a href="/modelling/setting-up-your-project" style="color:white;text-decoration:none">Setting up your Project</a>] -->  Step3[<a href="/modelling/structure-your-model" style="color:white;text-decoration:none">Structure your Model</a>]:::boxfont
-
-Step3[<a href="/modelling/structure-your-model" style="color:white;text-decoration:none">Structure your Model</a>] --> Step4[<a href="/modelling/build-your-model" style="color:white;text-decoration:none">Build your Model</a>]:::boxfont
-
-Step4[<a href="/modelling/build-your-model" style="color:white;text-decoration:none">Build your Model</a>] <--> Step5[<a href="/modelling/test-your-model" style="color:white;text-decoration:none">Test your Model</a>]:::currentfont
+<div style="display: flex; justify-content: space-between;margin-bottom:10px">
+    <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
+    <a href="/modelling/getting-started" class="btn btn--info" style="flex: 1;margin-right:5px">Getting Started</a>
+    <a href="/modelling/setting-up-your-project" class="btn btn--info" style="flex: 1;margin-right:5px">Setting up your Project</a>
+    <a href="/modelling/structure-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Structure your Model</a>
+    <a href="/modelling/build-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Build your Model</a>
+    <a href="/modelling/test-your-model" class="btn btn--warning" style="flex: 1;margin-right:5px">Test your Model</a>
 </div>
 
 As an example, when the Gross Margin functionality, obtained from the `profitability_model.py` needs to be tested, a function should be created that contains the same function name as within the `profitability_model.py` file with the exception that `test_` is included. This looks like the following:
