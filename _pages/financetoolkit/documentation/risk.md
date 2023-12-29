@@ -405,7 +405,6 @@ Which returns:
  | 2014Q3 | 0.03 | 0.214 | 0.0047 |
  | 2014Q4 | 0.0302 | 0.214 | 0.0047 |
  | 2015Q1 | 0.0303 | 0.214 | 0.0048 |
- ...
 
 ## get_garch_forecast
 Calculates sigma_2 forecasts.

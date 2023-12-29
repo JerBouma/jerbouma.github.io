@@ -1136,6 +1136,10 @@ Which returns:
 ## get_normalization_files
 Copies the normalization files to a folder based on path. By default, this is the path of the 'Downloads' folder.
 
+This function is relevant if you want to supply your own datasets. See for a proper guide the following notebook: [https://www.jeroenbouma.com/projects/financetoolkit/external
+-datasets](https://www.jeroenbouma.com/projects/financetoolkit/external
+-datasets){:target="_blank"}
+
 **Args:**
  - <u>path (str, optional):</u> The path where to save the files to.
 
