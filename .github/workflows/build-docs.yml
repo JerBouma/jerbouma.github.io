@@ -215,6 +215,25 @@ jobs:
             
             The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
             
+            To install the FinanceToolkit it simply requires the following:
+            
+            {% include code_header.html %}
+            {% highlight bash %}
+            pip install financetoolkit -U
+            {% endhighlight %}
+            
+            Then within Python use:
+            
+            {% include code_header.html %}
+            {% highlight python %}
+            from financetoolkit import Toolkit
+            
+            companies = Toolkit(
+                tickers=['GOOGL', 'MSFT', 'AMZN'],
+                api_key="FINANCIAL_MODELING_PREP_KEY",
+            )
+            {% endhighlight %}
+            
             If you are looking for documentation regarding the toolkit, models, technicals, risk, performance and economics, please have a look below:
             
             <div style="display: flex; justify-content: space-between;">
@@ -254,6 +273,25 @@ jobs:
             
             The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
             
+            To install the FinanceToolkit it simply requires the following:
+            
+            {% include code_header.html %}
+            {% highlight bash %}
+            pip install financetoolkit -U
+            {% endhighlight %}
+            
+            Then within Python use:
+            
+            {% include code_header.html %}
+            {% highlight python %}
+            from financetoolkit import Toolkit
+            
+            companies = Toolkit(
+                tickers=['GOOGL', 'MSFT', 'AMZN'],
+                api_key="FINANCIAL_MODELING_PREP_KEY",
+            )
+            {% endhighlight %}
+
             If you are looking for documentation regarding the toolkit, ratios, technicals, risk, performance and economics, please have a look below:
             
             <div style="display: flex; justify-content: space-between;">
@@ -293,6 +331,25 @@ jobs:
             
             The Technicals Module contains 30+ Technical Indicators that can be used to analyse companies. These ratios are divided into 4 categories which are breadth, momentum, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
             
+            To install the FinanceToolkit it simply requires the following:
+            
+            {% include code_header.html %}
+            {% highlight bash %}
+            pip install financetoolkit -U
+            {% endhighlight %}
+            
+            Then within Python use:
+            
+            {% include code_header.html %}
+            {% highlight python %}
+            from financetoolkit import Toolkit
+            
+            companies = Toolkit(
+                tickers=['GOOGL', 'MSFT', 'AMZN'],
+                api_key="FINANCIAL_MODELING_PREP_KEY",
+            )
+            {% endhighlight %}
+
             If you are looking for documentation regarding the toolkit, ratios, models, risk, performance and economics, please have a look below:
             
             <div style="display: flex; justify-content: space-between;">
@@ -332,6 +389,25 @@ jobs:
             ---
             The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
             
+            To install the FinanceToolkit it simply requires the following:
+            
+            {% include code_header.html %}
+            {% highlight bash %}
+            pip install financetoolkit -U
+            {% endhighlight %}
+            
+            Then within Python use:
+            
+            {% include code_header.html %}
+            {% highlight python %}
+            from financetoolkit import Toolkit
+            
+            companies = Toolkit(
+                tickers=['GOOGL', 'MSFT', 'AMZN'],
+                api_key="FINANCIAL_MODELING_PREP_KEY",
+            )
+            {% endhighlight %}
+
             If you are looking for documentation regarding the toolkit, ratios, models, technicals, performance and economics, please have a look below:
             
             <div style="display: flex; justify-content: space-between;">
@@ -370,6 +446,25 @@ jobs:
             ---
             The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, R-Squared and more.
             
+            To install the FinanceToolkit it simply requires the following:
+            
+            {% include code_header.html %}
+            {% highlight bash %}
+            pip install financetoolkit -U
+            {% endhighlight %}
+            
+            Then within Python use:
+            
+            {% include code_header.html %}
+            {% highlight python %}
+            from financetoolkit import Toolkit
+            
+            companies = Toolkit(
+                tickers=['GOOGL', 'MSFT', 'AMZN'],
+                api_key="FINANCIAL_MODELING_PREP_KEY",
+            )
+            {% endhighlight %}
+
             If you are looking for documentation regarding the toolkit, ratios, models, technicals, risk and economics, please have a look below:
             
             <div style="display: flex; justify-content: space-between;">
@@ -409,6 +504,25 @@ jobs:
             
             The Economics module gives insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and 3-month and 10-year Government Interest Rates. This is done through the economics module and can be used as a standalone module as well.
             
+            To install the FinanceToolkit it simply requires the following:
+            
+            {% include code_header.html %}
+            {% highlight bash %}
+            pip install financetoolkit -U
+            {% endhighlight %}
+            
+            Then within Python use:
+            
+            {% include code_header.html %}
+            {% highlight python %}
+            from financetoolkit import Toolkit
+            
+            companies = Toolkit(
+                tickers=['GOOGL', 'MSFT', 'AMZN'],
+                api_key="FINANCIAL_MODELING_PREP_KEY",
+            )
+            {% endhighlight %}
+
             If you are looking for documentation regarding the toolkit, models, ratios, technicals, risk and performance, please have a look below:
             
             <div style="display: flex; justify-content: space-between;">
