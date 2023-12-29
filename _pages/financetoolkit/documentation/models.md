@@ -108,7 +108,7 @@ The formula is as follows:
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 dupont_analysis = toolkit.models.get_dupont_analysis()
 {% endhighlight %}
@@ -153,7 +153,7 @@ The formula is as follows:
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 extended_dupont_analysis = toolkit.models.get_extended_dupont_analysis()
 {% endhighlight %}
@@ -200,7 +200,7 @@ This breakdown is displayed in a DataFrame for each company and includes the opt
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 enterprise_value_breakdown = toolkit.models.get_enterprise_value_breakdown()
 {% endhighlight %}
@@ -253,7 +253,7 @@ Total Market Value of Capital (V): The total market value of capital is the sum 
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_weighted_average_cost_of_capital()
 {% endhighlight %}
@@ -302,7 +302,7 @@ The formula is as follows:
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_intrinsic_valuation(0.05, 0.025, 0.094)
 {% endhighlight %}
@@ -358,7 +358,7 @@ The Altman Z
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 altman_z_score = toolkit.models.get_altman_z_score()
 {% endhighlight %}
@@ -404,7 +404,7 @@ Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financia
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA", "MSFT"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 altman_z_score = toolkit.models.get_piotroski_score()
 {% endhighlight %}

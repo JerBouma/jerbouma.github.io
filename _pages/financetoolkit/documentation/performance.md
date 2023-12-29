@@ -51,7 +51,7 @@ Initializes the Performance Controller Class.
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_capital_asset_pricing_model(period='quarterly')
 {% endhighlight %}
@@ -108,7 +108,7 @@ See definition: [https://en.wikipedia.org/wiki/Beta_(finance)](https://en.wikipe
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "AMZN"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_beta()
 {% endhighlight %}
@@ -160,7 +160,7 @@ See definition: [https://en.wikipedia.org/wiki/Capital_asset_pricing_model](http
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_capital_asset_pricing_model()
 {% endhighlight %}
@@ -191,7 +191,7 @@ However, since the results are closely related and tend to point into the same d
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_factor_asset_correlations()
 {% endhighlight %}
@@ -229,7 +229,7 @@ Optionally, it is also possible to see the correlation between the risk
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_factor_correlations()
 {% endhighlight %}
@@ -294,12 +294,12 @@ What is relevant to look at is the influence these factors have on each stock an
  In this case, the Risk Free Rate from the Fama and French dataset is used.
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
- Example:
+ As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 # Calculate Fama and French 5 Factor model scores
 toolkit.performance.get_fama_and_french_model()
@@ -336,7 +336,7 @@ See definition: [https://en.wikipedia.org/wiki/Alpha_(finance)](https://en.wikip
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_alpha()
 {% endhighlight %}
@@ -379,7 +379,7 @@ See definition: [https://en.wikipedia.org/wiki/Jensen%27s_alpha](https://en.wiki
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_jensens_alpha()
 {% endhighlight %}
@@ -422,7 +422,7 @@ See definition: [https://en.wikipedia.org/wiki/Treynor_ratio](https://en.wikiped
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_treynor_ratio()
 {% endhighlight %}
@@ -477,7 +477,7 @@ See definition: [https://en.wikipedia.org/wiki/Sharpe_ratio](https://en.wikipedi
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_sharpe_ratio()
 {% endhighlight %}
@@ -527,7 +527,7 @@ See definition: [https://en.wikipedia.org/wiki/Sortino_ratio](https://en.wikiped
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_sortino_ratio()
 {% endhighlight %}
@@ -559,7 +559,7 @@ It can be used to compare volatilities in different stocks or show stocks go int
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_ulcer_performance_index()
 {% endhighlight %}
@@ -603,7 +603,7 @@ See definition: [https://en.wikipedia.org/wiki/Modigliani_risk
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_m2_ratio()
 {% endhighlight %}
@@ -641,7 +641,7 @@ See definition: [https://en.wikipedia.org/wiki/Tracking_error](https://en.wikipe
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_tracking_error()
 {% endhighlight %}
@@ -685,7 +685,7 @@ See definition: [https://en.wikipedia.org/wiki/Information_ratio](https://en.wik
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_information_ratio()
 {% endhighlight %}
@@ -714,12 +714,12 @@ The formula is as follows:
  This is mostly noticeable when looking at the Compound Daily Growth Rate. Adjust the rounding with the
  rounding parameter accordingly to get a more precise figure.
 
- Example:
+ As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key=FMP_KEY)
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_compound_growth_rate()
 {% endhighlight %}
