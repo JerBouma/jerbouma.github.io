@@ -58,26 +58,6 @@ The aim of this database is explicitly not to provide up-to-date fundamentals or
 </div>
 </div>
 
-## [Personal Finance](/projects/personalfinance)
-
-<div class="row">
-<div markdown="1" class="sixty-column mobile-max-column-width">
-With PersonalFinance I want to make it easier to manage your personal finance. Through defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you.
-
-To assist in not needing to get *exact* matches, the package makes use of the Levenshtein distance to determine how similar two strings are. There is a limited amount of Mumbo Jumbo going on here on purpose so that it still becomes logical why it is categorised as such.
-
-[View this Project](/projects/personalfinance){: .btn .btn--info}
-</div>
-<div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="/projects/personalfinance"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" width="400"></a>
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=personalfinance)](/projects/personalfinance)
-
-[![PyPi Version](https://img.shields.io/pypi/v/personalfinance)](https://pypi.org/project/financedatabase/){:target="_blank"}
-[![PYPI Downloads](https://static.pepy.tech/badge/personalfinance/month)](https://pepy.tech/project/personalfinance){:target="_blank"}
-</div>
-</div>
-
-
 ## [The Passive Investor](/projects/thepassiveinvestor)
 
 <div class="row">
@@ -94,6 +74,25 @@ This is quickly reflected when looking for a S&P 500 ETF as there are over 20 di
 
 [![PyPi Version](https://img.shields.io/pypi/v/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/){:target="_blank"}
 [![PYPI Downloads](https://static.pepy.tech/badge/thepassiveinvestor/month)](https://pepy.tech/project/thepassiveinvestor){:target="_blank"}
+</div>
+</div>
+
+## [Personal Finance](/projects/personalfinance)
+
+<div class="row">
+<div markdown="1" class="sixty-column mobile-max-column-width">
+With PersonalFinance I want to make it easier to manage your personal finance. Through defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you.
+
+To assist in not needing to get *exact* matches, the package makes use of the Levenshtein distance to determine how similar two strings are. There is a limited amount of Mumbo Jumbo going on here on purpose so that it still becomes logical why it is categorised as such.
+
+[View this Project](/projects/personalfinance){: .btn .btn--info}
+</div>
+<div markdown="1" class="fourty-column mobile-max-column-width">
+<a href="/projects/personalfinance"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" width="400"></a>
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=personalfinance)](/projects/personalfinance)
+
+[![PyPi Version](https://img.shields.io/pypi/v/personalfinance)](https://pypi.org/project/financedatabase/){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/personalfinance/month)](https://pepy.tech/project/personalfinance){:target="_blank"}
 </div>
 </div>
 

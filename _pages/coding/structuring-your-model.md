@@ -27,8 +27,7 @@ The preferred logic of creating a model is the **Model, View and Controller (MVC
 
 The following diagrams illustrate the different flows of the MVC pattern depending on how you structured your model and what the purpose of your model is.
 
-<div class="row">
-<div markdown="1" class="thirty-column mobile-max-column-width">
+<div style="display: flex; justify-content: space-between;margin-bottom:10px">
 
 {% raw %}
 <div class="mermaid">
@@ -40,9 +39,6 @@ Step2["Model"] -- Updates --> Step3["View"]:::boxfont
 Step3["View"] -- Sees --> Step0["User"]:::boxfont
 </div>
 {% endraw %}
-</div>
-
-<div markdown="1" class="thirty-column mobile-max-column-width">
 
 {% raw %}
 <div class="mermaid">
@@ -54,10 +50,6 @@ Step2["Model"] -- Returns --> Step1["Controller"]:::boxfont
 Step1["Controller"] -- Sees --> Step0["User"]:::boxfont
 </div>
 {% endraw %}
-
-</div>
-
-<div markdown="1" class="thirty-column mobile-max-column-width">
 
 {% raw %}
 <div class="mermaid">
@@ -71,7 +63,6 @@ Step2["Controller 2"] -- Sees --> Step0["User"]:::boxfont
 </div>
 {% endraw %}
 
-</div>
 </div>
 
 What makes the MVC pattern so powerful is that it is immediately clear in the structure of the model what modules do what. If I am looking for the calculation of the Gross Margin ratio or want to understand what data is being passed on for this calculation, I know exactly where to look (the model and controller respectively).

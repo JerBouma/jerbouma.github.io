@@ -13,24 +13,11 @@ sidebar:
   nav: "modelling"
 ---
 
-<div class="row">
-<div markdown="1" class="sixty-column mobile-max-column-width">
-
 Python, a versatile and powerful programming language, has made significant inroads into the financial industry in recent years. Its simplicity, readability, and extensive libraries have made it a favorite tool for financial analysts, quantitative researchers and myself as I have spend thousands of hours by now in Python using it for both personal and institutional purposes.
-
-</div>
-
-<div markdown="1" class="fourty-column mobile-max-column-width show-on-desktop">
-
-![](/assets/images/modelling/FinancialModelling.png)
-
-</div>
-</div>
 
 With that, I've acquired a solid understanding of how to design models and algorithms that are tailored to the needs of the financial industry both in terms of financial sophistication as well as creating model structures that are robust, effective and easily maintainable. Especially in the area of keeping the model up-to-date and making sure that it is able to handle new data and new situations, I have made plenty of mistakes and learned a lot from them. With that said, these pages are about sharing my knowledge and experience with you so that you can avoid making the same mistakes I did.
 
 Within this financial modelling guide you can find information how to get started with Python, how to set up a project and structure, build and test a model. Here, I share what has worked well for me from what I've gathered from several employers. The contents can be found on the left-hand side of this page as well as by clicking on the different buttons below which appear on every page.
-
 
 <div style="display: flex; justify-content: space-between;margin-bottom:10px">
     <a href="/modelling/introduction" class="btn btn--warning" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
