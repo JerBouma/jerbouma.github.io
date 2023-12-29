@@ -197,18 +197,6 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#get_cash_flow_statement
     - title: "Statistics Statements"
       url: /projects/financetoolkit/docs#get_statistics_statement
-  - title: Ratios Documentation
-    url: /projects/financetoolkit/docs/ratios
-  - title: Models Documentation
-    url: /projects/financetoolkit/docs/models
-  - title: Technicals Documentation
-    url: /projects/financetoolkit/docs/technicals
-  - title: Risk Documentation
-    url: /projects/financetoolkit/docs/risk
-  - title: Performance Documentation
-    url: /projects/financetoolkit/docs/performance
-  - title: Economics Documentation
-    url: /projects/financetoolkit/docs/economics
 
 financetoolkit-docs-ratios:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
