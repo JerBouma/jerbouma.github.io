@@ -22,4 +22,4 @@ jobs:
           poetry install
       - name: Create Finance Toolkit Documentation
         run: |  
-          poetry run .github/workflows/docs.py
+          poetry run assets/python/docs.py
