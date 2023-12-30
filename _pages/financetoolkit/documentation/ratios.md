@@ -23,7 +23,7 @@ pip install financetoolkit -U
 
 If you are looking for documentation regarding the toolkit, models, technicals, risk, performance and economics, please have a look below:
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--warning" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
