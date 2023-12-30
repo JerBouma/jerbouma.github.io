@@ -61,7 +61,7 @@ financetoolkit:
     url: /projects/financetoolkit
   - title: "Installation"
     url: /projects/financetoolkit#installation
-  - title: "Code Documentation"
+  - title: <font color="#d67f05">Code Documentation</font>
     url: /projects/financetoolkit/docs
   - title: "How to Guides"
     url: /projects/financetoolkit#how-to-guides-for-the-financetoolkit
