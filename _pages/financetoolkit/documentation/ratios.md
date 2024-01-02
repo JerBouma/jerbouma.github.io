@@ -21,10 +21,11 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, models, technicals, risk, performance and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, models, technicals, risk, performance and economics, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--warning" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
@@ -44,7 +45,6 @@ Initializes the Ratios Controller Class.
  - <u>balance (pd.DataFrame):</u> The balance sheet data to use for the calculations.
  - <u>income (pd.DataFrame):</u> The income statement data to use for the calculations.
  - <u>cash (pd.DataFrame):</u> The cash flow statement data to use for the calculations.
- - <u>custom_ratios_dict (dict, optional):</u> A dictionary containing the custom ratios to calculate. This is
  an optional parameter given that you can also define the custom ratios through the Toolkit initialization.
  - <u>quarterly (bool, optional):</u> Whether to use quarterly data. Defaults to False.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -123,8 +123,8 @@ Note that any of the following characters are considered as operators: +,
 -, *, /, **, %, //, <, >, ==, !=, >=, <=, (, ) using any of the above characters as part of the column naming will result into an error.
 
 **Args:**
- - <u>custom_ratios (dict, optional):</u> A dictionary containing the custom ratios to calculate. This is
- an optional parameter given that you can also define the custom ratios through the Toolkit initialization.
+ - <u>custom_ratios (dict):</u> A dictionary containing the custom ratios to calculate.
+ - <u>options (bool):</u> Whether to return the available names to use in the custom ratios.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -155,11 +155,15 @@ custom_ratios = {
 }
 
 companies = Toolkit(
-["AAPL", "MSFT", "GOOGL", "AMZN"], api_key=API_KEY, start_date="2022-10-01",
-custom_ratios=custom_ratios, quarterly=True
+tickers=["AAPL", "MSFT", "GOOGL", "AMZN"],
+api_key="FINANCIAL_MODELING_PREP_KEY",
+start_date="2022-10-01",
+quarterly=True
 )
 
-custom_ratios = companies.ratios.collect_custom_ratios()
+custom_ratios = companies.ratios.collect_custom_ratios(
+custom_ratios_dict=custom_ratios
+)
 
 custom_ratios.loc['AMZN']
 {% endhighlight %}
@@ -168,13 +172,13 @@ custom_ratios.loc['AMZN']
 Which returns:
 
 | | 2022Q4 | 2023Q1 | 2023Q2 | 2023Q3 |
- |:-----------------------|---------------:|---------------:|---------------:|---------:|
- | Cash Op Expenses | 2.1856e+10 | 1.9972e+10 | 2.1322e+10 | nan |
- | Daily Cash Op Expenses | 5.98795e+07 | 5.47178e+07 | 5.84164e+07 | nan |
- | Defensive Interval | 2260.22 | 2592.34 | 2738.1 | nan |
- | Large Revenues | 1 | 1 | 1 | 0 |
- | Quick Assets | 1.35341e+11 | 1.41847e+11 | 1.5995e+11 | nan |
- | WC / Net Income as % | 463.349 | 427.335 | 398.924 | nan |
+ |:-----------------------|---------------:|---------------:|---------------:|---------------:|
+ | WC / Net Income as % | 463.349 | 427.335 | 398.924 | 371.423 |
+ | Large Revenues | 1 | 1 | 1 | 1 |
+ | Quick Assets | 1.35341e+11 | 1.41847e+11 | 1.5995e+11 | 1.80898e+11 |
+ | Cash Op Expenses | 2.1056e+10 | 1.9972e+10 | 2.2854e+10 | 1.9042e+10 |
+ | Daily Cash Op Expenses | 5.76877e+07 | 5.47178e+07 | 6.26137e+07 | 5.21699e+07 |
+ | Defensive Interval | 2346.1 | 2592.34 | 2554.55 | 3467.48 |
 
 ## collect_efficiency_ratios
 Calculates and collects all Efficiency Ratios based on the provided data.

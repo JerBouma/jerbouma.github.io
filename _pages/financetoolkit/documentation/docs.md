@@ -70,8 +70,6 @@ See for more information on all of this, the following link: [https://www.jeroen
  to collect data but could lead to confusing results. The parameter is built in to limit the API calls as it
  needs to acquire the data from Yahoo Finance. It is turned on when the amount of tickers are < 20 and turned
  off when the amount of tickers is higher than 20. Can be overridden when you set it to True or False.
- - <u>custom_ratios (dict):</u> A dictionary containing custom ratios. This is meant to define your own ratios. See
- the following Notebook how to set this up: [https://www.jeroenbouma.com/projects/financetoolkit/custom-ratios](https://www.jeroenbouma.com/projects/financetoolkit/custom-ratios){:target="_blank"}
  - <u>historical (pd.DataFrame):</u> A DataFrame containing historical data. This is a custom dataset only relevant if
  you are looking to use custom data. See for more information the following Notebook:
  [https://www.jeroenbouma.com/projects/financetoolkit/external-datasets](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets){:target="_blank"}
@@ -307,6 +305,10 @@ Which returns:
 ## get_profile
 Obtain the profile of the specified tickers. These include important metrics such as the beta, market capitalization, currency, isin, industry, and ipo date that give an overall understanding about the company.
 
+**Args:**
+ - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
+
+ As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Toolkit
@@ -354,6 +356,10 @@ Which returns:
 ## get_quote
 Get the quote of the specified tickers. These include important metrics such as the price, changes, day low, day high, year low, year high, market capitalization, volume, average volume, open, previous close, earnings per share (EPS), price to earnings ratio (PE), earnings announcement, shares outstanding and timestamp that give an overall understanding about the company.
 
+**Args:**
+ - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
+
+ As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Toolkit
@@ -404,7 +410,7 @@ Get the rating of the specified tickers. These scores and recommendations are ca
 - Price to Book (PB)
 
 **Args:**
- - <u>limit (int):</u> The number of results to return. Defaults to 100.
+ - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
 
  **Raises:**
  ValueError: If an API key is not defined for FinancialModelingPrep.
@@ -537,6 +543,7 @@ Note that this information requires a Premium FMP subscription.
 
 **Args:**
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+ - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
 
  **Returns:**
  pd.DataFrame: The revenue by geographic segmentation for the specified tickers.
@@ -573,6 +580,7 @@ Note that this information requires a Premium FMP subscription.
 
 **Args:**
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+ - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
 
  **Returns:**
  pd.DataFrame: The revenue by product segmentation for the specified tickers.
@@ -643,6 +651,7 @@ Important to note is that when an api_key is included in the Toolkit initializat
  overloading the API. Defaults to True.
  - <u>show_ticker_seperation (bool, optional):</u> A boolean representing whether to show which tickers
  acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance.
+ - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
 
  **Raises:**
  ValueError: If an invalid value is specified for period.
@@ -691,6 +700,7 @@ If a company does not pay any dividend, the function will mention that it was no
 **Args:**
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
  - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
+ - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
 
  **Returns:**
  pd.DataFrame: The earnings calendar for the specified tickers.
@@ -782,8 +792,13 @@ Retrieve statistics about each ticker's historical data. This is especially usef
 - Timezone: The timezone the instrument is traded in. 
 - Exchange Timezone Name: The name of the timezone the instrument is traded in.
 
-Returns: pd.DataFrame: A DataFrame containing the statistics for each ticker.
+**Args:**
+ - <u>progress_bar (bool):</u> Defines whether to show a progress bar. Defaults to None.
 
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the statistics for each ticker.
+
+ As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Toolkit
@@ -908,6 +923,7 @@ Retrieves the balance sheet statement financial data for the company(s) from the
  - <u>lag (int | str):</u> Defines the number of periods to lag the growth data by.
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
+ - <u>progress_bar (bool):</u> Defines whether to show a progress bar.
 
  **Returns:**
  pd.DataFrame: A pandas DataFrame with the retrieved balance sheet statement data.
@@ -984,6 +1000,7 @@ Retrieves the income statement financial data for the company(s) from the specif
  - <u>lag (int | str):</u> Defines the number of periods to lag the growth data by.
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
+ - <u>progress_bar (bool):</u> Defines whether to show a progress bar.
 
  **Returns:**
  pd.DataFrame: A pandas DataFrame with the retrieved income statement data.
@@ -1045,6 +1062,7 @@ Retrieves the cash flow statement financial data for the company(s) from the spe
  - <u>lag (int | str):</u> Defines the number of periods to lag the growth data by.
  - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
+ - <u>progress_bar (bool):</u> Defines whether to show a progress bar.
 
  **Returns:**
  pd.DataFrame: A pandas DataFrame with the retrieved cash flow statement data.
@@ -1105,6 +1123,7 @@ Note that this also obtains the balance sheet statement at the same time given t
 **Args:**
  - <u>limit (int):</u> Defines the maximum years or quarters to obtain.
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+ - <u>progress_bar (bool):</u> Defines whether to show a progress bar.
 
  **Returns:**
  pd.DataFrame: A pandas DataFrame with the retrieved statistics statement data.
