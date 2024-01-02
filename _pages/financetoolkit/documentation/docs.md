@@ -1,7 +1,7 @@
 ---
 title: Documentation
-excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 100+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
-description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 100+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
+excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 150+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
+description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 150+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
 author_profile: false
 permalink: projects/financetoolkit/docs
 classes: wide-sidebar
