@@ -1,6 +1,7 @@
 # Vim
 *~
 *.sw[p_]
+*.ipynb
 
 # Sublime Text
 *.sublime-project

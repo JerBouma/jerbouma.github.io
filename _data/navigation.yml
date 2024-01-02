@@ -200,36 +200,36 @@ financetoolkit-docs:
 
 financetoolkit-docs-discovery:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
-    url: /projects/financetoolkit
+    url: /projects/financetoolkit/docs
   - title: Search Instruments
     url: /projects/financetoolkit/docs/discovery#search_instruments
   - title: Stock Screener
     url: /projects/financetoolkit/docs/discovery#get_stock_screener
-  - title: Stocks
+  - title: Companies
     children:
     - title: Company List
       url: /projects/financetoolkit/docs/discovery#get_stock_list
     - title: Company Quotes
       url: /projects/financetoolkit/docs/discovery#get_stock_quotes
-    - title: Shares Floats
+    - title: Floating Shares
       url: /projects/financetoolkit/docs/discovery#get_stock_shares_float
     - title: Sector Performance
-      url: /projects/financetoolkit/docs/discovery#get_sector_performance
+      url: /projects/financetoolkit/docs/discovery#get_sectors_performance
     - title: Biggest Gainers
       url: /projects/financetoolkit/docs/discovery#get_biggest_gainers
     - title: Biggest Losers
       url: /projects/financetoolkit/docs/discovery#get_biggest_losers
     - title: Most Active
-      url: /projects/financetoolkit/docs/discovery#get_most_active
+      url: /projects/financetoolkit/docs/discovery#get_most_active_stocks
     - title: Delisted Companies
-      url: /projects/financetoolkit/docs/discovery#get_delisted_companies
-  - title: Cryptocurrency
+      url: /projects/financetoolkit/docs/discovery#get_delisted_stocks
+  - title: Cryptocurrencies
     children:
     - title: Cryptocurrency List
       url: /projects/financetoolkit/docs/discovery#get_crypto_list
     - title: Cryptocurrency Quotes
       url: /projects/financetoolkit/docs/discovery#get_crypto_quotes
-  - title: Forex
+  - title: FOREX
     children:
     - title: Forex List
       url: /projects/financetoolkit/docs/discovery#get_forex_list
@@ -238,15 +238,15 @@ financetoolkit-docs-discovery:
   - title: Commodities
     children:
     - title: Commodities List
-      url: /projects/financetoolkit/docs/discovery#get_commodities_list
+      url: /projects/financetoolkit/docs/discovery#get_commodity_list
     - title: Commodities Quotes
-      url: /projects/financetoolkit/docs/discovery#get_commodities_quotes
-  - title: ETF & Index
+      url: /projects/financetoolkit/docs/discovery#get_commodity_quotes
+  - title: ETFs & Indices
     children:
     - title: ETF List
-      url: /projects/financetoolkit/docs#get_etf_list
+      url: /projects/financetoolkit/docs/discovery#get_etf_list
     - title: Index List
-      url: /projects/financetoolkit/docs#get_index_list
+      url: /projects/financetoolkit/docs/discovery#get_index_list
     - title: Index Quotes
       url: /projects/financetoolkit/docs/discovery#get_index_quotes
 financetoolkit-docs-ratios:
