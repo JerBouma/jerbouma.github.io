@@ -229,9 +229,9 @@ jobs:
             """
             
             create_markdown_file(
-                file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/ratios/ratios_controller.py",
+                file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/discovery/discovery_controller.py",
                 header=markdown_content,
-                location="_pages/financetoolkit/documentation/ratios.md",
+                location="_pages/financetoolkit/documentation/discovery.md",
             )
 
             # Create the Ratios page
