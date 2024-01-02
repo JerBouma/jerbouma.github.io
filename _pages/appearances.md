@@ -3,7 +3,7 @@ title: Appearances
 excerpt: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
 description: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
 author_profile: true
-permalink: /appearances
+permalink: appearances
 redirect_from:
   - /activities
   - /talks

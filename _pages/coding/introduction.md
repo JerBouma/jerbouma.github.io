@@ -3,7 +3,7 @@ title: Financial Modelling with Python
 excerpt: Explore Financial Modeling with Python, develop robust models, avoid pitfalls, and learn from practical experience for professional insights.
 description: Explore Financial Modeling with Python, develop robust models, avoid pitfalls, and learn from practical experience for professional insights.
 author_profile: true
-permalink: /modelling/introduction
+permalink: modelling/introduction
 classes: wide-sidebar
 redirect_from:
   - /modelling
