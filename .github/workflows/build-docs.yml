@@ -187,6 +187,53 @@ jobs:
                 location="_pages/financetoolkit/documentation/docs.md",
             )
             
+            # Create the Discovery page
+            markdown_content = """---
+            title: Discovery
+            excerpt: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit. 
+            description: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit. 
+            author_profile: false
+            permalink: /projects/financetoolkit/docs/discovery
+            classes: wide-sidebar
+            layout: single
+            redirect_from:
+                - /ratios
+            sidebar:
+                nav: "financetoolkit-docs-discovery"
+            ---
+            
+            The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit.
+
+            To install the FinanceToolkit it simply requires the following:
+            
+            {% include code_header.html %}
+            {% highlight bash %}
+            pip install financetoolkit -U
+            {% endhighlight %}
+            
+            If you are looking for documentation regarding the toolkit, ratios, models, technicals, risk, performance and economics, please have a look below:
+            
+            <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
+                <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+                <a href="/projects/financetoolkit/docs/discovery" class="btn btn--warning" style="flex: 1;margin-right:5px">Discovery</a>
+                <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
+                <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+                <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+                <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
+                <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
+                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
+            </div>
+            
+            {% include algolia.html %}
+            
+            """
+            
+            create_markdown_file(
+                file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/ratios/ratios_controller.py",
+                header=markdown_content,
+                location="_pages/financetoolkit/documentation/ratios.md",
+            )
+
             # Create the Ratios page
             markdown_content = """---
             title: Ratios
@@ -211,10 +258,11 @@ jobs:
             pip install financetoolkit -U
             {% endhighlight %}
             
-            If you are looking for documentation regarding the toolkit, models, technicals, risk, performance and economics, please have a look below:
+            If you are looking for documentation regarding the toolkit, discovery, models, technicals, risk, performance and economics, please have a look below:
             
             <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
                 <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+                <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
                 <a href="/projects/financetoolkit/docs/ratios" class="btn btn--warning" style="flex: 1;margin-right:5px">Ratios</a>
                 <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
                 <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
@@ -257,10 +305,11 @@ jobs:
             pip install financetoolkit -U
             {% endhighlight %}
             
-            If you are looking for documentation regarding the toolkit, ratios, technicals, risk, performance and economics, please have a look below:
+            If you are looking for documentation regarding the toolkit, discovery, ratios, technicals, risk, performance and economics, please have a look below:
             
             <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
                 <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+                <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
                 <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
                 <a href="/projects/financetoolkit/docs/models" class="btn btn--warning" style="flex: 1;margin-right:5px">Models</a>
                 <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
@@ -303,10 +352,11 @@ jobs:
             pip install financetoolkit -U
             {% endhighlight %}
             
-            If you are looking for documentation regarding the toolkit, ratios, models, risk, performance and economics, please have a look below:
+            If you are looking for documentation regarding the toolkit, discovery, ratios, models, risk, performance and economics, please have a look below:
             
             <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
                 <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+                <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
                 <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
                 <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
                 <a href="/projects/financetoolkit/docs/technicals" class="btn btn--warning" style="flex: 1;margin-right:5px">Technicals</a>
@@ -348,10 +398,11 @@ jobs:
             pip install financetoolkit -U
             {% endhighlight %}
             
-            If you are looking for documentation regarding the toolkit, ratios, models, technicals, performance and economics, please have a look below:
+            If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, performance and economics, please have a look below:
             
             <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
                 <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+                <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
                 <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
                 <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
                 <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
@@ -393,10 +444,11 @@ jobs:
             pip install financetoolkit -U
             {% endhighlight %}
             
-            If you are looking for documentation regarding the toolkit, ratios, models, technicals, risk and economics, please have a look below:
+            If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, risk and economics, please have a look below:
             
             <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
                 <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+                <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
                 <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
                 <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
                 <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
@@ -439,10 +491,11 @@ jobs:
             pip install financetoolkit -U
             {% endhighlight %}
             
-            If you are looking for documentation regarding the toolkit, models, ratios, technicals, risk and performance, please have a look below:
+            If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, risk and performance, please have a look below:
             
             <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
                 <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+                <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
                 <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
                 <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
                 <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
