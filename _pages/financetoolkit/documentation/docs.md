@@ -1,9 +1,9 @@
 ---
-title: Documentation
-excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 150+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
-description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 150+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
+title: Docs
+excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 100+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
+description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 100+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
 author_profile: false
-permalink: projects/financetoolkit/docs
+permalink: /projects/financetoolkit/docs
 classes: wide-sidebar
 layout: single
 redirect_from:
@@ -12,7 +12,7 @@ sidebar:
     nav: "financetoolkit-docs"
 ---
 
-This page includes all the documentation for the Finance Toolkit, an open-source toolkit in which all relevant financial ratios (150+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
+This page includes all the documentation for the Finance Toolkit,an open-source toolkit in which all relevant financial ratios (150+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
 
 To install the FinanceToolkit it simply requires the following:
 
