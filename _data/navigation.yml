@@ -278,6 +278,8 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_days_of_accounts_payable_outstanding
       - title: Cash Conversion Cycle
         url: /projects/financetoolkit/docs/ratios#get_cash_conversion_cycle
+      - title: Cash Conversion Efficiency
+        url: /projects/financetoolkit/docs/ratios#get_cash_conversion_efficiency
       - title: Receivables Turnover
         url: /projects/financetoolkit/docs/ratios#get_receivables_turnover
       - title: SGA to Revenue Ratio
@@ -408,8 +410,8 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_earnings_yield
       - title: Dividend Payout Ratio
         url: /projects/financetoolkit/docs/ratios#get_dividend_payout_ratio
-      - title: Reinvestment Ratio
-        url: /projects/financetoolkit/docs/ratios#get_reinvestment_ratio
+      - title: Reinvestment Rate
+        url: /projects/financetoolkit/docs/ratios#get_reinvestment_rate
       - title: Tangible Asset Value
         url: /projects/financetoolkit/docs/ratios#get_tangible_asset_value
       - title: Net Current Asset Value
