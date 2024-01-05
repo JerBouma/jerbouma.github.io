@@ -81,6 +81,68 @@ Which returns:
  | 2022 | -0.8026 | -1.0046 |
  | 2023 | 1.8549 | 1.8238 |
 
+## get_black_scholes_model
+Calculate the Black Scholes Model, a mathematical model used to estimate the price of European
+-style options.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European
+-style options. It is widely used by traders and investors to determine the theoretical value of an option, and to assess the potential risks and rewards of a position.
+
+Within Risk Management, defining the theoretical value of an option is important to assess the potential risk and rewards of an option position. A position that could be used to hedge a portfolio, for example, is a long put option. The theoretical value of this option can be used to determine the potential risk and rewards of this position.
+
+The Black Scholes Model is based on several assumptions, including the following:
+
+
+- The option is European and can only be exercised at expiration. 
+- The option is on a non
+-dividend
+-paying stock. 
+- The underlying stock follows a lognormal distribution. 
+- The risk
+-free rate and volatility of the underlying stock are known and constant. 
+- The returns on the underlying stock are normally distributed.
+
+By default the most recent risk free rate and stock price is used. The volatility is calculated based on the daily returns of the stock price and the selected period (this can be altered by defining this accordingly when defining the Toolkit class, start_date and end_date).
+
+The formula are as follows:
+
+
+- d1 = (ln(S / K) + (r + (σ^2) / 2) * t) / (σ * sqrt(t)) 
+- d2 = d1 
+- σ * sqrt(t) 
+- Call Option Price = S * N(d1) 
+- K * e^(
+-r * t) * N(d2) 
+- Put Option Price = K * e^(
+-r * t) * N(
+-d2) 
+- S * N(
+-d1)
+
+**Args:**
+ - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
+ it will calculate the call option price.
+ - <u>price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+ 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
+ - <u>time_range (int):</u> The number of days to use for the time to expiration. Defaults to 30 which equals
+ 30 days.
+ - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None which
+ means it will use the current risk free rate.
+
+ **Returns:**
+ pd.DataFrame: Black Scholes values containing the tickers and strike prices as the index and the
+ time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.risk.get_black_scholes_model()
+{% endhighlight %}
+
 ## get_value_at_risk
 Calculate the Value at Risk (VaR) of an investment portfolio or asset's returns.
 

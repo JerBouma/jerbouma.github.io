@@ -23,7 +23,7 @@ pip install financetoolkit -U
 
 The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These are historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
 
-If you are looking for documentation regarding the discovery, ratios, models, technical indicators, risk metrics and performance metrics, please have a look below:
+If you are looking for documentation regarding the discovery, ratios, models, technical indicators, risk metrics, performance metrics and economic indicators, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--warning" style="flex: 1;margin-right:5px">Toolkit</a>
@@ -163,7 +163,7 @@ See the following link for more information: [https://www.jeroenbouma.com/projec
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["TSLA", "AMZN"], api_key=FMP_KEY, quarterly=True, start_date='2022-12-31')
+toolkit = Toolkit(["TSLA", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", quarterly=True, start_date='2022-12-31')
 
 dupont_analysis = toolkit.models.get_extended_dupont_analysis()
 
@@ -464,7 +464,7 @@ Note that this information requires a Premium FMP subscription.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-["AAPL", "MSFT", "GOOGL", "AMZN"], api_key=FMP_KEY, start_date="2021-05-01", quarterly=False
+["AAPL", "MSFT", "GOOGL", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2021-05-01", quarterly=False
 )
 
 analyst_estimates = toolkit.get_analyst_estimates()
@@ -515,7 +515,7 @@ Note that this information requires a Premium FMP subscription.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-["AAPL", "MSFT", "GOOGL", "AMZN"], api_key=FMP_KEY, start_date="2022-08-01", quarterly=False
+["AAPL", "MSFT", "GOOGL", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2022-08-01", quarterly=False
 )
 
 earning_calendar = toolkit.get_earnings_calendar()
@@ -555,7 +555,7 @@ Note that this information requires a Premium FMP subscription.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-["AAPL", "MSFT", "GOOGL", "AMZN"], api_key=FMP_KEY, start_date="2021-05-01", quarterly=False
+["AAPL", "MSFT", "GOOGL", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2021-05-01", quarterly=False
 )
 
 geographic_segmentation = toolkit.get_revenue_geographic_segmentation()
@@ -592,7 +592,7 @@ Note that this information requires a Premium FMP subscription.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-["AAPL", "MSFT", "GOOGL", "AMZN"], api_key=FMP_KEY, start_date="2021-05-01", quarterly=False
+["AAPL", "MSFT", "GOOGL", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2021-05-01", quarterly=False
 )
 
 product_segmentation = toolkit.get_revenue_product_segmentation()
@@ -712,7 +712,7 @@ If a company does not pay any dividend, the function will mention that it was no
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-["AAPL", "MSFT", "GOOGL", "AMZN"], api_key=FMP_KEY, start_date="2022-08-01", quarterly=False
+["AAPL", "MSFT", "GOOGL", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2022-08-01", quarterly=False
 )
 
 dividend_calendar = toolkit.get_dividend_calendar()
@@ -761,7 +761,7 @@ ESG scores provide investors with a holistic view of a company's sustainability 
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-["MSFT", "TSLA", "AMZN"], api_key=FMP_KEY, start_date="2022-08-01", quarterly=False
+["MSFT", "TSLA", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2022-08-01", quarterly=False
 )
 
 esg_scores = toolkit.get_esg_scores()
@@ -841,7 +841,7 @@ Retrieve daily, weekly, monthly, quarterly or yearly treasury data. This can be 
 {% highlight python %}
 from financetoolkit import Toolkit
 
-companies = Toolkit(["AAPL", "MSFT"], api_key=FMP_KEY, start_date="2023-08-10")
+companies = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2023-08-10")
 
 companies.get_treasury_data()
 {% endhighlight %}
@@ -934,7 +934,7 @@ Retrieves the balance sheet statement financial data for the company(s) from the
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["MSFT", "MU"], api_key=FMP_KEY, quarterly=True, start_date='2022-05-01')
+toolkit = Toolkit(["MSFT", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY", quarterly=True, start_date='2022-05-01')
 
 balance_sheet_statements = toolkit.get_balance_sheet_statement()
 
@@ -1011,7 +1011,7 @@ Retrieves the income statement financial data for the company(s) from the specif
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["TSLA", "MU"], api_key=FMP_KEY, quarterly=True, start_date='2022-05-01')
+toolkit = Toolkit(["TSLA", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY", quarterly=True, start_date='2022-05-01')
 
 income_sheet_statements = toolkit.get_income_statement()
 
@@ -1073,7 +1073,7 @@ Retrieves the cash flow statement financial data for the company(s) from the spe
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["MU", "AMZN"], api_key=FMP_KEY, quarterly=True, start_date='2022-09-01')
+toolkit = Toolkit(["MU", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", quarterly=True, start_date='2022-09-01')
 
 cash_flow_statements = toolkit.get_cash_flow_statement()
 
@@ -1134,7 +1134,7 @@ Note that this also obtains the balance sheet statement at the same time given t
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit("TSLA", api_key=FMP_KEY, quarterly=True, start_date='2023-05-01')
+toolkit = Toolkit("TSLA", api_key="FINANCIAL_MODELING_PREP_KEY", quarterly=True, start_date='2023-05-01')
 
 toolkit.get_statistics_statement()
 {% endhighlight %}

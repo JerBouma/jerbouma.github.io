@@ -466,7 +466,9 @@ dpo_ratios = toolkit.ratios.get_days_of_accounts_payable_outstanding()
 {% endhighlight %}
 
 ## get_cash_conversion_cycle
-Calculate the Cash Conversion Cycle, which measures the amount of time it takes for a company to convert its investments in inventory and accounts receivable into cash, while considering the time it takes to pay its accounts payable.
+Calculate the Cash Conversion Cycle, which measures the amount of time it takes for a company to convert its investments in inventory and accounts receivable into cash, while considering the time it takes to pay its accounts payable. This ratio is also known as Cash
+-to
+-Cash Cycle (C2C) or Net Operating Cycle.
 
 The Cash Conversion Cycle (CCC) is an important measure of a company's liquidity management and efficiency in managing its working capital. It takes into account the time it takes to sell inventory, collect payments from customers, and pay suppliers. A shorter CCC indicates that a company is able to quickly convert its investments into cash, which can be a positive sign of efficient operations.
 
@@ -499,6 +501,42 @@ from financetoolkit import Toolkit
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 ccc_values = toolkit.ratios.get_cash_conversion_cycle()
+{% endhighlight %}
+
+## get_cash_conversion_efficiency
+Calculate the operating ratio, a financial metric that measures the efficiency of a company's operations by comparing its operating expenses to its revenue.
+
+The operating ratio is calculated by dividing the company's operating expenses by its net sales and multiplying by 100 to express it as a percentage. It provides insight into how efficiently a company is managing its operations.
+
+The formula is as follows:
+
+
+- Operating Ratio = (Operating Expenses + Cost of Goods Sold) / Revenue
+
+**Args:**
+ - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+ - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+ - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+ - <u>trailing (int):</u> Defines whether to select a trailing period.
+ E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+ **Returns:**
+ pd.DataFrame: Operating ratio values.
+
+ **Notes:**
+ - The method retrieves historical data and calculates the operating ratio for each
+ asset in the Toolkit instance.
+ - If `growth` is set to True, the method calculates the growth of the ratio values
+ using the specified `lag`.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+operating_ratios = toolkit.ratios.get_operating_ratio()
 {% endhighlight %}
 
 ## get_receivables_turnover
@@ -1261,9 +1299,12 @@ The return on invested capital is calculated by dividing the net operating profi
 The formula is as follows:
 
 
-- Return on Invested Capital = Net Operating Profit After Taxes / Average Invested Capital
+- Return on Invested Capital = (Net Income 
+- Paid Dividends) / Average Invested Capital
 
 **Args:**
+ - <u>dividend_adjusted (bool, optional):</u> Whether to adjust the net operating profit after taxes
+ with the dividends paid. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -1627,9 +1668,9 @@ debt_to_assets_ratios = toolkit.ratios.get_debt_to_assets_ratio()
 {% endhighlight %}
 
 ## get_debt_to_equity_ratio
-Calculate the debt to equity ratio, a solvency ratio that measures the proportion of a company's equity that is financed by debt.
+Calculate the debt to equity ratio, a solvency ratio that measures the proportion of a company's equity that is financed by debt. This ratio is also known as the Gearing Ratio.
 
-The debt to equity ratio, also known as the D/E ratio, indicates the relative contribution of debt and equity to a company's capital structure. It helps assess the level of financial risk a company carries due to its debt obligations. A higher ratio implies a higher reliance on debt to finance the business, which could increase risk but also potentially lead to higher returns for shareholders.
+The debt to equity ratio, for short the D/E ratio, indicates the relative contribution of debt and equity to a company's capital structure. It helps assess the level of financial risk a company carries due to its debt obligations. A higher ratio implies a higher reliance on debt to finance the business, which could increase risk but also potentially lead to higher returns for shareholders.
 
 The formula is as follows:
 
@@ -2599,15 +2640,15 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 earnings_yield_ratio = toolkit.ratios.get_earnings_yield()
 {% endhighlight %}
 
-## get_payout_ratio
-Calculate the (dividend) payout ratio, a financial metric that measures the proportion of earnings paid out as dividends to shareholders.
+## get_dividend_payout_ratio
+Calculate the Dividend payout ratio, a financial metric that measures the proportion of earnings paid out as dividends to shareholders.
 
 The payout ratio is a financial metric that helps investors assess the portion of a company's earnings that is being distributed to shareholders in the form of dividends. It's a valuable indicator for dividend investors as it indicates the sustainability of dividend payments and the company's approach to distributing profits.
 
 The formula is as follows:
 
 
-- Payout Ratio = Dividends per Share / Earnings per Share
+- Dividend Payout Ratio = Dividends Paid / Net Income
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -2626,7 +2667,38 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
-payout_ratio = toolkit.ratios.get_payout_ratio()
+toolkit.ratios.get_dividend_payout_ratio()
+{% endhighlight %}
+
+## get_reinvestment_rate
+Calculate the Reinvestment rate, a financial metric that measures the proportion of earnings retained by the company.
+
+The reinvestment rate is a financial metric that helps investors assess the portion of a company's earnings that is being retained by the company for future growth. It's a valuable indicator for dividend investors as it indicates the sustainability of dividend payments and the company's approach to distributing profits.
+
+The formula is as follows:
+
+
+- Reinvestment Rate = 1 
+- Dividend Payout Ratio
+
+**Args:**
+ - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+ - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+ - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+ - <u>trailing (int):</u> Defines whether to select a trailing period.
+ E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+ **Returns:**
+ pd.DataFrame: Reinvestment Rate values.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.ratios.get_reinvestment_rate()
 {% endhighlight %}
 
 ## get_tangible_asset_value

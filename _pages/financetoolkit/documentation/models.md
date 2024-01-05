@@ -55,7 +55,8 @@ Initializes the Models Controller Class.
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["TSLA", "AMZN"], api_key=FMP_KEY, quarterly=True, start_date='2022-12-31')
+toolkit = Toolkit(["TSLA", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY",
+quarterly=True, start_date='2022-12-31')
 
 dupont_analysis = toolkit.models.get_extended_dupont_analysis()
 
@@ -242,8 +243,7 @@ Total Market Value of Capital (V): The total market value of capital is the sum 
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
  **Returns:**
- pd.DataFrame: DataFrame containing Dupont analysis results, including Profit Margin, Asset
- Turnover, Financial Leverage, and the calculated ROE values.
+ pd.DataFrame: DataFrame containing the WACC values.
 
  **Notes:**
  - The Cost of Equity is approximated with the Capital Asset Pricing Model (CAPM).
@@ -408,5 +408,37 @@ from financetoolkit import Toolkit
 toolkit = Toolkit(["AAPL", "TSLA", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_piotroski_score()
+{% endhighlight %}
+
+## get_present_value_of_growth_opportunities
+The Present Value of Growth Opportunities (PVGO) is a financial metric that represents the present value of a company's future growth opportunities. It is calculated as the difference between the company's current stock price and the discounted value of its future cash flows.
+
+The formula is as follows:
+
+
+- PVGO = Stock Price 
+- Earnings Per Share / Weighted Average Cost of Capital
+
+**Args:**
+ - <u>calculate_daily (bool, optional):</u> Whether to calculate the PVGO using daily historical data.
+ Defaults to False.
+ - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+ - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation.
+ Defaults to False.
+ - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+ - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+ - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+
+ **Returns:**
+ pd.DataFrame: DataFrame containing the PVGO values.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.models.get_present_value_of_growth_opportunities()
 {% endhighlight %}
 

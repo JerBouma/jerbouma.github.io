@@ -381,9 +381,9 @@ Which returns:
  | DISH | DISH Network Corporation | 0.11 | 5.77 | 1.9435 |
 
 ## get_delisted_stocks
-The crypto list function returns a complete list of all crypto symbols that can be used in the FinanceToolkit. These are over 4.000 symbols.
+The delisted stocks function returns a complete list of all delisted stocks including the IPO and delisted date.
 
-Returns: pd.DataFrame: A dataframe with all the symbols in the toolkit.
+Returns: pd.DataFrame: A dataframe with all the delisted stocks.
 
 {% include code_header.html %}
 {% highlight python %}
