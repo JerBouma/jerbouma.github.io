@@ -529,7 +529,7 @@ financetoolkit-docs-risk:
   - title: Risk
     children:
     - title: Black Scholes Model
-      url: /projects/financetoolkit/docs/risk#get_black_scholes
+      url: /projects/financetoolkit/docs/risk#get_black_scholes_model
     - title: Value at Risk (VaR)
       url:  /projects/financetoolkit/docs/risk#get_value_at_risk
     - title: Conditional Value at Risk (cVaR)
