@@ -404,8 +404,10 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_ev_to_operating_cashflow_ratio
       - title: Earnings Yield
         url: /projects/financetoolkit/docs/ratios#get_earnings_yield
-      - title: Payout Ratio
-        url: /projects/financetoolkit/docs/ratios#get_payout_ratio
+      - title: Dividend Payout Ratio
+        url: /projects/financetoolkit/docs/ratios#get_dividend_payout_ratio
+      - title: Reinvestment Ratio
+        url: /projects/financetoolkit/docs/ratios#get_reinvestment_ratio
       - title: Tangible Asset Value
         url: /projects/financetoolkit/docs/ratios#get_tangible_asset_value
       - title: Net Current Asset Value
@@ -432,6 +434,8 @@ financetoolkit-docs-models:
         url:  /projects/financetoolkit/docs/models#get_altman_z_score
       - title: Piotroski Score
         url:  /projects/financetoolkit/docs/models#get_piotroski_score
+      - title: Present Value of Growth Opportunities (PVGO)
+        url:  /projects/financetoolkit/docs/models#get_present_value_of_growth_opportunities
 
 financetoolkit-docs-technicals:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
@@ -520,6 +524,8 @@ financetoolkit-docs-risk:
     url: /projects/financetoolkit/docs
   - title: Risk
     children:
+    - title: Black Scholes Model
+      url: /projects/financetoolkit/docs/risk#get_black_scholes
     - title: Value at Risk (VaR)
       url:  /projects/financetoolkit/docs/risk#get_value_at_risk
     - title: Conditional Value at Risk (cVaR)
