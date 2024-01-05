@@ -504,14 +504,14 @@ ccc_values = toolkit.ratios.get_cash_conversion_cycle()
 {% endhighlight %}
 
 ## get_cash_conversion_efficiency
-Calculate the operating ratio, a financial metric that measures the efficiency of a company's operations by comparing its operating expenses to its revenue.
+Calculate the cash conversion efficiency, an efficiency ratio that measures how efficiently a company converts its sales into cash. It is also known as the cash conversion ratio.
 
-The operating ratio is calculated by dividing the company's operating expenses by its net sales and multiplying by 100 to express it as a percentage. It provides insight into how efficiently a company is managing its operations.
+The cash conversion efficiency ratio is calculated by dividing the operating cash flow by the revenue. It indicates how much of a company's sales are converted into cash. A higher cash conversion efficiency ratio is generally favorable, as it suggests that the company is able to convert its sales into cash more efficiently.
 
 The formula is as follows:
 
 
-- Operating Ratio = (Operating Expenses + Cost of Goods Sold) / Revenue
+- Cash Conversion Efficiency Ratio = Operating Cash Flow / Revenue
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -521,7 +521,7 @@ The formula is as follows:
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
  **Returns:**
- pd.DataFrame: Operating ratio values.
+ pd.DataFrame: Cash conversion efficiency ratio values.
 
  **Notes:**
  - The method retrieves historical data and calculates the operating ratio for each
@@ -536,7 +536,7 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
-operating_ratios = toolkit.ratios.get_operating_ratio()
+toolkit.ratios.get_cash_conversion_efficiency()
 {% endhighlight %}
 
 ## get_receivables_turnover
