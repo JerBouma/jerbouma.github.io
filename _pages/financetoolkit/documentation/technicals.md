@@ -148,7 +148,8 @@ The McClellan Oscillator is a breadth indicator that measures the difference bet
 
 The formula is a follows:
 
-McClellan Oscillator = EMA(Advancers) - EMA(Decliners)
+
+- McClellan Oscillator = EMA(Advancers) - EMA(Decliners)
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -192,7 +193,8 @@ The Advancers/Decliners ratio is a breadth indicator that measures the number of
 
 The formula is a follows:
 
-Advancers/Decliners = Advancers / Decliners
+
+- Advancers/Decliners = Advancers / Decliners
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -234,7 +236,8 @@ The On
 
 The formula is a follows:
 
-OBV = Previous OBV + Current Volume if Close > Previous Close
+
+- OBV = Previous OBV + Current Volume if Close > Previous Close
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -273,7 +276,8 @@ The Accumulation/Distribution Line is a technical indicator that evaluates the f
 
 The formula is a follows:
 
-ADL = Previous ADL + Current ADL
+
+- ADL = Previous ADL + Current ADL
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -316,7 +320,8 @@ The Chaikin Oscillator is a momentum
 
 The formula is a follows:
 
-Chaikin Oscillator = EMA(short
+
+- Chaikin Oscillator = EMA(short
 -window ADL) - EMA(long
 -window ADL)
 
@@ -397,7 +402,8 @@ The Money Flow Index is a momentum indicator that measures the strength and dire
 
 The formula is a follows:
 
-MFI = 100 
+
+- MFI = 100 
 - (100 / (1 + (positive_money_flow / negative_money_flow)))
 
 **Args:**
@@ -441,7 +447,8 @@ The Williams %R is a momentum indicator that measures the level of the close pri
 
 The formula is a follows:
 
-Williams %R = (Highest High - Close) / (Highest High - Lowest Low) * -100
+
+- Williams %R = (Highest High - Close) / (Highest High - Lowest Low) * -100
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -483,7 +490,8 @@ The Aroon Indicator is an oscillator that measures the strength of a trend and t
 
 The formula is a follows:
 
-Aroon Up = ((Number of periods) - (Number of periods since highest high)) / (Number of periods) * 100
+
+- Aroon Up = ((Number of periods) - (Number of periods since highest high)) / (Number of periods) * 100
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -524,7 +532,8 @@ The Commodity Channel Index is an oscillator that measures the current price lev
 
 The formula is a follows:
 
-CCI = (Typical Price - SMA(Typical Price)) / (constant * Mean Deviation)
+
+- CCI = (Typical Price - SMA(Typical Price)) / (constant * Mean Deviation)
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -568,7 +577,8 @@ The Relative Vigor Index is an oscillator that measures the conviction of a curr
 
 The formula is a follows:
 
-RVI = SMA(Upward Change) / (SMA(Upward Change) + SMA(Downward Change))
+
+- RVI = SMA(Upward Change) / (SMA(Upward Change) + SMA(Downward Change))
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -610,7 +620,8 @@ The Force Index is an indicator that measures the strength behind price movement
 
 The formula is a follows:
 
-Force Index = SMA(Periods) * (Close - Close(1))
+
+- Force Index = SMA(Periods) * (Close - Close(1))
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -655,7 +666,8 @@ The Ultimate Oscillator is a momentum oscillator that combines short
 
 The formula is a follows:
 
-Ultimate Oscillator = 100 * ((4 * SMA(Periods)) / (SMA(Periods) + SMA(Periods) + SMA(Periods)))
+
+- Ultimate Oscillator = 100 * ((4 * SMA(Periods)) / (SMA(Periods) + SMA(Periods) + SMA(Periods)))
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -701,7 +713,8 @@ The Percentage Price Oscillator (PPO) is a momentum oscillator that measures the
 
 The formula is a follows:
 
-PPO = ((Long
+
+- PPO = ((Long
 -term EMA - Short
 -term EMA) / Short-term EMA) * 100
 
@@ -749,7 +762,8 @@ The Detrended Price Oscillator (DPO) is an indicator that helps identify short
 
 The formula is a follows:
 
-DPO = Close 
+
+- DPO = Close 
 - SMA(Close, (Number of Periods / 2) + 1)
 
 **Args:**
@@ -792,7 +806,8 @@ The Average Directional Index (ADX) is an indicator that measures the strength o
 
 The formula is a follows:
 
-ADX = SMA(DMI) / (SMA(DMI) + SMA(DMI))
+
+- ADX = SMA(DMI) / (SMA(DMI) + SMA(DMI))
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -834,7 +849,8 @@ The Chande Momentum Oscillator is an indicator that measures the momentum of a p
 
 The formula is a follows:
 
-CMO = ((Sum of Upward Change) - (Sum of Downward Change)) / ((Sum of Upward Change) + (Sum of Downward Change))
+
+- CMO = ((Sum of Upward Change) - (Sum of Downward Change)) / ((Sum of Upward Change) + (Sum of Downward Change))
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -876,7 +892,8 @@ The Ichimoku Cloud, also known as the Ichimoku Kinko Hyo, is a versatile indicat
 
 The formula is a follows:
 
-Conversion Line = (Highest High + Lowest Low) / 2
+
+- Conversion Line = (Highest High + Lowest Low) / 2
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1022,7 +1039,8 @@ The Relative Strength Index (RSI) is a momentum oscillator that measures the spe
 
 The formula is a follows:
 
-RSI = 100 - (100 / (1 + RS))
+
+- RSI = 100 - (100 / (1 + RS))
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1064,7 +1082,8 @@ The Balance of Power (BOP) indicator measures the strength of buyers versus sell
 
 The formula is a follows:
 
-BOP = (Close - Open) / (High - Low)
+
+- BOP = (Close - Open) / (High - Low)
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1141,7 +1160,8 @@ The Moving Average (MA) is a commonly used technical indicator that smooths out 
 
 The formula is a follows:
 
-MA = (Sum of Prices) / (Number of Prices)
+
+- MA = (Sum of Prices) / (Number of Prices)
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1184,7 +1204,8 @@ EMA is a technical indicator that gives more weight to recent price data, provid
 
 The formula is a follows:
 
-EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
+
+- EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1227,7 +1248,8 @@ DEMA is a technical indicator that attempts to reduce the lag from traditional m
 
 The formula is a follows:
 
-EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
+
+- EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1365,7 +1387,8 @@ The Triangular Moving Average (TMA) is a smoothed version of the Simple Moving A
 
 The formula is a follows:
 
-TMA = SMA(SMA(Close, Window), Window)
+
+- TMA = SMA(SMA(Close, Window), Window)
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1442,7 +1465,8 @@ The True Range (TR) is a measure of market volatility that considers the differe
 
 The formula is a follows:
 
-TR = max(high - low, abs(high - previous_close), abs(low - previous_close))
+
+- TR = max(high - low, abs(high - previous_close), abs(low - previous_close))
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
