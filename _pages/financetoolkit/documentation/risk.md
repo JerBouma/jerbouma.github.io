@@ -104,20 +104,14 @@ The Black Scholes Model is based on several assumptions, including the following
 
 By default the most recent risk free rate and stock price is used. The volatility is calculated based on the daily returns of the stock price and the selected period (this can be altered by defining this accordingly when defining the Toolkit class, start_date and end_date).
 
-The formula are as follows:
+The formulas are as follows:
 
 
 - d1 = (ln(S / K) + (r + (σ^2) / 2) * t) / (σ * sqrt(t)) 
-- d2 = d1 
-- σ * sqrt(t) 
-- Call Option Price = S * N(d1) 
-- K * e^(
--r * t) * N(d2) 
-- Put Option Price = K * e^(
--r * t) * N(
--d2) 
-- S * N(
--d1)
+- d2 = d1 - σ * sqrt(t) 
+- Call Option Price = S * N(d1) - K * e^(-r * t) * N(d2) 
+- Put Option Price = K * e^(-r * t) * N(
+-d2) - S * N(-d1)
 
 **Args:**
  - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means

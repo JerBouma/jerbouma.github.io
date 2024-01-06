@@ -133,8 +133,7 @@ The Capital Asset Pricing Model (CAPM) is a widely used financial model that hel
 The formula is as follows:
 
 
-- Capital Asset Pricing Model = Risk Free Rate + Beta * (Benchmark Returns 
-- Risk Free Rate)
+- Capital Asset Pricing Model = Risk Free Rate + Beta * (Benchmark Returns - Risk Free Rate)
 
 See definition: [https://en.wikipedia.org/wiki/Capital_asset_pricing_model](https://en.wikipedia.org/wiki/Capital_asset_pricing_model){:target="_blank"}
 
@@ -313,8 +312,7 @@ Alpha, in a general sense, represents the excess return an investment generates 
 The formula is as follows:
 
 
-- Alpha = Asset's Actual Return 
-- Benchmark's Actual Return
+- Alpha = Asset's Actual Return - Benchmark's Actual Return
 
 See definition: [https://en.wikipedia.org/wiki/Alpha_(finance)](https://en.wikipedia.org/wiki/Alpha_(finance)){:target="_blank"}
 
@@ -347,13 +345,11 @@ Calculate Jensen's Alpha, a measure of an asset's performance relative to its ex
 
 Jensen's Alpha is used to assess whether an investment has outperformed or underperformed its expected return given its systematic risk, as represented by the asset's Beta.
 
-The formula for Jensen's Alpha is as follows:
+The formula is as follows:
 
 
-- Jensen's Alpha = Asset's Actual Return 
-- [Risk
--Free Rate + Beta * (Benchmark Return 
-- Risk
+- Jensen's Alpha = Asset's Actual Return - [Risk
+-Free Rate + Beta * (Benchmark Return - Risk
 -Free Rate)]
 
 See definition: [https://en.wikipedia.org/wiki/Jensen%27s_alpha](https://en.wikipedia.org/wiki/Jensen%27s_alpha){:target="_blank"}
@@ -395,8 +391,7 @@ The formula is as follows:
 
 
 - 
-- Treynor Ratio = (Portfolio's Return 
-- Risk
+- Treynor Ratio = (Portfolio's Return - Risk
 -Free Rate) / Portfolio Beta
 
 See definition: [https://en.wikipedia.org/wiki/Treynor_ratio](https://en.wikipedia.org/wiki/Treynor_ratio){:target="_blank"}
@@ -574,8 +569,7 @@ The M2 Ratio, also known as the Modigliani
 The formula is as follows:
 
 
-- M2 Ratio = (Portfolio's Return 
-- Risk
+- M2 Ratio = (Portfolio's Return - Risk
 -Free Rate) / Portfolio Standard Deviation
 
 See definition: [https://en.wikipedia.org/wiki/Modigliani_risk
@@ -615,8 +609,7 @@ Tracking Error is a financial metric that quantifies the volatility or dispersio
 The formula is as follows:
 
 
-- Tracking Error (TE) = Standard Deviation of (Portfolio Returns 
-- Benchmark Returns)
+- Tracking Error (TE) = Standard Deviation of (Portfolio Returns - Benchmark Returns)
 
 See definition: [https://en.wikipedia.org/wiki/Tracking_error](https://en.wikipedia.org/wiki/Tracking_error){:target="_blank"}
 
@@ -659,8 +652,7 @@ The Information Ratio (IR), also known as the Information Coefficient, is a fina
 The formula is as follows:
 
 
-- Information Ratio (IR) = (Portfolio's Excess Return 
-- Benchmark's Excess Return) / Tracking Error
+- Information Ratio (IR) = (Portfolio's Excess Return - Benchmark's Excess Return) / Tracking Error
 
 See definition: [https://en.wikipedia.org/wiki/Information_ratio](https://en.wikipedia.org/wiki/Information_ratio){:target="_blank"}
 
@@ -699,8 +691,7 @@ The CGR is a measure that provides the mean growth rate of an investment over a 
 The formula is as follows:
 
 
-- CGR = (Final Value / Initial Value) ^ (1 / Number of Periods) 
-- 1
+- CGR = (Final Value / Initial Value) ^ (1 / Number of Periods) - 1
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. If not provided,

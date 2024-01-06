@@ -99,9 +99,10 @@ jobs:
                             {
                                 "function_name": function_name,
                                 "description": re.sub(" +", " ", description.strip())
-                                .replace("\n ", " ")
-                                .replace("\n ", "\n\n")
-                                .replace("-", "\n-"),
+                                .replace("\n ", " ") # Deal with new lines due to PEP line length
+                                .replace("\n ", "\n\n") # Allow for proper spacing
+                                .replace("-", "\n-") # Create lists based on the dashes
+                                .replace("—", "-"), # Replace the em dash that was used in formulas
                                 "arguments": re.sub(" +", " ", arguments.strip()),
                                 "example_code": re.sub(" +", " ", example_code.strip()).replace(
                                     "\n ", "\n"

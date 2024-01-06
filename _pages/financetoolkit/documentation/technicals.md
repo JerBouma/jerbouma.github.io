@@ -148,8 +148,7 @@ The McClellan Oscillator is a breadth indicator that measures the difference bet
 
 The formula is a follows:
 
-McClellan Oscillator = EMA(Advancers) 
-- EMA(Decliners)
+McClellan Oscillator = EMA(Advancers) - EMA(Decliners)
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -318,8 +317,7 @@ The Chaikin Oscillator is a momentum
 The formula is a follows:
 
 Chaikin Oscillator = EMA(short
--window ADL) 
-- EMA(long
+-window ADL) - EMA(long
 -window ADL)
 
 **Args:**
@@ -443,10 +441,7 @@ The Williams %R is a momentum indicator that measures the level of the close pri
 
 The formula is a follows:
 
-Williams %R = (Highest High 
-- Close) / (Highest High 
-- Lowest Low) * 
--100
+Williams %R = (Highest High - Close) / (Highest High - Lowest Low) * -100
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -488,8 +483,7 @@ The Aroon Indicator is an oscillator that measures the strength of a trend and t
 
 The formula is a follows:
 
-Aroon Up = ((Number of periods) 
-- (Number of periods since highest high)) / (Number of periods) * 100
+Aroon Up = ((Number of periods) - (Number of periods since highest high)) / (Number of periods) * 100
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -530,8 +524,7 @@ The Commodity Channel Index is an oscillator that measures the current price lev
 
 The formula is a follows:
 
-CCI = (Typical Price 
-- SMA(Typical Price)) / (constant * Mean Deviation)
+CCI = (Typical Price - SMA(Typical Price)) / (constant * Mean Deviation)
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -617,8 +610,7 @@ The Force Index is an indicator that measures the strength behind price movement
 
 The formula is a follows:
 
-Force Index = SMA(Periods) * (Close 
-- Close(1))
+Force Index = SMA(Periods) * (Close - Close(1))
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -710,10 +702,8 @@ The Percentage Price Oscillator (PPO) is a momentum oscillator that measures the
 The formula is a follows:
 
 PPO = ((Long
--term EMA 
-- Short
--term EMA) / Short
--term EMA) * 100
+-term EMA - Short
+-term EMA) / Short-term EMA) * 100
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -844,8 +834,7 @@ The Chande Momentum Oscillator is an indicator that measures the momentum of a p
 
 The formula is a follows:
 
-CMO = ((Sum of Upward Change) 
-- (Sum of Downward Change)) / ((Sum of Upward Change) + (Sum of Downward Change))
+CMO = ((Sum of Upward Change) - (Sum of Downward Change)) / ((Sum of Upward Change) + (Sum of Downward Change))
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -935,9 +924,7 @@ The Stochastic Oscillator is a momentum indicator that shows the location of the
 The formula is a follows:
 
 
-- %K = 100 * ((Close 
-- Lowest Low) / (Highest High 
-- Lowest Low)) 
+- %K = 100 * ((Close - Lowest Low) / (Highest High - Lowest Low)) 
 - %D = SMA(%K)
 
 **Args:**
@@ -986,8 +973,7 @@ The formula is a follows:
 
 
 - MACD Line = Short
--term EMA 
-- Long
+-term EMA - Long
 -term EMA 
 - Signal Line = SMA(MACD Line)
 
@@ -1036,8 +1022,7 @@ The Relative Strength Index (RSI) is a momentum oscillator that measures the spe
 
 The formula is a follows:
 
-RSI = 100 
-- (100 / (1 + RS))
+RSI = 100 - (100 / (1 + RS))
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1079,9 +1064,7 @@ The Balance of Power (BOP) indicator measures the strength of buyers versus sell
 
 The formula is a follows:
 
-BOP = (Close 
-- Open) / (High 
-- Low)
+BOP = (Close - Open) / (High - Low)
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1201,8 +1184,7 @@ EMA is a technical indicator that gives more weight to recent price data, provid
 
 The formula is a follows:
 
-EMA = (Close 
-- Previous EMA) * (2 / (1 + Window)) + Previous EMA
+EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1245,8 +1227,7 @@ DEMA is a technical indicator that attempts to reduce the lag from traditional m
 
 The formula is a follows:
 
-EMA = (Close 
-- Previous EMA) * (2 / (1 + Window)) + Previous EMA
+EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1293,10 +1274,7 @@ The formula is a follows:
 - EMA1 = EMA(Close, Window) 
 - EMA2 = EMA(EMA1, Window) 
 - EMA3 = EMA(EMA2, Window) 
-- TRIX = 100 * ((EMA3 
-- EMA3[
--1]) / EMA3[
--1])
+- TRIX = 100 * ((EMA3 - EMA3[-1]) / EMA3[-1])
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1342,8 +1320,7 @@ The formula is a follows:
 
 - Middle Band = SMA(Close, Window) 
 - Upper Band = Middle Band + (Num Std Dev * Std Dev) 
-- Lower Band = Middle Band 
-- (Num Std Dev * Std Dev)
+- Lower Band = Middle Band - (Num Std Dev * Std Dev)
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1465,10 +1442,7 @@ The True Range (TR) is a measure of market volatility that considers the differe
 
 The formula is a follows:
 
-TR = max(high 
-- low, abs(high 
-- previous_close), abs(low 
-- previous_close))
+TR = max(high - low, abs(high - previous_close), abs(low - previous_close))
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1509,10 +1483,7 @@ The Average True Range (ATR) is a technical indicator that measures the volatili
 The formula is a follows:
 
 
-- TR = max(high 
-- low, abs(high 
-- previous_close), abs(low 
-- previous_close)) 
+- TR = max(high - low, abs(high - previous_close), abs(low - previous_close)) 
 - ATR = EMA(TR, Window)
 
 **Args:**
@@ -1564,13 +1535,11 @@ The Keltner Channels consist of three lines:
 The formula is a follows:
 
 
-- EMA = (Close 
-- Previous EMA) * (2 / (1 + Window)) + Previous EMA 
+- EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA 
 - ATR = EMA(TR, ATR Window) 
 - Upper Channel Line = EMA(High, Window) + ATR * ATR Multiplier 
 - Middle Channel Line = EMA(Close, Window) 
-- Lower Channel Line = EMA(Low, Window) 
-- ATR * ATR Multiplier
+- Lower Channel Line = EMA(Low, Window) - ATR * ATR Multiplier
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.

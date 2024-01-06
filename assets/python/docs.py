@@ -70,9 +70,10 @@ def create_markdown_file(file_url: str, header: str, location: str):
                 {
                     "function_name": function_name,
                     "description": re.sub(" +", " ", description.strip())
-                    .replace("\n ", " ")
-                    .replace("\n ", "\n\n")
-                    .replace("-", "\n-"),
+                    .replace("\n ", " ") # Deal with new lines due to PEP line length
+                    .replace("\n ", "\n\n") # Allow for proper spacing
+                    .replace("-", "\n-") # Create lists based on the dashes
+                    .replace("—", "-"), # Replace the em dash that was used in formulas
                     "arguments": re.sub(" +", " ", arguments.strip()),
                     "example_code": re.sub(" +", " ", example_code.strip()).replace(
                         "\n ", "\n"
@@ -111,7 +112,7 @@ def create_markdown_file(file_url: str, header: str, location: str):
 
 # Create Docs page
 markdown_content = """---
-title: Docs
+title: Documentation
 excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 100+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
 description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 100+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
 author_profile: false
@@ -124,7 +125,7 @@ sidebar:
     nav: "financetoolkit-docs"
 ---
 
-This page includes all the documentation for the Finance Toolkit,an open-source toolkit in which all relevant financial ratios (150+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
+This page includes all the documentation for the Finance Toolkit, an open-source toolkit in which all relevant financial ratios (150+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
 
 To install the FinanceToolkit it simply requires the following:
 
@@ -133,12 +134,13 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These is historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
+The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These are historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
 
-If you are looking for documentation regarding the ratios, technical indicators, models, risk metrics and performance metrics, please have a look below:
+If you are looking for documentation regarding the discovery, ratios, models, technical indicators, risk metrics, performance metrics and economic indicators, please have a look below:
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--warning" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
@@ -156,6 +158,53 @@ create_markdown_file(
     file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/toolkit_controller.py",
     header=markdown_content,
     location="_pages/financetoolkit/documentation/docs.md",
+)
+
+# Create the Discovery page
+markdown_content = """---
+title: Discovery
+excerpt: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit. 
+description: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit. 
+author_profile: false
+permalink: /projects/financetoolkit/docs/discovery
+classes: wide-sidebar
+layout: single
+redirect_from:
+    - /ratios
+sidebar:
+    nav: "financetoolkit-docs-discovery"
+---
+
+The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit.
+
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
+
+If you are looking for documentation regarding the toolkit, ratios, models, technicals, risk, performance and economics, please have a look below:
+
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
+    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--warning" style="flex: 1;margin-right:5px">Discovery</a>
+    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
+    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
+    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
+    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
+</div>
+
+{% include algolia.html %}
+
+"""
+
+create_markdown_file(
+    file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/discovery/discovery_controller.py",
+    header=markdown_content,
+    location="_pages/financetoolkit/documentation/discovery.md",
 )
 
 # Create the Ratios page
@@ -182,10 +231,11 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, models, technicals, risk, performance and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, models, technicals, risk, performance and economics, please have a look below:
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--warning" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
@@ -228,10 +278,11 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, ratios, technicals, risk, performance and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, ratios, technicals, risk, performance and economics, please have a look below:
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--warning" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
@@ -274,10 +325,11 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, ratios, models, risk, performance and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, ratios, models, risk, performance and economics, please have a look below:
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--warning" style="flex: 1;margin-right:5px">Technicals</a>
@@ -319,10 +371,11 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, ratios, models, technicals, performance and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, performance and economics, please have a look below:
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
@@ -364,10 +417,11 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, ratios, models, technicals, risk and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, risk and economics, please have a look below:
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
@@ -410,10 +464,11 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, models, ratios, technicals, risk and performance, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, risk and performance, please have a look below:
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
