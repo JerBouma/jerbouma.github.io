@@ -140,6 +140,8 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#ratios
     - title: "Models Module"
       url: /projects/financetoolkit/docs#models
+    - title: "Options Module"
+      url: /projects/financetoolkit/docs#options
     - title: "Technicals Module"
       url: /projects/financetoolkit/docs#technicals
     - title: "Risk Module"
