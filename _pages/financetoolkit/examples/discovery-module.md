@@ -26,4 +26,4 @@ author_profile: false
     }
 </style>
 
-<iframe name="iframe1" id="iframe1" src="https://nbviewer.org/github/JerBouma/FinanceToolkit/blob/main/examples/Finance%20Toolkit%20-%202.%20Discovery%20Module.ipynb" frameborder="0"></iframe>
+<iframe name="iframe1" id="iframe1" src="https://nbviewer.org/github/JerBouma/FinanceToolkit/blob/595275264d0c556b80618226a61184610686825e/examples/Finance%20Toolkit%20-%202.%20Discovery%20Module.ipynb" frameborder="0"></iframe>
