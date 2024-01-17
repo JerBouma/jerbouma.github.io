@@ -113,8 +113,8 @@ def create_markdown_file(file_url: str, header: str, location: str):
 # Create Docs page
 markdown_content = """---
 title: Documentation
-excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 100+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
-description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 100+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
+excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 150+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
+description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 150+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
 author_profile: false
 permalink: /projects/financetoolkit/docs
 classes: wide-sidebar
@@ -394,7 +394,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
 """
 
 create_markdown_file(
-    file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/technical/technicals_controller.py",
+    file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/technicals/technicals_controller.py",
     header=markdown_content,
     location="_pages/financetoolkit/documentation/technicals.md",
 )

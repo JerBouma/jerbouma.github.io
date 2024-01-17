@@ -423,7 +423,7 @@ jobs:
             """
             
             create_markdown_file(
-                file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/technical/technicals_controller.py",
+                file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/technicals/technicals_controller.py",
                 header=markdown_content,
                 location="_pages/financetoolkit/documentation/technicals.md",
             )
