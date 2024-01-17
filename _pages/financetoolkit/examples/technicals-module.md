@@ -3,7 +3,6 @@ title: Technicals Module
 permalink: /projects/financetoolkit/technicals-module
 excerpt: The Technicals Module contains 30+ Technical Indicators that can be used to analyse companies. These ratios are divided into 4 categories which are breadth, momentum, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
 description: The Technicals Module contains 30+ Technical Indicators that can be used to analyse companies. These ratios are divided into 4 categories which are breadth, momentum, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
-
 classes: wide-no-sidebar no-title
 author_profile: false   
 ---
