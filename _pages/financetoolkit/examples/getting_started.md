@@ -28,4 +28,4 @@ redirect_from:
     }
 </style>
 
-<iframe name="iframe1" id="iframe1" src="https://nbviewer.org/github/JerBouma/FinanceToolkit/blob/a7a2d40046f7b04f7c40bf55f349ae4651b137e5/examples/Finance%20Toolkit%20-%201.%20Getting%20Started.ipynb" frameborder="0"></iframe>
+<iframe name="iframe1" id="iframe1" src="https://nbviewer.org/github/JerBouma/FinanceToolkit/blob/c5e9729465e736d02e70c659f4f925b1a88c8d91/examples/Finance%20Toolkit%20-%201.%20Getting%20Started.ipynb" frameborder="0"></iframe>
