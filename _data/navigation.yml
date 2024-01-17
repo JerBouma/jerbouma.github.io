@@ -68,13 +68,23 @@ financetoolkit:
     children:
       - title: Getting Started
         url: /projects/financetoolkit/getting-started
-      - title: Working with the Finance Database
-        url: /projects/financetoolkit/finance-database
-      - title: Creating Custom Ratios
-        url: /projects/financetoolkit/custom-ratios
-      - title: Calling Functions Directly
-        url: /projects/financetoolkit/functional-toolkit
-      - title: Using External Datasets
+      - title: Discovery Module
+        url: /projects/financetoolkit/discovery-module
+      - title: Ratios Module
+        url: /projects/financetoolkit/ratios-module
+      - title: Models Module
+        url: /projects/financetoolkit/models-module
+      - title: Options Module
+        url: /projects/financetoolkit/options-module
+      - title: Technicals Module
+        url: /projects/financetoolkit/technicals-module
+      - title: Risk Module
+        url: /projects/financetoolkit/risk-module
+      - title: Performance Module
+        url: /projects/financetoolkit/performance-module
+      - title: Economics Module
+        url: /projects/financetoolkit/economics-module
+      - title: External Datasets
         url: /projects/financetoolkit/external-datasets
   - title: "Functionality"
     url: /projects/financetoolkit#functionality
@@ -440,6 +450,66 @@ financetoolkit-docs-models:
         url:  /projects/financetoolkit/docs/models#get_piotroski_score
       - title: Present Value of Growth Opportunities (PVGO)
         url:  /projects/financetoolkit/docs/models#get_present_value_of_growth_opportunities
+
+financetoolkit-docs-options:
+  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
+    url: /projects/financetoolkit/docs
+  - title: Option Pricing
+    children:
+      - title: Option Chains
+        url: /projects/financetoolkit/docs/options#get_option_chains
+      - title: Black Scholes Model
+        url: /projects/financetoolkit/docs/options#get_black_scholes_model
+  - title: Collect All Greeks
+    url: /projects/financetoolkit/docs/options#collect_all_greeks
+  - title: First-Order Greeks 
+    url: /projects/financetoolkit/docs/options#collect_first_order_greeks
+    children:
+      - title: Delta
+        url: /projects/financetoolkit/docs/options#get_delta
+      - title: Dual Delta
+        url: /projects/financetoolkit/docs/options#get_dual_delta
+      - title: Vega
+        url: /projects/financetoolkit/docs/options#get_vega
+      - title: Theta
+        url: /projects/financetoolkit/docs/options#get_theta
+      - title: Rho
+        url: /projects/financetoolkit/docs/options#get_rho
+      - title: Epsilon
+        url: /projects/financetoolkit/docs/options#get_epsilon
+      - title: Lambda
+        url: /projects/financetoolkit/docs/options#get_lambda
+  - title: Second-Order Greeks
+    url: /projects/financetoolkit/docs/options#collect_second_order_greeks
+    children:
+      - title: Gamma
+        url: /projects/financetoolkit/docs/options#get_gamma
+      - title: Dual Gamma
+        url: /projects/financetoolkit/docs/options#get_dual_gamma
+      - title: Vanna
+        url: /projects/financetoolkit/docs/options#get_vanna
+      - title: Charm
+        url: /projects/financetoolkit/docs/options#get_charm
+      - title: Vomma
+        url: /projects/financetoolkit/docs/options#get_vomma
+      - title: Vera
+        url: /projects/financetoolkit/docs/options#get_vera
+      - title: Veta
+        url: /projects/financetoolkit/docs/options#get_veta
+      - title: Partial Derivative
+        url: /projects/financetoolkit/docs/options#get_partial_derivative
+  - title: Third-Order Greeks
+    url: /projects/financetoolkit/docs/options#collect_third_order_greeks
+    children:
+      - title: Speed
+        url: /projects/financetoolkit/docs/options#get_speed
+      - title: Zomma
+        url: /projects/financetoolkit/docs/options#get_zomma
+      - title: Color
+        url: /projects/financetoolkit/docs/options#get_color
+      - title: Ultima
+        url: /projects/financetoolkit/docs/options#get_ultima
+
 
 financetoolkit-docs-technicals:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>

@@ -5,6 +5,8 @@ excerpt: A great use-case for the data found in the Finance Database is to do co
 description: A great use-case for the data found in the Finance Database is to do competitive analysis in which companies are compared that compete for the same market. For example, in case I want to look into the Railroad companies in the United States that are marked as "Large Cap", I can directly search for this with the Finance Database and use the Finance Toolkit to do further research. This Notebook shows how to do that.
 classes: wide-no-sidebar no-title
 author_profile: false
+redirect_from:
+  - /projects/financetoolkit/finance-database
 ---
 
 <style>

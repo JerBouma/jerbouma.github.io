@@ -17,7 +17,7 @@ For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is
 
 **This is why I designed the FinanceToolkit**, this is an open-source toolkit in which all relevant financial ratios ([150+](#available-metrics)), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py)). This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
 
-The Finance Toolkit not only supports Equities. Even for Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities, Key Economic Indicators and more, the Finance Toolkit can be used to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
+The Finance Toolkit not only supports Equities. Even for Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities, Key Economic Indicators and more, the Finance Toolkit can be used to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
 
 The Finance Toolkit is complimented very well with the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase), a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
 
@@ -66,59 +66,103 @@ This section contains a list of How-To guides for the Finance Toolkit. These gui
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 
-### Getting Started with the Finance Toolkit
+### Getting Started
 
 The Finance Toolkit offers a comprehensive set of tools designed to empower users with in-depth insights into the world of finance. By demonstrating each functionality and its practical application. This notebook will show you how to get started with the Finance Toolkit.
 
-[Open the Notebook](/projects/financetoolkit/getting-started){: .btn .btn--info}
+[Open the Notebook](/projects/financetoolkit/getting-started){: .btn .btn--warning}
 
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 
-### Visit the Code Documentation
+### Discovery Module
 
-Besides the practical examples, there exists a fully fledged documentation of the code. This documentation contains a description of each function, its parameters and an example. This allows you to quickly find the function you are looking for and understand how to use it.
+The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit. 
 
-[Visit the Code Documentation](/projects/financetoolkit/docs){: .btn .btn--warning}
+[Open the Notebook](/projects/financetoolkit/discovery-module){: .btn .btn--info}
 
 </div>
 </div>
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 
-### The Finance Database and the Finance Toolkit
+### Ratios Module
 
-This Notebooks demonstrates how to use the Finance Toolkit with the Finance Database to perform a complete financial analysis. Through the Finance Database you are able to find companies that are in the same country, sector and industry as the company you are analysing. This allows you to perform a complete competitive analysis with the help of the Finance Toolkit.
+The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module. 
 
-[Open the Notebook](/projects/financetoolkit/finance-database){: .btn .btn--info}
+[Open the Notebook](/projects/financetoolkit/ratios-module){: .btn .btn--info}
 
 </div>
 
 <div class="row">
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 
-### Creating Custom Ratios
+### Models Module
 
-The Finance Toolkit has an abundance of financial ratios, however it could be that you are looking for a specific ratio that is currently not provided. First and foremost, I encourage you to [create a Pull Request](https://github.com/JerBouma/FinanceToolkit/pulls) to add these ratios in but there is also an option to add custom ratios as follows. This feature was co-designed by [sword134](https://github.com/sword134).
+The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
 
-[Open the Notebook](/projects/financetoolkit/custom-ratios){: .btn .btn--info}
-
+[Open the Notebook](/projects/financetoolkit/models-module){: .btn .btn--info}
 
 </div>
 </div>
+
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 
-### Calling Functions Directly
+### Options Module
 
-If you possess your own financial statements data or have a different particular use-case in mind, it could be that you wish to directly use the functions in the FinanceToolkit. This Notebook illustrates the process of accomplishing this.
+The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden—Litzenberger and more.
 
-[Open the Notebook](/projects/financetoolkit/functional-toolkit){: .btn .btn--info}
+[Open the Notebook](/projects/financetoolkit/options-module){: .btn .btn--info}
 
 </div>
 
 <div class="row">
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 
-### Using External Datasets
+### Technicals Module
+
+The Technicals Module contains 30+ Technical Indicators that can be used to analyse companies. These ratios are divided into 4 categories which are breadth, momentum, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
+
+[Open the Notebook](/projects/financetoolkit/technicals-module){: .btn .btn--info}
+
+</div>
+</div>
+
+<div markdown="1" class="fifty-column-left mobile-max-column-width">
+
+### Risk Module
+
+The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
+
+[Open the Notebook](/projects/financetoolkit/risk-module){: .btn .btn--info}
+
+</div>
+
+<div class="row">
+<div markdown="1" class="fifty-column-right mobile-max-column-width">
+
+### Performance Module
+
+The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, R-Squared and more.
+
+[Open the Notebook](/projects/financetoolkit/performance-module){: .btn .btn--info}
+
+</div>
+</div>
+
+<div markdown="1" class="fifty-column-left mobile-max-column-width">
+
+### Economics Module
+
+The Economics module gives insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and 3-month and 10-year Government Interest Rates. This is done through the economics module and can be used as a standalone module as well.
+
+[Open the Notebook](/projects/financetoolkit/economics-module){: .btn .btn--info}
+
+</div>
+
+<div class="row">
+<div markdown="1" class="fifty-column-right mobile-max-column-width">
+
+### External Datasets
 
 The Finance Toolkit has the ability to leverage custom datasets from any data provider as well. This makes it possible to work with your preferred data and not be limited to the data source the Finance Toolkit currently provides. With this, it is possible to work with datasets from Yahoo Finance, OpenBB, Quandl, EODH, Bloomberg and much more.
 
@@ -146,6 +190,7 @@ The Finance Toolkit features the following functionality, also see [Basic Usage]
 | **Financial Ratios** | Acquire 50+ financial ratios categorized into their key financial domains, including Efficiency, Liquidity, Profitability, Solvency, and Valuation.<br><br>*Efficiency ratios*, such as Inventory Turnover and Asset Turnover provide insights into operational effectiveness. *Liquidity ratios*, including the Current and Quick Ratios, gauge the company's short-term financial viability. *Profitability ratios*, for example Return on Equity (RoE) and Net Profit Margin, shed light on the company's ability to generate profits. *Solvency ratios*, which include the Debt-to-Equity ratio or Interest Coverage ratio, assess the company's long-term financial stability. *Valuation ratios*, such as the Price-to-Earnings (P/E) ratio and Earnings Yield, offer perspectives on the company's market valuation.<br><br>Find all of them [here](#financial-ratios). |
 | **Custom Ratios** | Define custom ratios and calculate these automatically based on the balance sheet, income and cash flow statements. With this, it is possible to calculate any collection of custom ratios without needing to understanding the backend of the Finance Toolkit. Learn how [here](https://www.jeroenbouma.com/projects/financetoolkit/custom-ratios).|
 | **Financial Models** | Access a variety of financial models that combine the historical market data and financial statements. This is for example the DUPONT analysis, Weighted Average Cost of Capital (WACC), and Altman Z-Score. Find all of them [here](#financial-models). |
+| **Options and Greeks** | Access valuation methods such as the Black Scholes Model as well as real market prices for both call and put options. Next to that, calculate all First, Second and Third-Order Greeks such as Delta, Gamma, Theta, Vega, Rho, Veta and Ultima that explain option sensitivities. Find all of them [here](#options-and-greeks). |
 | **Performance Metrics** | Access a variety of performance metrics, including Jensens Alpha, Capital Asset Pricing Model (CAPM), and (Rolling) Sharpe Ratio. These metrics provide a comprehensive evaluation of a company's financial performance, risk-adjusted returns, and its relationship with market benchmarks. Find all of them [here](#performance-metrics). |
 | **Risk Metrics** | Access a diverse set of risk metrics, including the Value at Risk (VaR), GARCH, and Entropic Value at Risk (eVaR). These metrics are meant to gauge the potential major losses that can occur over time as well as estimate future volatilities. Find all of them [here](#risk-metrics). |
 | **Technical Indicators** | Access an extensive array of more than 40 technical indicators such as the Relative Strength Index (RSI), Exponential Moving Average (EMA), and Bollinger Bands. These technical indicators are key to understanding short-term market trends, momentum, and volatility. Find all of them [here](#technical-indicators). |
@@ -159,11 +204,11 @@ This section is an introduction to the Finance Toolkit. Also see [this notebook]
 
 A basic example of how to use the Finance Toolkit is shown below.
 
-{% include code_header.html %}
-{% highlight python %}
+
+````python
 from financetoolkit import Toolkit
 
-companies = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2017-12-31")
+companies = Toolkit(["AAPL", "MSFT"], api_key=API_KEY, start_date="2017-12-31")
 
 # a Historical example
 historical_data = companies.get_historical_data()
@@ -177,8 +222,13 @@ profitability_ratios = companies.ratios.collect_profitability_ratios()
 # a Models example
 extended_dupont_analysis = companies.models.get_extended_dupont_analysis()
 
+# a Options example
+all_greeks = companies.options.collect_all_greeks(expiration_time_range=180)
+
 # a Performance example
-factor_asset_correlations = companies.performance.get_factor_asset_correlations(period='quarterly')
+factor_asset_correlations = companies.performance.get_factor_asset_correlations(
+    period="quarterly"
+)
 
 # a Risk example
 value_at_risk = companies.risk.get_value_at_risk(period="weekly")
@@ -188,7 +238,7 @@ ichimoku_cloud = companies.technicals.get_ichimoku_cloud()
 
 # an Economics example
 unemployment_rates = companies.economics.get_unemployment_rate()
-{% endhighlight %}
+````
 
 Generally, the functions return a DataFrame with a multi-index in which all tickers, in this case Apple and Microsoft, are presented. To keep things manageable for this README, I select just Apple but in essence the list of tickers can be endless as I've seen DataFrames with thousands of tickers. The filtering is done through `.loc['AAPL']` and `.xs('AAPL', level=1, axis=1)` based on whether it's fundamental data or historical data respectively.
 
@@ -258,6 +308,22 @@ And below each component of the Extended Dupont Analysis is plotted including th
 
 ![Models](https://github.com/JerBouma/FinanceToolkit/assets/46355364/f5e1cab3-d1bd-455d-a4ba-92e1348163be)
 
+### Obtaining Options and Greeks
+
+Get the Black Scholes Model for both call and put options including the relevant Greeks, in this case Delta, Gamma, Theta and Vega. This can be any of the First, Second or Third Order Greeks as found in the the `options` module. The `get_` functions show a single Greek whereas the `collect_` functions show an aggregation of Greeks. For example, see the delta of the Call options for Apple for multiple expiration times and strike prices below (Stock Price: 185.92, Volatility: 31.59%, Dividend Yield: 0.49% and Risk Free Rate: 3.95%):
+
+|     |   1 Month |   2 Months |   3 Months |   4 Months |   5 Months |   6 Months |
+|----:|----------:|-----------:|-----------:|-----------:|-----------:|-----------:|
+| 175 |    0.7686 |     0.7178 |     0.6967 |     0.6857 |     0.6794 |     0.6759 |
+| 180 |    0.6659 |     0.64   |     0.6318 |     0.629  |     0.6285 |     0.6291 |
+| 185 |    0.5522 |     0.5583 |     0.5648 |     0.571  |     0.5767 |     0.5816 |
+| 190 |    0.4371 |     0.4762 |     0.4977 |     0.513  |     0.5249 |     0.5342 |
+| 195 |    0.3298 |     0.3971 |     0.4324 |     0.4562 |     0.474  |     0.4875 |
+
+Which can also be plotted together with Gamma, Theta and Vega as follows:
+
+![Greeks](https://github.com/JerBouma/FinanceToolkit/assets/46355364/3aebe116-c4ac-4845-9801-54d2b4bde0f5)
+
 ### Obtaining Performance Metrics
 
 Get the correlations with the factors as defined by Fama-and-French. These include market, size, value, operating profitability and investment. The beauty of all functionality here is that it can be based on any period as the function accepts the period 'weekly', 'monthly', 'quarterly' and 'yearly'. For example, this shows the quarterly correlations for Apple:
@@ -310,9 +376,6 @@ And below the Ichimoku Cloud parameters are plotted for Apple and Microsoft side
 
 Get insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and 3-month and 10-year Government Interest Rates. This is done through the `economics` module and can be used as a standalone module as well by using `from financetoolkit import Economics`. For example see a selection of the countries below:
 
-<div class="row">
-<div markdown="1" class="fifty-column-left">
-
 |      |   Colombia |   United States |   Sweden |   Japan |   Germany |
 |:-----|-----------:|----------------:|---------:|--------:|----------:|
 | 2017 |     0.093  |          0.0435 |   0.0686 |  0.0281 |    0.0357 |
@@ -322,14 +385,9 @@ Get insights for 60+ countries into key economic indicators such as the Consumer
 | 2021 |     0.1381 |          0.0537 |   0.0889 |  0.0282 |    0.0358 |
 | 2022 |     0.1122 |          0.0365 |   0.0748 |  0.026  |    0.0307 |
 
-</div>
-
-<div markdown="1" class="fifty-column-right">
+And below these Unemployment Rates are plotted over time:
 
 ![Economics](https://github.com/JerBouma/FinanceToolkit/assets/46355364/bb44bd4e-07a1-4ecf-a4eb-7fc09a960930)
-
-</div>
-</div>
 
 ## Available Metrics
 
@@ -351,7 +409,8 @@ All of these ratios can be calculated based on (lagged) growth as well as traili
 - Operating Cycle
 - Accounts Payables Turnover Ratio
 - Days of Accounts Payable Outstanding
-- Cash Conversion Cycle
+- Cash Conversion Cycle (CCC)
+- Cash Conversion Efficiency (CCE)
 - Receivables Turnover
 - SGA to Revenue Ratio
 - Fixed Asset Turnover
@@ -435,6 +494,40 @@ The Models module is meant to execute well-known models such as DUPONT and the D
 - Piotroski F-Score
 - Present Value of Growth Opportunities (PVGO)
 
+### Options and Greeks
+
+The Options module is meant to calculate theoretical values based on Black Scholes for European Options. This includes the theoretical value of the Option for each Strike Price and Expiration Date which is intelligently chosen. It also includes the First, Second and Third Order Greeks such as Delta, Gamma, Vega, Vomma and Ultima. **Find the documentation [here](https://www.jeroenbouma.com/projects/financetoolkit/docs/options) which includes an explanation about the model, the parameters and an example.**
+
+#### Option Pricing 📊
+
+- Black Scholes Model
+- Option Chains
+
+#### First-Order Greeks 1️⃣
+- Delta
+- Dual Delta
+- Vega
+- Theta
+- Rho
+- Epsilon
+- Lambda
+
+#### Second-Order Greeks 2️⃣
+- Gamma
+- Dual Gamma
+- Vanna
+- Charm
+- Vomma
+- Vera
+- Veta
+- Partial Derivative
+
+#### Third-Order Greeks 3️⃣
+- Speed
+- Zomma
+- Color
+- Ultima
+
 ### Performance Metrics
 
 The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, Factor Models and more. **Find the documentation [here](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance) which includes an explanation about the performance metrics, the parameters and an example.**
@@ -459,7 +552,6 @@ The Performance module is meant to calculate important performance metrics such 
 
 The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, Beta, GARCH, EWMA and more. **Find the documentation [here](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk) which includes an explanation about the risk metrics, the parameters and an example.**
 
-- Black Scholes Model
 - Value at Risk (VaR) with distributions Historical, Gaussian, Student-t, Cornish-Fisher.
 - Conditional Value at Risk (cVaR) with distributions Historical, Gaussian, Laplace, Logistic.
 - Entropic Value at Risk (eVaR) with a Gaussian distribution. 
@@ -573,7 +665,7 @@ The Economics Module contains a variety of Key Economic Indicators that help in 
 - Old-Age Dependency Ratio
 - Poverty Rate
 
-# Questions & Answers
+## Questions & Answers
 
 This section includes frequently asked questions and is meant to clear up confusion about certain results and/or deviations from other sources. If you have any questions that are not answered here, feel free to reach out to me via the contact details below.
 
@@ -597,6 +689,10 @@ The Toolkit initialization has the ability to add custom datasets which can serv
 
 This is related to the `benchmark_ticker` parameter which is set to "SPY" (S&P 500) by default. This is important when calculating performance metrics such as the Sharpe Ratio or Treynor Ratio that require a market return. This can be disabled by setting `benchmark_ticker=None` in the Toolkit initialization.
 
+> **Data collection seems to be slow, what could be the issue?**
+
+Generally, it should take less than 15 seconds to retrieve the historical data of 100 tickers. If it takes much longer, this could be due to reaching the API limit (the Starter plan has 250 requests per minute), due to a slow internet connection or due to unoptimized code. As the Finance Toolkit makes use of threading, initializing the Toolkit with a single ticker will result in a slow process. This is because the Toolkit will have to wait for the previous request to finish before it can start the next one. Therefore, it is recommended to initialize the Toolkit with all tickers you want to analyze. If it is taking 10+ minutes consider having a look at [this issue](https://github.com/JerBouma/FinanceToolkit/issues/99#issuecomment-1889726000) that managed to resolve the problem.
+
 > **Are you part of FinancialModelingPrep?**
 
 *No, I am not*. I've merely picked them as the primary data provider given that they have a generous free tier and fair pricing compared to other providers. Therefore, any questions related to the data should go through [their contact form](https://site.financialmodelingprep.com/contact). When it comes to any type of ratios, performance metrics, risk metrics, technical indicators or economic indicators, feel free to reach out to me as this is my own work.
@@ -610,6 +706,15 @@ ___
 ___
 
 The goal of the Finance Toolkit is to make any type of financial calculation as transparent and efficient as possible. I want to make these type of calculations as accessible to anyone as possible and seeing how many websites exists that do the same thing (but instead you have to pay) gave me plenty of reasons to work on this.
+
+## Contact
+If you have any questions about the FinanceToolkit or would like to share with me what you have been working on, feel free to reach out to me via:
+
+- **Website**: https://jeroenbouma.com/
+- **Twitter**: https://twitter.com/JerBouma
+- **LinkedIn:** https://www.linkedin.com/in/boumajeroen/
+- **Email:** jer.bouma@gmail.com
+- **Discord:** add me on Discord **`JerBouma`**
 
 If you'd like to support my efforts, either help me out by contributing to the package or [Sponsor Me](https://github.com/sponsors/JerBouma).
 

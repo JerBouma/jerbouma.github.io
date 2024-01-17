@@ -143,6 +143,7 @@ If you are looking for documentation regarding the discovery, ratios, models, te
     <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
@@ -191,6 +192,7 @@ If you are looking for documentation regarding the toolkit, ratios, models, tech
     <a href="/projects/financetoolkit/docs/discovery" class="btn btn--warning" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
@@ -238,6 +240,7 @@ If you are looking for documentation regarding the toolkit, discovery, models, t
     <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--warning" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
@@ -285,6 +288,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, t
     <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--warning" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
@@ -299,6 +303,52 @@ create_markdown_file(
     file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/models/models_controller.py",
     header=markdown_content,
     location="_pages/financetoolkit/documentation/models.md",
+)
+
+# Create Options page
+markdown_content = """---
+title: Options
+excerpt: The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden—Litzenberger and more.
+description: The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden—Litzenberger and more.
+author_profile: false
+permalink: /projects/financetoolkit/docs/options
+classes: wide-sidebar
+layout: single
+redirect_from:
+    - /models
+sidebar:
+    nav: "financetoolkit-docs-options"
+---
+
+The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden—Litzenberger and more.To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
+
+If you are looking for documentation regarding the toolkit, discovery, ratios, technicals, risk, performance and economics, please have a look below:
+
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
+    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
+    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
+    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--warning" style="flex: 1;margin-right:5px">Options</a>
+    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
+    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
+    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
+</div>
+
+{% include algolia.html %}
+
+"""
+
+create_markdown_file(
+    file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/options/options_controller.py",
+    header=markdown_content,
+    location="_pages/financetoolkit/documentation/options.md",
 )
 
 # Create the Technicals page
@@ -332,6 +382,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--warning" style="flex: 1;margin-right:5px">Technicals</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
@@ -378,6 +429,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--warning" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
@@ -424,6 +476,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--warning" style="flex: 1;margin-right:5px">Performance</a>
@@ -471,6 +524,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
