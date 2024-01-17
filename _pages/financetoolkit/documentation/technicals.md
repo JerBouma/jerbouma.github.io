@@ -28,6 +28,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--warning" style="flex: 1;margin-right:5px">Technicals</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
@@ -65,7 +66,7 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
-average_directional_index = toolkit.technical.get_average_directional_index()
+average_directional_index = toolkit.technicals.get_average_directional_index()
 {% endhighlight %}
 
 

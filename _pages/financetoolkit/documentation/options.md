@@ -25,7 +25,8 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, t
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
     <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
     <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--warning" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--warning" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
@@ -62,11 +63,6 @@ Which returns:
 
 | Strike Price | Delta | Dual Delta | Vega | Theta | Rho | Epsilon | Lambda | Gamma | Dual Gamma | Vanna | Charm | Vomma | Vera | Veta | PD | Speed | Zomma | Color | Ultima |
  |---------------:|--------:|-------------:|-------:|--------:|-------:|----------:|---------:|--------:|-------------:|--------:|---------:|--------:|--------:|----------:|-------:|--------:|--------:|--------:|---------:|
- | 180 | 1 | -0.9999 | 0 | -0.0193 | 0.0049 | -0.6533 | 0.0408 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | 0 |
- | 185 | 1 | -0.9999 | 0 | -0.0198 | 0.0051 | -0.6533 | 0.0446 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | 0 |
- | 190 | 1 | -0.9999 | 0 | -0.0204 | 0.0052 | -0.6533 | 0.0492 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | 0 |
- | 195 | 1 | -0.9999 | 0 | -0.0209 | 0.0053 | -0.6533 | 0.0549 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | 0 |
- | 200 | 1 | -0.9999 | 0 | -0.0214 | 0.0055 | -0.6533 | 0.062 | 0 | 0 | -0 | 0 | 0 | -0 | 0.0014 | 0 | -0 | 0 | 0 | 0 |
  | 205 | 1 | -0.9999 | 0 | -0.022 | 0.0056 | -0.6533 | 0.0712 | 0 | 0 | -0 | 0.0005 | 0.0003 | -0 | 0.1236 | 0 | -0 | 0 | 0.0004 | 0.0001 |
  | 210 | 1 | -0.9999 | 0 | -0.0226 | 0.0058 | -0.6533 | 0.0837 | 0 | 0 | -0.0002 | 0.0221 | 0.0119 | -0.0001 | 4.6313 | 0 | -0 | 0.0001 | 0.0132 | 0.0034 |
  | 215 | 0.9998 | -0.9997 | 0.0001 | -0.0254 | 0.0059 | -0.6532 | 0.1016 | 0.0001 | 0.0001 | -0.0044 | 0.4426 | 0.1942 | -0.0029 | 77.6496 | 0.0001 | -0.0001 | 0.0021 | 0.209 | 0.0336 |
@@ -82,29 +78,9 @@ Which returns:
  | 265 | 0.0002 | -0.0001 | 0.0001 | -0.0021 | 0 | -0.0001 | 1.4049 | 0.0001 | 0.0001 | 0.004 | -0.4041 | 0.1783 | 0.0026 | 71.3544 | 0.0001 | 0 | 0.0019 | 0.1933 | 0.0322 |
  | 270 | 0 | -0 | 0 | -0.0002 | 0 | -0 | 1.6059 | 0 | 0 | 0.0004 | -0.0385 | 0.02 | 0.0002 | 7.8471 | 0 | 0 | 0.0002 | 0.0222 | 0.0054 |
  | 275 | 0 | -0 | 0 | -0 | 0 | -0 | 1.8068 | 0 | 0 | 0 | -0.0025 | 0.0015 | 0 | 0.5804 | 0 | 0 | 0 | 0.0017 | 0.0006 |
- | 280 | 0 | -0 | 0 | -0 | 0 | -0 | 2.0066 | 0 | 0 | 0 | -0.0001 | 0.0001 | 0 | 0.0297 | 0 | 0 | 0 | 0.0001 | 0 |
- | 285 | 0 | -0 | 0 | -0 | 0 | -0 | 2.2048 | 0 | 0 | 0 | -0 | 0 | 0 | 0.0011 | 0 | 0 | 0 | 0 | 0 |
- | 290 | 0 | -0 | 0 | -0 | 0 | -0 | 2.401 | 0 | 0 | 0 | -0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
- | 295 | 0 | -0 | 0 | -0 | 0 | -0 | 2.595 | 0 | 0 | 0 | -0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ## get_option_chains
-Get the Option Chains which gives information about the currently available options as reported by Yahoo Finance. This returns the following:
-
-
-- Contract Symbol 
-- Strike 
-- Currency 
-- Last Price 
-- Change 
-- Percent Change 
-- Volume 
-- Open Interest 
-- Bid 
-- Ask 
-- Expiration 
-- Last Trade Date 
-- Implied Volatility 
-- In The Money
+Get the Option Chains which gives information about the currently available options as reported by Yahoo Finance. This returns the Contract Symbol, Strike Currency, Last Price, Absolute Change, Percent Change, Volume, Open Interest, Bid Pirce, Ask Price, Expiration, Last Trade Date, Implied Volatility and whether the option is In The Money.
 
 Please note that the Change and Percent Change are not available at all times as they are merely reported when the market is open. It is advised to use the theoretical calculations as provided by the Black Scholes Model as well as the Greeks to get a better understanding of the option prices over time.
 
@@ -134,18 +110,6 @@ Which returns:
 
 | Strike Price | Contract Symbol | Currency | Last Price | Change | Percent Change | Volume | Open Interest | Bid | Ask | Expiration | Last Trade Date | Implied Volatility | In The Money |
  |---------------:|:--------------------|:-----------|-------------:|---------:|-----------------:|---------:|----------------:|------:|------:|:-------------|:------------------|---------------------:|:---------------|
- | 60 | AAPL240112C00060000 | USD | 123.4 | 0 | 0 | 18 | 0 | 0 | 0 | 2024-01-12 | 2024-01-09 | 0 | True |
- | 70 | AAPL240112C00070000 | USD | 111.29 | 0 | 0 | 1 | 0 | 0 | 0 | 2024-01-12 | 2024-01-05 | 0 | True |
- | 75 | AAPL240112C00075000 | USD | 106.31 | 0 | 0 | 1 | 0 | 0 | 0 | 2024-01-12 | 2024-01-05 | 0 | True |
- | 80 | AAPL240112C00080000 | USD | 104.09 | 0 | 0 | nan | 0 | 0 | 0 | 2024-01-12 | 2024-01-02 | 0 | True |
- | 85 | AAPL240112C00085000 | USD | 98.7 | 0 | 0 | 2 | 0 | 0 | 0 | 2024-01-12 | 2024-01-08 | 0 | True |
- | 100 | AAPL240112C00100000 | USD | 85.03 | 0 | 0 | 7 | 0 | 0 | 0 | 2024-01-12 | 2024-01-11 | 0 | True |
- | 125 | AAPL240112C00125000 | USD | 59 | 0 | 0 | 1 | 0 | 0 | 0 | 2024-01-12 | 2024-01-11 | 0 | True |
- | 130 | AAPL240112C00130000 | USD | 51.69 | 0 | 0 | 1 | 0 | 0 | 0 | 2024-01-12 | 2024-01-05 | 0 | True |
- | 135 | AAPL240112C00135000 | USD | 50.05 | 0 | 0 | 30 | 0 | 0 | 0 | 2024-01-12 | 2024-01-09 | 0 | True |
- | 140 | AAPL240112C00140000 | USD | 44.49 | 0 | 0 | 4 | 0 | 0 | 0 | 2024-01-12 | 2024-01-09 | 0 | True |
- | 145 | AAPL240112C00145000 | USD | 39.57 | 0 | 0 | 1 | 0 | 0 | 0 | 2024-01-12 | 2024-01-08 | 0 | True |
- | 150 | AAPL240112C00150000 | USD | 34.19 | 0 | 0 | 20 | 0 | 0 | 0 | 2024-01-12 | 2024-01-11 | 0 | True |
  | 155 | AAPL240112C00155000 | USD | 29.75 | 0 | 0 | 9 | 0 | 0 | 0 | 2024-01-12 | 2024-01-11 | 0 | True |
  | 157.5 | AAPL240112C00157500 | USD | 24.15 | 0 | 0 | 1 | 0 | 0 | 0 | 2024-01-12 | 2024-01-05 | 0 | True |
  | 160 | AAPL240112C00160000 | USD | 25.75 | 0 | 0 | 11 | 0 | 0 | 0 | 2024-01-12 | 2024-01-11 | 0 | True |
@@ -238,10 +202,6 @@ Which returns:
  | 160 | 0.0437 | 0.2013 | 0.3903 | 0.5823 | 0.77 | 0.9513 | 1.1259 | 1.2942 | 1.4565 | 1.6133 | 1.7651 | 1.9124 | 2.0554 | 2.1946 | 2.3302 | 2.4624 | 2.5916 | 2.7179 | 2.8416 | 2.9627 | 3.0814 | 3.198 | 3.3124 | 3.4249 | 3.5355 | 3.6443 | 3.7514 | 3.8569 | 3.9608 |
  | 165 | 0.0001 | 0.0081 | 0.0378 | 0.0889 | 0.1563 | 0.235 | 0.3213 | 0.413 | 0.5081 | 0.6055 | 0.7043 | 0.804 | 0.9039 | 1.0039 | 1.1036 | 1.2029 | 1.3017 | 1.3999 | 1.4974 | 1.5941 | 1.69 | 1.7852 | 1.8795 | 1.973 | 2.0657 | 2.1576 | 2.2487 | 2.339 | 2.4285 |
  | 170 | 0 | 0.0001 | 0.0017 | 0.0079 | 0.0208 | 0.0412 | 0.0689 | 0.103 | 0.143 | 0.1879 | 0.237 | 0.2897 | 0.3454 | 0.4037 | 0.4641 | 0.5263 | 0.59 | 0.6549 | 0.721 | 0.7878 | 0.8555 | 0.9237 | 0.9923 | 1.0614 | 1.1307 | 1.2003 | 1.27 | 1.3398 | 1.4096 |
- | 175 | 0 | 0 | 0 | 0.0004 | 0.0018 | 0.0052 | 0.0111 | 0.0201 | 0.0325 | 0.0483 | 0.0673 | 0.0896 | 0.1148 | 0.1428 | 0.1734 | 0.2064 | 0.2415 | 0.2786 | 0.3175 | 0.358 | 0.4 | 0.4434 | 0.488 | 0.5336 | 0.5803 | 0.6279 | 0.6764 | 0.7255 | 0.7754 |
- | 180 | 0 | 0 | 0 | 0 | 0.0001 | 0.0005 | 0.0014 | 0.0031 | 0.006 | 0.0103 | 0.0162 | 0.0239 | 0.0333 | 0.0446 | 0.0578 | 0.0728 | 0.0896 | 0.108 | 0.1282 | 0.1499 | 0.1732 | 0.1979 | 0.2239 | 0.2513 | 0.2798 | 0.3095 | 0.3403 | 0.372 | 0.4048 |
- | 185 | 0 | 0 | 0 | 0 | 0 | 0 | 0.0001 | 0.0004 | 0.0009 | 0.0018 | 0.0033 | 0.0055 | 0.0085 | 0.0124 | 0.0173 | 0.0232 | 0.0302 | 0.0383 | 0.0476 | 0.0581 | 0.0696 | 0.0823 | 0.0962 | 0.1111 | 0.127 | 0.1441 | 0.1621 | 0.181 | 0.201 |
- | 190 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0.0001 | 0.0003 | 0.0006 | 0.0011 | 0.0019 | 0.0031 | 0.0046 | 0.0067 | 0.0093 | 0.0125 | 0.0163 | 0.0209 | 0.0261 | 0.0321 | 0.0388 | 0.0462 | 0.0545 | 0.0635 | 0.0733 | 0.0838 | 0.0951 |
 
 ## collect_all_greeks
 Calculate all Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
@@ -320,13 +280,6 @@ Which returns:
 
 | Strike Price | Delta | Dual Delta | Vega | Theta | Rho | Epsilon | Lambda | Gamma | Dual Gamma | Vanna | Charm | Vomma | Vera | Veta | PD | Speed | Zomma | Color | Ultima |
  |---------------:|--------:|-------------:|-------:|--------:|-------:|----------:|---------:|--------:|-------------:|--------:|---------:|--------:|--------:|----------:|-------:|--------:|--------:|--------:|---------:|
- | 180 | 1 | -0.9999 | 0 | -0.0193 | 0.0049 | -0.6533 | 0.0408 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | 0 |
- | 185 | 1 | -0.9999 | 0 | -0.0198 | 0.0051 | -0.6533 | 0.0446 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | 0 |
- | 190 | 1 | -0.9999 | 0 | -0.0204 | 0.0052 | -0.6533 | 0.0492 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | 0 |
- | 195 | 1 | -0.9999 | 0 | -0.0209 | 0.0053 | -0.6533 | 0.0549 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | -0 | 0 | 0 | 0 |
- | 200 | 1 | -0.9999 | 0 | -0.0214 | 0.0055 | -0.6533 | 0.062 | 0 | 0 | -0 | 0 | 0 | -0 | 0.0014 | 0 | -0 | 0 | 0 | 0 |
- | 205 | 1 | -0.9999 | 0 | -0.022 | 0.0056 | -0.6533 | 0.0712 | 0 | 0 | -0 | 0.0005 | 0.0003 | -0 | 0.1236 | 0 | -0 | 0 | 0.0004 | 0.0001 |
- | 210 | 1 | -0.9999 | 0 | -0.0226 | 0.0058 | -0.6533 | 0.0837 | 0 | 0 | -0.0002 | 0.0221 | 0.0119 | -0.0001 | 4.6313 | 0 | -0 | 0.0001 | 0.0132 | 0.0034 |
  | 215 | 0.9998 | -0.9997 | 0.0001 | -0.0254 | 0.0059 | -0.6532 | 0.1016 | 0.0001 | 0.0001 | -0.0044 | 0.4426 | 0.1942 | -0.0029 | 77.6496 | 0.0001 | -0.0001 | 0.0021 | 0.209 | 0.0336 |
  | 220 | 0.9973 | -0.9969 | 0.001 | -0.0526 | 0.006 | -0.6515 | 0.1287 | 0.0012 | 0.0014 | -0.0414 | 4.1955 | 1.4351 | -0.0273 | 600.92 | 0.0014 | -0.0005 | 0.0144 | 1.4569 | 0.1196 |
  | 225 | 0.9777 | -0.976 | 0.0066 | -0.2079 | 0.006 | -0.6387 | 0.1723 | 0.0076 | 0.0086 | -0.1884 | 19.0888 | 4.7244 | -0.1249 | 2187.89 | 0.0086 | -0.0022 | 0.0407 | 4.1228 | 0.0829 |
@@ -338,12 +291,6 @@ Which returns:
  | 255 | 0.0112 | -0.0104 | 0.0037 | -0.1028 | 0.0001 | -0.0073 | 1.0084 | 0.0042 | 0.0037 | 0.1223 | -12.477 | 3.4845 | 0.0789 | 1542.52 | 0.0037 | 0.0014 | 0.0325 | 3.3216 | 0.1424 |
  | 260 | 0.0016 | -0.0015 | 0.0006 | -0.018 | 0 | -0.001 | 1.205 | 0.0007 | 0.0006 | 0.0276 | -2.8148 | 1.0161 | 0.0179 | 421.028 | 0.0006 | 0.0003 | 0.0104 | 1.0578 | 0.1054 |
  | 265 | 0.0002 | -0.0001 | 0.0001 | -0.0021 | 0 | -0.0001 | 1.4049 | 0.0001 | 0.0001 | 0.004 | -0.4041 | 0.1783 | 0.0026 | 71.3544 | 0.0001 | 0 | 0.0019 | 0.1933 | 0.0322 |
- | 270 | 0 | -0 | 0 | -0.0002 | 0 | -0 | 1.6059 | 0 | 0 | 0.0004 | -0.0385 | 0.02 | 0.0002 | 7.8471 | 0 | 0 | 0.0002 | 0.0222 | 0.0054 |
- | 275 | 0 | -0 | 0 | -0 | 0 | -0 | 1.8068 | 0 | 0 | 0 | -0.0025 | 0.0015 | 0 | 0.5804 | 0 | 0 | 0 | 0.0017 | 0.0006 |
- | 280 | 0 | -0 | 0 | -0 | 0 | -0 | 2.0066 | 0 | 0 | 0 | -0.0001 | 0.0001 | 0 | 0.0297 | 0 | 0 | 0 | 0.0001 | 0 |
- | 285 | 0 | -0 | 0 | -0 | 0 | -0 | 2.2048 | 0 | 0 | 0 | -0 | 0 | 0 | 0.0011 | 0 | 0 | 0 | 0 | 0 |
- | 290 | 0 | -0 | 0 | -0 | 0 | -0 | 2.401 | 0 | 0 | 0 | -0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
- | 295 | 0 | -0 | 0 | -0 | 0 | -0 | 2.595 | 0 | 0 | 0 | -0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ## collect_first_order_greeks
 Calculate the first order Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
@@ -434,6 +381,17 @@ Note that the delta of a call option is always between 0 and 1, while the delta 
  **Returns:**
  pd.DataFrame: the delta values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_delta()
+{% endhighlight %}
+
 ## get_dual_delta
 Calculate the dual delta of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The dual delta is the actual probability of an option finishing in the money which is the first derivative of option price with respect to strike.
 
@@ -471,6 +429,17 @@ The Dual Delta can be interpreted as the probability of an option finishing in t
  **Returns:**
  pd.DataFrame: the gamma values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_dual_delta()
+{% endhighlight %}
+
 ## get_vega
 Calculate the vega of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vega is the rate of change of the option price with respect to the volatility of the underlying asset.
 
@@ -511,6 +480,17 @@ Note that the vega of a call option and put option are equal to each other.
  **Returns:**
  pd.DataFrame: the vega values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_vega()
+{% endhighlight %}
+
 ## get_theta
 Calculate the theta of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The theta is the rate of change of the option price with respect to the passage of time.
 
@@ -553,6 +533,17 @@ The Theta can be interpreted as follows:
  **Returns:**
  pd.DataFrame: the vega values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_theta()
+{% endhighlight %}
+
 ## get_rho
 Calculate the rho of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The rho is the rate of change of the option price with respect to the risk free interest rate.
 
@@ -597,6 +588,17 @@ Rho is typically expressed as the amount of money, per share of the underlying, 
  **Returns:**
  pd.DataFrame: the vega values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_rho()
+{% endhighlight %}
+
 ## get_epsilon
 Calculate the epsilon of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The epsilon is the rate of change of the option price with respect to the dividend yield.
 
@@ -638,6 +640,17 @@ The Epsilon can be interpreted as follows:
  **Returns:**
  pd.DataFrame: the lambda values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_epsilon()
+{% endhighlight %}
+
 ## get_lambda
 Calculate the lambda of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The lambda is the rate of change of the option price with respect to the underlying price.
 
@@ -681,6 +694,17 @@ The Lambda can be interpreted as follows:
  **Returns:**
  pd.DataFrame: the lambda values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_lambda()
+{% endhighlight %}
+
 ## collect_second_order_greeks
 Calculate the second order Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
 
@@ -758,6 +782,17 @@ Note that the gamma of a call option and put option are equal to each other.
  **Returns:**
  pd.DataFrame: the gamma values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_gamma()
+{% endhighlight %}
+
 ## get_dual_gamma
 Calculate the gamma of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The gamma is the rate of change of the delta with respect to the price of the underlying asset.
 
@@ -793,6 +828,17 @@ Note that the dual gamma of a call option and put option are equal to each other
  **Returns:**
  pd.DataFrame: the dual gamma values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_dual_gamma()
+{% endhighlight %}
+
 ## get_vanna
 Calculate the vanna of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vanna is the rate of change of the vega with respect to the price of the underlying asset.
 
@@ -834,6 +880,17 @@ Note that the vanna of a call option and put option are equal to each other.
  **Returns:**
  pd.DataFrame: the vanna values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_vanna()
+{% endhighlight %}
+
 ## get_charm
 Calculate the charm of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The charm is the rate of change of the delta with respect to the time to expiration.
 
@@ -876,6 +933,17 @@ The Charm can be interpreted as follows:
  **Returns:**
  pd.DataFrame: the charm values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_charm()
+{% endhighlight %}
+
 ## get_vomma
 Calculate the vomma of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vomma is the rate of change of the vega with respect to the volatility of the underlying asset.
 
@@ -915,6 +983,17 @@ The vomma can be interpreted as follows:
  **Returns:**
  pd.DataFrame: the vomma values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_vomma()
+{% endhighlight %}
+
 ## get_vera
 Calculate the vera of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vera is the rate of change of the rho with respect to volatility.
 
@@ -956,6 +1035,17 @@ Note that the vera of a call option and put option are equal to each other.
  **Returns:**
  pd.DataFrame: the gamma values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_vera()
+{% endhighlight %}
+
 ## get_veta
 Calculate the veta of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The veta is the rate of change of the vega with respect to the time to expiration.
 
@@ -997,6 +1087,17 @@ The Veta can be interpreted as follows:
  **Returns:**
  pd.DataFrame: the veta values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_veta()
+{% endhighlight %}
+
 ## get_partial_derivative
 Calculate the partial derivative of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The partial derivative is the rate of change of the option price with respect to the strike price.
 
@@ -1032,6 +1133,17 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
  **Returns:**
  pd.DataFrame: the partial derivative values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_partial_derivative()
+{% endhighlight %}
+
 ## collect_third_order_greeks
 Calculate the third order Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
 
@@ -1104,8 +1216,19 @@ Note that the speed of a call option and put option are equal to each other.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  **Returns:**
- pd.DataFrame: the gamma values containing the tickers and strike prices as the index and the
+ pd.DataFrame: the speed values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_speed()
+{% endhighlight %}
+
 ## get_zomma
 Calculate the zomma of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The zomma is the rate of change of the gamma with respect to volatility.
 
@@ -1147,6 +1270,17 @@ Note that the zomma of a call option and put option are equal to each other.
  **Returns:**
  pd.DataFrame: the gamma values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_zomma()
+{% endhighlight %}
+
 ## get_color
 Calculate the color of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The color is the rate of change of the gamma with respect to time to expiration.
 
@@ -1188,6 +1322,17 @@ Note that the color of a call option and put option are equal to each other.
  **Returns:**
  pd.DataFrame: the color values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_color()
+{% endhighlight %}
+
 ## get_ultima
 Calculate the ultima of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The ultima is the rate of change of the vomma with respect to volatility.
 
@@ -1229,3 +1374,14 @@ Note that the ultima of a call option and put option are equal to each other.
  **Returns:**
  pd.DataFrame: the gamma values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.options.get_ultima()
+{% endhighlight %}
+
