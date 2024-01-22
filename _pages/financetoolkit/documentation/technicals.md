@@ -42,6 +42,8 @@ Initializes the Technicals Controller Class.
 
 **Args:**
  - <u>tickers (str | list[str]):</u> The tickers to use for the calculation.
+ - <u>intraday_historical (pd.DataFrame, optional):</u> The intraday historical data to use for the calculation.
+ Defaults to pd.DataFrame().
  - <u>daily_historical (pd.DataFrame, optional):</u> The daily historical data to use for the calculation.
  Defaults to pd.DataFrame().
  - <u>weekly_historical (pd.DataFrame, optional):</u> The weekly historical data to use for the calculation.

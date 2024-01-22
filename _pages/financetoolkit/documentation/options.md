@@ -427,7 +427,7 @@ The Dual Delta can be interpreted as the probability of an option finishing in t
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  **Returns:**
- pd.DataFrame: the gamma values containing the tickers and strike prices as the index and the
+ pd.DataFrame: the dual delta values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
 
  As an example:
@@ -531,7 +531,7 @@ The Theta can be interpreted as follows:
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  **Returns:**
- pd.DataFrame: the vega values containing the tickers and strike prices as the index and the
+ pd.DataFrame: the theta values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
 
  As an example:
@@ -586,7 +586,7 @@ Rho is typically expressed as the amount of money, per share of the underlying, 
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  **Returns:**
- pd.DataFrame: the vega values containing the tickers and strike prices as the index and the
+ pd.DataFrame: the rho values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
 
  As an example:
@@ -638,7 +638,7 @@ The Epsilon can be interpreted as follows:
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  **Returns:**
- pd.DataFrame: the lambda values containing the tickers and strike prices as the index and the
+ pd.DataFrame: the epsilon values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
 
  As an example:
@@ -1033,7 +1033,7 @@ Note that the vera of a call option and put option are equal to each other.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  **Returns:**
- pd.DataFrame: the gamma values containing the tickers and strike prices as the index and the
+ pd.DataFrame: the vera values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
 
  As an example:
@@ -1268,7 +1268,7 @@ Note that the zomma of a call option and put option are equal to each other.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  **Returns:**
- pd.DataFrame: the gamma values containing the tickers and strike prices as the index and the
+ pd.DataFrame: the zomma values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
 
  As an example:
@@ -1372,7 +1372,7 @@ Note that the ultima of a call option and put option are equal to each other.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  **Returns:**
- pd.DataFrame: the gamma values containing the tickers and strike prices as the index and the
+ pd.DataFrame: the ultima values containing the tickers and strike prices as the index and the
  time to expiration as the columns.
 
  As an example:

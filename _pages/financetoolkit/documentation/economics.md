@@ -538,16 +538,19 @@ Which returns:
  | 2022 | 221.225 | 129.426 | 110.897 |
  | 2023 | 398.003 | 139.543 | 117.179 |
 
-## get_unemployment_rate
-The unemployed are people of working age who are without work, are available for work, and have taken specific steps to find work. The uniform application of this definition results in estimates of unemployment rates that are more internationally comparable than estimates based on national definitions of unemployment.
+## get_share_prices
+Share price indices are calculated from the prices of common shares of companies traded on national or foreign stock exchanges. They are usually determined by the stock exchange, using the closing daily values for the monthly data, and normally expressed as simple arithmetic averages of the daily data.
 
-This indicator is measured in numbers of unemployed people as a percentage of the labour force and it is seasonally adjusted. The labour force is defined as the total number of unemployed people plus those in employment. Data are based on labour force surveys (LFS).
+A share price index measures how the value of the stocks in the index is changing, a share return index tells the investor what their “return” is, meaning how much money they would make as a result of investing in that basket of shares.
 
-For European Union countries where monthly LFS information is not available, the monthly unemployed figures are estimated by Eurostat.
+A price index measures changes in the market capitalisation of the basket of shares in the index whereas a return index adds on to the price index the value of dividend payments, assuming they are re
+-invested in the same stocks. Occasionally agencies such as central banks will compile share indices.
 
-See definition: [https://data.oecd.org/unemp/unemployment
--rate.htm](https://data.oecd.org/unemp/unemployment
--rate.htm){:target="_blank"}
+This uses 2015 as the base year (= 100)
+
+See definition: [https://data.oecd.org/price/share
+-prices.htm](https://data.oecd.org/price/share
+-prices.htm){:target="_blank"}
 
 **Args:**
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
@@ -556,34 +559,35 @@ See definition: [https://data.oecd.org/unemp/unemployment
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  **Returns:**
- pd.DataFrame: A DataFrame containing the Unemployment Rate.
+ pd.DataFrame: A DataFrame containing the Exchange Rates.
 
  As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Economics
 
-economics = Economics(start_date='2021-03-01', end_date='2023-01-01')
+economics = Economics()
 
-unemployment_rate = economics.get_unemployment_rate(period='quarterly')
+share_prices = economics.get_share_prices()
 
-unemployment_rate.loc[:, ['Germany', 'United States', 'Japan']]
+share_prices.loc[:, ['Turkey', 'Belgium', 'Australia']]
 {% endhighlight %}
 
 
 Which returns:
 
-| | Germany | United States | Japan |
- |:-------|----------:|----------------:|--------:|
- | 2021Q1 | 0.039 | 0.062 | 0.0283 |
- | 2021Q2 | 0.037 | 0.0593 | 0.029 |
- | 2021Q3 | 0.0343 | 0.0513 | 0.0277 |
- | 2021Q4 | 0.0323 | 0.042 | 0.0273 |
- | 2022Q1 | 0.031 | 0.038 | 0.0267 |
- | 2022Q2 | 0.03 | 0.036 | 0.026 |
- | 2022Q3 | 0.0307 | 0.0357 | 0.0257 |
- | 2022Q4 | 0.0303 | 0.036 | 0.0253 |
- | 2023Q1 | 0.0293 | 0.035 | 0.026 |
+| | Turkey | Belgium | Australia |
+ |:-----|---------:|----------:|------------:|
+ | 2013 | 96.6029 | 74.3936 | 92.3054 |
+ | 2014 | 93.2354 | 87.8382 | 98.611 |
+ | 2015 | 100 | 100 | 100 |
+ | 2016 | 95.6644 | 95.2324 | 96.0699 |
+ | 2017 | 122.746 | 101.514 | 105.648 |
+ | 2018 | 126.263 | 96.5515 | 109.205 |
+ | 2019 | 123.056 | 92.6847 | 117.326 |
+ | 2020 | 140.511 | 77.8758 | 111.188 |
+ | 2021 | 187.146 | 91.6789 | 130.475 |
+ | 2022 | 369.298 | 93.0484 | 128.367 |
 
 ## get_long_term_interest_rate
 Long
@@ -691,6 +695,52 @@ Which returns:
  | 2025Q2 | 0.0057 | 0.0423 | 0.0425 |
  | 2025Q3 | 0.0067 | 0.0408 | 0.0425 |
  | 2025Q4 | 0.0077 | 0.0398 | 0.0425 |
+
+## get_narrow_and_broad_money
+M1 includes currency i.e. banknotes and coins, plus overnight deposits. M1 is expressed as a seasonally adjusted index based on 2015=100.
+
+Broad money (M3) includes currency, deposits with an agreed maturity of up to two years, deposits redeemable at notice of up to three months and repurchase agreements, money market fund shares/units and debt securities up to two years. M3 is measured as a seasonally adjusted index based on 2015=100.
+
+See definition: [https://data.oecd.org/money/broad
+-money
+-m3.htm](https://data.oecd.org/money/broad
+-money
+-m3.htm){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
+ - <u>lag (int, optional):</u> The number of periods to lag the data by.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Narrow and Broad Money.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Economics
+
+economics = Economics(start_date='2012-01-01', end_date='2020-01-01')
+
+narrow_and_broad_money = economics.get_narrow_and_broad_money(growth=True)
+
+narrow_and_broad_money.loc[:, 'Australia']
+{% endhighlight %}
+
+
+Which returns:
+
+| | Narrow Money (M1) | Broad Money (M3) |
+ |:-----|--------------------:|-------------------:|
+ | 2012 | 0.0462 | 0.0786 |
+ | 2013 | 0.1402 | 0.0667 |
+ | 2014 | 0.1279 | 0.0722 |
+ | 2015 | 0.1466 | 0.068 |
+ | 2016 | 0.0983 | 0.0594 |
+ | 2017 | 0.0941 | 0.0684 |
+ | 2018 | 0.0565 | 0.027 |
+ | 2019 | 0.1066 | 0.0301 |
+ | 2020 | 0.294 | 0.0835 |
 
 ## get_purchasing_power_parity
 Purchasing power parities (PPPs) are the rates of currency conversion that try to equalise the purchasing power of different currencies, by eliminating the differences in price levels between countries. The basket of goods and services priced is a sample of all those that are part of final expenditures: final consumption of households and government, fixed capital formation, and net exports.
@@ -917,331 +967,280 @@ Which returns:
  | 2023-12-13 | 0.0533 | 0.053 | 0.0531 | 0.0533 | 0.0545 |
  | 2023-12-14 | 0.0533 | 0.053 | 0.0531 | 0.0533 | 0.0535 |
 
-## get_share_prices
-Share price indices are calculated from the prices of common shares of companies traded on national or foreign stock exchanges. They are usually determined by the stock exchange, using the closing daily values for the monthly data, and normally expressed as simple arithmetic averages of the daily data.
+## get_renewable_energy
+Renewable energy is defined as the contribution of renewables to total primary energy supply (TPES). Renewables include the primary energy equivalent of hydro (excluding pumped storage), geothermal, solar, wind, tide and wave sources.
 
-A share price index measures how the value of the stocks in the index is changing, a share return index tells the investor what their “return” is, meaning how much money they would make as a result of investing in that basket of shares.
+Energy derived from solid biofuels, biogasoline, biodiesels, other liquid biofuels, biogases and the renewable fraction of municipal waste are also included. Biofuels are defined as fuels derived directly or indirectly from biomass (material obtained from living or recently living organisms).
 
-A price index measures changes in the market capitalisation of the basket of shares in the index whereas a return index adds on to the price index the value of dividend payments, assuming they are re
--invested in the same stocks. Occasionally agencies such as central banks will compile share indices.
+This includes wood, vegetal waste (including wood waste and crops used for energy production), ethanol, animal materials/wastes and sulphite lyes. Municipal waste comprises wastes produced by the residential, commercial and public service sectors that are collected by local authorities for disposal in a central location for the production of heat and/or power.
 
-This uses 2015 as the base year (= 100)
+This indicator in percentage of total primary energy supply.
 
-See definition: [https://data.oecd.org/price/share
--prices.htm](https://data.oecd.org/price/share
+See definition: [https://data.oecd.org/energy/renewable
+-energy.htm](https://data.oecd.org/energy/renewable
+-energy.htm){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
+ - <u>lag (int, optional):</u> The number of periods to lag the data by.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Renewable Energy Percentage.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Economics
+
+economics = Economics(start_date='2010-01-01', end_date='2020-01-01')
+
+renewable_energy = economics.get_renewable_energy()
+
+renewable_energy.loc[:, ['Zambia', 'Albania', 'Austria']]
+{% endhighlight %}
+
+
+Which returns:
+
+| | Zambia | Albania | Austria |
+ |:-----|---------:|----------:|----------:|
+ | 2010 | 0.9038 | 0.4049 | 0.2742 |
+ | 2011 | 0.8882 | 0.2581 | 0.2696 |
+ | 2012 | 0.8726 | 0.3121 | 0.307 |
+ | 2013 | 0.874 | 0.3489 | 0.3011 |
+ | 2014 | 0.8627 | 0.2722 | 0.3068 |
+ | 2015 | 0.8486 | 0.3433 | 0.2985 |
+ | 2016 | 0.8241 | 0.4209 | 0.3034 |
+ | 2017 | 0.8097 | 0.273 | 0.2984 |
+ | 2018 | 0.8081 | 0.4322 | 0.2943 |
+ | 2019 | 0.8089 | 0.3172 | 0.3006 |
+ | 2020 | 0.818 | 0.3388 | 0.3202 |
+
+## get_environmental_tax
+Environmentally related taxes are an important instrument for governments to shape relative prices of goods and services.
+
+The characteristics of such taxes included in the database (e.g. revenue, tax base, tax rates, exemptions, etc.) are used to construct the environmentally related tax revenues with a breakdown by environmental domain:
+
+
+- Energy products (including vehicle fuels); 
+- Motor vehicles and transport services; 
+- Measured or estimated emissions to air and water, ozone depleting substances, certain non
+-point sources of water pollution, waste management and noise, as well as management of water, land, soil, forests, biodiversity, wildlife and fish stocks.
+
+The data have been cross
+-validated and complemented with Revenue statistics from the OECD Tax statistics database and official national sources.
+
+See definition: [https://data.oecd.org/envpolicy/environmental
+-tax.htm](https://data.oecd.org/envpolicy/environmental
+-tax.htm){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
+ - <u>lag (int, optional):</u> The number of periods to lag the data by.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Environmental Tax.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Economics
+
+economics = Economics(start_date="2010-01-01", end_date="2020-01-01")
+
+environmental_tax = economics.get_environmental_tax()
+
+environmental_tax.loc[:, 'Netherlands']
+{% endhighlight %}
+
+
+Which returns:
+
+| | Total | Energy | Transport | Resource | Pollution |
+ |:-----|--------:|---------:|------------:|-----------:|------------:|
+ | 2010 | 3.63 | 1.88 | 1.14 | 0.37 | 0.24 |
+ | 2011 | 3.45 | 1.85 | 1.1 | 0.27 | 0.23 |
+ | 2012 | 3.28 | 1.78 | 1.02 | 0.25 | 0.23 |
+ | 2013 | 3.29 | 1.9 | 0.95 | 0.26 | 0.19 |
+ | 2014 | 3.35 | 1.88 | 1 | 0.28 | 0.19 |
+ | 2015 | 3.36 | 1.86 | 1.04 | 0.27 | 0.19 |
+ | 2016 | 3.39 | 1.89 | 1.03 | 0.28 | 0.19 |
+ | 2017 | 3.37 | 1.86 | 1.06 | 0.27 | 0.18 |
+ | 2018 | 3.37 | 1.87 | 1.07 | 0.26 | 0.18 |
+ | 2019 | 3.42 | 1.94 | 1.04 | 0.25 | 0.19 |
+ | 2020 | 3.21 | 1.8 | 0.96 | 0.26 | 0.2 |
+
+## get_greenhouse_emissions
+Greenhouse gases refer to the sum of seven gases that have direct effects on climate change:
+
+
+- Carbon Dioxide (CO2) 
+- Methane (CH4) 
+- Nitrous Oxide (N2O) 
+- Chlorofluorocarbons (CFCs) 
+- Hydrofluorocarbons (HFCs) 
+- Perfluorocarbons (PFCs) 
+- Sulphur Hexafluoride (SF6) 
+- Nitrogen Trifluoride (NF3).
+
+The data are expressed in CO2 equivalents and refer to gross direct emissions from human activities. CO2 refers to gross direct emissions from fuel combustion only and data are provided by the International Energy Agency. Other air emissions include emissions of sulphur oxides (SOx) and nitrogen oxides (NOx) given as quantities of SO2 and NO2, emissions of carbon monoxide (CO), and emissions of volatile organic compounds (VOC), excluding methane.
+
+Air and greenhouse gas emissions are measured in tonnes per capita and kilogram per capita in which all metrics are converted to tonnes (1000kg) per capita.
+
+See definition: [https://data.oecd.org/air/air
+-and
+-ghg
+-emissions.htm](https://data.oecd.org/air/air
+-and
+-ghg
+-emissions.htm){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
+ - <u>lag (int, optional):</u> The number of periods to lag the data by.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Environmental Tax.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Economics
+
+economics = Economics(start_date="2010-01-01", end_date="2020-01-01")
+
+greenhouse_emissions = economics.get_greenhouse_emissions()
+
+greenhouse_emissions.loc[:, 'United States']
+{% endhighlight %}
+
+
+Which returns:
+
+| | Carbon Dioxide (CO2) | Carbon Monoxide (CO) | Greenhouse Gases (GHG) | Nitrogen Oxides (NOX) | Sulphur Oxides (SOX) | Volatile Organic Compounds (VOC) |
+ |:-----|-----------------------:|-----------------------:|-------------------------:|------------------------:|-----------------------:|-----------------------------------:|
+ | 2010 | 17.28 | 0.1719 | 22.818 | 0.0449 | 0.0203 | 0.0388 |
+ | 2011 | 16.44 | 0.1658 | 22.168 | 0.0423 | 0.0186 | 0.0389 |
+ | 2012 | 15.6 | 0.1538 | 21.252 | 0.0395 | 0.0147 | 0.0382 |
+ | 2013 | 15.93 | 0.1504 | 21.647 | 0.0368 | 0.0139 | 0.0364 |
+ | 2014 | 15.84 | 0.1443 | 21.667 | 0.0345 | 0.013 | 0.036 |
+ | 2015 | 15.36 | 0.1345 | 21.006 | 0.031 | 0.0097 | 0.0343 |
+ | 2016 | 14.97 | 0.1259 | 20.362 | 0.0278 | 0.0074 | 0.0332 |
+ | 2017 | 14.64 | 0.133 | 20.183 | 0.026 | 0.0067 | 0.0348 |
+ | 2018 | 15.02 | 0.133 | 20.667 | 0.0248 | 0.0064 | 0.0351 |
+ | 2019 | 14.44 | 0.1264 | 20.156 | 0.0236 | 0.0054 | 0.0332 |
+ | 2020 | 12.9 | 0.1172 | 18.178 | 0.0207 | 0.0047 | 0.0329 |
+
+## get_crude_oil_production
+Crude oil production is defined as the quantities of oil extracted from the ground after the removal of inert matter or impurities. It includes crude oil, natural gas liquids (NGLs) and additives. This indicator is measured in thousand tonne of oil equivalent (toe).
+
+Crude oil is a mineral oil consisting of a mixture of hydrocarbons of natural origin, yellow to black in colour, and of variable density and viscosity. NGLs are the liquid or liquefied hydrocarbons produced in the manufacture, purification and stabilisation of natural gas.
+
+Additives are non
+-hydrocarbon substances added to or blended with a product to modify its properties, for example, to improve its combustion characteristics (e.g. MTBE and tetraethyl lead). Refinery production refers to the output of secondary oil products from an oil refinery.
+
+This indicator is measured in thousand tonne of oil equivalent (toe).
+
+See definition: [https://data.oecd.org/energy/crude
+-oil
+-production.htm](https://data.oecd.org/energy/crude
+-oil
+-production.htm){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
+ - <u>lag (int, optional):</u> The number of periods to lag the data by.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Crude Oil Production.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Economics
+
+economics = Economics(start_date='2007-01-01')
+
+crude_oil_production = economics.get_crude_oil_production()
+
+crude_oil_production.loc[:, ['China', 'Saudi Arabia', 'Russia', 'Netherlands']]
+{% endhighlight %}
+
+
+Which returns:
+
+| | China | Saudi Arabia | Russia | Netherlands |
+ |:-----|--------:|---------------:|---------:|--------------:|
+ | 2007 | 186318 | 446438 | 470511 | 2109.1 |
+ | 2008 | 190440 | 467050 | 471814 | 1765.4 |
+ | 2009 | 189490 | 414458 | 479089 | 1338.07 |
+ | 2010 | 203014 | 413505 | 487106 | 1040.27 |
+ | 2011 | 202876 | 471515 | 494393 | 1102.48 |
+ | 2012 | 207478 | 495778 | 499908 | 1133.08 |
+ | 2013 | 209919 | 488039 | 499966 | 1144.3 |
+ | 2014 | 211429 | 491857 | 505603 | 1555.3 |
+ | 2015 | 214556 | 516157 | 512777 | 1423.99 |
+ | 2016 | 199685 | 531161 | 524319 | 975.589 |
+ | 2017 | 191506 | 504365 | 517105 | 970.892 |
+ | 2018 | 189324 | 522375 | 525934 | 918.789 |
+ | 2019 | 191014 | 496688 | 530219 | 761.583 |
+ | 2020 | 194769 | 467840 | 484621 | 751.952 |
+ | 2021 | 199264 | 463618 | 495677 | 763.855 |
+
+## get_crude_oil_prices
+Crude oil import prices come from the IEA's Crude Oil Import Register and are influenced not only by traditional movements of supply and demand, but also by other factors such as geopolitics.
+
+Information is collected from national agencies according to the type of crude oil, by geographic origin and by quality of crude. Average prices are obtained by dividing value by volume as recorded by customs administrations for each tariff position.
+
+Values are recorded at the time of import and include cost, insurance and freight, but exclude import duties. The nominal crude oil spot price from 2003 to 2011 is for Dubai and from 1970 to 2002 for Arabian Light. This indicator is measured in USD per barrel of oil.
+
+The real price was calculated using the deflator for GDP at market prices and rebased with reference year 1970 = 100.
+
+See definition: [https://data.oecd.org/energy/crude
+-oil
+-import
+-prices.htm](https://data.oecd.org/energy/crude
+-oil
+-import
 -prices.htm){:target="_blank"}
 
 **Args:**
- - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  **Returns:**
- pd.DataFrame: A DataFrame containing the Exchange Rates.
+ pd.DataFrame: A DataFrame containing the Crude Oil Prices.
 
  As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Economics
 
-economics = Economics()
+economics = Economics(start_date='2015-01-01')
 
-share_prices = economics.get_share_prices()
+crude_oil_prices = economics.get_crude_oil_prices()
 
-share_prices.loc[:, ['Turkey', 'Belgium', 'Australia']]
+crude_oil_prices.loc[:, ['United Kingdom', 'Japan', 'Canada']]
 {% endhighlight %}
 
 
 Which returns:
 
-| | Turkey | Belgium | Australia |
- |:-----|---------:|----------:|------------:|
- | 2013 | 96.6029 | 74.3936 | 92.3054 |
- | 2014 | 93.2354 | 87.8382 | 98.611 |
- | 2015 | 100 | 100 | 100 |
- | 2016 | 95.6644 | 95.2324 | 96.0699 |
- | 2017 | 122.746 | 101.514 | 105.648 |
- | 2018 | 126.263 | 96.5515 | 109.205 |
- | 2019 | 123.056 | 92.6847 | 117.326 |
- | 2020 | 140.511 | 77.8758 | 111.188 |
- | 2021 | 187.146 | 91.6789 | 130.475 |
- | 2022 | 369.298 | 93.0484 | 128.367 |
-
-## get_labour_productivity
-GDP per hour worked is a measure of labour productivity. It measures how efficiently labour input is combined with other factors of production and used in the production process. Labour input is defined as total hours worked of all persons engaged in production. Labour productivity only partially reflects the productivity of labour in terms of the personal capacities of workers or the intensity of their effort.
-
-The ratio between the output measure and the labour input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organisational and efficiency change, economies of scale).
-
-This uses 2015 as the base year (= 100)
-
-See definition: [https://data.oecd.org/lprdty/gdp
--per
--hour
--worked.htm](https://data.oecd.org/lprdty/gdp
--per
--hour
--worked.htm){:target="_blank"}
-
-**Args:**
- - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
- - <u>lag (int, optional):</u> The number of periods to lag the data by.
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
-
- **Returns:**
- pd.DataFrame: A DataFrame containing the Exchange Rates.
-
- As an example:
-{% include code_header.html %}
-{% highlight python %}
-from financetoolkit import Economics
-
-economics = Economics()
-
-labour_productivity = economics.get_exchange_rates()
-
-labour_productivity.loc[:, ['Bulgaria', 'Croatia', 'Spain']]
-{% endhighlight %}
-
-
-Which returns:
-
-| | Bulgaria | Croatia | Spain |
- |:-----|-----------:|----------:|--------:|
- | 2013 | 1.4736 | 0.7572 | 0.7529 |
- | 2014 | 1.4742 | 0.7629 | 0.7527 |
- | 2015 | 1.7644 | 0.9103 | 0.9013 |
- | 2016 | 1.768 | 0.9033 | 0.9034 |
- | 2017 | 1.7355 | 0.8791 | 0.8852 |
- | 2018 | 1.657 | 0.8334 | 0.8468 |
- | 2019 | 1.747 | 0.879 | 0.8933 |
- | 2020 | 1.7163 | 0.8778 | 0.8755 |
- | 2021 | 1.6538 | 0.8441 | 0.8455 |
- | 2022 | 1.8601 | 0.9503 | 0.9496 |
-
-## get_population_statistics
-Population is defined as all nationals present in, or temporarily absent from a country, and aliens permanently settled in a country. This indicator shows the number of people that usually live in an area. Growth rates are the annual changes in population resulting from births, deaths and net migration during the year.
-
-Total population includes the following:
-
-
-- national armed forces stationed abroad; merchant seamen at sea; 
-- diplomatic personnel located abroad; 
-- civilian aliens resident in the country; 
-- displaced persons resident in the country.
-
-However, it excludes the following:
-
-
-- foreign armed forces stationed in the country; 
-- foreign diplomatic personnel located in the country; 
-- civilian aliens temporarily in the country.
-
-Population projections are a common demographic tool. They provide a basis for other statistical projections, helping governments in their decision making. This indicator is measured in terms of thousands of people.
-
-Furthermore the following statistics are provided:
-
-
-- The youth population is defined as those people aged less than 15 as a percentage of the total population. 
-- The working age population is defined as those aged 15 to 64 as a percentage of the total population. 
-- The elderly population is defined as those aged 65 and over as a percentage of the total population. 
-- The total fertility rate in a specific year is defined as the total number of children that would be born to each woman if she were to live to the end of her child
--bearing years and give birth to children in alignment with the prevailing age
--specific fertility rates. 
-- The old
--age to working
--age demographic ratio is defined as the number of individuals aged 65 and over per 100 people of working age defined as those at ages 20 to 64.
-
-See definition: [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
-
-**Args:**
- - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
- - <u>lag (int, optional):</u> The number of periods to lag the data by.
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
-
- **Returns:**
- pd.DataFrame: A DataFrame containing the Population Statistics.
-
- As an example:
-{% include code_header.html %}
-{% highlight python %}
-from financetoolkit import Economics
-
-economics = Economics(start_date='2010-01-01', end_date='2019-01-01')
-
-population_statistics = economics.get_population_statistics()
-
-population_statistics.loc[:, 'Japan']
-{% endhighlight %}
-
-
-Which returns:
-
-| | Population | Young Population | Working Age Population | Elderly Population |
- |:-----|-------------:|-------------------:|-------------------------:|---------------------:|
- | 2010 | 128.057 | 0.1315 | 0.6383 | 0.2302 |
- | 2011 | 127.834 | 0.1307 | 0.6365 | 0.2328 |
- | 2012 | 127.593 | 0.1298 | 0.6288 | 0.2415 |
- | 2013 | 127.414 | 0.1288 | 0.6207 | 0.2506 |
- | 2014 | 127.237 | 0.1277 | 0.6126 | 0.2597 |
- | 2015 | 127.095 | 0.1255 | 0.6081 | 0.2665 |
- | 2016 | 127.042 | 0.1244 | 0.6035 | 0.272 |
- | 2017 | 126.918 | 0.1232 | 0.6003 | 0.2765 |
- | 2018 | 126.749 | 0.1221 | 0.598 | 0.2799 |
- | 2019 | 126.555 | 0.1206 | 0.5969 | 0.2825 |
-
-## get_income_inequality
-Income is defined as household disposable income in a particular year. It consists of earnings, self
--employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes. Income inequality among individuals is measured here by five indicators.
-
-
-- The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality. 
-- P90/P10 is the ratio of the upper bound value of the ninth decile (i.e. the 10% of people with highest income) to that of the first decile; 
-- P90/P50 of the upper bound value of the ninth decile to the median income; 
-- and P50/P10 of median income to the upper bound value of the first decile. 
-- The Palma ratio is the share of all income received by the 10% people with highest disposable income divided by the share of all income received by the 40% people with the lowest disposable income. 
-- S80/S20 is the ratio of the average income of the 20% richest to the 20% poorest;
-
-See definition: [https://data.oecd.org/inequality/income
--inequality.htm](https://data.oecd.org/inequality/income
--inequality.htm){:target="_blank"}
-
-**Args:**
- - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
- - <u>lag (int, optional):</u> The number of periods to lag the data by.
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
-
- **Returns:**
- pd.DataFrame: A DataFrame containing the Population Statistics.
-
- As an example:
-{% include code_header.html %}
-{% highlight python %}
-from financetoolkit import Economics
-
-economics = Economics(start_date='2013-01-01')
-
-income_inequality = economics.get_income_inequality()
-
-income_inequality.loc[:, 'United States']
-{% endhighlight %}
-
-
-Which returns:
-
-| | Gini Coefficient | P90/P10 | P90/P50 | P50/P10 | Palma Ratio | S80/S20 |
- |:-----|-------------------:|----------:|----------:|----------:|--------------:|----------:|
- | 2013 | 0.396 | 6.4 | 2.3 | 2.7 | 1.82 | 8.6 |
- | 2014 | 0.394 | 6.4 | 2.3 | 2.7 | 1.79 | 8.7 |
- | 2015 | 0.39 | 6.1 | 2.3 | 2.7 | 1.75 | 8.3 |
- | 2016 | 0.391 | 6.3 | 2.3 | 2.7 | 1.77 | 8.5 |
- | 2017 | 0.39 | 6.2 | 2.3 | 2.7 | 1.76 | 8.4 |
- | 2018 | 0.393 | 6.3 | 2.3 | 2.8 | 1.79 | 8.4 |
- | 2019 | 0.395 | 6.3 | 2.3 | 2.7 | 1.81 | 8.4 |
- | 2020 | 0.377 | 5.8 | 2.2 | 2.6 | 1.64 | 7.5 |
- | 2021 | 0.375 | 5.4 | 2.2 | 2.4 | 1.63 | 7.1 |
-
-## get_poverty_rate
-The poverty rate is the ratio of the number of people (in a given age group) whose income falls below the poverty line; taken as half the median household income of the total population.
-
-It is also available by broad age group:
-
-
-- child poverty (0 to 17 year
--olds); 
-- working
--age poverty (18 to 65 year
--olds); 
-- and elderly poverty (66 year
--olds or more).
-
-However, two countries with the same poverty rates may differ in terms of the relative income
--level of the poor.
-
-See definition: [https://data.oecd.org/inequality/poverty
--rate.htm](https://data.oecd.org/inequality/poverty
--rate.htm){:target="_blank"}
-
-**Args:**
- - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
- - <u>lag (int, optional):</u> The number of periods to lag the data by.
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
-
- **Returns:**
- pd.DataFrame: A DataFrame containing the Poverty Rates.
-
- As an example:
-{% include code_header.html %}
-{% highlight python %}
-from financetoolkit import Economics
-
-economics = Economics(start_date='2012-01-01', end_date='2020-01-01')
-
-poverty_rate = economics.get_poverty_rate()
-
-poverty_rate.loc[:, 'Portugal']
-{% endhighlight %}
-
-
-Which returns:
-
-| | Total | 0-17 Year | 18-65 Year | 66 or More |
- |:-----|--------:|------------:|-------------:|-------------:|
- | 2012 | 0.13 | 0.178 | 0.129 | 0.082 |
- | 2013 | 0.135 | 0.183 | 0.133 | 0.097 |
- | 2014 | 0.135 | 0.182 | 0.133 | 0.097 |
- | 2015 | 0.125 | 0.155 | 0.123 | 0.108 |
- | 2016 | 0.125 | 0.155 | 0.126 | 0.095 |
- | 2017 | 0.107 | 0.122 | 0.105 | 0.101 |
- | 2018 | 0.104 | 0.122 | 0.103 | 0.09 |
- | 2019 | 0.106 | 0.131 | 0.098 | 0.107 |
- | 2020 | 0.128 | 0.152 | 0.118 | 0.138 |
-
-## get_narrow_and_broad_money
-M1 includes currency i.e. banknotes and coins, plus overnight deposits. M1 is expressed as a seasonally adjusted index based on 2015=100.
-
-Broad money (M3) includes currency, deposits with an agreed maturity of up to two years, deposits redeemable at notice of up to three months and repurchase agreements, money market fund shares/units and debt securities up to two years. M3 is measured as a seasonally adjusted index based on 2015=100.
-
-See definition: [https://data.oecd.org/money/broad
--money
--m3.htm](https://data.oecd.org/money/broad
--money
--m3.htm){:target="_blank"}
-
-**Args:**
- - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
- - <u>lag (int, optional):</u> The number of periods to lag the data by.
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
-
- **Returns:**
- pd.DataFrame: A DataFrame containing the Narrow and Broad Money.
-
- As an example:
-{% include code_header.html %}
-{% highlight python %}
-from financetoolkit import Economics
-
-economics = Economics(start_date='2012-01-01', end_date='2020-01-01')
-
-narrow_and_broad_money = economics.get_narrow_and_broad_money(growth=True)
-
-narrow_and_broad_money.loc[:, 'Australia']
-{% endhighlight %}
-
-
-Which returns:
-
-| | Narrow Money (M1) | Broad Money (M3) |
- |:-----|--------------------:|-------------------:|
- | 2012 | 0.0462 | 0.0786 |
- | 2013 | 0.1402 | 0.0667 |
- | 2014 | 0.1279 | 0.0722 |
- | 2015 | 0.1466 | 0.068 |
- | 2016 | 0.0983 | 0.0594 |
- | 2017 | 0.0941 | 0.0684 |
- | 2018 | 0.0565 | 0.027 |
- | 2019 | 0.1066 | 0.0301 |
- | 2020 | 0.294 | 0.0835 |
+| | United Kingdom | Japan | Canada |
+ |:-----|-----------------:|--------:|---------:|
+ | 2015 | 53.81 | 54.2 | 53.48 |
+ | 2016 | 44.62 | 41.79 | 43.6 |
+ | 2017 | 54.69 | 54.42 | 54.3 |
+ | 2018 | 72.65 | 72.85 | 70.88 |
+ | 2019 | 65.58 | 66.78 | 63.12 |
+ | 2020 | 44.62 | 46.85 | 45.79 |
+ | 2021 | 71.2 | 70.25 | 69.44 |
+ | 2022 | 104.66 | 102.11 | 104.16 |
 
 ## get_government_statistics
 This function contains a variety of general government statistics. The following statistics are provided:
@@ -1425,18 +1424,67 @@ Which returns:
  | 2021 | 0.4046 | 0.4017 | 0.2908 |
  | 2022 | 0.3102 | 0.2563 | 0.4315 |
 
-## get_renewable_energy
-Renewable energy is defined as the contribution of renewables to total primary energy supply (TPES). Renewables include the primary energy equivalent of hydro (excluding pumped storage), geothermal, solar, wind, tide and wave sources.
+## get_unemployment_rate
+The unemployed are people of working age who are without work, are available for work, and have taken specific steps to find work. The uniform application of this definition results in estimates of unemployment rates that are more internationally comparable than estimates based on national definitions of unemployment.
 
-Energy derived from solid biofuels, biogasoline, biodiesels, other liquid biofuels, biogases and the renewable fraction of municipal waste are also included. Biofuels are defined as fuels derived directly or indirectly from biomass (material obtained from living or recently living organisms).
+This indicator is measured in numbers of unemployed people as a percentage of the labour force and it is seasonally adjusted. The labour force is defined as the total number of unemployed people plus those in employment. Data are based on labour force surveys (LFS).
 
-This includes wood, vegetal waste (including wood waste and crops used for energy production), ethanol, animal materials/wastes and sulphite lyes. Municipal waste comprises wastes produced by the residential, commercial and public service sectors that are collected by local authorities for disposal in a central location for the production of heat and/or power.
+For European Union countries where monthly LFS information is not available, the monthly unemployed figures are estimated by Eurostat.
 
-This indicator in percentage of total primary energy supply.
+See definition: [https://data.oecd.org/unemp/unemployment
+-rate.htm](https://data.oecd.org/unemp/unemployment
+-rate.htm){:target="_blank"}
 
-See definition: [https://data.oecd.org/energy/renewable
--energy.htm](https://data.oecd.org/energy/renewable
--energy.htm){:target="_blank"}
+**Args:**
+ - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
+ - <u>lag (int, optional):</u> The number of periods to lag the data by.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Unemployment Rate.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Economics
+
+economics = Economics(start_date='2021-03-01', end_date='2023-01-01')
+
+unemployment_rate = economics.get_unemployment_rate(period='quarterly')
+
+unemployment_rate.loc[:, ['Germany', 'United States', 'Japan']]
+{% endhighlight %}
+
+
+Which returns:
+
+| | Germany | United States | Japan |
+ |:-------|----------:|----------------:|--------:|
+ | 2021Q1 | 0.039 | 0.062 | 0.0283 |
+ | 2021Q2 | 0.037 | 0.0593 | 0.029 |
+ | 2021Q3 | 0.0343 | 0.0513 | 0.0277 |
+ | 2021Q4 | 0.0323 | 0.042 | 0.0273 |
+ | 2022Q1 | 0.031 | 0.038 | 0.0267 |
+ | 2022Q2 | 0.03 | 0.036 | 0.026 |
+ | 2022Q3 | 0.0307 | 0.0357 | 0.0257 |
+ | 2022Q4 | 0.0303 | 0.036 | 0.0253 |
+ | 2023Q1 | 0.0293 | 0.035 | 0.026 |
+
+## get_labour_productivity
+GDP per hour worked is a measure of labour productivity. It measures how efficiently labour input is combined with other factors of production and used in the production process. Labour input is defined as total hours worked of all persons engaged in production. Labour productivity only partially reflects the productivity of labour in terms of the personal capacities of workers or the intensity of their effort.
+
+The ratio between the output measure and the labour input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organisational and efficiency change, economies of scale).
+
+This uses 2015 as the base year (= 100)
+
+See definition: [https://data.oecd.org/lprdty/gdp
+-per
+-hour
+-worked.htm](https://data.oecd.org/lprdty/gdp
+-per
+-hour
+-worked.htm){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1444,52 +1492,51 @@ See definition: [https://data.oecd.org/energy/renewable
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  **Returns:**
- pd.DataFrame: A DataFrame containing the Renewable Energy Percentage.
+ pd.DataFrame: A DataFrame containing the Exchange Rates.
 
  As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Economics
 
-economics = Economics(start_date='2010-01-01', end_date='2020-01-01')
+economics = Economics()
 
-renewable_energy = economics.get_renewable_energy()
+labour_productivity = economics.get_exchange_rates()
 
-renewable_energy.loc[:, ['Zambia', 'Albania', 'Austria']]
+labour_productivity.loc[:, ['Bulgaria', 'Croatia', 'Spain']]
 {% endhighlight %}
 
 
 Which returns:
 
-| | Zambia | Albania | Austria |
- |:-----|---------:|----------:|----------:|
- | 2010 | 0.9038 | 0.4049 | 0.2742 |
- | 2011 | 0.8882 | 0.2581 | 0.2696 |
- | 2012 | 0.8726 | 0.3121 | 0.307 |
- | 2013 | 0.874 | 0.3489 | 0.3011 |
- | 2014 | 0.8627 | 0.2722 | 0.3068 |
- | 2015 | 0.8486 | 0.3433 | 0.2985 |
- | 2016 | 0.8241 | 0.4209 | 0.3034 |
- | 2017 | 0.8097 | 0.273 | 0.2984 |
- | 2018 | 0.8081 | 0.4322 | 0.2943 |
- | 2019 | 0.8089 | 0.3172 | 0.3006 |
- | 2020 | 0.818 | 0.3388 | 0.3202 |
+| | Bulgaria | Croatia | Spain |
+ |:-----|-----------:|----------:|--------:|
+ | 2013 | 1.4736 | 0.7572 | 0.7529 |
+ | 2014 | 1.4742 | 0.7629 | 0.7527 |
+ | 2015 | 1.7644 | 0.9103 | 0.9013 |
+ | 2016 | 1.768 | 0.9033 | 0.9034 |
+ | 2017 | 1.7355 | 0.8791 | 0.8852 |
+ | 2018 | 1.657 | 0.8334 | 0.8468 |
+ | 2019 | 1.747 | 0.879 | 0.8933 |
+ | 2020 | 1.7163 | 0.8778 | 0.8755 |
+ | 2021 | 1.6538 | 0.8441 | 0.8455 |
+ | 2022 | 1.8601 | 0.9503 | 0.9496 |
 
-## get_crude_oil_production
-Crude oil production is defined as the quantities of oil extracted from the ground after the removal of inert matter or impurities. It includes crude oil, natural gas liquids (NGLs) and additives. This indicator is measured in thousand tonne of oil equivalent (toe).
+## get_income_inequality
+Income is defined as household disposable income in a particular year. It consists of earnings, self
+-employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes. Income inequality among individuals is measured here by five indicators.
 
-Crude oil is a mineral oil consisting of a mixture of hydrocarbons of natural origin, yellow to black in colour, and of variable density and viscosity. NGLs are the liquid or liquefied hydrocarbons produced in the manufacture, purification and stabilisation of natural gas.
 
-Additives are non
--hydrocarbon substances added to or blended with a product to modify its properties, for example, to improve its combustion characteristics (e.g. MTBE and tetraethyl lead). Refinery production refers to the output of secondary oil products from an oil refinery.
+- The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality. 
+- P90/P10 is the ratio of the upper bound value of the ninth decile (i.e. the 10% of people with highest income) to that of the first decile; 
+- P90/P50 of the upper bound value of the ninth decile to the median income; 
+- and P50/P10 of median income to the upper bound value of the first decile. 
+- The Palma ratio is the share of all income received by the 10% people with highest disposable income divided by the share of all income received by the 40% people with the lowest disposable income. 
+- S80/S20 is the ratio of the average income of the 20% richest to the 20% poorest;
 
-This indicator is measured in thousand tonne of oil equivalent (toe).
-
-See definition: [https://data.oecd.org/energy/crude
--oil
--production.htm](https://data.oecd.org/energy/crude
--oil
--production.htm){:target="_blank"}
+See definition: [https://data.oecd.org/inequality/income
+-inequality.htm](https://data.oecd.org/inequality/income
+-inequality.htm){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1497,57 +1544,69 @@ See definition: [https://data.oecd.org/energy/crude
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  **Returns:**
- pd.DataFrame: A DataFrame containing the Crude Oil Production.
+ pd.DataFrame: A DataFrame containing the Population Statistics.
 
  As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Economics
 
-economics = Economics(start_date='2007-01-01')
+economics = Economics(start_date='2013-01-01')
 
-crude_oil_production = economics.get_crude_oil_production()
+income_inequality = economics.get_income_inequality()
 
-crude_oil_production.loc[:, ['China', 'Saudi Arabia', 'Russia', 'Netherlands']]
+income_inequality.loc[:, 'United States']
 {% endhighlight %}
 
 
 Which returns:
 
-| | China | Saudi Arabia | Russia | Netherlands |
- |:-----|--------:|---------------:|---------:|--------------:|
- | 2007 | 186318 | 446438 | 470511 | 2109.1 |
- | 2008 | 190440 | 467050 | 471814 | 1765.4 |
- | 2009 | 189490 | 414458 | 479089 | 1338.07 |
- | 2010 | 203014 | 413505 | 487106 | 1040.27 |
- | 2011 | 202876 | 471515 | 494393 | 1102.48 |
- | 2012 | 207478 | 495778 | 499908 | 1133.08 |
- | 2013 | 209919 | 488039 | 499966 | 1144.3 |
- | 2014 | 211429 | 491857 | 505603 | 1555.3 |
- | 2015 | 214556 | 516157 | 512777 | 1423.99 |
- | 2016 | 199685 | 531161 | 524319 | 975.589 |
- | 2017 | 191506 | 504365 | 517105 | 970.892 |
- | 2018 | 189324 | 522375 | 525934 | 918.789 |
- | 2019 | 191014 | 496688 | 530219 | 761.583 |
- | 2020 | 194769 | 467840 | 484621 | 751.952 |
- | 2021 | 199264 | 463618 | 495677 | 763.855 |
+| | Gini Coefficient | P90/P10 | P90/P50 | P50/P10 | Palma Ratio | S80/S20 |
+ |:-----|-------------------:|----------:|----------:|----------:|--------------:|----------:|
+ | 2013 | 0.396 | 6.4 | 2.3 | 2.7 | 1.82 | 8.6 |
+ | 2014 | 0.394 | 6.4 | 2.3 | 2.7 | 1.79 | 8.7 |
+ | 2015 | 0.39 | 6.1 | 2.3 | 2.7 | 1.75 | 8.3 |
+ | 2016 | 0.391 | 6.3 | 2.3 | 2.7 | 1.77 | 8.5 |
+ | 2017 | 0.39 | 6.2 | 2.3 | 2.7 | 1.76 | 8.4 |
+ | 2018 | 0.393 | 6.3 | 2.3 | 2.8 | 1.79 | 8.4 |
+ | 2019 | 0.395 | 6.3 | 2.3 | 2.7 | 1.81 | 8.4 |
+ | 2020 | 0.377 | 5.8 | 2.2 | 2.6 | 1.64 | 7.5 |
+ | 2021 | 0.375 | 5.4 | 2.2 | 2.4 | 1.63 | 7.1 |
 
-## get_crude_oil_prices
-Crude oil import prices come from the IEA's Crude Oil Import Register and are influenced not only by traditional movements of supply and demand, but also by other factors such as geopolitics.
+## get_population_statistics
+Population is defined as all nationals present in, or temporarily absent from a country, and aliens permanently settled in a country. This indicator shows the number of people that usually live in an area. Growth rates are the annual changes in population resulting from births, deaths and net migration during the year.
 
-Information is collected from national agencies according to the type of crude oil, by geographic origin and by quality of crude. Average prices are obtained by dividing value by volume as recorded by customs administrations for each tariff position.
+Total population includes the following:
 
-Values are recorded at the time of import and include cost, insurance and freight, but exclude import duties. The nominal crude oil spot price from 2003 to 2011 is for Dubai and from 1970 to 2002 for Arabian Light. This indicator is measured in USD per barrel of oil.
 
-The real price was calculated using the deflator for GDP at market prices and rebased with reference year 1970 = 100.
+- national armed forces stationed abroad; merchant seamen at sea; 
+- diplomatic personnel located abroad; 
+- civilian aliens resident in the country; 
+- displaced persons resident in the country.
 
-See definition: [https://data.oecd.org/energy/crude
--oil
--import
--prices.htm](https://data.oecd.org/energy/crude
--oil
--import
--prices.htm){:target="_blank"}
+However, it excludes the following:
+
+
+- foreign armed forces stationed in the country; 
+- foreign diplomatic personnel located in the country; 
+- civilian aliens temporarily in the country.
+
+Population projections are a common demographic tool. They provide a basis for other statistical projections, helping governments in their decision making. This indicator is measured in terms of thousands of people.
+
+Furthermore the following statistics are provided:
+
+
+- The youth population is defined as those people aged less than 15 as a percentage of the total population. 
+- The working age population is defined as those aged 15 to 64 as a percentage of the total population. 
+- The elderly population is defined as those aged 65 and over as a percentage of the total population. 
+- The total fertility rate in a specific year is defined as the total number of children that would be born to each woman if she were to live to the end of her child
+-bearing years and give birth to children in alignment with the prevailing age
+-specific fertility rates. 
+- The old
+-age to working
+-age demographic ratio is defined as the number of individuals aged 65 and over per 100 people of working age defined as those at ages 20 to 64.
+
+See definition: [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1555,51 +1614,56 @@ See definition: [https://data.oecd.org/energy/crude
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  **Returns:**
- pd.DataFrame: A DataFrame containing the Crude Oil Prices.
+ pd.DataFrame: A DataFrame containing the Population Statistics.
 
  As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Economics
 
-economics = Economics(start_date='2015-01-01')
+economics = Economics(start_date='2010-01-01', end_date='2019-01-01')
 
-crude_oil_prices = economics.get_crude_oil_prices()
+population_statistics = economics.get_population_statistics()
 
-crude_oil_prices.loc[:, ['United Kingdom', 'Japan', 'Canada']]
+population_statistics.loc[:, 'Japan']
 {% endhighlight %}
 
 
 Which returns:
 
-| | United Kingdom | Japan | Canada |
- |:-----|-----------------:|--------:|---------:|
- | 2015 | 53.81 | 54.2 | 53.48 |
- | 2016 | 44.62 | 41.79 | 43.6 |
- | 2017 | 54.69 | 54.42 | 54.3 |
- | 2018 | 72.65 | 72.85 | 70.88 |
- | 2019 | 65.58 | 66.78 | 63.12 |
- | 2020 | 44.62 | 46.85 | 45.79 |
- | 2021 | 71.2 | 70.25 | 69.44 |
- | 2022 | 104.66 | 102.11 | 104.16 |
+| | Population | Young Population | Working Age Population | Elderly Population |
+ |:-----|-------------:|-------------------:|-------------------------:|---------------------:|
+ | 2010 | 128.057 | 0.1315 | 0.6383 | 0.2302 |
+ | 2011 | 127.834 | 0.1307 | 0.6365 | 0.2328 |
+ | 2012 | 127.593 | 0.1298 | 0.6288 | 0.2415 |
+ | 2013 | 127.414 | 0.1288 | 0.6207 | 0.2506 |
+ | 2014 | 127.237 | 0.1277 | 0.6126 | 0.2597 |
+ | 2015 | 127.095 | 0.1255 | 0.6081 | 0.2665 |
+ | 2016 | 127.042 | 0.1244 | 0.6035 | 0.272 |
+ | 2017 | 126.918 | 0.1232 | 0.6003 | 0.2765 |
+ | 2018 | 126.749 | 0.1221 | 0.598 | 0.2799 |
+ | 2019 | 126.555 | 0.1206 | 0.5969 | 0.2825 |
 
-## get_environmental_tax
-Environmentally related taxes are an important instrument for governments to shape relative prices of goods and services.
+## get_poverty_rate
+The poverty rate is the ratio of the number of people (in a given age group) whose income falls below the poverty line; taken as half the median household income of the total population.
 
-The characteristics of such taxes included in the database (e.g. revenue, tax base, tax rates, exemptions, etc.) are used to construct the environmentally related tax revenues with a breakdown by environmental domain:
+It is also available by broad age group:
 
 
-- Energy products (including vehicle fuels); 
-- Motor vehicles and transport services; 
-- Measured or estimated emissions to air and water, ozone depleting substances, certain non
--point sources of water pollution, waste management and noise, as well as management of water, land, soil, forests, biodiversity, wildlife and fish stocks.
+- child poverty (0 to 17 year
+-olds); 
+- working
+-age poverty (18 to 65 year
+-olds); 
+- and elderly poverty (66 year
+-olds or more).
 
-The data have been cross
--validated and complemented with Revenue statistics from the OECD Tax statistics database and official national sources.
+However, two countries with the same poverty rates may differ in terms of the relative income
+-level of the poor.
 
-See definition: [https://data.oecd.org/envpolicy/environmental
--tax.htm](https://data.oecd.org/envpolicy/environmental
--tax.htm){:target="_blank"}
+See definition: [https://data.oecd.org/inequality/poverty
+-rate.htm](https://data.oecd.org/inequality/poverty
+-rate.htm){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1607,96 +1671,32 @@ See definition: [https://data.oecd.org/envpolicy/environmental
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  **Returns:**
- pd.DataFrame: A DataFrame containing the Environmental Tax.
+ pd.DataFrame: A DataFrame containing the Poverty Rates.
 
  As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Economics
 
-economics = Economics(start_date="2010-01-01", end_date="2020-01-01")
+economics = Economics(start_date='2012-01-01', end_date='2020-01-01')
 
-environmental_tax = economics.get_environmental_tax()
+poverty_rate = economics.get_poverty_rate()
 
-environmental_tax.loc[:, 'Netherlands']
+poverty_rate.loc[:, 'Portugal']
 {% endhighlight %}
 
 
 Which returns:
 
-| | Total | Energy | Transport | Resource | Pollution |
- |:-----|--------:|---------:|------------:|-----------:|------------:|
- | 2010 | 3.63 | 1.88 | 1.14 | 0.37 | 0.24 |
- | 2011 | 3.45 | 1.85 | 1.1 | 0.27 | 0.23 |
- | 2012 | 3.28 | 1.78 | 1.02 | 0.25 | 0.23 |
- | 2013 | 3.29 | 1.9 | 0.95 | 0.26 | 0.19 |
- | 2014 | 3.35 | 1.88 | 1 | 0.28 | 0.19 |
- | 2015 | 3.36 | 1.86 | 1.04 | 0.27 | 0.19 |
- | 2016 | 3.39 | 1.89 | 1.03 | 0.28 | 0.19 |
- | 2017 | 3.37 | 1.86 | 1.06 | 0.27 | 0.18 |
- | 2018 | 3.37 | 1.87 | 1.07 | 0.26 | 0.18 |
- | 2019 | 3.42 | 1.94 | 1.04 | 0.25 | 0.19 |
- | 2020 | 3.21 | 1.8 | 0.96 | 0.26 | 0.2 |
-
-## get_greenhouse_emissions
-Greenhouse gases refer to the sum of seven gases that have direct effects on climate change:
-
-
-- Carbon Dioxide (CO2) 
-- Methane (CH4) 
-- Nitrous Oxide (N2O) 
-- Chlorofluorocarbons (CFCs) 
-- Hydrofluorocarbons (HFCs) 
-- Perfluorocarbons (PFCs) 
-- Sulphur Hexafluoride (SF6) 
-- Nitrogen Trifluoride (NF3).
-
-The data are expressed in CO2 equivalents and refer to gross direct emissions from human activities. CO2 refers to gross direct emissions from fuel combustion only and data are provided by the International Energy Agency. Other air emissions include emissions of sulphur oxides (SOx) and nitrogen oxides (NOx) given as quantities of SO2 and NO2, emissions of carbon monoxide (CO), and emissions of volatile organic compounds (VOC), excluding methane.
-
-Air and greenhouse gas emissions are measured in tonnes per capita and kilogram per capita in which all metrics are converted to tonnes (1000kg) per capita.
-
-See definition: [https://data.oecd.org/air/air
--and
--ghg
--emissions.htm](https://data.oecd.org/air/air
--and
--ghg
--emissions.htm){:target="_blank"}
-
-**Args:**
- - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
- - <u>lag (int, optional):</u> The number of periods to lag the data by.
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
-
- **Returns:**
- pd.DataFrame: A DataFrame containing the Environmental Tax.
-
- As an example:
-{% include code_header.html %}
-{% highlight python %}
-from financetoolkit import Economics
-
-economics = Economics(start_date="2010-01-01", end_date="2020-01-01")
-
-greenhouse_emissions = economics.get_greenhouse_emissions()
-
-greenhouse_emissions.loc[:, 'United States']
-{% endhighlight %}
-
-
-Which returns:
-
-| | Carbon Dioxide (CO2) | Carbon Monoxide (CO) | Greenhouse Gases (GHG) | Nitrogen Oxides (NOX) | Sulphur Oxides (SOX) | Volatile Organic Compounds (VOC) |
- |:-----|-----------------------:|-----------------------:|-------------------------:|------------------------:|-----------------------:|-----------------------------------:|
- | 2010 | 17.28 | 0.1719 | 22.818 | 0.0449 | 0.0203 | 0.0388 |
- | 2011 | 16.44 | 0.1658 | 22.168 | 0.0423 | 0.0186 | 0.0389 |
- | 2012 | 15.6 | 0.1538 | 21.252 | 0.0395 | 0.0147 | 0.0382 |
- | 2013 | 15.93 | 0.1504 | 21.647 | 0.0368 | 0.0139 | 0.0364 |
- | 2014 | 15.84 | 0.1443 | 21.667 | 0.0345 | 0.013 | 0.036 |
- | 2015 | 15.36 | 0.1345 | 21.006 | 0.031 | 0.0097 | 0.0343 |
- | 2016 | 14.97 | 0.1259 | 20.362 | 0.0278 | 0.0074 | 0.0332 |
- | 2017 | 14.64 | 0.133 | 20.183 | 0.026 | 0.0067 | 0.0348 |
- | 2018 | 15.02 | 0.133 | 20.667 | 0.0248 | 0.0064 | 0.0351 |
- | 2019 | 14.44 | 0.1264 | 20.156 | 0.0236 | 0.0054 | 0.0332 |
- | 2020 | 12.9 | 0.1172 | 18.178 | 0.0207 | 0.0047 | 0.0329 |
+| | Total | 0-17 Year | 18-65 Year | 66 or More |
+ |:-----|--------:|------------:|-------------:|-------------:|
+ | 2012 | 0.13 | 0.178 | 0.129 | 0.082 |
+ | 2013 | 0.135 | 0.183 | 0.133 | 0.097 |
+ | 2014 | 0.135 | 0.182 | 0.133 | 0.097 |
+ | 2015 | 0.125 | 0.155 | 0.123 | 0.108 |
+ | 2016 | 0.125 | 0.155 | 0.126 | 0.095 |
+ | 2017 | 0.107 | 0.122 | 0.105 | 0.101 |
+ | 2018 | 0.104 | 0.122 | 0.103 | 0.09 |
+ | 2019 | 0.106 | 0.131 | 0.098 | 0.107 |
+ | 2020 | 0.128 | 0.152 | 0.118 | 0.138 |
 

@@ -66,12 +66,6 @@ See for more information on all of this, the following link: [https://www.jeroen
  or YahooFinance. Defaults to FinancialModelingPrep. It is automatically defined if you enter an API Key from
  FinancialModelingPrep. You can overwrite this by filling this parameter. Note that for the Free plan the amount
  of historical data is limited to 5 years. If you want to collect more data, you need to upgrade to a paid plan.
- - <u>check_asset_class (bool):</u> Whether to check if the asset class will work for the function you are trying to
- execute. Defaults to None. If you are trying to execute a function that requires a specific asset class, this
- will raise an error if the asset class is not correct. If you set this to False, it will simply make an attempt
- to collect data but could lead to confusing results. The parameter is built in to limit the API calls as it
- needs to acquire the data from Yahoo Finance. It is turned on when the amount of tickers are < 20 and turned
- off when the amount of tickers is higher than 20. Can be overridden when you set it to True or False.
  - <u>historical (pd.DataFrame):</u> A DataFrame containing historical data. This is a custom dataset only relevant if
  you are looking to use custom data. See for more information the following Notebook:
  [https://www.jeroenbouma.com/projects/financetoolkit/external-datasets](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets){:target="_blank"}
@@ -87,6 +81,10 @@ See for more information on all of this, the following link: [https://www.jeroen
  If you are using a Premium plan from FinancialModelingPrep, this will be set to True. Defaults to None
  and can thus be overridden.
  - <u>reverse_dates (bool):</u> A boolean indicating whether to reverse the dates in the financial statements.
+ - <u>intraday_period (str):</u> A string containing the intraday period. This can be 1min, 5min, 15min, 30min or 1hour.
+ This is used to collect intraday data. Note that this is only relevant if you have are looking to utilize
+ intraday data through the Toolkit and wish to access Risk, Performance and Technicals for very short
+ timeframes. Defaults to None which means it will not use intraday data.
  - <u>rounding (int):</u> An integer indicating the number of decimals to round the results to.
  - <u>remove_invalid_tickers (bool):</u> A boolean indicating whether to remove invalid tickers. Defaults to False.
  - <u>sleep_timer (bool):</u> Whether to set a sleep timer when the rate limit is reached. Note that this only works
@@ -739,6 +737,70 @@ Which returns:
  | 2021 | 178.09 | 179.23 | 177.26 | 177.57 | 175.795 | 6.40623e+07 | 0.865 | 0.346482 | 0.251019 | 0.331362 | 0.251429 | 9.99467 |
  | 2022 | 128.41 | 129.95 | 127.43 | 129.93 | 129.378 | 7.70342e+07 | 0.91 | -0.264042 | 0.356964 | -0.302832 | 0.377293 | 7.35566 |
  | 2023 | 187.84 | 188.51 | 187.68 | 188.108 | 188.108 | 4.72009e+06 | 0.71 | 0.453941 | 0.213359 | 0.412901 | 0.22327 | 10.6947 |
+
+## get_intraday_data
+Returns intraday historical data for the specified tickers. This contains the following columns: 
+- Open: The opening price for the period. 
+- High: The highest price for the period. 
+- Low: The lowest price for the period. 
+- Close: The closing price for the period. 
+- Volume: The volume for the period. 
+- Return: The return for the period. 
+- Volatility: The volatility for the period. 
+- Cumulative Return: The cumulative return for the period.
+
+Keep in mind that this data is available for a shorter period. This means that the start date is ignored if the difference between the start and end date is bigger than the maximum period.
+
+If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
+
+Please note that this functionality is only available through Financial Modeling Prep. Therefore, an api_key is required to use this functionality.
+
+**Args:**
+ - <u>start (str):</u> The start date for the historical data. Defaults to None.
+ - <u>end (str):</u> The end date for the historical data. Defaults to None.
+ - <u>period (str):</u> The interval at which the historical data should be
+ returned - daily, weekly, monthly, quarterly, or yearly.
+ Defaults to "daily".
+ - <u>return_column (str):</u> The column to use for the return calculation. Defaults to "Close".
+ - <u>fill_nan (bool):</u> Defines whether to forward fill NaN values. This defaults
+ to True to prevent holes in the dataset. This is especially relevant for
+ technical indicators.
+ - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
+ - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
+
+ **Returns:**
+ pandas.DataFrame: The intraday data for the specified tickers.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit("MSFT", api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.get_intraday_data(period="1min")
+{% endhighlight %}
+
+
+Which returns:
+
+| date | Open | High | Low | Close | Volume | Return | Volatility | Cumulative Return |
+ |:-----------------|-------:|-------:|--------:|--------:|---------:|---------:|-------------:|--------------------:|
+ | 2024-01-19 15:45 | 397.64 | 397.88 | 397.63 | 397.88 | 49202 | 0.0006 | 0.0005 | 1.0266 |
+ | 2024-01-19 15:46 | 397.86 | 397.93 | 397.788 | 397.82 | 68913 | -0.0002 | 0.0005 | 1.0264 |
+ | 2024-01-19 15:47 | 397.81 | 397.97 | 397.76 | 397.78 | 62605 | -0.0001 | 0.0005 | 1.0263 |
+ | 2024-01-19 15:48 | 397.78 | 397.85 | 397.675 | 397.845 | 62146 | 0.0002 | 0.0005 | 1.0265 |
+ | 2024-01-19 15:49 | 397.85 | 397.97 | 397.8 | 397.94 | 72700 | 0.0002 | 0.0005 | 1.0267 |
+ | 2024-01-19 15:50 | 397.92 | 398.27 | 397.9 | 398.04 | 140754 | 0.0003 | 0.0005 | 1.027 |
+ | 2024-01-19 15:51 | 398.04 | 398.15 | 397.96 | 398 | 122208 | -0.0001 | 0.0005 | 1.0269 |
+ | 2024-01-19 15:52 | 397.99 | 398.26 | 397.98 | 398.05 | 83546 | 0.0001 | 0.0005 | 1.027 |
+ | 2024-01-19 15:53 | 398.04 | 398.12 | 397.98 | 398.09 | 85098 | 0.0001 | 0.0005 | 1.0271 |
+ | 2024-01-19 15:54 | 398.1 | 398.52 | 398.03 | 398.45 | 187358 | 0.0009 | 0.0005 | 1.028 |
+ | 2024-01-19 15:55 | 398.45 | 398.62 | 398.25 | 398.335 | 237902 | -0.0003 | 0.0005 | 1.0278 |
+ | 2024-01-19 15:56 | 398.33 | 398.44 | 398.3 | 398.415 | 149157 | 0.0002 | 0.0005 | 1.028 |
+ | 2024-01-19 15:57 | 398.42 | 398.5 | 398.29 | 398.43 | 181074 | 0 | 0.0005 | 1.028 |
+ | 2024-01-19 15:58 | 398.46 | 398.47 | 398.29 | 398.35 | 278802 | -0.0002 | 0.0005 | 1.0278 |
+ | 2024-01-19 15:59 | 398.35 | 398.66 | 398.22 | 398.66 | 586344 | 0.0008 | 0.0005 | 1.0286 |
 
 ## get_dividend_calendar
 Obtain Dividend Calendars for any range of companies. It includes the following columns: 
