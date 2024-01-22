@@ -86,8 +86,6 @@ financetoolkit:
         url: /projects/financetoolkit/economics-module
       - title: External Datasets
         url: /projects/financetoolkit/external-datasets
-  - title: "Functionality"
-    url: /projects/financetoolkit#functionality
   - title: "Basic Usage"
     url: /projects/financetoolkit#basic-usage
     children:
@@ -109,23 +107,6 @@ financetoolkit:
         url: /projects/financetoolkit#obtaining-technical-indicators
       - title: Key Economic Indicators
         url: /projects/financetoolkit#understanding-key-economic-indicators
-  - title: Available Metrics
-    url: /projects/financetoolkit#available-metrics
-    children:
-      - title: Financial Ratios
-        url: /projects/financetoolkit#financial-ratios
-      - title: Financial Models
-        url: /projects/financetoolkit#financial-models
-      - title: Options and Greeks
-        url: /projects/financetoolkit#options-and-greeks
-      - title: Performance Metrics
-        url: /projects/financetoolkit#performance-metrics
-      - title: Risk Metrics
-        url: /projects/financetoolkit#risk-metrics
-      - title: Technical Indicators
-        url: /projects/financetoolkit#technical-indicators
-      - title: Key Economic Indicators
-        url: /projects/financetoolkit#key-economic-indicators
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
   - title: Contributing
@@ -166,6 +147,8 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#get_revenue_product_segmentation
     - title: "Historical Data"
       url: /projects/financetoolkit/docs#get_historical_data
+    - title: "Intraday Data"
+      url: /projects/financetoolkit/docs#get_intraday_data
     - title: "Dividend Calendar"
       url: /projects/financetoolkit/docs#get_dividend_calendar
     - title: "ESG Scores"
@@ -569,8 +552,6 @@ financetoolkit-docs-risk:
     url: /projects/financetoolkit/docs
   - title: Risk
     children:
-    - title: Black Scholes Model
-      url: /projects/financetoolkit/docs/risk#get_black_scholes_model
     - title: Value at Risk (VaR)
       url:  /projects/financetoolkit/docs/risk#get_value_at_risk
     - title: Conditional Value at Risk (cVaR)
