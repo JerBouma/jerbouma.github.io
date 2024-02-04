@@ -4,9 +4,10 @@ template for other projects as it is directly related to the project structure a
 generated.
 """
 
-import requests
 import base64
 import re
+
+import requests
 
 
 def create_markdown_file(file_url: str, header: str, location: str):
@@ -70,10 +71,10 @@ def create_markdown_file(file_url: str, header: str, location: str):
                 {
                     "function_name": function_name,
                     "description": re.sub(" +", " ", description.strip())
-                    .replace("\n ", " ") # Deal with new lines due to PEP line length
-                    .replace("\n ", "\n\n") # Allow for proper spacing
-                    .replace("-", "\n-") # Create lists based on the dashes
-                    .replace("—", "-"), # Replace the em dash that was used in formulas
+                    .replace("\n ", " ")  # Deal with new lines due to PEP line length
+                    .replace("\n ", "\n\n")  # Allow for proper spacing
+                    .replace("-", "\n-")  # Create lists based on the dashes
+                    .replace("—", "-"),  # Replace the em dash that was used in formulas
                     "arguments": re.sub(" +", " ", arguments.strip()),
                     "example_code": re.sub(" +", " ", example_code.strip()).replace(
                         "\n ", "\n"
@@ -89,8 +90,13 @@ def create_markdown_file(file_url: str, header: str, location: str):
         markdown_content += f'{function_info["description"]}\n\n'
 
         if function_info["arguments"]:
-            markdown_content += (function_info["arguments"]).replace(
-                "Args:", "**Args:**").replace("Raises:", "**Raises:**").replace("Returns:", "**Returns:**").replace("Notes:", "**Notes:**")
+            markdown_content += (
+                (function_info["arguments"])
+                .replace("Args:", "**Args:**")
+                .replace("Raises:", "**Raises:**")
+                .replace("Returns:", "**Returns:**")
+                .replace("Notes:", "**Notes:**")
+            )
             markdown_content += "\n"
 
         if function_info["example_code"]:
@@ -164,8 +170,8 @@ create_markdown_file(
 # Create the Discovery page
 markdown_content = """---
 title: Discovery
-excerpt: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit. 
-description: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit. 
+excerpt: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit.
+description: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit.
 author_profile: false
 permalink: /projects/financetoolkit/docs/discovery
 classes: wide-sidebar
@@ -539,4 +545,4 @@ create_markdown_file(
     file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/economics/economics_controller.py",
     header=markdown_content,
     location="_pages/financetoolkit/documentation/economics.md",
-) 
+)

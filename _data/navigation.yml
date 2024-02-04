@@ -414,6 +414,10 @@ financetoolkit-docs-options:
         url: /projects/financetoolkit/docs/options#get_option_chains
       - title: Black Scholes Model
         url: /projects/financetoolkit/docs/options#get_black_scholes_model
+      - title: Binomial Model
+        url: /projects/financetoolkit/docs/options#get_binomial_model
+      - title: Stock Price Simulation
+        url: /projects/financetoolkit/docs/options#get_stock_price_simulation
   - title: Collect All Greeks
     url: /projects/financetoolkit/docs/options#collect_all_greeks
   - title: First-Order Greeks 
