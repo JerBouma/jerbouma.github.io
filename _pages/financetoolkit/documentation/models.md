@@ -306,6 +306,46 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 toolkit.models.get_intrinsic_valuation(0.05, 0.025, 0.094)
 {% endhighlight %}
 
+## get_gorden_growth_model
+The Gordon Growth Model, also known as the Dividend Discount Model (DDM) with Constant Growth, is a method used to estimate the intrinsic value of a stock based on its expected future dividends. The model assumes that dividends will grow at a constant rate indefinitely.
+
+The formula is as follows:
+
+
+- Intrinsic Value = (Dividends Per Share * (1 + Growth Rate)) / (Rate of Return 
+- Growth Rate)
+
+The formula essentially discounts the future expected dividends to their present value, taking into account the required rate of return and the growth rate. The numerator represents the expected dividend in the next period. The denominator represents the required rate of return minus the growth rate.
+
+Investors often use the Gordon Growth Model to compare the intrinsic value of a stock with its current market price. If the intrinsic value is higher than the market price, some investors may interpret it as an indication that the stock is undervalued.
+
+It's important to note that the Gordon Growth Model is based on several assumptions, including the assumption of constant growth in dividends. It is most applicable to mature companies with stable and predictable dividend growth. If a company's dividend growth is expected to fluctuate or if it does not pay dividends, alternative valuation models may be more appropriate.
+
+The assumption of constant growth of dividends is often unrealistic. In reality, dividends may fluctuate or even be suspended. Therefore, the Gordon Growth Model should be used with caution and in conjunction with other valuation methods.
+
+**Args:**
+ - <u>rate_of_return (float):</u> The required rate of return.
+ - <u>growth_rate (float):</u> The growth rate of the dividends.
+ - <u>project_periods (int, optional):</u> The number of periods to project the the stock price. Defaults to 5.
+ - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+
+ **Returns:**
+ pd.DataFrame: DataFrame containing the intrinsic value for each ticker over time.
+
+ **Notes:**
+ - The results are highly dependent on the input. Therefore, think carefully about each input parameter to
+ ensure the results are accurate (given your beliefs)
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.models.get_gorden_growth_model(0.20, 0.05)
+{% endhighlight %}
+
 ## get_altman_z_score
 Calculates the Altman Z
 -Score, a financial metric used to predict the likelihood of a company going bankrupt. The Altman Z

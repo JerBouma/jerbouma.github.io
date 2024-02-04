@@ -697,7 +697,8 @@ Important to note is that when an api_key is included in the Toolkit initializat
  - <u>fill_nan (bool):</u> Defines whether to forward fill NaN values. This defaults
  to True to prevent holes in the dataset. This is especially relevant for
  technical indicators.
- - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+ - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. If this is not enabled, the function
+ will return the earlier retrieved data. This is done to prevent too many API calls. Defaults to False.
  - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
  - <u>sleep_timer (bool):</u> Defines whether to include a sleep timer to prevent
  overloading the API. Defaults to True.

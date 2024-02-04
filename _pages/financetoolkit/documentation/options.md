@@ -82,7 +82,7 @@ Which returns:
 ## get_option_chains
 Get the Option Chains which gives information about the currently available options as reported by Yahoo Finance. This returns the Contract Symbol, Strike Currency, Last Price, Absolute Change, Percent Change, Volume, Open Interest, Bid Pirce, Ask Price, Expiration, Last Trade Date, Implied Volatility and whether the option is In The Money.
 
-Please note that the Change and Percent Change are not available at all times as they are merely reported when the market is open. It is advised to use the theoretical calculations as provided by the Black Scholes Model as well as the Greeks to get a better understanding of the option prices over time.
+The data comes from Yahoo Finance and is not always available. If the data is not available, it is advised to use the theoretical calculations as provided by the Black Scholes Model as well as the Greeks to get a better understanding of the option prices over time.
 
 **Args:**
  - <u>expiration_date (str | None, optional):</u> The expiration date to use. Defaults to None which means it will
@@ -202,6 +202,177 @@ Which returns:
  | 160 | 0.0437 | 0.2013 | 0.3903 | 0.5823 | 0.77 | 0.9513 | 1.1259 | 1.2942 | 1.4565 | 1.6133 | 1.7651 | 1.9124 | 2.0554 | 2.1946 | 2.3302 | 2.4624 | 2.5916 | 2.7179 | 2.8416 | 2.9627 | 3.0814 | 3.198 | 3.3124 | 3.4249 | 3.5355 | 3.6443 | 3.7514 | 3.8569 | 3.9608 |
  | 165 | 0.0001 | 0.0081 | 0.0378 | 0.0889 | 0.1563 | 0.235 | 0.3213 | 0.413 | 0.5081 | 0.6055 | 0.7043 | 0.804 | 0.9039 | 1.0039 | 1.1036 | 1.2029 | 1.3017 | 1.3999 | 1.4974 | 1.5941 | 1.69 | 1.7852 | 1.8795 | 1.973 | 2.0657 | 2.1576 | 2.2487 | 2.339 | 2.4285 |
  | 170 | 0 | 0.0001 | 0.0017 | 0.0079 | 0.0208 | 0.0412 | 0.0689 | 0.103 | 0.143 | 0.1879 | 0.237 | 0.2897 | 0.3454 | 0.4037 | 0.4641 | 0.5263 | 0.59 | 0.6549 | 0.721 | 0.7878 | 0.8555 | 0.9237 | 0.9923 | 1.0614 | 1.1307 | 1.2003 | 1.27 | 1.3398 | 1.4096 |
+
+## get_binomial_model
+Calculate the Binomial Option Pricing Model, a mathematical model used to estimate the price of European and American style options. It does so by creating a binomial tree of price paths for the underlying asset, and then working backwards through the tree to determine the price of the option at each node.
+
+By default the most recent risk free rate, dividend yield and stock price is used, you can alter this by changing the start date. The volatility is calculated based on the daily returns of the stock price and the selected period (this can be altered by defining this accordingly when defining the Toolkit class, start_date and end_date).
+
+The formulas are as follows:
+
+
+- up movement (u) = e^(σ * sqrt(t)) 
+- down movement (d) = 1 / u 
+- risk neutral probability (p) = (e^((r 
+- q) * t) 
+- d) / (u 
+- d) 
+- stock price at each node = S * u^j * d^(n 
+- j) 
+- call option price at expiration date = max(S 
+- K, 0) 
+- put option price at expiration date = max(K 
+- S, 0)
+
+For European Style options:
+
+
+- call option price at each node = (p * C_u + (1 
+- p) * C_d) * e^(-r * t) 
+- put option price at each node = (p * P_u + (1 
+- p) * P_d) * e^(-r * t)
+
+For American Style options:
+
+
+- call option price at each node = max(S 
+- K, (p * C_u + (1 
+- p) * C_d) * e^(-r * t)) 
+- put option price at each node = max(K 
+- S, (p * P_u + (1 
+- p) * P_d) * e^(-r * t))
+
+Where S is the stock price, K is the strike price, r is the risk free rate, σ is the volatility, t is the time to expiration, j is the number of up movements, n is the number of time steps, C_u is the call option price at the up movement, C_d is the call option price at the down movement, P_u is the put option price at the up movement and P_d is the put option price at the down movement.
+
+The resulting output is a DataFrame containing the tickers, strike prices and movements as the index and the time to expiration as the columns. The movements index contains the number of up movements and the number of down movements. The output is the binomial tree displayed in a table. E.g. when using 10 time steps, the table for each strike price from each company will contain the actual binomial tree as also depicted in the image found here: [https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method](https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method){:target="_blank"}
+
+**Args:**
+ - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+ which means it will use the most recent date.
+ - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
+ it will calculate the call option price.
+ - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+ 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
+ - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+ strike prices will be 75, 80, 85, 90, 95, 100, 105, 110, 115 and 120 if the current stock price is 100.
+ - <u>time_to_expiration (int):</u> The number of year to use for the time to expiration. Defaults to 1 which equals
+ one year.
+ - <u>timesteps (int):</u> The number of time steps to use for the binomial tree. Defaults to 10 which equals 10
+ time steps. This will be evenly distributed over the time to expiration.
+ - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None which
+ means it will use the current risk free rate.
+ - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
+ means it will use the dividend yield as obtained through annual historical data.
+ - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+
+ **Returns:**
+ pd.DataFrame: Binomial Trees values containing the tickers, strike prices and movements as the index and the
+ timesteps as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key=API_KEY)
+
+binomial_trees_model = toolkit.options.get_binomial_trees_model(
+start_date='2024-02-02'
+)
+
+binomial_trees_model.loc['AAPL', 140]
+{% endhighlight %}
+
+
+Which returns:
+
+| Movement | 2024-02-02 | 2024-03-09 | 2024-04-15 | 2024-05-21 | 2024-06-27 | 2024-08-02 | 2024-09-08 | 2024-10-14 | 2024-11-20 | 2024-12-26 | 2025-02-01 |
+ |:-----------|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|
+ | UUUUUUUUUU | 53.9518 | 69.0761 | 86.6159 | 106.476 | 128.56 | 152.858 | 179.496 | 208.695 | 240.695 | 275.76 | 314.18 |
+ | UUUUUUUUUD | nan | 39.3262 | 52.173 | 67.5522 | 85.3691 | 105.438 | 127.617 | 151.936 | 178.598 | 207.823 | 239.852 |
+ | UUUUUUUUDD | nan | nan | 26.8446 | 37.2767 | 50.3585 | 66.0853 | 84.2272 | 104.466 | 126.663 | 151.003 | 177.689 |
+ | UUUUUUUDDD | nan | nan | nan | 16.6633 | 24.5421 | 35.0986 | 48.5539 | 64.764 | 83.2271 | 103.482 | 125.698 |
+ | UUUUUUDDDD | nan | nan | nan | nan | 8.9417 | 14.216 | 21.9711 | 32.795 | 46.8998 | 63.7382 | 82.2161 |
+ | UUUUUDDDDD | nan | nan | nan | nan | nan | 3.7526 | 6.596 | 11.3548 | 18.9981 | 30.4984 | 45.85 |
+ | UUUUDDDDDD | nan | nan | nan | nan | nan | nan | 0.9457 | 1.9009 | 3.8207 | 7.6794 | 15.4353 |
+ | UUUDDDDDDD | nan | nan | nan | nan | nan | nan | nan | 0 | 0 | 0 | 0 |
+ | UUDDDDDDDD | nan | nan | nan | nan | nan | nan | nan | nan | 0 | 0 | 0 |
+ | UDDDDDDDDD | nan | nan | nan | nan | nan | nan | nan | nan | nan | 0 | 0 |
+ | DDDDDDDDDD | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | 0 |
+
+## get_stock_price_simulation
+Simulate the Stock Price based on the Binomial Model, a mathematical model used to estimate the price of European and American style options. It does so by creating a binomial tree of price paths for the underlying asset based on the stock price, volatility, risk free rate, dividend yield and time to expiration. The stock price is then simulated based on the up and down movements.
+
+By default the most recent risk free rate and stock price is used, you can alter this by changing the start date. The volatility is calculated based on the daily returns of the stock price and the selected period (this can be altered by defining this accordingly when defining the Toolkit class, start_date and end_date).
+
+The formulas are as follows:
+
+
+- up movement (u) = e^(σ * sqrt(t)) 
+- down movement (d) = 1 / u 
+- stock price at each node = S * u^j * d^(n 
+- j)
+
+Where S is the stock price, r is the risk free rate, σ is the volatility, t is the time to expiration, j is the number of up movements, n is the number of time steps.
+
+The resulting output is a DataFrame containing the tickers and movements as the index and the time to expiration as the columns. The movements index contains the number of up movements and the number of down movements. The output is the binomial tree displayed in a table. E.g. when using 10 time steps, the table from each company will contain the actual binomial tree's stock prices as also depicted in the image found here: [https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method](https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method){:target="_blank"}
+
+**Hint:** consider plotting the resulting DataFrame for each company to visualize the binomial tree. For example for below's example use `stock_price_simulation.loc['AMZN'].T.plot(legend=False)`
+
+**Args:**
+ - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+ which means it will use the most recent date.
+ - <u>time_to_expiration (int):</u> The number of year to use for the time to expiration. Defaults to 1 which equals
+ one year.
+ - <u>timesteps (int):</u> The number of time steps to use for the binomial tree. Defaults to 10 which equals 10
+ time steps. This will be evenly distributed over the time to expiration.
+ - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None which
+ means it will use the current risk free rate.
+ - <u>show_unique_combinations (bool, optional):</u> Whether to show the unique combinations of the stock prices.
+ Defaults to False.
+ - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+
+ **Returns:**
+ pd.DataFrame: Simulated Stock Price values containing the tickers and movements as the index and the
+ timesteps as the columns.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "ASML"], api_key=API_KEY)
+
+stock_price_simulation = toolkit.options.get_stock_price_simulation(
+start_date='2020-06-22', timesteps=4
+)
+
+stock_price_simulation.loc['AMZN']
+{% endhighlight %}
+
+
+Which returns:
+
+| Movement | 2020-06-22 | 2020-09-21 | 2020-12-21 | 2021-03-22 | 2021-06-22 |
+ |:-----------|-------------:|-------------:|-------------:|-------------:|-------------:|
+ | UUUU | 135.69 | 160.047 | 188.776 | 222.663 | 262.632 |
+ | UUUD | 135.69 | 160.047 | 188.776 | 222.663 | 188.776 |
+ | UUDU | 135.69 | 160.047 | 188.776 | 160.047 | 188.776 |
+ | UUDD | 135.69 | 160.047 | 188.776 | 160.047 | 135.69 |
+ | UDUU | 135.69 | 160.047 | 135.69 | 160.047 | 188.776 |
+ | UDUD | 135.69 | 160.047 | 135.69 | 160.047 | 135.69 |
+ | UDDU | 135.69 | 160.047 | 135.69 | 115.04 | 135.69 |
+ | UDDD | 135.69 | 160.047 | 135.69 | 115.04 | 97.5323 |
+ | DUUU | 135.69 | 115.04 | 135.69 | 160.047 | 188.776 |
+ | DUUD | 135.69 | 115.04 | 135.69 | 160.047 | 135.69 |
+ | DUDU | 135.69 | 115.04 | 135.69 | 115.04 | 135.69 |
+ | DUDD | 135.69 | 115.04 | 135.69 | 115.04 | 97.5323 |
+ | DDUU | 135.69 | 115.04 | 97.5323 | 115.04 | 135.69 |
+ | DDUD | 135.69 | 115.04 | 97.5323 | 115.04 | 97.5323 |
+ | DDDU | 135.69 | 115.04 | 97.5323 | 82.6891 | 97.5323 |
+ | DDDD | 135.69 | 115.04 | 97.5323 | 82.6891 | 70.1049 |
 
 ## collect_all_greeks
 Calculate all Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
