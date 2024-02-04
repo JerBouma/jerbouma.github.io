@@ -398,12 +398,14 @@ financetoolkit-docs-models:
         url:  /projects/financetoolkit/docs/models#get_weighted_average_cost_of_capital
       - title: Intrinsic Valuation
         url:  /projects/financetoolkit/docs/models#get_intrinsic_valuation
+      - title: Gorden Growth Model (GGM)
+        url:  /projects/financetoolkit/docs/models#get_gorden_growth_mode
       - title: Altman Z-Score
         url:  /projects/financetoolkit/docs/models#get_altman_z_score
       - title: Piotroski Score
         url:  /projects/financetoolkit/docs/models#get_piotroski_score
       - title: Present Value of Growth Opportunities (PVGO)
-        url:  /projects/financetoolkit/docs/models#get_present_value_of_growth_opportunities
+        url:  /projects/financetoolkit/docs/models#get_present_value_of_growth_opportunitiesl
 
 financetoolkit-docs-options:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
