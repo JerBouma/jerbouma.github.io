@@ -27,7 +27,6 @@ Where:
 - $$ \sigma $$ is the volatility of the underlying asset
 - $$ \Delta t $$ is the time step
 
-
 The tree is constructed by moving up and down from the current price of the underlying asset. For example, if $$ u $$ is equal to 1.1 and $$ d $$ is equal to 0.9, a tree with 3 time steps would look like this:
 
 {% raw %}
