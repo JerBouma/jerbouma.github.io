@@ -268,6 +268,34 @@
     }
   }
 
+  /* Dropdowns for the Navigation Menu */
+  .dropdown {
+    float: left;
+    width: auto;
+  }
+
+  .dropdown-content {
+    font-size: medium;
+    display: none;
+    position: absolute;
+    background-color: darken($background-color, 3%);
+    min-width: 160px;
+    box-shadow: $box-shadow;
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    padding: 10px 5px;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown-content a:not(:last-child){
+    border-bottom: none; 
+  }
+
   .hidden-links {
     position: absolute;
     top: 100%;

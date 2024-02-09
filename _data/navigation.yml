@@ -1,15 +1,37 @@
 # main links
 main:
-  - title: "About Me"
-    url: /
   - title: "Resume"
     url: /resume
   - title: "Projects"
     url: /projects
+    sublinks:
+      - title: "Finance Toolkit"
+        url: /projects/financetoolkit
+      - title: "Finance Database"
+        url: /projects/financedatabase
+      - title: "The Passive Investor"
+        url: /projects/thepassiveinvestor
+      - title: "Personal Finance"
+        url: /projects/personalfinance
+      - title: OpenBB Terminal
+        url: /projects/openbbterminal
   - title: "Modelling"
     url: /modelling
+    sublinks:
+      - title: Getting Started
+        url: /modelling/getting-started
+      - title: Setting up your Project
+        url: /modelling/setting-up-your-project
+      - title: Structure your Model
+        url: /modelling/structure-your-model
+      - title: Build your Model
+        url: /modelling/build-your-model
+      - title: Test your model
+        url: /modelling/test-your-model
   - title: "Appearances"
     url: /appearances
+  - title: "Articles"
+    url: /articles
   - title: "Contact"
     url: /contact
 resume:
@@ -111,7 +133,6 @@ financetoolkit:
     url: /projects/financetoolkit#questions--answers
   - title: Contributing
     url: /projects/financetoolkit#contributing
-
 financetoolkit-docs:
   - title: <p class="btn btn--x-large btn--info">Back to Homepage<p>
     url: /projects/financetoolkit
@@ -163,7 +184,6 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#get_cash_flow_statement
     - title: "Statistics Statements"
       url: /projects/financetoolkit/docs#get_statistics_statement
-
 financetoolkit-docs-discovery:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
@@ -382,7 +402,6 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_net_current_asset_value
       - title: EV to EBIT
         url: /projects/financetoolkit/docs/ratios#get_ev_to_ebit
-
 financetoolkit-docs-models:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
@@ -406,7 +425,6 @@ financetoolkit-docs-models:
         url:  /projects/financetoolkit/docs/models#get_piotroski_score
       - title: Present Value of Growth Opportunities (PVGO)
         url:  /projects/financetoolkit/docs/models#get_present_value_of_growth_opportunitiesl
-
 financetoolkit-docs-options:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
@@ -469,8 +487,6 @@ financetoolkit-docs-options:
         url: /projects/financetoolkit/docs/options#get_color
       - title: Ultima
         url: /projects/financetoolkit/docs/options#get_ultima
-
-
 financetoolkit-docs-technicals:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
@@ -552,7 +568,6 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_keltner_channels
       - title: Bollinger Bands
         url: /projects/financetoolkit/docs/technicals#get_bollinger_bands
-
 financetoolkit-docs-risk:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
@@ -576,7 +591,6 @@ financetoolkit-docs-risk:
       url:  /projects/financetoolkit/docs/risk#get_skewness
     - title: Kurtosis
       url:  /projects/financetoolkit/docs/risk#get_kurtosis
-
 financetoolkit-docs-performance:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
@@ -612,7 +626,6 @@ financetoolkit-docs-performance:
       url:  /projects/financetoolkit/docs/performance#get_information_ratio
     - title: Compound Growth Rate
       url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
-
 financetoolkit-docs-economics:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
@@ -724,7 +737,6 @@ financetoolkit-docs-economics:
         url: /projects/financetoolkit/docs/economics#get_population_statistics
       - title: Poverty Rate
         url: /projects/financetoolkit/docs/economics#get_poverty_rate
-
 thepassiveinvestor:
   - title: "Introduction"
     url: /projects/thepassiveinvestor
@@ -741,7 +753,6 @@ thepassiveinvestor:
         url: /projects/thepassiveinvestor#compare-etfs
       - title: "Generate an ETF Report"
         url: /projects/thepassiveinvestor#generate-an-etf-report
-
 personalfinance:
   - title: "Introduction"
     url: /projects/personalfinance
@@ -756,7 +767,6 @@ personalfinance:
         url: /projects/personalfinance/using-your-files
   - title: "Functionality"
     url: /projects/personalfinance#getting-started
-
 modelling:
   - title: "Introduction"
     url: /modelling
@@ -812,5 +822,8 @@ modelling:
         url: /modelling/build-your-model#creating-documentation
   - title: "Test your Model"
     url: /modelling/test-your-model
-
-
+articles:
+  - title: "Options"
+    children:
+      - title: Binomial Trees
+        url: /articles/binomial-trees
