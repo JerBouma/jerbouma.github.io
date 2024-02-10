@@ -4,6 +4,7 @@ permalink: /articles
 redirect_from: 
   - /categories
 author_profile: false
+excerpt: "This page includes a selection of articles I have written related to my open-source projects and financial background. It is meant to explain financial theory and how this theory can be directly applied in a variety of my open-source projects."
 classes: wide-sidebar
 sidebar:
   nav: "articles"
