@@ -36,7 +36,7 @@ main:
     url: /contact
 resume:
   - title: "Introduction"
-    url: /resume
+    url: /resume#site-nav
   - title: "Skills"
     url: /resume#skills
   - title: "Experience"
@@ -49,7 +49,7 @@ resume:
     url: /resume#testimonials
 financedatabase:
   - title: "Introduction"
-    url: /projects/financedatabase
+    url: /projects/financedatabase#site-nav
   - title: "Installation"
     url: /projects/financedatabase#installation
   - title: "How to Guides"
@@ -80,7 +80,7 @@ financedatabase:
     url: /projects/financedatabase#user-contributions
 financetoolkit:
   - title: Introduction
-    url: /projects/financetoolkit
+    url: /projects/financetoolkit#site-nav
   - title: "Installation"
     url: /projects/financetoolkit#installation
   - title: <font color="#d67f05">Code Documentation</font>
@@ -137,6 +137,7 @@ financetoolkit-docs:
   - title: <p class="btn btn--x-large btn--info">Back to Homepage<p>
     url: /projects/financetoolkit
   - title: Finance Toolkit
+    url: /projects/financetoolkit/docs#site-nav
     children:
     - title: "Ratios Module"
       url: /projects/financetoolkit/docs#ratios
