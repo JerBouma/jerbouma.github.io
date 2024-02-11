@@ -418,13 +418,13 @@ financetoolkit-docs-models:
       - title: Intrinsic Valuation
         url:  /projects/financetoolkit/docs/models#get_intrinsic_valuation
       - title: Gorden Growth Model (GGM)
-        url:  /projects/financetoolkit/docs/models#get_gorden_growth_mode
+        url:  /projects/financetoolkit/docs/models#get_gorden_growth_model
       - title: Altman Z-Score
         url:  /projects/financetoolkit/docs/models#get_altman_z_score
       - title: Piotroski Score
         url:  /projects/financetoolkit/docs/models#get_piotroski_score
       - title: Present Value of Growth Opportunities (PVGO)
-        url:  /projects/financetoolkit/docs/models#get_present_value_of_growth_opportunitiesl
+        url:  /projects/financetoolkit/docs/models#get_present_value_of_growth_opportunities
 financetoolkit-docs-options:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
@@ -434,6 +434,8 @@ financetoolkit-docs-options:
         url: /projects/financetoolkit/docs/options#get_option_chains
       - title: Black Scholes Model
         url: /projects/financetoolkit/docs/options#get_black_scholes_model
+      - title: Implied Volatility
+        url: /projects/financetoolkit/docs/options#get_implied_volatility
       - title: Binomial Model
         url: /projects/financetoolkit/docs/options#get_binomial_model
       - title: Stock Price Simulation
