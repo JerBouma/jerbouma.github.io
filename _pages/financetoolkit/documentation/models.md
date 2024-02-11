@@ -217,8 +217,7 @@ The formula is as follows:
 - Market Value of Equity = Share Price * Total Shares Outstanding 
 - Market Value of Debt = Total Debt 
 - Total Market Value = Market Value of Equity + Market Value of Debt 
-- Cost of Equity = Risk Free Rate + Beta * (Benchmark Return 
-- Risk Free Rate) 
+- Cost of Equity = Risk Free Rate + Beta * (Benchmark Return - Risk Free Rate) 
 - Cost of Debt = Interest Expense / Total Debt 
 - WACC = (Market Value of Equity / Total Market Value) * Cost of Equity + (Market Value of Debt / Total Market Value) * Cost of Debt * (1 - Corporate Tax Rate)
 
@@ -312,8 +311,7 @@ The Gordon Growth Model, also known as the Dividend Discount Model (DDM) with Co
 The formula is as follows:
 
 
-- Intrinsic Value = (Dividends Per Share * (1 + Growth Rate)) / (Rate of Return 
-- Growth Rate)
+- Intrinsic Value = (Dividends Per Share * (1 + Growth Rate)) / (Rate of Return - Growth Rate)
 
 The formula essentially discounts the future expected dividends to their present value, taking into account the required rate of return and the growth rate. The numerator represents the expected dividend in the next period. The denominator represents the required rate of return minus the growth rate.
 

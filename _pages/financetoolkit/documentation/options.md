@@ -203,7 +203,85 @@ Which returns:
  | 165 | 0.0001 | 0.0081 | 0.0378 | 0.0889 | 0.1563 | 0.235 | 0.3213 | 0.413 | 0.5081 | 0.6055 | 0.7043 | 0.804 | 0.9039 | 1.0039 | 1.1036 | 1.2029 | 1.3017 | 1.3999 | 1.4974 | 1.5941 | 1.69 | 1.7852 | 1.8795 | 1.973 | 2.0657 | 2.1576 | 2.2487 | 2.339 | 2.4285 |
  | 170 | 0 | 0.0001 | 0.0017 | 0.0079 | 0.0208 | 0.0412 | 0.0689 | 0.103 | 0.143 | 0.1879 | 0.237 | 0.2897 | 0.3454 | 0.4037 | 0.4641 | 0.5263 | 0.59 | 0.6549 | 0.721 | 0.7878 | 0.8555 | 0.9237 | 0.9923 | 1.0614 | 1.1307 | 1.2003 | 1.27 | 1.3398 | 1.4096 |
 
-## get_binomial_model
+## get_implied_volatility
+Calculate the Implied Volatility (IV) based on the Black Scholes Model and the actual option prices for any of the available expiration dates.
+
+Implied Volatility (IV) is a measure of how much the market expects the price of the underlying asset to fluctuate in the future. It is a key component of options pricing and can also be used to calculate the theoretical value of an option.
+
+By default the most recent risk free rate, dividend yield and stock price is used, you can alter this by changing the start date. The volatility is calculated based on the daily returns of the stock price and the selected period (this can be altered by defining this accordingly when defining the Toolkit class, start_date and end_date).
+
+The formulas are as follows:
+
+
+- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t)) 
+- d2 = d1 - σ * sqrt(t) 
+- Call Option Price = S * e^(-q * t) * N(d1) - K * e^(-r * t) * N(d2) 
+- Put Option Price = K * e^(-r * t) * N(-d2) - S * e^(-q * t) * N(-d1)
+
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
+
+In which the Implied Volatility is then calculated as follows:
+
+
+- Implied Volatility = MINIMIZE(Black Scholes Theoretical Price - Actual Option Price)
+
+To determine the Implied Volatility, the Black Scholes Model is used to calculate the theoretical option price in which sigma (σ) is the only unknown variable. The actual option price is then used to determine the implied volatility by minimizing the difference between the theoretical and actual option price.
+
+**Args:**
+ - <u>expiration_date (str | None, optional):</u> The expiration date to use for the calculation. Defaults to None
+ which means it will use the most recent expiration date.
+ - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
+ it will calculate the call option price.
+ - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None which
+ means it will use the current risk free rate.
+ - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
+ means it will use the dividend yield as obtained through annual historical data.
+ - <u>show_expiration_dates (bool, optional):</u> Whether to show the expiration dates. Defaults to False.
+ - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+
+ **Returns:**
+ pd.Series | list[str]: Implied Volatility values containing the tickers as the index and the expiration
+ dates as the columns. If show_expiration_dates is True, it will return a list of expiration dates.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["MSFT", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+implied_volatility = toolkit.options.get_implied_volatility()
+
+implied_volatility.loc['AAPL']
+{% endhighlight %}
+
+
+Which returns:
+
+| | 2024-02-09 |
+ |------:|-------------:|
+ | 162.5 | 0.2828 |
+ | 165 | 1.0238 |
+ | 167.5 | 0.7867 |
+ | 170 | 0.6984 |
+ | 172.5 | 0.6796 |
+ | 175 | 0.4611 |
+ | 177.5 | 0.4423 |
+ | 180 | 0.4154 |
+ | 182.5 | 0.3541 |
+ | 185 | 0.3506 |
+ | 187.5 | 0.3331 |
+ | 190 | 0.3329 |
+ | 192.5 | 0.3411 |
+ | 195 | 0.361 |
+ | 197.5 | 0.3833 |
+ | 200 | 0.4033 |
+ | 202.5 | 0.4477 |
+ | 205 | 0.4452 |
+ | 207.5 | 0.518 |
+
+## objective_function
 Calculate the Binomial Option Pricing Model, a mathematical model used to estimate the price of European and American style options. It does so by creating a binomial tree of price paths for the underlying asset, and then working backwards through the tree to determine the price of the option at each node.
 
 By default the most recent risk free rate, dividend yield and stock price is used, you can alter this by changing the start date. The volatility is calculated based on the daily returns of the stock price and the selected period (this can be altered by defining this accordingly when defining the Toolkit class, start_date and end_date).
@@ -263,7 +341,7 @@ The resulting output is a DataFrame containing the tickers, strike prices and mo
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key=API_KEY)
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 binomial_trees_model = toolkit.options.get_binomial_trees_model(
 start_date='2024-02-02'
