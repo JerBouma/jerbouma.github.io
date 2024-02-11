@@ -94,22 +94,26 @@ jobs:
                         example_result = (
                             example_result_match.group(0) if example_result_match else ""
                         )
-            
-                        functions_with_docstrings.append(
-                            {
-                                "function_name": function_name,
-                                "description": re.sub(" +", " ", description.strip())
-                                .replace("\n ", " ") # Deal with new lines due to PEP line length
-                                .replace("\n ", "\n\n") # Allow for proper spacing
-                                .replace("-", "\n-") # Create lists based on the dashes
-                                .replace("—", "-"), # Replace the em dash that was used in formulas
-                                "arguments": re.sub(" +", " ", arguments.strip()),
-                                "example_code": re.sub(" +", " ", example_code.strip()).replace(
-                                    "\n ", "\n"
-                                ),
-                                "example_result": re.sub(" +", " ", example_result.strip()),
-                            }
-                        )
+
+                        if function_name == 'objective_function':
+                            # Method to exclude functions that are nested inside another function
+                            continue
+                        else:
+                            functions_with_docstrings.append(
+                                {
+                                    "function_name": function_name,
+                                    "description": re.sub(" +", " ", description.strip())
+                                    .replace("\n ", " ") # Deal with new lines due to PEP line length
+                                    .replace("\n ", "\n\n") # Allow for proper spacing
+                                    .replace("-", "\n-") # Create lists based on the dashes
+                                    .replace("—", "-"), # Replace the em dash that was used in formulas
+                                    "arguments": re.sub(" +", " ", arguments.strip()),
+                                    "example_code": re.sub(" +", " ", example_code.strip()).replace(
+                                        "\n ", "\n"
+                                    ),
+                                    "example_result": re.sub(" +", " ", example_result.strip()),
+                                }
+                            )
             
                 markdown_content = header
             
