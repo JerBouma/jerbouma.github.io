@@ -8,7 +8,7 @@ author_profile: false
 ---
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width" markdown="1">
-When I discovered Python during my time in University, I was immediately captivated by its incredible versatility in the financial domain. Since then, I have devoted countless hours to programming in this language, whether it's developing internal models for companies like A.S.R. and PGGM or contributing to open-source projects (as demonstrated on this page). Witnessing the repetition of models and calculations within financial institutions has made me a strong advocate for open-source, as it liberates individuals and firms from relying solely on proprietary models.
+When I discovered Python during my time in University, I was immediately captivated by its incredible versatility in the financial domain. Since then, I have devoted countless hours to programming in this language, whether it's developing internal models for companies like a.s.r. asset management and PGGM or contributing to open-source projects (as demonstrated on this page). Witnessing the repetition of models and calculations within financial institutions has made me a strong advocate for open-source, as it liberates individuals and firms from relying solely on proprietary models.
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width" markdown="1">
 

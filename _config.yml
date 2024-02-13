@@ -20,7 +20,7 @@ title                    : "Jeroen Bouma"
 title_separator          : "|"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Jeroen Bouma"
-description              : "I'm Jeroen Bouma, a Financial Risk Analyst at A.S.R and Python Enthusiast. This website is dedicated to my open-source Python projects, resume and more."
+description              : "I'm Jeroen Bouma, a Quantitative Investment Strategist at A.S.R and Python Enthusiast. This website is dedicated to my open-source Python projects, resume and more."
 url                      : "https://www.jeroenbouma.com/" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "JerBouma/jerbouma.github.io"
@@ -120,7 +120,7 @@ author:
   name             : "Jeroen Bouma"
   avatar           : "/assets/images/default/bio-photo.jpg"
   bio              : "With Experience and Education in the areas of (Quantitative) Finance and Economics, my ambition is to continuously improve in the fields of Quant Finance and Python Programming"
-  location         : "Financial Risk Analyst at A.S.R."
+  location         : 
   email            : "jer.bouma@gmail.com"
   links:
     - label: "LinkedIn"

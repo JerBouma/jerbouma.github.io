@@ -5,12 +5,12 @@ redirect_from:
 classes: wide-sidebar
 title: About Me
 layout: home
-excerpt: I'm Jeroen Bouma, a Financial Risk Analyst at A.S.R and Python Enthusiast. This website is dedicated to my open-source Python projects, resume and more.
+excerpt: I'm Jeroen Bouma, a Quantitative Investment Strategist at a.s.r. asset management and Python Enthusiast. This website is dedicated to my open-source Python projects, resume and more.
 ---
 
 ![Bio Image](/assets/images/default/bio-photo.jpg){: .about-bio-image .display-about-bio-image}
 
-I'm Jeroen Bouma, a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:target="_blank"}, one of the largest Dutch insurance companies with over €120 billion AUM. I analyze profitability and investment risks in different risk frameworks (Solvency II and internal models), provide insights into portfolio sensitivities and their relationship with liabilities, assess the impact of month-to-month changes and offer a major contribution to the development of Python models for improved valuation and financial risk measurement.
+I'm Jeroen Bouma, a Quantitative Investment Strategist at [a.s.r. asset management](https://www.asrnl.com/){:target="_blank"}, one of the largest Dutch insurance companies with over €120 billion AUM. I am responsible for spearheading innovative initiatives within the asset management divisions by utilizing Python, particularly in portfolio analytics and optimization. Furthermore, I conduct Asset Liability Management (ALM) and Strategic Asset Allocation (SAA) analyses, encompassing a spectrum of topics including hedging strategies, liquidity risk management, Solvency II optimization, and asset-only studies.
 
 <div class="about-row display-about-bio-image">
 <div markdown="1" class="about-buttons-column">
@@ -36,7 +36,7 @@ I'm Jeroen Bouma, a Financial Risk Analyst at [A.S.R.](https://www.asrnl.com/){:
 </div>
 
 
-I joined A.S.R. after working at [OpenBB](https://openbb.co/){:target="_blank"}, an innovative open-source company transforming investment research, and [PGGM](https://www.pggm.nl/en/){:target="_blank"}, a prominent Dutch pension fund managing over €300 billion. What ties these experiences together, and reflects my own passion, is the incorporation of (advanced) Python modeling within Quantitative Finance.
+I joined a.s.r. asset management. after working at [OpenBB](https://openbb.co/){:target="_blank"}, an innovative open-source company transforming investment research, and [PGGM](https://www.pggm.nl/en/){:target="_blank"}, a prominent Dutch pension fund managing over €300 billion. What ties these experiences together, and reflects my own passion, is the incorporation of (advanced) Python modeling within Quantitative Finance.
 
 I thrive in the realm where advanced financial modeling meets making sense of the financial markets. The financial world is primarily shaped by human behavior and often driven by emotions rather than rationality. As predicting the future is incredibly challenging, if not impossible, and investment approaches needing to rely on current and past observations, it opens up room for extensive discussions around assumptions, input for econometric models, and interpretation of their model's output. This intersection captivates me the most and has been a consistent theme throughout my academic and professional journey.
 

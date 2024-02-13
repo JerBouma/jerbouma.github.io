@@ -19,7 +19,7 @@ I am strongly analytical, have a keen sense of long-term investment strategy and
 
 Furthermore, throughout the last several years I’ve spent thousands of hours developing in Python in the areas of quantitative and statistical modelling, and data science. Find all of my currently active open-source projects inside the <a href="/projects">projects page</a> which include the Finance Database and Financial Toolkit with both well over 1.000 GitHub Stars as well as the OpenBB Terminal in which I am one of the leading contributors with major contributions in the area of fundamental analysis, economics, fixed income and econometrics.
 
-All of this comes together within my current role as Financial Risk Analyst at A.S.R, one of the largest insurance companies in the Netherlands. Within this role, I analyze profitability and investment risks in different risk frameworks (Solvency II and internal models), provide insights into portfolio sensitivities and their relationship with liabilities, assess the impact of month-to-month changes and contribute to the development of Python models for improved valuation and financial risk measurement.
+All of this comes together within my current role as Quantitative Investment Strategist at a.s.r. asset management, one of the largest insurance companies in the Netherlands. Within this role, I am responsible for spearheading innovative initiatives within the asset management divisions by utilizing Python, particularly in portfolio analytics and optimization. Furthermore, I conduct Asset Liability Management (ALM) and Strategic Asset Allocation (SAA) analyses, encompassing a spectrum of topics including hedging strategies, liquidity risk management, Solvency II optimization, and asset-only studies.
 
 </div>
 
@@ -201,9 +201,22 @@ This section includes all my skills and the level of proficiency I have in each 
 
 ## Experience
 
-**A.S.R. — Financial Risk Analyst**
+**a.s.r. asset management — Quantitative Investment Strategist**
 
-June 2023 – Present
+February 2024 – Present
+
+<div class="row">
+<div markdown="1" class="eighty-column-left">
+As a Quantitative Investment Strategist, my role involves spearheading innovative initiatives within the asset management divisions by utilizing Python, particularly in portfolio analytics and optimization. Additionally, I analyze profitability and investment risks across different risk frameworks (Solvency II and internal models), provide perspectives into portfolio sensitivities and their relationship with liabilities, and apply Artificial Intelligence (AI) to uncover new insights. Moreover, I conduct Asset Liability Management (ALM) and Strategic Asset Allocation (SAA) analyses, encompassing a spectrum of topics including hedging strategies, liquidity risk management, Solvency II optimization, and asset-only studies.
+</div>
+<div markdown="1" class="twenty-column-right">
+<img src="assets/images/resume/asr.png"> 
+</div>
+</div>
+
+**a.s.r. asset management — Financial Risk Analyst**
+
+June 2023 – February 2024
 
 <div class="row">
 <div markdown="1" class="eighty-column-left">
