@@ -69,7 +69,7 @@ This is quickly reflected when looking for a S&P 500 ETF as there are over 20 di
 [View this Project](/projects/thepassiveinvestor){: .btn .btn--info}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="/projects/thepassiveinvestor"><img src="https://raw.githubusercontent.com/JerBouma/ThePassiveInvestor/master/Images/outputExample.gif" width="400"></a>
+<a href="/projects/thepassiveinvestor"><img src="https://github.com/JerBouma/ThePassiveInvestor/assets/46355364/48f40d07-bbc7-47c0-ae22-9cdb30a9308f" width="400"></a>
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=thepassiveinvestor)](/projects/thepassiveinvestor)
 
 [![PyPi Version](https://img.shields.io/pypi/v/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/){:target="_blank"}
