@@ -326,7 +326,9 @@ sidebar:
     nav: "financetoolkit-docs-options"
 ---
 
-The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden—Litzenberger and more.To install the FinanceToolkit it simply requires the following:
+The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden—Litzenberger and more.
+
+To install the FinanceToolkit it simply requires the following:
 
 {% include code_header.html %}
 {% highlight bash %}
