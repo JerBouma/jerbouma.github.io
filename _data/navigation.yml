@@ -686,6 +686,16 @@ financetoolkit-docs-economics:
       url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
     - title: Secured Overnight Financing Rate (FED)
       url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
+  - title: Fixed Income
+    children:
+    - title: Option Adjusted Spread (OAS)
+      url: /projects/financetoolkit/docs/economics#get_option_adjusted_spread
+    - title: Effective Yield
+      url: /projects/financetoolkit/docs/economics#get_effective_yield
+    - title: Total Return
+      url: /projects/financetoolkit/docs/economics#get_total_return
+    - title: Yield to Worst
+      url: /projects/financetoolkit/docs/economics#get_yield_to_worst
   - title: Environment
     children:
       - title: Renewable Energy as % of Total Energy
