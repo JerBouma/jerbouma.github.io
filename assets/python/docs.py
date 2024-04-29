@@ -142,7 +142,7 @@ pip install financetoolkit -U
 
 The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These are historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
 
-If you are looking for documentation regarding the discovery, ratios, models, technical indicators, risk metrics, performance metrics and economic indicators, please have a look below:
+If you are looking for documentation regarding the discovery, ratios, models, technical indicators, fixed income, risk metrics, performance metrics and economic indicators, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--warning" style="flex: 1;margin-right:5px">Toolkit</a>
@@ -151,6 +151,7 @@ If you are looking for documentation regarding the discovery, ratios, models, te
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
@@ -191,7 +192,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, ratios, models, technicals, risk, performance and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, ratios, models, technicals, fixed income, risk, performance and economics, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
@@ -200,6 +201,7 @@ If you are looking for documentation regarding the toolkit, ratios, models, tech
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
@@ -239,7 +241,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, discovery, models, technicals, risk, performance and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, models, technicals, fixed income, risk, performance and economics, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
@@ -248,6 +250,7 @@ If you are looking for documentation regarding the toolkit, discovery, models, t
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
@@ -287,7 +290,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, technicals, risk, performance and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, ratios, technicals, fixed income, risk, performance and economics, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
@@ -296,6 +299,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, t
     <a href="/projects/financetoolkit/docs/models" class="btn btn--warning" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
@@ -335,7 +339,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, technicals, risk, performance and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, ratios, technicals, fixed income, risk, performance and economics, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
@@ -344,6 +348,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, t
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/options" class="btn btn--warning" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
@@ -383,7 +388,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, models, risk, performance and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, ratios, models, fixed income, risk, performance and economics, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
@@ -392,6 +397,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--warning" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
@@ -405,6 +411,55 @@ create_markdown_file(
     file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/technicals/technicals_controller.py",
     header=markdown_content,
     location="_pages/financetoolkit/documentation/technicals.md",
+)
+
+# Create the Fixed Income page
+markdown_content = """---
+title: Fixed Income
+excerpt: The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions. 
+description: The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions. 
+author_profile: false
+permalink: /projects/financetoolkit/docs/fixedincome
+classes: wide-sidebar
+layout: single
+redirect_from:
+    - /fixedincome
+sidebar:
+    nav: "financetoolkit-docs-fixedincome"
+---
+
+The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions. 
+
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
+
+If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, risk, performance and economics, please have a look below:
+
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
+    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;margin-right:5px">Discovery</a>
+    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;margin-right:5px">Ratios</a>
+    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
+    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--warning" style="flex: 1;margin-right:5px">Fixed Income</a>
+    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
+    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
+    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
+</div>
+
+{% include algolia.html %}
+
+"""
+
+create_markdown_file(
+    file_url="https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/fixedincome/fixedincome_controller.py",
+    header=markdown_content,
+    location="_pages/financetoolkit/documentation/fixedincome.md",
 )
 
 # Create the Risk page
@@ -430,7 +485,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, performance and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, fixed income, performance and economics, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
@@ -439,6 +494,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--warning" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
@@ -477,7 +533,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, risk and economics, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, fixed income, risk and economics, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
@@ -486,6 +542,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--warning" style="flex: 1;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
@@ -525,7 +582,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 {% endhighlight %}
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, risk and performance, please have a look below:
+If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, fixed income, risk and performance, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;margin-right:5px">Toolkit</a>
@@ -534,6 +591,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--warning" style="flex: 1; ">Economics</a>

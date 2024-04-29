@@ -629,6 +629,58 @@ financetoolkit-docs-performance:
       url:  /projects/financetoolkit/docs/performance#get_information_ratio
     - title: Compound Growth Rate
       url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
+financetoolkit-docs-fixedincome:
+  - title: Bond Valuations
+    children:
+    - title: General Statistics
+      url: /projects/financetoolkit/docs/fixedincome#collect_bond_statistics
+    - title: Present Value
+      url: /projects/financetoolkit/docs/fixedincome#get_present_value
+    - title: Duration Metrics
+      url: /projects/financetoolkit/docs/fixedincome#get_duration
+    - title: Yield to Maturity
+      url: /projects/financetoolkit/docs/fixedincome#get_yield_to_maturity
+  - title: Derivative Valuations
+    children:
+    - title: Black Model
+      url: /projects/financetoolkit/docs/fixedincome#get_derivative_price
+    - title: Bachelier Model
+      url: /projects/financetoolkit/docs/fixedincome#get_derivative_price
+  - title: Government Bonds
+    - title: 3-Month Government Bond Yield
+      url:  /projects/financetoolkit/docs/fixedincome#get_government_bond_yield
+    - title: 10 Year Government Bond Yield
+      url:  /projects/financetoolkit/docs/fixedincome#get_government_bond_yield
+  - title: Central Banks
+    children:
+    - title: Main Refinancing Operations (ECB)
+      url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates
+    - title: Marginal Lending Facility (ECB)
+      url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates
+    - title: Deposit Facility (ECB)
+      url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates
+    - title: Effective Federal Funds Rate (FED)
+      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
+    - title: Overnight Bank Funding Rate (FED)
+      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
+    - title: Tri-Party General Collateral Rate (FED)
+      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
+    - title: Broad General Collateral Rate (FED)
+      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
+    - title: Secured Overnight Financing Rate (FED)
+      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
+    - title: Euribor Rates
+      url: /projects/financetoolkit/docs/fixedincome#get_euribor_rates
+  - title: Corporate Bonds
+    children:
+    - title: Option Adjusted Spread (OAS)
+      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_option_adjusted_spread
+    - title: Effective Yield
+      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_effective_yield
+    - title: Total Return
+      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_total_return
+    - title: Yield to Worst
+      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_yield_to_worst
 financetoolkit-docs-economics:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
@@ -668,34 +720,6 @@ financetoolkit-docs-economics:
       url:  /projects/financetoolkit/docs/economics#get_purchasing_power_parity
     - title: Exchange Rates
       url:  /projects/financetoolkit/docs/economics#get_exchange_rates
-  - title: Central Banks
-    children:
-    - title: Main Refinancing Operations (ECB)
-      url: /projects/financetoolkit/docs/economics#get_european_central_bank_rates
-    - title: Marginal Lending Facility (ECB)
-      url: /projects/financetoolkit/docs/economics#get_european_central_bank_rates
-    - title: Deposit Facility (ECB)
-      url: /projects/financetoolkit/docs/economics#get_european_central_bank_rates
-    - title: Effective Federal Funds Rate (FED)
-      url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
-    - title: Overnight Bank Funding Rate (FED)
-      url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
-    - title: Tri-Party General Collateral Rate (FED)
-      url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
-    - title: Broad General Collateral Rate (FED)
-      url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
-    - title: Secured Overnight Financing Rate (FED)
-      url: /projects/financetoolkit/docs/economics#get_federal_reserve_rates
-  - title: Fixed Income
-    children:
-    - title: Option Adjusted Spread (OAS)
-      url: /projects/financetoolkit/docs/economics#get_option_adjusted_spread
-    - title: Effective Yield
-      url: /projects/financetoolkit/docs/economics#get_effective_yield
-    - title: Total Return
-      url: /projects/financetoolkit/docs/economics#get_total_return
-    - title: Yield to Worst
-      url: /projects/financetoolkit/docs/economics#get_yield_to_worst
   - title: Environment
     children:
       - title: Renewable Energy as % of Total Energy
