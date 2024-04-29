@@ -652,10 +652,22 @@ financetoolkit-docs-fixedincome:
     children:
     - title: 3-Month Government Bond Yield
       url:  /projects/financetoolkit/docs/fixedincome#get_government_bond_yield
-    - title: 10 Year Government Bond Yield
+    - title: 10-Year Government Bond Yield
       url:  /projects/financetoolkit/docs/fixedincome#get_government_bond_yield
+  - title: Corporate Bonds
+    children:
+    - title: Option Adjusted Spread (OAS)
+      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_option_adjusted_spread
+    - title: Effective Yield
+      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_effective_yield
+    - title: Total Return
+      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_total_return
+    - title: Yield to Worst
+      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_yield_to_worst
   - title: Central Banks
     children:
+    - title: Euro Interbank Offered Rate (Euribor) Rates
+      url: /projects/financetoolkit/docs/fixedincome#get_euribor_rates
     - title: Main Refinancing Operations (ECB)
       url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates
     - title: Marginal Lending Facility (ECB)
@@ -672,18 +684,6 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
     - title: Secured Overnight Financing Rate (FED)
       url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
-    - title: Euribor Rates
-      url: /projects/financetoolkit/docs/fixedincome#get_euribor_rates
-  - title: Corporate Bonds
-    children:
-    - title: Option Adjusted Spread (OAS)
-      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_option_adjusted_spread
-    - title: Effective Yield
-      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_effective_yield
-    - title: Total Return
-      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_total_return
-    - title: Yield to Worst
-      url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_yield_to_worst
 financetoolkit-docs-economics:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs

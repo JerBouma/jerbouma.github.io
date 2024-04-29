@@ -209,6 +209,9 @@ value_at_risk = companies.risk.get_value_at_risk(period="weekly")
 # a Technical example
 ichimoku_cloud = companies.technicals.get_ichimoku_cloud()
 
+# a Fixed Income example
+corporate_bond_yields = companies.fixed_income.get_ice_bofa_effective_yield()
+
 # an Economics example
 unemployment_rates = companies.economics.get_unemployment_rate()
 ````
@@ -344,6 +347,22 @@ Get the Ichimoku Cloud parameters based on the historical market data. This can 
 And below the Ichimoku Cloud parameters are plotted for Apple and Microsoft side-by-side.
 
 ![Technicals](https://github.com/JerBouma/FinanceToolkit/assets/46355364/1ced5b34-2410-4206-8ddf-bb053bcb21b2)
+
+### Obtaining Fixed Income Metrics
+
+Get access to the ICE BofA Corporate Bond benchmark indices and a variety of other bond and derivative related valuations within the `fixedincome` module. For example, see the Effective Yield for the ICE BofA Corporate Bond Index below for each Credit Rating:
+
+| Date       |    AAA |     AA |      A |    BBB |     BB |      B |    CCC |
+|:-----------|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
+| 2024-04-19 | 0.0518 | 0.0532 | 0.0561 | 0.0594 | 0.0678 | 0.0804 | 0.1385 |
+| 2024-04-22 | 0.0517 | 0.0532 | 0.056  | 0.0593 | 0.0671 | 0.0793 | 0.1377 |
+| 2024-04-23 | 0.0514 | 0.0528 | 0.0556 | 0.0589 | 0.066  | 0.0777 | 0.1364 |
+| 2024-04-24 | 0.0518 | 0.0531 | 0.0559 | 0.0592 | 0.0664 | 0.0778 | 0.1361 |
+| 2024-04-25 | 0.0524 | 0.0537 | 0.0564 | 0.0598 | 0.0673 | 0.079  | 0.1368 |
+
+And below Effective Yields, Option-Adjusted Spreads (OAS), Yield to Worst and Total Returns are plotted over time for the different maturity periods.
+
+![Fixed Income](https://github.com/JerBouma/FinanceToolkit/assets/46355364/816cf251-4152-4341-a08e-a36268f5f721)
 
 ### Understanding Key Economic Indicators
 
