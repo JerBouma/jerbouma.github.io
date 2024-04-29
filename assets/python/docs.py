@@ -457,7 +457,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
 """
 
 create_markdown_file(
-    file_url="https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/fixedincome/fixedincome_controller.py",
+    file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/fixedincome/fixedincome_controller.py",
     header=markdown_content,
     location="_pages/financetoolkit/documentation/fixedincome.md",
 )

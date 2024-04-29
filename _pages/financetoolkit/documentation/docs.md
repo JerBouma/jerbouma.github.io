@@ -23,7 +23,7 @@ pip install financetoolkit -U
 
 The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These are historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
 
-If you are looking for documentation regarding the discovery, ratios, models, technical indicators, risk metrics, performance metrics and economic indicators, please have a look below:
+If you are looking for documentation regarding the discovery, ratios, models, technical indicators, fixed income, risk metrics, performance metrics and economic indicators, please have a look below:
 
 <div style="display: flex; justify-content: space-between;" class="show-on-desktop">
     <a href="/projects/financetoolkit/docs" class="btn btn--warning" style="flex: 1;margin-right:5px">Toolkit</a>
@@ -32,6 +32,7 @@ If you are looking for documentation regarding the discovery, ratios, models, te
     <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;margin-right:5px">Models</a>
     <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;margin-right:5px">Options</a>
     <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1; ">Economics</a>
