@@ -666,23 +666,23 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_yield_to_worst
   - title: Central Banks
     children:
-    - title: Euro Interbank Offered Rate (Euribor) Rates
+    - title: Euro Interbank Offered Rate (Euribor)
       url: /projects/financetoolkit/docs/fixedincome#get_euribor_rates
+    - title: Secured Overnight Financing Rate (SOFR)
+      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
     - title: Main Refinancing Operations (ECB)
       url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates
     - title: Marginal Lending Facility (ECB)
       url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates
     - title: Deposit Facility (ECB)
       url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates
-    - title: Effective Federal Funds Rate (FED)
+    - title: Effective Federal Funds Rate (EFFR)
       url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
-    - title: Overnight Bank Funding Rate (FED)
+    - title: Overnight Bank Funding Rate (OBFR)
       url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
-    - title: Tri-Party General Collateral Rate (FED)
+    - title: Tri-Party General Collateral Rate (TGCR)
       url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
-    - title: Broad General Collateral Rate (FED)
-      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
-    - title: Secured Overnight Financing Rate (FED)
+    - title: Broad General Collateral Rate (BGCR)
       url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
 financetoolkit-docs-economics:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
