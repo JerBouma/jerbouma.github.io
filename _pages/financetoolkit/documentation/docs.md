@@ -188,7 +188,7 @@ This gives access to the Options module. The Options Module is meant to provide 
 -order and third
 -order Greeks such as Delta, Gamma, Theta, Vega, Rho, Charm, Vanna, Vomma, Veta, Speed and Zomma.
 
-It gives insights in the sensitivity of an option to changes in the underlying asset price, volatility, time to maturity, dividend yilds and interest rates and several derivatives of these sensitivities.
+It gives insights in the sensitivity of an option to changes in the underlying asset price, volatility, years to maturity, dividend yilds and interest rates and several derivatives of these sensitivities.
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/options](https://www.jeroenbouma.com/projects/financetoolkit/docs/options){:target="_blank"}
 
@@ -321,6 +321,44 @@ Which returns:
  | 2021 | 1.3179 | 0.8797 |
  | 2022 | -0.8026 | -1.0046 |
  | 2023 | 1.8549 | 1.8238 |
+
+## fixedincome
+This gives access to the Fixed Income module. This module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration, the Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
+
+Next to that, it is also possible to acquire Central Bank Rates and ICE BofA Indices such as the ICE BofA US High Yield Index, the ICE BofA US Corporate Index and the ICE BofA US Treasury Index.
+
+Note that this class can also be directly accessed by importing the FixedIncome class directly via from financetoolkit import FixedIncome. This is useful if you only want to use the FixedIncome class and not the other classes within the Toolkit module.
+
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome){:target="_blank"}
+
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(
+start_date='2024-01-01',
+end_date='2024-01-15',
+)
+
+fixedincome.get_effective_yield(maturity=False)
+{% endhighlight %}
+
+
+Which returns:
+
+| Date | AAA | AA | A | BBB | BB | B | CCC |
+ |:-----------|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
+ | 2024-01-01 | 0.0456 | 0.047 | 0.0505 | 0.054 | 0.0613 | 0.0752 | 0.1319 |
+ | 2024-01-02 | 0.0459 | 0.0473 | 0.0509 | 0.0543 | 0.0622 | 0.0763 | 0.1333 |
+ | 2024-01-03 | 0.0459 | 0.0474 | 0.051 | 0.0544 | 0.0634 | 0.0779 | 0.1358 |
+ | 2024-01-04 | 0.0466 | 0.0481 | 0.0518 | 0.0551 | 0.0639 | 0.0784 | 0.1367 |
+ | 2024-01-05 | 0.047 | 0.0485 | 0.0521 | 0.0554 | 0.0641 | 0.0787 | 0.137 |
+ | 2024-01-08 | 0.0465 | 0.0481 | 0.0517 | 0.055 | 0.0633 | 0.0776 | 0.1365 |
+ | 2024-01-09 | 0.0464 | 0.048 | 0.0516 | 0.0548 | 0.0629 | 0.0771 | 0.1359 |
+ | 2024-01-10 | 0.0464 | 0.048 | 0.0515 | 0.0547 | 0.0622 | 0.0762 | 0.1351 |
+ | 2024-01-11 | 0.0456 | 0.0472 | 0.0507 | 0.054 | 0.0619 | 0.076 | 0.1344 |
+ | 2024-01-12 | 0.0451 | 0.0467 | 0.0502 | 0.0534 | 0.0613 | 0.0753 | 0.1338 |
+ | 2024-01-15 | 0.0451 | 0.0467 | 0.0501 | 0.0533 | 0.0611 | 0.0751 | 0.1328 |
 
 ## economics
 This gives access to the Economics module. This module contains a wide variety of economic data obtained from OECD. These include things such as the Consumer Price Index (CPI), the Producer Price Index (PPI), the Unemployment Rate, the GDP Growth Rate, the Long and Short Term Interest Rate and the Consumer Confidence Index.
