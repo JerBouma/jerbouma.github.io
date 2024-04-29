@@ -155,6 +155,8 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#risk
     - title: "Performance Module"
       url: /projects/financetoolkit/docs#performance
+    - title: "Fixed Income Module"
+      url: /projects/financetoolkit/docs#fixedincome
     - title: "Economics Module"
       url: /projects/financetoolkit/docs#economics
     - title: "Company Profiles"
