@@ -104,6 +104,8 @@ financetoolkit:
         url: /projects/financetoolkit/risk-module
       - title: Performance Module
         url: /projects/financetoolkit/performance-module
+      - title: Fixed Income Module
+        url: /projects/financetoolkit/fixed-income-module
       - title: Economics Module
         url: /projects/financetoolkit/economics-module
       - title: External Datasets
@@ -127,6 +129,8 @@ financetoolkit:
         url: /projects/financetoolkit#obtaining-risk-metrics
       - title: Technical Indicators
         url: /projects/financetoolkit#obtaining-technical-indicators
+      - title: Fixed Income Metrics
+        url: /projects/financetoolkit#obtaining-fixed-income-metrics
       - title: Key Economic Indicators
         url: /projects/financetoolkit#understanding-key-economic-indicators
   - title: Questions & Answers

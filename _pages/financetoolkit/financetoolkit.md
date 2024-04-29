@@ -149,7 +149,18 @@ The Performance module is meant to calculate important performance metrics such 
 </div>
 </div>
 
+<div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
+
+### Fixed Income Module
+
+The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
+
+[Open the Notebook](/projects/financetoolkit/fixed-income-module){: .btn .btn--info}
+
+</div>
+
+<div markdown="1" class="fifty-column-right mobile-max-column-width">
 
 ### Economics Module
 
@@ -158,18 +169,13 @@ The Economics module gives insights for 60+ countries into key economic indicato
 [Open the Notebook](/projects/financetoolkit/economics-module){: .btn .btn--info}
 
 </div>
-
-<div class="row">
-<div markdown="1" class="fifty-column-right mobile-max-column-width">
+</div>
 
 ### External Datasets
 
 The Finance Toolkit has the ability to leverage custom datasets from any data provider as well. This makes it possible to work with your preferred data and not be limited to the data source the Finance Toolkit currently provides. With this, it is possible to work with datasets from Yahoo Finance, OpenBB, Quandl, EODH, Bloomberg and much more.
 
 [Open the Notebook](/projects/financetoolkit/external-datasets){: .btn .btn--info}
-
-</div>
-</div>
 
 ## Basic Usage
 
