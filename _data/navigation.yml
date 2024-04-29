@@ -630,6 +630,8 @@ financetoolkit-docs-performance:
     - title: Compound Growth Rate
       url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
 financetoolkit-docs-fixedincome:
+  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
+    url: /projects/financetoolkit/docs
   - title: Bond Valuations
     children:
     - title: General Statistics
@@ -647,6 +649,7 @@ financetoolkit-docs-fixedincome:
     - title: Bachelier Model
       url: /projects/financetoolkit/docs/fixedincome#get_derivative_price
   - title: Government Bonds
+    children:
     - title: 3-Month Government Bond Yield
       url:  /projects/financetoolkit/docs/fixedincome#get_government_bond_yield
     - title: 10 Year Government Bond Yield
