@@ -1427,6 +1427,56 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 toolkit.technicals.get_triangular_moving_average()
 {% endhighlight %}
 
+## get_support_resistance_levels
+Retrieves the support and resistance levels for the specified period and assets.
+
+The Support and Resistance Levels are price levels where the price tends to stop and reverse.
+
+
+- Support Levels: These are the valleys where the price tends to stop going down and may start to go up. Think of support levels as "floors" that the price has trouble falling below. 
+- Resistance Levels: These are the peaks where the price tends to stop going up and may start to go down. Think of resistance levels as "ceilings" that the price has trouble breaking through.
+
+It does so by:
+
+
+- Looking for Peaks and Valleys: The function looks at the stock prices and finds the high points (peaks) and low points (valleys) over time. 
+- Grouping Similar Peaks and Valleys: Sometimes, prices will stop at similar points multiple times. The function groups these similar peaks and valleys together to identify key resistance and support levels.
+
+**Args:**
+ - <u>sensitivity (float, optional):</u> The sensitivity parameter to determine the significance of the peaks
+ and valleys. A higher sensitivity value will result in fewer support and resistance levels
+ being identified. Defaults to 0.05.
+ - <u>period (str, optional):</u> The time period to consider for historical data.
+ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
+ - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
+ Defaults to "Adj Close".
+ - <u>window (int, optional):</u> Number of periods for calculating support and resistance levels.
+ The number of periods (time intervals) over which to calculate the support and resistance levels.
+ Defaults to 14.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+ If None, the rounding value specified during the initialization of the Toolkit instance will be used.
+ Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: The support and resistance levels for each asset.
+
+ **Raises:**
+ ValueError: If the specified `period` is not one of the valid options.
+
+ **Notes:**
+ - The method retrieves historical data based on the specified `period` and calculates the
+ support and resistance levels for each asset in the Toolkit instance.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(tickers=["AAPL", "MSFT"])
+
+support_resistance_levels = toolkit.technicals.get_support_resistance_levels()
+{% endhighlight %}
+
 ## collect_volatility_indicators
 Calculates and collects various volatility indicators based on the provided data.
 
