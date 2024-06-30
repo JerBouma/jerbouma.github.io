@@ -21,8 +21,14 @@ The Finance Toolkit not only supports Equities. Even for Options, Currencies, Cr
 
 The Finance Toolkit is complimented very well with the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase), a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
 
+---
+
+**Interested in seeing the Finance Toolkit in action?** Find below a dashboard that can plot most of the metrics found inside the Finance Toolkit. <a href="https://financetoolkit.streamlit.app/" target="_blank">**Find the dashboard here.**</a>
+
 <p align="center">
-    <img src="https://github.com/JerBouma/FinanceToolkit/blob/main/examples/Finance%20Toolkit%20-%20Video%20Demo.gif?raw=true" alt="Finance Toolkit Illustration" width="100%" onerror="this.style.display = 'none'"/>
+    <a href="https://financetoolkit.streamlit.app/" target="_blank">
+        <img src="https://github.com/JerBouma/FinanceToolkit/blob/main/app/assets/financetoolkit-dashboard.gif?raw=true" alt="Finance Toolkit Illustration" width="100%" onerror="this.style.display = 'none'"/>
+    </a>
 </p>
 
 ## Installation
@@ -180,6 +186,10 @@ The Finance Toolkit has the ability to leverage custom datasets from any data pr
 ## Basic Usage
 
 This section is an introduction to the Finance Toolkit. Also see [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/getting-started) for a detailed Getting Started guide as well as [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/finance-database) that includes the [Finance Database 🌎](https://www.jeroenbouma.com/projects/financedatabase) and a proper financial analysis. Next to that, find below a fully-fledged code documentation as well as Jupyter Notebooks in which you can see many examples ranging from basic examples to creating custom ratios to working with your own datasets.
+
+<p align="center">
+    <img src="https://github.com/JerBouma/FinanceToolkit/blob/main/examples/Finance%20Toolkit%20-%20Video%20Demo.gif?raw=true" alt="Finance Toolkit Illustration" width="100%" onerror="this.style.display = 'none'"/>
+</p>
 
 A basic example of how to use the Finance Toolkit is shown below.
 
