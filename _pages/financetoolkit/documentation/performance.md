@@ -70,6 +70,34 @@ Which returns:
  | 2023Q2 | 0.0922 | 0.1342 |
  | 2023Q3 | 0.0052 | -0.0482 |
 
+## collect_all_metrics
+Calculates and collects all performance metrics.
+
+**Args:**
+ - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+ - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+ - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+ - <u>trailing (int):</u> Defines whether to select a trailing period.
+ E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+ **Returns:**
+ pd.Series or pd.DataFrame: Performance metrics calculated based on the specified parameters.
+
+ **Notes:**
+ - The method calculates various performance metrics for each asset in the Toolkit instance.
+ - If `growth` is set to True, the method calculates the growth of the ratio values
+ using the specified `lag`.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.performance.collect_all_metrics()
+{% endhighlight %}
+
 ## get_beta
 Calculate the Beta, a measurement that assess the systematic risk of a stock or investment.
 

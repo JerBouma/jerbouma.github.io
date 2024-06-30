@@ -83,6 +83,34 @@ Which returns:
  | 2022 | -0.8026 | -1.0046 |
  | 2023 | 1.8549 | 1.8238 |
 
+## collect_all_metrics
+Calculates and collects all risk metrics.
+
+**Args:**
+ - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+ - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+ - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+ - <u>trailing (int):</u> Defines whether to select a trailing period.
+ E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+ **Returns:**
+ pd.Series or pd.DataFrame: Risk metrics calculated based on the specified parameters.
+
+ **Notes:**
+ - The method calculates various risk metrics for each asset in the Toolkit instance.
+ - If `growth` is set to True, the method calculates the growth of the ratio values
+ using the specified `lag`.
+
+ As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.risk.collect_all_metrics()
+{% endhighlight %}
+
 ## get_value_at_risk
 Calculate the Value at Risk (VaR) of an investment portfolio or asset's returns.
 
