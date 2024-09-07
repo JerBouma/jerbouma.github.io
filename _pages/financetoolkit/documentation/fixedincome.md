@@ -345,7 +345,6 @@ See definition: [https://data.oecd.org/interest/short
  - <u>short_term (bool, optional):</u> Whether to return the short-term interest rate. Defaults to False.
  This means that the long-term interest rate will be returned.
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
- - <u>forecast (bool, optional):</u> Whether to return the forecasted data. Defaults to False.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
