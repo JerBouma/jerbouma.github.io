@@ -19,7 +19,7 @@ jobs:
         uses: snok/install-poetry@v1
       - name: Install dependencies  
         run: |  
-          poetry install
+          poetry install --no-root
       - uses: actions/setup-python@v4
         with:
           python-version: '3.x'
