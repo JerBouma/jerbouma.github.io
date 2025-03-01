@@ -757,7 +757,7 @@ financetoolkit-docs-economics:
       url:  /projects/financetoolkit/docs/economics#get_long_term_interest_rate
   - title: Environment
     children:
-      - title: Renewable Energy as % of Total Energy
+      - title: Renewable Energy
         url: /projects/financetoolkit/docs/economics#get_renewable_energy
       - title: Carbon Footprint
         url: /projects/financetoolkit/docs/economics#get_carbon_footprint
@@ -778,17 +778,17 @@ financetoolkit-docs-portfolio:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
   - title: Toolkit Integration
-    url: /projects/financetoolkit/docs/portfolio/#toolkit
+    url: /projects/financetoolkit/docs/portfolio#toolkit
   - title: Positions Overview
-    url: /projects/financetoolkit/docs/portfolio/#get_positions_overview
+    url: /projects/financetoolkit/docs/portfolio#get_positions_overview
   - title: Portfolio Overview
-    url: /projects/financetoolkit/docs/portfolio/#get_portfolio_overview
+    url: /projects/financetoolkit/docs/portfolio#get_portfolio_overview
   - title: Portfolio Performance
-    url: /projects/financetoolkit/docs/portfolio/#get_portfolio_performance
+    url: /projects/financetoolkit/docs/portfolio#get_portfolio_performance
   - title: Transactions Overview
-    url: /projects/financetoolkit/docs/portfolio/#get_transactions_overview
+    url: /projects/financetoolkit/docs/portfolio#get_transactions_overview
   - title: Transactions Performance
-    url: /projects/financetoolkit/docs/portfolio/#get_transactions_performance
+    url: /projects/financetoolkit/docs/portfolio#get_transactions_performance
       
 thepassiveinvestor:
   - title: "Introduction"
