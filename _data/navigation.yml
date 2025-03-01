@@ -110,6 +110,8 @@ financetoolkit:
         url: /projects/financetoolkit/fixed-income-module
       - title: Economics Module
         url: /projects/financetoolkit/economics-module
+      - title: Portfolio Module
+        url: /projects/financetoolkit/portfolio-module
       - title: External Datasets
         url: /projects/financetoolkit/external-datasets
   - title: "Basic Usage"
