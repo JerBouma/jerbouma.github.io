@@ -155,6 +155,7 @@ If you are looking for documentation regarding the discovery, ratios, models, te
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
 </div>
 
 
@@ -205,6 +206,7 @@ If you are looking for documentation regarding the toolkit, ratios, models, tech
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
 </div>
 
 {% include algolia.html %}
@@ -254,6 +256,7 @@ If you are looking for documentation regarding the toolkit, discovery, models, t
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
 </div>
 
 {% include algolia.html %}
@@ -303,6 +306,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, t
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
 </div>
 
 {% include algolia.html %}
@@ -352,6 +356,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, t
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
 </div>
 
 {% include algolia.html %}
@@ -401,6 +406,7 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
 </div>
 
 {% include algolia.html %}
@@ -450,6 +456,8 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
+
 </div>
 
 {% include algolia.html %}
@@ -498,6 +506,8 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
+
 </div>
 
 {% include algolia.html %}
@@ -546,6 +556,8 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
+
 </div>
 
 {% include algolia.html %}
@@ -594,7 +606,9 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--warning" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/economics" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
+
 </div>
 
 {% include algolia.html %}
@@ -606,3 +620,55 @@ create_markdown_file(
     header=markdown_content,
     location="_pages/financetoolkit/documentation/economics.md",
 )
+
+
+# Create the Economics page
+markdown_content = """---
+title: Portfolio
+excerpt: The Portfolio module is meant to calculate important portfolio metrics allows you to compare your own portfolio to a benchmark, seeing performance of individual assets and directly load the portfolio into the Finance Toolkit.
+description: The Portfolio module is meant to calculate important portfolio metrics allows you to compare your own portfolio to a benchmark, seeing performance of individual assets and directly load the portfolio into the Finance Toolkit.
+author_profile: false
+permalink: /projects/financetoolkit/docs/portfolio
+classes: wide-sidebar
+layout: single
+redirect_from:
+    - /economics
+sidebar:
+    nav: "financetoolkit-docs-portfolio"
+---
+
+The Portfolio module is meant to calculate important portfolio metrics allows you to compare your own portfolio to a benchmark, seeing performance of individual assets and directly load the portfolio into the Finance Toolkit.
+
+To install the FinanceToolkit it simply requires the following:
+
+{% include code_header.html %}
+{% highlight bash %}
+pip install financetoolkit -U
+{% endhighlight %}
+
+If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, fixed income, risk, performance and economics, please have a look below:
+
+<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
+    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
+    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
+    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
+    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
+    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
+    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
+    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
+    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
+    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
+    <a href="/projects/financetoolkit/docs/economics" class="btn btn-0unfi" style="flex: 1;font-size:10px;margin-right:5px">>Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--warning" style="flex: 1;font-size:10px;">>Portfolio</a>
+</div>
+
+{% include algolia.html %}
+
+"""
+
+create_markdown_file(
+    file_url="https://api.github.com/repos/JerBouma/FinanceToolkit/contents/financetoolkit/portfolio/portfolio_controller.py",
+    header=markdown_content,
+    location="_pages/financetoolkit/documentation/portfolio.md",
+)
+

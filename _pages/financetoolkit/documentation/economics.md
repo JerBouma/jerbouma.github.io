@@ -33,7 +33,9 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--warning" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/economics" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
+
 </div>
 
 {% include algolia.html %}
@@ -42,10 +44,11 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
 Initializes the Economics Controller Class.
 
 **Args:**
- - <u>quarterly (bool | None, optional):</u> Parameter that defines if the default data returned is quarterly
- or yearly. Defaults to None.
  - <u>start_date (str | None, optional):</u> The start date to retrieve data from. Defaults to None.
  - <u>end_date (str | None, optional):</u> The end date to retrieve data from. Defaults to None.
+ - <u>gmdb_source (bool, optional):</u> If True, retrieves data from the GMDB source. Defaults to False.
+ - <u>quarterly (bool | None, optional):</u> If True, returns quarterly data; otherwise, returns yearly data.
+ Defaults to None. This only works for data retrieved from the OECD source.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  As an example:
@@ -53,11 +56,11 @@ Initializes the Economics Controller Class.
 {% highlight python %}
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "ASML"])
+toolkit = Toolkit(["AMZN", "ASML"], start_date="2010-01-01", end_date="2020-01-01")
 
-cpi = toolkit.economics.get_consumer_price_index(period='yearly')
+cpi = toolkit.economics.get_consumer_price_index()
 
-cpi.loc['2015':, ['United States', 'Netherlands', 'Japan']]
+cpi.loc['2010':, ['United States', 'Netherlands', 'Japan']]
 {% endhighlight %}
 
 
@@ -65,14 +68,17 @@ Which returns:
 
 | | United States | Netherlands | Japan |
  |:-----|----------------:|--------------:|---------:|
- | 2015 | 100 | 100 | 100 |
- | 2016 | 101.262 | 100.317 | 99.8727 |
- | 2017 | 103.419 | 101.703 | 100.356 |
- | 2018 | 105.945 | 103.435 | 101.349 |
- | 2019 | 107.865 | 106.159 | 101.824 |
- | 2020 | 109.195 | 107.51 | 101.799 |
- | 2021 | 114.325 | 110.387 | 101.561 |
- | 2022 | 123.474 | 121.427 | 104.098 |
+ | 2010 | 100 | 100 | 100 |
+ | 2011 | 103.14 | 102.472 | 99.7226 |
+ | 2012 | 105.278 | 105.359 | 99.6741 |
+ | 2013 | 106.822 | 108.052 | 100.004 |
+ | 2014 | 108.547 | 108.397 | 102.762 |
+ | 2015 | 108.679 | 108.635 | 103.583 |
+ | 2016 | 110.056 | 108.759 | 103.455 |
+ | 2017 | 112.402 | 110.165 | 103.958 |
+ | 2018 | 115.143 | 111.927 | 104.986 |
+ | 2019 | 117.231 | 114.913 | 105.477 |
+ | 2020 | 118.695 | 116.185 | 105.449 |
 
 ## get_gross_domestic_product
 Get the Gross Domestic Product for a variety of countries over time from the OECD. The Gross Domestic Product is the total value of goods produced and services provided in a country during one year.
@@ -87,7 +93,13 @@ See definition: [https://data.oecd.org/gdp/gross
 -product
 -gdp.htm){:target="_blank"}
 
+It is also possible to acquire the data from the Global Macro Database (GMDB) source which also provides inflation adjusted data. For more information see: [https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf](https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf){:target="_blank"}
+
 **Args:**
+ - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
+ - <u>gmdb_source (bool | None, optional):</u> If True, retrieves data from the GMDB source. Defaults to None.
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  **Returns:**
@@ -118,89 +130,378 @@ Which returns:
  | 2020 | 897261 | 3.94717e+06 | 2.35091e+07 |
  | 2021 | 921282 | 4.07756e+06 | 2.55147e+07 |
 
-## get_gross_domestic_product_growth
-Get the Gross Domestic Product growth rate for a variety of countries over time from the OECD. The Gross Domestic Product is the total value of goods produced and services provided in a country during one year.
+## get_gross_domestic_product_deflator
+Get the Gross Domestic Product Deflator for a variety of countries over time from the Global Macro Database (GMDB). The GDP deflator is a measure of the price of all domestically produced final goods and services in an economy relative to the price level in a base year which can vary per country.
 
-It is possible to view the growth rate on a quarterly or annual basis, the default is dependent on the quarterly parameter. The growth rate is the percentage change in the GDP compared to the previous period.
-
-See definition: [https://data.oecd.org/gdp/quarterly
--gdp.htm](https://data.oecd.org/gdp/quarterly
--gdp.htm){:target="_blank"}
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
- - <u>quarterly (bool, optional):</u> Whether to return the quarterly data or the annual data.
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  **Returns:**
- pd.DataFrame: A DataFrame containing the Gross Domestic Product growth rates.
+ pd.DataFrame: A DataFrame containing the Gross Domestic Product Deflator
+## get_total_consumption
+Get the Total Consumption for a variety of countries over time from the Global Macro Database (GMDB). Total Consumption is the total amount of money spent by households on consumer goods and services.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Total Consumption
+## get_total_consumption_to_gdp_ratio
+Get the Total Consumption to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Total Consumption to GDP Ratio is the ratio of the total amount of money spent by households on consumer goods and services to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Total Consumption to GDP Ratio
+## get_investment
+Get the Investment for a variety of countries over time from the Global Macro Database (GMDB). Investment is the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Investment
+## get_investment_to_gdp_ratio
+Get the Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Investment to GDP Ratio is the ratio of the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Investment to GDP Ratio
+## get_fixed_investment
+Get the Fixed Investment for a variety of countries over time from the Global Macro Database (GMDB). Fixed Investment is the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings that are expected to last for more than one year.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Fixed Investment
+## get_fixed_investment_to_gdp_ratio
+Get the Fixed Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Fixed Investment to GDP Ratio is the ratio of the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings that are expected to last for more than one year to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Fixed Investment to GDP Ratio
+## get_exports
+Get the Exports for a variety of countries over time from the Global Macro Database (GMDB). Exports are the total amount of goods and services produced in a country that are sold to other countries.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Exports
+## get_exports_to_gdp_ratio
+Get the Exports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Exports to GDP Ratio is the ratio of the total amount of goods and services produced in a country that are sold to other countries to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Exports to GDP Ratio
+## get_imports
+Get the Imports for a variety of countries over time from the Global Macro Database (GMDB). Imports are the total amount of goods and services produced in other countries that are bought by a country.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Imports
+## get_imports_to_gdp_ratio
+Get the Imports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Imports to GDP Ratio is the ratio of the total amount of goods and services produced in other countries that are bought by a country to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Imports to GDP Ratio
+## get_current_account_balance
+Get the Current Account Balance for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance is the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Current Account Balance
+## get_current_account_balance_to_gdp_ratio
+Get the Current Account Balance to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance to GDP Ratio is the ratio of the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid) to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Current Account Balance to GDP Ratio
+## get_government_debt
+Get the Government Debt for a variety of countries over time from the Global Macro Database (GMDB). Government Debt is the total amount of money that a government owes to creditors.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Government Debt
+## get_government_debt_to_gdp_ratio
+Get the Government Debt to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Debt to GDP Ratio is the ratio of the total amount of money that a government owes to creditors to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Government Debt to GDP Ratio
+## get_government_revenue
+Get the Government Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Revenue is the total amount of money that a government collects from taxes and other sources.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Government Revenue
+## get_government_revenue_to_gdp_ratio
+Get the Government Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes and other sources to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Government Revenue to GDP Ratio
+## get_government_tax_revenue
+Get the Government Tax Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Tax Revenue is the total amount of money that a government collects from taxes.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Government Tax Revenue
+## get_government_tax_revenue_to_gdp_ratio
+Get the Government Tax Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Tax Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Government Tax Revenue to GDP Ratio
+## get_government_expenditure
+Get the Government Expenditure for a variety of countries over time from the Global Macro Database (GMDB). Government Expenditure is the total amount of money that a government spends on goods and services.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Government Expenditure
+## get_government_expenditure_to_gdp_ratio
+Get the Government Expenditure to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Expenditure to GDP Ratio is the ratio of the total amount of money that a government spends on goods and services to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Government Expenditure to GDP Ratio
+## get_government_deficit
+Get the Government Deficit for a variety of countries over time from the Global Macro Database (GMDB). Government Deficit is the total amount of money that a government spends more than it collects from taxes and other sources. A government deficit is usually financed by borrowing money.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Government Deficit
+## get_government_deficit_to_gdp_ratio
+Get the Government Deficit to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Deficit to GDP Ratio is the ratio of the total amount of money that a government spends more than it collects from taxes and other sources to the Gross Domestic Product (GDP). A government deficit is usually financed by borrowing money.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Government Deficit to GDP Ratio
+## get_trust_in_government
+Trust in government refers to the share of people who report having confidence in the national government. The data shown reflect the share of respondents answering “yes” (the other response categories being “no”, and “dont know”) to the survey question: “In this country, do you have confidence in… national government?
+
+Due to small sample sizes, country averages for horizontal inequalities (by age, gender and education) are pooled between 2010
+-18 to improve the accuracy of the estimates.
+
+The sample is ex ante designed to be nationally representative of the population aged 15 and over. This indicator is measured as a percentage of all survey respondents.
+
+See definition: [https://data.oecd.org/gga/trust
+-in
+-government.htm](https://data.oecd.org/gga/trust
+-in
+-government.htm){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
+ - <u>lag (int, optional):</u> The number of periods to lag the data by.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Trust in Government.
 
  As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Economics
 
-economics = Economics(start_date='2021-01-01', end_date='2022-01-01')
+economics = Economics()
 
-gdp_growth = economics.get_gross_domestic_product_growth(quarterly=True)
+trust_in_government = economics.get_trust_in_government()
 
-gdp_growth.loc[:, ['United Kingdom', 'United States', 'Belgium']]
+trust_in_government.loc[:, ['United States', 'Greece', 'Japan']]
 {% endhighlight %}
 
 
 Which returns:
 
-| | United Kingdom | United States | Belgium |
- |:-------|-----------------:|----------------:|----------:|
- | 2021Q1 | -0.0102 | 0.0129 | 0.0181 |
- | 2021Q2 | 0.0733 | 0.0152 | 0.0193 |
- | 2021Q3 | 0.0172 | 0.0081 | 0.0219 |
- | 2021Q4 | 0.0152 | 0.017 | 0.0076 |
- | 2022Q1 | 0.0053 | -0.005 | 0.0012 |
+| | United States | Greece | Japan |
+ |:-----|----------------:|---------:|--------:|
+ | 2006 | 0.558 | 0.4875 | 0.3503 |
+ | 2007 | 0.3932 | 0.3814 | 0.24 |
+ | 2008 | 0.3792 | nan | 0.2212 |
+ | 2009 | 0.503 | 0.3162 | 0.2518 |
+ | 2010 | 0.4183 | 0.2365 | 0.2703 |
+ | 2011 | 0.3825 | 0.1752 | 0.2311 |
+ | 2012 | 0.3489 | 0.1262 | 0.1692 |
+ | 2013 | 0.2886 | 0.1436 | 0.3581 |
+ | 2014 | 0.3487 | 0.1883 | 0.3795 |
+ | 2015 | 0.3469 | 0.4373 | 0.3529 |
+ | 2016 | 0.2972 | 0.1325 | 0.3622 |
+ | 2017 | 0.3865 | 0.1399 | 0.4125 |
+ | 2018 | 0.3138 | 0.157 | 0.3849 |
+ | 2019 | 0.3628 | 0.3964 | 0.4112 |
+ | 2020 | 0.4649 | 0.3975 | 0.4234 |
+ | 2021 | 0.4046 | 0.4017 | 0.2908 |
+ | 2022 | 0.3102 | 0.2563 | 0.4315 |
 
-## get_gross_domestic_product_forecast
-Get the Gross Domestic Product growth rate for a variety of countries over time from the OECD. The Gross Domestic Product is the total value of goods produced and services provided in a country during one year.
+## get_consumer_price_index
+Consumer Price Index (CPI) is a measure that examines the average change in prices paid by consumers for goods and services over time. It is a measure of inflation. The base year (2010) is the year against which the index is set to 100.
 
-It is possible to view the growth rate on a quarterly or annual basis, the default is dependent on the quarterly parameter. The growth rate is the percentage change in the GDP compared to the previous period.
-
-See definition: [https://data.oecd.org/gdp/real
--gdp
--long
--term
--forecast.htm](https://data.oecd.org/gdp/real
--gdp
--long
--term
--forecast.htm){:target="_blank"}
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
- - <u>quarterly (bool, optional):</u> Whether to return the quarterly data or the annual data.
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
+ - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  **Returns:**
- pd.DataFrame: A DataFrame containing the Gross Domestic Product forecast growth rates.
+ pd.DataFrame: A DataFrame containing the Consumer Price Index.
+## get_inflation_rate
+Inflation Rate is the percentage change in the Consumer Price Index (CPI) from one period to another. It is a measure of the rate of price increases in the economy.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
+ - <u>lag (int, optional):</u> The number of periods to lag the data by.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Inflation Rate.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
-from financetoolkit import Economics
-
-economics = Economics(start_date='2021-01-01')
-
-gdp_growth_forecast = economics.get_gross_domestic_product_forecast()
-
-gdp_growth_forecast.loc[:, ['Indonesia', 'China', 'India']]
-{% endhighlight %}
-
 
 Which returns:
 
-| | Indonesia | China | India |
- |:-----|------------:|--------:|--------:|
- | 2021 | 0.037 | 0.0845 | 0.0905 |
- | 2022 | 0.0531 | 0.0299 | 0.0724 |
- | 2023 | 0.0488 | 0.0516 | 0.0626 |
- | 2024 | 0.0519 | 0.047 | 0.0606 |
- | 2025 | 0.0519 | 0.0424 | 0.0648 |
+| | Germany | France | Portugal |
+ |:-----|----------:|---------:|-----------:|
+ | 2003 | 1.0342 | 2.0985 | 3.219 |
+ | 2004 | 1.6657 | 2.1421 | 2.3654 |
+ | 2005 | 1.5469 | 1.7459 | 2.2772 |
+ | 2006 | 1.5774 | 1.6751 | 3.1077 |
+ | 2007 | 2.2983 | 1.488 | 2.454 |
+ | 2008 | 2.6284 | 2.8129 | 2.5885 |
+ | 2009 | 0.3127 | 0.0876 | -0.8355 |
 
 ## get_consumer_confidence_index
 This consumer confidence indicator provides an indication of future developments of households consumption and saving, based upon answers regarding their expected financial situation, their sentiment about the general economic situation, unemployment and capability of savings.
@@ -350,9 +651,12 @@ See definition: [https://data.oecd.org/price/housing
 -prices.htm](https://data.oecd.org/price/housing
 -prices.htm){:target="_blank"}
 
+It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+
 **Args:**
  - <u>quarterly (bool | None, optional):</u> Whether to return the quarterly data or the annual data.
  - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data or the nominal data.
+ - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -483,56 +787,85 @@ Which returns:
  | 2021 | 187.146 | 91.6789 | 130.475 |
  | 2022 | 369.298 | 93.0484 | 128.367 |
 
-## get_long_term_interest_rate
-Long
--term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long
--term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
+## get_exchange_rates
+Exchange rates are defined as the price of one country's' currency in relation to another country's currency. This indicator is measured in terms of national currency per US dollar.
 
-In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long
--term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
-
-See definition: [https://data.oecd.org/interest/long
--term
--interest
--rates.htm](https://data.oecd.org/interest/long
--term
--interest
+See definition: [https://data.oecd.org/conversion/exchange
+-rates.htm](https://data.oecd.org/conversion/exchange
 -rates.htm){:target="_blank"}
+
+It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 
 **Args:**
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+ - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  **Returns:**
- pd.DataFrame: A DataFrame containing the Long Term Interest Rate.
+ pd.DataFrame: A DataFrame containing the Exchange Rates.
 
  As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Economics
 
-economics = Economics(start_date='2023-05-01', end_date='2023-12-31')
+economics = Economics()
 
-long_term_interest_rate = economics.get_long_term_interest_rate(period='monthly')
+exchange_rates = economics.get_exchange_rates()
 
-long_term_interest_rate.loc[:, ['Japan', 'United States', 'Brazil']]
+exchange_rates.loc[:, ['Netherlands', 'Japan', 'Indonesia']]
 {% endhighlight %}
 
 
 Which returns:
 
-| | Japan | United States | Brazil |
- |:--------|--------:|----------------:|---------:|
- | 2023-05 | 0.0043 | 0.0357 | 0.0728 |
- | 2023-06 | 0.004 | 0.0375 | 0.0728 |
- | 2023-07 | 0.0059 | 0.039 | 0.07 |
- | 2023-08 | 0.0064 | 0.0417 | 0.07 |
- | 2023-09 | 0.0076 | 0.0438 | 0.07 |
- | 2023-10 | 0.0095 | 0.048 | 0.0655 |
- | 2023-11 | 0.0066 | 0.045 | 0.0655 |
+| | Netherlands | Japan | Indonesia |
+ |:-----|--------------:|---------:|------------:|
+ | 2013 | 0.7529 | 97.5957 | 10461.2 |
+ | 2014 | 0.7527 | 105.945 | 11865.2 |
+ | 2015 | 0.9013 | 121.044 | 13389.4 |
+ | 2016 | 0.9034 | 108.793 | 13308.3 |
+ | 2017 | 0.8852 | 112.166 | 13380.8 |
+ | 2018 | 0.8468 | 110.423 | 14236.9 |
+ | 2019 | 0.8933 | 109.01 | 14147.7 |
+ | 2020 | 0.8755 | 106.775 | 14582.2 |
+ | 2021 | 0.8455 | 109.754 | 14308.1 |
+ | 2022 | 0.9496 | 131.498 | 14849.9 |
 
+## get_money_supply
+Money Supply is the total amount of money that is in circulation in a country. It includes currency, demand deposits, and other liquid assets that can be easily converted into cash. Money supply is an important economic indicator that the Federal Reserve uses to implement its monetary policy.
+
+Money supply can be divided into four categories: M0, M1, M2, M3 and M4. 
+- M0: The total of all physical currency, plus accounts at the central bank that can be exchanged for physical currency. 
+- M1: The total of all physical currency part of bank reserves + the amount in demand accounts ("checking" or "current" accounts). 
+- M2: M1 + most savings accounts, money market accounts, retail money market mutual funds, and small denomination time deposits. 
+- M3: M2 + large time deposits, institutional money market funds, short
+-term repurchase agreements, and other larger liquid assets. 
+- M4: M3 + all other financial assets.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Money Supply
+## get_central_bank_policy_rate
+The Central Bank Policy Rate is the interest rate that a central bank sets on its loans and advances to a commercial bank. This interest rate is used by the monetary authorities to control inflation and stabilize the country's currency.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+
+**Args:**
+ - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+ - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+ - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+ **Returns:**
+ pd.DataFrame: A DataFrame containing the Central Bank Policy Rate
 ## get_short_term_interest_rate
 Short
 -term interest rates are the rates at which short
@@ -552,8 +885,11 @@ See definition: [https://data.oecd.org/interest/short
 -interest
 -rates.htm){:target="_blank"}
 
+It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+
 **Args:**
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+ - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -590,48 +926,58 @@ Which returns:
  | 2025Q3 | 0.0067 | 0.0408 | 0.0425 |
  | 2025Q4 | 0.0077 | 0.0398 | 0.0425 |
 
-## get_exchange_rates
-Exchange rates are defined as the price of one country's' currency in relation to another country's currency. This indicator is measured in terms of national currency per US dollar.
+## get_long_term_interest_rate
+Long
+-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long
+-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
 
-See definition: [https://data.oecd.org/conversion/exchange
--rates.htm](https://data.oecd.org/conversion/exchange
+In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long
+-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
+
+See definition: [https://data.oecd.org/interest/long
+-term
+-interest
+-rates.htm](https://data.oecd.org/interest/long
+-term
+-interest
 -rates.htm){:target="_blank"}
 
+It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+
 **Args:**
+ - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+ - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  **Returns:**
- pd.DataFrame: A DataFrame containing the Exchange Rates.
+ pd.DataFrame: A DataFrame containing the Long Term Interest Rate.
 
  As an example:
 {% include code_header.html %}
 {% highlight python %}
 from financetoolkit import Economics
 
-economics = Economics()
+economics = Economics(start_date='2023-05-01', end_date='2023-12-31')
 
-exchange_rates = economics.get_exchange_rates()
+long_term_interest_rate = economics.get_long_term_interest_rate(period='monthly')
 
-exchange_rates.loc[:, ['Netherlands', 'Japan', 'Indonesia']]
+long_term_interest_rate.loc[:, ['Japan', 'United States', 'Brazil']]
 {% endhighlight %}
 
 
 Which returns:
 
-| | Netherlands | Japan | Indonesia |
- |:-----|--------------:|---------:|------------:|
- | 2013 | 0.7529 | 97.5957 | 10461.2 |
- | 2014 | 0.7527 | 105.945 | 11865.2 |
- | 2015 | 0.9013 | 121.044 | 13389.4 |
- | 2016 | 0.9034 | 108.793 | 13308.3 |
- | 2017 | 0.8852 | 112.166 | 13380.8 |
- | 2018 | 0.8468 | 110.423 | 14236.9 |
- | 2019 | 0.8933 | 109.01 | 14147.7 |
- | 2020 | 0.8755 | 106.775 | 14582.2 |
- | 2021 | 0.8455 | 109.754 | 14308.1 |
- | 2022 | 0.9496 | 131.498 | 14849.9 |
+| | Japan | United States | Brazil |
+ |:--------|--------:|----------------:|---------:|
+ | 2023-05 | 0.0043 | 0.0357 | 0.0728 |
+ | 2023-06 | 0.004 | 0.0375 | 0.0728 |
+ | 2023-07 | 0.0059 | 0.039 | 0.07 |
+ | 2023-08 | 0.0064 | 0.0417 | 0.07 |
+ | 2023-09 | 0.0076 | 0.0438 | 0.07 |
+ | 2023-10 | 0.0095 | 0.048 | 0.0655 |
+ | 2023-11 | 0.0066 | 0.045 | 0.0655 |
 
 ## get_renewable_energy
 Renewable energy is defined as the contribution of renewables to total primary energy supply (TPES). Renewables include the primary energy equivalent of hydro (excluding pumped storage), geothermal, solar, wind, tide and wave sources.
@@ -687,6 +1033,10 @@ Which returns:
 The carbon footprint is a measure of the total amount of greenhouse gases produced to directly and indirectly support human activities, usually expressed in equivalent tons of carbon dioxide (CO2).
 
 The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
+## get_carbon_footprint
+The carbon footprint is a measure of the total amount of greenhouse gases produced to directly and indirectly support human activities, usually expressed in equivalent tons of carbon dioxide (CO2).
+
+The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
 
 See definition: [https://data.oecd.org/envpolicy/environmental
 -tax.htm](https://data.oecd.org/envpolicy/environmental
@@ -729,63 +1079,6 @@ Which returns:
  | 2019 | 3.42 | 1.94 | 1.04 | 0.25 | 0.19 |
  | 2020 | 3.21 | 1.8 | 0.96 | 0.26 | 0.2 |
 
-## get_trust_in_government
-Trust in government refers to the share of people who report having confidence in the national government. The data shown reflect the share of respondents answering “yes” (the other response categories being “no”, and “dont know”) to the survey question: “In this country, do you have confidence in… national government?
-
-Due to small sample sizes, country averages for horizontal inequalities (by age, gender and education) are pooled between 2010
--18 to improve the accuracy of the estimates.
-
-The sample is ex ante designed to be nationally representative of the population aged 15 and over. This indicator is measured as a percentage of all survey respondents.
-
-See definition: [https://data.oecd.org/gga/trust
--in
--government.htm](https://data.oecd.org/gga/trust
--in
--government.htm){:target="_blank"}
-
-**Args:**
- - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
- - <u>lag (int, optional):</u> The number of periods to lag the data by.
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
-
- **Returns:**
- pd.DataFrame: A DataFrame containing the Trust in Government.
-
- As an example:
-{% include code_header.html %}
-{% highlight python %}
-from financetoolkit import Economics
-
-economics = Economics()
-
-trust_in_government = economics.get_trust_in_government()
-
-trust_in_government.loc[:, ['United States', 'Greece', 'Japan']]
-{% endhighlight %}
-
-
-Which returns:
-
-| | United States | Greece | Japan |
- |:-----|----------------:|---------:|--------:|
- | 2006 | 0.558 | 0.4875 | 0.3503 |
- | 2007 | 0.3932 | 0.3814 | 0.24 |
- | 2008 | 0.3792 | nan | 0.2212 |
- | 2009 | 0.503 | 0.3162 | 0.2518 |
- | 2010 | 0.4183 | 0.2365 | 0.2703 |
- | 2011 | 0.3825 | 0.1752 | 0.2311 |
- | 2012 | 0.3489 | 0.1262 | 0.1692 |
- | 2013 | 0.2886 | 0.1436 | 0.3581 |
- | 2014 | 0.3487 | 0.1883 | 0.3795 |
- | 2015 | 0.3469 | 0.4373 | 0.3529 |
- | 2016 | 0.2972 | 0.1325 | 0.3622 |
- | 2017 | 0.3865 | 0.1399 | 0.4125 |
- | 2018 | 0.3138 | 0.157 | 0.3849 |
- | 2019 | 0.3628 | 0.3964 | 0.4112 |
- | 2020 | 0.4649 | 0.3975 | 0.4234 |
- | 2021 | 0.4046 | 0.4017 | 0.2908 |
- | 2022 | 0.3102 | 0.2563 | 0.4315 |
-
 ## get_unemployment_rate
 The unemployed are people of working age who are without work, are available for work, and have taken specific steps to find work. The uniform application of this definition results in estimates of unemployment rates that are more internationally comparable than estimates based on national definitions of unemployment.
 
@@ -797,8 +1090,11 @@ See definition: [https://data.oecd.org/unemp/unemployment
 -rate.htm](https://data.oecd.org/unemp/unemployment
 -rate.htm){:target="_blank"}
 
+It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+
 **Args:**
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+ - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -889,6 +1185,9 @@ Income is defined as household disposable income in a particular year. It consis
 -employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
 
 The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
+-employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
+
+The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
 
 See definition: [https://data.oecd.org/inequality/income
 -inequality.htm](https://data.oecd.org/inequality/income
@@ -955,10 +1254,14 @@ Furthermore the following statistics are provided:
 - The youth population is defined as those people aged less than 15 as a percentage of the total population. 
 - The working age population is defined as those aged 15 to 64 as a percentage of the total population. 
 - The elderly population is defined as those aged 65 and over as a percentage of the total population.
+- The elderly population is defined as those aged 65 and over as a percentage of the total population.
 
 See definition: [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
 
+It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+
 **Args:**
+ - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.

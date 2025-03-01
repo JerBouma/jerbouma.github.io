@@ -33,6 +33,8 @@ If you are looking for documentation regarding the toolkit, discovery, ratios, m
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
+
 </div>
 
 {% include algolia.html %}
@@ -170,7 +172,6 @@ See definition: [https://en.wikipedia.org/wiki/Capital_asset_pricing_model](http
 **Args:**
  - <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
  results in basing it off the quarterly parameter as defined in the class instance.
- - <u>show_full_results (bool, optional):</u> Whether to show the full results. Defaults to False.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.

@@ -36,13 +36,14 @@ If you are looking for documentation regarding the discovery, ratios, models, te
     <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
     <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
     <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
+    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
 </div>
 
 
 {% include algolia.html %}
 
 ## __init__
-Initializes an Toolkit object with a ticker or a list of tickers. The way the Toolkit is initialized will define how the data is collected. For example, if you enable the quarterly flag, you will be able to collect quarterly data. Next to that, you can define the start and end date to specify a specific range. Another option is to define the custom ratios you want to calculate. This can be done by passing a dictionary.
+Initializes an Toolkit object with a ticker or a list of tickers. The way the Toolkit is initialized will define how the data is collected. For example, if you enable the quarterly flag, you will be able to collect quarterly data. Next to that, you can define the start and end date to specify a specific range. Another option is to work with cached data. This is useful when you have collected data before and want to use this data again. This can be done by setting the use_cached_data variable to True. If you want to use a specific location to store the cached data, you can define this as a string, e.g. "datasets".
 
 See for more information on all of this, the following link: [https://www.jeroenbouma.com/projects/financetoolkit](https://www.jeroenbouma.com/projects/financetoolkit){:target="_blank"}
 
@@ -58,6 +59,9 @@ See for more information on all of this, the following link: [https://www.jeroen
  - <u>quarterly (bool):</u> A boolean indicating whether to collect quarterly data. This defaults to False and thus
  collects yearly financial statements. Note that historical data can still be collected for
  any period and interval.
+ - <u>use_cached_data (bool or str):</u> A boolean indicating whether to use cached data. This is useful when you
+ have collected data before and want to use this data again. If you want to use a specific location to
+ store the cached data, you can define this as a string, e.g. "datasets". Defaults to False.
  - <u>risk_free_rate (str):</u> A string containing the risk free rate. This can be 13w, 5y, 10y or 30y. This is
  based on the US Treasury Yields and is used to calculate various ratios and Excess Returns.
  - <u>benchmark_ticker (str):</u> A string containing the benchmark ticker. Defaults to SPY (S&P 500). This is
@@ -99,16 +103,37 @@ See for more information on all of this, the following link: [https://www.jeroen
 from financetoolkit import Toolkit
 
 # Simple example
-toolkit = Toolkit(["TSLA", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+tickers=["TSLA", "ASML"],
+api_key="FINANCIAL_MODELING_PREP_KEY")
 
 # Obtaining quarterly data
-toolkit = Toolkit(["AAPL", "GOOGL"], quarterly=True, api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+tickers=["AAPL", "GOOGL"],
+quarterly=True,
+api_key="FINANCIAL_MODELING_PREP_KEY")
 
 # Including a start and end date
-toolkit = Toolkit(["MSFT", "MU"], start_date="2020-01-01", end_date="2023-01-01", quarterly=True, api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+tickers=["MSFT", "MU"],
+start_date="2020-01-01",
+end_date="2023-01-01"
+quarterly=True,
+api_key="FINANCIAL_MODELING_PREP_KEY")
+
+# Working with cached data
+toolkit = Toolkit(
+tickers=["WMT", "AAPL"],
+quarterly=True,
+api_key="FINANCIAL_MODELING_PREP_KEY",
+use_cached_data=True)
 
 # Changing the benchmark and risk free rate
-toolkit = Toolkit("AMZN", benchmark_ticker="^DJI", risk_free_rate="30y", api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+tickers="AMZN",
+benchmark_ticker="^DJI",
+risk_free_rate="30y",
+api_key="FINANCIAL_MODELING_PREP_KEY")
 {% endhighlight %}
 
 ## ratios
@@ -1069,7 +1094,16 @@ Which returns:
  | 2023-12 | 1.088 | 1.0898 | 1.0848 | 1.0871 | 1.0871 | 90494 | -0.0094 | 0.0173 | 0.7872 |
 
 ## get_balance_sheet_statement
-Retrieves the balance sheet statement financial data for the company(s) from the specified source.
+Retrieves the balance sheet statement data for the specified tickers. The balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. It shows the company's assets, liabilities, and shareholders' equity. The balance sheet statement is divided into three main sections:
+
+
+- Assets: Assets are resources owned by the company that have economic value and can be used to generate revenue. Assets are typically divided into current assets and non
+-current assets. 
+- Liabilities: Liabilities are obligations that the company owes to external parties. Liabilities are also divided into current liabilities and non
+-current liabilities. 
+- Shareholders' Equity: Shareholders' equity represents the company's net worth or book value. It is calculated as the difference between the company's assets and liabilities.
+
+Note that the balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. Therefore, trailing results are not available for this statement.
 
 **Args:**
  - <u>limit (int):</u> Defines the maximum years or quarters to obtain.
@@ -1077,7 +1111,6 @@ Retrieves the balance sheet statement financial data for the company(s) from the
  - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
  - <u>growth (bool):</u> Defines whether to return the growth of the data.
  - <u>lag (int | str):</u> Defines the number of periods to lag the growth data by.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
  - <u>progress_bar (bool):</u> Defines whether to show a progress bar.
 
@@ -1146,7 +1179,9 @@ Which returns:
  | Net Debt | -1.565e+09 | -7.46e+08 | 1.316e+09 | 3.086e+09 | 4.55e+09 |
 
 ## get_income_statement
-Retrieves the income statement financial data for the company(s) from the specified source.
+Retrieves the income statement data for the specified tickers. The income statement is a financial statement that shows a company's revenues and expenses over a specific period. It is used to calculate a company's net income.
+
+The income statement is a financial statement that shows a company's revenues and expenses over a specific period. Therefore, trailing results are available for this statement.
 
 **Args:**
  - <u>limit (int):</u> Defines the maximum years or quarters to obtain.
@@ -1208,7 +1243,9 @@ Which returns:
  | Weighted Average Shares Diluted | 3.465e+09 | 3.468e+09 | 3.471e+09 | 3.468e+09 | 3.478e+09 |
 
 ## get_cash_flow_statement
-Retrieves the cash flow statement financial data for the company(s) from the specified source.
+Retrieves the cash flow statement data for the specified tickers. The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. It breaks the analysis down to operating, investing and financing activities.
+
+The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. Therefore, trailing results are available for this statement.
 
 **Args:**
  - <u>limit (int):</u> Defines the maximum years or quarters to obtain.
