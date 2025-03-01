@@ -1033,10 +1033,6 @@ Which returns:
 The carbon footprint is a measure of the total amount of greenhouse gases produced to directly and indirectly support human activities, usually expressed in equivalent tons of carbon dioxide (CO2).
 
 The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
-## get_carbon_footprint
-The carbon footprint is a measure of the total amount of greenhouse gases produced to directly and indirectly support human activities, usually expressed in equivalent tons of carbon dioxide (CO2).
-
-The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
 
 See definition: [https://data.oecd.org/envpolicy/environmental
 -tax.htm](https://data.oecd.org/envpolicy/environmental
@@ -1185,9 +1181,6 @@ Income is defined as household disposable income in a particular year. It consis
 -employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
 
 The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
--employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
-
-The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
 
 See definition: [https://data.oecd.org/inequality/income
 -inequality.htm](https://data.oecd.org/inequality/income
@@ -1253,7 +1246,6 @@ Furthermore the following statistics are provided:
 
 - The youth population is defined as those people aged less than 15 as a percentage of the total population. 
 - The working age population is defined as those aged 15 to 64 as a percentage of the total population. 
-- The elderly population is defined as those aged 65 and over as a percentage of the total population.
 - The elderly population is defined as those aged 65 and over as a percentage of the total population.
 
 See definition: [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
