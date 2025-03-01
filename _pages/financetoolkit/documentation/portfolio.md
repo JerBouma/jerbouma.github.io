@@ -103,7 +103,7 @@ Read and consolidate cash flow data from Excel or CSV files into a single DataFr
  - Columns can be specified in the configuration or provided explicitly.
  - For missing cost or income columns, an exception is raised if no valid configuration is found.
 
- Note:
+ **Notes:**
  - Duplicates are handled according to configuration settings ('self._cfg["general"]["adjust_duplicates"]').
  - If duplicate data is found in the combination of datasets, it will be removed to prevent double-counting.
  - The date columns are converted to datetime objects, and transaction descriptions are treated as
