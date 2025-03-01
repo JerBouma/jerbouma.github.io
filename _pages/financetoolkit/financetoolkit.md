@@ -177,11 +177,26 @@ The Economics module gives insights for 60+ countries into key economic indicato
 </div>
 </div>
 
+<div class="row">
+<div markdown="1" class="fifty-column-left mobile-max-column-width">
+
+### Portfolio Module
+
+The Portfolio Module allows you to use your own transactions data from your portfolio to see performance over time and understand key drivers of your portfolio (compared to a benchmark). It also directly integrates with the Toolkit module to provide you with the most up-to-date data.
+
+[Open the Notebook](/projects/financetoolkit/portfolio-module){: .btn .btn--info}
+
+</div>
+
+<div markdown="1" class="fifty-column-left mobile-max-column-width">
+
 ### External Datasets
 
 The Finance Toolkit has the ability to leverage custom datasets from any data provider as well. This makes it possible to work with your preferred data and not be limited to the data source the Finance Toolkit currently provides. With this, it is possible to work with datasets from Yahoo Finance, OpenBB, Quandl, EODH, Bloomberg and much more.
 
 [Open the Notebook](/projects/financetoolkit/external-datasets){: .btn .btn--info}
+
+</div>
 
 ## Basic Usage
 
@@ -211,7 +226,7 @@ profitability_ratios = companies.ratios.collect_profitability_ratios()
 # a Models example
 extended_dupont_analysis = companies.models.get_extended_dupont_analysis()
 
-# a Options example
+# an Options example
 all_greeks = companies.options.collect_all_greeks(expiration_time_range=180)
 
 # a Performance example
@@ -250,10 +265,9 @@ And below the cumulative returns are plotted which include the S&P 500 as benchm
 
 ![HistoricalData](https://github.com/JerBouma/FinanceToolkit/assets/46355364/cd7b5029-0e66-4592-9822-42b652e7deed)
 
-
 ### Obtaining Financial Statements
 
-Obtain an Income Statement on an annual or quarterly basis. This can also be an income statement (`companies.get_income_statement()`) or cash flow statement (`companies.get_cash_flow_statement()`). For example, the first 5 rows of the Income Statement for Apple are shown below.
+Obtain an Income Statement on an annual or quarterly basis. This can also be a balance statement (`companies.get_balance_sheet_statement()`) or cash flow statement (`companies.get_cash_flow_statement()`). For example, the first 5 rows of the Income Statement for Apple are shown below.
 
 |                                   |        2017 |        2018 |        2019 |        2020 |        2021 |        2022 |        2023 |
 |:----------------------------------|------------:|------------:|------------:|------------:|------------:|------------:|------------:|
@@ -318,7 +332,7 @@ Which can also be plotted together with Gamma, Theta and Vega as follows:
 
 ### Obtaining Performance Metrics
 
-Get the correlations with the factors as defined by Fama-and-French. These include market, size, value, operating profitability and investment. The beauty of all functionality here is that it can be based on any period as the function accepts the period 'weekly', 'monthly', 'quarterly' and 'yearly'. For example, this shows the quarterly correlations for Apple:
+Get the correlations with the factors as defined by Fama-and-French. These include market, size, value, operating profitability and investment. The beauty of all functionality here is that it can be based on any period as the function accepts the period `intraday`, `weekly`, `monthly`, `quarterly` and `yearly`. For example, this shows the quarterly correlations for Apple:
 
 |        |   Mkt-RF |     SMB |     HML |     RMW |     CMA |
 |:-------|---------:|--------:|--------:|--------:|--------:|
@@ -376,9 +390,9 @@ Get access to the ICE BofA Corporate Bond benchmark indices and a variety of oth
 | 2024-04-24 | 0.0518 | 0.0531 | 0.0559 | 0.0592 | 0.0664 | 0.0778 | 0.1361 |
 | 2024-04-25 | 0.0524 | 0.0537 | 0.0564 | 0.0598 | 0.0673 | 0.079  | 0.1368 |
 
-And below Effective Yields and Option-Adjusted Spreads (OAS) including their distributions over time for the different maturity periods.
+And below a variety of Fixed Income metrics are shown all acquired from the Fixed Income module.
 
-![Fixed Income](https://github.com/JerBouma/FinanceToolkit/assets/46355364/74eaa407-c178-4710-890d-8318dffce577)
+![Fixed Income](https://github.com/JerBouma/FinanceToolkit/assets/46355364/dfe2a819-87d8-46be-892c-f90663bc177d)
 
 ### Understanding Key Economic Indicators
 
@@ -395,9 +409,33 @@ Get insights for 60+ countries into key economic indicators such as the Consumer
 
 And below these Unemployment Rates are plotted over time:
 
-![Economics](https://github.com/JerBouma/FinanceToolkit/assets/46355364/bb44bd4e-07a1-4ecf-a4eb-7fc09a960930)
+![Economics](https://github.com/JerBouma/FinanceToolkit/assets/46355364/0bba2ce2-9846-42de-a89d-737cdcd07b31)
 
-## Questions & Answers
+### Explore your own Portfolio
+
+Through a custom XLSX, XLS or CSV file you are able to load in your own portfolio directly into the Finance Toolkit. This allows you to view your positions and performance (over time) versus a benchmark and other positions as well as your PnL development over time. Furthermore, the portfolio can be directly loaded in the core functionality of the Finance Toolkit as well making it possible to calculate all metrics and ratios for your portfolio (which is a time-weighted sum of all positions). The portfolio module is a standalone module and can be used as such by using `from financetoolkit import Portfolio`.
+
+___
+<b><div align="center">It is important to note that it requires a specific Excel template to work, see for further instructions the following notebook <a href="https://www.jeroenbouma.com/projects/financetoolkit/portfolio" target="_blank">here</a>.</div></b>
+___
+
+The table below shows one of the functionalities of the Portfolio module but is purposely shrunken down given the >30 assets.
+
+| Identifier   |   Volume |   Costs |    Price |   Invested |   Latest Price |   Latest Value |   Return |   Return Value |   Benchmark Return |   Volatility |   Benchmark Volatility |   Alpha |   Beta |   Weight |
+|:-------------|---------:|--------:|---------:|-----------:|---------------:|---------------:|---------:|---------------:|-------------------:|-------------:|-----------------------:|--------:|-------:|---------:|
+| AAPL         |      137 |     -28 |  38.9692 |   5310.78  |        241.84  |       33132.1  |   5.2386 |     27821.3    |             2.2258 |       0.3858 |                 0.1937 |  3.0128 | 1.2027 |   0.0405 |
+| ALGN         |       81 |     -34 | 117.365  |   9472.53  |        187.03  |       15149.4  |   0.5993 |      5676.9    |             2.1413 |       0.5985 |                 0.1937 | -1.542  | 1.5501 |   0.0185 |
+| AMD          |       78 |     -30 |  11.9075 |    898.784 |         99.86  |        7789.08 |   7.6662 |      6890.3    |             3.7945 |       0.6159 |                 0.1937 |  3.8718 | 1.6551 |   0.0095 |
+| AMZN         |      116 |     -28 |  41.5471 |   4791.46  |        212.28  |       24624.5  |   4.1392 |     19833      |             1.8274 |       0.4921 |                 0.1937 |  2.3118 | 1.1594 |   0.0301 |
+| ASML         |      129 |     -25 |  33.3184 |   4273.07  |        709.08  |       91471.3  |  20.4065 |     87198.3    |             3.8005 |       0.4524 |                 0.1937 | 16.606  | 1.4407 |   0.1119 |
+| VOO          |       77 |     -12 | 238.499  |  18352.5   |        546.33  |       42067.4  |   1.2922 |     23715      |             1.1179 |       0.1699 |                 0.1937 |  0.1743 | 0.9973 |   0.0515 |
+| WMT          |       92 |     -18 |  17.8645 |   1625.53  |         98.61  |        9072.12 |   4.581  |      7446.59   |             2.4787 |       0.2334 |                 0.1937 |  2.1024 | 0.4948 |   0.0111 |
+| Portfolio    |     2142 |    -532 |  59.8406 | 128710     |        381.689 |      817577    |   5.3521 |    688867      |             2.0773 |       0.4193 |                 0.1937 |  3.2747 | 1.2909 |   1      |
+
+In which the weights and returns can be depicted as follows:
+
+![Portfolio](https://github.com/user-attachments/assets/a5e05df5-a76a-42fa-bb30-f640cd48da62)
+# Questions & Answers
 
 This section includes frequently asked questions and is meant to clear up confusion about certain results and/or deviations from other sources. If you have any questions that are not answered here, feel free to reach out to me via the contact details below.
 
@@ -415,7 +453,7 @@ Most functions will have the option to define the `trailing` parameter. This let
 
 > **How can I save the data periodically so that I don't have to retrieve it every single time again?**
 
-The Toolkit initialization has the ability to add custom datasets which can serve as input for external datasets from different providers but also to prevent downloading all of the same data again. Have a look at [this comment](https://github.com/JerBouma/FinanceToolkit/issues/68#issuecomment-1748684501) that explains this further.
+The Toolkit has the option to work with cached data through `use_cached_data=True` when initializing the Toolkit class. If you then use any of the functionalities of the Toolkit itself (e.g. `get_balance_sheet_statement`) it will store the data in a pickle file. When initializing the Toolkit class again with `use_cached_data=True`, it will load the data from the pickle file including all other previously set parameters (e.g. start_date and quarterly). You are also able to select a specific location to store the cached data by providing a string to the `use_cached_data` parameter. This will store the data in the provided location (with the assumption the folder exists).
 
 > **What is the "Benchmark" that is automatically obtained when acquiring historical data?**
 
@@ -429,24 +467,22 @@ Generally, it should take less than 15 seconds to retrieve the historical data o
 
 *No, I am not*. I've merely picked them as the primary data provider given that they have a generous free tier and fair pricing compared to other providers. Therefore, any questions related to the data should go through [their contact form](https://site.financialmodelingprep.com/contact). When it comes to any type of ratios, performance metrics, risk metrics, technical indicators or economic indicators, feel free to reach out to me as this is my own work.
 
-##  Contributing
+# Contributing
 First off all, thank you for taking the time to contribute (or at least read the Contributing Guidelines)! 🚀
 
 ___ 
 
-<p align="center"><b>Find the Contributing Guidelines <a href="https://github.com/JerBouma/FinanceToolkit/blob/main/CONTRIBUTING.md" target="_blank">here</a>.</b></p>
+<b><div align="center">Find the Contributing Guidelines <a href="/CONTRIBUTING.md">here</a>.</div></b>
 ___
 
 The goal of the Finance Toolkit is to make any type of financial calculation as transparent and efficient as possible. I want to make these type of calculations as accessible to anyone as possible and seeing how many websites exists that do the same thing (but instead you have to pay) gave me plenty of reasons to work on this.
 
-## Contact
+# Contact
 If you have any questions about the FinanceToolkit or would like to share with me what you have been working on, feel free to reach out to me via:
 
 - **Website**: https://jeroenbouma.com/
-- **Twitter**: https://twitter.com/JerBouma
 - **LinkedIn:** https://www.linkedin.com/in/boumajeroen/
 - **Email:** jer.bouma@gmail.com
-- **Discord:** add me on Discord **`JerBouma`**
 
 If you'd like to support my efforts, either help me out by contributing to the package or [Sponsor Me](https://github.com/sponsors/JerBouma).
 

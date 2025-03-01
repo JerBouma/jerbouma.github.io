@@ -695,34 +695,64 @@ financetoolkit-docs-fixedincome:
 financetoolkit-docs-economics:
   - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
     url: /projects/financetoolkit/docs
-  - title: Economy
+  - title: Government
     children:
     - title: Gross Domestic Product (GDP)
       url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product
-    - title: Gross Domestic Product Growth
-      url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product_growth
-    - title: Gross Domestic Product Forecast
-      url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product_forecast
-    - title: Consumer Confidence Index
-      url:  /projects/financetoolkit/docs/economics#get_consumer_confidence_index
-    - title: Business Confidence Index
-      url:  /projects/financetoolkit/docs/economics#get_business_confidence_index
-    - title: House Prices
-      url:  /projects/financetoolkit/docs/economics#get_house_prices
-    - title: Rent Prices
-      url:  /projects/financetoolkit/docs/economics#get_rent_prices
-    - title: Share Prices
-      url:  /projects/financetoolkit/docs/economics#get_share_prices
-  - title: Finance
-    children:
-    - title: Long Term Interest Rate
-      url:  /projects/financetoolkit/docs/economics#get_long_term_interest_rate
-    - title: Short Term Interest Rate
-      url:  /projects/financetoolkit/docs/economics#get_short_term_interest_rate
-    - title: Exchange Rates
-      url:  /projects/financetoolkit/docs/economics#get_exchange_rates
+    - title: Total Consumption
+      url:  /projects/financetoolkit/docs/economics#get_total_consumption
+    - title: Total Investment
+      url:  /projects/financetoolkit/docs/economics#get_investment
+    - title: Total Fixed Investment
+      url:  /projects/financetoolkit/docs/economics#get_fixed_investment
+    - title: Exports
+      url:  /projects/financetoolkit/docs/economics#get_exports
+    - title: Imports
+      url:  /projects/financetoolkit/docs/economics#get_imports
+    - title: Current Account Balance
+      url:  /projects/financetoolkit/docs/economics#get_current_account_balance
+    - title: Government Debt
+      url:  /projects/financetoolkit/docs/economics#get_government_debt
+    - title: Government Revenue
+      url:  /projects/financetoolkit/docs/economics#get_government_revenue
+    - title: Government Tax Revenue
+      url:  /projects/financetoolkit/docs/economics#get_government_tax_revenue
+    - title: Government Expenditure
+      url:  /projects/financetoolkit/docs/economics#get_government_expenditure
+    - title: Government Deficit
+      url:  /projects/financetoolkit/docs/economics#get_government_deficit
     - title: Trust in Government
       url: /projects/financetoolkit/docs/economics#get_trust_in_government
+  - title: Economy
+    children:
+      - title: Consumer Price Index
+        url:  /projects/financetoolkit/docs/economics#get_consumer_price_index
+      - title: Inflation Rate
+        url:  /projects/financetoolkit/docs/economics#get_inflation_rate
+      - title: Consumer Confidence Index
+        url:  /projects/financetoolkit/docs/economics#get_consumer_confidence_index
+      - title: Business Confidence Index
+        url:  /projects/financetoolkit/docs/economics#get_business_confidence_index
+      - title: Composite Leading Indicator
+        url:  /projects/financetoolkit/docs/economics#get_composite_leading_indicator
+      - title: House Prices
+        url:  /projects/financetoolkit/docs/economics#get_house_prices
+      - title: Rent Prices
+        url:  /projects/financetoolkit/docs/economics#get_rent_prices
+      - title: Share Prices
+        url:  /projects/financetoolkit/docs/economics#get_share_prices
+      - title: Exchange Rates
+        url:  /projects/financetoolkit/docs/economics#get_exchange_rates
+  - title: Finance
+    children:
+    - title: Money Supply
+      url:  /projects/financetoolkit/docs/economics#get_money_supply
+    - title: Central Bank Policy Rate
+      url:  /projects/financetoolkit/docs/economics#get_central_bank_policy_rate
+    - title: Short Term Interest Rate
+      url:  /projects/financetoolkit/docs/economics#get_short_term_interest_rate
+    - title: Long Term Interest Rate
+      url:  /projects/financetoolkit/docs/economics#get_long_term_interest_rate
   - title: Environment
     children:
       - title: Renewable Energy as % of Total Energy
@@ -741,6 +771,23 @@ financetoolkit-docs-economics:
         url: /projects/financetoolkit/docs/economics#get_population_statistics
       - title: Poverty Rate
         url: /projects/financetoolkit/docs/economics#get_poverty_rate
+
+financetoolkit-docs-portfolio:
+  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
+    url: /projects/financetoolkit/docs
+  - title: Toolkit Integration
+    url: /projects/financetoolkit/docs/portfolio/#toolkit
+  - title: Positions Overview
+    url: /projects/financetoolkit/docs/portfolio/#get_positions_overview
+  - title: Portfolio Overview
+    url: /projects/financetoolkit/docs/portfolio/#get_portfolio_overview
+  - title: Portfolio Performance
+    url: /projects/financetoolkit/docs/portfolio/#get_portfolio_performance
+  - title: Transactions Overview
+    url: /projects/financetoolkit/docs/portfolio/#get_transactions_overview
+  - title: Transactions Performance
+    url: /projects/financetoolkit/docs/portfolio/#get_transactions_performance
+      
 thepassiveinvestor:
   - title: "Introduction"
     url: /projects/thepassiveinvestor
