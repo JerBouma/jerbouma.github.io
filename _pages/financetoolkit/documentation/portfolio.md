@@ -64,6 +64,25 @@ Initialize the Portfolio class with the provided configuration file and portfoli
  ValueError: If no portfolio dataset is provided and `example` is set to False.
 
  As an example:
+{% include code_header.html %}
+{% highlight python %}
+from financetoolkit import Portfolio
+
+# Download porfolio files
+portfolio = Portfolio()
+
+# Load the portfolio dataset
+portfolio = Portfolio(portfolio_dataset="portfolio_template.xlsx")
+
+# Load an example portfolio instead
+portfolio = Portfolio(example=True)
+
+# Use an API key to access all features
+portfolio = Portfolio(
+portfolio_dataset="portfolio_template.xlsx",
+api_key="FINANCIAL_MODELING_PREP_KEY")
+{% endhighlight %}
+
 ## toolkit
 Converts the Portfolio to a Finance Toolkit object.
  This method converts the Portfolio object to a Finance Toolkit object, enabling the use of the Toolkit's 150+ financial metrics and indicators for the portfolio's assets.
