@@ -322,8 +322,8 @@ create_markdown_file(
 # Create Options page
 markdown_content = """---
 title: Options
-excerpt: The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden—Litzenberger and more.
-description: The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden—Litzenberger and more.
+excerpt: The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden Litzenberger and more.
+description: The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden Litzenberger and more.
 author_profile: false
 permalink: /projects/financetoolkit/docs/options
 classes: wide-sidebar
@@ -334,7 +334,7 @@ sidebar:
     nav: "financetoolkit-docs-options"
 ---
 
-The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden—Litzenberger and more.
+The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden Litzenberger and more.
 
 To install the FinanceToolkit it simply requires the following:
 
