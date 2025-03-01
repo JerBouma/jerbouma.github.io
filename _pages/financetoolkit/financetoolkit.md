@@ -197,6 +197,7 @@ The Finance Toolkit has the ability to leverage custom datasets from any data pr
 [Open the Notebook](/projects/financetoolkit/external-datasets){: .btn .btn--info}
 
 </div>
+</div>
 
 ## Basic Usage
 
