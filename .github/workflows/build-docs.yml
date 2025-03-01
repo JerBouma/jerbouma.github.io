@@ -28,7 +28,6 @@ jobs:
         with:
           script: |
             """
-            """
             This file is used to generate the documentation for the project. It is a very custom file and should not be used as a
             template for other projects as it is directly related to the project structure and the way the documentation is
             generated.
@@ -184,7 +183,7 @@ jobs:
                 <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
                 <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
                 <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px ">Economics</a>
+                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
                 <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
             </div>
 
@@ -235,7 +234,7 @@ jobs:
                 <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
                 <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
                 <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px ">Economics</a>
+                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
                 <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
             </div>
 
@@ -285,7 +284,7 @@ jobs:
                 <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
                 <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
                 <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px ">Economics</a>
+                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
                 <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
             </div>
 
@@ -335,7 +334,7 @@ jobs:
                 <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
                 <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
                 <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px ">Economics</a>
+                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
                 <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
             </div>
 
@@ -385,7 +384,7 @@ jobs:
                 <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
                 <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
                 <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px ">Economics</a>
+                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
                 <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
             </div>
 
@@ -435,7 +434,7 @@ jobs:
                 <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
                 <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
                 <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px ">Economics</a>
+                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
                 <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
             </div>
 
@@ -485,7 +484,7 @@ jobs:
                 <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
                 <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
                 <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px ">Economics</a>
+                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
                 <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
 
             </div>
@@ -535,7 +534,7 @@ jobs:
                 <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
                 <a href="/projects/financetoolkit/docs/risk" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
                 <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px ">Economics</a>
+                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
                 <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
 
             </div>
@@ -585,7 +584,7 @@ jobs:
                 <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
                 <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
                 <a href="/projects/financetoolkit/docs/performance" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px ">Economics</a>
+                <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px; ">Economics</a>
                 <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
 
             </div>
@@ -688,8 +687,8 @@ jobs:
                 <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
                 <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
                 <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-                <a href="/projects/financetoolkit/docs/economics" class="btn btn-0unfi" style="flex: 1;font-size:10px;margin-right:5px">>Economics</a>
-                <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--warning" style="flex: 1;font-size:10px;">>Portfolio</a>
+                <a href="/projects/financetoolkit/docs/economics" class="btn btn-0unfi" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
+                <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--warning" style="flex: 1;font-size:10px;">Portfolio</a>
             </div>
 
             {% include algolia.html %}
@@ -701,8 +700,6 @@ jobs:
                 header=markdown_content,
                 location="_pages/financetoolkit/documentation/portfolio.md",
             )
-
-
       - name: Commit files and log
         run: |
           git config --global user.name 'GitHub Action'
