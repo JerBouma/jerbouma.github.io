@@ -26,4 +26,4 @@ author_profile: false
     }
 </style>
 
-<iframe name="iframe1" id="iframe1" src="https://nbviewer.org/github.com/JerBouma/FinanceToolkit/blob/main/examples/Finance%20Toolkit%20-%2011.%20Portfolio%20Module.ipynb" frameborder="0"></iframe>
+<iframe name="iframe1" id="iframe1" src="https://nbviewer.org/github/JerBouma/FinanceToolkit/blob/main/examples/Finance%20Toolkit%20-%2011.%20Portfolio%20Module.ipynb" frameborder="0"></iframe>
