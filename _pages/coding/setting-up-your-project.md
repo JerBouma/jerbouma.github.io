@@ -95,7 +95,7 @@ Next to that, there is a section called `[tool.poetry.group.dev.dependencies]` w
 
 
 {: .notice--info}
-<b>Why Poetry over requirements.txt or pip?</b><br>Poetry is an actual dependency manager that understands the relationship between each package. This is different from `requirements.txt` which simply lists the packages and won't stop you from installing a package that is not compatible with the other packages. Pip is a package installer and <u>not</u> a dependency manager which is therefore not recommended to maintain an environment. There are other solutions available as well like `pipenv` which you could also use but I prefer Poetry especially as it is [increasing in popularity](https://lp.jetbrains.com/python-developers-survey-2022/#PythonPackaging){: target="_blank"}.
+<b>Why Poetry over requirements.txt or pip?</b><br>Poetry is an actual dependency manager that understands the relationship between each package. This is different from `requirements.txt` which simply lists the packages and won't stop you from installing a package that is not compatible with the other packages. Pip is a package installer and <u>not</u> a dependency manager which is therefore not recommended to maintain an environment. There are other solutions available as well like `pipenv` which you could also use but I prefer Poetry especially as it is [increasing in popularity](https://lp.jetbrains.com/python-developers-survey-2023/#python-packaging){: target="_blank"}.
 
 To give you an idea what it would look like:
 
