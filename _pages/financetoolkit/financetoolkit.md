@@ -9,6 +9,7 @@ redirect_from:
   - /financetoolkit
 sidebar:
   nav: "financetoolkit"
+image: assets/images/projects/FinanceToolkit.jpg
 ---
 
 While browsing a variety of websites, I kept finding that the same financial metric can greatly vary per source and so do the financial statements reported while little information is given how the metric was calculated.
