@@ -870,6 +870,22 @@ government_tax_revenue = economics.get_government_tax_revenue()
 government_tax_revenue.loc[:, ['Kenya', 'Nigeria', 'South Africa']]
 {% endhighlight %}
 
+
+Which returns:
+
+| | Kenya | Nigeria | South Africa |
+ |:-----|--------------:|----------:|---------------:|
+ | 2015 | 1.0216e+06 | 815000 | 1.10735e+06 |
+ | 2016 | 1.13656e+06 | nan | 1.18172e+06 |
+ | 2017 | 1.27696e+06 | nan | 1.25783e+06 |
+ | 2018 | 1.34139e+06 | nan | 1.33516e+06 |
+ | 2019 | 1.54591e+06 | nan | 1.39884e+06 |
+ | 2020 | 1.53224e+06 | nan | 1.29417e+06 |
+ | 2021 | 1.63031e+06 | nan | 1.61069e+06 |
+ | 2022 | 1.9694e+06 | nan | 1.7308e+06 |
+ | 2023 | 2.11419e+06 | nan | nan |
+ | 2024 | nan | nan | nan |
+
 ## get_government_tax_revenue_to_gdp_ratio
 Get the Government Tax Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Tax Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes to the Gross Domestic Product (GDP).
 
