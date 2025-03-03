@@ -15,6 +15,25 @@ layout: videos
 
 On this page, you will find a collection of my experiences and contributions within the finance and technology sectors. I had the privilege of serving as a jury member in the Utrecht University's Finance Hackathon, where students were challenged to create a Robo Advisor using Python. Additionally, I delivered presentations at universities, introducing the OpenBB Terminal and highlighting the role of Python in the financial industry. These experiences reflect my commitment to sharing knowledge and insights within the finance and technology domains, making this page a valuable resource for those interested in these fields. **Interested in partnering with me? Reach out via the [contact page](/contact)!**
 
+## Speaker at the Student Capital Society Rotterdam
+
+<div class="row">
+<div markdown="1" class="fifty-column-left mobile-max-column-width">
+
+Being a relatively new society, the Student Capital Society Rotterdam hosted their first event, which I had the pleasure of attending. The event was a great success, with over 100 students in attendance. I was invited to give a presentation about role in the financial sector and how I perceive the role of Python within the industry.
+
+It was a great opportunity to share my experiences and discuss with the students the way institutional investors bring financial theory into practice.
+
+The other speaker, Vladimir Mikirtumov, discussed the role Cryptocurrencies can have in the financial sector specifically focussed on institutional investors. A compelling story that left plenty of room for discussion.
+
+[Read More](https://www.linkedin.com/feed/update/urn:li:activity:7263214411874463746/){: .btn .btn--info target="_blank"}
+
+</div>
+<div markdown="1" class="fifty-column-right mobile-max-column-width">
+  <img src="/assets/images/appearances/RotterdamSociety.png">
+</div>
+</div>
+
 ## Guiding Students in the Utrecht University's Hackathon
 
 <div class="row">
@@ -95,24 +114,6 @@ Within this webinar I explored the main revenue streams, historical stock prices
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 <div class="embed-youtube" data-video-id="Bq7aLH4HY8Y">
-  <div class="embed-youtube-play"></div>
-</div>
-</div>
-</div>
-
-## Getting Started with the OpenBB Terminal
-
-<div class="row">
-<div markdown="1" class="fifty-column-left mobile-max-column-width">
-Within this webinar I gave an introduction to the OpenBB Terminal to serve as a getting started guide for novice users of the OpenBB ecosystem.
-
-Within this webinar I went over the installation process, the general structure, working with various data sources, collecting and exporting datasets and automating investment research workflows with routine scripts
-
-[Read More](https://www.youtube.com/watch?v=IbtILCinPrs){: .btn .btn--info target="_blank"}
-
-</div>
-<div markdown="1" class="fifty-column-right mobile-max-column-width">
-<div class="embed-youtube" data-video-id="IbtILCinPrs">
   <div class="embed-youtube-play"></div>
 </div>
 </div>
