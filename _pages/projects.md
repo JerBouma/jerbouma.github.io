@@ -96,13 +96,13 @@ To assist in not needing to get *exact* matches, the package makes use of the Le
 </div>
 </div>
 
-## [OpenBB Terminal](/projects/openbbterminal)
+## [OpenBB](/projects/openbbterminal)
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
-OpenBB Terminal provides a modern Python-based integrated environment for investment research, that allows an average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
+The OpenBB Platform offers access to equity, options, crypto, forex, macro economy, fixed income, and more while also offering a broad range of extensions to enhance the user experience according to their needs.
 
-During my time at OpenBB, I have made major code contributions to get the OpenBB Terminal in the shape it currently is. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. This led to much of the currently in place functionality. The OpenBB Terminal is a CLI based platform that democratises access to investment research. It is a platform that is meant to be used by both professional and non-professional investors. The [Finance Database](/projects/financedatabase) is part of this project and is crucial for finding and selecting companies that match the user's criteria.
+During my time at OpenBB, I have made major code contributions to the OpenBB Platform, formerly known as the OpenBB Terminal. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. I am proud having worked on this project and I am excited to see where it will go in the future. Being a competitor to Bloomberg, Reuters and FactSet, OpenBB is a platform that is here to stay.
 
 [View this Project](/projects/openbbterminal){: .btn .btn--info}
 </div>
