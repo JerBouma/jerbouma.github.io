@@ -19,23 +19,31 @@ The aim of this database is explicitly _not_ to provide up-to-date fundamentals 
 
 Some key statistics of the database:
 
-| Product           | Quantity   | Sectors    | Industries    | Countries | Exchanges |
-| ----------------- | ---------- | ---------- | ------------- | --------- | --------- |
-| Equities          | 158.429    | 12         | 63            | 111       | 83        | 
-| ETFs              | 36.786     | 295        | 22            | 111       | 53        |
-| Funds             | 57.881     | 1541       | 52            | 111       | 34        |
+
+
+<div class="row">
+<div markdown="1" class="fifty-column-left">
+
+| Product           | Quantity   | Sectors    | Industries    | Countries |
+| ----------------- | ---------- | ---------- | ------------- | --------- |
+| Equities          | 158,429    | 12         | 63            | 111       |
+| ETFs              | 36,786     | 295        | 22            | 111       |
+| Funds             | 57,881     | 1,541       | 52            | 111      |
+
+</div>
+<div markdown="1" class="fifty-column-right">
 
 | Product           | Quantity  | Category              |
 | ----------------- | --------- | --------------------- |
-| Currencies        | 2.556     | 175 Currencies        |
-| Cryptocurrencies  | 3.367     | 352 Cryptocurrencies  |
-| Indices           | 91.183    | 64 Exchanges          |
-| Money Markets     | 1.367     | 3 Exchanges           |
+| Currencies        | 2,556     | 175 Currencies        |
+| Cryptocurrencies  | 3,367     | 352 Cryptocurrencies  |
+| Indices           | 91,183    | 64 Exchanges          |
+| Money Markets     | 1,367     | 3 Exchanges           |
 
-The Finance Database is used within or referenced by:
+</div>
+</div>
 
-<a href="https://openbb.co/"><img width="200" height="100" alt="OpenBB" src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/cff58802-8f6e-48ec-9a5c-1a7795c3522c"></a><a href="https://app.noteable.io/f/242bc47d-9c85-4a30-b6e5-d7d201f6e2d6/Finance+Database.ipynb"><img alt="Noteable" width="200" height="100" src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/1110feb5-3ad8-4f1c-b580-df661df4682d"></a><a href="https://algotrading101.com/learn/financedatabase-python-guide/"><img width="200" height="100" alt="AlgoTrading" src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/4c113348-45fc-45fe-afb5-e043b738ee94"></a><a href="https://twitter.com/pyquantnews/status/1576185955677077504?lang=en"><img width="200" height="100" alt="PyQuantNews" src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/8c9025fb-3830-4f41-95fd-e5e6d0f84758"></a><a href="https://alpha2phi.medium.com/investment-analysis-finance-database-61f47ecfe7ca"><img width="200" height="100" alt="Medium" src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/dfbd0f4c-85eb-4de6-adba-345cb5189f31"></a>
-
+<img src="/assets/images/projects/FinanceDatabase.jpg" alt="Finance Database" width="100%"/>
 
 ## Installation
 
@@ -273,21 +281,30 @@ You can also store the database locally and point to your local location with th
 In this section you can find answers to commonly asked questions. In case the answer to your question is not here, 
 consider creating an [Issue](https://github.com/JerBouma/FinanceDatabase/issues).
 
-- **How is the data obtained?**
-    - The data is an aggregation of a variety of sources. The rule that I hold with high regard is that all data needs to be entirely publicly available. Any data that requires API key access or requires a paid tier is never included in this database. Data that you are being charged for is often owned and maintained by the company you have a subscription at and therefore publicly sharing this information online is against their Terms of Service (ToS). However, data that is publicly available can freely be shared (read more about this subject [here](https://techcrunch.com/2022/04/18/web-scraping-legal-court/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAJRZe3F6wCbuO_n8PJ9JtAHpOY4dF2gA_tO0gJF2PhfWUueUcRQataJwNS9FZlp9rH8f8_aiCBfA2v7wlHyXyVLUfMrca4kq0_m6CYSvK7eMk9zuEhnXJOvE0lrHWXSPTtL-lHP8UJD4SyWTpQ2BnCNx-kv3mG7GGn_G_3SGVvhP)) especially since this database will never cost any money.
-- **What categorization method is used?**
-    - The categorization for Equities is based on a loose approximation of GICS. No actual data is collected from this source and this database merely tries to reflect the sectors and industries as best as possible. This is completely done through manual curation. The actual datasets as curated by MSCI has not been used in the development of any part of this database and remains the most up to date, paid, solution. Other categorizations are entirely developed by the author and can freely be changed.
-- **How can I contribute?**
-    - Please see the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md). Thank you!
-- **How can I find out which countries, sectors and/or industries exists within the database without needing to check the database manually?**
-    - For this you can use the ``options`` function from the package attached to this database. Furthermore, it is also possible to use `equities = fd.Equities()` and then use `equities.options(selection='country')` or specific further with `equities.options(selection='sector', country='United States')`. Please see 
-    [this example](#companies-in-the-netherlands)
-- **When I try collect data I notice that not all tickers return output, why is that?**
-    - Some tickers are merely holdings of companies and therefore do not really have any data attached to them. 
-      Therefore, it makes sense that not all tickers return data. If you are still in doubt, search the ticker on 
-      Google to see if there is really no data available. If you can't find anything about the ticker, consider updating the database by visiting the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md).
-- **How does the database handle changes to companies over time - like symbol/exchange migration, mergers, bankruptcies, or symbols getting reused?**
-    - For the American Exchanges, every Sunday the database automatically updates based on [this repository](https://github.com/rreichel3/US-Stock-Symbols). It also automatically checks if there were any market cap changes and converts assets accordingly. On purpose, most tickers are not removed even after becoming delisted. This is because it can be still of value for research to look into companies that no longer exist. When it comes to further automisation, this is what you usually pay a hefty fee for, think of Bloomberg at over $25.000 a year. Instead of requiring you to pay, this database is meant to be a community-driven project in which you help in identifiyng these companies. As news about migrations, mergers, bankruptcies and similar occur outside of the American exchanges it is up to the community to identify these and/or users to look into writing scripts that help with this. It is important to note that the vast majority of companies do not change as rapidly that this database becomes irrelevant before it is identified, e.g. a company like Facebook changing to META has already been updated. Furthermore, even though a company goes bankrupt, the old ticker is still relevant when it comes to historic data before the bankruptcy.
+> **How is the data obtained?**
+
+The data is an aggregation of a variety of sources. The rule that I hold with high regard is that all data needs to be entirely publicly available. Any data that requires API key access or requires a paid tier is never included in this database. Data that you are being charged for is often owned and maintained by the company you have a subscription at and therefore publicly sharing this information online is against their Terms of Service (ToS). However, data that is publicly available can freely be shared (read more about this subject [here](https://techcrunch.com/2022/04/18/web-scraping-legal-court/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAJRZe3F6wCbuO_n8PJ9JtAHpOY4dF2gA_tO0gJF2PhfWUueUcRQataJwNS9FZlp9rH8f8_aiCBfA2v7wlHyXyVLUfMrca4kq0_m6CYSvK7eMk9zuEhnXJOvE0lrHWXSPTtL-lHP8UJD4SyWTpQ2BnCNx-kv3mG7GGn_G_3SGVvhP)) especially since this database will never cost any money.
+
+> **What categorization method is used?**
+
+The categorization for Equities is based on a loose approximation of GICS. No actual data is collected from this source and this database merely tries to reflect the sectors and industries as best as possible. This is completely done through manual curation. The actual datasets as curated by MSCI has not been used in the development of any part of this database and remains the most up to date, paid, solution. Other categorizations are entirely developed by the author and can freely be changed.
+
+> **How can I contribute?**
+
+Please see the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md). Thank you!
+
+> **How can I find out which countries, sectors and/or industries exists within the database without needing to check the database manually?**
+
+For this you can use the ``options`` function from the package attached to this database. Furthermore, it is also possible to use `equities = fd.Equities()` and then use `equities.options(selection='country')` or specific further with `equities.options(selection='sector', country='United States')`. Please see [this example](#companies-in-the-netherlands)
+
+> **When I try collect data I notice that not all tickers return output, why is that?**
+Some tickers are merely holdings of companies and therefore do not really have any data attached to them. 
+Therefore, it makes sense that not all tickers return data. If you are still in doubt, search the ticker on 
+Google to see if there is really no data available. If you can't find anything about the ticker, consider updating the database by visiting the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md).
+
+> **How does the database handle changes to companies over time - like symbol/exchange migration, mergers, bankruptcies, or symbols getting reused?**
+
+For the American Exchanges, every Sunday the database automatically updates based on [this repository](https://github.com/rreichel3/US-Stock-Symbols). It also automatically checks if there were any market cap changes and converts assets accordingly. On purpose, most tickers are not removed even after becoming delisted. This is because it can be still of value for research to look into companies that no longer exist. When it comes to further automisation, this is what you usually pay a hefty fee for, think of Bloomberg at over $25.000 a year. Instead of requiring you to pay, this database is meant to be a community-driven project in which you help in identifiyng these companies. As news about migrations, mergers, bankruptcies and similar occur outside of the American exchanges it is up to the community to identify these and/or users to look into writing scripts that help with this. It is important to note that the vast majority of companies do not change as rapidly that this database becomes irrelevant before it is identified, e.g. a company like Facebook changing to META has already been updated. Furthermore, even though a company goes bankrupt, the old ticker is still relevant when it comes to historic data before the bankruptcy.
     
 # User Contributions
 
@@ -295,5 +312,6 @@ This section is meant to thank those that contributed to the project. Looking to
 
 | User              | Contribution |
 | ----------------- | ------------ | 
+| [desaijimmy](https://github.com/desaijimmy)        | Made changes to Equities dataset including the Split of Daimler to Mercedes-Benz and Daimler Trucks |
 | [nindogo](https://github.com/nindogo)        | Introduced a variety of new equities from the Nairobi Securities Exchange and introduced the country Kenya into the dataset. |
 | [colin99d](https://github.com/colin99d)        | Helped in the conversion of the Finance Database package to Object-Orientated, making the code much more efficient. |
