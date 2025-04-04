@@ -52,32 +52,16 @@ financedatabase:
     url: /projects/financedatabase#site-nav
   - title: "Installation"
     url: /projects/financedatabase#installation
-  - title: "How to Guides"
-    url: /projects/financedatabase#how-to-guides-for-the-financedatabase
-    children:
-      - title: Getting Started
-        url: /projects/financedatabase/getting-started
-      - title: Categorizing Dutch Stocks
-        url: /projects/financedatabase/querying-netherlands
-      - title: Dupont Analysis on Railroad Companies
-        url: /projects/financedatabase/dupont-analysis
-      - title: Technical Analysis of Biotech ETFs
-        url: /projects/financedatabase/technical-analysis
-  - title: Quick Start
-    url: /projects/financedatabase#basic-usage
-    children:
-      - title: Using the Finance Database
-        url: /projects/financedatabase#basic-usage
-      - title: Collection Information from the Database
-        url: /projects/financedatabase#collecting-information-from-the-database
-      - title: "Searching the Database"
-        url: /projects/financedatabase#searching-the-database-extensively
-      - title: "Remote and Local Storing"
-        url: /projects/financedatabase#storing-the-database-at-a-different-location
+  - title: "Usage"
+    url: /projects/financedatabase#usage
+  - title: <font color="green">Example Notebook</font>
+    url: /projects/financedatabase/getting-started
   - title: "Questions & Answers"
     url: /projects/financedatabase#questions--answers
-  - title: "User Contributions"
-    url: /projects/financedatabase#user-contributions
+  - title: "Contributions"
+    url: /projects/financedatabase#contributions
+  - title: "Contact"
+    url: /projects/financedatabase#contact
 financetoolkit:
   - title: Introduction
     url: /projects/financetoolkit#site-nav

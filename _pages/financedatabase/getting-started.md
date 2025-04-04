@@ -5,6 +5,10 @@ excerpt: This notebook demonstrates how to use the FinanceDatabase to look into 
 description: This notebook demonstrates how to use the FinanceDatabase to look into companies and filter through them accordingly.
 classes: wide-no-sidebar no-title
 author_profile: false
+redirect_from:
+  - /projects/financedatabase/querying-netherlands
+  - /projects/financedatabase/technical-analysis
+  - /projects/financedatabase/dupont-analysis
 ---
 
 <style>
