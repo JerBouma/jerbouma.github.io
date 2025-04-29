@@ -1,69 +1,69 @@
 ---
 title: Build your Model
-excerpt: Build robust financial models with modular programming, styling, and PEP8 conventions.
-description: Build robust financial models with modular programming, styling, and PEP8 conventions.
+excerpt: Build robust financial models with modular programming, styling, and PEP 8 conventions.
+description: Build robust financial models with modular programming, styling, and PEP 8 conventions.
 author_profile: true
 permalink: /modelling/build-your-model
 classes: wide-sidebar
 author_profile: false
 sidebar:
-  nav: "modelling"
+    nav: "modelling"
 ---
 
-A financial model can have multiple purposes. It can be as simple as the aggregation of data to a more complex model which includes forecasting and scenario analysis. In any case, the model should be built in such a way that it is easy to understand, maintain and extend. This is where the concept of modular programming comes in which is the approach as found in [Structure your Model](/modelling/structure-your-model). For more examples of this method and inspiration how to build your own model please have a look at the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"}, [Finance Database](https://github.com/JerBouma/FinanceDatabase){:, target="_blank"}, [OpenBB Terminal](https://github.com/OpenBB-finance/OpenBBTerminal){: target="_blank"}, [yfinance](https://github.com/ranaroussi/yfinance){: target="_blank"} and [Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){: target="_blank"}.
+A financial model can serve multiple purposes, ranging from simple data aggregation to complex forecasting and scenario analysis. Regardless of its complexity, the model should be built for clarity, maintainability, and extensibility. This is where the concept of modular programming, as discussed in [Structure your Model](/modelling/structure-your-model), becomes crucial. For examples of this method and inspiration for building your own model, explore projects like the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"}, [Finance Database](https://github.com/JerBouma/FinanceDatabase){:, target="_blank"}, [OpenBB Terminal](https://github.com/OpenBB-finance/OpenBBTerminal){: target="_blank"}, [yfinance](https://github.com/ranaroussi/yfinance){: target="_blank"}, and [Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){: target="_blank"}.
 
 <div style="display: flex; justify-content: space-between;margin-bottom:10px">
-    <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
-    <a href="/modelling/getting-started" class="btn btn--info" style="flex: 1;margin-right:5px">Getting Started</a>
-    <a href="/modelling/setting-up-your-project" class="btn btn--info" style="flex: 1;margin-right:5px">Setting up your Project</a>
-    <a href="/modelling/structure-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Structure your Model</a>
-    <a href="/modelling/build-your-model" class="btn btn--warning" style="flex: 1;margin-right:5px">Build your Model</a>
-    <a href="/modelling/test-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Test your Model</a>
+        <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
+        <a href="/modelling/getting-started" class="btn btn--info" style="flex: 1;margin-right:5px">Getting Started</a>
+        <a href="/modelling/setting-up-your-project" class="btn btn--info" style="flex: 1;margin-right:5px">Setting up your Project</a>
+        <a href="/modelling/structure-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Structure your Model</a>
+        <a href="/modelling/build-your-model" class="btn btn--warning" style="flex: 1;margin-right:5px">Build your Model</a>
+        <a href="/modelling/test-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Test your Model</a>
 </div>
 
-Whatever the purpose of your model is, the following styling and coding guidelines should be applied to take out the subjective nature of coding. Applying a style guide will ensure that all code is written in the same way and therefore is easier to read and maintain. This is especially important when working with multiple developers on the same codebase but also when colleagues move teams and need to understand new models. 
+Regardless of the model's purpose, applying consistent styling and coding guidelines helps remove the subjective nature of coding. A style guide ensures code consistency, making it easier to read and maintain. This consistency is crucial when multiple developers collaborate on the same codebase or when colleagues transition between teams and need to understand unfamiliar models.
 
-The linters, as discussed in [Setting up your Project](/modelling/setting-up-your-project#setting-up-linters), will do much of the initial styling of the code for you. However, the methods you use to code, how you choose to name your variables or what docstring structure you employ is not something linters will be able to help you with. This is where the Style Guide [**PEP8**](https://peps.python.org/pep-0008/){: target="_blank"} comes in.
+Linters, as discussed in [Setting up your Project](/modelling/setting-up-your-project#setting-up-linters), automate much of the initial code styling. However, linters cannot enforce choices regarding coding methods, variable naming conventions, or docstring structures. This is where style guides like [**PEP 8**](https://peps.python.org/pep-0008/){: target="_blank"} are essential.
 
 {: .notice--info}
 **Why a Universal Style is Important**<br>
-It could be that you are used to a certain method of styling because that was employed within your firm or university. My honest advice is to detach from that and use the universal styling instead as it is adopted by countless of developers. Applying this style will make collaboration with your projects a lot easier since developers will be familiar with the way your code is written in an instant. Any questions whatsoever about the style, you have the full support of the Python Enhancement Proposals (PEP). Other than that, you'd otherwise also be fighting against the styling of the linters which will make your life a lot harder.
+You might be accustomed to specific styling methods from your firm or university. However, adopting universally accepted styles like PEP 8 is highly recommended, as countless developers use them. This standardisation significantly eases collaboration, allowing developers to quickly understand your code. Furthermore, adhering to PEP standards provides clear guidelines and avoids conflicts with automated linters, simplifying the development process.
 
 ## Default Styling
 
-Throughout this page, PEP is frequently referenced. PEP stands for Python Enhancement Proposal. A PEP is a technical design document for the Python community which describes a new feature for the language itself, its processes, or its environment. This is something developers have agreed on and therefore there is no point in reinventing the wheel for this matter.
+Throughout this page, PEP (Python Enhancement Proposal) is frequently referenced. A PEP is a technical design document for the Python community, outlining new features, processes, or environmental standards for the language. These proposals represent community consensus, providing established best practices.
 
-The styles as described by **PEP8** (see [here](https://peps.python.org/pep-0008/){: target="_blank"}) are used for general code structures. This is the default style that is adopted by countless of developers. By applying this style, the style is the same for both internal and external tooling. It is recommended to browse through the PEP8 documentation to get a better understanding of each component. Within this section, the major components are summarised.
+The styles described by **PEP 8** (see [here](https://peps.python.org/pep-0008/){: target="_blank"}) define conventions for general code structure. As the default style adopted by numerous developers, it ensures consistency across both internal and external tooling. Reviewing the PEP 8 documentation is recommended for a thorough understanding; this section summarizes the major components.
 
-To summarise the code lay-out, this results in the following:
+Key aspects of code layout include:
 
-- [**Indentation**](https://peps.python.org/pep-0008/#indentation){: target="_blank"}: use 4 spaces as indentation level. This is the default in basically any code editor.
-- [**Maximum line length**](https://peps.python.org/pep-0008/#maximum-line-length){: target="_blank"}: 79 is recommended but there is room to sway from this. PEP8 suggests up to 99 characters but 122 characters is often applied as well. The 79 characters was chosen due to the resolution size of the screens. This has since then greatly improved which loosens up this suggestion.
-- [**Line Breaks**](https://peps.python.org/pep-0008/#should-a-line-break-before-or-after-a-binary-operator){: target="_blank"}: should follow the logic of mathematics in which the operator is in front of the variable and not behind it.
-- [**Blank Lines**](https://peps.python.org/pep-0008/#blank-lines){: target="_blank"}: space out functionality accordingly, top-level functions with two blank lines and methods inside a class are surrounded by one blank line. Use blank lines within functions to separate logical sections.
-- [**Source File Encoding**](https://peps.python.org/pep-0008/#source-file-encoding){: target="_blank"}: code should always use UTF-8. Next to that, code should be written in English except for specific abbreviations.
-- [**Import statements**](https://peps.python.org/pep-0008/#imports){: target="_blank"}: are always written down separately and when a module is imported, this is specified explicitly. Thus it should not be `from package import *` but instead `from package import module, module2`.
-- [**Model Level Dunder Names**](https://peps.python.org/pep-0008/#module-level-dunder-names){: target="_blank"}: any dunders (e.g. `__version__`) should be placed before the import statements (with the exception to the `__future__` import).
+-   [**Indentation**](https://peps.python.org/pep-0008/#indentation){: target="_blank"}: Use 4 spaces per indentation level. This is the standard in most code editors.
+-   [**Maximum line length**](https://peps.python.org/pep-0008/#maximum-line-length){: target="_blank"}: While 79 characters is the traditional recommendation (originally based on screen resolution limitations), PEP 8 allows flexibility. Limits up to 99 or even 122 characters are common practice today due to improved screen resolutions.
+-   [**Line Breaks**](https://peps.python.org/pep-0008/#should-a-line-break-before-or-after-a-binary-operator){: target="_blank"}: Should generally occur *before* binary operators, aligning with mathematical conventions where the operator precedes the operand on the new line.
+-   [**Blank Lines**](https://peps.python.org/pep-0008/#blank-lines){: target="_blank"}: Use blank lines appropriately to separate functionality. Surround top-level functions and classes with two blank lines, and methods within a class with one blank line. Use blank lines sparingly within functions to indicate logical sections.
+-   [**Source File Encoding**](https://peps.python.org/pep-0008/#source-file-encoding){: target="_blank"}: Always use UTF-8 encoding for source files. Code identifiers (variables, functions, classes, comments) should be in English, except for widely understood abbreviations.
+-   [**Import statements**](https://peps.python.org/pep-0008/#imports){: target="_blank"}: Each import should generally be on a separate line. Imports should be explicit, specifying the modules being imported (e.g., `from package import module1, module2`) rather than using wildcard imports (`from package import *`). Imports should be grouped in the standard order: standard library, related third-party, local application/library specific.
+-   [**Module Level Dunder Names**](https://peps.python.org/pep-0008/#module-level-dunder-names){: target="_blank"}: Module-level "dunders" (names with double leading and trailing underscores), such as `__version__` or `__author__`, should be placed after the module docstring but before any import statements, except for `from __future__` imports.
 
 ## Naming Conventions
 
-Naming conventions for each type of variable is as follows:
+Recommended naming conventions include:
 
-- **Classes:** uses`CapWords` like `Ratios` or `RatiosClass`.
-- **Functions:** uses lowercase with a verb like `get_gross_margin`.
-- **Variables:** uses lowercase like `margin` or `gross_margin`.
-- **Constants:** uses uppercase like `PERIOD`. These variables can <u>never</u> change.
-- **Internal Variables:** uses an underscore at the start like `_income_statement`, this is meant for class-based systems to differentiate variables accordingly. Generally you won't use these variables outside of the class.
+-   **Classes:** Use `CapWords` (also known as PascalCase), like `Ratios` or `FinancialModel`.
+-   **Functions:** Use `lowercase_with_underscores` (snake_case), often starting with a verb, like `calculate_gross_margin` or `get_data`.
+-   **Variables:** Use `lowercase_with_underscores` (snake_case), like `margin` or `gross_margin`.
+-   **Constants:** Use `UPPERCASE_WITH_UNDERSCORES` (SCREAMING_SNAKE_CASE), like `INTEREST_RATE` or `PERIOD`. Constants represent values that are not intended to change.
+-   **Internal Use (Protected):** Use a single leading underscore, like `_income_statement`. This convention indicates that a variable or method is intended for internal use within a class or module, although it's not strictly enforced by Python.
 
-The goal with the naming convention is to make variables recognizable from the way they are written down. This makes it possible to understand the type of variable without needing to look for the variable declaration. By definition, I will know that `get_gross_margin` will execute a function whereas `gross_margin` and `PERIOD` will return data.
+The goal of these conventions is to make code more readable by indicating the intended use of a name (e.g., class, function, variable, constant) simply by its format. For instance, `calculate_gross_margin` clearly suggests a function, while `gross_margin` suggests a variable and `PERIOD` suggests a constant.
 
-It is also important to make variables as descriptive as possible. For example, a variable should never be called `df` as it has little meaning. It is better to have a variable called `microsoft_trailing_gross_margin` than use `msft_ttm_gm` because *the time spend reading code is 10 times higher than the amount of time code is written.*
+Choose descriptive names over overly abbreviated ones. For example, `microsoft_trailing_gross_margin` is preferable to `msft_ttm_gm`. While brevity has its place, clarity is paramount, especially considering that *code is read far more often than it is written.* Avoid generic names like `df` unless the scope is very limited and the meaning is obvious from context.
 
-If you are working on a model together with other developers, don't forget that they should be able to understand your code as well when you are on a holiday, sick or have left the company.
+When collaborating, remember that your code needs to be understandable by others, even in your absence (e.g., during holidays, sick leave, or after you've left the team).
 
 ## Applying Typing
 
-All variables should contain typing on initialization. This means when you create a new variable, it should display exactly what type it could be. This is all defined in PEP 256 (see [here](https://peps.python.org/pep-0526/){: target="_blank"}) and PEP 484 (see [here](https://peps.python.org/pep-0484/){: target="_blank"}). For example:
+Use type hints for variables and function signatures as defined in PEP 484 (Type Hints) and PEP 526 (Syntax for Variable Annotations). Type hints improve code clarity and allow static analysis tools to catch potential errors. Examples:
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -87,8 +87,8 @@ reported_values: dict[str, float] = {
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 
 ```python
-# Single definition which shouldn't change
-PERIOD: int = 5
+# Constant definition (use Final for linters)
+from typing import Final
 
 # Multiple possible types based on Pandas
 transactions: pd.DataFrame | pd.Series = (
@@ -103,7 +103,7 @@ margin: pd.DataFrame = pd.DataFrame(
 </div>
 </div>
 
-This also applies to functions:
+Type hints should also be applied to function parameters and return values:
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -130,11 +130,11 @@ def get_cost_of_goods_sold(
 </div>
 </div>
 
-Not defining typing lowers the quality of the code as the user will need to read the docstring or code first before it is possible to understand what to supply.
+Omitting type hints reduces code clarity, forcing users to rely solely on docstrings or reading the implementation to understand function inputs and outputs.
 
 ## Writing Docstrings
 
-Docstrings should follow PEP 257 (see [here](https://peps.python.org/pep-0257/){: target="_blank"}). This format is widely accepted by developers and used within many code editors as the default as well. An example of how a docstring could look like is as follows:
+Write clear and informative docstrings following PEP 257 (Docstring Conventions). Consistent docstring formatting is widely accepted and supported by many development tools. Here's an example using the Google style format:
 
 ```python
 def function_name(param1: type, param2: type) -> return_type:
@@ -153,9 +153,9 @@ def function_name(param1: type, param2: type) -> return_type:
     """
 ```
 
-This is the Google format but there are other formats such as [reStructuredText](https://docutils.sourceforge.io/rst.html){: target="_blank"} as well. Which one you choose doesn't matter as long as the docstrings you write explain what the function does, what arguments it takes and what it returns. It needs to provide enough clarity that the user can understand the purpose of the function without having to read the code.
+While this example uses the Google format, other formats like [reStructuredText (reST)](https://docutils.sourceforge.io/rst.html){: target="_blank"} or NumPy style are also common. The chosen format is less important than ensuring the docstring clearly explains the function's purpose, arguments (including types), return value(s), and any exceptions raised. The goal is to allow users to understand the function without needing to inspect its source code.
 
-I recommended to be as extensive as possible and thus it is better to overdo it then to have a minimal docstring which still doesn't really explain what is going on. Docstrings give you the room as well to explain the financial theory or the logic of the function. See an example here of what it could look like (from [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/performance/performance_model.py#L129-L174){: target="_blank"}) below. This is on purpose very extensive to show what is possible.
+Aim for comprehensive docstrings; it's generally better to provide too much detail than too little. Docstrings are an excellent place to explain underlying financial theory or complex logic within the function. Below is an extensive example (from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/performance/performance_model.py#L129-L174){: target="_blank"}) demonstrating the level of detail possible:
 
 ```python
 def get_capital_asset_pricing_model(
@@ -225,18 +225,18 @@ def get_capital_asset_pricing_model(
 
 Besides styling and docstrings, documentation is actually pretty important if you want to share your code with others. This is where [Sphinx](https://www.sphinx-doc.org/en/master/){: target="_blank"} comes in. Sphinx is a tool that makes it easy to create intelligent and beautiful documentation for Python projects (or other documents consisting of multiple reStructuredText or Markdown files).
 
-This is not the only approach to create documentation. There are other tools such as [MkDocs](https://www.mkdocs.org/){: target="_blank"} and [Read the Docs](https://readthedocs.org/){: target="_blank"} which are also widely used. See below the documentation of the [Finance Toolkit](/projects/financetoolkit/docs){: target="_blank"} as an example. This uses custom JavaScript but the result is similar to that what you can achieve with Sphinx.
+Other popular documentation generators include [MkDocs](https://www.mkdocs.org/){: target="_blank"}. Additionally, platforms like [Read the Docs](https://readthedocs.org/){: target="_blank"} can host documentation generated by these tools. The [Finance Toolkit documentation](/projects/financetoolkit/docs){: target="_blank"} serves as an example, showcasing a polished result achievable with such tools (though this specific example uses custom elements alongside standard tooling).
 
 [![Alt text](/assets/images/modelling/build-your-model/image-2.png)](/projects/financetoolkit/docs){: target="_blank"}
 
-Documentation shouldn't just be about describing each individual function. It should also feature Jupyter Notebooks demonstrating use-cases. This helps in understanding the logic behind the model and for what it could be used. This should be saved in an "examples" folder as also shown in [Structure your Model](/modelling/structure-your-model). E.g. see below a snippet of the Getting Started Notebook from the [Finance Toolkit](/projects/financetoolkit/getting-started){: target="_blank"}.
+Effective documentation goes beyond API references (descriptions of individual functions). It should include tutorials, conceptual explanations, and practical examples, often using Jupyter Notebooks to demonstrate use cases. These examples help users understand the model's logic and applications. Store such examples in a dedicated `examples` directory, as suggested in [Structure your Model](/modelling/structure-your-model). See a snippet from the [Finance Toolkit's Getting Started Notebook](/projects/financetoolkit/getting-started){: target="_blank"} below:
 
 [![Alt text](/assets/images/modelling/build-your-model/image.png)](/projects/financetoolkit/getting-started){: target="_blank"}
 
-When working in a corporate setting, do not forget about the function of the [Wiki (e.g. from Azure DevOps)](https://learn.microsoft.com/en-us/azure/devops/project/wiki/wiki-create-repo?view=azure-devops&tabs=browser){: target="_blank"}. This is a great way to share information with your team and to document your code on a higher level while still being able to use Markdown and version control.
+In corporate environments, internal wikis (like those in [Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/project/wiki/wiki-create-repo?view=azure-devops&tabs=browser){: target="_blank"} or Confluence) are valuable for sharing higher-level project information, architectural decisions, and team processes, often using Markdown and benefiting from version control.
 
-If you have designed proper docstrings, the documentation can be used to explain the overall structure of the model and how to use it instead of explaining each individual function. Especially when the model serves as the back-end, it can actually help Financial Analysts, Portfolio Managers and similar to understand what the model does without needing to understand any programming language. This is a great way to bridge the gap between the technical and non-technical professionals as well.
+Well-written docstrings allow the main documentation to focus on the model's overall structure, usage patterns, and concepts, rather than repeating low-level function details. This approach is particularly helpful when the model serves as a back-end, enabling non-programmers (like Financial Analysts or Portfolio Managers) to understand its capabilities and assumptions, bridging the gap between technical and domain experts.
 
-Once you have done these steps it's time to start testing your model. Visit [Test your Model](/modelling/test-your-model) to continue!
+After establishing these coding and documentation practices, the next crucial step is testing. Proceed to [Test your Model](/modelling/test-your-model) to learn more.
 
 [Test your Model](/modelling/test-your-model){: .btn .btn--info .btn--large .align-center}

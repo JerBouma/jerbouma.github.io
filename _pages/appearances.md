@@ -1,6 +1,6 @@
 ---
 title: Appearances
-description: All of my talks, both personal and professional, are included here. This include presentations at a variety of universities and webinars.
+description: All of my talks, both personal and professional, are included here. This includes presentations at a variety of universities and webinars.
 author_profile: true
 permalink: appearances
 redirect_from:
@@ -13,37 +13,37 @@ author_profile: false
 layout: videos
 ---
 
-On this page, you will find a collection of my experiences and contributions within the finance and technology sectors. I had the privilege of serving as a jury member in the Utrecht University's Finance Hackathon, where students were challenged to create a Robo Advisor using Python. Additionally, I delivered presentations at universities, introducing the OpenBB Terminal and highlighting the role of Python in the financial industry. These experiences reflect my commitment to sharing knowledge and insights within the finance and technology domains, making this page a valuable resource for those interested in these fields. **Interested in partnering with me? Reach out via the [contact page](/contact)!**
+On this page, you will find a collection of my experiences and contributions within the finance and technology sectors. I had the privilege of serving as a jury member for the Utrecht University Finance Hackathon, where students were challenged to create a Robo Advisor using Python. Additionally, I delivered presentations at universities, introducing the OpenBB Terminal and highlighting the role of Python in the financial industry. These experiences reflect my commitment to sharing knowledge and insights within the finance and technology domains, making this page a valuable resource for those interested in these fields. **Interested in partnering with me? Reach out via the [contact page](/contact)!**
 
 ## Speaker at the Student Capital Society Rotterdam
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 
-Being a relatively new society, the Student Capital Society Rotterdam hosted their first event, which I had the pleasure of attending. The event was a great success, with over 100 students in attendance. I was invited to give a presentation about role in the financial sector and how I perceive the role of Python within the industry.
+As a relatively new society, the Student Capital Society Rotterdam hosted its first event, which I had the pleasure of attending. The event was a great success, with over 100 students in attendance. I was invited to give a presentation about my role in the financial sector and how I perceive the role of Python within the industry.
 
-It was a great opportunity to share my experiences and discuss with the students the way institutional investors bring financial theory into practice.
+It was a great opportunity to share my experiences and discuss with the students how institutional investors bring financial theory into practice.
 
-The other speaker, Vladimir Mikirtumov, discussed the role Cryptocurrencies can have in the financial sector specifically focussed on institutional investors. A compelling story that left plenty of room for discussion.
+The other speaker, Vladimir Mikirtumov, discussed the potential role of Cryptocurrencies in the financial sector, specifically focusing on institutional investors. It was a compelling story that left plenty of room for discussion.
 
 [Read More](https://www.linkedin.com/feed/update/urn:li:activity:7263214411874463746/){: .btn .btn--info target="_blank"}
 
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
-  <img src="/assets/images/appearances/RotterdamSociety.png">
+  <img src="/assets/images/appearances/RotterdamSociety.png" alt="Student Capital Society Rotterdam Event">
 </div>
 </div>
 
-## Guiding Students in the Utrecht University's Hackathon
+## Guiding Students in the Utrecht University Hackathon
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 
-I had the privilege of serving as a jury member for a Hackathon for Finance students. Their objective was to develop a Robo Advisor using Python, utilising a dataset comprising of nearly 2,500 ETFs.
+I had the privilege of serving as a jury member for a Hackathon aimed at Finance students. Their objective was to develop a Robo Advisor using Python, utilizing a dataset comprising nearly 2,500 ETFs.
 
-What made this challenge very interesting was the need for students to find a balance between using Python for quantitative portfolio construction tailored to the given investor profile, and ensuring that the optimised portfolio made practical sense. My role was to guide the students in combining their knowledge of financial theory with their Python skills to provide sound investment advice.
+What made this challenge particularly interesting was the need for students to balance using Python for quantitative portfolio construction tailored to a given investor profile, while ensuring the optimized portfolio made practical sense. My role was to guide the students in combining their knowledge of financial theory with their Python skills to provide sound investment advice.
 
-I strongly believe in that the importance of Python in the financial industry will continue to grow and that is why I keep coming back each year.
+I strongly believe the importance of Python in the financial industry will continue to grow, which is why I keep coming back each year.
 
 [Read More](https://www.linkedin.com/feed/update/urn:li:activity:7127300810450853888/){: .btn .btn--info target="_blank"}
 
@@ -70,9 +70,9 @@ I strongly believe in that the importance of Python in the financial industry wi
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-I gave two presentations at the University of Loughborough and for the University of Warwick. It was very rewarding to see the amount of interest from students as both sessions had well over 100 students present.
+I gave presentations at the University of Loughborough and the University of Warwick. It was very rewarding to see the high level of interest from students, as both sessions had well over 100 attendees.
 
-These presentations were meant to enlighten students about the OpenBB Terminal and what OpenBB wants to achieve in the near future. This recording was done at the University of Warwick in collaboration with the Warwick Finance Society.
+These presentations aimed to inform students about the OpenBB Terminal and OpenBB's future goals. This recording was made at the University of Warwick in collaboration with the Warwick Finance Society.
 
 [Read More](https://www.linkedin.com/feed/update/urn:li:activity:7001557427250720768/){: .btn .btn--info target="_blank"}
 </div>
@@ -83,13 +83,13 @@ These presentations were meant to enlighten students about the OpenBB Terminal a
 </div>
 </div>
 
-## Role of Python in the Financial Industry 
+## Role of Python in the Financial Industry
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-I got approached by Utrecht University whether I'd be interested in providing a guest lecture to Finance students taking a workshop on Python. Being an alumni myself and enthusiastic about Python, I couldn't let this opportunity pass to return back to my former University.
+I was approached by Utrecht University about providing a guest lecture to Finance students taking a Python workshop. As an alumnus myself and enthusiastic about Python, I couldn't pass up the opportunity to return to my alma mater.
 
-Therefore, I did four presentations for nearly a hundred Master students at the campus. My goal with these presentations was to enlighten the students to take Python seriously for their careers within the financial sector, explaining the practical application with personal experience.
+Therefore, I gave four presentations to nearly one hundred Master's students on campus. My goal was to encourage students to take Python seriously for their careers in the financial sector, explaining its practical applications based on my personal experience.
 
 [Read More](https://www.linkedin.com/posts/boumajeroen_openbb-investment-research-for-everyone-activity-6987449395252191232-ET6W/){: .btn .btn--info target="_blank"}
 
@@ -105,9 +105,9 @@ Therefore, I did four presentations for nearly a hundred Master students at the 
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-Within this webinar I explored how to do financial due diligence with the OpenBB Terminal which requires an examination of financial records before entering into a proposed transaction with another party.
+In this webinar, I explored how to perform financial due diligence using the OpenBB Terminal, which involves examining financial records before entering into a proposed transaction with another party.
 
-Within this webinar I explored the main revenue streams, historical stock prices, dividends and stock splits, understand management, ownership and market capitalization, revenue and profit margins and future expectations.
+I covered key areas such as main revenue streams, historical stock prices, dividends and stock splits, understanding management, ownership, market capitalization, revenue and profit margins, and future expectations.
 
 [Read More](https://www.youtube.com/watch?v=Bq7aLH4HY8Y){: .btn .btn--info target="_blank"}
 
@@ -123,9 +123,9 @@ Within this webinar I explored the main revenue streams, historical stock prices
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-As part of my initative to present OpenBB to students and professors, I've been introducing the OpenBB Terminal to the students at Athens University in which I go over the structure, the basics and two use-cases.
+As part of my initiative to present OpenBB to students and professors, I introduced the OpenBB Terminal to students at Athens University, covering its structure, basics, and two use cases.
 
-The goal was to give a clear overview of some of the capabilities of the OpenBB Terminal and explain to the students how they can use the OpenBB Terminal for their market and investment reports.
+The goal was to provide a clear overview of the OpenBB Terminal's capabilities and explain how students can use it for their market and investment reports.
 
 [Read More](https://openbb.co/blog/intro-openbb-terminal){: .btn .btn--info target="_blank"}
 
@@ -141,9 +141,9 @@ The goal was to give a clear overview of some of the capabilities of the OpenBB 
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-Within this webinar, OpenBB introduced the OpenBB Terminal 3.0. This includes the addition of interactive tables and graphs, a brand new fixed income menu written by myself and many new back-end improvements.
+In this webinar, OpenBB introduced the OpenBB Terminal 3.0. This release included interactive tables and graphs, a brand new fixed income menu developed by me, and numerous back-end improvements.
 
-This is another step in becoming the next generation financial data and analytics platform designed to revolutionize the way analysts access and analyze financial and economic data.
+This marked another step towards becoming the next-generation financial data and analytics platform, designed to revolutionize how analysts access and analyze financial and economic data.
 
 [Read More](https://openbb.co/blog/openbb-terminal-3){: .btn .btn--info target="_blank"}
 
@@ -160,9 +160,9 @@ This is another step in becoming the next generation financial data and analytic
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 
-In 2022, the OpenBB Terminal 2.0 was introduced to an audience of over 1300 of our users and partners at a virtual event focused on the future of investment research.
+In 2022, the OpenBB Terminal 2.0 was introduced to an audience of over 1,300 users and partners at a virtual event focused on the future of investment research.
 
-The event, hosted by Sri Chilukuri, Vice President of Product & Marketing at OpenBB, featured Didier Lopes, Founder & CEO at OpenBB, Jeroen Bouma, Product Manager at OpenBB, Minh Hoang, Product Manager at OpenBB, and Martin Bufi, Sr. Engineer at OpenBB, as speakers.
+The event, hosted by Sri Chilukuri, Vice President of Product & Marketing at OpenBB, featured speakers Didier Lopes (Founder & CEO), Jeroen Bouma (Product Manager), Minh Hoang (Product Manager), and Martin Bufi (Sr. Engineer).
 
 [Read More](https://openbb.co/blog/openbb-terminal-2-event){: .btn .btn--info target="_blank"}
 

@@ -1,14 +1,14 @@
 ---
 permalink: /projects
 title: Projects
-excerpt: Much of the Finance theory I have learned, I apply within Python which I have spend thousands of hours developing in. This is in the fields of Data Science & Machine Learning, Fundamental, Algorithmic and Technical Analysis, GUIs and web-based dashboards as well as various other topics. On this page you are able to find all major Python projects I am actively maintaining.
-description: Much of the Finance theory I have learned, I apply within Python which I have spend thousands of hours developing in. This is in the fields of Data Science & Machine Learning, Fundamental, Algorithmic and Technical Analysis, GUIs and web-based dashboards as well as various other topics. On this page you are able to find all major Python projects I am actively maintaining.
+excerpt: I apply much of the finance theory I've learned using Python, a language in which I have invested thousands of development hours. My work spans Data Science & Machine Learning, Fundamental, Algorithmic, and Technical Analysis, GUIs, web-based dashboards, and various other topics. On this page, you can find all the major Python projects I actively maintain.
+description: I apply much of the finance theory I've learned using Python, a language in which I have invested thousands of development hours. My work spans Data Science & Machine Learning, Fundamental, Algorithmic, and Technical Analysis, GUIs, web-based dashboards, and various other topics. On this page, you can find all the major Python projects I actively maintain.
 classes: wide-no-sidebar
 author_profile: false
 ---
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width" markdown="1">
-When I discovered Python during my time in University, I was immediately captivated by its incredible versatility in the financial domain. Since then, I have devoted countless hours to programming in this language, whether it's developing internal models for companies like a.s.r. asset management and PGGM or contributing to open-source projects (as demonstrated on this page). Witnessing the repetition of models and calculations within financial institutions has made me a strong advocate for open-source, as it liberates individuals and firms from relying solely on proprietary models.
+When I discovered Python during my university studies, I was immediately captivated by its incredible versatility in the financial domain. Since then, I have devoted countless hours to programming in this language, whether developing internal models for companies like a.s.r. asset management and PGGM or contributing to open-source projects (as demonstrated on this page). Witnessing the repetition of models and calculations within financial institutions has made me a strong advocate for open source, as it liberates individuals and firms from relying solely on proprietary models.
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width" markdown="1">
 
@@ -18,15 +18,15 @@ When I discovered Python during my time in University, I was immediately captiva
 
 {: .notice--info}
 **Looking to get into Financial Modelling?**<br>
-Have a look at my [in-depth guide on Financial Modelling with Python](/modelling/introduction){: target="_blank"} which goes over the basics, setting up a project, structure, build and test a financial model. The purpose with this guide is to share my findings over the years and common mistakes that I've found both in open-source and proprietary models.
+Have a look at my [in-depth guide on Financial Modelling with Python](/modelling/introduction){: target="_blank"}, which covers the basics, project setup, structure, and how to build and test a financial model. The purpose of this guide is to share my findings over the years and highlight common mistakes I've observed in both open-source and proprietary models.
 
 ## [Finance Toolkit](/projects/financetoolkit)
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
-This package is an open-source toolkit in which 100+ financial ratios indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+This open-source package provides over 150 financial ratios, indicators, and performance measurements, implemented straightforwardly to ensure complete transparency of the calculation methods. This enables you to avoid reliance on metrics from external providers and perform efficient calculations directly from financial statements. It promotes a uniform calculation method that is accessible and understandable to everyone.
 
-The Finance Toolkit is complimented very well with the Finance Database and by utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
+The Finance Toolkit complements the Finance Database well. By utilizing both, you can perform a comprehensive competitive analysis using tickers from the Finance Database as input for the Finance Toolkit.
 
 [View this Project](/projects/financetoolkit){: .btn .btn--info}
 </div>
@@ -43,9 +43,9 @@ The Finance Toolkit is complimented very well with the Finance Database and by u
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
-This database features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
+This database features over 300,000 symbols, including Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies, and Money Markets. It allows you to gain a broad overview of sectors, industries, investment types, and much more.
 
-The aim of this database is explicitly not to provide up-to-date fundamentals or stock data as those can be obtained with ease (with the help of this database) by using yfinance or FundamentalAnalysis. Instead, it gives insights into the products that exist in each country, industry and sector and gives the most essential information about each product. With this information, you can analyse specific areas of the financial world and/or find a product that is hard to find.
+The explicit aim of this database is not to provide up-to-date fundamentals or stock data, as these can be easily obtained (using symbols from this database) with tools like yfinance or FundamentalAnalysis. Instead, it provides insights into the products available in each country, industry, and sector, offering essential information about each one. With this information, you can analyze specific areas of the financial world or locate hard-to-find products.
 
 [View this Project](/projects/financedatabase){: .btn .btn--info}
 </div>
@@ -62,9 +62,9 @@ The aim of this database is explicitly not to provide up-to-date fundamentals or
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
-With a large increase in ETFs available, it can become difficult to make the best choice in what you wish to invest. There are many different providers (iShares, Vanguard, Invesco) as well as with changes to the underlying stocks (i.e. High Yield, Super Dividends, Equal Weighted).
+With the large increase in available ETFs, choosing the best investment can be challenging. Numerous providers exist (iShares, Vanguard, Invesco), and ETFs vary based on underlying strategies (e.g., High Yield, Super Dividends, Equal Weighted).
 
-This is quickly reflected when looking for a S&P 500 ETF as there are over 20 different ETFs available. With this package, I wish to make investment decisions easier to make and manage.
+This variety is evident when searching for an S&P 500 ETF, where over 20 different options are available. With this package, I aim to simplify investment decision-making and management.
 
 [View this Project](/projects/thepassiveinvestor){: .btn .btn--info}
 </div>
@@ -81,9 +81,9 @@ This is quickly reflected when looking for a S&P 500 ETF as there are over 20 di
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
-With PersonalFinance I want to make it easier to manage your personal finance. Through defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you.
+With PersonalFinance, I aim to simplify personal finance management. By defining categories with appropriate keywords, you ensure the model categorizes transactions according to your specifications. This is effective because it's not a generic model trained on a large, diverse dataset of global transactions. Instead, it's trained on your data, enabling it to accurately categorize transactions specific to your financial habits.
 
-To assist in not needing to get *exact* matches, the package makes use of the Levenshtein distance to determine how similar two strings are. There is a limited amount of Mumbo Jumbo going on here on purpose so that it still becomes logical why it is categorised as such.
+To handle variations without requiring exact matches, the package uses the Levenshtein distance to measure string similarity. Complex logic is intentionally limited so that the categorization remains intuitive and understandable.
 
 [View this Project](/projects/personalfinance){: .btn .btn--info}
 </div>
@@ -91,7 +91,7 @@ To assist in not needing to get *exact* matches, the package makes use of the Le
 <a href="/projects/personalfinance"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" width="400"></a>
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=personalfinance)](/projects/personalfinance)
 
-[![PyPi Version](https://img.shields.io/pypi/v/personalfinance)](https://pypi.org/project/financedatabase/){:target="_blank"}
+[![PyPi Version](https://img.shields.io/pypi/v/personalfinance)](https://pypi.org/project/personalfinance/){:target="_blank"}
 [![PYPI Downloads](https://static.pepy.tech/badge/personalfinance/month)](https://pepy.tech/project/personalfinance){:target="_blank"}
 </div>
 </div>
@@ -100,9 +100,9 @@ To assist in not needing to get *exact* matches, the package makes use of the Le
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
-The OpenBB Platform offers access to equity, options, crypto, forex, macro economy, fixed income, and more while also offering a broad range of extensions to enhance the user experience according to their needs.
+The OpenBB Platform provides access to data on equities, options, crypto, forex, macroeconomics, fixed income, and more. It also offers a broad range of extensions to tailor the user experience.
 
-During my time at OpenBB, I have made major code contributions to the OpenBB Platform, formerly known as the OpenBB Terminal. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. I am proud having worked on this project and I am excited to see where it will go in the future. Being a competitor to Bloomberg, Reuters and FactSet, OpenBB is a platform that is here to stay.
+During my time at OpenBB, I made significant code contributions to the OpenBB Platform (formerly the OpenBB Terminal). My contributions focused on areas such as Macro and Microeconomics, Econometrics, Fundamental Analysis, and more. I am proud to have worked on this project and excited about its future direction. As a competitor to Bloomberg, Reuters, and FactSet, OpenBB is a platform poised for long-term impact.
 
 [View this Project](/projects/openbbterminal){: .btn .btn--info}
 </div>

@@ -1,29 +1,29 @@
 ---
 title: Test your Model
-excerpt: Explore model testing with Pytest. Set up tests mirroring model structure, ensuring accurate results through data recording and comparison. 
+excerpt: Explore model testing with Pytest. Set up tests mirroring model structure, ensuring accurate results through data recording and comparison.
 description: Explore model testing with Pytest. Set up tests mirroring model structure, ensuring accurate results through data recording and comparison.
 author_profile: true
 permalink: /modelling/test-your-model
 classes: wide-sidebar
 author_profile: false
 sidebar:
-  nav: "modelling"
+    nav: "modelling"
 ---
 
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.0/dist/mermaid.min.js"></script>
 
-As defined in [Setting up your Project](/modelling/setting-up-your-project), the model should always include a `tests` folder. This utilizes [Pytest](https://docs.pytest.org/en/){: target="_blank"} to run tests. The tests should be structured in the same way as the model. And is a duplication of the model in terms of structure. The only difference is that each individual module will have `test_` in front so that Pytest can recognize the file as a test.
+As defined in [Setting up your Project](/modelling/setting-up-your-project), the model should always include a `tests` folder. This folder utilizes [Pytest](https://docs.pytest.org/en/){: target="_blank"} to run tests. The test structure should mirror the model structure, essentially duplicating it. The primary difference is that each test module filename is prefixed with `test_` so Pytest can discover it.
 
 <div style="display: flex; justify-content: space-between;margin-bottom:10px">
-    <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
-    <a href="/modelling/getting-started" class="btn btn--info" style="flex: 1;margin-right:5px">Getting Started</a>
-    <a href="/modelling/setting-up-your-project" class="btn btn--info" style="flex: 1;margin-right:5px">Setting up your Project</a>
-    <a href="/modelling/structure-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Structure your Model</a>
-    <a href="/modelling/build-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Build your Model</a>
-    <a href="/modelling/test-your-model" class="btn btn--warning" style="flex: 1;margin-right:5px">Test your Model</a>
+        <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
+        <a href="/modelling/getting-started" class="btn btn--info" style="flex: 1;margin-right:5px">Getting Started</a>
+        <a href="/modelling/setting-up-your-project" class="btn btn--info" style="flex: 1;margin-right:5px">Setting up your Project</a>
+        <a href="/modelling/structure-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Structure your Model</a>
+        <a href="/modelling/build-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Build your Model</a>
+        <a href="/modelling/test-your-model" class="btn btn--warning" style="flex: 1;margin-right:5px">Test your Model</a>
 </div>
 
-As an example, when the Gross Margin functionality, obtained from the `profitability_model.py` needs to be tested, a function should be created that contains the same function name as within the `profitability_model.py` file with the exception that `test_` is included. This looks like the following:
+For example, to test the Gross Margin functionality from `profitability_model.py`, create a test function with the same name prefixed by `test_`. This looks like the following:
 
 ```python
 def test_get_gross_margin(recorder):
@@ -35,7 +35,7 @@ def test_get_gross_margin(recorder):
     )
 ```
 
-This is a test that would be created for the function that was defined in [Structure your Model](/modelling/structure-your-model). Graphically the process would look as follows:
+This is a test created for the function defined in [Structure your Model](/modelling/structure-your-model). Graphically, the process looks like this:
 
 <div class="mermaid">
 flowchart LR;
@@ -52,20 +52,20 @@ Step2["test_get_gross_margin"] -- <b>Step 6<br></b>Return Test Result --> Step1[
 Step1["Profitability Model Tests"] -- <b>Step 7<br></b>Return Summarized Test Result --> Step0["User"]
 </div>
 
-The process above shows that the data is saved to CSV on rewrite, this means that if you reinitialize the test, it will overwrite the existing data. This is for example relevant when you have identified that the output needed to be adjusted.
+The process above illustrates that data is saved to CSV when tests are run in rewrite mode. This means rerunning the test in this mode overwrites existing data, which is useful when you've identified that the expected output needs adjustment.
 
-To accompany the process, a `conftest.py` file is included in the `tests` folder. This file is meant to define fixtures that can be used in the tests. For example, I find it important that the data is exported to e.g. JSON, CSV, TXT and more. This all needs to be defined with `@pytest.fixture` (read more [here](https://docs.pytest.org/en/6.2.x/fixture.html){: target="_blank"}).
+To support this process, a `conftest.py` file is included in the `tests` folder. This file defines fixtures usable across tests. For example, fixtures can handle exporting data to formats like JSON, CSV, or TXT. These fixtures are defined using `@pytest.fixture` (read more [here](https://docs.pytest.org/en/6.2.x/fixture.html){: target="_blank"}).
 
 {: .notice--info}
-Working with a `conftest.py` is a quite difficult concept to understand at first and therefore, I'd recommend acquiring the `conftest.py` as found **[here](https://github.com/JerBouma/FinanceToolkit/blob/main/tests/conftest.py){: target="_blank"}** to automatically be able to execute tests and write them to the relevant file.
+Working with `conftest.py` can be challenging initially. Consider using the `conftest.py` found **[here](https://github.com/JerBouma/FinanceToolkit/blob/main/tests/conftest.py){: target="_blank"}** as a starting point for executing tests and writing results to files.
 
-To be able to see this in action, download or clone the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} repository and install the required dependencies by doing the following:
+To see this in action, download or clone the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} repository and install the required dependencies:
 
 1. Install pipx: `pip install pipx`
 2. Install Poetry: `pipx install poetry`
 3. Install the dependencies: `poetry install`
 
-You can run the tests by executing `pytest tests`. This will run all tests that are defined in the `tests` folder which shows the following:
+Run the tests by executing `pytest tests`. This command runs all tests defined in the `tests` folder, producing output similar to this:
 
 ```shell
 (base) FinanceToolkit % pytest tests
@@ -76,31 +76,13 @@ collected 277 items
 
 tests/test_toolkit_controller.py ......                                         [  2%]
 tests/models/test_alman_model.py ......                                         [  4%]
-tests/models/test_dupont_model.py ..                                            [  5%]
-tests/models/test_enterprise_model.py .                                         [  5%]
-tests/models/test_intrinsic_model.py .                                          [  5%]
-tests/models/test_models_controller.py .....                                    [  7%]
-tests/models/test_wacc_model.py ...                                             [  8%]
-tests/performance/test_performance_controller.py ...............                [ 14%]
-tests/performance/test_performance_model.py ...................                 [ 20%]
-tests/ratios/test_efficiency_model.py ............                              [ 25%]
-tests/ratios/test_liquidity_model.py .......                                    [ 27%]
-tests/ratios/test_profitability_model.py ................                       [ 33%]
-tests/ratios/test_ratios_controller.py ...................                      [ 58%]
-tests/ratios/test_solvency_model.py ..........                                  [ 62%]
-tests/ratios/test_valuation_model.py .....................                      [ 70%]
-tests/risk/test_risk_controller.py .......                                      [ 72%]
-tests/risk/test_risk_model.py .............                                     [ 77%]
-tests/technical/test_breadth_model.py .....                                     [ 79%]
-tests/technical/test_momentum_model.py ...............                          [ 84%]
-tests/technical/test_overlap_model.py .....                                     [ 86%]
-tests/technical/test_technical_controller.py .................................. [ 98%]
+# ... (rest of the output omitted for brevity) ...
 tests/technical/test_volatility_model.py ....                                   [ 100%]
 
 ============================= 277 passed in 65.18s (0:01:05) =============================
 ```
 
-Within the `conftest.py` I have defined ways to rewrite the tests if there are differences that I can explain. This is done by defining the `record-mode` which can be `rewrite` in case the tests need to be redefined. Any output will be stored in individual datafiles. This is a very powerful way to ensure that the results remain the same and if not, it can be verified that the changes are correct. This can be done through:
+The `conftest.py` can define ways to rewrite the test output files when there are expected or validated differences. This is controlled by the `record-mode` option; setting it to `rewrite` redefines the expected output for failing tests. The output is stored in individual data files. This provides a robust method to ensure results remain consistent. If discrepancies occur, they can be verified before accepting the changes. Use the following command:
 
 ```shell
 pytest tests --record-mode="rewrite"
@@ -112,11 +94,11 @@ Or for individual tests:
 pytest tests/ratios/test_profitability_model.py --record-mode="rewrite"
 ```
 
-This generates CSV files ([tests/ratios/csv/test_get_gross_margin.csv](https://github.com/JerBouma/FinanceToolkit/blob/main/tests/ratios/csv/test_profitability_model/test_get_gross_margin.csv){: target="_blank"}) which are used to compare the result once the test is ran again. So if any changes are made to the calculation, it will automatically give me the difference between the two results and only if I (or a tester) can validate that the new result is correct, the test should be rewritten.
+This generates CSV files (e.g., [tests/ratios/csv/test_get_gross_margin.csv](https://github.com/JerBouma/FinanceToolkit/blob/main/tests/ratios/csv/test_profitability_model/test_get_gross_margin.csv){: target="_blank"}) which are used for comparison when the test is run again. If changes are made to the calculation, the test framework automatically highlights the difference between the new result and the recorded result. Only after validating that the new result is correct should the test data be rewritten using the `--record-mode="rewrite"` flag.
 
 ![Testing Directory](/assets/images/modelling/test-your-model/testing-directory.png)
 
-For example, if I change the Gross Margin formula from `(revenue - cost_of_goods_sold) / revenue` to `(revenue - cost_of_goods_sold) / revenue - 1` (which is incorrect), the test will fail and show the following:
+For example, changing the Gross Margin formula from `(revenue - cost_of_goods_sold) / revenue` to `(revenue - cost_of_goods_sold) / revenue - 1` (which is incorrect) causes the test to fail and display the following error, showing the difference between the expected and actual results:
 
 ```shell
 (base) FinanceToolkit % pytest tests/ratios/test_profitability_model.py 

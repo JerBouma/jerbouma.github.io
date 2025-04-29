@@ -1,19 +1,20 @@
 ---
 title: Articles
 permalink: /articles
-redirect_from: 
+redirect_from:
   - /categories
 author_profile: false
-excerpt: "This page includes a selection of articles I have written related to my open-source projects and financial background. It is meant to explain financial theory and how this theory can be directly applied in a variety of my open-source projects."
+excerpt: "This page features a selection of articles I've written about my open-source projects and financial background. These articles explain financial theory and demonstrate its direct application within several of my open-source projects."
 classes: wide-sidebar
 sidebar:
   nav: "articles"
 ---
 
-This page includes a selection of articles I have written related to my open-source projects and financial background. It is meant to explain financial theory and how this theory can be directly applied in a variety of my open-source projects. For example, the first article I have written is related to the Binomial Trees in which I explain the theory and how the methods can be used within the [Finance Toolkit](/projects/financetoolkit){:target="_blank"} project. 
+This page presents a selection of articles I have written connecting my open-source projects with my financial background. The goal is to explain financial theory and demonstrate its practical application within these projects. For example, one article focuses on Binomial Trees, detailing the theory and its implementation within the [Finance Toolkit](/projects/financetoolkit){:target="_blank"} project.
 
 ___
 
 {% for post in site.posts %}
   {% include archive-single.html %}
 {% endfor %}
+

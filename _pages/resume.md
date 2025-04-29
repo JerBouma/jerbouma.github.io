@@ -1,7 +1,7 @@
 ---
 title: Resume
-excerpt: I am strongly analytical, have a keen sense of long-term investment strategy and have a “can do” attitude. This is proven by my achievements within the Finance domain by working as an ALM Advisor at PGGM, one of the largest pension funds in the Netherlands, and working as a Product Manager for OpenBB, a fintech start-up democratising access to investment research. Furthermore, I have a strong educational background in Finance, CFA level 1 and the post-master education titled Registered Financial Analyst (VBA/RBA) completed. This education not only discusses much of the relevant theory but also gives many examples of how these theories are currently applied within a multitude of different investment organisations.
-description: I am strongly analytical, have a keen sense of long-term investment strategy and have a “can do” attitude. This is proven by my achievements within the Finance domain by working as an ALM Advisor at PGGM, one of the largest pension funds in the Netherlands, and working as a Product Manager for OpenBB, a fintech start-up democratising access to investment research. Furthermore, I have a strong educational background in Finance, CFA level 1 and the post-master education titled Registered Financial Analyst (VBA/RBA) completed. This education not only discusses much of the relevant theory but also gives many examples of how these theories are currently applied within a multitude of different investment organisations.
+excerpt: I am strongly analytical, possess a keen sense of long-term investment strategy, and maintain a “can do” attitude. My achievements demonstrate this, including working as an ALM Advisor at PGGM, one of the largest Dutch pension funds, and as a Product Manager for OpenBB, a fintech start-up democratizing investment research access. Furthermore, I have a strong educational background in Finance, having completed CFA level 1 and the post-master Registered Financial Analyst (VBA/RBA) program. This education covers relevant theory and provides numerous examples of its application within various investment organizations.
+description: I am strongly analytical, possess a keen sense of long-term investment strategy, and maintain a “can do” attitude. My achievements demonstrate this, including working as an ALM Advisor at PGGM, one of the largest Dutch pension funds, and as a Product Manager for OpenBB, a fintech start-up democratizing investment research access. Furthermore, I have a strong educational background in Finance, having completed CFA level 1 and the post-master Registered Financial Analyst (VBA/RBA) program. This education covers relevant theory and provides numerous examples of its application within various investment organizations.
 author_profile: true
 permalink: /resume
 redirect_from:
@@ -15,11 +15,11 @@ sidebar:
 <div class="row">
 <div markdown="1" class="seventy-column">
 
-I am strongly analytical, have a keen sense of long-term investment strategy and have a “can do” attitude. This is proven by my achievements within the Finance domain by working as an ALM Advisor at PGGM, one of the largest pension funds in the Netherlands, and working as a Product Manager for OpenBB, a fintech start-up democratising access to investment research. Furthermore, I have a strong educational background in Finance, CFA level 1 and the post-master education titled Registered Financial Analyst (VBA/RBA) completed. This education not only discusses much of the relevant theory but also gives many examples of how these theories are currently applied within a multitude of different investment organisations.
+I am strongly analytical, possess a keen sense of long-term investment strategy, and maintain a “can do” attitude. My achievements demonstrate this, including working as an ALM Advisor at PGGM, one of the largest Dutch pension funds, and as a Product Manager for OpenBB, a fintech start-up democratizing investment research access. Furthermore, I have a strong educational background in Finance, having completed CFA level 1 and the post-master Registered Financial Analyst (VBA/RBA) program. This education covers relevant theory and provides numerous examples of its application within various investment organizations.
 
-Furthermore, throughout the last several years I’ve spent thousands of hours developing in Python in the areas of quantitative and statistical modelling, and data science. Find all of my currently active open-source projects inside the <a href="/projects">projects page</a> which include the Finance Database and Financial Toolkit with both well over 2.000 GitHub Stars as well as the OpenBB Terminal in which I am one of the leading contributors with major contributions in the area of fundamental analysis, economics, fixed income and econometrics.
+Additionally, over the last several years, I have dedicated thousands of hours to developing Python skills, focusing on quantitative and statistical modeling, and data science. Explore my active open-source projects on the <a href="/projects">projects page</a>. These include the Finance Database and Financial Toolkit, each with over 2,000 GitHub Stars, and the OpenBB Terminal, where I am a leading contributor, particularly in fundamental analysis, economics, fixed income, and econometrics.
 
-All of this comes together within my current role as Quantitative Investment Strategist at a.s.r. asset management, one of the largest insurance companies in the Netherlands. Within this role, I am responsible for spearheading innovative initiatives within the asset management divisions by utilizing Python, particularly in portfolio analytics and optimization. Furthermore, I conduct Asset Liability Management (ALM) and Strategic Asset Allocation (SAA) analyses, encompassing a spectrum of topics including hedging strategies, liquidity risk management, Solvency II optimization, and asset-only studies.
+This combination of skills culminates in my current role as Quantitative Investment Strategist at a.s.r. asset management, one of the largest insurance companies in the Netherlands. In this position, I spearhead innovative initiatives within the asset management divisions using Python, focusing on portfolio analytics and optimization. I also conduct Asset Liability Management (ALM) and Strategic Asset Allocation (SAA) analyses, covering topics such as hedging strategies, liquidity risk management, Solvency II optimization, and asset-only studies.
 
 </div>
 
@@ -32,7 +32,7 @@ All of this comes together within my current role as Quantitative Investment Str
 
 ## Skills
 
-This section includes all my skills and the level of proficiency I have in each of them. I am first and foremost a Financial professional with proper education but I also have a strong background in programming and data science. This combination of skills is what makes me unique and allows me to work on a wide range of projects ranging from actuarial models to portfolio analysis tools to data science projects.
+This section outlines my skills and proficiency levels. I am primarily a financial professional with formal education, complemented by a strong background in programming and data science. This unique combination enables me to contribute to diverse projects, from actuarial models and portfolio analysis tools to data science initiatives.
 
 <div class="row">
 <div markdown="1" class="thirty-three-column">
@@ -42,7 +42,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 100%;">
     <div class="tooltip">
-        <b>MS Excel</b> is the bread and butter for most financial analysis and is strongly embedded in my work and personal projects both through analysis and as data storage. A great example is the Finance Database that relies on compressed CSVs to store data and allow for easy adjustments where needed.
+        <b>MS Excel</b> is fundamental for much financial analysis and is deeply integrated into my work and personal projects for both analysis and data storage. For instance, the Finance Database utilizes compressed CSVs for data storage, allowing easy adjustments.
     </div>
     </div>
   </div>
@@ -56,7 +56,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 100%;"></div>
     <div class="tooltip">
-        <b>Python</b> is my main programming language which I have invested thousands of hours in by now. I have used it for a wide range of applications ranging from actuarial models, financial analysis, data science, web development, machine learning and much more. This is distributed evenly between institutional and personal projects.
+        <b>Python</b> is my primary programming language, in which I have invested thousands of hours. I have applied it across a wide range of areas, including actuarial models, financial analysis, data science, web development, and machine learning, distributed across institutional and personal projects.
     </div>
   </div>
 </div>
@@ -68,7 +68,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 90%;"></div>
     <div class="tooltip">
-      <b>Git</b> goes hand in hand with any programming language and is a tool I use on a daily basis. I have used it for both personal and institutional projects and have a strong understanding of how to use it in a team setting as well. Next to that, I also got used to using linters such as Black, Ruff, Mypy, Pylint and Bandit to ensure code quality as well as set up automatic testing through GitHub Actions and Azure Pipelines.
+      <b>Git</b> is essential for programming, and I use it daily for both personal and institutional projects. I have a strong understanding of its use in team settings and am proficient with linters like Black, Ruff, Mypy, Pylint, and Bandit to ensure code quality, alongside setting up automated testing via GitHub Actions and Azure Pipelines.
     </div>
   </div>
 </div>
@@ -83,7 +83,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 80%;">
     <div class="tooltip">
-      I've obtained experience with <b>SQL</b> through several channels. First and foremost, I got used to using it through Google Spreadsheets as a way to query larger datasets. Later on, I also got to use it with Metabase to parse large datasets. Lastly, I've used it in Python to explore creating queries from the Finance Database.
+      I gained experience with <b>SQL</b> through various channels: initially using it within Google Spreadsheets for querying larger datasets, later employing it with Metabase for parsing large datasets, and finally, using it within Python to explore query creation from the Finance Database.
     </div>
     </div>
   </div>
@@ -97,7 +97,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 70%;"></div>
     <div class="tooltip">
-        Both in college and during my time at PGGM, <b>MATLAB</b> was used. I've learned how to read and write code as PGGM was expanding its ALM model and later on transition it to Python. This allowed me to really understand the language and understand the advantages it has over other languages.
+        <b>MATLAB</b> was utilized both in college and during my time at PGGM. I learned to read and write MATLAB code while PGGM expanded its ALM model and subsequently transitioned parts of it to Python. This experience provided a solid understanding of the language and its advantages.
     </div>
   </div>
 </div>
@@ -109,7 +109,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 70%;"></div>
     <div class="tooltip">
-        Through my career I've seen the reliance on <b>Excel VBA</b> and therefore ensured I know the basics of how the read and write the language to supercharge Excel files where needed. This is especially useful for automating tasks and creating custom functions.
+        Recognizing the reliance on <b>Excel VBA</b> throughout my career, I ensured I understood the basics of reading and writing the language to enhance Excel files where necessary, particularly for automating tasks and creating custom functions.
     </div>
   </div>
 </div>
@@ -124,7 +124,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 60%;">
     <div class="tooltip">
-        Being proficient in Python, made getting the hang of <b>R Studio</b> relatively straight forward. It also was the basis of some financial courses during college. Even though I don't use it as much anymore, it remains an easy to pick up language for me.
+        Proficiency in Python made learning <b>R Studio</b> relatively straightforward. It was also used in some financial courses during college. Although I use it less frequently now, it remains a language I can easily pick up again.
     </div>
     </div>
   </div>
@@ -134,11 +134,11 @@ This section includes all my skills and the level of proficiency I have in each 
 <div markdown="1" class="thirty-three-column">
 
 <div class="skill visible">
-  <div class="skill-name">CS33 & HTML</div>
+  <div class="skill-name">CSS3 & HTML</div>
   <div class="progress-container">
     <div class="progress-bar" style="width: 60%;"></div>
     <div class="tooltip">
-        I used to own a Web Design firm in which I got most of my <b>CS33 & HTML</b> experience from. Next to that, this website is a great consistent refresher on everything CSS and HTML. I also greatly value this experience because of how thoroughly it is embedded in other programs making it much easier for me to work with those.
+        I gained most of my <b>CSS3 & HTML</b> experience while previously owning a Web Design firm. Additionally, maintaining this website serves as a consistent refresher. I value this experience greatly due to its integration into other programs, simplifying my work with them.
     </div>
   </div>
 </div>
@@ -150,7 +150,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 60%;"></div>
     <div class="tooltip">
-        This website is my main experience with <b>JavaScript</b>. I've learned it while designing much of the content as found here. A great example are the docs of the Finance Toolkit that are automatically generated based on JavaScript and collecting from files found on GitHub.
+        This website represents my main experience with <b>JavaScript</b>, learned while designing much of its content. A prime example is the Finance Toolkit documentation, automatically generated using JavaScript by collecting files from GitHub.
     </div>
   </div>
 </div>
@@ -165,7 +165,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 80%;">
     <div class="tooltip">
-      Through my time at PGGM and ASR I got the hang of the <b>Azure Ecosystem</b> which includes Azure DevOps, Azure Pipelines, Azure Artifacts and Azure Machine Learning. This helped me in maintaining models through Azure DevOps and testing them adequately through Azure Pipelines in which I push the models to Azure Artifacts. Lastly, I've then used Azure Machine Learning to deploy models to production.
+      During my time at PGGM and ASR, I became proficient with the <b>Azure Ecosystem</b>, including Azure DevOps, Azure Pipelines, Azure Artifacts, and Azure Machine Learning. This facilitated maintaining models via Azure DevOps, testing them adequately through Azure Pipelines, pushing models to Azure Artifacts, and deploying models to production using Azure Machine Learning.
     </div>
     </div>
   </div>
@@ -178,7 +178,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 80%;"></div>
     <div class="tooltip">
-      All of my open-source projects, like Finance Database and Finance Toolkit are hosted on the <b>GitHub Ecosysyem</b>. I've gotten very familiar with GitHub and how to work with GitHub Actions to automate workflows. Given my time at OpenBB, I've also really gotten the hang of how to organize projects on GitHub, define automatic tests and setting up a proper branch policy structure.
+      All my open-source projects, like Finance Database and Finance Toolkit, are hosted on the <b>GitHub Ecosystem</b>. I am very familiar with GitHub and using GitHub Actions to automate workflows. My time at OpenBB provided significant experience in organizing projects on GitHub, defining automated tests, and setting up proper branch policy structures.
     </div>
   </div>
 </div>
@@ -191,7 +191,7 @@ This section includes all my skills and the level of proficiency I have in each 
   <div class="progress-container">
     <div class="progress-bar" style="width: 70%;"></div>
     <div class="tooltip">
-      I have a good understanding how to work with <b>PowerBI</b> to visualize data. This is especially useful when working with large datasets and wanting to create a dashboard to visualize the data. I've used it to create dashboards for ASR as the models produced datasets that far exceeded what Excel would be able to handle.
+      I have a good understanding of how to work with <b>PowerBI</b> for data visualization. This is particularly useful for creating dashboards from large datasets. I used it at ASR to create dashboards for models that produced datasets exceeding Excel's capacity.
     </div>
   </div>
 </div>
@@ -207,10 +207,10 @@ February 2024 – Present
 
 <div class="row">
 <div markdown="1" class="eighty-column-left">
-As a Quantitative Investment Strategist, my role involves spearheading innovative initiatives within the asset management divisions by utilizing Python, particularly in portfolio analytics and optimization. Additionally, I analyze profitability and investment risks across different risk frameworks (Solvency II and internal models), provide perspectives into portfolio sensitivities and their relationship with liabilities, and apply Artificial Intelligence (AI) to uncover new insights. Moreover, I conduct Asset Liability Management (ALM) and Strategic Asset Allocation (SAA) analyses, encompassing a spectrum of topics including hedging strategies, liquidity risk management, Solvency II optimization, and asset-only studies.
+As a Quantitative Investment Strategist, my role involves spearheading innovative initiatives within the asset management divisions using Python, particularly in portfolio analytics and optimization. I analyze profitability and investment risks across different risk frameworks (Solvency II and internal models), provide insights into portfolio sensitivities and their relationship with liabilities, and apply Artificial Intelligence (AI) to uncover new insights. Furthermore, I conduct Asset Liability Management (ALM) and Strategic Asset Allocation (SAA) analyses, covering topics such as hedging strategies, liquidity risk management, Solvency II optimization, and asset-only studies.
 </div>
 <div markdown="1" class="twenty-column-right">
-<img src="assets/images/resume/asr.png"> 
+<img src="assets/images/resume/asr.png">
 </div>
 </div>
 
@@ -220,10 +220,10 @@ June 2023 – February 2024
 
 <div class="row">
 <div markdown="1" class="eighty-column-left">
-As a Financial Risk Analyst, I analyze profitability and investment risks in different risk frameworks (Solvency II and internal models), provide insights into portfolio sensitivities and their relationship with liabilities, assess the impact of month-to-month changes and contribute to the development of Python models for improved valuation and financial risk measurement.
+As a Financial Risk Analyst, I analyzed profitability and investment risks within different risk frameworks (Solvency II and internal models), provided insights into portfolio sensitivities and their relationship with liabilities, assessed the impact of month-to-month changes, and contributed to the development of Python models for improved valuation and financial risk measurement.
 </div>
 <div markdown="1" class="twenty-column-right">
-<img src="assets/images/resume/asr.png"> 
+<img src="assets/images/resume/asr.png">
 </div>
 </div>
 
@@ -233,10 +233,10 @@ February 2022 – June 2023
 
 <div class="row">
 <div markdown="1" class="eighty-column-left">
-Within this role I oversaw all Product Marketing initiatives which include designing the entire strategy regarding our initiatives for Academia, identifying market gaps within the financial sector and strategize accordingly, leading a multi-disciplinary Go-to-Market team and coordinating Engineering developments that require significant financial knowledge either through developing the quantitative models myself or guiding Engineering professionals in the design and implementation.
+In this role, I oversaw Product Marketing initiatives, including designing the strategy for our Academia outreach, identifying market gaps within the financial sector and strategizing accordingly, leading a multi-disciplinary Go-to-Market team, and coordinating Engineering developments requiring significant financial knowledge—either by developing quantitative models myself or guiding engineering professionals in design and implementation.
 </div>
 <div markdown="1" class="twenty-column-right">
-<img src="assets/images/resume/openbb.png"> 
+<img src="assets/images/resume/openbb.png">
 </div>
 </div>
 
@@ -246,7 +246,7 @@ July 2019 – February 2022
 
 <div class="row">
 <div markdown="1" class="eighty-column-left">
-As an ALM Advisor, I provided actuarial and strategy recommendations for several Dutch pension funds and was responsible for the development and maintenance of our econometric model in MATLAB and led most of the technical developments for the new econometric model in Python. These models are used to perform ALM, URM and VEV calculations. Furthermore, I worked actively in the development of (interactive) dashboards and GUIs as well as the implementation of A.I. (Machine Learning) techniques.
+As an ALM Advisor, I provided actuarial and strategic recommendations for several Dutch pension funds. I was responsible for the development and maintenance of our econometric model in MATLAB and led most technical developments for the new econometric model in Python. These models performed ALM, URM, and VEV calculations. Additionally, I actively contributed to developing (interactive) dashboards and GUIs and implementing A.I. (Machine Learning) techniques.
 </div>
 <div markdown="1" class="twenty-column-right">
 <img src="assets/images/resume/pggm.png">
@@ -261,36 +261,36 @@ September 2020 – June 2023
 
 <div class="row">
 <div markdown="1" class="seventy-column">
-The RBA Program, previously known as VBA, is a modular program tailored to the experienced investment professional organized by CFA Institute. The program provides insights in the entirety of the investment cycle, new market innovations and the role of investment leadership that shape the future of the investment industry.
+The RBA Program (formerly VBA), organized by the CFA Institute, is a modular program tailored for experienced investment professionals. It provides insights into the entire investment cycle, new market innovations, and the role of investment leadership shaping the future of the industry.
 </div>
 <div markdown="1" class="thirty-column">
-<img src="assets/images/resume/cfasocietynetherlands.png"> 
+<img src="assets/images/resume/cfasocietynetherlands.png">
 </div>
 </div>
 
-**Utrecht University — MSc Banking & Finance** 
+**Utrecht University — MSc Banking & Finance**
 
 September 2017 – June 2019
 
 <div class="row">
 <div markdown="1" class="seventy-column">
-Quantitative track with courses in Investment Management, Advanced Econometrics, Asset Pricing, Risk Management and Python courses in Algorithmic Trading, Risk Management and Data Science. My Master thesis covered the impact of interest rate deductability limits on capital structure decisions and was rewarded with a 7.5. I’ve done a Pre-Master of Finance prior to this.
+Completed the quantitative track with courses in Investment Management, Advanced Econometrics, Asset Pricing, Risk Management, and Python courses in Algorithmic Trading, Risk Management, and Data Science. My Master's thesis, covering the impact of interest rate deductibility limits on capital structure decisions, was awarded a 7.5. Prior to this, I completed a Pre-Master of Finance.
 </div>
 <div markdown="1" class="thirty-column">
-<img src="assets/images/resume/utrechtuniversity.png"> 
+<img src="assets/images/resume/utrechtuniversity.png">
 </div>
 </div>
 
-**Hanze University of Applied Sciences — Bachelor of Economics (BEc)** 
+**Hanze University of Applied Sciences — Bachelor of Economics (BEc)**
 
 September 2013 - July 2017
 
 <div class="row">
 <div markdown="1" class="seventy-column">
-A broad perspective of Economics and also a strong focus on soft skills including extensive communication skills, teamwork, analytical skills and adaptability. I was also an Ambassador of the Green Quest, an initiative to achieve zero-emission for the University and minimise waste to (almost) 0%.
+Gained a broad perspective on Economics with a strong focus on soft skills, including extensive communication, teamwork, analytical skills, and adaptability. I also served as an Ambassador for the Green Quest, an initiative aiming for zero emissions and minimal waste for the University.
 </div>
 <div markdown="1" class="thirty-column">
-<img src="assets/images/resume/hanzeuniversityofappliedsciences.png"> 
+<img src="assets/images/resume/hanzeuniversityofappliedsciences.png">
 </div>
 </div>
 
@@ -301,7 +301,7 @@ A broad perspective of Economics and also a strong focus on soft skills includin
 
 **Chartered Financial Analyst (CFA) – Level 1**
 
-Focused on knowledge and comprehension of investment tools and asset classes. Find credentials [here](https://drive.google.com/file/d/11OZSq6FDsaBizG9F3kgV8Ey4-lw0oZ9x/view)
+Focused on knowledge and comprehension of investment tools and asset classes. Find credentials [here](https://drive.google.com/file/d/11OZSq6FDsaBizG9F3kgV8Ey4-lw0oZ9x/view).
 </div>
 <div markdown="1" class="fifty-column-right">
 
@@ -314,7 +314,7 @@ Centered around the Scrum methodology and leading a team as Product Owner. Find 
 
 ## Testimonials
 
-View all of these testimoninals on my LinkedIn profile as well as found [here](https://www.linkedin.com/in/boumajeroen/).
+These testimonials can also be viewed on my LinkedIn profile [here](https://www.linkedin.com/in/boumajeroen/).
 
 **[Didier Lopes](https://www.linkedin.com/in/didier-lopes/) - CEO at OpenBB**
 
