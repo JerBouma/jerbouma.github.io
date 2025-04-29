@@ -95,6 +95,7 @@ The formula is as follows:
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+ - <u>trailing (int | None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 
  **Returns:**
  pd.DataFrame: DataFrame containing Dupont analysis results, including Profit Margin, Asset
@@ -137,6 +138,7 @@ The formula is as follows:
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+ - <u>trailing (int | None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 
  **Returns:**
  pd.DataFrame: DataFrame containing Extended Dupont analysis results, including Profit Margin, Asset Turnover,
