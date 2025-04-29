@@ -70,7 +70,7 @@ The power of the MVC pattern lies in its clear structure, making it immediately 
 {: .notice--info }
 **The Importance of Separation of Concerns for Financial Modelling**<br>The Model, View, Controller (MVC) structure is particularly effective for financial models because they often combine diverse datasets and complex calculations, requiring overarching logic to manage data flow correctly.<br><br>For example, during scenario analysis or time-based simulations, a dedicated module is needed to track the current period, scenario, dataset, etc. This is where the Controller comes in. The actual calculations should be independent of this tracking logic, which is why they are separated into the Model. Similarly, visualization is distinct from both calculation and control logic and is thus separated into the View.<br><br>This modular structure simplifies debugging, as each component has a specific purpose, making it easier to pinpoint formula or data issues. Conversely, combining calculation and data components makes identifying the source of issues more difficult.
 
-### The Model Layer (Data Layer)
+### The Data Layer
 
 The Model layer is where data manipulation occurs. This can range from complex calculations to simple data transformations. Ideally, Models should operate on various data inputs and have minimal dependencies.
 
@@ -105,7 +105,7 @@ def get_gross_margin(revenue: pd.Series, cost_of_goods_sold: pd.Series) -> pd.Se
 
 Each function is categorized in a specific module. For example, the Gross Margin calculation belongs in the `profitability_model.py` module, alongside other profitability ratio functions. Similarly, other ratio categories like liquidity, solvency, efficiency, and valuation reside in their respective model files (`liquidity_model.py`, `solvency_model.py`, `efficiency_model.py`, and `valuation_model.py`, respectively).
 
-### The View Layer (Visualization Layer)
+### The Visualization Layer
 
 The View layer is responsible for presenting data. This can be a table, a graph, a dashboard, etc. In some cases, the data structure (like a DataFrame) produced by the Model might suffice as a "View," making a dedicated View component optional.
 
@@ -146,7 +146,7 @@ def plot_gross_margin(gross_margin: pd.Series) -> pd.Series:
 
 Similar to the Model layer, the View layer is typically organized into modules. For example, the Gross Margin plotting function belongs in the `profitability_view.py` module, along with other profitability visualization functions. Likewise, visualizations for other ratio categories reside in corresponding view files (`liquidity_view.py`, `solvency_view.py`, `efficiency_view.py`, and `valuation_view.py`, respectively).
 
-### The Controller Layer (Controlling Layer)
+### The Controlling Layer
 
 The Controller layer contains the logic that connects the Model and View. It handles application-specific logic and data preparation. For example, when calculating the Gross Margin, the Controller extracts the 'Revenue' and 'Cost of Goods Sold' data from the specific dataset and passes it to the Model function.
 
@@ -259,7 +259,7 @@ class Toolkit:
                 )
 ```
 
-### The Supportive Layer (Helpers)
+### The Supportive Layer
 
 In addition to the Model, View, and Controller modules, a `helpers` module can be beneficial. This module houses utility functions used across different parts of the application.
 
