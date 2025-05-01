@@ -12,7 +12,7 @@ sidebar:
 
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.0/dist/mermaid.min.js"></script>
 
-Once you got the hang of Python and have installed a code editor such as Visual Studio Code, it is time to start working on your own project and utilise the various tools that greatly improve the quality of a model.
+Once you get the hang of Python and have installed a code editor such as Visual Studio Code, it's time to start working on your own project and utilize the various tools that greatly improve the quality of a model.
 
 <div style="display: flex; justify-content: space-between;margin-bottom:10px">
     <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
@@ -23,42 +23,42 @@ Once you got the hang of Python and have installed a code editor such as Visual 
     <a href="/modelling/test-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Test your Model</a>
 </div>
 
-By applying the structure as I write here right from the start, you ensure that anything you build is maintainable and scalable. This is especially important when you want to share your model with others or when you want to use it for a longer period of time.
+By applying the structure described here right from the start, you ensure that anything you build is maintainable and scalable. This is especially important when sharing your model with others or using it long-term.
 
 ## Managing your Project
 
-Starting a new project starts with creating a new empty folder named after the project, e.g. "FinanceToolkit". Then, open the folder in your code editor and initialize Git with `git init` (or pull in a remote repository). I tend to make a connection with a remote repository afterwards through `git remote add origin URL` so I can commit, push and pull to the branches.
+Starting a new project begins with creating an empty folder named after the project (e.g., "FinanceToolkit"). Then, open this folder in your code editor and initialize Git using `git init` (or clone an existing remote repository using `git clone URL`). Afterwards, I typically connect to a remote repository using `git remote add origin URL`, enabling me to commit, push, and pull changes.
 
-Once this is done, I start including the following files that help manage the project. Within any project of mine these will always be there, in fact I tend to copy them over from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} repository as it is a great template to start with. This is the case for both personal and professional projects.
+Once this is done, I include the following files to help manage the project. These files are always present in my projects; in fact, I often copy them from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} repository as it serves as an excellent starting template. This applies to both personal and professional projects.
 
 This consists of the following files:
 
-- **README.md** which includes a (short) description of the repository with useful links. This is a file such as the one you are reading right now.
-- **.gitignore** that includes Python specific and module specific exclusions. E.g. think of the exclusion of .idea, .vscode, .venv, .pytest_cache, .DS_Store, etc. See an example [here](https://github.com/JerBouma/FinanceToolkit/blob/main/.gitignore){: target="_blank"} of how such a file could look like.
-- **pyproject.toml** that includes build setups, linter configurations and dependencies ([example](https://github.com/JerBouma/FinanceToolkit/blob/main/pyproject.toml){: target="_blank"}). This file is the core of the project and contains all necessary information to run the project. It is the successor of the `setup.py` and `setup.cfg` files. Read more about it in [PEP518](https://peps.python.org/pep-0518/){: target="_blank"}.
-- **.pre-commit-config.yaml**: a special file meant for using `pre-commit`. This file is used to configure which linters should be run prior to committing code. It keeps the quality of the code to the highest standard and is therefore definitely a must-have. It can be used by executing `pre-commit install` in the terminal. See an example file [here](https://github.com/JerBouma/FinanceToolkit/blob/main/.pre-commit-config.yaml){: target="_blank"}.
+- **README.md**: Includes a (short) description of the repository with useful links, similar to the file you are currently reading.
+- **.gitignore**: Includes Python-specific and project-specific exclusions (e.g., `.idea`, `.vscode`, `.venv`, `.pytest_cache`, `.DS_Store`). See an example [here](https://github.com/JerBouma/FinanceToolkit/blob/main/.gitignore){: target="_blank"}.
+- **pyproject.toml**: Includes build setups, linter configurations, and dependencies ([example](https://github.com/JerBouma/FinanceToolkit/blob/main/pyproject.toml){: target="_blank"}). This file is central to the project, containing all necessary information to run it. It succeeds the older `setup.py` and `setup.cfg` files. Read more about it in [PEP 518](https://peps.python.org/pep-0518/){: target="_blank"}.
+- **.pre-commit-config.yaml**: A configuration file for `pre-commit`. It specifies which linters should run before code is committed, helping maintain high code quality ([example](https://github.com/JerBouma/FinanceToolkit/blob/main/.pre-commit-config.yaml){: target="_blank"}). Activate it by running `pre-commit install` in the terminal.
 
-The objective of these files is to lengthen the life span of the model. As an example, if you are still using `append` in Pandas you haven't been on top of your package dependencies given that this functionality has been depreciated since [January 2022](https://pandas.pydata.org/pandas-docs/version/1.4/whatsnew/v1.4.0.html#whatsnew-140-deprecations-frame-series-append){: target="_blank"} in v1.4.0. Not being on top of these developments will mean that unless you change the code, you will be stuck on v1.4.0 and subsequently, Python 3.8 and 3.9.
+The objective of these files is to increase the longevity of the model. For example, if you are still using `append` in Pandas, you haven't kept up with package dependencies, as this functionality was deprecated in v1.4.0 ([January 2022](https://pandas.pydata.org/pandas-docs/version/1.4/whatsnew/v1.4.0.html#whatsnew-140-deprecations-frame-series-append){: target="_blank"}). Failing to keep up with these developments means that without code changes, you'll be stuck on older versions like Pandas v1.4.0 and consequently, older Python versions like 3.8 and 3.9.
 
 ## Directory Structure
 
-The folder structure could look like the following, emphasizing here on the `financetoolkit` folder that contains the actual financial models:
+The folder structure could look like the following, with emphasis on the `financetoolkit` folder containing the actual financial models:
 
 ![](/assets/images/modelling/setting-up-your-project/financetoolkit.png)
 
-The tests folder structure has the same structure except it contains unit tests for `pytest` to work with:
+The `tests` folder mirrors this structure but contains unit tests for `pytest`:
 
 ![](/assets/images/modelling/setting-up-your-project/tests.png)
 
-There is a lot of room to change this structure, but the most important thing is that the model is structured in a way that is understandable and maintainable not only for yourself but also for others.
+While this structure can be modified, the key is to organize the model in a way that is understandable and maintainable for yourself and others.
 
-As an example, my package the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} follows this exact structure but this is not an isolated case, you will see the same structure in place when you look at a project like [OpenBB](https://github.com/OpenBB-finance/OpenBBTerminal){: target="_blank"} which is the largest open-source project in the Finance space. There is room to expand this also with `_view` modules.
+For instance, my [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} package follows this exact structure. This isn't an isolated case; you'll find a similar structure in projects like [OpenBB](https://github.com/OpenBB-finance/OpenBBTerminal){: target="_blank"}, a major open-source finance project. This structure can also be expanded, for example, by adding `_view` modules.
 
-In any case, using the above makes it very clear where to find what and what the purpose of each file is as discussed in [Structure your Model](/modelling/structure-your-model).
+In any case, using the structure described above clarifies the location and purpose of each file, as discussed further in [Structure your Model](/modelling/structure-your-model).
 
 ## Dependency Management
 
-The chances of your model surviving the next few years goes up significantly if you keep your dependencies up to date. With this, you define what version of Python, Pandas, NumPy, Scipy and more you require at the <u>minimum</u> for the model to function. It would look something like this in the `pyproject.toml` file:
+The chances of your model remaining functional over the next few years increase significantly if you keep its dependencies up to date. This involves defining the <u>minimum</u> required versions of Python, Pandas, NumPy, SciPy, and other libraries for the model to function correctly. It would look something like this in the `pyproject.toml` file:
 
 ```toml
 [tool.poetry.dependencies]
@@ -81,23 +81,23 @@ pytest-recorder = "^0.2.3"
 ipykernel = "^6.25.2"
 ```
 
-This uses the dependency manager **Poetry**, an advanced tool that understands the relationships between each package and their dependencies. It is also able to create a virtual environment for you and install all the dependencies in there. This is a great way to keep your dependencies in check and to make sure that you are not using any deprecated functions. Poetry has extensive documentation and it is therefore recommended to have a look at it [here](https://python-poetry.org/docs/){: target="_blank"}.
+This example uses the dependency manager **Poetry**, an advanced tool that understands the relationships between packages and their dependencies. It can also create a virtual environment and install all dependencies within it. This helps keep dependencies managed and ensures you avoid using deprecated functions. Poetry has extensive documentation, which is recommended reading [here](https://python-poetry.org/docs/){: target="_blank"}.
 
-Once this is done, you can add dependencies by using `poetry add` (e.g. `poetry add pandas`). This will result in pandas being added to `[tool.poetry.dependencies]`. Then, once all your dependencies are in place, it simply requires `poetry install` to install all the dependencies in the virtual environment. This will also create a `poetry.lock` file which is a snapshot of all the dependencies and their dependencies. This is a great way to keep track of what is installed and what is not.
-
-___
-
-**Pro-tip:** needing to be aware of new versions of each package can be tedious. Therefore, consider looking at `extras` as defined with Pandas. These include most of the data wrangling required and therefore limits maintenance for yourself. See [here](https://pandas.pydata.org/docs/getting_started/install.html#install-recommended-dependencies).
+Once set up, you can add dependencies using `poetry add` (e.g., `poetry add pandas`). This command adds the package (like pandas) to the `[tool.poetry.dependencies]` section. With dependencies listed, running `poetry install` installs them all within the virtual environment. This command also creates a `poetry.lock` file, which records the exact versions of all installed packages and their sub-dependencies. This file ensures reproducible builds by locking dependency versions.
 
 ___
 
-Next to that, there is a section called `[tool.poetry.group.dev.dependencies]` which are dependencies only relevant for development. You only want to install dependencies that are required for your model to be able to execute as a user. As a developer, these dependencies are required to be able to run tests, linting, etc.
+**Pro-tip:** Keeping track of new versions for every package can be tedious. Therefore, consider using `extras` as defined with Pandas. These optional dependency groups bundle related packages (like those needed for data wrangling), simplifying maintenance. See [here](https://pandas.pydata.org/docs/getting_started/install.html#install-recommended-dependencies).
+
+___
+
+Additionally, the `[tool.poetry.group.dev.dependencies]` section lists dependencies relevant only for development. As a user running the model, you only need the core dependencies listed under `[tool.poetry.dependencies]`. As a developer, you need these additional tools for tasks like running tests, linting, etc.
 
 
 {: .notice--info}
-<b>Why Poetry over requirements.txt or pip?</b><br>Poetry is an actual dependency manager that understands the relationship between each package. This is different from `requirements.txt` which simply lists the packages and won't stop you from installing a package that is not compatible with the other packages. Pip is a package installer and <u>not</u> a dependency manager which is therefore not recommended to maintain an environment. There are other solutions available as well like `pipenv` which you could also use but I prefer Poetry especially as it is [increasing in popularity](https://lp.jetbrains.com/python-developers-survey-2023/#python-packaging){: target="_blank"}.
+<b>Why Poetry over requirements.txt or pip?</b><br>Poetry is a true dependency manager that understands the relationships between packages. Unlike `requirements.txt`, which merely lists packages and doesn't prevent incompatible installations, Poetry resolves dependencies intelligently. Pip is a package installer, <u>not</u> a dependency manager, making it less suitable for maintaining consistent environments. While alternatives like `pipenv` exist, Poetry is preferred here, partly due to its [increasing popularity](https://lp.jetbrains.com/python-developers-survey-2023/#python-packaging){: target="_blank"}.
 
-To give you an idea what it would look like:
+Here's an example of what the installation process looks like:
 
 ```shell
 (modelling) FinanceToolkit % poetry install
@@ -116,7 +116,7 @@ Package operations: 72 installs, 0 updates, 0 removals
 
 Installing the current project: financetoolkit (1.6.1)
 ```
-And in case I wish to add a new dependency (in this case including extras)
+And here's how adding a new dependency (including extras) appears:
 
 ```shell
 (modelling) FinanceToolkit % poetry add pandas --extras "computation performance plot"
@@ -144,7 +144,7 @@ Package operations: 15 installs, 0 updates, 0 removals
   • Installing xarray (2023.10.1)
 ```
 
-Which will then show up in the `pyproject.toml` file:
+This addition will then be reflected in the `pyproject.toml` file:
 
 ```toml
 [tool.poetry.dependencies]
@@ -156,16 +156,16 @@ scikit-learn = "^1.3.1"
 
 ### Setting up Linters
 
-Linters are scripts that check and improve your code. This can be anything from formatters to spell checkers to code quality checkers. The following are recommended to always apply and ensure that no code is committed through Git that do not meet these requirements:
+Linters are tools that analyze code to detect errors, enforce style guidelines, and suggest improvements. They range from code formatters and spell checkers to tools identifying potential bugs or security vulnerabilities. The following linters are recommended to ensure code quality and consistency before committing changes via Git:
 
-- [**Black**](https://github.com/psf/black) which is a PEP 8 compliant opinionated formatter, maintained by the developers of Python themselves.
-- [**Ruff**](https://github.com/charliermarsh/ruff) is a linter that is extremely fast and replaces Flake8 (plus dozens of plugins), isort, pydocstyle, yesqa, eradicate, pyupgrade, and autoflake.
-- [**Pylint**](https://github.com/pylint-dev/pylint) which checks for errors, enforces a coding standard, looks for code smells, and can make suggestions about how the code could be refactored.
-- [**mypy**](https://mypy.readthedocs.io/en/stable/) which is a type checker that helps ensure that you’re using variables and functions in your code correctly in accordance with PEP 484.
-- [**bandit**](https://github.com/PyCQA/bandit) which is designed to find common security issues in Python code.
-- [**codespell**](https://github.com/codespell-project/codespell) which signals common misspellings in text files.
+- [**Black**](https://github.com/psf/black): A PEP 8 compliant opinionated formatter, maintained by the Python Software Foundation.
+- [**Ruff**](https://github.com/charliermarsh/ruff): An extremely fast linter that consolidates the functionality of tools like Flake8 (and its plugins), isort, pydocstyle, yesqa, eradicate, pyupgrade, and autoflake.
+- [**Pylint**](https://github.com/pylint-dev/pylint): Checks for errors, enforces a coding standard, looks for code smells, and suggests potential refactoring.
+- [**mypy**](https://mypy.readthedocs.io/en/stable/): A static type checker that verifies type hints (PEP 484) to help ensure correct usage of variables and functions.
+- [**bandit**](https://github.com/PyCQA/bandit): Designed to find common security vulnerabilities in Python code.
+- [**codespell**](https://github.com/codespell-project/codespell): Identifies common misspellings in code and text files.
 
-These linters can be configured inside the `pyproject.toml` as seen below:
+These linters can be configured within the `pyproject.toml` file, as shown below:
 
 ```toml
 [tool.ruff]
@@ -196,12 +196,12 @@ skip = '*.json,./.git,pyproject.toml,poetry.lock,examples'
 disable_error_code = "misc"
 ```
 
-The `.pre-commit-config.yaml` file is meant to configure which linters should be ran prior to committing code. By running `pre-commit install`, it will install the linters based on this file.
+The `.pre-commit-config.yaml` file configures which linters should be run automatically before code is committed. Running `pre-commit install` sets up Git hooks based on this file.
 
 {: .notice--info}
-I recommend downloading [this .pre-commit-config.yaml file](https://github.com/JerBouma/FinanceToolkit/blob/main/.pre-commit-config.yaml){: target="_blank"} and use it as a template for your own projects. You can definitely deviate from it as you like but this is a great initial template to get you started and it uses the most common linters.
+I recommend downloading [this .pre-commit-config.yaml file](https://github.com/JerBouma/FinanceToolkit/blob/main/.pre-commit-config.yaml){: target="_blank"} as a starting template for your projects. Feel free to modify it, but it provides a solid foundation using common linters.
 
-With this file installed, it will automatically be ran on each commit. E.g. when running a commit, it could look like the following:
+With the hooks installed, these checks will run automatically on each `git commit`. For example, the output during a commit might look like this:
 
 ```shell
 (base) FinanceToolkit % git commit -m "v1.5.0 Release featuring Threading"
@@ -225,16 +225,16 @@ Found 1 error.
 
 codespell................................................................Passed
 mypy.....................................................................Passed
-pylint...................................................................Passed   
+pylint...................................................................Passed
 ```
 
-Based on the files I have added to my commit, I am able to see which linters have passed and which have failed. In this case, Black and Ruff have failed. This is because Black has reformatted the code and Ruff has found a magic value in the code it is asking me to change. There are multiple things I can do with this:
+This output shows which linters passed and failed based on the files staged for the commit. In this example, Black failed because it needed to reformat a file, and Ruff failed because it detected a 'magic value' (a hardcoded number without clear meaning). There are several ways to address these failures:
 
-1. I can add a new variable that saves this magic value as the issue is that I use an integer that has little meaning to the reader. This is the preferred way as it makes the code more readable.
-3. I can add `# noqa` to the line that is causing the issue. This is mostly relevant if the code remains self explanatory. E.g. let's say you want to see if the dataset features a single or multiple columns, you could use `if len(df.columns) == 1: # noqa` as it is clear what the code does.
-2. I can add an exception to the `pyproject.toml` and `.pre-commit-config.yaml` files to ignore this specific error. This is not the preferred way as it does not solve the issue but rather hides it. However, in some cases it could be that it is not a big deal that it does.
+1.  **Refactor:** Introduce a named constant for the magic value. This is generally the preferred approach as it improves code readability.
+2.  **Suppress:** Add a `# noqa` comment to the specific line causing the issue. This is suitable if the code is already self-explanatory despite the linter warning (e.g., `if len(df.columns) == 1: # noqa`).
+3.  **Configure:** Add an exception rule in the `pyproject.toml` or `.pre-commit-config.yaml` file to ignore this specific error type project-wide. This is generally discouraged as it hides potential issues, but might be acceptable in specific circumstances.
 
-Once everything has been resolved, it is possible to commit the code. The beauty of this is that code will always be tested _before_ it is committed.
+After resolving the issues (e.g., by letting Black reformat and refactoring the magic value, then staging the changes again), the commit can proceed. The benefit of pre-commit hooks is that code quality checks run automatically *before* the commit is finalized.
 
 ```shell
 (base) FinanceToolkit % git commit -m "v1.5.0 Release featuring Threading"
@@ -251,17 +251,17 @@ pylint...................................................................Passed
 
 ### Creating a Git Workflow
 
-While working on code, it is important to follow a solid Git workflow that separates development from production. I make the distinction between working alone or working in a team here because you shouldn't over complicate things. Needing to approve your own PRs from the Feature branch is non-sense if you are the only one working on the project.
+When working with code, it's important to follow a solid Git workflow that separates development from production environments. The complexity of the workflow can depend on whether you are working alone or in a team; avoid unnecessary complexity. For example, requiring self-approval of Pull Requests (PRs) from a feature branch is unnecessary if you are the sole developer.
 
 {: .notice--info}
-I highly recommend Git even if you have no intention to publish the code, GitHub for example allows the creation of Private Repositories to accommodate for this. The reason you should still use Git is because you can easily revert back to previous versions of the code if you made a mistake or wish to create multiple versions of the code.
+Using Git is highly recommended even for private projects. Platforms like GitHub offer private repositories for this purpose. The key benefit of Git is version control: you can easily track changes, revert to previous states if mistakes are made, and manage different versions or features concurrently.
 
-My usual approach contains at least the following branches:
+A common approach, especially for solo developers, involves at least these branches:
 
-- **Main**: this is your production branch and should only contain versions of the code that are fully production-ready. You should not push directly to main but rather merge from a development branch.
-- **Develop**: this is your development branch and should contain the latest version of the code that is not yet production-ready. You should only push directly to this branch if you are the sole programmer. Otherwise, merge from a feature branch.
+-   **main**: This branch represents the stable, production-ready code. Direct pushes to `main` should be avoided; changes should be merged from a development branch.
+-   **develop**: This branch contains the latest development changes, potentially unstable but integrating new features. If working alone, you might push directly here. In a team, changes are typically merged from feature branches.
 
-This results in the following structure:
+This leads to a workflow visualized as follows:
 
 <div class="mermaid">
 gitGraph LR:
@@ -286,12 +286,12 @@ gitGraph LR:
     merge develop tag:"v1.2.0"
 </div>
 
-If you are working in a team, it is important to have a proper workflow with code reviewers and testers before anything is merged into the development branch to prevent issues from occurring in a feature branch from someone else that is not related to the code changes. The following branches should be included:
+When working in a team, a more structured workflow involving code reviews and testing is crucial before merging into the `develop` branch. This prevents issues in one feature branch from affecting others. Additional branches often used in team workflows include:
 
-- **Feature**: these are your feature branches and should contain the code that you are working on. It will push to the development branch through PRs. These contain many different feature branches based on the feature that is being worked on and is dropped once the feature is merged into the development branch. For simplicity sake, in the graph below I merged the feature branches into one but in reality, there are many more.
-- **Hotfix**: this is your hotfix branch and should contain the code that is required to fix a bug in production. This is only used in the rare case that a bug is found in production and needs to be fixed immediately.
+-   **feature/***: These branches are created for specific new features or tasks. Work is done here, and changes are merged into `develop` (usually via Pull Requests). Feature branches are typically deleted after merging. The graph below simplifies this by showing a single 'feature' branch, but many exist in practice.
+-   **hotfix/***: These branches are used to address critical bugs found in the production (`main`) branch that require immediate fixes. They branch off `main` and are merged back into both `main` and `develop`.
 
-This results in the following structure:
+This team workflow can be visualized as:
 
 <div class="mermaid">
 gitGraph LR:
@@ -320,13 +320,13 @@ gitGraph LR:
     merge develop tag:"v1.2.0"
 </div>
 
-This is my way of doing things but there are many other ways to do this. The most important thing is that you have a workflow in place that works for you and your team and makes a proper distinction between production and development.
+This is one common way to structure Git workflows; many variations exist (e.g., Gitflow, GitHub Flow). The key principle is to establish a workflow that suits your project and team, clearly separating production code from ongoing development.
 
 ### Adding Git Exceptions
 
-The `.gitignore` file is meant to exclude or include files for [Git](https://git-scm.com/){: target="_blank"} which comes in very handy when you have Jupyter Notebooks you use for testing or specific data files that contain personal information. This file is only relevant if you apply version control but that should be a given. If it isn't, definitely look into applying Git for your models as it is a very powerful tool to keep track of changes and to revert back to previous versions.
+The `.gitignore` file specifies intentionally untracked files that Git should ignore. This is useful for excluding generated files (like compiled code), local configuration (IDE settings), sensitive data, or temporary files (like Jupyter Notebook checkpoints). This file is essential when using version control. If you aren't already using Git, consider adopting it for its powerful change tracking and versioning capabilities.
 
-Such a file could look like the following:
+An example `.gitignore` file might look like this:
 
 ```shell
 # FinanceToolkit Specific
@@ -351,6 +351,6 @@ develop-eggs/
 dist/
 ```
 
-Once you have done these steps it's time to start structuring your model. Visit [Structure your Model](/modelling/structure-your-model) to continue!
+Once these setup steps are complete, it's time to focus on structuring your model's code. Visit [Structure your Model](/modelling/structure-your-model) to continue!
 
 [Structure your Model](/modelling/structure-your-model){: .btn .btn--info .btn--large .align-center}
