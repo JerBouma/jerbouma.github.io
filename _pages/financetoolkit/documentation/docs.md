@@ -43,59 +43,48 @@ If you are looking for documentation regarding the discovery, ratios, models, te
 {% include algolia.html %}
 
 ## __init__
-Initializes an Toolkit object with a ticker or a list of tickers. The way the Toolkit is initialized will define how the data is collected. For example, if you enable the quarterly flag, you will be able to collect quarterly data. Next to that, you can define the start and end date to specify a specific range. Another option is to work with cached data. This is useful when you have collected data before and want to use this data again. This can be done by setting the use_cached_data variable to True. If you want to use a specific location to store the cached data, you can define this as a string, e.g. "datasets".
+Initializes a Toolkit object with a ticker or a list of tickers. The way the Toolkit is initialized will define how the data is collected. For example, if you enable the quarterly flag, you will be able to collect quarterly data. Next to that, you can define the start and end date to specify a specific range. Another option is to work with cached data. This is useful when you have collected data before and want to use this data again. This can be done by setting the use_cached_data variable to True. If you want to use a specific location to store the cached data, you can define this as a string, e.g. "datasets".
 
-See for more information on all of this, the following link: [https://www.jeroenbouma.com/projects/financetoolkit](https://www.jeroenbouma.com/projects/financetoolkit){:target="_blank"}
+It is good to note that the Finance Toolkit will always attempt to acquire data from Financial Modeling Prep if an API key is set. If this isn't the case, the data comes from Yahoo Finance. In case you have an API key set and the current plan doesn't allow for the data to be collected, the Toolkit will automatically switch to Yahoo Finance. You can disable this behaviour by setting the enforce_source variable to "FinancialModelingPrep".
+
+For more information on the capabilities of the Finance Toolkit see here: [https://www.jeroenbouma.com/projects/financetoolkit](https://www.jeroenbouma.com/projects/financetoolkit){:target="_blank"}
 
 **Args:**
-
- - <u>tickers (str or list):</u> A string or a list of strings containing the company ticker(s). E.g. 'TSLA' or 'MSFT'
- Find the tickers on a variety of websites or via the FinanceDatabase: [https://github.com/JerBouma/financedatabase](https://github.com/JerBouma/financedatabase){:target="_blank"}
- - <u>api_key (str):</u> An API key from FinancialModelingPrep. Obtain one here: [https://www.jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}
- - <u>start_date (str):</u> A string containing the start date of the data. This needs to be formatted as YYYY-MM-DD.
- The default is today minus 10 years which can be freely changed to extend the period.
- - <u>end_date (str):</u> A string containing the end date of the data. This needs to be formatted as YYYY-MM-DD.
- The default is today which can be freely changed to extend the period.
- - <u>quarterly (bool):</u> A boolean indicating whether to collect quarterly data. This defaults to False and thus
- collects yearly financial statements. Note that historical data can still be collected for
- any period and interval.
- - <u>use_cached_data (bool or str):</u> A boolean indicating whether to use cached data. This is useful when you
- have collected data before and want to use this data again. If you want to use a specific location to
- store the cached data, you can define this as a string, e.g. "datasets". Defaults to False.
- - <u>risk_free_rate (str):</u> A string containing the risk free rate. This can be 13w, 5y, 10y or 30y. This is
- based on the US Treasury Yields and is used to calculate various ratios and Excess Returns.
- - <u>benchmark_ticker (str):</u> A string containing the benchmark ticker. Defaults to SPY (S&P 500). This is
- meant to calculate ratios and indicators such as the CAPM and Jensen's Alpha but also serves as purpose to
- give insights in the performance of a stock compared to a benchmark.
- - <u>historical_source (str):</u> A string containing the historical source. This can be either FinancialModelingPrep
- or YahooFinance. Defaults to FinancialModelingPrep. It is automatically defined if you enter an API Key from
- FinancialModelingPrep. You can overwrite this by filling this parameter. Note that for the Free plan the amount
- of historical data is limited to 5 years. If you want to collect more data, you need to upgrade to a paid plan.
- - <u>historical (pd.DataFrame):</u> A DataFrame containing historical data. This is a custom dataset only relevant if
- you are looking to use custom data. See for more information the following Notebook:
- [https://www.jeroenbouma.com/projects/financetoolkit/external-datasets](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets){:target="_blank"}
- - <u>balance (pd.DataFrame):</u> A DataFrame containing balance sheet data. This is a custom dataset only
- relevant if you are looking to use custom data. See for more information the notebook as mentioned at historical.
- - <u>cash (pd.DataFrame):</u> A DataFrame containing cash flow statement data. This is a custom dataset only
- relevant if you are looking to use custom data. See for more information the notebook as mentioned at historical.
- - <u>format_location (str):</u> A string containing the location of the normalization files.
- - <u>convert_currency (bool):</u> A boolean indicating whether to convert the currency of the financial statements to
- match that of the related historical data. This is an important conversion when comparing the financial
- statements between each ticker as well as for calculations that are done with the historical data.
- If you are using a Free plan from FinancialModelingPrep, this will be set to False.
- If you are using a Premium plan from FinancialModelingPrep, this will be set to True. Defaults to None
- and can thus be overridden.
- - <u>reverse_dates (bool):</u> A boolean indicating whether to reverse the dates in the financial statements.
- - <u>intraday_period (str):</u> A string containing the intraday period. This can be 1min, 5min, 15min, 30min or 1hour.
- This is used to collect intraday data. Note that this is only relevant if you have are looking to utilize
- intraday data through the Toolkit and wish to access Risk, Performance and Technicals for very short
- timeframes. Defaults to None which means it will not use intraday data.
- - <u>rounding (int):</u> An integer indicating the number of decimals to round the results to.
- - <u>remove_invalid_tickers (bool):</u> A boolean indicating whether to remove invalid tickers. Defaults to False.
- - <u>sleep_timer (bool):</u> Whether to set a sleep timer when the rate limit is reached. Note that this only works
- if you have a Premium subscription (Starter or higher) from FinancialModelingPrep. Defaults to None which
- means it is determined by the model (Free plan = False, Premium plan = True).
- - <u>progress_bar (bool):</u> Whether to enable the progress bar when ticker amount is over 10. Defaults to True.
+ - <u>tickers (list | str | None):</u> A string or a list of strings containing the company ticker(s). E.g. 'TSLA' or 'MSFT'.
+ Find tickers on various websites or via the FinanceDatabase: [https://github.com/JerBouma/financedatabase.](https://github.com/JerBouma/financedatabase.){:target="_blank"} Defaults to None.
+ - <u>api_key (str):</u> An API key from FinancialModelingPrep. Obtain one here: [https://www.jeroenbouma.com/fmp.](https://www.jeroenbouma.com/fmp.){:target="_blank"} Defaults to "".
+ - <u>start_date (str | None):</u> A string containing the start date of the data. Needs to be formatted as YYYY-MM-DD.
+ Defaults to 5 years/quarters back from today depending on the 'quarterly' flag.
+ - <u>end_date (str | None):</u> A string containing the end date of the data. Needs to be formatted as YYYY-MM-DD.
+ Defaults to today.
+ - <u>quarterly (bool):</u> A boolean indicating whether to collect quarterly data. Defaults to False (yearly).
+ Note that historical data can still be collected for any period and interval.
+ - <u>use_cached_data (bool | str):</u> A boolean indicating whether to use cached data. If True, uses a 'cached' folder.
+ If a string is provided, uses that string as the path to the cache folder. Defaults to False.
+ - <u>risk_free_rate (str):</u> The risk-free rate identifier ('13w', '5y', '10y', '30y'). Based on US Treasury Yields.
+ Used for calculations like Excess Returns. Defaults to "10y".
+ - <u>benchmark_ticker (str | None):</u> The benchmark ticker (e.g., 'SPY' for S&P 500). Used for comparative analysis
+ (CAPM, Alpha, Beta). Defaults to "SPY". Set to None to disable benchmark comparison.
+ - <u>enforce_source (str | None):</u> Enforce data source ('FinancialModelingPrep' or 'YahooFinance').
+ Defaults to None (uses FMP if api_key provided, otherwise YahooFinance, with fallback).
+ - <u>historical (pd.DataFrame):</u> Custom historical price data. See notebook:
+ [https://www.jeroenbouma.com/projects/financetoolkit/external-datasets.](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets.){:target="_blank"} Defaults to an empty DataFrame.
+ - <u>balance (pd.DataFrame):</u> Custom balance sheet data. See notebook link above. Defaults to an empty DataFrame.
+ - <u>income (pd.DataFrame):</u> Custom income statement data. See notebook link above. Defaults to an empty DataFrame.
+ - <u>cash (pd.DataFrame):</u> Custom cash flow statement data. See notebook link above. Defaults to an empty DataFrame.
+ - <u>format_location (str):</u> Path to custom normalization files. Defaults to "".
+ - <u>convert_currency (bool | None):</u> Convert financial statements currency to match historical data currency.
+ Important for cross-ticker comparison and calculations involving both data types.
+ Defaults to None (True if FMP plan is Premium, False if Free). Can be overridden.
+ - <u>reverse_dates (bool):</u> Reverse the order of dates in financial statements (oldest first). Defaults to True.
+ - <u>intraday_period (str | None):</u> Intraday data interval ('1min', '5min', '15min', '30min', '1hour').
+ Enables short-term analysis using Risk, Performance, and Technicals modules. Requires FMP Premium.
+ Defaults to None (no intraday data).
+ - <u>rounding (int | None):</u> Number of decimal places for results. Defaults to 4.
+ - <u>remove_invalid_tickers (bool):</u> Remove tickers that fail data retrieval. Defaults to False.
+ - <u>sleep_timer (bool | None):</u> Enable sleep timer on FMP rate limit (requires Premium).
+ Defaults to None (determined by FMP plan: True for Premium, False for Free).
+ - <u>progress_bar (bool):</u> Show progress bar for operations involving multiple tickers. Defaults to True.
 
  As an example:
 {% include code_header.html %}
@@ -113,11 +102,17 @@ tickers=["AAPL", "GOOGL"],
 quarterly=True,
 api_key="FINANCIAL_MODELING_PREP_KEY")
 
+# Enforce a specific source
+toolkit = Toolkit(
+tickers=["ASML", "BABA"],
+quarterly=True,
+enforce_source="YahooFinance")
+
 # Including a start and end date
 toolkit = Toolkit(
 tickers=["MSFT", "MU"],
 start_date="2020-01-01",
-end_date="2023-01-01"
+end_date="2023-01-01",
 quarterly=True,
 api_key="FINANCIAL_MODELING_PREP_KEY")
 
@@ -747,11 +742,11 @@ Returns historical data for the specified tickers. This contains the following c
 
 If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
 
-Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting historical_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
+Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
 
 **Args:**
- - <u>start (str):</u> The start date for the historical data. Defaults to None.
- - <u>end (str):</u> The end date for the historical data. Defaults to None.
+ - <u>enforce_source (str, optional):</u> A string containing the historical source you wish to enforce.
+ This can be either FinancialModelingPrep or YahooFinance. Defaults to no enforcement.
  - <u>period (str):</u> The interval at which the historical data should be
  returned - daily, weekly, monthly, quarterly, or yearly.
  Defaults to "daily".
@@ -764,8 +759,6 @@ Important to note is that when an api_key is included in the Toolkit initializat
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. If this is not enabled, the function
  will return the earlier retrieved data. This is done to prevent too many API calls. Defaults to False.
  - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
- - <u>sleep_timer (bool):</u> Defines whether to include a sleep timer to prevent
- overloading the API. Defaults to True.
  - <u>show_ticker_seperation (bool, optional):</u> A boolean representing whether to show which tickers
  acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance.
  - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
@@ -1044,7 +1037,7 @@ This function therefore shows the exchange rates that are used to convert the fi
 
 Note that you can get currency data from any currency as well by supplying the currency as a ticker. For example, if you want to get the exchange rates between USD and EUR you can use USDEUR=X as a ticker.
 
-Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting historical_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
+Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
 
 **Args:**
  - <u>start (str):</u> The start date for the exchange data. Defaults to None.
@@ -1106,7 +1099,8 @@ Retrieves the balance sheet statement data for the specified tickers. The balanc
 Note that the balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. Therefore, trailing results are not available for this statement.
 
 **Args:**
- - <u>limit (int):</u> Defines the maximum years or quarters to obtain.
+ - <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
+ either "FinancialModelingPrep" or "YahooFinance". Defaults to None.
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
  - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
  - <u>growth (bool):</u> Defines whether to return the growth of the data.
@@ -1184,7 +1178,8 @@ Retrieves the income statement data for the specified tickers. The income statem
 The income statement is a financial statement that shows a company's revenues and expenses over a specific period. Therefore, trailing results are available for this statement.
 
 **Args:**
- - <u>limit (int):</u> Defines the maximum years or quarters to obtain.
+ - <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
+ either "FinancialModelingPrep" or "YahooFinance". Defaults to None.
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
  - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
  - <u>growth (bool):</u> Defines whether to return the growth of the data.
@@ -1248,7 +1243,7 @@ Retrieves the cash flow statement data for the specified tickers. The cash flow 
 The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. Therefore, trailing results are available for this statement.
 
 **Args:**
- - <u>limit (int):</u> Defines the maximum years or quarters to obtain.
+ - <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
  - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
  - <u>growth (bool):</u> Defines whether to return the growth of the data.
@@ -1314,9 +1309,11 @@ Retrieves the balance, cash and income statistics for the company(s) from the sp
 Note that this also obtains the balance sheet statement at the same time given that it's the same API call. This is done to reduce the number of API calls to FinancialModelingPrep.
 
 **Args:**
- - <u>limit (int):</u> Defines the maximum years or quarters to obtain.
+ - <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
+ either "FinancialModelingPrep" or "YahooFinance". Defaults to None.
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
  - <u>progress_bar (bool):</u> Defines whether to show a progress bar.
+ - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 
  **Returns:**
  pd.DataFrame: A pandas DataFrame with the retrieved statistics statement data.

@@ -44,7 +44,8 @@ Initializes the Ratios Controller Class.
 
 **Args:**
  - <u>tickers (str | list[str]):</u> The tickers to use for the calculations.
- - <u>historical (pd.DataFrame):</u> The historical data to use for the calculations.
+ - <u>historical (dict[str, pd.DataFrame]):</u> The historical data to use for the calculations.
+ Typically includes a "period" and "daily" key to access the respective data.
  - <u>balance (pd.DataFrame):</u> The balance sheet data to use for the calculations.
  - <u>income (pd.DataFrame):</u> The income statement data to use for the calculations.
  - <u>cash (pd.DataFrame):</u> The cash flow statement data to use for the calculations.
@@ -1812,6 +1813,7 @@ The formula is as follows:
 - Free Cash Flow Yield Ratio = Free Cash Flow / Market Capitalization
 
 **Args:**
+ - <u>show_daily (bool, optional):</u> Whether to use daily data for the calculation. Defaults to False.
  - <u>diluted (bool, optional):</u> Whether to use diluted shares for market capitalization. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2079,7 +2081,7 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 revenue_per_share = toolkit.ratios.get_revenue_per_share()
 {% endhighlight %}
 
-## get_price_earnings_ratio
+## get_price_to_earnings_ratio
 Calculate the price earnings ratio (P/E), a valuation ratio that compares a company's stock price to its earnings per share.
 
 The price earnings ratio is a widely used valuation metric that helps investors assess the relative value of a company's stock. A higher P/E ratio may indicate that the market has high expectations for the company's future growth, while a lower P/E ratio may suggest that the company is undervalued.
@@ -2087,7 +2089,7 @@ The price earnings ratio is a widely used valuation metric that helps investors 
 The formula is as follows:
 
 
-- Price Earnings Ratio (P/E) = Share Price / Earnings per Share (EPS)
+- Price to Earnings Ratio (P/E) = Share Price / Earnings per Share (EPS)
 
 **Args:**
  - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
@@ -2095,8 +2097,6 @@ The formula is as follows:
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
  **Returns:**
  pd.DataFrame: Price earnings ratio (P/E) values.
@@ -2112,7 +2112,7 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
-pe_ratio = toolkit.ratios.get_price_earnings_ratio()
+pe_ratio = toolkit.ratios.get_price_to_earnings_ratio()
 {% endhighlight %}
 
 ## get_price_to_earnings_growth_ratio
@@ -2127,9 +2127,11 @@ The price
 The formula is as follows:
 
 
-- Price Earnings to Growth Ratio (PEG) = Price Earnings Ratio (P/E) / Earnings per Share Growth
+- Price Earnings to Growth Ratio (PEG) = Price Earnings Ratio (P/E) / Growth Rate
 
 **Args:**
+ - <u>use_ebitda_growth_rate (bool, optional):</u> Whether to use EBITDA growth rate for the calculation.
+ Defaults to False.
  - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -2315,6 +2317,7 @@ The formula is as follows:
 - Dividend Yield = Dividends per Share / Share Price
 
 **Args:**
+ - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
  - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2351,6 +2354,7 @@ The formula is as follows:
 - Weighted Dividend Yield = Dividends Paid / Weighted Average (Diluted) Shares * Share Price
 
 **Args:**
+ - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2388,6 +2392,7 @@ The formula is as follows:
 - Price to Cash Flow Ratio = Share Price / Cash Flow from Operations per Share
 
 **Args:**
+ - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2425,6 +2430,7 @@ The formula is as follows:
 - Price to Free Cash Flow Ratio = Market Cap / Free Cash Flow
 
 **Args:**
+ - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2462,6 +2468,7 @@ The formula is as follows:
 - Market Capitalization = Share Price * Weighted Average (Diluted) Shares
 
 **Args:**
+ - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2491,6 +2498,7 @@ The formula is as follows:
 - Enterprise Value = Market Capitalization + Total Debt + Minority Interest + Preferred Equity - Cash and Cash Equivalents
 
 **Args:**
+ - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2522,6 +2530,7 @@ The formula is as follows:
 - Enterprise Value to Sales Ratio = Enterprise Value / Total Revenue
 
 **Args:**
+ - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2584,6 +2593,7 @@ The formula is as follows:
 - Enterprise Value to Operating Cash Flow Ratio = Enterprise Value / Operating Cash Flow
 
 **Args:**
+ - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2615,6 +2625,7 @@ The formula is as follows:
 - Earnings Yield Ratio = Earnings per Share / Share Price
 
 **Args:**
+ - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
  - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -2763,6 +2774,7 @@ The formula is as follows:
 - Enterprise Value to EBIT Ratio = Enterprise Value / EBIT
 
 **Args:**
+ - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
  - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
