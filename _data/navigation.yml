@@ -65,8 +65,6 @@ financedatabase:
 financetoolkit:
   - title: Introduction
     url: /projects/financetoolkit#site-nav
-  - title: <font color="green">Interactive Dashboard</font>
-    url: /projects/financetoolkit/interactive-dashboard
   - title: "Installation"
     url: /projects/financetoolkit#installation
   - title: <font color="#d67f05">Code Documentation</font>
