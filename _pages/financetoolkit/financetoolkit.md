@@ -7,6 +7,7 @@ classes: wide-sidebar
 author_profile: false
 redirect_from:
   - /financetoolkit
+  - /projects/financetoolkit/interactive-dashboard
 sidebar:
   nav: "financetoolkit"
 image: assets/images/projects/FinanceToolkit.jpg
