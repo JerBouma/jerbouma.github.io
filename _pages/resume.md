@@ -1,21 +1,19 @@
 ---
 title: Resume
-excerpt: I am strongly analytical, possess a keen sense of long-term investment strategy, and maintain a “can do” attitude. My achievements demonstrate this, including working as an ALM Advisor at PGGM, one of the largest Dutch pension funds, and as a Product Manager for OpenBB, a fintech start-up democratizing investment research access. Furthermore, I have a strong educational background in Finance, having completed CFA level 1 and the post-master Registered Financial Analyst (VBA/RBA) program. This education covers relevant theory and provides numerous examples of its application within various investment organizations.
-description: I am strongly analytical, possess a keen sense of long-term investment strategy, and maintain a “can do” attitude. My achievements demonstrate this, including working as an ALM Advisor at PGGM, one of the largest Dutch pension funds, and as a Product Manager for OpenBB, a fintech start-up democratizing investment research access. Furthermore, I have a strong educational background in Finance, having completed CFA level 1 and the post-master Registered Financial Analyst (VBA/RBA) program. This education covers relevant theory and provides numerous examples of its application within various investment organizations.
-author_profile: true
+excerpt: I am strongly analytical, possess a keen sense of long-term investment strategy, and maintain a “can do” attitude.
+description: I am strongly analytical, possess a keen sense of long-term investment strategy, and maintain a “can do” attitude.
 permalink: /resume
 redirect_from:
   - /cv
-classes: wide-sidebar
+layout: single
+classes: custom-document
 author_profile: false
-sidebar:
-  nav: "resume"
 ---
 
 <div class="row">
 <div markdown="1" class="seventy-column">
 
-I am strongly analytical, possess a keen sense of long-term investment strategy, and maintain a “can do” attitude. My achievements demonstrate this, including working as an ALM Advisor at PGGM, one of the largest Dutch pension funds, and as a Product Manager for OpenBB, a fintech start-up democratizing investment research access. Furthermore, I have a strong educational background in Finance, having completed CFA level 1 and the post-master Registered Financial Analyst (VBA/RBA) program. This education covers relevant theory and provides numerous examples of its application within various investment organizations.
+I am strongly analytical, possess a keen sense of long-term investment strategy, and maintain a “can do attitude. My achievements demonstrate this, including working as an ALM Advisor at PGGM, one of the largest Dutch pension funds, and as a Product Manager for OpenBB, a fintech start-up democratizing investment research access. Furthermore, I have a strong educational background in Finance, having completed CFA level 1 and the post-master Registered Financial Analyst (VBA/RBA) program. This education covers relevant theory and provides numerous examples of its application within various investment organizations.
 
 Additionally, over the last several years, I have dedicated thousands of hours to developing Python skills, focusing on quantitative and statistical modeling, and data science. Explore my active open-source projects on the <a href="/projects">projects page</a>. These include the Finance Database and Financial Toolkit, each with well over 3,000 GitHub Stars, and the OpenBB Terminal, where I was a leading contributor, particularly in fundamental analysis, economics, fixed income, and econometrics.
 
@@ -24,7 +22,7 @@ This combination of skills culminates in my current role as Quantitative Investm
 </div>
 
 <div markdown="1" class="thirty-column">
-ß
+
 <img src="assets/images/default/bio-photo.jpg" class='testimoninals'>
 
 </div>

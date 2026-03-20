@@ -1,12 +1,12 @@
 ---
 title: Contact
-excerpt: I am always open to discuss financial theory, getting involved in new financial (Python) projects or general discussions. If you are interested in supporting my projects and work, consider buying me a coffee. You can reach out to me or support me via the following channels.
-description: I am always open to discuss financial theory, getting involved in new financial (Python) projects or general discussions. If you are interested in supporting my projects and work, consider buying me a coffee. You can reach out to me or support me via the following channels.
-author_profile: true
+excerpt: I am always open to discuss financial theory.
+description: I am always open to discuss financial theory.
 permalink: /contact
 redirect_from:
   - /contacting
-classes: wide-no-sidebar
+layout: single
+classes: custom-document
 author_profile: false
 ---
 

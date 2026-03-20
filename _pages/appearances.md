@@ -1,16 +1,15 @@
 ---
 title: Appearances
-description: All of my talks, both personal and professional, are included here. This includes presentations at a variety of universities and webinars.
-author_profile: true
-permalink: appearances
+description: All of my talks, both personal and professional.
+permalink: /talks
 redirect_from:
   - /activities
-  - /talks
+  - /appearances
   - /media
   - /videos
-classes: wide-no-sidebar
+layout: single
+classes: custom-document
 author_profile: false
-layout: videos
 ---
 
 On this page, you will find a collection of my experiences and contributions within the finance and technology sectors. I had the privilege of serving as a jury member for the Utrecht University Finance Hackathon, where students were challenged to create a Robo Advisor using Python. Additionally, I delivered presentations at universities, introducing the OpenBB Terminal and highlighting the role of Python in the financial industry. These experiences reflect my commitment to sharing knowledge and insights within the finance and technology domains, making this page a valuable resource for those interested in these fields. **Interested in partnering with me? Reach out via the [contact page](/contact)!**

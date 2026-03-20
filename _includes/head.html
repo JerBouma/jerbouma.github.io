@@ -23,3 +23,11 @@
     <script src="{{ script | relative_url }}"></script>
   {% endfor %}
 {% endif %}
+
+<script>
+  let theme_preference = localStorage.getItem("theme");
+  if (!theme_preference) {
+    theme_preference = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  document.documentElement.setAttribute("data-theme", theme_preference);
+</script>

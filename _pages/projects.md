@@ -1,9 +1,10 @@
 ---
-permalink: /projects
 title: Projects
-excerpt: I apply much of the finance theory I've learned using Python, a language in which I have invested thousands of development hours. My work spans Data Science & Machine Learning, Fundamental, Algorithmic, and Technical Analysis, GUIs, web-based dashboards, and various other topics. On this page, you can find all the major Python projects I actively maintain.
-description: I apply much of the finance theory I've learned using Python, a language in which I have invested thousands of development hours. My work spans Data Science & Machine Learning, Fundamental, Algorithmic, and Technical Analysis, GUIs, web-based dashboards, and various other topics. On this page, you can find all the major Python projects I actively maintain.
-classes: wide-no-sidebar
+permalink: /projects
+excerpt: I apply much of the finance theory I've learned using Python.
+description: I apply much of the finance theory I've learned using Python.
+layout: single
+classes: custom-document
 author_profile: false
 ---
 <div class="row">

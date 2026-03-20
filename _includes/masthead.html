@@ -5,7 +5,8 @@
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         {% unless logo_path == empty %}
-          <a class="site-logo" href="{{ '/' | relative_url }}"><img src="{{ logo_path | relative_url }}" alt="{{ site.masthead_title | default: site.title }}"></a>
+        <a class="site-logo" href="{{ '/' | relative_url }}"><img src="{{ logo_path | relative_url }}"
+            alt="{{ site.masthead_title | default: site.title }}"></a>
         {% endunless %}
         <a class="site-title" href="{{ '/' | relative_url }}">
           {{ site.masthead_title | default: site.title }}
@@ -13,37 +14,46 @@
         </a>
         <ul class="visible-links">
           {%- for link in site.data.navigation.main -%}
-            {% assign class = nil %}
-            {% if page.url contains link.url %}
-                {% assign class = 'active' %}
-            {% endif %}
-            {% if link.sublinks %}
-                <!-- Show the main link and sub links on desktop, exclude mobile -->
-                <li class="dropdown {{ class }} show-on-desktop">
-                    <a href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ link.title }} <i class="fa fa-chevron-down fa-sm" style="color: #3b9cba" aria-hidden="true"></i><span class="caret"></span></a>
-                    <ul class="dropdown-content">
-                        {% for sublink in link.sublinks %}
-                            <li>
-                                <a href="{{ site.baseurl }}{{ sublink.url }}">    {{ sublink.title }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-
-                <!-- Show the main link only on mobile -->
-                <li class="masthead__menu-item show-on-mobile">
-                  <a href="{{ site.baseurl }}{{ link.url }}">{{ link.title }}</a>
+          {% assign class = nil %}
+          {% if page.url contains link.url %}
+          {% assign class = 'active' %}
+          {% endif %}
+          {% if link.sublinks %}
+          <!-- Show the main link and sub links on desktop, exclude mobile -->
+          <li class="dropdown {{ class }} show-on-desktop">
+            <a href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+              aria-expanded="false">{{ link.title }} <i class="fa fa-chevron-down fa-sm" style="color: #3b9cba"
+                aria-hidden="true"></i><span class="caret"></span></a>
+            <ul class="dropdown-content">
+              {% for sublink in link.sublinks %}
+              <li>
+                <a href="{{ site.baseurl }}{{ sublink.url }}"> {{ sublink.title }}</a>
               </li>
-            {% else %}
-              <li class="masthead__menu-item">
-                <a href="{{ site.baseurl }}{{ link.url }}">{{ link.title }}</a>
-            </li>
-            {% endif %}
-        {% endfor %}
+              {% endfor %}
+            </ul>
+          </li>
+
+          <!-- Show the main link only on mobile -->
+          <li class="masthead__menu-item show-on-mobile">
+            <a href="{{ site.baseurl }}{{ link.url }}">{{ link.title }}</a>
+          </li>
+          {% else %}
+          <li class="masthead__menu-item">
+            <a href="{{ site.baseurl }}{{ link.url }}">{{ link.title }}</a>
+          </li>
+          {% endif %}
+          {% endfor %}
+          <li class="masthead__menu-item">
+            <button class="theme__toggle" type="button" title="Toggle theme"
+              style="background:transparent; border:none; cursor:pointer; font-size:1.1rem; color:var(--text-secondary); padding: 0.5rem;">
+              <i class="fas fa-moon"></i>
+            </button>
+          </li>
         </ul>
         {% if site.search == true %}
         <button class="search__toggle" type="button">
-          <span class="visually-hidden">{{ site.data.ui-text[site.locale].search_label | default: "Toggle search" }}</span>
+          <span class="visually-hidden">{{ site.data.ui-text[site.locale].search_label | default: "Toggle search"
+            }}</span>
           <i class="fas fa-search"></i>
         </button>
         {% endif %}
@@ -56,3 +66,30 @@
     </div>
   </div>
 </div>
+
+<script>
+  const themeToggle = document.querySelector('.theme__toggle');
+  const themeIcon = themeToggle.querySelector('i');
+
+  function updateThemeIcon() {
+    const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+    if (currentTheme === "light") {
+      themeIcon.classList.remove("fa-moon");
+      themeIcon.classList.add("fa-sun");
+    } else {
+      themeIcon.classList.remove("fa-sun");
+      themeIcon.classList.add("fa-moon");
+    }
+  }
+
+  themeToggle.addEventListener('click', () => {
+    let currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+    let newTheme = currentTheme === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    updateThemeIcon();
+  });
+
+  // Initial icon setup
+  updateThemeIcon();
+</script>

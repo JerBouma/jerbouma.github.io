@@ -1,9 +1,10 @@
 ---
 title:  Binomial Trees in the Finance Toolkit
 permalink: /articles/binomial-trees
-author_profile: true
-classes: wide-sidebar
 excerpt: "Binomial trees are a popular method for pricing options and other derivatives. The Finance Toolkit includes a function for binomial trees, which can price European and American options. This article provides an overview of the binomial tree module and demonstrates its use in option pricing."
+layout: single
+classes: custom-document
+author_profile: false
 ---
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.0/dist/mermaid.min.js"></script>
