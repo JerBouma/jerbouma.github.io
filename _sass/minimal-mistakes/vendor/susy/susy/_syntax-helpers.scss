@@ -1,3 +1,7 @@
+@use "sass:map";
+@use "sass:meta";
+@use "sass:list";
+
 /// Syntax Utilities for Extending Susy
 /// ===================================
 /// There are many steps involved
@@ -106,18 +110,19 @@
   $context-only: false
 ) {
   // Get and normalize config
-  $config: if($config, susy-settings($config), susy-settings());
+  @if $config { $config: susy-settings($config); }
+  @else { $config: susy-settings(); }
   $normal-config: susy-normalize($config);
 
   // Parse and normalize shorthand
-  @if (type-of($short) != 'map') and (length($short) > 0) {
+  @if (meta.type-of($short) != 'map') and (list.length($short) > 0) {
     $short: susy-parse($short, $context-only);
   }
 
   $normal-short: susy-normalize($short, $normal-config);
 
   // Merge and return
-  @return map-merge($normal-config, $normal-short);
+  @return map.merge($normal-config, $normal-short);
 }
 
 
@@ -170,22 +175,22 @@
     'su-slice': ('span', 'columns', 'location'),
   );
 
-  $args: map-get($grid-function-args, $name);
+  $args: map.get($grid-function-args, $name);
 
   @if not $args {
-    $options: 'Try one of these: #{map-keys($grid-function-args)}';
+    $options: 'Try one of these: #{map.keys($grid-function-args)}';
     @return _susy-error(
       '#{$name} is not a public Su function. #{$options}',
       'su-call');
   }
 
-  $call: if(function-exists('get-function'), get-function($name), $name);
+  $call: meta.get-function($name);
   $output: ();
 
   @each $arg in $args {
-    $value: map-get($config, $arg);
-    $output: if($value, map-merge($output, ($arg: $value)), $output);
+    $value: map.get($config, $arg);
+    @if $value { $output: map.merge($output, ($arg: $value)); }
   }
 
-  @return call($call, $output...);
+  @return meta.call($call, $output...);
 }

@@ -10,18 +10,9 @@ sidebar:
     nav: "modelling"
 ---
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.0/dist/mermaid.min.js"></script>
+{% include mermaid.html %}
 
 As defined in [Setting up your Project](/modelling/setting-up-your-project), the model should always include a `tests` folder. This folder utilizes [Pytest](https://docs.pytest.org/en/){: target="_blank"} to run tests. The test structure should mirror the model structure, essentially duplicating it. The primary difference is that each test module filename is prefixed with `test_` so Pytest can discover it.
-
-<div style="display: flex; justify-content: space-between;margin-bottom:10px">
-        <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
-        <a href="/modelling/getting-started" class="btn btn--info" style="flex: 1;margin-right:5px">Getting Started</a>
-        <a href="/modelling/setting-up-your-project" class="btn btn--info" style="flex: 1;margin-right:5px">Setting up your Project</a>
-        <a href="/modelling/structure-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Structure your Model</a>
-        <a href="/modelling/build-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Build your Model</a>
-        <a href="/modelling/test-your-model" class="btn btn--warning" style="flex: 1;margin-right:5px">Test your Model</a>
-</div>
 
 For example, to test the Gross Margin functionality from `profitability_model.py`, create a test function with the same name prefixed by `test_`. This looks like the following:
 
@@ -40,14 +31,12 @@ This is a test created for the function defined in [Structure your Model](/model
 <div class="mermaid">
 flowchart LR;
 
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
-
-Step0["User"]:::boxfont -- <b>Step 1<br></b>Execute Pytest --> Step1["Profitability Model Tests"]:::boxfont
-Step1["Profitability Model Tests"] -- <b>Step 2<br></b>Run Test --> Step2["test_get_gross_margin"]:::boxfont
-Step2["test_get_gross_margin"] -- <b>Step 3<br></b>Run Function with Test Data --> Step3["get_gross_margin"]:::boxfont
+Step0["User"] -- <b>Step 1<br></b>Execute Pytest --> Step1["Profitability Model Tests"]
+Step1["Profitability Model Tests"] -- <b>Step 2<br></b>Run Test --> Step2["test_get_gross_margin"]
+Step2["test_get_gross_margin"] -- <b>Step 3<br></b>Run Function with Test Data --> Step3["get_gross_margin"]
 Step3["get_gross_margin"] -- <b>Step 4a<br></b>Return the Output --> Step2["test_get_gross_margin"]
-Step2["test_get_gross_margin"] -- <b>Step 4b<br></b> (On Rewrite) Save the Output --> Step4["test_get_gross_margin.csv"]:::boxfont
-Step2["test_get_gross_margin"] <-- <b>Step 5<br></b> Compare Result with Saved Output --> Step4["test_get_gross_margin.csv"]:::boxfont
+Step2["test_get_gross_margin"] -- <b>Step 4b<br></b> (On Rewrite) Save the Output --> Step4["test_get_gross_margin.csv"]
+Step2["test_get_gross_margin"] <-- <b>Step 5<br></b> Compare Result with Saved Output --> Step4["test_get_gross_margin.csv"]
 Step2["test_get_gross_margin"] -- <b>Step 6<br></b>Return Test Result --> Step1["Profitability Model Tests"]
 Step1["Profitability Model Tests"] -- <b>Step 7<br></b>Return Summarized Test Result --> Step0["User"]
 </div>

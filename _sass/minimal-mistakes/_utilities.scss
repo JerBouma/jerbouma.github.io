@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /* ==========================================================================
    UTILITY CLASSES
    ========================================================================== */
@@ -416,7 +418,7 @@ body:hover .visually-hidden button {
   .navicon,
   .navicon:before,
   .navicon:after {
-    background: mix(#000, $primary-color, 25%);
+    background: color.mix(#000, $primary-color, 25%);
   }
 
   &.close {
@@ -516,12 +518,12 @@ body:hover .visually-hidden button {
    ========================================================================== */
 
 .footnote {
-  color: mix(#fff, $gray, 25%);
+  color: color.mix(#fff, $gray, 25%);
   text-decoration: none;
 }
 
 .footnotes {
-  color: mix(#fff, $gray, 25%);
+  color: color.mix(#fff, $gray, 25%);
 
   ol,
   li,

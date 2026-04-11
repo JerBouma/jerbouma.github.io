@@ -7,19 +7,27 @@ classes: custom-splash
 <div class="hero-section">
   <div class="hero-glow blob-1"></div>
   <div class="hero-glow blob-2"></div>
-  <h1 class="hero-title">Quantitative Investment Strategist <br> <span class="hero-highlight">& Python Enthusiast</span></h1>
-  <p class="hero-subtitle">
-    Spearheading innovative ALM initiatives, Solvency II optimization, and open-source tools.<br>
-    Currently at <a href="https://www.asrnl.com/" target="_blank">a.s.r. asset management</a>. Previously <a href="https://openbb.co/" target="_blank">OpenBB</a> and <a href="https://www.pggm.nl/en/" target="_blank">PGGM</a>.
-  </p>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1 class="hero-title">Hi there, I'm  <span class="hero-signature">Jeroen Bouma</span></h1>
+      <p class="hero-tagline">Quantitative Investment Strategist <span class="hero-highlight">&amp; Python Enthusiast</span></p>
+      <p class="hero-bio">
+        I combine a formal Quantitative Finance background with deep Python expertise across Asset-Liability Management (ALM), Solvency II Leglislation, Portfolio Optimization and Artificial Intelligence. My Open-Source projects, including the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a>, have over 10,000 GitHub Stars combined.
+      </p>
+    </div>
+    <div class="hero-photo">
+      <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma">
+    </div>
+  </div>
 </div>
 
 <div class="bento-grid">
-  <a href="/resume" class="bento-card bento-large">
+
+  <a href="/resume" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-briefcase bento-icon"></i>
       <h2>Professional Experience</h2>
-      <p>View my comprehensive resume. A deep dive into my career in quantitative asset management, advanced Python modelling, and driving open-source financial tools.</p>
+      <p>A career spanning quantitative asset management, open-source development, and Python education.</p>
     </div>
   </a>
 
@@ -27,23 +35,23 @@ classes: custom-splash
     <div class="bento-content">
       <i class="fas fa-code-branch bento-icon"></i>
       <h2>Open-Source Projects</h2>
-      <p>Explore my diverse collection of Python libraries dedicated to robust financial theory and data modelling.</p>
+      <p>Python libraries for financial datasets and mathematics built for transparency and reuse.</p>
     </div>
   </a>
 
   <a href="/modelling" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-chart-line bento-icon"></i>
-      <h2>Learn Modelling</h2>
-      <p>Understand the strategies behind Asset Liability Management (ALM), hedging, and mathematical optimization.</p>
+      <h2>Financial Modelling</h2>
+      <p>In-depth guides on using Python to create professional financial models.</p>
     </div>
   </a>
 
-  <a href="/talks" class="bento-card bento-wide">
+  <a href="/talks" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-microphone bento-icon"></i>
-      <h2>Public Talks & Literature</h2>
-      <p>Watch recorded talks and explore a complete list of literature I've studied regarding the financial markets.</p>
+      <h2>Talks &amp; Writing</h2>
+      <p>Recorded talks, articles, and a curated reading list on financial markets and open source.</p>
     </div>
   </a>
 </div>
@@ -53,7 +61,7 @@ classes: custom-splash
 <h2 class="section-title text-center">Testimonials</h2>
 
 <div class="testimonial-slider">
-  
+
   <div class="testimonial-slide">
     <div class="testimonial-content">
       <div class="testimonial-image">
@@ -76,7 +84,7 @@ classes: custom-splash
       </div>
       <div class="testimonial-text">
         <strong>Sri Chilukuri - VP of Product Marketing at OpenBB</strong>
-        <em>"Jeroen has been a delight to work with. With his expertise in investment research and “can do” attitude, he quickly transformed himself into an excellent product marketing manager at OpenBB. In fact, I would not hesitate to say that he was often the lone sane voice in helping steer the heavily engineering-centric company in the right business direction."</em>
+        <em>"Jeroen has been a delight to work with. With his expertise in investment research and "can do" attitude, he quickly transformed himself into an excellent product marketing manager at OpenBB. In fact, I would not hesitate to say that he was often the lone sane voice in helping steer the heavily engineering-centric company in the right business direction."</em>
         <div class="testimonial-action">
           <a href="/resume" class="btn btn--info">Read More</a>
         </div>
@@ -131,20 +139,55 @@ classes: custom-splash
 
 </div>
 
+<div class="testimonial-controls">
+  <button class="testimonial-btn" id="testimonial-prev" aria-label="Previous testimonial"><i class="fas fa-chevron-left"></i></button>
+  <div class="testimonial-dots" id="testimonial-dots"></div>
+  <button class="testimonial-btn" id="testimonial-next" aria-label="Next testimonial"><i class="fas fa-chevron-right"></i></button>
+</div>
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   const slides = document.querySelectorAll('.testimonial-slide');
+  const dotsContainer = document.getElementById('testimonial-dots');
   let currentIndex = 0;
-  
-  function showNextSlide() {
-    currentIndex = (currentIndex + 1) % slides.length;
+  let timer;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'testimonial-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+    dot.addEventListener('click', () => { goTo(i); resetTimer(); });
+    dotsContainer.appendChild(dot);
+  });
+
+  function goTo(index) {
+    currentIndex = index;
     slides.forEach((slide) => {
       slide.style.transform = `translateX(-${currentIndex * 100}%)`;
     });
+    document.querySelectorAll('.testimonial-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentIndex);
+    });
   }
-  
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(() => goTo((currentIndex + 1) % slides.length), 10000);
+  }
+
+  document.getElementById('testimonial-prev').addEventListener('click', () => {
+    goTo((currentIndex - 1 + slides.length) % slides.length);
+    resetTimer();
+  });
+
+  document.getElementById('testimonial-next').addEventListener('click', () => {
+    goTo((currentIndex + 1) % slides.length);
+    resetTimer();
+  });
+
   if (slides.length > 1) {
-    setInterval(showNextSlide, 10000);
+    resetTimer();
   }
 });
 </script>

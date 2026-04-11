@@ -16,28 +16,11 @@ The Fixed Income module contains a wide variety of fixed income related calculat
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```python
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, risk, performance and economics, please have a look below:
-
-<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
-    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
-    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
-    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
-    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
-    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
-    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
-    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
-    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
-    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
-
-</div>
-
 {% include algolia.html %}
 
 ## __init__
@@ -50,8 +33,8 @@ Initializes the Fixed Income Controller Class.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome(
@@ -60,8 +43,7 @@ end_date='2024-01-15',
 )
 
 fixedincome.get_ice_bofa_effective_yield(maturity=False)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -111,8 +93,8 @@ These statistics can be used to evaluate the bond's performance as opposed to ot
  pd.Series: A pandas Series containing the bond statistics.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome()
@@ -126,8 +108,7 @@ years_to_maturity=5,
 yield_to_maturity=0.08,
 frequency=1,
 )
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -266,8 +247,8 @@ It is possible to alter all parameters within the models, e.g. strike rate, vola
  pandas.- <u>DataFrame (optional):</u> The Black derivative payoffs rounded to the specified decimal places if include_payoff is True.
 
  For example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome()
@@ -275,8 +256,7 @@ fixedincome = FixedIncome()
 # You can also provide lists of values for the strike rate and years to maturity
 # to define your own strike rates and years to maturity to display in the DataFrame
 fixedincome.get_derivative_price(model_type='black', forward_rate=0.0325)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -355,8 +335,8 @@ See definition: [https://data.oecd.org/interest/short
  pd.DataFrame: A DataFrame containing the Long Term Interest Rate.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome(start_date='2023-05-01', end_date='2023-12-31')
@@ -364,8 +344,7 @@ fixedincome = FixedIncome(start_date='2023-05-01', end_date='2023-12-31')
 long_term_interest_rate = fixedincome.get_government_bond_yield(short_term=False, period='monthly')
 
 long_term_interest_rate.loc[:, ['Japan', 'United States', 'Brazil']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -403,8 +382,8 @@ See definitions:
  pd.DataFrame: A DataFrame containing the Option Adjusted Spread
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome(
@@ -413,8 +392,7 @@ end_date='2024-01-15',
 )
 
 fixedincome.get_option_adjusted_spread()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -451,8 +429,8 @@ See definitions:
  pd.DataFrame: A DataFrame containing the Gross Domestic Product
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome(
@@ -461,8 +439,7 @@ end_date='2024-01-15',
 )
 
 fixedincome.get_effective_yield(maturity=False)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -499,8 +476,8 @@ See definitions:
  pd.DataFrame: A DataFrame containing the Gross Domestic Product
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome(
@@ -509,8 +486,7 @@ end_date='2024-01-15',
 )
 
 fixedincome.get_total_return(maturity=True)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -550,8 +526,8 @@ See definitions:
  pd.DataFrame: A DataFrame containing the Gross Domestic Product
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome(
@@ -560,8 +536,7 @@ end_date='2024-01-15',
 )
 
 fixedincome.get_yield_to_worst(maturity=False)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -596,15 +571,14 @@ For more information, see for example: [https://data.ecb.europa.eu/data/datasets
  pandas.DataFrame: DataFrame containing the Euribor rates for the specified maturities.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome(start_date='2023-12-01')
 
 euribor_rates = fixedincome.get_euribor_rates()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -641,15 +615,14 @@ See source: [https://data.ecb.europa.eu/main
  pd.DataFrame: A DataFrame containing the ECB rates.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome(start_date='2023-12-01')
 
 fixedincome.get_european_central_bank_rates()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -723,8 +696,8 @@ See source: [https://www.newyorkfed.org/markets/reference
  percentiles, volume and upper and lower bounds.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome(start_date='2023-12-01')
@@ -732,8 +705,7 @@ fixedincome = FixedIncome(start_date='2023-12-01')
 effr = fixedincome.get_federal_reserve_rates()
 
 effr.loc[:, ['Rate', '1st Percentile', '25th Percentile', '75th Percentile', '99th Percentile']]
-{% endhighlight %}
-
+```
 
 Which returns:
 

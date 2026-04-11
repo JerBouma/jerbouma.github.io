@@ -16,27 +16,11 @@ The Discovery Module contains lists of companies, cryptocurrencies, forex, commo
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```python
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 If you are looking for documentation regarding the toolkit, ratios, models, technicals, fixed income, risk, performance and economics, please have a look below:
-
-<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
-    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
-    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
-    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
-    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
-    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
-    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
-    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
-    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
-    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
-</div>
-
 {% include algolia.html %}
 
 ## __init__
@@ -46,8 +30,8 @@ Initializes the Discovery Controller Class.
  - <u>api_key (str):</u> An API key from FinancialModelingPrep. Obtain one here: [https://www.jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -56,8 +40,7 @@ stock_list = discovery.get_stock_list()
 
 # The total list equals over 60.000 rows
 stock_list.iloc[48000:48010]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -84,15 +67,14 @@ The search instruments function allows you to search for a company or financial 
  pd.DataFrame: A dataframe with all the symbols that match the query.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 
 discovery.search_instruments(query='META')
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -132,8 +114,8 @@ Note that the limit is 1000 companies. Thus if you hit the 1000, it is recommend
  pd.DataFrame: A dataframe with all the symbols that match the query.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -151,8 +133,7 @@ dividend_higher=1,
 dividend_lower=2,
 is_etf=False
 )
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -168,8 +149,8 @@ The stock list function returns a complete list of all the symbols that can be u
 
 Returns: pd.DataFrame: A dataframe with all the symbols in the toolkit.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -178,8 +159,7 @@ stock_list = discovery.get_stock_list()
 
 # The total list equals over 60.000 rows
 stock_list.iloc[38000:38010]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -201,8 +181,8 @@ Returns the shares float for each company. The shares float is the number of sha
 
 Returns: pd.DataFrame: A dataframe with the shares float for each company.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -210,8 +190,7 @@ discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 shares_float = discovery.get_stock_shares_float()
 
 shares_float.iloc[50000:50010]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -233,8 +212,8 @@ Returns the sectors performance for each sector. This features the sector perfor
 
 Returns: pd.DataFrame: A dataframe with the sectors performance for each sector.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -242,8 +221,7 @@ discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 sectors_performance = discovery.get_sectors_performance()
 
 sectors_performance.tail()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -260,8 +238,8 @@ Returns the biggest gainers for the day. This includes the symbol, the name, the
 
 Returns: pd.DataFrame: A dataframe with the biggest gainers for the day.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -269,8 +247,7 @@ discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 biggest_gainers = discovery.get_biggest_gainers()
 
 biggest_gainers.head(10)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -292,8 +269,8 @@ Returns the biggest losers for the day. This includes the symbol, the name, the 
 
 Returns: pd.DataFrame: A dataframe with the biggest losers for the day.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -301,8 +278,7 @@ discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 biggest_losers = discovery.get_biggest_losers()
 
 biggest_losers.head(10)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -324,8 +300,8 @@ Returns the most active stocks for the day. This includes the symbol, the name, 
 
 Returns: pd.DataFrame: A dataframe with the most active stocks for the day.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -333,8 +309,7 @@ discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 most_active_stocks = discovery.get_most_active_stocks()
 
 most_active_stocks.head(10)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -356,8 +331,8 @@ The delisted stocks function returns a complete list of all delisted stocks incl
 
 Returns: pd.DataFrame: A dataframe with all the delisted stocks.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -365,8 +340,7 @@ discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 delisted_stocks = discovery.get_delisted_stocks()
 
 delisted_stocks.head(10)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -388,8 +362,8 @@ The crypto list function returns a complete list of all crypto symbols that can 
 
 Returns: pd.DataFrame: A dataframe with all the symbols in the toolkit.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -397,8 +371,7 @@ discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 crypto_list = discovery.get_crypto_list()
 
 crypto_list.head(10)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -420,8 +393,8 @@ The forex list function returns a complete list of all forex symbols that can be
 
 Returns: pd.DataFrame: A dataframe with the forex symbols.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -429,8 +402,7 @@ discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 forex_list = discovery.get_forex_list()
 
 forex_list.head(10)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -452,8 +424,8 @@ The commodity list function returns a complete list of all commodity symbols tha
 
 Returns: pd.DataFrame: A dataframe with all the commodities available.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -461,8 +433,7 @@ discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 commodity_list = discovery.get_commodity_list()
 
 commodity_list.head(10)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -484,8 +455,8 @@ The etf list function returns a complete list of all etf symbols that can be use
 
 Returns: pd.DataFrame: A dataframe with all the etf symbols.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -493,8 +464,7 @@ discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 etf_list = discovery.get_etf_list()
 
 etf_list.head(10)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -516,8 +486,8 @@ The index list function returns a complete list of all etf symbols that can be u
 
 Returns: pd.DataFrame: A dataframe with all the index symbols.
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Discovery
 
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -525,8 +495,7 @@ discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 index_list = discovery.get_index_list()
 
 index_list.head(10)
-{% endhighlight %}
-
+```
 
 Which returns:
 

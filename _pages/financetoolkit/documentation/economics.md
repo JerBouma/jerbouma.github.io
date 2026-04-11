@@ -16,28 +16,11 @@ The Economics module gives insights for 60+ countries into key economic indicato
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```python
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, fixed income, risk and performance, please have a look below:
-
-<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
-    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
-    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
-    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
-    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
-    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
-    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
-    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
-    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
-    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
-
-</div>
-
 {% include algolia.html %}
 
 ## __init__
@@ -52,8 +35,8 @@ Initializes the Economics Controller Class.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date="2010-01-01")
@@ -61,8 +44,7 @@ economics = Economics(start_date="2010-01-01")
 cpi = economics.get_consumer_price_index()
 
 cpi.loc['2010':, ['United States', 'Netherlands', 'Japan']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -111,8 +93,8 @@ It is also possible to acquire the data from the Global Macro Database (GMDB) so
  pd.DataFrame: A DataFrame containing the Gross Domestic Product
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -120,8 +102,7 @@ economics = Economics(start_date='2015-01-01')
 real_gdp = economics.get_gross_domestic_product(inflation_adjusted=True)
 
 real_gdp.loc[:, ['Netherlands', 'Germany', 'China']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -153,8 +134,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Gross Domestic Product Deflator
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -162,8 +143,7 @@ economics = Economics(start_date='2015-01-01')
 gdp_deflator = economics.get_gross_domestic_product_deflator()
 
 gdp_deflator.loc[:, ['United States', 'Canada', 'Russian Federation']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -196,8 +176,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Total Consumption
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2018-01-01')
@@ -205,8 +185,7 @@ economics = Economics(start_date='2018-01-01')
 total_consumption = economics.get_total_consumption()
 
 total_consumption.loc[:, ['Netherlands', 'France', 'Poland']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -235,8 +214,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Total Consumption to GDP Ratio
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2018-01-01')
@@ -244,8 +223,7 @@ economics = Economics(start_date='2018-01-01')
 total_consumption_to_gdp_ratio = economics.get_total_consumption_to_gdp_ratio()
 
 total_consumption_to_gdp_ratio.loc[:, ['Netherlands', 'France', 'Poland']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -274,8 +252,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Investment
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2014-01-01')
@@ -283,8 +261,7 @@ economics = Economics(start_date='2014-01-01')
 investment = economics.get_investment()
 
 investment.loc[:, ['United States', 'Portugal', 'China']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -317,8 +294,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Investment to GDP Ratio
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2019-01-01')
@@ -326,8 +303,7 @@ economics = Economics(start_date='2019-01-01')
 investment_to_gdp_ratio = economics.get_investment_to_gdp_ratio()
 
 investment_to_gdp_ratio.loc[:, ['Australia', 'Japan', 'Turkey']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -355,8 +331,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Fixed Investment
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2020-01-01')
@@ -364,8 +340,7 @@ economics = Economics(start_date='2020-01-01')
 fixed_investment = economics.get_fixed_investment()
 
 fixed_investment.loc[:, ['United Kingdom', 'Germany', 'France']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -392,8 +367,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Fixed Investment to GDP Ratio
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2000-01-01')
@@ -401,8 +376,7 @@ economics = Economics(start_date='2000-01-01')
 fixed_investment_to_gdp_ratio = economics.get_fixed_investment_to_gdp_ratio()
 
 fixed_investment_to_gdp_ratio.loc[:, ['Austria', 'Germany', 'Switzerland']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -449,8 +423,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Exports
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='1980-01-01', end_date='1990-01-01')
@@ -458,8 +432,7 @@ economics = Economics(start_date='1980-01-01', end_date='1990-01-01')
 exports = economics.get_exports()
 
 exports.loc[:, ['Netherlands', 'Germany', 'China']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -491,8 +464,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Exports to GDP Ratio
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -500,8 +473,7 @@ economics = Economics(start_date='2015-01-01')
 exports_to_gdp_ratio = economics.get_exports_to_gdp_ratio()
 
 exports_to_gdp_ratio.loc[:, ['United States', 'Canada', 'Russian Federation']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -533,8 +505,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Imports
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2010-01-01')
@@ -542,8 +514,7 @@ economics = Economics(start_date='2010-01-01')
 imports = economics.get_imports()
 
 imports.loc[:, ['United States', 'Canada', 'Mexico']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -580,8 +551,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Imports to GDP Ratio
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -589,8 +560,7 @@ economics = Economics(start_date='2015-01-01')
 imports_to_gdp_ratio = economics.get_imports_to_gdp_ratio()
 
 imports_to_gdp_ratio.loc[:, ['United States', 'Canada', 'Mexico']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -622,8 +592,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Current Account Balance
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -631,8 +601,7 @@ economics = Economics(start_date='2015-01-01')
 current_account_balance = economics.get_current_account_balance()
 
 current_account_balance.loc[:, ['France', 'Germany', 'Italy']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -664,8 +633,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Current Account Balance to GDP Ratio
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -673,8 +642,7 @@ economics = Economics(start_date='2015-01-01')
 current_account_balance_to_gdp_ratio = economics.get_current_account_balance_to_gdp_ratio()
 
 current_account_balance_to_gdp_ratio.loc[:, ['Poland', 'Turkey', 'United Kingdom']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -706,8 +674,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Government Debt
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -715,8 +683,7 @@ economics = Economics(start_date='2015-01-01')
 government_debt = economics.get_government_debt()
 
 government_debt.loc[:, ['United States', 'Canada', 'Mexico']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -748,8 +715,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Government Debt to GDP Ratio
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -757,8 +724,7 @@ economics = Economics(start_date='2015-01-01')
 government_debt_to_gdp_ratio = economics.get_government_debt_to_gdp_ratio()
 
 government_debt_to_gdp_ratio.loc[:, ['Netherlands', 'Germany', 'China']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -817,8 +783,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Government Revenue to GDP Ratio
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -826,8 +792,7 @@ economics = Economics(start_date='2015-01-01')
 government_revenue_to_gdp_ratio = economics.get_government_revenue_to_gdp_ratio()
 
 government_revenue_to_gdp_ratio.loc[:, ['United States', 'Canada', 'Russian Federation']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -859,8 +824,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Government Tax Revenue
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -868,8 +833,7 @@ economics = Economics(start_date='2015-01-01')
 government_tax_revenue = economics.get_government_tax_revenue()
 
 government_tax_revenue.loc[:, ['Kenya', 'Nigeria', 'South Africa']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -900,8 +864,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Government Tax Revenue to GDP Ratio
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -909,8 +873,7 @@ economics = Economics(start_date='2015-01-01')
 government_tax_revenue_to_gdp_ratio = economics.get_government_tax_revenue_to_gdp_ratio()
 
 government_tax_revenue_to_gdp_ratio.loc[:, ['United States', 'Canada', 'Mexico']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -940,8 +903,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Government Expenditure
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -949,8 +912,7 @@ economics = Economics(start_date='2015-01-01')
 government_expenditure = economics.get_government_expenditure()
 
 government_expenditure.loc[:, ['Japan', 'China', 'India']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -982,8 +944,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Government Expenditure to GDP Ratio
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -991,8 +953,7 @@ economics = Economics(start_date='2015-01-01')
 government_expenditure_to_gdp_ratio = economics.get_government_expenditure_to_gdp_ratio()
 
 government_expenditure_to_gdp_ratio.loc[:, ['United States', 'Japan', 'Netherlands']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1024,8 +985,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Government Deficit
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -1033,8 +994,7 @@ economics = Economics(start_date='2015-01-01')
 government_deficit = economics.get_government_deficit()
 
 government_deficit.loc[:, ['United States', 'Canada', 'Mexico']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1066,8 +1026,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Government Deficit to GDP Ratio
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
@@ -1075,8 +1035,7 @@ economics = Economics(start_date='2015-01-01')
 government_deficit_to_gdp_ratio = economics.get_government_deficit_to_gdp_ratio()
 
 government_deficit_to_gdp_ratio.loc[:, ['New Zealand', 'Australia', 'United Kingdom']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1117,8 +1076,8 @@ See definition: [https://data.oecd.org/gga/trust
  pd.DataFrame: A DataFrame containing the Trust in Government.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics()
@@ -1126,8 +1085,7 @@ economics = Economics()
 trust_in_government = economics.get_trust_in_government()
 
 trust_in_government.loc[:, ['United States', 'Greece', 'Japan']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1166,8 +1124,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Consumer Price Index.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2008-09-01', end_date='2020-03-01')
@@ -1175,8 +1133,7 @@ economics = Economics(start_date='2008-09-01', end_date='2020-03-01')
 consumer_price_index = economics.get_consumer_price_index()
 
 consumer_price_index.loc[:, ['Germany', 'France', 'Portugal']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1210,8 +1167,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Inflation Rate.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2003-01-01', end_date='2009-03-01')
@@ -1219,8 +1176,7 @@ economics = Economics(start_date='2003-01-01', end_date='2009-03-01')
 inflation_rate = economics.get_inflation_rate()
 
 inflation_rate.loc[:, ['Germany', 'France', 'Portugal']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1256,8 +1212,8 @@ See definition: [https://data.oecd.org/leadind/consumer
  pd.DataFrame: A DataFrame containing the Consumer Confidence Index.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2008-09-01', end_date='2009-03-01')
@@ -1265,8 +1221,7 @@ economics = Economics(start_date='2008-09-01', end_date='2009-03-01')
 consumer_confidence_index = economics.get_consumer_confidence_index()
 
 consumer_confidence_index.loc[:, ['Germany', 'France', 'Portugal']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1302,8 +1257,8 @@ See definition: [https://data.oecd.org/leadind/business
  pd.DataFrame: A DataFrame containing the Business Confidence Index.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2022-09-01', end_date='2023-03-01')
@@ -1311,8 +1266,7 @@ economics = Economics(start_date='2022-09-01', end_date='2023-03-01')
 business_confidence_index = economics.get_business_confidence_index()
 
 business_confidence_index.loc[:, ['Brazil', 'Canada', 'Costa Rica']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1347,8 +1301,8 @@ See definition: [https://data.oecd.org/leadind/composite
  pd.DataFrame: A DataFrame containing the Composite Leading Indicator.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2023-06-01', end_date='2023-12-01')
@@ -1356,8 +1310,7 @@ economics = Economics(start_date='2023-06-01', end_date='2023-12-01')
 composite_leading_indicator = economics.get_composite_leading_indicator()
 
 composite_leading_indicator.loc[:, ['United States', 'United Kingdom', 'Japan']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1396,8 +1349,8 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
  pd.DataFrame: A DataFrame containing the House Prices.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01', end_date='2023-12-31')
@@ -1405,8 +1358,7 @@ economics = Economics(start_date='2015-01-01', end_date='2023-12-31')
 real_house_prices = economics.get_house_prices(quarterly=False, inflation_adjusted=True)
 
 real_house_prices.loc[:, ['Japan', 'Netherlands', 'Ireland']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1442,8 +1394,8 @@ See definition: [https://data.oecd.org/price/housing
  pd.DataFrame: A DataFrame containing the House Prices.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01', end_date='2023-12-31')
@@ -1451,8 +1403,7 @@ economics = Economics(start_date='2015-01-01', end_date='2023-12-31')
 rent_prices = economics.get_rent_prices(quarterly=False)
 
 rent_prices.loc[:, ['Turkey', 'United States', 'United Kingdom']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1492,8 +1443,8 @@ See definition: [https://data.oecd.org/price/share
  pd.DataFrame: A DataFrame containing the Exchange Rates.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date="2013-01-01")
@@ -1501,8 +1452,7 @@ economics = Economics(start_date="2013-01-01")
 share_prices = economics.get_share_prices()
 
 share_prices.loc[:, ['Turkey', 'Belgium', 'Australia']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1541,8 +1491,8 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
  pd.DataFrame: A DataFrame containing the Exchange Rates.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2000-01-01', end_date='2010-12-31')
@@ -1550,8 +1500,7 @@ economics = Economics(start_date='2000-01-01', end_date='2010-12-31')
 exchange_rates = economics.get_exchange_rates()
 
 exchange_rates.loc[:, ['Japan', 'Indonesia', "China"]]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1591,8 +1540,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Money Supply
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2010-01-01', end_date='2020-12-31')
@@ -1600,8 +1549,7 @@ economics = Economics(start_date='2010-01-01', end_date='2020-12-31')
 money_supply = economics.get_money_supply()
 
 money_supply["M2"][["Netherlands", "Germany", "United States"]]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1633,8 +1581,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
  pd.DataFrame: A DataFrame containing the Central Bank Policy Rate
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2021-01-01', end_date='2025-12-31')
@@ -1642,8 +1590,7 @@ economics = Economics(start_date='2021-01-01', end_date='2025-12-31')
 central_bank_policy_rate = economics.get_central_bank_policy_rate()
 
 central_bank_policy_rate[["Netherlands", "Germany", "United States"]]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1687,8 +1634,8 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
  pd.DataFrame: A DataFrame containing the Short Term Interest Rate.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2023-05-01')
@@ -1696,8 +1643,7 @@ economics = Economics(start_date='2023-05-01')
 short_term_interest_rate = economics.get_short_term_interest_rate(period='quarterly')
 
 short_term_interest_rate.loc[:, ['Japan', 'United States', 'China']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1740,8 +1686,8 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
  pd.DataFrame: A DataFrame containing the Long Term Interest Rate.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2023-05-01', end_date='2023-12-31')
@@ -1749,8 +1695,7 @@ economics = Economics(start_date='2023-05-01', end_date='2023-12-31')
 long_term_interest_rate = economics.get_long_term_interest_rate(period='monthly')
 
 long_term_interest_rate.loc[:, ['Japan', 'United States', 'Brazil']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1786,8 +1731,8 @@ See definition: [https://data.oecd.org/energy/renewable
  pd.DataFrame: A DataFrame containing the Renewable Energy Percentage.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2010-01-01', end_date='2020-01-01')
@@ -1795,8 +1740,7 @@ economics = Economics(start_date='2010-01-01', end_date='2020-01-01')
 renewable_energy = economics.get_renewable_energy()
 
 renewable_energy.loc[:, ['Austria', 'Germany', 'United States']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1832,8 +1776,8 @@ See definition: [https://data.oecd.org/envpolicy/environmental
  pd.DataFrame: A DataFrame containing the Environmental Tax.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date="2010-01-01", end_date="2020-01-01")
@@ -1841,8 +1785,7 @@ economics = Economics(start_date="2010-01-01", end_date="2020-01-01")
 carbon_footprint = economics.get_carbon_footprint()
 
 carbon_footprint.loc[:, ["Germany", "United States", "Poland"]]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1882,8 +1825,8 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
  pd.DataFrame: A DataFrame containing the Unemployment Rate.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2021-03-01', end_date='2023-01-01')
@@ -1891,8 +1834,7 @@ economics = Economics(start_date='2021-03-01', end_date='2023-01-01')
 unemployment_rate = economics.get_unemployment_rate(period='quarterly')
 
 unemployment_rate.loc[:, ['Germany', 'United States', 'Japan']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1932,8 +1874,8 @@ See definition: [https://data.oecd.org/lprdty/gdp
  pd.DataFrame: A DataFrame containing the Exchange Rates.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics()
@@ -1941,8 +1883,7 @@ economics = Economics()
 labour_productivity = economics.get_exchange_rates()
 
 labour_productivity.loc[:, ['Bulgaria', 'Croatia', 'Spain']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1978,8 +1919,8 @@ See definition: [https://data.oecd.org/inequality/income
  pd.DataFrame: A DataFrame containing the Population Statistics.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2013-01-01')
@@ -1987,8 +1928,7 @@ economics = Economics(start_date='2013-01-01')
 income_inequality = economics.get_income_inequality()
 
 income_inequality.loc[:, 'United States']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -2045,8 +1985,8 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
  pd.DataFrame: A DataFrame containing the Population Statistics.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2010-01-01', end_date='2019-01-01')
@@ -2054,8 +1994,7 @@ economics = Economics(start_date='2010-01-01', end_date='2019-01-01')
 population_statistics = economics.get_population_statistics()
 
 population_statistics.loc[:, 'Japan']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -2091,8 +2030,8 @@ See definition: [https://data.oecd.org/inequality/poverty
  pd.DataFrame: A DataFrame containing the Poverty Rates.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Economics
 
 economics = Economics(start_date='2012-01-01', end_date='2020-01-01')
@@ -2100,8 +2039,7 @@ economics = Economics(start_date='2012-01-01', end_date='2020-01-01')
 poverty_rate = economics.get_poverty_rate()
 
 poverty_rate.loc[:, 'Portugal']
-{% endhighlight %}
-
+```
 
 Which returns:
 

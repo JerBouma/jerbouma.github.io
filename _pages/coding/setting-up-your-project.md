@@ -10,18 +10,9 @@ sidebar:
   nav: "modelling"
 ---
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.0/dist/mermaid.min.js"></script>
+{% include mermaid.html %}
 
 Once you get the hang of Python and have installed a code editor such as Visual Studio Code, it's time to start working on your own project and utilize the various tools that greatly improve the quality of a model.
-
-<div style="display: flex; justify-content: space-between;margin-bottom:10px">
-    <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
-    <a href="/modelling/getting-started" class="btn btn--info" style="flex: 1;margin-right:5px">Getting Started</a>
-    <a href="/modelling/setting-up-your-project" class="btn btn--warning" style="flex: 1;margin-right:5px">Setting up your Project</a>
-    <a href="/modelling/structure-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Structure your Model</a>
-    <a href="/modelling/build-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Build your Model</a>
-    <a href="/modelling/test-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Test your Model</a>
-</div>
 
 By applying the structure described here right from the start, you ensure that anything you build is maintainable and scalable. This is especially important when sharing your model with others or using it long-term.
 

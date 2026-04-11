@@ -68,6 +68,12 @@
 </div>
 
 <script>
+  // Apply saved theme immediately (default: dark)
+  (function() {
+    var saved = localStorage.getItem("theme") || "dark";
+    document.documentElement.setAttribute("data-theme", saved);
+  })();
+
   const themeToggle = document.querySelector('.theme__toggle');
   const themeIcon = themeToggle.querySelector('i');
 

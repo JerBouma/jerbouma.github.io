@@ -1,0 +1,106 @@
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  (function() {
+    var theme = document.documentElement.getAttribute('data-theme');
+    var isDark = theme !== 'light';
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: isDark ? {
+        darkMode: true,
+        background: '#0f172a',
+        primaryColor: 'rgba(30, 58, 95, 0.85)',
+        primaryBorderColor: '#38bdf8',
+        primaryTextColor: '#f8fafc',
+        secondaryColor: 'rgba(30, 41, 59, 0.7)',
+        secondaryBorderColor: 'rgba(255,255,255,0.12)',
+        secondaryTextColor: '#cbd5e1',
+        tertiaryColor: 'rgba(15, 23, 42, 0.6)',
+        tertiaryBorderColor: 'rgba(255,255,255,0.08)',
+        tertiaryTextColor: '#94a3b8',
+        lineColor: '#38bdf8',
+        textColor: '#f8fafc',
+        mainBkg: 'rgba(30, 58, 95, 0.85)',
+        nodeBorder: '#38bdf8',
+        clusterBkg: 'rgba(15, 23, 42, 0.5)',
+        clusterBorder: 'rgba(255,255,255,0.08)',
+        titleColor: '#f8fafc',
+        edgeLabelBackground: 'rgba(15, 23, 42, 0.9)',
+        nodeTextColor: '#f8fafc',
+
+        git0: '#38bdf8',
+        git1: '#a78bfa',
+        git2: '#34d399',
+        git3: '#fb923c',
+        git4: '#f472b6',
+        git5: '#facc15',
+        git6: '#67e8f9',
+        git7: '#c084fc',
+        gitBranchLabel0: '#f8fafc',
+        gitBranchLabel1: '#f8fafc',
+        gitBranchLabel2: '#f8fafc',
+        gitBranchLabel3: '#f8fafc',
+        gitInv0: '#0f172a',
+        tagLabelColor: '#f8fafc',
+        tagLabelBackground: '#0284c7',
+        tagLabelBorder: '#38bdf8',
+        commitLabelColor: '#cbd5e1',
+        commitLabelBackground: 'rgba(30, 41, 59, 0.8)'
+      } : {
+        darkMode: false,
+        background: '#f8fafc',
+        primaryColor: 'rgba(2, 132, 199, 0.12)',
+        primaryBorderColor: '#0284c7',
+        primaryTextColor: '#0f172a',
+        secondaryColor: 'rgba(226, 232, 240, 0.8)',
+        secondaryBorderColor: 'rgba(0,0,0,0.15)',
+        secondaryTextColor: '#334155',
+        tertiaryColor: 'rgba(241, 245, 249, 0.8)',
+        tertiaryBorderColor: 'rgba(0,0,0,0.1)',
+        tertiaryTextColor: '#64748b',
+        lineColor: '#0284c7',
+        textColor: '#0f172a',
+        mainBkg: 'rgba(2, 132, 199, 0.12)',
+        nodeBorder: '#0284c7',
+        clusterBkg: 'rgba(241, 245, 249, 0.6)',
+        clusterBorder: 'rgba(0,0,0,0.1)',
+        titleColor: '#0f172a',
+        edgeLabelBackground: 'rgba(255, 255, 255, 0.95)',
+        nodeTextColor: '#0f172a',
+
+        git0: '#0284c7',
+        git1: '#7c3aed',
+        git2: '#059669',
+        git3: '#ea580c',
+        git4: '#db2777',
+        git5: '#ca8a04',
+        git6: '#0891b2',
+        git7: '#9333ea',
+        gitBranchLabel0: '#f8fafc',
+        gitBranchLabel1: '#f8fafc',
+        gitBranchLabel2: '#f8fafc',
+        gitBranchLabel3: '#f8fafc',
+        tagLabelColor: '#f8fafc',
+        tagLabelBackground: '#0284c7',
+        tagLabelBorder: '#0284c7',
+        commitLabelColor: '#334155',
+        commitLabelBackground: 'rgba(226, 232, 240, 0.8)'
+      },
+      flowchart: {
+        curve: 'basis',
+        padding: 16,
+        htmlLabels: true,
+        useMaxWidth: true
+      },
+      gitGraph: {
+        showBranches: true,
+        showCommitLabel: true,
+        mainBranchName: 'main',
+        rotateCommitLabel: false
+      },
+      fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      fontSize: 14
+    });
+  })();
+</script>

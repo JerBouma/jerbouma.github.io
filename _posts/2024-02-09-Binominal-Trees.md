@@ -298,8 +298,7 @@ pip install financetoolkit -U
 
 Let's first demonstrate the core model function, which requires manual input of all parameters. Later, we'll show how to use it with real company data.
 
-{% include code_header.html %}
-{% highlight python %}
+```python
 from financetoolkit.options import binomial_trees_model
 
 # Calculate European Call option payoffs
@@ -353,7 +352,7 @@ option_pay_off_ap = binomial_trees_model.get_option_payoffs(
     put_option=True,
     american_option=True
 )
-{% endhighlight %}
+```
 
 This code generates DataFrames representing the binomial trees for European Call, European Put, American Call, and American Put options, respectively. The values in these DataFrames correspond to the nodes in the binomial trees shown earlier:
 
@@ -410,8 +409,7 @@ This code generates DataFrames representing the binomial trees for European Call
 
 Now, let's apply this using actual company data. We'll use Apple Inc. (AAPL) and Microsoft Corporation (MSFT). The toolkit automatically fetches necessary inputs like the current stock price, risk-free rate, dividend yield, and calculates historical volatility.
 
-{% include code_header.html %}
-{% highlight python %}
+```python
 from financetoolkit import Toolkit
 
 # Initialize Toolkit with tickers and API key
@@ -425,7 +423,7 @@ binomial_results = companies.options.get_binomial_model(
     time_to_expiration=16/365,
     timesteps=10 # Example: using 10 timesteps
 )
-{% endhighlight %}
+```
 
 Setting `show_input_info=True` provides insights into the parameters used for the calculation, which is helpful for understanding the model's inputs. The output might look similar to this (based on data up to February 7, 2024):
 
@@ -461,14 +459,13 @@ This table represents the binomial tree for a European Call Option on Apple (AAP
 
 With this calculated fair value, we can compare it to the actual market price of the option using the `get_option_chains` method. We specify the same expiration date (`2024-02-23`) to match the binomial model's timeframe.
 
-{% include code_header.html %}
-{% highlight python %}
+```python
 # Get option chain data for the specific expiration date
 option_chains = companies.options.get_option_chains(expiration_date="2024-02-23")
 
 # Display the relevant part for AAPL (e.g., filtering the DataFrame)
 # print(option_chains['AAPL'][option_chains['AAPL']['Strike Price'] == 190])
-{% endhighlight %}
+```
 
 Selecting the Apple data reveals the following market prices (showing relevant rows around the $190 strike):
 
@@ -479,20 +476,20 @@ Selecting the Apple data reveals the following market prices (showing relevant r
 |            190 | AAPL240223C00190000 | USD        |         <span style="color:#3b9cba; font-weight:bold;">2.67</span> |    -0.13 |            -4.64 |            8817 |  2.66 |  2.69 | 2024-02-23   | 2024-02-07        |               0.2383 | False          |     5594 |
 |            195 | AAPL240223C00195000 | USD        |         0.95 |    -0.08 |            -7.77 |            7124 |  0.94 |  0.96 | 2024-02-23   | 2024-02-07        |               0.2217 | False          |     4149 |
 |            200 | AAPL240223C00200000 | USD        |         0.34 |    -0.03 |            -8.11 |           17056 |  0.33 |  0.34 | 2024-02-23   | 2024-02-07        |               0.2129 | False          |     2927 |
-*(Note: Bid/Ask and other market data added for context if available from the source)*
+
+*Note: Bid/Ask and other market data added for context if available from the source*
 
 The binomial tree model calculated a fair value of $4.32 for the $190 strike call, while the market's last traded price was $2.67 (with a bid-ask spread around that). This suggests the option might be undervalued according to the model. Such discrepancies could indicate potential trading opportunities if an investor believes the price will converge towards the theoretical fair value.
 
 As an alternative pricing model, the Black-Scholes formula can also be used. The Finance Toolkit provides this via the `get_black_scholes_model` method. Here, we calculate prices for options expiring within the next 20 days.
 
-{% include code_header.html %}
-{% highlight python %}
+```python
 # Calculate Black-Scholes prices for options expiring within 20 days
 black_scholes_results = companies.options.get_black_scholes_model(expiration_time_range=20)
 
 # Display relevant part for AAPL Call options around the $190 strike
 # print(black_scholes_results['AAPL']['Call'][['Strike Price', '2024-02-23']])
-{% endhighlight %}
+```
 
 Selecting the results for Apple Inc. (AAPL) Call options expiring on Feb 23, 2024, shows the following (relevant rows):
 

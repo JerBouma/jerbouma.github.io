@@ -16,27 +16,11 @@ The Models module is meant to execute well-known models such as DUPONT and the D
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```python
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 If you are looking for documentation regarding the toolkit, discovery, ratios, technicals, fixed income, risk, performance and economics, please have a look below:
-
-<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
-    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
-    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
-    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
-    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
-    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
-    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
-    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
-    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
-    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
-</div>
-
 {% include algolia.html %}
 
 ## __init__
@@ -54,8 +38,8 @@ Initializes the Models Controller Class.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["TSLA", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY",
@@ -64,8 +48,7 @@ quarterly=True, start_date='2022-12-31')
 dupont_analysis = toolkit.models.get_extended_dupont_analysis()
 
 dupont_analysis.loc['AMZN']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -110,15 +93,14 @@ The formula is as follows:
  amplify returns as well as risks.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 dupont_analysis = toolkit.models.get_dupont_analysis()
-{% endhighlight %}
-
+```
 ## get_extended_dupont_analysis
 Perform an Extended Dupont analysis to breakdown the return on equity (ROE) into its components, while considering additional financial metrics.
 
@@ -156,15 +138,14 @@ The formula is as follows:
  - Total Asset Turnover considers all assets, including both equity and debt financing.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 extended_dupont_analysis = toolkit.models.get_extended_dupont_analysis()
-{% endhighlight %}
-
+```
 ## get_enterprise_value_breakdown
 Calculate the Enterprise Value (EV) breakdown, providing a detailed view of its components.
 
@@ -203,15 +184,14 @@ This breakdown is displayed in a DataFrame for each company and includes the opt
  company's value and potential risks.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 enterprise_value_breakdown = toolkit.models.get_enterprise_value_breakdown()
-{% endhighlight %}
-
+```
 ## get_weighted_average_cost_of_capital
 The Weighted Average Cost of Capital (WACC) is a financial metric used to estimate the cost of capital for a company. It represents the average rate of return a company must pay to its investors for using their capital. WACC takes into account the cost of both equity and debt, weighted by their respective proportions in the company's capital structure.
 
@@ -253,15 +233,14 @@ Total Market Value of Capital (V): The total market value of capital is the sum 
  - The Market Value of Debt is approximated as the Total Debt.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_weighted_average_cost_of_capital()
-{% endhighlight %}
-
+```
 ## get_intrinsic_valuation
 Intrinsic value is a fundamental concept in finance and investing that represents the true worth or value of an asset, security, or investment, independent of its current market price or prevailing market sentiment. It is a concept often associated with the value investing philosophy, made famous by legendary investors like Benjamin Graham and Warren Buffett. Understanding intrinsic value is crucial for investors looking to make informed decisions about where to allocate their capital.
 
@@ -300,15 +279,14 @@ The formula is as follows:
  ensure the results are accurate (given your beliefs)
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_intrinsic_valuation(0.05, 0.025, 0.094)
-{% endhighlight %}
-
+```
 ## get_gorden_growth_model
 The Gordon Growth Model, also known as the Dividend Discount Model (DDM) with Constant Growth, is a method used to estimate the intrinsic value of a stock based on its expected future dividends. The model assumes that dividends will grow at a constant rate indefinitely.
 
@@ -339,15 +317,14 @@ The assumption of constant growth of dividends is often unrealistic. In reality,
  ensure the results are accurate (given your beliefs)
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_gorden_growth_model(0.20, 0.05)
-{% endhighlight %}
-
+```
 ## get_altman_z_score
 Calculates the Altman Z
 -Score, a financial metric used to predict the likelihood of a company going bankrupt. The Altman Z
@@ -395,15 +372,14 @@ The Altman Z
  $1 million or more.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 altman_z_score = toolkit.models.get_altman_z_score()
-{% endhighlight %}
-
+```
 ## get_piotroski_score
 Calculate the Piotroski Score, a comprehensive financial assessment tool that helps investors and analysts evaluate a company's financial health and fundamental strength.
 
@@ -441,15 +417,14 @@ Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financia
  pd.DataFrame: DataFrame containing the Piotroski F-Score and its components.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_piotroski_score()
-{% endhighlight %}
-
+```
 ## get_present_value_of_growth_opportunities
 The Present Value of Growth Opportunities (PVGO) is a financial metric that represents the present value of a company's future growth opportunities. It is calculated as the difference between the company's current stock price and the discounted value of its future cash flows.
 
@@ -472,12 +447,11 @@ The formula is as follows:
  pd.DataFrame: DataFrame containing the PVGO values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_present_value_of_growth_opportunities()
-{% endhighlight %}
-
+```

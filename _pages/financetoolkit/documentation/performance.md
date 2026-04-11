@@ -15,28 +15,11 @@ The Performance module is meant to calculate important performance metrics such 
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```python
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, fixed income, risk and economics, please have a look below:
-
-<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
-    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
-    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
-    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
-    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
-    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
-    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
-    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
-    <a href="/projects/financetoolkit/docs/performance" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
-    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
-
-</div>
-
 {% include algolia.html %}
 
 ## __init__
@@ -52,15 +35,14 @@ Initializes the Performance Controller Class.
  - <u>end_date (str | None, optional):</u> The end date to use for the calculations. Defaults to None.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_capital_asset_pricing_model(period='quarterly')
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -91,15 +73,14 @@ Calculates and collects all performance metrics.
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.collect_all_metrics()
-{% endhighlight %}
-
+```
 ## get_beta
 Calculate the Beta, a measurement that assess the systematic risk of a stock or investment.
 
@@ -137,15 +118,14 @@ See definition: [https://en.wikipedia.org/wiki/Beta_(finance)](https://en.wikipe
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_beta()
-{% endhighlight %}
-
+```
 ## get_capital_asset_pricing_model
 CAPM, or the Capital Asset Pricing Model, is a financial model used to estimate the expected return on an investment, such as a stock or portfolio of stocks. It provides a framework for evaluating the risk and return trade
 -off of an asset or portfolio in relation to the overall market. CAPM is based on the following key components:
@@ -187,15 +167,14 @@ See definition: [https://en.wikipedia.org/wiki/Capital_asset_pricing_model](http
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_capital_asset_pricing_model()
-{% endhighlight %}
-
+```
 ## get_factor_asset_correlations
 Calculates factor exposures for each asset.
 
@@ -218,15 +197,14 @@ However, since the results are closely related and tend to point into the same d
  pd.DataFrame: Factor Asset Correlations.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_factor_asset_correlations()
-{% endhighlight %}
-
+```
 ## get_factor_correlations
 Calculates factor correlations between each factor. This is useful to understand how correlated each factor is to each other. This is based off the Fama and French 5 Factor model which includes:
 
@@ -256,15 +234,14 @@ Optionally, it is also possible to see the correlation between the risk
  pd.DataFrame: Factor Correlations.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_factor_correlations()
-{% endhighlight %}
-
+```
 ## get_fama_and_french_model
 Calculate Fama and French 5 Factor model scores and residuals for a set of financial assets.
 
@@ -326,16 +303,15 @@ What is relevant to look at is the influence these factors have on each stock an
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 # Calculate Fama and French 5 Factor model scores
 toolkit.performance.get_fama_and_french_model()
-{% endhighlight %}
-
+```
 ## get_alpha
 Alpha, in a general sense, represents the excess return an investment generates relative to a benchmark or a risk
 -adjusted return. It can be positive (indicating the investment outperformed the benchmark) or negative (indicating underperformance).
@@ -362,15 +338,14 @@ See definition: [https://en.wikipedia.org/wiki/Alpha_(finance)](https://en.wikip
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_alpha()
-{% endhighlight %}
-
+```
 ## get_jensens_alpha
 Calculate Jensen's Alpha, a measure of an asset's performance relative to its expected return based on the Capital Asset Pricing Model (CAPM).
 
@@ -403,15 +378,14 @@ See definition: [https://en.wikipedia.org/wiki/Jensen%27s_alpha](https://en.wiki
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_jensens_alpha()
-{% endhighlight %}
-
+```
 ## get_treynor_ratio
 The Treynor Ratio, also known as Treynor's Measure or the Reward
 -to
@@ -445,15 +419,14 @@ See definition: [https://en.wikipedia.org/wiki/Treynor_ratio](https://en.wikiped
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_treynor_ratio()
-{% endhighlight %}
-
+```
 ## get_sharpe_ratio
 Calculate the Sharpe ratio, a measure of risk
 -adjusted return that evaluates the excess return of an investment portfolio or asset per unit of risk taken.
@@ -500,15 +473,14 @@ See definition: [https://en.wikipedia.org/wiki/Sharpe_ratio](https://en.wikipedi
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_sharpe_ratio()
-{% endhighlight %}
-
+```
 ## get_sortino_ratio
 The Sortino Ratio is a financial metric used to assess the risk
 -adjusted performance of an investment portfolio or asset by considering only the downside risk. It measures the excess return generated by the portfolio per unit of downside risk, specifically, the standard deviation of negative returns. The Sortino Ratio is particularly useful for investors who are primarily concerned with minimizing the downside risk of their investments.
@@ -550,15 +522,14 @@ See definition: [https://en.wikipedia.org/wiki/Sortino_ratio](https://en.wikiped
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_sortino_ratio()
-{% endhighlight %}
-
+```
 ## get_ulcer_performance_index
 Calculate the Ulcer Performance Index (UPI), alternatively called Martin ratio, a measure of risk
 -adjusted return that evaluates the excess return of an investment portfolio or asset per unit of risk taken.
@@ -582,15 +553,14 @@ It can be used to compare volatilities in different stocks or show stocks go int
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_ulcer_performance_index()
-{% endhighlight %}
-
+```
 ## get_m2_ratio
 The M2 Ratio, also known as the Modigliani
 -Modigliani Measure, is a financial metric used to evaluate the risk
@@ -625,15 +595,14 @@ See definition: [https://en.wikipedia.org/wiki/Modigliani_risk
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_m2_ratio()
-{% endhighlight %}
-
+```
 ## get_tracking_error
 Tracking Error is a financial metric that quantifies the volatility or dispersion of the difference between the returns of an investment portfolio or asset and the returns of a benchmark index. It measures how closely the portfolio tracks its benchmark and provides insights into the consistency of the portfolio's performance relative to the benchmark. A higher Tracking Error indicates greater divergence from the benchmark, while a lower Tracking Error suggests that the portfolio closely follows the benchmark.
 
@@ -662,15 +631,14 @@ See definition: [https://en.wikipedia.org/wiki/Tracking_error](https://en.wikipe
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_tracking_error()
-{% endhighlight %}
-
+```
 ## get_information_ratio
 The Information Ratio (IR), also known as the Information Coefficient, is a financial metric that assesses the risk
 -adjusted performance of a portfolio or investment strategy relative to a benchmark index. It quantifies how much excess return the portfolio generates for each unit of tracking error (volatility of tracking error). The Information Ratio is commonly used by portfolio managers, financial analysts, and investors to evaluate the skill of a portfolio manager in generating returns beyond what would be expected based on the risk taken.
@@ -705,15 +673,14 @@ See definition: [https://en.wikipedia.org/wiki/Information_ratio](https://en.wik
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_information_ratio()
-{% endhighlight %}
-
+```
 ## get_compound_growth_rate
 This function calculates the Compound Growth Rate (CGR) for different periods: yearly, quarterly, monthly, weekly, and daily.
 
@@ -738,12 +705,11 @@ The formula is as follows:
  rounding parameter accordingly to get a more precise figure.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_compound_growth_rate()
-{% endhighlight %}
-
+```

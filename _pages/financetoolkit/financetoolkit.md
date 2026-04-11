@@ -33,22 +33,20 @@ Before installation, consider starring the project on GitHub which helps others 
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```bash
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 Then within Python use:
 
-{% include code_header.html %}
-{% highlight python %}
+```python
 from financetoolkit import Toolkit
 
 companies = Toolkit(
     tickers=['GOOGL', 'MSFT', 'AMZN'],
     api_key="FINANCIAL_MODELING_PREP_KEY",
 )
-{% endhighlight %}
+```
 
 To be able to get started, you need to obtain an API Key from FinancialModelingPrep. This is used to gain access to 30+ years of financial statement both annually and quarterly. Note that the Free plan is limited to 250 requests each day, 5 years of data and only features companies listed on US exchanges.
 

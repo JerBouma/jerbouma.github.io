@@ -16,27 +16,11 @@ The Technicals Module contains 30+ Technical Indicators that can be used to anal
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```python
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 If you are looking for documentation regarding the toolkit, discovery, ratios, models, fixed income, risk, performance and economics, please have a look below:
-
-<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
-    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
-    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
-    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
-    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
-    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
-    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
-    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
-    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
-    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
-</div>
-
 {% include algolia.html %}
 
 ## __init__
@@ -64,15 +48,14 @@ Initializes the Technicals Controller Class.
  Defaults to None.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 average_directional_index = toolkit.technicals.get_average_directional_index()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -104,15 +87,14 @@ Calculates all Technical Indicators based on the data provided.
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.collect_all_indicators()
-{% endhighlight %}
-
+```
 ## collect_breadth_indicators
 Calculates and collects various breadth indicators based on the provided data.
 
@@ -137,15 +119,14 @@ Calculates and collects various breadth indicators based on the provided data.
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.collect_breadth_indicators()
-{% endhighlight %}
-
+```
 ## get_mcclellan_oscillator
 Calculate the McClellan Oscillator for a given price series.
 
@@ -182,15 +163,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_mcclellan_oscillator()
-{% endhighlight %}
-
+```
 ## get_advancers_decliners
 Calculate the Advancers/Decliners ratio for a given price series.
 
@@ -223,15 +203,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_advancers_decliners()
-{% endhighlight %}
-
+```
 ## get_on_balance_volume
 Calculate the On
 -Balance Volume (OBV) for a given price series.
@@ -265,15 +244,14 @@ The formula is a follows:
  - If `growth` is set to True, the method calculates the growth of the OBV using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_on_balance_volume()
-{% endhighlight %}
-
+```
 ## get_accumulation_distribution_line
 Calculate the Accumulation/Distribution Line for a given price series.
 
@@ -306,15 +284,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_accumulation_distribution_line()
-{% endhighlight %}
-
+```
 ## get_chaikin_oscillator
 Calculate the Chaikin Oscillator for a given price series.
 
@@ -356,15 +333,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_chaikin_oscillator()
-{% endhighlight %}
-
+```
 ## collect_momentum_indicators
 Calculates and collects various momentum indicators based on the provided data.
 
@@ -391,15 +367,14 @@ Calculates and collects various momentum indicators based on the provided data.
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.collect_momentum_indicators()
-{% endhighlight %}
-
+```
 ## get_money_flow_index
 Calculate the Money Flow Index (MFI) for a given price series.
 
@@ -435,15 +410,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_money_flow_index()
-{% endhighlight %}
-
+```
 ## get_williams_percent_r
 Calculate the Williams Percent R (Williams %R) for a given price series.
 
@@ -479,15 +453,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_williams_percent_r()
-{% endhighlight %}
-
+```
 ## get_aroon_indicator
 Calculate the Aroon Indicator for a given price series.
 
@@ -521,15 +494,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_aroon_indicator()
-{% endhighlight %}
-
+```
 ## get_commodity_channel_index
 Calculate the Commodity Channel Index (CCI) for a given price series.
 
@@ -566,15 +538,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_commodity_channel_index()
-{% endhighlight %}
-
+```
 ## get_relative_vigor_index
 Calculate the Relative Vigor Index (RVI) for a given price series.
 
@@ -609,15 +580,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_relative_vigor_index()
-{% endhighlight %}
-
+```
 ## get_force_index
 Calculate the Force Index for a given price series.
 
@@ -652,15 +622,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_force_index()
-{% endhighlight %}
-
+```
 ## get_ultimate_oscillator
 Calculate the Ultimate Oscillator for a given price series.
 
@@ -702,15 +671,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_ultimate_oscillator()
-{% endhighlight %}
-
+```
 ## get_percentage_price_oscillator
 Calculate the Percentage Price Oscillator (PPO) for a given price series.
 
@@ -749,15 +717,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_percentage_price_oscillator()
-{% endhighlight %}
-
+```
 ## get_detrended_price_oscillator
 Calculate the Detrended Price Oscillator (DPO) for a given price series.
 
@@ -795,15 +762,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_detrended_price_oscillator()
-{% endhighlight %}
-
+```
 ## get_average_directional_index
 Calculate the Average Directional Index (ADX) for a given price series.
 
@@ -838,15 +804,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_average_directional_index()
-{% endhighlight %}
-
+```
 ## get_chande_momentum_oscillator
 Calculate the Chande Momentum Oscillator (CMO) for a given price series.
 
@@ -881,15 +846,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_chande_momentum_oscillator()
-{% endhighlight %}
-
+```
 ## get_ichimoku_cloud
 Calculate the Ichimoku Cloud indicator for a given price series.
 
@@ -928,15 +892,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_ichimoku_cloud()
-{% endhighlight %}
-
+```
 ## get_stochastic_oscillator
 Calculate the Stochastic Oscillator indicator for a given price series.
 
@@ -976,15 +939,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_stochastic_oscillator()
-{% endhighlight %}
-
+```
 ## get_moving_average_convergence_divergence
 Calculate the Moving Average Convergence Divergence (MACD) indicator for a given price series.
 
@@ -1028,15 +990,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_moving_average_convergence_divergence()
-{% endhighlight %}
-
+```
 ## get_relative_strength_index
 Calculate the Relative Strength Index (RSI) indicator for a given price series.
 
@@ -1071,15 +1032,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_relative_strength_index()
-{% endhighlight %}
-
+```
 ## get_balance_of_power
 Calculate the Balance of Power (BOP) indicator for a given price series.
 
@@ -1113,15 +1073,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_balance_of_power()
-{% endhighlight %}
-
+```
 ## collect_overlap_indicators
 Calculates and collects various overlap
 -based indicators based on the provided data.
@@ -1149,15 +1108,14 @@ Calculates and collects various overlap
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.collect_overlap_indicators()
-{% endhighlight %}
-
+```
 ## get_moving_average
 Calculate the Moving Average (MA) for a given price series.
 
@@ -1193,15 +1151,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_moving_average()
-{% endhighlight %}
-
+```
 ## get_exponential_moving_average
 Calculate the Exponential Moving Average (EMA) for a given price series.
 
@@ -1237,15 +1194,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_exponential_moving_average()
-{% endhighlight %}
-
+```
 ## get_double_exponential_moving_average
 Calculate the Double Exponential Moving Average (DEMA) for a given price series.
 
@@ -1281,15 +1237,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_double_exponential_moving_average()
-{% endhighlight %}
-
+```
 ## get_trix
 Calculate the Trix (Triple Exponential Moving Average) for a given price series.
 
@@ -1328,15 +1283,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_trix()
-{% endhighlight %}
-
+```
 ## get_bollinger_bands
 Calculate the Bollinger Bands for a given price series.
 
@@ -1376,15 +1330,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_bollinger_bands()
-{% endhighlight %}
-
+```
 ## get_triangular_moving_average
 Calculate the Triangular Moving Average (TMA) for a given price series.
 
@@ -1419,15 +1372,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_triangular_moving_average()
-{% endhighlight %}
-
+```
 ## get_support_resistance_levels
 Retrieves the support and resistance levels for the specified period and assets.
 
@@ -1469,15 +1421,14 @@ It does so by:
  support and resistance levels for each asset in the Toolkit instance.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 support_resistance_levels = toolkit.technicals.get_support_resistance_levels()
-{% endhighlight %}
-
+```
 ## collect_volatility_indicators
 Calculates and collects various volatility indicators based on the provided data.
 
@@ -1504,15 +1455,14 @@ Calculates and collects various volatility indicators based on the provided data
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.collect_volatility_indicators()
-{% endhighlight %}
-
+```
 ## get_true_range
 Calculate the True Range (TR) for a given price series.
 
@@ -1545,15 +1495,14 @@ The formula is a follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_true_range()
-{% endhighlight %}
-
+```
 ## get_average_true_range
 Calculate the Average True Range (ATR) of a given price series.
 
@@ -1593,15 +1542,14 @@ The formula is a follows:
  - A higher ATR value indicates higher volatility, while a lower ATR value suggests lower volatility.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_average_true_range()
-{% endhighlight %}
-
+```
 ## get_keltner_channels
 Calculate the Keltner Channels for a given price series.
 
@@ -1647,12 +1595,11 @@ The formula is a follows:
  - If `growth` is set to True, the method calculates the growth of the channels using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_keltner_channels()
-{% endhighlight %}
-
+```

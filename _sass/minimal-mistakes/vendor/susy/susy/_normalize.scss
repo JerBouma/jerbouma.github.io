@@ -1,3 +1,8 @@
+@use "sass:map";
+@use "sass:list";
+@use "sass:meta";
+@use "sass:math";
+
 /// Syntax Normalization
 /// ====================
 /// Susy is divided into two layers:
@@ -56,42 +61,43 @@
 ) {
   // Spread
   @each $setting in ('spread', 'container-spread') {
-    $value: map-get($config, $setting);
+    $value: map.get($config, $setting);
 
     @if $value {
       $value: susy-normalize-spread($value);
-      $config: map-merge($config, ($setting: $value));
+      $config: map.merge($config, ($setting: $value));
     }
   }
 
   // Columns
-  $columns: map-get($config, 'columns');
+  $columns: map.get($config, 'columns');
 
   @if $columns {
     $columns: susy-normalize-columns($columns, $context);
-    $config: map-merge($config, ('columns': $columns));
+    $config: map.merge($config, ('columns': $columns));
   }
 
   @if not $columns {
-    $map: type-of($context) == 'map';
-    $columns: if($map, map-get($context, 'columns'), null);
+    $map: meta.type-of($context) == 'map';
+    $columns: null;
+    @if $map { $columns: map.get($context, 'columns'); }
     $columns: $columns or susy-get('columns');
   }
 
   // Span
-  $span: map-get($config, 'span');
+  $span: map.get($config, 'span');
 
   @if $span {
     $span: susy-normalize-span($span, $columns);
-    $config: map-merge($config, ('span': $span));
+    $config: map.merge($config, ('span': $span));
   }
 
   // Location
-  $location: map-get($config, 'location');
+  $location: map.get($config, 'location');
 
   @if $location {
     $location: susy-normalize-location($span, $location, $columns);
-    $config: map-merge($config, ('location': $location));
+    $config: map.merge($config, ('location': $location));
   }
 
   @return $config;
@@ -124,7 +130,7 @@
   $columns: susy-get('columns')
 ) {
   @if ($span == 'all') {
-    @return length($columns);
+    @return list.length($columns);
   }
 
   @return $span;
@@ -162,17 +168,17 @@
 ) {
   $context: $context or susy-settings();
 
-  @if type-of($columns) == 'list' {
+  @if meta.type-of($columns) == 'list' {
     @return _susy-flatten($columns);
   }
 
-  @if (type-of($columns) == 'number') and (unitless($columns)) {
+  @if (meta.type-of($columns) == 'number') and (math.is-unitless($columns)) {
     $span: $columns;
-    $context: map-get($context, 'columns');
-    $symmetrical: susy-repeat(length($context), nth($context, 1));
+    $context: map.get($context, 'columns');
+    $symmetrical: susy-repeat(list.length($context), list.nth($context, 1));
 
     @if ($context == $symmetrical) {
-      @return susy-repeat($span, nth($context, 1));
+      @return susy-repeat($span, list.nth($context, 1));
     } @else {
       $actual: 'of `#{$span}`';
       $columns: 'grid-columns `#{$context}`';
@@ -216,7 +222,7 @@
     'wider': 1,
   );
 
-  @return map-get($normal-spread, $spread) or $spread;
+  @return map.get($normal-spread, $spread) or $spread;
 }
 
 
@@ -249,7 +255,7 @@
   $location,
   $columns
 ) {
-  $count: length($columns);
+  $count: list.length($columns);
   $normal-locations: (
     'first': 1,
     'alpha': 1,
@@ -257,5 +263,5 @@
     'omega': $count - $span + 1,
   );
 
-  @return map-get($normal-locations, $location) or $location;
+  @return map.get($normal-locations, $location) or $location;
 }

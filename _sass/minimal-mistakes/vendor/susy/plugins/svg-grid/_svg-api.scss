@@ -1,3 +1,7 @@
+@use "sass:map";
+@use "sass:list";
+@use "sass:meta";
+
 /// Plugin: SVG Grid Image
 /// ======================
 /// @group plugin_svg-grid
@@ -78,7 +82,7 @@
     $colors: susy-get('svg-grid-colors');
   }
 
-  @if length($colors) > 1 {
+  @if list.length($colors) > 1 {
     $gradient: _susy-svg-gradient($colors);
     $colors: 'url(%23susy-svg-gradient)';
   } @else {
@@ -87,15 +91,15 @@
 
   // Get a default image-width
   $span: (
-    'span': map-get($grid, 'columns'),
-    'spread': map-get($grid, 'container-spread'),
+    'span': map.get($grid, 'columns'),
+    'spread': map.get($grid, 'container-spread'),
   );
-  $span: map-merge($grid, $span);
+  $span: map.merge($grid, $span);
   $image-width: su-call('su-span', $span);
-  $image-width: if((type-of($image-width) == 'number'), $image-width, 100%);
+  $image-width: if((meta.type-of($image-width) == 'number'), $image-width, 100%);
 
   // SVG construction
-  $columns: map-get($grid, 'columns');
+  $columns: map.get($grid, 'columns');
   $offset: $offset or _susy-svg-offset($grid);
 
   $attrs: 'fill="#{$colors}" width="#{$image-width}"';
@@ -103,7 +107,7 @@
   $svg: $svg + '%3Csvg xmlns="http://www.w3.org/2000/svg" #{$attrs} %3E';
   $svg: $svg + $gradient;
 
-  @for $column from 1 through length($columns) {
+  @for $column from 1 through list.length($columns) {
     $width: susy-span(1 narrow at $column, $grid);
     $x: _susy-svg-column-position($column, $grid);
 

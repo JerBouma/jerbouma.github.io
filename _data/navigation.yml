@@ -1,5 +1,7 @@
 # main links
 main:
+  - title: "Home"
+    url: /
   - title: "Resume"
     url: /resume
   - title: "Projects"
@@ -28,10 +30,8 @@ main:
         url: /modelling/build-your-model
       - title: Test your model
         url: /modelling/test-your-model
-  - title: "Appearances"
-    url: /appearances
-  - title: "Articles"
-    url: /articles
+  - title: "Media"
+    url: /media
   - title: "Contact"
     url: /contact
 resume:
@@ -124,8 +124,30 @@ financetoolkit:
   - title: Contributing
     url: /projects/financetoolkit#contributing
 financetoolkit-docs:
-  - title: <p class="btn btn--x-large btn--info">Back to Homepage<p>
-    url: /projects/financetoolkit
+  - title: Documentation
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
   - title: Finance Toolkit
     url: /projects/financetoolkit/docs#site-nav
     children:
@@ -178,8 +200,30 @@ financetoolkit-docs:
     - title: "Statistics Statements"
       url: /projects/financetoolkit/docs#get_statistics_statement
 financetoolkit-docs-discovery:
-  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
-    url: /projects/financetoolkit/docs
+  - title: Documentation
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
   - title: Search Instruments
     url: /projects/financetoolkit/docs/discovery#search_instruments
   - title: Stock Screener
@@ -229,8 +273,30 @@ financetoolkit-docs-discovery:
     - title: Index Quotes
       url: /projects/financetoolkit/docs/discovery#get_index_quotes
 financetoolkit-docs-ratios:
-  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
-    url: /projects/financetoolkit/docs
+  - title: Documentation
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
   - title: All Ratios
     url: /projects/financetoolkit/docs/ratios#collect_all_ratios
   - title: Custom Ratios
@@ -396,8 +462,30 @@ financetoolkit-docs-ratios:
       - title: EV to EBIT
         url: /projects/financetoolkit/docs/ratios#get_ev_to_ebit
 financetoolkit-docs-models:
-  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
-    url: /projects/financetoolkit/docs
+  - title: Documentation
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
   - title: Models
     children:
       - title: DuPont Analysis
@@ -419,8 +507,30 @@ financetoolkit-docs-models:
       - title: Present Value of Growth Opportunities (PVGO)
         url:  /projects/financetoolkit/docs/models#get_present_value_of_growth_opportunities
 financetoolkit-docs-options:
-  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
-    url: /projects/financetoolkit/docs
+  - title: Documentation
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
   - title: Option Pricing
     children:
       - title: Option Chains
@@ -483,8 +593,30 @@ financetoolkit-docs-options:
       - title: Ultima
         url: /projects/financetoolkit/docs/options#get_ultima
 financetoolkit-docs-technicals:
-  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
-    url: /projects/financetoolkit/docs
+  - title: Documentation
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
   - title: All Indicators
     url: /projects/financetoolkit/docs/technicals#collect_all_indicators
   - title: Breadth Indicators
@@ -564,8 +696,30 @@ financetoolkit-docs-technicals:
       - title: Bollinger Bands
         url: /projects/financetoolkit/docs/technicals#get_bollinger_bands
 financetoolkit-docs-risk:
-  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
-    url: /projects/financetoolkit/docs
+  - title: Documentation
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
   - title: Risk
     children:
     - title: Value at Risk (VaR)
@@ -587,8 +741,30 @@ financetoolkit-docs-risk:
     - title: Kurtosis
       url:  /projects/financetoolkit/docs/risk#get_kurtosis
 financetoolkit-docs-performance:
-  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
-    url: /projects/financetoolkit/docs
+  - title: Documentation
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
   - title: Performance
     children:
     - title: Beta
@@ -622,8 +798,30 @@ financetoolkit-docs-performance:
     - title: Compound Growth Rate
       url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
 financetoolkit-docs-fixedincome:
-  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
-    url: /projects/financetoolkit/docs
+  - title: Documentation
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
   - title: Bond Valuations
     children:
     - title: General Statistics
@@ -677,8 +875,30 @@ financetoolkit-docs-fixedincome:
     - title: Broad General Collateral Rate (BGCR)
       url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
 financetoolkit-docs-economics:
-  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
-    url: /projects/financetoolkit/docs
+  - title: Documentation
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
   - title: Government
     children:
     - title: Gross Domestic Product (GDP)
@@ -757,8 +977,30 @@ financetoolkit-docs-economics:
         url: /projects/financetoolkit/docs/economics#get_poverty_rate
 
 financetoolkit-docs-portfolio:
-  - title: <p class="btn btn--x-large btn--warning">Back to Toolkit<p>
-    url: /projects/financetoolkit/docs
+  - title: Documentation
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
   - title: Toolkit Integration
     url: /projects/financetoolkit/docs/portfolio#toolkit
   - title: Positions Overview

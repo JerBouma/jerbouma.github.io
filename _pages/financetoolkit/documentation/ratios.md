@@ -16,27 +16,11 @@ The Ratios Module contains over 50+ ratios that can be used to analyse companies
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```python
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 If you are looking for documentation regarding the toolkit, discovery, models, technicals, fixed income, risk, performance and economics, please have a look below:
-
-<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
-    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
-    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
-    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
-    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
-    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
-    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
-    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
-    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
-    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
-</div>
-
 {% include algolia.html %}
 
 ## __init__
@@ -54,8 +38,8 @@ Initializes the Ratios Controller Class.
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -63,8 +47,7 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 profitability_ratios = toolkit.ratios.collect_profitability_ratios()
 
 profitability_ratios.loc['AAPL']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -111,15 +94,14 @@ Calculates and collects all ratios based on the provided data.
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.ratios.collect_all_ratios()
-{% endhighlight %}
-
+```
 ## collect_custom_ratios
 Calculates all Custom Ratios based on the data provided.
 
@@ -144,8 +126,8 @@ Note that any of the following characters are considered as operators: +,
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 custom_ratios = {
@@ -170,8 +152,7 @@ custom_ratios_dict=custom_ratios
 )
 
 custom_ratios.loc['AMZN']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -204,15 +185,14 @@ Calculates and collects all Efficiency Ratios based on the provided data.
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.ratios.collect_efficiency_ratios()
-{% endhighlight %}
-
+```
 ## get_asset_turnover_ratio
 Calculate the asset turnover ratio, an efficiency ratio that measures how efficiently a company uses its assets to generate sales.
 
@@ -240,15 +220,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 asset_turnover_ratios = toolkit.ratios.get_asset_turnover_ratio()
-{% endhighlight %}
-
+```
 ## get_inventory_turnover_ratio
 Calculate the inventory turnover ratio, an efficiency ratio that measures how quickly a company sells its inventory.
 
@@ -276,15 +255,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 inventory_turnover_ratios = toolkit.ratios.get_inventory_turnover_ratio()
-{% endhighlight %}
-
+```
 ## get_days_of_inventory_outstanding
 Calculate the days sales in inventory ratio, an efficiency ratio that measures how long it takes a company to sell its inventory.
 
@@ -313,15 +291,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.ratios.get_days_of_inventory_outstanding()
-{% endhighlight %}
-
+```
 ## get_days_of_sales_outstanding
 Calculate the days of sales outstanding ratio, an efficiency ratio that measures the average number of days it takes a company to collect payment on its credit sales.
 
@@ -350,15 +327,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 dso_ratios = toolkit.ratios.get_days_of_sales_outstanding()
-{% endhighlight %}
-
+```
 ## get_operating_cycle
 Calculate the operating cycle ratio, an efficiency ratio that measures the average number of days it takes a company to turn its inventory into cash.
 
@@ -387,15 +363,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 operating_cycle_ratios = toolkit.ratios.get_operating_cycle()
-{% endhighlight %}
-
+```
 ## get_accounts_payables_turnover_ratio
 Calculate the accounts payable turnover ratio, an efficiency ratio that measures how quickly a company pays its suppliers.
 
@@ -423,15 +398,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 ap_turnover_ratios = toolkit.ratios.get_accounts_payables_turnover_ratio()
-{% endhighlight %}
-
+```
 ## get_days_of_accounts_payable_outstanding
 Calculate the days payables outstanding, an efficiency ratio that measures the number of days it takes a company to pay its suppliers.
 
@@ -460,15 +434,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 dpo_ratios = toolkit.ratios.get_days_of_accounts_payable_outstanding()
-{% endhighlight %}
-
+```
 ## get_cash_conversion_cycle
 Calculate the Cash Conversion Cycle, which measures the amount of time it takes for a company to convert its investments in inventory and accounts receivable into cash, while considering the time it takes to pay its accounts payable. This ratio is also known as Cash
 -to
@@ -498,15 +471,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the CCC values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 ccc_values = toolkit.ratios.get_cash_conversion_cycle()
-{% endhighlight %}
-
+```
 ## get_cash_conversion_efficiency
 Calculate the cash conversion efficiency, an efficiency ratio that measures how efficiently a company converts its sales into cash. It is also known as the cash conversion ratio.
 
@@ -534,15 +506,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.ratios.get_cash_conversion_efficiency()
-{% endhighlight %}
-
+```
 ## get_receivables_turnover
 Calculate the receivables turnover, a ratio that measures how efficiently a company uses its assets by comparing the amount of credit extended to customers to the amount of sales generated.
 
@@ -568,15 +539,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 receivables_turnover = toolkit.ratios.get_receivables_turnover()
-{% endhighlight %}
-
+```
 ## get_sga_to_revenue_ratio
 Calculate the sales, general, and administrative (SG&A) expenses to revenue ratio, which measures the SG&A expenses relative to the revenue of the company.
 
@@ -604,15 +574,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 sga_to_revenue_ratios = toolkit.ratios.get_sga_to_revenue_ratio()
-{% endhighlight %}
-
+```
 ## get_fixed_asset_turnover
 Calculate the Fixed Asset Turnover ratio, an efficiency ratio that measures how efficiently a company uses its fixed assets to generate sales.
 
@@ -640,15 +609,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 fixed_asset_turnover_ratios = toolkit.ratios.get_fixed_asset_turnover()
-{% endhighlight %}
-
+```
 ## get_operating_ratio
 Calculate the operating ratio, a financial metric that measures the efficiency of a company's operations by comparing its operating expenses to its revenue.
 
@@ -676,15 +644,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 operating_ratios = toolkit.ratios.get_operating_ratio()
-{% endhighlight %}
-
+```
 ## collect_liquidity_ratios
 Calculates and collects all Liquidity Ratios based on the provided data.
 
@@ -704,15 +671,14 @@ Calculates and collects all Liquidity Ratios based on the provided data.
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 liquidity_ratios = toolkit.ratios.collect_liquidity_ratios()
-{% endhighlight %}
-
+```
 ## get_current_ratio
 Calculate the current ratio, a liquidity ratio that measures a company's ability to pay off its short
 -term liabilities with its current assets.
@@ -743,15 +709,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 current_ratios = toolkit.ratios.get_current_ratio()
-{% endhighlight %}
-
+```
 ## get_quick_ratio
 Calculate the quick ratio (also known as the acid
 -test ratio), a more stringent measure of liquidity that excludes inventory from current assets.
@@ -783,14 +748,13 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 quick_ratios = toolkit.ratios.get_quick_ratio()
-{% endhighlight %}
-
+```
 ## get_cash_ratio
 Calculate the cash ratio, a liquidity ratio that measures a company's ability to pay off its short
 -term liabilities with its cash and cash equivalents.
@@ -820,15 +784,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 cash_ratios = toolkit.ratios.get_cash_ratio()
-{% endhighlight %}
-
+```
 ## get_working_capital
 Calculate the working capital, which is the difference between a company's current assets and current liabilities.
 
@@ -857,15 +820,14 @@ The formula is as follows:
  values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 working_capitals = toolkit.ratios.get_working_capital()
-{% endhighlight %}
-
+```
 ## get_operating_cash_flow_ratio
 Calculate the operating cash flow ratio, a liquidity ratio that measures a company's ability to pay off its current liabilities with its operating cash flow.
 
@@ -894,15 +856,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 operating_cash_flow_ratios = toolkit.ratios.get_operating_cash_flow_ratio()
-{% endhighlight %}
-
+```
 ## get_operating_cash_flow_sales_ratio
 Calculate the operating cash flow to sales ratio, a liquidity ratio that measures the ability of a company to generate cash from its sales.
 
@@ -930,15 +891,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 operating_cash_flow_sales_ratios = toolkit.ratios.get_operating_cash_flow_sales_ratio()
-{% endhighlight %}
-
+```
 ## get_short_term_coverage_ratio
 Calculate the short
 -term coverage ratio, a liquidity ratio that measures a company's ability to pay off its short
@@ -962,15 +922,14 @@ The formula is as follows:
  E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.ratios.get_short_term_coverage_ratio()
-{% endhighlight %}
-
+```
 ## collect_profitability_ratios
 Calculates and collects all Profitability Ratios based on the provided data.
 
@@ -990,15 +949,14 @@ Calculates and collects all Profitability Ratios based on the provided data.
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 profitability_ratios = toolkit.ratios.collect_profitability_ratios()
-{% endhighlight %}
-
+```
 ## get_gross_margin
 Calculate the gross margin, a profitability ratio that measures the percentage of revenue that exceeds the cost of goods sold.
 
@@ -1026,15 +984,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 gross_margin_ratios = toolkit.ratios.get_gross_margin()
-{% endhighlight %}
-
+```
 ## get_operating_margin
 Calculate the operating margin, a profitability ratio that measures the percentage of revenue that remains after deducting operating expenses.
 
@@ -1062,15 +1019,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 operating_margin_ratios = toolkit.ratios.get_operating_margin()
-{% endhighlight %}
-
+```
 ## get_net_profit_margin
 Calculate the net profit margin, a profitability ratio that measures the percentage of profit a company earns per dollar of revenue.
 
@@ -1098,15 +1054,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 net_profit_margin_ratios = toolkit.ratios.get_net_profit_margin()
-{% endhighlight %}
-
+```
 ## get_interest_burden_ratio
 Compute the Interest Coverage Ratio, a metric that reveals a company's ability to cover its interest expenses with its pre
 -tax profits. This ratio measures the proportion of pre
@@ -1136,15 +1091,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 interest_coverage_ratios = toolkit.ratios.get_interest_burden_ratio()
-{% endhighlight %}
-
+```
 ## get_income_before_tax_profit_margin
 Calculate the Pretax Profit Margin, which is the ratio of a company's pre
 -tax profit to its revenue, indicating how much profit a company makes before paying taxes on its earnings.
@@ -1174,15 +1128,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 pretax_profit_margin = toolkit.ratios.get_income_before_tax_profit_margin()
-{% endhighlight %}
-
+```
 ## get_effective_tax_rate
 Calculate the effective tax rate, a financial ratio that measures the percentage of pretax income that is paid as taxes.
 
@@ -1211,15 +1164,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 effective_tax_rate = toolkit.ratios.get_effective_tax_rate()
-{% endhighlight %}
-
+```
 ## get_return_on_assets
 Calculate the return on assets (ROA), a profitability ratio that measures how efficiently a company uses its assets to generate profits.
 
@@ -1247,15 +1199,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 roa_ratios = toolkit.ratios.get_return_on_assets()
-{% endhighlight %}
-
+```
 ## get_return_on_equity
 Calculate the return on equity (ROE), a profitability ratio that measures how efficiently a company generates profits using its shareholders' equity.
 
@@ -1283,15 +1234,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 roe_ratios = toolkit.ratios.get_return_on_equity()
-{% endhighlight %}
-
+```
 ## get_return_on_invested_capital
 Calculate the return on invested capital (ROIC), a financial ratio that measures the company's return on the capital invested in it, including both equity and debt.
 
@@ -1319,15 +1269,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 roic_ratios = toolkit.ratios.get_return_on_invested_capital()
-{% endhighlight %}
-
+```
 ## get_income_quality_ratio
 Calculate the income quality ratio, a financial metric that measures the cash flow from operating activities relative to the net income of the company.
 
@@ -1354,15 +1303,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 income_quality_ratios = toolkit.ratios.get_income_quality_ratio()
-{% endhighlight %}
-
+```
 ## get_return_on_tangible_assets
 Calculate the return on tangible assets, a financial ratio that measures the amount of profit generated by a company's tangible assets.
 
@@ -1388,15 +1336,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 rota_ratios = toolkit.ratios.get_return_on_tangible_assets()
-{% endhighlight %}
-
+```
 ## get_return_on_capital_employed
 Calculate the return on capital employed (ROCE), a profitability ratio that measures the amount of return a company generates from the capital it has invested in the business.
 
@@ -1422,15 +1369,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 roce_ratios = toolkit.ratios.get_return_on_capital_employed()
-{% endhighlight %}
-
+```
 ## get_net_income_per_ebt
 Calculate the net income per earnings before taxes (EBT), a profitability ratio that measures the net income generated for each dollar of EBT.
 
@@ -1458,15 +1404,14 @@ The formula is as follows:
  the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 net_income_per_ebt_ratios = toolkit.ratios.get_net_income_per_ebt()
-{% endhighlight %}
-
+```
 ## get_free_cash_flow_operating_cash_flow_ratio
 Calculate the free cash flow to operating cash flow ratio, a profitability ratio that measures the amount of free cash flow a company generates for every dollar of operating cash flow.
 
@@ -1492,15 +1437,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 fcf_to_ocf_ratios = toolkit.ratios.get_free_cash_flow_operating_cash_flow_ratio()
-{% endhighlight %}
-
+```
 ## get_tax_burden_ratio
 Calculate the tax burden ratio, which is the ratio of a company's net income to its income before tax, indicating how much of a company's income is retained after taxes.
 
@@ -1526,15 +1470,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 tax_burden_ratios = toolkit.ratios.get_tax_burden_ratio()
-{% endhighlight %}
-
+```
 ## get_EBT_to_EBIT
 Calculate the EBT to EBIT, which is the ratio of a company's earnings before tax to its earnings before interest and taxes, indicating how much of a company's earnings are generated before paying interest on debt.
 
@@ -1560,15 +1503,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 ebt_to_ebit_ratios = toolkit.ratios.get_EBT_to_EBIT()
-{% endhighlight %}
-
+```
 ## get_EBIT_to_revenue
 Calculate the EBIT per Revenue, which is the ratio of a company's earnings before interest and taxes to its revenue, indicating how much profit a company generates from its operations before paying interest on debt and taxes on its earnings.
 
@@ -1594,15 +1536,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 ebit_to_revenue_ratios = toolkit.ratios.get_EBIT_to_revenue()
-{% endhighlight %}
-
+```
 ## collect_solvency_ratios
 Calculates and collects all Solvency Ratios based on the provided data.
 
@@ -1623,15 +1564,14 @@ Calculates and collects all Solvency Ratios based on the provided data.
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 solvency_ratios = toolkit.ratios.collect_solvency_ratios()
-{% endhighlight %}
-
+```
 ## get_debt_to_assets_ratio
 Calculate the debt to assets ratio, a solvency ratio that measures the proportion of a company's assets that are financed by debt.
 
@@ -1657,15 +1597,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 debt_to_assets_ratios = toolkit.ratios.get_debt_to_assets_ratio()
-{% endhighlight %}
-
+```
 ## get_debt_to_equity_ratio
 Calculate the debt to equity ratio, a solvency ratio that measures the proportion of a company's equity that is financed by debt. This ratio is also known as the Gearing Ratio.
 
@@ -1691,15 +1630,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 debt_to_equity_ratios = toolkit.ratios.get_debt_to_equity_ratio()
-{% endhighlight %}
-
+```
 ## get_interest_coverage_ratio
 Calculate the interest coverage ratio, a solvency ratio that measures a company's ability to pay its interest expenses on outstanding debt.
 
@@ -1725,15 +1663,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 interest_coverage_ratios = toolkit.ratios.get_interest_coverage_ratio()
-{% endhighlight %}
-
+```
 ## get_equity_multiplier
 Calculate the equity multiplier, a solvency ratio that measures the degree to which a company uses borrowed money (debt) to finance its operations and growth.
 
@@ -1759,15 +1696,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 equity_multipliers = toolkit.ratios.get_equity_multiplier()
-{% endhighlight %}
-
+```
 ## get_debt_service_coverage_ratio
 Calculate the debt service coverage ratio, a solvency ratio that measures a company's ability to service its debt with its net operating income.
 
@@ -1793,15 +1729,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 debt_service_coverage_ratios = toolkit.ratios.get_debt_service_coverage_ratio()
-{% endhighlight %}
-
+```
 ## get_free_cash_flow_yield
 Calculates the free cash flow yield ratio, which measures the free cash flow relative to the market capitalization of the company.
 
@@ -1829,15 +1764,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 free_cash_flow_yield_ratios = toolkit.ratios.get_free_cash_flow_yield()
-{% endhighlight %}
-
+```
 ## get_net_debt_to_ebitda_ratio
 Calculates the net debt to EBITDA ratio, which measures the net debt of the company relative to its EBITDA (Earnings Before Interest, Taxes, Depreciation, and Amortization).
 
@@ -1863,15 +1797,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 net_debt_to_ebitda_ratios = toolkit.ratios.get_net_debt_to_ebitda_ratio()
-{% endhighlight %}
-
+```
 ## get_cash_flow_coverage_ratio
 Calculate the cash flow coverage ratio, a solvency ratio that measures a company's ability to pay off its debt with its operating cash flow.
 
@@ -1897,15 +1830,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 cash_flow_coverage_ratios = toolkit.ratios.get_cash_flow_coverage_ratio()
-{% endhighlight %}
-
+```
 ## get_capex_coverage_ratio
 Calculate the capital expenditure coverage ratio, a solvency ratio that measures a company's ability to cover its capital expenditures with its cash flow from operations.
 
@@ -1931,15 +1863,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 capex_coverage_ratios = toolkit.ratios.get_capex_coverage_ratio()
-{% endhighlight %}
-
+```
 ## get_capex_dividend_coverage_ratio
 Calculate the dividend paid and capital expenditure coverage ratio, a solvency ratio that measures a company's ability to cover both its capital expenditures and dividend payments with its cash flow from operations.
 
@@ -1965,15 +1896,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 capex_dividend_coverage_ratios = toolkit.ratios.get_capex_dividend_coverage_ratio()
-{% endhighlight %}
-
+```
 ## collect_valuation_ratios
 Calculates and collects all Valuation Ratios based on the provided data.
 
@@ -1995,15 +1925,14 @@ Calculates and collects all Valuation Ratios based on the provided data.
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 valuation_ratios = toolkit.ratios.collect_valuation_ratios()
-{% endhighlight %}
-
+```
 ## get_earnings_per_share
 Calculate the earnings per share (EPS), a valuation ratio that measures the amount of net income earned per share of outstanding common stock.
 
@@ -2033,15 +1962,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the EPS values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 eps_ratios = toolkit.ratios.get_earnings_per_share()
-{% endhighlight %}
-
+```
 ## get_revenue_per_share
 Calculate the revenue per share, a valuation ratio that measures the amount of revenue generated per outstanding share of a company's stock.
 
@@ -2072,15 +2000,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 revenue_per_share = toolkit.ratios.get_revenue_per_share()
-{% endhighlight %}
-
+```
 ## get_price_to_earnings_ratio
 Calculate the price earnings ratio (P/E), a valuation ratio that compares a company's stock price to its earnings per share.
 
@@ -2106,15 +2033,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the P/E ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 pe_ratio = toolkit.ratios.get_price_to_earnings_ratio()
-{% endhighlight %}
-
+```
 ## get_price_to_earnings_growth_ratio
 Calculate the price earnings to growth (PEG) ratio, a valuation metric that measures the ratio of the price
 -to
@@ -2148,15 +2074,14 @@ The formula is as follows:
  - If `growth` is set to True, the method calculates the growth of the PEG ratio values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 peg_ratio = toolkit.ratios.get_price_to_earnings_growth_ratio()
-{% endhighlight %}
-
+```
 ## get_book_value_per_share
 Calculate the book value per share, a valuation ratio that measures the amount of common equity value per share outstanding.
 
@@ -2185,15 +2110,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 book_value_per_share = toolkit.ratios.get_book_value_per_share()
-{% endhighlight %}
-
+```
 ## get_price_to_book_ratio
 Calculate the price to book ratio, a valuation ratio that compares a company's market price to its book value per share.
 
@@ -2222,15 +2146,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 price_to_book_ratio = toolkit.ratios.get_price_to_book_ratio()
-{% endhighlight %}
-
+```
 ## get_interest_debt_per_share
 Calculate the interest debt per share, a valuation ratio that measures the amount of interest expense incurred per outstanding share of a company's stock.
 
@@ -2259,15 +2182,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 interest_debt_per_share = toolkit.ratios.get_interest_debt_per_share()
-{% endhighlight %}
-
+```
 ## get_capex_per_share
 Calculate the capex per share, a valuation ratio that measures the amount of capital expenditures made per outstanding share of a company's stock.
 
@@ -2296,15 +2218,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 capex_per_share = toolkit.ratios.get_capex_per_share()
-{% endhighlight %}
-
+```
 ## get_dividend_yield
 Calculate the dividend yield ratio, a valuation ratio that measures the amount of dividends distributed per share of stock relative to the stock's price.
 
@@ -2334,15 +2255,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 dividend_yield = toolkit.ratios.get_dividend_yield()
-{% endhighlight %}
-
+```
 ## get_weighted_dividend_yield
 Calculate the weighted dividend yield ratio, a valuation ratio that measures the amount of dividends distributed per share of stock relative to the stock's price.
 
@@ -2372,15 +2292,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 weighted_dividend_yield = toolkit.ratios.get_weighted_dividend_yield()
-{% endhighlight %}
-
+```
 ## get_price_to_cash_flow_ratio
 Calculate the price to cash flow ratio, a valuation ratio that compares a company's market price to its operating cash flow per share.
 
@@ -2410,15 +2329,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 price_to_cash_flow_ratio = toolkit.ratios.get_price_to_cash_flow_ratio()
-{% endhighlight %}
-
+```
 ## get_price_to_free_cash_flow_ratio
 Calculate the price to free cash flow ratio, a valuation ratio that compares a company's market price to its free cash flow per share.
 
@@ -2448,15 +2366,14 @@ The formula is as follows:
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 price_to_free_cash_flow_ratio = toolkit.ratios.get_price_to_free_cash_flow_ratio()
-{% endhighlight %}
-
+```
 ## get_market_cap
 Calculates the market capitalization of the company.
 
@@ -2480,15 +2397,14 @@ The formula is as follows:
  pd.DataFrame: Market capitalization values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 market_cap = toolkit.ratios.get_market_cap()
-{% endhighlight %}
-
+```
 ## get_enterprise_value
 Calculates the Enterprise Value (EV) of a company. The Enterprise Value (EV) is a measure of a company's total value, often used as a more comprehensive alternative to market capitalization. It is calculated as the sum of a company's market capitalization, outstanding debt, minority interest, and preferred equity, minus the cash and cash equivalents.
 
@@ -2510,15 +2426,14 @@ The formula is as follows:
  pd.DataFrame: Enterprise Value values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 enterprise_value = toolkit.ratios.get_enterprise_value()
-{% endhighlight %}
-
+```
 ## get_ev_to_sales_ratio
 Calculate the EV to sales ratio, a valuation ratio that compares a company's enterprise value (EV) to its total revenue.
 
@@ -2542,15 +2457,14 @@ The formula is as follows:
  pd.DataFrame: EV to Sales Ratio values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 ev_to_sales_ratio = toolkit.ratios.get_ev_to_sales_ratio()
-{% endhighlight %}
-
+```
 ## get_ev_to_ebitda_ratio
 Calculate the enterprise value over EBITDA ratio, a valuation ratio that measures a company's total value (including debt and equity) relative to its EBITDA.
 
@@ -2573,15 +2487,14 @@ The formula is as follows:
  pd.DataFrame: EV to EBITDA Ratio values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 ev_to_ebitda_ratio = toolkit.ratios.get_ev_to_ebitda_ratio()
-{% endhighlight %}
-
+```
 ## get_ev_to_operating_cashflow_ratio
 Calculate the enterprise value over operating cash flow ratio, a valuation ratio that measures a company's total value (including debt and equity) relative to its operating cash flow.
 
@@ -2605,15 +2518,14 @@ The formula is as follows:
  pd.DataFrame: EV to Operating Cash Flow Ratio values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 ev_to_operating_cashflow_ratio = toolkit.ratios.get_ev_to_operating_cashflow_ratio()
-{% endhighlight %}
-
+```
 ## get_earnings_yield
 Calculate the earnings yield ratio, a valuation ratio that measures the earnings per share relative to the market price per share.
 
@@ -2638,15 +2550,14 @@ The formula is as follows:
  pd.DataFrame: Earnings Yield Ratio values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 earnings_yield_ratio = toolkit.ratios.get_earnings_yield()
-{% endhighlight %}
-
+```
 ## get_dividend_payout_ratio
 Calculate the Dividend payout ratio, a financial metric that measures the proportion of earnings paid out as dividends to shareholders.
 
@@ -2668,15 +2579,14 @@ The formula is as follows:
  pd.DataFrame: Payout Ratio values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.ratios.get_dividend_payout_ratio()
-{% endhighlight %}
-
+```
 ## get_reinvestment_rate
 Calculate the Reinvestment rate, a financial metric that measures the proportion of earnings retained by the company.
 
@@ -2698,15 +2608,14 @@ The formula is as follows:
  pd.DataFrame: Reinvestment Rate values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.ratios.get_reinvestment_rate()
-{% endhighlight %}
-
+```
 ## get_tangible_asset_value
 Calculate the tangible asset value, a financial metric that represents the total value of a company's assets that can be used to generate revenue. Tangible assets are those physical assets that have a finite monetary value and can be sold, used, or consumed.
 
@@ -2726,15 +2635,14 @@ The formula is as follows:
  pd.DataFrame: Tangible Asset Value values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 tangible_asset_value = toolkit.ratios.get_tangible_asset_value()
-{% endhighlight %}
-
+```
 ## get_net_current_asset_value
 Calculate the net current asset value, a financial metric that represents the total value of a company's current assets minus its current liabilities. It indicates the extent to which a company's short
 -term assets exceed its short
@@ -2756,15 +2664,14 @@ The formula is as follows:
  pd.DataFrame: Net Current Asset Value values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 net_current_asset_value = toolkit.ratios.get_net_current_asset_value()
-{% endhighlight %}
-
+```
 ## get_ev_to_ebit
 Calculate the enterprise value over earnings before interest and taxes (EBIT) ratio, which is a valuation metric that compares a company's total value (including debt and equity) relative to its earnings before interest and taxes.
 
@@ -2786,12 +2693,11 @@ The formula is as follows:
  pd.DataFrame: Enterprise Value over EBIT values.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 ev_to_ebit_ratio = toolkit.ratios.get_ev_to_ebit()
-{% endhighlight %}
-
+```

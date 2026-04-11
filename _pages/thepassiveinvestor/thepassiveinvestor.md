@@ -24,17 +24,15 @@ An example of the output can be found in the GIF below. This depicts several ETF
 
 The package can be installed via the following commands:
 
-{% include code_header.html %}
-{% highlight bash %}
+```bash
 pip install thepassiveinvestor
-{% endhighlight %}
+```
 
 Within Python:
 
-{% include code_header.html %}
-{% highlight python %}
+```python
 import thepassiveinvestor as pi
-{% endhighlight %}
+```
 
 ## Functionality
 

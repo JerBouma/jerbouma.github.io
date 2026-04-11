@@ -1,13 +1,15 @@
+@use "sass:color";
+
 /* ==========================================================================
    Aqua skin
    ========================================================================== */
 
 /* Colors */
 $gray                       : #1976d2 !default;
-$dark-gray                  : mix(#000, $gray, 40%) !default;
-$darker-gray                : mix(#000, $gray, 60%) !default;
-$light-gray                 : mix(#fff, $gray, 50%) !default;
-$lighter-gray               : mix(#fff, $gray, 90%) !default;
+$dark-gray                  : color.mix(#000, $gray, 40%) !default;
+$darker-gray                : color.mix(#000, $gray, 60%) !default;
+$light-gray                 : color.mix(#fff, $gray, 50%) !default;
+$lighter-gray               : color.mix(#fff, $gray, 90%) !default;
 
 $body-color                 : #fff !default;
 $background-color           : #f0fff0 !default;
@@ -24,10 +26,10 @@ $info-color                 : #03a9f4 !default;
 
 /* links */
 $link-color                 : $info-color !default;
-$link-color-hover           : mix(#000, $link-color, 25%) !default;
-$link-color-visited         : mix(#fff, $link-color, 25%) !default;
+$link-color-hover           : color.mix(#000, $link-color, 25%) !default;
+$link-color-visited         : color.mix(#fff, $link-color, 25%) !default;
 $masthead-link-color        : $primary-color !default;
-$masthead-link-color-hover  : mix(#000, $primary-color, 25%) !default;
+$masthead-link-color-hover  : color.mix(#000, $primary-color, 25%) !default;
 
 /* notices */
 $notice-background-mix: 90% !default;

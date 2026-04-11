@@ -51,17 +51,15 @@ Before installation, consider starring the project on GitHub which helps others 
 
 To install the FinanceDatabase it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```bash
 pip install financedatabase -U
-{% endhighlight %}
+```
 
 Then within Python use:
 
-{% include code_header.html %}
-{% highlight python %}
+```python
 import financedatabase as fd
-{% endhighlight %}
+```
 
 # Usage
 This section explains in detail how the database can be queried with the related `financedatabase` package. Note that examples here are purposely cut off to a maximum of 10 entries due to the sheer size of the database. Furthermore, the summary column is also taken out for readability. For the full detailed results, see the Notebook [here](https://www.jeroenbouma.com/projects/financedatabase/getting-started). Let's start by importing the package:

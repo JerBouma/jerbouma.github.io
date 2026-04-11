@@ -1,20 +1,29 @@
 ---
-title: Appearances
-description: All of my talks, both personal and professional.
-permalink: /talks
+title: Media
+description: All of my talks, appearances, and written articles.
+permalink: /media
 redirect_from:
   - /activities
+  - /talks
   - /appearances
-  - /media
   - /videos
+  - /articles
+  - /categories
 layout: single
 classes: custom-document
 author_profile: false
 ---
 
-On this page, you will find a collection of my experiences and contributions within the finance and technology sectors. I had the privilege of serving as a jury member for the Utrecht University Finance Hackathon, where students were challenged to create a Robo Advisor using Python. Additionally, I delivered presentations at universities, introducing the OpenBB Terminal and highlighting the role of Python in the financial industry. These experiences reflect my commitment to sharing knowledge and insights within the finance and technology domains, making this page a valuable resource for those interested in these fields. **Interested in partnering with me? Reach out via the [contact page](/contact)!**
+A collection of my public appearances, talks, and written articles connecting finance theory with open-source Python. **Interested in partnering with me? Reach out via the [contact page](/contact)!**
 
-## Speaker at the Student Capital Society Rotterdam
+<div class="page-tabs">
+  <button class="page-tab active" data-tab="appearances"><i class="fas fa-microphone"></i> Appearances</button>
+  <button class="page-tab" data-tab="articles"><i class="fas fa-pen"></i> Articles</button>
+</div>
+
+<div class="tab-panel active" id="tab-appearances">
+
+<h3>Speaker at the Student Capital Society Rotterdam</h3>
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -33,7 +42,7 @@ The other speaker, Vladimir Mikirtumov, discussed the potential role of Cryptocu
 </div>
 </div>
 
-## Guiding Students in the Utrecht University Hackathon
+<h3>Guiding Students in the Utrecht University Hackathon</h3>
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -65,7 +74,7 @@ I strongly believe the importance of Python in the financial industry will conti
 </div>
 </div>
 
-## Revolutionizing The Way Investment Research Is Done
+<h3>Revolutionizing The Way Investment Research Is Done</h3>
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -82,7 +91,7 @@ These presentations aimed to inform students about the OpenBB Terminal and OpenB
 </div>
 </div>
 
-## Role of Python in the Financial Industry
+<h3>Role of Python in the Financial Industry</h3>
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -100,7 +109,7 @@ Therefore, I gave four presentations to nearly one hundred Master's students on 
 </div>
 </div>
 
-## How to Perform Financial Due Diligence with the OpenBB Terminal
+<h3>How to Perform Financial Due Diligence with the OpenBB Terminal</h3>
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -118,7 +127,7 @@ I covered key areas such as main revenue streams, historical stock prices, divid
 </div>
 </div>
 
-## Introduction to the OpenBB Terminal
+<h3>Introduction to the OpenBB Terminal</h3>
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -136,7 +145,7 @@ The goal was to provide a clear overview of the OpenBB Terminal's capabilities a
 </div>
 </div>
 
-## The OpenBB Terminal 3.0 Launch Event
+<h3>The OpenBB Terminal 3.0 Launch Event</h3>
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -154,7 +163,7 @@ This marked another step towards becoming the next-generation financial data and
 </div>
 </div>
 
-## The OpenBB Terminal 2.0 Launch Event
+<h3>The OpenBB Terminal 2.0 Launch Event</h3>
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -171,4 +180,39 @@ The event, hosted by Sri Chilukuri, Vice President of Product & Marketing at Ope
   <div class="embed-youtube-play"></div>
 </div>
 </div>
+
 </div>
+</div>
+
+<div class="tab-panel" id="tab-articles" markdown="1">
+
+A selection of articles I have written connecting my open-source projects with my financial background. The goal is to explain financial theory and demonstrate its practical application within these projects. For example, one article focuses on Binomial Trees, detailing the theory and its implementation within the [Finance Toolkit](/projects/financetoolkit){:target="_blank"} project.
+
+{% for post in site.posts %}
+  {% include archive-single.html %}
+{% endfor %}
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const tabs = document.querySelectorAll('.page-tab');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  // Activate tab from URL hash
+  const hash = window.location.hash.replace('#', '');
+  if (hash === 'articles') activateTab('articles');
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      activateTab(tab.dataset.tab);
+      history.replaceState(null, '', '#' + tab.dataset.tab);
+    });
+  });
+
+  function activateTab(name) {
+    tabs.forEach(function (t) { t.classList.toggle('active', t.dataset.tab === name); });
+    panels.forEach(function (p) { p.classList.toggle('active', p.id === 'tab-' + name); });
+  }
+});
+</script>

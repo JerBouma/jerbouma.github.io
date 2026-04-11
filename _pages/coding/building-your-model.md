@@ -12,15 +12,6 @@ sidebar:
 
 A financial model can serve multiple purposes, ranging from simple data aggregation to complex forecasting and scenario analysis. Regardless of its complexity, the model should be built for clarity, maintainability, and extensibility. This is where the concept of modular programming, as discussed in [Structure your Model](/modelling/structure-your-model), becomes crucial. For examples of this method and inspiration for building your own model, explore projects like the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"}, [Finance Database](https://github.com/JerBouma/FinanceDatabase){:, target="_blank"}, [OpenBB Terminal](https://github.com/OpenBB-finance/OpenBBTerminal){: target="_blank"}, [yfinance](https://github.com/ranaroussi/yfinance){: target="_blank"}, and [Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){: target="_blank"}.
 
-<div style="display: flex; justify-content: space-between;margin-bottom:10px">
-        <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
-        <a href="/modelling/getting-started" class="btn btn--info" style="flex: 1;margin-right:5px">Getting Started</a>
-        <a href="/modelling/setting-up-your-project" class="btn btn--info" style="flex: 1;margin-right:5px">Setting up your Project</a>
-        <a href="/modelling/structure-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Structure your Model</a>
-        <a href="/modelling/build-your-model" class="btn btn--warning" style="flex: 1;margin-right:5px">Build your Model</a>
-        <a href="/modelling/test-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Test your Model</a>
-</div>
-
 Regardless of the model's purpose, applying consistent styling and coding guidelines helps remove the subjective nature of coding. A style guide ensures code consistency, making it easier to read and maintain. This consistency is crucial when multiple developers collaborate on the same codebase or when colleagues transition between teams and need to understand unfamiliar models.
 
 Linters, as discussed in [Setting up your Project](/modelling/setting-up-your-project#setting-up-linters), automate much of the initial code styling. However, linters cannot enforce choices regarding coding methods, variable naming conventions, or docstring structures. This is where style guides like [**PEP 8**](https://peps.python.org/pep-0008/){: target="_blank"} are essential.

@@ -1,3 +1,6 @@
+@use "sass:map";
+@use "sass:meta";
+
 /// Susy3 API Functions
 /// ===================
 /// These three functions form the core of Susy's
@@ -142,11 +145,11 @@
 ) {
   $output: susy-compile($span, $config);
 
-  @if map-get($output, 'span') {
+  @if map.get($output, 'span') {
     @return su-call('su-span', $output);
   }
 
-  $actual: '[#{type-of($span)}] `#{inspect($span)}`';
+  $actual: '[#{meta.type-of($span)}] `#{meta.inspect($span)}`';
   @return _susy-error(
     'Unable to determine span value from #{$actual}.',
     'susy-span');

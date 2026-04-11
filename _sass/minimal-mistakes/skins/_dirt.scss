@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /* ==========================================================================
    Dirt skin
    ========================================================================== */
@@ -12,7 +14,7 @@ $footer-background-color: #e9dcbe !default;
 $link-color: #343434 !default;
 $masthead-link-color: $text-color !default;
 $masthead-link-color-hover: $text-color !default;
-$navicon-link-color-hover: mix(#fff, $text-color, 80%) !default;
+$navicon-link-color-hover: color.mix(#fff, $text-color, 80%) !default;
 
 /* dirt syntax highlighting (base16) */
 $base00: #231e18 !default;

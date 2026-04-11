@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /* ==========================================================================
    SINGLE PAGE/POST
    ========================================================================== */
@@ -365,7 +367,7 @@ body {
   margin-bottom: 8px;
   padding: 5px 10px;
   text-decoration: none;
-  border: 1px solid mix(#000, $border-color, 25%);
+  border: 1px solid color.mix(#000, $border-color, 25%);
   border-radius: $border-radius;
 
   &:hover {
@@ -755,6 +757,23 @@ body {
     float: none;
     width: 100%;
     padding-left: 0%;
+    padding-right: 0%;
+  }
+
+  .about-buttons-column {
+    width: 33%;
+  }
+}
+
+// Tablet breakpoint: stack columns earlier to avoid cramped layouts
+@media (max-width: 1024px) and (min-width: 768px) {
+  .sixty-column,
+  .fourty-column,
+  .thirty-three-column {
+    float: none;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -825,73 +844,4 @@ body {
   background-color: #f00;
 }
 
-/*
-   Testimonials Carousel
-   ========================================================================== */
-
-.testimonial-slider {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.testimonial-slide {
-  width: 100%;
-  display: none;
-  height: auto;
-}
-
-.testimonial-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.testimonial-content img {
-  max-width: 100px;
-  height: auto;
-}
-
-.testimonial-text {
-  margin-left: 20px;
-}
-
-.read-more-buttons {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.carousel-buttons {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.carousel-btn {
-  width: 40px;
-  height: 40px;
-  background-color: transparent;
-  border: none;
-  opacity: 0.7;
-  transition: opacity 0.3s;
-  cursor: pointer;
-  margin: 0 5px;
-}
-
-.carousel-btn::before {
-  content: "";
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-style: solid;
-  border-width: 2px 2px 0 0;
-  transform: rotate(-45deg);
-  margin: auto;
-}
-
-.carousel-btn-prev::before {
-  transform: rotate(225deg);
-}
-
-.carousel-btn-next::before {
-  transform: rotate(45deg);
-}
+// Old testimonial/carousel CSS removed — replaced by modern glassmorphic version in custom.scss

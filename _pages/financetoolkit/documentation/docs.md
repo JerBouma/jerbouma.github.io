@@ -16,30 +16,11 @@ This page includes all the documentation for the Finance Toolkit, an open-source
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```python
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These are historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
-
-If you are looking for documentation regarding the discovery, ratios, models, technical indicators, fixed income, risk metrics, performance metrics and economic indicators, please have a look below:
-
-<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
-    <a href="/projects/financetoolkit/docs" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
-    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
-    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
-    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
-    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
-    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
-    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
-    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
-    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
-</div>
-
-
 {% include algolia.html %}
 
 ## __init__
@@ -87,8 +68,8 @@ For more information on the capabilities of the Finance Toolkit see here: [https
  - <u>progress_bar (bool):</u> Show progress bar for operations involving multiple tickers. Defaults to True.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 # Simple example
@@ -129,8 +110,7 @@ tickers="AMZN",
 benchmark_ticker="^DJI",
 risk_free_rate="30y",
 api_key="FINANCIAL_MODELING_PREP_KEY")
-{% endhighlight %}
-
+```
 ## ratios
 The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
 
@@ -140,8 +120,8 @@ Next to that, it is also possible to define custom ratios.
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios){:target="_blank"}
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -149,8 +129,7 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 profitability_ratios = toolkit.ratios.collect_profitability_ratios()
 
 profitability_ratios.loc['AAPL']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -179,8 +158,8 @@ Gives access to the Models module. The Models module is meant to execute well
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/models](https://www.jeroenbouma.com/projects/financetoolkit/docs/models){:target="_blank"}
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["TSLA", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", quarterly=True, start_date='2022-12-31')
@@ -188,8 +167,7 @@ toolkit = Toolkit(["TSLA", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", quart
 dupont_analysis = toolkit.models.get_extended_dupont_analysis()
 
 dupont_analysis.loc['AMZN']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -213,8 +191,8 @@ It gives insights in the sensitivity of an option to changes in the underlying a
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/options](https://www.jeroenbouma.com/projects/financetoolkit/docs/options){:target="_blank"}
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["TSLA", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -222,8 +200,7 @@ toolkit = Toolkit(["TSLA", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY")
 all_greeks = toolkit.options.collect_all_greeks(start_date='2024-01-03')
 
 all_greeks.loc['TSLA', '2024-01-04']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -261,15 +238,14 @@ Some examples of technical indicators are the Average Directional Index (ADX), t
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals](https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals){:target="_blank"}
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 average_directional_index = toolkit.technicals.get_average_directional_index()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -289,15 +265,14 @@ It gives insights in the performance a stock has to e.g. a benchmark that is not
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/performance](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance){:target="_blank"}
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.performance.get_capital_asset_pricing_model(period='quarterly')
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -316,15 +291,14 @@ It gives insights in the risk a stock composes that is not perceived as easily b
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/risk](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk){:target="_blank"}
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.get_value_at_risk(period='yearly')
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -352,8 +326,8 @@ Note that this class can also be directly accessed by importing the FixedIncome 
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome){:target="_blank"}
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome(
@@ -362,8 +336,7 @@ end_date='2024-01-15',
 )
 
 fixedincome.get_effective_yield(maturity=False)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -388,8 +361,8 @@ Note that this class can also be directly accessed by importing the Economics cl
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/economics](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics){:target="_blank"}
 
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "ASML"])
@@ -397,8 +370,7 @@ toolkit = Toolkit(["AMZN", "ASML"])
 cpi = toolkit.economics.get_consumer_price_index(period='yearly')
 
 cpi.loc['2015':, ['United States', 'Netherlands', 'Japan']]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -420,15 +392,14 @@ Obtain the profile of the specified tickers. These include important metrics suc
  - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["MSFT", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.get_profile()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -471,15 +442,14 @@ Get the quote of the specified tickers. These include important metrics such as 
  - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["TSLA", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.get_quote()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -525,8 +495,8 @@ Get the rating of the specified tickers. These scores and recommendations are ca
  pd.DataFrame: The stock rating information for the specified tickers.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -534,8 +504,7 @@ toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 rating = toolkit.get_rating()
 
 rating.loc['AMZN'].tail()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -564,8 +533,8 @@ Note that this information requires a Premium FMP subscription.
  pandas.DataFrame: The analyst estimates for the specified tickers.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
@@ -575,8 +544,7 @@ toolkit = Toolkit(
 analyst_estimates = toolkit.get_analyst_estimates()
 
 analyst_estimates.loc['AAPL'].iloc[:, :5]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -615,8 +583,8 @@ Note that this information requires a Premium FMP subscription.
  pd.DataFrame: The earnings calendar for the specified tickers.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
@@ -626,8 +594,7 @@ toolkit = Toolkit(
 earning_calendar = toolkit.get_earnings_calendar()
 
 earning_calendar.loc['AMZN']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -659,8 +626,8 @@ Note that this information requires a Premium FMP subscription.
  pd.DataFrame: The revenue by geographic segmentation for the specified tickers.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
@@ -670,8 +637,7 @@ toolkit = Toolkit(
 geographic_segmentation = toolkit.get_revenue_geographic_segmentation()
 
 geographic_segmentation.loc['AAPL']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -696,8 +662,8 @@ Note that this information requires a Premium FMP subscription.
  pd.DataFrame: The revenue by product segmentation for the specified tickers.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
@@ -707,8 +673,7 @@ toolkit = Toolkit(
 product_segmentation = toolkit.get_revenue_product_segmentation()
 
 product_segmentation.loc['MSFT']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -769,15 +734,14 @@ Important to note is that when an api_key is included in the Toolkit initializat
  pandas.DataFrame: The historical data for the specified tickers.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit("AAPL", api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.get_historical_data(period="yearly")
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -829,15 +793,14 @@ Please note that this functionality is only available through Financial Modeling
  pandas.DataFrame: The intraday data for the specified tickers.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit("MSFT", api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.get_intraday_data(period="1min")
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -879,8 +842,8 @@ If a company does not pay any dividend, the function will mention that it was no
  pd.DataFrame: The earnings calendar for the specified tickers.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
@@ -890,8 +853,7 @@ toolkit = Toolkit(
 dividend_calendar = toolkit.get_dividend_calendar()
 
 dividend_calendar.loc['AAPL']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -936,8 +898,8 @@ ESG scores provide investors with a holistic view of a company's sustainability 
  pd.DataFrame: The ESG scores for the specified tickers.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
@@ -947,8 +909,7 @@ toolkit = Toolkit(
 esg_scores = toolkit.get_esg_scores()
 
 esg_scores.xs("MSFT", level=1, axis=1)
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -980,15 +941,14 @@ Retrieve statistics about each ticker's historical data. This is especially usef
  pd.DataFrame: A DataFrame containing the statistics for each ticker.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 companies = Toolkit(["AMZN", "^HSI", "IWDA.AS", "0P0000Z8RO.T"])
 
 companies.get_historical_statistics()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1017,15 +977,14 @@ Retrieve daily, weekly, monthly, quarterly or yearly treasury data. This can be 
  pd.DataFrame: A DataFrame containing the treasury data.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 companies = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2023-08-10")
 
 companies.get_treasury_data()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1068,15 +1027,14 @@ Important to note is that when an api_key is included in the Toolkit initializat
  pandas.DataFrame: The historical exchange rate data.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit("ASML", api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.get_exchange_rates(period="monthly")
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1119,8 +1077,8 @@ Note that the balance sheet statement is a financial statement that provides a s
  pd.DataFrame: A pandas DataFrame with the retrieved balance sheet statement data.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["MSFT", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY", quarterly=True, start_date='2022-05-01')
@@ -1128,8 +1086,7 @@ toolkit = Toolkit(["MSFT", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY", quarter
 balance_sheet_statements = toolkit.get_balance_sheet_statement()
 
 balance_sheet_statements.loc['MU']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1199,8 +1156,8 @@ The income statement is a financial statement that shows a company's revenues an
  pd.DataFrame: A pandas DataFrame with the retrieved income statement data.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["TSLA", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY", quarterly=True, start_date='2022-05-01')
@@ -1208,8 +1165,7 @@ toolkit = Toolkit(["TSLA", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY", quarter
 income_sheet_statements = toolkit.get_income_statement()
 
 income_sheet_statements.loc['TSLA']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1263,8 +1219,8 @@ The cash flow statement is a financial statement that shows how changes in balan
  pd.DataFrame: A pandas DataFrame with the retrieved cash flow statement data.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["MU", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", quarterly=True, start_date='2022-09-01')
@@ -1272,8 +1228,7 @@ toolkit = Toolkit(["MU", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY", quarter
 cash_flow_statements = toolkit.get_cash_flow_statement()
 
 cash_flow_statements.loc['AMZN']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -1326,15 +1281,14 @@ Note that this also obtains the balance sheet statement at the same time given t
  pd.DataFrame: A pandas DataFrame with the retrieved statistics statement data.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit("TSLA", api_key="FINANCIAL_MODELING_PREP_KEY", quarterly=True, start_date='2023-05-01')
 
 toolkit.get_statistics_statement()
-{% endhighlight %}
-
+```
 
 Which returns:
 

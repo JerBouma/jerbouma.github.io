@@ -10,56 +10,40 @@ sidebar:
     nav: "modelling"
 ---
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.0/dist/mermaid.min.js"></script>
+{% include mermaid.html %}
 
 The following guidelines explain how to structure a model. These guidelines serve as a reference, not strict rules. The primary goal is a structure that is understandable and maintainable.
-
-<div style="display: flex; justify-content: space-between;margin-bottom:10px">
-        <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
-        <a href="/modelling/getting-started" class="btn btn--info" style="flex: 1;margin-right:5px">Getting Started</a>
-        <a href="/modelling/setting-up-your-project" class="btn btn--info" style="flex: 1;margin-right:5px">Setting up your Project</a>
-        <a href="/modelling/structure-your-model" class="btn btn--warning" style="flex: 1;margin-right:5px">Structure your Model</a>
-        <a href="/modelling/build-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Build your Model</a>
-        <a href="/modelling/test-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Test your Model</a>
-</div>
 
 The preferred approach for structuring a model is the **Model, View, Controller (MVC)** pattern. This software design pattern is commonly used to separate user interfaces, data, and controlling logic. It emphasizes separating the software's business logic from its presentation. This "separation of concerns" facilitates a better division of labor and improves maintainability. Models and Views should ideally function independently, while Controllers depend on Models or a combination of Models and Views. Note that while many variations of this pattern exist (see [here](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller#See_also){: target="_blank"}), they all adhere to the same core principles.
 
 The following diagrams illustrate different data flows within the MVC pattern, depending on the model's structure and purpose.
 
-<div style="display: flex; justify-content: space-between;margin-bottom:10px">
+<div style="display: flex; justify-content: space-between; gap: 1em; margin-bottom: 10px; flex-wrap: wrap;">
 
 {% raw %}
 <div class="mermaid">
 flowchart TB;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
-Step0["User"] -- Uses --> Step1["Controller"]:::boxfont
-Step1["Controller"] -- Manipulates --> Step2["Model"]:::boxfont
-Step2["Model"] -- Updates --> Step3["View"]:::boxfont
-Step3["View"] -- Sees --> Step0["User"]:::boxfont
+Step0["User"] -- Uses --> Step1["Controller"]
+Step1["Controller"] -- Manipulates --> Step2["Model"]
+Step2["Model"] -- Updates --> Step3["View"]
+Step3["View"] -- Sees --> Step0["User"]
 </div>
-{% endraw %}
 
-{% raw %}
 <div class="mermaid">
 flowchart TB;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
-Step0["User"] -- Uses -->  Step1["Controller"]:::boxfont
-Step1["Controller"] -- Manipulates --> Step2["Model"]:::boxfont
-Step2["Model"] -- Returns --> Step1["Controller"]:::boxfont
-Step1["Controller"] -- Sees --> Step0["User"]:::boxfont
+Step0["User"] -- Uses -->  Step1["Controller"]
+Step1["Controller"] -- Manipulates --> Step2["Model"]
+Step2["Model"] -- Returns --> Step1["Controller"]
+Step1["Controller"] -- Sees --> Step0["User"]
 </div>
-{% endraw %}
 
-{% raw %}
 <div class="mermaid">
 flowchart TB;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
-Step0["User"] -- Uses -->  Step1["Controller"]:::boxfont
-Step1["Controller 1"] -- Activates --> Step2["Controller 2"]:::boxfont
-Step2["Controller 2"] -- Manipulates --> Step3["Model"]:::boxfont
-Step3["Model"] -- Returns --> Step2["Controller 2"]:::boxfont
-Step2["Controller 2"] -- Sees --> Step0["User"]:::boxfont
+Step0["User"] -- Uses -->  Step1["Controller"]
+Step1["Controller 1"] -- Activates --> Step2["Controller 2"]
+Step2["Controller 2"] -- Manipulates --> Step3["Model"]
+Step3["Model"] -- Returns --> Step2["Controller 2"]
+Step2["Controller 2"] -- Sees --> Step0["User"]
 </div>
 {% endraw %}
 
@@ -76,11 +60,10 @@ The Model layer is where data manipulation occurs. This can range from complex c
 
 <div class="mermaid">
 flowchart LR;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
 
-Step0["User"]:::boxfont -- <b>Step 1<br></b>Provides Data -->  Step2["Profitability Model"]:::boxfont
-Step2["Profitability Model"]:::boxfont <-- <b>Step 2<br></b>Calculates the Gross Margin -->  Step3["Get Gross Margin"]:::boxfont
-Step2["Profitability Model"]:::boxfont  --<b>Step 3<br></b> Returns the Gross Margin --> Step0["User"]:::boxfont
+Step0["User"] -- <b>Step 1<br></b>Provides Data -->  Step2["Profitability Model"]
+Step2["Profitability Model"] <-- <b>Step 2<br></b>Calculates the Gross Margin -->  Step3["Get Gross Margin"]
+Step2["Profitability Model"]  --<b>Step 3<br></b> Returns the Gross Margin --> Step0["User"]
 </div>
 
 For example, a Gross Margin calculation function shouldn't require input data with specific column names. Instead, it should accept generic inputs like two Series, Arrays, Floats, or Integers. This approach promotes creating "dumb" calculation functions, devoid of application-specific logic.
@@ -111,14 +94,13 @@ The View layer is responsible for presenting data. This can be a table, a graph,
 
 <div class="mermaid">
 flowchart LR;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
 
-Step0["User"]:::boxfont -- <b>Step 1<br></b>Provides Data -->  Step2["Profitability Model"]:::boxfont
-Step2["Profitability Model"]:::boxfont <-- <b>Step 2<br></b>Calculates the Gross Margin -->  Step3["Get Gross Margin"]:::boxfont
-Step2["Profitability Model"]:::boxfont  --<b>Step 3<br></b> Returns the Gross Margin --> Step0["User"]:::boxfont
-Step0["User"]:::boxfont -- <b>Step 4<br></b>Provides Gross Margin -->  Step4["Profitability View"]:::boxfont
-Step4["Profitability View"]:::boxfont <-- <b>Step 5<br></b>Plot the Gross Margin -->  Step5["Plot Gross Margin"]:::boxfont
-Step4["Profitability View"]:::boxfont -- <b>Step 6<br></b>Shows the Gross Margin Plot --> Step0["User"]:::boxfont
+Step0["User"] -- <b>Step 1<br></b>Provides Data -->  Step2["Profitability Model"]
+Step2["Profitability Model"] <-- <b>Step 2<br></b>Calculates the Gross Margin -->  Step3["Get Gross Margin"]
+Step2["Profitability Model"]  --<b>Step 3<br></b> Returns the Gross Margin --> Step0["User"]
+Step0["User"] -- <b>Step 4<br></b>Provides Gross Margin -->  Step4["Profitability View"]
+Step4["Profitability View"] <-- <b>Step 5<br></b>Plot the Gross Margin -->  Step5["Plot Gross Margin"]
+Step4["Profitability View"] -- <b>Step 6<br></b>Shows the Gross Margin Plot --> Step0["User"]
 </div>
 
 See below how such a view could look like:
@@ -152,11 +134,10 @@ The Controller layer contains the logic that connects the Model and View. It han
 
 <div class="mermaid">
 flowchart LR;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
 
-Step0["User"]:::boxfont -- <b>Step 1<br></b>Request Data -->  Step3["Ratios Controller"]:::boxfont
-Step3["Ratios Controller"]:::boxfont <-- <b>Step 2<br></b>Calculates the Gross Margin --> Step2["Profitability Model"]:::boxfont
-Step3["Ratios Controller"]:::boxfont -- <b>Step 3<br></b>Shows the Gross Margin Data --> Step0["User"]:::boxfont
+Step0["User"] -- <b>Step 1<br></b>Request Data -->  Step3["Ratios Controller"]
+Step3["Ratios Controller"] <-- <b>Step 2<br></b>Calculates the Gross Margin --> Step2["Profitability Model"]
+Step3["Ratios Controller"] -- <b>Step 3<br></b>Shows the Gross Margin Data --> Step0["User"]
 </div>
 
 Crucially, the Controller should perform <u>no</u> core calculations; its role is purely to orchestrate data flow between the Model and View. Controller logic is often encapsulated within classes. For instance, the Gross Margin calculation might be accessed via a method within a `Ratios` class (see the actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/ratios_controller.py#L2310-L2374){: target="_blank"}):
@@ -210,12 +191,11 @@ It's also possible, and sometimes beneficial, to have multiple Controllers. For 
 
 <div class="mermaid">
 flowchart LR;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
 
-Step0["User"]:::boxfont-- <b>Step 1<br></b>Initializes the FinanceToolkit -->  Step1["Toolkit Controller"]:::boxfont
-Step1["Toolkit Controller"] <-- <b>Step 2<br></b>Asks for Fundamental Data --> Step2a["Fundamentals Model"]:::boxfont
-Step1["Toolkit Controller"] <-- <b>Step 3<br></b>Asks for Historical Data --> Step2b["Historical Model"]:::boxfont
-Step1["Toolkit Controller"] -- <b>Step 4<br></b>Initializes the Ratios Controller --> Step3["Ratios Controller"]:::boxfont
+Step0["User"]-- <b>Step 1<br></b>Initializes the FinanceToolkit -->  Step1["Toolkit Controller"]
+Step1["Toolkit Controller"] <-- <b>Step 2<br></b>Asks for Fundamental Data --> Step2a["Fundamentals Model"]
+Step1["Toolkit Controller"] <-- <b>Step 3<br></b>Asks for Historical Data --> Step2b["Historical Model"]
+Step1["Toolkit Controller"] -- <b>Step 4<br></b>Initializes the Ratios Controller --> Step3["Ratios Controller"]
 </div>
 
 This main controller then initializes a dedicated `ratios_controller.py` responsible for ratio calculations. This separation prevents the main Toolkit Controller from becoming overloaded and allows the Ratios Controller to be potentially used independently. For example, in `toolkit_controller.py`, the Ratios Controller is initialized like this (see actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/toolkit_controller.py#L400-L523){: target="_blank"}):
@@ -265,12 +245,11 @@ In addition to the Model, View, and Controller modules, a `helpers` module can b
 
 <div class="mermaid">
 flowchart LR;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
 
-Step0["User"]:::boxfont -- <b>Step 1<br></b>Request Data -->  Step4["Ratios Controller"]:::boxfont
-Step4["Ratios Controller"]:::boxfont <-- <b>Step 2<br></b>Calculates the Gross Margin --> Step2["Profitability Model"]:::boxfont
-Step4["Ratios Controller"]:::boxfont <-- <b>Step 3<br></b>Calculates the Growth --> Step3["Helpers"]:::boxfont
-Step4["Ratios Controller"]:::boxfont -- <b>Step 4<br></b>Shows the Growth of the Gross Margin --> Step0["User"]:::boxfont
+Step0["User"] -- <b>Step 1<br></b>Request Data -->  Step4["Ratios Controller"]
+Step4["Ratios Controller"] <-- <b>Step 2<br></b>Calculates the Gross Margin --> Step2["Profitability Model"]
+Step4["Ratios Controller"] <-- <b>Step 3<br></b>Calculates the Growth --> Step3["Helpers"]
+Step4["Ratios Controller"] -- <b>Step 4<br></b>Shows the Growth of the Gross Margin --> Step0["User"]
 </div>
 
 For example, consider a function that calculates the growth of a pd.Series or pd.DataFrame. Since growth calculation might be needed for ratios, technical indicators, performance metrics, etc., placing it in a central `helpers` module avoids code duplication. See the actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/helpers.py#L129-L207){: target="_blank"} and an example below:
@@ -309,15 +288,14 @@ The Finance Toolkit applies this methodology, utilizing the structure shown in t
 
 <div class="mermaid">
 flowchart TB;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
 
-Step0["User"] -- <b>Step 1<br></b>Initializes the FinanceToolkit -->  Step1["Toolkit Controller"]:::boxfont
-Step1["Toolkit Controller"] <-- <b>Step 2<br></b>Asks for Fundamental Data --> Step2a["Fundamentals Model"]:::boxfont
-Step1["Toolkit Controller"] <-- <b>Step 3<br></b>Asks for Historical Data --> Step2b["Historical Model"]:::boxfont
-Step1["Toolkit Controller"] -- <b>Step 4<br></b>Initializes the Ratios Controller --> Step3["Ratios Controller"]:::boxfont
-Step3["Ratios Controller"] -- <b>Step 5a<br></b>Calculates the Gross Margin --> Step2["Profitability Model"]:::boxfont
-Step3["Ratios Controller"] -- <b>Step 5b<br></b>Optional Growth Calculation --> Step4["Helpers"]:::boxfont
-Step3["Ratios Controller"] -- <b>Step 6<br></b>Shows the Gross Margin Data --> Step0["User"]:::boxfont
+Step0["User"] -- <b>Step 1<br></b>Initializes the FinanceToolkit -->  Step1["Toolkit Controller"]
+Step1["Toolkit Controller"] <-- <b>Step 2<br></b>Asks for Fundamental Data --> Step2a["Fundamentals Model"]
+Step1["Toolkit Controller"] <-- <b>Step 3<br></b>Asks for Historical Data --> Step2b["Historical Model"]
+Step1["Toolkit Controller"] -- <b>Step 4<br></b>Initializes the Ratios Controller --> Step3["Ratios Controller"]
+Step3["Ratios Controller"] -- <b>Step 5a<br></b>Calculates the Gross Margin --> Step2["Profitability Model"]
+Step3["Ratios Controller"] -- <b>Step 5b<br></b>Optional Growth Calculation --> Step4["Helpers"]
+Step3["Ratios Controller"] -- <b>Step 6<br></b>Shows the Gross Margin Data --> Step0["User"]
 </div>
 
 Following this structure, here's how you might execute the code:

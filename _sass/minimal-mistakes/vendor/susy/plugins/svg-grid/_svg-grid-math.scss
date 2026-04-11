@@ -1,3 +1,5 @@
+@use "sass:meta";
+
 // SVG Grid Math
 // =============
 
@@ -49,9 +51,9 @@
 @function _susy-svg-offset(
   $grid
 ) {
-  $columns: su-valid-columns(map-get($grid, 'columns'));
-  $gutters: su-valid-gutters(map-get($grid, 'gutters'));
-  $container: su-valid-spread(map-get($grid, 'container-spread')) + 1;
+  $columns: su-valid-columns(map.get($grid, 'columns'));
+  $gutters: su-valid-gutters(map.get($grid, 'gutters'));
+  $container: su-valid-spread(map.get($grid, 'container-spread')) + 1;
 
   @if ($container == 0) {
     @return null;
@@ -59,7 +61,7 @@
 
   $gutter: su-call('su-gutter', $grid);
 
-  @if (type-of($gutter) == 'string') {
+  @if (meta.type-of($gutter) == 'string') {
     @return 'calc(#{$container} * #{$gutter} / 2)';
   }
 

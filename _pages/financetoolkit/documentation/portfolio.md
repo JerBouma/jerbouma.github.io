@@ -16,32 +16,21 @@ The Portfolio module is meant to calculate important portfolio metrics allows yo
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```python
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, fixed income, risk, performance and economics, please have a look below:
-
-<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
-    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
-    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
-    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
-    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
-    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
-    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
-    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
-    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
-    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--warning" style="flex: 1;font-size:10px;">Portfolio</a>
-</div>
-
 {% include algolia.html %}
 
 ## __init__
 Initialize the Portfolio class with the provided configuration file and portfolio dataset.
- This constructor sets up a portfolio management instance, configuring it with a dataset (either as a pandas DataFrame or a file path to an Excel/CSV file), a benchmark ticker for performance comparison, and various settings specified through a configuration file (YAML format). The configuration file defines key columns for cash flow analysis, such as date columns, asset tickers, price, volume, and transaction costs. It also allows for the use of quarterly data and fetching of historical financial data via an API.
+
+ This constructor sets up a portfolio management instance, configuring it with a dataset (either as a
+ pandas DataFrame or a file path to an Excel/CSV file), a benchmark ticker for performance comparison,
+ and various settings specified through a configuration file (YAML format). The configuration file defines
+ key columns for cash flow analysis, such as date columns, asset tickers, price, volume, and transaction costs.
+ It also allows for the use of quarterly data and fetching of historical financial data via an API.
 
 **Args:**
  - <u>portfolio_dataset (pd.DataFrame | str | None):</u> A pandas DataFrame containing the portfolio dataset,
@@ -64,8 +53,8 @@ Initialize the Portfolio class with the provided configuration file and portfoli
  ValueError: If no portfolio dataset is provided and `example` is set to False.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Portfolio
 
 # Download porfolio files
@@ -81,15 +70,21 @@ portfolio = Portfolio(example=True)
 portfolio = Portfolio(
 portfolio_dataset="portfolio_template.xlsx",
 api_key="FINANCIAL_MODELING_PREP_KEY")
-{% endhighlight %}
-
+```
 ## toolkit
 Converts the Portfolio to a Finance Toolkit object.
- This method converts the Portfolio object to a Finance Toolkit object, enabling the use of the Toolkit's 150+ financial metrics and indicators for the portfolio's assets.
- Next to the historical data, the portfolio weights are also loaded in the Toolkit class. This, together with the "Portfolio" ticker, enables the possibility to calculate any Toolkit metric for all assets in the portfolio in combination with the Portfolio itself which is a weighted average of other results based on the portfolio weights over time.
 
-{% include code_header.html %}
-{% highlight python %}
+ This method converts the Portfolio object to a Finance Toolkit object, enabling the
+ use of the Toolkit's 150+ financial metrics and indicators for the portfolio's assets.
+
+ Next to the historical data, the portfolio weights are also
+ loaded in the Toolkit class. This, together with the "Portfolio" ticker, enables
+ the possibility to calculate any Toolkit metric for all assets in the portfolio
+ in combination with the Portfolio itself which is a weighted average of other
+ results based on the portfolio weights over time.
+
+
+```python
 from financetoolkit import Portfolio
 
 portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -97,8 +92,7 @@ portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
 toolkit = portfolio.toolkit
 
 toolkit.ratios.get_net_profit_margin()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -130,8 +124,15 @@ Which returns:
 
 ## read_portfolio_dataset
 Read and consolidate cash flow data from Excel or CSV files into a single DataFrame.
- This method consolidates portfolio data from one or more Excel or CSV files. It processes the data by identifying and handling duplicate entries, adjusting for the required date format, and renaming columns based on configuration or user inputs. It ensures consistency across transaction details, including descriptions, amounts, costs, and currencies, before returning the data as a structured DataFrame.
- The function also allows for customization of the column names used in the dataset, including columns for transaction dates, asset tickers, prices, volumes, and costs/incomes. If necessary, adjustments can be made to handle duplicated entries in the dataset based on configuration settings.
+
+ This method consolidates portfolio data from one or more Excel or CSV files. It processes the data by
+ identifying and handling duplicate entries, adjusting for the required date format, and renaming columns
+ based on configuration or user inputs. It ensures consistency across transaction details, including
+ descriptions, amounts, costs, and currencies, before returning the data as a structured DataFrame.
+
+ The function also allows for customization of the column names used in the dataset, including columns
+ for transaction dates, asset tickers, prices, volumes, and costs/incomes. If necessary, adjustments
+ can be made to handle duplicated entries in the dataset based on configuration settings.
 
 **Args:**
  - <u>adjust_duplicates (bool | None):</u> Flag to indicate whether to adjust duplicate rows in the dataset.
@@ -175,15 +176,14 @@ Read and consolidate cash flow data from Excel or CSV files into a single DataFr
  the date and ticker columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Portfolio
 
 portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
 
 portfolio.read_portfolio_dataset()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -202,22 +202,42 @@ Which returns:
 
 ## collect_benchmark_historical_data
 Collect and align historical benchmark data with the portfolio's data.
- The following columns are included:
- 
-- Open: the opening price for the benchmark over time. 
-- High: the highest price for the benchmark over time. 
-- Low: the lowest price for the benchmark over time. 
-- Close: the closing price for the benchmark over time. 
-- Adj Close: the adjusted closing price for the benchmark over time. 
-- Volume: the volume of the benchmark over time. 
-- Dividends: the dividends of the benchmark over time. 
-- Returns: the returns of the benchmark over time. 
-- Volatility: the volatility of the benchmark over the whole period. 
-- Excess Return: the excess return (return minus risk free rate) of the benchmark over time. 
-- Excess Volatility: the excess volatility (return minus risk free rate) of the benchmark over time. 
+
+ The following columns are included:
+
+ 
+- Open: the opening price for the benchmark over time.
+ 
+- High: the highest price for the benchmark over time.
+ 
+- Low: the lowest price for the benchmark over time.
+ 
+- Close: the closing price for the benchmark over time.
+ 
+- Adj Close: the adjusted closing price for the benchmark over time.
+ 
+- Volume: the volume of the benchmark over time.
+ 
+- Dividends: the dividends of the benchmark over time.
+ 
+- Returns: the returns of the benchmark over time.
+ 
+- Volatility: the volatility of the benchmark over the whole period.
+ 
+- Excess Return: the excess return (return minus risk free rate) of the benchmark over time.
+ 
+- Excess Volatility: the excess volatility (return minus risk free rate) of the benchmark over time.
+ 
 - Cumulative Return: the cumulative return of the benchmark over time.
- This method retrieves historical benchmark data (daily, weekly, monthly, quarterly, and yearly) for the portfolio, based on a specified benchmark ticker or a mapping of portfolio tickers to their corresponding benchmark tickers. The retrieved benchmark data is then aligned with the portfolio's historical data, ensuring that the dates of the benchmark data match the dates of the portfolio's transactions.
- The method can retrieve data for a single benchmark ticker or for multiple benchmarks depending on the portfolio tickers. The resulting benchmark data is returned in a structured DataFrame.
+
+ This method retrieves historical benchmark data (daily, weekly, monthly, quarterly, and yearly)
+ for the portfolio, based on a specified benchmark ticker or a mapping of portfolio tickers to
+ their corresponding benchmark tickers. The retrieved benchmark data is then aligned with the
+ portfolio's historical data, ensuring that the dates of the benchmark data match the dates of
+ the portfolio's transactions.
+
+ The method can retrieve data for a single benchmark ticker or for multiple benchmarks depending
+ on the portfolio tickers. The resulting benchmark data is returned in a structured DataFrame.
 
 **Args:**
  - <u>benchmark_ticker (str | None):</u> The default benchmark ticker symbol to use if no per-ticker mapping
@@ -242,15 +262,14 @@ Collect and align historical benchmark data with the portfolio's data.
  - `self._benchmark_specific_prices`: The specific benchmark price for each portfolio transaction.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Portfolio
 
 portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
 
 portfolio.collect_benchmark_historical_data()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -269,22 +288,42 @@ Which returns:
 
 ## collect_historical_data
 Collect and adjust historical price data for the portfolio's tickers.
- The following columns are included:
- 
-- Open: the opening price of each asset over time. 
-- High: the highest price of each asset over time. 
-- Low: the lowest price of each asset over time. 
-- Close: the closing price of each asset over time. 
-- Adj Close: the adjusted closing price of each asset over time. 
-- Volume: the volume of each asset over time. 
-- Dividends: the dividends of each asset over time. 
-- Returns: the returns of each asset over time. 
-- Volatility: the volatility of each asset over the whole period. 
-- Excess Return: the excess return (return minus risk free rate) of each asset over time. 
-- Excess Volatility: the excess volatility (return minus risk free rate) of each asset over time. 
+
+ The following columns are included:
+
+ 
+- Open: the opening price of each asset over time.
+ 
+- High: the highest price of each asset over time.
+ 
+- Low: the lowest price of each asset over time.
+ 
+- Close: the closing price of each asset over time.
+ 
+- Adj Close: the adjusted closing price of each asset over time.
+ 
+- Volume: the volume of each asset over time.
+ 
+- Dividends: the dividends of each asset over time.
+ 
+- Returns: the returns of each asset over time.
+ 
+- Volatility: the volatility of each asset over the whole period.
+ 
+- Excess Return: the excess return (return minus risk free rate) of each asset over time.
+ 
+- Excess Volatility: the excess volatility (return minus risk free rate) of each asset over time.
+ 
 - Cumulative Return: the cumulative return of each asset over time.
- This method retrieves historical price data (daily, weekly, monthly, quarterly, and yearly) for the portfolio's tickers and adjusts for any currency mismatches if necessary. It fetches data from a specified data source, applies currency conversion where applicable, and stores the adjusted data in separate DataFrames for different time periods (daily, weekly, monthly, quarterly, yearly).
- The method uses the Toolkit class to fetch historical price data and the Currency Toolkit to handle currency conversions if the portfolio’s transaction currency does not match the historical data's currency.
+
+ This method retrieves historical price data (daily, weekly, monthly, quarterly, and yearly)
+ for the portfolio's tickers and adjusts for any currency mismatches if necessary. It fetches
+ data from a specified data source, applies currency conversion where applicable, and stores the
+ adjusted data in separate DataFrames for different time periods (daily, weekly, monthly, quarterly, yearly).
+
+ The method uses the Toolkit class to fetch historical price data and the Currency Toolkit to
+ handle currency conversions if the portfolio’s transaction currency does not match the historical
+ data's currency.
 
 **Args:**
  - <u>rounding (int | None):</u> An optional integer specifying the number of decimal places to round the
@@ -308,15 +347,14 @@ Collect and adjust historical price data for the portfolio's tickers.
  historical data currencies are found (e.g., for ISIN codes).
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Portfolio
 
 portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
 
 portfolio.collect_historical_data()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -335,17 +373,32 @@ Which returns:
 
 ## get_positions_overview
 Calculate and provide an overview of the portfolio's positions, including key statistics and performance metrics.
- The following columns are included:
- 
-- Volume: the volume of each asset over time. 
-- Costs: the costs of each asset over time. 
-- Invested Amount: the invested amount over time. 
-- Current Value: the current value of the asset based on the market value on that specific day over time. 
-- Cumulative Return: the cumulative return of the asset over time. 
-- Invested Weight: the weight of the asset in the portfolio based on the invested amount over time. 
+
+ The following columns are included:
+
+ 
+- Volume: the volume of each asset over time.
+ 
+- Costs: the costs of each asset over time.
+ 
+- Invested Amount: the invested amount over time.
+ 
+- Current Value: the current value of the asset based on the market value on that specific day over time.
+ 
+- Cumulative Return: the cumulative return of the asset over time.
+ 
+- Invested Weight: the weight of the asset in the portfolio based on the invested amount over time.
+ 
 - Current Weight: the weight of the asset in the portfolio based on the current value over time.
- This method computes an overview of the portfolio's positions by calculating important statistics and performance metrics based on the historical data and transactions. If necessary data has not been collected, it will trigger the collection of historical and benchmark data using the `collect_historical_data` and `collect_benchmark_historical_data` methods. Additionally, it will compute an overview of transactions using the `get_transactions_overview` method.
- The resulting overview includes information about the positions, such as the value, performance, and other key metrics. The data is rounded to the specified precision before being returned.
+
+ This method computes an overview of the portfolio's positions by calculating important statistics and performance
+ metrics based on the historical data and transactions. If necessary data has not been collected, it will trigger
+ the collection of historical and benchmark data using the `collect_historical_data` and
+ `collect_benchmark_historical_data` methods. Additionally, it will compute an overview of
+ transactions using the `get_transactions_overview` method.
+
+ The resulting overview includes information about the positions, such as the value, performance, and other
+ key metrics. The data is rounded to the specified precision before being returned.
 
 **Args:**
  - <u>rounding (int | None):</u> An optional integer specifying the number of decimal places to round the data.
@@ -367,15 +420,14 @@ Calculate and provide an overview of the portfolio's positions, including key st
  - The resulting overview DataFrame is rounded to the specified or default precision.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Portfolio
 
 portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
 
 portfolio.get_positions_overview()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -393,27 +445,55 @@ Which returns:
  | 2025-02-28 | 101 | -14 | 1747.63 | 4932.84 | 2.8226 | 0.0126 | 0.0054 |
 
 ## get_portfolio_overview
-Calculate and provide an overview of the portfolio's key statistics, including performance metrics and cost
+Calculate and provide an overview of the portfolio's key statistics, including performance metrics and
+ cost
 -related information.
- The following columns are included:
- 
-- Identifier: The name of the asset, specifically the ticker (e.g. AAPL) 
-- Volume: The total volume of the asset representing all transactions. 
-- Costs: The total costs associated with the asset transactions. 
-- Price: The mean price of the asset based on the transactions. 
-- Invested: The total amount invested in the asset, this is the Price times the Volume minus Costs. 
-- Latest Price: The latest available price of the asset obtained from historical data. 
-- Latest Value: The total value of the asset based on the latest price and the total volume minus costs. 
-- Return: The return of the asset based on the latest value and invested amount. 
-- Return Value: The absolute return value of the asset based on the latest value and invested amount. 
-- Benchmark Return: The return of the asset's benchmark based on the latest value and invested amount. 
-- Volatility: The yearly volatility of the asset based on the historical data, this computes the volatility over the entire period and multiplies this number by SQRT(252). 
-- Benchmark Volatility: The yearly volatility of the asset's benchmark based on the historical data, this computes the volatility over the entire period and multiplies this number by SQRT(252). 
-- Alpha: The alpha is based on the difference between the asset's return and the benchmark return. 
-- Beta: The beta is based on the asset's return and the benchmark return. It measures the asset's volatility compared to the benchmark. A beta >1 indicates that the asset is more volatile than the benchmark and a beta <1 indicates that the asset is less volatile than the benchmark. 
+
+ The following columns are included:
+
+ 
+- Identifier: The name of the asset, specifically the ticker (e.g. AAPL)
+ 
+- Volume: The total volume of the asset representing all transactions.
+ 
+- Costs: The total costs associated with the asset transactions.
+ 
+- Price: The mean price of the asset based on the transactions.
+ 
+- Invested: The total amount invested in the asset, this is the Price times the Volume minus Costs.
+ 
+- Latest Price: The latest available price of the asset obtained from historical data.
+ 
+- Latest Value: The total value of the asset based on the latest price and the total volume minus costs.
+ 
+- Return: The return of the asset based on the latest value and invested amount.
+ 
+- Return Value: The absolute return value of the asset based on the latest value and invested amount.
+ 
+- Benchmark Return: The return of the asset's benchmark based on the latest value and invested amount.
+ 
+- Volatility: The yearly volatility of the asset based on the historical data, this computes the volatility
+ over the entire period and multiplies this number by SQRT(252).
+ 
+- Benchmark Volatility: The yearly volatility of the asset's benchmark based on the historical data, this computes
+ the volatility over the entire period and multiplies this number by SQRT(252).
+ 
+- Alpha: The alpha is based on the difference between the asset's return and the benchmark return.
+ 
+- Beta: The beta is based on the asset's return and the benchmark return. It measures the asset's volatility
+ compared to the benchmark. A beta >1 indicates that the asset is more volatile than the benchmark and a beta <1
+ indicates that the asset is less volatile than the benchmark.
+ 
 - Weight: The weight of the asset in the portfolio based on the latest value and the total value of the portfolio.
- When recalculating these numbers, it is important to note that results are calculated before the rounding parameter is applied which can lead to some discrepancies in the results.
- This method computes a detailed overview of the portfolio, calculating various key statistics such as performance, costs, and returns. If necessary data has not been collected, it will automatically trigger data collection using the `collect_historical_data` and `collect_benchmark_historical_data` methods. The portfolio overview is generated based on the portfolio dataset and benchmark data, and is rounded to the specified precision before being returned.
+
+ When recalculating these numbers, it is important to note that results are calculated before the
+ rounding parameter is applied which can lead to some discrepancies in the results.
+
+ This method computes a detailed overview of the portfolio, calculating various key statistics such as performance,
+ costs, and returns. If necessary data has not been collected, it will automatically trigger data collection using
+ the `collect_historical_data` and `collect_benchmark_historical_data` methods. The portfolio overview is
+ generated based on the portfolio dataset and benchmark data, and is rounded to the specified precision
+ before being returned.
 
 **Args:**
  - <u>include_portfolio (bool):</u> A boolean flag indicating whether the portfolio itself should be included
@@ -438,15 +518,14 @@ Calculate and provide an overview of the portfolio's key statistics, including p
  - The resulting DataFrame is rounded to the specified or default precision.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Portfolio
 
 portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
 
 portfolio.get_portfolio_overview()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -465,7 +544,12 @@ Which returns:
 
 ## get_portfolio_performance
 Calculate portfolio performance metrics for a specified period.
- This method calculates key performance metrics, such as returns, for the portfolio over a specified period. The available periods are 'yearly', 'quarterly', 'monthly', 'weekly', and 'daily'. It uses the positions overview dataset for these calculations. If the necessary data has not been collected, it triggers the collection of historical and benchmark data.
+
+ This method calculates key performance metrics, such as returns, for the portfolio
+ over a specified period. The available periods are 'yearly', 'quarterly', 'monthly',
+ 'weekly', and 'daily'. It uses the positions overview dataset for these calculations.
+ If the necessary data has not been collected, it triggers the collection of historical
+ and benchmark data.
 
 **Args:**
  - <u>period (str | None):</u> The time period for which portfolio performance metrics should be calculated.
@@ -491,15 +575,14 @@ Calculate portfolio performance metrics for a specified period.
  (or the default configuration).
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Portfolio
 
 portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
 
 portfolio.get_portfolio_performance(period='weekly')
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -518,7 +601,13 @@ Which returns:
 
 ## get_transactions_overview
 Calculate and collect transaction overview ratios based on the provided data.
- This method calculates various transaction overview ratios, such as returns, costs, and profit & loss (PnL), based on the transaction dataset. The calculated ratios are added as new columns to the portfolio dataset. It also provides the option to use different methods for calculating PnL (FIFO, LIFO, or AVERAGE). The method ensures that necessary historical and benchmark data is available before performing calculations.
+
+ This method calculates various transaction overview ratios, such as returns, costs,
+ and profit & loss (PnL), based on the transaction dataset. The calculated ratios
+ are added as new columns to the portfolio dataset. It also provides the option
+ to use different methods for calculating PnL (FIFO, LIFO, or AVERAGE). The method
+ ensures that necessary historical and benchmark data is available before performing
+ calculations.
 
 **Args:**
  - <u>rounding (int | None):</u> The number of decimal places to round the output to.
@@ -544,15 +633,14 @@ Calculate and collect transaction overview ratios based on the provided data.
  - If no rounding is provided, the rounding precision specified in the configuration is used.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Portfolio
 
 portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
 
 portfolio.get_transactions_overview()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -571,7 +659,12 @@ Which returns:
 
 ## get_transactions_performance
 Calculate transaction performance metrics for a specified period.
- This method calculates various transaction performance metrics, such as returns, costs, and benchmarks, for the specified period. The calculation is based on historical price data for the corresponding period, including both the portfolio and benchmark datasets. It provides an overview of how the portfolio's transactions have performed in comparison to the benchmark over the given period.
+
+ This method calculates various transaction performance metrics, such as returns,
+ costs, and benchmarks, for the specified period. The calculation is based on
+ historical price data for the corresponding period, including both the portfolio
+ and benchmark datasets. It provides an overview of how the portfolio's transactions
+ have performed in comparison to the benchmark over the given period.
 
 **Args:**
  - <u>period (str | None):</u> The time period for which transaction performance metrics
@@ -600,15 +693,14 @@ Calculate transaction performance metrics for a specified period.
  - If no rounding is specified, the rounding precision from the configuration is used.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Portfolio
 
 portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
 
 portfolio.get_transactions_performance(period='quarterly')
-{% endhighlight %}
-
+```
 
 Which returns:
 

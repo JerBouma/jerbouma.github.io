@@ -16,27 +16,11 @@ The Options module is meant to calculate important options metrics such as the F
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```python
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 If you are looking for documentation regarding the toolkit, discovery, ratios, technicals, fixed income, risk, performance and economics, please have a look below:
-
-<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
-    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
-    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
-    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
-    <a href="/projects/financetoolkit/docs/options" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
-    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
-    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
-    <a href="/projects/financetoolkit/docs/risk" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
-    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
-    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
-</div>
-
 {% include algolia.html %}
 
 ## __init__
@@ -51,8 +35,8 @@ Initializes the Options Controller Class. The Options module is meant to calcula
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["TSLA", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -60,8 +44,7 @@ toolkit = Toolkit(["TSLA", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY")
 all_greeks = toolkit.options.collect_all_greeks(start_date='2024-01-03')
 
 all_greeks.loc['TSLA', '2024-01-04']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -98,8 +81,8 @@ The data comes from Yahoo Finance and is not always available. If the data is no
  the index and the time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -107,8 +90,7 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 option_chains = toolkit.options.get_option_chains()
 
 option_chains.loc[('AAPL', option_chains['In The Money'] == True), :]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -178,8 +160,8 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -187,8 +169,7 @@ toolkit = Toolkit(["AMZN", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
 black_scholes = toolkit.options.get_black_scholes_model()
 
 black_scholes.loc['AMZN']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -249,8 +230,8 @@ To determine the Implied Volatility, the Black Scholes Model is used to calculat
  dates as the columns. If show_expiration_dates is True, it will return a list of expiration dates.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["MSFT", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -258,8 +239,7 @@ toolkit = Toolkit(["MSFT", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
 implied_volatility = toolkit.options.get_implied_volatility()
 
 implied_volatility.loc['AAPL']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -341,8 +321,8 @@ The resulting output is a DataFrame containing the tickers, strike prices and mo
  timesteps as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -352,8 +332,7 @@ start_date='2024-02-02'
 )
 
 binomial_trees_model.loc['AAPL', 140]
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -408,8 +387,8 @@ The resulting output is a DataFrame containing the tickers and movements as the 
  timesteps as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "ASML"], api_key=API_KEY)
@@ -419,8 +398,7 @@ start_date='2020-06-22', timesteps=4
 )
 
 stock_price_simulation.loc['AMZN']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -504,8 +482,8 @@ By default the most recent risk free rate, dividend yield and stock price is use
  time to expiration and greeks as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["TSLA", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY")
@@ -513,8 +491,7 @@ toolkit = Toolkit(["TSLA", "MU"], api_key="FINANCIAL_MODELING_PREP_KEY")
 all_greeks = toolkit.options.collect_all_greeks(start_date='2024-01-03')
 
 all_greeks.loc['TSLA', '2024-01-04']
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -571,15 +548,14 @@ By default the most recent risk free rate, dividend yield and stock price is use
  and the time to expiration and greeks as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.collect_first_order_greeks()
-{% endhighlight %}
-
+```
 ## get_delta
 Calculate the delta of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The delta is the rate of change of the option price with respect to the price of the underlying asset.
 
@@ -623,15 +599,14 @@ Note that the delta of a call option is always between 0 and 1, while the delta 
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_delta()
-{% endhighlight %}
-
+```
 ## get_dual_delta
 Calculate the dual delta of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The dual delta is the actual probability of an option finishing in the money which is the first derivative of option price with respect to strike.
 
@@ -671,15 +646,14 @@ The Dual Delta can be interpreted as the probability of an option finishing in t
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_dual_delta()
-{% endhighlight %}
-
+```
 ## get_vega
 Calculate the vega of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vega is the rate of change of the option price with respect to the volatility of the underlying asset.
 
@@ -722,15 +696,14 @@ Note that the vega of a call option and put option are equal to each other.
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_vega()
-{% endhighlight %}
-
+```
 ## get_theta
 Calculate the theta of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The theta is the rate of change of the option price with respect to the passage of time.
 
@@ -775,15 +748,14 @@ The Theta can be interpreted as follows:
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_theta()
-{% endhighlight %}
-
+```
 ## get_rho
 Calculate the rho of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The rho is the rate of change of the option price with respect to the risk free interest rate.
 
@@ -830,15 +802,14 @@ Rho is typically expressed as the amount of money, per share of the underlying, 
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_rho()
-{% endhighlight %}
-
+```
 ## get_epsilon
 Calculate the epsilon of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The epsilon is the rate of change of the option price with respect to the dividend yield.
 
@@ -882,15 +853,14 @@ The Epsilon can be interpreted as follows:
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_epsilon()
-{% endhighlight %}
-
+```
 ## get_lambda
 Calculate the lambda of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The lambda is the rate of change of the option price with respect to the underlying price.
 
@@ -936,15 +906,14 @@ The Lambda can be interpreted as follows:
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_lambda()
-{% endhighlight %}
-
+```
 ## collect_second_order_greeks
 Calculate the second order Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
 
@@ -1024,15 +993,14 @@ Note that the gamma of a call option and put option are equal to each other.
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_gamma()
-{% endhighlight %}
-
+```
 ## get_dual_gamma
 Calculate the gamma of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The gamma is the rate of change of the delta with respect to the price of the underlying asset.
 
@@ -1070,15 +1038,14 @@ Note that the dual gamma of a call option and put option are equal to each other
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_dual_gamma()
-{% endhighlight %}
-
+```
 ## get_vanna
 Calculate the vanna of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vanna is the rate of change of the vega with respect to the price of the underlying asset.
 
@@ -1122,15 +1089,14 @@ Note that the vanna of a call option and put option are equal to each other.
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_vanna()
-{% endhighlight %}
-
+```
 ## get_charm
 Calculate the charm of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The charm is the rate of change of the delta with respect to the time to expiration.
 
@@ -1175,15 +1141,14 @@ The Charm can be interpreted as follows:
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_charm()
-{% endhighlight %}
-
+```
 ## get_vomma
 Calculate the vomma of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vomma is the rate of change of the vega with respect to the volatility of the underlying asset.
 
@@ -1225,15 +1190,14 @@ The vomma can be interpreted as follows:
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_vomma()
-{% endhighlight %}
-
+```
 ## get_vera
 Calculate the vera of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vera is the rate of change of the rho with respect to volatility.
 
@@ -1277,15 +1241,14 @@ Note that the vera of a call option and put option are equal to each other.
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_vera()
-{% endhighlight %}
-
+```
 ## get_veta
 Calculate the veta of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The veta is the rate of change of the vega with respect to the time to expiration.
 
@@ -1329,15 +1292,14 @@ The Veta can be interpreted as follows:
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_veta()
-{% endhighlight %}
-
+```
 ## get_partial_derivative
 Calculate the partial derivative of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The partial derivative is the rate of change of the option price with respect to the strike price.
 
@@ -1375,15 +1337,14 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_partial_derivative()
-{% endhighlight %}
-
+```
 ## collect_third_order_greeks
 Calculate the third order Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
 
@@ -1460,15 +1421,14 @@ Note that the speed of a call option and put option are equal to each other.
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_speed()
-{% endhighlight %}
-
+```
 ## get_zomma
 Calculate the zomma of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The zomma is the rate of change of the gamma with respect to volatility.
 
@@ -1512,15 +1472,14 @@ Note that the zomma of a call option and put option are equal to each other.
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_zomma()
-{% endhighlight %}
-
+```
 ## get_color
 Calculate the color of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The color is the rate of change of the gamma with respect to time to expiration.
 
@@ -1564,15 +1523,14 @@ Note that the color of a call option and put option are equal to each other.
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_color()
-{% endhighlight %}
-
+```
 ## get_ultima
 Calculate the ultima of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The ultima is the rate of change of the vomma with respect to volatility.
 
@@ -1616,12 +1574,11 @@ Note that the ultima of a call option and put option are equal to each other.
  time to expiration as the columns.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "ASML"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.options.get_ultima()
-{% endhighlight %}
-
+```

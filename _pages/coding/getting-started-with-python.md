@@ -12,15 +12,6 @@ sidebar:
 
 If you are new to Python or want to get started, this page is for you. I will cover the basics of Python and how to begin using it. I will also share some tips and tricks I have learned over the years.
 
-<div style="display: flex; justify-content: space-between;margin-bottom:10px">
-    <a href="/modelling/introduction" class="btn btn--info" style="flex: 1;margin-right:5px;">Introduction to Modelling</a>
-    <a href="/modelling/getting-started" class="btn btn--warning" style="flex: 1;margin-right:5px">Getting Started</a>
-    <a href="/modelling/setting-up-your-project" class="btn btn--info" style="flex: 1;margin-right:5px">Setting up your Project</a>
-    <a href="/modelling/structure-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Structure your Model</a>
-    <a href="/modelling/build-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Build your Model</a>
-    <a href="/modelling/test-your-model" class="btn btn--info" style="flex: 1;margin-right:5px">Test your Model</a>
-</div>
-
 This page assumes you have little prior knowledge of Python or need a refresher. Perhaps you have become accustomed to working with Jupyter Notebooks and are looking for the next step. Once you get the hang of it, you can visit the other pages to understand how to structure, test, and maintain a model.
 
 ## Learning the Basics

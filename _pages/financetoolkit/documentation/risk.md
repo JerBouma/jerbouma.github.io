@@ -15,28 +15,11 @@ The Risk module is meant to calculate important risk metrics such as Value at Ri
 
 To install the FinanceToolkit it simply requires the following:
 
-{% include code_header.html %}
-{% highlight bash %}
+```python
 pip install financetoolkit -U
-{% endhighlight %}
+```
 
 If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, fixed income, performance and economics, please have a look below:
-
-<div style="display: flex; justify-content: space-between;" class="show-on-desktop">
-    <a href="/projects/financetoolkit/docs" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Toolkit</a>
-    <a href="/projects/financetoolkit/docs/discovery" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Discovery</a>
-    <a href="/projects/financetoolkit/docs/ratios" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Ratios</a>
-    <a href="/projects/financetoolkit/docs/models" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Models</a>
-    <a href="/projects/financetoolkit/docs/options" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Options</a>
-    <a href="/projects/financetoolkit/docs/technicals" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Technicals</a>
-    <a href="/projects/financetoolkit/docs/fixedincome" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Fixed Income</a>
-    <a href="/projects/financetoolkit/docs/risk" class="btn btn--warning" style="flex: 1;font-size:10px;margin-right:5px">Risk</a>
-    <a href="/projects/financetoolkit/docs/performance" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Performance</a>
-    <a href="/projects/financetoolkit/docs/economics" class="btn btn--info" style="flex: 1;font-size:10px;margin-right:5px">Economics</a>
-    <a href="/projects/financetoolkit/docs/portfolio" class="btn btn--info" style="flex: 1;font-size:10px;">Portfolio</a>
-
-</div>
-
 {% include algolia.html %}
 
 ## __init__
@@ -58,15 +41,14 @@ Initializes the Risk Controller Class.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.get_value_at_risk(period='yearly')
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -104,15 +86,14 @@ Calculates and collects all risk metrics.
  using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.collect_all_metrics()
-{% endhighlight %}
-
+```
 ## get_value_at_risk
 Calculate the Value at Risk (VaR) of an investment portfolio or asset's returns.
 
@@ -143,15 +124,14 @@ The VaR is calculated as the quantile of the return distribution, representing t
  - If `growth` is set to True, the method calculates the growth of VaR values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.get_value_at_risk()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -200,15 +180,14 @@ The CVaR is calculated as the expected loss given that the loss threshold (VaR) 
  - If `growth` is set to True, the method calculates the growth of CVaR values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.get_conditional_value_at_risk()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -255,15 +234,14 @@ The EVaR is calculated as the upper bound of VaR and CVaR with a given confidenc
  - If `growth` is set to True, the method calculates the growth of EVaR values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.get_entropic_value_at_risk()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -308,15 +286,14 @@ Maximum Drawdown (MDD) is a risk management metric that quantifies the largest h
  - If `growth` is set to True, the method calculates the growth of MMD values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.get_maximum_drawdown()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -361,15 +338,14 @@ Ulcer Index = SQRT(SUM[(Pn / Highest High)^2] / n)
  - If `growth` is set to True, the method calculates the growth of VaR values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.get_ulcer_index()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -414,15 +390,14 @@ GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic 
  - If `growth` is set to True, the method calculates the growth of GARCH values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.get_garch()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -482,15 +457,14 @@ For more information about the method, see the following book:
  the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.get_garch_forecast()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -533,15 +507,14 @@ Skewness is a statistical measure used in finance to assess the asymmetry in the
  - If `growth` is set to True, the method calculates the growth of VaR values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["MSFT", "AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.get_skewness()
-{% endhighlight %}
-
+```
 
 Which returns:
 
@@ -580,15 +553,14 @@ Kurtosis is a statistical measure used in finance to evaluate the shape of the p
  - If `growth` is set to True, the method calculates the growth of VaR values using the specified `lag`.
 
  As an example:
-{% include code_header.html %}
-{% highlight python %}
+
+```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["MSFT", "AAPL", "TSLA"]], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.get_kurtosis()
-{% endhighlight %}
-
+```
 
 Which returns:
 
