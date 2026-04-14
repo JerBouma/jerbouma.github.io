@@ -2000,6 +2000,12 @@ body.wide-no-sidebar:not(.no-title) {
     background: rgba(128, 128, 128, 0.05) !important;
     transition: all 0.2s ease !important;
 
+    // Hide the default MM +/- cross icon
+    &::before,
+    &::after {
+      display: none !important;
+    }
+
     &:hover {
       border-color: var(--accent-color) !important;
       background: rgba(56, 189, 248, 0.06) !important;
