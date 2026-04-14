@@ -18,7 +18,7 @@ main:
       - title: OpenBB Terminal
         url: /projects/openbbterminal
   - title: "Modelling"
-    url: /modelling
+    url: /modelling/introduction
     sublinks:
       - title: Getting Started
         url: /modelling/getting-started
@@ -31,7 +31,14 @@ main:
       - title: Test your model
         url: /modelling/test-your-model
   - title: "Media"
-    url: /media
+    url: /appearances
+    sublinks:
+      - title: Appearances
+        url: /appearances
+      - title: Articles
+        url: /articles
+      - title: Literature
+        url: /literature
   - title: "Contact"
     url: /contact
 resume:
@@ -67,33 +74,33 @@ financetoolkit:
     url: /projects/financetoolkit#site-nav
   - title: "Installation"
     url: /projects/financetoolkit#installation
-  - title: <font color="#d67f05">Code Documentation</font>
+  - title: <font color="#d67f05">Documentation</font>
     url: /projects/financetoolkit/docs
   - title: "How to Guides"
     url: /projects/financetoolkit#how-to-guides-for-the-financetoolkit
     children:
       - title: Getting Started
         url: /projects/financetoolkit/getting-started
-      - title: Discovery Module
-        url: /projects/financetoolkit/discovery-module
-      - title: Ratios Module
-        url: /projects/financetoolkit/ratios-module
-      - title: Models Module
-        url: /projects/financetoolkit/models-module
-      - title: Options Module
-        url: /projects/financetoolkit/options-module
-      - title: Technicals Module
-        url: /projects/financetoolkit/technicals-module
-      - title: Risk Module
-        url: /projects/financetoolkit/risk-module
-      - title: Performance Module
-        url: /projects/financetoolkit/performance-module
-      - title: Fixed Income Module
-        url: /projects/financetoolkit/fixed-income-module
-      - title: Economics Module
-        url: /projects/financetoolkit/economics-module
-      - title: Portfolio Module
-        url: /projects/financetoolkit/portfolio-module
+      - title: Discovery Notebook
+        url: /projects/financetoolkit/discovery-Notebook
+      - title: Ratios Notebook
+        url: /projects/financetoolkit/ratios-Notebook
+      - title: Models Notebook
+        url: /projects/financetoolkit/models-Notebook
+      - title: Options Notebook
+        url: /projects/financetoolkit/options-Notebook
+      - title: Technicals Notebook
+        url: /projects/financetoolkit/technicals-Notebook
+      - title: Risk Notebook
+        url: /projects/financetoolkit/risk-Notebook
+      - title: Performance Notebook
+        url: /projects/financetoolkit/performance-Notebook
+      - title: Fixed Income Notebook
+        url: /projects/financetoolkit/fixed-income-Notebook
+      - title: Economics Notebook
+        url: /projects/financetoolkit/economics-Notebook
+      - title: Portfolio Notebook
+        url: /projects/financetoolkit/portfolio-Notebook
       - title: External Datasets
         url: /projects/financetoolkit/external-datasets
   - title: "Basic Usage"
@@ -121,10 +128,8 @@ financetoolkit:
         url: /projects/financetoolkit#understanding-key-economic-indicators
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
-  - title: Contributing
-    url: /projects/financetoolkit#contributing
 financetoolkit-docs:
-  - title: Documentation
+  - title: Modules
     children:
     - title: "Toolkit"
       url: /projects/financetoolkit/docs
@@ -189,8 +194,12 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#get_dividend_calendar
     - title: "ESG Scores"
       url: /projects/financetoolkit/docs#get_esg_scores
+    - title: "Historical Statistics"
+      url: /projects/financetoolkit/docs#get_historical_statistics
     - title: "Treasury Rates"
       url: /projects/financetoolkit/docs#get_treasury_data
+    - title: "Exchange Rates"
+      url: /projects/financetoolkit/docs#get_exchange_rates
     - title: "Balance Sheet Statements"
       url: /projects/financetoolkit/docs#get_balance_sheet_statement
     - title: "Income Sheet Statements"
@@ -199,8 +208,10 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#get_cash_flow_statement
     - title: "Statistics Statements"
       url: /projects/financetoolkit/docs#get_statistics_statement
+    - title: "Normalization Files"
+      url: /projects/financetoolkit/docs#get_normalization_files
 financetoolkit-docs-discovery:
-  - title: Documentation
+  - title: Modules
     children:
     - title: "Toolkit"
       url: /projects/financetoolkit/docs
@@ -273,7 +284,7 @@ financetoolkit-docs-discovery:
     - title: Index Quotes
       url: /projects/financetoolkit/docs/discovery#get_index_quotes
 financetoolkit-docs-ratios:
-  - title: Documentation
+  - title: Modules
     children:
     - title: "Toolkit"
       url: /projects/financetoolkit/docs
@@ -462,7 +473,7 @@ financetoolkit-docs-ratios:
       - title: EV to EBIT
         url: /projects/financetoolkit/docs/ratios#get_ev_to_ebit
 financetoolkit-docs-models:
-  - title: Documentation
+  - title: Modules
     children:
     - title: "Toolkit"
       url: /projects/financetoolkit/docs
@@ -507,7 +518,7 @@ financetoolkit-docs-models:
       - title: Present Value of Growth Opportunities (PVGO)
         url:  /projects/financetoolkit/docs/models#get_present_value_of_growth_opportunities
 financetoolkit-docs-options:
-  - title: Documentation
+  - title: Modules
     children:
     - title: "Toolkit"
       url: /projects/financetoolkit/docs
@@ -593,7 +604,7 @@ financetoolkit-docs-options:
       - title: Ultima
         url: /projects/financetoolkit/docs/options#get_ultima
 financetoolkit-docs-technicals:
-  - title: Documentation
+  - title: Modules
     children:
     - title: "Toolkit"
       url: /projects/financetoolkit/docs
@@ -683,6 +694,8 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_trix
       - title: Triangular Moving Average (TMA)
         url: /projects/financetoolkit/docs/technicals#get_triangular_moving_average
+      - title: Support/Resistance Levels
+        url: /projects/financetoolkit/docs/technicals#get_support_resistance_levels
   - title: Volatility Indicators
     children:
       - title: All Volatility Indicators
@@ -696,7 +709,7 @@ financetoolkit-docs-technicals:
       - title: Bollinger Bands
         url: /projects/financetoolkit/docs/technicals#get_bollinger_bands
 financetoolkit-docs-risk:
-  - title: Documentation
+  - title: Modules
     children:
     - title: "Toolkit"
       url: /projects/financetoolkit/docs
@@ -722,6 +735,8 @@ financetoolkit-docs-risk:
       url: /projects/financetoolkit/docs/portfolio
   - title: Risk
     children:
+    - title: All Risk Metrics
+      url:  /projects/financetoolkit/docs/risk#collect_all_metrics
     - title: Value at Risk (VaR)
       url:  /projects/financetoolkit/docs/risk#get_value_at_risk
     - title: Conditional Value at Risk (cVaR)
@@ -741,7 +756,7 @@ financetoolkit-docs-risk:
     - title: Kurtosis
       url:  /projects/financetoolkit/docs/risk#get_kurtosis
 financetoolkit-docs-performance:
-  - title: Documentation
+  - title: Modules
     children:
     - title: "Toolkit"
       url: /projects/financetoolkit/docs
@@ -767,6 +782,8 @@ financetoolkit-docs-performance:
       url: /projects/financetoolkit/docs/portfolio
   - title: Performance
     children:
+    - title: All Performance Metrics
+      url:  /projects/financetoolkit/docs/performance#collect_all_metrics
     - title: Beta
       url:  /projects/financetoolkit/docs/performance#get_beta
     - title: Capital Asset Pricing Model (CAPM)
@@ -798,7 +815,7 @@ financetoolkit-docs-performance:
     - title: Compound Growth Rate
       url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
 financetoolkit-docs-fixedincome:
-  - title: Documentation
+  - title: Modules
     children:
     - title: "Toolkit"
       url: /projects/financetoolkit/docs
@@ -875,7 +892,7 @@ financetoolkit-docs-fixedincome:
     - title: Broad General Collateral Rate (BGCR)
       url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
 financetoolkit-docs-economics:
-  - title: Documentation
+  - title: Modules
     children:
     - title: "Toolkit"
       url: /projects/financetoolkit/docs
@@ -903,28 +920,52 @@ financetoolkit-docs-economics:
     children:
     - title: Gross Domestic Product (GDP)
       url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product
+    - title: GDP Deflator
+      url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product_deflator
     - title: Total Consumption
       url:  /projects/financetoolkit/docs/economics#get_total_consumption
+    - title: Consumption to GDP
+      url:  /projects/financetoolkit/docs/economics#get_total_consumption_to_gdp_ratio
     - title: Total Investment
       url:  /projects/financetoolkit/docs/economics#get_investment
+    - title: Investment to GDP
+      url:  /projects/financetoolkit/docs/economics#get_investment_to_gdp_ratio
     - title: Total Fixed Investment
       url:  /projects/financetoolkit/docs/economics#get_fixed_investment
+    - title: Fixed Investment to GDP
+      url:  /projects/financetoolkit/docs/economics#get_fixed_investment_to_gdp_ratio
     - title: Exports
       url:  /projects/financetoolkit/docs/economics#get_exports
+    - title: Exports to GDP
+      url:  /projects/financetoolkit/docs/economics#get_exports_to_gdp_ratio
     - title: Imports
       url:  /projects/financetoolkit/docs/economics#get_imports
+    - title: Imports to GDP
+      url:  /projects/financetoolkit/docs/economics#get_imports_to_gdp_ratio
     - title: Current Account Balance
       url:  /projects/financetoolkit/docs/economics#get_current_account_balance
+    - title: Account Balance to GDP
+      url:  /projects/financetoolkit/docs/economics#get_current_account_balance_to_gdp_ratio
     - title: Government Debt
       url:  /projects/financetoolkit/docs/economics#get_government_debt
+    - title: Debt to GDP
+      url:  /projects/financetoolkit/docs/economics#get_government_debt_to_gdp_ratio
     - title: Government Revenue
       url:  /projects/financetoolkit/docs/economics#get_government_revenue
+    - title: Revenue to GDP
+      url:  /projects/financetoolkit/docs/economics#get_government_revenue_to_gdp_ratio
     - title: Government Tax Revenue
       url:  /projects/financetoolkit/docs/economics#get_government_tax_revenue
+    - title: Tax Revenue to GDP
+      url:  /projects/financetoolkit/docs/economics#get_government_tax_revenue_to_gdp_ratio
     - title: Government Expenditure
       url:  /projects/financetoolkit/docs/economics#get_government_expenditure
+    - title: Expenditure to GDP
+      url:  /projects/financetoolkit/docs/economics#get_government_expenditure_to_gdp_ratio
     - title: Government Deficit
       url:  /projects/financetoolkit/docs/economics#get_government_deficit
+    - title: Deficit to GDP
+      url:  /projects/financetoolkit/docs/economics#get_government_deficit_to_gdp_ratio
     - title: Trust in Government
       url: /projects/financetoolkit/docs/economics#get_trust_in_government
   - title: Economy
@@ -977,7 +1018,7 @@ financetoolkit-docs-economics:
         url: /projects/financetoolkit/docs/economics#get_poverty_rate
 
 financetoolkit-docs-portfolio:
-  - title: Documentation
+  - title: Modules
     children:
     - title: "Toolkit"
       url: /projects/financetoolkit/docs
@@ -1003,6 +1044,12 @@ financetoolkit-docs-portfolio:
       url: /projects/financetoolkit/docs/portfolio
   - title: Toolkit Integration
     url: /projects/financetoolkit/docs/portfolio#toolkit
+  - title: Read Portfolio Dataset
+    url: /projects/financetoolkit/docs/portfolio#read_portfolio_dataset
+  - title: Benchmark Historical Data
+    url: /projects/financetoolkit/docs/portfolio#collect_benchmark_historical_data
+  - title: Historical Data
+    url: /projects/financetoolkit/docs/portfolio#collect_historical_data
   - title: Positions Overview
     url: /projects/financetoolkit/docs/portfolio#get_positions_overview
   - title: Portfolio Overview

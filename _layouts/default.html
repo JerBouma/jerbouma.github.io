@@ -3,12 +3,12 @@
 
 <!doctype html>
 <!--
-  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
-  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
-  Free for personal and commercial use under the MIT license
-  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
-
-  Definitely recommend checking it out! ~ Jeroen
+  Hey there! If you're reading this, you might be interested in how this website is built.
+  It's built using Jekyll, a static site generator that allows for easy customization
+  and fast performance. This is officially supported by GitHub Pages.
+  
+  The code is open source and available on GitHub, so feel free to check it
+  out and contribute if you're interested: https://github.com/JerBouma/jerbouma.github.io
 -->
 <html lang="{{ site.locale | slice: 0,2 | default: "en" }}" class="no-js">
   <head>
@@ -17,7 +17,6 @@
   </head>
 
   <body class="layout--{{ page.layout | default: layout.layout }}{% if page.classes or layout.classes %}{{ page.classes | default: layout.classes | join: ' ' | prepend: ' ' }}{% endif %}">
-    {% include_cached skip-links.html %}
     {% include_cached masthead.html %}
 
     <div class="initial-content">
@@ -38,6 +37,23 @@
     </div>
 
     {% include scripts.html %}
+
+    <script>
+      // Force all nav items into the hamburger menu on mobile
+      window.addEventListener('load', function() {
+        if (window.innerWidth <= 768) {
+          var vlinks = document.querySelector('nav.greedy-nav .visible-links');
+          var hlinks = document.querySelector('nav.greedy-nav .hidden-links');
+          var btn = document.querySelector('nav.greedy-nav .greedy-nav__toggle');
+          if (vlinks && hlinks) {
+            while (vlinks.children.length > 0) {
+              hlinks.insertBefore(vlinks.children[0], hlinks.firstChild);
+            }
+            if (btn) btn.classList.remove('hidden');
+          }
+        }
+      });
+    </script>
 
     <aside class="sidebar__top">
       <a href="#site-nav"> <i class="fas fa-arrow-circle-up fa-2x"></i></a>

@@ -1,13 +1,18 @@
 ---
-title:  Binomial Trees in the Finance Toolkit
+title: Binomial Trees in the Finance Toolkit
+date: 2024-02-09
 permalink: /articles/binomial-trees
 excerpt: "Binomial trees are a popular method for pricing options and other derivatives. The Finance Toolkit includes a function for binomial trees, which can price European and American options. This article provides an overview of the binomial tree module and demonstrates its use in option pricing."
+description: "Learn how binomial trees work for pricing European and American options, with worked examples and Python code using the Finance Toolkit."
 layout: single
 classes: custom-document
 author_profile: false
+collection: article
+tags: [Finance Toolkit, Options, Derivatives, Binomial Trees]
+share: true
 ---
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.0/dist/mermaid.min.js"></script>
+{% include mermaid.html %}
 
 
 Binomial trees are a widely used method for pricing options and other derivatives. The Finance Toolkit features a function for binomial trees capable of pricing both European and American options. This article outlines the binomial tree module and shows how to apply it to option pricing.
@@ -506,5 +511,3 @@ Interestingly, both the Binomial Tree ($4.32) and the Black-Scholes model ($4.33
 {: .notice--info}
 **Statistical Option Arbitrage**<br>
 Comparing theoretical option prices (from models like Binomial Trees or Black-Scholes) with actual market prices to identify and trade on discrepancies is a strategy used in finance, sometimes referred to as "Statistical Option Arbitrage." While pure risk-free arbitrage is rare, statistical arbitrage aims to exploit persistent deviations based on historical patterns and model assumptions. For academic context, see articles like "*Statistical Arbitrage in the Black-Scholes Framework*" in the Journal of Financial and Quantitative Analysis ([link](https://www.researchgate.net/publication/263352435_Statistical_Arbitrage_in_the_Black-Scholes_Framework){:target="_blank"}), which explores theoretical possibilities for such strategies.
-
-Did you find this article helpful? If you have questions or suggestions, please reach out via the links provided.

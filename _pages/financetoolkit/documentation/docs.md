@@ -1,18 +1,18 @@
 ---
 title: Documentation
-excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 150+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
-description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 150+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
+excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 180+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
+description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 180+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
 author_profile: false
 permalink: /projects/financetoolkit/docs
 classes: wide-sidebar
 layout: single
 redirect_from:
-- /docs
+    - /docs
 sidebar:
     nav: "financetoolkit-docs"
 ---
 
-This page includes all the documentation for the Finance Toolkit, an open-source toolkit in which all relevant financial ratios (150+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
+This page includes all the documentation for the Finance Toolkit, an open-source toolkit in which all relevant financial ratios (180+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
 
 To install the FinanceToolkit it simply requires the following:
 
@@ -20,105 +20,15 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 ```
 
-The Toolkit Module is meant to be a collection of useful functions that collect and parse data. These are historical data, fundamental data (balance, income and cash flow statements) as well as several others metrics from Financial Modeling Prep like enterprise values, company profiles and more. From this module, you are able to access the related modules as well.
 {% include algolia.html %}
 
-## __init__
-Initializes a Toolkit object with a ticker or a list of tickers. The way the Toolkit is initialized will define how the data is collected. For example, if you enable the quarterly flag, you will be able to collect quarterly data. Next to that, you can define the start and end date to specify a specific range. Another option is to work with cached data. This is useful when you have collected data before and want to use this data again. This can be done by setting the use_cached_data variable to True. If you want to use a specific location to store the cached data, you can define this as a string, e.g. "datasets".
+The Toolkit Module is a collection of functions that collect and parse data, including historical data, fundamental data (balance, income and cash flow statements) and metrics from Financial Modeling Prep such as enterprise values, company profiles and more. From this module you can access all related sub-modules.
 
-It is good to note that the Finance Toolkit will always attempt to acquire data from Financial Modeling Prep if an API key is set. If this isn't the case, the data comes from Yahoo Finance. In case you have an API key set and the current plan doesn't allow for the data to be collected, the Toolkit will automatically switch to Yahoo Finance. You can disable this behaviour by setting the enforce_source variable to "FinancialModelingPrep".
-
-For more information on the capabilities of the Finance Toolkit see here: [https://www.jeroenbouma.com/projects/financetoolkit](https://www.jeroenbouma.com/projects/financetoolkit){:target="_blank"}
-
-**Args:**
- - <u>tickers (list | str | None):</u> A string or a list of strings containing the company ticker(s). E.g. 'TSLA' or 'MSFT'.
- Find tickers on various websites or via the FinanceDatabase: [https://github.com/JerBouma/financedatabase.](https://github.com/JerBouma/financedatabase.){:target="_blank"} Defaults to None.
- - <u>api_key (str):</u> An API key from FinancialModelingPrep. Obtain one here: [https://www.jeroenbouma.com/fmp.](https://www.jeroenbouma.com/fmp.){:target="_blank"} Defaults to "".
- - <u>start_date (str | None):</u> A string containing the start date of the data. Needs to be formatted as YYYY-MM-DD.
- Defaults to 5 years/quarters back from today depending on the 'quarterly' flag.
- - <u>end_date (str | None):</u> A string containing the end date of the data. Needs to be formatted as YYYY-MM-DD.
- Defaults to today.
- - <u>quarterly (bool):</u> A boolean indicating whether to collect quarterly data. Defaults to False (yearly).
- Note that historical data can still be collected for any period and interval.
- - <u>use_cached_data (bool | str):</u> A boolean indicating whether to use cached data. If True, uses a 'cached' folder.
- If a string is provided, uses that string as the path to the cache folder. Defaults to False.
- - <u>risk_free_rate (str):</u> The risk-free rate identifier ('13w', '5y', '10y', '30y'). Based on US Treasury Yields.
- Used for calculations like Excess Returns. Defaults to "10y".
- - <u>benchmark_ticker (str | None):</u> The benchmark ticker (e.g., 'SPY' for S&P 500). Used for comparative analysis
- (CAPM, Alpha, Beta). Defaults to "SPY". Set to None to disable benchmark comparison.
- - <u>enforce_source (str | None):</u> Enforce data source ('FinancialModelingPrep' or 'YahooFinance').
- Defaults to None (uses FMP if api_key provided, otherwise YahooFinance, with fallback).
- - <u>historical (pd.DataFrame):</u> Custom historical price data. See notebook:
- [https://www.jeroenbouma.com/projects/financetoolkit/external-datasets.](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets.){:target="_blank"} Defaults to an empty DataFrame.
- - <u>balance (pd.DataFrame):</u> Custom balance sheet data. See notebook link above. Defaults to an empty DataFrame.
- - <u>income (pd.DataFrame):</u> Custom income statement data. See notebook link above. Defaults to an empty DataFrame.
- - <u>cash (pd.DataFrame):</u> Custom cash flow statement data. See notebook link above. Defaults to an empty DataFrame.
- - <u>format_location (str):</u> Path to custom normalization files. Defaults to "".
- - <u>convert_currency (bool | None):</u> Convert financial statements currency to match historical data currency.
- Important for cross-ticker comparison and calculations involving both data types.
- Defaults to None (True if FMP plan is Premium, False if Free). Can be overridden.
- - <u>reverse_dates (bool):</u> Reverse the order of dates in financial statements (oldest first). Defaults to True.
- - <u>intraday_period (str | None):</u> Intraday data interval ('1min', '5min', '15min', '30min', '1hour').
- Enables short-term analysis using Risk, Performance, and Technicals modules. Requires FMP Premium.
- Defaults to None (no intraday data).
- - <u>rounding (int | None):</u> Number of decimal places for results. Defaults to 4.
- - <u>remove_invalid_tickers (bool):</u> Remove tickers that fail data retrieval. Defaults to False.
- - <u>sleep_timer (bool | None):</u> Enable sleep timer on FMP rate limit (requires Premium).
- Defaults to None (determined by FMP plan: True for Premium, False for Free).
- - <u>progress_bar (bool):</u> Show progress bar for operations involving multiple tickers. Defaults to True.
-
- As an example:
-
-```python
-from financetoolkit import Toolkit
-
-# Simple example
-toolkit = Toolkit(
-tickers=["TSLA", "ASML"],
-api_key="FINANCIAL_MODELING_PREP_KEY")
-
-# Obtaining quarterly data
-toolkit = Toolkit(
-tickers=["AAPL", "GOOGL"],
-quarterly=True,
-api_key="FINANCIAL_MODELING_PREP_KEY")
-
-# Enforce a specific source
-toolkit = Toolkit(
-tickers=["ASML", "BABA"],
-quarterly=True,
-enforce_source="YahooFinance")
-
-# Including a start and end date
-toolkit = Toolkit(
-tickers=["MSFT", "MU"],
-start_date="2020-01-01",
-end_date="2023-01-01",
-quarterly=True,
-api_key="FINANCIAL_MODELING_PREP_KEY")
-
-# Working with cached data
-toolkit = Toolkit(
-tickers=["WMT", "AAPL"],
-quarterly=True,
-api_key="FINANCIAL_MODELING_PREP_KEY",
-use_cached_data=True)
-
-# Changing the benchmark and risk free rate
-toolkit = Toolkit(
-tickers="AMZN",
-benchmark_ticker="^DJI",
-risk_free_rate="30y",
-api_key="FINANCIAL_MODELING_PREP_KEY")
-```
 ## ratios
 The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
-
-Some examples of ratios are the Current Ratio, Debt to Equity Ratio, Return on Assets (ROA), Return on Equity (ROE), Return on Invested Capital (ROIC), Return on Capital Employed (ROCE), Price to Earnings Ratio (P/E), Price to Book Ratio (P/B), Price to Sales Ratio (P/S), Price to Cash Flow Ratio (P/CF), Price to Free Cash Flow Ratio (P/FCF), Dividend Yield and Dividend Payout Ratio.
-
-Next to that, it is also possible to define custom ratios.
-
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios){:target="_blank"}
+ Some examples of ratios are the Current Ratio, Debt to Equity Ratio, Return on Assets (ROA), Return on Equity (ROE), Return on Invested Capital (ROIC), Return on Capital Employed (ROCE), Price to Earnings Ratio (P/E), Price to Book Ratio (P/B), Price to Sales Ratio (P/S), Price to Cash Flow Ratio (P/CF), Price to Free Cash Flow Ratio (P/FCF), Dividend Yield and Dividend Payout Ratio.
+ Next to that, it is also possible to define custom ratios.
+ See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios){:target="_blank"}
 
 
 ```python
@@ -152,11 +62,13 @@ Which returns:
  | EBT to EBIT Ratio | 0.957448 | 0.948408 | 0.958936 | 0.976353 | 0.975982 |
  | EBIT to Revenue | 0.286688 | 0.26641 | 0.254864 | 0.305759 | 0.309473 |
 
+
+---
+
 ## models
 Gives access to the Models module. The Models module is meant to execute well
 -known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
-
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/models](https://www.jeroenbouma.com/projects/financetoolkit/docs/models){:target="_blank"}
+ See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/models](https://www.jeroenbouma.com/projects/financetoolkit/docs/models){:target="_blank"}
 
 
 ```python
@@ -180,16 +92,17 @@ Which returns:
  | Equity Multiplier | nan | 3.15403 | 3.14263 | 3.08433 | 2.91521 |
  | Return on Equity | nan | 0.0213618 | 0.00196098 | 0.0211066 | 0.0417791 |
 
+
+---
+
 ## options
 This gives access to the Options module. The Options Module is meant to provide Options valuations based on real market data. This includes the Black
 -Scholes model and in the future the Binomial model and the Monte Carlo model. It also includes all available first
 -order, second
 -order and third
 -order Greeks such as Delta, Gamma, Theta, Vega, Rho, Charm, Vanna, Vomma, Veta, Speed and Zomma.
-
-It gives insights in the sensitivity of an option to changes in the underlying asset price, volatility, years to maturity, dividend yilds and interest rates and several derivatives of these sensitivities.
-
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/options](https://www.jeroenbouma.com/projects/financetoolkit/docs/options){:target="_blank"}
+ It gives insights in the sensitivity of an option to changes in the underlying asset price, volatility, years to maturity, dividend yilds and interest rates and several derivatives of these sensitivities.
+ See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/options](https://www.jeroenbouma.com/projects/financetoolkit/docs/options){:target="_blank"}
 
 
 ```python
@@ -231,12 +144,13 @@ Which returns:
  | 290 | 0 | -0 | 0 | -0 | 0 | -0 | 2.401 | 0 | 0 | 0 | -0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
  | 295 | 0 | -0 | 0 | -0 | 0 | -0 | 2.595 | 0 | 0 | 0 | -0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
+
+---
+
 ## technicals
 This gives access to the Technicals module. The Technicals Module contains nearly 50 Technical Indicators that can be used to analyse companies. These indicators are divided into 3 categories: breadth, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
-
-Some examples of technical indicators are the Average Directional Index (ADX), the Accumulation/Distribution Line (ADL), the Average True Range (ATR), the Bollinger Bands (BBANDS), the Commodity Channel Index (CCI), the Chaikin Oscillator (CHO), the Chaikin Money Flow (CMF), the Double Exponential Moving Average (DEMA), the Exponential Moving Average (EMA) and the Moving Average Convergence Divergence (MACD).
-
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals](https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals){:target="_blank"}
+ Some examples of technical indicators are the Average Directional Index (ADX), the Accumulation/Distribution Line (ADL), the Average True Range (ATR), the Bollinger Bands (BBANDS), the Commodity Channel Index (CCI), the Chaikin Oscillator (CHO), the Chaikin Money Flow (CMF), the Double Exponential Moving Average (DEMA), the Exponential Moving Average (EMA) and the Moving Average Convergence Divergence (MACD).
+ See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals](https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals){:target="_blank"}
 
 
 ```python
@@ -257,13 +171,14 @@ Which returns:
  | 2023-08-24 | 66.4527 | 35.4399 |
  | 2023-08-25 | 63.4837 | 32.3323 |
 
+
+---
+
 ## performance
 This gives access to the Performance module. The Performance Module is meant to calculate metrics related to the risk
 -return relationship. These are things such as Beta, Sharpe Ratio, Sortino Ratio, CAPM, Alpha and the Treynor Ratio.
-
-It gives insights in the performance a stock has to e.g. a benchmark that is not easily identified by looking at the raw data. This class is closely related to the Risk class which highlights things such as Value at Risk (VaR) and Maximum Drawdown.
-
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/performance](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance){:target="_blank"}
+ It gives insights in the performance a stock has to e.g. a benchmark that is not easily identified by looking at the raw data. This class is closely related to the Risk class which highlights things such as Value at Risk (VaR) and Maximum Drawdown.
+ See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/performance](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance){:target="_blank"}
 
 
 ```python
@@ -284,12 +199,13 @@ Which returns:
  | 2023Q2 | 0.0922 | 0.1342 |
  | 2023Q3 | 0.0052 | -0.0482 |
 
+
+---
+
 ## risk
 This gives access to the Risk module. The Risk Module is meant to calculate metrics related to risk such as Value at Risk (VaR), Conditional Value at Risk (cVaR), EMWA/GARCH models and similar models.
-
-It gives insights in the risk a stock composes that is not perceived as easily by looking at the data. This class is closely related to the Performance class which highlights things such as Sharpe Ratio and Sortino Ratio.
-
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/risk](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk){:target="_blank"}
+ It gives insights in the risk a stock composes that is not perceived as easily by looking at the data. This class is closely related to the Performance class which highlights things such as Sharpe Ratio and Sortino Ratio.
+ See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/risk](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk){:target="_blank"}
 
 
 ```python
@@ -317,14 +233,14 @@ Which returns:
  | 2022 | -0.8026 | -1.0046 |
  | 2023 | 1.8549 | 1.8238 |
 
+
+---
+
 ## fixedincome
 This gives access to the Fixed Income module. This module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration, the Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
-
-Next to that, it is also possible to acquire Central Bank Rates and ICE BofA Indices such as the ICE BofA US High Yield Index, the ICE BofA US Corporate Index and the ICE BofA US Treasury Index.
-
-Note that this class can also be directly accessed by importing the FixedIncome class directly via from financetoolkit import FixedIncome. This is useful if you only want to use the FixedIncome class and not the other classes within the Toolkit module.
-
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome){:target="_blank"}
+ Next to that, it is also possible to acquire Central Bank Rates and ICE BofA Indices such as the ICE BofA US High Yield Index, the ICE BofA US Corporate Index and the ICE BofA US Treasury Index.
+ Note that this class can also be directly accessed by importing the FixedIncome class directly via from financetoolkit import FixedIncome. This is useful if you only want to use the FixedIncome class and not the other classes within the Toolkit module.
+ See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome){:target="_blank"}
 
 
 ```python
@@ -354,12 +270,13 @@ Which returns:
  | 2024-01-12 | 0.0451 | 0.0467 | 0.0502 | 0.0534 | 0.0613 | 0.0753 | 0.1338 |
  | 2024-01-15 | 0.0451 | 0.0467 | 0.0501 | 0.0533 | 0.0611 | 0.0751 | 0.1328 |
 
+
+---
+
 ## economics
 This gives access to the Economics module. This module contains a wide variety of economic data obtained from OECD. These include things such as the Consumer Price Index (CPI), the Producer Price Index (PPI), the Unemployment Rate, the GDP Growth Rate, the Long and Short Term Interest Rate and the Consumer Confidence Index.
-
-Note that this class can also be directly accessed by importing the Economics class directly via from financetoolkit import Economics. This is useful if you only want to use the Economics class and not the other classes within the Toolkit module.
-
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/economics](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics){:target="_blank"}
+ Note that this class can also be directly accessed by importing the Economics class directly via from financetoolkit import Economics. This is useful if you only want to use the Economics class and not the other classes within the Toolkit module.
+ See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/economics](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics){:target="_blank"}
 
 
 ```python
@@ -384,6 +301,9 @@ Which returns:
  | 2020 | 109.195 | 107.51 | 101.799 |
  | 2021 | 114.325 | 110.387 | 101.561 |
  | 2022 | 123.474 | 121.427 | 104.098 |
+
+
+---
 
 ## get_profile
 Obtain the profile of the specified tickers. These include important metrics such as the beta, market capitalization, currency, isin, industry, and ipo date that give an overall understanding about the company.
@@ -435,6 +355,9 @@ Which returns:
  | DCF | 243.594 | 150.082 |
  | IPO Date | 1986-03-13 | 1980-12-12 |
 
+
+---
+
 ## get_quote
 Get the quote of the specified tickers. These include important metrics such as the price, changes, day low, day high, year low, year high, market capitalization, volume, average volume, open, previous close, earnings per share (EPS), price to earnings ratio (PE), earnings announcement, shares outstanding and timestamp that give an overall understanding about the company.
 
@@ -473,10 +396,12 @@ Which returns:
  | Previous Close | 440.4 | 255.46 |
  | Timestamp | 2025-09-29 20:00:00 | 2025-09-29 20:00:01 |
 
+
+---
+
 ## get_rating
 Get the rating of the specified tickers. These scores and recommendations are categorized as follows:
-
-
+ 
 - An overall rating 
 - Discounted Cash Flow (DCF) 
 - Return on Equity (ROE) 
@@ -516,10 +441,12 @@ Which returns:
  | 2025-09-26 00:00:00 | B+ | 3 | 2 | 5 | 5 | 3 | 2 | 1 |
  | 2025-09-29 00:00:00 | B+ | 3 | 2 | 5 | 5 | 3 | 2 | 1 |
 
+
+---
+
 ## get_analyst_estimates
 Obtain analyst estimates regarding revenues, EBITDA, EBIT, Net Income SGA Expenses and EPS. The number of analysts are also reported.
-
-Note that this information requires a Premium FMP subscription.
+ Note that this information requires a Premium FMP subscription.
 
 **Args:**
  - <u>limit (int):</u> Defines the maximum years or quarters to obtain.
@@ -570,10 +497,12 @@ Which returns:
  | Estimated EPS Low | 6.139 | 7.2358 | 7.6936 | 7.9284 | 8.9681 |
  | Number of Analysts | 25 | 29 | 30 | 19 | 9 |
 
+
+---
+
 ## get_earnings_calendar
 Obtain Earnings Calendars for any range of companies. You have the option to obtain the actual dates or to convert to the corresponding quarters.
-
-Note that this information requires a Premium FMP subscription.
+ Note that this information requires a Premium FMP subscription.
 
 **Args:**
  - <u>actual_dates (bool):</u> Defines whether to return the actual dates or the corresponding quarters.
@@ -613,10 +542,12 @@ Which returns:
  | 2025-05-01 00:00:00 | 1.59 | 1.37 | 1.55667e+11 | 1.55148e+11 | 2025-08-01 |
  | 2025-07-31 00:00:00 | 1.68 | 1.31 | 1.67702e+11 | 1.61776e+11 | 2025-09-30 |
 
+
+---
+
 ## get_revenue_geographic_segmentation
 Obtain revenue by geographic segmentation (e.g. United States, Europe, Asia).
-
-Note that this information requires a Premium FMP subscription.
+ Note that this information requires a Premium FMP subscription.
 
 **Args:**
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
@@ -649,10 +580,12 @@ Which returns:
  | Europe | 2.7306e+10 | 2.9749e+10 | 2.7681e+10 | 2.0205e+10 |
  | Japan | 8.285e+09 | 7.107e+09 | 6.755e+09 | 4.821e+09 |
 
+
+---
+
 ## get_revenue_product_segmentation
 Obtain revenue by product segmentation (e.g. iPad, Advertisement, Windows).
-
-Note that this information requires a Premium FMP subscription.
+ Note that this information requires a Premium FMP subscription.
 
 **Args:**
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
@@ -689,6 +622,9 @@ Which returns:
  | Server Products And Cloud Services | 1.8839e+10 | 1.8388e+10 | 1.9594e+10 | 2.0025e+10 | 2.1963e+10 |
  | Windows | 6.408e+09 | 5.313e+09 | 4.808e+09 | 5.328e+09 | 6.058e+09 |
 
+
+---
+
 ## get_historical_data
 Returns historical data for the specified tickers. This contains the following columns: 
 - Open: The opening price for the period. 
@@ -703,10 +639,8 @@ Returns historical data for the specified tickers. This contains the following c
 - Excess Return: The excess return for the period. This is defined as the return minus the a predefined risk free rate. Only calculated when excess_return is True. 
 - Excess Volatility: The excess volatility for the period. This is defined as the volatility of the excess return. Only calculated when excess_return is True. 
 - Cumulative Return: The cumulative return for the period.
-
-If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
-
-Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
+ If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
+ Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
 
 **Args:**
  - <u>enforce_source (str, optional):</u> A string containing the historical source you wish to enforce.
@@ -759,6 +693,9 @@ Which returns:
  | 2022 | 128.41 | 129.95 | 127.43 | 129.93 | 129.378 | 7.70342e+07 | 0.91 | -0.264042 | 0.356964 | -0.302832 | 0.377293 | 7.35566 |
  | 2023 | 187.84 | 188.51 | 187.68 | 188.108 | 188.108 | 4.72009e+06 | 0.71 | 0.453941 | 0.213359 | 0.412901 | 0.22327 | 10.6947 |
 
+
+---
+
 ## get_intraday_data
 Returns intraday historical data for the specified tickers. This contains the following columns: 
 - Open: The opening price for the period. 
@@ -769,12 +706,9 @@ Returns intraday historical data for the specified tickers. This contains the fo
 - Return: The return for the period. 
 - Volatility: The volatility for the period. 
 - Cumulative Return: The cumulative return for the period.
-
-Keep in mind that this data is available for a shorter period. This means that the start date is ignored if the difference between the start and end date is bigger than the maximum period.
-
-If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
-
-Please note that this functionality is only available through Financial Modeling Prep. Therefore, an api_key is required to use this functionality.
+ Keep in mind that this data is available for a shorter period. This means that the start date is ignored if the difference between the start and end date is bigger than the maximum period.
+ If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
+ Please note that this functionality is only available through Financial Modeling Prep. Therefore, an api_key is required to use this functionality.
 
 **Args:**
  - <u>start (str):</u> The start date for the historical data. Defaults to None.
@@ -822,6 +756,9 @@ Which returns:
  | 2024-01-19 15:58 | 398.46 | 398.47 | 398.29 | 398.35 | 278802 | -0.0002 | 0.0005 | 1.0278 |
  | 2024-01-19 15:59 | 398.35 | 398.66 | 398.22 | 398.66 | 586344 | 0.0008 | 0.0005 | 1.0286 |
 
+
+---
+
 ## get_dividend_calendar
 Obtain Dividend Calendars for any range of companies. It includes the following columns: 
 - Date: The date of the dividend. 
@@ -830,8 +767,7 @@ Obtain Dividend Calendars for any range of companies. It includes the following 
 - Record Date: The record date of the dividend. 
 - Payment Date: The payment date of the dividend. 
 - Declaration Date: The declaration date of the dividend.
-
-If a company does not pay any dividend, the function will mention that it was not able to find any dividend data for that company.
+ If a company does not pay any dividend, the function will mention that it was not able to find any dividend data for that company.
 
 **Args:**
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
@@ -873,21 +809,20 @@ Which returns:
  | 2025-05-12 | 0.26 | 0.26 | 0.4791 | 2025-05-12 | 2025-05-15 | 2025-05-01 |
  | 2025-08-11 | 0.26 | 0.26 | 0.449 | 2025-08-11 | 2025-08-14 | 2025-07-31 |
 
+
+---
+
 ## get_esg_scores
 ESG scores, which stands for Environmental, Social, and Governance scores, are a crucial metric used by investors and organizations to assess a company's sustainability and ethical practices. These scores provide valuable insights into a company's performance in three key areas:
-
-
+ 
 - Environmental (E): The environmental component evaluates a company's impact on the planet and its efforts to mitigate environmental risks. It includes factors like carbon emissions, energy efficiency, water management, and waste reduction. A high environmental score indicates a company's commitment to eco
 -friendly practices and reducing its ecological footprint.
-
-
+ 
 - Social (S): The social component focuses on how a company interacts with its employees, customers, suppliers, and the communities in which it operates. Key factors in the social score include labor practices, diversity and inclusion, human rights, product safety, and community engagement. A strong social score reflects a company's dedication to fostering positive relationships and contributing positively to society.
-
-
+ 
 - Governance (G): Governance examines a company's internal structures, policies, and leadership. It assesses aspects such as board independence, executive compensation, transparency, and the presence of anti
 -corruption measures. A high governance score signifies strong leadership and a commitment to maintaining high ethical standards and accountability
-
-ESG scores provide investors with a holistic view of a company's sustainability and ethical practices, allowing them to make more informed investment decisions. These scores are increasingly used to identify socially responsible investments and guide capital towards companies that prioritize long
+ ESG scores provide investors with a holistic view of a company's sustainability and ethical practices, allowing them to make more informed investment decisions. These scores are increasingly used to identify socially responsible investments and guide capital towards companies that prioritize long
 -term sustainability and responsible business practices. As the importance of ESG considerations continues to grow, companies are motivated to improve their ESG scores, not only for ethical reasons but also to attract investors who value sustainable and responsible business practices.
 
 **Args:**
@@ -920,10 +855,12 @@ Which returns:
  | 2024 | 72.53 | 58.08 | 60.7 | 63.77 |
  | 2025 | 71.85 | 57.64 | 59.62 | 63.04 |
 
+
+---
+
 ## get_historical_statistics
 Retrieve statistics about each ticker's historical data. This is especially useful to understand why certain tickers might fluctuate more than others as it could be due to local regulations or the currency the instrument is denoted in. It returns:
-
-
+ 
 - Currency: The currency the instrument is denoted in. 
 - Symbol: The symbol of the instrument. 
 - Exchange Name: The name of the exchange the instrument is listed on. 
@@ -964,6 +901,9 @@ Which returns:
  | Timezone | EDT | HKT | CEST | JST |
  | Exchange Timezone Name | America/New_York | Asia/Hong_Kong | Europe/Amsterdam | Asia/Tokyo |
 
+
+---
+
 ## get_treasury_data
 Retrieve daily, weekly, monthly, quarterly or yearly treasury data. This can be from FinancialModelingPrep or from YahooFinance. FinancialModelingPrep is by far a more extensive dataset containing daily data from 1 month to 30 years. YahooFinance only contains daily data for 5, 10 and 30 years but is a free alternative.
 
@@ -996,14 +936,14 @@ Which returns:
  | 2023-10-19 | 0.0531 | 0.0496 | 0.0499 | 0.051 |
  | 2023-10-20 | 0.053 | 0.0491 | 0.0496 | 0.0512 |
 
+
+---
+
 ## get_exchange_rates
 This functionality looks at the exchange rates between the currency of the historical data and the currency of the financial statements. Given that these can deviate from each other, e.g. the historical data is in USD but the financial statements are in EUR, it is important to adjust for this. This is especially relevant for models that use the historical data and the financial statements.
-
-This function therefore shows the exchange rates that are used to convert the financial statements to the currency of the historical data. The historical market data is quote currency and the financial statements are base currency.
-
-Note that you can get currency data from any currency as well by supplying the currency as a ticker. For example, if you want to get the exchange rates between USD and EUR you can use USDEUR=X as a ticker.
-
-Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
+ This function therefore shows the exchange rates that are used to convert the financial statements to the currency of the historical data. The historical market data is quote currency and the financial statements are base currency.
+ Note that you can get currency data from any currency as well by supplying the currency as a ticker. For example, if you want to get the exchange rates between USD and EUR you can use USDEUR=X as a ticker.
+ Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
 
 **Args:**
  - <u>start (str):</u> The start date for the exchange data. Defaults to None.
@@ -1051,17 +991,18 @@ Which returns:
  | 2023-11 | 1.0973 | 1.0984 | 1.0878 | 1.0892 | 1.0974 | 173646 | 0.0338 | 0.0202 | 0.7946 |
  | 2023-12 | 1.088 | 1.0898 | 1.0848 | 1.0871 | 1.0871 | 90494 | -0.0094 | 0.0173 | 0.7872 |
 
+
+---
+
 ## get_balance_sheet_statement
 Retrieves the balance sheet statement data for the specified tickers. The balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. It shows the company's assets, liabilities, and shareholders' equity. The balance sheet statement is divided into three main sections:
-
-
+ 
 - Assets: Assets are resources owned by the company that have economic value and can be used to generate revenue. Assets are typically divided into current assets and non
 -current assets. 
 - Liabilities: Liabilities are obligations that the company owes to external parties. Liabilities are also divided into current liabilities and non
 -current liabilities. 
 - Shareholders' Equity: Shareholders' equity represents the company's net worth or book value. It is calculated as the difference between the company's assets and liabilities.
-
-Note that the balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. Therefore, trailing results are not available for this statement.
+ Note that the balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. Therefore, trailing results are not available for this statement.
 
 **Args:**
  - <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
@@ -1136,10 +1077,12 @@ Which returns:
  | Total Debt | 7.592e+09 | 7.516e+09 | 1.089e+10 | 1.2884e+10 | 1.3848e+10 |
  | Net Debt | -1.565e+09 | -7.46e+08 | 1.316e+09 | 3.086e+09 | 4.55e+09 |
 
+
+---
+
 ## get_income_statement
 Retrieves the income statement data for the specified tickers. The income statement is a financial statement that shows a company's revenues and expenses over a specific period. It is used to calculate a company's net income.
-
-The income statement is a financial statement that shows a company's revenues and expenses over a specific period. Therefore, trailing results are available for this statement.
+ The income statement is a financial statement that shows a company's revenues and expenses over a specific period. Therefore, trailing results are available for this statement.
 
 **Args:**
  - <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
@@ -1200,10 +1143,12 @@ Which returns:
  | Weighted Average Shares | 3.111e+09 | 3.146e+09 | 3.16e+09 | 3.166e+09 | 3.171e+09 |
  | Weighted Average Shares Diluted | 3.465e+09 | 3.468e+09 | 3.471e+09 | 3.468e+09 | 3.478e+09 |
 
+
+---
+
 ## get_cash_flow_statement
 Retrieves the cash flow statement data for the specified tickers. The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. It breaks the analysis down to operating, investing and financing activities.
-
-The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. Therefore, trailing results are available for this statement.
+ The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. Therefore, trailing results are available for this statement.
 
 **Args:**
  - <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
@@ -1265,10 +1210,12 @@ Which returns:
  | Capital Expenditure | -1.6378e+10 | -1.6592e+10 | -1.4207e+10 | -1.1455e+10 |
  | Free Cash Flow | -4.974e+09 | 1.2581e+10 | -9.419e+09 | 5.021e+09 |
 
+
+---
+
 ## get_statistics_statement
 Retrieves the balance, cash and income statistics for the company(s) from the specified source.
-
-Note that this also obtains the balance sheet statement at the same time given that it's the same API call. This is done to reduce the number of API calls to FinancialModelingPrep.
+ Note that this also obtains the balance sheet statement at the same time given that it's the same API call. This is done to reduce the number of API calls to FinancialModelingPrep.
 
 **Args:**
  - <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
@@ -1303,10 +1250,12 @@ Which returns:
  | SEC Link | https://www.sec.gov/Archives/edgar/data/1318605/000095017023033872/0000950170-23-033872-index.htm |
  | Document Link | https://www.sec.gov/Archives/edgar/data/1318605/000095017023033872/tsla-20230630.htm |
 
+
+---
+
 ## get_normalization_files
 Copies the normalization files to a folder based on path. By default, this is the path of the 'Downloads' folder.
-
-This function is relevant if you want to supply your own datasets. See for a proper guide the following notebook: [https://www.jeroenbouma.com/projects/financetoolkit/external
+ This function is relevant if you want to supply your own datasets. See for a proper guide the following notebook: [https://www.jeroenbouma.com/projects/financetoolkit/external
 -datasets](https://www.jeroenbouma.com/projects/financetoolkit/external
 -datasets){:target="_blank"}
 
@@ -1315,3 +1264,6 @@ This function is relevant if you want to supply your own datasets. See for a pro
 
  **Returns:**
  Three csv files saved to the desired location.
+
+---
+

@@ -1,12 +1,74 @@
 <!-- start custom head snippets -->
 
 <!-- Favicon -->
-<link rel="shortcut icon" type="image/png" href="/assets/images/default/favicon.png">
-<link rel="icon" type="image/png" href="/assets/images/default/favicon.png">
+<link rel="icon" type="image/svg+xml" href="/assets/images/default/favicon.svg">
+<link rel="shortcut icon" type="image/png" href="/assets/images/default/favicon.svg">
+<link rel="icon" type="image/png" href="/assets/images/default/favicon.svg">
 
 <!-- Preconnect to external origins for faster resource loading -->
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+
+<!-- WebSite structured data — enables Google Sitelinks -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ site.title | jsonify }},
+  "url": {{ site.url | jsonify }},
+  "description": {{ site.description | jsonify }},
+  "author": {
+    "@type": "Person",
+    "name": {{ site.name | jsonify }},
+    "url": {{ site.url | jsonify }},
+    "jobTitle": "Quantitative Investment Strategist",
+    "sameAs": [
+      "https://www.linkedin.com/in/boumajeroen/",
+      "https://github.com/JerBouma"
+    ]
+  }
+}
+</script>
+
+{% if page.date %}
+<!-- Article structured data for blog posts -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ page.title | jsonify }},
+  "description": {{ page.description | default: page.excerpt | strip_html | strip_newlines | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  {% if page.last_modified_at %}"dateModified": "{{ page.last_modified_at | date_to_xmlschema }}",{% endif %}
+  "author": {
+    "@type": "Person",
+    "name": {{ site.name | jsonify }},
+    "url": {{ site.url | jsonify }}
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": {{ site.name | jsonify }}
+  }{% if page.header.og_image %},
+  "image": {{ page.header.og_image | absolute_url | jsonify }}{% endif %}
+}
+</script>
+{% endif %}
+
+<!-- Twitter Card fallback when no Twitter username is configured -->
+{% unless site.twitter.username and site.twitter.username != "" %}
+{% assign _og_img = page.header.og_image | default: site.og_image %}
+{% if _og_img and _og_img != "" %}
+<meta name="twitter:card" content="summary_large_image">
+{% else %}
+<meta name="twitter:card" content="summary">
+{% endif %}
+<meta name="twitter:title" content="{{ page.title | default: site.title | markdownify | strip_html | strip_newlines | escape_once }}">
+<meta name="twitter:description" content="{{ page.description | default: page.excerpt | default: site.description | markdownify | strip_html | strip_newlines | truncate: 200 | escape_once }}">
+{% if _og_img and _og_img != "" %}
+<meta name="twitter:image" content="{{ _og_img | absolute_url }}">
+{% endif %}
+{% endunless %}
 
 <!-- end custom head snippets -->

@@ -12,7 +12,7 @@ sidebar:
     nav: "financetoolkit-docs-models"
 ---
 
-The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
+The Models module executes well-known models such as DuPont analysis and the Discounted Cash Flow (DCF) model, using data retrieved from the Toolkit module.
 
 To install the FinanceToolkit it simply requires the following:
 
@@ -20,55 +20,13 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 ```
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, technicals, fixed income, risk, performance and economics, please have a look below:
 {% include algolia.html %}
-
-## __init__
-Initializes the Models Controller Class.
-
-**Args:**
- - <u>tickers (str | list[str]):</u> The ticker(s) to use for the models.
- - <u>daily_historical (pd.DataFrame):</u> The daily historical data.
- - <u>period_historical (pd.DataFrame):</u> The period historical data.
- - <u>risk_free_rate (pd.DataFrame):</u> The risk free rate data.
- - <u>balance (pd.DataFrame):</u> The balance sheet data.
- - <u>income (pd.DataFrame):</u> The income statement data.
- - <u>cash (pd.DataFrame):</u> The cash flow statement data.
- - <u>quarterly (bool, optional):</u> Whether to use quarterly or yearly data. Defaults to False.
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
-
- As an example:
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(["TSLA", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY",
-quarterly=True, start_date='2022-12-31')
-
-dupont_analysis = toolkit.models.get_extended_dupont_analysis()
-
-dupont_analysis.loc['AMZN']
-```
-
-Which returns:
-
-| | 2022Q2 | 2022Q3 | 2022Q4 | 2023Q1 | 2023Q2 |
- |:------------------------|------------:|----------:|------------:|----------:|----------:|
- | Interest Burden Ratio | -1.24465 | 0.858552 | -2.88409 | 1.20243 | 1.01681 |
- | Tax Burden Ratio | -0.611396 | 1.13743 | 0.101571 | 0.640291 | 0.878792 |
- | Operating Profit Margin | -0.0219823 | 0.0231391 | -0.00636042 | 0.0323498 | 0.0562125 |
- | Asset Turnover | nan | 0.299735 | 0.3349 | 0.274759 | 0.285319 |
- | Equity Multiplier | nan | 3.15403 | 3.14263 | 3.08433 | 2.91521 |
- | Return on Equity | nan | 0.0213618 | 0.00196098 | 0.0211066 | 0.0417791 |
 
 ## get_dupont_analysis
 Perform a Dupont analysis to breakdown the return on equity (ROE) into its components.
-
-The Dupont analysis is a method used to dissect and understand the factors that drive a company's return on equity (ROE). It breaks down the ROE into three key components: Profit Margin, Asset Turnover, and Financial Leverage.
-
-The formula is as follows:
-
-
+ The Dupont analysis is a method used to dissect and understand the factors that drive a company's return on equity (ROE). It breaks down the ROE into three key components: Profit Margin, Asset Turnover, and Financial Leverage.
+ The formula is as follows:
+ 
 - Profit Margin = Net Income / Revenue 
 - Asset Turnover = Revenue / Average Total Assets 
 - Financial Leverage = Average Total Assets / Average Total Equity 
@@ -101,14 +59,14 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 dupont_analysis = toolkit.models.get_dupont_analysis()
 ```
+
+---
+
 ## get_extended_dupont_analysis
 Perform an Extended Dupont analysis to breakdown the return on equity (ROE) into its components, while considering additional financial metrics.
-
-The Extended Dupont analysis is an advanced method used to break down the return on equity (ROE) into multiple components, providing a more detailed insight into the factors influencing a company's profitability. It considers additional metrics such as Return on Assets (ROA), Total Asset Turnover, Financial Leverage, and more.
-
-The formula is as follows:
-
-
+ The Extended Dupont analysis is an advanced method used to break down the return on equity (ROE) into multiple components, providing a more detailed insight into the factors influencing a company's profitability. It considers additional metrics such as Return on Assets (ROA), Total Asset Turnover, Financial Leverage, and more.
+ The formula is as follows:
+ 
 - Profit Margin = Net Income / Revenue 
 - Asset Turnover = Revenue / Average Total Assets 
 - Financial Leverage = Average Total Assets / Average Total Equity 
@@ -146,12 +104,13 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 extended_dupont_analysis = toolkit.models.get_extended_dupont_analysis()
 ```
+
+---
+
 ## get_enterprise_value_breakdown
 Calculate the Enterprise Value (EV) breakdown, providing a detailed view of its components.
-
-The Enterprise Value breakdown includes the following components for each quarter or year:
-
-
+ The Enterprise Value breakdown includes the following components for each quarter or year:
+ 
 - Share Price: The market price per share of the company's stock. 
 - Market Capitalization (Market Cap): The total value of a company's outstanding common and preferred shares. 
 - Debt: The sum of long
@@ -161,10 +120,8 @@ The Enterprise Value breakdown includes the following components for each quarte
 - Minority Interest: The equity value of a subsidiary with less than 50% ownership. 
 - Cash and Cash Equivalents: The total amount of liquid assets including cash, marketable securities, and short
 -term investments.
-
-The Enterprise Value is calculated as the sum of Market Cap, Debt, Preferred Equity, Minority Interest, minus Cash and Cash Equivalents.
-
-This breakdown is displayed in a DataFrame for each company and includes the option to show growth values as well.
+ The Enterprise Value is calculated as the sum of Market Cap, Debt, Preferred Equity, Minority Interest, minus Cash and Cash Equivalents.
+ This breakdown is displayed in a DataFrame for each company and includes the option to show growth values as well.
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -192,30 +149,25 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 enterprise_value_breakdown = toolkit.models.get_enterprise_value_breakdown()
 ```
+
+---
+
 ## get_weighted_average_cost_of_capital
 The Weighted Average Cost of Capital (WACC) is a financial metric used to estimate the cost of capital for a company. It represents the average rate of return a company must pay to its investors for using their capital. WACC takes into account the cost of both equity and debt, weighted by their respective proportions in the company's capital structure.
-
-The formula is as follows:
-
-
+ The formula is as follows:
+ 
 - Market Value of Equity = Share Price * Total Shares Outstanding 
 - Market Value of Debt = Total Debt 
 - Total Market Value = Market Value of Equity + Market Value of Debt 
 - Cost of Equity = Risk Free Rate + Beta * (Benchmark Return - Risk Free Rate) 
 - Cost of Debt = Interest Expense / Total Debt 
 - WACC = (Market Value of Equity / Total Market Value) * Cost of Equity + (Market Value of Debt / Total Market Value) * Cost of Debt * (1 - Corporate Tax Rate)
-
-Cost of Equity (Re): The cost of equity represents the return required by the company's shareholders or equity investors. It is the cost of raising funds by selling equity (such as common stock). The cost of equity is often estimated using methods like the Capital Asset Pricing Model (CAPM) or the Dividend Discount Model (DDM).
-
-Cost of Debt (Rd): The cost of debt is the interest rate the company pays on its outstanding debt. It is the cost of raising funds through borrowing, such as issuing bonds or taking loans. The cost of debt is typically based on the prevailing interest rates in the market and the company's creditworthiness.
-
-Corporate Tax Rate (Tc): The corporate tax rate is the percentage of a company's profits that is paid in taxes. It is used to calculate the tax shield on interest payments. Interest expenses on debt reduce taxable income, and the tax shield represents the tax savings resulting from these deductions.
-
-Market Value of Equity (E): The market value of equity is the total value of the company's outstanding shares of common stock. It is calculated by multiplying the current stock price by the number of shares outstanding.
-
-Market Value of Debt (D): The market value of debt is the total value of the company's outstanding debt obligations, such as bonds and loans. It represents the current market price of the debt instruments.
-
-Total Market Value of Capital (V): The total market value of capital is the sum of the market value of equity and the market value of debt (V = E + D). It represents the total value of the company's financing, both through equity and debt.
+ Cost of Equity (Re): The cost of equity represents the return required by the company's shareholders or equity investors. It is the cost of raising funds by selling equity (such as common stock). The cost of equity is often estimated using methods like the Capital Asset Pricing Model (CAPM) or the Dividend Discount Model (DDM).
+ Cost of Debt (Rd): The cost of debt is the interest rate the company pays on its outstanding debt. It is the cost of raising funds through borrowing, such as issuing bonds or taking loans. The cost of debt is typically based on the prevailing interest rates in the market and the company's creditworthiness.
+ Corporate Tax Rate (Tc): The corporate tax rate is the percentage of a company's profits that is paid in taxes. It is used to calculate the tax shield on interest payments. Interest expenses on debt reduce taxable income, and the tax shield represents the tax savings resulting from these deductions.
+ Market Value of Equity (E): The market value of equity is the total value of the company's outstanding shares of common stock. It is calculated by multiplying the current stock price by the number of shares outstanding.
+ Market Value of Debt (D): The market value of debt is the total value of the company's outstanding debt obligations, such as bonds and loans. It represents the current market price of the debt instruments.
+ Total Market Value of Capital (V): The total market value of capital is the sum of the market value of equity and the market value of debt (V = E + D). It represents the total value of the company's financing, both through equity and debt.
 
 **Args:**
  - <u>show_full_results (bool, optional):</u> Whether to show the full results or just the WACC values.
@@ -241,14 +193,14 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_weighted_average_cost_of_capital()
 ```
+
+---
+
 ## get_intrinsic_valuation
 Intrinsic value is a fundamental concept in finance and investing that represents the true worth or value of an asset, security, or investment, independent of its current market price or prevailing market sentiment. It is a concept often associated with the value investing philosophy, made famous by legendary investors like Benjamin Graham and Warren Buffett. Understanding intrinsic value is crucial for investors looking to make informed decisions about where to allocate their capital.
-
-This functionality uses DCF, or Discounted Cash Flow which is a widely used financial valuation method that allows investors and analysts to estimate the intrinsic value of an investment or business based on its expected future cash flows. It is a fundamental tool in finance and investment analysis, providing a systematic way to assess the present value of future cash flows while considering the time value of money.
-
-The formula is as follows:
-
-
+ This functionality uses DCF, or Discounted Cash Flow which is a widely used financial valuation method that allows investors and analysts to estimate the intrinsic value of an investment or business based on its expected future cash flows. It is a fundamental tool in finance and investment analysis, providing a systematic way to assess the present value of future cash flows while considering the time value of money.
+ The formula is as follows:
+ 
 - Cash Flow Projection_t = Cash Flow_t
 -1 * (1 + Growth Rate) 
 - Terminal Value = Last Cash Flow Projection * (1 + Perpetual Growth Rate) / (Weighted Average Cost of Capital - Perpetual Growth Rate) 
@@ -287,21 +239,18 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_intrinsic_valuation(0.05, 0.025, 0.094)
 ```
+
+---
+
 ## get_gorden_growth_model
 The Gordon Growth Model, also known as the Dividend Discount Model (DDM) with Constant Growth, is a method used to estimate the intrinsic value of a stock based on its expected future dividends. The model assumes that dividends will grow at a constant rate indefinitely.
-
-The formula is as follows:
-
-
+ The formula is as follows:
+ 
 - Intrinsic Value = (Dividends Per Share * (1 + Growth Rate)) / (Rate of Return - Growth Rate)
-
-The formula essentially discounts the future expected dividends to their present value, taking into account the required rate of return and the growth rate. The numerator represents the expected dividend in the next period. The denominator represents the required rate of return minus the growth rate.
-
-Investors often use the Gordon Growth Model to compare the intrinsic value of a stock with its current market price. If the intrinsic value is higher than the market price, some investors may interpret it as an indication that the stock is undervalued.
-
-It's important to note that the Gordon Growth Model is based on several assumptions, including the assumption of constant growth in dividends. It is most applicable to mature companies with stable and predictable dividend growth. If a company's dividend growth is expected to fluctuate or if it does not pay dividends, alternative valuation models may be more appropriate.
-
-The assumption of constant growth of dividends is often unrealistic. In reality, dividends may fluctuate or even be suspended. Therefore, the Gordon Growth Model should be used with caution and in conjunction with other valuation methods.
+ The formula essentially discounts the future expected dividends to their present value, taking into account the required rate of return and the growth rate. The numerator represents the expected dividend in the next period. The denominator represents the required rate of return minus the growth rate.
+ Investors often use the Gordon Growth Model to compare the intrinsic value of a stock with its current market price. If the intrinsic value is higher than the market price, some investors may interpret it as an indication that the stock is undervalued.
+ It's important to note that the Gordon Growth Model is based on several assumptions, including the assumption of constant growth in dividends. It is most applicable to mature companies with stable and predictable dividend growth. If a company's dividend growth is expected to fluctuate or if it does not pay dividends, alternative valuation models may be more appropriate.
+ The assumption of constant growth of dividends is often unrealistic. In reality, dividends may fluctuate or even be suspended. Therefore, the Gordon Growth Model should be used with caution and in conjunction with other valuation methods.
 
 **Args:**
  - <u>rate_of_return (float):</u> The required rate of return.
@@ -325,14 +274,15 @@ toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_gorden_growth_model(0.20, 0.05)
 ```
+
+---
+
 ## get_altman_z_score
 Calculates the Altman Z
 -Score, a financial metric used to predict the likelihood of a company going bankrupt. The Altman Z
 -Score is calculated using several financial ratios, including working capital to total assets, retained earnings to total assets, earnings before interest and taxes (EBIT) to total assets, market value of equity to book value of total liabilities, and sales to total assets.
-
-The formula is as follows:
-
-
+ The formula is as follows:
+ 
 - Working Capital to Total Assets = Working Capital / Total Assets 
 - Retained Earnings to Total Assets = Retained Earnings / Total Assets 
 - EBIT to Total Assets = EBIT / Total Assets 
@@ -340,11 +290,9 @@ The formula is as follows:
 - Sales to Total Assets = Sales / Total Assets 
 - Altman Z
 -Score = 1.2 * Working Capital to Total Assets + 1.4 * Retained Earnings to Total Assets + 3.3 * EBIT to Total Assets + 0.6 * Market Value to Total Liabilities + 1.0 * Sales to Total Assets
-
-The Altman Z
+ The Altman Z
 -Score can be interpreted as follows:
-
-
+ 
 - A Z
 -Score of less than 1.81 indicates a high likelihood of bankruptcy. 
 - A Z
@@ -380,33 +328,28 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 altman_z_score = toolkit.models.get_altman_z_score()
 ```
+
+---
+
 ## get_piotroski_score
 Calculate the Piotroski Score, a comprehensive financial assessment tool that helps investors and analysts evaluate a company's financial health and fundamental strength.
-
-The Piotroski Score was developed by Joseph Piotroski and is based on a set of nine fundamental financial criteria. Each criterion is assigned a score of 0 or 1, and the scores are then summed to calculate the Piotroski Score.
-
-The nine criteria are categorized into three groups:
-
-1. Profitability: 
+ The Piotroski Score was developed by Joseph Piotroski and is based on a set of nine fundamental financial criteria. Each criterion is assigned a score of 0 or 1, and the scores are then summed to calculate the Piotroski Score.
+ The nine criteria are categorized into three groups:
+ 1. Profitability: 
 - Return on Assets (ROA) Criteria: Measures the profitability of the company. 
 - Operating Cash Flow Criteria: Evaluates the company's ability to generate cash from its operations. 
 - Change in ROA Criteria: Assesses the trend in ROA over time. 
 - Accruals Criteria: Examines the quality of earnings.
-
-2. Leverage, Liquidity, and Operating Efficiency: 
+ 2. Leverage, Liquidity, and Operating Efficiency: 
 - Change in Leverage Criteria: Analyzes changes in the company's leverage (debt). 
 - Change in Current Ratio Criteria: Evaluates changes in the current ratio. 
 - Number of Shares Criteria: Assesses the issuance of common shares.
-
-3. Operating Efficiency and Asset Utilization: 
+ 3. Operating Efficiency and Asset Utilization: 
 - Gross Margin Criteria: Examines the company's gross margin, a measure of profitability. 
 - Asset Turnover Ratio Criteria: Evaluates the efficiency of asset utilization and sales generation.
-
-The Piotroski Score is calculated by summing the scores assigned to each of the nine criteria. The maximum possible score is 9, indicating the highest financial strength, while the minimum score is 0, suggesting potential financial weaknesses.
-
-Note that the Piostroski Score has been developed many decades ago and that it is important to always compare the same sectors. E.g. it could be that it is quite normal that a firm issues shares each year which nets a lower score even though it is a normal practice in that sector.
-
-Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers." Journal of Accounting Research, Vol. 38, No. 3, 1999, pp. 1
+ The Piotroski Score is calculated by summing the scores assigned to each of the nine criteria. The maximum possible score is 9, indicating the highest financial strength, while the minimum score is 0, suggesting potential financial weaknesses.
+ Note that the Piostroski Score has been developed many decades ago and that it is important to always compare the same sectors. E.g. it could be that it is quite normal that a firm issues shares each year which nets a lower score even though it is a normal practice in that sector.
+ Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers." Journal of Accounting Research, Vol. 38, No. 3, 1999, pp. 1
 -41.
 
 **Args:**
@@ -425,12 +368,13 @@ toolkit = Toolkit(["AAPL", "TSLA", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY
 
 toolkit.models.get_piotroski_score()
 ```
+
+---
+
 ## get_present_value_of_growth_opportunities
 The Present Value of Growth Opportunities (PVGO) is a financial metric that represents the present value of a company's future growth opportunities. It is calculated as the difference between the company's current stock price and the discounted value of its future cash flows.
-
-The formula is as follows:
-
-
+ The formula is as follows:
+ 
 - PVGO = Stock Price - Earnings Per Share / Weighted Average Cost of Capital
 
 **Args:**
@@ -455,3 +399,6 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.models.get_present_value_of_growth_opportunities()
 ```
+
+---
+

@@ -26,9 +26,20 @@
                 aria-hidden="true"></i><span class="caret"></span></a>
             <ul class="dropdown-content">
               {% for sublink in link.sublinks %}
-              <li>
-                <a href="{{ site.baseurl }}{{ sublink.url }}"> {{ sublink.title }}</a>
+              {% if sublink.sublinks %}
+              <li class="dropdown-submenu">
+                <a href="{{ site.baseurl }}{{ sublink.url }}">{{ sublink.title }} <i class="fa fa-chevron-right fa-xs" aria-hidden="true"></i></a>
+                <ul class="dropdown-submenu-content">
+                  {% for childlink in sublink.sublinks %}
+                  <li><a href="{{ site.baseurl }}{{ childlink.url }}">{{ childlink.title }}</a></li>
+                  {% endfor %}
+                </ul>
               </li>
+              {% else %}
+              <li>
+                <a href="{{ site.baseurl }}{{ sublink.url }}">{{ sublink.title }}</a>
+              </li>
+              {% endif %}
               {% endfor %}
             </ul>
           </li>

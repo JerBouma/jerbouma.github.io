@@ -1,6 +1,8 @@
 ---
 layout: splash
 title: "Jeroen Bouma"
+description: "Jeroen Bouma — Quantitative Investment Strategist and Python developer. Creator of Finance Toolkit and Finance Database, open-source financial analysis libraries with 10,000+ GitHub stars."
+excerpt: "Quantitative Investment Strategist and Python developer. Creator of Finance Toolkit and Finance Database."
 classes: custom-splash
 ---
 
@@ -10,14 +12,29 @@ classes: custom-splash
   <div class="hero-inner">
     <div class="hero-text">
       <h1 class="hero-title">Hi there, I'm  <span class="hero-signature">Jeroen Bouma</span></h1>
-      <p class="hero-tagline">Quantitative Investment Strategist <span class="hero-highlight">&amp; Python Enthusiast</span></p>
+      <p class="hero-tagline">Quantitative Investment Strategist</p>
       <p class="hero-bio">
-        I combine a formal Quantitative Finance background with deep Python expertise across Asset-Liability Management (ALM), Solvency II Leglislation, Portfolio Optimization and Artificial Intelligence. My Open-Source projects, including the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a>, have over 10,000 GitHub Stars combined.
+        I combine a formal Quantitative Finance background with deep Python expertise across Asset-Liability Management (ALM), Solvency II Legislation, Portfolio Optimization and Artificial Intelligence. My Open-Source projects, including the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a>, have over 10,000 GitHub Stars combined.
       </p>
     </div>
     <div class="hero-photo">
       <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma">
     </div>
+  </div>
+</div>
+
+<div class="stats-band" aria-label="Key statistics">
+  <a href="/projects" class="stat-item">
+    <span class="stat-number" data-stat="stars" data-target="12000" data-suffix="+">0+</span>
+    <span class="stat-label">GitHub Stars</span>
+  </a>
+  <a href="/projects/financetoolkit" class="stat-item">
+    <span class="stat-number" data-stat="ratios" data-target="180" data-suffix="+">0+</span>
+    <span class="stat-label">Financial Ratios</span>
+  </a>
+  <div class="stat-item">
+    <span class="stat-number" data-stat="downloads" data-target="60000" data-suffix="+">0+</span>
+    <span class="stat-label" style="font-size: 0.6rem; letter-spacing: 0.07em; white-space: nowrap;">Downloads per Month</span>
   </div>
 </div>
 
@@ -27,7 +44,7 @@ classes: custom-splash
     <div class="bento-content">
       <i class="fas fa-briefcase bento-icon"></i>
       <h2>Professional Experience</h2>
-      <p>A career spanning quantitative asset management, open-source development, and Python education.</p>
+      <p>A career spanning Quantitative Asset Management, Open Source development, and Finance education.</p>
     </div>
   </a>
 
@@ -35,7 +52,7 @@ classes: custom-splash
     <div class="bento-content">
       <i class="fas fa-code-branch bento-icon"></i>
       <h2>Open-Source Projects</h2>
-      <p>Python libraries for financial datasets and mathematics built for transparency and reuse.</p>
+      <p>Python libraries for Financial Datasets and Financial Modelling built for Transparency and Reusability.</p>
     </div>
   </a>
 
@@ -43,22 +60,102 @@ classes: custom-splash
     <div class="bento-content">
       <i class="fas fa-chart-line bento-icon"></i>
       <h2>Financial Modelling</h2>
-      <p>In-depth guides on using Python to create professional financial models.</p>
+      <p>In-depth guides on using Python to create Professional Financial Models that last.</p>
     </div>
   </a>
 
   <a href="/talks" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-microphone bento-icon"></i>
-      <h2>Talks &amp; Writing</h2>
-      <p>Recorded talks, articles, and a curated reading list on financial markets and open source.</p>
+      <h2>Appearances</h2>
+      <p>Recorded Talks, Articles, and a curated reading list on Financial Markets and Open Source.</p>
     </div>
   </a>
 </div>
 
+<script>
+(function () {
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* -- Count-up -- */
+  function fmt(n, target) {
+    return target >= 1000 ? n.toLocaleString('en-US') : String(n);
+  }
+  function countUp(el) {
+    var target = parseInt(el.getAttribute('data-target'), 10);
+    var suffix = el.getAttribute('data-suffix') || '';
+    if (reduced) { el.textContent = fmt(target, target) + suffix; return; }
+    var duration = 1600, start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(Math.round(eased * target), target) + (p >= 1 ? suffix : '');
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  var starsEl = document.querySelector('.stat-number[data-stat="stars"]');
+  var ratiosEl = document.querySelector('.stat-number[data-stat="ratios"]');
+  var dlEl = document.querySelector('.stat-number[data-stat="downloads"]');
+
+  /* -- Live GitHub stars -- */
+  var ghRepos = ['JerBouma/FinanceToolkit', 'JerBouma/FinanceDatabase', 'JerBouma/ThePassiveInvestor', 'JerBouma/PersonalFinance'];
+  var starsPromise = starsEl ? Promise.all(ghRepos.map(function (repo) {
+    return fetch('https://api.github.com/repos/' + repo)
+      .then(function (r) { return r.json(); })
+      .then(function (d) { return d.stargazers_count || 0; })
+      .catch(function () { return 0; });
+  })).then(function (counts) {
+    var total = counts.reduce(function (a, b) { return a + b; }, 0);
+    if (total > 0) starsEl.setAttribute('data-target', Math.floor(total / 100) * 100);
+  }).catch(function () {}) : Promise.resolve();
+
+  /* -- Live PyPI monthly downloads (shields.io, CORS-enabled) -- */
+  var pypiPkgs = ['financetoolkit', 'financedatabase', 'thepassiveinvestor', 'personalfinance'];
+  var dlPromise = dlEl ? Promise.all(pypiPkgs.map(function (pkg) {
+    return fetch('https://img.shields.io/pypi/dm/' + pkg + '.json')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var msg = (d.message || '').replace(/\/month.*$/, '').trim();
+        var m = msg.match(/^([\.\d]+)([kKmM])?/);
+        if (!m) return 0;
+        var n = parseFloat(m[1]);
+        var s = (m[2] || '').toLowerCase();
+        return Math.round(n * (s === 'k' ? 1000 : s === 'm' ? 1000000 : 1));
+      })
+      .catch(function () { return 0; });
+  })).then(function (counts) {
+    var total = counts.reduce(function (a, b) { return a + b; }, 0);
+    if (total > 0) dlEl.setAttribute('data-target', Math.floor(total / 1000) * 1000);
+  }).catch(function () {}) : Promise.resolve();
+
+  /* -- Animate after live data resolves (falls back to hardcoded targets on error) -- */
+  Promise.all([starsPromise, dlPromise]).then(function () {
+    [starsEl, ratiosEl, dlEl].forEach(function (el) { if (el) countUp(el); });
+  });
+
+  /* -- Rotating tagline -- */
+  var rotating = document.querySelector('.hero-rotating');
+  if (!rotating || reduced) return;
+  var words = (rotating.getAttribute('data-words') || '').split('|').filter(Boolean);
+  if (words.length < 2) return;
+  var idx = 0;
+  setInterval(function () {
+    rotating.style.opacity = '0';
+    setTimeout(function () {
+      idx = (idx + 1) % words.length;
+      rotating.textContent = words[idx];
+      rotating.style.opacity = '1';
+    }, 300);
+  }, 3200);
+}());
+</script>
+
 <div class="section-divider"></div>
 
-<h2 class="section-title text-center">Testimonials</h2>
+<h2 class="section-title text-center gradient-title">Testimonials</h2>
 
 <div class="testimonial-slider">
 

@@ -11,6 +11,8 @@ sidebar:
   nav: "personalfinance"
 ---
 
+<div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/PersonalFinance" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
+
 Tracking personal finances can be tedious. It either requires a massive time investment to keep everything well categorized as new transactions come in or it is far from accurate with tools that try to do prediction to define categories for you. Perhaps it works fine for names such as "Wall Mart" or "Starbucks" but your local bakery called "Morty's Place" is definitely not going to get picked up by the model. Many personal finance tools allow you to manually adjust these categories but that is just as tedious as doing it from scratch.
 
 **With PersonalFinance I want to make it easier to manage your finances.** Through defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you. This results in Morty's Place being correctly categorised as a Bakery.
@@ -47,7 +49,7 @@ This will generate the configuration file for you to use which you can supply ag
 
 ## How-To Guides for PersonalFinance
 
-This section contains a list of How-To guides for Personal Finance These guides are meant to show you how to use Personal Finance to gain insights into your own personal financnes. The guides are written in the form of Jupyter Notebooks. You can view the notebooks by clicking on the button below the description.
+This section contains a list of How-To guides for Personal Finance. These guides are meant to show you how to use Personal Finance to gain insights into your own personal finances. The guides are written in the form of Jupyter Notebooks. You can view the notebooks by clicking on the button below the description.
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -63,7 +65,7 @@ This notebook demonstrates an example how to use Personal Finance to understand 
 
 ### Managing your Personal Finances
 
-This notebook explains in detail how to use your own transaction files to manage your personal finances. It explains in detail how to use the configuration file and how you can leverage the created datasets to gain insights in your prsonal finances.
+This notebook explains in detail how to use your own transaction files to manage your personal finances. It explains in detail how to use the configuration file and how you can leverage the created datasets to gain insights into your personal finances.
 
 [Open the Notebook](/projects/personalfinance/using-your-files){: .btn .btn--info}
 

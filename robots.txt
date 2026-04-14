@@ -4,5 +4,7 @@ layout: null
 
 User-agent: *
 Allow: /
+Disallow: /assets/js/
+Disallow: /assets/css/
 
 Sitemap: {{ site.url }}/sitemap.xml

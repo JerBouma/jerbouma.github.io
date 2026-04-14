@@ -12,7 +12,7 @@ sidebar:
     nav: "financetoolkit-docs-economics"
 ---
 
-The Economics module gives insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and 3-month and 10-year Government Interest Rates. This is done through the economics module and can be used as a standalone module as well.
+The Economics module provides insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and government interest rates. It can also be used as a standalone module.
 
 To install the FinanceToolkit it simply requires the following:
 
@@ -20,67 +20,19 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 ```
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, fixed income, risk and performance, please have a look below:
 {% include algolia.html %}
-
-## __init__
-Initializes the Economics Controller Class.
-
-**Args:**
- - <u>start_date (str | None, optional):</u> The start date to retrieve data from. Defaults to None.
- - <u>end_date (str | None, optional):</u> The end date to retrieve data from. Defaults to None.
- - <u>gmdb_source (bool, optional):</u> If True, retrieves data from the GMDB source. Defaults to False.
- - <u>quarterly (bool | None, optional):</u> If True, returns quarterly data; otherwise, returns yearly data.
- Defaults to None. This only works for data retrieved from the OECD source.
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
-
- As an example:
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date="2010-01-01")
-
-cpi = economics.get_consumer_price_index()
-
-cpi.loc['2010':, ['United States', 'Netherlands', 'Japan']]
-```
-
-Which returns:
-
-| | United States | Netherlands | Japan |
- |:-----|----------------:|--------------:|---------:|
- | 2010 | 100 | 100 | 100 |
- | 2011 | 103.14 | 102.472 | 99.7226 |
- | 2012 | 105.278 | 105.359 | 99.6741 |
- | 2013 | 106.822 | 108.052 | 100.004 |
- | 2014 | 108.547 | 108.397 | 102.762 |
- | 2015 | 108.679 | 108.635 | 103.583 |
- | 2016 | 110.056 | 108.759 | 103.455 |
- | 2017 | 112.402 | 110.165 | 103.958 |
- | 2018 | 115.143 | 111.927 | 104.986 |
- | 2019 | 117.231 | 114.913 | 105.477 |
- | 2020 | 118.695 | 116.185 | 105.449 |
- | 2021 | 124.253 | 119.459 | 105.202 |
- | 2022 | 134.183 | 133.336 | 107.828 |
- | 2023 | 139.722 | 138.827 | 111.353 |
- | 2024 | 143.896 | 143.228 | 113.839 |
- | 2025 | 146.562 | 146.58 | 116.102 |
 
 ## get_gross_domestic_product
 Get the Gross Domestic Product for a variety of countries over time from the OECD. The Gross Domestic Product is the total value of goods produced and services provided in a country during one year.
-
-The data is available in two forms: compared to the previous year's value or compared to the previous period. The year on year data is the GDP compared to the same quarter in the previous year. The quarter on quarter data is the GDP compared to the previous quarter.
-
-See definition: [https://data.oecd.org/gdp/gross
+ The data is available in two forms: compared to the previous year's value or compared to the previous period. The year on year data is the GDP compared to the same quarter in the previous year. The quarter on quarter data is the GDP compared to the previous quarter.
+ See definition: [https://data.oecd.org/gdp/gross
 -domestic
 -product
 -gdp.htm](https://data.oecd.org/gdp/gross
 -domestic
 -product
 -gdp.htm){:target="_blank"}
-
-It is also possible to acquire the data from the Global Macro Database (GMDB) source which also provides inflation adjusted data. For more information see: [https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf](https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf){:target="_blank"}
+ It is also possible to acquire the data from the Global Macro Database (GMDB) source which also provides inflation adjusted data. For more information see: [https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf](https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf){:target="_blank"}
 
 **Args:**
  - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
@@ -120,10 +72,12 @@ Which returns:
  | 2024 | 942765 | 3.61572e+06 | 1.12652e+08 |
  | 2025 | 958100 | 3.64414e+06 | 1.17704e+08 |
 
+
+---
+
 ## get_gross_domestic_product_deflator
 Get the Gross Domestic Product Deflator for a variety of countries over time from the Global Macro Database (GMDB). The GDP deflator is a measure of the price of all domestically produced final goods and services in an economy relative to the price level in a base year which can vary per country.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -161,10 +115,12 @@ Which returns:
  | 2024 | 125.195 | 126.443 | 136.148 |
  | 2025 | 127.469 | 129.463 | 142.557 |
 
+
+---
+
 ## get_total_consumption
 Get the Total Consumption for a variety of countries over time from the Global Macro Database (GMDB). Total Consumption is the total amount of money spent by households on consumer goods and services.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
@@ -200,10 +156,12 @@ Which returns:
  | 2024 | 776464 | 2.29617e+06 | 2.80908e+06 |
  | 2025 | 804450 | 2.3712e+06 | 3.03317e+06 |
 
+
+---
+
 ## get_total_consumption_to_gdp_ratio
 Get the Total Consumption to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Total Consumption to GDP Ratio is the ratio of the total amount of money spent by households on consumer goods and services to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -238,10 +196,12 @@ Which returns:
  | 2024 | 69.8097 | 78.906 | 76.7534 |
  | 2025 | 70.0162 | 78.995 | 77.1961 |
 
+
+---
+
 ## get_investment
 Get the Investment for a variety of countries over time from the Global Macro Database (GMDB). Investment is the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -280,10 +240,12 @@ Which returns:
  | 2024 | 6.36237e+06 | 54339.8 | 5.5217e+07 |
  | 2025 | 6.66113e+06 | 57349.5 | 5.84789e+07 |
 
+
+---
+
 ## get_investment_to_gdp_ratio
 Get the Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Investment to GDP Ratio is the ratio of the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -317,10 +279,12 @@ Which returns:
  | 2024 | 24.149 | 26.572 | 25.574 |
  | 2025 | 23.928 | 26.639 | 24.649 |
 
+
+---
+
 ## get_fixed_investment
 Get the Fixed Investment for a variety of countries over time from the Global Macro Database (GMDB). Fixed Investment is the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings that are expected to last for more than one year.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -353,10 +317,12 @@ Which returns:
  | 2024 | 473070 | 897275 | 657075 |
  | 2025 | 482008 | 925002 | 674350 |
 
+
+---
+
 ## get_fixed_investment_to_gdp_ratio
 Get the Fixed Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Fixed Investment to GDP Ratio is the ratio of the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings that are expected to last for more than one year to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -409,10 +375,12 @@ Which returns:
  | 2024 | 25.1474 | 20.6719 | 24.9148 |
  | 2025 | 25.2518 | 20.7174 | 24.8035 |
 
+
+---
+
 ## get_exports
 Get the Exports for a variety of countries over time from the Global Macro Database (GMDB). Exports are the total amount of goods and services produced in a country that are sold to other countries.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -450,10 +418,12 @@ Which returns:
  | 1989 | 138137 | 299732 | 203483 |
  | 1990 | 144521 | 334043 | 256949 |
 
+
+---
+
 ## get_exports_to_gdp_ratio
 Get the Exports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Exports to GDP Ratio is the ratio of the total amount of goods and services produced in a country that are sold to other countries to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -491,10 +461,12 @@ Which returns:
  | 2024 | 10.7508 | 32.3514 | 21.242 |
  | 2025 | 10.5946 | 31.6492 | 21.2205 |
 
+
+---
+
 ## get_imports
 Get the Imports for a variety of countries over time from the Global Macro Database (GMDB). Imports are the total amount of goods and services produced in other countries that are bought by a country.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -537,10 +509,12 @@ Which returns:
  | 2024 | 4.03094e+06 | 990187 | 1.19409e+07 |
  | 2025 | 4.1031e+06 | 1.02675e+06 | 1.22266e+07 |
 
+
+---
+
 ## get_imports_to_gdp_ratio
 Get the Imports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Imports to GDP Ratio is the ratio of the total amount of goods and services produced in other countries that are bought by a country to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -578,10 +552,12 @@ Which returns:
  | 2019 | 14.4693 | 33.8188 | 38.9323 |
  | 2020 | 13.0061 | 31.6831 | 37.6192 |
 
+
+---
+
 ## get_current_account_balance
 Get the Current Account Balance for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance is the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -619,10 +595,12 @@ Which returns:
  | 2024 | 2650.74 | 286059 | 23619.7 |
  | 2025 | -3590.1 | 285609 | 31890.9 |
 
+
+---
+
 ## get_current_account_balance_to_gdp_ratio
 Get the Current Account Balance to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance to GDP Ratio is the ratio of the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid) to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -660,10 +638,12 @@ Which returns:
  | 2024 | 0.848 | -2.161 | -2.787 |
  | 2025 | -0.024 | -2.072 | -2.829 |
 
+
+---
+
 ## get_government_debt
 Get the Government Debt for a variety of countries over time from the Global Macro Database (GMDB). Government Debt is the total amount of money that a government owes to creditors.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -701,10 +681,12 @@ Which returns:
  | 2024 | 3.52945e+07 | 3.20199e+06 | 1.97489e+07 |
  | 2025 | 3.76545e+07 | 3.26736e+06 | 2.12283e+07 |
 
+
+---
+
 ## get_government_debt_to_gdp_ratio
 Get the Government Debt to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Debt to GDP Ratio is the ratio of the total amount of money that a government owes to creditors to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -742,10 +724,12 @@ Which returns:
  | 2024 | 44.264 | 62.679 | 90.119 |
  | 2025 | 45.11 | 62.098 | 93.845 |
 
+
+---
+
 ## get_government_revenue
 Get the Government Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Revenue is the total amount of money that a government collects from taxes and other sources.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -769,10 +753,12 @@ Which returns:
  | 2024 | 1.0989e+06 | 1.24586e+06 | 2.20353e+08 |
  | 2025 | 1.14061e+06 | 1.30501e+06 | 2.31967e+08 |
 
+
+---
+
 ## get_government_revenue_to_gdp_ratio
 Get the Government Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes and other sources to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -810,10 +796,12 @@ Which returns:
  | 2024 | 29.897 | 41.274 | 35.446 |
  | 2025 | 30.06 | 41.238 | 36.466 |
 
+
+---
+
 ## get_government_tax_revenue
 Get the Government Tax Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Tax Revenue is the total amount of money that a government collects from taxes.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -850,10 +838,12 @@ Which returns:
  | 2023 | 2.11419e+06 | nan | nan |
  | 2024 | nan | nan | nan |
 
+
+---
+
 ## get_government_tax_revenue_to_gdp_ratio
 Get the Government Tax Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Tax Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -889,10 +879,12 @@ Which returns:
  | 2022 | 21.5601 | 12.826 | 13.6774 |
  | 2023 | 10.2238 | 14.0076 | 14.2666 |
 
+
+---
+
 ## get_government_expenditure
 Get the Government Expenditure for a variety of countries over time from the Global Macro Database (GMDB). Government Expenditure is the total amount of money that a government spends on goods and services.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -930,10 +922,12 @@ Which returns:
  | 2024 | 2.57546e+08 | 4.45191e+07 | 9.43978e+07 |
  | 2025 | 2.50987e+08 | 4.77611e+07 | 1.02862e+08 |
 
+
+---
+
 ## get_government_expenditure_to_gdp_ratio
 Get the Government Expenditure to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Expenditure to GDP Ratio is the ratio of the total amount of money that a government spends on goods and services to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -971,10 +965,12 @@ Which returns:
  | 2024 | 37.526 | 42.198 | 44.158 |
  | 2025 | 37.384 | 39.825 | 44.798 |
 
+
+---
+
 ## get_government_deficit
 Get the Government Deficit for a variety of countries over time from the Global Macro Database (GMDB). Government Deficit is the total amount of money that a government spends more than it collects from taxes and other sources. A government deficit is usually financed by borrowing money.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1012,10 +1008,12 @@ Which returns:
  | 2024 | -2.22521e+06 | -59827.1 | -2.01778e+06 |
  | 2025 | -2.22159e+06 | -32373.6 | -1.28252e+06 |
 
+
+---
+
 ## get_government_deficit_to_gdp_ratio
 Get the Government Deficit to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Deficit to GDP Ratio is the ratio of the total amount of money that a government spends more than it collects from taxes and other sources to the Gross Domestic Product (GDP). A government deficit is usually financed by borrowing money.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1053,15 +1051,15 @@ Which returns:
  | 2024 | -3.845 | -1.661 | -4.25 |
  | 2025 | -3.493 | -2.043 | -3.741 |
 
+
+---
+
 ## get_trust_in_government
 Trust in government refers to the share of people who report having confidence in the national government. The data shown reflect the share of respondents answering “yes” (the other response categories being “no”, and “dont know”) to the survey question: “In this country, do you have confidence in… national government?
-
-Due to small sample sizes, country averages for horizontal inequalities (by age, gender and education) are pooled between 2010
+ Due to small sample sizes, country averages for horizontal inequalities (by age, gender and education) are pooled between 2010
 -18 to improve the accuracy of the estimates.
-
-The sample is ex ante designed to be nationally representative of the population aged 15 and over. This indicator is measured as a percentage of all survey respondents.
-
-See definition: [https://data.oecd.org/gga/trust
+ The sample is ex ante designed to be nationally representative of the population aged 15 and over. This indicator is measured as a percentage of all survey respondents.
+ See definition: [https://data.oecd.org/gga/trust
 -in
 -government.htm](https://data.oecd.org/gga/trust
 -in
@@ -1110,10 +1108,12 @@ Which returns:
  | 2022 | 0.3654 | 0.3086 | 0.3798 |
  | 2023 | 0.3654 | 0.3217 | 0.3798 |
 
+
+---
+
 ## get_consumer_price_index
 Consumer Price Index (CPI) is a measure that examines the average change in prices paid by consumers for goods and services over time. It is a measure of inflation. The base year (2010) is the year against which the index is set to 100.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1153,10 +1153,12 @@ Which returns:
  | 2019 | 113.815 | 111.591 | 111.243 |
  | 2020 | 114.239 | 112.18 | 111.108 |
 
+
+---
+
 ## get_inflation_rate
 Inflation Rate is the percentage change in the Consumer Price Index (CPI) from one period to another. It is a measure of the rate of price increases in the economy.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1190,12 +1192,13 @@ Which returns:
  | 2008 | 2.6284 | 2.8129 | 2.5885 |
  | 2009 | 0.3127 | 0.0876 | -0.8355 |
 
+
+---
+
 ## get_consumer_confidence_index
 This consumer confidence indicator provides an indication of future developments of households consumption and saving, based upon answers regarding their expected financial situation, their sentiment about the general economic situation, unemployment and capability of savings.
-
-An indicator above 100 signals a boost in the consumers’ confidence towards the future economic situation, as a consequence of which they are less prone to save, and more inclined to spend money on major purchases in the next 12 months. Values below 100 indicate a pessimistic attitude towards future developments in the economy, possibly resulting in a tendency to save more and consume less.
-
-See definition: [https://data.oecd.org/leadind/consumer
+ An indicator above 100 signals a boost in the consumers’ confidence towards the future economic situation, as a consequence of which they are less prone to save, and more inclined to spend money on major purchases in the next 12 months. Values below 100 indicate a pessimistic attitude towards future developments in the economy, possibly resulting in a tendency to save more and consume less.
+ See definition: [https://data.oecd.org/leadind/consumer
 -confidence
 -index
 -cci.htm](https://data.oecd.org/leadind/consumer
@@ -1235,12 +1238,13 @@ Which returns:
  | 2009-02 | 97.4573 | 97.3785 | 96.658 |
  | 2009-03 | 97.4165 | 97.4899 | 96.9339 |
 
+
+---
+
 ## get_business_confidence_index
 This business confidence indicator provides information on future developments, based upon opinion surveys on developments in production, orders and stocks of finished goods in the industry sector. It can be used to monitor output growth and to anticipate turning points in economic activity.
-
-Numbers above 100 suggest an increased confidence in near future business performance, and numbers below 100 indicate pessimism towards future performance.
-
-See definition: [https://data.oecd.org/leadind/business
+ Numbers above 100 suggest an increased confidence in near future business performance, and numbers below 100 indicate pessimism towards future performance.
+ See definition: [https://data.oecd.org/leadind/business
 -confidence
 -index
 -bci.htm](https://data.oecd.org/leadind/business
@@ -1280,11 +1284,13 @@ Which returns:
  | 2023-02 | 99.2644 | 98.6224 | 101.35 |
  | 2023-03 | 99.3837 | 98.2617 | 101.553 |
 
+
+---
+
 ## get_composite_leading_indicator
 The composite leading indicator (CLI) is designed to provide early signals of turning points in business cycles showing fluctuation of the economic activity around its long term potential level. CLIs show short
 -term economic movements in qualitative rather than quantitative terms.
-
-See definition: [https://data.oecd.org/leadind/composite
+ See definition: [https://data.oecd.org/leadind/composite
 -leading
 -indicator
 -cli.htm](https://data.oecd.org/leadind/composite
@@ -1323,19 +1329,18 @@ Which returns:
  | 2023-10 | 99.4863 | 100.806 | 100.075 |
  | 2023-11 | 99.5104 | 100.998 | 100.085 |
 
+
+---
+
 ## get_house_prices
 In most cases, the nominal house price index covers the sales of newly
 -built and existing dwellings, following the recommendations from the RPPI (Residential Property Prices Indices) manual.
-
-The real house price index is given by the ratio of the nominal house price index to the consumers’ expenditure deflator in each country from the OECD national accounts database. Both indices are seasonally adjusted.
-
-Both are based on an 2015 = 100 as an index.
-
-See definition: [https://data.oecd.org/price/housing
+ The real house price index is given by the ratio of the nominal house price index to the consumers’ expenditure deflator in each country from the OECD national accounts database. Both indices are seasonally adjusted.
+ Both are based on an 2015 = 100 as an index.
+ See definition: [https://data.oecd.org/price/housing
 -prices.htm](https://data.oecd.org/price/housing
 -prices.htm){:target="_blank"}
-
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 
 **Args:**
  - <u>quarterly (bool | None, optional):</u> Whether to return the quarterly data or the annual data.
@@ -1374,12 +1379,13 @@ Which returns:
  | 2022 | 118.739 | 152.287 | 141.162 |
  | 2023 | 118.74 | 139.601 | 134.022 |
 
+
+---
+
 ## get_rent_prices
 The price to rent ratio is the nominal house price index divided by the housing rent price index and can be considered as a measure of the profitability of house ownership.
-
-This is based on an 2015 = 100 as an index.
-
-See definition: [https://data.oecd.org/price/housing
+ This is based on an 2015 = 100 as an index.
+ See definition: [https://data.oecd.org/price/housing
 -prices.htm](https://data.oecd.org/price/housing
 -prices.htm){:target="_blank"}
 
@@ -1419,17 +1425,16 @@ Which returns:
  | 2022 | 221.225 | 129.426 | 110.897 |
  | 2023 | 398.003 | 139.543 | 117.179 |
 
+
+---
+
 ## get_share_prices
 Share price indices are calculated from the prices of common shares of companies traded on national or foreign stock exchanges. They are usually determined by the stock exchange, using the closing daily values for the monthly data, and normally expressed as simple arithmetic averages of the daily data.
-
-A share price index measures how the value of the stocks in the index is changing, a share return index tells the investor what their “return” is, meaning how much money they would make as a result of investing in that basket of shares.
-
-A price index measures changes in the market capitalisation of the basket of shares in the index whereas a return index adds on to the price index the value of dividend payments, assuming they are re
+ A share price index measures how the value of the stocks in the index is changing, a share return index tells the investor what their “return” is, meaning how much money they would make as a result of investing in that basket of shares.
+ A price index measures changes in the market capitalisation of the basket of shares in the index whereas a return index adds on to the price index the value of dividend payments, assuming they are re
 -invested in the same stocks. Occasionally agencies such as central banks will compile share indices.
-
-This uses 2015 as the base year (= 100)
-
-See definition: [https://data.oecd.org/price/share
+ This uses 2015 as the base year (= 100)
+ See definition: [https://data.oecd.org/price/share
 -prices.htm](https://data.oecd.org/price/share
 -prices.htm){:target="_blank"}
 
@@ -1471,14 +1476,15 @@ Which returns:
  | 2023 | 785.903 | 97.9468 | 131.286 |
  | 2024 | 1190.71 | 106.289 | 143.996 |
 
+
+---
+
 ## get_exchange_rates
 Exchange rates are defined as the price of one country's' currency in relation to another country's currency. This indicator is measured in terms of national currency per US dollar.
-
-See definition: [https://data.oecd.org/conversion/exchange
+ See definition: [https://data.oecd.org/conversion/exchange
 -rates.htm](https://data.oecd.org/conversion/exchange
 -rates.htm){:target="_blank"}
-
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 
 **Args:**
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
@@ -1518,18 +1524,19 @@ Which returns:
  | 2009 | 93.5716 | 10376.8 | 6.8308 |
  | 2010 | 87.7606 | 9078.03 | 6.769 |
 
+
+---
+
 ## get_money_supply
 Money Supply is the total amount of money that is in circulation in a country. It includes currency, demand deposits, and other liquid assets that can be easily converted into cash. Money supply is an important economic indicator that the Federal Reserve uses to implement its monetary policy.
-
-Money supply can be divided into four categories: M0, M1, M2, M3 and M4. 
+ Money supply can be divided into four categories: M0, M1, M2, M3 and M4. 
 - M0: The total of all physical currency, plus accounts at the central bank that can be exchanged for physical currency. 
 - M1: The total of all physical currency part of bank reserves + the amount in demand accounts ("checking" or "current" accounts). 
 - M2: M1 + most savings accounts, money market accounts, retail money market mutual funds, and small denomination time deposits. 
 - M3: M2 + large time deposits, institutional money market funds, short
 -term repurchase agreements, and other larger liquid assets. 
 - M4: M3 + all other financial assets.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1567,10 +1574,12 @@ Which returns:
  | 2019 | 889033 | 3.1968e+06 | 1.44327e+07 |
  | 2020 | 974276 | 3.4582e+06 | 1.54013e+07 |
 
+
+---
+
 ## get_central_bank_policy_rate
 The Central Bank Policy Rate is the interest rate that a central bank sets on its loans and advances to a commercial bank. This interest rate is used by the monetary authorities to control inflation and stabilize the country's currency.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1602,26 +1611,26 @@ Which returns:
  | 2024 | 3.8125 | 3.8125 | 4.375 |
  | 2025 | 2.875 | 2.875 | 4.255 |
 
+
+---
+
 ## get_short_term_interest_rate
 Short
 -term interest rates are the rates at which short
 -term borrowings are effected between financial institutions or the rate at which short
 -term government paper is issued or traded in the market. Short
 -term interest rates are generally averages of daily rates, measured as a percentage.
-
-Short
+ Short
 -term interest rates are based on three
 -month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".
-
-See definition: [https://data.oecd.org/interest/short
+ See definition: [https://data.oecd.org/interest/short
 -term
 -interest
 -rates.htm](https://data.oecd.org/interest/short
 -term
 -interest
 -rates.htm){:target="_blank"}
-
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 
 **Args:**
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
@@ -1657,23 +1666,23 @@ Which returns:
  | 2024Q3 | 0.0023 | 0.051 | 0.021 |
  | 2024Q4 | 0.0033 | 0.0454 | 0.0205 |
 
+
+---
+
 ## get_long_term_interest_rate
 Long
 -term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long
 -term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
-
-In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long
+ In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long
 -term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
-
-See definition: [https://data.oecd.org/interest/long
+ See definition: [https://data.oecd.org/interest/long
 -term
 -interest
 -rates.htm](https://data.oecd.org/interest/long
 -term
 -interest
 -rates.htm){:target="_blank"}
-
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 
 **Args:**
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
@@ -1709,16 +1718,15 @@ Which returns:
  | 2023-10 | 0.0095 | 0.048 | 0.0655 |
  | 2023-11 | 0.0066 | 0.045 | 0.0655 |
 
+
+---
+
 ## get_renewable_energy
 Renewable energy is defined as the contribution of renewables to total primary energy supply (TPES). Renewables include the primary energy equivalent of hydro (excluding pumped storage), geothermal, solar, wind, tide and wave sources.
-
-Energy derived from solid biofuels, biogasoline, biodiesels, other liquid biofuels, biogases and the renewable fraction of municipal waste are also included. Biofuels are defined as fuels derived directly or indirectly from biomass (material obtained from living or recently living organisms).
-
-This includes wood, vegetal waste (including wood waste and crops used for energy production), ethanol, animal materials/wastes and sulphite lyes. Municipal waste comprises wastes produced by the residential, commercial and public service sectors that are collected by local authorities for disposal in a central location for the production of heat and/or power.
-
-This indicator in percentage of total primary energy supply.
-
-See definition: [https://data.oecd.org/energy/renewable
+ Energy derived from solid biofuels, biogasoline, biodiesels, other liquid biofuels, biogases and the renewable fraction of municipal waste are also included. Biofuels are defined as fuels derived directly or indirectly from biomass (material obtained from living or recently living organisms).
+ This includes wood, vegetal waste (including wood waste and crops used for energy production), ethanol, animal materials/wastes and sulphite lyes. Municipal waste comprises wastes produced by the residential, commercial and public service sectors that are collected by local authorities for disposal in a central location for the production of heat and/or power.
+ This indicator in percentage of total primary energy supply.
+ See definition: [https://data.oecd.org/energy/renewable
 -energy.htm](https://data.oecd.org/energy/renewable
 -energy.htm){:target="_blank"}
 
@@ -1758,12 +1766,13 @@ Which returns:
  | 2019 | 0.3006 | 0.1485 | 0.0776 |
  | 2020 | 0.3191 | 0.1637 | 0.083 |
 
+
+---
+
 ## get_carbon_footprint
 The carbon footprint is a measure of the total amount of greenhouse gases produced to directly and indirectly support human activities, usually expressed in equivalent tons of carbon dioxide (CO2).
-
-The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
-
-See definition: [https://data.oecd.org/envpolicy/environmental
+ The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
+ See definition: [https://data.oecd.org/envpolicy/environmental
 -tax.htm](https://data.oecd.org/envpolicy/environmental
 -tax.htm){:target="_blank"}
 
@@ -1801,18 +1810,17 @@ Which returns:
  | 2017 | 10.661 | 17.211 | 7.497 |
  | 2018 | 10.437 | 17.551 | 7.539 |
 
+
+---
+
 ## get_unemployment_rate
 The unemployed are people of working age who are without work, are available for work, and have taken specific steps to find work. The uniform application of this definition results in estimates of unemployment rates that are more internationally comparable than estimates based on national definitions of unemployment.
-
-This indicator is measured in numbers of unemployed people as a percentage of the labour force and it is seasonally adjusted. The labour force is defined as the total number of unemployed people plus those in employment. Data are based on labour force surveys (LFS).
-
-For European Union countries where monthly LFS information is not available, the monthly unemployed figures are estimated by Eurostat.
-
-See definition: [https://data.oecd.org/unemp/unemployment
+ This indicator is measured in numbers of unemployed people as a percentage of the labour force and it is seasonally adjusted. The labour force is defined as the total number of unemployed people plus those in employment. Data are based on labour force surveys (LFS).
+ For European Union countries where monthly LFS information is not available, the monthly unemployed figures are estimated by Eurostat.
+ See definition: [https://data.oecd.org/unemp/unemployment
 -rate.htm](https://data.oecd.org/unemp/unemployment
 -rate.htm){:target="_blank"}
-
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 
 **Args:**
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
@@ -1850,14 +1858,14 @@ Which returns:
  | 2022Q4 | 0.0303 | 0.036 | 0.0253 |
  | 2023Q1 | 0.0293 | 0.035 | 0.026 |
 
+
+---
+
 ## get_labour_productivity
 GDP per hour worked is a measure of labour productivity. It measures how efficiently labour input is combined with other factors of production and used in the production process. Labour input is defined as total hours worked of all persons engaged in production. Labour productivity only partially reflects the productivity of labour in terms of the personal capacities of workers or the intensity of their effort.
-
-The ratio between the output measure and the labour input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organisational and efficiency change, economies of scale).
-
-This uses 2015 as the base year (= 100)
-
-See definition: [https://data.oecd.org/lprdty/gdp
+ The ratio between the output measure and the labour input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organisational and efficiency change, economies of scale).
+ This uses 2015 as the base year (= 100)
+ See definition: [https://data.oecd.org/lprdty/gdp
 -per
 -hour
 -worked.htm](https://data.oecd.org/lprdty/gdp
@@ -1900,13 +1908,14 @@ Which returns:
  | 2021 | 1.6538 | 0.8441 | 0.8455 |
  | 2022 | 1.8601 | 0.9503 | 0.9496 |
 
+
+---
+
 ## get_income_inequality
 Income is defined as household disposable income in a particular year. It consists of earnings, self
 -employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
-
-The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
-
-See definition: [https://data.oecd.org/inequality/income
+ The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
+ See definition: [https://data.oecd.org/inequality/income
 -inequality.htm](https://data.oecd.org/inequality/income
 -inequality.htm){:target="_blank"}
 
@@ -1944,36 +1953,30 @@ Which returns:
  | 2020 | 0.377 | 5.8 | 2.2 | 2.6 | 1.64 | 7.5 |
  | 2021 | 0.375 | 5.4 | 2.2 | 2.4 | 1.63 | 7.1 |
 
+
+---
+
 ## get_population_statistics
 Population is defined as all nationals present in, or temporarily absent from a country, and aliens permanently settled in a country. This indicator shows the number of people that usually live in an area. Growth rates are the annual changes in population resulting from births, deaths and net migration during the year.
-
-Total population includes the following:
-
-
+ Total population includes the following:
+ 
 - national armed forces stationed abroad; merchant seamen at sea; 
 - diplomatic personnel located abroad; 
 - civilian aliens resident in the country; 
 - displaced persons resident in the country.
-
-However, it excludes the following:
-
-
+ However, it excludes the following:
+ 
 - foreign armed forces stationed in the country; 
 - foreign diplomatic personnel located in the country; 
 - civilian aliens temporarily in the country.
-
-Population projections are a common demographic tool. They provide a basis for other statistical projections, helping governments in their decision making. This indicator is measured in terms of thousands of people.
-
-Furthermore the following statistics are provided:
-
-
+ Population projections are a common demographic tool. They provide a basis for other statistical projections, helping governments in their decision making. This indicator is measured in terms of thousands of people.
+ Furthermore the following statistics are provided:
+ 
 - The youth population is defined as those people aged less than 15 as a percentage of the total population. 
 - The working age population is defined as those aged 15 to 64 as a percentage of the total population. 
 - The elderly population is defined as those aged 65 and over as a percentage of the total population.
-
-See definition: [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
-
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ See definition: [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
+ It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 
 **Args:**
  - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
@@ -2011,13 +2014,14 @@ Which returns:
  | 2018 | 126.749 | 0.1221 | 0.598 | 0.2799 |
  | 2019 | 126.555 | 0.1206 | 0.5969 | 0.2825 |
 
+
+---
+
 ## get_poverty_rate
 The poverty rate is the ratio of the number of people (in a given age group) whose income falls below the poverty line; taken as half the median household income of the total population.
-
-However, two countries with the same poverty rates may differ in terms of the relative income
+ However, two countries with the same poverty rates may differ in terms of the relative income
 -level of the poor.
-
-See definition: [https://data.oecd.org/inequality/poverty
+ See definition: [https://data.oecd.org/inequality/poverty
 -rate.htm](https://data.oecd.org/inequality/poverty
 -rate.htm){:target="_blank"}
 
@@ -2054,4 +2058,7 @@ Which returns:
  | 2018 | 0.104 | 0.122 | 0.103 | 0.09 |
  | 2019 | 0.106 | 0.131 | 0.098 | 0.107 |
  | 2020 | 0.128 | 0.152 | 0.118 | 0.138 |
+
+
+---
 

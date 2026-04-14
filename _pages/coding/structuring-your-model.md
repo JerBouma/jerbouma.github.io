@@ -18,7 +18,7 @@ The preferred approach for structuring a model is the **Model, View, Controller 
 
 The following diagrams illustrate different data flows within the MVC pattern, depending on the model's structure and purpose.
 
-<div style="display: flex; justify-content: space-between; gap: 1em; margin-bottom: 10px; flex-wrap: wrap;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1em; margin-bottom: 10px;">
 
 {% raw %}
 <div class="mermaid">
@@ -61,9 +61,9 @@ The Model layer is where data manipulation occurs. This can range from complex c
 <div class="mermaid">
 flowchart LR;
 
-Step0["User"] -- <b>Step 1<br></b>Provides Data -->  Step2["Profitability Model"]
-Step2["Profitability Model"] <-- <b>Step 2<br></b>Calculates the Gross Margin -->  Step3["Get Gross Margin"]
-Step2["Profitability Model"]  --<b>Step 3<br></b> Returns the Gross Margin --> Step0["User"]
+Step0["User"] -- "1. Provides Data" -->  Step2["Profitability Model"]
+Step2["Profitability Model"] <-- "2. Calculates Gross Margin" -->  Step3["Get Gross Margin"]
+Step2["Profitability Model"]  -- "3. Returns Gross Margin" --> Step0["User"]
 </div>
 
 For example, a Gross Margin calculation function shouldn't require input data with specific column names. Instead, it should accept generic inputs like two Series, Arrays, Floats, or Integers. This approach promotes creating "dumb" calculation functions, devoid of application-specific logic.
@@ -72,18 +72,18 @@ See the simplicity of such a model [here](https://github.com/JerBouma/FinanceToo
 
 ```python
 def get_gross_margin(revenue: pd.Series, cost_of_goods_sold: pd.Series) -> pd.Series:
-        """
-        Calculate the gross margin, a profitability ratio that measures the percentage of
-        revenue that exceeds the cost of goods sold.
+    """
+    Calculate the gross margin, a profitability ratio that measures the percentage of
+    revenue that exceeds the cost of goods sold.
 
-        Args:
-                revenue (float or pd.Series): Total revenue of the company.
-                cost_of_goods_sold (float or pd.Series): Total cost of goods sold of the company.
+    Args:
+        revenue (float or pd.Series): Total revenue of the company.
+        cost_of_goods_sold (float or pd.Series): Total cost of goods sold of the company.
 
-        Returns:
-                float | pd.Series: The gross margin percentage value.
-        """
-        return (revenue - cost_of_goods_sold) / revenue
+    Returns:
+        float | pd.Series: The gross margin percentage value.
+    """
+    return (revenue - cost_of_goods_sold) / revenue
 ```
 
 Each function is categorized in a specific module. For example, the Gross Margin calculation belongs in the `profitability_model.py` module, alongside other profitability ratio functions. Similarly, other ratio categories like liquidity, solvency, efficiency, and valuation reside in their respective model files (`liquidity_model.py`, `solvency_model.py`, `efficiency_model.py`, and `valuation_model.py`, respectively).
@@ -95,35 +95,35 @@ The View layer is responsible for presenting data. This can be a table, a graph,
 <div class="mermaid">
 flowchart LR;
 
-Step0["User"] -- <b>Step 1<br></b>Provides Data -->  Step2["Profitability Model"]
-Step2["Profitability Model"] <-- <b>Step 2<br></b>Calculates the Gross Margin -->  Step3["Get Gross Margin"]
-Step2["Profitability Model"]  --<b>Step 3<br></b> Returns the Gross Margin --> Step0["User"]
-Step0["User"] -- <b>Step 4<br></b>Provides Gross Margin -->  Step4["Profitability View"]
-Step4["Profitability View"] <-- <b>Step 5<br></b>Plot the Gross Margin -->  Step5["Plot Gross Margin"]
-Step4["Profitability View"] -- <b>Step 6<br></b>Shows the Gross Margin Plot --> Step0["User"]
+Step0["User"] -- "1. Provides Data" -->  Step2["Profitability Model"]
+Step2["Profitability Model"] <-- "2. Calculates Gross Margin" -->  Step3["Get Gross Margin"]
+Step2["Profitability Model"]  -- "3. Returns Gross Margin" --> Step0["User"]
+Step0["User"] -- "4. Provides Gross Margin" -->  Step4["Profitability View"]
+Step4["Profitability View"] <-- "5. Plot Gross Margin" -->  Step5["Plot Gross Margin"]
+Step4["Profitability View"] -- "6. Shows Plot" --> Step0["User"]
 </div>
 
 See below how such a view could look like:
 
 ```python
 def plot_gross_margin(gross_margin: pd.Series) -> pd.Series:
-        """
-        Plot the gross margin, a profitability ratio that measures the percentage of
-        revenue that exceeds the cost of goods sold.
+    """
+    Plot the gross margin, a profitability ratio that measures the percentage of
+    revenue that exceeds the cost of goods sold.
 
-        Args:
-                gross_margin (pd.Series): Gross Margin of the company.
+    Args:
+        gross_margin (pd.Series): Gross Margin of the company.
 
-        Returns:
-                A plot of the gross margin.
-        """
-        gross_margin.plot(
-                kind="bar",
-                title="Gross Margin",
-                ylabel="Gross Margin (%)",
-                xlabel="Date",
-                color="green"
-        )
+    Returns:
+        A plot of the gross margin.
+    """
+    gross_margin.plot(
+        kind="bar",
+        title="Gross Margin",
+        ylabel="Gross Margin (%)",
+        xlabel="Date",
+        color="green"
+    )
 ```
 
 Similar to the Model layer, the View layer is typically organized into modules. For example, the Gross Margin plotting function belongs in the `profitability_view.py` module, along with other profitability visualization functions. Likewise, visualizations for other ratio categories reside in corresponding view files (`liquidity_view.py`, `solvency_view.py`, `efficiency_view.py`, and `valuation_view.py`, respectively).
@@ -135,54 +135,54 @@ The Controller layer contains the logic that connects the Model and View. It han
 <div class="mermaid">
 flowchart LR;
 
-Step0["User"] -- <b>Step 1<br></b>Request Data -->  Step3["Ratios Controller"]
-Step3["Ratios Controller"] <-- <b>Step 2<br></b>Calculates the Gross Margin --> Step2["Profitability Model"]
-Step3["Ratios Controller"] -- <b>Step 3<br></b>Shows the Gross Margin Data --> Step0["User"]
+Step0["User"] -- "1. Request Data" -->  Step3["Ratios Controller"]
+Step3["Ratios Controller"] <-- "2. Calculates Gross Margin" --> Step2["Profitability Model"]
+Step3["Ratios Controller"] -- "3. Shows Gross Margin" --> Step0["User"]
 </div>
 
 Crucially, the Controller should perform <u>no</u> core calculations; its role is purely to orchestrate data flow between the Model and View. Controller logic is often encapsulated within classes. For instance, the Gross Margin calculation might be accessed via a method within a `Ratios` class (see the actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/ratios_controller.py#L2310-L2374){: target="_blank"}):
 
 ```python
 class Ratios:
+    """
+    The Ratios Module
+    """
+    def __init__(
+        self,
+        tickers: str | list[str],
+        historical: pd.DataFrame,
+        balance: pd.DataFrame,
+        income: pd.DataFrame,
+        cash: pd.DataFrame,
+        quarterly: bool = False,
+        rounding: int | None = 4,
+    ):
         """
-        The Ratios Module
+        Initializes the Ratios Controller Class. Remaining docstring omitted.
         """
-        def __init__(
-                self,
-                tickers: str | list[str],
-                historical: pd.DataFrame,
-                balance: pd.DataFrame,
-                income: pd.DataFrame,
-                cash: pd.DataFrame,
-                quarterly: bool = False,
-                rounding: int | None = 4,
-        ):
-                """
-                Initializes the Ratios Controller Class. Remaining docstring omitted.
-                """
-                # The necessary data initialization is done here.
+        # The necessary data initialization is done here.
 
-        def get_gross_margin(
-                self,
-                rounding: int | None = None,
-                growth: bool = False,
-                lag: int | list[int] = 1,
-        ) -> pd.DataFrame:
-                """
-                Calculate the gross margin, a profitability ratio that measures the percentage of
-                revenue that exceeds the cost of goods sold. Remaining docstring omitted.
-                """
-                gross_margin = profitability_model.get_gross_margin(
-                                self._income_statement.loc[:, "Revenue", :],
-                                self._income_statement.loc[:, "Cost of Goods Sold", :],
-                        )
+    def get_gross_margin(
+        self,
+        rounding: int | None = None,
+        growth: bool = False,
+        lag: int | list[int] = 1,
+    ) -> pd.DataFrame:
+        """
+        Calculate the gross margin, a profitability ratio that measures the percentage of
+        revenue that exceeds the cost of goods sold. Remaining docstring omitted.
+        """
+        gross_margin = profitability_model.get_gross_margin(
+                self._income_statement.loc[:, "Revenue", :],
+                self._income_statement.loc[:, "Cost of Goods Sold", :],
+            )
 
-                if growth:
-                        return calculate_growth(
-                                gross_margin, lag=lag, rounding=rounding if rounding else self._rounding
-                        )
+        if growth:
+            return calculate_growth(
+                gross_margin, lag=lag, rounding=rounding if rounding else self._rounding
+            )
 
-                return gross_margin.round(rounding if rounding else self._rounding)
+        return gross_margin.round(rounding if rounding else self._rounding)
 ```
 
 Unlike the Model and View layers, a single Controller module might handle multiple related functionalities. This is because the Controller acts as the central coordinator or "glue." So in this case, this function would fit in the `ratios_controller.py` module.
@@ -192,51 +192,51 @@ It's also possible, and sometimes beneficial, to have multiple Controllers. For 
 <div class="mermaid">
 flowchart LR;
 
-Step0["User"]-- <b>Step 1<br></b>Initializes the FinanceToolkit -->  Step1["Toolkit Controller"]
-Step1["Toolkit Controller"] <-- <b>Step 2<br></b>Asks for Fundamental Data --> Step2a["Fundamentals Model"]
-Step1["Toolkit Controller"] <-- <b>Step 3<br></b>Asks for Historical Data --> Step2b["Historical Model"]
-Step1["Toolkit Controller"] -- <b>Step 4<br></b>Initializes the Ratios Controller --> Step3["Ratios Controller"]
+Step0["User"] -- "1. Initialize" -->  Step1["Toolkit Controller"]
+Step1["Toolkit Controller"] <-- "2. Fundamental Data" --> Step2a["Fundamentals Model"]
+Step1["Toolkit Controller"] <-- "3. Historical Data" --> Step2b["Historical Model"]
+Step1["Toolkit Controller"] -- "4. Init Ratios" --> Step3["Ratios Controller"]
 </div>
 
 This main controller then initializes a dedicated `ratios_controller.py` responsible for ratio calculations. This separation prevents the main Toolkit Controller from becoming overloaded and allows the Ratios Controller to be potentially used independently. For example, in `toolkit_controller.py`, the Ratios Controller is initialized like this (see actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/toolkit_controller.py#L400-L523){: target="_blank"}):
 
 ```python
 class Toolkit:
+    """
+    The Finance Toolkit
+    """
+    def __init__(
+        self,
+        tickers: list | str,
+        api_key: str = "",
+        start_date: str | None = None,
+        end_date: str | None = None,
+        quarterly: bool = False,
+        rounding: int | None = 4,
+    ):
         """
-        The Finance Toolkit
+        Initializes an Toolkit object. Remaining docstring omitted.
         """
-        def __init__(
-                self,
-                tickers: list | str,
-                api_key: str = "",
-                start_date: str | None = None,
-                end_date: str | None = None,
-                quarterly: bool = False,
-                rounding: int | None = 4,
-        ):
-                """
-                Initializes an Toolkit object. Remaining docstring omitted.
-                """
-                # The necessary data initialization is done.
+        # The necessary data initialization is done.
 
-        def ratios(self) -> Ratios:
-                """
-                The Ratios Module. Remaining docstring omitted.
-                """
-                # The necessary data collection is done here as depicted in the graph above.
+    def ratios(self) -> Ratios:
+        """
+        The Ratios Module. Remaining docstring omitted.
+        """
+        # The necessary data collection is done here as depicted in the graph above.
 
-                return Ratios(
-                        tickers=tickers,
-                        historical=self._quarterly_historical_data
-                        if self._quarterly
-                        else self._yearly_historical_data,
-                        balance=self._balance_sheet_statement,
-                        income=self._income_statement,
-                        cash=self._cash_flow_statement,
-                        custom_ratios_dict=self._custom_ratios,
-                        quarterly=self._quarterly,
-                        rounding=self._rounding,
-                )
+        return Ratios(
+            tickers=tickers,
+            historical=self._quarterly_historical_data
+            if self._quarterly
+            else self._yearly_historical_data,
+            balance=self._balance_sheet_statement,
+            income=self._income_statement,
+            cash=self._cash_flow_statement,
+            custom_ratios_dict=self._custom_ratios,
+            quarterly=self._quarterly,
+            rounding=self._rounding,
+        )
 ```
 
 ### The Supportive Layer
@@ -246,36 +246,36 @@ In addition to the Model, View, and Controller modules, a `helpers` module can b
 <div class="mermaid">
 flowchart LR;
 
-Step0["User"] -- <b>Step 1<br></b>Request Data -->  Step4["Ratios Controller"]
-Step4["Ratios Controller"] <-- <b>Step 2<br></b>Calculates the Gross Margin --> Step2["Profitability Model"]
-Step4["Ratios Controller"] <-- <b>Step 3<br></b>Calculates the Growth --> Step3["Helpers"]
-Step4["Ratios Controller"] -- <b>Step 4<br></b>Shows the Growth of the Gross Margin --> Step0["User"]
+Step0["User"] -- "1. Request Data" -->  Step4["Ratios Controller"]
+Step4["Ratios Controller"] <-- "2. Calculates Gross Margin" --> Step2["Profitability Model"]
+Step4["Ratios Controller"] <-- "3. Calculates Growth" --> Step3["Helpers"]
+Step4["Ratios Controller"] -- "4. Shows Result" --> Step0["User"]
 </div>
 
 For example, consider a function that calculates the growth of a pd.Series or pd.DataFrame. Since growth calculation might be needed for ratios, technical indicators, performance metrics, etc., placing it in a central `helpers` module avoids code duplication. See the actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/helpers.py#L129-L207){: target="_blank"} and an example below:
 
 ```python
 def calculate_growth(
-        dataset: pd.Series | pd.DataFrame,
-        lag: int | list[int] = 1,
-        rounding: int | None = 4,
-        axis: str = "columns",
+    dataset: pd.Series | pd.DataFrame,
+    lag: int | list[int] = 1,
+    rounding: int | None = 4,
+    axis: str = "columns",
 ) -> pd.Series | pd.DataFrame:
-        """
-        Calculates growth for a given dataset. Defaults to a lag of 1
-        (i.e. 1 year or 1 quarter).
+    """
+    Calculates growth for a given dataset. Defaults to a lag of 1
+    (i.e. 1 year or 1 quarter).
 
-        Args:
-                dataset (pd.Series | pd.DataFrame): the dataset to calculate the growth values for.
-                lag (int | str): the lag to use for the calculation. Defaults to 1.
-                rounding (int | None): the number of decimals to round the results to.
-                Defaults to 4.
-                axis (str): the axis to use for the calculation. Defaults to "columns".
+    Args:
+        dataset (pd.Series | pd.DataFrame): the dataset to calculate the growth values for.
+        lag (int | str): the lag to use for the calculation. Defaults to 1.
+        rounding (int | None): the number of decimals to round the results to.
+        Defaults to 4.
+        axis (str): the axis to use for the calculation. Defaults to "columns".
 
-        Returns:
-                pd.Series | pd.DataFrame: _description_
-        """
-        return dataset.pct_change(periods=lag, axis=axis).round(rounding)
+    Returns:
+        pd.Series | pd.DataFrame: _description_
+    """
+    return dataset.pct_change(periods=lag, axis=axis).round(rounding)
 ```
 
 Other examples of helper functions include reading data from files (e.g., XLSX, CSV) or handling common errors. Usually, a single `helpers` module suffices.
@@ -289,13 +289,13 @@ The Finance Toolkit applies this methodology, utilizing the structure shown in t
 <div class="mermaid">
 flowchart TB;
 
-Step0["User"] -- <b>Step 1<br></b>Initializes the FinanceToolkit -->  Step1["Toolkit Controller"]
-Step1["Toolkit Controller"] <-- <b>Step 2<br></b>Asks for Fundamental Data --> Step2a["Fundamentals Model"]
-Step1["Toolkit Controller"] <-- <b>Step 3<br></b>Asks for Historical Data --> Step2b["Historical Model"]
-Step1["Toolkit Controller"] -- <b>Step 4<br></b>Initializes the Ratios Controller --> Step3["Ratios Controller"]
-Step3["Ratios Controller"] -- <b>Step 5a<br></b>Calculates the Gross Margin --> Step2["Profitability Model"]
-Step3["Ratios Controller"] -- <b>Step 5b<br></b>Optional Growth Calculation --> Step4["Helpers"]
-Step3["Ratios Controller"] -- <b>Step 6<br></b>Shows the Gross Margin Data --> Step0["User"]
+Step0["User"] -- "1. Initialize" -->  Step1["Toolkit Controller"]
+Step1["Toolkit Controller"] <-- "2. Fundamental Data" --> Step2a["Fundamentals Model"]
+Step1["Toolkit Controller"] <-- "3. Historical Data" --> Step2b["Historical Model"]
+Step1["Toolkit Controller"] -- "4. Init Ratios" --> Step3["Ratios Controller"]
+Step3["Ratios Controller"] -- "5a. Calculates Gross Margin" --> Step2["Profitability Model"]
+Step3["Ratios Controller"] -- "5b. Growth Calculation" --> Step4["Helpers"]
+Step3["Ratios Controller"] -- "6. Shows Result" --> Step0["User"]
 </div>
 
 Following this structure, here's how you might execute the code:

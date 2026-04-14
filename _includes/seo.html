@@ -165,4 +165,32 @@
 {% if site.baidu_site_verification %}
   <meta name="baidu-site-verification" content="{{ site.baidu_site_verification }}">
 {% endif %}
+
+{% unless page.url == "/" %}
+{% assign raw_crumbs = page.url | split: '/' %}
+{% assign crumbs = "" | split: "" %}
+{% for c in raw_crumbs %}{% if c != "" %}{% assign crumbs = crumbs | push: c %}{% endif %}{% endfor %}
+{% if crumbs.size > 0 %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": {{ '/' | absolute_url | jsonify }}
+    }{% assign crumb_path = '' %}{% for crumb in crumbs %},
+    {
+      "@type": "ListItem",
+      "position": {{ forloop.index | plus: 1 }},
+      "name": {% if forloop.last %}{{ page.title | default: crumb | replace: '-', ' ' | capitalize | jsonify }}{% else %}{{ crumb | replace: '-', ' ' | capitalize | jsonify }}{% endif %},
+      "item": {% assign crumb_path = crumb_path | append: '/' | append: crumb %}{{ crumb_path | append: '/' | absolute_url | jsonify }}
+    }{% endfor %}
+  ]
+}
+</script>
+{% endif %}
+{% endunless %}
 <!-- end _includes/seo.html -->

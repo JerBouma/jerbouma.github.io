@@ -1,19 +1,19 @@
 ---
 permalink: /projects/openbbterminal
 title: OpenBB Terminal
-excerpt: During my time at OpenBB, I have made major code contributions to the OpenBB Platform, formerly known as the OpenBB Terminal. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. I am proud having worked on this project and I am excited to see where it will go in the future. Being a competitor to Bloomberg, Reuters and FactSet, OpenBB is a platform that is here to stay.
-description: During my time at OpenBB, I have made major code contributions to the OpenBB Platform, formerly known as the OpenBB Terminal. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. I am proud having worked on this project and I am excited to see where it will go in the future. Being a competitor to Bloomberg, Reuters and FactSet, OpenBB is a platform that is here to stay.
+excerpt: During my time at OpenBB, I have made major code contributions to the OpenBB Platform, formerly known as the OpenBB Terminal. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. I am proud to have worked on this project and I am excited to see where it will go in the future. Being a competitor to Bloomberg, Reuters and FactSet, OpenBB is a platform that is here to stay.
+description: During my time at OpenBB, I have made major code contributions to the OpenBB Platform, formerly known as the OpenBB Terminal. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. I am proud to have worked on this project and I am excited to see where it will go in the future. Being a competitor to Bloomberg, Reuters and FactSet, OpenBB is a platform that is here to stay.
 classes: wide-no-sidebar
 author_profile: false
 redirect_from:
   - /openbbterminal
 ---
 
+<div class="page-header-action notebook-viewer-actions"><a href="https://github.com/OpenBB-finance/OpenBBTerminal" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
+
 During my time at OpenBB, I have made major code contributions to the OpenBB Platform, formerly known as the OpenBB Terminal. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. I am proud having worked on this project and I am excited to see where it will go in the future. Being a competitor to Bloomberg, Reuters and FactSet, OpenBB is a platform that is here to stay.
 
-I've led many of the Academic initatives presenting the software at multiple universities in Europe (as seen on the [Appearances](/appearances) page as well) and shared a lot of my financial knowledge with team. This also led to several Powerpoint presentations that have been presented at webinars and conferences.
-
-I am proud to have worked on this project and I am excited to see where it will go in the future. Being a competitor to Bloomberg, Reuters and FactSet, OpenBB is a platform that is here to stay.
+I've led many of the academic initiatives, presenting the software at multiple universities in Europe (as also seen on the [Appearances](/appearances) page), and shared a lot of my financial knowledge with the team. This also led to several Powerpoint presentations that have been presented at webinars and conferences.
 
 For more information, have a look on the website of [OpenBB](https://openbb.co/). Alternatively, discover some of my code contributions (with over 250 commits and millions of code additions) by clicking the image below. Be advised this is related to the OpenBB Terminal and not the current OpenBB Platform.
 

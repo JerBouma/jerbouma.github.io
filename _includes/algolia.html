@@ -3,9 +3,17 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch-theme-algolia.min.css">
 
-<div id="search-hits-wrapper"></div>
 <div id="search-searchbar"></div>
-<div class="post-list" id="search-hits"></div>
+
+<div id="search-hits-wrapper">
+  <div id="search-results-header">
+    <span id="search-results-label">Search Results</span>
+    <button id="search-results-toggle" aria-expanded="true" aria-label="Collapse search results">
+      <i class="fas fa-chevron-up"></i>
+    </button>
+  </div>
+  <div class="post-list" id="search-hits"></div>
+</div>
 
 <script>
 const search = instantsearch({
@@ -13,13 +21,18 @@ const search = instantsearch({
   apiKey: '{{ site.algolia.search_only_api_key }}',
   indexName: '{{ site.algolia.index_name }}',
   searchFunction: function (helper) {
-    var searchResults = document.getElementById("search-hits-wrapper");
-    var hitsContainer = document.getElementById("search-hits");
+    var wrapper = document.getElementById("search-hits-wrapper");
 
     if (helper.state.query === "") {
-      searchResults.style.display = "none";
+      wrapper.style.display = "none";
     } else {
-      searchResults.style.display = "block";
+      wrapper.style.display = "";
+      // Reset collapse if re-opening
+      var hits = document.getElementById('search-hits');
+      var btn = document.getElementById('search-results-toggle');
+      hits.style.display = '';
+      btn.setAttribute('aria-expanded', 'true');
+      btn.querySelector('i').className = 'fas fa-chevron-up';
       helper.search();
     }}
   });
@@ -72,53 +85,17 @@ search.addWidget(
 
 search.start();
 
+// Collapse toggle
+document.getElementById('search-results-toggle').addEventListener('click', function () {
+  const hits = document.getElementById('search-hits');
+  const icon = this.querySelector('i');
+  const expanded = this.getAttribute('aria-expanded') === 'true';
+  hits.style.display = expanded ? 'none' : '';
+  this.setAttribute('aria-expanded', String(!expanded));
+  icon.className = expanded ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+});
+
 </script>
 
-<style>
-  .ais-search-box {
-    max-width: 100%;
-    margin-bottom: 15px;
-  }
-  
-  .post-list {
-    max-height: 400px; /* Adjust the max-height as needed */
-    overflow-y: auto;
-    padding: 10px; /* Padding around the search results box */
-  }
-  
-  .post-item {
-    margin-bottom: 30px;
-  }
-  
-  .post-link .ais-Highlight {
-    color: #111;
-    font-style: normal;
-    text-decoration: underline;
-  }
-  
-  .post-breadcrumbs {
-    color: #424242;
-    display: block;
-  }
-  
-  .post-breadcrumb {
-    font-size: 18px;
-    color: #424242;
-  }
-  
-  .post-breadcrumb .ais-Highlight {
-    font-weight: bold;
-    font-style: normal;
-  }
-  
-  .post-snippet .ais-Highlight {
-    color: #2a7ae2;
-    font-style: normal;
-    font-weight: bold;
-  }
-  
-  .post-snippet img {
-    display: none;
-  }
-</style>
+
   

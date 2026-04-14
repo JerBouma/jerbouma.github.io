@@ -1,21 +1,46 @@
-<div class="page__footer-follow">
-  <ul class="social-icons">
-    {% if site.data.ui-text[site.locale].follow_label %}
-      <li><strong>{{ site.data.ui-text[site.locale].follow_label }}</strong></li>
-    {% endif %}
+<div class="footer__inner">
 
-    {% if site.footer.links %}
-      {% for link in site.footer.links %}
-        {% if link.label and link.url %}
-          <li><a href="{{ link.url }}" rel="nofollow noopener noreferrer"><i class="{{ link.icon | default: 'fas fa-link' }}" aria-hidden="true"></i> {{ link.label }}</a></li>
-        {% endif %}
+  <div class="footer__brand">
+    <a class="footer__brand-name" href="{{ '/' | relative_url }}"><span class="hero-signature">{{ site.masthead_title | default: site.title }}</span></a>
+    <p>Quantitative Investment Strategist & Python Enthusiast</p>
+  </div>
+
+  <div class="footer__col">
+    <h4 class="footer__heading">Navigate</h4>
+    <ul class="footer__links">
+      {% for link in site.data.navigation.main %}
+        <li><a href="{{ link.url | relative_url }}">{{ link.title }}</a></li>
       {% endfor %}
-    {% endif %}
+    </ul>
+  </div>
 
-    {% unless site.atom_feed.hide %}
-      <li><a href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ '/feed.xml' | relative_url }}{% endif %}"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].feed_label | default: "Feed" }}</a></li>
-    {% endunless %}
-  </ul>
+  <div class="footer__col">
+    <h4 class="footer__heading">Connect</h4>
+    <ul class="footer__links">
+      {% if site.footer.links %}
+        {% for link in site.footer.links %}
+          {% if link.label and link.url %}
+            <li>
+              <a href="{{ link.url }}" rel="nofollow noopener noreferrer">
+                <i class="{{ link.icon | default: 'fas fa-link' }}" aria-hidden="true"></i> {{ link.label }}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      {% unless site.atom_feed.hide %}
+        <li>
+          <a href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ '/feed.xml' | relative_url }}{% endif %}">
+            <i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].feed_label | default: "Feed" }}
+          </a>
+        </li>
+      {% endunless %}
+    </ul>
+  </div>
+
 </div>
 
-<div class="page__footer-copyright">&copy; {{ site.time | date: '%Y' }} {{ site.name | default: site.title }}
+<div class="footer__bottom">
+  <span class="footer__copyright">&copy; {{ site.time | date: '%Y' }} {{ site.name | default: site.title }}</span>
+  <span class="footer__built">Built with <a href="https://jekyllrb.com" rel="nofollow noopener noreferrer">Jekyll</a> &amp; hosted on <a href="https://pages.github.com" rel="nofollow noopener noreferrer">GitHub Pages</a></span>
+</div>

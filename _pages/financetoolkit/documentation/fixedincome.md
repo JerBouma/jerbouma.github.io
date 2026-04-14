@@ -1,7 +1,7 @@
 ---
 title: Fixed Income
-excerpt: The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions. 
-description: The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions. 
+excerpt: The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
+description: The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
 author_profile: false
 permalink: /projects/financetoolkit/docs/fixedincome
 classes: wide-sidebar
@@ -12,7 +12,7 @@ sidebar:
     nav: "financetoolkit-docs-fixedincome"
 ---
 
-The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions. 
+The Fixed Income module covers a wide variety of calculations including the Effective Yield, Macaulay Duration, Modified Duration, Convexity, Yield to Maturity and derivative pricing models such as Black and Bachelier (used for Swaptions and other instruments).
 
 To install the FinanceToolkit it simply requires the following:
 
@@ -20,51 +20,11 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 ```
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, risk, performance and economics, please have a look below:
 {% include algolia.html %}
-
-## __init__
-Initializes the Fixed Income Controller Class.
-
-**Args:**
- - <u>start_date (str | None, optional):</u> The start date to retrieve data from. Defaults to None.
- - <u>end_date (str | None, optional):</u> The end date to retrieve data from. Defaults to None.
- - <u>quarterly (bool, optional):</u> Whether to return the data quarterly. Defaults to True.
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
-
- As an example:
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(
-start_date='2024-01-01',
-end_date='2024-01-15',
-)
-
-fixedincome.get_ice_bofa_effective_yield(maturity=False)
-```
-
-Which returns:
-
-| Date | AAA | AA | A | BBB | BB | B | CCC |
- |:-----------|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
- | 2024-01-01 | 0.0456 | 0.047 | 0.0505 | 0.054 | 0.0613 | 0.0752 | 0.1319 |
- | 2024-01-02 | 0.0459 | 0.0473 | 0.0509 | 0.0543 | 0.0622 | 0.0763 | 0.1333 |
- | 2024-01-03 | 0.0459 | 0.0474 | 0.051 | 0.0544 | 0.0634 | 0.0779 | 0.1358 |
- | 2024-01-04 | 0.0466 | 0.0481 | 0.0518 | 0.0551 | 0.0639 | 0.0784 | 0.1367 |
- | 2024-01-05 | 0.047 | 0.0485 | 0.0521 | 0.0554 | 0.0641 | 0.0787 | 0.137 |
- | 2024-01-08 | 0.0465 | 0.0481 | 0.0517 | 0.055 | 0.0633 | 0.0776 | 0.1365 |
- | 2024-01-09 | 0.0464 | 0.048 | 0.0516 | 0.0548 | 0.0629 | 0.0771 | 0.1359 |
- | 2024-01-10 | 0.0464 | 0.048 | 0.0515 | 0.0547 | 0.0622 | 0.0762 | 0.1351 |
- | 2024-01-11 | 0.0456 | 0.0472 | 0.0507 | 0.054 | 0.0619 | 0.076 | 0.1344 |
- | 2024-01-12 | 0.0451 | 0.0467 | 0.0502 | 0.0534 | 0.0613 | 0.0753 | 0.1338 |
- | 2024-01-15 | 0.0451 | 0.0467 | 0.0501 | 0.0533 | 0.0611 | 0.0751 | 0.1328 |
 
 ## collect_bond_statistics
 Collect the bond statistics for a given bond which includes the following fields:
-
-
+ 
 - Par Value: The face value of the bond. 
 - Coupon Rate: The annual coupon rate (in decimal). 
 - Years to Maturity: The number of years until the bond matures. 
@@ -78,8 +38,7 @@ Collect the bond statistics for a given bond which includes the following fields
 - Dollar Duration: The modified duration multiplied by the bond price. 
 - DV01: The dollar value of a 0.01% change in yield to maturity. 
 - Convexity: The second derivative of the bond price with respect to the yield to maturity.
-
-These statistics can be used to evaluate the bond's performance as opposed to other bonds or to estimate the bond's sensitivity to changes in interest rates to be able to apply a hedging strategy.
+ These statistics can be used to evaluate the bond's performance as opposed to other bonds or to estimate the bond's sensitivity to changes in interest rates to be able to apply a hedging strategy.
 
 **Args:**
  - <u>par_value (float):</u> The face value of the bond. Defaults to 100.
@@ -129,22 +88,21 @@ Which returns:
  | DV01 | 0.0004 | 0.0022 | 0 | 0.01 | 0.0001 | 0 |
  | Convexity | 22.4017 | 93.7509 | 4.0849 | 110 | 7.0923 | 1.0662 |
 
+
+---
+
 ## get_present_value
 Calculates the bond prices for different coupon rates and years to maturity. The bond price is the present value of the bond's future cash flows, which includes the coupon payments and the par value of the bond at maturity. The bond price is calculated using the following formula:
-
-
+ 
 - Bond Price = (C / r) * (1 - (1 + r)^
 -n) + F / (1 + r)^n
-
-where:
-
-
+ where:
+ 
 - C = Coupon payment per period 
 - r = Yield to maturity per period 
 - n = Number of periods 
 - F = Face value of the bond
-
-The bond price is used to determine the fair value of the bond and to compare the bond's price to its market price to determine if the bond is overvalued or undervalued.
+ The bond price is used to determine the fair value of the bond and to compare the bond's price to its market price to determine if the bond is overvalued or undervalued.
 
 **Args:**
  - <u>par_value (float):</u> The par value (face value) of the bond.
@@ -156,16 +114,17 @@ The bond price is used to determine the fair value of the bond and to compare th
 
  **Returns:**
  pandas.DataFrame: A DataFrame containing the bond prices for different coupon rates and years to maturity.
+
+---
+
 ## get_duration
 Calculates the bond duration for different coupon rates and years to maturity. It has the option to calculate the following type of bond durations:
-
-
+ 
 - Macaulay's Duration: The weighted average time to receive the bond's cash flows. 
 - Modified Duration: The Macaulay's duration divided by 1 plus the yield to maturity. 
 - Effective Duration: The percentage change in the bond price for a 1% change in the yield to maturity. 
 - Dollar Duration: The modified duration multiplied by the bond price.
-
-These duration measures can be used to estimate the sensitivity of a bond's price to changes in interest rates as well as to compare the risk of different bonds. The modified duration is particularly useful for estimating the percentage change in the bond price for a 1% change in the yield to maturity. This is also known as the bond's price value of a basis point (PVBP), or the bond's dollar duration (DD) or dollar value of a .01% change (DV01).
+ These duration measures can be used to estimate the sensitivity of a bond's price to changes in interest rates as well as to compare the risk of different bonds. The modified duration is particularly useful for estimating the percentage change in the bond price for a 1% change in the yield to maturity. This is also known as the bond's price value of a basis point (PVBP), or the bond's dollar duration (DD) or dollar value of a .01% change (DV01).
 
 **Args:**
  - <u>duration_type (str, optional):</u> The type of duration to calculate. Defaults to 'modified' but can also
@@ -182,24 +141,22 @@ These duration measures can be used to estimate the sensitivity of a bond's pric
 
  **Returns:**
  pandas.DataFrame: A DataFrame containing the bond duration for different coupon rates and years to maturity.
+
+---
+
 ## get_yield_to_maturity
 Calculates the yield to maturity for a bond. The yield to maturity is the internal rate of return of the bond, which is the discount rate that equates the present value of the bond's cash flows to its market price. The yield to maturity is used to estimate the bond's return and to compare the bond's return to other investments.
-
-The yield to maturity is calculated using the following formula:
-
-
+ The yield to maturity is calculated using the following formula:
+ 
 - Bond Price = (C / r) * (1 - (1 + r)^
 -n) + F / (1 + r)^n
-
-where:
-
-
+ where:
+ 
 - C = Coupon payment per period 
 - r = Yield to maturity per period 
 - n = Number of periods 
 - F = Face value of the bond
-
-The goal is to find the yield to maturity that satisfies the equation above. This is done using the Newton
+ The goal is to find the yield to maturity that satisfies the equation above. This is done using the Newton
 -Raphson method which is an iterative method that converges to the root of a function.
 
 **Args:**
@@ -215,17 +172,17 @@ The goal is to find the yield to maturity that satisfies the equation above. Thi
 
  **Returns:**
  pandas.DataFrame: A DataFrame containing the yield to maturity for different bond prices and years to maturity.
+
+---
+
 ## get_derivative_price
 Calculates the derivative price for a fixed income instrument.
-
-It is possible to use two different models to calculate the derivative price:
-
-
+ It is possible to use two different models to calculate the derivative price:
+ 
 - Black Model: A mathematical model used for pricing financial derivatives, its primary applications are for pricing options on future contracts, bond options, interest rate cap and floors, and swaptions. For more information, see: [https://en.wikipedia.org/wiki/Black_model](https://en.wikipedia.org/wiki/Black_model){:target="_blank"} 
 - Bachelier Model: A deviation of the Black Model that is used for pricing future contracts. It is a simple model that assumes the price of the underlying asset follows a normal distribution with constant volatility. This is in contrast to the Black Model which assumes the price of the underlying asset follows a log
 -normal distribution. For more information, see: [https://en.wikipedia.org/wiki/Bachelier_model](https://en.wikipedia.org/wiki/Bachelier_model){:target="_blank"}
-
-It is possible to alter all parameters within the models, e.g. strike rate, volatility, years to maturity, risk
+ It is possible to alter all parameters within the models, e.g. strike rate, volatility, years to maturity, risk
 -free rate, notional amount, and whether the holder is the receiver or payer of the derivative. Next to that, you can provide lists of values for the fixed rate, strike rate, volatility, and years to maturity to calculate the derivative price for multiple scenarios outside of the standard sample.
 
 **Args:**
@@ -289,33 +246,31 @@ Which returns:
  | 0.125 | 895421 | 866787 | 839070 | 812238 | 786265 | 761122 | 736783 | 713223 | 690416 | 668338 |
  | 0.13 | 943822 | 913641 | 884425 | 856143 | 828766 | 802264 | 776609 | 751775 | 727735 | 704464 |
 
+
+---
+
 ## get_government_bond_yield
 Long
 -term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long
 -term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
-
-In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long
+ In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long
 -term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
-
-See definition: [https://data.oecd.org/interest/long
+ See definition: [https://data.oecd.org/interest/long
 -term
 -interest
 -rates.htm](https://data.oecd.org/interest/long
 -term
 -interest
 -rates.htm){:target="_blank"}
-
-Short
+ Short
 -term interest rates are the rates at which short
 -term borrowings are effected between financial institutions or the rate at which short
 -term government paper is issued or traded in the market. Short
 -term interest rates are generally averages of daily rates, measured as a percentage.
-
-Short
+ Short
 -term interest rates are based on three
 -month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".
-
-See definition: [https://data.oecd.org/interest/short
+ See definition: [https://data.oecd.org/interest/short
 -term
 -interest
 -rates.htm](https://data.oecd.org/interest/short
@@ -358,19 +313,19 @@ Which returns:
  | 2023-10 | 0.0095 | 0.048 | 0.0655 |
  | 2023-11 | 0.0066 | 0.045 | 0.0655 |
 
+
+---
+
 ## get_ice_bofa_option_adjusted_spread
 The ICE BofA Option
 -Adjusted Spreads (OASs) are the calculated spreads between a computed OAS index of all bonds in a given maturity and rating category and a spot Treasury curve. An OAS index is constructed using each constituent bond's OAS, weighted by market capitalization.
-
-The Option
+ The Option
 -Adjusted Spread (OAS) is the spread relative to a risk
 -free interest rate, usually measured in basis points (bp), that equates the theoretical present value of a series of uncertain cash flows to the market price of a fixed
 -income investment. The spread is added to the risk
 -free rate to compensate for the uncertainty of the cash flows.
-
-See definitions:
-
-
+ See definitions:
+ 
 - Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBB](https://fred.stlouisfed.org/series/BAMLC0A4CBBB){:target="_blank"} 
 - Maturity: [https://fred.stlouisfed.org/series/BAMLC1A0C13Y](https://fred.stlouisfed.org/series/BAMLC1A0C13Y){:target="_blank"}
 
@@ -410,14 +365,14 @@ Which returns:
  | 2024-01-12 | 74 | 94 | 107 | 128 | 126 | 112 |
  | 2024-01-15 | 74 | 94 | 107 | 128 | 125 | 111 |
 
+
+---
+
 ## get_ice_bofa_effective_yield
 This data represents the effective yield of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
-
-The Effective Yield is the yield of a bond, calculated by dividing the bond's coupon payments by its market price. The effective yield is not the same as the stated yield, which is the yield on the bond's coupon payments divided by the bond's principal value. The effective yield is a more accurate measure of a bond's return, as it takes into account the fact that the investor will not hold the bond to maturity and will likely sell it before it matures.
-
-See definitions:
-
-
+ The Effective Yield is the yield of a bond, calculated by dividing the bond's coupon payments by its market price. The effective yield is not the same as the stated yield, which is the yield on the bond's coupon payments divided by the bond's principal value. The effective yield is a more accurate measure of a bond's return, as it takes into account the fact that the investor will not hold the bond to maturity and will likely sell it before it matures.
+ See definitions:
+ 
 - Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY](https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY){:target="_blank"} 
 - Maturity: [https://fred.stlouisfed.org/series/BAMLC1A0C13YEY](https://fred.stlouisfed.org/series/BAMLC1A0C13YEY){:target="_blank"}
 
@@ -457,14 +412,14 @@ Which returns:
  | 2024-01-12 | 0.0451 | 0.0467 | 0.0502 | 0.0534 | 0.0613 | 0.0753 | 0.1338 |
  | 2024-01-15 | 0.0451 | 0.0467 | 0.0501 | 0.0533 | 0.0611 | 0.0751 | 0.1328 |
 
+
+---
+
 ## get_ice_bofa_total_return
 This data represents the total return of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
-
-The total return is the actual rate of return of an investment or a pool of investments over a given evaluation period. Total return includes interest, capital gains, dividends and distributions realized over a given period of time.
-
-See definitions:
-
-
+ The total return is the actual rate of return of an investment or a pool of investments over a given evaluation period. Total return includes interest, capital gains, dividends and distributions realized over a given period of time.
+ See definitions:
+ 
 - Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY](https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY){:target="_blank"} 
 - Maturity: [https://fred.stlouisfed.org/series/BAMLC1A0C13YEY](https://fred.stlouisfed.org/series/BAMLC1A0C13YEY){:target="_blank"}
 
@@ -504,17 +459,17 @@ Which returns:
  | 2024-01-12 | 1922.1 | 2498.89 | 812.41 | 585.2 | 4213.47 | 4338.43 |
  | 2024-01-15 | 1922.67 | 2499.76 | 812.67 | 585.41 | 4215.34 | 4340.24 |
 
+
+---
+
 ## get_ice_bofa_yield_to_worst
 This data represents the semi
 -annual yield to worst of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
-
-Yield to worst is the lowest potential yield that a bond can generate without the issuer defaulting. The standard US convention for this series is to use semi
+ Yield to worst is the lowest potential yield that a bond can generate without the issuer defaulting. The standard US convention for this series is to use semi
 -annual coupon payments, whereas the standard in the foreign markets is to use coupon payments with frequencies of annual, semi
 -annual, quarterly, and monthly.
-
-See definitions:
-
-
+ See definitions:
+ 
 - Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY](https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY){:target="_blank"} 
 - Maturity: [https://fred.stlouisfed.org/series/BAMLC1A0C13YEY](https://fred.stlouisfed.org/series/BAMLC1A0C13YEY){:target="_blank"}
 
@@ -554,12 +509,13 @@ Which returns:
  | 2024-01-12 | 0.0453 | 0.0468 | 0.0499 | 0.0537 | 0.0642 | 0.0786 | 0.1335 |
  | 2024-01-15 | 0.0452 | 0.0468 | 0.0498 | 0.0537 | 0.064 | 0.0784 | 0.1325 |
 
+
+---
+
 ## get_euribor_rates
 Euribor rates, short for Euro Interbank Offered Rate, are the interest rates at which a panel of European banks lend funds to one another in the interbank market. These rates are published daily by the European Money Markets Institute (EMMI) and serve as a benchmark for various financial products and contracts, including mortgages, loans, and derivatives, across the Eurozone.
-
-The Euribor rates are determined for different maturities, typically ranging from overnight to 12 months The most common maturities are 1 month, 3 months, 6 months, and 12 months. Each maturity represents the time period for which the funds are borrowed, with longer maturities generally implying higher interest rates due to increased uncertainty and risk over longer time horizons.
-
-For more information, see for example: [https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA](https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA){:target="_blank"}
+ The Euribor rates are determined for different maturities, typically ranging from overnight to 12 months The most common maturities are 1 month, 3 months, 6 months, and 12 months. Each maturity represents the time period for which the funds are borrowed, with longer maturities generally implying higher interest rates due to increased uncertainty and risk over longer time horizons.
+ For more information, see for example: [https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA](https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA){:target="_blank"}
 
 **Args:**
  - <u>maturities (str | list | None, optional):</u> Maturities for which to retrieve rates. Defaults to None.
@@ -589,21 +545,19 @@ Which returns:
  | 2024-02 | 0.0387 | 0.0392 | 0.039 | 0.0367 |
  | 2024-03 | 0.0385 | 0.0392 | 0.0389 | 0.0372 |
 
+
+---
+
 ## get_european_central_bank_rates
 The Governing Council of the ECB sets the key interest rates for the euro area. The available rates are:
-
-
+ 
 - Main refinancing operations (refinancing) 
 - Marginal lending facility (lending) 
 - Deposit facility (deposit)
-
-The main refinancing operations (MRO) rate is the interest rate banks pay when they borrow money from the ECB for one week. When they do this, they have to provide collateral to guarantee that the money will be paid back.
-
-The marginal lending facility rate is the interest rate banks pay when they borrow from the ECB overnight. When they do this, they have to provide collateral, for example securities, to guarantee that the money will be paid back.
-
-The deposit facility rate is one of the three interest rates the ECB sets every six weeks as part of its monetary policy. The rate defines the interest banks receive for depositing money with the central bank overnight.
-
-See source: [https://data.ecb.europa.eu/main
+ The main refinancing operations (MRO) rate is the interest rate banks pay when they borrow money from the ECB for one week. When they do this, they have to provide collateral to guarantee that the money will be paid back.
+ The marginal lending facility rate is the interest rate banks pay when they borrow from the ECB overnight. When they do this, they have to provide collateral, for example securities, to guarantee that the money will be paid back.
+ The deposit facility rate is one of the three interest rates the ECB sets every six weeks as part of its monetary policy. The rate defines the interest banks receive for depositing money with the central bank overnight.
+ See source: [https://data.ecb.europa.eu/main
 -figures/](https://data.ecb.europa.eu/main
 -figures/){:target="_blank"}
 
@@ -647,44 +601,38 @@ Which returns:
  | 2023-12-17 | 0.045 | 0.0475 | 0.04 |
  | 2023-12-18 | 0.045 | 0.0475 | 0.04 |
 
+
+---
+
 ## get_federal_reserve_rates
 Get the Federal Reserve rates as published by the Federal Reserve Bank of New York. The federal funds market consists of domestic unsecured borrowings in U.S. dollars by depository institutions from other depository institutions and certain other entities, primarily government
 -sponsored enterprises.
-
-The following rates are available:
-
-
+ The following rates are available:
+ 
 - Effective Federal Funds Rate (EFFR) 
 - Overnight Bank Funding Rate (OBFR) 
 - Tri
 -Party General Collateral Rate (TGCR) 
 - Broad General Collateral Rate (BGCR) 
 - Secured Overnight Financing Rate (SOFR)
-
-The effective federal funds rate (EFFR) is calculated as a volume
+ The effective federal funds rate (EFFR) is calculated as a volume
 -weighted median of overnight federal funds transactions reported in the FR 2420 Report of Selected Money Market Rates.
-
-The overnight bank funding rate (OBFR) is calculated as a volume
+ The overnight bank funding rate (OBFR) is calculated as a volume
 -weighted median of overnight federal funds transactions, Eurodollar transactions, and the domestic deposits reported as “Selected Deposits” in the FR 2420 Report.
-
-The TGCR is calculated as a volume
+ The TGCR is calculated as a volume
 -weighted median of transaction
 -level tri
 -party repo data collected from the Bank of New York Mellon.
-
-The BGCR is calculated as a volume
+ The BGCR is calculated as a volume
 -weighted median of transaction
 -level tri
 -party repo data collected from the Bank of New York Mellon as well as GCF Repo transaction data obtained from the U.S. Department of the Treasury’s Office of Financial Research (OFR).
-
-The SOFR is calculated as a volume
+ The SOFR is calculated as a volume
 -weighted median of transaction
 -level tri
 -party repo data collected from the Bank of New York Mellon as well as GCF Repo transaction data and data on bilateral Treasury repo transactions cleared through FICC's DVP service, which are obtained from the U.S. Department of the Treasury’s Office of Financial Research (OFR).
-
-The New York Fed publishes the rates for the prior business day on the New York Fed’s website between 8:00 and 9:00 a.m.
-
-See source: [https://www.newyorkfed.org/markets/reference
+ The New York Fed publishes the rates for the prior business day on the New York Fed’s website between 8:00 and 9:00 a.m.
+ See source: [https://www.newyorkfed.org/markets/reference
 -rates/](https://www.newyorkfed.org/markets/reference
 -rates/){:target="_blank"}
 
@@ -721,4 +669,7 @@ Which returns:
  | 2023-12-12 | 0.0533 | 0.053 | 0.0531 | 0.0533 | 0.0544 |
  | 2023-12-13 | 0.0533 | 0.053 | 0.0531 | 0.0533 | 0.0545 |
  | 2023-12-14 | 0.0533 | 0.053 | 0.0531 | 0.0533 | 0.0535 |
+
+
+---
 

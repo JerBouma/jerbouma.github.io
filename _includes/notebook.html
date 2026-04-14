@@ -1,0 +1,54 @@
+{% comment %}
+  Jupyter Notebook renderer include.
+
+  Usage:
+    {% include notebook.html
+       src="/assets/notebooks/financetoolkit/01_Getting_Started.ipynb"
+       title="Getting Started with the Finance Toolkit"
+       github="https://github.com/JerBouma/FinanceToolkit/blob/main/examples/..."
+    %}
+{% endcomment %}
+
+{% assign ft_notebooks = "Getting Started,/projects/financetoolkit/getting-started|Discovery,/projects/financetoolkit/discovery-notebook|Ratios,/projects/financetoolkit/ratios-notebook|Models,/projects/financetoolkit/models-notebook|Options,/projects/financetoolkit/options-notebook|Technicals,/projects/financetoolkit/technicals-notebook|Performance,/projects/financetoolkit/performance-notebook|Risk,/projects/financetoolkit/risk-notebook|Fixed Income,/projects/financetoolkit/fixed-income-notebook|Economics,/projects/financetoolkit/economics-notebook|Portfolio,/projects/financetoolkit/portfolio-notebook|External Datasets,/projects/financetoolkit/external-datasets" | split: "|" %}
+
+<div class="notebook-viewer-wrapper">
+  {% if include.title or include.github %}
+  <div class="notebook-viewer-header">
+    <div class="notebook-viewer-title">
+      <i class="fas fa-book"></i>
+      <span>{{ include.title | default: "Jupyter Notebook" }}</span>
+    </div>
+    <div class="notebook-viewer-actions">
+      {% if include.github %}
+      <a href="{{ include.github }}" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i> View on GitHub
+      </a>
+      {% endif %}
+      {% if include.src %}
+      <a href="{{ include.src | relative_url }}" download>
+        <i class="fas fa-download"></i> Download
+      </a>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if include.src contains "financetoolkit" %}
+  <nav class="notebook-nav" aria-label="Finance Toolkit notebooks">
+    {% for item in ft_notebooks %}
+      {% assign parts = item | split: "," %}
+      {% assign nb_label = parts[0] %}
+      {% assign nb_url   = parts[1] %}
+      {% if page.permalink == nb_url %}
+        <a href="{{ nb_url }}" class="notebook-nav__link notebook-nav__link--active" aria-current="page">{{ nb_label }}</a>
+      {% else %}
+        <a href="{{ nb_url }}" class="notebook-nav__link">{{ nb_label }}</a>
+      {% endif %}
+    {% endfor %}
+  </nav>
+  {% endif %}
+
+  <div class="nb-container" data-notebook-src="{{ include.src | relative_url }}"></div>
+</div>
+
+<script src="{{ '/assets/js/notebookRenderer.js' | relative_url }}" defer></script>

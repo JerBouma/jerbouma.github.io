@@ -9,11 +9,50 @@ author_profile: false
 ---
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width" markdown="1">
-When I discovered Python during my university studies, I was immediately captivated by its incredible versatility in the financial domain. Since then, I have devoted countless hours to programming in this language, whether developing internal models for companies like a.s.r. asset management and PGGM or contributing to open-source projects (as demonstrated on this page). Witnessing the repetition of models and calculations within financial institutions has made me a strong advocate for open source, as it liberates individuals and firms from relying solely on proprietary models.
+When I discovered Python during my university studies, I was immediately captivated by its incredible versatility in the financial domain. Since then, I have devoted countless hours to programming in this language, whether developing internal models for companies like a.s.r. asset management and PGGM or contributing to open-source projects (as demonstrated on this page). 
+
+Witnessing the repetition of models and calculations within financial institutions has made me a strong advocate for open source, as it liberates individuals and firms from relying solely on proprietary models. By sharing my work openly, I aim to contribute to the democratization of financial knowledge and tools, fostering a more inclusive and innovative financial ecosystem.
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width" markdown="1">
 
-[![Jeroen Bouma's GitHub stats](https://github-readme-stats.vercel.app/api?username=JerBouma&show_icons=true&theme=graywhite&include_all_commits=true&count_private=true&hide=contribs)](https://github.com/JerBouma){:target="_blank"}
+<div class="github-profile-card">
+  <div class="github-card-header">
+    <img src="https://avatars.githubusercontent.com/u/46355364?v=4" alt="Jeroen Bouma" class="github-card-avatar">
+    <div class="github-card-identity">
+      <strong>Jeroen Bouma</strong>
+      <span class="github-card-username">@JerBouma</span>
+    </div>
+  </div>
+  <div class="github-card-stats">
+    <div class="github-stat">
+      <span class="github-stat-value" id="gh-repos">—</span>
+      <span class="github-stat-label">Repos</span>
+    </div>
+    <div class="github-stat">
+      <span class="github-stat-value" id="gh-followers">—</span>
+      <span class="github-stat-label">Followers</span>
+    </div>
+    <div class="github-stat">
+      <span class="github-stat-value">10K+</span>
+      <span class="github-stat-label">Stars</span>
+    </div>
+  </div>
+  <a href="https://github.com/JerBouma" class="btn btn--info github-card-cta" target="_blank">View GitHub Profile</a>
+</div>
+
+<script>
+fetch('https://api.github.com/users/JerBouma')
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var repos = document.getElementById('gh-repos');
+    var followers = document.getElementById('gh-followers');
+    if (repos) repos.textContent = data.public_repos;
+    if (followers) followers.textContent = data.followers >= 1000
+      ? (data.followers / 1000).toFixed(1) + 'K'
+      : data.followers;
+  })
+  .catch(function() {});
+</script>
 </div>
 </div>
 
@@ -33,8 +72,9 @@ The Finance Toolkit complements the Finance Database well. By utilizing both, yo
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
 <a href="/projects/financetoolkit"><img src="https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg" width="400"></a>
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=financetoolkit)](/projects/financetoolkit)
 
+[![GitHub Stars](https://img.shields.io/github/stars/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
+[![GitHub Forks](https://img.shields.io/github/forks/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
 [![PyPi Version](https://img.shields.io/pypi/v/financetoolkit)](https://pypi.org/project/financetoolkit/){:target="_blank"}
 [![PYPI Downloads](https://static.pepy.tech/badge/financetoolkit/month)](https://pepy.tech/project/financetoolkit){:target="_blank"}
 </div>
@@ -52,48 +92,11 @@ The explicit aim of this database is not to provide up-to-date fundamentals or s
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
 <a href="/projects/financedatabase"><img src="https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg" width="400"></a>
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=financedatabase)](/projects/financedatabase)
 
+[![GitHub Stars](https://img.shields.io/github/stars/JerBouma/financedatabase?style=social)](https://github.com/JerBouma/financedatabase){:target="_blank"}
+[![GitHub Forks](https://img.shields.io/github/forks/JerBouma/financedatabase?style=social)](https://github.com/JerBouma/financedatabase){:target="_blank"}
 [![PyPi Version](https://img.shields.io/pypi/v/financedatabase)](https://pypi.org/project/financedatabase/){:target="_blank"}
 [![PYPI Downloads](https://static.pepy.tech/badge/financedatabase/month)](https://pepy.tech/project/financedatabase){:target="_blank"}
-</div>
-</div>
-
-## [The Passive Investor](/projects/thepassiveinvestor)
-
-<div class="row">
-<div markdown="1" class="sixty-column mobile-max-column-width">
-With the large increase in available ETFs, choosing the best investment can be challenging. Numerous providers exist (iShares, Vanguard, Invesco), and ETFs vary based on underlying strategies (e.g., High Yield, Super Dividends, Equal Weighted).
-
-This variety is evident when searching for an S&P 500 ETF, where over 20 different options are available. With this package, I aim to simplify investment decision-making and management.
-
-[View this Project](/projects/thepassiveinvestor){: .btn .btn--info}
-</div>
-<div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="/projects/thepassiveinvestor"><img src="https://github.com/JerBouma/ThePassiveInvestor/assets/46355364/48f40d07-bbc7-47c0-ae22-9cdb30a9308f" width="400"></a>
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=thepassiveinvestor)](/projects/thepassiveinvestor)
-
-[![PyPi Version](https://img.shields.io/pypi/v/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/){:target="_blank"}
-[![PYPI Downloads](https://static.pepy.tech/badge/thepassiveinvestor/month)](https://pepy.tech/project/thepassiveinvestor){:target="_blank"}
-</div>
-</div>
-
-## [Personal Finance](/projects/personalfinance)
-
-<div class="row">
-<div markdown="1" class="sixty-column mobile-max-column-width">
-With PersonalFinance, I aim to simplify personal finance management. By defining categories with appropriate keywords, you ensure the model categorizes transactions according to your specifications. This is effective because it's not a generic model trained on a large, diverse dataset of global transactions. Instead, it's trained on your data, enabling it to accurately categorize transactions specific to your financial habits.
-
-To handle variations without requiring exact matches, the package uses the Levenshtein distance to measure string similarity. Complex logic is intentionally limited so that the categorization remains intuitive and understandable.
-
-[View this Project](/projects/personalfinance){: .btn .btn--info}
-</div>
-<div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="/projects/personalfinance"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" width="400"></a>
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=jerbouma&repo=personalfinance)](/projects/personalfinance)
-
-[![PyPi Version](https://img.shields.io/pypi/v/personalfinance)](https://pypi.org/project/personalfinance/){:target="_blank"}
-[![PYPI Downloads](https://static.pepy.tech/badge/personalfinance/month)](https://pepy.tech/project/personalfinance){:target="_blank"}
 </div>
 </div>
 
@@ -109,9 +112,55 @@ During my time at OpenBB, I made significant code contributions to the OpenBB Pl
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
 <a href="/projects/openbbterminal"><img src="https://github.com/OpenBB-finance/OpenBBTerminal/raw/develop/images/openbb_gradient.png" width="400"></a>
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=OpenBB-finance&repo=OpenBBTerminal)](/projects/openbbterminal)
 
+[![GitHub Stars](https://img.shields.io/github/stars/OpenBB-finance/OpenBBTerminal?style=social)](https://github.com/OpenBB-finance/OpenBBTerminal){:target="_blank"}
+[![GitHub Forks](https://img.shields.io/github/forks/OpenBB-finance/OpenBBTerminal?style=social)](https://github.com/OpenBB-finance/OpenBBTerminal){:target="_blank"}
 [![PyPi Version](https://img.shields.io/pypi/v/openbb)](https://pypi.org/project/openbb/){:target="_blank"}
 [![PYPI Downloads](https://static.pepy.tech/badge/openbb/month)](https://pepy.tech/project/openbb){:target="_blank"}
+</div>
+</div>
+
+## [The Passive Investor](/projects/thepassiveinvestor)
+
+<div class="row">
+<div markdown="1" class="sixty-column mobile-max-column-width">
+With the large increase in available ETFs, choosing the best investment can be challenging. Numerous providers exist (iShares, Vanguard, Invesco), and ETFs vary based on underlying strategies (e.g., High Yield, Super Dividends, Equal Weighted).
+
+This variety is evident when searching for an S&P 500 ETF, where over 20 different options are available. With this package, I aim to simplify investment decision-making and management.
+
+[View this Project](/projects/thepassiveinvestor){: .btn .btn--warning}
+
+</div>
+<div markdown="1" class="fourty-column mobile-max-column-width">
+<a href="/projects/thepassiveinvestor"><img src="https://github.com/JerBouma/ThePassiveInvestor/assets/46355364/48f40d07-bbc7-47c0-ae22-9cdb30a9308f" width="400"></a>
+
+[![GitHub Stars](https://img.shields.io/github/stars/JerBouma/thepassiveinvestor?style=social)](https://github.com/JerBouma/thepassiveinvestor){:target="_blank"}
+[![GitHub Forks](https://img.shields.io/github/forks/JerBouma/thepassiveinvestor?style=social)](https://github.com/JerBouma/thepassiveinvestor){:target="_blank"}
+[![PyPi Version](https://img.shields.io/pypi/v/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/thepassiveinvestor/month)](https://pepy.tech/project/thepassiveinvestor){:target="_blank"}
+
+*This project has been archived due to being a project that I no longer maintain.*
+</div>
+</div>
+
+## [Personal Finance](/projects/personalfinance)
+
+<div class="row">
+<div markdown="1" class="sixty-column mobile-max-column-width">
+With PersonalFinance, I aim to simplify personal finance management. By defining categories with appropriate keywords, you ensure the model categorizes transactions according to your specifications. This is effective because it's not a generic model trained on a large, diverse dataset of global transactions. Instead, it's trained on your data, enabling it to accurately categorize transactions specific to your financial habits.
+
+To handle variations without requiring exact matches, the package uses the Levenshtein distance to measure string similarity. Complex logic is intentionally limited so that the categorization remains intuitive and understandable.
+
+[View this Project](/projects/personalfinance){: .btn .btn--warning}
+</div>
+<div markdown="1" class="fourty-column mobile-max-column-width">
+<a href="/projects/personalfinance"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" width="400"></a>
+
+[![GitHub Stars](https://img.shields.io/github/stars/JerBouma/personalfinance?style=social)](https://github.com/JerBouma/personalfinance){:target="_blank"}
+[![GitHub Forks](https://img.shields.io/github/forks/JerBouma/personalfinance?style=social)](https://github.com/JerBouma/personalfinance){:target="_blank"}
+[![PyPi Version](https://img.shields.io/pypi/v/personalfinance)](https://pypi.org/project/personalfinance/){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/personalfinance/month)](https://pepy.tech/project/personalfinance){:target="_blank"}
+
+*This project has been archived due to being a project that I no longer maintain.*
 </div>
 </div>

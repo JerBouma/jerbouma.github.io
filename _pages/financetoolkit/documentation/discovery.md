@@ -7,12 +7,12 @@ permalink: /projects/financetoolkit/docs/discovery
 classes: wide-sidebar
 layout: single
 redirect_from:
-    - /ratios
+    - /discovery
 sidebar:
     nav: "financetoolkit-docs-discovery"
 ---
 
-The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit.
+The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, ETFs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit.
 
 To install the FinanceToolkit it simply requires the following:
 
@@ -20,42 +20,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 ```
 
-If you are looking for documentation regarding the toolkit, ratios, models, technicals, fixed income, risk, performance and economics, please have a look below:
 {% include algolia.html %}
-
-## __init__
-Initializes the Discovery Controller Class.
-
-**Args:**
- - <u>api_key (str):</u> An API key from FinancialModelingPrep. Obtain one here: [https://www.jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}
-
- As an example:
-
-```python
-from financetoolkit import Discovery
-
-discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
-
-stock_list = discovery.get_stock_list()
-
-# The total list equals over 60.000 rows
-stock_list.iloc[48000:48010]
-```
-
-Which returns:
-
-| Symbol | Name | Price | Exchange | Exchange Code |
- |:-----------|:------------------------------------|--------:|:---------------------------------|:----------------|
- | RBL.AX | Redbubble Limited | 0.54 | Australian Securities Exchange | ASX |
- | RBL.BO | Rane Brake Lining Limited | 870.05 | Bombay Stock Exchange | BSE |
- | RBL.NS | Rane Brake Lining Limited | 870.05 | National Stock Exchange of India | NSE |
- | RBLAY | Robinsons Land Corporation | 4.61 | Other OTC | PNK |
- | RBLBANK.BO | RBL Bank Limited | 280.9 | Bombay Stock Exchange | BSE |
- | RBLBANK.NS | RBL Bank Limited | 280.9 | National Stock Exchange of India | NSE |
- | RBLN-B.CO | Roblon A/S | 91.8 | Copenhagen | CPH |
- | RBLX | Roblox Corporation | 45.72 | New York Stock Exchange | NYSE |
- | RBMNF | Rugby Resources Ltd. | 0.065 | Other OTC | PNK |
- | RBMS.JK | PT Ristia Bintang Mahkotasejati Tbk | 50 | Jakarta Stock Exchange | JKT |
 
 ## search_instruments
 The search instruments function allows you to search for a company or financial instrument by name. It returns a dataframe with all the symbols that match the query.
@@ -86,17 +51,18 @@ Which returns:
  | META.MI | WisdomTree Industrial Metals Enhanced | EUR | Milan | MIL |
  | META.JK | PT Nusantara Infrastructure Tbk | IDR | Jakarta Stock Exchange | JKT |
 
+
+---
+
 ## get_stock_screener
 Screen stocks based on a set of criteria. This can be useful to find companies that match a specific criteria or your analysis. Further filtering can be done by utilising the Finance Toolkit and calculating the relevant ratios to filter by. This can be:
-
-
+ 
 - Market capitalization (market_cap_higher, market_cap_lower) 
 - Price (price_higher, price_lower) 
 - Beta (beta_higher, beta_lower) 
 - Volume (volume_higher, volume_lower) 
 - Dividend (dividend_higher, dividend_lower)
-
-Note that the limit is 1000 companies. Thus if you hit the 1000, it is recommended to narrow down your search to prevent companies from being excluded simply because of this limit.
+ Note that the limit is 1000 companies. Thus if you hit the 1000, it is recommended to narrow down your search to prevent companies from being excluded simply because of this limit.
 
 **Args:**
  - <u>market_cap_higher (int):</u> The minimum market capitalization of the stock.
@@ -144,10 +110,12 @@ Which returns:
  | ROST | Ross Stores, Inc. | 46724188589 | Consumer Cyclical | Apparel Retail | 1.026 | 138.785 | 1.34 | 169879 | NASDAQ Global Select | NASDAQ | US |
  | HES | Hess Corporation | 44694706090 | Energy | Oil & Gas E&P | 1.464 | 145.51 | 1.75 | 123147 | New York Stock Exchange | NYSE | US |
 
+
+---
+
 ## get_stock_list
 The stock list function returns a complete list of all the symbols that can be used in the FinanceToolkit. These are over 60.000 symbols.
-
-Returns: pd.DataFrame: A dataframe with all the symbols in the toolkit.
+ Returns: pd.DataFrame: A dataframe with all the symbols in the toolkit.
 
 
 ```python
@@ -176,10 +144,12 @@ Which returns:
  | LESHAIND.BO | Lesha Industries Limited | 4.68 | Bombay Stock Exchange | BSE |
  | LESL | Leslie's, Inc. | 6.91 | NASDAQ Global Select | NASDAQ |
 
+
+---
+
 ## get_stock_shares_float
 Returns the shares float for each company. The shares float is the number of shares available for trading for each company. It also includes the number of shares outstanding and the date.
-
-Returns: pd.DataFrame: A dataframe with the shares float for each company.
+ Returns: pd.DataFrame: A dataframe with the shares float for each company.
 
 
 ```python
@@ -207,10 +177,12 @@ Which returns:
  | OR.SW | 2023-12-31 13:38:10 | 45.2727 | 355743960 | 7.8578e+08 |
  | OR.TO | 2023-12-31 17:56:33 | 99.3317 | 183928535 | 1.85166e+08 |
 
+
+---
+
 ## get_sectors_performance
 Returns the sectors performance for each sector. This features the sector performance over the last months.
-
-Returns: pd.DataFrame: A dataframe with the sectors performance for each sector.
+ Returns: pd.DataFrame: A dataframe with the sectors performance for each sector.
 
 
 ```python
@@ -233,10 +205,12 @@ Which returns:
  | 2024-01-01 | -0.01347 | -0.14536 | -0.15074 | -0.58877 | 0.18141 | -0.41917 | -0.34753 | -0.08193 | -0.21821 | -0.52216 | -0.5708 |
  | 2024-01-02 | -0.01347 | -0.14536 | -0.15074 | -0.58877 | 0.18141 | -0.41917 | -0.34779 | -0.08193 | -0.21823 | -0.52281 | -0.57073 |
 
+
+---
+
 ## get_biggest_gainers
 Returns the biggest gainers for the day. This includes the symbol, the name, the price, the change and the change percentage.
-
-Returns: pd.DataFrame: A dataframe with the biggest gainers for the day.
+ Returns: pd.DataFrame: A dataframe with the biggest gainers for the day.
 
 
 ```python
@@ -264,10 +238,12 @@ Which returns:
  | BHG | Bright Health Group, Inc. | 2.37 | 7.63 | 45.057 |
  | BROG | Brooge Energy Limited | 0.73 | 3.68 | 24.7458 |
 
+
+---
+
 ## get_biggest_losers
 Returns the biggest losers for the day. This includes the symbol, the name, the price, the change and the change percentage.
-
-Returns: pd.DataFrame: A dataframe with the biggest losers for the day.
+ Returns: pd.DataFrame: A dataframe with the biggest losers for the day.
 
 
 ```python
@@ -295,10 +271,12 @@ Which returns:
  | BTDR | Bitdeer Technologies Group | -3.36 | 9.86 | -25.416 |
  | BYN | Banyan Acquisition Corporation | -2.035 | 10.9 | -15.7325 |
 
+
+---
+
 ## get_most_active_stocks
 Returns the most active stocks for the day. This includes the symbol, the name, the price, the change and the change percentage.
-
-Returns: pd.DataFrame: A dataframe with the most active stocks for the day.
+ Returns: pd.DataFrame: A dataframe with the most active stocks for the day.
 
 
 ```python
@@ -326,10 +304,12 @@ Which returns:
  | CLSK | CleanSpark, Inc. | -2.08 | 11.03 | -15.8657 |
  | DISH | DISH Network Corporation | 0.11 | 5.77 | 1.9435 |
 
+
+---
+
 ## get_delisted_stocks
 The delisted stocks function returns a complete list of all delisted stocks including the IPO and delisted date.
-
-Returns: pd.DataFrame: A dataframe with all the delisted stocks.
+ Returns: pd.DataFrame: A dataframe with all the delisted stocks.
 
 
 ```python
@@ -357,10 +337,12 @@ Which returns:
  | ASPAU | Abri SPAC I, Inc. | NASDAQ | 2021-08-10 | 2023-11-02 |
  | AVID | Avid Technology, Inc. | NASDAQ | 1993-03-12 | 2023-11-07 |
 
+
+---
+
 ## get_crypto_list
 The crypto list function returns a complete list of all crypto symbols that can be used in the FinanceToolkit. These are over 4.000 symbols.
-
-Returns: pd.DataFrame: A dataframe with all the symbols in the toolkit.
+ Returns: pd.DataFrame: A dataframe with all the symbols in the toolkit.
 
 
 ```python
@@ -388,10 +370,12 @@ Which returns:
  | 0XGASUSD | 0xGasless USD | USD | CCC |
  | 0XMRUSD | 0xMonero USD | USD | CCC |
 
+
+---
+
 ## get_forex_list
 The forex list function returns a complete list of all forex symbols that can be used in the FinanceToolkit. These are over 1.000 symbols.
-
-Returns: pd.DataFrame: A dataframe with the forex symbols.
+ Returns: pd.DataFrame: A dataframe with the forex symbols.
 
 
 ```python
@@ -419,10 +403,12 @@ Which returns:
  | AEDINR | AED/INR | INR | CCY |
  | AEDJOD | AED/JOD | JOD | CCY |
 
+
+---
+
 ## get_commodity_list
 The commodity list function returns a complete list of all commodity symbols that can be used in the FinanceToolkit.
-
-Returns: pd.DataFrame: A dataframe with all the commodities available.
+ Returns: pd.DataFrame: A dataframe with all the commodities available.
 
 
 ```python
@@ -450,10 +436,12 @@ Which returns:
  | GCUSD | Gold Futures | USD | CME |
  | GFUSX | Feeder Cattle Futures | USX | CME |
 
+
+---
+
 ## get_etf_list
 The etf list function returns a complete list of all etf symbols that can be used in the FinanceToolkit.
-
-Returns: pd.DataFrame: A dataframe with all the etf symbols.
+ Returns: pd.DataFrame: A dataframe with all the etf symbols.
 
 
 ```python
@@ -481,10 +469,12 @@ Which returns:
  | 091230.KS | Mirae Asset TIGER Semicon ETF | 38400 | KSE | KSC |
  | 098560.KS | Mirae Asset TIGER Media & Telecom ETF | 7335 | KSE | KSC |
 
+
+---
+
 ## get_index_list
 The index list function returns a complete list of all etf symbols that can be used in the FinanceToolkit.
-
-Returns: pd.DataFrame: A dataframe with all the index symbols.
+ Returns: pd.DataFrame: A dataframe with all the index symbols.
 
 
 ```python
@@ -511,4 +501,7 @@ Which returns:
  | IMOEX.ME | MOEX Russia Index | RUB | MCX |
  | ITLMS.MI | FTSE Italia All-Share Index | EUR | Milan |
  | KOSPI200.KS | KOSPI 200 Index | KRW | KSE |
+
+
+---
 

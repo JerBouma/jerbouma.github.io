@@ -7,11 +7,12 @@ permalink: /projects/financetoolkit/docs/risk
 classes: wide-sidebar
 layout: single
 redirect_from:
-    - /ratios
+    - /risk
 sidebar:
     nav: "financetoolkit-docs-risk"
 ---
-The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
+
+The Risk module calculates important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (CVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
 
 To install the FinanceToolkit it simply requires the following:
 
@@ -19,53 +20,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 ```
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, fixed income, performance and economics, please have a look below:
 {% include algolia.html %}
-
-## __init__
-Initializes the Risk Controller Class.
-
-**Args:**
- - <u>tickers (str | list[str]):</u> The tickers to use for the Toolkit instance.
- - <u>daily_historical (pd.DataFrame, optional):</u> The daily historical data for the tickers.
- Defaults to pd.DataFrame().
- - <u>weekly_historical (pd.DataFrame, optional):</u> The weekly historical data for the tickers.
- Defaults to pd.DataFrame().
- - <u>monthly_historical (pd.DataFrame, optional):</u> The monthly historical data for the tickers.
- Defaults to pd.DataFrame().
- - <u>quarterly_historical (pd.DataFrame, optional):</u> The quarterly historical data for the tickers.
- Defaults to pd.DataFrame().
- - <u>yearly_historical (pd.DataFrame, optional):</u> The yearly historical data for the tickers.
- Defaults to pd.DataFrame().
- - <u>quarterly (bool, optional):</u> Whether to use quarterly data. Defaults to False.
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
-
- As an example:
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
-
-toolkit.risk.get_value_at_risk(period='yearly')
-```
-
-Which returns:
-
-| Date | AAPL | TSLA |
- |:-------|--------:|--------:|
- | 2012 | 0 | 0 |
- | 2013 | 0.1754 | 4.96 |
- | 2014 | 1.7515 | 0.9481 |
- | 2015 | -0.1958 | 0.1454 |
- | 2016 | 0.4177 | -0.3437 |
- | 2017 | 2.6368 | 1.2225 |
- | 2018 | -0.2786 | 0.0718 |
- | 2019 | 3.2243 | 0.4707 |
- | 2020 | 1.729 | 8.3319 |
- | 2021 | 1.3179 | 0.8797 |
- | 2022 | -0.8026 | -1.0046 |
- | 2023 | 1.8549 | 1.8238 |
 
 ## collect_all_metrics
 Calculates and collects all risk metrics.
@@ -94,12 +49,13 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 toolkit.risk.collect_all_metrics()
 ```
+
+---
+
 ## get_value_at_risk
 Calculate the Value at Risk (VaR) of an investment portfolio or asset's returns.
-
-Value at Risk (VaR) is a risk management metric that quantifies the maximum potential loss an investment portfolio or asset may experience over a specified time horizon and confidence level. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
-
-The VaR is calculated as the quantile of the return distribution, representing the loss threshold that is not expected to be exceeded with a given confidence level (e.g., 5% for alpha=0.05).
+ Value at Risk (VaR) is a risk management metric that quantifies the maximum potential loss an investment portfolio or asset may experience over a specified time horizon and confidence level. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
+ The VaR is calculated as the quantile of the return distribution, representing the loss threshold that is not expected to be exceeded with a given confidence level (e.g., 5% for alpha=0.05).
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -150,12 +106,13 @@ Which returns:
  | 2022 | -0.0518 | -0.0713 |
  | 2023 | -0.0271 | -0.054 |
 
+
+---
+
 ## get_conditional_value_at_risk
 Calculate the Conditional Value at Risk (CVaR) of an investment portfolio or asset's returns.
-
-Conditional Value at Risk (CVaR) is a risk management metric that quantifies the loss in the worst % of cases of an investment portfolio or asset may experience over a specified time horizon and confidence level. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
-
-The CVaR is calculated as the expected loss given that the loss threshold (VaR) with a given confidence level (e.g., 5% for alpha=0.05) is excceeded.
+ Conditional Value at Risk (CVaR) is a risk management metric that quantifies the loss in the worst % of cases of an investment portfolio or asset may experience over a specified time horizon and confidence level. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
+ The CVaR is calculated as the expected loss given that the loss threshold (VaR) with a given confidence level (e.g., 5% for alpha=0.05) is excceeded.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -206,12 +163,13 @@ Which returns:
  | 2022 | -0.0685 | -0.0914 |
  | 2023 | -0.0397 | -0.0747 |
 
+
+---
+
 ## get_entropic_value_at_risk
 Calculate the Entropic Value at Risk (EVaR) of an investment portfolio or asset's returns.
-
-Entropic Value at Risk (EVaR) is a risk management metric that quantifies upper bound for the value at risk (VaR) and the conditional value at risk (CVaR) over a specified time horizon and confidence level. EVaR is obtained from the Chernoff inequality. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
-
-The EVaR is calculated as the upper bound of VaR and CVaR with a given confidence level (e.g., 5% for alpha=0.05).
+ Entropic Value at Risk (EVaR) is a risk management metric that quantifies upper bound for the value at risk (VaR) and the conditional value at risk (CVaR) over a specified time horizon and confidence level. EVaR is obtained from the Chernoff inequality. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
+ The EVaR is calculated as the upper bound of VaR and CVaR with a given confidence level (e.g., 5% for alpha=0.05).
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -260,10 +218,12 @@ Which returns:
  | 2022 | -0.0758 | -0.1012 | -0.0362 |
  | 2023 | -0.0471 | -0.0793 | -0.0188 |
 
+
+---
+
 ## get_maximum_drawdown
 Calculate the Maximum Drawdown (MDD) of an investment portfolio or asset's returns.
-
-Maximum Drawdown (MDD) is a risk management metric that quantifies the largest historical loss of n investment portfolio or asset experienced over a specified time horizon. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
+ Maximum Drawdown (MDD) is a risk management metric that quantifies the largest historical loss of n investment portfolio or asset experienced over a specified time horizon. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -312,14 +272,14 @@ Which returns:
  | 2022 | -0.5198 | -0.7272 |
  | 2023 | -0.1964 | -0.2823 |
 
+
+---
+
 ## get_ulcer_index
 The Ulcer Index is a financial metric used to assess the risk and volatility of an investment portfolio or asset. Developed by Peter Martin in the 1980s, the Ulcer Index is particularly useful for evaluating the downside risk and drawdowns associated with investments.
-
-The Ulcer Index differs from traditional volatility measures like standard deviation or variance because it focuses on the depth and duration of drawdowns rather than the dispersion of returns.
-
-The formula is a follows:
-
-Ulcer Index = SQRT(SUM[(Pn / Highest High)^2] / n)
+ The Ulcer Index differs from traditional volatility measures like standard deviation or variance because it focuses on the depth and duration of drawdowns rather than the dispersion of returns.
+ The formula is a follows:
+ Ulcer Index = SQRT(SUM[(Pn / Highest High)^2] / n)
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -364,10 +324,12 @@ Which returns:
  | 2022 | 0.1081 | 0.1373 | 0.0492 |
  | 2023 | 0.0475 | 0.0815 | 0.0186 |
 
+
+---
+
 ## get_garch
 Calculates volatility forecasts based on the GARCH model.
-
-GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
+ GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -414,21 +376,19 @@ Which returns:
  | 2014Q4 | 0.0302 | 0.214 | 0.0047 |
  | 2015Q1 | 0.0303 | 0.214 | 0.0048 |
 
+
+---
+
 ## get_garch_forecast
 Calculates sigma_2 forecasts.
-
-GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
-
-The forecasting with GARCH is done with the following formula:
-
-
+ GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
+ The forecasting with GARCH is done with the following formula:
+ 
 - sigma_l ** 2 + (sigma_t ** 2 
 - sigma_l ** 2) * (alpha + beta) ** (t 
 - 1)
-
-For more information about the method, see the following book:
-
-
+ For more information about the method, see the following book:
+ 
 - Finance Compact Plus Band 1, by Yvonne Seler Zimmerman and Heinz Zimmerman; ISBN: 978
 -3
 -907291
@@ -481,10 +441,12 @@ Which returns:
  | 2032 | 2.1683 | 1319.5 | 0.0301 |
  | 2033 | 2.3671 | 1440.47 | 0.0329 |
 
+
+---
+
 ## get_skewness
 Calculate the Skewness of an investment portfolio or asset's returns.
-
-Skewness is a statistical measure used in finance to assess the asymmetry in the distribution of returns for an investment portfolio or asset over a defined period. It offers valuable insights into the shape of the return distribution, indicating whether returns are skewed towards the positive or negative side of the mean. Skewness is a crucial tool for investors and analysts seeking to understand the potential risk and return characteristics of an investment, aiding in the assessment of the distribution's tails and potential outliers. It provides a means to gauge the level of skew in returns, enabling more informed investment decisions and risk management strategies.
+ Skewness is a statistical measure used in finance to assess the asymmetry in the distribution of returns for an investment portfolio or asset over a defined period. It offers valuable insights into the shape of the return distribution, indicating whether returns are skewed towards the positive or negative side of the mean. Skewness is a crucial tool for investors and analysts seeking to understand the potential risk and return characteristics of an investment, aiding in the assessment of the distribution's tails and potential outliers. It provides a means to gauge the level of skew in returns, enabling more informed investment decisions and risk management strategies.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -526,10 +488,12 @@ Which returns:
  | 2022 | 0.1478 | 0.3164 | -0.0263 |
  | 2023 | 0.5252 | 0.0318 | -0.0972 |
 
+
+---
+
 ## get_kurtosis
 Calculate the Kurtosis of an investment portfolio or asset's returns.
-
-Kurtosis is a statistical measure used in finance to evaluate the shape of the probability distribution of returns for an investment portfolio or asset over a defined time period. It assesses the "tailedness" of the return distribution, indicating whether returns have fatter or thinner tails compared to a normal distribution. Kurtosis plays a critical role in risk assessment by revealing the potential presence of extreme outliers or the likelihood of heavy tails in the return data. This information aids investors and analysts in understanding the degree of risk associated with an investment and assists in making more informed decisions regarding risk tolerance. In essence, kurtosis serves as a valuable tool for comprehending the distribution characteristics of returns, offering insights into the potential for rare but significant events in the financial markets.
+ Kurtosis is a statistical measure used in finance to evaluate the shape of the probability distribution of returns for an investment portfolio or asset over a defined time period. It assesses the "tailedness" of the return distribution, indicating whether returns have fatter or thinner tails compared to a normal distribution. Kurtosis plays a critical role in risk assessment by revealing the potential presence of extreme outliers or the likelihood of heavy tails in the return data. This information aids investors and analysts in understanding the degree of risk associated with an investment and assists in making more informed decisions regarding risk tolerance. In essence, kurtosis serves as a valuable tool for comprehending the distribution characteristics of returns, offering insights into the potential for rare but significant events in the financial markets.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -571,4 +535,7 @@ Which returns:
  | 2021 | 3.3152 | 3.3352 | 7.3197 |
  | 2022 | 3.852 | 4.0085 | 3.3553 |
  | 2023 | 4.2908 | 4.4568 | 4.07 |
+
+
+---
 

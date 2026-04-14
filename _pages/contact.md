@@ -10,23 +10,24 @@ classes: custom-document
 author_profile: false
 ---
 
-I am always excited to engage in conversations about financial theory, explore new Python-based financial projects, or delve into general discussions about finance. If you share a passion for these topics and would like to support my work, I would be grateful if you considered [sponsoring me](https://github.com/sponsors/JerBouma). Your sponsorship helps fuel these endeavors, and constructive feedback is always equally appreciated!
+I'm always excited to engage in conversations about financial theory, explore new Python-based financial projects, or discuss the world of quantitative finance & open source. If you'd like to support my work, consider <a href="https://github.com/sponsors/JerBouma" target="_blank">sponsoring me on GitHub</a>.
 
-Feel free to reach out to me for:
+Feel free to reach out about any of my open-source projects, collaboration requests, or general discussions about the financial industry and Python programming.
 
-1.  Questions regarding any of my open-source projects, such as the Finance Toolkit or the Finance Database.
-2.  Requests to collaborate on a project, event, or other initiatives.
-3.  General discussions about the financial industry or Python programming.
-
-You can contact me using the form below, or alternatively via [Email](mailto:jer.bouma@gmail.com) or [LinkedIn](https://www.linkedin.com/in/boumajeroen/){:target="_blank"}.
-
-<form id="fs-frm" name="simple-contact-form" accept-charset="utf-8" action="https://formspree.io/f/xdovvgey" method="POST">
-  <fieldset id="fs-frm-inputs">
-    <label for="email-address">Email Address</label>
-    <input type="email" name="_replyto" id="email-address" placeholder="example@gmail.com" required="">
-    <label for="message">Message</label>
-    <textarea rows="5" name="message" id="message" placeholder="Please be as detailed as possible with your question or request." required=""></textarea>
-    <input type="hidden" name="_subject" id="email-subject" value="Contact Form Submission">
-  </fieldset>
-  <input type="submit" value="Submit">
-</form>
+<div class="contact-channels">
+  <a href="mailto:jer.bouma@gmail.com" class="contact-card">
+    <i class="fas fa-envelope contact-card-icon"></i>
+    <strong>Email</strong>
+    <span>jer.bouma@gmail.com</span>
+  </a>
+  <a href="https://www.linkedin.com/in/boumajeroen/" target="_blank" class="contact-card">
+    <i class="fab fa-linkedin contact-card-icon"></i>
+    <strong>LinkedIn</strong>
+    <span>boumajeroen</span>
+  </a>
+  <a href="https://github.com/JerBouma" target="_blank" class="contact-card">
+    <i class="fab fa-github contact-card-icon"></i>
+    <strong>GitHub</strong>
+    <span>JerBouma</span>
+  </a>
+</div>

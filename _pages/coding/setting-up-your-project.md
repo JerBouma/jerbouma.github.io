@@ -52,29 +52,32 @@ In any case, using the structure described above clarifies the location and purp
 The chances of your model remaining functional over the next few years increase significantly if you keep its dependencies up to date. This involves defining the <u>minimum</u> required versions of Python, Pandas, NumPy, SciPy, and other libraries for the model to function correctly. It would look something like this in the `pyproject.toml` file:
 
 ```toml
-[tool.poetry.dependencies]
-python = ">=3.10, <3.13"
-pandas = {extras = ["computation", "performance", "plot"], version = "^2.1.0"}
-requests = "^2.31.0"
-scikit-learn = "^1.3.1"
+[project]
+requires-python = ">=3.10, <3.13"
+dependencies = [
+    "pandas[computation,performance,plot]>=2.1.0",
+    "requests>=2.31.0",
+    "scikit-learn>=1.3.1",
+]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.4.1"
-pylint = "^2.17.5"
-codespell = "^2.2.5"
-black = "^23.7.0"
-pytest-mock = "^3.11.1"
-pytest-recording = "^0.13.0"
-pytest-cov = "^4.1.0"
-ruff = "^0.0.287"
-pytest-timeout = "^2.1.0"
-pytest-recorder = "^0.2.3"
-ipykernel = "^6.25.2"
+[dependency-groups]
+dev = [
+    "pytest>=7.4.1",
+    "codespell>=2.2.5",
+    "black>=23.7.0",
+    "pytest-mock>=3.11.1",
+    "pytest-recording>=0.13.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.0.287",
+    "pytest-timeout>=2.1.0",
+    "pytest-recorder>=0.2.3",
+    "ipykernel>=6.25.2",
+]
 ```
 
-This example uses the dependency manager **Poetry**, an advanced tool that understands the relationships between packages and their dependencies. It can also create a virtual environment and install all dependencies within it. This helps keep dependencies managed and ensures you avoid using deprecated functions. Poetry has extensive documentation, which is recommended reading [here](https://python-poetry.org/docs/){: target="_blank"}.
+This example uses the dependency manager **uv**, an extremely fast tool written in Rust that handles dependency resolution, virtual environment creation, and package installation. It is significantly faster than alternatives like pip or Poetry and supports the standard `pyproject.toml` format. uv has excellent documentation, which is recommended reading [here](https://docs.astral.sh/uv/){: target="_blank"}.
 
-Once set up, you can add dependencies using `poetry add` (e.g., `poetry add pandas`). This command adds the package (like pandas) to the `[tool.poetry.dependencies]` section. With dependencies listed, running `poetry install` installs them all within the virtual environment. This command also creates a `poetry.lock` file, which records the exact versions of all installed packages and their sub-dependencies. This file ensures reproducible builds by locking dependency versions.
+Once set up, you can add dependencies using `uv add` (e.g., `uv add pandas`). This command adds the package (like pandas) to the `[project]` dependencies section. With dependencies listed, running `uv sync` installs them all within a virtual environment that uv manages automatically. This command also creates a `uv.lock` file, which records the exact versions of all installed packages and their sub-dependencies. This file ensures reproducible builds by locking dependency versions.
 
 ___
 
@@ -82,67 +85,60 @@ ___
 
 ___
 
-Additionally, the `[tool.poetry.group.dev.dependencies]` section lists dependencies relevant only for development. As a user running the model, you only need the core dependencies listed under `[tool.poetry.dependencies]`. As a developer, you need these additional tools for tasks like running tests, linting, etc.
+Additionally, the `[dependency-groups]` section lists dependencies relevant only for development. As a user running the model, you only need the core dependencies listed under `[project]` dependencies. As a developer, you need these additional tools for tasks like running tests, linting, etc.
 
 
 {: .notice--info}
-<b>Why Poetry over requirements.txt or pip?</b><br>Poetry is a true dependency manager that understands the relationships between packages. Unlike `requirements.txt`, which merely lists packages and doesn't prevent incompatible installations, Poetry resolves dependencies intelligently. Pip is a package installer, <u>not</u> a dependency manager, making it less suitable for maintaining consistent environments. While alternatives like `pipenv` exist, Poetry is preferred here, partly due to its [increasing popularity](https://lp.jetbrains.com/python-developers-survey-2023/#python-packaging){: target="_blank"}.
+<b>Why uv over requirements.txt or pip?</b><br>uv is a true dependency manager that understands the relationships between packages. Unlike `requirements.txt`, which merely lists packages and doesn't prevent incompatible installations, uv resolves dependencies intelligently — and does so extremely fast thanks to its Rust-based implementation. Pip is a package installer, <u>not</u> a dependency manager, making it less suitable for maintaining consistent environments. While alternatives like Poetry and `pipenv` exist, uv is preferred here due to its speed, adherence to Python standards, and [rapidly growing adoption](https://docs.astral.sh/uv/){: target="_blank"}.
 
 Here's an example of what the installation process looks like:
 
 ```shell
-(modelling) FinanceToolkit % poetry install
-Installing dependencies from lock file
-
-Package operations: 72 installs, 0 updates, 0 removals
-
-  • Installing six (1.16.0)
-  • Installing asttokens (2.4.1)
-  • Installing executing (2.0.0)
-  • Installing idna (3.4)
-  • Installing multidict (6.0.4)
-  • Installing parso (0.8.3)
-  • Installing platformdirs (3.11.0)
-  • ...
-
-Installing the current project: financetoolkit (1.6.1)
+FinanceToolkit % uv sync
+Resolved 72 packages in 0.8s
+Installed 72 packages in 1.2s
+ + six==1.16.0
+ + asttokens==2.4.1
+ + executing==2.0.0
+ + idna==3.4
+ + multidict==6.0.4
+ + parso==0.8.3
+ + platformdirs==3.11.0
+ + ...
 ```
 And here's how adding a new dependency (including extras) appears:
 
 ```shell
-(modelling) FinanceToolkit % poetry add pandas --extras "computation performance plot"
-Using version ^2.1.2 for pandas
-
-Updating dependencies
-Resolving dependencies... (1.6s)
-
-Package operations: 15 installs, 0 updates, 0 removals
-
-  • Installing pytz (2023.3.post1)
-  • Installing tzdata (2023.3)
-  • Installing contourpy (1.2.0)
-  • Installing cycler (0.12.1)
-  • Installing fonttools (4.44.0)
-  • Installing kiwisolver (1.4.5)
-  • Installing llvmlite (0.41.1)
-  • Installing pandas (2.1.2)
-  • Installing pillow (10.1.0)
-  • Installing pyparsing (3.1.1)
-  • Installing bottleneck (1.3.7)
-  • Installing matplotlib (3.8.1)
-  • Installing numba (0.58.1)
-  • Installing numexpr (2.8.7)
-  • Installing xarray (2023.10.1)
+FinanceToolkit % uv add "pandas[computation,performance,plot]"
+Resolved 87 packages in 0.6s
+Installed 15 packages in 0.9s
+ + pytz==2023.3.post1
+ + tzdata==2023.3
+ + contourpy==1.2.0
+ + cycler==0.12.1
+ + fonttools==4.44.0
+ + kiwisolver==1.4.5
+ + llvmlite==0.41.1
+ + pandas==2.1.2
+ + pillow==10.1.0
+ + pyparsing==3.1.1
+ + bottleneck==1.3.7
+ + matplotlib==3.8.1
+ + numba==0.58.1
+ + numexpr==2.8.7
+ + xarray==2023.10.1
 ```
 
 This addition will then be reflected in the `pyproject.toml` file:
 
 ```toml
-[tool.poetry.dependencies]
-python = ">=3.10, <3.13"
-pandas = {extras = ["computation", "performance", "plot"], version = "^2.1.2"}  <-- Added
-requests = "^2.31.0"
-scikit-learn = "^1.3.1"
+[project]
+requires-python = ">=3.10, <3.13"
+dependencies = [
+    "pandas[computation,performance,plot]>=2.1.2",  # <-- Added
+    "requests>=2.31.0",
+    "scikit-learn>=1.3.1",
+]
 ```
 
 ### Setting up Linters
@@ -151,8 +147,7 @@ Linters are tools that analyze code to detect errors, enforce style guidelines, 
 
 - [**Black**](https://github.com/psf/black): A PEP 8 compliant opinionated formatter, maintained by the Python Software Foundation.
 - [**Ruff**](https://github.com/charliermarsh/ruff): An extremely fast linter that consolidates the functionality of tools like Flake8 (and its plugins), isort, pydocstyle, yesqa, eradicate, pyupgrade, and autoflake.
-- [**Pylint**](https://github.com/pylint-dev/pylint): Checks for errors, enforces a coding standard, looks for code smells, and suggests potential refactoring.
-- [**mypy**](https://mypy.readthedocs.io/en/stable/): A static type checker that verifies type hints (PEP 484) to help ensure correct usage of variables and functions.
+- [**ty**](https://docs.astral.sh/ty/): An extremely fast type checker by Astral (the creators of Ruff and uv) that verifies type hints to help ensure correct usage of variables and functions.
 - [**bandit**](https://github.com/PyCQA/bandit): Designed to find common security vulnerabilities in Python code.
 - [**codespell**](https://github.com/codespell-project/codespell): Identifies common misspellings in code and text files.
 
@@ -164,10 +159,6 @@ line-length = 122
 select = ["E", "W", "F", "Q", "W", "S", "UP", "I", "PD", "SIM", "PLC", "PLE", "PLR", "PLW"]
 ignore = ["S105", "S106", "S107", "PLR0913", "S310", "S301"]
 exclude = ["conftest.py"]
-
-[tool.pylint]
-max-line-length = 122
-disable = ["R0913", "W1514", "R0911", "R0912", "R0915", "R0801", "W0221", "C0103", "E1131"]
 
 [tool.ruff.isort]
 combine-as-imports = true
@@ -181,10 +172,10 @@ combine_as_imports = true
 
 [tool.codespell]
 ignore-words-list = 'te,hsi'
-skip = '*.json,./.git,pyproject.toml,poetry.lock,examples'
+skip = '*.json,./.git,pyproject.toml,uv.lock,examples'
 
-[tool.mypy]
-disable_error_code = "misc"
+[tool.ty]
+# See https://docs.astral.sh/ty/ for configuration options
 ```
 
 The `.pre-commit-config.yaml` file configures which linters should be run automatically before code is committed. Running `pre-commit install` sets up Git hooks based on this file.
@@ -215,8 +206,7 @@ financetoolkit/helpers.py:75:33: PLR2004 Magic value used in comparison.
 Found 1 error.
 
 codespell................................................................Passed
-mypy.....................................................................Passed
-pylint...................................................................Passed
+ty.......................................................................Passed
 ```
 
 This output shows which linters passed and failed based on the files staged for the commit. In this example, Black failed because it needed to reformat a file, and Ruff failed because it detected a 'magic value' (a hardcoded number without clear meaning). There are several ways to address these failures:
@@ -234,8 +224,7 @@ detect private key.......................................................Passed
 black....................................................................Passed
 ruff.....................................................................Passed
 codespell................................................................Passed
-mypy.....................................................................Passed
-pylint...................................................................Passed
+ty.......................................................................Passed
 [main eb9140d] v1.5.0 Release featuring Threading
  5 files changed, 683 insertions(+), 729 deletions(-)
 ```

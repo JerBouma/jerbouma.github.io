@@ -12,7 +12,7 @@ sidebar:
     nav: "financetoolkit-docs-technicals"
 ---
 
-The Technicals Module contains 30+ Technical Indicators that can be used to analyse companies. These ratios are divided into 4 categories which are breadth, momentum, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
+The Technicals Module contains 30+ technical indicators divided into 4 categories: breadth, momentum, overlap and volatility.
 
 To install the FinanceToolkit it simply requires the following:
 
@@ -20,52 +20,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 ```
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, models, fixed income, risk, performance and economics, please have a look below:
 {% include algolia.html %}
-
-## __init__
-Initializes the Technicals Controller Class.
-
-**Args:**
- - <u>tickers (str | list[str]):</u> The tickers to use for the calculation.
- - <u>intraday_historical (pd.DataFrame, optional):</u> The intraday historical data to use for the calculation.
- Defaults to pd.DataFrame().
- - <u>daily_historical (pd.DataFrame, optional):</u> The daily historical data to use for the calculation.
- Defaults to pd.DataFrame().
- - <u>weekly_historical (pd.DataFrame, optional):</u> The weekly historical data to use for the calculation.
- Defaults to pd.DataFrame().
- - <u>monthly_historical (pd.DataFrame, optional):</u> The monthly historical data to use for the calculation.
- Defaults to pd.DataFrame().
- - <u>quarterly_historical (pd.DataFrame, optional):</u> The quarterly historical data to use for the calculation.
- Defaults to pd.DataFrame().
- - <u>yearly_historical (pd.DataFrame, optional):</u> The yearly historical data to use for the calculation.
- Defaults to pd.DataFrame().
- - <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
- Defaults to 4.
- - <u>start_date (str | None, optional):</u> The start date to use for the calculation.
- Defaults to None.
- - <u>end_date (str | None, optional):</u> The end date to use for the calculation.
- Defaults to None.
-
- As an example:
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
-
-average_directional_index = toolkit.technicals.get_average_directional_index()
-```
-
-Which returns:
-
-| Date | AAPL | MSFT |
- |:-----------|--------:|--------:|
- | 2023-08-21 | 62.8842 | 36.7468 |
- | 2023-08-22 | 65.7063 | 36.5525 |
- | 2023-08-23 | 67.3596 | 35.5149 |
- | 2023-08-24 | 66.4527 | 35.4399 |
- | 2023-08-25 | 63.4837 | 32.3323 |
 
 ## collect_all_indicators
 Calculates all Technical Indicators based on the data provided.
@@ -95,6 +50,9 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.collect_all_indicators()
 ```
+
+---
+
 ## collect_breadth_indicators
 Calculates and collects various breadth indicators based on the provided data.
 
@@ -127,14 +85,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.collect_breadth_indicators()
 ```
+
+---
+
 ## get_mcclellan_oscillator
 Calculate the McClellan Oscillator for a given price series.
-
-The McClellan Oscillator is a breadth indicator that measures the difference between the exponential moving average of advancing stocks and the exponential moving average of declining stocks.
-
-The formula is a follows:
-
-
+ The McClellan Oscillator is a breadth indicator that measures the difference between the exponential moving average of advancing stocks and the exponential moving average of declining stocks.
+ The formula is a follows:
+ 
 - McClellan Oscillator = EMA(Advancers) - EMA(Decliners)
 
 **Args:**
@@ -171,14 +129,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_mcclellan_oscillator()
 ```
+
+---
+
 ## get_advancers_decliners
 Calculate the Advancers/Decliners ratio for a given price series.
-
-The Advancers/Decliners ratio is a breadth indicator that measures the number of advancing stocks (stocks with positive price changes) versus the number of declining stocks (stocks with negative price changes).
-
-The formula is a follows:
-
-
+ The Advancers/Decliners ratio is a breadth indicator that measures the number of advancing stocks (stocks with positive price changes) versus the number of declining stocks (stocks with negative price changes).
+ The formula is a follows:
+ 
 - Advancers/Decliners = Advancers / Decliners
 
 **Args:**
@@ -211,16 +169,16 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_advancers_decliners()
 ```
+
+---
+
 ## get_on_balance_volume
 Calculate the On
 -Balance Volume (OBV) for a given price series.
-
-The On
+ The On
 -Balance Volume (OBV) is a technical indicator that uses volume flow to predict changes in stock price. It accumulates the volume on up days and subtracts the volume on down days. The resulting OBV line provides insights into the buying and selling pressure behind price movements.
-
-The formula is a follows:
-
-
+ The formula is a follows:
+ 
 - OBV = Previous OBV + Current Volume if Close > Previous Close
 
 **Args:**
@@ -252,14 +210,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_on_balance_volume()
 ```
+
+---
+
 ## get_accumulation_distribution_line
 Calculate the Accumulation/Distribution Line for a given price series.
-
-The Accumulation/Distribution Line is a technical indicator that evaluates the flow of money into or out of an asset. It takes into account both price and volume information to identify whether an asset is being accumulated (bought) or distributed (sold) by investors.
-
-The formula is a follows:
-
-
+ The Accumulation/Distribution Line is a technical indicator that evaluates the flow of money into or out of an asset. It takes into account both price and volume information to identify whether an asset is being accumulated (bought) or distributed (sold) by investors.
+ The formula is a follows:
+ 
 - ADL = Previous ADL + Current ADL
 
 **Args:**
@@ -292,17 +250,17 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_accumulation_distribution_line()
 ```
+
+---
+
 ## get_chaikin_oscillator
 Calculate the Chaikin Oscillator for a given price series.
-
-The Chaikin Oscillator is a momentum
+ The Chaikin Oscillator is a momentum
 -based indicator that combines price and volume to help identify potential trends and reversals in the market. It is calculated as the difference between the 3
 -day and 10
 -day Accumulation/Distribution Line.
-
-The formula is a follows:
-
-
+ The formula is a follows:
+ 
 - Chaikin Oscillator = EMA(short
 -window ADL) - EMA(long
 -window ADL)
@@ -341,6 +299,9 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_chaikin_oscillator()
 ```
+
+---
+
 ## collect_momentum_indicators
 Calculates and collects various momentum indicators based on the provided data.
 
@@ -375,14 +336,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.collect_momentum_indicators()
 ```
+
+---
+
 ## get_money_flow_index
 Calculate the Money Flow Index (MFI) for a given price series.
-
-The Money Flow Index is a momentum indicator that measures the strength and direction of money flowing in and out of a security by considering both price and volume.
-
-The formula is a follows:
-
-
+ The Money Flow Index is a momentum indicator that measures the strength and direction of money flowing in and out of a security by considering both price and volume.
+ The formula is a follows:
+ 
 - MFI = 100 
 - (100 / (1 + (positive_money_flow / negative_money_flow)))
 
@@ -418,15 +379,15 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_money_flow_index()
 ```
+
+---
+
 ## get_williams_percent_r
 Calculate the Williams Percent R (Williams %R) for a given price series.
-
-The Williams %R is a momentum indicator that measures the level of the close price relative to the high
+ The Williams %R is a momentum indicator that measures the level of the close price relative to the high
 -low range over a certain number of periods.
-
-The formula is a follows:
-
-
+ The formula is a follows:
+ 
 - Williams %R = (Highest High - Close) / (Highest High - Lowest Low) * -100
 
 **Args:**
@@ -461,14 +422,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_williams_percent_r()
 ```
+
+---
+
 ## get_aroon_indicator
 Calculate the Aroon Indicator for a given price series.
-
-The Aroon Indicator is an oscillator that measures the strength of a trend and the likelihood of its continuation or reversal.
-
-The formula is a follows:
-
-
+ The Aroon Indicator is an oscillator that measures the strength of a trend and the likelihood of its continuation or reversal.
+ The formula is a follows:
+ 
 - Aroon Up = ((Number of periods) - (Number of periods since highest high)) / (Number of periods) * 100
 
 **Args:**
@@ -502,14 +463,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_aroon_indicator()
 ```
+
+---
+
 ## get_commodity_channel_index
 Calculate the Commodity Channel Index (CCI) for a given price series.
-
-The Commodity Channel Index is an oscillator that measures the current price level relative to an average price level over a specified period.
-
-The formula is a follows:
-
-
+ The Commodity Channel Index is an oscillator that measures the current price level relative to an average price level over a specified period.
+ The formula is a follows:
+ 
 - CCI = (Typical Price - SMA(Typical Price)) / (constant * Mean Deviation)
 
 **Args:**
@@ -546,14 +507,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_commodity_channel_index()
 ```
+
+---
+
 ## get_relative_vigor_index
 Calculate the Relative Vigor Index (RVI) for a given price series.
-
-The Relative Vigor Index is an oscillator that measures the conviction of a current price trend using the relationship between closing and opening prices.
-
-The formula is a follows:
-
-
+ The Relative Vigor Index is an oscillator that measures the conviction of a current price trend using the relationship between closing and opening prices.
+ The formula is a follows:
+ 
 - RVI = SMA(Upward Change) / (SMA(Upward Change) + SMA(Downward Change))
 
 **Args:**
@@ -588,14 +549,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_relative_vigor_index()
 ```
+
+---
+
 ## get_force_index
 Calculate the Force Index for a given price series.
-
-The Force Index is an indicator that measures the strength behind price movements.
-
-The formula is a follows:
-
-
+ The Force Index is an indicator that measures the strength behind price movements.
+ The formula is a follows:
+ 
 - Force Index = SMA(Periods) * (Close - Close(1))
 
 **Args:**
@@ -630,17 +591,17 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_force_index()
 ```
+
+---
+
 ## get_ultimate_oscillator
 Calculate the Ultimate Oscillator for a given price series.
-
-The Ultimate Oscillator is a momentum oscillator that combines short
+ The Ultimate Oscillator is a momentum oscillator that combines short
 -term, mid
 -term, and long
 -term price momentum into a single value.
-
-The formula is a follows:
-
-
+ The formula is a follows:
+ 
 - Ultimate Oscillator = 100 * ((4 * SMA(Periods)) / (SMA(Periods) + SMA(Periods) + SMA(Periods)))
 
 **Args:**
@@ -679,14 +640,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_ultimate_oscillator()
 ```
+
+---
+
 ## get_percentage_price_oscillator
 Calculate the Percentage Price Oscillator (PPO) for a given price series.
-
-The Percentage Price Oscillator (PPO) is a momentum oscillator that measures the difference between two moving averages as a percentage of the longer moving average.
-
-The formula is a follows:
-
-
+ The Percentage Price Oscillator (PPO) is a momentum oscillator that measures the difference between two moving averages as a percentage of the longer moving average.
+ The formula is a follows:
+ 
 - PPO = ((Long
 -term EMA - Short
 -term EMA) / Short-term EMA) * 100
@@ -725,16 +686,16 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_percentage_price_oscillator()
 ```
+
+---
+
 ## get_detrended_price_oscillator
 Calculate the Detrended Price Oscillator (DPO) for a given price series.
-
-The Detrended Price Oscillator (DPO) is an indicator that helps identify short
+ The Detrended Price Oscillator (DPO) is an indicator that helps identify short
 -term cycles by removing longer
 -term trends from prices.
-
-The formula is a follows:
-
-
+ The formula is a follows:
+ 
 - DPO = Close 
 - SMA(Close, (Number of Periods / 2) + 1)
 
@@ -770,14 +731,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_detrended_price_oscillator()
 ```
+
+---
+
 ## get_average_directional_index
 Calculate the Average Directional Index (ADX) for a given price series.
-
-The Average Directional Index (ADX) is an indicator that measures the strength of a trend, whether it's an uptrend or a downtrend.
-
-The formula is a follows:
-
-
+ The Average Directional Index (ADX) is an indicator that measures the strength of a trend, whether it's an uptrend or a downtrend.
+ The formula is a follows:
+ 
 - ADX = SMA(DMI) / (SMA(DMI) + SMA(DMI))
 
 **Args:**
@@ -812,14 +773,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_average_directional_index()
 ```
+
+---
+
 ## get_chande_momentum_oscillator
 Calculate the Chande Momentum Oscillator (CMO) for a given price series.
-
-The Chande Momentum Oscillator is an indicator that measures the momentum of a price series and identifies overbought and oversold conditions.
-
-The formula is a follows:
-
-
+ The Chande Momentum Oscillator is an indicator that measures the momentum of a price series and identifies overbought and oversold conditions.
+ The formula is a follows:
+ 
 - CMO = ((Sum of Upward Change) - (Sum of Downward Change)) / ((Sum of Upward Change) + (Sum of Downward Change))
 
 **Args:**
@@ -854,14 +815,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_chande_momentum_oscillator()
 ```
+
+---
+
 ## get_ichimoku_cloud
 Calculate the Ichimoku Cloud indicator for a given price series.
-
-The Ichimoku Cloud, also known as the Ichimoku Kinko Hyo, is a versatile indicator that defines support and resistance, identifies trend direction, gauges momentum, and provides trading signals.
-
-The formula is a follows:
-
-
+ The Ichimoku Cloud, also known as the Ichimoku Kinko Hyo, is a versatile indicator that defines support and resistance, identifies trend direction, gauges momentum, and provides trading signals.
+ The formula is a follows:
+ 
 - Conversion Line = (Highest High + Lowest Low) / 2
 
 **Args:**
@@ -900,15 +861,15 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_ichimoku_cloud()
 ```
+
+---
+
 ## get_stochastic_oscillator
 Calculate the Stochastic Oscillator indicator for a given price series.
-
-The Stochastic Oscillator is a momentum indicator that shows the location of the close relative to the high
+ The Stochastic Oscillator is a momentum indicator that shows the location of the close relative to the high
 -low range over a set number of periods. It consists of the %K line (fast) and the %D line (slow).
-
-The formula is a follows:
-
-
+ The formula is a follows:
+ 
 - %K = 100 * ((Close - Lowest Low) / (Highest High - Lowest Low)) 
 - %D = SMA(%K)
 
@@ -947,15 +908,15 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_stochastic_oscillator()
 ```
+
+---
+
 ## get_moving_average_convergence_divergence
 Calculate the Moving Average Convergence Divergence (MACD) indicator for a given price series.
-
-The Moving Average Convergence Divergence (MACD) is a trend
+ The Moving Average Convergence Divergence (MACD) is a trend
 -following momentum indicator that shows the relationship between two moving averages of a security's price. It consists of the MACD line, signal line, and MACD histogram.
-
-The formula is a follows:
-
-
+ The formula is a follows:
+ 
 - MACD Line = Short
 -term EMA - Long
 -term EMA 
@@ -998,14 +959,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_moving_average_convergence_divergence()
 ```
+
+---
+
 ## get_relative_strength_index
 Calculate the Relative Strength Index (RSI) indicator for a given price series.
-
-The Relative Strength Index (RSI) is a momentum oscillator that measures the speed and change of price movements. It ranges from 0 to 100 and is used to identify overbought or oversold conditions in an asset's price.
-
-The formula is a follows:
-
-
+ The Relative Strength Index (RSI) is a momentum oscillator that measures the speed and change of price movements. It ranges from 0 to 100 and is used to identify overbought or oversold conditions in an asset's price.
+ The formula is a follows:
+ 
 - RSI = 100 - (100 / (1 + RS))
 
 **Args:**
@@ -1040,14 +1001,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_relative_strength_index()
 ```
+
+---
+
 ## get_balance_of_power
 Calculate the Balance of Power (BOP) indicator for a given price series.
-
-The Balance of Power (BOP) indicator measures the strength of buyers versus sellers in the market. It relates the price change to the change in the asset's trading range.
-
-The formula is a follows:
-
-
+ The Balance of Power (BOP) indicator measures the strength of buyers versus sellers in the market. It relates the price change to the change in the asset's trading range.
+ The formula is a follows:
+ 
 - BOP = (Close - Open) / (High - Low)
 
 **Args:**
@@ -1081,6 +1042,9 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_balance_of_power()
 ```
+
+---
+
 ## collect_overlap_indicators
 Calculates and collects various overlap
 -based indicators based on the provided data.
@@ -1116,14 +1080,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.collect_overlap_indicators()
 ```
+
+---
+
 ## get_moving_average
 Calculate the Moving Average (MA) for a given price series.
-
-The Moving Average (MA) is a commonly used technical indicator that smooths out price data by calculating the average price over a specified number of periods.
-
-The formula is a follows:
-
-
+ The Moving Average (MA) is a commonly used technical indicator that smooths out price data by calculating the average price over a specified number of periods.
+ The formula is a follows:
+ 
 - MA = (Sum of Prices) / (Number of Prices)
 
 **Args:**
@@ -1159,14 +1123,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_moving_average()
 ```
+
+---
+
 ## get_exponential_moving_average
 Calculate the Exponential Moving Average (EMA) for a given price series.
-
-EMA is a technical indicator that gives more weight to recent price data, providing a smoothed moving average that reacts faster to price changes.
-
-The formula is a follows:
-
-
+ EMA is a technical indicator that gives more weight to recent price data, providing a smoothed moving average that reacts faster to price changes.
+ The formula is a follows:
+ 
 - EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
 
 **Args:**
@@ -1202,14 +1166,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_exponential_moving_average()
 ```
+
+---
+
 ## get_double_exponential_moving_average
 Calculate the Double Exponential Moving Average (DEMA) for a given price series.
-
-DEMA is a technical indicator that attempts to reduce the lag from traditional moving averages by using a combination of two exponential moving averages.
-
-The formula is a follows:
-
-
+ DEMA is a technical indicator that attempts to reduce the lag from traditional moving averages by using a combination of two exponential moving averages.
+ The formula is a follows:
+ 
 - EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
 
 **Args:**
@@ -1245,14 +1209,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_double_exponential_moving_average()
 ```
+
+---
+
 ## get_trix
 Calculate the Trix (Triple Exponential Moving Average) for a given price series.
-
-Trix is a momentum oscillator that calculates the percentage rate of change of a triple exponentially smoothed moving average. It helps identify overbought and oversold conditions in a market.
-
-The formula is a follows:
-
-
+ Trix is a momentum oscillator that calculates the percentage rate of change of a triple exponentially smoothed moving average. It helps identify overbought and oversold conditions in a market.
+ The formula is a follows:
+ 
 - EMA1 = EMA(Close, Window) 
 - EMA2 = EMA(EMA1, Window) 
 - EMA3 = EMA(EMA2, Window) 
@@ -1291,14 +1255,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_trix()
 ```
+
+---
+
 ## get_bollinger_bands
 Calculate the Bollinger Bands for a given price series.
-
-Bollinger Bands are a volatility indicator that consists of three lines: an upper band, a middle band (simple moving average), and a lower band. The upper and lower bands are calculated as the moving average plus and minus a specified number of standard deviations, respectively.
-
-The formula is a follows:
-
-
+ Bollinger Bands are a volatility indicator that consists of three lines: an upper band, a middle band (simple moving average), and a lower band. The upper and lower bands are calculated as the moving average plus and minus a specified number of standard deviations, respectively.
+ The formula is a follows:
+ 
 - Middle Band = SMA(Close, Window) 
 - Upper Band = Middle Band + (Num Std Dev * Std Dev) 
 - Lower Band = Middle Band - (Num Std Dev * Std Dev)
@@ -1338,14 +1302,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_bollinger_bands()
 ```
+
+---
+
 ## get_triangular_moving_average
 Calculate the Triangular Moving Average (TMA) for a given price series.
-
-The Triangular Moving Average (TMA) is a smoothed version of the Simple Moving Average (SMA) that uses multiple SMAs to reduce noise and provide a smoother trendline.
-
-The formula is a follows:
-
-
+ The Triangular Moving Average (TMA) is a smoothed version of the Simple Moving Average (SMA) that uses multiple SMAs to reduce noise and provide a smoother trendline.
+ The formula is a follows:
+ 
 - TMA = SMA(SMA(Close, Window), Window)
 
 **Args:**
@@ -1380,18 +1344,17 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_triangular_moving_average()
 ```
+
+---
+
 ## get_support_resistance_levels
 Retrieves the support and resistance levels for the specified period and assets.
-
-The Support and Resistance Levels are price levels where the price tends to stop and reverse.
-
-
+ The Support and Resistance Levels are price levels where the price tends to stop and reverse.
+ 
 - Support Levels: These are the valleys where the price tends to stop going down and may start to go up. Think of support levels as "floors" that the price has trouble falling below. 
 - Resistance Levels: These are the peaks where the price tends to stop going up and may start to go down. Think of resistance levels as "ceilings" that the price has trouble breaking through.
-
-It does so by:
-
-
+ It does so by:
+ 
 - Looking for Peaks and Valleys: The function looks at the stock prices and finds the high points (peaks) and low points (valleys) over time. 
 - Grouping Similar Peaks and Valleys: Sometimes, prices will stop at similar points multiple times. The function groups these similar peaks and valleys together to identify key resistance and support levels.
 
@@ -1429,6 +1392,9 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 support_resistance_levels = toolkit.technicals.get_support_resistance_levels()
 ```
+
+---
+
 ## collect_volatility_indicators
 Calculates and collects various volatility indicators based on the provided data.
 
@@ -1463,14 +1429,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.collect_volatility_indicators()
 ```
+
+---
+
 ## get_true_range
 Calculate the True Range (TR) for a given price series.
-
-The True Range (TR) is a measure of market volatility that considers the differences between the high and low prices and the previous closing price. It provides insights into the price movement of an asset.
-
-The formula is a follows:
-
-
+ The True Range (TR) is a measure of market volatility that considers the differences between the high and low prices and the previous closing price. It provides insights into the price movement of an asset.
+ The formula is a follows:
+ 
 - TR = max(high - low, abs(high - previous_close), abs(low - previous_close))
 
 **Args:**
@@ -1503,14 +1469,14 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_true_range()
 ```
+
+---
+
 ## get_average_true_range
 Calculate the Average True Range (ATR) of a given price series.
-
-The Average True Range (ATR) is a technical indicator that measures the volatility of an asset's price movements over a specified number of periods. It provides insights into the potential price range of an asset, which can help traders and investors make more informed decisions.
-
-The formula is a follows:
-
-
+ The Average True Range (ATR) is a technical indicator that measures the volatility of an asset's price movements over a specified number of periods. It provides insights into the potential price range of an asset, which can help traders and investors make more informed decisions.
+ The formula is a follows:
+ 
 - TR = max(high - low, abs(high - previous_close), abs(low - previous_close)) 
 - ATR = EMA(TR, Window)
 
@@ -1550,18 +1516,18 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_average_true_range()
 ```
+
+---
+
 ## get_keltner_channels
 Calculate the Keltner Channels for a given price series.
-
-The Keltner Channels consist of three lines: 
+ The Keltner Channels consist of three lines: 
 - Upper Channel Line = Exponential Moving Average (EMA) of High Prices + ATR * ATR Multiplier 
 - Middle Channel Line = Exponential Moving Average (EMA) of Closing Prices 
 - Lower Channel Line = Exponential Moving Average (EMA) of Low Prices 
 - ATR * ATR Multiplier
-
-The formula is a follows:
-
-
+ The formula is a follows:
+ 
 - EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA 
 - ATR = EMA(TR, ATR Window) 
 - Upper Channel Line = EMA(High, Window) + ATR * ATR Multiplier 
@@ -1603,3 +1569,6 @@ toolkit = Toolkit(tickers=["AAPL", "MSFT"])
 
 toolkit.technicals.get_keltner_channels()
 ```
+
+---
+

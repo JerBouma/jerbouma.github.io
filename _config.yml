@@ -20,7 +20,7 @@ title                    : "Jeroen Bouma"
 title_separator          : "|"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Jeroen Bouma"
-description              : "I'm Jeroen Bouma, a Quantitative Investment Strategist at A.S.R and Python Enthusiast. This website is dedicated to my open-source Python projects, resume and more."
+description              : "Jeroen Bouma — Quantitative Investment Strategist, Python developer, and creator of Finance Toolkit and Finance Database. Open-source financial analysis tools with 10,000+ GitHub stars."
 url                      : "https://www.jeroenbouma.com" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "JerBouma/jerbouma.github.io"
@@ -90,13 +90,7 @@ yandex_site_verification :
 baidu_site_verification  :
 
 # Social Sharing
-twitter:
-  username               :
-facebook:
-  username               :
-  app_id                 :
-  publisher              :
-og_image                 : "/assets/images/default/socialmediabanner.jpeg"
+og_image                 : "/assets/images/default/socialmediabanner.png"
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
@@ -176,6 +170,7 @@ exclude:
   - tmp
   - /docs # ignore Minimal Mistakes /docs
   - /test # ignore Minimal Mistakes /test
+  - Literature
 keep_files:
   - .git
   - .svn
@@ -207,6 +202,8 @@ kramdown:
 sass:
   sass_dir: _sass
   style: compressed # https://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
+  silence_deprecations:
+    - import
 
 
 # Outputting

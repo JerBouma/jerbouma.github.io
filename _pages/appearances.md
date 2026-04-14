@@ -1,27 +1,19 @@
 ---
-title: Media
-description: All of my talks, appearances, and written articles.
-permalink: /media
+title: Appearances
+description: My public talks and appearances connecting finance theory with open-source Python.
+permalink: /appearances
 redirect_from:
+  - /media
   - /activities
   - /talks
-  - /appearances
   - /videos
-  - /articles
-  - /categories
 layout: single
 classes: custom-document
 author_profile: false
 ---
 
-A collection of my public appearances, talks, and written articles connecting finance theory with open-source Python. **Interested in partnering with me? Reach out via the [contact page](/contact)!**
+A collection of my public talks and appearances connecting finance theory with open-source Python. **Interested in partnering with me? Reach out via the [contact page](/contact)!**
 
-<div class="page-tabs">
-  <button class="page-tab active" data-tab="appearances"><i class="fas fa-microphone"></i> Appearances</button>
-  <button class="page-tab" data-tab="articles"><i class="fas fa-pen"></i> Articles</button>
-</div>
-
-<div class="tab-panel active" id="tab-appearances">
 
 <h3>Speaker at the Student Capital Society Rotterdam</h3>
 
@@ -182,37 +174,25 @@ The event, hosted by Sri Chilukuri, Vice President of Product & Marketing at Ope
 </div>
 
 </div>
-</div>
 
-<div class="tab-panel" id="tab-articles" markdown="1">
-
-A selection of articles I have written connecting my open-source projects with my financial background. The goal is to explain financial theory and demonstrate its practical application within these projects. For example, one article focuses on Binomial Trees, detailing the theory and its implementation within the [Finance Toolkit](/projects/financetoolkit){:target="_blank"} project.
-
-{% for post in site.posts %}
-  {% include archive-single.html %}
-{% endfor %}
-
-</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  const tabs = document.querySelectorAll('.page-tab');
-  const panels = document.querySelectorAll('.tab-panel');
+  // YouTube lazy-embed: load thumbnail and swap for iframe on click
+  document.querySelectorAll('.embed-youtube').forEach(function (container) {
+    var img = new Image();
+    img.src = 'https://img.youtube.com/vi/' + container.dataset.videoId + '/sddefault.jpg';
+    img.addEventListener('load', function () { container.appendChild(img); });
 
-  // Activate tab from URL hash
-  const hash = window.location.hash.replace('#', '');
-  if (hash === 'articles') activateTab('articles');
-
-  tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      activateTab(tab.dataset.tab);
-      history.replaceState(null, '', '#' + tab.dataset.tab);
+    container.addEventListener('click', function () {
+      var iframe = document.createElement('iframe');
+      iframe.setAttribute('frameborder', '0');
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+      iframe.setAttribute('src', 'https://www.youtube.com/embed/' + container.dataset.videoId + '?rel=0&showinfo=0&autoplay=1');
+      container.innerHTML = '';
+      container.appendChild(iframe);
     });
   });
-
-  function activateTab(name) {
-    tabs.forEach(function (t) { t.classList.toggle('active', t.dataset.tab === name); });
-    panels.forEach(function (p) { p.classList.toggle('active', p.id === 'tab-' + name); });
-  }
 });
 </script>

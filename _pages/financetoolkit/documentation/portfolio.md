@@ -7,12 +7,12 @@ permalink: /projects/financetoolkit/docs/portfolio
 classes: wide-sidebar
 layout: single
 redirect_from:
-    - /economics
+    - /portfolio
 sidebar:
     nav: "financetoolkit-docs-portfolio"
 ---
 
-The Portfolio module is meant to calculate important portfolio metrics allows you to compare your own portfolio to a benchmark, seeing performance of individual assets and directly load the portfolio into the Finance Toolkit.
+The Portfolio module calculates important portfolio metrics, allowing you to compare your portfolio against a benchmark, analyse individual asset performance and load your portfolio directly into the Finance Toolkit.
 
 To install the FinanceToolkit it simply requires the following:
 
@@ -20,60 +20,11 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 ```
 
-If you are looking for documentation regarding the toolkit, discovery, ratios, models, technicals, fixed income, risk, performance and economics, please have a look below:
 {% include algolia.html %}
 
-## __init__
-Initialize the Portfolio class with the provided configuration file and portfolio dataset.
-
- This constructor sets up a portfolio management instance, configuring it with a dataset (either as a
- pandas DataFrame or a file path to an Excel/CSV file), a benchmark ticker for performance comparison,
- and various settings specified through a configuration file (YAML format). The configuration file defines
- key columns for cash flow analysis, such as date columns, asset tickers, price, volume, and transaction costs.
- It also allows for the use of quarterly data and fetching of historical financial data via an API.
-
-**Args:**
- - <u>portfolio_dataset (pd.DataFrame | str | None):</u> A pandas DataFrame containing the portfolio dataset,
- or a file path to an Excel/CSV file containing the portfolio data. If None, the dataset must
- be loaded later using the `read_portfolio_dataset` method.
- - <u>benchmark_ticker (str | None):</u> The ticker symbol for the benchmark asset used for performance comparison.
- If None, the benchmark ticker specified in the configuration file will be used.
- - <u>api_key (str):</u> The API key for accessing financial data and historical metrics. If not provided, only
- basic historical data and indicators are available.
- - <u>quarterly (bool):</u> Flag to specify whether to use quarterly data for performance metrics. Defaults to False
- (yearly data).
- - <u>example (bool):</u> Flag to use example configuration and dataset files for demonstration purposes.
- If True, example files are downloaded and used.
- - <u>configuration_file (str | None):</u> Path to a YAML configuration file defining portfolio settings.
- If None, the default configuration file is used.
- - <u>rounding (int):</u> The number of decimal places to round the outputs. Defaults to 4 decimal places.
-
- **Raises:**
- ValueError: If the provided configuration file is not in YAML format.
- ValueError: If no portfolio dataset is provided and `example` is set to False.
-
- As an example:
-
-```python
-from financetoolkit import Portfolio
-
-# Download porfolio files
-portfolio = Portfolio()
-
-# Load the portfolio dataset
-portfolio = Portfolio(portfolio_dataset="portfolio_template.xlsx")
-
-# Load an example portfolio instead
-portfolio = Portfolio(example=True)
-
-# Use an API key to access all features
-portfolio = Portfolio(
-portfolio_dataset="portfolio_template.xlsx",
-api_key="FINANCIAL_MODELING_PREP_KEY")
-```
 ## toolkit
 Converts the Portfolio to a Finance Toolkit object.
-
+180+
  This method converts the Portfolio object to a Finance Toolkit object, enabling the
  use of the Toolkit's 150+ financial metrics and indicators for the portfolio's assets.
 
@@ -121,6 +72,9 @@ Which returns:
  | SKY | 0.0598 | 0.1124 | 0.1542 | 0.0724 | nan |
  | WMT | 0.0284 | 0.0242 | 0.0239 | 0.0191 | 0.0239 |
  | Portfolio | 0.2373 | 0.2183 | 0.2001 | 0.2098 | 0.202 |
+
+
+---
 
 ## read_portfolio_dataset
 Read and consolidate cash flow data from Excel or CSV files into a single DataFrame.
@@ -199,6 +153,9 @@ Which returns:
  | 2024-11-05 | EMXC | 58.2921 | -5 | -1 | USD |
  | 2024-11-13 | VOO | 552.136 | 11 | 0 | USD |
  | 2024-12-05 | OXY | 48.2517 | -2 | 0 | USD |
+
+
+---
 
 ## collect_benchmark_historical_data
 Collect and align historical benchmark data with the portfolio's data.
@@ -286,6 +243,9 @@ Which returns:
  | 2025-02-27 | 5981.88 | 5993.69 | 5858.78 | 5861.57 | 5861.57 | 5.05768e+09 | 0 | -0.0159 | 0.0122 | -0.0587 | 0.018 | 4.0664 |
  | 2025-02-28 | 5856.74 | 5959.4 | 5837.66 | 5954.5 | 5954.5 | 6.44114e+09 | 0 | 0.0159 | 0.0122 | -0.0264 | 0.018 | 4.1309 |
 
+
+---
+
 ## collect_historical_data
 Collect and adjust historical price data for the portfolio's tickers.
 
@@ -371,6 +331,9 @@ Which returns:
  | 2025-02-27 | 48.9 | 49.43 | 48.34 | 48.65 | 48.65 | 1.04084e+07 | 0 | 0.0021 | 0.0253 | -0.0407 | 0.0284 | 9.3303 |
  | 2025-02-28 | 48.48 | 48.93 | 47.75 | 48.84 | 48.84 | 1.26817e+07 | 0 | 0.0039 | 0.0253 | -0.0384 | 0.0284 | 9.3667 |
 
+
+---
+
 ## get_positions_overview
 Calculate and provide an overview of the portfolio's positions, including key statistics and performance metrics.
 
@@ -443,6 +406,9 @@ Which returns:
  | 2025-02-26 | 101 | -14 | 1747.63 | 4903.55 | 2.8058 | 0.0126 | 0.0053 |
  | 2025-02-27 | 101 | -14 | 1747.63 | 4913.65 | 2.8116 | 0.0126 | 0.0055 |
  | 2025-02-28 | 101 | -14 | 1747.63 | 4932.84 | 2.8226 | 0.0126 | 0.0054 |
+
+
+---
 
 ## get_portfolio_overview
 Calculate and provide an overview of the portfolio's key statistics, including performance metrics and
@@ -542,6 +508,9 @@ Which returns:
  | WMT | 92 | -18 | 17.8645 | 1625.53 | 48.84 | 4493.28 | 1.7642 | 2867.75 | 2.4786 | 0.4016 | 0.1937 | -0.7145 | 1.246 | 0.0057 |
  | Portfolio | 2142 | -532 | 59.8406 | 128710 | 368.549 | 789432 | 5.1334 | 660721 | 2.0773 | 0.4187 | 0.1937 | 3.0561 | 1.3272 | 1 |
 
+
+---
+
 ## get_portfolio_performance
 Calculate portfolio performance metrics for a specified period.
 
@@ -598,6 +567,9 @@ Which returns:
  | 2025-02-24/2025-03-02 | VOO | 79 | -12 | 18660.8 | 4232.82 | 0.1347 | 0.0046 | -0.7732 |
  | 2025-02-24/2025-03-02 | VSS | 109 | -19 | 8393.99 | 66600.1 | 0.0606 | 0.0732 | 6.9343 |
  | 2025-02-24/2025-03-02 | WMT | 101 | -14 | 1747.63 | 4932.84 | 0.0126 | 0.0054 | 1.8226 |
+
+
+---
 
 ## get_transactions_overview
 Calculate and collect transaction overview ratios based on the provided data.
@@ -656,6 +628,9 @@ Which returns:
  | 2024-07-30 | AMD | 139.57 | 3 | 0 | USD | 418.711 | 1089.99 | 1.6032 | 671.279 | 0 | 5092.28 |
  | 2024-10-25 | MCHI | 48.8436 | 6 | 0 | USD | 293.062 | 321.48 | 0.097 | 28.4183 | 0 | 5703.28 |
  | 2024-11-13 | VOO | 552.136 | 11 | 0 | USD | 6073.5 | 589.38 | -0.903 | -5484.12 | 0 | 5745.3 |
+
+
+---
 
 ## get_transactions_performance
 Calculate transaction performance metrics for a specified period.
@@ -716,4 +691,7 @@ Which returns:
  | 2024Q2 | 14 | 847.6 | -1 | 11867.4 | 2543.81 | -0.7856 | -0.0048 | -0.7808 |
  | 2024Q4 | 6 | 48.8436 | 0 | 293.062 | 281.16 | -0.0406 | 0.0127 | -0.0533 |
  | 2024Q4 | 11 | 552.136 | 0 | 6073.5 | 515.46 | -0.9151 | -0.0173 | -0.8978 |
+
+
+---
 

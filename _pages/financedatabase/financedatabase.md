@@ -11,6 +11,8 @@ sidebar:
   nav: "financedatabase"
 ---
 
+<div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceDatabase" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
+
 As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to understand what type of companies or ETFs are available is incredibly challenging with there being millions of companies and derivatives available on the market. Sure, the most traded companies and ETFs can quickly be found simply because they are known to the public (for example, Microsoft, Tesla, S&P500 ETF or an All-World ETF). However, what else is out there is often unknown.
 
 **This database tries to solve that**. It features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
@@ -47,7 +49,7 @@ Some key statistics of the database:
 
 Before installation, consider starring the project on GitHub which helps others find the project as well.
 
-<a href="https://github.com/JerBouma/FinanceDatabase"><img width="1353" alt="image" src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/4132edde-72f9-4e32-adfe-8872207f46ff"></a>
+<a href="https://github.com/JerBouma/FinanceDatabase" target="_blank"><img width="1353" alt="image" src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/4132edde-72f9-4e32-adfe-8872207f46ff"></a>
 
 To install the FinanceDatabase it simply requires the following:
 
@@ -285,10 +287,7 @@ Lastly, the Finance Database has a direct integration with the [Finance Toolkit]
 
 To be able to get started, you need to obtain an API Key from FinancialModelingPrep. This is used to gain access to 30+ years of financial statement both annually and quarterly. Note that the Free plan is limited to 250 requests each day, 5 years of data and only features companies listed on US exchanges.
 
-___ 
-
-<p align="center"><b>Obtain an API Key from FinancialModelingPrep <a href="https://www.jeroenbouma.com/fmp" target="_blank">here</a>.</b></p>
-___
+[Obtain an API Key from FinancialModelingPrep](https://www.jeroenbouma.com/fmp){: .btn .btn--warning .btn--large .align-center target="_blank"}
 
 Then you can go ahead and run the following code, changing the `API_KEY` to your own API Key.
 

@@ -11,23 +11,4 @@ redirect_from:
   - /projects/financedatabase/dupont-analysis
 ---
 
-<style>
-    html, body {
-        width: 100%;
-        height: 100vh;
-        overflow: hidden;
-        margin: 0px;
-        padding: 0px;
-        border: none;
-    }
-    iframe {
-        width: 100%;
-        height: 100vh;
-        overflow: hidden;
-        margin: 0px;
-        padding: 0px;
-        border: none;
-    }
-</style>
-
-<iframe name="iframe1" id="iframe1" src="https://nbviewer.org/github/JerBouma/FinanceDatabase/blob/main/examples/FInance%20Database%20-%201.%20Getting%20Started.ipynb" frameborder="0"></iframe>
+{% include notebook.html src="/assets/notebooks/financedatabase/getting-started.ipynb" title="Getting Started with the Finance Database" github="https://github.com/JerBouma/FinanceDatabase/blob/main/examples/FInance%20Database%20-%201.%20Getting%20Started.ipynb" %}
