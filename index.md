@@ -33,7 +33,7 @@ classes: custom-splash
     <span class="stat-label">Financial Ratios</span>
   </a>
   <div class="stat-item">
-    <span class="stat-number" data-stat="downloads" data-target="60000" data-suffix="+">0+</span>
+    <span class="stat-number" data-stat="downloads" data-target="50000" data-suffix="+">0+</span>
     <span class="stat-label" style="font-size: 0.6rem; letter-spacing: 0.07em; white-space: nowrap;">Downloads per Month</span>
   </div>
 </div>
@@ -112,24 +112,8 @@ classes: custom-splash
     if (total > 0) starsEl.setAttribute('data-target', Math.floor(total / 100) * 100);
   }).catch(function () {}) : Promise.resolve();
 
-  /* -- Live PyPI monthly downloads (shields.io, CORS-enabled) -- */
-  var pypiPkgs = ['financetoolkit', 'financedatabase', 'thepassiveinvestor', 'personalfinance'];
-  var dlPromise = dlEl ? Promise.all(pypiPkgs.map(function (pkg) {
-    return fetch('https://img.shields.io/pypi/dm/' + pkg + '.json')
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        var msg = (d.message || '').replace(/\/month.*$/, '').trim();
-        var m = msg.match(/^([\.\d]+)([kKmM])?/);
-        if (!m) return 0;
-        var n = parseFloat(m[1]);
-        var s = (m[2] || '').toLowerCase();
-        return Math.round(n * (s === 'k' ? 1000 : s === 'm' ? 1000000 : 1));
-      })
-      .catch(function () { return 0; });
-  })).then(function (counts) {
-    var total = counts.reduce(function (a, b) { return a + b; }, 0);
-    if (total > 0) dlEl.setAttribute('data-target', Math.floor(total / 1000) * 1000);
-  }).catch(function () {}) : Promise.resolve();
+  /* -- Live PyPI monthly downloads disabled — fixed at 50k+ -- */
+  var dlPromise = Promise.resolve();
 
   /* -- Animate after live data resolves (falls back to hardcoded targets on error) -- */
   Promise.all([starsPromise, dlPromise]).then(function () {
