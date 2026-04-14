@@ -62,7 +62,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
 
 <div class="bento-grid">
 
-  <a href="/projects/financetoolkit/getting-started" class="bento-card bento-card--warning">
+  <a href="/projects/financetoolkit/getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-rocket bento-icon"></i>
       <h2>Getting Started</h2>
