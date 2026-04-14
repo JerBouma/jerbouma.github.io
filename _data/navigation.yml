@@ -82,25 +82,25 @@ financetoolkit:
       - title: Getting Started
         url: /projects/financetoolkit/getting-started
       - title: Discovery Notebook
-        url: /projects/financetoolkit/discovery-Notebook
+        url: /projects/financetoolkit/discovery-notebook
       - title: Ratios Notebook
-        url: /projects/financetoolkit/ratios-Notebook
+        url: /projects/financetoolkit/ratios-notebook
       - title: Models Notebook
-        url: /projects/financetoolkit/models-Notebook
+        url: /projects/financetoolkit/models-notebook
       - title: Options Notebook
-        url: /projects/financetoolkit/options-Notebook
+        url: /projects/financetoolkit/options-notebook
       - title: Technicals Notebook
-        url: /projects/financetoolkit/technicals-Notebook
+        url: /projects/financetoolkit/technicals-notebook
       - title: Risk Notebook
-        url: /projects/financetoolkit/risk-Notebook
+        url: /projects/financetoolkit/risk-notebook
       - title: Performance Notebook
-        url: /projects/financetoolkit/performance-Notebook
+        url: /projects/financetoolkit/performance-notebook
       - title: Fixed Income Notebook
-        url: /projects/financetoolkit/fixed-income-Notebook
+        url: /projects/financetoolkit/fixed-income-notebook
       - title: Economics Notebook
-        url: /projects/financetoolkit/economics-Notebook
+        url: /projects/financetoolkit/economics-notebook
       - title: Portfolio Notebook
-        url: /projects/financetoolkit/portfolio-Notebook
+        url: /projects/financetoolkit/portfolio-notebook
       - title: External Datasets
         url: /projects/financetoolkit/external-datasets
   - title: "Basic Usage"
