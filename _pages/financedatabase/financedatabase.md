@@ -21,26 +21,42 @@ The aim of this database is explicitly _not_ to provide up-to-date fundamentals 
 
 Some key statistics of the database:
 
-<div class="row">
-<div markdown="1" class="fifty-column-left">
-
-| Product           | Quantity   | Sectors    | Industries    | Countries |
-| ----------------- | ---------- | ---------- | ------------- | --------- |
-| Equities          | 158,429    | 12         | 63            | 111       |
-| ETFs              | 36,786     | 295        | 22            | 111       |
-| Funds             | 57,881     | 1,541       | 52            | 111      |
-
-</div>
-<div markdown="1" class="fifty-column-right">
-
-| Product           | Quantity  | Category              |
-| ----------------- | --------- | --------------------- |
-| Currencies        | 2,556     | 175 Currencies        |
-| Cryptocurrencies  | 3,367     | 352 Cryptocurrencies  |
-| Indices           | 91,183    | 64 Exchanges          |
-| Money Markets     | 1,367     | 3 Exchanges           |
-
-</div>
+<div class="fd-stats-grid">
+  <div class="fd-stat-card">
+    <div class="fd-stat-name">Equities</div>
+    <div class="fd-stat-qty">158,429</div>
+    <div class="fd-stat-meta">12 Sectors &middot; 63 Industries &middot; 111 Countries</div>
+  </div>
+  <div class="fd-stat-card">
+    <div class="fd-stat-name">ETFs</div>
+    <div class="fd-stat-qty">36,786</div>
+    <div class="fd-stat-meta">295 Sectors &middot; 22 Industries &middot; 111 Countries</div>
+  </div>
+  <div class="fd-stat-card">
+    <div class="fd-stat-name">Funds</div>
+    <div class="fd-stat-qty">57,881</div>
+    <div class="fd-stat-meta">1,541 Sectors &middot; 52 Industries &middot; 111 Countries</div>
+  </div>
+  <div class="fd-stat-card">
+    <div class="fd-stat-name">Indices</div>
+    <div class="fd-stat-qty">91,183</div>
+    <div class="fd-stat-meta">64 Exchanges</div>
+  </div>
+  <div class="fd-stat-card">
+    <div class="fd-stat-name">Currencies</div>
+    <div class="fd-stat-qty">2,556</div>
+    <div class="fd-stat-meta">175 Currencies</div>
+  </div>
+  <div class="fd-stat-card">
+    <div class="fd-stat-name">Cryptocurrencies</div>
+    <div class="fd-stat-qty">3,367</div>
+    <div class="fd-stat-meta">352 Categories</div>
+  </div>
+  <div class="fd-stat-card">
+    <div class="fd-stat-name">Money Markets</div>
+    <div class="fd-stat-qty">1,367</div>
+    <div class="fd-stat-meta">3 Exchanges</div>
+  </div>
 </div>
 
 <img src="/assets/images/projects/FinanceDatabase.jpg" alt="Finance Database" width="100%"/>

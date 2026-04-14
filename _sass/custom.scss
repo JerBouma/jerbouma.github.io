@@ -59,6 +59,64 @@
   --input-bg: rgba(241, 245, 249, 0.6);
 }
 
+// Finance Database — product stats card grid
+.fd-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin: 1.5em 0 2em;
+
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (max-width: 420px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.fd-stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 14px 8px 12px;
+  text-align: center;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--card-hover-border);
+  }
+
+  .fd-stat-name {
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .fd-stat-qty {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    color: var(--accent-color);
+    margin-bottom: 6px;
+    white-space: nowrap;
+  }
+
+  .fd-stat-meta {
+    font-size: 0.56rem;
+    color: var(--text-muted);
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+  }
+}
+
 html {
   overflow-x: clip; // clip hides horizontal overflow visually but does NOT create a scroll container (unlike hidden)
 }
@@ -859,6 +917,11 @@ body.custom-splash .masthead .site-title {
   flex: 1 !important;
   overflow: visible !important;
 
+  // Hide all nav links on mobile — hamburger only
+  @media (max-width: 1023px) {
+    display: none !important;
+  }
+
   >li {
     margin: 0 !important;
     padding: 0 !important;
@@ -1109,6 +1172,18 @@ body.custom-splash .masthead .site-title {
     border-radius: 2px !important;
     width: 18px !important;
     height: 2px !important;
+  }
+}
+
+// Force hamburger visible on mobile — override MM's .hidden class
+@media (max-width: 1023px) {
+  .greedy-nav__toggle,
+  .greedy-nav__toggle.hidden {
+    display: flex !important;
+    visibility: visible !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: auto !important;
   }
 }
 
@@ -2912,6 +2987,32 @@ body.wide-no-sidebar:not(.no-title) {
 @media (max-width: 480px) {
   .stat-number { font-size: 1.7rem; }
   .stat-item   { padding: 20px 10px; }
+}
+
+@media (max-width: 600px) {
+  .stats-band {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 14px;
+  }
+
+  .stat-item {
+    flex: 1;
+    padding: 16px 8px;
+  }
+
+  .stat-number {
+    font-size: 1.3rem;
+    letter-spacing: -0.5px;
+  }
+
+  .stat-label {
+    font-size: 0.52rem;
+    letter-spacing: 0.05em;
+    white-space: normal;
+    text-align: center;
+  }
 }
 
 /* Bento Box Grid */
