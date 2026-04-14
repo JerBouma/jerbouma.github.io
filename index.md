@@ -34,7 +34,7 @@ classes: custom-splash
   </a>
   <div class="stat-item">
     <span class="stat-number" data-stat="downloads" data-target="50000" data-suffix="+">0+</span>
-    <span class="stat-label" style="font-size: 0.6rem; letter-spacing: 0.07em; white-space: nowrap;">Downloads per Month</span>
+    <span class="stat-label" style="font-size: 0.60rem;">Downloads per Month</span>
   </div>
 </div>
 

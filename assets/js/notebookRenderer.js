@@ -273,13 +273,16 @@
     html += '<div class="nb-source highlight"><pre><code>' + highlighted + "</code></pre></div>";
     html += "</div>";
 
-    // Outputs
+    // Outputs — wrapped in a collapsible details block
     if (cell.outputs && cell.outputs.length) {
-      html += '<div class="nb-output-area">';
+      var outputsHtml = '';
       for (var i = 0; i < cell.outputs.length; i++) {
-        html += renderOutput(cell.outputs[i], execCount);
+        outputsHtml += renderOutput(cell.outputs[i], execCount);
       }
-      html += "</div>";
+      html += '<details class="nb-output-details">';
+      html += '<summary class="nb-output-summary"><span class="nb-output-summary__icon"></span>Show output</summary>';
+      html += '<div class="nb-output-area">' + outputsHtml + '</div>';
+      html += '</details>';
     }
 
     html += "</div>";
