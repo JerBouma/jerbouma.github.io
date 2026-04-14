@@ -1,6 +1,11 @@
 This is the source code of my personal website. On this website, you are able to find a detailed resume including testiominals, my Python projects related to financial theory, all talks and videos that I’ve been a part of and lastly a complete list of literature that I’ve read to better understand the financial world.
 
-# [Visit the Website](https://www.jeroenbouma.com/)
+<p><div align="center">
+<a href="https://www.jeroenbouma.com/">
+    <img src="https://img.shields.io/badge/Visit_my_Website-blue?style=for-the-badge" alt="JerBouma">
+</a>
+</div></p>
 
-[![Website](https://github.com/JerBouma/jerbouma.github.io/assets/46355364/99689423-b7b8-4e49-87c8-bb8cc50c08a2)](https://www.jeroenbouma.com/)
-
+<a href="https://www.jeroenbouma.com/">
+    <img width="1506" height="825" alt="image" src="https://github.com/user-attachments/assets/2ba9c8d5-396b-4791-9c5a-7f818912479c" />
+</a>
