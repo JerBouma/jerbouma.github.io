@@ -941,7 +941,6 @@ body.custom-splash .masthead .site-title {
     top: 60px !important;
     left: 0 !important;
     width: 100% !important;
-    background: var(--masthead-bg) !important;
     border-bottom: 1px solid var(--masthead-border) !important;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35) !important;
     padding: 8px !important;
@@ -1358,6 +1357,11 @@ body.custom-splash .masthead .site-title {
   padding: 6px !important;
   min-width: 180px !important;
   box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5) !important;
+
+  &::before,
+  &::after {
+    display: none !important;
+  }
   z-index: 1000 !important;
 
   li {
@@ -4776,4 +4780,31 @@ table.highlight {
 .page__meta,
 .page__meta-readtime {
   color: var(--text-muted) !important;
+}
+
+// ── Resume bio intro: stack photo above text on mobile ──────────────────────
+@media (max-width: 767px) {
+  .row:has(.seventy-column) {
+    display: flex;
+    flex-direction: column;
+
+    .seventy-column {
+      float: none;
+      width: 100%;
+      padding-left: 0;
+      order: 2;
+    }
+
+    .thirty-column {
+      float: none;
+      width: 100%;
+      padding-left: 0;
+      order: 1;
+      text-align: center;
+
+      img.testimoninals {
+        display: none !important;
+      }
+    }
+  }
 }

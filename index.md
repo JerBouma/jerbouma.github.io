@@ -32,10 +32,11 @@ classes: custom-splash
     <span class="stat-number" data-stat="ratios" data-target="180" data-suffix="+">0+</span>
     <span class="stat-label">Financial Ratios</span>
   </a>
-  <div class="stat-item">
+  <a href="/projects" class="stat-item">
     <span class="stat-number" data-stat="downloads" data-target="50000" data-suffix="+">0+</span>
     <span class="stat-label" style="font-size: 0.60rem;">Downloads per Month</span>
-  </div>
+  </a>
+</div>
 </div>
 
 <div class="bento-grid">
