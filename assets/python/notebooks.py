@@ -89,9 +89,10 @@ NOTEBOOKS = [
     ),
     # ── Personal Finance ──────────────────────────────────────
     (
-        "https://raw.githubusercontent.com/JerBouma/PersonalFinance/main/examples/Personal%20Finance%20-%201.%20Getting%20Started.ipynb",
-        "assets/notebooks/personalfinance/getting-started.ipynb",
+        "https://raw.githubusercontent.com/JerBouma/PersonalFinance/refs/heads/main/examples/Personal%20Finance%20-%202.%20Using%20Your%20Files.ipynb",
+        "assets/notebooks/personalfinance/using-your-files.ipynb",
     ),
+
 ]
 
 

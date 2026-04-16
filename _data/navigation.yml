@@ -11,12 +11,12 @@ main:
         url: /projects/financetoolkit
       - title: "Finance Database"
         url: /projects/financedatabase
+      - title: OpenBB Terminal
+        url: /projects/openbbterminal
       - title: "The Passive Investor"
         url: /projects/thepassiveinvestor
       - title: "Personal Finance"
         url: /projects/personalfinance
-      - title: OpenBB Terminal
-        url: /projects/openbbterminal
   - title: "Modelling"
     url: /modelling/introduction
     sublinks:
