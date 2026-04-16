@@ -2,6 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Mr+Dafoe&display=swap');
 
 :root {
+  // ── Responsive site-width tokens ─────────────────────────────────────────
+  // These drive all major page containers so layout scales consistently
+  // across mobile, 1080p, 4K, and ultrawide without images becoming huge.
+  --site-max-width: 1440px;   // default (up to ~1920px)
+  --site-h-padding: 40px;     // horizontal gutter used by #main wrappers
+
   --bg-color: linear-gradient(135deg, #0f172a 0%, #020617 100%);
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
@@ -1455,8 +1461,8 @@ body.wide-no-sidebar {
 // Non-iframe wide-no-sidebar pages (like openbbterminal) — constrain to card width
 body.wide-no-sidebar:not(.no-title) {
   #main {
-    max-width: calc(100% - 80px) !important;
-    width: calc(100% - 80px) !important;
+    max-width: min(calc(100% - 80px), var(--site-max-width)) !important;
+    width: min(calc(100% - 80px), var(--site-max-width)) !important;
     margin: 40px auto !important;
     background: var(--card-bg) !important;
     border: 1px solid var(--card-border) !important;
@@ -1679,7 +1685,7 @@ body.wide-no-sidebar:not(.no-title) {
 }
 
 .nb-notebook {
-  max-width: 1200px;
+  max-width: min(1200px, var(--site-max-width));
   margin: 0 auto;
   padding: 24px 32px 40px;
 }
@@ -2825,7 +2831,7 @@ body.wide-no-sidebar:not(.no-title) {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 48px;
-  max-width: 1200px;
+  max-width: min(1200px, var(--site-max-width));
   margin: 0 auto;
   padding: 56px 32px 40px;
 
@@ -3001,7 +3007,7 @@ body.wide-no-sidebar:not(.no-title) {
 
 .custom-splash {
   .page__content {
-    max-width: 1200px !important;
+    max-width: min(1200px, var(--site-max-width)) !important;
     margin: 0 auto;
     padding: 0 20px;
   }
@@ -3018,7 +3024,7 @@ body.wide-no-sidebar:not(.no-title) {
   display: flex;
   align-items: center;
   gap: 64px;
-  max-width: 1100px;
+  max-width: min(1100px, var(--site-max-width));
   margin: 0 auto;
 }
 
@@ -4111,9 +4117,9 @@ body.wide-no-sidebar:not(.no-title) {
 /* Sub-page Specific Reading Constraints */
 body.custom-document {
   #main {
-    max-width: 100% !important;
+    max-width: calc(var(--site-max-width) + var(--site-h-padding) * 2) !important;
     margin: 0 auto !important;
-    padding: 0 40px !important;
+    padding: 0 var(--site-h-padding) !important;
   }
 
   .page__inner-wrap {
@@ -4151,7 +4157,7 @@ body.wide-sidebar {
   #main {
     display: flex !important;
     align-items: flex-start !important;
-    max-width: 100% !important;
+    max-width: var(--site-max-width) !important;
     width: calc(100% - 80px) !important;
     margin: 40px auto !important;
     padding: 0 !important;
@@ -4780,6 +4786,89 @@ table.highlight {
 .page__meta,
 .page__meta-readtime {
   color: var(--text-muted) !important;
+}
+
+// ── Content image cap — prevent images stretching huge on large screens ─────
+// Inline content images (screenshots, diagrams) are capped at a readable size.
+// Badge/shield images and testimonial avatars are excluded.
+.page__content {
+  > p > img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="github-readme-stats"]):not(.testimoninals),
+  > img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="github-readme-stats"]):not(.testimoninals) {
+    max-width: min(100%, 960px);
+  }
+}
+
+// ── Large-screen responsive scaling ─────────────────────────────────────────
+// Progressively widen the max-width token and adjust padding/font-sizes so
+// the layout breathes naturally on 1080p, 4K, and ultrawide monitors.
+
+// ── 1920 × 1080 and up ────────────────────────────────────────────────────
+@media (min-width: 1920px) {
+  :root {
+    --site-max-width: 1600px;
+    --site-h-padding: 60px;
+  }
+
+  body.custom-document .page__inner-wrap {
+    padding: 72px !important;
+  }
+
+  body.wide-sidebar {
+    .sidebar {
+      width: 290px !important;
+      min-width: 290px !important;
+    }
+    article.page .page__inner-wrap {
+      padding: 52px !important;
+    }
+  }
+
+  .hero-photo {
+    width: 280px;
+  }
+
+  .bento-card {
+    padding: 28px 30px !important;
+  }
+
+  .footer__inner {
+    padding: 64px 40px 48px;
+  }
+}
+
+// ── 2560 × 1440 (2K / QHD) and up ───────────────────────────────────────
+@media (min-width: 2560px) {
+  :root {
+    --site-max-width: 1800px;
+    --site-h-padding: 80px;
+  }
+
+  body {
+    font-size: 17px !important;
+  }
+
+  .page__content {
+    > p > img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="github-readme-stats"]):not(.testimoninals),
+    > img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="github-readme-stats"]):not(.testimoninals) {
+      max-width: min(100%, 1100px);
+    }
+  }
+
+  .hero-title {
+    font-size: clamp(2.8rem, 3.5vw, 4.2rem) !important;
+  }
+
+  .bento-card {
+    padding: 32px 36px !important;
+  }
+}
+
+// ── 3440 × 1440 (ultrawide) and up ──────────────────────────────────────
+@media (min-width: 3440px) {
+  :root {
+    --site-max-width: 2000px;
+    --site-h-padding: 100px;
+  }
 }
 
 // ── Resume bio intro: stack photo above text on mobile ──────────────────────
