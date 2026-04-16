@@ -22,7 +22,7 @@
           <!-- Show the main link and sub links on desktop, exclude mobile -->
           <li class="dropdown {{ class }} show-on-desktop">
             <a href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-              aria-expanded="false">{{ link.title }} <i class="fa fa-chevron-down fa-sm" style="color: #3b9cba"
+              aria-expanded="false">{{ link.title }} <i class="fa fa-chevron-down fa-sm"
                 aria-hidden="true"></i><span class="caret"></span></a>
             <ul class="dropdown-content">
               {% for sublink in link.sublinks %}
@@ -44,9 +44,19 @@
             </ul>
           </li>
 
-          <!-- Show the main link only on mobile -->
-          <li class="masthead__menu-item show-on-mobile">
-            <a href="{{ site.baseurl }}{{ link.url }}">{{ link.title }}</a>
+          <!-- Mobile: nav link + separate chevron to expand sublinks -->
+          <li class="masthead__menu-item show-on-mobile mobile-accordion">
+            <div class="mobile-accordion__row">
+              <a href="{{ site.baseurl }}{{ link.url }}" class="mobile-accordion__link">{{ link.title }}</a>
+              <button class="mobile-accordion__chevron" type="button" aria-expanded="false" aria-label="Expand {{ link.title }}">
+                <i class="fa fa-chevron-down fa-xs mobile-accordion__icon" aria-hidden="true"></i>
+              </button>
+            </div>
+            <ul class="mobile-accordion__sub">
+              {% for sublink in link.sublinks %}
+              <li><a href="{{ site.baseurl }}{{ sublink.url }}">{{ sublink.title }}</a></li>
+              {% endfor %}
+            </ul>
           </li>
           {% else %}
           <li class="masthead__menu-item">
@@ -109,4 +119,53 @@
 
   // Initial icon setup
   updateThemeIcon();
+
+  // ── Mobile accordion sublink toggles ──────────────────
+  (function () {
+    var allChevrons = document.querySelectorAll('.mobile-accordion__chevron');
+    allChevrons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var sub = btn.closest('.mobile-accordion').querySelector('.mobile-accordion__sub');
+        var opening = !sub.classList.contains('open');
+        // close all others first
+        allChevrons.forEach(function (other) {
+          if (other !== btn) {
+            other.setAttribute('aria-expanded', 'false');
+            other.closest('.mobile-accordion').querySelector('.mobile-accordion__sub').classList.remove('open');
+          }
+        });
+        sub.classList.toggle('open', opening);
+        btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+      });
+    });
+  })();
+
+  // ── Mobile nav drawer ──────────────────────────────────
+  (function () {
+    var toggle = document.querySelector('.greedy-nav__toggle');
+    var visibleLinks = document.querySelector('.masthead .visible-links');
+    if (!toggle || !visibleLinks) return;
+
+    toggle.addEventListener('click', function (e) {
+      if (window.innerWidth > 1023) return; // desktop handled by greedy-nav.js
+      e.stopPropagation();
+      var isOpen = visibleLinks.classList.toggle('mobile-open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.masthead') && visibleLinks.classList.contains('mobile-open')) {
+        visibleLinks.classList.remove('mobile-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Close drawer on resize back to desktop
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 1023) {
+        visibleLinks.classList.remove('mobile-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
 </script>
