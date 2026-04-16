@@ -37,7 +37,6 @@ classes: custom-splash
     <span class="stat-label" style="font-size: 0.60rem;">Downloads per Month</span>
   </a>
 </div>
-</div>
 
 <div class="bento-grid">
 
