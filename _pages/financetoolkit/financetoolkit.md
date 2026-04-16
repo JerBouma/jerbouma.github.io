@@ -70,7 +70,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/discovery-Notebook" class="bento-card">
+  <a href="/projects/financetoolkit/discovery-notebook" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-compass bento-icon"></i>
       <h2>Discovery</h2>
@@ -78,7 +78,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/ratios-Notebook" class="bento-card">
+  <a href="/projects/financetoolkit/ratios-notebook" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-percentage bento-icon"></i>
       <h2>Ratios</h2>
@@ -86,7 +86,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/models-Notebook" class="bento-card">
+  <a href="/projects/financetoolkit/models-notebook" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-project-diagram bento-icon"></i>
       <h2>Models</h2>
@@ -94,7 +94,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/options-Notebook" class="bento-card">
+  <a href="/projects/financetoolkit/options-notebook" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-sliders-h bento-icon"></i>
       <h2>Options</h2>
@@ -102,7 +102,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/technicals-Notebook" class="bento-card">
+  <a href="/projects/financetoolkit/technicals-notebook" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-chart-line bento-icon"></i>
       <h2>Technicals</h2>
@@ -110,7 +110,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/risk-Notebook" class="bento-card">
+  <a href="/projects/financetoolkit/risk-notebook" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-shield-alt bento-icon"></i>
       <h2>Risk</h2>
@@ -118,7 +118,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/performance-Notebook" class="bento-card">
+  <a href="/projects/financetoolkit/performance-notebook" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-trophy bento-icon"></i>
       <h2>Performance</h2>
@@ -126,7 +126,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/fixed-income-Notebook" class="bento-card">
+  <a href="/projects/financetoolkit/fixed-income-notebook" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-university bento-icon"></i>
       <h2>Fixed Income</h2>
@@ -134,7 +134,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/economics-Notebook" class="bento-card">
+  <a href="/projects/financetoolkit/economics-notebook" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-globe bento-icon"></i>
       <h2>Economics</h2>
@@ -142,7 +142,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/portfolio-Notebook" class="bento-card">
+  <a href="/projects/financetoolkit/portfolio-notebook" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-briefcase bento-icon"></i>
       <h2>Portfolio</h2>
