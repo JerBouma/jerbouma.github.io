@@ -127,7 +127,7 @@ As part of my initiative to present OpenBB to students and professors, I introdu
 
 The goal was to provide a clear overview of the OpenBB Terminal's capabilities and explain how students can use it for their market and investment reports.
 
-[Read More](https://openbb.co/blog/intro-openbb-terminal){: .btn .btn--info target="_blank"}
+[Read More](https://www.youtube.com/watch?v=HLead2WTnIs&t=1s){: .btn .btn--info target="_blank"}
 
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
@@ -145,7 +145,7 @@ In this webinar, OpenBB introduced the OpenBB Terminal 3.0. This release include
 
 This marked another step towards becoming the next-generation financial data and analytics platform, designed to revolutionize how analysts access and analyze financial and economic data.
 
-[Read More](https://openbb.co/blog/openbb-terminal-3){: .btn .btn--info target="_blank"}
+[Read More](https://www.youtube.com/watch?v=_4dQs_q_Jtk){: .btn .btn--info target="_blank"}
 
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
@@ -164,7 +164,7 @@ In 2022, the OpenBB Terminal 2.0 was introduced to an audience of over 1,300 use
 
 The event, hosted by Sri Chilukuri, Vice President of Product & Marketing at OpenBB, featured speakers Didier Lopes (Founder & CEO), Jeroen Bouma (Product Manager), Minh Hoang (Product Manager), and Martin Bufi (Sr. Engineer).
 
-[Read More](https://openbb.co/blog/openbb-terminal-2-event){: .btn .btn--info target="_blank"}
+[Read More](https://www.youtube.com/watch?v=W9r2joPZOOw){: .btn .btn--info target="_blank"}
 
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
