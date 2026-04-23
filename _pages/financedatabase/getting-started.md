@@ -9,6 +9,7 @@ redirect_from:
   - /projects/financedatabase/querying-netherlands
   - /projects/financedatabase/technical-analysis
   - /projects/financedatabase/dupont-analysis
+  - /projects/financetoolkit/finance-database
 ---
 
 {% include notebook.html src="/assets/notebooks/financedatabase/getting-started.ipynb" title="Getting Started with the Finance Database" github="https://github.com/JerBouma/FinanceDatabase/blob/main/examples/FInance%20Database%20-%201.%20Getting%20Started.ipynb" %}

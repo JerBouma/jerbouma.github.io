@@ -1139,7 +1139,7 @@ modelling:
       - title: "Naming Conventions"
         url: /modelling/build-your-model#naming-conventions
       - title: "Applying Typing"
-        url: modelling/build-your-model#applying-typing
+        url: /modelling/build-your-model#applying-typing
       - title: "Writing Docstrings"
         url: /modelling/build-your-model#writing-docstrings
       - title: "Creating Documentation"

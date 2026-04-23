@@ -62,4 +62,4 @@ This financial modeling guide provides information on getting started with Pytho
 
 </div>
 
-Have suggestions? This entire website is open-source, so feel free to contribute [here](https://github.com/JerBouma/jerbouma.github.io){:, target="blank"}!
+Have suggestions? This entire website is open-source, so feel free to contribute [here](https://github.com/JerBouma/jerbouma.github.io){: target="_blank"}!
