@@ -74,6 +74,8 @@ financetoolkit:
     url: /projects/financetoolkit#site-nav
   - title: "Installation"
     url: /projects/financetoolkit#installation
+  - title: "MCP Server"
+    url: /projects/financetoolkit#mcp-server
   - title: <font color="#d67f05">Documentation</font>
     url: /projects/financetoolkit/docs
   - title: "How to Guides"
