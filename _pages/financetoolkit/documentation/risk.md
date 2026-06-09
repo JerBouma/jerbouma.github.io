@@ -56,7 +56,7 @@ toolkit.risk.collect_all_metrics()
 Calculate the Value at Risk (VaR) of an investment portfolio or asset's returns.
  Value at Risk (VaR) is a risk management metric that quantifies the maximum potential loss an investment portfolio or asset may experience over a specified time horizon and confidence level. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
  The VaR is calculated as the quantile of the return distribution, representing the loss threshold that is not expected to be exceeded with a given confidence level (e.g., 5% for alpha=0.05).
- Also known as: VaR, maximum expected loss, portfolio loss risk.
+Also known as: VaR, maximum expected loss, portfolio loss risk.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -114,7 +114,7 @@ Which returns:
 Calculate the Conditional Value at Risk (CVaR) of an investment portfolio or asset's returns.
  Conditional Value at Risk (CVaR) is a risk management metric that quantifies the loss in the worst % of cases of an investment portfolio or asset may experience over a specified time horizon and confidence level. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
  The CVaR is calculated as the expected loss given that the loss threshold (VaR) with a given confidence level (e.g., 5% for alpha=0.05) is excceeded.
- Also known as: CVaR, expected shortfall, ES, tail risk.
+Also known as: CVaR, expected shortfall, ES, tail risk.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -172,7 +172,7 @@ Which returns:
 Calculate the Entropic Value at Risk (EVaR) of an investment portfolio or asset's returns.
  Entropic Value at Risk (EVaR) is a risk management metric that quantifies upper bound for the value at risk (VaR) and the conditional value at risk (CVaR) over a specified time horizon and confidence level. EVaR is obtained from the Chernoff inequality. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
  The EVaR is calculated as the upper bound of VaR and CVaR with a given confidence level (e.g., 5% for alpha=0.05).
- Also known as: EVaR.
+Also known as: EVaR.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -227,7 +227,7 @@ Which returns:
 ## get_maximum_drawdown
 Calculate the Maximum Drawdown (MDD) of an investment portfolio or asset's returns.
  Maximum Drawdown (MDD) is a risk management metric that quantifies the largest historical loss of n investment portfolio or asset experienced over a specified time horizon. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
- Also known as: max drawdown, peak
+Also known as: max drawdown, peak
 -to
 -trough decline.
 
@@ -286,7 +286,7 @@ The Ulcer Index is a financial metric used to assess the risk and volatility of 
  The Ulcer Index differs from traditional volatility measures like standard deviation or variance because it focuses on the depth and duration of drawdowns rather than the dispersion of returns.
  The formula is a follows:
  Ulcer Index = SQRT(SUM[(Pn / Highest High)^2] / n)
- Also known as: UI, drawdown risk.
+Also known as: UI, drawdown risk.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -337,7 +337,7 @@ Which returns:
 ## get_garch
 Calculates volatility forecasts based on the GARCH model.
  GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
- Also known as: GARCH, volatility clustering, conditional heteroscedasticity.
+Also known as: GARCH, volatility clustering, conditional heteroscedasticity.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -402,7 +402,7 @@ Calculates sigma_2 forecasts.
 -907291
 -31
 -1
- Also known as: volatility forecast, predicted volatility.
+Also known as: volatility forecast, predicted volatility.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -456,7 +456,7 @@ Which returns:
 ## get_skewness
 Calculate the Skewness of an investment portfolio or asset's returns.
  Skewness is a statistical measure used in finance to assess the asymmetry in the distribution of returns for an investment portfolio or asset over a defined period. It offers valuable insights into the shape of the return distribution, indicating whether returns are skewed towards the positive or negative side of the mean. Skewness is a crucial tool for investors and analysts seeking to understand the potential risk and return characteristics of an investment, aiding in the assessment of the distribution's tails and potential outliers. It provides a means to gauge the level of skew in returns, enabling more informed investment decisions and risk management strategies.
- Also known as: return distribution asymmetry, tail skew.
+Also known as: return distribution asymmetry, tail skew.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -504,7 +504,7 @@ Which returns:
 ## get_kurtosis
 Calculate the Kurtosis of an investment portfolio or asset's returns.
  Kurtosis is a statistical measure used in finance to evaluate the shape of the probability distribution of returns for an investment portfolio or asset over a defined time period. It assesses the "tailedness" of the return distribution, indicating whether returns have fatter or thinner tails compared to a normal distribution. Kurtosis plays a critical role in risk assessment by revealing the potential presence of extreme outliers or the likelihood of heavy tails in the return data. This information aids investors and analysts in understanding the degree of risk associated with an investment and assists in making more informed decisions regarding risk tolerance. In essence, kurtosis serves as a valuable tool for comprehending the distribution characteristics of returns, offering insights into the potential for rare but significant events in the financial markets.
- Also known as: tail heaviness, fat tails, leptokurtosis.
+Also known as: tail heaviness, fat tails, leptokurtosis.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).

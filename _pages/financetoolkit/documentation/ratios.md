@@ -159,7 +159,7 @@ Calculate the asset turnover ratio, an efficiency ratio that measures how effici
  The formula is as follows:
  
 - Asset Turnover Ratio = Net Sales / Average Total Assets
- Also known as: asset efficiency, revenue per asset.
+Also known as: asset efficiency, revenue per asset.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -195,7 +195,7 @@ Calculate the inventory turnover ratio, an efficiency ratio that measures how qu
  The formula is as follows:
  
 - Inventory Turnover Ratio = Cost of Goods Sold / Average Inventory
- Also known as: stock turnover ratio.
+Also known as: stock turnover ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -231,7 +231,7 @@ Calculate the days sales in inventory ratio, an efficiency ratio that measures h
  The formula is as follows:
  
 - Days Sales in Inventory Ratio = (Average Inventory / Cost of Goods Sold) * Days
- Also known as: DIO, days inventory outstanding.
+Also known as: DIO, days inventory outstanding.
 
 **Args:**
  - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
@@ -268,7 +268,7 @@ Calculate the days of sales outstanding ratio, an efficiency ratio that measures
  The formula is as follows:
  
 - Days of Sales Outstanding Ratio = (Accounts Receivable / Total Credit Sales) * Days
- Also known as: DSO, days sales outstanding, receivable days.
+Also known as: DSO, days sales outstanding, receivable days.
 
 **Args:**
  - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
@@ -305,7 +305,7 @@ Calculate the operating cycle ratio, an efficiency ratio that measures the avera
  The formula is as follows:
  
 - Operating Cycle Ratio = Days of Sales in Inventory + Days of Sales Outstanding
- Also known as: business cycle, cash
+Also known as: business cycle, cash
 -to
 -cash cycle.
 
@@ -344,7 +344,7 @@ Calculate the accounts payable turnover ratio, an efficiency ratio that measures
  The formula is as follows:
  
 - Accounts Payable Turnover Ratio = Cost of Goods Sold / Average Accounts Payable
- Also known as: payables efficiency, AP turnover.
+Also known as: payables efficiency, AP turnover.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -380,7 +380,7 @@ Calculate the days payables outstanding, an efficiency ratio that measures the n
  The formula is as follows:
  
 - Days Payables Outstanding = (Average Accounts Payable / Cost of Goods Sold) * Days
- Also known as: DPO, days payable outstanding.
+Also known as: DPO, days payable outstanding.
 
 **Args:**
  - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
@@ -419,7 +419,7 @@ Calculate the Cash Conversion Cycle, which measures the amount of time it takes 
  The formula is as follows:
  
 - Cash Conversion Cycle = Days of Sales in Inventory + Days of Sales Outstanding - Days of Accounts Payable Outstanding
- Also known as: CCC.
+Also known as: CCC.
 
 **Args:**
  - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
@@ -454,7 +454,7 @@ Calculate the cash conversion efficiency, an efficiency ratio that measures how 
  The formula is as follows:
  
 - Cash Conversion Efficiency Ratio = Operating Cash Flow / Revenue
- Also known as: CCE, cash efficiency ratio.
+Also known as: CCE, cash efficiency ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -490,7 +490,7 @@ Calculate the receivables turnover, a ratio that measures how efficiently a comp
  The formula is as follows:
  
 - Receivables Turnover Ratio = Net Credit Sales / Average Accounts Receivable
- Also known as: receivables efficiency, accounts receivable turnover.
+Also known as: receivables efficiency, accounts receivable turnover.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -524,7 +524,7 @@ Calculate the sales, general, and administrative (SG&A) expenses to revenue rati
  The formula is as follows:
  
 - SG&A to Revenue Ratio = SG&A Expenses / Revenue
- Also known as: SG&A ratio, selling general administrative ratio.
+Also known as: SG&A ratio, selling general administrative ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -560,7 +560,7 @@ Calculate the Fixed Asset Turnover ratio, an efficiency ratio that measures how 
  The formula is as follows:
  
 - Fixed Asset Turnover Ratio = Net Sales / Average Fixed Assets
- Also known as: fixed asset efficiency, PP&E turnover.
+Also known as: fixed asset efficiency, PP&E turnover.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -596,7 +596,7 @@ Calculate the operating ratio, a financial metric that measures the efficiency o
  The formula is as follows:
  
 - Operating Ratio = (Operating Expenses + Cost of Goods Sold) / Revenue
- Also known as: operating efficiency ratio, operating expense ratio.
+Also known as: operating efficiency ratio, operating expense ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -665,7 +665,7 @@ Calculate the current ratio, a liquidity ratio that measures a company's ability
  The formula is as follows:
  
 - Current Ratio = Current Assets / Current Liabilities
- Also known as: short
+Also known as: short
 -term liquidity, working capital ratio.
 
 **Args:**
@@ -705,7 +705,7 @@ Calculate the quick ratio (also known as the acid
  The formula is as follows:
  
 - Quick Ratio = (Cash and Cash Equivalents + Short Term Investments + Accounts Receivable) / Current Liabilities
- Also known as: acid
+Also known as: acid
 -test ratio, liquid ratio.
 
 **Args:**
@@ -743,7 +743,7 @@ Calculate the cash ratio, a liquidity ratio that measures a company's ability to
  The formula is as follows:
  
 - Cash Ratio = (Cash and Cash Equivalents + Short Term Investments) / Current Liabilities
- Also known as: most conservative liquidity ratio.
+Also known as: most conservative liquidity ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -780,7 +780,7 @@ Calculate the working capital, which is the difference between a company's curre
  The formula is as follows:
  
 - Working Capital = Current Assets - Current Liabilities
- Also known as: net current assets, operating liquidity.
+Also known as: net current assets, operating liquidity.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -817,7 +817,7 @@ Calculate the operating cash flow ratio, a liquidity ratio that measures a compa
  The formula is as follows:
  
 - Operating Cash Flow Ratio = Cash Flow from Operations / Current Liabilities
- Also known as: OCF ratio, cash liquidity.
+Also known as: OCF ratio, cash liquidity.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -853,7 +853,7 @@ Calculate the operating cash flow to sales ratio, a liquidity ratio that measure
  The formula is as follows:
  
 - Operating Cash Flow to Sales Ratio = Cash Flow from Operations / Revenue
- Also known as: cash flow to sales ratio.
+Also known as: cash flow to sales ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -894,7 +894,7 @@ Calculate the short
  The formula is as follows:
  
 - Short Term Coverage Ratio = Cash Flow from Operations / (Accounts Receivable + Inventory - Accounts Payable)
- Also known as: short
+Also known as: short
 -term debt coverage.
 
 **Args:**
@@ -952,7 +952,7 @@ Calculate the gross margin, a profitability ratio that measures the percentage o
  The formula is as follows:
  
 - Gross Margin Ratio = (Revenue - Cost of Goods Sold) / Revenue
- Also known as: gross profit margin, gross profit percentage.
+Also known as: gross profit margin, gross profit percentage.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -988,7 +988,7 @@ Calculate the operating margin, a profitability ratio that measures the percenta
  The formula is as follows:
  
 - Operating Margin Ratio = Operating Income / Revenue
- Also known as: EBIT margin, operating income margin.
+Also known as: EBIT margin, operating income margin.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1024,7 +1024,7 @@ Calculate the net profit margin, a profitability ratio that measures the percent
  The formula is as follows:
  
 - Net Profit Margin Ratio = Net Income / Revenue
- Also known as: net margin, bottom line margin, net income margin.
+Also known as: net margin, bottom line margin, net income margin.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1062,7 +1062,7 @@ Compute the Interest Coverage Ratio, a metric that reveals a company's ability t
  The formula is as follows:
  
 - Interest Coverage Ratio = EBIT (or Operating Income) / Interest Expenses
- Also known as: interest burden, EBIT to EBT ratio.
+Also known as: interest burden, EBIT to EBT ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1100,7 +1100,7 @@ Calculate the Pretax Profit Margin, which is the ratio of a company's pre
  The formula is as follows:
  
 - Pretax Profit Margin = Income Before Tax / Revenue
- Also known as: pretax margin, EBT margin.
+Also known as: pretax margin, EBT margin.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1137,7 +1137,7 @@ Calculate the effective tax rate, a financial ratio that measures the percentage
  The formula is as follows:
  
 - Effective Tax Rate = Income Tax Expense / Income Before Tax
- Also known as: tax burden, actual tax rate.
+Also known as: tax burden, actual tax rate.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1173,7 +1173,7 @@ Calculate the return on assets (ROA), a profitability ratio that measures how ef
  The formula is as follows:
  
 - Return on Assets = Net Income / Average Total Assets
- Also known as: ROA, asset profitability.
+Also known as: ROA, asset profitability.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1210,7 +1210,7 @@ Calculate the return on equity (ROE), a profitability ratio that measures how ef
  The formula is as follows:
  
 - Return on Equity = Net Income / Average Shareholders' Equity (or Total Equity)
- Also known as: ROE, shareholders equity return, equity profitability.
+Also known as: ROE, shareholders equity return, equity profitability.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1244,7 +1244,7 @@ Calculate the return on invested capital (ROIC), a financial ratio that measures
  The formula is as follows:
  
 - Return on Invested Capital = (Net Income - Paid Dividends) / Average Invested Capital
- Also known as: ROIC.
+Also known as: ROIC.
 
 **Args:**
  - <u>dividend_adjusted (bool, optional):</u> Whether to adjust the net operating profit after taxes
@@ -1280,7 +1280,7 @@ Calculate the income quality ratio, a financial metric that measures the cash fl
  The formula is as follows:
  
 - Income Quality Ratio = Cash Flow from Operations / Net Income
- Also known as: earnings quality, accrual ratio.
+Also known as: earnings quality, accrual ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1315,7 +1315,7 @@ Calculate the return on tangible assets, a financial ratio that measures the amo
  The formula is as follows:
  
 - Return on Tangible Assets = Net Income / Average Tangible Assets
- Also known as: ROTA, tangible asset return.
+Also known as: ROTA, tangible asset return.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1349,7 +1349,7 @@ Calculate the return on capital employed (ROCE), a profitability ratio that meas
  The formula is as follows:
  
 - Return on Capital Employed = EBIT / (Total Assets - Current Liabilities)
- Also known as: ROCE.
+Also known as: ROCE.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1383,7 +1383,7 @@ Calculate the net income per earnings before taxes (EBT), a profitability ratio 
  The formula is as follows:
  
 - Net Income per EBT = Net Income / Income Before Tax
- Also known as: net income to pre
+Also known as: net income to pre
 -tax income.
 
 **Args:**
@@ -1420,7 +1420,7 @@ Calculate the free cash flow to operating cash flow ratio, a profitability ratio
  The formula is as follows:
  
 - Free Cash Flow to Operating Cash Flow Ratio = Free Cash Flow / Cash Flow from Operations
- Also known as: FCF to OCF ratio.
+Also known as: FCF to OCF ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1454,7 +1454,7 @@ Calculate the tax burden ratio, which is the ratio of a company's net income to 
  The formula is as follows:
  
 - Tax Burden Ratio = Net Income / Income Before Tax
- Also known as: tax efficiency ratio.
+Also known as: tax efficiency ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1488,7 +1488,7 @@ Calculate the EBT to EBIT, which is the ratio of a company's earnings before tax
  The formula is as follows:
  
 - EBT to EBIT = (Net Income + Income Tax Expense) / (Net Income + Income Tax Expense + Interest Expense)
- Also known as: EBT to EBIT, interest burden.
+Also known as: EBT to EBIT, interest burden.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1522,7 +1522,7 @@ Calculate the EBIT per Revenue, which is the ratio of a company's earnings befor
  The formula is as follows:
  
 - EBIT to Revenue = EBIT / Revenue
- Also known as: EBIT margin, operating income to revenue.
+Also known as: EBIT margin, operating income to revenue.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1587,7 +1587,7 @@ Calculate the debt to assets ratio, a solvency ratio that measures the proportio
  The formula is as follows:
  
 - Debt to Assets Ratio = Total Debt / Total Assets
- Also known as: asset leverage, debt ratio.
+Also known as: asset leverage, debt ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1621,7 +1621,7 @@ Calculate the debt to equity ratio, a solvency ratio that measures the proportio
  The formula is as follows:
  
 - Debt to Equity Ratio = Total Debt / Total Equity
- Also known as: D/E ratio, leverage ratio, gearing ratio.
+Also known as: D/E ratio, leverage ratio, gearing ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1655,7 +1655,7 @@ Calculate the interest coverage ratio, a solvency ratio that measures a company'
  The formula is as follows:
  
 - Interest Coverage Ratio = Operating Income / (Interest Expense + Depreciation and Amortization)
- Also known as: TIE, times interest earned.
+Also known as: TIE, times interest earned.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1689,7 +1689,7 @@ Calculate the equity multiplier, a solvency ratio that measures the degree to wh
  The formula is as follows:
  
 - Equity Multiplier = Average Total Assets / Average Total Equity
- Also known as: financial leverage multiplier.
+Also known as: financial leverage multiplier.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1723,7 +1723,7 @@ Calculate the debt service coverage ratio, a solvency ratio that measures a comp
  The formula is as follows:
  
 - Debt Service Coverage Ratio = Operating Income / Total Current Liabilities
- Also known as: DSCR, debt service ratio.
+Also known as: DSCR, debt service ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1757,7 +1757,7 @@ Calculates the free cash flow yield ratio, which measures the free cash flow rel
  The formula is as follows:
  
 - Free Cash Flow Yield Ratio = Free Cash Flow / Market Capitalization
- Also known as: FCF yield.
+Also known as: FCF yield.
 
 **Args:**
  - <u>show_daily (bool, optional):</u> Whether to use daily data for the calculation. Defaults to False.
@@ -1859,7 +1859,7 @@ Calculate the capital expenditure coverage ratio, a solvency ratio that measures
  The formula is as follows:
  
 - Capital Expenditure Coverage Ratio = Cash Flow from Operations / Capital Expenditure
- Also known as: capital expenditure coverage.
+Also known as: capital expenditure coverage.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1893,7 +1893,7 @@ Calculate the dividend paid and capital expenditure coverage ratio, a solvency r
  The formula is as follows:
  
 - Dividend Paid and Capital Expenditure Coverage Ratio = Cash Flow from Operations / (Capital Expenditure + Dividends Paid)
- Also known as: capex dividend coverage.
+Also known as: capex dividend coverage.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1960,7 +1960,7 @@ Calculate the earnings per share (EPS), a valuation ratio that measures the amou
  The formula is as follows:
  
 - Earnings per Share (EPS) = (Net Income - Preferred Dividends Paid) / Weighted Average Shares
- Also known as: EPS, net income per share.
+Also known as: EPS, net income per share.
 
 **Args:**
  - <u>include_dividends (bool, optional):</u> Whether to include dividends in the EPS calculation. Defaults to False.
@@ -1998,7 +1998,7 @@ Calculate the revenue per share, a valuation ratio that measures the amount of r
  The formula is as follows:
  
 - Revenue per Share = Revenue / Weighted Average (Diluted) Shares
- Also known as: sales per share.
+Also known as: sales per share.
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2035,7 +2035,7 @@ Calculate the price earnings ratio (P/E), a valuation ratio that compares a comp
  The formula is as follows:
  
 - Price to Earnings Ratio (P/E) = Share Price / Earnings per Share (EPS)
- Also known as: PE ratio, P/E ratio, price
+Also known as: PE ratio, P/E ratio, price
 -earnings ratio, earnings multiple.
 
 **Args:**
@@ -2074,7 +2074,7 @@ Calculate the price earnings to growth (PEG) ratio, a valuation metric that meas
  The formula is as follows:
  
 - Price Earnings to Growth Ratio (PEG) = Price Earnings Ratio (P/E) / Growth Rate
- Also known as: PEG ratio, price earnings growth.
+Also known as: PEG ratio, price earnings growth.
 
 **Args:**
  - <u>use_ebitda_growth_rate (bool, optional):</u> Whether to use EBITDA growth rate for the calculation.
@@ -2112,7 +2112,7 @@ Calculate the book value per share, a valuation ratio that measures the amount o
  The formula is as follows:
  
 - Book Value per Share = (Total Shareholder Equity - Preferred Stock) / Weighted Average (Diluted) Shares
- Also known as: BVPS, net asset value per share.
+Also known as: BVPS, net asset value per share.
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2149,7 +2149,7 @@ Calculate the price to book ratio, a valuation ratio that compares a company's m
  The formula is as follows:
  
 - Price to Book Ratio = Share Price / Book Value per Share
- Also known as: P/B ratio.
+Also known as: P/B ratio.
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2222,7 +2222,7 @@ Calculate the capex per share, a valuation ratio that measures the amount of cap
  The formula is as follows:
  
 - CAPEX per Share = Capital Expenditure / Weighted Average (Diluted) Shares
- Also known as: capital expenditure per share.
+Also known as: capital expenditure per share.
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2260,7 +2260,7 @@ Calculate the dividend yield ratio, a valuation ratio that measures the amount o
  The formula is as follows:
  
 - Dividend Yield = Dividends per Share / Share Price
- Also known as: annual dividend yield, income yield.
+Also known as: annual dividend yield, income yield.
 
 **Args:**
  - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
@@ -2297,7 +2297,7 @@ Calculate the weighted dividend yield ratio, a valuation ratio that measures the
  The formula is as follows:
  
 - Weighted Dividend Yield = Dividends Paid / Weighted Average (Diluted) Shares * Share Price
- Also known as: blended dividend yield.
+Also known as: blended dividend yield.
 
 **Args:**
  - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
@@ -2335,7 +2335,7 @@ Calculate the price to cash flow ratio, a valuation ratio that compares a compan
  The formula is as follows:
  
 - Price to Cash Flow Ratio = Share Price / Cash Flow from Operations per Share
- Also known as: P/CF ratio.
+Also known as: P/CF ratio.
 
 **Args:**
  - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
@@ -2373,7 +2373,7 @@ Calculate the price to free cash flow ratio, a valuation ratio that compares a c
  The formula is as follows:
  
 - Price to Free Cash Flow Ratio = Market Cap / Free Cash Flow
- Also known as: P/FCF ratio.
+Also known as: P/FCF ratio.
 
 **Args:**
  - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
@@ -2411,7 +2411,7 @@ Calculates the market capitalization of the company.
  The formula is as follows:
  
 - Market Capitalization = Share Price * Weighted Average (Diluted) Shares
- Also known as: market capitalization.
+Also known as: market capitalization.
 
 **Args:**
  - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
@@ -2442,7 +2442,7 @@ Calculates the Enterprise Value (EV) of a company. The Enterprise Value (EV) is 
  The formula is as follows:
  
 - Enterprise Value = Market Capitalization + Total Debt + Minority Interest + Preferred Equity - Cash and Cash Equivalents
- Also known as: EV, total enterprise value.
+Also known as: EV, total enterprise value.
 
 **Args:**
  - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
@@ -2474,7 +2474,7 @@ Calculate the EV to sales ratio, a valuation ratio that compares a company's ent
  The formula is as follows:
  
 - Enterprise Value to Sales Ratio = Enterprise Value / Total Revenue
- Also known as: EV/Sales.
+Also known as: EV/Sales.
 
 **Args:**
  - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
@@ -2506,7 +2506,7 @@ Calculate the enterprise value over EBITDA ratio, a valuation ratio that measure
  The formula is as follows:
  
 - Enterprise Value to EBITDA Ratio = Enterprise Value / EBITDA
- Also known as: EV/EBITDA.
+Also known as: EV/EBITDA.
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -2568,7 +2568,7 @@ Calculate the earnings yield ratio, a valuation ratio that measures the earnings
  The formula is as follows:
  
 - Earnings Yield Ratio = Earnings per Share / Share Price
- Also known as: E/P ratio, inverse PE ratio.
+Also known as: E/P ratio, inverse PE ratio.
 
 **Args:**
  - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
@@ -2601,7 +2601,7 @@ Calculate the Dividend payout ratio, a financial metric that measures the propor
  The formula is as follows:
  
 - Dividend Payout Ratio = Dividends Paid / Net Income
- Also known as: payout ratio.
+Also known as: payout ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -2631,7 +2631,7 @@ Calculate the Reinvestment rate, a financial metric that measures the proportion
  The formula is as follows:
  
 - Reinvestment Rate = 1 - Dividend Payout Ratio
- Also known as: plowback ratio, retention rate.
+Also known as: plowback ratio, retention rate.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -2660,7 +2660,7 @@ Calculate the tangible asset value, a financial metric that represents the total
  The formula is as follows:
  
 - Tangible Asset Value = Total Assets - Total Liabilities - Goodwill
- Also known as: tangible assets, net tangible assets.
+Also known as: tangible assets, net tangible assets.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -2691,7 +2691,7 @@ Calculate the net current asset value, a financial metric that represents the to
  The formula is as follows:
  
 - Net Current Asset Value = Total Current Assets - Total Current Liabilities
- Also known as: NCAV, net current asset value, Graham number.
+Also known as: NCAV, net current asset value, Graham number.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.

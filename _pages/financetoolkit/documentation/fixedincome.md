@@ -39,7 +39,7 @@ Collect the bond statistics for a given bond which includes the following fields
 - DV01: The dollar value of a 0.01% change in yield to maturity. 
 - Convexity: The second derivative of the bond price with respect to the yield to maturity.
  These statistics can be used to evaluate the bond's performance as opposed to other bonds or to estimate the bond's sensitivity to changes in interest rates to be able to apply a hedging strategy.
- Also known as: bond data, fixed income statistics.
+Also known as: bond data, fixed income statistics.
 
 **Args:**
  - <u>par_value (float):</u> The face value of the bond. Defaults to 100.
@@ -104,7 +104,7 @@ Calculates the bond prices for different coupon rates and years to maturity. The
 - n = Number of periods 
 - F = Face value of the bond
  The bond price is used to determine the fair value of the bond and to compare the bond's price to its market price to determine if the bond is overvalued or undervalued.
- Also known as: PV, bond pricing, discounted cash flows.
+Also known as: PV, bond pricing, discounted cash flows.
 
 **Args:**
  - <u>par_value (float):</u> The par value (face value) of the bond.
@@ -127,7 +127,7 @@ Calculates the bond duration for different coupon rates and years to maturity. I
 - Effective Duration: The percentage change in the bond price for a 1% change in the yield to maturity. 
 - Dollar Duration: The modified duration multiplied by the bond price.
  These duration measures can be used to estimate the sensitivity of a bond's price to changes in interest rates as well as to compare the risk of different bonds. The modified duration is particularly useful for estimating the percentage change in the bond price for a 1% change in the yield to maturity. This is also known as the bond's price value of a basis point (PVBP), or the bond's dollar duration (DD) or dollar value of a .01% change (DV01).
- Also known as: Macaulay duration, modified duration, bond price sensitivity.
+Also known as: Macaulay duration, modified duration, bond price sensitivity.
 
 **Args:**
  - <u>duration_type (str, optional):</u> The type of duration to calculate. Defaults to 'modified' but can also
@@ -161,7 +161,7 @@ Calculates the yield to maturity for a bond. The yield to maturity is the intern
 - F = Face value of the bond
  The goal is to find the yield to maturity that satisfies the equation above. This is done using the Newton
 -Raphson method which is an iterative method that converges to the root of a function.
- Also known as: YTM, bond return to maturity.
+Also known as: YTM, bond return to maturity.
 
 **Args:**
  - <u>par_value (float):</u> The par value (face value) of the bond. This is the original price when it was issued by the issuer.
@@ -188,7 +188,7 @@ Calculates the derivative price for a fixed income instrument.
 -normal distribution. For more information, see: [https://en.wikipedia.org/wiki/Bachelier_model](https://en.wikipedia.org/wiki/Bachelier_model){:target="_blank"}
  It is possible to alter all parameters within the models, e.g. strike rate, volatility, years to maturity, risk
 -free rate, notional amount, and whether the holder is the receiver or payer of the derivative. Next to that, you can provide lists of values for the fixed rate, strike rate, volatility, and years to maturity to calculate the derivative price for multiple scenarios outside of the standard sample.
- Also known as: bond derivative pricing, fixed income derivative.
+Also known as: bond derivative pricing, fixed income derivative.
 
 **Args:**
  - <u>model (str, optional):</u> The type of model to use for calculating the derivative price. Defaults to "black".
@@ -260,7 +260,7 @@ Long
 -term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
  In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long
 -term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
- See definition: [https://data.oecd.org/interest/long
+See Definition: [https://data.oecd.org/interest/long
 -term
 -interest
 -rates.htm](https://data.oecd.org/interest/long
@@ -275,14 +275,14 @@ Long
  Short
 -term interest rates are based on three
 -month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".
- See definition: [https://data.oecd.org/interest/short
+See Definition: [https://data.oecd.org/interest/short
 -term
 -interest
 -rates.htm](https://data.oecd.org/interest/short
 -term
 -interest
 -rates.htm){:target="_blank"}
- Also known as: treasury yield, bond yield by maturity.
+Also known as: treasury yield, bond yield by maturity.
 
 **Args:**
  - <u>short_term (bool, optional):</u> Whether to return the short-term interest rate. Defaults to False.
@@ -381,7 +381,7 @@ This data represents the effective yield of the ICE BofA Indices, When the last 
  
 - Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY](https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY){:target="_blank"} 
 - Maturity: [https://fred.stlouisfed.org/series/BAMLC1A0C13YEY](https://fred.stlouisfed.org/series/BAMLC1A0C13YEY){:target="_blank"}
- Also known as: ICE BofA corporate bond yield, credit yield.
+Also known as: ICE BofA corporate bond yield, credit yield.
 
 **Args:**
  - <u>maturity (bool, optional):</u> Whether to return the maturity effective yield or the rating effective yield.
@@ -523,7 +523,7 @@ Which returns:
 Euribor rates, short for Euro Interbank Offered Rate, are the interest rates at which a panel of European banks lend funds to one another in the interbank market. These rates are published daily by the European Money Markets Institute (EMMI) and serve as a benchmark for various financial products and contracts, including mortgages, loans, and derivatives, across the Eurozone.
  The Euribor rates are determined for different maturities, typically ranging from overnight to 12 months The most common maturities are 1 month, 3 months, 6 months, and 12 months. Each maturity represents the time period for which the funds are borrowed, with longer maturities generally implying higher interest rates due to increased uncertainty and risk over longer time horizons.
  For more information, see for example: [https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA](https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA){:target="_blank"}
- Also known as: euro interbank offered rate, eurozone money market.
+Also known as: euro interbank offered rate, eurozone money market.
 
 **Args:**
  - <u>maturities (str | list | None, optional):</u> Maturities for which to retrieve rates. Defaults to None.
@@ -568,7 +568,7 @@ The Governing Council of the ECB sets the key interest rates for the euro area. 
  See source: [https://data.ecb.europa.eu/main
 -figures/](https://data.ecb.europa.eu/main
 -figures/){:target="_blank"}
- Also known as: ECB rates, deposit facility rate.
+Also known as: ECB rates, deposit facility rate.
 
 **Args:**
  - <u>rate (str, optional):</u> The rate to return. Defaults to None, which returns all rates.
@@ -644,7 +644,7 @@ Get the Federal Reserve rates as published by the Federal Reserve Bank of New Yo
  See source: [https://www.newyorkfed.org/markets/reference
 -rates/](https://www.newyorkfed.org/markets/reference
 -rates/){:target="_blank"}
- Also known as: Fed rates, federal funds rate, FOMC rate.
+Also known as: Fed rates, federal funds rate, FOMC rate.
 
 **Args:**
  - <u>rate (str):</u> The rate to return. Defaults to 'EFFR' (Effective Federal Funds Rate).

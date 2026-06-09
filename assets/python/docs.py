@@ -17,6 +17,8 @@ _RE_DESCRIPTION = re.compile(r"([\s\S]*?)(?:Args:|As an example:|$)", re.DOTALL)
 _RE_ARGUMENTS = re.compile(r"(Args:[\s\S]*?)(```python|$)", re.DOTALL)
 _RE_CODE = re.compile(r"```python([\s\S]*?)```", re.DOTALL)
 _RE_RESULT = re.compile(r"Which returns:[\s\S]*$", re.DOTALL)
+_RE_ALSO_KNOWN = re.compile(r"[ \t]*\n*[ \t]*Also known as:")
+_RE_SEE_DEF = re.compile(r"[ \t]*\n*[ \t]*See definition:")
 
 _INSTALL_SNIPPET = """\
 To install the FinanceToolkit it simply requires the following:
@@ -39,12 +41,14 @@ def _underline_arg(match: re.Match) -> str:
 
 
 def _clean_description(text: str) -> str:
-    return (
+    cleaned = (
         _RE_MULTI_SPACE.sub(" ", text.strip())
         .replace("\n ", " ")   # collapse PEP8 continuation lines
         .replace("-", "\n-")   # dash-bullet lists
         .replace("—", "-")     # em dash → hyphen (used in formulas)
     )
+    cleaned = _RE_ALSO_KNOWN.sub("\nAlso known as:", cleaned)
+    return _RE_SEE_DEF.sub("\nSee Definition:", cleaned)
 
 
 def _fetch_file(url: str) -> str:

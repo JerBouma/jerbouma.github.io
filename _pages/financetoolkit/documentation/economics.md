@@ -25,7 +25,7 @@ pip install financetoolkit -U
 ## get_gross_domestic_product
 Get the Gross Domestic Product for a variety of countries over time from the OECD. The Gross Domestic Product is the total value of goods produced and services provided in a country during one year.
  The data is available in two forms: compared to the previous year's value or compared to the previous period. The year on year data is the GDP compared to the same quarter in the previous year. The quarter on quarter data is the GDP compared to the previous quarter.
- See definition: [https://data.oecd.org/gdp/gross
+See Definition: [https://data.oecd.org/gdp/gross
 -domestic
 -product
 -gdp.htm](https://data.oecd.org/gdp/gross
@@ -33,7 +33,7 @@ Get the Gross Domestic Product for a variety of countries over time from the OEC
 -product
 -gdp.htm){:target="_blank"}
  It is also possible to acquire the data from the Global Macro Database (GMDB) source which also provides inflation adjusted data. For more information see: [https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf](https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf){:target="_blank"}
- Also known as: GDP, national income, economic growth.
+Also known as: GDP, national income, economic growth.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -78,7 +78,7 @@ Which returns:
 ## get_gross_domestic_product_deflator
 Get the Gross Domestic Product Deflator for a variety of countries over time from the Global Macro Database (GMDB). The GDP deflator is a measure of the price of all domestically produced final goods and services in an economy relative to the price level in a base year which can vary per country.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: GDP deflator, implicit price deflator.
+Also known as: GDP deflator, implicit price deflator.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -121,7 +121,7 @@ Which returns:
 ## get_total_consumption
 Get the Total Consumption for a variety of countries over time from the Global Macro Database (GMDB). Total Consumption is the total amount of money spent by households on consumer goods and services.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: household consumption, private consumption.
+Also known as: household consumption, private consumption.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -164,7 +164,7 @@ Which returns:
 ## get_total_consumption_to_gdp_ratio
 Get the Total Consumption to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Total Consumption to GDP Ratio is the ratio of the total amount of money spent by households on consumer goods and services to the Gross Domestic Product (GDP).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: consumption share of GDP.
+Also known as: consumption share of GDP.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -206,7 +206,7 @@ Which returns:
 ## get_investment
 Get the Investment for a variety of countries over time from the Global Macro Database (GMDB). Investment is the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: total investment, capital formation.
+Also known as: total investment, capital formation.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -252,7 +252,7 @@ Which returns:
 ## get_investment_to_gdp_ratio
 Get the Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Investment to GDP Ratio is the ratio of the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings to the Gross Domestic Product (GDP).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: investment rate.
+Also known as: investment rate.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -293,7 +293,7 @@ Which returns:
 ## get_fixed_investment
 Get the Fixed Investment for a variety of countries over time from the Global Macro Database (GMDB). Fixed Investment is the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings that are expected to last for more than one year.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: gross fixed capital formation, capital investment.
+Also known as: gross fixed capital formation, capital investment.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -333,7 +333,7 @@ Which returns:
 ## get_fixed_investment_to_gdp_ratio
 Get the Fixed Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Fixed Investment to GDP Ratio is the ratio of the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings that are expected to last for more than one year to the Gross Domestic Product (GDP).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: investment to GDP ratio.
+Also known as: investment to GDP ratio.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -393,7 +393,7 @@ Which returns:
 ## get_exports
 Get the Exports for a variety of countries over time from the Global Macro Database (GMDB). Exports are the total amount of goods and services produced in a country that are sold to other countries.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: exports, trade exports.
+Also known as: exports, trade exports.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -436,7 +436,7 @@ Which returns:
 ## get_exports_to_gdp_ratio
 Get the Exports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Exports to GDP Ratio is the ratio of the total amount of goods and services produced in a country that are sold to other countries to the Gross Domestic Product (GDP).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: exports to GDP ratio, trade openness.
+Also known as: exports to GDP ratio, trade openness.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -479,7 +479,7 @@ Which returns:
 ## get_imports
 Get the Imports for a variety of countries over time from the Global Macro Database (GMDB). Imports are the total amount of goods and services produced in other countries that are bought by a country.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: imports, trade imports.
+Also known as: imports, trade imports.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -527,7 +527,7 @@ Which returns:
 ## get_imports_to_gdp_ratio
 Get the Imports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Imports to GDP Ratio is the ratio of the total amount of goods and services produced in other countries that are bought by a country to the Gross Domestic Product (GDP).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: imports to GDP ratio.
+Also known as: imports to GDP ratio.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -570,7 +570,7 @@ Which returns:
 ## get_current_account_balance
 Get the Current Account Balance for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance is the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: current account, trade balance, balance of payments.
+Also known as: current account, trade balance, balance of payments.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -613,7 +613,7 @@ Which returns:
 ## get_current_account_balance_to_gdp_ratio
 Get the Current Account Balance to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance to GDP Ratio is the ratio of the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid) to the Gross Domestic Product (GDP).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: current account to GDP.
+Also known as: current account to GDP.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -657,7 +657,7 @@ Which returns:
 ## get_government_debt
 Get the Government Debt for a variety of countries over time from the Global Macro Database (GMDB). Government Debt is the total amount of money that a government owes to creditors.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: national debt, sovereign debt.
+Also known as: national debt, sovereign debt.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -700,7 +700,7 @@ Which returns:
 ## get_government_debt_to_gdp_ratio
 Get the Government Debt to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Debt to GDP Ratio is the ratio of the total amount of money that a government owes to creditors to the Gross Domestic Product (GDP).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: debt
+Also known as: debt
 -to
 -GDP ratio, fiscal sustainability.
 
@@ -745,7 +745,7 @@ Which returns:
 ## get_government_revenue
 Get the Government Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Revenue is the total amount of money that a government collects from taxes and other sources.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: government income, public revenue.
+Also known as: government income, public revenue.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -784,7 +784,7 @@ Which returns:
 ## get_government_revenue_to_gdp_ratio
 Get the Government Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes and other sources to the Gross Domestic Product (GDP).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: revenue to GDP ratio.
+Also known as: revenue to GDP ratio.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -827,7 +827,7 @@ Which returns:
 ## get_government_tax_revenue
 Get the Government Tax Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Tax Revenue is the total amount of money that a government collects from taxes.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: tax revenue, fiscal revenue.
+Also known as: tax revenue, fiscal revenue.
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -868,7 +868,7 @@ Which returns:
 ## get_government_tax_revenue_to_gdp_ratio
 Get the Government Tax Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Tax Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes to the Gross Domestic Product (GDP).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: tax burden, tax to GDP ratio.
+Also known as: tax burden, tax to GDP ratio.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -910,7 +910,7 @@ Which returns:
 ## get_government_expenditure
 Get the Government Expenditure for a variety of countries over time from the Global Macro Database (GMDB). Government Expenditure is the total amount of money that a government spends on goods and services.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: government spending, public expenditure.
+Also known as: government spending, public expenditure.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -953,7 +953,7 @@ Which returns:
 ## get_government_expenditure_to_gdp_ratio
 Get the Government Expenditure to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Expenditure to GDP Ratio is the ratio of the total amount of money that a government spends on goods and services to the Gross Domestic Product (GDP).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: government spending to GDP.
+Also known as: government spending to GDP.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -997,7 +997,7 @@ Which returns:
 ## get_government_deficit
 Get the Government Deficit for a variety of countries over time from the Global Macro Database (GMDB). Government Deficit is the total amount of money that a government spends more than it collects from taxes and other sources. A government deficit is usually financed by borrowing money.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: budget deficit, fiscal deficit.
+Also known as: budget deficit, fiscal deficit.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -1040,7 +1040,7 @@ Which returns:
 ## get_government_deficit_to_gdp_ratio
 Get the Government Deficit to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Deficit to GDP Ratio is the ratio of the total amount of money that a government spends more than it collects from taxes and other sources to the Gross Domestic Product (GDP). A government deficit is usually financed by borrowing money.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: deficit
+Also known as: deficit
 -to
 -GDP, fiscal balance.
 
@@ -1088,12 +1088,12 @@ Trust in government refers to the share of people who report having confidence i
  Due to small sample sizes, country averages for horizontal inequalities (by age, gender and education) are pooled between 2010
 -18 to improve the accuracy of the estimates.
  The sample is ex ante designed to be nationally representative of the population aged 15 and over. This indicator is measured as a percentage of all survey respondents.
- See definition: [https://data.oecd.org/gga/trust
+See Definition: [https://data.oecd.org/gga/trust
 -in
 -government.htm](https://data.oecd.org/gga/trust
 -in
 -government.htm){:target="_blank"}
- Also known as: political trust, institutional trust.
+Also known as: political trust, institutional trust.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1145,7 +1145,7 @@ Which returns:
 ## get_consumer_price_index
 Consumer Price Index (CPI) is a measure that examines the average change in prices paid by consumers for goods and services over time. It is a measure of inflation. The base year (2010) is the year against which the index is set to 100.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: CPI, cost of living index.
+Also known as: CPI, cost of living index.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1190,7 +1190,7 @@ Which returns:
 ## get_inflation_rate
 Inflation Rate is the percentage change in the Consumer Price Index (CPI) from one period to another. It is a measure of the rate of price increases in the economy.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: CPI
+Also known as: CPI
 -based inflation, price increases, consumer prices.
 
 **Args:**
@@ -1230,14 +1230,14 @@ Which returns:
 ## get_consumer_confidence_index
 This consumer confidence indicator provides an indication of future developments of households consumption and saving, based upon answers regarding their expected financial situation, their sentiment about the general economic situation, unemployment and capability of savings.
  An indicator above 100 signals a boost in the consumers’ confidence towards the future economic situation, as a consequence of which they are less prone to save, and more inclined to spend money on major purchases in the next 12 months. Values below 100 indicate a pessimistic attitude towards future developments in the economy, possibly resulting in a tendency to save more and consume less.
- See definition: [https://data.oecd.org/leadind/consumer
+See Definition: [https://data.oecd.org/leadind/consumer
 -confidence
 -index
 -cci.htm](https://data.oecd.org/leadind/consumer
 -confidence
 -index
 -cci.htm){:target="_blank"}
- Also known as: consumer sentiment, spending outlook.
+Also known as: consumer sentiment, spending outlook.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1276,14 +1276,14 @@ Which returns:
 ## get_business_confidence_index
 This business confidence indicator provides information on future developments, based upon opinion surveys on developments in production, orders and stocks of finished goods in the industry sector. It can be used to monitor output growth and to anticipate turning points in economic activity.
  Numbers above 100 suggest an increased confidence in near future business performance, and numbers below 100 indicate pessimism towards future performance.
- See definition: [https://data.oecd.org/leadind/business
+See Definition: [https://data.oecd.org/leadind/business
 -confidence
 -index
 -bci.htm](https://data.oecd.org/leadind/business
 -confidence
 -index
 -bci.htm){:target="_blank"}
- Also known as: BCI, business sentiment.
+Also known as: BCI, business sentiment.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1322,14 +1322,14 @@ Which returns:
 ## get_composite_leading_indicator
 The composite leading indicator (CLI) is designed to provide early signals of turning points in business cycles showing fluctuation of the economic activity around its long term potential level. CLIs show short
 -term economic movements in qualitative rather than quantitative terms.
- See definition: [https://data.oecd.org/leadind/composite
+See Definition: [https://data.oecd.org/leadind/composite
 -leading
 -indicator
 -cli.htm](https://data.oecd.org/leadind/composite
 -leading
 -indicator
 -cli.htm){:target="_blank"}
- Also known as: CLI, leading economic indicator.
+Also known as: CLI, leading economic indicator.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1369,11 +1369,11 @@ In most cases, the nominal house price index covers the sales of newly
 -built and existing dwellings, following the recommendations from the RPPI (Residential Property Prices Indices) manual.
  The real house price index is given by the ratio of the nominal house price index to the consumers' expenditure deflator in each country from the OECD national accounts database. Both indices are seasonally adjusted.
  Both are based on an 2015 = 100 as an index.
- See definition: [https://data.oecd.org/price/housing
+See Definition: [https://data.oecd.org/price/housing
 -prices.htm](https://data.oecd.org/price/housing
 -prices.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
- Also known as: real estate prices, property prices, housing index.
+Also known as: real estate prices, property prices, housing index.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1421,10 +1421,10 @@ Which returns:
 ## get_rent_prices
 The price to rent ratio is the nominal house price index divided by the housing rent price index and can be considered as a measure of the profitability of house ownership.
  This is based on an 2015 = 100 as an index.
- See definition: [https://data.oecd.org/price/housing
+See Definition: [https://data.oecd.org/price/housing
 -prices.htm](https://data.oecd.org/price/housing
 -prices.htm){:target="_blank"}
- Also known as: rental prices, housing costs, rent index.
+Also known as: rental prices, housing costs, rent index.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1471,10 +1471,10 @@ Share price indices are calculated from the prices of common shares of companies
  A price index measures changes in the market capitalisation of the basket of shares in the index whereas a return index adds on to the price index the value of dividend payments, assuming they are re
 -invested in the same stocks. Occasionally agencies such as central banks will compile share indices.
  This uses 2015 as the base year (= 100)
- See definition: [https://data.oecd.org/price/share
+See Definition: [https://data.oecd.org/price/share
 -prices.htm](https://data.oecd.org/price/share
 -prices.htm){:target="_blank"}
- Also known as: stock market index, equity index, market performance.
+Also known as: stock market index, equity index, market performance.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1518,11 +1518,11 @@ Which returns:
 
 ## get_exchange_rates
 Exchange rates are defined as the price of one country's' currency in relation to another country's currency. This indicator is measured in terms of national currency per US dollar.
- See definition: [https://data.oecd.org/conversion/exchange
+See Definition: [https://data.oecd.org/conversion/exchange
 -rates.htm](https://data.oecd.org/conversion/exchange
 -rates.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
- Also known as: currency exchange, FX rates, foreign exchange rates.
+Also known as: currency exchange, FX rates, foreign exchange rates.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1574,7 +1574,7 @@ Money Supply is the total amount of money that is in circulation in a country. I
 -term repurchase agreements, and other larger liquid assets. 
 - M4: M3 + all other financial assets.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: M1, M2, M3, monetary aggregate.
+Also known as: M1, M2, M3, monetary aggregate.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1621,7 +1621,7 @@ Which returns:
 ## get_central_bank_policy_rate
 The Central Bank Policy Rate is the interest rate that a central bank sets on its loans and advances to a commercial bank. This interest rate is used by the monetary authorities to control inflation and stabilize the country's currency.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
- Also known as: policy rate, benchmark rate, base rate.
+Also known as: policy rate, benchmark rate, base rate.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1664,7 +1664,7 @@ Short
  Short
 -term interest rates are based on three
 -month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".
- See definition: [https://data.oecd.org/interest/short
+See Definition: [https://data.oecd.org/interest/short
 -term
 -interest
 -rates.htm](https://data.oecd.org/interest/short
@@ -1672,7 +1672,7 @@ Short
 -interest
 -rates.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
- Also known as: 3
+Also known as: 3
 -month rate, money market rate, short
 -term yield.
 
@@ -1721,7 +1721,7 @@ Long
 -term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
  In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long
 -term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
- See definition: [https://data.oecd.org/interest/long
+See Definition: [https://data.oecd.org/interest/long
 -term
 -interest
 -rates.htm](https://data.oecd.org/interest/long
@@ -1729,7 +1729,7 @@ Long
 -interest
 -rates.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
- Also known as: 10
+Also known as: 10
 -year yield, government bond rate, long
 -term yield.
 
@@ -1776,10 +1776,10 @@ Renewable energy is defined as the contribution of renewables to total primary e
  Energy derived from solid biofuels, biogasoline, biodiesels, other liquid biofuels, biogases and the renewable fraction of municipal waste are also included. Biofuels are defined as fuels derived directly or indirectly from biomass (material obtained from living or recently living organisms).
  This includes wood, vegetal waste (including wood waste and crops used for energy production), ethanol, animal materials/wastes and sulphite lyes. Municipal waste comprises wastes produced by the residential, commercial and public service sectors that are collected by local authorities for disposal in a central location for the production of heat and/or power.
  This indicator in percentage of total primary energy supply.
- See definition: [https://data.oecd.org/energy/renewable
+See Definition: [https://data.oecd.org/energy/renewable
 -energy.htm](https://data.oecd.org/energy/renewable
 -energy.htm){:target="_blank"}
- Also known as: clean energy, green energy, renewable energy share.
+Also known as: clean energy, green energy, renewable energy share.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1822,10 +1822,10 @@ Which returns:
 ## get_carbon_footprint
 The carbon footprint is a measure of the total amount of greenhouse gases produced to directly and indirectly support human activities, usually expressed in equivalent tons of carbon dioxide (CO2).
  The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
- See definition: [https://data.oecd.org/envpolicy/environmental
+See Definition: [https://data.oecd.org/envpolicy/environmental
 -tax.htm](https://data.oecd.org/envpolicy/environmental
 -tax.htm){:target="_blank"}
- Also known as: CO2 emissions, carbon emissions, greenhouse gas.
+Also known as: CO2 emissions, carbon emissions, greenhouse gas.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1867,11 +1867,11 @@ Which returns:
 The unemployed are people of working age who are without work, are available for work, and have taken specific steps to find work. The uniform application of this definition results in estimates of unemployment rates that are more internationally comparable than estimates based on national definitions of unemployment.
  This indicator is measured in numbers of unemployed people as a percentage of the labour force and it is seasonally adjusted. The labour force is defined as the total number of unemployed people plus those in employment. Data are based on labour force surveys (LFS).
  For European Union countries where monthly LFS information is not available, the monthly unemployed figures are estimated by Eurostat.
- See definition: [https://data.oecd.org/unemp/unemployment
+See Definition: [https://data.oecd.org/unemp/unemployment
 -rate.htm](https://data.oecd.org/unemp/unemployment
 -rate.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
- Also known as: jobless rate, labor market, unemployment level.
+Also known as: jobless rate, labor market, unemployment level.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1918,14 +1918,14 @@ Which returns:
 GDP per hour worked is a measure of labour productivity. It measures how efficiently labour input is combined with other factors of production and used in the production process. Labour input is defined as total hours worked of all persons engaged in production. Labour productivity only partially reflects the productivity of labour in terms of the personal capacities of workers or the intensity of their effort.
  The ratio between the output measure and the labour input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organisational and efficiency change, economies of scale).
  This uses 2015 as the base year (= 100)
- See definition: [https://data.oecd.org/lprdty/gdp
+See Definition: [https://data.oecd.org/lprdty/gdp
 -per
 -hour
 -worked.htm](https://data.oecd.org/lprdty/gdp
 -per
 -hour
 -worked.htm){:target="_blank"}
- Also known as: labor productivity, output per worker.
+Also known as: labor productivity, output per worker.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1968,10 +1968,10 @@ Which returns:
 Income is defined as household disposable income in a particular year. It consists of earnings, self
 -employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
  The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
- See definition: [https://data.oecd.org/inequality/income
+See Definition: [https://data.oecd.org/inequality/income
 -inequality.htm](https://data.oecd.org/inequality/income
 -inequality.htm){:target="_blank"}
- Also known as: Gini coefficient, income distribution.
+Also known as: Gini coefficient, income distribution.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -2028,9 +2028,9 @@ Population is defined as all nationals present in, or temporarily absent from a 
 - The youth population is defined as those people aged less than 15 as a percentage of the total population. 
 - The working age population is defined as those aged 15 to 64 as a percentage of the total population. 
 - The elderly population is defined as those aged 65 and over as a percentage of the total population.
- See definition: [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
- Also known as: demographic data, census data.
+Also known as: demographic data, census data.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -2074,10 +2074,10 @@ Which returns:
 The poverty rate is the ratio of the number of people (in a given age group) whose income falls below the poverty line; taken as half the median household income of the total population.
  However, two countries with the same poverty rates may differ in terms of the relative income
 -level of the poor.
- See definition: [https://data.oecd.org/inequality/poverty
+See Definition: [https://data.oecd.org/inequality/poverty
 -rate.htm](https://data.oecd.org/inequality/poverty
 -rate.htm){:target="_blank"}
- Also known as: poverty rate, income poverty.
+Also known as: poverty rate, income poverty.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.

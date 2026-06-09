@@ -25,7 +25,7 @@ pip install financetoolkit -U
 ## get_option_chains
 Get the Option Chains which gives information about the currently available options as reported by Yahoo Finance. This returns the Contract Symbol, Strike Currency, Last Price, Absolute Change, Percent Change, Volume, Open Interest, Bid Pirce, Ask Price, Expiration, Last Trade Date, Implied Volatility and whether the option is In The Money.
  The data comes from Yahoo Finance and is not always available. If the data is not available, it is advised to use the theoretical calculations as provided by the Black Scholes Model as well as the Greeks to get a better understanding of the option prices over time.
- Also known as: calls, puts, strike prices, expiry dates, option data.
+Also known as: calls, puts, strike prices, expiry dates, option data.
 
 **Args:**
  - <u>expiration_date (str | None, optional):</u> The expiration date to use. Defaults to None which means it will
@@ -87,7 +87,7 @@ Calculate the Black Scholes Model, a mathematical model used to estimate the pri
 - Call Option Price = S * e^(-q * t) * N(d1) - K * e^(-r * t) * N(d2) 
 - Put Option Price = K * e^(-r * t) * N(-d2) - S * e^(-q * t) * N(-d1)
  Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
- Also known as: BSM, Black
+Also known as: BSM, Black
 -Scholes
 -Merton, option pricing model.
 
@@ -160,7 +160,7 @@ Calculate the Implied Volatility (IV) based on the Black Scholes Model and the a
  
 - Implied Volatility = MINIMIZE(Black Scholes Theoretical Price - Actual Option Price)
  To determine the Implied Volatility, the Black Scholes Model is used to calculate the theoretical option price in which sigma (σ) is the only unknown variable. The actual option price is then used to determine the implied volatility by minimizing the difference between the theoretical and actual option price.
- Also known as: IV, option
+Also known as: IV, option
 -implied volatility.
 
 **Args:**
@@ -240,7 +240,7 @@ Calculate the Binomial Option Pricing Model, a mathematical model used to estima
 - put option price at each node = max(K - S, (p * P_u + (1 - p) * P_d) * e^(-r * t))
  Where S is the stock price, K is the strike price, r is the risk free rate, σ is the volatility, t is the time to expiration, j is the number of up movements, n is the number of time steps, C_u is the call option price at the up movement, C_d is the call option price at the down movement, P_u is the put option price at the up movement and P_d is the put option price at the down movement.
  The resulting output is a DataFrame containing the tickers, strike prices and movements as the index and the time to expiration as the columns. The movements index contains the number of up movements and the number of down movements. The output is the binomial tree displayed in a table. E.g. when using 10 time steps, the table for each strike price from each company will contain the actual binomial tree as also depicted in the image found here: [https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method](https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method){:target="_blank"}
- Also known as: binomial tree, lattice model, option pricing.
+Also known as: binomial tree, lattice model, option pricing.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -310,7 +310,7 @@ Simulate the Stock Price based on the Binomial Model, a mathematical model used 
  Where S is the stock price, r is the risk free rate, σ is the volatility, t is the time to expiration, j is the number of up movements, n is the number of time steps.
  The resulting output is a DataFrame containing the tickers and movements as the index and the time to expiration as the columns. The movements index contains the number of up movements and the number of down movements. The output is the binomial tree displayed in a table. E.g. when using 10 time steps, the table from each company will contain the actual binomial tree's stock prices as also depicted in the image found here: [https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method](https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method){:target="_blank"}
  **Hint:** consider plotting the resulting DataFrame for each company to visualize the binomial tree. For example for below's example use `stock_price_simulation.loc['AMZN'].T.plot(legend=False)`
- Also known as: Monte Carlo simulation, GBM, stock price path.
+Also known as: Monte Carlo simulation, GBM, stock price path.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -512,7 +512,7 @@ Calculate the delta of an option based on the Black Scholes Model. The Black Sch
 - For call options, Delta is positive, indicating that the option price tends to move in the same direction as the underlying asset's price. 
 - For put options, Delta is negative, indicating that the option price tends to move in the opposite direction to the underlying asset's price.
  Note that the delta of a call option is always between 0 and 1, while the delta of a put option is always between -1 and 0.
- Also known as: option price sensitivity to underlying, hedge ratio.
+Also known as: option price sensitivity to underlying, hedge ratio.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -556,7 +556,7 @@ Calculate the dual delta of an option based on the Black Scholes Model. The Blac
 - Put Dual Delta = e^(-r * t) * N(-d2)
  Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
  The Dual Delta can be interpreted as the probability of an option finishing in the money. For example, if the Dual Delta is 0.5, then the probability of the option finishing in the money is 50%.
- Also known as: cash delta, binary option delta.
+Also known as: cash delta, binary option delta.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -605,7 +605,7 @@ Calculate the vega of an option based on the Black Scholes Model. The Black Scho
 - If Vega is positive, it indicates that the option value will increase as the volatility increases, and vice versa. 
 - If Vega is negative, it implies that the option value will decrease as the volatility increases, and vice versa.
  Note that the vega of a call option and put option are equal to each other.
- Also known as: option sensitivity to volatility changes.
+Also known as: option sensitivity to volatility changes.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -653,7 +653,7 @@ Calculate the theta of an option based on the Black Scholes Model. The Black Sch
  
 - If Theta is positive, it indicates that the option value will increase as the time to expiration increases, and vice versa. 
 - If Theta is negative, it implies that the option value will decrease as the time to expiration increases, and vice versa.
- Also known as: time decay, option time value erosion.
+Also known as: time decay, option time value erosion.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -704,7 +704,7 @@ Calculate the rho of an option based on the Black Scholes Model. The Black Schol
 - If Rho is positive, it indicates that the option value will increase as the risk free rate increases, and vice versa. 
 - If Rho is negative, it implies that the option value will decrease as the risk free rate increases, and vice versa.
  Rho is typically expressed as the amount of money, per share of the underlying, that the value of the option will gain or lose as the risk-free interest rate rises or falls by 1.0% per annum (100 basis points).
- Also known as: option sensitivity to interest rate.
+Also known as: option sensitivity to interest rate.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -753,7 +753,7 @@ Calculate the epsilon of an option based on the Black Scholes Model. The Black S
  
 - If Epislon is positive, it indicates that the option value will increase as the dividend yield increases, and vice versa. 
 - If Epislon is negative, it implies that the option value will decrease as the dividend yield increases, and vice versa.
- Also known as: option sensitivity to dividend yield.
+Also known as: option sensitivity to dividend yield.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -804,7 +804,7 @@ Calculate the lambda of an option based on the Black Scholes Model. The Black Sc
  
 - If Lambda is positive, it indicates that the option value will increase as the underlying price increases, and vice versa. 
 - If Lambda is negative, it implies that the option value will decrease as the underlying price increases, and vice versa.
- Also known as: option elasticity, leverage factor.
+Also known as: option elasticity, leverage factor.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -892,7 +892,7 @@ Calculate the gamma of an option based on the Black Scholes Model. The Black Sch
 - If Gamma is high, it indicates that the option's Delta is highly sensitive to changes in the underlying asset's price. The option's Delta will change more significantly with small movements in the stock price. 
 - If Gamma is low, it suggests that the option's Delta is relatively insensitive to changes in the underlying asset's price. The option's Delta changes more gradually with movements in the stock price.
  Note that the gamma of a call option and put option are equal to each other.
- Also known as: rate of change of delta, option convexity.
+Also known as: rate of change of delta, option convexity.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -934,7 +934,7 @@ Calculate the gamma of an option based on the Black Scholes Model. The Black Sch
 - Dual Gamma = e^(-r * t) * N'(d2) / (S * σ * sqrt(t))
  Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
  Note that the dual gamma of a call option and put option are equal to each other.
- Also known as: cash gamma, binary option gamma.
+Also known as: cash gamma, binary option gamma.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -982,7 +982,7 @@ Calculate the vanna of an option based on the Black Scholes Model. The Black Sch
 - If Vanna is positive, it indicates that the Delta of the option becomes more positive as both the underlying asset's price and implied volatility increase, and more negative as they both decrease. 
 - If Vanna is negative, it suggests that the Delta of the option becomes more negative as both the underlying asset's price and implied volatility increase, and more positive as they both decrease.
  Note that the vanna of a call option and put option are equal to each other.
- Also known as: delta
+Also known as: delta
 -vega cross
 -derivative.
 
@@ -1032,7 +1032,7 @@ Calculate the charm of an option based on the Black Scholes Model. The Black Sch
  
 - If Charm is positive, it suggests that the option's Delta is becoming more positive over time. In other words, the option is gaining sensitivity to changes in the underlying asset's price as time passes. 
 - If Charm is negative, it indicates that the option's Delta is becoming more negative over time. The option is losing sensitivity to changes in the underlying asset's price as time passes.
- Also known as: delta time decay, delta bleed.
+Also known as: delta time decay, delta bleed.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -1081,7 +1081,7 @@ Calculate the vomma of an option based on the Black Scholes Model. The Black Sch
  
 - If Vomma is high, it indicates that the option's Vega is highly sensitive to changes in implied volatility. The option's value will experience more significant fluctuations with variations in implied volatility. 
 - If Vomma is low, it suggests that the option's Vega is relatively less sensitive to changes in implied volatility.
- Also known as: volga, vega convexity.
+Also known as: volga, vega convexity.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -1129,7 +1129,7 @@ Calculate the vera of an option based on the Black Scholes Model. The Black Scho
 - If Vera is positive, it indicates that the option's Rho is becoming more positive over time. In other words, the option is gaining sensitivity to changes in the risk free rate as time passes. 
 - If Vera is negative, it suggests that the option's Rho is becoming more negative over time. The option is losing sensitivity to changes in the risk free rate as time passes.
  Note that the vera of a call option and put option are equal to each other.
- Also known as: rho
+Also known as: rho
 -vega cross
 -derivative.
 
@@ -1179,7 +1179,7 @@ Calculate the veta of an option based on the Black Scholes Model. The Black Scho
  
 - If Veta is positive, it indicates that the option's Vega is becoming more positive over time. In other words, the option is gaining sensitivity to changes in implied volatility as time passes. 
 - If Veta is negative, it suggests that the option's Vega is becoming more negative over time. The option is losing sensitivity to changes in implied volatility as time passes.
- Also known as: vega time decay.
+Also known as: vega time decay.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -1224,7 +1224,7 @@ Calculate the partial derivative of an option based on the Black Scholes Model. 
  
 - Partial Derivative (PD) = e^(-r * t) * (1 / K) * (1 sqrt(2 * pi * volatility ** 2 * t)) * e^(-(1 / (2 * volatility ** 2 * t)) * (ln(S / K) - ((r - q) - (0.5 * volatility ** 2)) * t) ** 2
  Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
- Also known as: numerical derivative, option sensitivity.
+Also known as: numerical derivative, option sensitivity.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -1305,7 +1305,7 @@ Calculate the speed of an option based on the Black Scholes Model. The Black Sch
 - If Speed is positive, it indicates that the option's Gamma is becoming more positive over time. In other words, the option is gaining sensitivity to changes in the underlying price as time passes. 
 - If Speed is negative, it suggests that the option's Gamma is becoming more negative over time. The option is losing sensitivity to changes in the underlying price as time passes.
  Note that the speed of a call option and put option are equal to each other.
- Also known as: gamma rate of change.
+Also known as: gamma rate of change.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -1353,7 +1353,7 @@ Calculate the zomma of an option based on the Black Scholes Model. The Black Sch
 - If Zomma is positive, it indicates that the option's Gamma is becoming more positive over time. In other words, the option is gaining sensitivity to changes in volatility as time passes. 
 - If Zomma is negative, it suggests that the option's Gamma is becoming more negative over time. The option is losing sensitivity to changes in volatility as time passes.
  Note that the zomma of a call option and put option are equal to each other.
- Also known as: gamma sensitivity to volatility.
+Also known as: gamma sensitivity to volatility.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -1401,7 +1401,7 @@ Calculate the color of an option based on the Black Scholes Model. The Black Sch
 - If Color is positive, it indicates that the option's Gamma is becoming more positive over time. In other words, the option is gaining sensitivity to changes in time to expiration as time passes. 
 - If Color is negative, it suggests that the option's Gamma is becoming more negative over time. The option is losing sensitivity to changes in time to expiration as time passes.
  Note that the color of a call option and put option are equal to each other.
- Also known as: gamma time decay.
+Also known as: gamma time decay.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -1449,7 +1449,7 @@ Calculate the ultima of an option based on the Black Scholes Model. The Black Sc
 - If Ultima is positive, it indicates that the option's vomma is becoming more positive over time. In other words, the option is gaining sensitivity to changes in volatility as time passes. 
 - If Ultima is negative, it suggests that the option's vomma is becoming more negative over time. The option is losing sensitivity to changes in volatility as time passes.
  Note that the ultima of a call option and put option are equal to each other.
- Also known as: third
+Also known as: third
 -order vega.
 
 **Args:**
