@@ -39,6 +39,7 @@ Collect the bond statistics for a given bond which includes the following fields
 - DV01: The dollar value of a 0.01% change in yield to maturity. 
 - Convexity: The second derivative of the bond price with respect to the yield to maturity.
  These statistics can be used to evaluate the bond's performance as opposed to other bonds or to estimate the bond's sensitivity to changes in interest rates to be able to apply a hedging strategy.
+ Also known as: bond data, fixed income statistics.
 
 **Args:**
  - <u>par_value (float):</u> The face value of the bond. Defaults to 100.
@@ -103,6 +104,7 @@ Calculates the bond prices for different coupon rates and years to maturity. The
 - n = Number of periods 
 - F = Face value of the bond
  The bond price is used to determine the fair value of the bond and to compare the bond's price to its market price to determine if the bond is overvalued or undervalued.
+ Also known as: PV, bond pricing, discounted cash flows.
 
 **Args:**
  - <u>par_value (float):</u> The par value (face value) of the bond.
@@ -125,6 +127,7 @@ Calculates the bond duration for different coupon rates and years to maturity. I
 - Effective Duration: The percentage change in the bond price for a 1% change in the yield to maturity. 
 - Dollar Duration: The modified duration multiplied by the bond price.
  These duration measures can be used to estimate the sensitivity of a bond's price to changes in interest rates as well as to compare the risk of different bonds. The modified duration is particularly useful for estimating the percentage change in the bond price for a 1% change in the yield to maturity. This is also known as the bond's price value of a basis point (PVBP), or the bond's dollar duration (DD) or dollar value of a .01% change (DV01).
+ Also known as: Macaulay duration, modified duration, bond price sensitivity.
 
 **Args:**
  - <u>duration_type (str, optional):</u> The type of duration to calculate. Defaults to 'modified' but can also
@@ -158,6 +161,7 @@ Calculates the yield to maturity for a bond. The yield to maturity is the intern
 - F = Face value of the bond
  The goal is to find the yield to maturity that satisfies the equation above. This is done using the Newton
 -Raphson method which is an iterative method that converges to the root of a function.
+ Also known as: YTM, bond return to maturity.
 
 **Args:**
  - <u>par_value (float):</u> The par value (face value) of the bond. This is the original price when it was issued by the issuer.
@@ -184,6 +188,7 @@ Calculates the derivative price for a fixed income instrument.
 -normal distribution. For more information, see: [https://en.wikipedia.org/wiki/Bachelier_model](https://en.wikipedia.org/wiki/Bachelier_model){:target="_blank"}
  It is possible to alter all parameters within the models, e.g. strike rate, volatility, years to maturity, risk
 -free rate, notional amount, and whether the holder is the receiver or payer of the derivative. Next to that, you can provide lists of values for the fixed rate, strike rate, volatility, and years to maturity to calculate the derivative price for multiple scenarios outside of the standard sample.
+ Also known as: bond derivative pricing, fixed income derivative.
 
 **Args:**
  - <u>model (str, optional):</u> The type of model to use for calculating the derivative price. Defaults to "black".
@@ -277,6 +282,7 @@ Long
 -term
 -interest
 -rates.htm){:target="_blank"}
+ Also known as: treasury yield, bond yield by maturity.
 
 **Args:**
  - <u>short_term (bool, optional):</u> Whether to return the short-term interest rate. Defaults to False.
@@ -375,6 +381,7 @@ This data represents the effective yield of the ICE BofA Indices, When the last 
  
 - Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY](https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY){:target="_blank"} 
 - Maturity: [https://fred.stlouisfed.org/series/BAMLC1A0C13YEY](https://fred.stlouisfed.org/series/BAMLC1A0C13YEY){:target="_blank"}
+ Also known as: ICE BofA corporate bond yield, credit yield.
 
 **Args:**
  - <u>maturity (bool, optional):</u> Whether to return the maturity effective yield or the rating effective yield.
@@ -516,6 +523,7 @@ Which returns:
 Euribor rates, short for Euro Interbank Offered Rate, are the interest rates at which a panel of European banks lend funds to one another in the interbank market. These rates are published daily by the European Money Markets Institute (EMMI) and serve as a benchmark for various financial products and contracts, including mortgages, loans, and derivatives, across the Eurozone.
  The Euribor rates are determined for different maturities, typically ranging from overnight to 12 months The most common maturities are 1 month, 3 months, 6 months, and 12 months. Each maturity represents the time period for which the funds are borrowed, with longer maturities generally implying higher interest rates due to increased uncertainty and risk over longer time horizons.
  For more information, see for example: [https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA](https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA){:target="_blank"}
+ Also known as: euro interbank offered rate, eurozone money market.
 
 **Args:**
  - <u>maturities (str | list | None, optional):</u> Maturities for which to retrieve rates. Defaults to None.
@@ -560,6 +568,7 @@ The Governing Council of the ECB sets the key interest rates for the euro area. 
  See source: [https://data.ecb.europa.eu/main
 -figures/](https://data.ecb.europa.eu/main
 -figures/){:target="_blank"}
+ Also known as: ECB rates, deposit facility rate.
 
 **Args:**
  - <u>rate (str, optional):</u> The rate to return. Defaults to None, which returns all rates.
@@ -626,15 +635,16 @@ Get the Federal Reserve rates as published by the Federal Reserve Bank of New Yo
  The BGCR is calculated as a volume
 -weighted median of transaction
 -level tri
--party repo data collected from the Bank of New York Mellon as well as GCF Repo transaction data obtained from the U.S. Department of the Treasury’s Office of Financial Research (OFR).
+-party repo data collected from the Bank of New York Mellon as well as GCF Repo transaction data obtained from the U.S. Department of the Treasury's Office of Financial Research (OFR).
  The SOFR is calculated as a volume
 -weighted median of transaction
 -level tri
--party repo data collected from the Bank of New York Mellon as well as GCF Repo transaction data and data on bilateral Treasury repo transactions cleared through FICC's DVP service, which are obtained from the U.S. Department of the Treasury’s Office of Financial Research (OFR).
- The New York Fed publishes the rates for the prior business day on the New York Fed’s website between 8:00 and 9:00 a.m.
+-party repo data collected from the Bank of New York Mellon as well as GCF Repo transaction data and data on bilateral Treasury repo transactions cleared through FICC's DVP service, which are obtained from the U.S. Department of the Treasury's Office of Financial Research (OFR).
+ The New York Fed publishes the rates for the prior business day on the New York Fed's website between 8:00 and 9:00 a.m.
  See source: [https://www.newyorkfed.org/markets/reference
 -rates/](https://www.newyorkfed.org/markets/reference
 -rates/){:target="_blank"}
+ Also known as: Fed rates, federal funds rate, FOMC rate.
 
 **Args:**
  - <u>rate (str):</u> The rate to return. Defaults to 'EFFR' (Effective Federal Funds Rate).

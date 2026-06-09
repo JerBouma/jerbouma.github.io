@@ -33,8 +33,10 @@ Get the Gross Domestic Product for a variety of countries over time from the OEC
 -product
 -gdp.htm){:target="_blank"}
  It is also possible to acquire the data from the Global Macro Database (GMDB) source which also provides inflation adjusted data. For more information see: [https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf](https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf){:target="_blank"}
+ Also known as: GDP, national income, economic growth.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
  - <u>gmdb_source (bool | None, optional):</u> If True, retrieves data from the GMDB source. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -51,9 +53,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-real_gdp = economics.get_gross_domestic_product(inflation_adjusted=True)
-
-real_gdp.loc[:, ['Netherlands', 'Germany', 'China']]
+economics.get_gross_domestic_product(inflation_adjusted=True, countries=['Netherlands', 'Germany', 'China'])
 ```
 
 Which returns:
@@ -77,9 +77,11 @@ Which returns:
 
 ## get_gross_domestic_product_deflator
 Get the Gross Domestic Product Deflator for a variety of countries over time from the Global Macro Database (GMDB). The GDP deflator is a measure of the price of all domestically produced final goods and services in an economy relative to the price level in a base year which can vary per country.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: GDP deflator, implicit price deflator.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -94,9 +96,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-gdp_deflator = economics.get_gross_domestic_product_deflator()
-
-gdp_deflator.loc[:, ['United States', 'Canada', 'Russian Federation']]
+economics.get_gross_domestic_product_deflator(countries=['United States', 'Canada', 'Russian Federation'])
 ```
 
 Which returns:
@@ -120,9 +120,11 @@ Which returns:
 
 ## get_total_consumption
 Get the Total Consumption for a variety of countries over time from the Global Macro Database (GMDB). Total Consumption is the total amount of money spent by households on consumer goods and services.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: household consumption, private consumption.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
@@ -161,9 +163,11 @@ Which returns:
 
 ## get_total_consumption_to_gdp_ratio
 Get the Total Consumption to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Total Consumption to GDP Ratio is the ratio of the total amount of money spent by households on consumer goods and services to the Gross Domestic Product (GDP).
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: consumption share of GDP.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -201,9 +205,11 @@ Which returns:
 
 ## get_investment
 Get the Investment for a variety of countries over time from the Global Macro Database (GMDB). Investment is the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: total investment, capital formation.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -245,9 +251,11 @@ Which returns:
 
 ## get_investment_to_gdp_ratio
 Get the Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Investment to GDP Ratio is the ratio of the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings to the Gross Domestic Product (GDP).
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: investment rate.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -284,9 +292,11 @@ Which returns:
 
 ## get_fixed_investment
 Get the Fixed Investment for a variety of countries over time from the Global Macro Database (GMDB). Fixed Investment is the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings that are expected to last for more than one year.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: gross fixed capital formation, capital investment.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -322,9 +332,11 @@ Which returns:
 
 ## get_fixed_investment_to_gdp_ratio
 Get the Fixed Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Fixed Investment to GDP Ratio is the ratio of the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings that are expected to last for more than one year to the Gross Domestic Product (GDP).
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: investment to GDP ratio.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -380,9 +392,11 @@ Which returns:
 
 ## get_exports
 Get the Exports for a variety of countries over time from the Global Macro Database (GMDB). Exports are the total amount of goods and services produced in a country that are sold to other countries.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: exports, trade exports.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -397,9 +411,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='1980-01-01', end_date='1990-01-01')
 
-exports = economics.get_exports()
-
-exports.loc[:, ['Netherlands', 'Germany', 'China']]
+economics.get_exports(countries=['Netherlands', 'Germany', 'China'])
 ```
 
 Which returns:
@@ -423,9 +435,11 @@ Which returns:
 
 ## get_exports_to_gdp_ratio
 Get the Exports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Exports to GDP Ratio is the ratio of the total amount of goods and services produced in a country that are sold to other countries to the Gross Domestic Product (GDP).
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: exports to GDP ratio, trade openness.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -440,9 +454,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-exports_to_gdp_ratio = economics.get_exports_to_gdp_ratio()
-
-exports_to_gdp_ratio.loc[:, ['United States', 'Canada', 'Russian Federation']]
+economics.get_exports_to_gdp_ratio(countries=['United States', 'Canada', 'Russian Federation'])
 ```
 
 Which returns:
@@ -466,9 +478,11 @@ Which returns:
 
 ## get_imports
 Get the Imports for a variety of countries over time from the Global Macro Database (GMDB). Imports are the total amount of goods and services produced in other countries that are bought by a country.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: imports, trade imports.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -483,9 +497,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2010-01-01')
 
-imports = economics.get_imports()
-
-imports.loc[:, ['United States', 'Canada', 'Mexico']]
+economics.get_imports(countries=['United States', 'Canada', 'Mexico'])
 ```
 
 Which returns:
@@ -514,9 +526,11 @@ Which returns:
 
 ## get_imports_to_gdp_ratio
 Get the Imports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Imports to GDP Ratio is the ratio of the total amount of goods and services produced in other countries that are bought by a country to the Gross Domestic Product (GDP).
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: imports to GDP ratio.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -531,9 +545,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-imports_to_gdp_ratio = economics.get_imports_to_gdp_ratio()
-
-imports_to_gdp_ratio.loc[:, ['United States', 'Canada', 'Mexico']]
+economics.get_imports_to_gdp_ratio(countries=['United States', 'Canada', 'Mexico'])
 ```
 
 Which returns:
@@ -557,9 +569,11 @@ Which returns:
 
 ## get_current_account_balance
 Get the Current Account Balance for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance is the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid).
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: current account, trade balance, balance of payments.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -574,9 +588,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-current_account_balance = economics.get_current_account_balance()
-
-current_account_balance.loc[:, ['France', 'Germany', 'Italy']]
+economics.get_current_account_balance(countries=['France', 'Germany', 'Italy'])
 ```
 
 Which returns:
@@ -600,9 +612,11 @@ Which returns:
 
 ## get_current_account_balance_to_gdp_ratio
 Get the Current Account Balance to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance to GDP Ratio is the ratio of the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid) to the Gross Domestic Product (GDP).
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: current account to GDP.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -617,9 +631,8 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-current_account_balance_to_gdp_ratio = economics.get_current_account_balance_to_gdp_ratio()
-
-current_account_balance_to_gdp_ratio.loc[:, ['Poland', 'Turkey', 'United Kingdom']]
+economics.get_current_account_balance_to_gdp_ratio(countries=[
+'Poland', 'Turkey', 'United Kingdom'])
 ```
 
 Which returns:
@@ -643,9 +656,11 @@ Which returns:
 
 ## get_government_debt
 Get the Government Debt for a variety of countries over time from the Global Macro Database (GMDB). Government Debt is the total amount of money that a government owes to creditors.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: national debt, sovereign debt.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -660,9 +675,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-government_debt = economics.get_government_debt()
-
-government_debt.loc[:, ['United States', 'Canada', 'Mexico']]
+economics.get_government_debt(countries=['United States', 'Canada', 'Mexico'])
 ```
 
 Which returns:
@@ -686,9 +699,13 @@ Which returns:
 
 ## get_government_debt_to_gdp_ratio
 Get the Government Debt to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Debt to GDP Ratio is the ratio of the total amount of money that a government owes to creditors to the Gross Domestic Product (GDP).
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: debt
+-to
+-GDP ratio, fiscal sustainability.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -703,9 +720,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-government_debt_to_gdp_ratio = economics.get_government_debt_to_gdp_ratio()
-
-government_debt_to_gdp_ratio.loc[:, ['Netherlands', 'Germany', 'China']]
+economics.get_government_debt_to_gdp_ratio(countries=['Netherlands', 'Germany', 'China'])
 ```
 
 Which returns:
@@ -729,9 +744,11 @@ Which returns:
 
 ## get_government_revenue
 Get the Government Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Revenue is the total amount of money that a government collects from taxes and other sources.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: government income, public revenue.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -740,6 +757,14 @@ Get the Government Revenue for a variety of countries over time from the Global 
  pd.DataFrame: A DataFrame containing the Government Revenue
 
  As an example:
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2019-01-01')
+
+economics.get_government_revenue(countries=['United Kingdom', 'Canada', 'Japan'])
+```
 
 Which returns:
 
@@ -758,9 +783,11 @@ Which returns:
 
 ## get_government_revenue_to_gdp_ratio
 Get the Government Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes and other sources to the Gross Domestic Product (GDP).
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: revenue to GDP ratio.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -775,9 +802,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-government_revenue_to_gdp_ratio = economics.get_government_revenue_to_gdp_ratio()
-
-government_revenue_to_gdp_ratio.loc[:, ['United States', 'Canada', 'Russian Federation']]
+economics.get_government_revenue_to_gdp_ratio(countries=['United States', 'Canada', 'Russian Federation'])
 ```
 
 Which returns:
@@ -801,7 +826,8 @@ Which returns:
 
 ## get_government_tax_revenue
 Get the Government Tax Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Tax Revenue is the total amount of money that a government collects from taxes.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: tax revenue, fiscal revenue.
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -818,9 +844,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-government_tax_revenue = economics.get_government_tax_revenue()
-
-government_tax_revenue.loc[:, ['Kenya', 'Nigeria', 'South Africa']]
+economics.get_government_tax_revenue(countries=['Kenya', 'Nigeria', 'South Africa'] )
 ```
 
 Which returns:
@@ -843,9 +867,11 @@ Which returns:
 
 ## get_government_tax_revenue_to_gdp_ratio
 Get the Government Tax Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Tax Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes to the Gross Domestic Product (GDP).
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: tax burden, tax to GDP ratio.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -860,9 +886,8 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-government_tax_revenue_to_gdp_ratio = economics.get_government_tax_revenue_to_gdp_ratio()
-
-government_tax_revenue_to_gdp_ratio.loc[:, ['United States', 'Canada', 'Mexico']]
+economics.get_government_tax_revenue_to_gdp_ratio(
+countries=['United States', 'Canada', 'Mexico'])
 ```
 
 Which returns:
@@ -884,9 +909,11 @@ Which returns:
 
 ## get_government_expenditure
 Get the Government Expenditure for a variety of countries over time from the Global Macro Database (GMDB). Government Expenditure is the total amount of money that a government spends on goods and services.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: government spending, public expenditure.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -901,9 +928,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-government_expenditure = economics.get_government_expenditure()
-
-government_expenditure.loc[:, ['Japan', 'China', 'India']]
+economics.get_government_expenditure(countries=['Japan', 'China', 'India'])
 ```
 
 Which returns:
@@ -927,9 +952,11 @@ Which returns:
 
 ## get_government_expenditure_to_gdp_ratio
 Get the Government Expenditure to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Expenditure to GDP Ratio is the ratio of the total amount of money that a government spends on goods and services to the Gross Domestic Product (GDP).
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: government spending to GDP.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -944,9 +971,8 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-government_expenditure_to_gdp_ratio = economics.get_government_expenditure_to_gdp_ratio()
-
-government_expenditure_to_gdp_ratio.loc[:, ['United States', 'Japan', 'Netherlands']]
+economics.get_government_expenditure_to_gdp_ratio(
+countries=['United States', 'Japan', 'Netherlands'])
 ```
 
 Which returns:
@@ -970,9 +996,11 @@ Which returns:
 
 ## get_government_deficit
 Get the Government Deficit for a variety of countries over time from the Global Macro Database (GMDB). Government Deficit is the total amount of money that a government spends more than it collects from taxes and other sources. A government deficit is usually financed by borrowing money.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: budget deficit, fiscal deficit.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -987,9 +1015,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01')
 
-government_deficit = economics.get_government_deficit()
-
-government_deficit.loc[:, ['United States', 'Canada', 'Mexico']]
+economics.get_government_deficit(countries=['United States', 'Canada', 'Mexico'])
 ```
 
 Which returns:
@@ -1013,7 +1039,10 @@ Which returns:
 
 ## get_government_deficit_to_gdp_ratio
 Get the Government Deficit to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Deficit to GDP Ratio is the ratio of the total amount of money that a government spends more than it collects from taxes and other sources to the Gross Domestic Product (GDP). A government deficit is usually financed by borrowing money.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: deficit
+-to
+-GDP, fiscal balance.
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1064,8 +1093,10 @@ Trust in government refers to the share of people who report having confidence i
 -government.htm](https://data.oecd.org/gga/trust
 -in
 -government.htm){:target="_blank"}
+ Also known as: political trust, institutional trust.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1113,9 +1144,11 @@ Which returns:
 
 ## get_consumer_price_index
 Consumer Price Index (CPI) is a measure that examines the average change in prices paid by consumers for goods and services over time. It is a measure of inflation. The base year (2010) is the year against which the index is set to 100.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: CPI, cost of living index.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1130,9 +1163,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2008-09-01', end_date='2020-03-01')
 
-consumer_price_index = economics.get_consumer_price_index()
-
-consumer_price_index.loc[:, ['Germany', 'France', 'Portugal']]
+economics.get_consumer_price_index(countries=['Germany', 'France', 'Portugal'])
 ```
 
 Which returns:
@@ -1158,9 +1189,12 @@ Which returns:
 
 ## get_inflation_rate
 Inflation Rate is the percentage change in the Consumer Price Index (CPI) from one period to another. It is a measure of the rate of price increases in the economy.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: CPI
+-based inflation, price increases, consumer prices.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1175,9 +1209,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2003-01-01', end_date='2009-03-01')
 
-inflation_rate = economics.get_inflation_rate()
-
-inflation_rate.loc[:, ['Germany', 'France', 'Portugal']]
+economics.get_inflation_rate(countries=['Germany', 'France', 'Portugal'])
 ```
 
 Which returns:
@@ -1205,8 +1237,10 @@ This consumer confidence indicator provides an indication of future developments
 -confidence
 -index
 -cci.htm){:target="_blank"}
+ Also known as: consumer sentiment, spending outlook.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1221,9 +1255,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2008-09-01', end_date='2009-03-01')
 
-consumer_confidence_index = economics.get_consumer_confidence_index()
-
-consumer_confidence_index.loc[:, ['Germany', 'France', 'Portugal']]
+economics.get_consumer_confidence_index(countries=['Germany', 'France', 'Portugal'])
 ```
 
 Which returns:
@@ -1251,8 +1283,10 @@ This business confidence indicator provides information on future developments, 
 -confidence
 -index
 -bci.htm){:target="_blank"}
+ Also known as: BCI, business sentiment.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1267,9 +1301,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2022-09-01', end_date='2023-03-01')
 
-business_confidence_index = economics.get_business_confidence_index()
-
-business_confidence_index.loc[:, ['Brazil', 'Canada', 'Costa Rica']]
+economics.get_business_confidence_index(countries=['Brazil', 'Canada', 'Costa Rica'])
 ```
 
 Which returns:
@@ -1297,8 +1329,10 @@ The composite leading indicator (CLI) is designed to provide early signals of tu
 -leading
 -indicator
 -cli.htm){:target="_blank"}
+ Also known as: CLI, leading economic indicator.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1313,9 +1347,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2023-06-01', end_date='2023-12-01')
 
-composite_leading_indicator = economics.get_composite_leading_indicator()
-
-composite_leading_indicator.loc[:, ['United States', 'United Kingdom', 'Japan']]
+economics.get_composite_leading_indicator(countries=['United States', 'United Kingdom', 'Japan'])
 ```
 
 Which returns:
@@ -1335,14 +1367,16 @@ Which returns:
 ## get_house_prices
 In most cases, the nominal house price index covers the sales of newly
 -built and existing dwellings, following the recommendations from the RPPI (Residential Property Prices Indices) manual.
- The real house price index is given by the ratio of the nominal house price index to the consumers’ expenditure deflator in each country from the OECD national accounts database. Both indices are seasonally adjusted.
+ The real house price index is given by the ratio of the nominal house price index to the consumers' expenditure deflator in each country from the OECD national accounts database. Both indices are seasonally adjusted.
  Both are based on an 2015 = 100 as an index.
  See definition: [https://data.oecd.org/price/housing
 -prices.htm](https://data.oecd.org/price/housing
 -prices.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ Also known as: real estate prices, property prices, housing index.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>quarterly (bool | None, optional):</u> Whether to return the quarterly data or the annual data.
  - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data or the nominal data.
  - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
@@ -1360,9 +1394,11 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01', end_date='2023-12-31')
 
-real_house_prices = economics.get_house_prices(quarterly=False, inflation_adjusted=True)
-
-real_house_prices.loc[:, ['Japan', 'Netherlands', 'Ireland']]
+economics.get_house_prices(
+countries=['Japan', 'Netherlands', 'Ireland'],
+quarterly=False,
+inflation_adjusted=True
+)
 ```
 
 Which returns:
@@ -1388,10 +1424,11 @@ The price to rent ratio is the nominal house price index divided by the housing 
  See definition: [https://data.oecd.org/price/housing
 -prices.htm](https://data.oecd.org/price/housing
 -prices.htm){:target="_blank"}
+ Also known as: rental prices, housing costs, rent index.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>quarterly (bool | None, optional):</u> Whether to return the quarterly data or the annual data.
- - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data or the nominal data.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1406,9 +1443,9 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2015-01-01', end_date='2023-12-31')
 
-rent_prices = economics.get_rent_prices(quarterly=False)
-
-rent_prices.loc[:, ['Turkey', 'United States', 'United Kingdom']]
+economics.get_rent_prices(
+countries=['Turkey', 'United States', 'United Kingdom'],
+quarterly=False)
 ```
 
 Which returns:
@@ -1437,8 +1474,10 @@ Share price indices are calculated from the prices of common shares of companies
  See definition: [https://data.oecd.org/price/share
 -prices.htm](https://data.oecd.org/price/share
 -prices.htm){:target="_blank"}
+ Also known as: stock market index, equity index, market performance.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
@@ -1454,9 +1493,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date="2013-01-01")
 
-share_prices = economics.get_share_prices()
-
-share_prices.loc[:, ['Turkey', 'Belgium', 'Australia']]
+economics.get_share_prices(countries=['Turkey', 'Belgium', 'Australia'])
 ```
 
 Which returns:
@@ -1485,8 +1522,10 @@ Exchange rates are defined as the price of one country's' currency in relation t
 -rates.htm](https://data.oecd.org/conversion/exchange
 -rates.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ Also known as: currency exchange, FX rates, foreign exchange rates.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
  - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1503,9 +1542,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2000-01-01', end_date='2010-12-31')
 
-exchange_rates = economics.get_exchange_rates()
-
-exchange_rates.loc[:, ['Japan', 'Indonesia', "China"]]
+economics.get_exchange_rates(countries=['Japan', 'Indonesia', "China"])
 ```
 
 Which returns:
@@ -1536,9 +1573,12 @@ Money Supply is the total amount of money that is in circulation in a country. I
 - M3: M2 + large time deposits, institutional money market funds, short
 -term repurchase agreements, and other larger liquid assets. 
 - M4: M3 + all other financial assets.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: M1, M2, M3, monetary aggregate.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+ - <u>measure (str | None, optional):</u> The measure of money supply to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1553,9 +1593,10 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2010-01-01', end_date='2020-12-31')
 
-money_supply = economics.get_money_supply()
-
-money_supply["M2"][["Netherlands", "Germany", "United States"]]
+money_supply = economics.get_money_supply(
+countries=['Netherlands', 'Germany', 'United States'],
+measure='M2'
+)
 ```
 
 Which returns:
@@ -1579,9 +1620,11 @@ Which returns:
 
 ## get_central_bank_policy_rate
 The Central Bank Policy Rate is the interest rate that a central bank sets on its loans and advances to a commercial bank. This interest rate is used by the monetary authorities to control inflation and stabilize the country's currency.
- Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/files/GMD_TA.pdf](https://www.globalmacrodata.com/files/GMD_TA.pdf){:target="_blank"}
+ Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+ Also known as: policy rate, benchmark rate, base rate.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
  - <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1596,9 +1639,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2021-01-01', end_date='2025-12-31')
 
-central_bank_policy_rate = economics.get_central_bank_policy_rate()
-
-central_bank_policy_rate[["Netherlands", "Germany", "United States"]]
+economics.get_central_bank_policy_rate(countries=['Netherlands', 'Germany', 'United States'])
 ```
 
 Which returns:
@@ -1631,8 +1672,12 @@ Short
 -interest
 -rates.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ Also known as: 3
+-month rate, money market rate, short
+-term yield.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
  - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1649,9 +1694,10 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2023-05-01')
 
-short_term_interest_rate = economics.get_short_term_interest_rate(period='quarterly')
-
-short_term_interest_rate.loc[:, ['Japan', 'United States', 'China']]
+economics.get_short_term_interest_rate(
+countries=['Japan', 'United States', 'China'],
+period='quarterly'
+)
 ```
 
 Which returns:
@@ -1683,8 +1729,12 @@ Long
 -interest
 -rates.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ Also known as: 10
+-year yield, government bond rate, long
+-term yield.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
  - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1701,9 +1751,9 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2023-05-01', end_date='2023-12-31')
 
-long_term_interest_rate = economics.get_long_term_interest_rate(period='monthly')
-
-long_term_interest_rate.loc[:, ['Japan', 'United States', 'Brazil']]
+economics.get_long_term_interest_rate(
+countries=['Japan', 'United States', 'Brazil'],
+)
 ```
 
 Which returns:
@@ -1729,8 +1779,10 @@ Renewable energy is defined as the contribution of renewables to total primary e
  See definition: [https://data.oecd.org/energy/renewable
 -energy.htm](https://data.oecd.org/energy/renewable
 -energy.htm){:target="_blank"}
+ Also known as: clean energy, green energy, renewable energy share.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1745,9 +1797,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2010-01-01', end_date='2020-01-01')
 
-renewable_energy = economics.get_renewable_energy()
-
-renewable_energy.loc[:, ['Austria', 'Germany', 'United States']]
+economics.get_renewable_energy(countries=['Austria', 'Germany', 'United States'])
 ```
 
 Which returns:
@@ -1775,8 +1825,10 @@ The carbon footprint is a measure of the total amount of greenhouse gases produc
  See definition: [https://data.oecd.org/envpolicy/environmental
 -tax.htm](https://data.oecd.org/envpolicy/environmental
 -tax.htm){:target="_blank"}
+ Also known as: CO2 emissions, carbon emissions, greenhouse gas.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1791,9 +1843,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date="2010-01-01", end_date="2020-01-01")
 
-carbon_footprint = economics.get_carbon_footprint()
-
-carbon_footprint.loc[:, ["Germany", "United States", "Poland"]]
+economics.get_carbon_footprint(countries=['Germany', 'United States', 'Poland'])
 ```
 
 Which returns:
@@ -1821,8 +1871,10 @@ The unemployed are people of working age who are without work, are available for
 -rate.htm](https://data.oecd.org/unemp/unemployment
 -rate.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ Also known as: jobless rate, labor market, unemployment level.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
  - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1839,9 +1891,10 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2021-03-01', end_date='2023-01-01')
 
-unemployment_rate = economics.get_unemployment_rate(period='quarterly')
-
-unemployment_rate.loc[:, ['Germany', 'United States', 'Japan']]
+economics.get_unemployment_rate(
+countries=['Germany', 'United States', 'Japan'],
+period='quarterly'
+)
 ```
 
 Which returns:
@@ -1872,8 +1925,10 @@ GDP per hour worked is a measure of labour productivity. It measures how efficie
 -per
 -hour
 -worked.htm){:target="_blank"}
+ Also known as: labor productivity, output per worker.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1888,9 +1943,7 @@ from financetoolkit import Economics
 
 economics = Economics()
 
-labour_productivity = economics.get_exchange_rates()
-
-labour_productivity.loc[:, ['Bulgaria', 'Croatia', 'Spain']]
+economics.get_exchange_rates(countries=['Bulgaria', 'Croatia', 'Spain'])
 ```
 
 Which returns:
@@ -1918,8 +1971,10 @@ Income is defined as household disposable income in a particular year. It consis
  See definition: [https://data.oecd.org/inequality/income
 -inequality.htm](https://data.oecd.org/inequality/income
 -inequality.htm){:target="_blank"}
+ Also known as: Gini coefficient, income distribution.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1934,9 +1989,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2013-01-01')
 
-income_inequality = economics.get_income_inequality()
-
-income_inequality.loc[:, 'United States']
+economics.get_income_inequality(countries="United States")
 ```
 
 Which returns:
@@ -1977,8 +2030,10 @@ Population is defined as all nationals present in, or temporarily absent from a 
 - The elderly population is defined as those aged 65 and over as a percentage of the total population.
  See definition: [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+ Also known as: demographic data, census data.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
@@ -1994,9 +2049,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2010-01-01', end_date='2019-01-01')
 
-population_statistics = economics.get_population_statistics()
-
-population_statistics.loc[:, 'Japan']
+economics.get_population_statistics(countries='Japan')
 ```
 
 Which returns:
@@ -2024,8 +2077,10 @@ The poverty rate is the ratio of the number of people (in a given age group) who
  See definition: [https://data.oecd.org/inequality/poverty
 -rate.htm](https://data.oecd.org/inequality/poverty
 -rate.htm){:target="_blank"}
+ Also known as: poverty rate, income poverty.
 
 **Args:**
+ - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
  - <u>lag (int, optional):</u> The number of periods to lag the data by.
  - <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -2040,9 +2095,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2012-01-01', end_date='2020-01-01')
 
-poverty_rate = economics.get_poverty_rate()
-
-poverty_rate.loc[:, 'Portugal']
+economics.get_poverty_rate(countries='Portugal')
 ```
 
 Which returns:

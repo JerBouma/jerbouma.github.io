@@ -1,8 +1,8 @@
 ---
 permalink: projects/financetoolkit
 title: Finance Toolkit
-excerpt: This is a free open-source toolkit written in Python in which 180+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
-description: This is a free open-source toolkit written in Python in which 180+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+excerpt: This is a free open-source toolkit written in Python in which 200+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+description: This is a free open-source toolkit written in Python in which 200+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
 classes: wide-sidebar
 author_profile: false
 redirect_from:
@@ -19,9 +19,11 @@ While browsing a variety of websites, I kept finding that the same financial met
 
 For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is reported to be 28.93 (Stockopedia), 32.05 (Morningstar), 32.66 (Macrotrends), 33.09 (Finance Charts), 33.66 (Y Charts), 33.67 (Wall Street Journal), 33.80 (Yahoo Finance) and 34.4 (Companies Market Cap). All of these calculations are correct, however the method applied varies leading to different results. Therefore, collecting data from multiple sources can lead to wrong interpretation of the results given that one source could be applying a different calculation method than another. And that is, if it is even freely available. Often the calculation is hidden behind a paid subscription.
 
-**This is why I designed the FinanceToolkit**, this is an open-source toolkit in which all relevant financial ratios ([180+](https://www.jeroenbouma.com/projects/financetoolkit/docs)), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py)). This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+**This is why I designed the FinanceToolkit**, this is an open-source toolkit in which all relevant financial ratios ([200+](https://www.jeroenbouma.com/projects/financetoolkit/docs)), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py)). This enables you to avoid dependence on metrics from other providers that do not provide their methods. With a large selection of financial statements in hand, it facilitates streamlined calculations, promoting the adoption of a consistent and universally understood methods and formulas.
 
-The Finance Toolkit not only supports Equities. Even for Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities, Key Economic Indicators and more, the Finance Toolkit can be used to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
+Beyond Equities, it supports Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities, Key Economic Indicators and more, allowing you to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
+
+**The Finance Toolkit is also available as an [MCP Server](https://github.com/JerBouma/FinanceToolkit/blob/main/MCP.md)**, connect it to any AI assistant that supports the Model Context Protocol (Claude, GitHub Copilot, Cursor, Windsurf, and more) and query 200+ financial metrics conversationally. **No Python installation required**, a single command configures your AI client automatically.
 
 The Finance Toolkit is complemented very well by the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase), a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
 
@@ -54,7 +56,17 @@ To be able to get started, you need to obtain an API Key from FinancialModelingP
 
 [Obtain an API Key from FinancialModelingPrep](https://www.jeroenbouma.com/fmp){: .btn .btn--warning .btn--large .align-center target="_blank"}
 
-Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time. I have chosen FinancialModelingPrep as a source as I find it to be the most transparent, reliable and at an affordable price. I have yet to find a platform offering such low prices for the amount of data offered. When you notice that the data is inaccurate or have any other issue related to the data, note that I simply provide the means to access this data and I am not responsible for the accuracy of the data itself. For this, use [their contact form](https://site.financialmodelingprep.com/contact) or provide the data yourself. 
+Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time. I have chosen FinancialModelingPrep as a source as I find it to be the most transparent, reliable and at an affordable price. I have yet to find a platform offering such low prices for the amount of data offered. When you notice that the data is inaccurate or have any other issue related to the data, note that I simply provide the means to access this data and I am not responsible for the accuracy of the data itself. For this, use [their contact form](https://site.financialmodelingprep.com/contact) or provide the data yourself.
+
+**By default, the Finance Toolkit prioritizes Financial Modeling Prep for data retrieval. If data acquisition from Financial Modeling Prep is unsuccessful (e.g., due to plan restrictions or API key issues), the toolkit automatically switches to Yahoo Finance as a secondary source.** To disable this fallback behavior and exclusively use Financial Modeling Prep, set `enforce_source="FinancialModelingPrep"` during Toolkit initialization.
+
+Prefer a conversational interface over writing Python? Run the one-line setup wizard and it will configure your AI client automatically, **no local installation or Python knowledge required**:
+
+```
+uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
+```
+
+Supports Claude Desktop, Claude Code, GitHub Copilot (VS Code), Cursor, Windsurf, and Gemini. See the [MCP Server section](#mcp-server) below for more details.
 
 ## How-To Guides for the FinanceToolkit
 
@@ -203,7 +215,7 @@ value_at_risk = companies.risk.get_value_at_risk(period="weekly")
 ichimoku_cloud = companies.technicals.get_ichimoku_cloud()
 
 # a Fixed Income example
-corporate_bond_yields = companies.fixed_income.get_ice_bofa_effective_yield()
+corporate_bond_yields = companies.fixedincome.get_ice_bofa_effective_yield()
 
 # an Economics example
 unemployment_rates = companies.economics.get_unemployment_rate()
@@ -395,6 +407,30 @@ The table below shows one of the functionalities of the Portfolio Notebook but i
 In which the weights and returns can be depicted as follows:
 
 ![Portfolio](https://github.com/user-attachments/assets/a5e05df5-a76a-42fa-bb30-f640cd48da62)
+
+## MCP Server
+
+The Finance Toolkit is available as an **MCP (Model Context Protocol) Server**, exposing 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports MCP. This includes Claude Desktop & Code, GitHub Copilot (VS Code), Cursor, Windsurf, and Gemini. Once configured, you simply ask questions in plain English and the AI fetches live financial data on your behalf — no copy-pasting, no switching between apps.
+
+The server consolidates the entire Finance Toolkit surface into a small number of categorical master tools (e.g. `get_valuation_ratios`, `get_profitability_ratios`, `get_momentum_indicators`) so that the AI can discover and call the right metric without being overwhelmed by hundreds of individual function signatures.
+
+### Setup
+
+The installation process is designed to be as seamless as possible. Run the one-line setup wizard:
+
+```
+uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
+```
+
+The wizard uses [uv](https://docs.astral.sh/uv/getting-started/installation/), a fast Python package manager. If you don't have it yet, install it first (takes about 30 seconds). Once running, the wizard will ask for your FinancialModelingPrep API key, let you select which clients to configure (you can pick multiple), and optionally install a SKILL.md analyst instructions file that guides the AI on how to interpret Finance Toolkit results.
+
+After the wizard completes, restart your AI client and the Finance Toolkit tools will appear. For full installation details, manual setup instructions, and client-specific configuration files, see the [MCP Documentation](https://github.com/JerBouma/FinanceToolkit/blob/main/MCP.md).
+
+See an example of the Finance Toolkit MCP server in action in Claude Desktop below:
+
+<video src="/_pages/financetoolkit/examples/Demonstration-of-the-Finance-Toolkit-MCP.mp4" width="100%" controls>
+  Your browser does not support the video tag.
+</video>
 
 # Questions & Answers
 

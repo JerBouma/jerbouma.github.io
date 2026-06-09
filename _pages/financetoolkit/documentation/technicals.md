@@ -94,6 +94,7 @@ Calculate the McClellan Oscillator for a given price series.
  The formula is a follows:
  
 - McClellan Oscillator = EMA(Advancers) - EMA(Decliners)
+ Also known as: McClellan oscillator, market breadth.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -138,6 +139,7 @@ Calculate the Advancers/Decliners ratio for a given price series.
  The formula is a follows:
  
 - Advancers/Decliners = Advancers / Decliners
+ Also known as: advance decline ratio, market breadth.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -180,6 +182,7 @@ Calculate the On
  The formula is a follows:
  
 - OBV = Previous OBV + Current Volume if Close > Previous Close
+ Also known as: OBV, volume momentum.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -219,6 +222,8 @@ Calculate the Accumulation/Distribution Line for a given price series.
  The formula is a follows:
  
 - ADL = Previous ADL + Current ADL
+ Also known as: ADL, Chaikin ADL, volume
+-price trend.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -264,6 +269,7 @@ Calculate the Chaikin Oscillator for a given price series.
 - Chaikin Oscillator = EMA(short
 -window ADL) - EMA(long
 -window ADL)
+ Also known as: Chaikin oscillator, volume accumulation.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -344,8 +350,9 @@ Calculate the Money Flow Index (MFI) for a given price series.
  The Money Flow Index is a momentum indicator that measures the strength and direction of money flowing in and out of a security by considering both price and volume.
  The formula is a follows:
  
-- MFI = 100 
-- (100 / (1 + (positive_money_flow / negative_money_flow)))
+- MFI = 100 - (100 / (1 + (positive_money_flow / negative_money_flow)))
+ Also known as: MFI, volume
+-weighted RSI.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -389,6 +396,7 @@ Calculate the Williams Percent R (Williams %R) for a given price series.
  The formula is a follows:
  
 - Williams %R = (Highest High - Close) / (Highest High - Lowest Low) * -100
+ Also known as: Williams percent R, overbought oversold oscillator.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -431,6 +439,7 @@ Calculate the Aroon Indicator for a given price series.
  The formula is a follows:
  
 - Aroon Up = ((Number of periods) - (Number of periods since highest high)) / (Number of periods) * 100
+ Also known as: Aroon Up, Aroon Down, trend strength.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -472,6 +481,7 @@ Calculate the Commodity Channel Index (CCI) for a given price series.
  The formula is a follows:
  
 - CCI = (Typical Price - SMA(Typical Price)) / (constant * Mean Deviation)
+ Also known as: CCI, cyclical trend indicator.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -516,6 +526,7 @@ Calculate the Relative Vigor Index (RVI) for a given price series.
  The formula is a follows:
  
 - RVI = SMA(Upward Change) / (SMA(Upward Change) + SMA(Downward Change))
+ Also known as: RVI, vigor index.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -558,6 +569,7 @@ Calculate the Force Index for a given price series.
  The formula is a follows:
  
 - Force Index = SMA(Periods) * (Close - Close(1))
+ Also known as: price volume trend indicator.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -603,6 +615,7 @@ Calculate the Ultimate Oscillator for a given price series.
  The formula is a follows:
  
 - Ultimate Oscillator = 100 * ((4 * SMA(Periods)) / (SMA(Periods) + SMA(Periods) + SMA(Periods)))
+ Also known as: UO, ultimate momentum oscillator.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -651,6 +664,7 @@ Calculate the Percentage Price Oscillator (PPO) for a given price series.
 - PPO = ((Long
 -term EMA - Short
 -term EMA) / Short-term EMA) * 100
+ Also known as: PPO, price oscillator.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -696,8 +710,8 @@ Calculate the Detrended Price Oscillator (DPO) for a given price series.
 -term trends from prices.
  The formula is a follows:
  
-- DPO = Close 
-- SMA(Close, (Number of Periods / 2) + 1)
+- DPO = Close - SMA(Close, (Number of Periods / 2) + 1)
+ Also known as: DPO, detrended price oscillator.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -740,6 +754,7 @@ Calculate the Average Directional Index (ADX) for a given price series.
  The formula is a follows:
  
 - ADX = SMA(DMI) / (SMA(DMI) + SMA(DMI))
+ Also known as: ADX, trend strength indicator.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -782,6 +797,7 @@ Calculate the Chande Momentum Oscillator (CMO) for a given price series.
  The formula is a follows:
  
 - CMO = ((Sum of Upward Change) - (Sum of Downward Change)) / ((Sum of Upward Change) + (Sum of Downward Change))
+ Also known as: CMO, Chande momentum.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -824,6 +840,7 @@ Calculate the Ichimoku Cloud indicator for a given price series.
  The formula is a follows:
  
 - Conversion Line = (Highest High + Lowest Low) / 2
+ Also known as: Ichimoku Kinko Hyo, cloud indicator.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -872,6 +889,7 @@ Calculate the Stochastic Oscillator indicator for a given price series.
  
 - %K = 100 * ((Close - Lowest Low) / (Highest High - Lowest Low)) 
 - %D = SMA(%K)
+ Also known as: stochastic oscillator, percent K, percent D.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -921,6 +939,7 @@ Calculate the Moving Average Convergence Divergence (MACD) indicator for a given
 -term EMA - Long
 -term EMA 
 - Signal Line = SMA(MACD Line)
+ Also known as: MACD, momentum indicator.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -968,6 +987,7 @@ Calculate the Relative Strength Index (RSI) indicator for a given price series.
  The formula is a follows:
  
 - RSI = 100 - (100 / (1 + RS))
+ Also known as: RSI, momentum oscillator, overbought, oversold.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1010,6 +1030,7 @@ Calculate the Balance of Power (BOP) indicator for a given price series.
  The formula is a follows:
  
 - BOP = (Close - Open) / (High - Low)
+ Also known as: BOP, bull bear power.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1089,6 +1110,7 @@ Calculate the Moving Average (MA) for a given price series.
  The formula is a follows:
  
 - MA = (Sum of Prices) / (Number of Prices)
+ Also known as: SMA, simple moving average, MA.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1132,6 +1154,7 @@ Calculate the Exponential Moving Average (EMA) for a given price series.
  The formula is a follows:
  
 - EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
+ Also known as: EMA.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1175,6 +1198,7 @@ Calculate the Double Exponential Moving Average (DEMA) for a given price series.
  The formula is a follows:
  
 - EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
+ Also known as: DEMA, double EMA.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1221,6 +1245,7 @@ Calculate the Trix (Triple Exponential Moving Average) for a given price series.
 - EMA2 = EMA(EMA1, Window) 
 - EMA3 = EMA(EMA2, Window) 
 - TRIX = 100 * ((EMA3 - EMA3[-1]) / EMA3[-1])
+ Also known as: triple smoothed EMA, rate of change oscillator.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1266,6 +1291,7 @@ Calculate the Bollinger Bands for a given price series.
 - Middle Band = SMA(Close, Window) 
 - Upper Band = Middle Band + (Num Std Dev * Std Dev) 
 - Lower Band = Middle Band - (Num Std Dev * Std Dev)
+ Also known as: Bollinger Bands, BB, volatility bands, price channels.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1311,6 +1337,7 @@ Calculate the Triangular Moving Average (TMA) for a given price series.
  The formula is a follows:
  
 - TMA = SMA(SMA(Close, Window), Window)
+ Also known as: TMA, triangular MA.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1357,6 +1384,7 @@ Retrieves the support and resistance levels for the specified period and assets.
  
 - Looking for Peaks and Valleys: The function looks at the stock prices and finds the high points (peaks) and low points (valleys) over time. 
 - Grouping Similar Peaks and Valleys: Sometimes, prices will stop at similar points multiple times. The function groups these similar peaks and valleys together to identify key resistance and support levels.
+ Also known as: support levels, resistance levels, pivot points.
 
 **Args:**
  - <u>sensitivity (float, optional):</u> The sensitivity parameter to determine the significance of the peaks
@@ -1438,6 +1466,7 @@ Calculate the True Range (TR) for a given price series.
  The formula is a follows:
  
 - TR = max(high - low, abs(high - previous_close), abs(low - previous_close))
+ Also known as: TR, true range.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1479,6 +1508,7 @@ Calculate the Average True Range (ATR) of a given price series.
  
 - TR = max(high - low, abs(high - previous_close), abs(low - previous_close)) 
 - ATR = EMA(TR, Window)
+ Also known as: ATR, volatility indicator.
 
 **Args:**
  - <u>period (str):</u> Period for which to calculate the ATR.
@@ -1499,7 +1529,7 @@ Calculate the Average True Range (ATR) of a given price series.
  Formula:
  The Average True Range (ATR) is calculated using the following steps:
  1. Calculate the True Range (TR) for each period:
- - True Range (TR) = max(high - low, abs(high - previous_close), abs(low - previous_close))
+ - True Range (TR) = max(high — low, abs(high — previous_close), abs(low — previous_close))
  2. Calculate the Average True Range (ATR) over the specified window:
  - ATR = EMA(TR, window), where EMA is the Exponential Moving Average.
 
@@ -1524,8 +1554,7 @@ Calculate the Keltner Channels for a given price series.
  The Keltner Channels consist of three lines: 
 - Upper Channel Line = Exponential Moving Average (EMA) of High Prices + ATR * ATR Multiplier 
 - Middle Channel Line = Exponential Moving Average (EMA) of Closing Prices 
-- Lower Channel Line = Exponential Moving Average (EMA) of Low Prices 
-- ATR * ATR Multiplier
+- Lower Channel Line = Exponential Moving Average (EMA) of Low Prices - ATR * ATR Multiplier
  The formula is a follows:
  
 - EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA 
@@ -1533,6 +1562,8 @@ Calculate the Keltner Channels for a given price series.
 - Upper Channel Line = EMA(High, Window) + ATR * ATR Multiplier 
 - Middle Channel Line = EMA(Close, Window) 
 - Lower Channel Line = EMA(Low, Window) - ATR * ATR Multiplier
+ Also known as: ATR
+-based bands, volatility channels.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.

@@ -24,7 +24,7 @@ pip install financetoolkit -U
 
 ## toolkit
 Converts the Portfolio to a Finance Toolkit object.
- This method converts the Portfolio object to a Finance Toolkit object, enabling the use of the Toolkit's 150+ financial metrics and indicators for the portfolio's assets.
+ This method converts the Portfolio object to a Finance Toolkit object, enabling the use of the Toolkit's 200+ financial metrics and indicators for the portfolio's assets.
  Next to the historical data, the portfolio weights are also loaded in the Toolkit class. This, together with the "Portfolio" ticker, enables the possibility to calculate any Toolkit metric for all assets in the portfolio in combination with the Portfolio itself which is a weighted average of other results based on the portfolio weights over time.
 
 
@@ -79,8 +79,8 @@ Read and consolidate cash flow data from Excel or CSV files into a single DataFr
  If None, defaults to the configuration setting.
  - <u>date_column (list[str] | None):</u> List of column names for date information.
  Defaults to configuration settings.
- - <u>date_format (str | None):</u> The format for date columns, specified as a string.
- Defaults to configuration.
+ - <u>date_format_options (list[str] | None):</u> List of date format strings to attempt when parsing
+ date columns (e.g. ['%Y-%m-%d', '%d/%m/%Y']). Defaults to configuration.
  - <u>name_columns (list[str] | None):</u> List of column names for transaction descriptions.
  Defaults to configuration.
  - <u>ticker_columns (list[str] | None):</u> List of column names for asset tickers.

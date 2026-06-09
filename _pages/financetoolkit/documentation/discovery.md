@@ -24,9 +24,12 @@ pip install financetoolkit -U
 
 ## search_instruments
 The search instruments function allows you to search for a company or financial instrument by name. It returns a dataframe with all the symbols that match the query.
+ Also known as: find companies, lookup stocks, ticker search, instrument search.
 
 **Args:**
  - <u>query (str):</u> A query to search for, e.g. 'META'.
+ - <u>search_method (str, optional):</u> The field to search against. Valid options are 'symbol', 'name',
+ 'cik', 'cusip', and 'isin'. Defaults to 'name'.
 
  **Returns:**
  pd.DataFrame: A dataframe with all the symbols that match the query.
@@ -63,6 +66,7 @@ Screen stocks based on a set of criteria. This can be useful to find companies t
 - Volume (volume_higher, volume_lower) 
 - Dividend (dividend_higher, dividend_lower)
  Note that the limit is 1000 companies. Thus if you hit the 1000, it is recommended to narrow down your search to prevent companies from being excluded simply because of this limit.
+ Also known as: filter stocks, financial criteria screener.
 
 **Args:**
  - <u>market_cap_higher (int):</u> The minimum market capitalization of the stock.
@@ -114,7 +118,7 @@ Which returns:
 ---
 
 ## get_stock_list
-The stock list function returns a complete list of all the symbols that can be used in the FinanceToolkit. These are over 60.000 symbols.
+The stock list function returns a complete list of all the symbols that can be used in the Finance Toolkit. These are over 60.000 symbols.
  Returns: pd.DataFrame: A dataframe with all the symbols in the toolkit.
 
 
@@ -341,7 +345,7 @@ Which returns:
 ---
 
 ## get_crypto_list
-The crypto list function returns a complete list of all crypto symbols that can be used in the FinanceToolkit. These are over 4.000 symbols.
+The crypto list function returns a complete list of all crypto symbols that can be used in the Finance Toolkit. These are over 4.000 symbols.
  Returns: pd.DataFrame: A dataframe with all the symbols in the toolkit.
 
 
@@ -374,7 +378,7 @@ Which returns:
 ---
 
 ## get_forex_list
-The forex list function returns a complete list of all forex symbols that can be used in the FinanceToolkit. These are over 1.000 symbols.
+The forex list function returns a complete list of all forex symbols that can be used in the Finance Toolkit. These are over 1.000 symbols.
  Returns: pd.DataFrame: A dataframe with the forex symbols.
 
 
@@ -407,7 +411,7 @@ Which returns:
 ---
 
 ## get_commodity_list
-The commodity list function returns a complete list of all commodity symbols that can be used in the FinanceToolkit.
+The commodity list function returns a complete list of all commodity symbols that can be used in the Finance Toolkit.
  Returns: pd.DataFrame: A dataframe with all the commodities available.
 
 
@@ -440,7 +444,7 @@ Which returns:
 ---
 
 ## get_etf_list
-The etf list function returns a complete list of all etf symbols that can be used in the FinanceToolkit.
+The etf list function returns a complete list of all etf symbols that can be used in the Finance Toolkit.
  Returns: pd.DataFrame: A dataframe with all the etf symbols.
 
 
@@ -473,7 +477,7 @@ Which returns:
 ---
 
 ## get_index_list
-The index list function returns a complete list of all etf symbols that can be used in the FinanceToolkit.
+The index list function returns a complete list of all etf symbols that can be used in the Finance Toolkit.
  Returns: pd.DataFrame: A dataframe with all the index symbols.
 
 

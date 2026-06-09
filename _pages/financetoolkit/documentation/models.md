@@ -31,6 +31,8 @@ Perform a Dupont analysis to breakdown the return on equity (ROE) into its compo
 - Asset Turnover = Revenue / Average Total Assets 
 - Financial Leverage = Average Total Assets / Average Total Equity 
 - ROE = Profit Margin * Asset Turnover * Financial Leverage
+ Also known as: DuPont, ROE decomposition, three
+-factor DuPont.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -73,6 +75,8 @@ Perform an Extended Dupont analysis to breakdown the return on equity (ROE) into
 - ROA = Net Income / Average Total Assets 
 - Total Asset Turnover = Revenue / Average Total Assets 
 - ROE = Profit Margin * Asset Turnover * Financial Leverage * ROA * Total Asset Turnover
+ Also known as: extended DuPont, five
+-factor DuPont, ROE breakdown.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -122,6 +126,7 @@ Calculate the Enterprise Value (EV) breakdown, providing a detailed view of its 
 -term investments.
  The Enterprise Value is calculated as the sum of Market Cap, Debt, Preferred Equity, Minority Interest, minus Cash and Cash Equivalents.
  This breakdown is displayed in a DataFrame for each company and includes the option to show growth values as well.
+ Also known as: EV breakdown, enterprise value components, EV bridge.
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -168,6 +173,7 @@ The Weighted Average Cost of Capital (WACC) is a financial metric used to estima
  Market Value of Equity (E): The market value of equity is the total value of the company's outstanding shares of common stock. It is calculated by multiplying the current stock price by the number of shares outstanding.
  Market Value of Debt (D): The market value of debt is the total value of the company's outstanding debt obligations, such as bonds and loans. It represents the current market price of the debt instruments.
  Total Market Value of Capital (V): The total market value of capital is the sum of the market value of equity and the market value of debt (V = E + D). It represents the total value of the company's financing, both through equity and debt.
+ Also known as: WACC, blended cost of capital, discount rate.
 
 **Args:**
  - <u>show_full_results (bool, optional):</u> Whether to show the full results or just the WACC values.
@@ -207,6 +213,7 @@ Intrinsic value is a fundamental concept in finance and investing that represent
 - Enterprise Value = Sum of Present Value of Cash Flow Projections + Terminal Value 
 - Equity Value = Enterprise Value - Total Debt + Cash and Cash Equivalents 
 - Intrinsic Value = Equity Value / Total Shares Outstanding
+ Also known as: DCF, discounted cash flow, fair value, intrinsic value.
 
 **Args:**
  - <u>growth_rate (float, list or dict):</u> The growth rate to use for the cash flow projections. Can be one number
@@ -251,6 +258,7 @@ The Gordon Growth Model, also known as the Dividend Discount Model (DDM) with Co
  Investors often use the Gordon Growth Model to compare the intrinsic value of a stock with its current market price. If the intrinsic value is higher than the market price, some investors may interpret it as an indication that the stock is undervalued.
  It's important to note that the Gordon Growth Model is based on several assumptions, including the assumption of constant growth in dividends. It is most applicable to mature companies with stable and predictable dividend growth. If a company's dividend growth is expected to fluctuate or if it does not pay dividends, alternative valuation models may be more appropriate.
  The assumption of constant growth of dividends is often unrealistic. In reality, dividends may fluctuate or even be suspended. Therefore, the Gordon Growth Model should be used with caution and in conjunction with other valuation methods.
+ Also known as: Gordon Growth Model, DDM, dividend discount model, GGM.
 
 **Args:**
  - <u>rate_of_return (float):</u> The required rate of return.
@@ -299,6 +307,8 @@ Calculates the Altman Z
 -Score between 1.81 and 2.99 indicates a gray area. 
 - A Z
 -Score of greater than 2.99 indicates a low likelihood of bankruptcy.
+ Also known as: Altman Z
+-score, bankruptcy prediction, financial distress score.
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares outstanding in the calculation. Defaults to True.
@@ -351,15 +361,11 @@ Calculate the Piotroski Score, a comprehensive financial assessment tool that he
  Note that the Piostroski Score has been developed many decades ago and that it is important to always compare the same sectors. E.g. it could be that it is quite normal that a firm issues shares each year which nets a lower score even though it is a normal practice in that sector.
  Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers." Journal of Accounting Research, Vol. 38, No. 3, 1999, pp. 1
 -41.
+ Also known as: Piotroski F
+-score, financial strength, quality score.
+ Returns: pd.DataFrame: DataFrame containing the Piotroski F
+-Score and its components.
 
-**Args:**
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
- - <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
-
- **Returns:**
- pd.DataFrame: DataFrame containing the Piotroski F-Score and its components.
-
- As an example:
 
 ```python
 from financetoolkit import Toolkit
@@ -376,6 +382,7 @@ The Present Value of Growth Opportunities (PVGO) is a financial metric that repr
  The formula is as follows:
  
 - PVGO = Stock Price - Earnings Per Share / Weighted Average Cost of Capital
+ Also known as: PVGO, growth value.
 
 **Args:**
  - <u>calculate_daily (bool, optional):</u> Whether to calculate the PVGO using daily historical data.
