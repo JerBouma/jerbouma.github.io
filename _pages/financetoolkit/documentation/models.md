@@ -31,6 +31,7 @@ Perform a Dupont analysis to breakdown the return on equity (ROE) into its compo
 - Asset Turnover = Revenue / Average Total Assets 
 - Financial Leverage = Average Total Assets / Average Total Equity 
 - ROE = Profit Margin * Asset Turnover * Financial Leverage
+
 Also known as: DuPont, ROE decomposition, three-factor DuPont.
 
 **Args:**
@@ -74,6 +75,7 @@ Perform an Extended Dupont analysis to breakdown the return on equity (ROE) into
 - ROA = Net Income / Average Total Assets 
 - Total Asset Turnover = Revenue / Average Total Assets 
 - ROE = Profit Margin * Asset Turnover * Financial Leverage * ROA * Total Asset Turnover
+
 Also known as: extended DuPont, five-factor DuPont, ROE breakdown.
 
 **Args:**
@@ -119,8 +121,10 @@ Calculate the Enterprise Value (EV) breakdown, providing a detailed view of its 
 - Preferred Equity: The value of preferred shares, if applicable. 
 - Minority Interest: The equity value of a subsidiary with less than 50% ownership. 
 - Cash and Cash Equivalents: The total amount of liquid assets including cash, marketable securities, and short-term investments.
+
  The Enterprise Value is calculated as the sum of Market Cap, Debt, Preferred Equity, Minority Interest, minus Cash and Cash Equivalents.
  This breakdown is displayed in a DataFrame for each company and includes the option to show growth values as well.
+
 Also known as: EV breakdown, enterprise value components, EV bridge.
 
 **Args:**
@@ -162,12 +166,14 @@ The Weighted Average Cost of Capital (WACC) is a financial metric used to estima
 - Cost of Equity = Risk Free Rate + Beta * (Benchmark Return - Risk Free Rate) 
 - Cost of Debt = Interest Expense / Total Debt 
 - WACC = (Market Value of Equity / Total Market Value) * Cost of Equity + (Market Value of Debt / Total Market Value) * Cost of Debt * (1 - Corporate Tax Rate)
+
  Cost of Equity (Re): The cost of equity represents the return required by the company's shareholders or equity investors. It is the cost of raising funds by selling equity (such as common stock). The cost of equity is often estimated using methods like the Capital Asset Pricing Model (CAPM) or the Dividend Discount Model (DDM).
  Cost of Debt (Rd): The cost of debt is the interest rate the company pays on its outstanding debt. It is the cost of raising funds through borrowing, such as issuing bonds or taking loans. The cost of debt is typically based on the prevailing interest rates in the market and the company's creditworthiness.
  Corporate Tax Rate (Tc): The corporate tax rate is the percentage of a company's profits that is paid in taxes. It is used to calculate the tax shield on interest payments. Interest expenses on debt reduce taxable income, and the tax shield represents the tax savings resulting from these deductions.
  Market Value of Equity (E): The market value of equity is the total value of the company's outstanding shares of common stock. It is calculated by multiplying the current stock price by the number of shares outstanding.
  Market Value of Debt (D): The market value of debt is the total value of the company's outstanding debt obligations, such as bonds and loans. It represents the current market price of the debt instruments.
  Total Market Value of Capital (V): The total market value of capital is the sum of the market value of equity and the market value of debt (V = E + D). It represents the total value of the company's financing, both through equity and debt.
+
 Also known as: WACC, blended cost of capital, discount rate.
 
 **Args:**
@@ -207,6 +213,7 @@ Intrinsic value is a fundamental concept in finance and investing that represent
 - Enterprise Value = Sum of Present Value of Cash Flow Projections + Terminal Value 
 - Equity Value = Enterprise Value - Total Debt + Cash and Cash Equivalents 
 - Intrinsic Value = Equity Value / Total Shares Outstanding
+
 Also known as: DCF, discounted cash flow, fair value, intrinsic value.
 
 **Args:**
@@ -248,10 +255,12 @@ The Gordon Growth Model, also known as the Dividend Discount Model (DDM) with Co
  The formula is as follows:
  
 - Intrinsic Value = (Dividends Per Share * (1 + Growth Rate)) / (Rate of Return - Growth Rate)
+
  The formula essentially discounts the future expected dividends to their present value, taking into account the required rate of return and the growth rate. The numerator represents the expected dividend in the next period. The denominator represents the required rate of return minus the growth rate.
  Investors often use the Gordon Growth Model to compare the intrinsic value of a stock with its current market price. If the intrinsic value is higher than the market price, some investors may interpret it as an indication that the stock is undervalued.
  It's important to note that the Gordon Growth Model is based on several assumptions, including the assumption of constant growth in dividends. It is most applicable to mature companies with stable and predictable dividend growth. If a company's dividend growth is expected to fluctuate or if it does not pay dividends, alternative valuation models may be more appropriate.
  The assumption of constant growth of dividends is often unrealistic. In reality, dividends may fluctuate or even be suspended. Therefore, the Gordon Growth Model should be used with caution and in conjunction with other valuation methods.
+
 Also known as: Gordon Growth Model, DDM, dividend discount model, GGM.
 
 **Args:**
@@ -289,11 +298,13 @@ Calculates the Altman Z-Score, a financial metric used to predict the likelihood
 - Market Value to Total Liabilities = Market Value of Equity / Total Liabilities 
 - Sales to Total Assets = Sales / Total Assets 
 - Altman Z-Score = 1.2 * Working Capital to Total Assets + 1.4 * Retained Earnings to Total Assets + 3.3 * EBIT to Total Assets + 0.6 * Market Value to Total Liabilities + 1.0 * Sales to Total Assets
+
  The Altman Z-Score can be interpreted as follows:
  
 - A Z-Score of less than 1.81 indicates a high likelihood of bankruptcy. 
 - A Z-Score between 1.81 and 2.99 indicates a gray area. 
 - A Z-Score of greater than 2.99 indicates a low likelihood of bankruptcy.
+
 Also known as: Altman Z-score, bankruptcy prediction, financial distress score.
 
 **Args:**
@@ -336,16 +347,20 @@ Calculate the Piotroski Score, a comprehensive financial assessment tool that he
 - Operating Cash Flow Criteria: Evaluates the company's ability to generate cash from its operations. 
 - Change in ROA Criteria: Assesses the trend in ROA over time. 
 - Accruals Criteria: Examines the quality of earnings.
+
  2. Leverage, Liquidity, and Operating Efficiency: 
 - Change in Leverage Criteria: Analyzes changes in the company's leverage (debt). 
 - Change in Current Ratio Criteria: Evaluates changes in the current ratio. 
 - Number of Shares Criteria: Assesses the issuance of common shares.
+
  3. Operating Efficiency and Asset Utilization: 
 - Gross Margin Criteria: Examines the company's gross margin, a measure of profitability. 
 - Asset Turnover Ratio Criteria: Evaluates the efficiency of asset utilization and sales generation.
+
  The Piotroski Score is calculated by summing the scores assigned to each of the nine criteria. The maximum possible score is 9, indicating the highest financial strength, while the minimum score is 0, suggesting potential financial weaknesses.
  Note that the Piostroski Score has been developed many decades ago and that it is important to always compare the same sectors. E.g. it could be that it is quite normal that a firm issues shares each year which nets a lower score even though it is a normal practice in that sector.
  Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers." Journal of Accounting Research, Vol. 38, No. 3, 1999, pp. 1-41.
+
 Also known as: Piotroski F-score, financial strength, quality score.
  **Returns:**
  pd.DataFrame: DataFrame containing the Piotroski F-Score and its components.
@@ -366,6 +381,7 @@ The Present Value of Growth Opportunities (PVGO) is a financial metric that repr
  The formula is as follows:
  
 - PVGO = Stock Price - Earnings Per Share / Weighted Average Cost of Capital
+
 Also known as: PVGO, growth value.
 
 **Args:**

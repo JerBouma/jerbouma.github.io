@@ -24,6 +24,7 @@ pip install financetoolkit -U
 
 ## search_instruments
 The search instruments function allows you to search for a company or financial instrument by name. It returns a dataframe with all the symbols that match the query.
+
 Also known as: find companies, lookup stocks, ticker search, instrument search.
 
 **Args:**
@@ -66,6 +67,7 @@ Screen stocks based on a set of criteria. This can be useful to find companies t
 - Volume (volume_higher, volume_lower) 
 - Dividend (dividend_higher, dividend_lower)
  Note that the limit is 1000 companies. Thus if you hit the 1000, it is recommended to narrow down your search to prevent companies from being excluded simply because of this limit.
+
 Also known as: filter stocks, financial criteria screener.
 
 **Args:**

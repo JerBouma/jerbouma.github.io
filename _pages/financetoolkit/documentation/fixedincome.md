@@ -38,7 +38,9 @@ Collect the bond statistics for a given bond which includes the following fields
 - Dollar Duration: The modified duration multiplied by the bond price. 
 - DV01: The dollar value of a 0.01% change in yield to maturity. 
 - Convexity: The second derivative of the bond price with respect to the yield to maturity.
+
  These statistics can be used to evaluate the bond's performance as opposed to other bonds or to estimate the bond's sensitivity to changes in interest rates to be able to apply a hedging strategy.
+
 Also known as: bond data, fixed income statistics.
 
 **Args:**
@@ -102,7 +104,9 @@ Calculates the bond prices for different coupon rates and years to maturity. The
 - r = Yield to maturity per period 
 - n = Number of periods 
 - F = Face value of the bond
+
  The bond price is used to determine the fair value of the bond and to compare the bond's price to its market price to determine if the bond is overvalued or undervalued.
+
 Also known as: PV, bond pricing, discounted cash flows.
 
 **Args:**
@@ -125,7 +129,9 @@ Calculates the bond duration for different coupon rates and years to maturity. I
 - Modified Duration: The Macaulay's duration divided by 1 plus the yield to maturity. 
 - Effective Duration: The percentage change in the bond price for a 1% change in the yield to maturity. 
 - Dollar Duration: The modified duration multiplied by the bond price.
+
  These duration measures can be used to estimate the sensitivity of a bond's price to changes in interest rates as well as to compare the risk of different bonds. The modified duration is particularly useful for estimating the percentage change in the bond price for a 1% change in the yield to maturity. This is also known as the bond's price value of a basis point (PVBP), or the bond's dollar duration (DD) or dollar value of a .01% change (DV01).
+
 Also known as: Macaulay duration, modified duration, bond price sensitivity.
 
 **Args:**
@@ -157,7 +163,9 @@ Calculates the yield to maturity for a bond. The yield to maturity is the intern
 - r = Yield to maturity per period 
 - n = Number of periods 
 - F = Face value of the bond
+
  The goal is to find the yield to maturity that satisfies the equation above. This is done using the Newton-Raphson method which is an iterative method that converges to the root of a function.
+
 Also known as: YTM, bond return to maturity.
 
 **Args:**
@@ -182,7 +190,9 @@ Calculates the derivative price for a fixed income instrument.
  
 - Black Model: A mathematical model used for pricing financial derivatives, its primary applications are for pricing options on future contracts, bond options, interest rate cap and floors, and swaptions. For more information, see: [https://en.wikipedia.org/wiki/Black_model](https://en.wikipedia.org/wiki/Black_model){:target="_blank"} 
 - Bachelier Model: A deviation of the Black Model that is used for pricing future contracts. It is a simple model that assumes the price of the underlying asset follows a normal distribution with constant volatility. This is in contrast to the Black Model which assumes the price of the underlying asset follows a log-normal distribution. For more information, see: [https://en.wikipedia.org/wiki/Bachelier_model](https://en.wikipedia.org/wiki/Bachelier_model){:target="_blank"}
+
  It is possible to alter all parameters within the models, e.g. strike rate, volatility, years to maturity, risk-free rate, notional amount, and whether the holder is the receiver or payer of the derivative. Next to that, you can provide lists of values for the fixed rate, strike rate, volatility, and years to maturity to calculate the derivative price for multiple scenarios outside of the standard sample.
+
 Also known as: bond derivative pricing, fixed income derivative.
 
 **Args:**
@@ -252,10 +262,13 @@ Which returns:
 ## get_government_bond_yield
 Long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
  In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
+
 See Definition: [https://data.oecd.org/interest/long-term-interest-rates.htm](https://data.oecd.org/interest/long-term-interest-rates.htm){:target="_blank"}
  Short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage.
  Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".
+
 See Definition: [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
+
 Also known as: treasury yield, bond yield by maturity.
 
 **Args:**
@@ -350,6 +363,7 @@ This data represents the effective yield of the ICE BofA Indices, When the last 
  
 - Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY](https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY){:target="_blank"} 
 - Maturity: [https://fred.stlouisfed.org/series/BAMLC1A0C13YEY](https://fred.stlouisfed.org/series/BAMLC1A0C13YEY){:target="_blank"}
+
 Also known as: ICE BofA corporate bond yield, credit yield.
 
 **Args:**
@@ -489,6 +503,7 @@ Which returns:
 Euribor rates, short for Euro Interbank Offered Rate, are the interest rates at which a panel of European banks lend funds to one another in the interbank market. These rates are published daily by the European Money Markets Institute (EMMI) and serve as a benchmark for various financial products and contracts, including mortgages, loans, and derivatives, across the Eurozone.
  The Euribor rates are determined for different maturities, typically ranging from overnight to 12 months The most common maturities are 1 month, 3 months, 6 months, and 12 months. Each maturity represents the time period for which the funds are borrowed, with longer maturities generally implying higher interest rates due to increased uncertainty and risk over longer time horizons.
  For more information, see for example: [https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA](https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA){:target="_blank"}
+
 Also known as: euro interbank offered rate, eurozone money market.
 
 **Args:**
@@ -528,10 +543,12 @@ The Governing Council of the ECB sets the key interest rates for the euro area. 
 - Main refinancing operations (refinancing) 
 - Marginal lending facility (lending) 
 - Deposit facility (deposit)
+
  The main refinancing operations (MRO) rate is the interest rate banks pay when they borrow money from the ECB for one week. When they do this, they have to provide collateral to guarantee that the money will be paid back.
  The marginal lending facility rate is the interest rate banks pay when they borrow from the ECB overnight. When they do this, they have to provide collateral, for example securities, to guarantee that the money will be paid back.
  The deposit facility rate is one of the three interest rates the ECB sets every six weeks as part of its monetary policy. The rate defines the interest banks receive for depositing money with the central bank overnight.
  See source: [https://data.ecb.europa.eu/main-figures/](https://data.ecb.europa.eu/main-figures/){:target="_blank"}
+
 Also known as: ECB rates, deposit facility rate.
 
 **Args:**
@@ -586,6 +603,7 @@ Get the Federal Reserve rates as published by the Federal Reserve Bank of New Yo
 - Tri-Party General Collateral Rate (TGCR) 
 - Broad General Collateral Rate (BGCR) 
 - Secured Overnight Financing Rate (SOFR)
+
  The effective federal funds rate (EFFR) is calculated as a volume-weighted median of overnight federal funds transactions reported in the FR 2420 Report of Selected Money Market Rates.
  The overnight bank funding rate (OBFR) is calculated as a volume-weighted median of overnight federal funds transactions, Eurodollar transactions, and the domestic deposits reported as “Selected Deposits” in the FR 2420 Report.
  The TGCR is calculated as a volume-weighted median of transaction-level tri-party repo data collected from the Bank of New York Mellon.
@@ -593,6 +611,7 @@ Get the Federal Reserve rates as published by the Federal Reserve Bank of New Yo
  The SOFR is calculated as a volume-weighted median of transaction-level tri-party repo data collected from the Bank of New York Mellon as well as GCF Repo transaction data and data on bilateral Treasury repo transactions cleared through FICC's DVP service, which are obtained from the U.S. Department of the Treasury's Office of Financial Research (OFR).
  The New York Fed publishes the rates for the prior business day on the New York Fed's website between 8:00 and 9:00 a.m.
  See source: [https://www.newyorkfed.org/markets/reference-rates/](https://www.newyorkfed.org/markets/reference-rates/){:target="_blank"}
+
 Also known as: Fed rates, federal funds rate, FOMC rate.
 
 **Args:**

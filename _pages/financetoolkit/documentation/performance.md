@@ -61,7 +61,9 @@ Calculate the Beta, a measurement that assess the systematic risk of a stock or 
  For a given period, for example monthly, this translates into the following:
  
 - Beta = Monthly Covariance of Asset Returns and Benchmark Returns / Monthly Variance of Benchmark Returns
+
 See Definition: [https://en.wikipedia.org/wiki/Beta_(finance)](https://en.wikipedia.org/wiki/Beta_(finance)){:target="_blank"}
+
 Also known as: market sensitivity, systematic risk.
 
 **Args:**
@@ -101,11 +103,14 @@ CAPM, or the Capital Asset Pricing Model, is a financial model used to estimate 
 - Risk-Free Rate (Rf): This is the theoretical return an investor could earn from an investment with no risk of financial loss. It is typically based on the yield of a government bond. 
 - Market Risk Premium (Rm - Rf): This represents the additional return that investors expect to earn for taking on the risk of investing in the overall market as opposed to a risk-free asset. It is calculated as the difference between the expected return of the market (Rm) and the risk-free rate (Rf). 
 - Beta (β): Beta is a measure of an asset's or portfolio's sensitivity to market movements. It quantifies how much an asset's returns are expected to move in relation to changes in the overall market. A beta of 1 indicates that the asset moves in line with the market, while a beta greater than 1 suggests higher volatility, and a beta less than 1 indicates lower volatility.
+
  The Capital Asset Pricing Model (CAPM) is a widely used financial model that helps in determining the expected return of an asset or portfolio based on its systematic risk and the prevailing risk-free rate in the market. CAPM provides insights into how an asset or investment should be priced in order to offer an appropriate rate of return, given its level of risk compared to the overall market.
  The formula is as follows:
  
 - Capital Asset Pricing Model = Risk Free Rate + Beta * (Benchmark Returns - Risk Free Rate)
+
 See Definition: [https://en.wikipedia.org/wiki/Capital_asset_pricing_model](https://en.wikipedia.org/wiki/Capital_asset_pricing_model){:target="_blank"}
+
 Also known as: CAPM, expected return model.
 
 **Args:**
@@ -142,6 +147,7 @@ Calculates factor exposures for each asset.
  The major difference between the Fama and French Model here is that the correlation is taken as opposed to a Linear Regression in which the R-squared or Slope can be used to understand the exposure to each factor.
  For assessing the exposure or influence of a stock to external factors, it's often preferable to use R-squared (R²) or Beta because it explicitly measures how well the factors explain the stock's returns. A higher R² indicates that the stock's returns are more closely related to the factors, and thus, the factors have a greater influence on the stock's performance.
  However, since the results are closely related and tend to point into the same direction it could be fine to use correlations as well depending on the level of accuracy required.
+
 Also known as: factor exposure, asset correlations.
 
 **Args:**
@@ -175,6 +181,7 @@ Calculates factor correlations between each factor. This is useful to understand
 - Profitability (RMW): Measures the historical excess return of high profitability stocks over low profitability stocks. 
 - Investment (CMA): Quantifies the historical excess return of low investment stocks over high investment stocks.
  Optionally, it is also possible to see the correlation between the risk-free rate and each factor.
+
 Also known as: factor model correlations.
 
 **Args:**
@@ -219,6 +226,7 @@ Calculate Fama and French 5 Factor model scores and residuals for a set of finan
 - Excess Return = Intercept + Slope * Factor Value + Residuals
  So for a given factor, it should hold that the Excess Return equals the entire regression. Note that in this calculation the Excess Return refers to the Asset Return minus the Risk Free Rate as reported in the Fama and French dataset and will not be the same as the defined Excess Return in the historical data given that this is based on the Risk Free Rate defined in the initialization.
  What is relevant to look at is the influence these factors have on each stock and how much each factor explains the stock return. E.g. you will generally see a pretty high influence (Beta or Slope) for the Market Risk Premium (Mkt-RF) factor as this is the main factor that explains the stock return (as also prevalent in the CAPM). The other factors can fluctuate greatly between stocks depending on which stocks you look at.
+
 Also known as: Fama-French model, three-factor model, five-factor model, FF3, FF5.
 
 **Args:**
@@ -262,7 +270,9 @@ Alpha, in a general sense, represents the excess return an investment generates 
  The formula is as follows:
  
 - Alpha = Asset's Actual Return - Benchmark's Actual Return
+
 See Definition: [https://en.wikipedia.org/wiki/Alpha_(finance)](https://en.wikipedia.org/wiki/Alpha_(finance)){:target="_blank"}
+
 Also known as: excess return, outperformance.
 
 **Args:**
@@ -297,7 +307,9 @@ Calculate Jensen's Alpha, a measure of an asset's performance relative to its ex
  The formula is as follows:
  
 - Jensen's Alpha = Asset's Actual Return - [Risk-Free Rate + Beta * (Benchmark Return - Risk-Free Rate)]
+
 See Definition: [https://en.wikipedia.org/wiki/Jensen%27s_alpha](https://en.wikipedia.org/wiki/Jensen%27s_alpha){:target="_blank"}
+
 Also known as: Jensen alpha, risk-adjusted excess return.
 
 **Args:**
@@ -334,7 +346,9 @@ The Treynor Ratio, also known as Treynor's Measure or the Reward-to-Variability 
  The formula is as follows:
  
 - Treynor Ratio = (Portfolio's Return - Risk-Free Rate) / Portfolio Beta
+
 See Definition: [https://en.wikipedia.org/wiki/Treynor_ratio](https://en.wikipedia.org/wiki/Treynor_ratio){:target="_blank"}
+
 Also known as: reward-to-volatility ratio.
 
 **Args:**
@@ -379,7 +393,9 @@ Calculate the Sharpe ratio, a measure of risk-adjusted return that evaluates the
  
 - Sharpe Ratio = Average Rolling Excess Return / Standard Deviation of Rolling Excess Returns
  Note that this is explicitly already subtracts the Risk Free Rate.
+
 See Definition: [https://en.wikipedia.org/wiki/Sharpe_ratio](https://en.wikipedia.org/wiki/Sharpe_ratio){:target="_blank"}
+
 Also known as: risk-adjusted return, reward-to-variability ratio.
 
 **Args:**
@@ -425,6 +441,7 @@ The Sortino Ratio is a financial metric used to assess the risk-adjusted perform
  
 - Sortino Ratio = Average Rolling Excess Return / Rolling Downside Risk
  Note that this is explicitly already subtracts the Risk Free Rate.
+
 See Definition: [https://en.wikipedia.org/wiki/Sortino_ratio](https://en.wikipedia.org/wiki/Sortino_ratio){:target="_blank"}
 
 **Args:**
@@ -459,6 +476,7 @@ toolkit.performance.get_sortino_ratio()
 ## get_ulcer_performance_index
 Calculate the Ulcer Performance Index (UPI), alternatively called Martin ratio, a measure of risk-adjusted return that evaluates the excess return of an investment portfolio or asset per unit of risk taken.
  It can be used to compare volatilities in different stocks or show stocks go into Ulcer territory. Similar to the Sharpe Ratio, a higher UPI is better than a lower one (since investors prefer more return for less risk).
+
 Also known as: UPI, Martin ratio.
 
 **Args:**
@@ -494,7 +512,9 @@ The M2 Ratio, also known as the Modigliani-Modigliani Measure, is a financial me
  The formula is as follows:
  
 - M2 Ratio = (Portfolio's Return - Risk-Free Rate) / Portfolio Standard Deviation
+
 See Definition: [https://en.wikipedia.org/wiki/Modigliani_risk-adjusted_performance](https://en.wikipedia.org/wiki/Modigliani_risk-adjusted_performance){:target="_blank"}
+
 Also known as: Modigliani-Modigliani measure, M2, risk-adjusted performance.
 
 **Args:**
@@ -531,7 +551,9 @@ Tracking Error is a financial metric that quantifies the volatility or dispersio
  The formula is as follows:
  
 - Tracking Error (TE) = Standard Deviation of (Portfolio Returns - Benchmark Returns)
+
 See Definition: [https://en.wikipedia.org/wiki/Tracking_error](https://en.wikipedia.org/wiki/Tracking_error){:target="_blank"}
+
 Also known as: active risk, benchmark deviation.
 
 **Args:**
@@ -572,7 +594,9 @@ The Information Ratio (IR), also known as the Information Coefficient, is a fina
  The formula is as follows:
  
 - Information Ratio (IR) = (Portfolio's Excess Return - Benchmark's Excess Return) / Tracking Error
+
 See Definition: [https://en.wikipedia.org/wiki/Information_ratio](https://en.wikipedia.org/wiki/Information_ratio){:target="_blank"}
+
 Also known as: active return per risk.
 
 **Args:**
@@ -610,6 +634,7 @@ This function calculates the Compound Growth Rate (CGR) for different periods: y
  The formula is as follows:
  
 - CGR = (Final Value / Initial Value) ^ (1 / Number of Periods) - 1
+
 Also known as: CAGR, compound annual growth rate, annualized return.
 
 **Args:**

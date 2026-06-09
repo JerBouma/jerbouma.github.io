@@ -301,6 +301,7 @@ Which returns:
 
 ## get_profile
 Obtain the profile of the specified tickers. These include important metrics such as the beta, market capitalization, currency, isin, industry, and ipo date that give an overall understanding about the company.
+
 Also known as: company description, sector, industry, CEO, employee count.
 
 **Args:**
@@ -355,6 +356,7 @@ Which returns:
 
 ## get_quote
 Get the quote of the specified tickers. These include important metrics such as the price, changes, day low, day high, year low, year high, market capitalization, volume, average volume, open, previous close, earnings per share (EPS), price to earnings ratio (PE), earnings announcement, shares outstanding and timestamp that give an overall understanding about the company.
+
 Also known as: real-time price, current stock price, live quote.
 
 **Args:**
@@ -405,6 +407,7 @@ Get the rating of the specified tickers. These scores and recommendations are ca
 - Debt to Equity (DE) 
 - Price Earnings (PE) 
 - Price to Book (PB)
+
 Also known as: analyst consensus, buy sell hold recommendation.
 
 **Args:**
@@ -444,6 +447,7 @@ Which returns:
 ## get_analyst_estimates
 Obtain analyst estimates regarding revenues, EBITDA, EBIT, Net Income SGA Expenses and EPS. The number of analysts are also reported.
  Note that this information requires a Premium FMP subscription.
+
 Also known as: earnings estimates, revenue estimates, analyst consensus.
 
 **Args:**
@@ -500,6 +504,7 @@ Which returns:
 ## get_earnings_calendar
 Obtain Earnings Calendars for any range of companies. You have the option to obtain the actual dates or to convert to the corresponding quarters.
  Note that this information requires a Premium FMP subscription.
+
 Also known as: earnings dates, earnings schedule, reporting date.
 
 **Args:**
@@ -546,6 +551,7 @@ Which returns:
 ## get_revenue_geographic_segmentation
 Obtain revenue by geographic segmentation (e.g. United States, Europe, Asia).
  Note that this information requires a Premium FMP subscription.
+
 Also known as: revenue by region, geographic revenue breakdown.
 
 **Args:**
@@ -585,6 +591,7 @@ Which returns:
 ## get_revenue_product_segmentation
 Obtain revenue by product segmentation (e.g. iPad, Advertisement, Windows).
  Note that this information requires a Premium FMP subscription.
+
 Also known as: revenue by product, product segment revenue.
 
 **Args:**
@@ -639,8 +646,10 @@ Returns historical data for the specified tickers. This contains the following c
 - Excess Return: The excess return for the period. This is defined as the return minus the a predefined risk free rate. Only calculated when excess_return is True. 
 - Excess Volatility: The excess volatility for the period. This is defined as the volatility of the excess return. Only calculated when excess_return is True. 
 - Cumulative Return: The cumulative return for the period.
+
  If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
  Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
+
 Also known as: OHLCV, price history, open high low close volume.
 
 **Args:**
@@ -707,9 +716,11 @@ Returns intraday historical data for the specified tickers. This contains the fo
 - Return: The return for the period. 
 - Volatility: The volatility for the period. 
 - Cumulative Return: The cumulative return for the period.
+
  Keep in mind that this data is available for a shorter period. This means that the start date is ignored if the difference between the start and end date is bigger than the maximum period.
  If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
  Please note that this functionality is only available through Financial Modeling Prep. Therefore, an api_key is required to use this functionality.
+
 Also known as: tick data, minute data, intraday price history.
 
 **Args:**
@@ -764,7 +775,9 @@ Obtain Dividend Calendars for any range of companies. It includes the following 
 - Record Date: The record date of the dividend. 
 - Payment Date: The payment date of the dividend. 
 - Declaration Date: The declaration date of the dividend.
+
  If a company does not pay any dividend, the function will mention that it was not able to find any dividend data for that company.
+
 Also known as: dividend dates, ex-dividend date, dividend history.
 
 **Args:**
@@ -818,7 +831,9 @@ ESG scores, which stands for Environmental, Social, and Governance scores, are a
 - Social (S): The social component focuses on how a company interacts with its employees, customers, suppliers, and the communities in which it operates. Key factors in the social score include labor practices, diversity and inclusion, human rights, product safety, and community engagement. A strong social score reflects a company's dedication to fostering positive relationships and contributing positively to society.
  
 - Governance (G): Governance examines a company's internal structures, policies, and leadership. It assesses aspects such as board independence, executive compensation, transparency, and the presence of anti-corruption measures. A high governance score signifies strong leadership and a commitment to maintaining high ethical standards and accountability
+
  ESG scores provide investors with a holistic view of a company's sustainability and ethical practices, allowing them to make more informed investment decisions. These scores are increasingly used to identify socially responsible investments and guide capital towards companies that prioritize long-term sustainability and responsible business practices. As the importance of ESG considerations continues to grow, companies are motivated to improve their ESG scores, not only for ethical reasons but also to attract investors who value sustainable and responsible business practices.
+
 Also known as: environmental social governance, sustainability, ESG rating.
 
 **Args:**
@@ -866,6 +881,7 @@ Retrieve statistics about each ticker's historical data. This is especially usef
 - GMT Offset: The GMT offset. 
 - Timezone: The timezone the instrument is traded in. 
 - Exchange Timezone Name: The name of the timezone the instrument is traded in.
+
 Also known as: key statistics over time, historical key metrics.
 
 **Args:**
@@ -903,6 +919,7 @@ Which returns:
 
 ## get_treasury_data
 Retrieve daily, weekly, monthly, quarterly or yearly treasury data. This can be from FinancialModelingPrep or from YahooFinance. FinancialModelingPrep is by far a more extensive dataset containing daily data from 1 month to 30 years. YahooFinance only contains daily data for 5, 10 and 30 years but is a free alternative.
+
 Also known as: US Treasury yields, yield curve, treasury rates.
 
 **Args:**
@@ -942,6 +959,7 @@ This functionality looks at the exchange rates between the currency of the histo
  This function therefore shows the exchange rates that are used to convert the financial statements to the currency of the historical data. The historical market data is quote currency and the financial statements are base currency.
  Note that you can get currency data from any currency as well by supplying the currency as a ticker. For example, if you want to get the exchange rates between USD and EUR you can use USDEUR=X as a ticker.
  Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
+
 Also known as: currency exchange, FX rates, foreign exchange rates.
 
 **Args:**
@@ -999,7 +1017,9 @@ Retrieves the balance sheet statement data for the specified tickers. The balanc
 - Assets: Assets are resources owned by the company that have economic value and can be used to generate revenue. Assets are typically divided into current assets and non-current assets. 
 - Liabilities: Liabilities are obligations that the company owes to external parties. Liabilities are also divided into current liabilities and non-current liabilities. 
 - Shareholders' Equity: Shareholders' equity represents the company's net worth or book value. It is calculated as the difference between the company's assets and liabilities.
+
  Note that the balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. Therefore, trailing results are not available for this statement.
+
 Also known as: assets, liabilities, shareholders equity, financial position.
 
 **Args:**
@@ -1081,6 +1101,7 @@ Which returns:
 ## get_income_statement
 Retrieves the income statement data for the specified tickers. The income statement is a financial statement that shows a company's revenues and expenses over a specific period. It is used to calculate a company's net income.
  The income statement is a financial statement that shows a company's revenues and expenses over a specific period. Therefore, trailing results are available for this statement.
+
 Also known as: profit and loss, revenue, net income, earnings, P&L statement.
 
 **Args:**
@@ -1148,6 +1169,7 @@ Which returns:
 ## get_cash_flow_statement
 Retrieves the cash flow statement data for the specified tickers. The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. It breaks the analysis down to operating, investing and financing activities.
  The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. Therefore, trailing results are available for this statement.
+
 Also known as: operating cash flow, investing activities, financing activities.
 
 **Args:**
@@ -1216,6 +1238,7 @@ Which returns:
 ## get_statistics_statement
 Retrieves the balance, cash and income statistics for the company(s) from the specified source.
  Note that this also obtains the balance sheet statement at the same time given that it's the same API call. This is done to reduce the number of API calls to FinancialModelingPrep.
+
 Also known as: key stats, shares outstanding, float data.
 
 **Args:**
