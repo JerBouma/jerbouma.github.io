@@ -175,10 +175,8 @@ toolkit.technicals.get_advancers_decliners()
 ---
 
 ## get_on_balance_volume
-Calculate the On
--Balance Volume (OBV) for a given price series.
- The On
--Balance Volume (OBV) is a technical indicator that uses volume flow to predict changes in stock price. It accumulates the volume on up days and subtracts the volume on down days. The resulting OBV line provides insights into the buying and selling pressure behind price movements.
+Calculate the On-Balance Volume (OBV) for a given price series.
+ The On-Balance Volume (OBV) is a technical indicator that uses volume flow to predict changes in stock price. It accumulates the volume on up days and subtracts the volume on down days. The resulting OBV line provides insights into the buying and selling pressure behind price movements.
  The formula is a follows:
  
 - OBV = Previous OBV + Current Volume if Close > Previous Close
@@ -222,8 +220,7 @@ Calculate the Accumulation/Distribution Line for a given price series.
  The formula is a follows:
  
 - ADL = Previous ADL + Current ADL
-Also known as: ADL, Chaikin ADL, volume
--price trend.
+Also known as: ADL, Chaikin ADL, volume-price trend.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -260,15 +257,10 @@ toolkit.technicals.get_accumulation_distribution_line()
 
 ## get_chaikin_oscillator
 Calculate the Chaikin Oscillator for a given price series.
- The Chaikin Oscillator is a momentum
--based indicator that combines price and volume to help identify potential trends and reversals in the market. It is calculated as the difference between the 3
--day and 10
--day Accumulation/Distribution Line.
+ The Chaikin Oscillator is a momentum-based indicator that combines price and volume to help identify potential trends and reversals in the market. It is calculated as the difference between the 3-day and 10-day Accumulation/Distribution Line.
  The formula is a follows:
  
-- Chaikin Oscillator = EMA(short
--window ADL) - EMA(long
--window ADL)
+- Chaikin Oscillator = EMA(short-window ADL) - EMA(long-window ADL)
 Also known as: Chaikin oscillator, volume accumulation.
 
 **Args:**
@@ -351,8 +343,7 @@ Calculate the Money Flow Index (MFI) for a given price series.
  The formula is a follows:
  
 - MFI = 100 - (100 / (1 + (positive_money_flow / negative_money_flow)))
-Also known as: MFI, volume
--weighted RSI.
+Also known as: MFI, volume-weighted RSI.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -391,8 +382,7 @@ toolkit.technicals.get_money_flow_index()
 
 ## get_williams_percent_r
 Calculate the Williams Percent R (Williams %R) for a given price series.
- The Williams %R is a momentum indicator that measures the level of the close price relative to the high
--low range over a certain number of periods.
+ The Williams %R is a momentum indicator that measures the level of the close price relative to the high-low range over a certain number of periods.
  The formula is a follows:
  
 - Williams %R = (Highest High - Close) / (Highest High - Lowest Low) * -100
@@ -608,10 +598,7 @@ toolkit.technicals.get_force_index()
 
 ## get_ultimate_oscillator
 Calculate the Ultimate Oscillator for a given price series.
- The Ultimate Oscillator is a momentum oscillator that combines short
--term, mid
--term, and long
--term price momentum into a single value.
+ The Ultimate Oscillator is a momentum oscillator that combines short-term, mid-term, and long-term price momentum into a single value.
  The formula is a follows:
  
 - Ultimate Oscillator = 100 * ((4 * SMA(Periods)) / (SMA(Periods) + SMA(Periods) + SMA(Periods)))
@@ -661,9 +648,7 @@ Calculate the Percentage Price Oscillator (PPO) for a given price series.
  The Percentage Price Oscillator (PPO) is a momentum oscillator that measures the difference between two moving averages as a percentage of the longer moving average.
  The formula is a follows:
  
-- PPO = ((Long
--term EMA - Short
--term EMA) / Short-term EMA) * 100
+- PPO = ((Long-term EMA - Short-term EMA) / Short-term EMA) * 100
 Also known as: PPO, price oscillator.
 
 **Args:**
@@ -705,9 +690,7 @@ toolkit.technicals.get_percentage_price_oscillator()
 
 ## get_detrended_price_oscillator
 Calculate the Detrended Price Oscillator (DPO) for a given price series.
- The Detrended Price Oscillator (DPO) is an indicator that helps identify short
--term cycles by removing longer
--term trends from prices.
+ The Detrended Price Oscillator (DPO) is an indicator that helps identify short-term cycles by removing longer-term trends from prices.
  The formula is a follows:
  
 - DPO = Close - SMA(Close, (Number of Periods / 2) + 1)
@@ -883,8 +866,7 @@ toolkit.technicals.get_ichimoku_cloud()
 
 ## get_stochastic_oscillator
 Calculate the Stochastic Oscillator indicator for a given price series.
- The Stochastic Oscillator is a momentum indicator that shows the location of the close relative to the high
--low range over a set number of periods. It consists of the %K line (fast) and the %D line (slow).
+ The Stochastic Oscillator is a momentum indicator that shows the location of the close relative to the high-low range over a set number of periods. It consists of the %K line (fast) and the %D line (slow).
  The formula is a follows:
  
 - %K = 100 * ((Close - Lowest Low) / (Highest High - Lowest Low)) 
@@ -931,13 +913,10 @@ toolkit.technicals.get_stochastic_oscillator()
 
 ## get_moving_average_convergence_divergence
 Calculate the Moving Average Convergence Divergence (MACD) indicator for a given price series.
- The Moving Average Convergence Divergence (MACD) is a trend
--following momentum indicator that shows the relationship between two moving averages of a security's price. It consists of the MACD line, signal line, and MACD histogram.
+ The Moving Average Convergence Divergence (MACD) is a trend-following momentum indicator that shows the relationship between two moving averages of a security's price. It consists of the MACD line, signal line, and MACD histogram.
  The formula is a follows:
  
-- MACD Line = Short
--term EMA - Long
--term EMA 
+- MACD Line = Short-term EMA - Long-term EMA 
 - Signal Line = SMA(MACD Line)
 Also known as: MACD, momentum indicator.
 
@@ -1067,8 +1046,7 @@ toolkit.technicals.get_balance_of_power()
 ---
 
 ## collect_overlap_indicators
-Calculates and collects various overlap
--based indicators based on the provided data.
+Calculates and collects various overlap-based indicators based on the provided data.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.
@@ -1562,8 +1540,7 @@ Calculate the Keltner Channels for a given price series.
 - Upper Channel Line = EMA(High, Window) + ATR * ATR Multiplier 
 - Middle Channel Line = EMA(Close, Window) 
 - Lower Channel Line = EMA(Low, Window) - ATR * ATR Multiplier
-Also known as: ATR
--based bands, volatility channels.
+Also known as: ATR-based bands, volatility channels.
 
 **Args:**
  - <u>period (str, optional):</u> The time period to consider for historical data.

@@ -87,9 +87,7 @@ Calculate the Black Scholes Model, a mathematical model used to estimate the pri
 - Call Option Price = S * e^(-q * t) * N(d1) - K * e^(-r * t) * N(d2) 
 - Put Option Price = K * e^(-r * t) * N(-d2) - S * e^(-q * t) * N(-d1)
  Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
-Also known as: BSM, Black
--Scholes
--Merton, option pricing model.
+Also known as: BSM, Black-Scholes-Merton, option pricing model.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -160,8 +158,7 @@ Calculate the Implied Volatility (IV) based on the Black Scholes Model and the a
  
 - Implied Volatility = MINIMIZE(Black Scholes Theoretical Price - Actual Option Price)
  To determine the Implied Volatility, the Black Scholes Model is used to calculate the theoretical option price in which sigma (σ) is the only unknown variable. The actual option price is then used to determine the implied volatility by minimizing the difference between the theoretical and actual option price.
-Also known as: IV, option
--implied volatility.
+Also known as: IV, option-implied volatility.
 
 **Args:**
  - <u>expiration_date (str | None, optional):</u> The expiration date to use for the calculation. Defaults to None
@@ -376,8 +373,7 @@ Calculate all Greeks of an option based on the Black Scholes Model. This will re
 - Dual Delta: the actual probability of an option finishing in the money which is the first derivative of option price with respect to strike. 
 - Vega: measures sensitivity to volatility. Vega is the derivative of the option value with respect to the volatility of the underlying asset. 
 - Theta: measures the sensitivity of the value of the derivative to the passage of time, the "time decay." 
-- Rho: measures sensitivity to the interest rate: it is the derivative of the option value with respect to the risk
--free interest rate (for the relevant outstanding term). 
+- Rho: measures sensitivity to the interest rate: it is the derivative of the option value with respect to the risk-free interest rate (for the relevant outstanding term). 
 - Epsilon: measures the percentage change in option value per percentage change in the underlying dividend yield, a measure of the dividend risk. 
 - Lambda: measures the percentage change in option value per percentage change in the underlying price, a measure of leverage, sometimes called gearing. This greek is also sometimes called Omega or Elasticity.
  **Second Order Greeks:**
@@ -982,9 +978,7 @@ Calculate the vanna of an option based on the Black Scholes Model. The Black Sch
 - If Vanna is positive, it indicates that the Delta of the option becomes more positive as both the underlying asset's price and implied volatility increase, and more negative as they both decrease. 
 - If Vanna is negative, it suggests that the Delta of the option becomes more negative as both the underlying asset's price and implied volatility increase, and more positive as they both decrease.
  Note that the vanna of a call option and put option are equal to each other.
-Also known as: delta
--vega cross
--derivative.
+Also known as: delta-vega cross-derivative.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -1129,9 +1123,7 @@ Calculate the vera of an option based on the Black Scholes Model. The Black Scho
 - If Vera is positive, it indicates that the option's Rho is becoming more positive over time. In other words, the option is gaining sensitivity to changes in the risk free rate as time passes. 
 - If Vera is negative, it suggests that the option's Rho is becoming more negative over time. The option is losing sensitivity to changes in the risk free rate as time passes.
  Note that the vera of a call option and put option are equal to each other.
-Also known as: rho
--vega cross
--derivative.
+Also known as: rho-vega cross-derivative.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
@@ -1215,11 +1207,7 @@ toolkit.options.get_veta()
 
 ## get_partial_derivative
 Calculate the partial derivative of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The partial derivative is the rate of change of the option price with respect to the strike price.
- The partial derivative is used in the Breeden
--Litzenberger theorem is used for risk
--neutral valuation and was developed by Fischer Black and Robert Litzenberger in 1978. The theorem states that the price of any derivative security can be calculated by finding the expected value of the derivative under a risk
--neutral measure. The theorem is based on the Black
--Scholes model and the assumption that the underlying asset follows a lognormal distribution. See the paper: [https://www.jstor.org/stable/2352653](https://www.jstor.org/stable/2352653){:target="_blank"}
+ The partial derivative is used in the Breeden-Litzenberger theorem is used for risk-neutral valuation and was developed by Fischer Black and Robert Litzenberger in 1978. The theorem states that the price of any derivative security can be calculated by finding the expected value of the derivative under a risk-neutral measure. The theorem is based on the Black-Scholes model and the assumption that the underlying asset follows a lognormal distribution. See the paper: [https://www.jstor.org/stable/2352653](https://www.jstor.org/stable/2352653){:target="_blank"}
  The formula is as follows:
  
 - Partial Derivative (PD) = e^(-r * t) * (1 / K) * (1 sqrt(2 * pi * volatility ** 2 * t)) * e^(-(1 / (2 * volatility ** 2 * t)) * (ln(S / K) - ((r - q) - (0.5 * volatility ** 2)) * t) ** 2
@@ -1449,8 +1437,7 @@ Calculate the ultima of an option based on the Black Scholes Model. The Black Sc
 - If Ultima is positive, it indicates that the option's vomma is becoming more positive over time. In other words, the option is gaining sensitivity to changes in volatility as time passes. 
 - If Ultima is negative, it suggests that the option's vomma is becoming more negative over time. The option is losing sensitivity to changes in volatility as time passes.
  Note that the ultima of a call option and put option are equal to each other.
-Also known as: third
--order vega.
+Also known as: third-order vega.
 
 **Args:**
  - <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None

@@ -25,13 +25,7 @@ pip install financetoolkit -U
 ## get_gross_domestic_product
 Get the Gross Domestic Product for a variety of countries over time from the OECD. The Gross Domestic Product is the total value of goods produced and services provided in a country during one year.
  The data is available in two forms: compared to the previous year's value or compared to the previous period. The year on year data is the GDP compared to the same quarter in the previous year. The quarter on quarter data is the GDP compared to the previous quarter.
-See Definition: [https://data.oecd.org/gdp/gross
--domestic
--product
--gdp.htm](https://data.oecd.org/gdp/gross
--domestic
--product
--gdp.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/gdp/gross-domestic-product-gdp.htm](https://data.oecd.org/gdp/gross-domestic-product-gdp.htm){:target="_blank"}
  It is also possible to acquire the data from the Global Macro Database (GMDB) source which also provides inflation adjusted data. For more information see: [https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf](https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf){:target="_blank"}
 Also known as: GDP, national income, economic growth.
 
@@ -700,9 +694,7 @@ Which returns:
 ## get_government_debt_to_gdp_ratio
 Get the Government Debt to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Debt to GDP Ratio is the ratio of the total amount of money that a government owes to creditors to the Gross Domestic Product (GDP).
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-Also known as: debt
--to
--GDP ratio, fiscal sustainability.
+Also known as: debt-to-GDP ratio, fiscal sustainability.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
@@ -1040,9 +1032,7 @@ Which returns:
 ## get_government_deficit_to_gdp_ratio
 Get the Government Deficit to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Deficit to GDP Ratio is the ratio of the total amount of money that a government spends more than it collects from taxes and other sources to the Gross Domestic Product (GDP). A government deficit is usually financed by borrowing money.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-Also known as: deficit
--to
--GDP, fiscal balance.
+Also known as: deficit-to-GDP, fiscal balance.
 
 **Args:**
  - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1085,14 +1075,9 @@ Which returns:
 
 ## get_trust_in_government
 Trust in government refers to the share of people who report having confidence in the national government. The data shown reflect the share of respondents answering “yes” (the other response categories being “no”, and “dont know”) to the survey question: “In this country, do you have confidence in… national government?
- Due to small sample sizes, country averages for horizontal inequalities (by age, gender and education) are pooled between 2010
--18 to improve the accuracy of the estimates.
+ Due to small sample sizes, country averages for horizontal inequalities (by age, gender and education) are pooled between 2010-18 to improve the accuracy of the estimates.
  The sample is ex ante designed to be nationally representative of the population aged 15 and over. This indicator is measured as a percentage of all survey respondents.
-See Definition: [https://data.oecd.org/gga/trust
--in
--government.htm](https://data.oecd.org/gga/trust
--in
--government.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/gga/trust-in-government.htm](https://data.oecd.org/gga/trust-in-government.htm){:target="_blank"}
 Also known as: political trust, institutional trust.
 
 **Args:**
@@ -1190,8 +1175,7 @@ Which returns:
 ## get_inflation_rate
 Inflation Rate is the percentage change in the Consumer Price Index (CPI) from one period to another. It is a measure of the rate of price increases in the economy.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-Also known as: CPI
--based inflation, price increases, consumer prices.
+Also known as: CPI-based inflation, price increases, consumer prices.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1230,13 +1214,7 @@ Which returns:
 ## get_consumer_confidence_index
 This consumer confidence indicator provides an indication of future developments of households consumption and saving, based upon answers regarding their expected financial situation, their sentiment about the general economic situation, unemployment and capability of savings.
  An indicator above 100 signals a boost in the consumers’ confidence towards the future economic situation, as a consequence of which they are less prone to save, and more inclined to spend money on major purchases in the next 12 months. Values below 100 indicate a pessimistic attitude towards future developments in the economy, possibly resulting in a tendency to save more and consume less.
-See Definition: [https://data.oecd.org/leadind/consumer
--confidence
--index
--cci.htm](https://data.oecd.org/leadind/consumer
--confidence
--index
--cci.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/leadind/consumer-confidence-index-cci.htm](https://data.oecd.org/leadind/consumer-confidence-index-cci.htm){:target="_blank"}
 Also known as: consumer sentiment, spending outlook.
 
 **Args:**
@@ -1276,13 +1254,7 @@ Which returns:
 ## get_business_confidence_index
 This business confidence indicator provides information on future developments, based upon opinion surveys on developments in production, orders and stocks of finished goods in the industry sector. It can be used to monitor output growth and to anticipate turning points in economic activity.
  Numbers above 100 suggest an increased confidence in near future business performance, and numbers below 100 indicate pessimism towards future performance.
-See Definition: [https://data.oecd.org/leadind/business
--confidence
--index
--bci.htm](https://data.oecd.org/leadind/business
--confidence
--index
--bci.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/leadind/business-confidence-index-bci.htm](https://data.oecd.org/leadind/business-confidence-index-bci.htm){:target="_blank"}
 Also known as: BCI, business sentiment.
 
 **Args:**
@@ -1320,15 +1292,8 @@ Which returns:
 ---
 
 ## get_composite_leading_indicator
-The composite leading indicator (CLI) is designed to provide early signals of turning points in business cycles showing fluctuation of the economic activity around its long term potential level. CLIs show short
--term economic movements in qualitative rather than quantitative terms.
-See Definition: [https://data.oecd.org/leadind/composite
--leading
--indicator
--cli.htm](https://data.oecd.org/leadind/composite
--leading
--indicator
--cli.htm){:target="_blank"}
+The composite leading indicator (CLI) is designed to provide early signals of turning points in business cycles showing fluctuation of the economic activity around its long term potential level. CLIs show short-term economic movements in qualitative rather than quantitative terms.
+See Definition: [https://data.oecd.org/leadind/composite-leading-indicator-cli.htm](https://data.oecd.org/leadind/composite-leading-indicator-cli.htm){:target="_blank"}
 Also known as: CLI, leading economic indicator.
 
 **Args:**
@@ -1365,13 +1330,10 @@ Which returns:
 ---
 
 ## get_house_prices
-In most cases, the nominal house price index covers the sales of newly
--built and existing dwellings, following the recommendations from the RPPI (Residential Property Prices Indices) manual.
+In most cases, the nominal house price index covers the sales of newly-built and existing dwellings, following the recommendations from the RPPI (Residential Property Prices Indices) manual.
  The real house price index is given by the ratio of the nominal house price index to the consumers' expenditure deflator in each country from the OECD national accounts database. Both indices are seasonally adjusted.
  Both are based on an 2015 = 100 as an index.
-See Definition: [https://data.oecd.org/price/housing
--prices.htm](https://data.oecd.org/price/housing
--prices.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/price/housing-prices.htm](https://data.oecd.org/price/housing-prices.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 Also known as: real estate prices, property prices, housing index.
 
@@ -1421,9 +1383,7 @@ Which returns:
 ## get_rent_prices
 The price to rent ratio is the nominal house price index divided by the housing rent price index and can be considered as a measure of the profitability of house ownership.
  This is based on an 2015 = 100 as an index.
-See Definition: [https://data.oecd.org/price/housing
--prices.htm](https://data.oecd.org/price/housing
--prices.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/price/housing-prices.htm](https://data.oecd.org/price/housing-prices.htm){:target="_blank"}
 Also known as: rental prices, housing costs, rent index.
 
 **Args:**
@@ -1468,12 +1428,9 @@ Which returns:
 ## get_share_prices
 Share price indices are calculated from the prices of common shares of companies traded on national or foreign stock exchanges. They are usually determined by the stock exchange, using the closing daily values for the monthly data, and normally expressed as simple arithmetic averages of the daily data.
  A share price index measures how the value of the stocks in the index is changing, a share return index tells the investor what their “return” is, meaning how much money they would make as a result of investing in that basket of shares.
- A price index measures changes in the market capitalisation of the basket of shares in the index whereas a return index adds on to the price index the value of dividend payments, assuming they are re
--invested in the same stocks. Occasionally agencies such as central banks will compile share indices.
+ A price index measures changes in the market capitalisation of the basket of shares in the index whereas a return index adds on to the price index the value of dividend payments, assuming they are re-invested in the same stocks. Occasionally agencies such as central banks will compile share indices.
  This uses 2015 as the base year (= 100)
-See Definition: [https://data.oecd.org/price/share
--prices.htm](https://data.oecd.org/price/share
--prices.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/price/share-prices.htm](https://data.oecd.org/price/share-prices.htm){:target="_blank"}
 Also known as: stock market index, equity index, market performance.
 
 **Args:**
@@ -1518,9 +1475,7 @@ Which returns:
 
 ## get_exchange_rates
 Exchange rates are defined as the price of one country's' currency in relation to another country's currency. This indicator is measured in terms of national currency per US dollar.
-See Definition: [https://data.oecd.org/conversion/exchange
--rates.htm](https://data.oecd.org/conversion/exchange
--rates.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/conversion/exchange-rates.htm](https://data.oecd.org/conversion/exchange-rates.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 Also known as: currency exchange, FX rates, foreign exchange rates.
 
@@ -1570,8 +1525,7 @@ Money Supply is the total amount of money that is in circulation in a country. I
 - M0: The total of all physical currency, plus accounts at the central bank that can be exchanged for physical currency. 
 - M1: The total of all physical currency part of bank reserves + the amount in demand accounts ("checking" or "current" accounts). 
 - M2: M1 + most savings accounts, money market accounts, retail money market mutual funds, and small denomination time deposits. 
-- M3: M2 + large time deposits, institutional money market funds, short
--term repurchase agreements, and other larger liquid assets. 
+- M3: M2 + large time deposits, institutional money market funds, short-term repurchase agreements, and other larger liquid assets. 
 - M4: M3 + all other financial assets.
  Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 Also known as: M1, M2, M3, monetary aggregate.
@@ -1656,25 +1610,11 @@ Which returns:
 ---
 
 ## get_short_term_interest_rate
-Short
--term interest rates are the rates at which short
--term borrowings are effected between financial institutions or the rate at which short
--term government paper is issued or traded in the market. Short
--term interest rates are generally averages of daily rates, measured as a percentage.
- Short
--term interest rates are based on three
--month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".
-See Definition: [https://data.oecd.org/interest/short
--term
--interest
--rates.htm](https://data.oecd.org/interest/short
--term
--interest
--rates.htm){:target="_blank"}
+Short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage.
+ Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".
+See Definition: [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
-Also known as: 3
--month rate, money market rate, short
--term yield.
+Also known as: 3-month rate, money market rate, short-term yield.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1716,22 +1656,11 @@ Which returns:
 ---
 
 ## get_long_term_interest_rate
-Long
--term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long
--term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
- In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long
--term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
-See Definition: [https://data.oecd.org/interest/long
--term
--interest
--rates.htm](https://data.oecd.org/interest/long
--term
--interest
--rates.htm){:target="_blank"}
+Long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
+ In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
+See Definition: [https://data.oecd.org/interest/long-term-interest-rates.htm](https://data.oecd.org/interest/long-term-interest-rates.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
-Also known as: 10
--year yield, government bond rate, long
--term yield.
+Also known as: 10-year yield, government bond rate, long-term yield.
 
 **Args:**
  - <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
@@ -1776,9 +1705,7 @@ Renewable energy is defined as the contribution of renewables to total primary e
  Energy derived from solid biofuels, biogasoline, biodiesels, other liquid biofuels, biogases and the renewable fraction of municipal waste are also included. Biofuels are defined as fuels derived directly or indirectly from biomass (material obtained from living or recently living organisms).
  This includes wood, vegetal waste (including wood waste and crops used for energy production), ethanol, animal materials/wastes and sulphite lyes. Municipal waste comprises wastes produced by the residential, commercial and public service sectors that are collected by local authorities for disposal in a central location for the production of heat and/or power.
  This indicator in percentage of total primary energy supply.
-See Definition: [https://data.oecd.org/energy/renewable
--energy.htm](https://data.oecd.org/energy/renewable
--energy.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/energy/renewable-energy.htm](https://data.oecd.org/energy/renewable-energy.htm){:target="_blank"}
 Also known as: clean energy, green energy, renewable energy share.
 
 **Args:**
@@ -1822,9 +1749,7 @@ Which returns:
 ## get_carbon_footprint
 The carbon footprint is a measure of the total amount of greenhouse gases produced to directly and indirectly support human activities, usually expressed in equivalent tons of carbon dioxide (CO2).
  The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
-See Definition: [https://data.oecd.org/envpolicy/environmental
--tax.htm](https://data.oecd.org/envpolicy/environmental
--tax.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/envpolicy/environmental-tax.htm](https://data.oecd.org/envpolicy/environmental-tax.htm){:target="_blank"}
 Also known as: CO2 emissions, carbon emissions, greenhouse gas.
 
 **Args:**
@@ -1867,9 +1792,7 @@ Which returns:
 The unemployed are people of working age who are without work, are available for work, and have taken specific steps to find work. The uniform application of this definition results in estimates of unemployment rates that are more internationally comparable than estimates based on national definitions of unemployment.
  This indicator is measured in numbers of unemployed people as a percentage of the labour force and it is seasonally adjusted. The labour force is defined as the total number of unemployed people plus those in employment. Data are based on labour force surveys (LFS).
  For European Union countries where monthly LFS information is not available, the monthly unemployed figures are estimated by Eurostat.
-See Definition: [https://data.oecd.org/unemp/unemployment
--rate.htm](https://data.oecd.org/unemp/unemployment
--rate.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/unemp/unemployment-rate.htm](https://data.oecd.org/unemp/unemployment-rate.htm){:target="_blank"}
  It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 Also known as: jobless rate, labor market, unemployment level.
 
@@ -1918,13 +1841,7 @@ Which returns:
 GDP per hour worked is a measure of labour productivity. It measures how efficiently labour input is combined with other factors of production and used in the production process. Labour input is defined as total hours worked of all persons engaged in production. Labour productivity only partially reflects the productivity of labour in terms of the personal capacities of workers or the intensity of their effort.
  The ratio between the output measure and the labour input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organisational and efficiency change, economies of scale).
  This uses 2015 as the base year (= 100)
-See Definition: [https://data.oecd.org/lprdty/gdp
--per
--hour
--worked.htm](https://data.oecd.org/lprdty/gdp
--per
--hour
--worked.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/lprdty/gdp-per-hour-worked.htm](https://data.oecd.org/lprdty/gdp-per-hour-worked.htm){:target="_blank"}
 Also known as: labor productivity, output per worker.
 
 **Args:**
@@ -1965,12 +1882,9 @@ Which returns:
 ---
 
 ## get_income_inequality
-Income is defined as household disposable income in a particular year. It consists of earnings, self
--employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
+Income is defined as household disposable income in a particular year. It consists of earnings, self-employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
  The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
-See Definition: [https://data.oecd.org/inequality/income
--inequality.htm](https://data.oecd.org/inequality/income
--inequality.htm){:target="_blank"}
+See Definition: [https://data.oecd.org/inequality/income-inequality.htm](https://data.oecd.org/inequality/income-inequality.htm){:target="_blank"}
 Also known as: Gini coefficient, income distribution.
 
 **Args:**
@@ -2072,11 +1986,8 @@ Which returns:
 
 ## get_poverty_rate
 The poverty rate is the ratio of the number of people (in a given age group) whose income falls below the poverty line; taken as half the median household income of the total population.
- However, two countries with the same poverty rates may differ in terms of the relative income
--level of the poor.
-See Definition: [https://data.oecd.org/inequality/poverty
--rate.htm](https://data.oecd.org/inequality/poverty
--rate.htm){:target="_blank"}
+ However, two countries with the same poverty rates may differ in terms of the relative income-level of the poor.
+See Definition: [https://data.oecd.org/inequality/poverty-rate.htm](https://data.oecd.org/inequality/poverty-rate.htm){:target="_blank"}
 Also known as: poverty rate, income poverty.
 
 **Args:**

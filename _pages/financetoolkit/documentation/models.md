@@ -31,8 +31,7 @@ Perform a Dupont analysis to breakdown the return on equity (ROE) into its compo
 - Asset Turnover = Revenue / Average Total Assets 
 - Financial Leverage = Average Total Assets / Average Total Equity 
 - ROE = Profit Margin * Asset Turnover * Financial Leverage
-Also known as: DuPont, ROE decomposition, three
--factor DuPont.
+Also known as: DuPont, ROE decomposition, three-factor DuPont.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -75,8 +74,7 @@ Perform an Extended Dupont analysis to breakdown the return on equity (ROE) into
 - ROA = Net Income / Average Total Assets 
 - Total Asset Turnover = Revenue / Average Total Assets 
 - ROE = Profit Margin * Asset Turnover * Financial Leverage * ROA * Total Asset Turnover
-Also known as: extended DuPont, five
--factor DuPont, ROE breakdown.
+Also known as: extended DuPont, five-factor DuPont, ROE breakdown.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -117,13 +115,10 @@ Calculate the Enterprise Value (EV) breakdown, providing a detailed view of its 
  
 - Share Price: The market price per share of the company's stock. 
 - Market Capitalization (Market Cap): The total value of a company's outstanding common and preferred shares. 
-- Debt: The sum of long
--term and short
--term debt on the company's balance sheet. 
+- Debt: The sum of long-term and short-term debt on the company's balance sheet. 
 - Preferred Equity: The value of preferred shares, if applicable. 
 - Minority Interest: The equity value of a subsidiary with less than 50% ownership. 
-- Cash and Cash Equivalents: The total amount of liquid assets including cash, marketable securities, and short
--term investments.
+- Cash and Cash Equivalents: The total amount of liquid assets including cash, marketable securities, and short-term investments.
  The Enterprise Value is calculated as the sum of Market Cap, Debt, Preferred Equity, Minority Interest, minus Cash and Cash Equivalents.
  This breakdown is displayed in a DataFrame for each company and includes the option to show growth values as well.
 Also known as: EV breakdown, enterprise value components, EV bridge.
@@ -207,8 +202,7 @@ Intrinsic value is a fundamental concept in finance and investing that represent
  This functionality uses DCF, or Discounted Cash Flow which is a widely used financial valuation method that allows investors and analysts to estimate the intrinsic value of an investment or business based on its expected future cash flows. It is a fundamental tool in finance and investment analysis, providing a systematic way to assess the present value of future cash flows while considering the time value of money.
  The formula is as follows:
  
-- Cash Flow Projection_t = Cash Flow_t
--1 * (1 + Growth Rate) 
+- Cash Flow Projection_t = Cash Flow_t-1 * (1 + Growth Rate) 
 - Terminal Value = Last Cash Flow Projection * (1 + Perpetual Growth Rate) / (Weighted Average Cost of Capital - Perpetual Growth Rate) 
 - Enterprise Value = Sum of Present Value of Cash Flow Projections + Terminal Value 
 - Equity Value = Enterprise Value - Total Debt + Cash and Cash Equivalents 
@@ -286,9 +280,7 @@ toolkit.models.get_gorden_growth_model(0.20, 0.05)
 ---
 
 ## get_altman_z_score
-Calculates the Altman Z
--Score, a financial metric used to predict the likelihood of a company going bankrupt. The Altman Z
--Score is calculated using several financial ratios, including working capital to total assets, retained earnings to total assets, earnings before interest and taxes (EBIT) to total assets, market value of equity to book value of total liabilities, and sales to total assets.
+Calculates the Altman Z-Score, a financial metric used to predict the likelihood of a company going bankrupt. The Altman Z-Score is calculated using several financial ratios, including working capital to total assets, retained earnings to total assets, earnings before interest and taxes (EBIT) to total assets, market value of equity to book value of total liabilities, and sales to total assets.
  The formula is as follows:
  
 - Working Capital to Total Assets = Working Capital / Total Assets 
@@ -296,19 +288,13 @@ Calculates the Altman Z
 - EBIT to Total Assets = EBIT / Total Assets 
 - Market Value to Total Liabilities = Market Value of Equity / Total Liabilities 
 - Sales to Total Assets = Sales / Total Assets 
-- Altman Z
--Score = 1.2 * Working Capital to Total Assets + 1.4 * Retained Earnings to Total Assets + 3.3 * EBIT to Total Assets + 0.6 * Market Value to Total Liabilities + 1.0 * Sales to Total Assets
- The Altman Z
--Score can be interpreted as follows:
+- Altman Z-Score = 1.2 * Working Capital to Total Assets + 1.4 * Retained Earnings to Total Assets + 3.3 * EBIT to Total Assets + 0.6 * Market Value to Total Liabilities + 1.0 * Sales to Total Assets
+ The Altman Z-Score can be interpreted as follows:
  
-- A Z
--Score of less than 1.81 indicates a high likelihood of bankruptcy. 
-- A Z
--Score between 1.81 and 2.99 indicates a gray area. 
-- A Z
--Score of greater than 2.99 indicates a low likelihood of bankruptcy.
-Also known as: Altman Z
--score, bankruptcy prediction, financial distress score.
+- A Z-Score of less than 1.81 indicates a high likelihood of bankruptcy. 
+- A Z-Score between 1.81 and 2.99 indicates a gray area. 
+- A Z-Score of greater than 2.99 indicates a low likelihood of bankruptcy.
+Also known as: Altman Z-score, bankruptcy prediction, financial distress score.
 
 **Args:**
  - <u>diluted (bool, optional):</u> Whether to use diluted shares outstanding in the calculation. Defaults to True.
@@ -359,12 +345,10 @@ Calculate the Piotroski Score, a comprehensive financial assessment tool that he
 - Asset Turnover Ratio Criteria: Evaluates the efficiency of asset utilization and sales generation.
  The Piotroski Score is calculated by summing the scores assigned to each of the nine criteria. The maximum possible score is 9, indicating the highest financial strength, while the minimum score is 0, suggesting potential financial weaknesses.
  Note that the Piostroski Score has been developed many decades ago and that it is important to always compare the same sectors. E.g. it could be that it is quite normal that a firm issues shares each year which nets a lower score even though it is a normal practice in that sector.
- Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers." Journal of Accounting Research, Vol. 38, No. 3, 1999, pp. 1
--41.
-Also known as: Piotroski F
--score, financial strength, quality score.
- Returns: pd.DataFrame: DataFrame containing the Piotroski F
--Score and its components.
+ Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers." Journal of Accounting Research, Vol. 38, No. 3, 1999, pp. 1-41.
+Also known as: Piotroski F-score, financial strength, quality score.
+ **Returns:**
+ pd.DataFrame: DataFrame containing the Piotroski F-Score and its components.
 
 
 ```python

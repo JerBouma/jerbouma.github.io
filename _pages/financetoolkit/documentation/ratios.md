@@ -59,8 +59,7 @@ toolkit.ratios.collect_all_ratios()
 
 ## collect_custom_ratios
 Calculates all Custom Ratios based on the data provided.
- Note that any of the following characters are considered as operators: +, 
--, *, /, **, %, //, <, >, ==, !=, >=, <=, (, ) using any of the above characters as part of the column naming will result into an error.
+ Note that any of the following characters are considered as operators: +, -, *, /, **, %, //, <, >, ==, !=, >=, <=, (, ) using any of the above characters as part of the column naming will result into an error.
 
 **Args:**
  - <u>custom_ratios (dict):</u> A dictionary containing the custom ratios to calculate.
@@ -305,9 +304,7 @@ Calculate the operating cycle ratio, an efficiency ratio that measures the avera
  The formula is as follows:
  
 - Operating Cycle Ratio = Days of Sales in Inventory + Days of Sales Outstanding
-Also known as: business cycle, cash
--to
--cash cycle.
+Also known as: business cycle, cash-to-cash cycle.
 
 **Args:**
  - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
@@ -412,9 +409,7 @@ dpo_ratios = toolkit.ratios.get_days_of_accounts_payable_outstanding()
 ---
 
 ## get_cash_conversion_cycle
-Calculate the Cash Conversion Cycle, which measures the amount of time it takes for a company to convert its investments in inventory and accounts receivable into cash, while considering the time it takes to pay its accounts payable. This ratio is also known as Cash
--to
--Cash Cycle (C2C) or Net Operating Cycle.
+Calculate the Cash Conversion Cycle, which measures the amount of time it takes for a company to convert its investments in inventory and accounts receivable into cash, while considering the time it takes to pay its accounts payable. This ratio is also known as Cash-to-Cash Cycle (C2C) or Net Operating Cycle.
  The Cash Conversion Cycle (CCC) is an important measure of a company's liquidity management and efficiency in managing its working capital. It takes into account the time it takes to sell inventory, collect payments from customers, and pay suppliers. A shorter CCC indicates that a company is able to quickly convert its investments into cash, which can be a positive sign of efficient operations.
  The formula is as follows:
  
@@ -657,16 +652,12 @@ liquidity_ratios = toolkit.ratios.collect_liquidity_ratios()
 ---
 
 ## get_current_ratio
-Calculate the current ratio, a liquidity ratio that measures a company's ability to pay off its short
--term liabilities with its current assets.
- The current ratio is calculated by dividing a company's current assets by its current liabilities. It indicates whether a company can meet its short
--term obligations using its short
--term assets.
+Calculate the current ratio, a liquidity ratio that measures a company's ability to pay off its short-term liabilities with its current assets.
+ The current ratio is calculated by dividing a company's current assets by its current liabilities. It indicates whether a company can meet its short-term obligations using its short-term assets.
  The formula is as follows:
  
 - Current Ratio = Current Assets / Current Liabilities
-Also known as: short
--term liquidity, working capital ratio.
+Also known as: short-term liquidity, working capital ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -697,16 +688,13 @@ current_ratios = toolkit.ratios.get_current_ratio()
 ---
 
 ## get_quick_ratio
-Calculate the quick ratio (also known as the acid
--test ratio), a more stringent measure of liquidity that excludes inventory from current assets.
+Calculate the quick ratio (also known as the acid-test ratio), a more stringent measure of liquidity that excludes inventory from current assets.
  This ratio is also referred to as the Acid Test Ratio.
- The quick ratio is calculated by subtracting inventory from current assets and then dividing the result by current liabilities. It provides insight into a company's ability to cover its short
--term liabilities using its most liquid assets without relying on inventory.
+ The quick ratio is calculated by subtracting inventory from current assets and then dividing the result by current liabilities. It provides insight into a company's ability to cover its short-term liabilities using its most liquid assets without relying on inventory.
  The formula is as follows:
  
 - Quick Ratio = (Cash and Cash Equivalents + Short Term Investments + Accounts Receivable) / Current Liabilities
-Also known as: acid
--test ratio, liquid ratio.
+Also known as: acid-test ratio, liquid ratio.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -736,10 +724,8 @@ quick_ratios = toolkit.ratios.get_quick_ratio()
 ---
 
 ## get_cash_ratio
-Calculate the cash ratio, a liquidity ratio that measures a company's ability to pay off its short
--term liabilities with its cash and cash equivalents.
- The cash ratio is calculated by dividing the sum of cash and cash equivalents by current liabilities. It provides insight into a company's immediate ability to cover its short
--term obligations using its most liquid assets.
+Calculate the cash ratio, a liquidity ratio that measures a company's ability to pay off its short-term liabilities with its cash and cash equivalents.
+ The cash ratio is calculated by dividing the sum of cash and cash equivalents by current liabilities. It provides insight into a company's immediate ability to cover its short-term obligations using its most liquid assets.
  The formula is as follows:
  
 - Cash Ratio = (Cash and Cash Equivalents + Short Term Investments) / Current Liabilities
@@ -775,8 +761,7 @@ cash_ratios = toolkit.ratios.get_cash_ratio()
 
 ## get_working_capital
 Calculate the working capital, which is the difference between a company's current assets and current liabilities.
- The working capital is calculated by subtracting total current liabilities from total current assets. It represents the company's short
--term financial health and its ability to cover its current obligations using its liquid assets.
+ The working capital is calculated by subtracting total current liabilities from total current assets. It represents the company's short-term financial health and its ability to cover its current obligations using its liquid assets.
  The formula is as follows:
  
 - Working Capital = Current Assets - Current Liabilities
@@ -812,8 +797,7 @@ working_capitals = toolkit.ratios.get_working_capital()
 
 ## get_operating_cash_flow_ratio
 Calculate the operating cash flow ratio, a liquidity ratio that measures a company's ability to pay off its current liabilities with its operating cash flow.
- The operating cash flow ratio is calculated by dividing operating cash flow by current liabilities. It indicates whether a company's operating cash flow is sufficient to cover its short
--term obligations.
+ The operating cash flow ratio is calculated by dividing operating cash flow by current liabilities. It indicates whether a company's operating cash flow is sufficient to cover its short-term obligations.
  The formula is as follows:
  
 - Operating Cash Flow Ratio = Cash Flow from Operations / Current Liabilities
@@ -884,18 +868,12 @@ operating_cash_flow_sales_ratios = toolkit.ratios.get_operating_cash_flow_sales_
 ---
 
 ## get_short_term_coverage_ratio
-Calculate the short
--term coverage ratio, a liquidity ratio that measures a company's ability to pay off its short
--term obligations with its operating cash flow.
- The short
--term coverage ratio is calculated by dividing operating cash flow by short
--term debt. It assesses the company's ability to meet its short
--term obligations using its operating cash flow.
+Calculate the short-term coverage ratio, a liquidity ratio that measures a company's ability to pay off its short-term obligations with its operating cash flow.
+ The short-term coverage ratio is calculated by dividing operating cash flow by short-term debt. It assesses the company's ability to meet its short-term obligations using its operating cash flow.
  The formula is as follows:
  
 - Short Term Coverage Ratio = Cash Flow from Operations / (Accounts Receivable + Inventory - Accounts Payable)
-Also known as: short
--term debt coverage.
+Also known as: short-term debt coverage.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1055,9 +1033,7 @@ net_profit_margin_ratios = toolkit.ratios.get_net_profit_margin()
 ---
 
 ## get_interest_burden_ratio
-Compute the Interest Coverage Ratio, a metric that reveals a company's ability to cover its interest expenses with its pre
--tax profits. This ratio measures the proportion of pre
--tax profits required to pay for interest payments and is crucial in determining a company's financial health.
+Compute the Interest Coverage Ratio, a metric that reveals a company's ability to cover its interest expenses with its pre-tax profits. This ratio measures the proportion of pre-tax profits required to pay for interest payments and is crucial in determining a company's financial health.
  The Interest Coverage Ratio is calculated by dividing the earnings before interest and taxes (EBIT) by the interest expenses. A higher ratio indicates that the company has more earnings to cover its interest expenses, which is generally considered favorable.
  The formula is as follows:
  
@@ -1093,10 +1069,8 @@ interest_coverage_ratios = toolkit.ratios.get_interest_burden_ratio()
 ---
 
 ## get_income_before_tax_profit_margin
-Calculate the Pretax Profit Margin, which is the ratio of a company's pre
--tax profit to its revenue, indicating how much profit a company makes before paying taxes on its earnings.
- The Pretax Profit Margin is calculated by dividing the pre
--tax profit by the revenue. It provides insight into how efficiently a company is able to generate profits from its revenue.
+Calculate the Pretax Profit Margin, which is the ratio of a company's pre-tax profit to its revenue, indicating how much profit a company makes before paying taxes on its earnings.
+ The Pretax Profit Margin is calculated by dividing the pre-tax profit by the revenue. It provides insight into how efficiently a company is able to generate profits from its revenue.
  The formula is as follows:
  
 - Pretax Profit Margin = Income Before Tax / Revenue
@@ -1132,8 +1106,7 @@ pretax_profit_margin = toolkit.ratios.get_income_before_tax_profit_margin()
 
 ## get_effective_tax_rate
 Calculate the effective tax rate, a financial ratio that measures the percentage of pretax income that is paid as taxes.
- The effective tax rate is calculated by dividing the income tax expense by the pre
--tax income.
+ The effective tax rate is calculated by dividing the income tax expense by the pre-tax income.
  The formula is as follows:
  
 - Effective Tax Rate = Income Tax Expense / Income Before Tax
@@ -1383,8 +1356,7 @@ Calculate the net income per earnings before taxes (EBT), a profitability ratio 
  The formula is as follows:
  
 - Net Income per EBT = Net Income / Income Before Tax
-Also known as: net income to pre
--tax income.
+Also known as: net income to pre-tax income.
 
 **Args:**
  - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1955,8 +1927,7 @@ valuation_ratios = toolkit.ratios.collect_valuation_ratios()
 
 ## get_earnings_per_share
 Calculate the earnings per share (EPS), a valuation ratio that measures the amount of net income earned per share of outstanding common stock.
- The earnings per share (EPS) is a widely used financial metric that helps investors understand the profitability of a company on a per
--share basis. It provides insight into the portion of a company's earnings that is allocated to each outstanding share of its common stock. EPS is an important measure for investors and analysts when assessing a company's financial performance and comparing it to other companies.
+ The earnings per share (EPS) is a widely used financial metric that helps investors understand the profitability of a company on a per-share basis. It provides insight into the portion of a company's earnings that is allocated to each outstanding share of its common stock. EPS is an important measure for investors and analysts when assessing a company's financial performance and comparing it to other companies.
  The formula is as follows:
  
 - Earnings per Share (EPS) = (Net Income - Preferred Dividends Paid) / Weighted Average Shares
@@ -1992,9 +1963,7 @@ eps_ratios = toolkit.ratios.get_earnings_per_share()
 
 ## get_revenue_per_share
 Calculate the revenue per share, a valuation ratio that measures the amount of revenue generated per outstanding share of a company's stock.
- The revenue per share is an important metric that provides insight into a company's ability to generate revenue on a per
--share basis. It can help investors understand the company's revenue
--generation efficiency and its overall financial health.
+ The revenue per share is an important metric that provides insight into a company's ability to generate revenue on a per-share basis. It can help investors understand the company's revenue-generation efficiency and its overall financial health.
  The formula is as follows:
  
 - Revenue per Share = Revenue / Weighted Average (Diluted) Shares
@@ -2035,8 +2004,7 @@ Calculate the price earnings ratio (P/E), a valuation ratio that compares a comp
  The formula is as follows:
  
 - Price to Earnings Ratio (P/E) = Share Price / Earnings per Share (EPS)
-Also known as: PE ratio, P/E ratio, price
--earnings ratio, earnings multiple.
+Also known as: PE ratio, P/E ratio, price-earnings ratio, earnings multiple.
 
 **Args:**
  - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
@@ -2065,12 +2033,8 @@ pe_ratio = toolkit.ratios.get_price_to_earnings_ratio()
 ---
 
 ## get_price_to_earnings_growth_ratio
-Calculate the price earnings to growth (PEG) ratio, a valuation metric that measures the ratio of the price
--to
--earnings ratio to earnings growth rate.
- The price
--to
--earnings growth (PEG) ratio provides a more comprehensive valuation measure compared to the P/E ratio alone. It takes into account a company's earnings growth rate, allowing investors to assess whether a stock is overvalued or undervalued relative to its growth prospects.
+Calculate the price earnings to growth (PEG) ratio, a valuation metric that measures the ratio of the price-to-earnings ratio to earnings growth rate.
+ The price-to-earnings growth (PEG) ratio provides a more comprehensive valuation measure compared to the P/E ratio alone. It takes into account a company's earnings growth rate, allowing investors to assess whether a stock is overvalued or undervalued relative to its growth prospects.
  The formula is as follows:
  
 - Price Earnings to Growth Ratio (PEG) = Price Earnings Ratio (P/E) / Growth Rate
@@ -2255,8 +2219,7 @@ capex_per_share = toolkit.ratios.get_capex_per_share()
 
 ## get_dividend_yield
 Calculate the dividend yield ratio, a valuation ratio that measures the amount of dividends distributed per share of stock relative to the stock's price.
- The dividend yield ratio is used by investors to assess the income potential of an investment in a company's stock based on the dividends it pays out. A higher dividend yield can be attractive to income
--seeking investors.
+ The dividend yield ratio is used by investors to assess the income potential of an investment in a company's stock based on the dividends it pays out. A higher dividend yield can be attractive to income-seeking investors.
  The formula is as follows:
  
 - Dividend Yield = Dividends per Share / Share Price
@@ -2685,9 +2648,7 @@ tangible_asset_value = toolkit.ratios.get_tangible_asset_value()
 ---
 
 ## get_net_current_asset_value
-Calculate the net current asset value, a financial metric that represents the total value of a company's current assets minus its current liabilities. It indicates the extent to which a company's short
--term assets exceed its short
--term liabilities.
+Calculate the net current asset value, a financial metric that represents the total value of a company's current assets minus its current liabilities. It indicates the extent to which a company's short-term assets exceed its short-term liabilities.
  The formula is as follows:
  
 - Net Current Asset Value = Total Current Assets - Total Current Liabilities

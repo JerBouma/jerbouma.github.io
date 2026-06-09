@@ -66,8 +66,7 @@ Which returns:
 ---
 
 ## models
-Gives access to the Models module. The Models module is meant to execute well
--known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
+Gives access to the Models module. The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
  See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/models](https://www.jeroenbouma.com/projects/financetoolkit/docs/models){:target="_blank"}
 
 
@@ -96,11 +95,7 @@ Which returns:
 ---
 
 ## options
-This gives access to the Options module. The Options Module is meant to provide Options valuations based on real market data. This includes the Black
--Scholes model and in the future the Binomial model and the Monte Carlo model. It also includes all available first
--order, second
--order and third
--order Greeks such as Delta, Gamma, Theta, Vega, Rho, Charm, Vanna, Vomma, Veta, Speed and Zomma.
+This gives access to the Options module. The Options Module is meant to provide Options valuations based on real market data. This includes the Black-Scholes model and in the future the Binomial model and the Monte Carlo model. It also includes all available first-order, second-order and third-order Greeks such as Delta, Gamma, Theta, Vega, Rho, Charm, Vanna, Vomma, Veta, Speed and Zomma.
  It gives insights in the sensitivity of an option to changes in the underlying asset price, volatility, years to maturity, dividend yilds and interest rates and several derivatives of these sensitivities.
  See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/options](https://www.jeroenbouma.com/projects/financetoolkit/docs/options){:target="_blank"}
 
@@ -175,8 +170,7 @@ Which returns:
 ---
 
 ## performance
-This gives access to the Performance module. The Performance Module is meant to calculate metrics related to the risk
--return relationship. These are things such as Beta, Sharpe Ratio, Sortino Ratio, CAPM, Alpha and the Treynor Ratio.
+This gives access to the Performance module. The Performance Module is meant to calculate metrics related to the risk-return relationship. These are things such as Beta, Sharpe Ratio, Sortino Ratio, CAPM, Alpha and the Treynor Ratio.
  It gives insights in the performance a stock has to e.g. a benchmark that is not easily identified by looking at the raw data. This class is closely related to the Risk class which highlights things such as Value at Risk (VaR) and Maximum Drawdown.
  See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/performance](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance){:target="_blank"}
 
@@ -361,8 +355,7 @@ Which returns:
 
 ## get_quote
 Get the quote of the specified tickers. These include important metrics such as the price, changes, day low, day high, year low, year high, market capitalization, volume, average volume, open, previous close, earnings per share (EPS), price to earnings ratio (PE), earnings announcement, shares outstanding and timestamp that give an overall understanding about the company.
-Also known as: real
--time price, current stock price, live quote.
+Also known as: real-time price, current stock price, live quote.
 
 **Args:**
  - <u>progress_bar (bool, optional):</u> Whether to show a progress bar. Defaults to None.
@@ -772,8 +765,7 @@ Obtain Dividend Calendars for any range of companies. It includes the following 
 - Payment Date: The payment date of the dividend. 
 - Declaration Date: The declaration date of the dividend.
  If a company does not pay any dividend, the function will mention that it was not able to find any dividend data for that company.
-Also known as: dividend dates, ex
--dividend date, dividend history.
+Also known as: dividend dates, ex-dividend date, dividend history.
 
 **Args:**
  - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
@@ -821,15 +813,12 @@ Which returns:
 ## get_esg_scores
 ESG scores, which stands for Environmental, Social, and Governance scores, are a crucial metric used by investors and organizations to assess a company's sustainability and ethical practices. These scores provide valuable insights into a company's performance in three key areas:
  
-- Environmental (E): The environmental component evaluates a company's impact on the planet and its efforts to mitigate environmental risks. It includes factors like carbon emissions, energy efficiency, water management, and waste reduction. A high environmental score indicates a company's commitment to eco
--friendly practices and reducing its ecological footprint.
+- Environmental (E): The environmental component evaluates a company's impact on the planet and its efforts to mitigate environmental risks. It includes factors like carbon emissions, energy efficiency, water management, and waste reduction. A high environmental score indicates a company's commitment to eco-friendly practices and reducing its ecological footprint.
  
 - Social (S): The social component focuses on how a company interacts with its employees, customers, suppliers, and the communities in which it operates. Key factors in the social score include labor practices, diversity and inclusion, human rights, product safety, and community engagement. A strong social score reflects a company's dedication to fostering positive relationships and contributing positively to society.
  
-- Governance (G): Governance examines a company's internal structures, policies, and leadership. It assesses aspects such as board independence, executive compensation, transparency, and the presence of anti
--corruption measures. A high governance score signifies strong leadership and a commitment to maintaining high ethical standards and accountability
- ESG scores provide investors with a holistic view of a company's sustainability and ethical practices, allowing them to make more informed investment decisions. These scores are increasingly used to identify socially responsible investments and guide capital towards companies that prioritize long
--term sustainability and responsible business practices. As the importance of ESG considerations continues to grow, companies are motivated to improve their ESG scores, not only for ethical reasons but also to attract investors who value sustainable and responsible business practices.
+- Governance (G): Governance examines a company's internal structures, policies, and leadership. It assesses aspects such as board independence, executive compensation, transparency, and the presence of anti-corruption measures. A high governance score signifies strong leadership and a commitment to maintaining high ethical standards and accountability
+ ESG scores provide investors with a holistic view of a company's sustainability and ethical practices, allowing them to make more informed investment decisions. These scores are increasingly used to identify socially responsible investments and guide capital towards companies that prioritize long-term sustainability and responsible business practices. As the importance of ESG considerations continues to grow, companies are motivated to improve their ESG scores, not only for ethical reasons but also to attract investors who value sustainable and responsible business practices.
 Also known as: environmental social governance, sustainability, ESG rating.
 
 **Args:**
@@ -1007,10 +996,8 @@ Which returns:
 ## get_balance_sheet_statement
 Retrieves the balance sheet statement data for the specified tickers. The balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. It shows the company's assets, liabilities, and shareholders' equity. The balance sheet statement is divided into three main sections:
  
-- Assets: Assets are resources owned by the company that have economic value and can be used to generate revenue. Assets are typically divided into current assets and non
--current assets. 
-- Liabilities: Liabilities are obligations that the company owes to external parties. Liabilities are also divided into current liabilities and non
--current liabilities. 
+- Assets: Assets are resources owned by the company that have economic value and can be used to generate revenue. Assets are typically divided into current assets and non-current assets. 
+- Liabilities: Liabilities are obligations that the company owes to external parties. Liabilities are also divided into current liabilities and non-current liabilities. 
 - Shareholders' Equity: Shareholders' equity represents the company's net worth or book value. It is calculated as the difference between the company's assets and liabilities.
  Note that the balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. Therefore, trailing results are not available for this statement.
 Also known as: assets, liabilities, shareholders equity, financial position.
@@ -1269,9 +1256,7 @@ Which returns:
 
 ## get_normalization_files
 Copies the normalization files to a folder based on path. By default, this is the path of the 'Downloads' folder.
- This function is relevant if you want to supply your own datasets. See for a proper guide the following notebook: [https://www.jeroenbouma.com/projects/financetoolkit/external
--datasets](https://www.jeroenbouma.com/projects/financetoolkit/external
--datasets){:target="_blank"}
+ This function is relevant if you want to supply your own datasets. See for a proper guide the following notebook: [https://www.jeroenbouma.com/projects/financetoolkit/external-datasets](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets){:target="_blank"}
 
 **Args:**
  - <u>path (str, optional):</u> The path where to save the files to.

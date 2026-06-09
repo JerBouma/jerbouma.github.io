@@ -95,8 +95,7 @@ Which returns:
 ## get_present_value
 Calculates the bond prices for different coupon rates and years to maturity. The bond price is the present value of the bond's future cash flows, which includes the coupon payments and the par value of the bond at maturity. The bond price is calculated using the following formula:
  
-- Bond Price = (C / r) * (1 - (1 + r)^
--n) + F / (1 + r)^n
+- Bond Price = (C / r) * (1 - (1 + r)^-n) + F / (1 + r)^n
  where:
  
 - C = Coupon payment per period 
@@ -151,16 +150,14 @@ Also known as: Macaulay duration, modified duration, bond price sensitivity.
 Calculates the yield to maturity for a bond. The yield to maturity is the internal rate of return of the bond, which is the discount rate that equates the present value of the bond's cash flows to its market price. The yield to maturity is used to estimate the bond's return and to compare the bond's return to other investments.
  The yield to maturity is calculated using the following formula:
  
-- Bond Price = (C / r) * (1 - (1 + r)^
--n) + F / (1 + r)^n
+- Bond Price = (C / r) * (1 - (1 + r)^-n) + F / (1 + r)^n
  where:
  
 - C = Coupon payment per period 
 - r = Yield to maturity per period 
 - n = Number of periods 
 - F = Face value of the bond
- The goal is to find the yield to maturity that satisfies the equation above. This is done using the Newton
--Raphson method which is an iterative method that converges to the root of a function.
+ The goal is to find the yield to maturity that satisfies the equation above. This is done using the Newton-Raphson method which is an iterative method that converges to the root of a function.
 Also known as: YTM, bond return to maturity.
 
 **Args:**
@@ -184,10 +181,8 @@ Calculates the derivative price for a fixed income instrument.
  It is possible to use two different models to calculate the derivative price:
  
 - Black Model: A mathematical model used for pricing financial derivatives, its primary applications are for pricing options on future contracts, bond options, interest rate cap and floors, and swaptions. For more information, see: [https://en.wikipedia.org/wiki/Black_model](https://en.wikipedia.org/wiki/Black_model){:target="_blank"} 
-- Bachelier Model: A deviation of the Black Model that is used for pricing future contracts. It is a simple model that assumes the price of the underlying asset follows a normal distribution with constant volatility. This is in contrast to the Black Model which assumes the price of the underlying asset follows a log
--normal distribution. For more information, see: [https://en.wikipedia.org/wiki/Bachelier_model](https://en.wikipedia.org/wiki/Bachelier_model){:target="_blank"}
- It is possible to alter all parameters within the models, e.g. strike rate, volatility, years to maturity, risk
--free rate, notional amount, and whether the holder is the receiver or payer of the derivative. Next to that, you can provide lists of values for the fixed rate, strike rate, volatility, and years to maturity to calculate the derivative price for multiple scenarios outside of the standard sample.
+- Bachelier Model: A deviation of the Black Model that is used for pricing future contracts. It is a simple model that assumes the price of the underlying asset follows a normal distribution with constant volatility. This is in contrast to the Black Model which assumes the price of the underlying asset follows a log-normal distribution. For more information, see: [https://en.wikipedia.org/wiki/Bachelier_model](https://en.wikipedia.org/wiki/Bachelier_model){:target="_blank"}
+ It is possible to alter all parameters within the models, e.g. strike rate, volatility, years to maturity, risk-free rate, notional amount, and whether the holder is the receiver or payer of the derivative. Next to that, you can provide lists of values for the fixed rate, strike rate, volatility, and years to maturity to calculate the derivative price for multiple scenarios outside of the standard sample.
 Also known as: bond derivative pricing, fixed income derivative.
 
 **Args:**
@@ -206,7 +201,7 @@ Also known as: bond derivative pricing, fixed income derivative.
 
  **Returns:**
  pandas.DataFrame: The Black derivative prices rounded to the specified decimal places.
- pandas.- <u>DataFrame (optional):</u> The Black derivative payoffs rounded to the specified decimal places if include_payoff is True.
+ pandas.DataFrame (optional): The Black derivative payoffs rounded to the specified decimal places if include_payoff is True.
 
  For example:
 
@@ -255,33 +250,12 @@ Which returns:
 ---
 
 ## get_government_bond_yield
-Long
--term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long
--term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
- In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long
--term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
-See Definition: [https://data.oecd.org/interest/long
--term
--interest
--rates.htm](https://data.oecd.org/interest/long
--term
--interest
--rates.htm){:target="_blank"}
- Short
--term interest rates are the rates at which short
--term borrowings are effected between financial institutions or the rate at which short
--term government paper is issued or traded in the market. Short
--term interest rates are generally averages of daily rates, measured as a percentage.
- Short
--term interest rates are based on three
--month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".
-See Definition: [https://data.oecd.org/interest/short
--term
--interest
--rates.htm](https://data.oecd.org/interest/short
--term
--interest
--rates.htm){:target="_blank"}
+Long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
+ In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
+See Definition: [https://data.oecd.org/interest/long-term-interest-rates.htm](https://data.oecd.org/interest/long-term-interest-rates.htm){:target="_blank"}
+ Short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage.
+ Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".
+See Definition: [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
 Also known as: treasury yield, bond yield by maturity.
 
 **Args:**
@@ -323,13 +297,8 @@ Which returns:
 ---
 
 ## get_ice_bofa_option_adjusted_spread
-The ICE BofA Option
--Adjusted Spreads (OASs) are the calculated spreads between a computed OAS index of all bonds in a given maturity and rating category and a spot Treasury curve. An OAS index is constructed using each constituent bond's OAS, weighted by market capitalization.
- The Option
--Adjusted Spread (OAS) is the spread relative to a risk
--free interest rate, usually measured in basis points (bp), that equates the theoretical present value of a series of uncertain cash flows to the market price of a fixed
--income investment. The spread is added to the risk
--free rate to compensate for the uncertainty of the cash flows.
+The ICE BofA Option-Adjusted Spreads (OASs) are the calculated spreads between a computed OAS index of all bonds in a given maturity and rating category and a spot Treasury curve. An OAS index is constructed using each constituent bond's OAS, weighted by market capitalization.
+ The Option-Adjusted Spread (OAS) is the spread relative to a risk-free interest rate, usually measured in basis points (bp), that equates the theoretical present value of a series of uncertain cash flows to the market price of a fixed-income investment. The spread is added to the risk-free rate to compensate for the uncertainty of the cash flows.
  See definitions:
  
 - Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBB](https://fred.stlouisfed.org/series/BAMLC0A4CBBB){:target="_blank"} 
@@ -470,11 +439,8 @@ Which returns:
 ---
 
 ## get_ice_bofa_yield_to_worst
-This data represents the semi
--annual yield to worst of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
- Yield to worst is the lowest potential yield that a bond can generate without the issuer defaulting. The standard US convention for this series is to use semi
--annual coupon payments, whereas the standard in the foreign markets is to use coupon payments with frequencies of annual, semi
--annual, quarterly, and monthly.
+This data represents the semi-annual yield to worst of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
+ Yield to worst is the lowest potential yield that a bond can generate without the issuer defaulting. The standard US convention for this series is to use semi-annual coupon payments, whereas the standard in the foreign markets is to use coupon payments with frequencies of annual, semi-annual, quarterly, and monthly.
  See definitions:
  
 - Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY](https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY){:target="_blank"} 
@@ -565,9 +531,7 @@ The Governing Council of the ECB sets the key interest rates for the euro area. 
  The main refinancing operations (MRO) rate is the interest rate banks pay when they borrow money from the ECB for one week. When they do this, they have to provide collateral to guarantee that the money will be paid back.
  The marginal lending facility rate is the interest rate banks pay when they borrow from the ECB overnight. When they do this, they have to provide collateral, for example securities, to guarantee that the money will be paid back.
  The deposit facility rate is one of the three interest rates the ECB sets every six weeks as part of its monetary policy. The rate defines the interest banks receive for depositing money with the central bank overnight.
- See source: [https://data.ecb.europa.eu/main
--figures/](https://data.ecb.europa.eu/main
--figures/){:target="_blank"}
+ See source: [https://data.ecb.europa.eu/main-figures/](https://data.ecb.europa.eu/main-figures/){:target="_blank"}
 Also known as: ECB rates, deposit facility rate.
 
 **Args:**
@@ -614,36 +578,21 @@ Which returns:
 ---
 
 ## get_federal_reserve_rates
-Get the Federal Reserve rates as published by the Federal Reserve Bank of New York. The federal funds market consists of domestic unsecured borrowings in U.S. dollars by depository institutions from other depository institutions and certain other entities, primarily government
--sponsored enterprises.
+Get the Federal Reserve rates as published by the Federal Reserve Bank of New York. The federal funds market consists of domestic unsecured borrowings in U.S. dollars by depository institutions from other depository institutions and certain other entities, primarily government-sponsored enterprises.
  The following rates are available:
  
 - Effective Federal Funds Rate (EFFR) 
 - Overnight Bank Funding Rate (OBFR) 
-- Tri
--Party General Collateral Rate (TGCR) 
+- Tri-Party General Collateral Rate (TGCR) 
 - Broad General Collateral Rate (BGCR) 
 - Secured Overnight Financing Rate (SOFR)
- The effective federal funds rate (EFFR) is calculated as a volume
--weighted median of overnight federal funds transactions reported in the FR 2420 Report of Selected Money Market Rates.
- The overnight bank funding rate (OBFR) is calculated as a volume
--weighted median of overnight federal funds transactions, Eurodollar transactions, and the domestic deposits reported as “Selected Deposits” in the FR 2420 Report.
- The TGCR is calculated as a volume
--weighted median of transaction
--level tri
--party repo data collected from the Bank of New York Mellon.
- The BGCR is calculated as a volume
--weighted median of transaction
--level tri
--party repo data collected from the Bank of New York Mellon as well as GCF Repo transaction data obtained from the U.S. Department of the Treasury's Office of Financial Research (OFR).
- The SOFR is calculated as a volume
--weighted median of transaction
--level tri
--party repo data collected from the Bank of New York Mellon as well as GCF Repo transaction data and data on bilateral Treasury repo transactions cleared through FICC's DVP service, which are obtained from the U.S. Department of the Treasury's Office of Financial Research (OFR).
+ The effective federal funds rate (EFFR) is calculated as a volume-weighted median of overnight federal funds transactions reported in the FR 2420 Report of Selected Money Market Rates.
+ The overnight bank funding rate (OBFR) is calculated as a volume-weighted median of overnight federal funds transactions, Eurodollar transactions, and the domestic deposits reported as “Selected Deposits” in the FR 2420 Report.
+ The TGCR is calculated as a volume-weighted median of transaction-level tri-party repo data collected from the Bank of New York Mellon.
+ The BGCR is calculated as a volume-weighted median of transaction-level tri-party repo data collected from the Bank of New York Mellon as well as GCF Repo transaction data obtained from the U.S. Department of the Treasury's Office of Financial Research (OFR).
+ The SOFR is calculated as a volume-weighted median of transaction-level tri-party repo data collected from the Bank of New York Mellon as well as GCF Repo transaction data and data on bilateral Treasury repo transactions cleared through FICC's DVP service, which are obtained from the U.S. Department of the Treasury's Office of Financial Research (OFR).
  The New York Fed publishes the rates for the prior business day on the New York Fed's website between 8:00 and 9:00 a.m.
- See source: [https://www.newyorkfed.org/markets/reference
--rates/](https://www.newyorkfed.org/markets/reference
--rates/){:target="_blank"}
+ See source: [https://www.newyorkfed.org/markets/reference-rates/](https://www.newyorkfed.org/markets/reference-rates/){:target="_blank"}
 Also known as: Fed rates, federal funds rate, FOMC rate.
 
 **Args:**

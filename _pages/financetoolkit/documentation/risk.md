@@ -227,9 +227,7 @@ Which returns:
 ## get_maximum_drawdown
 Calculate the Maximum Drawdown (MDD) of an investment portfolio or asset's returns.
  Maximum Drawdown (MDD) is a risk management metric that quantifies the largest historical loss of n investment portfolio or asset experienced over a specified time horizon. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
-Also known as: max drawdown, peak
--to
--trough decline.
+Also known as: max drawdown, peak-to-trough decline.
 
 **Args:**
  - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
@@ -397,11 +395,7 @@ Calculates sigma_2 forecasts.
 - 1)
  For more information about the method, see the following book:
  
-- Finance Compact Plus Band 1, by Yvonne Seler Zimmerman and Heinz Zimmerman; ISBN: 978
--3
--907291
--31
--1
+- Finance Compact Plus Band 1, by Yvonne Seler Zimmerman and Heinz Zimmerman; ISBN: 978-3-907291-31-1
 Also known as: volatility forecast, predicted volatility.
 
 **Args:**
