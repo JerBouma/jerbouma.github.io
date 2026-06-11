@@ -142,7 +142,7 @@ financetoolkit-mcp:
         url: /projects/financetoolkit/mcp#run-the-setup-wizard
       - title: Enter an API Key
         url: /projects/financetoolkit/mcp#enter-your-api-key
-      - title: Select Clients
+      - title: Select your Clients
         url: /projects/financetoolkit/mcp#select-your-clients
       - title: Manual Setup
         url: /projects/financetoolkit/mcp#manual-setup
