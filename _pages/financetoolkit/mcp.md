@@ -43,7 +43,6 @@ Claude Desktop users can install in under a minute via a one-click MCPB bundle â
 [Download the Finance Toolkit MCPB file](https://github.com/JerBouma/FinanceToolkit/releases/latest/download/financetoolkit.mcpb){: .btn .btn--warning .btn--large .align-center target="_blank"}
 
 Then follow these steps:
-
 1. Double-click `financetoolkit.mcpb` which will open Claude Desktop, this will open a prompt whether you want to install the bundle, click "Install".
 2. A prompt will appear asking you to confirm the installation, click "Install" again.
 3. The bundle will ask you to provide a Financial Modeling Prep API key (obtain one [here](https://www.jeroenbouma.com/fmp)) and click "Save".
