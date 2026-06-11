@@ -80,6 +80,26 @@ The Finance Toolkit complements the Finance Database well. By utilizing both, yo
 </div>
 </div>
 
+## [Finance Toolkit MCP](/projects/financetoolkit/mcp)
+
+<div class="row">
+<div markdown="1" class="sixty-column mobile-max-column-width">
+The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the Model Context Protocol (MCP). Once configured, you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators — all in plain English.
+
+The server builds on the same transparent, open-source calculation methods of the Finance Toolkit and consolidates the entire surface into a small number of categorical master tools so that the AI can discover and call the right metric without being overwhelmed by hundreds of individual function signatures.
+
+[View this Project](/projects/financetoolkit/mcp){: .btn .btn--info}
+</div>
+<div markdown="1" class="fourty-column mobile-max-column-width">
+<a href="/projects/financetoolkit/mcp"><img src="/assets/images/projects/FinanceToolkitMCP.jpg" width="400"></a>
+
+[![GitHub Stars](https://img.shields.io/github/stars/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
+[![GitHub Forks](https://img.shields.io/github/forks/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
+[![PyPi Version](https://img.shields.io/pypi/v/financetoolkit)](https://pypi.org/project/financetoolkit/){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/financetoolkit/month)](https://pepy.tech/project/financetoolkit){:target="_blank"}
+</div>
+</div>
+
 ## [Finance Database](/projects/financedatabase)
 
 <div class="row">

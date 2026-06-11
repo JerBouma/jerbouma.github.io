@@ -76,6 +76,7 @@ algolia:
     - _pages/coding/*.md
     - _pages/financedatabase/*.md
     - _pages/financetoolkit/financetoolkit.md
+    - _pages/financetoolkit/mcp.md
     - _pages/openbbterminal/*.md
     - _pages/personalfinance/*.md
     - _pages/thepassiveinvestor/*.md

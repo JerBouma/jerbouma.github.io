@@ -25,8 +25,6 @@ Beyond Equities, it supports Options, Currencies, Cryptocurrencies, ETFs, Mutual
 
 The Finance Toolkit is complemented very well by the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase), a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
 
-**The Finance Toolkit is also available as an [MCP Server](#mcp-server)**, connect it to any AI assistant that supports the Model Context Protocol (Claude, GitHub Copilot, Cursor, Windsurf, and more) and query 200+ financial metrics conversationally. **No Python installation required**, a single command configures your AI client automatically.
-
 <img src="/assets/images/projects/FinanceToolkit.jpg" alt="Finance Toolkit" width="100%"/>
 
 ## Installation
@@ -59,30 +57,6 @@ To be able to get started, you need to obtain an API Key from FinancialModelingP
 Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time. I have chosen FinancialModelingPrep as a source as I find it to be the most transparent, reliable and at an affordable price. I have yet to find a platform offering such low prices for the amount of data offered. When you notice that the data is inaccurate or have any other issue related to the data, note that I simply provide the means to access this data and I am not responsible for the accuracy of the data itself. For this, use [their contact form](https://site.financialmodelingprep.com/contact) or provide the data yourself.
 
 **By default, the Finance Toolkit prioritizes Financial Modeling Prep for data retrieval. If data acquisition from Financial Modeling Prep is unsuccessful (e.g., due to plan restrictions or API key issues), the toolkit automatically switches to Yahoo Finance as a secondary source.** To disable this fallback behavior and exclusively use Financial Modeling Prep, set `enforce_source="FinancialModelingPrep"` during Toolkit initialization.
-
-## MCP Server
-
-The Finance Toolkit is available as an **MCP (Model Context Protocol) Server**, exposing 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports MCP. This includes Claude Desktop & Code, GitHub Copilot (VS Code), Cursor, Windsurf, and Gemini. Once configured, you simply ask questions in plain English and the AI fetches live financial data on your behalf — no copy-pasting, no switching between apps.
-
-The server consolidates the entire Finance Toolkit surface into a small number of categorical master tools (e.g. `get_valuation_ratios`, `get_profitability_ratios`, `get_momentum_indicators`) so that the AI can discover and call the right metric without being overwhelmed by hundreds of individual function signatures.
-
-### Setup
-
-The installation process is designed to be as seamless as possible. Run the one-line setup wizard:
-
-```
-uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
-```
-
-The wizard uses [uv](https://docs.astral.sh/uv/getting-started/installation/), a fast Python package manager. If you don't have it yet, install it first (takes about 30 seconds). Once running, the wizard will ask for your FinancialModelingPrep API key, let you select which clients to configure (you can pick multiple), and optionally install a SKILL.md analyst instructions file that guides the AI on how to interpret Finance Toolkit results.
-
-After the wizard completes, restart your AI client and the Finance Toolkit tools will appear. For full installation details, manual setup instructions, and client-specific configuration files, see the [MCP Documentation](https://github.com/JerBouma/FinanceToolkit/blob/main/MCP.md).
-
-See an example of the Finance Toolkit MCP server in action in Claude Desktop below:
-
-<video src="/_pages/financetoolkit/examples/Demonstration-of-the-Finance-Toolkit-MCP.mp4" width="100%" controls>
-  Your browser does not support the video tag.
-</video>
 
 ## How-To Guides for the FinanceToolkit
 

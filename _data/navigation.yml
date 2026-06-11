@@ -9,6 +9,8 @@ main:
     sublinks:
       - title: "Finance Toolkit"
         url: /projects/financetoolkit
+      - title: "Finance Toolkit MCP"
+        url: /projects/financetoolkit/mcp
       - title: "Finance Database"
         url: /projects/financedatabase
       - title: OpenBB Terminal
@@ -75,7 +77,7 @@ financetoolkit:
   - title: "Installation"
     url: /projects/financetoolkit#installation
   - title: "MCP Server"
-    url: /projects/financetoolkit#mcp-server
+    url: /projects/financetoolkit/mcp
   - title: <font color="#d67f05">Documentation</font>
     url: /projects/financetoolkit/docs
   - title: "How to Guides"
@@ -130,6 +132,62 @@ financetoolkit:
         url: /projects/financetoolkit#understanding-key-economic-indicators
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
+financetoolkit-mcp:
+  - title: <font color="#d67f05">Finance Toolkit</font>
+    url: /projects/financetoolkit
+  - title: Introduction
+    url: /projects/financetoolkit/mcp#site-nav
+  - title: "Installation"
+    url: /projects/financetoolkit/mcp#installation
+    children:
+      - title: Run the Setup Wizard
+        url: /projects/financetoolkit/mcp#run-the-setup-wizard
+      - title: Enter an API Key
+        url: /projects/financetoolkit/mcp#enter-your-api-key
+      - title: Select Clients
+        url: /projects/financetoolkit/mcp#select-your-clients
+      - title: Manual Setup
+        url: /projects/financetoolkit/mcp#manual-setup
+  - title: "Example Conversations"
+    url: /projects/financetoolkit/mcp#example-conversations
+    children:
+      - title: Apple vs Microsoft
+        url: /projects/financetoolkit/mcp#ex-apple-microsoft
+      - title: Bank Solvency
+        url: /projects/financetoolkit/mcp#ex-bank-solvency
+      - title: Chip Momentum
+        url: /projects/financetoolkit/mcp#ex-semiconductor-overbought
+      - title: P/E Comparison
+        url: /projects/financetoolkit/mcp#ex-pe-comparison
+      - title: Tesla Sharpe
+        url: /projects/financetoolkit/mcp#ex-tesla-sharpe
+      - title: Alibaba vs Amazon
+        url: /projects/financetoolkit/mcp#ex-alibaba-amazon
+      - title: Unemployment Rates
+        url: /projects/financetoolkit/mcp#ex-unemployment
+      - title: Amazon WACC
+        url: /projects/financetoolkit/mcp#ex-amazon-wacc
+      - title: NVIDIA RSI
+        url: /projects/financetoolkit/mcp#ex-nvidia-rsi
+      - title: Chip Sustainability
+        url: /projects/financetoolkit/mcp#ex-semiconductor-esg
+  - title: "Available Tools"
+    url: /projects/financetoolkit/mcp#available-tools
+  - title: "Under the Hood"
+    url: /projects/financetoolkit/mcp#under-the-hood
+    children:
+      - title: Modules
+        url: /projects/financetoolkit/mcp#module-overview
+      - title: Startup
+        url: /projects/financetoolkit/mcp#startup-sequence
+      - title: Router Pattern
+        url: /projects/financetoolkit/mcp#the-router-pattern
+      - title: Dispatch
+        url: /projects/financetoolkit/mcp#dispatch-categories
+      - title: Utilities
+        url: /projects/financetoolkit/mcp#utility-tools
+      - title: Setup Wizard
+        url: /projects/financetoolkit/mcp#setup-wizard
 financetoolkit-docs:
   - title: Modules
     children:

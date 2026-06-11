@@ -4897,3 +4897,288 @@ table.highlight {
     }
   }
 }
+// ════════════════════════════════════════════════════════════════════════
+// Finance Toolkit MCP — LLM output example "chat" cards
+// Renders each example prompt/response as a collapsible conversation card:
+// a clickable prompt bar (user) that expands into the assistant's reply.
+// ════════════════════════════════════════════════════════════════════════
+.mcp-chat {
+  position: relative;
+  margin: 14px 0;
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  :root[data-theme="light"] & {
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.07);
+  }
+
+  // accent shimmer along the top edge (mirrors .bento-card)
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+    opacity: 0.6;
+    z-index: 1;
+  }
+
+  &:hover {
+    border-color: var(--card-hover-border);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.26);
+  }
+
+  &[open] { border-color: var(--card-hover-border); }
+}
+
+// ── prompt bar (the clickable summary) ──────────────────────────────────
+.mcp-chat__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  transition: background 0.15s ease;
+
+  &::-webkit-details-marker { display: none; }
+  &:hover { background: color-mix(in srgb, var(--card-bg) 82%, var(--accent-color) 6%); }
+
+  .mcp-chat[open] & { border-bottom: 1px solid var(--card-border); }
+}
+
+.mcp-chat__q {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+// ── avatars (user prompt + assistant reply) ─────────────────────────────
+.mcp-chat__avatar {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  color: #fff;
+
+  &--user { background: linear-gradient(135deg, #0ea5e9, #2563eb); }
+
+  &--ai {
+    width: 22px;
+    height: 22px;
+    font-size: 0.62rem;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  }
+}
+
+// ── model badge ─────────────────────────────────────────────────────────
+.mcp-chat__model {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  white-space: nowrap;
+
+  i { color: var(--accent-color); font-size: 0.7rem; }
+}
+
+// ── toggle chevron ──────────────────────────────────────────────────────
+.mcp-chat__toggle {
+  flex: 0 0 auto;
+  display: inline-flex;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  transition: transform 0.25s ease, color 0.2s ease;
+
+  .mcp-chat[open] & {
+    transform: rotate(180deg);
+    color: var(--accent-color);
+  }
+}
+
+.mcp-chat__bar:hover .mcp-chat__toggle { color: var(--accent-color); }
+
+// ── assistant reply body ────────────────────────────────────────────────
+.mcp-chat__reply {
+  padding: 16px 18px 8px;
+  font-size: 0.9rem;
+
+  > p:first-of-type,
+  > .mcp-chat__reply-tag + p { margin-top: 0; }
+
+  table { font-size: 0.82rem; }
+}
+
+.mcp-chat[open] .mcp-chat__reply {
+  animation: mcpReplyIn 0.28s ease both;
+}
+
+@keyframes mcpReplyIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.mcp-chat__reply-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-color);
+}
+
+// ── mobile ──────────────────────────────────────────────────────────────
+@media (max-width: 600px) {
+  .mcp-chat__model { display: none; }
+  .mcp-chat__q { font-size: 0.86rem; }
+  .mcp-chat__bar { padding: 12px 13px; gap: 10px; }
+  .mcp-chat__reply { padding: 14px 14px 4px; }
+}
+
+// ── Finance Toolkit MCP — manual-config tab group ───────────────────────
+// ── Finance Toolkit MCP — demo video ────────────────────────────────────
+.mcp-video-wrapper {
+  position: relative;
+  margin: 24px 0 32px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.07),
+              0 24px 64px rgba(0, 0, 0, 0.45);
+  transition: box-shadow 0.25s;
+
+  &:hover {
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.14),
+                0 28px 72px rgba(0, 0, 0, 0.55);
+  }
+
+  :root[data-theme="light"] & {
+    border-color: rgba(2, 132, 199, 0.4);
+    box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.07),
+                0 12px 40px rgba(15, 23, 42, 0.14);
+
+    &:hover {
+      box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.14),
+                  0 16px 48px rgba(15, 23, 42, 0.2);
+    }
+  }
+
+  .mcp-demo-video {
+    display: block;
+    width: 100%;
+    background: #000;
+  }
+}
+
+// ── Finance Toolkit MCP — custom expander (replaces native <details>) ────
+.ft-details {
+  margin: 14px 0;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover,
+  &[open] { border-color: var(--card-hover-border); }
+
+  &[open] {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+    :root[data-theme="light"] & { box-shadow: 0 6px 22px rgba(15, 23, 42, 0.06); }
+  }
+
+  > summary {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 13px 16px;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    transition: background 0.15s ease;
+
+    &::-webkit-details-marker { display: none; }
+    &::marker { content: ''; }
+
+    b { font-weight: 600; }
+
+    // leading accent dot
+    &::before {
+      content: '';
+      flex: 0 0 auto;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent);
+    }
+
+    // trailing chevron
+    &::after {
+      content: '\f078';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-left: auto;
+      transition: transform 0.25s ease, color 0.2s ease;
+    }
+
+    &:hover {
+      background: color-mix(in srgb, var(--card-bg) 80%, var(--accent-color) 7%);
+      &::after { color: var(--accent-color); }
+    }
+  }
+
+  &[open] > summary {
+    border-bottom: 1px solid var(--card-border);
+    &::after { transform: rotate(180deg); color: var(--accent-color); }
+  }
+
+  // body padding (margins keep code-block backgrounds tidy)
+  > :not(summary) { margin-left: 16px; margin-right: 16px; }
+  > summary + * { margin-top: 14px; }
+  > :last-child { margin-bottom: 14px; }
+
+  // tables inside read a touch smaller, like the chat cards
+  table { font-size: 0.84rem; }
+}
+
+// Offset anchored MCP cards/sections so they clear the sticky masthead
+.mcp-chat[id],
+#run-the-setup-wizard, #enter-your-api-key, #select-your-clients, #manual-setup,
+#module-overview, #startup-sequence, #the-router-pattern,
+#dispatch-categories, #utility-tools, #setup-wizard {
+  scroll-margin-top: 90px;
+}
