@@ -22,8 +22,6 @@ This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assi
 
 The server consolidates the entire Finance Toolkit surface into a small number of categorical master tools (e.g. `get_valuation_ratios`, `get_profitability_ratios`, `get_momentum_indicators`) so that the AI can discover and call the right metric without being overwhelmed by hundreds of individual function signatures.
 
-See an example of the Finance Toolkit MCP server in action in Claude Desktop below:
-
 <div class="mcp-video-wrapper">
   <video class="mcp-demo-video" autoplay muted playsinline loop
          poster="/assets/images/projects/FinanceToolkitMCP.jpg">
