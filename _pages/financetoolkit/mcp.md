@@ -878,5 +878,18 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("hashchange", revealHashTarget);
   revealHashTarget();
 
+  // Reinforce autoplay: the HTML attribute is a hint browsers can suppress.
+  // Explicit play() covers fresh navigations; canplay covers slow connections;
+  // pageshow covers bfcache (back/forward); click is the last-resort fallback.
+  (function () {
+    var v = document.querySelector(".mcp-demo-video");
+    if (!v) return;
+    function tryPlay() { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    tryPlay();
+    v.addEventListener("canplay", tryPlay);
+    window.addEventListener("pageshow", function (e) { if (e.persisted) tryPlay(); });
+    v.addEventListener("click", tryPlay);
+  })();
+
 });
 </script>
