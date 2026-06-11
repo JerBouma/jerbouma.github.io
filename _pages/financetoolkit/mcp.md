@@ -37,11 +37,11 @@ Claude Desktop users can install in under a minute via a one-click MCPB bundle â
 
 ### <i class="fas fa-robot"></i> Claude Desktop
 {: .mcp-install-heading}
-
+<br>
 **Easiest setup â€” recommended for most users.** When using Claude Desktop, you can make use of the related MCPB file. Download it and follow the five steps below to get up and running in under a minute, no terminal required.
-
+<br><br>
 [Download the Finance Toolkit MCPB file](https://github.com/JerBouma/FinanceToolkit/releases/latest/download/financetoolkit.mcpb){: .btn .btn--warning .btn--large .align-center target="_blank"}
-
+<br>
 Then follow these steps:
 1. Double-click `financetoolkit.mcpb` which will open Claude Desktop, this will open a prompt whether you want to install the bundle, click "Install".
 2. A prompt will appear asking you to confirm the installation, click "Install" again.
