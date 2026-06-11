@@ -133,8 +133,6 @@ financetoolkit:
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
 financetoolkit-mcp:
-  - title: <font color="#d67f05">Finance Toolkit</font>
-    url: /projects/financetoolkit
   - title: Introduction
     url: /projects/financetoolkit/mcp#site-nav
   - title: "Installation"
