@@ -138,12 +138,10 @@ financetoolkit-mcp:
   - title: "Installation"
     url: /projects/financetoolkit/mcp#installation
     children:
-      - title: Run the Setup Wizard
-        url: /projects/financetoolkit/mcp#run-the-setup-wizard
-      - title: Enter an API Key
-        url: /projects/financetoolkit/mcp#enter-your-api-key
-      - title: Select your Clients
-        url: /projects/financetoolkit/mcp#select-your-clients
+      - title: Claude Desktop
+        url: /projects/financetoolkit/mcp#claude-desktop
+      - title: Other Clients
+        url: /projects/financetoolkit/mcp#other-clients
       - title: Manual Setup
         url: /projects/financetoolkit/mcp#manual-setup
   - title: "Example Conversations"

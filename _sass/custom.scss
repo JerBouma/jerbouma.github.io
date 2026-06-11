@@ -3394,8 +3394,8 @@ body.wide-no-sidebar:not(.no-title) {
 .bento-large {
   grid-column: span 12; // Full width row on top
   flex-direction: row;
-  align-items: center;
-  padding: 40px !important;
+  align-items: flex-start;
+  padding: 24px !important;
 
   .bento-icon {
     font-size: 4rem;
@@ -3444,7 +3444,7 @@ body.wide-no-sidebar:not(.no-title) {
 }
 
 .bento-content {
-  h2 {
+  h2, h3 {
     font-size: 1.25rem !important;
     font-weight: 700 !important;
     margin-top: 0 !important;
@@ -3456,11 +3456,64 @@ body.wide-no-sidebar:not(.no-title) {
     background-clip: text;
   }
 
-  p {
+  p, ol, ul, li {
     color: var(--text-secondary) !important;
     font-size: 0.95rem !important;
     line-height: 1.55 !important;
-    margin: 0 !important;
+  }
+
+  p {
+    margin: 0 0 8px !important;
+  }
+
+  ol, ul {
+    margin: 8px 0 0 !important;
+    padding-left: 1.4em !important;
+  }
+
+  li {
+    margin-bottom: 4px !important;
+  }
+}
+
+// Installation highlight card — full-width, compact, no grid wrapper needed
+.mcp-install-card {
+  grid-column: unset !important;
+  display: block !important;
+  padding: 16px 20px !important;
+  margin-bottom: 24px;
+
+  h3.mcp-install-heading {
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    margin-top: 0 !important;
+    margin-bottom: 6px !important;
+    letter-spacing: -0.3px;
+    background: linear-gradient(135deg, var(--accent-color) 0%, #818cf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    i {
+      margin-right: 8px;
+      -webkit-text-fill-color: var(--accent-color);
+    }
+  }
+
+  p, li {
+    font-size: 0.92rem !important;
+    line-height: 1.5 !important;
+    color: var(--text-secondary) !important;
+    margin: 0 0 6px !important;
+  }
+
+  ol {
+    margin: 8px 0 0 !important;
+    padding-left: 1.4em !important;
+  }
+
+  li {
+    margin-bottom: 3px !important;
   }
 }
 

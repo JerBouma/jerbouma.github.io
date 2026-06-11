@@ -31,9 +31,34 @@ The server consolidates the entire Finance Toolkit surface into a small number o
 
 ## Installation
 
-The server runs on demand through an interactive setup wizard that configures your AI clients and securely stores your API key — no permanent background process and no local Python environment required.
+Claude Desktop users can install in under a minute via a one-click MCPB bundle — no terminal required. For all other clients, an interactive setup wizard handles configuration and API key storage. Either way, the server runs on demand with no permanent background process.
 
-### Run the Setup Wizard
+<div class="bento-card mcp-install-card" markdown="1">
+
+### <i class="fas fa-robot"></i> Claude Desktop
+{: .mcp-install-heading}
+<br>
+**Easiest setup — recommended for most users.** When using Claude Desktop, you can make use of the related MCPB file. Download it and follow the five steps below to get up and running in under a minute, no terminal required.
+<br><br>
+
+[Download the Finance Toolkit MCPB file](https://github.com/JerBouma/FinanceToolkit/releases/latest/download/financetoolkit.mcpb){: .btn .btn--warning .btn--large .align-center target="_blank"}
+
+<br>
+Then follow these steps:
+
+1. Double-click `financetoolkit.mcpb` which will open Claude Desktop, this will open a prompt whether you want to install the bundle, click "Install".
+2. A prompt will appear asking you to confirm the installation, click "Install" again.
+3. The bundle will ask you to provide a Financial Modeling Prep API key (obtain one [here](https://www.jeroenbouma.com/fmp)) and click "Save".
+4. Enable the bundle by toggling the switch which says "Disabled" to "Enabled".
+5. Restart Claude Desktop and the Finance Toolkit MCP Server will be available for use in your conversations. *Please note it might take up to 15 seconds to initalize the first time after restarting.*
+
+</div>
+
+### Other Clients
+
+If you are using another client or prefer a more hands-on setup, follow the instructions below to run the setup wizard and configure your client manually.
+
+#### Run the Setup Wizard
 
 It uses [uv](https://docs.astral.sh/uv/getting-started/installation/), a fast Python package manager (install it first if you don't have it — about 30 seconds). The bundled `uvx` command then runs the wizard directly:
 
@@ -41,7 +66,7 @@ It uses [uv](https://docs.astral.sh/uv/getting-started/installation/), a fast Py
 uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
 ```
 
-### Enter your API Key
+#### Enter your API Key
 
 The wizard first asks for your FinancialModelingPrep (FMP) API key — the data provider behind the Finance Toolkit, giving access to 30+ years of financial statements, prices and fundamentals. Grab a free key **<a href="https://www.jeroenbouma.com/fmp" target="_blank">here</a>** (the free plan is enough to get started). It is stored in a global config file (`~/.config/financetoolkit/.env`), never inside a project or version-controlled file.
 
@@ -60,7 +85,7 @@ The wizard first asks for your FinancialModelingPrep (FMP) API key — the data 
   API Key  › YOUR_FINANCIAL_MODELING_PREP_API_KEY_HERE
 ```
 
-### Select your Clients
+#### Select your Clients
 
 Pick one or more of the six supported clients (e.g. `23` for Claude Code + VS Code). The wizard writes each client's config — safely merging into any existing file — and optionally installs a `SKILL.md` analyst instruction file that teaches the AI how to interpret results and respond in a consistent, analyst-style format.
 
@@ -91,7 +116,7 @@ The wizard handles most cases, but you can also configure clients by hand or aut
 **Configure manually.** Edit the client's JSON config directly. The `env` block takes either `FINANCIAL_MODELING_PREP_API_KEY` (the key inline) or `FINANCETOOLKIT_ENV_FILE` (a path to a `.env` file containing `FINANCIAL_MODELING_PREP_API_KEY=your_key_here`); when both are present the inline key wins. In every client `uvx` is the *command* and the rest are *args*. Pick your client:
 
 <details class="ft-details" markdown="1">
-  <summary><i class="fas fa-desktop"></i> <b>Claude Desktop</b></summary>
+  <summary><i class="fas fa-robot"></i> <b>Claude Desktop</b></summary>
 
   Edit `claude_desktop_config.json` and add the entry inside `mcpServers`:
 
@@ -114,7 +139,7 @@ The wizard handles most cases, but you can also configure clients by hand or aut
 </details>
 
 <details class="ft-details" markdown="1">
-  <summary><i class="fas fa-terminal"></i> <b>Claude Code</b></summary>
+  <summary><i class="fas fa-robot"></i> <b>Claude Code</b></summary>
 
   Edit `~/.claude.json` (create it if needed) and merge the entry inside `mcpServers`:
 
@@ -133,7 +158,7 @@ The wizard handles most cases, but you can also configure clients by hand or aut
 </details>
 
 <details class="ft-details" markdown="1">
-  <summary><i class="fas fa-code"></i> <b>VS Code</b></summary>
+  <summary><i class="fab fa-microsoft"></i> <b>VS Code</b></summary>
 
   Create or edit `.vscode/mcp.json` in your workspace root. VS Code uses `servers` as the top-level key (not `mcpServers`):
 
@@ -171,7 +196,7 @@ The wizard handles most cases, but you can also configure clients by hand or aut
 </details>
 
 <details class="ft-details" markdown="1">
-  <summary><i class="fas fa-gem"></i> <b>Gemini</b></summary>
+  <summary><i class="fab fa-google"></i> <b>Gemini</b></summary>
 
   Edit `~/.gemini/settings.json` (create it if needed):
 
