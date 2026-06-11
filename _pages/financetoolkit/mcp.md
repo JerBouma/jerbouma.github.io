@@ -110,7 +110,11 @@ Restart the client afterwards and the tools appear.
 
 The wizard handles most cases, but you can also configure clients by hand or automate the setup via command-line arguments.
 
-**Configure manually.** Edit the client's JSON config directly. The `env` block takes either `FINANCIAL_MODELING_PREP_API_KEY` (the key inline) or `FINANCETOOLKIT_ENV_FILE` (a path to a `.env` file containing `FINANCIAL_MODELING_PREP_API_KEY=your_key_here`); when both are present the inline key wins. In every client `uvx` is the *command* and the rest are *args*. Pick your client:
+Edit the client's JSON config directly. The `env` block takes either:
+- `FINANCIAL_MODELING_PREP_API_KEY`: the API key directly inline.
+- `FINANCETOOLKIT_ENV_FILE`: a path to a `.env` file containing `FINANCIAL_MODELING_PREP_API_KEY=your_key_here`
+ 
+ When both are present the inline key wins. In every client `uvx` is the *command* and the rest are *args*. Pick your client:
 
 <details class="ft-details" markdown="1">
   <summary><i class="fas fa-robot"></i> <b>Claude Desktop</b></summary>
