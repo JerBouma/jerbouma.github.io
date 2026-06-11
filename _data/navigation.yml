@@ -153,18 +153,10 @@ financetoolkit-mcp:
         url: /projects/financetoolkit/mcp#ex-bank-solvency
       - title: Chip Momentum
         url: /projects/financetoolkit/mcp#ex-semiconductor-overbought
-      - title: P/E Comparison
-        url: /projects/financetoolkit/mcp#ex-pe-comparison
-      - title: Tesla Sharpe
-        url: /projects/financetoolkit/mcp#ex-tesla-sharpe
       - title: Alibaba vs Amazon
         url: /projects/financetoolkit/mcp#ex-alibaba-amazon
       - title: Unemployment Rates
         url: /projects/financetoolkit/mcp#ex-unemployment
-      - title: Amazon WACC
-        url: /projects/financetoolkit/mcp#ex-amazon-wacc
-      - title: NVIDIA RSI
-        url: /projects/financetoolkit/mcp#ex-nvidia-rsi
       - title: Chip Sustainability
         url: /projects/financetoolkit/mcp#ex-semiconductor-esg
   - title: "Available Tools"

@@ -248,7 +248,7 @@ There is deliberately no `--api-key` flag. The config points to a `.env` file (e
 
 ## Example Conversations
 
-The optional `SKILL.md` file installed during setup teaches your assistant the Finance Toolkit's response style, so answers come back as polished, analyst-grade tables and narrative — selected automatically, or invoked by name (e.g. `/finance-toolkit-analyst What is Apple's current P/E ratio?`). The examples below, from an advanced model (`Claude Sonnet 4.6`), show how much qualitative depth a capable model layers on top of the data.
+A core goal in building this MCP was to make it useful across the full spectrum of models — the server should return the right data regardless of which AI you use, and the depth of interpretation should scale naturally with the model's capability. The conversations below show that in practice.
 
 <details class="mcp-chat" id="ex-apple-microsoft" markdown="1">
 <summary class="mcp-chat__bar">
@@ -427,54 +427,7 @@ The semiconductor sector is not uniformly overbought as of June 4, 2026. The dat
 </div>
 </details>
 
-<details class="mcp-chat" id="ex-pe-comparison" markdown="1">
-<summary class="mcp-chat__bar">
-<span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<span class="mcp-chat__q">Compare the P/E ratios of Apple, Microsoft, and Google over the last 5 years.</span>
-<span class="mcp-chat__model"><i class="fas fa-microchip"></i>GPT-5 mini</span>
-<span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
-</summary>
-
-<div class="mcp-chat__reply" markdown="1">
-<div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
-
-Apple, Microsoft, and Google's P/E ratios over the last five years show that Microsoft started at the highest valuation in 2021, compressed sharply in 2022, then largely recovered, Apple dipped in 2022 before rebounding to a 2024 peak, and Google remained the cheapest overall but recovered noticeably by 2025. The yearly P/E ratios for 2021–2025 are shown below.
-
-|       |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:------|--------:|--------:|--------:|--------:|--------:|
-| AAPL  | 31.6299 | 21.254  | 31.3868 | 41.1631 | 36.418  |
-| GOOGL | 25.8204 | 19.3593 | 24.082  | 23.5345 | 28.9627 |
-| MSFT  | 41.7607 | 24.8598 | 38.8299 | 35.7197 | 35.4526 |
-
-</div>
-</details>
-
-<details class="mcp-chat" id="ex-tesla-sharpe" markdown="1">
-<summary class="mcp-chat__bar">
-<span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<span class="mcp-chat__q">What is the current Sharpe ratio for Tesla compared to the S&P 500?</span>
-<span class="mcp-chat__model"><i class="fas fa-microchip"></i>GPT-5 mini</span>
-<span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
-</summary>
-
-<div class="mcp-chat__reply" markdown="1">
-<div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
-
-Over the available yearly series, Tesla’s Sharpe ratio is negative but consistently higher (less negative) than the S&P 500 (proxied by `SPY`), indicating Tesla delivered better risk‑adjusted returns than the S&P 500 in each year shown.
-
-Yearly Sharpe ratios (TSLA vs SPY):
-
-| Date   |    TSLA |     SPY |
-|:-------|--------:|--------:|
-| 2021   | -0.3537 | -1.5987 |
-| 2022   | -0.7606 | -1.8078 |
-| 2023   | -1.0402 | -4.0283 |
-| 2024   | -0.9845 | -4.8964 |
-| 2025   | -1.0411 | -3.4406 |
-| 2026   | -1.7836 | -4.6496 |
-
-</div>
-</details>
+The examples above use **Claude Sonnet 4.6**, which layers substantial qualitative reasoning on top of the raw numbers. The examples below use **GPT-5 mini** — a lighter, faster model that returns clean, structured data without the added narrative. Both work well with the Finance Toolkit MCP; the depth of interpretation scales with the model you choose.
 
 <details class="mcp-chat" id="ex-alibaba-amazon" markdown="1">
 <summary class="mcp-chat__bar">
@@ -584,65 +537,6 @@ Since 2010 Germany's unemployment rate fell from about 6.6% to roughly 3.0% and 
 </div>
 </details>
 
-<details class="mcp-chat" id="ex-amazon-wacc" markdown="1">
-<summary class="mcp-chat__bar">
-<span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<span class="mcp-chat__q">Calculate the WACC for Amazon and explain what it means.</span>
-<span class="mcp-chat__model"><i class="fas fa-microchip"></i>GPT-5 mini</span>
-<span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
-</summary>
-
-<div class="mcp-chat__reply" markdown="1">
-<div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
-
-Amazon's WACC is elevated historically, driven by a high implied cost of equity compared with its low cost of debt; the model shows WACC around 19–32% across 2021–2025 with a 2025 WACC of 19.23%. Below is the model output used to calculate Amazon's WACC (values in USD for market values, rates in decimal form).
-
-|                                  |        2021 |         2022 |        2023 |        2024 |        2025 |
-|:---------------------------------|------------:|-------------:|------------:|------------:|------------:|
-| Market Value Equity              | 1.71722e+12 |  8.55876e+11 | 1.59415e+12 | 2.35208e+12 | 2.49909e+12 |
-| Market Value Debt                | 1.16395e+11 |  1.40118e+11 | 1.35611e+11 | 1.309e+11   | 1.52987e+11 |
-| Cost of Equity                   | 0.2774      | -0.3418      | 0.3477      | 0.3349      | 0.2033      |
-| Cost of Debt                     | 0.0155      |  0.0169      | 0.0235      | 0.0184      | 0.0149      |
-| Corporate Tax Rate               | 0.1256      |  0.5417      | 0.1896      | 0.1352      | 0.1973      |
-| Weighted Average Cost of Capital | 0.2607      | -0.2926      | 0.3219      | 0.3181      | 0.1923      |
-
-The WACC represents the blended after-tax cost of the capital providers (equity and debt) and is the discount rate a company must earn on its existing asset base to satisfy its investors. Amazon's high reported cost of equity in several years makes the WACC unusually large relative to typical large-cap firms, indicating investors require high returns for bearing equity risk; by contrast, Amazon's cost of debt is low, so debt contributes little to WACC because equity dominates the capital structure by market value. 
-
-</div>
-</details>
-
-<details class="mcp-chat" id="ex-nvidia-rsi" markdown="1">
-<summary class="mcp-chat__bar">
-<span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<span class="mcp-chat__q">What is the RSI for NVIDIA right now and is it overbought?</span>
-<span class="mcp-chat__model"><i class="fas fa-microchip"></i>GPT-5 mini</span>
-<span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
-</summary>
-
-<div class="mcp-chat__reply" markdown="1">
-<div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
-
-NVIDIA's 14‑day RSI fell from extreme overbought readings in late April and is now in neutral territory near 59.8 as of 2026-05-07.
-
-The last ten trading-day 14‑day RSI values for NVIDIA are shown below.
-
-| Date       |   NVDA |
-|:-----------|-------:|
-| 2026-04-24 | 86.6826 |
-| 2026-04-27 | 88.7971 |
-| 2026-04-28 | 81.6663 |
-| 2026-04-29 | 74.7558 |
-| 2026-04-30 | 59.7435 |
-| 2026-05-01 | 58.0771 |
-| 2026-05-04 | 51.9935 |
-| 2026-05-05 | 47.5831 |
-| 2026-05-06 | 57.9211 |
-| 2026-05-07 | 59.8245 |
-
-The most recent RSI on 2026-05-07 is 59.82, which is below the common overbought threshold of 70 and therefore indicates NVIDIA is not currently overbought; the series shows it moved out of extreme overbought conditions after late‑April peaks above 90.
-
-</div>
-</details>
 
 <details class="mcp-chat" id="ex-semiconductor-esg" markdown="1">
 <summary class="mcp-chat__bar">
