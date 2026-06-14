@@ -8,7 +8,7 @@ layout: single
 classes: custom-document
 author_profile: false
 collection: article
-tags: [Finance Toolkit, Value Investing, Stock Screening]
+tags: [Finance Toolkit, Fundamental Analysis, Stock Screening]
 share: true
 ---
 
