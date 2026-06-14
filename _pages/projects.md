@@ -64,7 +64,7 @@ Have a look at my [in-depth guide on Financial Modelling with Python](/modelling
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
-This open-source package provides over 150 financial ratios, indicators, and performance measurements, implemented straightforwardly to ensure complete transparency of the calculation methods. This enables you to avoid reliance on metrics from external providers and perform efficient calculations directly from financial statements. It promotes a uniform calculation method that is accessible and understandable to everyone.
+This open-source package provides over 200 financial ratios, indicators, and performance measurements, implemented straightforwardly to ensure complete transparency of the calculation methods. This enables you to avoid reliance on metrics from external providers and perform efficient calculations directly from financial statements. It promotes a uniform calculation method that is accessible and understandable to everyone.
 
 The Finance Toolkit complements the Finance Database well. By utilizing both, you can perform a comprehensive competitive analysis using tickers from the Finance Database as input for the Finance Toolkit.
 

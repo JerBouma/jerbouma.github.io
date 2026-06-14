@@ -307,7 +307,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-info">
 <h3>Finance Toolkit</h3>
 <h4>Creator &amp; Maintainer — 4,500+ GitHub Stars</h4>
-<p>An open-source toolkit providing 180+ financial ratios, indicators, and performance measurements written in the most transparent way possible. Supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Complements the Finance Database to enable fully-fledged competitive analyses. Used by thousands of analysts, developers and students worldwide.</p>
+<p>An open-source toolkit providing 200+ financial ratios, indicators, and performance measurements written in the most transparent way possible. Supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Complements the Finance Database to enable fully-fledged competitive analyses. Used by thousands of analysts, developers and students worldwide.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>
 <span class="skill-pill">GitHub Actions</span>

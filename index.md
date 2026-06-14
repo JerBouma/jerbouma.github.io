@@ -29,7 +29,7 @@ classes: custom-splash
     <span class="stat-label">GitHub Stars</span>
   </a>
   <a href="/projects/financetoolkit" class="stat-item">
-    <span class="stat-number" data-stat="ratios" data-target="180" data-suffix="+">0+</span>
+    <span class="stat-number" data-stat="ratios" data-target="200" data-suffix="+">0+</span>
     <span class="stat-label">Financial Ratios</span>
   </a>
   <a href="/projects" class="stat-item">
