@@ -12,7 +12,7 @@ tags: [Finance Toolkit, Fundamental Analysis]
 share: true
 ---
 
-March 13, 1986. Microsoft went public at $21 per share ([Wikipedia](https://en.wikipedia.org/wiki/History_of_Microsoft)). Split-adjusted, that works out to roughly $0.08. The stock closed 2025 at $484, making it one of the most remarkable compounding records in market history: a return of more than 5,000x over four decades.
+March 13, 1986. Microsoft went public at $21 per share ([Wikipedia](https://en.wikipedia.org/wiki/History_of_Microsoft)). Split-adjusted, that works out to roughly $0.08. The stock closed 2025 at $484 (Finance Toolkit historical data), making it one of the most remarkable compounding records in market history: a return of more than 5,000x over four decades.
 
 But the stock price alone obscures something more interesting. The Microsoft that went public in 1986 and the Microsoft that generates $282 billion in annual revenue today are not the same company. The financials show three distinct businesses operating under the same name, each shaped by a different CEO, a different product strategy, and a different relationship with capital. Pulling 40 years of data through the Finance Toolkit makes that transformation visible in a way that no headline number can.
 
@@ -42,7 +42,7 @@ Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp). 
 
 ## Revenue: Three Very Different Eras
 
-Microsoft's revenue history divides cleanly into three phases, each corresponding to a CEO tenure: Bill Gates (1986–2000), Steve Ballmer (2000–2014), and Satya Nadella (2014–present).
+Microsoft's revenue history divides cleanly into three phases, each corresponding to a CEO tenure: Bill Gates (1986-2000), Steve Ballmer (2000-2014), and Satya Nadella (2014-present).
 
 ```python
 income_statement = company.get_income_statement()
@@ -52,6 +52,8 @@ revenue = income_statement.loc[
     ["1986", "1990", "1995", "2000", "2005", "2010", "2015", "2020", "2025"]
 ]
 ```
+
+Which returns:
 
 | Year | Revenue ($B) | Net Income ($B) |
 |------|-------------|-----------------|
@@ -67,7 +69,7 @@ revenue = income_statement.loc[
 
 The Gates era was extraordinary by any standard. Revenue grew from $197 million in 1986 to $23 billion in 2000, a 115-fold increase in 14 years driven almost entirely by Windows and Office on the back of the PC revolution. Microsoft was not really a technology company in the modern sense; it was a licensing machine with near-zero cost of reproduction and near-monopoly pricing power.
 
-The Ballmer era is often described as a lost decade, but that framing is partly unfair. Revenue grew from $23 billion to $87 billion between 2000 and 2014. That is real growth by any measure. What failed was not the business but the valuation. Ballmer inherited Microsoft at the height of the dot-com bubble, when the market was pricing in decades of compounding at rates no company could sustain. The stock went roughly nowhere for 14 years not because the business stagnated, but because the starting price was simply too high.
+The Ballmer era is often described as a lost decade, but that framing is partly unfair. Revenue grew from $23 billion to $87 billion between 2000 and 2014 (Finance Toolkit income statement). That is real growth by any measure. What failed was not the business but the valuation. Ballmer inherited Microsoft at the height of the dot-com bubble, when the market was pricing in decades of compounding at rates no company could sustain. The stock went roughly nowhere for 14 years not because the business stagnated, but because the starting price was simply too high.
 
 The 2015 net income of $12.2 billion against $93.6 billion in revenue reflects Nadella's first full year, when Microsoft took a $7.5 billion write-down on the Nokia acquisition ([Wikipedia](https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Microsoft)). Strip that out and the underlying business was already accelerating. By 2020, net income had grown to $44 billion. By 2025 it reached $102 billion, a number that would have seemed absurd when Nadella took over.
 
@@ -85,6 +87,8 @@ margins = ratios.loc[
     ["1990", "1995", "2000", "2005", "2010", "2015", "2020", "2025"]
 ]
 ```
+
+Which returns:
 
 | Year | Gross Margin | Net Margin |
 |------|-------------|------------|
@@ -118,6 +122,8 @@ snapshot = balance_sheet.loc[
 ]
 ```
 
+Which returns:
+
 | Year | Cash + Investments ($B) | Long-Term Debt ($B) | Goodwill ($B) |
 |------|------------------------|--------------------|---------| 
 | 1995 | 2.0 | 0.0 | 0.0 |
@@ -128,11 +134,11 @@ snapshot = balance_sheet.loc[
 | 2020 | 136.5 | 59.6 | 43.4 |
 | 2025 | 94.6 | 40.2 | 119.5 |
 
-The first debt appeared in 2009, not because Microsoft needed the money, but because borrowing at low rates to fund buybacks was more tax-efficient than repatriating overseas cash. By 2020, cash and investments had reached $136 billion while long-term debt stood at $60 billion. The net position was still comfortably positive, but the capital structure had become more aggressive.
+The first debt appeared in 2009 (Finance Toolkit balance sheet), not because Microsoft needed the money, but because borrowing at low rates to fund buybacks was more tax-efficient than repatriating overseas cash. By 2020, cash and investments had reached $136 billion while long-term debt stood at $60 billion. The net position was still comfortably positive, but the capital structure had become more aggressive.
 
 The most striking shift is goodwill. It was zero for most of Microsoft's history because the company built rather than bought. That changed under Ballmer with acquisitions like aQuantive and Skype, and accelerated dramatically under Nadella. LinkedIn ($26 billion, 2016), GitHub ($7.5 billion, 2018), Nuance ($19 billion, 2022), and Activision Blizzard ($69 billion, 2023) turned Microsoft into one of the most acquisitive companies in tech ([Wikipedia](https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Microsoft)). Goodwill reached $119.5 billion in 2025.
 
-The cash balance fell from $136 billion in 2020 to $94.6 billion in 2025, largely because of Activision. Long-term debt has declined from its peak of $66.7 billion in 2019 to $40.2 billion in 2025 as Microsoft pays down the acquisition-related borrowing, a sign that the balance sheet is normalising after the deal.
+The cash balance fell from $136 billion in 2020 to $94.6 billion in 2025, largely because of Activision. Long-term debt has declined from its peak of $66.7 billion in 2019 (Finance Toolkit balance sheet) to $40.2 billion in 2025 as Microsoft pays down the acquisition-related borrowing, a sign that the balance sheet is normalising after the deal.
 
 ## Free Cash Flow: The Number That Matters Most
 
@@ -146,6 +152,8 @@ fcf_table = cash_flow.loc[
     ["1995", "2000", "2005", "2010", "2015", "2020", "2025"]
 ]
 ```
+
+Which returns:
 
 | Year | Operating Cash Flow ($B) | CapEx ($B) | Free Cash Flow ($B) |
 |------|------------------------|-----------|---------------------|
@@ -176,6 +184,8 @@ profitability_ratios.loc[
 ]
 ```
 
+Which returns:
+
 | Year | ROE | ROA | ROIC |
 |------|-----|-----|------|
 | 1990 | 37.7% | 30.6% | 36.9% |
@@ -188,7 +198,7 @@ profitability_ratios.loc[
 
 The early Microsoft numbers are a reminder of what a capital-light monopoly looks like. ROE of 38% in 1990 with zero debt and no buybacks means the underlying business was genuinely that profitable. Those returns compressed through the 2000s as the business mix changed and the equity base remained large.
 
-The 2015 figures are distorted by the Nokia write-down, which depressed net income and inflated the apparent collapse in ROA and ROE. By 2020 ROE had rebounded to 40%, though this partly reflects the equity base shrinking from buybacks rather than purely improved profitability. ROIC strips out the effects of capital structure and tells a cleaner story: Microsoft earns roughly 30–31% on invested capital today, which is very good but not dramatically different from what it earned in the 1990s. The business quality has been maintained; what changed is how the returns are distributed to shareholders.
+The 2015 figures are distorted by the Nokia write-down, which depressed net income and inflated the apparent collapse in ROA and ROE. By 2020 ROE had rebounded to 40%, though this partly reflects the equity base shrinking from buybacks rather than purely improved profitability. ROIC strips out the effects of capital structure and tells a cleaner story: Microsoft earns roughly 30-31% on invested capital today, which is very good but not dramatically different from what it earned in the 1990s. The business quality has been maintained; what changed is how the returns are distributed to shareholders.
 
 Return on assets paints a similar picture. ROA of 18% in 2025 reflects that Microsoft now carries a much heavier asset base of cloud infrastructure, acquisitions, and data centers than the software company of the 1990s. The high-30s ROA of the Gates era is gone, but 18% is a strong number for a company of this size and scope.
 
@@ -212,6 +222,8 @@ alpha_beta_performance = performance.loc[
 ]
 ```
 
+Which returns:
+
 | Metric | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 |
 |--------|------|------|------|------|------|------|
 | P/E | 38.6 | 41.8 | 24.9 | 38.8 | 35.7 | 35.5 |
@@ -228,6 +240,6 @@ At 35x earnings and 50x free cash flow, Microsoft is priced for sustained growth
 
 Beta declining to 0.88 in 2025 is notable. For most of the Nadella era, Microsoft moved in line with or slightly above the broader market. A beta below 1 suggests the market increasingly treats it as a defensive-quality holding: a large, profitable, cash-generative business that belongs in portfolios regardless of the macro environment.
 
-Alpha has been positive in most years, notably +0.33 in 2023 when Microsoft's AI positioning drove a 57% stock return against the S&P 500's 26%. The negative alpha in 2022 and 2024 reflects years when the market rotated toward other sectors, not fundamental deterioration. The business compounded steadily throughout.
+Alpha has been positive in most years, notably +0.33 in 2023 when Microsoft's AI positioning drove a 57% stock return (Finance Toolkit historical data) against the S&P 500's 26%. The negative alpha in 2022 and 2024 reflects years when the market rotated toward other sectors, not fundamental deterioration. The business compounded steadily throughout.
 
 What to watch over the next few years: the pace of Azure growth (which funds everything else), margin expansion as the AI CapEx cycle matures, and whether Activision contributes enough to earnings to justify the $69 billion price tag. The financial track record over 40 years gives Microsoft the benefit of the doubt. But at these valuations, the margin for error is narrower than it has been at any point in the company's history outside the dot-com peak.
