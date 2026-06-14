@@ -224,6 +224,9 @@ alpha_beta_performance = performance.loc[
 
 Which returns:
 
+<div class="row">
+<div markdown="1" class="fifty-column-left mobile-max-column-width">
+
 | Metric | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 |
 |--------|------|------|------|------|------|------|
 | P/E | 38.6 | 41.8 | 24.9 | 38.8 | 35.7 | 35.5 |
@@ -231,10 +234,17 @@ Which returns:
 | P/FCF | 37.8 | 45.6 | 27.8 | 47.2 | 42.5 | 50.4 |
 | EV/EBITDA | 27.0 | 32.2 | 19.1 | 27.9 | 24.5 | 22.7 |
 
+</div>
+
+<div markdown="1" class="fifty-column-right mobile-max-column-width">
+
 | Metric | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 |
 |--------|------|------|------|------|------|------|
 | Beta | 1.14 | 1.15 | 1.28 | 1.16 | 1.19 | 0.88 |
 | Alpha | +0.25 | +0.24 | -0.09 | +0.33 | -0.11 | -0.02 |
+
+</div>
+</div>
 
 At 35x earnings and 50x free cash flow, Microsoft is priced for sustained growth. The P/FCF ratio in particular looks stretched on the surface, but it needs to be read alongside the elevated CapEx. Microsoft spent $64.6 billion on capital expenditure in fiscal 2025, the vast majority of it on AI infrastructure. If that investment generates meaningful Azure revenue growth over the next three to five years, the normalized FCF picture is more attractive than the headline ratio suggests. If it does not, the multiple will prove optimistic.
 
