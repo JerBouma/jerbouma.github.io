@@ -89,7 +89,7 @@ Additionally, the `[dependency-groups]` section lists dependencies relevant only
 
 
 {: .notice--info}
-<b>Why uv over requirements.txt or pip?</b><br>uv is a true dependency manager that understands the relationships between packages. Unlike `requirements.txt`, which merely lists packages and doesn't prevent incompatible installations, uv resolves dependencies intelligently — and does so extremely fast thanks to its Rust-based implementation. Pip is a package installer, <u>not</u> a dependency manager, making it less suitable for maintaining consistent environments. While alternatives like Poetry and `pipenv` exist, uv is preferred here due to its speed, adherence to Python standards, and [rapidly growing adoption](https://docs.astral.sh/uv/){: target="_blank"}.
+<b>Why uv over requirements.txt or pip?</b><br>uv is a true dependency manager that understands the relationships between packages. Unlike `requirements.txt`, which merely lists packages and doesn't prevent incompatible installations, uv resolves dependencies intelligently, and does so extremely fast thanks to its Rust-based implementation. Pip is a package installer, <u>not</u> a dependency manager, making it less suitable for maintaining consistent environments. While alternatives like Poetry and `pipenv` exist, uv is preferred here due to its speed, adherence to Python standards, and [rapidly growing adoption](https://docs.astral.sh/uv/){: target="_blank"}.
 
 Here's an example of what the installation process looks like:
 

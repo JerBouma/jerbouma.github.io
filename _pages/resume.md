@@ -112,7 +112,7 @@ Below is my journey from education through certifications, open-source projects,
 <div class="timeline-info">
 <h3>OpenBB</h3>
 <h4>Product Manager</h4>
-<p>Oversaw Product Marketing initiatives, including designing the strategy for Academia outreach, identifying market gaps within the financial sector and strategizing accordingly, leading a multi-disciplinary Go-to-Market team, and coordinating Engineering developments requiring significant financial knowledge—either by developing quantitative models or guiding engineering professionals in design and implementation.</p>
+<p>Oversaw Product Marketing initiatives, including designing the strategy for Academia outreach, identifying market gaps within the financial sector and strategizing accordingly, leading a multi-disciplinary Go-to-Market team, and coordinating Engineering developments requiring significant financial knowledge, either by developing quantitative models or guiding engineering professionals in design and implementation.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>
 <span class="skill-pill">Git</span>
@@ -225,7 +225,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-content">
 <div class="timeline-info">
 <h3>Finance Database</h3>
-<h4>Creator &amp; Maintainer — 7,000+ GitHub Stars</h4>
+<h4>Creator &amp; Maintainer (7,000+ GitHub Stars)</h4>
 <p>An open-source database featuring 300,000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies, and Money Markets. Provides a broad overview of sectors, industries, and investment types across 111 countries. Born from the frustration of not knowing what financial products exist, this project was later noticed by OpenBB and led to a job offer.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>
@@ -306,7 +306,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-content">
 <div class="timeline-info">
 <h3>Finance Toolkit</h3>
-<h4>Creator &amp; Maintainer — 4,500+ GitHub Stars</h4>
+<h4>Creator &amp; Maintainer (4,500+ GitHub Stars)</h4>
 <p>An open-source toolkit providing 200+ financial ratios, indicators, and performance measurements written in the most transparent way possible. Supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Complements the Finance Database to enable fully-fledged competitive analyses. Used by thousands of analysts, developers and students worldwide.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>

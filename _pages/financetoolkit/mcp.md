@@ -18,7 +18,7 @@ image: assets/images/projects/FinanceToolkit.jpg
 
 The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io) (MCP). MCP is an open standard that lets AI assistants call external tools and data sources directly from the chat interface; no copy-pasting, no switching between apps. Once the server is configured, you simply ask questions in plain English and the AI fetches live financial data on your behalf.
 
-This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators — all backed by the transparent, open-source calculation methods of the Finance Toolkit.
+This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all backed by the transparent, open-source calculation methods of the Finance Toolkit.
 
 The server consolidates the entire Finance Toolkit surface into a small number of categorical master tools (e.g. `get_valuation_ratios`, `get_profitability_ratios`, `get_momentum_indicators`) so that the AI can discover and call the right metric without being overwhelmed by hundreds of individual function signatures.
 
@@ -31,14 +31,14 @@ The server consolidates the entire Finance Toolkit surface into a small number o
 
 ## Installation
 
-Claude Desktop users can install in under a minute via a one-click MCPB bundle — no terminal required. For all other clients, an interactive setup wizard handles configuration and API key storage. Either way, the server runs on demand with no permanent background process.
+Claude Desktop users can install in under a minute via a one-click MCPB bundle, no terminal required. For all other clients, an interactive setup wizard handles configuration and API key storage. Either way, the server runs on demand with no permanent background process.
 
 <div class="bento-card mcp-install-card" markdown="1">
 
 ### <i class="fas fa-robot"></i> Claude Desktop
 {: .mcp-install-heading}
 <br>
-**Easiest setup — recommended for most users.** When using Claude Desktop, you can make use of the related MCPB file. Download it and follow the five steps below to get up and running in under a minute, no terminal required.
+**Easiest setup, recommended for most users.** When using Claude Desktop, you can make use of the related MCPB file. Download it and follow the five steps below to get up and running in under a minute, no terminal required.
 <br><br>
 [Download the Finance Toolkit MCPB file](https://github.com/JerBouma/FinanceToolkit/releases/latest/download/financetoolkit.mcpb){: .btn .btn--warning .btn--large .align-center target="_blank"}
 <br>
@@ -57,7 +57,7 @@ If you are using another client or prefer a more hands-on setup, follow the inst
 
 #### Run the Setup Wizard
 
-It uses [uv](https://docs.astral.sh/uv/getting-started/installation/), a fast Python package manager (install it first if you don't have it — about 30 seconds). The bundled `uvx` command then runs the wizard directly:
+It uses [uv](https://docs.astral.sh/uv/getting-started/installation/), a fast Python package manager (install it first if you don't have it, about 30 seconds). The bundled `uvx` command then runs the wizard directly:
 
 ```
 uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
@@ -65,7 +65,7 @@ uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
 
 #### Enter your API Key
 
-The wizard first asks for your FinancialModelingPrep (FMP) API key — the data provider behind the Finance Toolkit, giving access to 30+ years of financial statements, prices and fundamentals. Grab a free key **<a href="https://www.jeroenbouma.com/fmp" target="_blank">here</a>** (the free plan is enough to get started). It is stored in a global config file (`~/.config/financetoolkit/.env`), never inside a project or version-controlled file.
+The wizard first asks for your FinancialModelingPrep (FMP) API key, the data provider behind the Finance Toolkit, giving access to 30+ years of financial statements, prices and fundamentals. Grab a free key **<a href="https://www.jeroenbouma.com/fmp" target="_blank">here</a>** (the free plan is enough to get started). It is stored in a global config file (`~/.config/financetoolkit/.env`), never inside a project or version-controlled file.
 
 ```bash
 (base) jeroenbouma@Jeroens-MacBook-Pro FinanceToolkit % uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
@@ -84,7 +84,7 @@ The wizard first asks for your FinancialModelingPrep (FMP) API key — the data 
 
 #### Select your Clients
 
-Pick one or more of the six supported clients (e.g. `23` for Claude Code + VS Code). The wizard writes each client's config — safely merging into any existing file — and optionally installs a `SKILL.md` analyst instruction file that teaches the AI how to interpret results and respond in a consistent, analyst-style format.
+Pick one or more of the six supported clients (e.g. `23` for Claude Code + VS Code). The wizard writes each client's config, safely merging into any existing file, and optionally installs a `SKILL.md` analyst instruction file that teaches the AI how to interpret results and respond in a consistent, analyst-style format.
 
 ```bash
   ✔  API key saved to /Users/jeroenbouma/.config/financetoolkit/.env
@@ -252,7 +252,7 @@ There is deliberately no `--api-key` flag. The config points to a `.env` file (e
 
 ## Example Conversations
 
-A core goal in building this MCP was to make it useful across the full spectrum of models — the server should return the right data regardless of which AI you use, and the depth of interpretation should scale naturally with the model's capability. The conversations below show that in practice.
+A core goal in building this MCP was to make it useful across the full spectrum of models: the server should return the right data regardless of which AI you use, and the depth of interpretation should scale naturally with the model's capability. The conversations below show that in practice.
 
 <details class="mcp-chat" id="ex-apple-microsoft" markdown="1">
 <summary class="mcp-chat__bar">
@@ -265,7 +265,7 @@ A core goal in building this MCP was to make it useful across the full spectrum 
 <div class="mcp-chat__reply" markdown="1">
 <div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
 
-Across the five-year window from 2021 to 2025, Microsoft and Apple present genuinely different profitability profiles depending on the analytical lens applied — a nuance that institutional research rarely collapses into a single verdict. The data below, derived directly from the Finance Toolkit MCP server, covers gross margin, operating margin, and net profit margin across both companies from fiscal year 2021 through fiscal year 2025.
+Across the five-year window from 2021 to 2025, Microsoft and Apple present genuinely different profitability profiles depending on the analytical lens applied, a nuance that institutional research rarely collapses into a single verdict. The data below, derived directly from the Finance Toolkit MCP server, covers gross margin, operating margin, and net profit margin across both companies from fiscal year 2021 through fiscal year 2025.
 
 Microsoft commands a structurally superior margin stack at every level of the income statement. Its software and cloud-heavy revenue mix consistently produces gross margins in the 68–70% range, reflecting the near-zero marginal cost of licensing and Azure compute, while Apple's hardware-weighted mix constrains gross margins to the 42–47% band despite meaningful Services segment expansion.
 
@@ -278,7 +278,7 @@ Microsoft commands a structurally superior margin stack at every level of the in
 | Net Profit Margin | AAPL | 25.88% | 25.31% | 25.31% | 23.97% | 26.92% |
 | Net Profit Margin | MSFT | 36.45% | 36.69% | 34.15% | 35.96% | 36.15% |
 
-The margin story, however, is not the complete picture. When shifting from income-statement efficiency to capital deployment efficiency, Apple's financial engineering inverts the comparison dramatically. Apple carries a deliberately compressed equity base — the result of decades of aggressive share repurchases — which mechanically inflates its Return on Equity to levels that appear extraordinary, consistently exceeding 170% in recent years. The following table captures ROE, Return on Invested Capital, and Return on Assets for the same period.
+The margin story, however, is not the complete picture. When shifting from income-statement efficiency to capital deployment efficiency, Apple's financial engineering inverts the comparison dramatically. Apple carries a deliberately compressed equity base, the result of decades of aggressive share repurchases, which mechanically inflates its Return on Equity to levels that appear extraordinary, consistently exceeding 170% in recent years. The following table captures ROE, Return on Invested Capital, and Return on Assets for the same period.
 
 | Metric | Company | 2022 | 2023 | 2024 | 2025 |
 |:--|:--|--:|--:|--:|--:|
@@ -289,11 +289,11 @@ The margin story, however, is not the complete picture. When shifting from incom
 | Return on Assets | AAPL | 28.36% | 27.50% | 26.13% | 30.93% |
 | Return on Assets | MSFT | 20.82% | 18.63% | 19.07% | 18.00% |
 
-The verdict depends precisely on what one means by "most profitable." On a pure income statement basis — gross, operating, and net margins — **Microsoft is unambiguously the more profitable business**, generating roughly 22 percentage points more net income per dollar of revenue than Apple in fiscal year 2025 (36.15% vs. 26.92%). This structural advantage reflects Microsoft's software and cloud economics, where incremental revenue has near-zero marginal cost.
+The verdict depends precisely on what one means by "most profitable." On a pure income statement basis (gross, operating, and net margins), **Microsoft is unambiguously the more profitable business**, generating roughly 22 percentage points more net income per dollar of revenue than Apple in fiscal year 2025 (36.15% vs. 26.92%). This structural advantage reflects Microsoft's software and cloud economics, where incremental revenue has near-zero marginal cost.
 
 Apple, by contrast, leads on every capital efficiency metric: its ROIC of 70.38% in 2025 versus Microsoft's 30.64% indicates that Apple extracts significantly more economic value from each dollar of invested capital. Its ROA advantage (30.93% vs. 18.00%) is similarly consistent across the full sample. The ROE comparison is analytically distorted by Apple's balance sheet structure and is better set aside in favor of ROIC as the cleanest apples-to-apples measure.
 
-For a more complete picture, the analysis could be extended into DuPont decomposition to isolate whether Apple's ROIC lead is driven by asset turnover, operational leverage, or financial leverage — all of which the Finance Toolkit supports natively.
+For a more complete picture, the analysis could be extended into DuPont decomposition to isolate whether Apple's ROIC lead is driven by asset turnover, operational leverage, or financial leverage, all of which the Finance Toolkit supports natively.
 
 </div>
 </details>
@@ -309,7 +309,7 @@ For a more complete picture, the analysis could be extended into DuPont decompos
 <div class="mcp-chat__reply" markdown="1">
 <div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
 
-Assessing solvency across Europe's nine largest listed banking groups — HSBC, BNP Paribas (BNPQY), Deutsche Bank (DB), Banco Santander (SAN), Barclays (BCS), UniCredit (UNCRY), Société Générale (SCGLY), ING, and Intesa Sanpaolo (ISNPY) — requires examining leverage in multiple dimensions simultaneously. Because banks operate with inherently high financial leverage by design, the equity multiplier and debt-to-assets ratio are the most discriminating solvency signals, with the debt service coverage ratio providing a cash-flow-based cross-check. Taken together, the data point to **UniCredit** and **Intesa Sanpaolo** as the standout names for solvency quality within this cohort.
+Assessing solvency across Europe's nine largest listed banking groups (HSBC, BNP Paribas (BNPQY), Deutsche Bank (DB), Banco Santander (SAN), Barclays (BCS), UniCredit (UNCRY), Société Générale (SCGLY), ING, and Intesa Sanpaolo (ISNPY)) requires examining leverage in multiple dimensions simultaneously. Because banks operate with inherently high financial leverage by design, the equity multiplier and debt-to-assets ratio are the most discriminating solvency signals, with the debt service coverage ratio providing a cash-flow-based cross-check. Taken together, the data point to **UniCredit** and **Intesa Sanpaolo** as the standout names for solvency quality within this cohort.
 
 The debt-to-equity ratio captures the proportion of debt relative to shareholders' equity. A lower reading indicates a more conservative capital structure relative to the equity cushion available to absorb losses. The six-year progression below reveals a clear dispersion across the group, with BNP Paribas and Santander consistently carrying the heaviest debt loads relative to equity, while HSBC and Intesa Sanpaolo trend toward the lower end.
 
@@ -325,7 +325,7 @@ The debt-to-equity ratio captures the proportion of debt relative to shareholder
 | SAN    | 3.53 | 3.45 | 4.36 | 2.98 | 4.50 | 4.40 |
 | BNPQY  | 6.40 | 6.34 | 2.56 | 5.23 | 5.43 | 6.22 |
 
-The equity multiplier — total assets divided by equity — provides a balance-sheet-wide view of financial leverage and is a core input into DuPont decomposition. A lower multiplier implies a thicker equity buffer relative to the entire asset base. The 2025 cross-section is particularly telling: UniCredit stands at just 12.6x, the lowest among all nine peers, followed closely by Intesa Sanpaolo at 14.5x and Santander at 16.8x. By contrast, BNP Paribas (20.7x), Société Générale (21.0x), Barclays (20.3x), and ING (20.3x) are meaningfully more leveraged. Importantly, UniCredit's multiplier has compressed steadily from 15.1x in 2021 to 12.6x in 2025, signalling a deliberate and sustained de-leveraging trajectory.
+The equity multiplier, total assets divided by equity, provides a balance-sheet-wide view of financial leverage and is a core input into DuPont decomposition. A lower multiplier implies a thicker equity buffer relative to the entire asset base. The 2025 cross-section is particularly telling: UniCredit stands at just 12.6x, the lowest among all nine peers, followed closely by Intesa Sanpaolo at 14.5x and Santander at 16.8x. By contrast, BNP Paribas (20.7x), Société Générale (21.0x), Barclays (20.3x), and ING (20.3x) are meaningfully more leveraged. Importantly, UniCredit's multiplier has compressed steadily from 15.1x in 2021 to 12.6x in 2025, signalling a deliberate and sustained de-leveraging trajectory.
 
 | Ticker | 2021 | 2022 | 2023 | 2024 | 2025 |
 |:-------|-----:|-----:|-----:|-----:|-----:|
@@ -339,7 +339,7 @@ The equity multiplier — total assets divided by equity — provides a balance-
 | BNPQY  | 23.21 | 23.24 | 21.55 | 20.14 | 20.67 |
 | SCGLY  | 21.10 | 20.46 | 20.33 | 20.08 | 20.96 |
 
-The debt-to-assets ratio corroborates this ranking. HSBC (0.153), Deutsche Bank (0.178), and Intesa Sanpaolo (0.145) hold the smallest debt loads as a share of the total balance sheet in 2025, while BNP Paribas (0.294) and Santander (0.266) are again the outliers on the high end. The debt service coverage ratio provides the critical cash-flow validation: UniCredit (0.228) and Intesa Sanpaolo (0.181) post the highest readings in 2025, meaning their operating earnings are most comfortably covering their debt obligations — a distinction that separates balance-sheet strength from earnings-backed solvency capacity.
+The debt-to-assets ratio corroborates this ranking. HSBC (0.153), Deutsche Bank (0.178), and Intesa Sanpaolo (0.145) hold the smallest debt loads as a share of the total balance sheet in 2025, while BNP Paribas (0.294) and Santander (0.266) are again the outliers on the high end. The debt service coverage ratio provides the critical cash-flow validation: UniCredit (0.228) and Intesa Sanpaolo (0.181) post the highest readings in 2025, meaning their operating earnings are most comfortably covering their debt obligations, a distinction that separates balance-sheet strength from earnings-backed solvency capacity.
 
 | Ticker | D/A 2025 | Equity Mult 2025 | DSCR 2025 |
 |:-------|----------:|-----------------:|----------:|
@@ -353,7 +353,7 @@ The debt-to-assets ratio corroborates this ranking. HSBC (0.153), Deutsche Bank 
 | SAN    | 0.266 | 16.82 | 0.014 |
 | BNPQY  | 0.294 | 20.67 | 0.013 |
 
-Synthesizing across all three dimensions, **UniCredit (UNCRY)** emerges as the most solvent major European bank. Its equity multiplier of 12.6x is the lowest in the peer group by a meaningful margin, its trend has been consistently improving over six years, and its debt service coverage ratio of 0.228 is the highest in the cohort — confirming that the balance-sheet strength is underpinned by genuine earnings power rather than accounting structure alone. **Intesa Sanpaolo (ISNPY)** is the clear runner-up, posting the second-best equity multiplier and second-best DSCR. At the other end of the spectrum, BNP Paribas is the most leveraged name across nearly every metric, and Société Générale's equity multiplier spiked to 21.0x in 2025, flagging elevated structural leverage risk in that institution.
+Synthesizing across all three dimensions, **UniCredit (UNCRY)** emerges as the most solvent major European bank. Its equity multiplier of 12.6x is the lowest in the peer group by a meaningful margin, its trend has been consistently improving over six years, and its debt service coverage ratio of 0.228 is the highest in the cohort, confirming that the balance-sheet strength is underpinned by genuine earnings power rather than accounting structure alone. **Intesa Sanpaolo (ISNPY)** is the clear runner-up, posting the second-best equity multiplier and second-best DSCR. At the other end of the spectrum, BNP Paribas is the most leveraged name across nearly every metric, and Société Générale's equity multiplier spiked to 21.0x in 2025, flagging elevated structural leverage risk in that institution.
 
 Logical extensions of this analysis within the Finance Toolkit ecosystem would include examining capital allocation quality via return on equity and return on invested capital for these same banks, running a rolling volatility and maximum drawdown comparison to understand how solvency strength translates into price resilience, or stress-testing via the Altman Z-Score model where data coverage permits.
 
@@ -371,9 +371,9 @@ Logical extensions of this analysis within the Finance Toolkit ecosystem would i
 <div class="mcp-chat__reply" markdown="1">
 <div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
 
-The following analysis covers eight representative semiconductor names spanning the full value chain — fabless designers (NVDA, AMD, QCOM), integrated device manufacturers (INTC, MU), a pure-play foundry (TSM), a diversified chip infrastructure leader (AVGO), and the European lithography monopoly (ASML) — using RSI momentum, trailing P/E multiples, and risk-adjusted Sharpe ratios sourced entirely from the Finance Toolkit MCP server.
+The following analysis covers eight representative semiconductor names spanning the full value chain: fabless designers (NVDA, AMD, QCOM), integrated device manufacturers (INTC, MU), a pure-play foundry (TSM), a diversified chip infrastructure leader (AVGO), and the European lithography monopoly (ASML), using RSI momentum, trailing P/E multiples, and risk-adjusted Sharpe ratios sourced entirely from the Finance Toolkit MCP server.
 
-**Momentum: The Sector Was Overbought in May — and Has Since Corrected**
+**Momentum: The Sector Was Overbought in May and Has Since Corrected**
 
 The most telling technical story of 2026 is a sharp but short-lived overbought surge in May, now substantially unwound as of the June 4 close. The table below presents trailing 14-day RSI readings across the cohort for the last ten trading sessions. Readings above 70 flag overbought conditions; readings below 30 indicate oversold pressure.
 
@@ -390,11 +390,11 @@ The most telling technical story of 2026 is a sharp but short-lived overbought s
 | 2026-06-03 | 41.65 | 74.14 | 42.23 | 61.96 | 73.63 | 64.73 | 74.99 | 65.57 | 61.53 |
 | 2026-06-04 | **35.85** | 67.01 | 45.42 | 64.32 | **43.84** | 61.77 | 68.09 | 67.54 | 59.15 |
 
-The data paints a diverging picture within the sector. NVDA is the clearest outlier: its RSI has collapsed from a local peak of ~70 in mid-May to 35.85 on June 4, approaching oversold territory and suggesting near-term selling pressure has been substantial. AVGO echoes a similar dynamic, dropping from an intraday peak above 73 to 43.84 in just two sessions, possibly reflecting rotation out of AI-infrastructure adjacent names. In contrast, AMD, QCOM, MU, and ASML remain in the 60–75 band — elevated but not technically overbought as of the last close. The broader SPY benchmark sits at 59.15, meaning several semiconductor names (AMD at 67, QCOM at 64, MU at 68, ASML at 68) are trading with more momentum than the broad market, but not yet at alarming levels. Notably, the sector as a whole touched genuinely overbought readings of 80–89 on INTC, QCOM, and MU in the first two weeks of May, coinciding with the US-China trade truce news and renewed AI capex guidance from hyperscalers. That wave has receded.
+The data paints a diverging picture within the sector. NVDA is the clearest outlier: its RSI has collapsed from a local peak of ~70 in mid-May to 35.85 on June 4, approaching oversold territory and suggesting near-term selling pressure has been substantial. AVGO echoes a similar dynamic, dropping from an intraday peak above 73 to 43.84 in just two sessions, possibly reflecting rotation out of AI-infrastructure adjacent names. In contrast, AMD, QCOM, MU, and ASML remain in the 60–75 band, elevated but not technically overbought as of the last close. The broader SPY benchmark sits at 59.15, meaning several semiconductor names (AMD at 67, QCOM at 64, MU at 68, ASML at 68) are trading with more momentum than the broad market, but not yet at alarming levels. Notably, the sector as a whole touched genuinely overbought readings of 80–89 on INTC, QCOM, and MU in the first two weeks of May, coinciding with the US-China trade truce news and renewed AI capex guidance from hyperscalers. That wave has receded.
 
 **Valuation: Multiples Remain Structurally Elevated for AI-Exposed Names**
 
-The overbought question cannot be answered through momentum alone — RSI describes the speed of price change, not whether the underlying business justifies the price. The following table presents trailing annual P/E ratios for the cohort from 2021 through 2026 (2026 where available).
+The overbought question cannot be answered through momentum alone: RSI describes the speed of price change, not whether the underlying business justifies the price. The following table presents trailing annual P/E ratios for the cohort from 2021 through 2026 (2026 where available).
 
 | Ticker | 2021  | 2022  | 2023   | 2024   | 2025    | 2026  |
 |:-------|------:|------:|-------:|-------:|--------:|------:|
@@ -407,7 +407,7 @@ The overbought question cannot be answered through momentum alone — RSI descri
 | TSM    | 29.1  | 11.9  | 19.4   | 29.0   | 28.4    |       |
 | INTC   | 10.6  | 13.6  | 125.3  | —      | —       |       |
 
-NVDA's P/E compression from its stratospheric 284x in 2023 to 44.6x on a current-year basis is meaningful progress, but at 44x it still prices in enormous earnings growth expectations that leave little room for execution disappointment. AMD at 80.8x and AVGO at 72.6x for 2025 are similarly demanding. In contrast, TSM trades at a comparatively modest 28x, QCOM at 34x, and ASML at 37x — multiples that, while not cheap, are more defensible given their structural moat positions in leading-edge foundry, mobile/auto connectivity, and EUV lithography respectively. INTC remains the sector's distressed outlier, posting deeply negative earnings in 2024 and 2025 as its restructuring and process-technology catch-up remains unresolved.
+NVDA's P/E compression from its stratospheric 284x in 2023 to 44.6x on a current-year basis is meaningful progress, but at 44x it still prices in enormous earnings growth expectations that leave little room for execution disappointment. AMD at 80.8x and AVGO at 72.6x for 2025 are similarly demanding. In contrast, TSM trades at a comparatively modest 28x, QCOM at 34x, and ASML at 37x, multiples that, while not cheap, are more defensible given their structural moat positions in leading-edge foundry, mobile/auto connectivity, and EUV lithography respectively. INTC remains the sector's distressed outlier, posting deeply negative earnings in 2024 and 2025 as its restructuring and process-technology catch-up remains unresolved.
 
 **Risk-Adjusted Returns: The Sector Has Not Rewarded Shareholders Proportionally**
 
@@ -422,16 +422,16 @@ Sharpe ratios on an annual basis tell a sobering story. The table below shows ri
 | 2025 | -1.32  | -1.05  | -0.98  | -1.75  | -1.22  | -1.57  | -0.94  | -1.61  |
 | 2026 | -1.73  | -0.74  | -0.57  | -1.03  | -1.41  | -1.53  | -0.59  | -1.24  |
 
-These uniformly negative Sharpe ratios indicate that, in every period, volatility has outpaced risk-compensated returns across the cohort. NVDA stands out negatively in 2026 with a Sharpe of -1.73, confirming that its recent price drawdown has been accompanied by elevated volatility — consistent with the RSI collapse observed above. AMD and MU register the least-negative 2026 ratios (-0.74 and -0.59 respectively), suggesting comparatively less turbulent price action relative to their returns. QCOM and INTC are also showing improvement in 2026 versus 2025, which aligns with their RSI readings reflecting a less extended momentum condition.
+These uniformly negative Sharpe ratios indicate that, in every period, volatility has outpaced risk-compensated returns across the cohort. NVDA stands out negatively in 2026 with a Sharpe of -1.73, confirming that its recent price drawdown has been accompanied by elevated volatility, consistent with the RSI collapse observed above. AMD and MU register the least-negative 2026 ratios (-0.74 and -0.59 respectively), suggesting comparatively less turbulent price action relative to their returns. QCOM and INTC are also showing improvement in 2026 versus 2025, which aligns with their RSI readings reflecting a less extended momentum condition.
 
-**Synthesis: Mixed Signals — Sector Was Overbought, Now Normalizing**
+**Synthesis: Mixed Signals, Sector Was Overbought, Now Normalizing**
 
 The semiconductor sector is not uniformly overbought as of June 4, 2026. The data reveals a sector mid-cycle in a technical correction from a genuine May overbought peak. NVDA and AVGO have unwound their momentum surges most aggressively and now flash caution signals in the opposite direction, with NVDA approaching oversold territory. AMD, MU, QCOM, and ASML remain mildly elevated on momentum but well below the threshold that would warrant an overbought classification. Valuations remain the persistent structural concern: NVDA, AMD, and AVGO carry multiples that require continued AI-driven earnings acceleration to justify, while ASML, QCOM, and TSM offer more moderate entry points from a fundamental standpoint. For investors monitoring the sector, the logical next steps within the Finance Toolkit ecosystem would include drilling into individual-name volatility profiles using GARCH forecasts, running rolling Sharpe analyses to capture momentum-regime shifts, or examining sector-level factor exposures through Fama-French decomposition to isolate whether excess returns are attributable to market beta, size, or value factors.
 
 </div>
 </details>
 
-The examples above use **Claude Sonnet 4.6**, which layers substantial qualitative reasoning on top of the raw numbers. The examples below use **GPT-5 mini** — a lighter, faster model that returns clean, structured data without the added narrative. Both work well with the Finance Toolkit MCP; the depth of interpretation scales with the model you choose.
+The examples above use **Claude Sonnet 4.6**, which layers substantial qualitative reasoning on top of the raw numbers. The examples below use **GPT-5 mini**, a lighter, faster model that returns clean, structured data without the added narrative. Both work well with the Finance Toolkit MCP; the depth of interpretation scales with the model you choose.
 
 <details class="mcp-chat" id="ex-alibaba-amazon" markdown="1">
 <summary class="mcp-chat__bar">
@@ -585,9 +585,9 @@ ASML’s lead is supported by very strong component scores in 2026, which indica
 
 ## Available Tools
 
-The server groups the 200+ Finance Toolkit methods into ~21 categorical master tools, each taking an `indicator` parameter that selects the exact metric — e.g. `get_valuation_ratios` with `indicator='get_price_to_earnings_ratio'`. You never set this by hand: the assistant picks the right tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`.
+The server groups the 200+ Finance Toolkit methods into ~21 categorical master tools, each taking an `indicator` parameter that selects the exact metric, e.g. `get_valuation_ratios` with `indicator='get_price_to_earnings_ratio'`. You never set this by hand: the assistant picks the right tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`.
 
-To explore what's available, ask the assistant to run the built-in `list_categories` or `search_metrics` tools, or launch the interactive inspector with `uvx --from "financetoolkit[mcp]" financetoolkit-mcp-inspector`. The full catalogue — every tool returns data as standardised Markdown — is grouped below. Each master tool wraps dozens of underlying Finance Toolkit functions; to understand **every** metric, model and parameter that can ultimately be reached through these tools, see the full Finance Toolkit documentation.
+To explore what's available, ask the assistant to run the built-in `list_categories` or `search_metrics` tools, or launch the interactive inspector with `uvx --from "financetoolkit[mcp]" financetoolkit-mcp-inspector`. The full catalogue (every tool returns data as standardised Markdown) is grouped below. Each master tool wraps dozens of underlying Finance Toolkit functions; to understand **every** metric, model and parameter that can ultimately be reached through these tools, see the full Finance Toolkit documentation.
 
 [Browse the Finance Toolkit Documentation](/projects/financetoolkit/docs){: .btn .btn--info .btn--large}
 
@@ -671,7 +671,7 @@ These tools help you navigate the available functionality before making any data
 
 The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 200+ Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into ~21 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time.
 
-**For developers.** If you just want to use the Finance Toolkit through your assistant you can stop here — everything below is implementation detail for those who want to extend or contribute to the server.
+**For developers.** If you just want to use the Finance Toolkit through your assistant you can stop here. Everything below is implementation detail for those who want to extend or contribute to the server.
 {: .notice--info}
 
 ### Module Overview
@@ -692,14 +692,14 @@ The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structu
 
 When the server process starts (`uvx … financetoolkit-mcp`), `mcp_controller._build_mcp_app()` runs the following steps in order:
 
-1. **Load environment** — resolves the FMP API key from the process environment, a local `.env` file, or the global Finance Toolkit config path (`~/.config/financetoolkit/.env`).
-2. **Read `config.yaml`** — a single YAML file in the same package directory drives all registration: which controller classes exist (`module_class_map`), which methods to skip (`skip_methods`), which parameters the wrapper always handles (`init_handled_params`), and the full ordered list of tool groups (`tool_groups`).
-3. **Instantiate subsystems** — a `ToolkitProvider` (with its `SQLiteCache`), a `ControllerInspector`, a `ToolRegistry`, and a `UtilityToolRegistry` are all constructed and wired together.
-4. **Register tools** — `ToolRegistry.register_all_tools()` registers the router groups, then `UtilityToolRegistry.register_all_tools()` registers the four utility tools. The server is then ready to serve requests over stdio (or whichever transport `MCP_TRANSPORT` specifies).
+1. **Load environment**: resolves the FMP API key from the process environment, a local `.env` file, or the global Finance Toolkit config path (`~/.config/financetoolkit/.env`).
+2. **Read `config.yaml`**: a single YAML file in the same package directory drives all registration: which controller classes exist (`module_class_map`), which methods to skip (`skip_methods`), which parameters the wrapper always handles (`init_handled_params`), and the full ordered list of tool groups (`tool_groups`).
+3. **Instantiate subsystems**: a `ToolkitProvider` (with its `SQLiteCache`), a `ControllerInspector`, a `ToolRegistry`, and a `UtilityToolRegistry` are all constructed and wired together.
+4. **Register tools**: `ToolRegistry.register_all_tools()` registers the router groups, then `UtilityToolRegistry.register_all_tools()` registers the four utility tools. The server is then ready to serve requests over stdio (or whichever transport `MCP_TRANSPORT` specifies).
 
 ### The Router Pattern
 
-`ToolRegistry` reads the `tool_groups` list from `config.yaml`. Each entry is converted to a `RouterGroupSpec` NamedTuple that describes one master tool — its name, the controller class to introspect, and how methods are discovered.
+`ToolRegistry` reads the `tool_groups` list from `config.yaml`. Each entry is converted to a `RouterGroupSpec` NamedTuple that describes one master tool: its name, the controller class to introspect, and how methods are discovered.
 
 For each group, `ControllerInspector` either:
 - **Parses the source** of a nominated `collect_*` method on the controller class to find every `self.get_*()` call in the order they appear, or
@@ -723,8 +723,8 @@ Every tool group has a `category` that controls how `ToolkitProvider` routes the
 |:---|:---|
 | `ticker` | Instantiates a `Toolkit(tickers=…)` object and calls a method on one of its sub-modules (e.g. `ratios`, `models`, `options`) |
 | `toolkit` | Same Toolkit instance, but calls a method directly on the `Toolkit` class (e.g. `get_historical_data`) |
-| `standalone` | Instantiates `Economics` or `FixedIncome` directly — no tickers required |
-| `discovery` | Instantiates `Discovery(api_key=…)` — no tickers or dates required |
+| `standalone` | Instantiates `Economics` or `FixedIncome` directly, no tickers required |
+| `discovery` | Instantiates `Discovery(api_key=…)`, no tickers or dates required |
 | `mixed` | Per-method routing table: each indicator maps to its own `(module, category)` pair |
 
 `ToolkitProvider` caches `Toolkit` instances by a key derived from tickers, date range, quarterly flag, and a hash of the API key, so repeated calls for the same parameters reuse an existing instance. Standalone module instances are cached the same way. Full DataFrame results are written to and read from `SQLiteCache` with configurable TTL.
@@ -733,11 +733,11 @@ Every tool group has a `category` that controls how `ToolkitProvider` routes the
 
 `UtilityToolRegistry` registers four tools that operate on the tool index rather than routing to a controller:
 
-- `get_analyst_guidelines` — returns the full analyst SKILL.md instructions so the LLM always has the response style guide available.
-- `list_categories`* — returns a Markdown table of all registered categories and tool counts.
-- `list_metrics_by_category` — lists every indicator within a given category.
-- `search_metrics` — token-based fuzzy search across all tool names and descriptions, with typo tolerance via `difflib.get_close_matches`.
-- `search_instruments` — proxies a live `Discovery.search_instruments()` call for ticker/ISIN/name lookups.
+- `get_analyst_guidelines`: returns the full analyst SKILL.md instructions so the LLM always has the response style guide available.
+- `list_categories`*: returns a Markdown table of all registered categories and tool counts.
+- `list_metrics_by_category`: lists every indicator within a given category.
+- `search_metrics`: token-based fuzzy search across all tool names and descriptions, with typo tolerance via `difflib.get_close_matches`.
+- `search_instruments`: proxies a live `Discovery.search_instruments()` call for ticker/ISIN/name lookups.
 
 ### Setup Wizard
 

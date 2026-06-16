@@ -20,7 +20,7 @@ title                    : "Jeroen Bouma"
 title_separator          : "|"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Jeroen Bouma"
-description              : "Jeroen Bouma — Quantitative Investment Strategist, Python developer, and creator of Finance Toolkit and Finance Database. Open-source financial analysis tools with 10,000+ GitHub stars."
+description              : "Jeroen Bouma, Quantitative Investment Strategist, Python developer, and creator of Finance Toolkit and Finance Database. Open-source financial analysis tools with 10,000+ GitHub stars."
 url                      : "https://www.jeroenbouma.com" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "JerBouma/jerbouma.github.io"

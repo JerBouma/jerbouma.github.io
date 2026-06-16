@@ -23,7 +23,7 @@ A selection of articles I have written connecting my open-source projects with m
 {% assign all_tags = all_tags | sort_natural %}
 
 {% if articles.size == 0 %}
-<p class="lit-empty">No articles yet — check back soon.</p>
+<p class="lit-empty">No articles yet. Check back soon.</p>
 {% else %}
 <div class="lit-filters" id="article-filters">
   <button class="lit-filter active" data-filter="all">All <span class="lit-count" data-count="all"></span></button>

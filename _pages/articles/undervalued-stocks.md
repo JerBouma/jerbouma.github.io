@@ -90,9 +90,9 @@ Which returns:
 | AAPL | 36.4 | 41.3 | 55.3 | 28.7 |
 | WMT | 46.3 | 71.1 | 9.9 | 22.6 |
 
-The spread is immediately visible. BAC and MRK trade below 15x earnings. WMT trades at 46x. INTC appears at the top of the sort only because its P/E is negative — the company reported a net loss — which is why sorting by a single metric is dangerous without additional filters.
+The spread is immediately visible. BAC and MRK trade below 15x earnings. WMT trades at 46x. INTC appears at the top of the sort only because its P/E is negative (the company reported a net loss), which is why sorting by a single metric is dangerous without additional filters.
 
-A few other readings worth noting. KO trades at 57x free cash flow despite a relatively modest P/E of 23x, suggesting either elevated CapEx or capital structure effects. P/B of 55.3x for AAPL reflects the reality that Apple has bought back so much equity it has almost none left — a reminder that P/B is most useful for asset-heavy sectors like financials and energy.
+A few other readings worth noting. KO trades at 57x free cash flow despite a relatively modest P/E of 23x, suggesting either elevated CapEx or capital structure effects. P/B of 55.3x for AAPL reflects the reality that Apple has bought back so much equity it has almost none left, a reminder that P/B is most useful for asset-heavy sectors like financials and energy.
 
 ## Step 2: Applying the Filter
 
@@ -116,7 +116,7 @@ Which returns:
 ['BAC', 'JNJ', 'MRK', 'PFE', 'XOM']
 ```
 
-JPM passes the P/E filter but misses on EV/EBITDA at 18.7x — marginally above the threshold. CVX passes on EV/EBITDA (8.9x) but its P/E of 23x falls just outside the cut. Five stocks pass both filters: BAC, JNJ, MRK, PFE, and XOM.
+JPM passes the P/E filter but misses on EV/EBITDA at 18.7x, marginally above the threshold. CVX passes on EV/EBITDA (8.9x) but its P/E of 23x falls just outside the cut. Five stocks pass both filters: BAC, JNJ, MRK, PFE, and XOM.
 
 Note that EV/EBITDA is less meaningful for banks, where the concept of enterprise value and operating earnings work differently from industrial companies. JPM at 16x P/E with a P/FCF of 8.9x deserves separate consideration using bank-specific metrics like price-to-tangible-book and return on equity.
 
@@ -151,7 +151,7 @@ Which returns:
 | PFE | 8.8% | 11.3% | 70.3% |
 | XOM | 10.7% | 14.8% | 21.7% |
 
-The table separates the field. JNJ and MRK both earn above 28% on invested capital with gross margins above 71%. These are not cheap because the business is deteriorating — they are cheap because pharmaceutical stocks have faced broader sector pressure, patent cliff concerns (MRK), and litigation overhangs (JNJ). The underlying profitability is intact.
+The table separates the field. JNJ and MRK both earn above 28% on invested capital with gross margins above 71%. These are not cheap because the business is deteriorating; they are cheap because pharmaceutical stocks have faced broader sector pressure, patent cliff concerns (MRK), and litigation overhangs (JNJ). The underlying profitability is intact.
 
 XOM earns 14.8% ROIC, which is solid for an energy company operating with significant fixed asset bases. The thin gross margin of 21.7% reflects the commodity economics of oil refining and distribution rather than a structural weakness. The risk here is cyclical: energy earnings compress when oil prices fall.
 
@@ -179,7 +179,7 @@ Which returns:
 
 BAC falls out at 4.8% ROIC under the industrial threshold, though the banking context warrants separate analysis. The remaining four represent meaningfully different risk profiles.
 
-JNJ and MRK are the strongest combination of value and quality in this screen. Both earn well above their cost of capital, carry strong franchise positions, and trade at multiples that imply no earnings growth — which is conservative given both have significant product pipelines. XOM offers commodity exposure with decent capital efficiency and a low EV/EBITDA of 9.3x, appropriate for investors comfortable with oil cycle risk. PFE is the speculative recovery candidate: the business model is intact, the discount is real, but the recovery timeline is uncertain.
+JNJ and MRK are the strongest combination of value and quality in this screen. Both earn well above their cost of capital, carry strong franchise positions, and trade at multiples that imply no earnings growth, which is conservative given both have significant product pipelines. XOM offers commodity exposure with decent capital efficiency and a low EV/EBITDA of 9.3x, appropriate for investors comfortable with oil cycle risk. PFE is the speculative recovery candidate: the business model is intact, the discount is real, but the recovery timeline is uncertain.
 
 ## Conclusion
 

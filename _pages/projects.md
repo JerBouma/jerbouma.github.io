@@ -84,7 +84,7 @@ The Finance Toolkit complements the Finance Database well. By utilizing both, yo
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
-The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the Model Context Protocol (MCP). Once configured, you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators — all in plain English.
+The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the Model Context Protocol (MCP). Once configured, you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all in plain English.
 
 The server builds on the same transparent, open-source calculation methods of the Finance Toolkit and consolidates the entire surface into a small number of categorical master tools so that the AI can discover and call the right metric without being overwhelmed by hundreds of individual function signatures.
 

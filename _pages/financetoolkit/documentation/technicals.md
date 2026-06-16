@@ -1537,7 +1537,7 @@ Also known as: ATR, volatility indicator.
  Formula:
  The Average True Range (ATR) is calculated using the following steps:
  1. Calculate the True Range (TR) for each period:
- - True Range (TR) = max(high — low, abs(high — previous_close), abs(low — previous_close))
+ - True Range (TR) = max(high - low, abs(high - previous_close), abs(low - previous_close))
  2. Calculate the Average True Range (ATR) over the specified window:
  - ATR = EMA(TR, window), where EMA is the Exponential Moving Average.
 

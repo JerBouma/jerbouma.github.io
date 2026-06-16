@@ -68,7 +68,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-rocket bento-icon"></i>
       <h2>Getting Started</h2>
-      <p>New to the Finance Toolkit? This notebook walks through every major feature with practical examples — from fetching historical prices and financial statements to running a complete financial analysis. Start here.</p>
+      <p>New to the Finance Toolkit? This notebook walks through every major feature with practical examples, from fetching historical prices and financial statements to running a complete financial analysis. Start here.</p>
     </div>
   </a>
 
@@ -92,7 +92,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-project-diagram bento-icon"></i>
       <h2>Models</h2>
-      <p>Execute well-known financial models — Extended DuPont Analysis, Discounted Cash Flow (DCF), Enterprise Value Breakdown, Altman Z-Score and Weighted Average Cost of Capital (WACC).</p>
+      <p>Execute well-known financial models: Extended DuPont Analysis, Discounted Cash Flow (DCF), Enterprise Value Breakdown, Altman Z-Score and Weighted Average Cost of Capital (WACC).</p>
     </div>
   </a>
 
@@ -116,7 +116,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-shield-alt bento-icon"></i>
       <h2>Risk</h2>
-      <p>Quantify downside exposure with Value at Risk (VaR), Conditional VaR (cVaR), Maximum Drawdown, Correlation matrices, GARCH and EWMA — essential for any risk-aware investment strategy.</p>
+      <p>Quantify downside exposure with Value at Risk (VaR), Conditional VaR (cVaR), Maximum Drawdown, Correlation matrices, GARCH and EWMA, essential for any risk-aware investment strategy.</p>
     </div>
   </a>
 
@@ -140,7 +140,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-globe bento-icon"></i>
       <h2>Economics</h2>
-      <p>Key economic indicators for 60+ countries — CPI, GDP, Unemployment Rates and Government Interest Rates at 3-month and 10-year maturities. Works as a standalone notebook as well.</p>
+      <p>Key economic indicators for 60+ countries: CPI, GDP, Unemployment Rates and Government Interest Rates at 3-month and 10-year maturities. Works as a standalone notebook as well.</p>
     </div>
   </a>
 
@@ -148,7 +148,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-briefcase bento-icon"></i>
       <h2>Portfolio</h2>
-      <p>Import your own transaction data to track portfolio performance over time, identify key return drivers and benchmark against an index — directly integrated with live Finance Toolkit data.</p>
+      <p>Import your own transaction data to track portfolio performance over time, identify key return drivers and benchmark against an index, directly integrated with live Finance Toolkit data.</p>
     </div>
   </a>
 
@@ -156,7 +156,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-plug bento-icon"></i>
       <h2>External Datasets</h2>
-      <p>Connect the Finance Toolkit to any data provider. Fully compatible with Yahoo Finance, OpenBB, Quandl, EODH and Bloomberg — bring your preferred data without being locked to a single source.</p>
+      <p>Connect the Finance Toolkit to any data provider. Fully compatible with Yahoo Finance, OpenBB, Quandl, EODH and Bloomberg, so you can bring your preferred data without being locked to a single source.</p>
     </div>
   </a>
 
