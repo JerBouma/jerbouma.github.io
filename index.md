@@ -30,7 +30,7 @@ classes: custom-splash
   </a>
   <a href="/projects/financetoolkit" class="stat-item">
     <span class="stat-number" data-stat="ratios" data-target="200" data-suffix="+">0+</span>
-    <span class="stat-label">Financial Ratios</span>
+    <span class="stat-label">Financial Metrics</span>
   </a>
   <a href="/projects" class="stat-item">
     <span class="stat-number" data-stat="downloads" data-target="50000" data-suffix="+">0+</span>
