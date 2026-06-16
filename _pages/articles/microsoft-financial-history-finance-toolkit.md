@@ -8,7 +8,7 @@ layout: single
 classes: custom-document
 author_profile: false
 collection: article
-tags: [Finance Toolkit, Fundamental Analysis]
+tags: [Finance Toolkit, Fundamental Analysis, MCP Server]
 share: true
 ---
 
