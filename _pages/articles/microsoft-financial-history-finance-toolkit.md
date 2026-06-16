@@ -5,7 +5,7 @@ permalink: /articles/microsoft-financial-history-finance-toolkit
 excerpt: "Explore Microsoft's financial journey over 40 years using the Finance Toolkit. This article analyzes revenue, net income, and other key metrics to understand the company's transformation."
 description: "Learn how Microsoft's financials have evolved since its IPO, with detailed analysis and Python code using the Finance Toolkit."
 layout: single
-classes: custom-document
+classes: wide-sidebar article-document
 author_profile: false
 collection: article
 tags: [Finance Toolkit, Fundamental Analysis, MCP Server]

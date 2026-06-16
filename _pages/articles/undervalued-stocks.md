@@ -5,7 +5,7 @@ permalink: /articles/screening-undervalued-stocks-finance-toolkit
 excerpt: "Learn how to build a systematic stock screen using the Finance Toolkit. Pull valuation multiples across a universe of stocks, apply multi-metric filters, and overlay profitability metrics to separate genuine value from value traps."
 description: "Build a Python-based stock screener using P/E, EV/EBITDA, ROIC, and gross margins with the Finance Toolkit."
 layout: single
-classes: custom-document
+classes: wide-sidebar article-document
 author_profile: false
 collection: article
 tags: [Finance Toolkit, Fundamental Analysis, MCP Server]

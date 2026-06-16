@@ -5,7 +5,7 @@ permalink: /articles/introducing-the-finance-toolkit-mcp-server
 excerpt: "Learn how the Finance Toolkit MCP server exposes 200+ financial ratios, indicators, and performance measurements to any AI assistant that supports the Model Context Protocol. This allows you to ask questions in plain English and receive structured answers without writing Python code."
 description: "Learn how the Finance Toolkit MCP server exposes 200+ financial ratios, indicators, and performance measurements to any AI assistant that supports the Model Context Protocol."
 layout: single
-classes: custom-document
+classes: wide-sidebar article-document
 author_profile: false
 collection: article
 tags: [Finance Toolkit, Fundamental Analysis, MCP Server]
@@ -57,7 +57,10 @@ Once it is running, the server groups the 200+ Finance Toolkit methods into abou
 
 Within Claude Desktop, it will look like below once setup.
 
-![Once everything is setup, you should see the Finance Toolkit as one of the available connectors.](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q0o5322rfem76oub01l5.png)
+<p align="center">
+  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q0o5322rfem76oub01l5.png" alt="Finance Toolkit MCP server configured in Claude Desktop" width="600">
+  <br><em>Once everything is setup, you should see the Finance Toolkit as one of the available connectors.</em>
+</p>
 
 ## Equity Analysis: Margins, Returns, and Multiples Side by Side
 
@@ -97,7 +100,10 @@ The dispersion inside one industry is the whole story here: NVDA turned a 2015 p
 
 A call with the Finance Toolkit MCP would return an answer such as below.
 
-![Semiconductors went from a cyclical industrial sector to the backbone of AI infrastructure over the last decade and the market priced that transition in full. NVDA and AMD returned over 150x since 2015 while the S&P 500 compounded quietly at the bottom of the same chart.](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hbwucatw62srxqu3qc3v.png)
+<p align="center">
+  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hbwucatw62srxqu3qc3v.png" alt="Finance Toolkit MCP response comparing semiconductor equity ratios" width="600">
+  <br><em>Semiconductors went from a cyclical industrial sector to the backbone of AI infrastructure over the last decade and the market priced that transition in full. NVDA and AMD returned over 150x since 2015 while the S&P 500 compounded quietly at the bottom of the same chart.</em>
+</p>
 
 ## Technical Analysis: Is the Market Overbought?
 
@@ -134,7 +140,10 @@ The more striking part is the reversal. The same two sectors that bottomed harde
 
 A call with the Finance Toolkit MCP is showing what I mean:
 
-![The COVID crash was swift but uneven. Airlines collapsed into extreme oversold territory with RSI hitting 22 in April 2020. Alevel that signals panic selling, not fundamental repricing. Technology barely dipped. Oil & Gas, untouched by the initial shock, swung to RSI 91 a year later as the energy cycle turned.](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ef2dxd12heokum126nsl.png)
+<p align="center">
+  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ef2dxd12heokum126nsl.png" alt="Finance Toolkit MCP response on European sector RSI during the 2020 crash" width="600">
+  <br><em>The COVID crash was swift but uneven. Airlines collapsed into extreme oversold territory with RSI hitting 22 in April 2020. Alevel that signals panic selling, not fundamental repricing. Technology barely dipped. Oil & Gas, untouched by the initial shock, swung to RSI 91 a year later as the energy cycle turned.</em>
+</p>
 
 ## Risk and Performance: What the Fama-French Factors Reveal About South American Stocks
 
@@ -178,7 +187,10 @@ MELI's R-squared has fallen almost every year since 2021, from 0.619 to 0.122, m
 
 A call with the Finance Toolkit MCP would return an answer such as below.
 
-![The Fama-French 5-factor model decomposes stock returns into market beta, size, value, profitability, and investment exposure. Applied to South American industries, it reveals that MercadoLibre behaves more like a US growth stock than a Latin American consumer play while energy names like Petrobras and YPF are primarily market-beta bets with a secondary value tilt.](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mcpyhbr1gwkezepzvss0.png)
+<p align="center">
+  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mcpyhbr1gwkezepzvss0.png" alt="Finance Toolkit MCP response on the Fama-French factor model for South American equities" width="600">
+  <br><em>The Fama-French 5-factor model decomposes stock returns into market beta, size, value, profitability, and investment exposure. Applied to South American industries, it reveals that MercadoLibre behaves more like a US growth stock than a Latin American consumer play while energy names like Petrobras and YPF are primarily market-beta bets with a secondary value tilt.</em>
+</p>
 
 ## Macroeconomic Analysis: Tracking Asia's Growth Engines
 
@@ -209,4 +221,7 @@ India has held growth above 9.5% every year since the 2020 contraction, while Ch
 
 A call with the Finance Toolkit MCP would return an answer such as below.
 
-![Investment as a share of GDP is one of the cleanest leading indicators of structural economic development. Vietnam and India led the region in the 2000s, fuelling their infrastructure and manufacturing buildouts. Bangladesh has been rising steadily since 2010. The hallmark of an economy still in the upgrading phase, not yet plateauing like Malaysia or Thailand.](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6o1jp35n33itf807nhx5.png)
+<p align="center">
+  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6o1jp35n33itf807nhx5.png" alt="Finance Toolkit MCP response on GDP growth across Asian economies" width="600">
+  <br><em>Investment as a share of GDP is one of the cleanest leading indicators of structural economic development. Vietnam and India led the region in the 2000s, fuelling their infrastructure and manufacturing buildouts. Bangladesh has been rising steadily since 2010. The hallmark of an economy still in the upgrading phase, not yet plateauing like Malaysia or Thailand.</em>
+</p>

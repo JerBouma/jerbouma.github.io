@@ -1,0 +1,27 @@
+<div class="article-byline">
+  <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}" class="article-byline__avatar">
+  <div class="article-byline__info">
+    <span class="article-byline__name">{{ site.author.name }}</span>
+    <span class="article-byline__meta">
+      {% if page.date %}
+        {% assign date_format = site.date_format | default: "%B %-d, %Y" %}
+        <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: date_format }}</time>
+        <span class="article-byline__sep">&middot;</span>
+      {% endif %}
+      {% assign words_per_minute = site.words_per_minute | default: 200 %}
+      {% assign words = content | strip_html | number_of_words %}
+      {% if words < words_per_minute %}
+        {{ site.data.ui-text[site.locale].less_than | default: "less than" }} 1 {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
+      {% elsif words == words_per_minute %}
+        1 {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
+      {% else %}
+        {{ words | divided_by: words_per_minute }} {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
+      {% endif %}
+    </span>
+  </div>
+</div>
+{% if page.tags.size > 0 %}
+  <div class="article-byline__tags">
+    {% for tag in page.tags %}<span class="lit-tag">{{ tag }}</span>{% endfor %}
+  </div>
+{% endif %}

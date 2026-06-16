@@ -3708,14 +3708,17 @@ body.wide-no-sidebar:not(.no-title) {
 
 // Articles Page
 .article-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
   margin-top: 28px;
+  align-items: stretch;
 }
 
 .article-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 14px;
@@ -3774,6 +3777,10 @@ body.wide-no-sidebar:not(.no-title) {
     color: var(--text-secondary);
     line-height: 1.6;
     margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
 
@@ -4280,6 +4287,170 @@ body.wide-sidebar {
   }
 }
 
+/* Blog-post reading layout — narrow centered column, dev.to/Medium style */
+body.article-document {
+  header,
+  .page__content,
+  footer.page__meta,
+  .article-share,
+  .pagination {
+    float: none !important;
+    max-width: 760px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  // Cancel the global title+action flex row (.page__inner-wrap header) —
+  // articles stack title, byline, and tags vertically instead.
+  header {
+    display: block !important;
+    border-bottom: 1px solid var(--masthead-border) !important;
+    padding-bottom: 28px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .page__title {
+    border-bottom: none !important;
+    margin-bottom: 16px !important;
+    padding-bottom: 0 !important;
+  }
+}
+
+.article-byline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.4;
+  }
+
+  &__name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.92rem;
+  }
+
+  &__meta {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+
+  &__sep {
+    margin: 0 6px;
+    opacity: 0.6;
+  }
+}
+
+.article-byline__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+// "More Articles" sidebar panel on individual article pages
+.article-sidebar__title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  margin: 0 0 14px;
+  padding: 0 4px;
+}
+
+.article-sidebar__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.article-sidebar__item {
+  display: block;
+  padding: 10px 4px;
+  border-radius: 8px;
+  text-decoration: none !important;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(128, 128, 128, 0.08);
+  }
+
+  &.is-active {
+    background: rgba(56, 189, 248, 0.08);
+  }
+}
+
+.article-sidebar__item-title {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-primary) !important;
+  margin-bottom: 3px;
+}
+
+.article-sidebar__item-date {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+// Sticky in-page TOC, sits above "More Articles" in the sidebar
+.article-toc__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+
+  li {
+    margin: 0;
+  }
+
+  a {
+    display: block;
+    padding: 6px 4px;
+    color: var(--text-secondary) !important;
+    text-decoration: none !important;
+    line-height: 1.4;
+    border-radius: 6px;
+    transition: background 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      color: var(--accent-color) !important;
+      background: rgba(128, 128, 128, 0.08);
+    }
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 14px;
+
+    a {
+      font-size: 0.8rem;
+      color: var(--text-muted) !important;
+    }
+  }
+}
+
+.article-toc__menu + .article-sidebar__title {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--card-border);
+}
+
 @media (max-width: 1024px) {
   body.custom-document, body.wide-sidebar {
     #main {
@@ -4382,19 +4553,14 @@ body.wide-sidebar {
       font-size: 1.8rem !important;
     }
 
-    // Prevent wide tables/images/code from overflowing the card
+    // Prevent wide images/code from overflowing the card
+    // (tables are handled by the .table-scroll wrapper at all sizes)
     .page__content {
       overflow-x: hidden !important;
 
       img {
         max-width: 100% !important;
         height: auto !important;
-      }
-      table {
-        display: block !important;
-        overflow-x: auto !important;
-        max-width: 100% !important;
-        -webkit-overflow-scrolling: touch;
       }
 
       pre, div.highlighter-rouge, div.language-python, div.language-bash, figure.highlight {
@@ -4701,13 +4867,23 @@ table.highlight {
    professional, high-contrast, and glassmorphic look.
    ======================================================= */
 
-.page__content table:not(.highlight) {
-  display: block !important; 
-  overflow-x: auto !important;
+// Wraps every .page__content table (added by JS in scripts.html) so wide
+// tables scroll horizontally inside their own column instead of bleeding
+// into the card edge or a neighboring float column.
+.table-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  margin: 2em 0;
+}
+
+.page__content table:not(.highlight) {
+  display: table !important;
+  table-layout: auto !important;
   width: 100% !important;
   max-width: 100% !important;
-  margin: 2em 0 !important;
+  margin: 0 !important;
   border-radius: 16px !important;
   font-size: 0.9rem !important;
 

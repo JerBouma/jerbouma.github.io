@@ -1,6 +1,10 @@
-{% if page.author_profile or layout.author_profile or page.sidebar %}
+{% if page.author_profile or layout.author_profile or page.sidebar or page.collection == "article" %}
   <div class="sidebar sticky" role="navigation">
     {% if page.author_profile or layout.author_profile %}{% include author-profile.html %}{% endif %}
+    {% if page.collection == "article" %}
+      {% include article__toc.html %}
+      {% include article__sidebar.html %}
+    {% endif %}
     {% if page.sidebar %}
       {% for s in page.sidebar %}
         {% if s.image %}

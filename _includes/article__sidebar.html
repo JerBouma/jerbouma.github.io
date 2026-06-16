@@ -1,0 +1,10 @@
+{% assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
+<p class="article-sidebar__title">More Articles</p>
+<nav class="article-sidebar__list">
+  {% for article in articles %}
+    <a href="{{ article.url | relative_url }}" class="article-sidebar__item{% if article.url == page.url %} is-active{% endif %}">
+      <span class="article-sidebar__item-title">{{ article.title }}</span>
+      <span class="article-sidebar__item-date">{{ article.date | date: "%b %-d, %Y" }}</span>
+    </a>
+  {% endfor %}
+</nav>

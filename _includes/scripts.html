@@ -31,6 +31,18 @@
   });
 </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.page__content table:not(.highlight)').forEach(function (table) {
+      if (table.parentElement.classList.contains('table-scroll')) { return; }
+      var wrapper = document.createElement('div');
+      wrapper.className = 'table-scroll';
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    });
+  });
+</script>
+
 {% if site.after_footer_scripts %}
   {% for script in site.after_footer_scripts %}
     <script src="{{ script | relative_url }}"></script>

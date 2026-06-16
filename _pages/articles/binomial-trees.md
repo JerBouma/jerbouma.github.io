@@ -5,7 +5,7 @@ permalink: /articles/binomial-trees
 excerpt: "Binomial trees are a popular method for pricing options and other derivatives. The Finance Toolkit includes a function for binomial trees, which can price European and American options. This article provides an overview of the binomial tree module and demonstrates its use in option pricing."
 description: "Learn how binomial trees work for pricing European and American options, with worked examples and Python code using the Finance Toolkit."
 layout: single
-classes: custom-document
+classes: wide-sidebar article-document
 author_profile: false
 collection: article
 tags: [Finance Toolkit, Options, Derivatives, Binomial Trees]
@@ -361,9 +361,6 @@ option_pay_off_ap = binomial_trees_model.get_option_payoffs(
 
 This code generates DataFrames representing the binomial trees for European Call, European Put, American Call, and American Put options, respectively. The values in these DataFrames correspond to the nodes in the binomial trees shown earlier:
 
-<div class="row">
-<div markdown="1" class="fifty-column-left mobile-max-column-width">
-
 **European Call Option (Strike $90)**
 
 |     |        0 |         1 |        2 |       3 |
@@ -372,8 +369,6 @@ This code generates DataFrames representing the binomial trees for European Call
 | UUD | nan      |  11.4975  |  17.6385 | 25.5274 |
 | UDD | nan      | nan       |   5      |  0      |
 | DDD | nan      | nan       | nan      |  0      |
-
-<br>
 
 **European Put Option (Strike $90)**
 
@@ -384,10 +379,6 @@ This code generates DataFrames representing the binomial trees for European Call
 | UDD | nan       | nan        |  13.9826  |  3.44045 |
 | DDD | nan       | nan        | nan       | 25.1448  |
 
-</div>
-
-<div markdown="1" class="fifty-column-right mobile-max-column-width">
-
 **American Call Option (Strike $90)**
 
 |     |        0 |        1 |        2 |       3 |
@@ -396,8 +387,6 @@ This code generates DataFrames representing the binomial trees for European Call
 | UUD | nan      |  11.4975 |  17.6385 | 25.5274 |
 | UDD | nan      | nan      |   5      |  0      |
 | DDD | nan      | nan      | nan      |  0      |
-
-<br>
 
 **American Put Option (Strike $90)**
 
@@ -408,8 +397,6 @@ This code generates DataFrames representing the binomial trees for European Call
 | UDD | nan       | nan        |  13.9826  |  3.44045 |
 | DDD | nan       | nan        | nan       | 25.1448  |
 
-</div>
-</div>
 *(Note: Slight differences compared to the manually calculated trees might arise from rounding in the manual example or precise calculations in the code.)*
 
 Now, let's apply this using actual company data. We'll use Apple Inc. (AAPL) and Microsoft Corporation (MSFT). The toolkit automatically fetches necessary inputs like the current stock price, risk-free rate, dividend yield, and calculates historical volatility.

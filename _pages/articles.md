@@ -44,16 +44,15 @@ A selection of articles I have written connecting my open-source projects with m
     {% endif %}
   {% endfor %}
   <a href="{{ article.url | relative_url }}" class="article-card" data-tags="{{ art_tag_slugs }}">
+    <h3 class="article-card__title">{{ article.title }}</h3>
+    {% if article.excerpt %}<p class="article-card__excerpt">{{ article.excerpt | strip_html }}</p>{% endif %}
+    {% if article.tags.size > 0 %}
     <div class="article-card__meta">
-      <span class="article-card__date">{{ article.date | date: "%b %-d, %Y" }}</span>
-      {% if article.tags.size > 0 %}
       <div class="article-card__tags">
         {% for tag in article.tags %}<span class="lit-tag">{{ tag }}</span>{% endfor %}
       </div>
-      {% endif %}
     </div>
-    <h2 class="article-card__title">{{ article.title }}</h2>
-    {% if article.excerpt %}<p class="article-card__excerpt">{{ article.excerpt | strip_html }}</p>{% endif %}
+    {% endif %}
   </a>
 {% endfor %}
 </div>
