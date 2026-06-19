@@ -1,9 +1,18 @@
 <!-- start custom head snippets -->
 
 <!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="/assets/images/default/favicon.svg">
-<link rel="shortcut icon" type="image/png" href="/assets/images/default/favicon.svg">
-<link rel="icon" type="image/png" href="/assets/images/default/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="/assets/images/default/favicon.svg" id="favicon-svg">
+<link rel="shortcut icon" type="image/png" href="/assets/images/default/favicon.svg" id="favicon-shortcut">
+<link rel="icon" type="image/png" href="/assets/images/default/favicon.svg" id="favicon-png">
+<script>
+  if (window.location.hostname === 'financetoolkit.jeroenbouma.com') {
+    var ft = '/assets/images/default/finance_toolkit_icon.png';
+    document.getElementById('favicon-svg').setAttribute('href', ft);
+    document.getElementById('favicon-svg').setAttribute('type', 'image/png');
+    document.getElementById('favicon-shortcut').setAttribute('href', ft);
+    document.getElementById('favicon-png').setAttribute('href', ft);
+  }
+</script>
 
 <!-- Preconnect to external origins for faster resource loading -->
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
