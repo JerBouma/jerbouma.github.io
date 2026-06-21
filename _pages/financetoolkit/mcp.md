@@ -1,8 +1,8 @@
 ---
 permalink: /projects/financetoolkit/mcp
 title: Finance Toolkit MCP
-excerpt: The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the Model Context Protocol (MCP). Ask questions in plain English and let the AI fetch live financial data on your behalf.
-description: The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the Model Context Protocol (MCP). Ask questions in plain English and let the AI fetch live financial data on your behalf.
+excerpt: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp — no installation required. Ask questions in plain English and let the AI fetch 200+ live financial metrics, models, and economic indicators on your behalf.
+description: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp — no installation required. Ask questions in plain English and let the AI fetch 200+ live financial metrics, models, and economic indicators on your behalf.
 classes: wide-sidebar
 author_profile: false
 layout: single
@@ -16,9 +16,9 @@ image: assets/images/projects/FinanceToolkit.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit/blob/main/MCP.md" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io) (MCP). MCP is an open standard that lets AI assistants call external tools and data sources directly from the chat interface; no copy-pasting, no switching between apps. Once the server is configured, you simply ask questions in plain English and the AI fetches live financial data on your behalf.
+The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io) (MCP). The server is hosted at [`https://financetoolkit.jeroenbouma.com/mcp`](https://financetoolkit.jeroenbouma.com/mcp) — connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
 
-This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all backed by the transparent, open-source calculation methods of the Finance Toolkit.
+MCP is an open standard that lets AI assistants call external tools and data sources directly from the chat interface; no copy-pasting, no switching between apps. Once connected, you simply ask questions in plain English and the AI fetches live financial data on your behalf. This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all backed by the transparent, open-source calculation methods of the Finance Toolkit.
 
 The server consolidates the entire Finance Toolkit surface into a small number of categorical master tools (e.g. `get_valuation_ratios`, `get_profitability_ratios`, `get_momentum_indicators`) so that the AI can discover and call the right metric without being overwhelmed by hundreds of individual function signatures.
 
@@ -31,29 +31,43 @@ The server consolidates the entire Finance Toolkit surface into a small number o
 
 ## Installation
 
-Claude Desktop users can install in under a minute via a one-click MCPB bundle, no terminal required. For all other clients, an interactive setup wizard handles configuration and API key storage. Either way, the server runs on demand with no permanent background process.
+The fastest way to get started is to point any MCP-compatible client at the hosted server — no Python, no terminal, no local process. For Claude Desktop users, a one-click MCPB bundle is the next easiest option. For all other clients, an interactive setup wizard handles configuration in under two minutes. Advanced users can configure clients by hand.
 
 <div class="bento-card mcp-install-card" markdown="1">
 
-### <i class="fas fa-robot"></i> Claude Desktop
+### <i class="fas fa-server"></i> Remote Server
 {: .mcp-install-heading}
 <br>
-**Easiest setup, recommended for most users.** When using Claude Desktop, you can make use of the related MCPB file. Download it and follow the five steps below to get up and running in under a minute, no terminal required.
+**No installation required — works with any MCP-compatible client.** Connect directly to the hosted Finance Toolkit MCP server by adding the URL below. The server runs in the cloud; nothing needs to be installed locally. On first connection your client will open an OAuth consent page asking for your [Financial Modeling Prep API key](https://www.jeroenbouma.com/fmp) — enter it once and the server handles authentication from there.
 <br><br>
-[Download the Finance Toolkit MCPB file](https://github.com/JerBouma/FinanceToolkit/releases/latest/download/financetoolkit.mcpb){: .btn .btn--warning .btn--large .align-center target="_blank"}
+```
+https://financetoolkit.jeroenbouma.com/mcp
+```
 <br>
+For **Claude Code**, add the server in one command:
+```
+claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp
+```
+For all other clients, add the URL as a remote HTTP MCP server in your client's settings. See the [manual setup section](#manual-setup) for per-client JSON examples.
+
+</div>
+
+### Claude Desktop
+
+When using Claude Desktop, you can also make use of the related MCPB bundle file. Download it and follow the five steps below to get up and running in under a minute, no terminal required.
+
+[Download the Finance Toolkit MCPB file](https://github.com/JerBouma/FinanceToolkit/releases/latest/download/financetoolkit.mcpb){: .btn .btn--warning .btn--large .align-center target="_blank"}
+
 Then follow these steps:
 1. Double-click `financetoolkit.mcpb` which will open Claude Desktop, this will open a prompt whether you want to install the bundle, click "Install".
 2. A prompt will appear asking you to confirm the installation, click "Install" again.
 3. The bundle will ask you to provide a Financial Modeling Prep API key (obtain one [here](https://www.jeroenbouma.com/fmp)) and click "Save".
 4. Enable the bundle by toggling the switch which says "Disabled" to "Enabled".
-5. Restart Claude Desktop and the Finance Toolkit MCP Server will be available for use in your conversations. *Please note it might take up to 15 seconds to initalize the first time after restarting.*
-
-</div>
+5. Restart Claude Desktop and the Finance Toolkit MCP Server will be available for use in your conversations. *Please note it might take up to 15 seconds to initialize the first time after restarting.*
 
 ### Other Clients
 
-If you are using another client or prefer a more hands-on setup, follow the instructions below to run the setup wizard and configure your client manually.
+If you are using another client or prefer a local setup, follow the instructions below to run the setup wizard and configure your client.
 
 #### Run the Setup Wizard
 
@@ -108,7 +122,7 @@ Restart the client afterwards and the tools appear.
 
 ### Manual Setup
 
-The wizard handles most cases, but you can also configure clients by hand or automate the setup via command-line arguments.
+The wizard handles most cases, but you can also configure clients by hand or automate the setup via command-line arguments. To use the hosted remote server instead, replace the `command`/`args`/`env` block with a single `url` entry pointing to `https://financetoolkit.jeroenbouma.com/mcp`.
 
 Edit the client's JSON config directly. The `env` block takes either:
 - `FINANCIAL_MODELING_PREP_API_KEY`: the API key directly inline.
