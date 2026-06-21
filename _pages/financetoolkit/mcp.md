@@ -1,8 +1,8 @@
 ---
 permalink: /projects/financetoolkit/mcp
 title: Finance Toolkit MCP
-excerpt: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp — no installation required. Ask questions in plain English and let the AI fetch 200+ live financial metrics, models, and economic indicators on your behalf.
-description: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp — no installation required. Ask questions in plain English and let the AI fetch 200+ live financial metrics, models, and economic indicators on your behalf.
+excerpt: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 200+ live financial metrics, models, and economic indicators on your behalf.
+description: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 200+ live financial metrics, models, and economic indicators on your behalf.
 classes: wide-sidebar
 author_profile: false
 layout: single
@@ -16,7 +16,7 @@ image: assets/images/projects/FinanceToolkit.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit/blob/main/MCP.md" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io) (MCP). The server is hosted at [`https://financetoolkit.jeroenbouma.com/mcp`](https://financetoolkit.jeroenbouma.com/mcp) — connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
+The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io) (MCP). The server is hosted at [`https://financetoolkit.jeroenbouma.com/mcp`](https://financetoolkit.jeroenbouma.com/mcp). Connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
 
 MCP is an open standard that lets AI assistants call external tools and data sources directly from the chat interface; no copy-pasting, no switching between apps. Once connected, you simply ask questions in plain English and the AI fetches live financial data on your behalf. This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all backed by the transparent, open-source calculation methods of the Finance Toolkit.
 
@@ -31,28 +31,113 @@ The server consolidates the entire Finance Toolkit surface into a small number o
 
 ## Installation
 
-The fastest way to get started is to point any MCP-compatible client at the hosted server — no Python, no terminal, no local process. For Claude Desktop users, a one-click MCPB bundle is the next easiest option. For all other clients, an interactive setup wizard handles configuration in under two minutes. Advanced users can configure clients by hand.
+The fastest way to get started is to point any MCP-compatible client at the hosted server, with no Python, no terminal, and no local process needed. For Claude Desktop users, a one-click MCPB bundle is the next easiest option. For all other clients, an interactive setup wizard handles configuration in under two minutes. Advanced users can configure clients by hand.
 
 <div class="bento-card mcp-install-card" markdown="1">
 
-### <i class="fas fa-server"></i> Remote Server
+### <i class="fas fa-server"></i>Remote Server
 {: .mcp-install-heading}
 <br>
-**No installation required — works with any MCP-compatible client.** Connect directly to the hosted Finance Toolkit MCP server by adding the URL below. The server runs in the cloud; nothing needs to be installed locally. On first connection your client will open an OAuth consent page asking for your [Financial Modeling Prep API key](https://www.jeroenbouma.com/fmp) — enter it once and the server handles authentication from there.
+**No installation required, works with any MCP-compatible client.** Connect directly to the hosted Finance Toolkit MCP server by adding the URL below. The server runs in the cloud; nothing needs to be installed locally. On first connection your client will open an OAuth consent page asking for your [Financial Modeling Prep API key](https://www.jeroenbouma.com/fmp); enter it once and the server handles authentication from there.
 <br><br>
 ```
 https://financetoolkit.jeroenbouma.com/mcp
 ```
 <br>
-For **Claude Code**, add the server in one command:
-```
-claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp
-```
-For all other clients, add the URL as a remote HTTP MCP server in your client's settings. See the [manual setup section](#manual-setup) for per-client JSON examples.
+
+<details class="ft-details" markdown="1">
+  <summary><i class="fas fa-robot"></i> <b>Claude Desktop</b></summary>
+
+  1. Open **Claude Desktop** and click on **Customize**.
+  2. Go to the **Connectors** tab and click the on the "+" button.
+  3. Enter a name, e.g. *Finance Toolkit*, and paste the URL:
+     ```
+     https://financetoolkit.jeroenbouma.com/mcp
+     ```
+  4. Click "Add" to add the Finance Toolkit MCP server to your list of connectors.
+  5. On first use Claude Desktop opens a browser window asking for your [FMP API key](https://www.jeroenbouma.com/fmp). Enter it once and the server remembers it.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><i class="fas fa-globe"></i> <b>Claude.ai</b></summary>
+
+  1. Open [claude.ai](https://claude.ai) and click on **Customize** in the left sidebar.
+  2. Go to the **Connectors** tab and click the on the "+" button.
+  3. Enter a name, e.g. *Finance Toolkit*, and paste the URL:
+     ```
+     https://financetoolkit.jeroenbouma.com/mcp
+     ```
+  4. Click "Add" to add the Finance Toolkit MCP server to your list of connectors.
+  5. On first use Claude.ai opens a browser window asking for your [FMP API key](https://www.jeroenbouma.com/fmp). Enter it once and the server remembers it.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><i class="fas fa-terminal"></i> <b>Claude Code</b></summary>
+
+  Run once in your terminal, no config file editing needed:
+
+  ```bash
+  claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp
+  ```
+
+  Restart Claude Code afterwards and the Finance Toolkit tools appear automatically.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><i class="fab fa-microsoft"></i> <b>VS Code</b></summary>
+
+  1. Open the **Command Palette** (`Cmd+Shift+P` / `Ctrl+Shift+P`) and run **MCP: Add Server**.
+  2. Select **HTTP** as the server type.
+  3. Enter the URL `https://financetoolkit.jeroenbouma.com/mcp` and name it *finance-toolkit*.
+  4. VS Code writes the entry to `.vscode/mcp.json` automatically.
+  5. On first tool call VS Code opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp).
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><i class="fas fa-i-cursor"></i> <b>Cursor</b></summary>
+
+  1. Open **Cursor Settings** (`Cmd+,` / `Ctrl+,`) and navigate to **Features → MCP Servers**.
+  2. Click **+ Add new MCP server**.
+  3. Set the type to **http** and paste the URL:
+     ```
+     https://financetoolkit.jeroenbouma.com/mcp
+     ```
+  4. Name it *finance-toolkit* and click **Save**.
+  5. On first tool call Cursor opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp).
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><i class="fas fa-wind"></i> <b>Windsurf</b></summary>
+
+  1. Open **Windsurf Settings** and navigate to **MCP Servers**.
+  2. Click **Add Server** and select **Remote / HTTP**.
+  3. Paste the URL `https://financetoolkit.jeroenbouma.com/mcp` and name it *finance-toolkit*.
+  4. Click **Save** and reload the window.
+  5. On first tool call Windsurf opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp).
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><i class="fab fa-google"></i> <b>Gemini</b></summary>
+
+  1. Open **Gemini CLI** settings or the **Google AI Studio** integrations panel.
+  2. Add a new MCP server entry, set the type to **http**, and paste the URL:
+     ```
+     https://financetoolkit.jeroenbouma.com/mcp
+     ```
+  3. Name it *finance-toolkit* and save.
+  4. On first tool call follow the OAuth prompt to enter your [FMP API key](https://www.jeroenbouma.com/fmp).
+
+</details>
 
 </div>
 
-### Claude Desktop
+### Claude Desktop (MCPB)
 
 When using Claude Desktop, you can also make use of the related MCPB bundle file. Download it and follow the five steps below to get up and running in under a minute, no terminal required.
 
@@ -760,19 +845,19 @@ Crucially, the server carries **no persistent user database**: it never stores t
 
 The complete flow from first connection to authorized tool call:
 
-1. **Discovery** — the MCP client connects to `/mcp` or `/sse` without a token. `MCPAuthMiddleware` returns HTTP 401 with a `WWW-Authenticate: Bearer resource_metadata="…/.well-known/oauth-protected-resource"` header. The client fetches that URL to learn the authorization server location, then fetches `/.well-known/oauth-authorization-server` for the full OAuth metadata (authorization endpoint, token endpoint, PKCE methods, scopes).
+1. **Discovery:** The MCP client connects to `/mcp` or `/sse` without a token. `MCPAuthMiddleware` returns HTTP 401 with a `WWW-Authenticate: Bearer resource_metadata="…/.well-known/oauth-protected-resource"` header. The client fetches that URL to learn the authorization server location, then fetches `/.well-known/oauth-authorization-server` for the full OAuth metadata (authorization endpoint, token endpoint, PKCE methods, scopes).
 
-2. **Dynamic client registration** — the client POSTs its `client_name` and `redirect_uris` to `/oauth/register`. The server issues a random `client_id` without storing anything server-side; the client holds onto it for the rest of the flow.
+2. **Dynamic client registration:** The client POSTs its `client_name` and `redirect_uris` to `/oauth/register`. The server issues a random `client_id` without storing anything server-side; the client holds onto it for the rest of the flow.
 
-3. **Authorization request** — the client generates a PKCE `code_verifier` (a cryptographically random string) and derives `code_challenge = BASE64URL(SHA-256(code_verifier))`. It redirects the user's browser to `/oauth/authorize?client_id=…&redirect_uri=…&code_challenge=…&code_challenge_method=S256&state=…`.
+3. **Authorization request:** The client generates a PKCE `code_verifier` (a cryptographically random string) and derives `code_challenge = BASE64URL(SHA-256(code_verifier))`. It redirects the user's browser to `/oauth/authorize?client_id=…&redirect_uri=…&code_challenge=…&code_challenge_method=S256&state=…`.
 
-4. **User consent** — the server renders a branded HTML page asking for the user's FMP API key. The user enters the key and clicks "Authorize". The form POSTs to `/oauth/authorize`.
+4. **User consent:** The server renders a branded HTML page asking for the user's FMP API key. The user enters the key and clicks "Authorize". The form POSTs to `/oauth/authorize`.
 
-5. **Authorization code issuance** — the server bundles the FMP key, `client_id`, `redirect_uri`, `code_challenge`, and `code_challenge_method` into a JWT payload, signs it with HMAC-SHA256 using the server secret, and sets a 5-minute expiry. The resulting signed token is the authorization code. The browser is redirected to `redirect_uri?code=<jwt>&state=<state>`.
+5. **Authorization code issuance:** The server bundles the FMP key, `client_id`, `redirect_uri`, `code_challenge`, and `code_challenge_method` into a JWT payload, signs it with HMAC-SHA256 using the server secret, and sets a 5-minute expiry. The resulting signed token is the authorization code. The browser is redirected to `redirect_uri?code=<jwt>&state=<state>`.
 
-6. **Token exchange** — the client POSTs to `/oauth/token` with `grant_type=authorization_code`, the `code` JWT, and the original `code_verifier`. The server: (a) verifies the JWT signature and expiry, (b) checks `client_id` and `redirect_uri` match what is in the code payload, and (c) validates PKCE by computing `BASE64URL(SHA-256(code_verifier))` and comparing it with the `code_challenge` stored in the code using a constant-time `hmac.compare_digest`. If all checks pass, the server issues a long-lived access token: another HMAC-SHA256 JWT containing the FMP key, this time with a one-year expiry.
+6. **Token exchange:** The client POSTs to `/oauth/token` with `grant_type=authorization_code`, the `code` JWT, and the original `code_verifier`. The server: (a) verifies the JWT signature and expiry, (b) checks `client_id` and `redirect_uri` match what is in the code payload, and (c) validates PKCE by computing `BASE64URL(SHA-256(code_verifier))` and comparing it with the `code_challenge` stored in the code using a constant-time `hmac.compare_digest`. If all checks pass, the server issues a long-lived access token: another HMAC-SHA256 JWT containing the FMP key, this time with a one-year expiry.
 
-7. **Authorized requests** — the client sends every subsequent MCP request with an `Authorization: Bearer <access_token>` header. `MCPAuthMiddleware` intercepts the request, calls `get_api_key_from_request()`, which calls `verify_jwt()` to check the signature and expiry, and extracts the FMP key from the token payload. The key is then available to `ToolkitProvider.call_method()` via `resolve_api_key()` for the lifetime of that request only. Nothing is written to disk.
+7. **Authorized requests:** The client sends every subsequent MCP request with an `Authorization: Bearer <access_token>` header. `MCPAuthMiddleware` intercepts the request, calls `get_api_key_from_request()`, which calls `verify_jwt()` to check the signature and expiry, and extracts the FMP key from the token payload. The key is then available to `ToolkitProvider.call_method()` via `resolve_api_key()` for the lifetime of that request only. Nothing is written to disk.
 
 #### JWT Signing
 

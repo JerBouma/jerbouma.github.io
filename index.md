@@ -112,7 +112,7 @@ classes: custom-splash
     if (total > 0) starsEl.setAttribute('data-target', Math.floor(total / 100) * 100);
   }).catch(function () {}) : Promise.resolve();
 
-  /* -- Live PyPI monthly downloads disabled — fixed at 50k+ -- */
+  /* -- Live PyPI monthly downloads disabled, fixed at 50k+ -- */
   var dlPromise = Promise.resolve();
 
   /* -- Animate after live data resolves (falls back to hardcoded targets on error) -- */

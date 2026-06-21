@@ -336,7 +336,7 @@ Which returns:
  | CUSIP | 594918104 | 37833100 |
  | Exchange | NASDAQ Global Select | NASDAQ Global Select |
  | Exchange Short Name | NASDAQ | NASDAQ |
- | Industry | Software—Infrastructure | Consumer Electronics |
+ | Industry | Software / Infrastructure | Consumer Electronics |
  | Website | https://www.microsoft.com | https://www.apple.com |
  | CEO | Mr. Satya Nadella | Mr. Timothy D. Cook |
  | Sector | Technology | Technology |

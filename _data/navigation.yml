@@ -138,8 +138,10 @@ financetoolkit-mcp:
   - title: "Installation"
     url: /projects/financetoolkit/mcp#installation
     children:
-      - title: Claude Desktop
-        url: /projects/financetoolkit/mcp#claude-desktop
+      - title: Remote Server
+        url: /projects/financetoolkit/mcp#remote-server
+      - title: Claude Desktop (MCPB)
+        url: /projects/financetoolkit/mcp#claude-desktop-mcpb
       - title: Other Clients
         url: /projects/financetoolkit/mcp#other-clients
       - title: Manual Setup
