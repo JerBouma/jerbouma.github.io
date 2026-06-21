@@ -51,7 +51,7 @@ For detailed instructions on how to connect your client, see the sections below.
   <summary><i class="fas fa-robot"></i> <b>Claude Desktop</b></summary>
 
   1. Open **Claude Desktop** and click on **Customize**.
-  2. Go to the **Connectors** tab and click the on the "+" button.
+  2. Go to the **Connectors** tab, click the on the "+" button and select **Add custom connector**.
   3. Enter a name, e.g. *Finance Toolkit*, and paste the URL:
      ```
      https://financetoolkit.jeroenbouma.com/mcp
@@ -65,7 +65,7 @@ For detailed instructions on how to connect your client, see the sections below.
   <summary><i class="fas fa-globe"></i> <b>Claude.ai</b></summary>
 
   1. Open [claude.ai](https://claude.ai) and click on **Customize** in the left sidebar.
-  2. Go to the **Connectors** tab and click the on the "+" button.
+  2. Go to the **Connectors** tab, click the on the "+" button and select **Add custom connector**.
   3. Enter a name, e.g. *Finance Toolkit*, and paste the URL:
      ```
      https://financetoolkit.jeroenbouma.com/mcp
