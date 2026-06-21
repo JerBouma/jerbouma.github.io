@@ -5,7 +5,7 @@
 <link rel="shortcut icon" type="image/png" href="/assets/images/default/favicon.svg" id="favicon-shortcut">
 <link rel="icon" type="image/png" href="/assets/images/default/favicon.svg" id="favicon-png">
 <script>
-  if (window.location.hostname === 'financetoolkit.jeroenbouma.com') {
+  if (window.location.hostname.startsWith('financetoolkit.')) {
     var ft = '/assets/images/default/finance_toolkit_icon.png';
     document.getElementById('favicon-svg').setAttribute('href', ft);
     document.getElementById('favicon-svg').setAttribute('type', 'image/png');
