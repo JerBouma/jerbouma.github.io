@@ -45,6 +45,8 @@ https://financetoolkit.jeroenbouma.com/mcp
 ```
 <br>
 
+For detailed instructions on how to connect your client, see the sections below.
+
 <details class="ft-details" markdown="1">
   <summary><i class="fas fa-robot"></i> <b>Claude Desktop</b></summary>
 
