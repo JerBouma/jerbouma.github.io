@@ -78,13 +78,11 @@ For detailed instructions on how to connect your client, see the sections below.
 <details class="ft-details" markdown="1">
   <summary><i class="fas fa-terminal"></i> <b>Claude Code</b></summary>
 
-  Run once in your terminal, no config file editing needed:
-
-  ```bash
-  claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp
-  ```
-
-  Restart Claude Code afterwards and the Finance Toolkit tools appear automatically.
+  1. Run the following command once in your terminal:
+     ```bash
+     claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp
+     ```
+  2. Restart Claude Code and the Finance Toolkit tools appear automatically.
 
 </details>
 
