@@ -183,7 +183,7 @@ The wizard first asks for your FinancialModelingPrep (FMP) API key, the data pro
 
 #### Select your Clients
 
-Pick one or more of the six supported clients (e.g. `23` for Claude Code + VS Code). The wizard writes each client's config, safely merging into any existing file, and optionally installs a `SKILL.md` analyst instruction file that teaches the AI how to interpret results and respond in a consistent, analyst-style format.
+Pick one or more of the six supported clients (e.g. `23` for Claude Code + VS Code). The wizard writes each client's config, safely merging into any existing file.
 
 ```bash
   ✔  API key saved to /Users/jeroenbouma/.config/financetoolkit/.env
@@ -333,10 +333,10 @@ Edit the client's JSON config directly. The `env` block takes either:
 
 </details>
 
-For scripted or headless installs, pass arguments directly to `financetoolkit-mcp-setup` to bypass the interactive prompts. For example, to configure Claude Code with the analyst skill file in a single command:
+For scripted or headless installs, pass arguments directly to `financetoolkit-mcp-setup` to bypass the interactive prompts. For example, to configure Claude Code in a single command:
 
 ```
-uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup --client claude-code --include-skills
+uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup --client claude-code
 ```
 
 The available flags are:
@@ -344,7 +344,6 @@ The available flags are:
 | Flag | Description |
 |:---|:---|
 | `--client` | Client to configure. Choices: `claude-desktop`, `claude-code`, `vscode`, `cursor`, `gemini`, `windsurf`. |
-| `--include-skills` | Installs the `SKILL.md` analyst instructions that teach the LLM how to interpret results and respond in a consistent analyst format. |
 | `--overwrite` | Replaces existing `finance-toolkit` config entries without prompting for confirmation. |
 
 There is deliberately no `--api-key` flag. The config points to a `.env` file (e.g. `~/.config/financetoolkit/.env`), and keeping the key there rather than passing it as a command argument means it never appears in your shell history or process list.
@@ -783,10 +782,10 @@ The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structu
 | `inspection_controller.py` | Static introspection of controller classes: method discovery and signature building |
 | `provider_model.py` | Routes tool calls to the correct Finance Toolkit module; manages Toolkit instance caching |
 | `cache_model.py` | Thread-safe SQLite cache for DataFrame results with TTL-based eviction |
-| `tools_model.py` | Registers the five built-in utility tools (list, search, instrument lookup, analyst guidelines) |
+| `tools_model.py` | Registers the four built-in utility tools (list, search, instrument lookup) |
 | `formatting_model.py` | Converts any Finance Toolkit result (DataFrame, Series, dict, scalar) to Markdown |
 | `coercion_model.py` | Best-effort type coercion for string values arriving from LLMs |
-| `setup_model.py` | Interactive and CLI setup wizard: writes client configs and SKILL.md files |
+| `setup_model.py` | Interactive and CLI setup wizard: writes client configs |
 
 ### Startup Sequence
 
@@ -887,9 +886,8 @@ When a JWT is found in any of these positions, `verify_jwt()` validates the sign
 
 ### Utility Tools
 
-`UtilityToolRegistry` registers five tools that operate on the tool index rather than routing to a controller:
+`UtilityToolRegistry` registers four tools that operate on the tool index rather than routing to a controller:
 
-- `get_analyst_guidelines`: returns the full analyst SKILL.md instructions so the LLM always has the response style guide available.
 - `list_categories`: returns a Markdown table of all registered categories and tool counts.
 - `list_metrics_by_category`: lists every indicator within a given category.
 - `search_metrics`: token-based fuzzy search across all tool names and descriptions, with typo tolerance via `difflib.get_close_matches`.
@@ -897,7 +895,7 @@ When a JWT is found in any of these positions, `verify_jwt()` validates the sign
 
 ### Setup Wizard
 
-`setup_model.py` powers both the interactive wizard (`financetoolkit-mcp-setup`) and the non-interactive `--client` CLI path. It locates and merges the `finance-toolkit` MCP entry into each client's JSON config file without disturbing other server entries, writes the FMP API key to `~/.config/financetoolkit/.env`, and optionally copies the `SKILL.md` analyst instructions to the location expected by each client (`.agents/skills/` for VS Code/Cursor, `.claude/skills/` for Claude Code, etc.).
+`setup_model.py` powers both the interactive wizard (`financetoolkit-mcp-setup`) and the non-interactive `--client` CLI path. It locates and merges the `finance-toolkit` MCP entry into each client's JSON config file without disturbing other server entries, and writes the FMP API key to `~/.config/financetoolkit/.env`.
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
