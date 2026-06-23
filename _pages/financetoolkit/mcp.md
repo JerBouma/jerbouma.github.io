@@ -16,7 +16,7 @@ image: assets/images/projects/FinanceToolkit.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit/blob/main/MCP.md" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io) (MCP). The server is hosted at [`https://financetoolkit.jeroenbouma.com/mcp`](https://financetoolkit.jeroenbouma.com/mcp). Connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
+The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io) (MCP). The server is hosted at `https://financetoolkit.jeroenbouma.com/mcp`. Connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
 
 MCP is an open standard that lets AI assistants call external tools and data sources directly from the chat interface; no copy-pasting, no switching between apps. Once connected, you simply ask questions in plain English and the AI fetches live financial data on your behalf. This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all backed by the transparent, open-source calculation methods of the Finance Toolkit.
 
@@ -51,7 +51,7 @@ For detailed instructions on how to connect your client, see the sections below.
   <summary><i class="fas fa-robot"></i> <b>Claude Desktop</b></summary>
 
   1. Open **Claude Desktop** and click on **Customize**.
-  2. Go to the **Connectors** tab, click the on the "+" button and select **Add custom connector**.
+  2. Go to the **Connectors** tab, click on the "+" button and select **Add custom connector**.
   3. Enter a name, e.g. *Finance Toolkit*, and paste the URL:
      ```
      https://financetoolkit.jeroenbouma.com/mcp
@@ -65,7 +65,7 @@ For detailed instructions on how to connect your client, see the sections below.
   <summary><i class="fas fa-globe"></i> <b>Claude.ai</b></summary>
 
   1. Open [claude.ai](https://claude.ai) and click on **Customize** in the left sidebar.
-  2. Go to the **Connectors** tab, click the on the "+" button and select **Add custom connector**.
+  2. Go to the **Connectors** tab, click on the "+" button and select **Add custom connector**.
   3. Enter a name, e.g. *Finance Toolkit*, and paste the URL:
      ```
      https://financetoolkit.jeroenbouma.com/mcp
