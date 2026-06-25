@@ -10,6 +10,17 @@ sitemap: false
 author_profile: false
 ---
 
-<meta http-equiv="Refresh" content="0; url=https://site.financialmodelingprep.com/pricing-plans?couponCode=jeroen"/>
+<meta http-equiv="Refresh" content="3; url=https://site.financialmodelingprep.com/pricing-plans?couponCode=jeroen"/>
 
-<script>window.location.href = 'https://site.financialmodelingprep.com/pricing-plans?couponCode=jeroen';</script>
+<script>
+(function () {
+  var dest = 'https://site.financialmodelingprep.com/pricing-plans?couponCode=jeroen';
+  function go() { window.location.href = dest; }
+  if (typeof plausible === 'function') {
+    plausible('FMP Affiliate Visit', { callback: go });
+    setTimeout(go, 1500);
+  } else {
+    setTimeout(go, 150);
+  }
+}());
+</script>
