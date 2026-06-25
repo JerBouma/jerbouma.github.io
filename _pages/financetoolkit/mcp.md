@@ -33,17 +33,13 @@ The server consolidates the entire Finance Toolkit surface into a small number o
 
 The fastest way to get started is to point any MCP-compatible client at the hosted server, with no Python, no terminal, and no local process needed. For Claude Desktop users, a one-click MCPB bundle is the next easiest option. For local client setup, a setup wizard or manual configuration is available.
 
-<div class="bento-card mcp-install-card" markdown="1">
+### Remote Server
 
-### <i class="fas fa-server"></i>Remote Server
-{: .mcp-install-heading}
-<br>
 **No installation required, works with any MCP-compatible client.** Connect directly to the hosted Finance Toolkit MCP server by adding the URL below. The server runs in the cloud; nothing needs to be installed locally. On first connection your client will open an OAuth consent page asking for your [Financial Modeling Prep API key](https://www.jeroenbouma.com/fmp); enter it once and the server handles authentication from there.
-<br><br>
+
 ```
 https://financetoolkit.jeroenbouma.com/mcp
 ```
-<br>
 
 For detailed instructions on how to connect your client, see the sections below.
 
@@ -135,21 +131,6 @@ For detailed instructions on how to connect your client, see the sections below.
 
 </details>
 
-</div>
-
-### Claude Desktop (MCPB)
-
-When using Claude Desktop, you can also make use of the related MCPB bundle file. Download it and follow the five steps below to get up and running in under a minute, no terminal required.
-
-[Download the Finance Toolkit MCPB file](https://github.com/JerBouma/FinanceToolkit/releases/latest/download/financetoolkit.mcpb){: .btn .btn--warning .btn--large .align-center target="_blank"}
-
-Then follow these steps:
-1. Double-click `financetoolkit.mcpb` which will open Claude Desktop, this will open a prompt whether you want to install the bundle, click "Install".
-2. A prompt will appear asking you to confirm the installation, click "Install" again.
-3. The bundle will ask you to provide a Financial Modeling Prep API key (obtain one [here](https://www.jeroenbouma.com/fmp)) and click "Save".
-4. Enable the bundle by toggling the switch which says "Disabled" to "Enabled".
-5. Restart Claude Desktop and the Finance Toolkit MCP Server will be available for use in your conversations. *Please note it might take up to 15 seconds to initialize the first time after restarting.*
-
 ### Local Clients
 
 For a local setup, a setup wizard is available that handles configuration automatically:
@@ -168,8 +149,10 @@ Edit the client's JSON config directly. The `env` block takes either:
 
 <details class="ft-details" markdown="1">
   <summary><i class="fas fa-robot"></i> <b>Claude Desktop</b></summary>
+  
+  **Easiest installation is via the MCPB bundle**, which handles configuration automatically. Download the [Finance Toolkit MCPB bundle](https://github.com/JerBouma/FinanceToolkit/releases/latest/download/financetoolkit.mcpb) and double-click it to start installation.
 
-  Edit `claude_desktop_config.json` and add the entry inside `mcpServers`:
+  Alternatively, edit `claude_desktop_config.json` and add the entry inside `mcpServers`:
 
   - macOS: `~/Library/Application Support/Claude/`
   - Windows: `%APPDATA%\Claude\`

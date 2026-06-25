@@ -140,8 +140,6 @@ financetoolkit-mcp:
     children:
       - title: Remote Server
         url: /projects/financetoolkit/mcp#remote-server
-      - title: Claude Desktop (MCPB)
-        url: /projects/financetoolkit/mcp#claude-desktop-mcpb
       - title: Local Clients
         url: /projects/financetoolkit/mcp#local-clients
   - title: "Example Conversations"
