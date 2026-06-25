@@ -50,9 +50,8 @@ Working with `conftest.py` can be challenging initially. Consider using the `con
 
 To see this in action, download or clone the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} repository and install the required dependencies:
 
-1. Install pipx: `pip install pipx`
-2. Install Poetry: `pipx install poetry`
-3. Install the dependencies: `poetry install`
+1. Install uv: `brew install uv`
+2. Install the dependencies: `uv sync`
 
 Run the tests by executing `pytest tests`. This command runs all tests defined in the `tests` folder, producing output similar to this:
 

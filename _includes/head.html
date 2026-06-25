@@ -21,9 +21,12 @@
 </script>
 
 <script>
-  // Apply theme before CSS loads to prevent flash (default: dark)
+  // Apply theme before CSS loads to prevent flash; respect system preference if no saved choice
   (function() {
-    var saved = localStorage.getItem("theme") || "dark";
+    var saved = localStorage.getItem("theme");
+    if (!saved) {
+      saved = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
     document.documentElement.setAttribute("data-theme", saved);
   })();
 </script>
@@ -39,10 +42,3 @@
   {% endfor %}
 {% endif %}
 
-<script>
-  let theme_preference = localStorage.getItem("theme");
-  if (!theme_preference) {
-    theme_preference = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  }
-  document.documentElement.setAttribute("data-theme", theme_preference);
-</script>

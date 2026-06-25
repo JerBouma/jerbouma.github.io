@@ -30,7 +30,7 @@ The other speaker, Vladimir Mikirtumov, discussed the potential role of Cryptocu
 
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
-  <img src="/assets/images/appearances/RotterdamSociety.png" alt="Student Capital Society Rotterdam Event">
+  <img src="/assets/images/appearances/RotterdamSociety.png" alt="Student Capital Society Rotterdam Event" loading="lazy">
 </div>
 </div>
 
@@ -51,16 +51,16 @@ I strongly believe the importance of Python in the financial industry will conti
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
 <div class="image-grid">
   <div class="grid-item">
-    <img src="/assets/images/appearances/hackathon/DSC06281.jpg" alt="Hackathon Utrecht University">
+    <img src="/assets/images/appearances/hackathon/DSC06281.jpg" alt="Hackathon Utrecht University" loading="lazy">
   </div>
   <div class="grid-item">
-    <img src="/assets/images/appearances/hackathon/DSC06385.jpg" alt="Hackathon Utrecht University">
+    <img src="/assets/images/appearances/hackathon/DSC06385.jpg" alt="Hackathon Utrecht University" loading="lazy">
   </div>
   <div class="grid-item">
-    <img src="/assets/images/appearances/hackathon/DSC06451.jpg" alt="Hackathon Utrecht University">
+    <img src="/assets/images/appearances/hackathon/DSC06451.jpg" alt="Hackathon Utrecht University" loading="lazy">
   </div>
   <div class="grid-item">
-    <img src="/assets/images/appearances/hackathon/DSC06491.jpg" alt="Hackathon Utrecht University">
+    <img src="/assets/images/appearances/hackathon/DSC06491.jpg" alt="Hackathon Utrecht University" loading="lazy">
   </div>
 </div>
 </div>
