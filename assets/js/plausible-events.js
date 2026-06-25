@@ -44,97 +44,47 @@
     var page = getPage();
     var loc = getLinkLocation(el);
 
-    // FMP affiliate link — highest-value conversion
-    if (
-      href === '/fmp' || href === '/financialmodelingprep' ||
-      fullHref.includes('jeroenbouma.com/fmp') ||
-      fullHref.includes('financialmodelingprep.com/pricing-plans')
-    ) {
-      track('FMP Affiliate Click', { page: page, location: loc });
-      return;
-    }
-
-    // GitHub Sponsors
-    if (fullHref.includes('github.com/sponsors/JerBouma')) {
-      track('GitHub Sponsor Click', { page: page, location: loc });
-      return;
-    }
-
-    // Buy Me A Coffee
-    if (fullHref.includes('buymeacoffee.com')) {
-      track('Buy Me Coffee Click', { page: page, location: loc });
-      return;
-    }
-
-    // GitHub repo or profile links
-    if (fullHref.includes('github.com/JerBouma')) {
-      var repoMatch = fullHref.match(/github\.com\/JerBouma\/([^/?#]+)/i);
-      if (repoMatch) {
-        track('GitHub Repo Click', { repo: repoMatch[1], page: page, location: loc });
-      } else {
-        track('GitHub Profile Click', { page: page, location: loc });
-      }
-      return;
-    }
-
-    // LinkedIn
-    if (fullHref.includes('linkedin.com')) {
-      track('LinkedIn Click', { page: page, location: loc });
-      return;
-    }
-
-    // Email
+    // Email links
     if (href.startsWith('mailto:')) {
       track('Email Click', { page: page, location: loc });
       return;
     }
 
-    // PyPI
-    if (fullHref.includes('pypi.org/project/')) {
-      var pkgMatch = fullHref.match(/pypi\.org\/project\/([\w-]+)/);
-      track('PyPI Click', {
-        package: pkgMatch ? pkgMatch[1] : 'unknown',
-        page: page,
-        location: loc
-      });
+    // Internal FMP referral paths (/fmp, /financialmodelingprep)
+    if (href === '/fmp' || href === '/financialmodelingprep' ||
+        href.startsWith('/fmp/') || href.startsWith('/financialmodelingprep/')) {
+      track('FMP Outbound', { page: page, location: loc });
       return;
     }
 
-    // PePy download stats
-    if (fullHref.includes('pepy.tech')) {
-      track('PePy Stats Click', { page: page });
+    // Only proceed for external http(s) links
+    var isExternal = false;
+    try {
+      var url = new URL(fullHref, window.location.href);
+      isExternal = url.hostname !== window.location.hostname && url.protocol.startsWith('http');
+    } catch (e) {}
+    if (!isExternal) return;
+
+    // GitHub links
+    if (fullHref.includes('github.com')) {
+      var repoMatch = fullHref.match(/github\.com\/JerBouma\/([^/?#]+)/i);
+      var props = { page: page, location: loc };
+      props.type = fullHref.includes('/sponsors/') ? 'sponsors' : repoMatch ? 'repo' : 'other';
+      if (repoMatch) props.repo = repoMatch[1];
+      track('GitHub Outbound', props);
       return;
     }
 
-    // MCP server URL copy / any click on code containing the MCP server URL
-    if (fullHref.includes('financetoolkit.jeroenbouma.com')) {
-      track('MCP Server Link Click', { page: page, location: loc });
+    // FinancialModelingPrep links
+    if (fullHref.includes('financialmodelingprep.com') || fullHref.includes('jeroenbouma.com/fmp')) {
+      track('FMP Outbound', { page: page, location: loc });
       return;
     }
 
-    // Amazon book links (literature page)
-    if (fullHref.includes('amazon.com')) {
-      track('Literature Outbound Click', { source: 'amazon', page: page });
-      return;
-    }
-
-    // Academic papers (SSRN, journals, JSTOR, NBER)
-    if (
-      fullHref.includes('ssrn.com') ||
-      fullHref.includes('jstor.org') ||
-      fullHref.includes('nber.org') ||
-      fullHref.includes('papers.ssrn')
-    ) {
-      track('Literature Outbound Click', { source: 'academic', page: page });
-      return;
-    }
-
-    // LinkedIn activity/post links (appearances page)
-    if (fullHref.includes('linkedin.com/feed/update')) {
-      track('Appearance LinkedIn Click', { page: page });
-      return;
-    }
-
+    // All other external links
+    var domain = '';
+    try { domain = new URL(fullHref).hostname.replace(/^www\./, ''); } catch (e) {}
+    track('Other Outbound', { page: page, location: loc, domain: domain });
   });
 
 })();
