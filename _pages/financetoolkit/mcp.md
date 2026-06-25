@@ -31,7 +31,7 @@ The server consolidates the entire Finance Toolkit surface into a small number o
 
 ## Installation
 
-The fastest way to get started is to point any MCP-compatible client at the hosted server, with no Python, no terminal, and no local process needed. For Claude Desktop users, a one-click MCPB bundle is the next easiest option. For all other clients, an interactive setup wizard handles configuration in under two minutes. Advanced users can configure clients by hand.
+The fastest way to get started is to point any MCP-compatible client at the hosted server, with no Python, no terminal, and no local process needed. For Claude Desktop users, a one-click MCPB bundle is the next easiest option. For local client setup, a setup wizard or manual configuration is available.
 
 <div class="bento-card mcp-install-card" markdown="1">
 
@@ -150,64 +150,15 @@ Then follow these steps:
 4. Enable the bundle by toggling the switch which says "Disabled" to "Enabled".
 5. Restart Claude Desktop and the Finance Toolkit MCP Server will be available for use in your conversations. *Please note it might take up to 15 seconds to initialize the first time after restarting.*
 
-### Other Clients
+### Local Clients
 
-If you are using another client or prefer a local setup, follow the instructions below to run the setup wizard and configure your client.
+For a local setup, a setup wizard is available that handles configuration automatically:
 
-#### Run the Setup Wizard
-
-It uses [uv](https://docs.astral.sh/uv/getting-started/installation/), a fast Python package manager (install it first if you don't have it, about 30 seconds). The bundled `uvx` command then runs the wizard directly:
-
-```
+```bash
 uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
 ```
 
-#### Enter your API Key
-
-The wizard first asks for your FinancialModelingPrep (FMP) API key, the data provider behind the Finance Toolkit, giving access to 30+ years of financial statements, prices and fundamentals. Grab a free key **<a href="https://www.jeroenbouma.com/fmp" target="_blank">here</a>** (the free plan is enough to get started). It is stored in a global config file (`~/.config/financetoolkit/.env`), never inside a project or version-controlled file.
-
-```bash
-(base) jeroenbouma@Jeroens-MacBook-Pro FinanceToolkit % uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
-╭──────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                                                          │
-│  FinanceToolkit  ·  MCP Setup Wizard                                                     │
-│  Transparent and Efficient Financial Analysis                                            │
-│                                                                                          │
-╰──────────────────────────────────────────────────────────────────────────────────────────╯
-
-  ⚠  No API key found.  Get one at https://www.jeroenbouma.com/fmp  (15% discount)
-  Press Enter to skip and configure via .env later.
-
-  API Key  › YOUR_FINANCIAL_MODELING_PREP_API_KEY_HERE
-```
-
-#### Select your Clients
-
-Pick one or more of the six supported clients (e.g. `23` for Claude Code + VS Code). The wizard writes each client's config, safely merging into any existing file.
-
-```bash
-  ✔  API key saved to /Users/jeroenbouma/.config/financetoolkit/.env
-
-╭────────────────────────────────────────── Configure Clients ────────────────────────────╮
-│                                                                                         │
-│    1  Claude Desktop                                                                    │
-│    2  Claude Code                                                                       │
-│    3  VS Code                                                                           │
-│    4  Cursor                                                                            │
-│    5  Gemini                                                                            │
-│    6  Windsurf                                                                          │
-│                                                                                         │
-│    7  Remove configuration                                                              │
-│    0  Exit                                                                              │
-│                                                                                         │
-╰──────────────────────────────── e.g. 23 for Claude Code + VS Code ──────────────────────╯
-```
-
-Restart the client afterwards and the tools appear.
-
-### Manual Setup
-
-The wizard handles most cases, but you can also configure clients by hand or automate the setup via command-line arguments. To use the hosted remote server instead, replace the `command`/`args`/`env` block with a single `url` entry pointing to `https://financetoolkit.jeroenbouma.com/mcp`.
+For manual configuration, edit the client's JSON config directly. To use the hosted remote server instead, replace the `command`/`args`/`env` block with a single `url` entry pointing to `https://financetoolkit.jeroenbouma.com/mcp`.
 
 Edit the client's JSON config directly. The `env` block takes either:
 - `FINANCIAL_MODELING_PREP_API_KEY`: the API key directly inline.
@@ -241,7 +192,13 @@ Edit the client's JSON config directly. The `env` block takes either:
 <details class="ft-details" markdown="1">
   <summary><i class="fas fa-robot"></i> <b>Claude Code</b></summary>
 
-  Edit `~/.claude.json` (create it if needed) and merge the entry inside `mcpServers`:
+  Run the following command once in your terminal (replace `YOUR_API_KEY_HERE` with your [FMP API key](https://www.jeroenbouma.com/fmp)):
+
+  ```bash
+  claude mcp add --transport stdio finance-toolkit --env FINANCIAL_MODELING_PREP_API_KEY=YOUR_API_KEY_HERE -- uvx --from "financetoolkit[mcp]" financetoolkit-mcp
+  ```
+
+  Or edit `~/.claude.json` (create it if needed) and merge the entry inside `mcpServers`:
 
   ```json
   {
@@ -260,7 +217,7 @@ Edit the client's JSON config directly. The `env` block takes either:
 <details class="ft-details" markdown="1">
   <summary><i class="fab fa-microsoft"></i> <b>VS Code</b></summary>
 
-  Create or edit `.vscode/mcp.json` in your workspace root. VS Code uses `servers` as the top-level key (not `mcpServers`):
+  **Workspace** — create or edit `.vscode/mcp.json` in your workspace root. VS Code uses `servers` as the top-level key (not `mcpServers`):
 
   ```json
   {
@@ -274,12 +231,46 @@ Edit the client's JSON config directly. The `env` block takes either:
   }
   ```
 
+  **Global (all workspaces)** — add the same block under `"mcp"` in your user `settings.json`:
+
+  - macOS: `~/Library/Application Support/Code/User/settings.json`
+  - Windows: `%APPDATA%\Code\User\settings.json`
+  - Linux: `~/.config/Code/User/settings.json`
+
+  ```json
+  {
+    "mcp": {
+      "servers": {
+        "finance-toolkit": {
+          "command": "uvx",
+          "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
+          "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+        }
+      }
+    }
+  }
+  ```
+
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><i class="fas fa-i-cursor"></i> <b>Cursor</b></summary>
 
-  Create or edit `.cursor/mcp.json` in your workspace root:
+  **Workspace** — create or edit `.cursor/mcp.json` in your workspace root:
+
+  ```json
+  {
+    "mcpServers": {
+      "finance-toolkit": {
+        "command": "uvx",
+        "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
+        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+      }
+    }
+  }
+  ```
+
+  **Global (all projects)** — create or edit `~/.cursor/mcp.json`:
 
   ```json
   {
@@ -332,21 +323,6 @@ Edit the client's JSON config directly. The `env` block takes either:
   ```
 
 </details>
-
-For scripted or headless installs, pass arguments directly to `financetoolkit-mcp-setup` to bypass the interactive prompts. For example, to configure Claude Code in a single command:
-
-```
-uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup --client claude-code
-```
-
-The available flags are:
-
-| Flag | Description |
-|:---|:---|
-| `--client` | Client to configure. Choices: `claude-desktop`, `claude-code`, `vscode`, `cursor`, `gemini`, `windsurf`. |
-| `--overwrite` | Replaces existing `finance-toolkit` config entries without prompting for confirmation. |
-
-There is deliberately no `--api-key` flag. The config points to a `.env` file (e.g. `~/.config/financetoolkit/.env`), and keeping the key there rather than passing it as a command argument means it never appears in your shell history or process list.
 
 ## Example Conversations
 
