@@ -19,7 +19,7 @@ Therefore, the term 'Passive Investing' is often coined around. This refers to b
 
 With a large increase in ETFs available (over 5,000 in 2020), it can become difficult to make the best choice in what you wish to invest. There are many different providers (iShares, Vanguard, Invesco) as well as with changes to the underlying stocks (i.e. High Yield, Super Dividends, Equal Weighted). This is quickly reflected when looking for a S&P 500 ETF as there are over 20 different ETFs available. With this package, I wish to make investment decisions easier to make and manage.
 
-An example of the output can be found in the GIF below. This depicts several ETFs collected from [the Top ETFs according to Yahoo Finance](https://finance.yahoo.com/etfs).
+An example of the output can be found in the GIF below. This depicts several ETFs collected from [the Top ETFs according to Yahoo Finance](https://finance.yahoo.com/etfs){:target="_blank"}.
 
 ![ThePassiveInvestor](https://github.com/JerBouma/ThePassiveInvestor/assets/46355364/48f40d07-bbc7-47c0-ae22-9cdb30a9308f)
 

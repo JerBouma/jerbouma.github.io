@@ -16,7 +16,7 @@ With thousands of publicly listed companies, finding undervalued stocks by hand 
 
 This article walks through a complete screening process from universe definition to a final shortlist. It uses 15 stocks across five sectors to illustrate the logic, a real screen would cast a wider net, and the Discovery module supports that too.
 
-**For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit). To explore the Finance Toolkit MCP, see [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
+**For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To explore the Finance Toolkit MCP, see [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
 
 > **Try this with the Finance Toolkit MCP:** *"Screen 15 stocks across technology, healthcare, consumer staples, financials, and energy for P/E below 20, EV/EBITDA below 18, and ROIC above 10%. Show the valuation and quality metrics side by side."*
 
@@ -48,7 +48,7 @@ screener = Toolkit(
 )
 ```
 
-Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp). The free plan covers five years of history; a paid plan unlocks deeper history and a larger universe.
+Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}. The free plan covers five years of history; a paid plan unlocks deeper history and a larger universe.
 
 ## Step 1: Pulling Valuation Multiples
 

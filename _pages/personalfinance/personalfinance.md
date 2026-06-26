@@ -17,7 +17,7 @@ Tracking personal finances can be tedious. It either requires a massive time inv
 
 **With PersonalFinance I want to make it easier to manage your finances.** Through defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you. This results in Morty's Place being correctly categorised as a Bakery.
 
-To assist in not needing to get *exact* matches, the package makes use of the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) to determine how similar two strings are. This means that if you have a category called "Groceries" with the keyword "Supermarket" and a transaction comes in with the name "Rick's Super Market", it will still be categorised as "Groceries". **There is a limited amount of Mumbo Jumbo going on here on purpose so that it still becomes logical why it is categorised as such.**
+To assist in not needing to get *exact* matches, the package makes use of the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance){:target="_blank"} to determine how similar two strings are. This means that if you have a category called "Groceries" with the keyword "Supermarket" and a transaction comes in with the name "Rick's Super Market", it will still be categorised as "Groceries". **There is a limited amount of Mumbo Jumbo going on here on purpose so that it still becomes logical why it is categorised as such.**
 
 By doing most of these things through Python and Excel, you have the complete freedom to decide what to do with the output. For example, you can use it to create your own personalized dashboards via any programming language or application such as Excel, PowerBI, Tableau, etc. **I don't want to bore you with custom dashboards that I tailored to myself just so that you can come to the conclusion that it isn't a perfect fit for you.**
 
@@ -86,12 +86,12 @@ cashflows = Cashflow(example=True)
 cashflows.perform_analysis()
 ```
 
-Before it does anything, it will download the example datasets as found [here](https://github.com/JerBouma/PersonalFinance/tree/main/examples). This is merely meant for you to understand how the functionality works. When you are ready to use it for your own cashflows, you can simply remove the `example=True` argument and supply your own configuration file. If you don't have one yet, it will automatically supply one if you use `Cashflow()`. **See the Notebooks as found [here](https://www.jeroenbouma.com/projects/personalfinance) for an in-depth explanation.**
+Before it does anything, it will download the example datasets as found [here](https://github.com/JerBouma/PersonalFinance/tree/main/examples){:target="_blank"}. This is merely meant for you to understand how the functionality works. When you are ready to use it for your own cashflows, you can simply remove the `example=True` argument and supply your own configuration file. If you don't have one yet, it will automatically supply one if you use `Cashflow()`. **See the Notebooks as found [here](https://www.jeroenbouma.com/projects/personalfinance) for an in-depth explanation.**
 
 The `perform_analysis` functionality does the following things:
 
 1. **It reads all the cashflow datasets** based on the configuration file's `file_location` parameter. This can be a single file, a selection of files or an entire folder. It also applies the cost or income indicator if the numbers in your file are all positive (e.g. a column that says "Plus" or "Minus") if chosen.
-3. **It starts applying categorization** based on the `categories` section in the configuration file. It uses [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) to find matches that are closely related (e.g. 'Tim's Bakery' and 'Bakery' would fit in the same category)
+3. **It starts applying categorization** based on the `categories` section in the configuration file. It uses [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance){:target="_blank"} to find matches that are closely related (e.g. 'Tim's Bakery' and 'Bakery' would fit in the same category)
 4. **It generates multiple transactional and categorized overviews** on a weekly, monthly, quarterly and yearly basis.
 4. **It generates an Excel file** in which all of the results are displayed in a neat format based on the `excel` section of the configuration file. This is optional and can be disabled by setting `write_to_excel` to `False`.
 

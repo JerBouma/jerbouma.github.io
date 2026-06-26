@@ -17,7 +17,7 @@ As a private investor, the sheer amount of information that can be found on the 
 
 **This database tries to solve that**. It features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
 
-The aim of this database is explicitly _not_ to provide up-to-date fundamentals or stock data as those can be obtained with ease (with the help of this database) by using the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit). Instead, it gives insights into the products that exist in each country, industry and sector and gives the most essential information about each product. With this information, you can analyse specific areas of the financial world and/or find a product that is hard to find. See for examples on how you can combine this database, and the earlier mentioned packages the section [Usage](#usage).
+The aim of this database is explicitly _not_ to provide up-to-date fundamentals or stock data as those can be obtained with ease (with the help of this database) by using the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. Instead, it gives insights into the products that exist in each country, industry and sector and gives the most essential information about each product. With this information, you can analyse specific areas of the financial world and/or find a product that is hard to find. See for examples on how you can combine this database, and the earlier mentioned packages the section [Usage](#usage).
 
 Some key statistics of the database:
 
@@ -299,7 +299,7 @@ This returns instruments that are listed on the Frankfurt Stock Exchange, are in
 | 1YO.F    | Yangtze Optical Fibre And Cable Joint Stock Limited Company | EUR        | Information Technology | Technology Hardware & Equipment  | Communications Equipment                       | FRA        | Frankfurt Stock Exchange | China         | nan     | Wuhan         | 430073     | http://www.yofc.com            | Small Cap    | nan          | nan       | nan          | nan              | nan               |
 | 1ZU.F    | The Pennant Group, Inc.                                     | EUR        | Health Care            | Health Care Equipment & Services | Health Care Equipment & Supplies               | FRA        | Frankfurt Stock Exchange | United States | ID      | Eagle         | 83616      | http://pennantgroup.com        | Small Cap    | US70805E1091 | 7.08E+113 | BBG00QJ35K78 | BBG00QJ35K69     | BBG00P33SZ15      |
 
-Lastly, the Finance Database has a direct integration with the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) making it possible to do financial analysis on the companies you've found in the Finance Database. Returning to the earlier example of the 3 insurance companies in the Netherlands, it becomes possible to load these into the Finance Toolkit with the `to_toolkit` functionality. 
+Lastly, the Finance Database has a direct integration with the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} making it possible to do financial analysis on the companies you've found in the Finance Database. Returning to the earlier example of the 3 insurance companies in the Netherlands, it becomes possible to load these into the Finance Toolkit with the `to_toolkit` functionality. 
 
 To be able to get started, you need to obtain an API Key from FinancialModelingPrep. This is used to gain access to 30+ years of financial statement both annually and quarterly. Note that the Free plan is limited to 250 requests each day, 5 years of data and only features companies listed on US exchanges.
 
@@ -338,7 +338,7 @@ Which returns, selecting only "ASRNL.AS" as an example:
 | 2025-04-03 |  52.32 |  53.22 | 52.18 |   52.42 |       52.42 |   567242 |           0 |  -0.0165 |       0.0175 |         -0.057  |              0.0206 |              4.2274 |
 | 2025-04-04 |  52    |  52.5  | 49.45 |   50.4  |       50.4  |   485024 |           0 |  -0.0385 |       0.0175 |         -0.0775 |              0.0206 |              4.0645 |
 
-And now let's make it more advanced by automatically calculating 60+ financial ratios for each. **This is just a small snippet of what is available within the Finance Toolkit, see for more information the GitHub page of the Finance Toolkit [here](https://github.com/JerBouma/FinanceToolkit) or the example Notebook [here](https://www.jeroenbouma.com/projects/financetoolkit/getting-started).**
+And now let's make it more advanced by automatically calculating 60+ financial ratios for each. **This is just a small snippet of what is available within the Finance Toolkit, see for more information the GitHub page of the Finance Toolkit [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} or the example Notebook [here](https://www.jeroenbouma.com/projects/financetoolkit/getting-started).**
 
 ```python
 toolkit.ratios.collect_all_ratios()
@@ -457,11 +457,11 @@ A sample of the output is shown below, focussig on ETH-BTC:
 
 # Questions & Answers
 In this section you can find answers to commonly asked questions. In case the answer to your question is not here, 
-consider creating an [Issue](https://github.com/JerBouma/FinanceDatabase/issues).
+consider creating an [Issue](https://github.com/JerBouma/FinanceDatabase/issues){:target="_blank"}.
 
 > **How is the data obtained?**
 
-The data is an aggregation of various publicly available sources. I strictly maintain the rule that all data in this database must be freely accessible to everyone. Data requiring API keys or paid subscriptions is never included. Information that companies charge for is typically owned and maintained by those companies, making public sharing of such data a violation of their Terms of Service (ToS). However, publicly available data can be freely shared (read more about the legality of web scraping [here](https://techcrunch.com/2022/04/18/web-scraping-legal-court/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAJRZe3F6wCbuO_n8PJ9JtAHpOY4dF2gA_tO0gJF2PhfWUueUcRQataJwNS9FZlp9rH8f8_aiCBfA2v7wlHyXyVLUfMrca4kq0_m6CYSvK7eMk9zuEhnXJOvE0lrHWXSPTtL-lHP8UJD4SyWTpQ2BnCNx-kv3mG7GGn_G_3SGVvhP)). This database will always remain <u>completely free</u>.
+The data is an aggregation of various publicly available sources. I strictly maintain the rule that all data in this database must be freely accessible to everyone. Data requiring API keys or paid subscriptions is never included. Information that companies charge for is typically owned and maintained by those companies, making public sharing of such data a violation of their Terms of Service (ToS). However, publicly available data can be freely shared (read more about the legality of web scraping [here](https://techcrunch.com/2022/04/18/web-scraping-legal-court/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAJRZe3F6wCbuO_n8PJ9JtAHpOY4dF2gA_tO0gJF2PhfWUueUcRQataJwNS9FZlp9rH8f8_aiCBfA2v7wlHyXyVLUfMrca4kq0_m6CYSvK7eMk9zuEhnXJOvE0lrHWXSPTtL-lHP8UJD4SyWTpQ2BnCNx-kv3mG7GGn_G_3SGVvhP){:target="_blank"}). This database will always remain <u>completely free</u>.
 
 > **What categorization method is used?**
 
@@ -469,7 +469,7 @@ The categorization for Equities is based on a loose approximation of GICS (Globa
 
 > **How can I contribute?**
 
-Please see the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md). Thank you!
+Please see the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"}. Thank you!
 
 > **How can I find out which countries, sectors and/or industries exist within the database without needing to check the database manually?**
 
@@ -477,27 +477,27 @@ For this you can use the `show_options` function from the package attached to th
 
 > **When I try collect data I notice that not all tickers return output, why is that?**
 
-Some tickers are merely holdings of companies and therefore do not really have any data attached to them. Therefore, it makes sense that not all tickers return data. If you are still in doubt, search the ticker on Google to see if there is really no data available. If you can't find anything about the ticker, consider updating the database by visiting the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md).
+Some tickers are merely holdings of companies and therefore do not really have any data attached to them. Therefore, it makes sense that not all tickers return data. If you are still in doubt, search the ticker on Google to see if there is really no data available. If you can't find anything about the ticker, consider updating the database by visiting the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"}.
 
 > **How does the database handle changes to companies over time - like symbol/exchange migration, mergers, bankruptcies, or symbols getting reused?**
 
-For American exchanges, the database automatically updates every Sunday using data from [this repository](https://github.com/rreichel3/US-Stock-Symbols). This process includes checks for market cap changes and updates asset classifications accordingly. Delisted tickers are intentionally retained for historical research purposes.
+For American exchanges, the database automatically updates every Sunday using data from [this repository](https://github.com/rreichel3/US-Stock-Symbols){:target="_blank"}. This process includes checks for market cap changes and updates asset classifications accordingly. Delisted tickers are intentionally retained for historical research purposes.
 
 While professional financial data services like Bloomberg charge over $25,000 annually for comprehensive market data maintenance, this database relies on community contributions. When companies outside American exchanges undergo changes (migrations, mergers, bankruptcies), we depend on community members to identify and update these entries.
 
 Most companies don't change so rapidly that the database becomes obsolete - major changes like Facebook's rebrand to META are quickly incorporated. Even when companies go bankrupt, their ticker information remains valuable for historical analysis.
 
-If you notice outdated information, please consider contributing through the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md).
+If you notice outdated information, please consider contributing through the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"}.
 
 # Contributions
 
-This section is meant to thank those that contributed to the project. Looking to contribute as well? Have a look [here](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md).
+This section is meant to thank those that contributed to the project. Looking to contribute as well? Have a look [here](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"}.
 
 | User              | Contribution |
 | ----------------- | ------------ | 
-| [desaijimmy](https://github.com/desaijimmy)        | Made changes to Equities dataset including the Split of Daimler to Mercedes-Benz and Daimler Trucks |
-| [nindogo](https://github.com/nindogo)        | Introduced a variety of new equities from the Nairobi Securities Exchange and introduced the country Kenya into the dataset. |
-| [colin99d](https://github.com/colin99d)        | Helped in the conversion of the Finance Database package to Object-Orientated, making the code much more efficient. |
+| [desaijimmy](https://github.com/desaijimmy){:target="_blank"}        | Made changes to Equities dataset including the Split of Daimler to Mercedes-Benz and Daimler Trucks |
+| [nindogo](https://github.com/nindogo){:target="_blank"}        | Introduced a variety of new equities from the Nairobi Securities Exchange and introduced the country Kenya into the dataset. |
+| [colin99d](https://github.com/colin99d){:target="_blank"}        | Helped in the conversion of the Finance Database package to Object-Orientated, making the code much more efficient. |
 
 # Contact
 If you have any questions about the FinanceDatabase or would like to share with me what you have been working on, feel free to reach out to me via:
@@ -506,6 +506,6 @@ If you have any questions about the FinanceDatabase or would like to share with 
 - **LinkedIn:** https://www.linkedin.com/in/boumajeroen/
 - **Email:** jer.bouma@gmail.com
 
-If you'd like to support my efforts, either help me out via the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md) or [Buy me a Coffee](https://www.buymeacoffee.com/jerbouma).
+If you'd like to support my efforts, either help me out via the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"} or [Buy me a Coffee](https://www.buymeacoffee.com/jerbouma){:target="_blank"}.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=JerBouma/FinanceDatabase&type=Date)](https://star-history.com/#JerBouma/FinanceDatabase&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=JerBouma/FinanceDatabase&type=Date)](https://star-history.com/#JerBouma/FinanceDatabase&Date){:target="_blank"}

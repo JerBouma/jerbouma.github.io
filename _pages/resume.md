@@ -131,7 +131,7 @@ Below is my journey from education through certifications, open-source projects,
 <div class="timeline-testimonial-header">
 <img src="assets/images/testimonials/DidierLopes.jpeg" alt="Didier Lopes" class="testimonial-avatar">
 <div>
-<strong><a href="https://www.linkedin.com/in/didier-lopes/">Didier Lopes</a></strong>
+<strong><a href="https://www.linkedin.com/in/didier-lopes/" target="_blank">Didier Lopes</a></strong>
 <span>CEO at OpenBB</span>
 </div>
 </div>
@@ -149,7 +149,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-testimonial-header">
 <img src="assets/images/testimonials/MinhHoang.jpeg" alt="Minh Hoang" class="testimonial-avatar">
 <div>
-<strong><a href="https://www.linkedin.com/in/minhhoang95/">Minh Hoang</a></strong>
+<strong><a href="https://www.linkedin.com/in/minhhoang95/" target="_blank">Minh Hoang</a></strong>
 <span>Product Manager at OpenBB</span>
 </div>
 </div>
@@ -161,7 +161,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-testimonial-header">
 <img src="assets/images/testimonials/SriChilukuri.jpeg" alt="Sri Chilukuri" class="testimonial-avatar">
 <div>
-<strong><a href="https://www.linkedin.com/in/srichilukuri/">Sri Chilukuri</a></strong>
+<strong><a href="https://www.linkedin.com/in/srichilukuri/" target="_blank">Sri Chilukuri</a></strong>
 <span>VP of Product Marketing at OpenBB</span>
 </div>
 </div>
@@ -271,7 +271,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-testimonial-header">
 <img src="assets/images/testimonials/LuukvanBenthem.jpeg" alt="Luuk van Benthem" class="testimonial-avatar">
 <div>
-<strong><a href="https://www.linkedin.com/in/luuk-van-benthem-b817a765/">Luuk van Benthem</a></strong>
+<strong><a href="https://www.linkedin.com/in/luuk-van-benthem-b817a765/" target="_blank">Luuk van Benthem</a></strong>
 <span>Senior ALM Adviseur at PGGM</span>
 </div>
 </div>
@@ -283,7 +283,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-testimonial-header">
 <img src="assets/images/testimonials/PascalJanssen.jpeg" alt="Pascal Janssen" class="testimonial-avatar">
 <div>
-<strong><a href="https://www.linkedin.com/in/pascal-janssen-225b345/">Pascal Janssen</a></strong>
+<strong><a href="https://www.linkedin.com/in/pascal-janssen-225b345/" target="_blank">Pascal Janssen</a></strong>
 <span>Strategisch ALM Adviseur at PGGM</span>
 </div>
 </div>

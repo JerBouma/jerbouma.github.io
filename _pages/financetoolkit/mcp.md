@@ -16,7 +16,7 @@ image: assets/images/projects/FinanceToolkit.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit/blob/main/MCP.md" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io) (MCP). The server is hosted at `https://financetoolkit.jeroenbouma.com/mcp`. Connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
+The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP). The server is hosted at `https://financetoolkit.jeroenbouma.com/mcp`. Connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
 
 MCP is an open standard that lets AI assistants call external tools and data sources directly from the chat interface; no copy-pasting, no switching between apps. Once connected, you simply ask questions in plain English and the AI fetches live financial data on your behalf. This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all backed by the transparent, open-source calculation methods of the Finance Toolkit.
 
@@ -35,7 +35,7 @@ The fastest way to get started is to point any MCP-compatible client at the host
 
 ### Remote Server
 
-**No installation required, works with any MCP-compatible client.** Connect directly to the hosted Finance Toolkit MCP server by adding the URL below. The server runs in the cloud; nothing needs to be installed locally. On first connection your client will open an OAuth consent page asking for your [Financial Modeling Prep API key](https://www.jeroenbouma.com/fmp); enter it once and the server handles authentication from there.
+**No installation required, works with any MCP-compatible client.** Connect directly to the hosted Finance Toolkit MCP server by adding the URL below. The server runs in the cloud; nothing needs to be installed locally. On first connection your client will open an OAuth consent page asking for your [Financial Modeling Prep API key](https://www.jeroenbouma.com/fmp){:target="_blank"}; enter it once and the server handles authentication from there.
 
 ```
 https://financetoolkit.jeroenbouma.com/mcp
@@ -53,21 +53,21 @@ For detailed instructions on how to connect your client, see the sections below.
      https://financetoolkit.jeroenbouma.com/mcp
      ```
   4. Click "Add" to add the Finance Toolkit MCP server to your list of connectors.
-  5. On first use Claude Desktop opens a browser window asking for your [FMP API key](https://www.jeroenbouma.com/fmp). Enter it once and the server remembers it.
+  5. On first use Claude Desktop opens a browser window asking for your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}. Enter it once and the server remembers it.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><i class="fas fa-globe"></i> <b>Claude.ai</b></summary>
 
-  1. Open [claude.ai](https://claude.ai) and click on **Customize** in the left sidebar.
+  1. Open [claude.ai](https://claude.ai){:target="_blank"} and click on **Customize** in the left sidebar.
   2. Go to the **Connectors** tab, click on the "+" button and select **Add custom connector**.
   3. Enter a name, e.g. *Finance Toolkit*, and paste the URL:
      ```
      https://financetoolkit.jeroenbouma.com/mcp
      ```
   4. Click "Add" to add the Finance Toolkit MCP server to your list of connectors.
-  5. On first use Claude.ai opens a browser window asking for your [FMP API key](https://www.jeroenbouma.com/fmp). Enter it once and the server remembers it.
+  5. On first use Claude.ai opens a browser window asking for your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}. Enter it once and the server remembers it.
 
 </details>
 
@@ -89,7 +89,7 @@ For detailed instructions on how to connect your client, see the sections below.
   2. Select **HTTP** as the server type.
   3. Enter the URL `https://financetoolkit.jeroenbouma.com/mcp` and name it *finance-toolkit*.
   4. VS Code writes the entry to `.vscode/mcp.json` automatically.
-  5. On first tool call VS Code opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp).
+  5. On first tool call VS Code opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}.
 
 </details>
 
@@ -103,7 +103,7 @@ For detailed instructions on how to connect your client, see the sections below.
      https://financetoolkit.jeroenbouma.com/mcp
      ```
   4. Name it *finance-toolkit* and click **Save**.
-  5. On first tool call Cursor opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp).
+  5. On first tool call Cursor opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}.
 
 </details>
 
@@ -114,7 +114,7 @@ For detailed instructions on how to connect your client, see the sections below.
   2. Click **Add Server** and select **Remote / HTTP**.
   3. Paste the URL `https://financetoolkit.jeroenbouma.com/mcp` and name it *finance-toolkit*.
   4. Click **Save** and reload the window.
-  5. On first tool call Windsurf opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp).
+  5. On first tool call Windsurf opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}.
 
 </details>
 
@@ -127,7 +127,7 @@ For detailed instructions on how to connect your client, see the sections below.
      https://financetoolkit.jeroenbouma.com/mcp
      ```
   3. Name it *finance-toolkit* and save.
-  4. On first tool call follow the OAuth prompt to enter your [FMP API key](https://www.jeroenbouma.com/fmp).
+  4. On first tool call follow the OAuth prompt to enter your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}.
 
 </details>
 
@@ -150,7 +150,7 @@ Edit the client's JSON config directly. The `env` block takes either:
 <details class="ft-details" markdown="1">
   <summary><i class="fas fa-robot"></i> <b>Claude Desktop</b></summary>
   
-  **Easiest installation is via the MCPB bundle**, which handles configuration automatically. Download the [Finance Toolkit MCPB bundle](https://github.com/JerBouma/FinanceToolkit/releases/latest/download/financetoolkit.mcpb) and double-click it to start installation.
+  **Easiest installation is via the MCPB bundle**, which handles configuration automatically. Download the [Finance Toolkit MCPB bundle](https://github.com/JerBouma/FinanceToolkit/releases/latest/download/financetoolkit.mcpb){:target="_blank"} and double-click it to start installation.
 
   Alternatively, edit `claude_desktop_config.json` and add the entry inside `mcpServers`:
 
@@ -175,7 +175,7 @@ Edit the client's JSON config directly. The `env` block takes either:
 <details class="ft-details" markdown="1">
   <summary><i class="fas fa-robot"></i> <b>Claude Code</b></summary>
 
-  Run the following command once in your terminal (replace `YOUR_API_KEY_HERE` with your [FMP API key](https://www.jeroenbouma.com/fmp)):
+  Run the following command once in your terminal (replace `YOUR_API_KEY_HERE` with your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}):
 
   ```bash
   claude mcp add --transport stdio finance-toolkit --env FINANCIAL_MODELING_PREP_API_KEY=YOUR_API_KEY_HERE -- uvx --from "financetoolkit[mcp]" financetoolkit-mcp

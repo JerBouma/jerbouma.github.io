@@ -15,7 +15,7 @@ On the 6th of May, 2023, Microsoft's Price-to-Earnings ratio was reported as 28.
 
 That inconsistency is why I built the Finance Toolkit: an open-source Python library where every ratio, indicator, and model is implemented in plain, readable code you can audit yourself. It covers 200+ metrics across equities, options, currencies, crypto, ETFs, indices, and macroeconomic data going back over a century, all sourced from 30+ years of financial statements. On top of the library sits an MCP server that exposes the same 200+ metrics to any AI assistant that supports the Model Context Protocol, so you (or your assistant) never have to choose between writing Python and asking a question in plain English.
 
-**The source code for every calculation is on [GitHub](https://github.com/JerBouma/FinanceToolkit). The MCP server documentation lives [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
+**The source code for every calculation is on [GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. The MCP server documentation lives [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
 
 ## Setting Things Up
 
@@ -39,7 +39,7 @@ companies = Toolkit(
 )
 ```
 
-Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp). The free plan covers five years of history and 250 requests a day; a paid plan unlocks the full 30+ years and quarterly data, at a 15% discount through that (affiliat) link. I do provide means to provide your own data as well, see [here](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets).
+Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}. The free plan covers five years of history and 250 requests a day; a paid plan unlocks the full 30+ years and quarterly data, at a 15% discount through that (affiliat) link. I do provide means to provide your own data as well, see [here](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets).
 
 ## From Code to Conversation: the MCP Server
 
@@ -51,7 +51,7 @@ You do not need a local Python environment to use it. A single command configure
 uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
 ```
 
-This supports Claude Desktop, Claude Code, GitHub Copilot in VS Code, Cursor, Windsurf, and Gemini. If you use Claude Desktop specifically, there is also a one-click MCPB bundle on the [latest GitHub release](https://github.com/JerBouma/FinanceToolkit/releases/latest) that skips the terminal entirely. Either way, you will be asked for the same FMP API key used above, and the free plan is enough to get started.
+This supports Claude Desktop, Claude Code, GitHub Copilot in VS Code, Cursor, Windsurf, and Gemini. If you use Claude Desktop specifically, there is also a one-click MCPB bundle on the [latest GitHub release](https://github.com/JerBouma/FinanceToolkit/releases/latest){:target="_blank"} that skips the terminal entirely. Either way, you will be asked for the same FMP API key used above, and the free plan is enough to get started.
 
 Once it is running, the server groups the 200+ Finance Toolkit methods into about 21 categorical tools. You never name a function or set a parameter yourself; the assistant picks the right tool from your question and returns structured output. The depth of interpretation scales with the model: Claude Sonnet layers in qualitative reasoning on top of the numbers, while smaller models like GPT-5 mini return clean structured data without the narrative. Both work, since the server is built to support either.
 
@@ -194,7 +194,7 @@ A call with the Finance Toolkit MCP would return an answer such as below.
 
 ## Macroeconomic Analysis: Tracking Asia's Growth Engines
 
-Macroeconomic data goes back over a century and covers 60+ countries: unemployment, GDP growth, inflation, trade balances, government debt, central bank rates, and government bond yields, sourced from the [OECD](https://www.oecd.org/en/data/indicators.html?orderBy=mostRelevant&page=0&facetTags=oecd-languages%3Aen) and the [Global Macro Database](https://www.globalmacrodata.com/). It is available through the `economics` module on a Toolkit instance, or as a fully standalone module if you only need macro data.
+Macroeconomic data goes back over a century and covers 60+ countries: unemployment, GDP growth, inflation, trade balances, government debt, central bank rates, and government bond yields, sourced from the [OECD](https://www.oecd.org/en/data/indicators.html?orderBy=mostRelevant&page=0&facetTags=oecd-languages%3Aen){:target="_blank"} and the [Global Macro Database](https://www.globalmacrodata.com/){:target="_blank"}. It is available through the `economics` module on a Toolkit instance, or as a fully standalone module if you only need macro data.
 
 ```python
 from financetoolkit import Economics

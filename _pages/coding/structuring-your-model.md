@@ -68,7 +68,7 @@ Step2["Profitability Model"]  -- "3. Returns Gross Margin" --> Step0["User"]
 
 For example, a Gross Margin calculation function shouldn't require input data with specific column names. Instead, it should accept generic inputs like two Series, Arrays, Floats, or Integers. This approach promotes creating "dumb" calculation functions, devoid of application-specific logic.
 
-See the simplicity of such a model [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/profitability_model.py) and below:
+See the simplicity of such a model [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/profitability_model.py){:target="_blank"} and below:
 
 ```python
 def get_gross_margin(revenue: pd.Series, cost_of_goods_sold: pd.Series) -> pd.Series:

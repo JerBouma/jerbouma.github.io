@@ -12,11 +12,11 @@ tags: [Finance Toolkit, Fundamental Analysis, MCP Server]
 share: true
 ---
 
-March 13, 1986. Microsoft went public at $21 per share ([Wikipedia](https://en.wikipedia.org/wiki/History_of_Microsoft)). Split-adjusted, that works out to roughly $0.08. The stock closed 2025 at $484 (Finance Toolkit historical data), making it one of the most remarkable compounding records in market history: a return of more than 5,000x over four decades.
+March 13, 1986. Microsoft went public at $21 per share ([Wikipedia](https://en.wikipedia.org/wiki/History_of_Microsoft){:target="_blank"}). Split-adjusted, that works out to roughly $0.08. The stock closed 2025 at $484 (Finance Toolkit historical data), making it one of the most remarkable compounding records in market history: a return of more than 5,000x over four decades.
 
 But the stock price alone obscures something more interesting. The Microsoft that went public in 1986 and the Microsoft that generates $282 billion in annual revenue today are not the same company. The financials show three distinct businesses operating under the same name, each shaped by a different CEO, a different product strategy, and a different relationship with capital. Pulling 40 years of data through the Finance Toolkit makes that transformation visible in a way that no headline number can.
 
-This blogpost demonstrates using the Finance Toolkit to analyze Microsoft's financial history. It also includes MCP prompts at the end of each section so you can run the same analysis yourself. **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit). To explore the Finance Toolkit MCP, see [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
+This blogpost demonstrates using the Finance Toolkit to analyze Microsoft's financial history. It also includes MCP prompts at the end of each section so you can run the same analysis yourself. **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To explore the Finance Toolkit MCP, see [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
 
 ## Setting Things Up
 
@@ -38,7 +38,7 @@ company = Toolkit(
 )
 ```
 
-Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp). The free plan covers five years of history; a paid plan unlocks the full 40-year dataset used here.
+Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}. The free plan covers five years of history; a paid plan unlocks the full 40-year dataset used here.
 
 ## Revenue: Three Very Different Eras
 
@@ -71,7 +71,7 @@ The Gates era was extraordinary by any standard. Revenue grew from $197 million 
 
 The Ballmer era is often described as a lost decade, but that framing is partly unfair. Revenue grew from $23 billion to $87 billion between 2000 and 2014 (Finance Toolkit income statement). That is real growth by any measure. What failed was not the business but the valuation. Ballmer inherited Microsoft at the height of the dot-com bubble, when the market was pricing in decades of compounding at rates no company could sustain. The stock went roughly nowhere for 14 years not because the business stagnated, but because the starting price was simply too high.
 
-The 2015 net income of $12.2 billion against $93.6 billion in revenue reflects Nadella's first full year, when Microsoft took a $7.5 billion write-down on the Nokia acquisition ([Wikipedia](https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Microsoft)). Strip that out and the underlying business was already accelerating. By 2020, net income had grown to $44 billion. By 2025 it reached $102 billion, a number that would have seemed absurd when Nadella took over.
+The 2015 net income of $12.2 billion against $93.6 billion in revenue reflects Nadella's first full year, when Microsoft took a $7.5 billion write-down on the Nokia acquisition ([Wikipedia](https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Microsoft){:target="_blank"}). Strip that out and the underlying business was already accelerating. By 2020, net income had grown to $44 billion. By 2025 it reached $102 billion, a number that would have seemed absurd when Nadella took over.
 
 > **Try this in the Finance Toolkit MCP:** *"Show me Microsoft's annual revenue from 1986 to 2025, and identify the three distinct growth phases under Gates, Ballmer, and Nadella."*
 
@@ -136,7 +136,7 @@ Which returns:
 
 The first debt appeared in 2009 (Finance Toolkit balance sheet), not because Microsoft needed the money, but because borrowing at low rates to fund buybacks was more tax-efficient than repatriating overseas cash. By 2020, cash and investments had reached $136 billion while long-term debt stood at $60 billion. The net position was still comfortably positive, but the capital structure had become more aggressive.
 
-The most striking shift is goodwill. It was zero for most of Microsoft's history because the company built rather than bought. That changed under Ballmer with acquisitions like aQuantive and Skype, and accelerated dramatically under Nadella. LinkedIn ($26 billion, 2016), GitHub ($7.5 billion, 2018), Nuance ($19 billion, 2022), and Activision Blizzard ($69 billion, 2023) turned Microsoft into one of the most acquisitive companies in tech ([Wikipedia](https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Microsoft)). Goodwill reached $119.5 billion in 2025.
+The most striking shift is goodwill. It was zero for most of Microsoft's history because the company built rather than bought. That changed under Ballmer with acquisitions like aQuantive and Skype, and accelerated dramatically under Nadella. LinkedIn ($26 billion, 2016), GitHub ($7.5 billion, 2018), Nuance ($19 billion, 2022), and Activision Blizzard ($69 billion, 2023) turned Microsoft into one of the most acquisitive companies in tech ([Wikipedia](https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Microsoft){:target="_blank"}). Goodwill reached $119.5 billion in 2025.
 
 The cash balance fell from $136 billion in 2020 to $94.6 billion in 2025, largely because of Activision. Long-term debt has declined from its peak of $66.7 billion in 2019 (Finance Toolkit balance sheet) to $40.2 billion in 2025 as Microsoft pays down the acquisition-related borrowing, a sign that the balance sheet is normalising after the deal.
 

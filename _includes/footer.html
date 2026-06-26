@@ -21,7 +21,7 @@
         {% for link in site.footer.links %}
           {% if link.label and link.url %}
             <li>
-              <a href="{{ link.url }}" rel="nofollow noopener noreferrer">
+              <a href="{{ link.url }}" rel="nofollow noopener noreferrer" target="_blank">
                 <i class="{{ link.icon | default: 'fas fa-link' }}" aria-hidden="true"></i> {{ link.label }}
               </a>
             </li>
@@ -42,5 +42,5 @@
 
 <div class="footer__bottom">
   <span class="footer__copyright">&copy; {{ site.time | date: '%Y' }} {{ site.name | default: site.title }}</span>
-  <span class="footer__built">Built with <a href="https://jekyllrb.com" rel="nofollow noopener noreferrer">Jekyll</a> &amp; hosted on <a href="https://pages.github.com" rel="nofollow noopener noreferrer">GitHub Pages</a></span>
+  <span class="footer__built">Built with <a href="https://jekyllrb.com" rel="nofollow noopener noreferrer" target="_blank">Jekyll</a> &amp; hosted on <a href="https://pages.github.com" rel="nofollow noopener noreferrer" target="_blank">GitHub Pages</a></span>
 </div>
