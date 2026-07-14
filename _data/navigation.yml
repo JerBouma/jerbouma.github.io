@@ -110,6 +110,8 @@ financetoolkit:
   - title: "Basic Usage"
     url: /projects/financetoolkit#basic-usage
     children:
+      - title: Discovering Instruments & News
+        url: /projects/financetoolkit#discovering-instruments--news
       - title: Historical Data
         url: /projects/financetoolkit#obtaining-historical-data
       - title: Financial Statements
@@ -130,6 +132,8 @@ financetoolkit:
         url: /projects/financetoolkit#obtaining-fixed-income-metrics
       - title: Key Economic Indicators
         url: /projects/financetoolkit#understanding-key-economic-indicators
+      - title: Explore your own Portfolio
+        url: /projects/financetoolkit#explore-your-own-portfolio
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
 financetoolkit-mcp:
@@ -228,6 +232,10 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#get_analyst_estimates
     - title: "Earnings Calendar"
       url: /projects/financetoolkit/docs#get_earnings_calendar
+    - title: "Stock News"
+      url: /projects/financetoolkit/docs#get_stock_news
+    - title: "Press Releases"
+      url: /projects/financetoolkit/docs#get_press_releases
     - title: "Revenue Geographic Segmentation"
       url: /projects/financetoolkit/docs#get_revenue_geographic_segmentation
     - title: "Revenue Product Segmentation"
@@ -289,8 +297,6 @@ financetoolkit-docs-discovery:
     children:
     - title: Company List
       url: /projects/financetoolkit/docs/discovery#get_stock_list
-    - title: Company Quotes
-      url: /projects/financetoolkit/docs/discovery#get_stock_quotes
     - title: Floating Shares
       url: /projects/financetoolkit/docs/discovery#get_stock_shares_float
     - title: Sector Performance
@@ -307,28 +313,62 @@ financetoolkit-docs-discovery:
     children:
     - title: Cryptocurrency List
       url: /projects/financetoolkit/docs/discovery#get_crypto_list
-    - title: Cryptocurrency Quotes
-      url: /projects/financetoolkit/docs/discovery#get_crypto_quotes
   - title: FOREX
     children:
     - title: Forex List
       url: /projects/financetoolkit/docs/discovery#get_forex_list
-    - title: Forex Quotes
-      url: /projects/financetoolkit/docs/discovery#get_forex_quotes
   - title: Commodities
     children:
     - title: Commodities List
       url: /projects/financetoolkit/docs/discovery#get_commodity_list
-    - title: Commodities Quotes
-      url: /projects/financetoolkit/docs/discovery#get_commodity_quotes
   - title: ETFs & Indices
     children:
     - title: ETF List
       url: /projects/financetoolkit/docs/discovery#get_etf_list
     - title: Index List
       url: /projects/financetoolkit/docs/discovery#get_index_list
-    - title: Index Quotes
-      url: /projects/financetoolkit/docs/discovery#get_index_quotes
+  - title: News
+    children:
+    - title: Stock Market News
+      url: /projects/financetoolkit/docs/discovery#get_stock_news
+    - title: General News
+      url: /projects/financetoolkit/docs/discovery#get_general_news
+    - title: Press Releases
+      url: /projects/financetoolkit/docs/discovery#get_press_releases
+    - title: Cryptocurrency News
+      url: /projects/financetoolkit/docs/discovery#get_crypto_news
+    - title: Forex News
+      url: /projects/financetoolkit/docs/discovery#get_forex_news
+    - title: Search Stock News
+      url: /projects/financetoolkit/docs/discovery#search_stock_news
+    - title: Search Press Releases
+      url: /projects/financetoolkit/docs/discovery#search_press_releases
+    - title: Search Cryptocurrency News
+      url: /projects/financetoolkit/docs/discovery#search_crypto_news
+    - title: Search Forex News
+      url: /projects/financetoolkit/docs/discovery#search_forex_news
+  - title: Calendars
+    children:
+    - title: IPO Calendar
+      url: /projects/financetoolkit/docs/discovery#get_ipo_calendar
+    - title: IPO Disclosures
+      url: /projects/financetoolkit/docs/discovery#get_ipo_disclosures
+    - title: IPO Prospectuses
+      url: /projects/financetoolkit/docs/discovery#get_ipo_prospectuses
+    - title: Stock Splits Calendar
+      url: /projects/financetoolkit/docs/discovery#get_stock_splits_calendar
+  - title: Sector & Industry
+    children:
+    - title: Sector Performance
+      url: /projects/financetoolkit/docs/discovery#get_sector_performance
+    - title: Industry Performance
+      url: /projects/financetoolkit/docs/discovery#get_industry_performance
+    - title: Sector P/E
+      url: /projects/financetoolkit/docs/discovery#get_sector_pe
+    - title: Industry P/E
+      url: /projects/financetoolkit/docs/discovery#get_industry_pe
+  - title: Mergers & Acquisitions
+    url: /projects/financetoolkit/docs/discovery#get_mergers_acquisitions_latest
 financetoolkit-docs-ratios:
   - title: Modules
     children:
@@ -388,6 +428,16 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_fixed_asset_turnover
       - title: Operating Ratio
         url: /projects/financetoolkit/docs/ratios#get_operating_ratio
+      - title: Research and Development Ratio
+        url: /projects/financetoolkit/docs/ratios#get_research_and_development_ratio
+      - title: Selling and Marketing Ratio
+        url: /projects/financetoolkit/docs/ratios#get_selling_and_marketing_ratio
+      - title: General and Administrative Ratio
+        url: /projects/financetoolkit/docs/ratios#get_general_and_administrative_ratio
+      - title: Stock-Based Compensation Ratio
+        url: /projects/financetoolkit/docs/ratios#get_stock_based_compensation_ratio
+      - title: Deferred Revenue Ratio
+        url: /projects/financetoolkit/docs/ratios#get_deferred_revenue_ratio
   - title: Liquidity Ratios
     children:
       - title: All Liquidity Ratios
@@ -444,6 +494,10 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_EBT_to_EBIT
       - title: EBIT to Revenue
         url: /projects/financetoolkit/docs/ratios#get_EBIT_to_revenue
+      - title: Cash Tax Rate
+        url: /projects/financetoolkit/docs/ratios#get_cash_tax_rate
+      - title: Tax Rate Divergence
+        url: /projects/financetoolkit/docs/ratios#get_tax_rate_divergence
   - title: Solvency Ratios
     children:
       - title: All Solvency Ratios
@@ -468,6 +522,12 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_capex_coverage_ratio
       - title: CAPEX Dividend Coverage Ratio
         url: /projects/financetoolkit/docs/ratios#get_capex_dividend_coverage_ratio
+      - title: Debt to Capital Ratio
+        url: /projects/financetoolkit/docs/ratios#get_debt_to_capital_ratio
+      - title: Preferred Dividend Coverage Ratio
+        url: /projects/financetoolkit/docs/ratios#get_preferred_dividend_coverage_ratio
+      - title: Interest Paid to Interest Expense Ratio
+        url: /projects/financetoolkit/docs/ratios#get_interest_paid_to_expense_ratio
   - title: Valuation Ratios
     children:
       - title: All Valuation Ratios
@@ -476,10 +536,14 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_earnings_per_share
       - title: Revenue per Share (RPS)
         url: /projects/financetoolkit/docs/ratios#get_revenue_per_share
-      - title: Price Earnings Ratio (PE)
-        url: /projects/financetoolkit/docs/ratios#get_price_earnings_ratio
+      - title: Price to Earnings Ratio (PE)
+        url: /projects/financetoolkit/docs/ratios#get_price_to_earnings_ratio
       - title: Price to Earnings Growth Ratio (PEG)
         url: /projects/financetoolkit/docs/ratios#get_price_to_earnings_growth_ratio
+      - title: Forward Price to Earnings Ratio (Forward PE)
+        url: /projects/financetoolkit/docs/ratios#get_forward_price_earnings_ratio
+      - title: Forward Price to Earnings Growth Ratio (Forward PEG)
+        url: /projects/financetoolkit/docs/ratios#get_forward_price_earnings_growth_ratio
       - title: Book Value per Share
         url: /projects/financetoolkit/docs/ratios#get_book_value_per_share
       - title: Price to Book Ratio (PB)
@@ -518,6 +582,14 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_net_current_asset_value
       - title: EV to EBIT
         url: /projects/financetoolkit/docs/ratios#get_ev_to_ebit
+      - title: EV to Free Cash Flow Ratio
+        url: /projects/financetoolkit/docs/ratios#get_ev_to_free_cash_flow_ratio
+      - title: Buyback Yield
+        url: /projects/financetoolkit/docs/ratios#get_buyback_yield
+      - title: Shareholder Yield
+        url: /projects/financetoolkit/docs/ratios#get_shareholder_yield
+      - title: SBC Adjusted Free Cash Flow
+        url: /projects/financetoolkit/docs/ratios#get_sbc_adjusted_free_cash_flow
 financetoolkit-docs-models:
   - title: Modules
     children:
@@ -553,6 +625,8 @@ financetoolkit-docs-models:
         url:  /projects/financetoolkit/docs/models#get_enterprise_value_breakdown
       - title: Weighted Average Cost of Capital (WACC)
         url:  /projects/financetoolkit/docs/models#get_weighted_average_cost_of_capital
+      - title: Economic Value Added (EVA)
+        url:  /projects/financetoolkit/docs/models#get_economic_value_added
       - title: Intrinsic Valuation
         url:  /projects/financetoolkit/docs/models#get_intrinsic_valuation
       - title: Gorden Growth Model (GGM)
@@ -561,8 +635,16 @@ financetoolkit-docs-models:
         url:  /projects/financetoolkit/docs/models#get_altman_z_score
       - title: Piotroski Score
         url:  /projects/financetoolkit/docs/models#get_piotroski_score
+      - title: Beneish M-Score
+        url:  /projects/financetoolkit/docs/models#get_beneish_m_score
       - title: Present Value of Growth Opportunities (PVGO)
         url:  /projects/financetoolkit/docs/models#get_present_value_of_growth_opportunities
+      - title: Sustainable Growth Rate (SGR)
+        url:  /projects/financetoolkit/docs/models#get_sustainable_growth_rate
+      - title: Internal Growth Rate (IGR)
+        url:  /projects/financetoolkit/docs/models#get_internal_growth_rate
+      - title: Graham Number
+        url:  /projects/financetoolkit/docs/models#get_graham_number
 financetoolkit-docs-options:
   - title: Modules
     children:
@@ -690,6 +772,10 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_accumulation_distribution_line
       - title: Chaikin Oscillator
         url: /projects/financetoolkit/docs/technicals#get_chaikin_oscillator
+      - title: TRIN (Arms Index)
+        url: /projects/financetoolkit/docs/technicals#get_trin
+      - title: New Highs - New Lows
+        url: /projects/financetoolkit/docs/technicals#get_new_highs_new_lows
   - title: Momentum Indicators
     children:
       - title: All Momentum Indicators
@@ -740,6 +826,16 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_trix
       - title: Triangular Moving Average (TMA)
         url: /projects/financetoolkit/docs/technicals#get_triangular_moving_average
+      - title: Weighted Moving Average (WMA)
+        url: /projects/financetoolkit/docs/technicals#get_weighted_moving_average
+      - title: Hull Moving Average (HMA)
+        url: /projects/financetoolkit/docs/technicals#get_hull_moving_average
+      - title: Volume Weighted Average Price (VWAP)
+        url: /projects/financetoolkit/docs/technicals#get_volume_weighted_average_price
+      - title: Parabolic SAR
+        url: /projects/financetoolkit/docs/technicals#get_parabolic_sar
+      - title: Pivot Points
+        url: /projects/financetoolkit/docs/technicals#get_pivot_points
       - title: Support/Resistance Levels
         url: /projects/financetoolkit/docs/technicals#get_support_resistance_levels
   - title: Volatility Indicators
@@ -754,6 +850,10 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_keltner_channels
       - title: Bollinger Bands
         url: /projects/financetoolkit/docs/technicals#get_bollinger_bands
+      - title: Donchian Channels
+        url: /projects/financetoolkit/docs/technicals#get_donchian_channels
+      - title: Volatility Cone
+        url: /projects/financetoolkit/docs/technicals#get_volatility_cone
 financetoolkit-docs-risk:
   - title: Modules
     children:
@@ -789,18 +889,44 @@ financetoolkit-docs-risk:
       url:  /projects/financetoolkit/docs/risk#get_conditional_value_at_risk
     - title: Entropic Value at Risk (eVaR)
       url:  /projects/financetoolkit/docs/risk#get_entropic_value_at_risk
+    - title: Conditional Drawdown at Risk (CDaR)
+      url:  /projects/financetoolkit/docs/risk#get_conditional_drawdown_at_risk
+    - title: Tail Ratio
+      url:  /projects/financetoolkit/docs/risk#get_tail_ratio
     - title: Maximum Drawdown (MDD)
       url:  /projects/financetoolkit/docs/risk#get_maximum_drawdown
+    - title: Maximum Drawdown Duration
+      url:  /projects/financetoolkit/docs/risk#get_maximum_drawdown_duration
+    - title: Maximum Drawdown Recovery Time
+      url:  /projects/financetoolkit/docs/risk#get_maximum_drawdown_recovery_time
     - title: Ulcer Index (UI)
       url:  /projects/financetoolkit/docs/risk#get_ulcer_index
     - title: GARCH Volatilty Model
       url:  /projects/financetoolkit/docs/risk#get_garch
     - title: GARCH Volatilty Forecast
       url:  /projects/financetoolkit/docs/risk#get_garch_forecast
+    - title: Variance
+      url:  /projects/financetoolkit/docs/risk#get_variance
+    - title: Volatility
+      url:  /projects/financetoolkit/docs/risk#get_volatility
+    - title: Excess Volatility
+      url:  /projects/financetoolkit/docs/risk#get_excess_volatility
+    - title: Downside Deviation
+      url:  /projects/financetoolkit/docs/risk#get_downside_deviation
     - title: Skewness
       url:  /projects/financetoolkit/docs/risk#get_skewness
     - title: Kurtosis
       url:  /projects/financetoolkit/docs/risk#get_kurtosis
+    - title: Mean Absolute Deviation (MAD)
+      url:  /projects/financetoolkit/docs/risk#get_mean_absolute_deviation
+    - title: Coefficient of Variation (CV)
+      url:  /projects/financetoolkit/docs/risk#get_coefficient_of_variation
+    - title: EWMA Volatility
+      url:  /projects/financetoolkit/docs/risk#get_ewma_volatility
+    - title: Autocorrelation (ACF)
+      url:  /projects/financetoolkit/docs/risk#get_autocorrelation
+    - title: Hurst Exponent
+      url:  /projects/financetoolkit/docs/risk#get_hurst_exponent
 financetoolkit-docs-performance:
   - title: Modules
     children:
@@ -852,14 +978,40 @@ financetoolkit-docs-performance:
       url:  /projects/financetoolkit/docs/performance#get_sortino_ratio
     - title: Ulcer Performance Index (UPI)
       url:  /projects/financetoolkit/docs/performance#get_ulcer_performance_index
+    - title: Calmar Ratio
+      url:  /projects/financetoolkit/docs/performance#get_calmar_ratio
+    - title: Sterling Ratio
+      url:  /projects/financetoolkit/docs/performance#get_sterling_ratio
+    - title: Burke Ratio
+      url:  /projects/financetoolkit/docs/performance#get_burke_ratio
     - title: M2 Ratio
       url:  /projects/financetoolkit/docs/performance#get_m2_ratio
     - title: Tracking Error
       url:  /projects/financetoolkit/docs/performance#get_tracking_error
     - title: Information Ratio
       url:  /projects/financetoolkit/docs/performance#get_information_ratio
+    - title: Upside Capture Ratio
+      url:  /projects/financetoolkit/docs/performance#get_upside_capture_ratio
+    - title: Downside Capture Ratio
+      url:  /projects/financetoolkit/docs/performance#get_downside_capture_ratio
+    - title: Win Rate
+      url:  /projects/financetoolkit/docs/performance#get_win_rate
+    - title: Kappa Ratio
+      url:  /projects/financetoolkit/docs/performance#get_kappa_ratio
+    - title: Omega Ratio
+      url:  /projects/financetoolkit/docs/performance#get_omega_ratio
+    - title: Gain-to-Pain Ratio
+      url:  /projects/financetoolkit/docs/performance#get_gain_to_pain_ratio
     - title: Compound Growth Rate
       url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
+    - title: Returns
+      url:  /projects/financetoolkit/docs/performance#get_returns
+    - title: Excess Return
+      url:  /projects/financetoolkit/docs/performance#get_excess_return
+    - title: Correlation Matrix
+      url:  /projects/financetoolkit/docs/performance#get_correlation_matrix
+    - title: Covariance Matrix
+      url:  /projects/financetoolkit/docs/performance#get_covariance_matrix
 financetoolkit-docs-fixedincome:
   - title: Modules
     children:

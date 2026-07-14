@@ -4,21 +4,37 @@ from the controller modules on GitHub and converting them to Jekyll Markdown.
 """
 
 import base64
+import os
 import re
+import sys
 
 import requests
 
 # ── Compiled regexes (module-level, compiled once) ────────────────────────────
 _RE_FUNC = re.compile(r"def\s+(\w+)\([\s\S]*?\"\"\"([\s\S]*?)\"\"\"")
-_RE_URL = re.compile(r"(https?://\S+)")
+_RE_URL = re.compile(r"https?://\S+")
 _RE_ARG_LABEL = re.compile(r"\w+ \([^)]+\):")
 _RE_MULTI_SPACE = re.compile(r" +")
+_RE_BLANK_LINE = re.compile(r"\n[ \t]*\n")
 _RE_DESCRIPTION = re.compile(r"([\s\S]*?)(?:Args:|As an example:|$)", re.DOTALL)
 _RE_ARGUMENTS = re.compile(r"(Args:[\s\S]*?)(```python|$)", re.DOTALL)
 _RE_CODE = re.compile(r"```python([\s\S]*?)```", re.DOTALL)
 _RE_RESULT = re.compile(r"Which returns:[\s\S]*$", re.DOTALL)
-_RE_ALSO_KNOWN = re.compile(r"[ \t]*\n*[ \t]*Also known as:")
-_RE_SEE_DEF = re.compile(r"[ \t]*\n*[ \t]*See definition:")
+
+# Section headers that get bolded wherever they appear as their own paragraph.
+_BOLD_HEADERS = ("Also known as:", "See definition:", "See Definition:")
+
+_GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
+_REQUEST_TIMEOUT = 30
+
+# ── Local mode ──────────────────────────────────────────────────────────────
+# Set DOCS_LOCAL_PATH (or pass --local) to read controller modules straight
+# off disk instead of hitting the GitHub API. Points at the financetoolkit
+# package directory, e.g. /Users/jeroenbouma/Documents/FinanceToolkit/financetoolkit
+_DEFAULT_LOCAL_PATH = "/Users/jeroenbouma/Documents/FinanceToolkit/financetoolkit"
+_LOCAL_PATH = os.environ.get("DOCS_LOCAL_PATH", "")
+if "--local" in sys.argv and not _LOCAL_PATH:
+    _LOCAL_PATH = _DEFAULT_LOCAL_PATH
 
 _INSTALL_SNIPPET = """\
 To install the FinanceToolkit it simply requires the following:
@@ -32,28 +48,138 @@ pip install financetoolkit -U
 """
 
 
+def _trim_url(url: str) -> tuple[str, str]:
+    """Split a raw regex match into (url, trailing_punctuation).
+
+    Sentence punctuation directly after a URL (e.g. "See https://x.com.")
+    is not part of the link, but a closing paren that balances one inside
+    the URL itself (e.g. Wikipedia's ".../wiki/Beta_(finance)") is.
+    """
+    trailing = ""
+    while url and url[-1] in ".,;:!?":
+        trailing = url[-1] + trailing
+        url = url[:-1]
+    if url.endswith(")") and url.count("(") < url.count(")"):
+        trailing = ")" + trailing
+        url = url[:-1]
+    return url, trailing
+
+
 def _linkify(text: str) -> str:
-    return _RE_URL.sub(r'[\1](\1){:target="_blank"}', text)
+    def _replace(match: re.Match) -> str:
+        url, trailing = _trim_url(match.group(0))
+        return f'[{url}]({url}){{:target="_blank"}}{trailing}'
+
+    return _RE_URL.sub(_replace, text)
 
 
 def _underline_arg(match: re.Match) -> str:
     return f"- <u>{match.group(0)}</u>"
 
 
+def _dedent_block(text: str) -> str:
+    """Strip the docstring's fixed source indentation while preserving any
+    relative indentation the author used (e.g. nested multi-line calls or
+    aligned table columns).
+
+    The section regexes (Args:, Which returns:, ...) match starting mid-line,
+    right after the header text, so the first captured line often has zero
+    leading whitespace even though every other line shares the docstring's
+    real indent. That lone unindented line would otherwise fool
+    `textwrap.dedent` into stripping nothing at all, so it is excluded when
+    the common indent is computed.
+    """
+    lines = text.strip("\n").split("\n")
+    if not lines:
+        return ""
+
+    indents = [len(l) - len(l.lstrip(" ")) for l in lines[1:] if l.strip()]
+    if not indents:
+        return "\n".join(l.strip() for l in lines).strip()
+
+    base = min(indents)
+    dedented = [lines[0].strip()] + [
+        l[base:] if l.strip() else "" for l in lines[1:]
+    ]
+    return "\n".join(dedented).strip("\n")
+
+
 def _clean_description(text: str) -> str:
-    cleaned = (
-        _RE_MULTI_SPACE.sub(" ", text.strip())
-        .replace("\n ", " ")   # collapse PEP8 continuation lines
-        .replace("-", "\n-")   # dash-bullet lists
-        .replace("—", "-")     # em dash → hyphen (used in formulas)
-    )
-    cleaned = _RE_ALSO_KNOWN.sub("\nAlso known as:", cleaned)
-    return _RE_SEE_DEF.sub("\nSee Definition:", cleaned)
+    """Turn a raw docstring description into clean Markdown.
+
+    Paragraphs are detected via blank lines (the only reliable signal in the
+    source). A paragraph is treated as a bullet list only if *every* one of
+    its lines already starts with "- " once dedented - anything else
+    (formula minus signs, hyphenated words, negative numbers) is left alone.
+
+    Source docstrings often put a blank line between each bullet (for their
+    own readability). If that blank line survived into the Markdown, Kramdown
+    would render the list as "loose" - wrapping each item's text in its own
+    <p> - which double-applies the site's `.page__content li { font-size:
+    0.8em }` rule (once for the <li>, again for the nested <p>) and renders
+    the bullets visibly smaller than surrounding text. Consecutive
+    bullet-list paragraphs are therefore joined with a single newline so
+    Kramdown treats them as one tight list instead.
+    """
+    text = text.replace("—", "-")  # em dash -> hyphen, used for formula minus signs
+
+    paragraphs = []
+    for raw_paragraph in _RE_BLANK_LINE.split(_dedent_block(text)):
+        lines = [_RE_MULTI_SPACE.sub(" ", line.strip()) for line in raw_paragraph.split("\n")]
+        lines = [line for line in lines if line]
+        if not lines:
+            continue
+
+        for header in _BOLD_HEADERS:
+            if lines[0].startswith(header):
+                lines[0] = f"**{header}**{lines[0][len(header):]}"
+                break
+
+        is_bullet_list = all(line.startswith("- ") for line in lines)
+        # A paragraph "is" a bullet (for joining purposes) whenever it starts
+        # with "- ", even if it's really one bullet whose continuation lines
+        # got wrapped without a "- " prefix (is_bullet_list is False for
+        # those, but they still need to join tightly with neighbouring
+        # bullets rather than getting a blank line before them).
+        starts_as_bullet = lines[0].startswith("- ")
+        paragraph = "\n".join(lines) if is_bullet_list else " ".join(lines)
+        paragraphs.append((paragraph, starts_as_bullet))
+
+    parts = []
+    for i, (paragraph, starts_as_bullet) in enumerate(paragraphs):
+        if i > 0:
+            parts.append("\n" if starts_as_bullet and paragraphs[i - 1][1] else "\n\n")
+        parts.append(paragraph)
+
+    return "".join(parts)
+
+
+def _local_file_path(file_url: str) -> str:
+    """Map a GitHub contents-API URL to its local file path under _LOCAL_PATH."""
+    relative_path = file_url.split(f"{_BASE}/", 1)[1]
+    return os.path.join(_LOCAL_PATH, relative_path)
 
 
 def _fetch_file(url: str) -> str:
-    response = requests.get(url, timeout=30)
-    response.raise_for_status()
+    if _LOCAL_PATH:
+        local_path = _local_file_path(url)
+        with open(local_path, encoding="utf-8") as f:
+            return f.read()
+
+    headers = {"Authorization": f"token {_GITHUB_TOKEN}"} if _GITHUB_TOKEN else {}
+    try:
+        response = requests.get(url, headers=headers, timeout=_REQUEST_TIMEOUT)
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as error:
+        if response.status_code == 403:
+            raise RuntimeError(
+                f"GitHub API rate limit likely exceeded fetching {url}. "
+                "Set a GITHUB_TOKEN environment variable to raise the limit."
+            ) from error
+        raise RuntimeError(f"Failed to fetch {url}: {error}") from error
+    except requests.exceptions.RequestException as error:
+        raise RuntimeError(f"Network error fetching {url}: {error}") from error
+
     data = response.json()
     if "content" not in data:
         raise ValueError(f"No 'content' key in GitHub API response for {url}")
@@ -71,27 +197,32 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
 
         # Description
         desc_m = _RE_DESCRIPTION.match(docstring)
-        description = _linkify(desc_m.group(1)) if desc_m else ""
+        description = _clean_description(desc_m.group(1)) if desc_m else ""
+        description = _linkify(description)
 
-        # Arguments
+        # Arguments (also covers Returns / Raises / Notes, which follow Args:)
         args_m = _RE_ARGUMENTS.search(docstring)
         arguments = _linkify(args_m.group(1)) if args_m else ""
+        arguments = _dedent_block(arguments)
         arguments = _RE_ARG_LABEL.sub(_underline_arg, arguments)
+        arguments = "\n".join(
+            _RE_MULTI_SPACE.sub(" ", line).strip() for line in arguments.split("\n")
+        )
 
         # Example code block
         code_m = _RE_CODE.search(docstring)
-        example_code = code_m.group(1) if code_m else ""
+        example_code = _dedent_block(code_m.group(1)) if code_m else ""
 
         # Example result
         result_m = _RE_RESULT.search(docstring)
-        example_result = result_m.group(0) if result_m else ""
+        example_result = _dedent_block(result_m.group(0)) if result_m else ""
 
         functions_with_docstrings.append({
             "function_name": function_name,
-            "description": _clean_description(description),
-            "arguments": _RE_MULTI_SPACE.sub(" ", arguments.strip()),
-            "example_code": _RE_MULTI_SPACE.sub(" ", example_code.strip()).replace("\n ", "\n"),
-            "example_result": _RE_MULTI_SPACE.sub(" ", example_result.strip()),
+            "description": description,
+            "arguments": arguments,
+            "example_code": example_code,
+            "example_result": example_result,
         })
 
     markdown_content = header
@@ -100,13 +231,18 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
         markdown_content += f'{fn["description"]}\n\n'
 
         if fn["arguments"]:
-            markdown_content += (
+            arguments = (
                 fn["arguments"]
                 .replace("Args:", "**Args:**")
                 .replace("Raises:", "**Raises:**")
                 .replace("Returns:", "**Returns:**")
                 .replace("Notes:", "**Notes:**")
+                .replace("As an example:", "**As an example:**")
             )
+            # Ensure a blank line follows each bolded header so a directly
+            # adjacent bullet list (e.g. "**Notes:**\n- ...") renders as a list.
+            arguments = re.sub(r"(\*\*[^*]+:\*\*)\n(?!\n)", r"\1\n\n", arguments)
+            markdown_content += arguments
             markdown_content += "\n"
 
         if fn["example_code"]:
@@ -365,6 +501,7 @@ The Portfolio module calculates important portfolio metrics, allowing you to com
 
 # ── Generate all pages ────────────────────────────────────────────────────────
 if __name__ == "__main__":
+    if _LOCAL_PATH:
+        print(f"Local mode: reading controllers from {_LOCAL_PATH}\n")
     for page in PAGES:
         create_markdown_file(page["url"], page["header"], page["location"])
-

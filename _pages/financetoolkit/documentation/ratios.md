@@ -26,82 +26,111 @@ pip install financetoolkit -U
 Calculates and collects all ratios based on the provided data.
 
 **Args:**
- - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculations.
- Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation.
- Defaults to True.
- - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.Series or pd.DataFrame: Ratios calculated based on the specified parameters.
+- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculations.
+Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation.
+Defaults to True.
+- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method calculates various ratios for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.Series or pd.DataFrame: Ratios calculated based on the specified parameters.
+
+**Notes:**
+
+- The method calculates various ratios for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
-toolkit.ratios.collect_all_ratios()
+toolkit.ratios.collect_all_ratios().loc['AAPL']
 ```
+
+Which returns:
+
+|                           |         2021 |         2022 |         2023 |         2024 |         2025 |
+|:--------------------------|-------------:|-------------:|-------------:|-------------:|-------------:|
+| Price-to-Cash-Flow        | 28.7847      | 17.3655      | 27.5403      | 32.6289      | 36.5905      |
+| Price-to-Free-Cash-Flow   | 32.2174      | 19.0341      | 30.5711      | 35.4618      | 41.301       |
+| Market Cap                |  2.9947e+12  |  2.12121e+12 |  3.04439e+12 |  3.8585e+12  |  4.07918e+12 |
+| Enterprise Value          |  3.09629e+12 |  2.23005e+12 |  3.13835e+12 |  3.94761e+12 |  4.15562e+12 |
+| EV-to-Sales               |  8.464       |  5.6553      |  8.188       | 10.0953      |  9.9856      |
+| EV-to-EBIT                | 27.682       | 18.274       | 26.671       | 31.9683      | 31.3091      |
+| EV-to-EBITDA              | 25.7524      | 17.0831      | 24.9432      | 29.3152      | 28.7093      |
+| EV-to-Operating-Cash-Flow | 29.7611      | 18.2565      | 28.3904      | 33.3825      | 37.2762      |
+| Tangible Asset Value      |  6.309e+10   |  5.0672e+10  |  6.2146e+10  |  5.695e+10   |  7.3733e+10  |
+| Net Current Asset Value   |  9.355e+09   | -1.8577e+10  | -1.742e+09   | -2.3405e+10  | -1.7674e+10  |
+
 
 ---
 
 ## collect_custom_ratios
 Calculates all Custom Ratios based on the data provided.
- Note that any of the following characters are considered as operators: +, -, *, /, **, %, //, <, >, ==, !=, >=, <=, (, ) using any of the above characters as part of the column naming will result into an error.
+
+Note that any of the following characters are considered as operators: +, -, *, /, **, %, //, <, >, ==, !=, >=, <=, (, ) using any of the above characters as part of the column naming will result into an error.
 
 **Args:**
- - <u>custom_ratios (dict):</u> A dictionary containing the custom ratios to calculate.
- - <u>options (bool):</u> Whether to return the available names to use in the custom ratios.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Custom ratios calculated based on the specified parameters.
+- <u>custom_ratios (dict):</u> A dictionary containing the custom ratios to calculate.
+- <u>options (bool):</u> Whether to return the available names to use in the custom ratios.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method calculates various custom ratios for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Custom ratios calculated based on the specified parameters.
+
+**Notes:**
+
+- The method calculates various custom ratios for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
 
 custom_ratios = {
-'WC / Net Income as %': '(Working Capital / Net Income) * 100',
-'Large Revenues': 'Revenue > 1000000000',
-'Quick Assets': 'Cash and Short Term Investments + Accounts Receivable',
-'Cash Op Expenses':'Cost of Goods Sold + Selling, General and Administrative Expenses '
-'- Depreciation and Amortization',
-'Daily Cash Op Expenses': 'Cash Op Expenses / 365',
-'Defensive Interval':'Quick Assets / Daily Cash Op Expenses'
+    'WC / Net Income as %': '(Working Capital / Net Income) * 100',
+    'Large Revenues': 'Revenue > 1000000000',
+    'Quick Assets': 'Cash and Short Term Investments + Accounts Receivable',
+    'Cash Op Expenses':'Cost of Goods Sold + Selling, General and Administrative Expenses '
+    '- Depreciation and Amortization',
+    'Daily Cash Op Expenses': 'Cash Op Expenses / 365',
+    'Defensive Interval':'Quick Assets / Daily Cash Op Expenses'
 }
 
 companies = Toolkit(
-tickers=["AAPL", "MSFT", "GOOGL", "AMZN"],
-api_key="FINANCIAL_MODELING_PREP_KEY",
-start_date="2022-10-01",
-quarterly=True
+    tickers=["AAPL", "MSFT", "GOOGL", "AMZN"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2022-10-01",
+    quarterly=True
 )
 
 custom_ratios = companies.ratios.collect_custom_ratios(
-custom_ratios_dict=custom_ratios
+    custom_ratios_dict=custom_ratios
 )
 
 custom_ratios.loc['AMZN']
@@ -109,14 +138,14 @@ custom_ratios.loc['AMZN']
 
 Which returns:
 
-| | 2022Q4 | 2023Q1 | 2023Q2 | 2023Q3 |
- |:-----------------------|---------------:|---------------:|---------------:|---------------:|
- | WC / Net Income as % | 463.349 | 427.335 | 398.924 | 371.423 |
- | Large Revenues | 1 | 1 | 1 | 1 |
- | Quick Assets | 1.35341e+11 | 1.41847e+11 | 1.5995e+11 | 1.80898e+11 |
- | Cash Op Expenses | 2.1056e+10 | 1.9972e+10 | 2.2854e+10 | 1.9042e+10 |
- | Daily Cash Op Expenses | 5.76877e+07 | 5.47178e+07 | 6.26137e+07 | 5.21699e+07 |
- | Defensive Interval | 2346.1 | 2592.34 | 2554.55 | 3467.48 |
+|                        |         2022Q4 |         2023Q1 |         2023Q2 |         2023Q3 |
+|:-----------------------|---------------:|---------------:|---------------:|---------------:|
+| WC / Net Income as %   |  463.349       |  427.335       |  398.924       |  371.423       |
+| Large Revenues         |    1           |    1           |    1           |    1           |
+| Quick Assets           |    1.35341e+11 |    1.41847e+11 |    1.5995e+11  |    1.80898e+11 |
+| Cash Op Expenses       |    2.1056e+10  |    1.9972e+10  |    2.2854e+10  |    1.9042e+10  |
+| Daily Cash Op Expenses |    5.76877e+07 |    5.47178e+07 |    6.26137e+07 |    5.21699e+07 |
+| Defensive Interval     | 2346.1         | 2592.34        | 2554.55        | 3467.48        |
 
 
 ---
@@ -125,59 +154,89 @@ Which returns:
 Calculates and collects all Efficiency Ratios based on the provided data.
 
 **Args:**
- - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.Series or pd.DataFrame: Efficiency ratios calculated based on the specified parameters.
+- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method calculates various efficiency ratios for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.Series or pd.DataFrame: Efficiency ratios calculated based on the specified parameters.
+
+**Notes:**
+
+- The method calculates various efficiency ratios for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
-toolkit.ratios.collect_efficiency_ratios()
+toolkit.ratios.collect_efficiency_ratios().loc['AAPL']
 ```
+
+Which returns:
+
+|                                 |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:--------------------------------|-------:|-------:|-------:|-------:|-------:|
+| Accounts Payable Turnover Ratio | 4.3887 | 3.7609 | 3.3795 | 3.1975 | 3.1834 |
+| SGA-to-Revenue Ratio            | 0.0601 | 0.0636 | 0.065  | 0.0667 | 0.0663 |
+| Fixed Asset Turnover            | 1.846  | 1.8192 | 1.7979 | 1.8576 | 1.9664 |
+| Asset Turnover Ratio            | 1.0841 | 1.1206 | 1.0868 | 1.0899 | 1.1493 |
+| Operating Ratio                 | 0.7022 | 0.6971 | 0.7018 | 0.6849 | 0.6803 |
+| R&D Intensity Ratio             | 0.0599 | 0.0666 | 0.078  | 0.0802 | 0.083  |
+| S&M to Revenue Ratio            | 0      | 0      | 0      | 0.0477 | 0      |
+| G&A to Revenue Ratio            | 0      | 0      | 0      | 0.0191 | 0.0663 |
+| SBC to Revenue Ratio            | 0.0216 | 0.0229 | 0.0283 | 0.0299 | 0.0309 |
+| Deferred Revenue Ratio          | 0.0208 | 0.0201 | 0.021  | 0.0211 | 0.0218 |
+
 
 ---
 
 ## get_asset_turnover_ratio
 Calculate the asset turnover ratio, an efficiency ratio that measures how efficiently a company uses its assets to generate sales.
- The asset turnover ratio is calculated by dividing the company's net sales (revenue) by its average total assets. It measures how well a company utilizes its assets to generate revenue. A higher asset turnover ratio indicates that the company is generating more revenue per unit of assets, which is generally seen as a positive sign of operational efficiency.
- The formula is as follows:
- 
+
+The asset turnover ratio is calculated by dividing the company's net sales (revenue) by its average total assets. It measures how well a company utilizes its assets to generate revenue. A higher asset turnover ratio indicates that the company is generating more revenue per unit of assets, which is generally seen as a positive sign of operational efficiency.
+
+The formula is as follows:
+
 - Asset Turnover Ratio = Net Sales / Average Total Assets
 
-Also known as: asset efficiency, revenue per asset.
+**Also known as:** asset efficiency, revenue per asset.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.Series: Asset turnover ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the asset turnover ratio
- for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.Series: Asset turnover ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the asset turnover ratio
+for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -187,34 +246,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 asset_turnover_ratios = toolkit.ratios.get_asset_turnover_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 1.0841 | 1.1206 | 1.0868 | 1.0899 | 1.1493 |
+| TSLA | 0.942  | 1.1277 | 1.0243 | 0.8544 | 0.7298 |
+
+
 ---
 
 ## get_inventory_turnover_ratio
 Calculate the inventory turnover ratio, an efficiency ratio that measures how quickly a company sells its inventory.
- The inventory turnover ratio is calculated by dividing the cost of goods sold (COGS) by the average inventory value. It indicates how many times a company's inventory is sold and replaced over a period. A higher inventory turnover ratio suggests that a company is effectively managing its inventory by quickly converting it into sales.
- The formula is as follows:
- 
+
+The inventory turnover ratio is calculated by dividing the cost of goods sold (COGS) by the average inventory value. It indicates how many times a company's inventory is sold and replaced over a period. A higher inventory turnover ratio suggests that a company is effectively managing its inventory by quickly converting it into sales.
+
+The formula is as follows:
+
 - Inventory Turnover Ratio = Cost of Goods Sold / Average Inventory
 
-Also known as: stock turnover ratio.
+**Also known as:** stock turnover ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.Series: Inventory turnover ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the inventory turnover ratio
- for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.Series: Inventory turnover ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the inventory turnover ratio
+for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -224,35 +299,51 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 inventory_turnover_ratios = toolkit.ratios.get_inventory_turnover_ratio()
 ```
 
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | 40.0303 | 38.7899 | 37.9777 | 30.8955 | 33.9834 |
+| TSLA |  8.1593 |  6.5185 |  5.9787 |  6.2582 |  6.3692 |
+
+
 ---
 
 ## get_days_of_inventory_outstanding
 Calculate the days sales in inventory ratio, an efficiency ratio that measures how long it takes a company to sell its inventory.
- The days sales in inventory ratio (DSI) is calculated by dividing the average inventory by the cost of goods sold (COGS) and then multiplying by the number of days in the period. It represents the average number of days it takes for a company to sell its inventory. A lower DSI indicates that the company is selling its inventory more quickly.
- The formula is as follows:
- 
+
+The days sales in inventory ratio (DSI) is calculated by dividing the average inventory by the cost of goods sold (COGS) and then multiplying by the number of days in the period. It represents the average number of days it takes for a company to sell its inventory. A lower DSI indicates that the company is selling its inventory more quickly.
+
+The formula is as follows:
+
 - Days Sales in Inventory Ratio = (Average Inventory / Cost of Goods Sold) * Days
 
-Also known as: DIO, days inventory outstanding.
+**Also known as:** DIO, days inventory outstanding.
 
 **Args:**
- - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Days sales in inventory ratio values.
+- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the DSI ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Days sales in inventory ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the DSI ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -262,35 +353,51 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 toolkit.ratios.get_days_of_inventory_outstanding()
 ```
 
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL |  9.1181 |  9.4097 |  9.6109 | 11.814  | 10.7405 |
+| TSLA | 44.7344 | 55.9945 | 61.0502 | 58.3231 | 57.307  |
+
+
 ---
 
 ## get_days_of_sales_outstanding
 Calculate the days of sales outstanding ratio, an efficiency ratio that measures the average number of days it takes a company to collect payment on its credit sales.
- The days of sales outstanding (DSO) ratio is calculated by dividing the accounts receivable by the total credit sales and then multiplying by the number of days in the period. It represents the average number of days it takes for a company to collect payment on its credit sales. A lower DSO indicates that the company is collecting payments more quickly.
- The formula is as follows:
- 
+
+The days of sales outstanding (DSO) ratio is calculated by dividing the accounts receivable by the total credit sales and then multiplying by the number of days in the period. It represents the average number of days it takes for a company to collect payment on its credit sales. A lower DSO indicates that the company is collecting payments more quickly.
+
+The formula is as follows:
+
 - Days of Sales Outstanding Ratio = (Accounts Receivable / Total Credit Sales) * Days
 
-Also known as: DSO, days sales outstanding, receivable days.
+**Also known as:** DSO, days sales outstanding, receivable days.
 
 **Args:**
- - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Days of sales outstanding ratio values.
+- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the DSO ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Days of sales outstanding ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the DSO ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -300,35 +407,51 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 dso_ratios = toolkit.ratios.get_days_of_sales_outstanding()
 ```
 
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | 21.1517 | 25.2057 | 27.4699 | 29.3645 | 32.0949 |
+| TSLA | 12.8814 | 10.8991 | 12.1826 | 14.807  | 17.3095 |
+
+
 ---
 
 ## get_operating_cycle
 Calculate the operating cycle ratio, an efficiency ratio that measures the average number of days it takes a company to turn its inventory into cash.
- The operating cycle represents the total time required to purchase inventory, convert it into finished goods, sell the goods to customers, and collect the accounts receivable. It is calculated by adding the days sales in inventory (DSI) and the days of sales outstanding (DSO).
- The formula is as follows:
- 
+
+The operating cycle represents the total time required to purchase inventory, convert it into finished goods, sell the goods to customers, and collect the accounts receivable. It is calculated by adding the days sales in inventory (DSI) and the days of sales outstanding (DSO).
+
+The formula is as follows:
+
 - Operating Cycle Ratio = Days of Sales in Inventory + Days of Sales Outstanding
 
-Also known as: business cycle, cash-to-cash cycle.
+**Also known as:** business cycle, cash-to-cash cycle.
 
 **Args:**
- - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Operating cycle ratio values.
+- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the operating cycle ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Operating cycle ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the operating cycle ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -338,34 +461,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 operating_cycle_ratios = toolkit.ratios.get_operating_cycle()
 ```
 
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | 30.2698 | 34.6154 | 37.0808 | 41.1785 | 42.8354 |
+| TSLA | 57.6159 | 66.8936 | 73.2328 | 73.1301 | 74.6164 |
+
+
 ---
 
 ## get_accounts_payables_turnover_ratio
 Calculate the accounts payable turnover ratio, an efficiency ratio that measures how quickly a company pays its suppliers.
- The accounts payable turnover ratio indicates how many times, on average, a company pays off its accounts payable during a specific period. A higher turnover ratio is generally favorable, as it suggests that the company is efficiently managing its payments to suppliers.
- The formula is as follows:
- 
+
+The accounts payable turnover ratio indicates how many times, on average, a company pays off its accounts payable during a specific period. A higher turnover ratio is generally favorable, as it suggests that the company is efficiently managing its payments to suppliers.
+
+The formula is as follows:
+
 - Accounts Payable Turnover Ratio = Cost of Goods Sold / Average Accounts Payable
 
-Also known as: payables efficiency, AP turnover.
+**Also known as:** payables efficiency, AP turnover.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Accounts payable turnover ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the accounts payable turnover ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Accounts payable turnover ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the accounts payable turnover ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -375,35 +514,51 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 ap_turnover_ratios = toolkit.ratios.get_accounts_payables_turnover_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 4.3887 | 3.7609 | 3.3795 | 3.1975 | 3.1834 |
+| TSLA | 5.0034 | 4.795  | 5.33   | 5.9647 | 6.0153 |
+
+
 ---
 
 ## get_days_of_accounts_payable_outstanding
 Calculate the days payables outstanding, an efficiency ratio that measures the number of days it takes a company to pay its suppliers.
- The days payables outstanding (DPO) ratio is used to assess how efficiently a company manages its accounts payable. It calculates the average number of days it takes for a company to pay its suppliers after receiving an invoice. A higher DPO ratio indicates that the company is taking longer to pay its suppliers, which may have implications for its relationships with suppliers.
- The formula is as follows:
- 
+
+The days payables outstanding (DPO) ratio is used to assess how efficiently a company manages its accounts payable. It calculates the average number of days it takes for a company to pay its suppliers after receiving an invoice. A higher DPO ratio indicates that the company is taking longer to pay its suppliers, which may have implications for its relationships with suppliers.
+
+The formula is as follows:
+
 - Days Payables Outstanding = (Average Accounts Payable / Cost of Goods Sold) * Days
 
-Also known as: DPO, days payable outstanding.
+**Also known as:** DPO, days payable outstanding.
 
 **Args:**
- - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Days payables outstanding (DPO) ratio values.
+- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the DPO ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Days payables outstanding (DPO) ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the DPO ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -413,33 +568,49 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 dpo_ratios = toolkit.ratios.get_days_of_accounts_payable_outstanding()
 ```
 
+Which returns:
+
+|      |    2021 |    2022 |     2023 |     2024 |     2025 |
+|:-----|--------:|--------:|---------:|---------:|---------:|
+| AAPL | 83.1683 | 97.0504 | 108.003  | 114.15   | 114.657  |
+| TSLA | 72.951  | 76.1207 |  68.4805 |  61.1935 |  60.6784 |
+
+
 ---
 
 ## get_cash_conversion_cycle
 Calculate the Cash Conversion Cycle, which measures the amount of time it takes for a company to convert its investments in inventory and accounts receivable into cash, while considering the time it takes to pay its accounts payable. This ratio is also known as Cash-to-Cash Cycle (C2C) or Net Operating Cycle.
- The Cash Conversion Cycle (CCC) is an important measure of a company's liquidity management and efficiency in managing its working capital. It takes into account the time it takes to sell inventory, collect payments from customers, and pay suppliers. A shorter CCC indicates that a company is able to quickly convert its investments into cash, which can be a positive sign of efficient operations.
- The formula is as follows:
- 
+
+The Cash Conversion Cycle (CCC) is an important measure of a company's liquidity management and efficiency in managing its working capital. It takes into account the time it takes to sell inventory, collect payments from customers, and pay suppliers. A shorter CCC indicates that a company is able to quickly convert its investments into cash, which can be a positive sign of efficient operations.
+
+The formula is as follows:
+
 - Cash Conversion Cycle = Days of Sales in Inventory + Days of Sales Outstanding - Days of Accounts Payable Outstanding
 
-Also known as: CCC.
+**Also known as:** CCC.
 
 **Args:**
- - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Cash Conversion Cycle (CCC) values.
+- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the CCC for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the CCC values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Cash Conversion Cycle (CCC) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the CCC for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the CCC values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -449,34 +620,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 ccc_values = toolkit.ratios.get_cash_conversion_cycle()
 ```
 
+Which returns:
+
+|      |     2021 |     2022 |     2023 |     2024 |     2025 |
+|:-----|---------:|---------:|---------:|---------:|---------:|
+| AAPL | -52.8985 | -62.435  | -70.9225 | -72.9716 | -71.8218 |
+| TSLA | -15.3351 |  -9.2271 |   4.7523 |  11.9367 |  13.9381 |
+
+
 ---
 
 ## get_cash_conversion_efficiency
 Calculate the cash conversion efficiency, an efficiency ratio that measures how efficiently a company converts its sales into cash. It is also known as the cash conversion ratio.
- The cash conversion efficiency ratio is calculated by dividing the operating cash flow by the revenue. It indicates how much of a company's sales are converted into cash. A higher cash conversion efficiency ratio is generally favorable, as it suggests that the company is able to convert its sales into cash more efficiently.
- The formula is as follows:
- 
+
+The cash conversion efficiency ratio is calculated by dividing the operating cash flow by the revenue. It indicates how much of a company's sales are converted into cash. A higher cash conversion efficiency ratio is generally favorable, as it suggests that the company is able to convert its sales into cash more efficiently.
+
+The formula is as follows:
+
 - Cash Conversion Efficiency Ratio = Operating Cash Flow / Revenue
 
-Also known as: CCE, cash efficiency ratio.
+**Also known as:** CCE, cash efficiency ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Cash conversion efficiency ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the operating ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Cash conversion efficiency ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the operating ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -486,32 +673,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 toolkit.ratios.get_cash_conversion_efficiency()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.2844 | 0.3098 | 0.2884 | 0.3024 | 0.2679 |
+| TSLA | 0.2136 | 0.1807 | 0.137  | 0.1528 | 0.1555 |
+
+
 ---
 
 ## get_receivables_turnover
 Calculate the receivables turnover, a ratio that measures how efficiently a company uses its assets by comparing the amount of credit extended to customers to the amount of sales generated.
- The receivables turnover ratio is an important measure of how well a company manages its accounts receivable. It indicates how quickly a company collects payments from its customers. A higher turnover ratio is generally favorable as it suggests that the company is collecting payments more quickly, which improves its cash flow and working capital management.
- The formula is as follows:
- 
+
+The receivables turnover ratio is an important measure of how well a company manages its accounts receivable. It indicates how quickly a company collects payments from its customers. A higher turnover ratio is generally favorable as it suggests that the company is collecting payments more quickly, which improves its cash flow and working capital management.
+
+The formula is as follows:
+
 - Receivables Turnover Ratio = Net Credit Sales / Average Accounts Receivable
 
-Also known as: receivables efficiency, accounts receivable turnover.
+**Also known as:** receivables efficiency, accounts receivable turnover.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
- **Returns:**
- pd.DataFrame: Receivables turnover ratio values.
 
- **Notes:**
- - The method retrieves historical data and calculates the receivables turnover ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+**Returns:**
 
- As an example:
+pd.DataFrame: Receivables turnover ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the receivables turnover ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -521,34 +724,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 receivables_turnover = toolkit.ratios.get_receivables_turnover()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.0579 | 0.0691 | 0.0753 | 0.0805 | 0.0879 |
+| TSLA | 0.0353 | 0.0299 | 0.0334 | 0.0406 | 0.0474 |
+
+
 ---
 
 ## get_sga_to_revenue_ratio
 Calculate the sales, general, and administrative (SG&A) expenses to revenue ratio, which measures the SG&A expenses relative to the revenue of the company.
- The SG&A to revenue ratio is calculated by dividing the total SG&A expenses by the company's revenue and then multiplying by 100 to express it as a percentage. It provides insight into the efficiency of a company's cost management and its ability to control its overhead costs.
- The formula is as follows:
- 
+
+The SG&A to revenue ratio is calculated by dividing the total SG&A expenses by the company's revenue and then multiplying by 100 to express it as a percentage. It provides insight into the efficiency of a company's cost management and its ability to control its overhead costs.
+
+The formula is as follows:
+
 - SG&A to Revenue Ratio = SG&A Expenses / Revenue
 
-Also known as: SG&A ratio, selling general administrative ratio.
+**Also known as:** SG&A ratio, selling general administrative ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: SG&A to revenue ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the SG&A to revenue ratio for
- each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: SG&A to revenue ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the SG&A to revenue ratio for
+each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -558,34 +777,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 sga_to_revenue_ratios = toolkit.ratios.get_sga_to_revenue_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.0601 | 0.0636 | 0.065  | 0.0667 | 0.0663 |
+| TSLA | 0.0839 | 0.0484 | 0.0496 | 0.0527 | 0.0615 |
+
+
 ---
 
 ## get_fixed_asset_turnover
 Calculate the Fixed Asset Turnover ratio, an efficiency ratio that measures how efficiently a company uses its fixed assets to generate sales.
- The Fixed Asset Turnover ratio is calculated by dividing the company's net sales by the average fixed assets. It indicates how well a company is utilizing its fixed assets to generate revenue. A higher ratio suggests more efficient utilization of fixed assets.
- The formula is as follows:
- 
+
+The Fixed Asset Turnover ratio is calculated by dividing the company's net sales by the average fixed assets. It indicates how well a company is utilizing its fixed assets to generate revenue. A higher ratio suggests more efficient utilization of fixed assets.
+
+The formula is as follows:
+
 - Fixed Asset Turnover Ratio = Net Sales / Average Fixed Assets
 
-Also known as: fixed asset efficiency, PP&E turnover.
+**Also known as:** fixed asset efficiency, PP&E turnover.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Fixed Asset Turnover ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the Fixed Asset Turnover ratio
- for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Fixed Asset Turnover ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the Fixed Asset Turnover ratio
+for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -595,34 +830,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 fixed_asset_turnover_ratios = toolkit.ratios.get_fixed_asset_turnover()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 1.846  | 1.8192 | 1.7979 | 1.8576 | 1.9664 |
+| TSLA | 1.7804 | 2.1312 | 1.9665 | 1.6185 | 1.4273 |
+
+
 ---
 
 ## get_operating_ratio
 Calculate the operating ratio, a financial metric that measures the efficiency of a company's operations by comparing its operating expenses to its revenue.
- The operating ratio is calculated by dividing the company's operating expenses by its net sales and multiplying by 100 to express it as a percentage. It provides insight into how efficiently a company is managing its operations.
- The formula is as follows:
- 
+
+The operating ratio is calculated by dividing the company's operating expenses by its net sales and multiplying by 100 to express it as a percentage. It provides insight into how efficiently a company is managing its operations.
+
+The formula is as follows:
+
 - Operating Ratio = (Operating Expenses + Cost of Goods Sold) / Revenue
 
-Also known as: operating efficiency ratio, operating expense ratio.
+**Also known as:** operating efficiency ratio, operating expense ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Operating ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the operating ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Operating ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the operating ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -632,27 +883,312 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 operating_ratios = toolkit.ratios.get_operating_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.7022 | 0.6971 | 0.7018 | 0.6849 | 0.6803 |
+| TSLA | 0.8793 | 0.8324 | 0.9081 | 0.9276 | 0.9541 |
+
+
+---
+
+## get_research_and_development_ratio
+Calculate the research and development (R&D) intensity ratio, an efficiency ratio that measures how much a company reinvests in research and development relative to its revenue.
+
+This ratio is particularly relevant for comparing companies in technology, pharmaceutical and other innovation-driven industries, where R&D spending is a key driver of future growth.
+
+The formula is as follows:
+
+- R&D Intensity Ratio = Research and Development Expenses / Revenue
+
+**Also known as:** R&D intensity, R&D to sales ratio.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: R&D intensity ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the R&D intensity ratio for
+each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+rd_ratios = toolkit.ratios.get_research_and_development_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.0599 | 0.0666 |  0.078 | 0.0802 | 0.083  |
+| TSLA | 0.0482 | 0.0377 |  0.041 | 0.0465 | 0.0676 |
+
+
+---
+
+## get_selling_and_marketing_ratio
+Calculate the selling and marketing (S&M) expenses to revenue ratio, an efficiency ratio that measures the proportion of revenue spent on selling and marketing activities.
+
+This ratio isolates the selling and marketing component of the combined SG&A expense line (see `get_sga_to_revenue_ratio`), which is useful for comparing customer-acquisition efficiency independently of administrative overhead.
+
+The formula is as follows:
+
+- S&M to Revenue Ratio = Selling and Marketing Expenses / Revenue
+
+**Also known as:** S&M ratio, sales and marketing intensity.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: S&M to revenue ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the S&M to revenue ratio for
+each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+- Not every company reports Selling and Marketing Expenses separately from General
+and Administrative Expenses, in which case this ratio will be unavailable.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+sm_ratios = toolkit.ratios.get_selling_and_marketing_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL |      0 |      0 |      0 | 0.0477 |      0 |
+| TSLA |      0 |      0 |      0 | 0      |      0 |
+
+
+---
+
+## get_general_and_administrative_ratio
+Calculate the general and administrative (G&A) expenses to revenue ratio, an efficiency ratio that measures the proportion of revenue spent on general and administrative overhead.
+
+This ratio isolates the administrative component of the combined SG&A expense line (see `get_sga_to_revenue_ratio`), which is useful for assessing overhead efficiency independently of selling and marketing spend.
+
+The formula is as follows:
+
+- G&A to Revenue Ratio = General and Administrative Expenses / Revenue
+
+**Also known as:** G&A ratio, overhead ratio.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: G&A to revenue ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the G&A to revenue ratio for
+each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+- Not every company reports General and Administrative Expenses separately from
+Selling and Marketing Expenses, in which case this ratio will be unavailable.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+ga_ratios = toolkit.ratios.get_general_and_administrative_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0      | 0      | 0      | 0.0191 | 0.0663 |
+| TSLA | 0.0839 | 0.0484 | 0.0496 | 0.0527 | 0.0615 |
+
+
+---
+
+## get_stock_based_compensation_ratio
+Calculate the stock-based compensation (SBC) to revenue ratio, an efficiency ratio that measures how much of a company's revenue is being used to compensate employees through non-cash equity awards.
+
+A high or rising SBC-to-revenue ratio is a common quality-of-earnings flag, particularly for technology companies, since SBC is added back in cash flow from operations but represents real economic dilution for shareholders.
+
+The formula is as follows:
+
+- SBC to Revenue Ratio = Stock Based Compensation / Revenue
+
+**Also known as:** SBC intensity, equity compensation ratio.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: SBC to revenue ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the SBC to revenue ratio for
+each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+sbc_ratios = toolkit.ratios.get_stock_based_compensation_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.0216 | 0.0229 | 0.0283 | 0.0299 | 0.0309 |
+| TSLA | 0.0394 | 0.0192 | 0.0187 | 0.0205 | 0.0298 |
+
+
+---
+
+## get_deferred_revenue_ratio
+Calculate the deferred revenue ratio, an efficiency ratio that measures the size of a company's deferred revenue (payments collected for goods or services not yet delivered) relative to its revenue.
+
+This ratio is a common leading indicator for subscription and SaaS businesses, where a growing deferred revenue balance relative to revenue can signal accelerating future revenue recognition.
+
+The formula is as follows:
+
+- Deferred Revenue Ratio = Deferred Revenue / Revenue
+
+**Also known as:** deferred revenue intensity, unearned revenue ratio.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Deferred revenue ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the deferred revenue ratio for
+each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+- Not every company reports Deferred Revenue on its Balance Sheet, in which case this
+ratio will be unavailable.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+deferred_revenue_ratios = toolkit.ratios.get_deferred_revenue_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.0208 | 0.0201 | 0.021  | 0.0211 | 0.0218 |
+| TSLA | 0.0441 | 0.0345 | 0.0386 | 0.0426 | 0.0361 |
+
+
 ---
 
 ## collect_liquidity_ratios
 Calculates and collects all Liquidity Ratios based on the provided data.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Liquidity ratios calculated based on the specified parameters.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method calculates various liquidity ratios for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Liquidity ratios calculated based on the specified parameters.
+
+**Notes:**
+
+- The method calculates various liquidity ratios for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -660,36 +1196,59 @@ from financetoolkit import Toolkit
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 liquidity_ratios = toolkit.ratios.collect_liquidity_ratios()
+
+liquidity_ratios.loc['AAPL']
 ```
+
+Which returns:
+
+|                                    |       2021 |        2022 |       2023 |        2024 |        2025 |
+|:-----------------------------------|-----------:|------------:|-----------:|------------:|------------:|
+| Current Ratio                      |  1.0746    |  0.8794     |  0.988     |  0.8673     |  0.8933     |
+| Quick Ratio                        |  0.7086    |  0.4967     |  0.6267    |  0.5589     |  0.5704     |
+| Cash Ratio                         |  0.4992    |  0.3137     |  0.4236    |  0.3695     |  0.3302     |
+| Working Capital                    |  9.355e+09 | -1.8577e+10 | -1.742e+09 | -2.3405e+10 | -1.7674e+10 |
+| Operating Cash Flow Ratio          |  0.8291    |  0.7933     |  0.7607    |  0.6704     |  0.6731     |
+| Operating Cash Flow to Sales Ratio |  0.2844    |  0.3098     |  0.2884    |  0.3024     |  0.2679     |
+| Short Term Coverage Ratio          | -4.7495    | -3.9423     | -4.1291    | -4.1839     | -4.5755     |
+
 
 ---
 
 ## get_current_ratio
 Calculate the current ratio, a liquidity ratio that measures a company's ability to pay off its short-term liabilities with its current assets.
- The current ratio is calculated by dividing a company's current assets by its current liabilities. It indicates whether a company can meet its short-term obligations using its short-term assets.
- The formula is as follows:
- 
+
+The current ratio is calculated by dividing a company's current assets by its current liabilities. It indicates whether a company can meet its short-term obligations using its short-term assets.
+
+The formula is as follows:
+
 - Current Ratio = Current Assets / Current Liabilities
 
-Also known as: short-term liquidity, working capital ratio.
+**Also known as:** short-term liquidity, working capital ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Current ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the current ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Current ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the current ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -699,35 +1258,52 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 current_ratios = toolkit.ratios.get_current_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 1.0746 | 0.8794 | 0.988  | 0.8673 | 0.8933 |
+| TSLA | 1.3753 | 1.532  | 1.7259 | 2.0249 | 2.1644 |
+
+
 ---
 
 ## get_quick_ratio
 Calculate the quick ratio (also known as the acid-test ratio), a more stringent measure of liquidity that excludes inventory from current assets.
- This ratio is also referred to as the Acid Test Ratio.
- The quick ratio is calculated by subtracting inventory from current assets and then dividing the result by current liabilities. It provides insight into a company's ability to cover its short-term liabilities using its most liquid assets without relying on inventory.
- The formula is as follows:
- 
+
+This ratio is also referred to as the Acid Test Ratio.
+
+The quick ratio is calculated by subtracting inventory from current assets and then dividing the result by current liabilities. It provides insight into a company's ability to cover its short-term liabilities using its most liquid assets without relying on inventory.
+
+The formula is as follows:
+
 - Quick Ratio = (Cash and Cash Equivalents + Short Term Investments + Accounts Receivable) / Current Liabilities
 
-Also known as: acid-test ratio, liquid ratio.
+**Also known as:** acid-test ratio, liquid ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Quick ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the quick ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Quick ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the quick ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -736,34 +1312,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 quick_ratios = toolkit.ratios.get_quick_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.7086 | 0.4967 | 0.6267 | 0.5589 | 0.5704 |
+| TSLA | 0.9957 | 0.9411 | 1.1341 | 1.4219 | 1.5335 |
+
+
 ---
 
 ## get_cash_ratio
 Calculate the cash ratio, a liquidity ratio that measures a company's ability to pay off its short-term liabilities with its cash and cash equivalents.
- The cash ratio is calculated by dividing the sum of cash and cash equivalents by current liabilities. It provides insight into a company's immediate ability to cover its short-term obligations using its most liquid assets.
- The formula is as follows:
- 
+
+The cash ratio is calculated by dividing the sum of cash and cash equivalents by current liabilities. It provides insight into a company's immediate ability to cover its short-term obligations using its most liquid assets.
+
+The formula is as follows:
+
 - Cash Ratio = (Cash and Cash Equivalents + Short Term Investments) / Current Liabilities
 
-Also known as: most conservative liquidity ratio.
+**Also known as:** most conservative liquidity ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Cash ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the cash ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Cash ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the cash ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -773,34 +1365,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 cash_ratios = toolkit.ratios.get_cash_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.4992 | 0.3137 | 0.4236 | 0.3695 | 0.3302 |
+| TSLA | 0.8986 | 0.8306 | 1.012  | 1.2686 | 1.3893 |
+
+
 ---
 
 ## get_working_capital
 Calculate the working capital, which is the difference between a company's current assets and current liabilities.
- The working capital is calculated by subtracting total current liabilities from total current assets. It represents the company's short-term financial health and its ability to cover its current obligations using its liquid assets.
- The formula is as follows:
- 
+
+The working capital is calculated by subtracting total current liabilities from total current assets. It represents the company's short-term financial health and its ability to cover its current obligations using its liquid assets.
+
+The formula is as follows:
+
 - Working Capital = Current Assets - Current Liabilities
 
-Also known as: net current assets, operating liquidity.
+**Also known as:** net current assets, operating liquidity.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Working capital values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the working capital for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the working capital
- values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Working capital values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the working capital for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the working capital
+values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -810,34 +1418,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 working_capitals = toolkit.ratios.get_working_capital()
 ```
 
+Which returns:
+
+|      |      2021 |        2022 |        2023 |        2024 |        2025 |
+|:-----|----------:|------------:|------------:|------------:|------------:|
+| AAPL | 9.355e+09 | -1.8577e+10 | -1.742e+09  | -2.3405e+10 | -1.7674e+10 |
+| TSLA | 7.395e+09 |  1.4208e+10 |  2.0868e+10 |  2.9539e+10 |  3.6928e+10 |
+
+
 ---
 
 ## get_operating_cash_flow_ratio
 Calculate the operating cash flow ratio, a liquidity ratio that measures a company's ability to pay off its current liabilities with its operating cash flow.
- The operating cash flow ratio is calculated by dividing operating cash flow by current liabilities. It indicates whether a company's operating cash flow is sufficient to cover its short-term obligations.
- The formula is as follows:
- 
+
+The operating cash flow ratio is calculated by dividing operating cash flow by current liabilities. It indicates whether a company's operating cash flow is sufficient to cover its short-term obligations.
+
+The formula is as follows:
+
 - Operating Cash Flow Ratio = Cash Flow from Operations / Current Liabilities
 
-Also known as: OCF ratio, cash liquidity.
+**Also known as:** OCF ratio, cash liquidity.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Operating cash flow ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the operating cash flow ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Operating cash flow ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the operating cash flow ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -847,34 +1471,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 operating_cash_flow_ratios = toolkit.ratios.get_operating_cash_flow_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.8291 | 0.7933 | 0.7607 | 0.6704 | 0.6731 |
+| TSLA | 0.5835 | 0.5513 | 0.4611 | 0.5178 | 0.465  |
+
+
 ---
 
 ## get_operating_cash_flow_sales_ratio
 Calculate the operating cash flow to sales ratio, a liquidity ratio that measures the ability of a company to generate cash from its sales.
- The operating cash flow to sales ratio is calculated by dividing operating cash flow by sales revenue. It indicates the proportion of sales revenue that is converted into cash from operating activities.
- The formula is as follows:
- 
+
+The operating cash flow to sales ratio is calculated by dividing operating cash flow by sales revenue. It indicates the proportion of sales revenue that is converted into cash from operating activities.
+
+The formula is as follows:
+
 - Operating Cash Flow to Sales Ratio = Cash Flow from Operations / Revenue
 
-Also known as: cash flow to sales ratio.
+**Also known as:** cash flow to sales ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Operating cash flow to sales ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the operating cash flow to sales ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Operating cash flow to sales ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the operating cash flow to sales ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -884,25 +1524,39 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 operating_cash_flow_sales_ratios = toolkit.ratios.get_operating_cash_flow_sales_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.2844 | 0.3098 | 0.2884 | 0.3024 | 0.2679 |
+| TSLA | 0.2136 | 0.1807 | 0.137  | 0.1528 | 0.1555 |
+
+
 ---
 
 ## get_short_term_coverage_ratio
 Calculate the short-term coverage ratio, a liquidity ratio that measures a company's ability to pay off its short-term obligations with its operating cash flow.
- The short-term coverage ratio is calculated by dividing operating cash flow by short-term debt. It assesses the company's ability to meet its short-term obligations using its operating cash flow.
- The formula is as follows:
- 
+
+The short-term coverage ratio is calculated by dividing operating cash flow by short-term debt. It assesses the company's ability to meet its short-term obligations using its operating cash flow.
+
+The formula is as follows:
+
 - Short Term Coverage Ratio = Cash Flow from Operations / (Accounts Receivable + Inventory - Accounts Payable)
 
-Also known as: short-term debt coverage.
+**Also known as:** short-term debt coverage.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -912,27 +1566,41 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 toolkit.ratios.get_short_term_coverage_ratio()
 ```
 
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | -4.7495 | -3.9423 | -4.1291 | -4.1839 | -4.5755 |
+| TSLA | -4.882  | 27.4701 |  4.9042 |  3.7675 |  4.0998 |
+
+
 ---
 
 ## collect_profitability_ratios
 Calculates and collects all Profitability Ratios based on the provided data.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Profitability ratios calculated based on the specified parameters.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method calculates various profitability ratios for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Profitability ratios calculated based on the specified parameters.
+
+**Notes:**
+
+- The method calculates various profitability ratios for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -940,36 +1608,62 @@ from financetoolkit import Toolkit
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 profitability_ratios = toolkit.ratios.collect_profitability_ratios()
+
+profitability_ratios.loc['AAPL']
 ```
+
+Which returns:
+
+|                                             |   2021 |   2022 |   2023 |    2024 |   2025 |
+|:--------------------------------------------|-------:|-------:|-------:|--------:|-------:|
+| Return on Invested Capital                  | 0.5637 | 0.599  | 0.6068 |  0.6019 | 0.7038 |
+| Return on Capital Employed                  | 0.496  | 0.6139 | 0.5677 |  0.6548 | 0.6855 |
+| Return on Tangible Assets                   | 0.155  | 0.1543 | 0.1495 |  0.1425 | 0.17   |
+| Income Quality Ratio                        | 1.0988 | 1.2239 | 1.1397 |  1.2616 | 0.9953 |
+| Net Income per EBT                          | 0.867  | 0.838  | 0.8528 |  0.7591 | 0.8439 |
+| Free Cash Flow to Operating Cash Flow Ratio | 0.8935 | 0.9123 | 0.9009 |  0.9201 | 0.8859 |
+| EBT to EBIT Ratio                           | 0.9764 | 0.976  | 0.9666 |  1      | 1      |
+| EBIT to Revenue                             | 0.3058 | 0.3095 | 0.307  |  0.3158 | 0.3189 |
+| Cash Tax Rate                               | 0.2324 | 0.1643 | 0.1642 |  0.2114 | 0.3267 |
+| Tax Rate Divergence                         | 0.0994 | 0.0023 | 0.017  | -0.0295 | 0.1706 |
+
 
 ---
 
 ## get_gross_margin
 Calculate the gross margin, a profitability ratio that measures the percentage of revenue that exceeds the cost of goods sold.
- The gross margin ratio is calculated by subtracting the cost of goods sold (COGS) from the total revenue and then dividing the result by the total revenue. It represents the portion of revenue that contributes to covering other expenses and generating profit.
- The formula is as follows:
- 
+
+The gross margin ratio is calculated by subtracting the cost of goods sold (COGS) from the total revenue and then dividing the result by the total revenue. It represents the portion of revenue that contributes to covering other expenses and generating profit.
+
+The formula is as follows:
+
 - Gross Margin Ratio = (Revenue - Cost of Goods Sold) / Revenue
 
-Also known as: gross profit margin, gross profit percentage.
+**Also known as:** gross profit margin, gross profit percentage.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Gross margin ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the gross margin ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Gross margin ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the gross margin ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -979,34 +1673,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 gross_margin_ratios = toolkit.ratios.get_gross_margin()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.4178 | 0.4331 | 0.4413 | 0.4621 | 0.4691 |
+| TSLA | 0.2528 | 0.256  | 0.1825 | 0.1786 | 0.1803 |
+
+
 ---
 
 ## get_operating_margin
 Calculate the operating margin, a profitability ratio that measures the percentage of revenue that remains after deducting operating expenses.
- The operating margin ratio is calculated by subtracting the operating expenses from the total revenue and then dividing the result by the total revenue. It indicates how efficiently a company is managing its operating expenses in relation to its revenue.
- The formula is as follows:
- 
+
+The operating margin ratio is calculated by subtracting the operating expenses from the total revenue and then dividing the result by the total revenue. It indicates how efficiently a company is managing its operating expenses in relation to its revenue.
+
+The formula is as follows:
+
 - Operating Margin Ratio = Operating Income / Revenue
 
-Also known as: EBIT margin, operating income margin.
+**Also known as:** EBIT margin, operating income margin.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Operating margin ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the operating margin ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Operating margin ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the operating margin ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1016,34 +1726,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 operating_margin_ratios = toolkit.ratios.get_operating_margin()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.2978 | 0.3029 | 0.2982 | 0.3151 | 0.3197 |
+| TSLA | 0.1212 | 0.1676 | 0.0919 | 0.0724 | 0.0459 |
+
+
 ---
 
 ## get_net_profit_margin
 Calculate the net profit margin, a profitability ratio that measures the percentage of profit a company earns per dollar of revenue.
- The net profit margin ratio is calculated by dividing the net income by the total revenue. It indicates the portion of each dollar of revenue that represents profit after all expenses have been deducted. A higher net profit margin is generally considered favorable.
- The formula is as follows:
- 
+
+The net profit margin ratio is calculated by dividing the net income by the total revenue. It indicates the portion of each dollar of revenue that represents profit after all expenses have been deducted. A higher net profit margin is generally considered favorable.
+
+The formula is as follows:
+
 - Net Profit Margin Ratio = Net Income / Revenue
 
-Also known as: net margin, bottom line margin, net income margin.
+**Also known as:** net margin, bottom line margin, net income margin.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Net profit margin ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the net profit margin ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Net profit margin ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the net profit margin ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1053,71 +1779,102 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 net_profit_margin_ratios = toolkit.ratios.get_net_profit_margin()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.2588 | 0.2531 | 0.2531 | 0.2397 | 0.2692 |
+| TSLA | 0.1028 | 0.1545 | 0.155  | 0.073  | 0.04   |
+
+
 ---
 
 ## get_interest_burden_ratio
 Compute the Interest Coverage Ratio, a metric that reveals a company's ability to cover its interest expenses with its pre-tax profits. This ratio measures the proportion of pre-tax profits required to pay for interest payments and is crucial in determining a company's financial health.
- The Interest Coverage Ratio is calculated by dividing the earnings before interest and taxes (EBIT) by the interest expenses. A higher ratio indicates that the company has more earnings to cover its interest expenses, which is generally considered favorable.
- The formula is as follows:
- 
+
+The Interest Coverage Ratio is calculated by dividing the earnings before interest and taxes (EBIT) by the interest expenses. A higher ratio indicates that the company has more earnings to cover its interest expenses, which is generally considered favorable.
+
+The formula is as follows:
+
 - Interest Coverage Ratio = EBIT (or Operating Income) / Interest Expenses
 
-Also known as: interest burden, EBIT to EBT ratio.
+**Also known as:** interest burden, EBIT to EBT ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Interest Coverage Ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the Interest Coverage Ratio for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Interest Coverage Ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the Interest Coverage Ratio for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(["TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 interest_coverage_ratios = toolkit.ratios.get_interest_burden_ratio()
 ```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |     2024 |     2025 |
+|:-----|--------:|--------:|--------:|---------:|---------:|
+| TSLA | 17.5822 | 71.4974 | 56.9936 |  20.2171 |  12.8846 |
+
 
 ---
 
 ## get_income_before_tax_profit_margin
 Calculate the Pretax Profit Margin, which is the ratio of a company's pre-tax profit to its revenue, indicating how much profit a company makes before paying taxes on its earnings.
- The Pretax Profit Margin is calculated by dividing the pre-tax profit by the revenue. It provides insight into how efficiently a company is able to generate profits from its revenue.
- The formula is as follows:
- 
+
+The Pretax Profit Margin is calculated by dividing the pre-tax profit by the revenue. It provides insight into how efficiently a company is able to generate profits from its revenue.
+
+The formula is as follows:
+
 - Pretax Profit Margin = Income Before Tax / Revenue
 
-Also known as: pretax margin, EBT margin.
+**Also known as:** pretax margin, EBT margin.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Pretax Profit Margin values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the Pretax Profit Margin for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Pretax Profit Margin values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the Pretax Profit Margin for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1127,34 +1884,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 pretax_profit_margin = toolkit.ratios.get_income_before_tax_profit_margin()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.2985 | 0.302  | 0.2967 | 0.3158 | 0.3189 |
+| TSLA | 0.1178 | 0.1684 | 0.1031 | 0.092  | 0.0557 |
+
+
 ---
 
 ## get_effective_tax_rate
 Calculate the effective tax rate, a financial ratio that measures the percentage of pretax income that is paid as taxes.
- The effective tax rate is calculated by dividing the income tax expense by the pre-tax income.
- The formula is as follows:
- 
+
+The effective tax rate is calculated by dividing the income tax expense by the pre-tax income.
+
+The formula is as follows:
+
 - Effective Tax Rate = Income Tax Expense / Income Before Tax
 
-Also known as: tax burden, actual tax rate.
+**Also known as:** tax burden, actual tax rate.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Effective tax rate values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the effective tax rate for each
- asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Effective tax rate values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the effective tax rate for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1164,34 +1937,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 effective_tax_rate = toolkit.ratios.get_effective_tax_rate()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |    2023 |   2024 |   2025 |
+|:-----|-------:|-------:|--------:|-------:|-------:|
+| AAPL | 0.133  | 0.162  |  0.1472 | 0.2409 | 0.1561 |
+| TSLA | 0.1102 | 0.0825 | -0.5015 | 0.2043 | 0.2696 |
+
+
 ---
 
 ## get_return_on_assets
 Calculate the return on assets (ROA), a profitability ratio that measures how efficiently a company uses its assets to generate profits.
- The return on assets is calculated by dividing the net income by the average total assets. Note that it is false to take the total assets at the end of the period given that income statements report over the period whereas a balance sheet reports on the period.
- The formula is as follows:
- 
+
+The return on assets is calculated by dividing the net income by the average total assets. Note that it is false to take the total assets at the end of the period given that income statements report over the period whereas a balance sheet reports on the period.
+
+The formula is as follows:
+
 - Return on Assets = Net Income / Average Total Assets
 
-Also known as: ROA, asset profitability.
+**Also known as:** ROA, asset profitability.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Return on assets (ROA) values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ROA for each asset in the
- Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Return on assets (ROA) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ROA for each asset in the
+Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1201,33 +1990,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 roa_ratios = toolkit.ratios.get_return_on_assets()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.2806 | 0.2836 | 0.275  | 0.2613 | 0.3093 |
+| TSLA | 0.0968 | 0.1742 | 0.1588 | 0.0624 | 0.0292 |
+
+
 ---
 
 ## get_return_on_equity
 Calculate the return on equity (ROE), a profitability ratio that measures how efficiently a company generates profits using its shareholders' equity.
- The return on equity is calculated by dividing the net income by the average shareholders' equity. Shareholders' equity represents the residual interest in the assets of a company after deducting liabilities. Note that it is false to take the total assets at the end of the period given that income statements report over the period whereas a balance sheet reports on the period.
- ROE provides insight into the company's ability to generate profits from the investments made by its shareholders. A higher ROE indicates that the company is using its equity effectively to generate higher returns for its shareholders.
- The formula is as follows:
- 
+
+The return on equity is calculated by dividing the net income by the average shareholders' equity. Shareholders' equity represents the residual interest in the assets of a company after deducting liabilities. Note that it is false to take the total assets at the end of the period given that income statements report over the period whereas a balance sheet reports on the period.
+
+ROE provides insight into the company's ability to generate profits from the investments made by its shareholders. A higher ROE indicates that the company is using its equity effectively to generate higher returns for its shareholders.
+
+The formula is as follows:
+
 - Return on Equity = Net Income / Average Shareholders' Equity (or Total Equity)
 
-Also known as: ROE, shareholders equity return, equity profitability.
+**Also known as:** ROE, shareholders equity return, equity profitability.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Return on equity (ROE) values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ROE for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Return on equity (ROE) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ROE for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1237,34 +2043,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 roe_ratios = toolkit.ratios.get_return_on_equity()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 1.4744 | 1.7546 | 1.7195 | 1.5741 | 1.7142 |
+| TSLA | 0.2002 | 0.3248 | 0.2739 | 0.1039 | 0.0485 |
+
+
 ---
 
 ## get_return_on_invested_capital
 Calculate the return on invested capital (ROIC), a financial ratio that measures the company's return on the capital invested in it, including both equity and debt.
- The return on invested capital is calculated by dividing the net operating profit after taxes (NOPAT) by the average invested capital. Invested capital includes both equity and debt, making this ratio a valuable measure of how efficiently a company generates returns for all of its investors.
- The formula is as follows:
- 
+
+The return on invested capital is calculated by dividing the net operating profit after taxes (NOPAT) by the average invested capital. Invested capital includes both equity and debt, making this ratio a valuable measure of how efficiently a company generates returns for all of its investors.
+
+The formula is as follows:
+
 - Return on Invested Capital = (Net Income - Paid Dividends) / Average Invested Capital
 
-Also known as: ROIC.
+**Also known as:** ROIC.
 
 **Args:**
- - <u>dividend_adjusted (bool, optional):</u> Whether to adjust the net operating profit after taxes
- with the dividends paid. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Return on invested capital (ROIC) values.
+- <u>dividend_adjusted (bool, optional):</u> Whether to adjust the net operating profit after taxes
+with the dividends paid. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ROIC for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Return on invested capital (ROIC) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ROIC for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1274,33 +2096,49 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 roic_ratios = toolkit.ratios.get_return_on_invested_capital()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.5637 | 0.599  | 0.6068 | 0.6019 | 0.7038 |
+| TSLA | 0.1429 | 0.2733 | 0.2403 | 0.0889 | 0.0425 |
+
+
 ---
 
 ## get_income_quality_ratio
 Calculate the income quality ratio, a financial metric that measures the cash flow from operating activities relative to the net income of the company.
- The income quality ratio provides insights into the quality of a company's reported earnings. By comparing the cash flow from operating activities to the net income, this ratio helps assess whether a company's reported profits are backed by actual cash flow. A higher income quality ratio suggests higher earnings quality and a better ability to convert profits into cash flow.
- The formula is as follows:
- 
+
+The income quality ratio provides insights into the quality of a company's reported earnings. By comparing the cash flow from operating activities to the net income, this ratio helps assess whether a company's reported profits are backed by actual cash flow. A higher income quality ratio suggests higher earnings quality and a better ability to convert profits into cash flow.
+
+The formula is as follows:
+
 - Income Quality Ratio = Cash Flow from Operations / Net Income
 
-Also known as: earnings quality, accrual ratio.
+**Also known as:** earnings quality, accrual ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Income quality ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the income quality ratio for each asset
- in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Income quality ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the income quality ratio for each asset
+in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1310,32 +2148,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 income_quality_ratios = toolkit.ratios.get_income_quality_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 1.0988 | 1.2239 | 1.1397 | 1.2616 | 0.9953 |
+| TSLA | 2.0779 | 1.1701 | 0.8838 | 2.093  | 3.8869 |
+
+
 ---
 
 ## get_return_on_tangible_assets
 Calculate the return on tangible assets, a financial ratio that measures the amount of profit generated by a company's tangible assets.
- The return on tangible assets (ROTA) provides insights into the efficiency with which a company utilizes its tangible assets to generate profits. Tangible assets include physical assets such as buildings, machinery, and equipment. ROTA indicates how well a company can generate profits from its core operational assets.
- The formula is as follows:
- 
+
+The return on tangible assets (ROTA) provides insights into the efficiency with which a company utilizes its tangible assets to generate profits. Tangible assets include physical assets such as buildings, machinery, and equipment. ROTA indicates how well a company can generate profits from its core operational assets.
+
+The formula is as follows:
+
 - Return on Tangible Assets = Net Income / Average Tangible Assets
 
-Also known as: ROTA, tangible asset return.
+**Also known as:** ROTA, tangible asset return.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Return on tangible assets (ROTA) values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ROTA for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Return on tangible assets (ROTA) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ROTA for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1345,32 +2199,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 rota_ratios = toolkit.ratios.get_return_on_tangible_assets()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.155  | 0.1543 | 0.1495 | 0.1425 | 0.17   |
+| TSLA | 0.0632 | 0.118  | 0.1114 | 0.0443 | 0.0208 |
+
+
 ---
 
 ## get_return_on_capital_employed
 Calculate the return on capital employed (ROCE), a profitability ratio that measures the amount of return a company generates from the capital it has invested in the business.
- Return on capital employed (ROCE) is a crucial financial metric that evaluates the efficiency and profitability of a company's utilization of both equity and debt capital to generate profits. It assesses how well the company generates earnings relative to the total capital invested in the business.
- The formula is as follows:
- 
+
+Return on capital employed (ROCE) is a crucial financial metric that evaluates the efficiency and profitability of a company's utilization of both equity and debt capital to generate profits. It assesses how well the company generates earnings relative to the total capital invested in the business.
+
+The formula is as follows:
+
 - Return on Capital Employed = EBIT / (Total Assets - Current Liabilities)
 
-Also known as: ROCE.
+**Also known as:** ROCE.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Return on capital employed (ROCE) values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ROCE for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Return on capital employed (ROCE) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ROCE for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1380,34 +2250,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 roce_ratios = toolkit.ratios.get_return_on_capital_employed()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.496  | 0.6139 | 0.5677 | 0.6548 | 0.6855 |
+| TSLA | 0.1556 | 0.25   | 0.1304 | 0.0999 | 0.0524 |
+
+
 ---
 
 ## get_net_income_per_ebt
 Calculate the net income per earnings before taxes (EBT), a profitability ratio that measures the net income generated for each dollar of EBT.
- The net income per earnings before taxes (EBT) ratio helps evaluate the extent to which a company's net income is generated from its operating activities before considering the impact of income taxes. It gives insights into how effectively a company generates profit relative to its taxable income.
- The formula is as follows:
- 
+
+The net income per earnings before taxes (EBT) ratio helps evaluate the extent to which a company's net income is generated from its operating activities before considering the impact of income taxes. It gives insights into how effectively a company generates profit relative to its taxable income.
+
+The formula is as follows:
+
 - Net Income per EBT = Net Income / Income Before Tax
 
-Also known as: net income to pre-tax income.
+**Also known as:** net income to pre-tax income.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Net income per earnings before taxes (EBT) values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the net income per EBT for each asset in
- the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using
- the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Net income per earnings before taxes (EBT) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the net income per EBT for each asset in
+the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using
+the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1417,32 +2303,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 net_income_per_ebt_ratios = toolkit.ratios.get_net_income_per_ebt()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.867  | 0.838  | 0.8528 | 0.7591 | 0.8439 |
+| TSLA | 0.8878 | 0.9175 | 1.5002 | 0.7951 | 0.7272 |
+
+
 ---
 
 ## get_free_cash_flow_operating_cash_flow_ratio
 Calculate the free cash flow to operating cash flow ratio, a profitability ratio that measures the amount of free cash flow a company generates for every dollar of operating cash flow.
- The free cash flow to operating cash flow ratio helps assess how well a company's operating activities translate into free cash flow, which is the cash available after all expenses and investments. A higher ratio indicates that the company is generating strong free cash flow relative to its operating cash flow, which could signify efficient capital management.
- The formula is as follows:
- 
+
+The free cash flow to operating cash flow ratio helps assess how well a company's operating activities translate into free cash flow, which is the cash available after all expenses and investments. A higher ratio indicates that the company is generating strong free cash flow relative to its operating cash flow, which could signify efficient capital management.
+
+The formula is as follows:
+
 - Free Cash Flow to Operating Cash Flow Ratio = Free Cash Flow / Cash Flow from Operations
 
-Also known as: FCF to OCF ratio.
+**Also known as:** FCF to OCF ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Free cash flow to operating cash flow ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Free cash flow to operating cash flow ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1452,32 +2354,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 fcf_to_ocf_ratios = toolkit.ratios.get_free_cash_flow_operating_cash_flow_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.8935 | 0.9123 | 0.9009 | 0.9201 | 0.8859 |
+| TSLA | 0.3029 | 0.5129 | 0.3287 | 0.24   | 0.4218 |
+
+
 ---
 
 ## get_tax_burden_ratio
 Calculate the tax burden ratio, which is the ratio of a company's net income to its income before tax, indicating how much of a company's income is retained after taxes.
- The tax burden ratio measures the portion of a company's earnings that is paid as taxes. A higher ratio indicates that a larger portion of the income is being retained by the company after taxes. This ratio provides insights into the tax efficiency of the company and its ability to manage its tax liabilities.
- The formula is as follows:
- 
+
+The tax burden ratio measures the portion of a company's earnings that is paid as taxes. A higher ratio indicates that a larger portion of the income is being retained by the company after taxes. This ratio provides insights into the tax efficiency of the company and its ability to manage its tax liabilities.
+
+The formula is as follows:
+
 - Tax Burden Ratio = Net Income / Income Before Tax
 
-Also known as: tax efficiency ratio.
+**Also known as:** tax efficiency ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Tax burden ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Tax burden ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1487,32 +2405,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 tax_burden_ratios = toolkit.ratios.get_tax_burden_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.867  | 0.838  | 0.8528 | 0.7591 | 0.8439 |
+| TSLA | 0.8723 | 0.9173 | 1.504  | 0.7931 | 0.7188 |
+
+
 ---
 
 ## get_EBT_to_EBIT
 Calculate the EBT to EBIT, which is the ratio of a company's earnings before tax to its earnings before interest and taxes, indicating how much of a company's earnings are generated before paying interest on debt.
- The EBT to EBIT ratio measures the proportion of a company's earnings that is generated before paying interest and taxes. It provides insights into how a company's operating performance is impacted by interest expenses and tax obligations. A higher ratio indicates that a larger portion of the company's earnings is generated from its core operations before considering interest payments and taxes.
- The formula is as follows:
- 
+
+The EBT to EBIT ratio measures the proportion of a company's earnings that is generated before paying interest and taxes. It provides insights into how a company's operating performance is impacted by interest expenses and tax obligations. A higher ratio indicates that a larger portion of the company's earnings is generated from its core operations before considering interest payments and taxes.
+
+The formula is as follows:
+
 - EBT to EBIT = (Net Income + Income Tax Expense) / (Net Income + Income Tax Expense + Interest Expense)
 
-Also known as: EBT to EBIT, interest burden.
+**Also known as:** EBT to EBIT, interest burden.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: EBT to EBIT ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: EBT to EBIT ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1522,32 +2456,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 ebt_to_ebit_ratios = toolkit.ratios.get_EBT_to_EBIT()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.9764 | 0.976  | 0.9666 | 1      | 1      |
+| TSLA | 0.9438 | 0.9863 | 0.9846 | 0.9624 | 0.9392 |
+
+
 ---
 
 ## get_EBIT_to_revenue
 Calculate the EBIT per Revenue, which is the ratio of a company's earnings before interest and taxes to its revenue, indicating how much profit a company generates from its operations before paying interest on debt and taxes on its earnings.
- The EBIT to Revenue ratio measures the company's ability to generate profit from its core operations relative to its revenue. It provides insights into the operational efficiency and profitability of the company, as it excludes the impact of interest expenses and taxes on its earnings. A higher ratio indicates that a larger portion of the company's revenue is converted into operating profit.
- The formula is as follows:
- 
+
+The EBIT to Revenue ratio measures the company's ability to generate profit from its core operations relative to its revenue. It provides insights into the operational efficiency and profitability of the company, as it excludes the impact of interest expenses and taxes on its earnings. A higher ratio indicates that a larger portion of the company's revenue is converted into operating profit.
+
+The formula is as follows:
+
 - EBIT to Revenue = EBIT / Revenue
 
-Also known as: EBIT margin, operating income to revenue.
+**Also known as:** EBIT margin, operating income to revenue.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: EBIT to Revenue ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: EBIT to Revenue ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1557,28 +2507,146 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 ebit_to_revenue_ratios = toolkit.ratios.get_EBIT_to_revenue()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.3058 | 0.3095 | 0.307  | 0.3158 | 0.3189 |
+| TSLA | 0.1227 | 0.1707 | 0.1049 | 0.0954 | 0.0586 |
+
+
+---
+
+## get_cash_tax_rate
+Calculate the cash tax rate, which measures the percentage of pretax income that is actually paid out in cash taxes, as opposed to the accrual-based effective tax rate.
+
+The formula is as follows:
+
+- Cash Tax Rate = Income Taxes Paid / Income Before Tax
+
+**Also known as:** cash effective tax rate.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Cash tax rate values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the cash tax rate for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+cash_tax_rates = toolkit.ratios.get_cash_tax_rate()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.2324 | 0.1643 | 0.1642 | 0.2114 | 0.3267 |
+| TSLA | 0.0884 | 0.0877 | 0.1122 | 0.1481 | 0      |
+
+
+---
+
+## get_tax_rate_divergence
+Calculate the tax rate divergence, which measures the difference between the cash tax rate and the accrual-based effective tax rate.
+
+A persistently positive divergence indicates the company is paying more in cash taxes than it is recognizing as tax expense (e.g. due to the reversal of deferred tax liabilities), while a persistently negative divergence indicates the opposite and can be a quality-of-earnings red flag if it stems from aggressive tax deferral rather than timing differences.
+
+The formula is as follows:
+
+- Tax Rate Divergence = Cash Tax Rate - Effective Tax Rate
+
+**Also known as:** cash-accrual tax gap.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Tax rate divergence values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the tax rate divergence for
+each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+tax_rate_divergences = toolkit.ratios.get_tax_rate_divergence()
+```
+
+Which returns:
+
+|      |    2021 |   2022 |   2023 |    2024 |    2025 |
+|:-----|--------:|-------:|-------:|--------:|--------:|
+| AAPL |  0.0994 | 0.0023 | 0.017  | -0.0295 |  0.1706 |
+| TSLA | -0.0218 | 0.0052 | 0.6137 | -0.0562 | -0.2696 |
+
+
 ---
 
 ## collect_solvency_ratios
 Calculates and collects all Solvency Ratios based on the provided data.
 
 **Args:**
- - <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Solvency ratios calculated based on the specified parameters.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method calculates various solvency ratios for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Solvency ratios calculated based on the specified parameters.
+
+**Notes:**
+
+- The method calculates various solvency ratios for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1586,34 +2654,58 @@ from financetoolkit import Toolkit
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 solvency_ratios = toolkit.ratios.collect_solvency_ratios()
+
+solvency_ratios.loc['AAPL']
 ```
+
+Which returns:
+
+|                                   |     2021 |     2022 |     2023 |     2024 |     2025 |
+|:----------------------------------|---------:|---------:|---------:|---------:|---------:|
+| Debt Service Coverage Ratio       |   0.8683 |   0.7757 |   0.7866 |   0.6985 |   0.8033 |
+| Equity Multiplier                 |   5.255  |   6.1862 |   6.252  |   6.0251 |   5.5418 |
+| Free Cash Flow Yield              |   0.031  |   0.0525 |   0.0327 |   0.0282 |   0.0242 |
+| Net-Debt to EBITDA Ratio          |   0.8449 |   0.8337 |   0.7468 |   0.6618 |   0.5281 |
+| Cash Flow Coverage Ratio          |   0.7621 |   0.922  |   0.892  |   0.9932 |   0.992  |
+| CAPEX Coverage Ratio              |  -9.3855 | -11.4075 | -10.087  | -12.5176 |  -8.7678 |
+| Dividend CAPEX Coverage Ratio     |  -4.0716 |  -4.781  |  -4.2543 |  -4.7913 |  -3.9623 |
+| Debt-to-Capital Ratio             |   0.6839 |   0.7233 |   0.666  |   0.6764 |   0.6038 |
+
 
 ---
 
 ## get_debt_to_assets_ratio
 Calculate the debt to assets ratio, a solvency ratio that measures the proportion of a company's assets that are financed by debt.
- This ratio, also known as the Debt Ratio, indicates the percentage of a company's total assets that are funded by debt. It is a measure of a company's financial leverage and indicates the extent to which a company relies on borrowed funds to finance its operations. A higher ratio implies a higher level of debt in the company's capital structure, which could increase financial risk.
- The formula is as follows:
- 
+
+This ratio, also known as the Debt Ratio, indicates the percentage of a company's total assets that are funded by debt. It is a measure of a company's financial leverage and indicates the extent to which a company relies on borrowed funds to finance its operations. A higher ratio implies a higher level of debt in the company's capital structure, which could increase financial risk.
+
+The formula is as follows:
+
 - Debt to Assets Ratio = Total Debt / Total Assets
 
-Also known as: asset leverage, debt ratio.
+**Also known as:** asset leverage, debt ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Debt to assets ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Debt to assets ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1623,32 +2715,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 debt_to_assets_ratios = toolkit.ratios.get_debt_to_assets_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.3889 | 0.3756 | 0.3515 | 0.3262 | 0.3128 |
+| TSLA | 0.1428 | 0.0698 | 0.0898 | 0.1116 | 0.0608 |
+
+
 ---
 
 ## get_debt_to_equity_ratio
 Calculate the debt to equity ratio, a solvency ratio that measures the proportion of a company's equity that is financed by debt. This ratio is also known as the Gearing Ratio.
- The debt to equity ratio, for short the D/E ratio, indicates the relative contribution of debt and equity to a company's capital structure. It helps assess the level of financial risk a company carries due to its debt obligations. A higher ratio implies a higher reliance on debt to finance the business, which could increase risk but also potentially lead to higher returns for shareholders.
- The formula is as follows:
- 
+
+The debt to equity ratio, for short the D/E ratio, indicates the relative contribution of debt and equity to a company's capital structure. It helps assess the level of financial risk a company carries due to its debt obligations. A higher ratio implies a higher reliance on debt to finance the business, which could increase risk but also potentially lead to higher returns for shareholders.
+
+The formula is as follows:
+
 - Debt to Equity Ratio = Total Debt / Total Equity
 
-Also known as: D/E ratio, leverage ratio, gearing ratio.
+**Also known as:** D/E ratio, leverage ratio, gearing ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Debt to equity ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Debt to equity ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1658,32 +2766,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 debt_to_equity_ratios = toolkit.ratios.get_debt_to_equity_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 2.1639 | 2.6145 | 1.9942 | 2.0906 | 1.5241 |
+| TSLA | 0.2809 | 0.1252 | 0.1505 | 0.1849 | 0.1011 |
+
+
 ---
 
 ## get_interest_coverage_ratio
 Calculate the interest coverage ratio, a solvency ratio that measures a company's ability to pay its interest expenses on outstanding debt.
- The interest coverage ratio evaluates a company's ability to meet its interest obligations from its operating income. A higher ratio indicates a company's stronger ability to cover its interest payments using its earnings, implying lower financial risk. Conversely, a lower ratio suggests a company may have difficulty meeting its interest obligations and could be at higher risk of default.
- The formula is as follows:
- 
+
+The interest coverage ratio evaluates a company's ability to meet its interest obligations from its operating income. A higher ratio indicates a company's stronger ability to cover its interest payments using its earnings, implying lower financial risk. Conversely, a lower ratio suggests a company may have difficulty meeting its interest obligations and could be at higher risk of default.
+
+The formula is as follows:
+
 - Interest Coverage Ratio = Operating Income / (Interest Expense + Depreciation and Amortization)
 
-Also known as: TIE, times interest earned.
+**Also known as:** TIE, times interest earned.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Interest coverage ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Interest coverage ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1693,32 +2817,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 interest_coverage_ratios = toolkit.ratios.get_interest_coverage_ratio()
 ```
 
+Which returns:
+
+|      |    2021 |    2022 |    2023 |     2024 |    2025 |
+|:-----|--------:|--------:|--------:|---------:|--------:|
+| AAPL | 45.4567 | 44.538  | 31.9908 | -        | -       |
+| TSLA | 25.4286 | 90.0471 | 86.9103 |  35.5543 |  31.074 |
+
+
 ---
 
 ## get_equity_multiplier
 Calculate the equity multiplier, a solvency ratio that measures the degree to which a company uses borrowed money (debt) to finance its operations and growth.
- The equity multiplier helps assess the financial leverage of a company by indicating how much of its assets are financed by equity versus debt. A higher equity multiplier suggests that the company relies more on debt financing, which can amplify returns but also increases financial risk. Conversely, a lower equity multiplier indicates a larger portion of assets is financed by equity, potentially lowering financial risk.
- The formula is as follows:
- 
+
+The equity multiplier helps assess the financial leverage of a company by indicating how much of its assets are financed by equity versus debt. A higher equity multiplier suggests that the company relies more on debt financing, which can amplify returns but also increases financial risk. Conversely, a lower equity multiplier indicates a larger portion of assets is financed by equity, potentially lowering financial risk.
+
+The formula is as follows:
+
 - Equity Multiplier = Average Total Assets / Average Total Equity
 
-Also known as: financial leverage multiplier.
+**Also known as:** financial leverage multiplier.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Equity multiplier values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Equity multiplier values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1728,32 +2868,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 equity_multipliers = toolkit.ratios.get_equity_multiplier()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 5.255  | 6.1862 | 6.252  | 6.0251 | 5.5418 |
+| TSLA | 2.0679 | 1.8646 | 1.7255 | 1.6657 | 1.6601 |
+
+
 ---
 
 ## get_debt_service_coverage_ratio
 Calculate the debt service coverage ratio, a solvency ratio that measures a company's ability to service its debt with its net operating income.
- The debt service coverage ratio provides insights into a company's ability to meet its debt obligations from its operating income. It is especially important for companies with significant debt obligations, as a lower ratio indicates higher financial risk and potential difficulties in servicing debt payments.
- The formula is as follows:
- 
+
+The debt service coverage ratio provides insights into a company's ability to meet its debt obligations from its operating income. It is especially important for companies with significant debt obligations, as a lower ratio indicates higher financial risk and potential difficulties in servicing debt payments.
+
+The formula is as follows:
+
 - Debt Service Coverage Ratio = Operating Income / Total Current Liabilities
 
-Also known as: DSCR, debt service ratio.
+**Also known as:** DSCR, debt service ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Debt service coverage ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Debt service coverage ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1763,34 +2919,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 debt_service_coverage_ratios = toolkit.ratios.get_debt_service_coverage_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.8683 | 0.7757 | 0.7866 | 0.6985 | 0.8033 |
+| TSLA | 0.331  | 0.5113 | 0.3093 | 0.2455 | 0.1373 |
+
+
 ---
 
 ## get_free_cash_flow_yield
 Calculates the free cash flow yield ratio, which measures the free cash flow relative to the market capitalization of the company.
- The free cash flow yield ratio is a measure of how efficiently a company generates free cash flow relative to its market value. It provides insights into whether the company's valuation is reasonable compared to the amount of cash it generates.
- The formula is as follows:
- 
+
+The free cash flow yield ratio is a measure of how efficiently a company generates free cash flow relative to its market value. It provides insights into whether the company's valuation is reasonable compared to the amount of cash it generates.
+
+The formula is as follows:
+
 - Free Cash Flow Yield Ratio = Free Cash Flow / Market Capitalization
 
-Also known as: FCF yield.
+**Also known as:** FCF yield.
 
 **Args:**
- - <u>show_daily (bool, optional):</u> Whether to use daily data for the calculation. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares for market capitalization. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Free cash flow yield ratio values.
+- <u>show_daily (bool, optional):</u> Whether to use daily data for the calculation. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares for market capitalization. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Free cash flow yield ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1800,30 +2972,46 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 free_cash_flow_yield_ratios = toolkit.ratios.get_free_cash_flow_yield()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.031  | 0.0525 | 0.0327 | 0.0282 | 0.0242 |
+| TSLA | 0.0029 | 0.0176 | 0.005  | 0.0025 | 0.0039 |
+
+
 ---
 
 ## get_net_debt_to_ebitda_ratio
 Calculates the net debt to EBITDA ratio, which measures the net debt of the company relative to its EBITDA (Earnings Before Interest, Taxes, Depreciation, and Amortization).
- The net debt to EBITDA ratio is a measure of a company's ability to manage its debt obligations in relation to its earnings and cash flow. A lower ratio indicates better financial health and a stronger ability to manage debt.
- The formula is as follows:
- 
+
+The net debt to EBITDA ratio is a measure of a company's ability to manage its debt obligations in relation to its earnings and cash flow. A lower ratio indicates better financial health and a stronger ability to manage debt.
+
+The formula is as follows:
+
 - Net Debt to EBITDA Ratio = Net Debt / EBITDA
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Net debt to EBITDA ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Net debt to EBITDA ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1833,30 +3021,46 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 net_debt_to_ebitda_ratios = toolkit.ratios.get_net_debt_to_ebitda_ratio()
 ```
 
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL |  0.8449 |  0.8337 |  0.7468 |  0.6618 |  0.5281 |
+| TSLA | -0.9225 | -0.6108 | -0.5034 | -0.2022 | -0.7747 |
+
+
 ---
 
 ## get_cash_flow_coverage_ratio
 Calculate the cash flow coverage ratio, a solvency ratio that measures a company's ability to pay off its debt with its operating cash flow.
- The cash flow coverage ratio assesses a company's ability to meet its debt obligations by comparing its operating cash flow to its total debt. A higher ratio indicates a stronger ability to cover its debt with cash generated from operations.
- The formula is as follows:
- 
+
+The cash flow coverage ratio assesses a company's ability to meet its debt obligations by comparing its operating cash flow to its total debt. A higher ratio indicates a stronger ability to cover its debt with cash generated from operations.
+
+The formula is as follows:
+
 - Cash Flow Coverage Ratio = Cash Flow from Operations / Total Debt
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Cash flow coverage ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Cash flow coverage ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1866,32 +3070,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 cash_flow_coverage_ratios = toolkit.ratios.get_cash_flow_coverage_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.7621 | 0.922  | 0.892  | 0.9932 | 0.992  |
+| TSLA | 1.2957 | 2.5616 | 1.3847 | 1.0954 | 1.7606 |
+
+
 ---
 
 ## get_capex_coverage_ratio
 Calculate the capital expenditure coverage ratio, a solvency ratio that measures a company's ability to cover its capital expenditures with its cash flow from operations.
- The capex coverage ratio evaluates a company's ability to fund its capital expenditures, which are essential for maintaining and growing its business, using the cash generated from its operations. A higher ratio indicates a stronger ability to fund capital investments from operating cash flow.
- The formula is as follows:
- 
+
+The capex coverage ratio evaluates a company's ability to fund its capital expenditures, which are essential for maintaining and growing its business, using the cash generated from its operations. A higher ratio indicates a stronger ability to fund capital investments from operating cash flow.
+
+The formula is as follows:
+
 - Capital Expenditure Coverage Ratio = Cash Flow from Operations / Capital Expenditure
 
-Also known as: capital expenditure coverage.
+**Also known as:** capital expenditure coverage.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Capital expenditure coverage ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Capital expenditure coverage ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1901,32 +3121,48 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 capex_coverage_ratios = toolkit.ratios.get_capex_coverage_ratio()
 ```
 
+Which returns:
+
+|      |    2021 |     2022 |     2023 |     2024 |    2025 |
+|:-----|--------:|---------:|---------:|---------:|--------:|
+| AAPL | -9.3855 | -11.4075 | -10.087  | -12.5176 | -8.7678 |
+| TSLA | -1.4346 |  -2.053  |  -1.4896 |  -1.3157 | -1.7294 |
+
+
 ---
 
 ## get_capex_dividend_coverage_ratio
 Calculate the dividend paid and capital expenditure coverage ratio, a solvency ratio that measures a company's ability to cover both its capital expenditures and dividend payments with its cash flow from operations.
- The capex dividend coverage ratio assesses whether a company's cash flow from operations is sufficient to cover both its capital expenditures (which are essential for maintaining and growing its business) and its dividend payments to shareholders. A higher ratio indicates a stronger ability to fund both capex and dividends from operating cash flow.
- The formula is as follows:
- 
+
+The capex dividend coverage ratio assesses whether a company's cash flow from operations is sufficient to cover both its capital expenditures (which are essential for maintaining and growing its business) and its dividend payments to shareholders. A higher ratio indicates a stronger ability to fund both capex and dividends from operating cash flow.
+
+The formula is as follows:
+
 - Dividend Paid and Capital Expenditure Coverage Ratio = Cash Flow from Operations / (Capital Expenditure + Dividends Paid)
 
-Also known as: capex dividend coverage.
+**Also known as:** capex dividend coverage.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Dividend paid and capex coverage ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Dividend paid and capex coverage ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1936,29 +3172,195 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 capex_dividend_coverage_ratios = toolkit.ratios.get_capex_dividend_coverage_ratio()
 ```
 
+Which returns:
+
+|      |    2021 |   2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|-------:|--------:|--------:|--------:|
+| AAPL | -4.0716 | -4.781 | -4.2543 | -4.7913 | -3.9623 |
+| TSLA | -1.4346 | -2.053 | -1.4896 | -1.3157 | -1.7294 |
+
+
+---
+
+## get_debt_to_capital_ratio
+Calculate the debt to capital ratio, a solvency ratio that measures the proportion of a company's total capital (debt plus equity) that is financed by debt.
+
+Unlike the debt to equity ratio, which can theoretically exceed one or become negative with low or negative equity, the debt to capital ratio is bounded between 0 and 1 under normal circumstances, making it easier to compare across companies with very different capital structures.
+
+The formula is as follows:
+
+- Debt to Capital Ratio = Total Debt / (Total Debt + Total Equity)
+
+**Also known as:** capitalization ratio.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Debt to capital ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+debt_to_capital_ratios = toolkit.ratios.get_debt_to_capital_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.6839 | 0.7233 | 0.666  | 0.6764 | 0.6038 |
+| TSLA | 0.2193 | 0.1113 | 0.1308 | 0.156  | 0.0918 |
+
+
+---
+
+## get_preferred_dividend_coverage_ratio
+Calculate the preferred dividend coverage ratio, a solvency ratio that measures a company's ability to pay dividends owed to preferred shareholders out of its net income.
+
+The formula is as follows:
+
+- Preferred Dividend Coverage Ratio = Net Income / |Preferred Dividends Paid|
+
+**Also known as:** preferred dividend cover.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Preferred dividend coverage ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- This ratio is only meaningful for companies that have preferred stock outstanding;
+it will be zero-division/NaN for companies without preferred dividends.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["WFC"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+preferred_dividend_coverage_ratios = toolkit.ratios.get_preferred_dividend_coverage_ratio()
+```
+
+Which returns:
+
+|     |     2021 |     2022 |     2023 |     2024 |     2025 |
+|:----|---------:|---------:|---------:|---------:|---------:|
+| WFC |  17.2763 |  11.2664 |  15.7599 |  16.9299 |  19.5543 |
+
+
+---
+
+## get_interest_paid_to_expense_ratio
+Calculate the interest paid to interest expense ratio, which measures how much of the accrual-based interest expense reported on the income statement was actually paid out in cash during the period.
+
+A ratio consistently below one can indicate that interest is being accrued (e.g. on payment-in-kind debt) rather than paid, while a ratio well above one can indicate the payment of previously accrued interest or a mismatch between the cash and accrual reporting periods, both of which are relevant quality-of-earnings signals.
+
+The formula is as follows:
+
+- Interest Paid to Expense Ratio = Interest Paid / Interest Expense
+
+**Also known as:** cash interest coverage, interest cash conversion.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Interest paid to interest expense ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+interest_paid_to_expense_ratios = toolkit.ratios.get_interest_paid_to_expense_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |     2024 |   2025 |
+|:-----|-------:|-------:|-------:|---------:|-------:|
+| AAPL | 1.0159 | 0.9775 | 0.9669 | -        | -      |
+| TSLA | 0.717  | 0.7958 | 0.8077 |   0.7914 |      0 |
+
+
 ---
 
 ## collect_valuation_ratios
 Calculates and collects all Valuation Ratios based on the provided data.
 
 **Args:**
- - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculations. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Valuation ratios calculated based on the specified parameters.
+- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculations. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method calculates various valuation ratios for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Valuation ratios calculated based on the specified parameters.
+
+**Notes:**
+
+- The method calculates various valuation ratios for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -1966,36 +3368,62 @@ from financetoolkit import Toolkit
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 valuation_ratios = toolkit.ratios.collect_valuation_ratios()
+
+valuation_ratios.loc['AAPL']
 ```
+
+Which returns:
+
+|                             |        2021 |         2022 |        2023 |        2024 |        2025 |
+|:----------------------------|------------:|-------------:|------------:|------------:|------------:|
+| EV-to-EBIT                  | 27.682      | 18.274       | 26.671      | 31.9683     | 31.3091     |
+| EV-to-EBITDA                | 25.7524     | 17.0831      | 24.9432     | 29.3152     | 28.7093     |
+| EV-to-Operating-Cash-Flow   | 29.7611     | 18.2565      | 28.3904     | 33.3825     | 37.2762     |
+| Tangible Asset Value        |  6.309e+10  |  5.0672e+10  |  6.2146e+10 |  5.695e+10  |  7.3733e+10 |
+| Net Current Asset Value     |  9.355e+09  | -1.8577e+10  | -1.742e+09  | -2.3405e+10 | -1.7674e+10 |
+| EV-to-Free-Cash-Flow        | 33.3102     | 20.0107      | 31.5146     | 36.2809     | 42.075      |
+| Graham Number               | 21.7378     | 20.662       | 23.2902     | 22.4928     | 28.7292     |
+| Buyback Yield               |  0.0283     |  0.0421      |  0.0255     |  0.0246     |  0.0222     |
+| Shareholder Yield           |  0.0283     |  0.0421      |  0.0255     |  0.0246     |  0.0251     |
+| SBC-Adjusted Free Cash Flow |  8.5047e+10 |  1.02405e+11 |  8.8751e+10 |  9.7119e+10 |  8.5904e+10 |
+
 
 ---
 
 ## get_earnings_per_share
 Calculate the earnings per share (EPS), a valuation ratio that measures the amount of net income earned per share of outstanding common stock.
- The earnings per share (EPS) is a widely used financial metric that helps investors understand the profitability of a company on a per-share basis. It provides insight into the portion of a company's earnings that is allocated to each outstanding share of its common stock. EPS is an important measure for investors and analysts when assessing a company's financial performance and comparing it to other companies.
- The formula is as follows:
- 
+
+The earnings per share (EPS) is a widely used financial metric that helps investors understand the profitability of a company on a per-share basis. It provides insight into the portion of a company's earnings that is allocated to each outstanding share of its common stock. EPS is an important measure for investors and analysts when assessing a company's financial performance and comparing it to other companies.
+
+The formula is as follows:
+
 - Earnings per Share (EPS) = (Net Income - Preferred Dividends Paid) / Weighted Average Shares
 
-Also known as: EPS, net income per share.
+**Also known as:** EPS, net income per share.
 
 **Args:**
- - <u>include_dividends (bool, optional):</u> Whether to include dividends in the EPS calculation. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted earnings per share. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Earnings per share (EPS) values.
+- <u>include_dividends (bool, optional):</u> Whether to include dividends in the EPS calculation. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted earnings per share. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the EPS for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the EPS values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Earnings per share (EPS) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the EPS for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the EPS values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2005,35 +3433,51 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 eps_ratios = toolkit.ratios.get_earnings_per_share()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 5.614  | 6.1132 | 6.1341 | 6.0836 | 7.465  |
+| TSLA | 1.6341 | 3.6213 | 4.3067 | 2.0383 | 1.0754 |
+
+
 ---
 
 ## get_revenue_per_share
 Calculate the revenue per share, a valuation ratio that measures the amount of revenue generated per outstanding share of a company's stock.
- The revenue per share is an important metric that provides insight into a company's ability to generate revenue on a per-share basis. It can help investors understand the company's revenue-generation efficiency and its overall financial health.
- The formula is as follows:
- 
+
+The revenue per share is an important metric that provides insight into a company's ability to generate revenue on a per-share basis. It can help investors understand the company's revenue-generation efficiency and its overall financial health.
+
+The formula is as follows:
+
 - Revenue per Share = Revenue / Weighted Average (Diluted) Shares
 
-Also known as: sales per share.
+**Also known as:** sales per share.
 
 **Args:**
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Revenue per share values.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the revenue per share for each asset in
- the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the revenue per share values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Revenue per share values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the revenue per share for each asset in
+the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the revenue per share values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2043,32 +3487,50 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 revenue_per_share = toolkit.ratios.get_revenue_per_share()
 ```
 
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | 21.691  | 24.1536 | 24.2393 | 25.3785 | 27.7354 |
+| TSLA | 15.8957 | 23.4423 | 27.7864 | 27.9274 | 26.8784 |
+
+
 ---
 
 ## get_price_to_earnings_ratio
 Calculate the price earnings ratio (P/E), a valuation ratio that compares a company's stock price to its earnings per share.
- The price earnings ratio is a widely used valuation metric that helps investors assess the relative value of a company's stock. A higher P/E ratio may indicate that the market has high expectations for the company's future growth, while a lower P/E ratio may suggest that the company is undervalued.
- The formula is as follows:
- 
+
+The price earnings ratio is a widely used valuation metric that helps investors assess the relative value of a company's stock. A higher P/E ratio may indicate that the market has high expectations for the company's future growth, while a lower P/E ratio may suggest that the company is undervalued.
+
+The formula is as follows:
+
 - Price to Earnings Ratio (P/E) = Share Price / Earnings per Share (EPS)
 
-Also known as: PE ratio, P/E ratio, price-earnings ratio, earnings multiple.
+**Also known as:** PE ratio, P/E ratio, price-earnings ratio, earnings multiple.
 
 **Args:**
- - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 
- **Returns:**
- pd.DataFrame: Price earnings ratio (P/E) values.
+- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the P/E ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the P/E ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Price earnings ratio (P/E) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the P/E ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the P/E ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2078,36 +3540,52 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 pe_ratio = toolkit.ratios.get_price_to_earnings_ratio()
 ```
 
+Which returns:
+
+|      |     2021 |    2022 |    2023 |     2024 |    2025 |
+|:-----|---------:|--------:|--------:|---------:|--------:|
+| AAPL |  31.6299 | 21.254  | 31.3868 |  41.1631 |  36.418 |
+| TSLA | 215.568  | 34.0154 | 57.6961 | 198.126  | 418.189 |
+
+
 ---
 
 ## get_price_to_earnings_growth_ratio
 Calculate the price earnings to growth (PEG) ratio, a valuation metric that measures the ratio of the price-to-earnings ratio to earnings growth rate.
- The price-to-earnings growth (PEG) ratio provides a more comprehensive valuation measure compared to the P/E ratio alone. It takes into account a company's earnings growth rate, allowing investors to assess whether a stock is overvalued or undervalued relative to its growth prospects.
- The formula is as follows:
- 
+
+The price-to-earnings growth (PEG) ratio provides a more comprehensive valuation measure compared to the P/E ratio alone. It takes into account a company's earnings growth rate, allowing investors to assess whether a stock is overvalued or undervalued relative to its growth prospects.
+
+The formula is as follows:
+
 - Price Earnings to Growth Ratio (PEG) = Price Earnings Ratio (P/E) / Growth Rate
 
-Also known as: PEG ratio, price earnings growth.
+**Also known as:** PEG ratio, price earnings growth.
 
 **Args:**
- - <u>use_ebitda_growth_rate (bool, optional):</u> Whether to use EBITDA growth rate for the calculation.
- Defaults to False.
- - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Price earnings to growth (PEG) ratio values.
+- <u>use_ebitda_growth_rate (bool, optional):</u> Whether to use EBITDA growth rate for the calculation.
+Defaults to False.
+- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the PEG ratio for each asset in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the PEG ratio values using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Price earnings to growth (PEG) ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the PEG ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the PEG ratio values using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2117,35 +3595,140 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 peg_ratio = toolkit.ratios.get_price_to_earnings_growth_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |    2023 |     2024 |    2025 |
+|:-----|-------:|-------:|--------:|---------:|--------:|
+| AAPL |  0.443 | 2.3908 | 92.3141 | -50.1989 |  1.6036 |
+| TSLA |  0.322 | 0.2797 |  3.0479 |  -3.7616 | -8.8524 |
+
+
+---
+
+## get_forward_price_earnings_ratio
+Calculate the forward price earnings ratio (forward P/E), a valuation ratio that compares the current stock price to the analyst consensus (average) EPS estimate for a future period, instead of the trailing EPS used by the regular P/E ratio.
+
+The formula is as follows:
+
+Forward P/E = Stock Price / Estimated EPS Average
+
+Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP subscription. Analyst estimates are fetched once per Toolkit instance and cached across calls to this (or the other forward-looking ratio) method - never on initialization or on any other ratio.
+
+**Also known as:** forward P/E, projected P/E.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Forward P/E ratio for each period covered by the analyst estimates.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.ratios.get_forward_price_earnings_ratio()
+```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | 56.1094 | 51.5965 | 48.7491 | 46.9062 | 42.6259 |
+| MSFT | 49.0076 | 41.0618 | 39.5875 | 31.2615 | 28.3729 |
+
+
+---
+
+## get_forward_price_earnings_growth_ratio
+Calculate the forward price earnings to growth (forward PEG) ratio, a valuation metric that measures the forward P/E ratio relative to the growth implied by the analyst consensus (average) EPS estimate versus the company's most recently reported actual EPS.
+
+The formula is as follows:
+
+- Estimated EPS Growth Rate = (Estimated EPS - Trailing EPS) / |Trailing EPS|
+- Forward PEG = Forward P/E / (Estimated EPS Growth Rate * 100)
+
+Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP subscription. Analyst estimates are fetched once per Toolkit instance and cached across calls to this (or the other forward-looking ratio) method - never on initialization or on any other ratio.
+
+**Also known as:** forward PEG, PEG on forward growth.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Forward PEG ratio for each period covered by the analyst estimates.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.ratios.get_forward_price_earnings_growth_ratio()
+```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |     2025 |
+|:-----|--------:|--------:|--------:|--------:|---------:|
+| AAPL | -2.26   | -2.8269 | -3.6172 | -4.6544 | -40.6636 |
+| MSFT | -1.1385 | -1.2822 | -1.3423 | -2.918  | -17.48   |
+
+
 ---
 
 ## get_book_value_per_share
 Calculate the book value per share, a valuation ratio that measures the amount of common equity value per share outstanding.
- The book value per share is a fundamental valuation metric that reflects the net worth of a company attributed to each outstanding share of common stock.
- The formula is as follows:
- 
+
+The book value per share is a fundamental valuation metric that reflects the net worth of a company attributed to each outstanding share of common stock.
+
+The formula is as follows:
+
 - Book Value per Share = (Total Shareholder Equity - Preferred Stock) / Weighted Average (Diluted) Shares
 
-Also known as: BVPS, net asset value per share.
+**Also known as:** BVPS, net asset value per share.
 
 **Args:**
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Book value per share values.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the book value per share for each asset
- in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the book value per share values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Book value per share values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the book value per share for each asset
+in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the book value per share values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2155,35 +3738,51 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 book_value_per_share = toolkit.ratios.get_book_value_per_share()
 ```
 
+Which returns:
+
+|      |   2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|-------:|--------:|--------:|--------:|--------:|
+| AAPL | 3.7409 |  3.1038 |  3.9302 |  3.6961 |  4.914  |
+| TSLA | 8.9158 | 12.8645 | 17.9841 | 20.8442 | 23.2815 |
+
+
 ---
 
 ## get_price_to_book_ratio
 Calculate the price to book ratio, a valuation ratio that compares a company's market price to its book value per share.
- The price to book ratio is a key valuation metric that helps investors assess whether a company's stock is overvalued or undervalued relative to its underlying net asset value.
- The formula is as follows:
- 
+
+The price to book ratio is a key valuation metric that helps investors assess whether a company's stock is overvalued or undervalued relative to its underlying net asset value.
+
+The formula is as follows:
+
 - Price to Book Ratio = Share Price / Book Value per Share
 
-Also known as: P/B ratio.
+**Also known as:** P/B ratio.
 
 **Args:**
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Price to book ratio values.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the price to book ratio for each asset
- in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the price to book ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Price to book ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the price to book ratio for each asset
+in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the price to book ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2193,33 +3792,49 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 price_to_book_ratio = toolkit.ratios.get_price_to_book_ratio()
 ```
 
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | 47.4672 | 41.8616 | 48.9873 | 67.7525 | 55.3236 |
+| TSLA | 39.5096 |  9.5752 | 13.8166 | 19.3742 | 19.3166 |
+
+
 ---
 
 ## get_interest_debt_per_share
 Calculate the interest debt per share, a valuation ratio that measures the amount of interest expense incurred per outstanding share of a company's stock.
- The interest debt per share ratio provides insight into how much interest a company pays on its debt relative to its shareholder base. It can help investors assess the financial burden of interest expenses on the company's profitability.
- The formula is as follows:
- 
+
+The interest debt per share ratio provides insight into how much interest a company pays on its debt relative to its shareholder base. It can help investors assess the financial burden of interest expenses on the company's profitability.
+
+The formula is as follows:
+
 - Interest Debt per Share = (Interest Expense / Total Debt) / Weighted Average (Diluted) Shares
 
 **Args:**
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Interest debt per share values.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the interest debt per share ratio for each asset
- in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the interest debt per share values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Interest debt per share values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the interest debt per share ratio for each asset
+in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the interest debt per share values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2229,35 +3844,51 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 interest_debt_per_share = toolkit.ratios.get_interest_debt_per_share()
 ```
 
+Which returns:
+
+|      |        2021 |        2022 |        2023 |        2024 |        2025 |
+|:-----|------------:|------------:|------------:|------------:|------------:|
+| AAPL | 3.26744e+08 | 3.61194e+08 | 5.01822e+08 | 0           | 0           |
+| TSLA | 1.41576e+08 | 1.15471e+08 | 5.67543e+07 | 8.98701e+07 | 1.42367e+08 |
+
+
 ---
 
 ## get_capex_per_share
 Calculate the capex per share, a valuation ratio that measures the amount of capital expenditures made per outstanding share of a company's stock.
- The capex per share ratio provides insight into how much capital a company invests in its operations and growth initiatives relative to its shareholder base. It can help investors assess the level of reinvestment into the business.
- The formula is as follows:
- 
+
+The capex per share ratio provides insight into how much capital a company invests in its operations and growth initiatives relative to its shareholder base. It can help investors assess the level of reinvestment into the business.
+
+The formula is as follows:
+
 - CAPEX per Share = Capital Expenditure / Weighted Average (Diluted) Shares
 
-Also known as: capital expenditure per share.
+**Also known as:** capital expenditure per share.
 
 **Args:**
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Capex per share values.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the capex per share ratio for each asset
- in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the capex per share values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Capex per share values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the capex per share ratio for each asset
+in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the capex per share values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2267,35 +3898,51 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 capex_per_share = toolkit.ratios.get_capex_per_share()
 ```
 
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | -0.6573 | -0.6559 | -0.6931 | -0.6131 | -0.8474 |
+| TSLA | -2.3668 | -2.0639 | -2.5552 | -3.2424 | -2.417  |
+
+
 ---
 
 ## get_dividend_yield
 Calculate the dividend yield ratio, a valuation ratio that measures the amount of dividends distributed per share of stock relative to the stock's price.
- The dividend yield ratio is used by investors to assess the income potential of an investment in a company's stock based on the dividends it pays out. A higher dividend yield can be attractive to income-seeking investors.
- The formula is as follows:
- 
+
+The dividend yield ratio is used by investors to assess the income potential of an investment in a company's stock based on the dividends it pays out. A higher dividend yield can be attractive to income-seeking investors.
+
+The formula is as follows:
+
 - Dividend Yield = Dividends per Share / Share Price
 
-Also known as: annual dividend yield, income yield.
+**Also known as:** annual dividend yield, income yield.
 
 **Args:**
- - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Dividend yield values.
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the dividend yield ratio for each asset
- in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the dividend yield values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Dividend yield values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the dividend yield ratio for each asset
+in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the dividend yield values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2305,36 +3952,52 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 dividend_yield = toolkit.ratios.get_dividend_yield()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |   2026 |
+|:-----|-------:|-------:|-------:|-------:|-------:|-------:|
+| AAPL |      0 |      0 |      0 |      0 | 0.0029 | 0.0017 |
+| TSLA |      0 |      0 |      0 |      0 | 0      | 0      |
+
+
 ---
 
 ## get_weighted_dividend_yield
 Calculate the weighted dividend yield ratio, a valuation ratio that measures the amount of dividends distributed per share of stock relative to the stock's price.
- This dividend yield ratio takes into account the (diluted) weighted average shares and actual dividends paid as found in the cash flow statement. It provides a more accurate reflection of the dividends paid out per share, considering any changes in the number of shares.
- The formula is as follows:
- 
+
+This dividend yield ratio takes into account the (diluted) weighted average shares and actual dividends paid as found in the cash flow statement. It provides a more accurate reflection of the dividends paid out per share, considering any changes in the number of shares.
+
+The formula is as follows:
+
 - Weighted Dividend Yield = Dividends Paid / Weighted Average (Diluted) Shares * Share Price
 
-Also known as: blended dividend yield.
+**Also known as:** blended dividend yield.
 
 **Args:**
- - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Weighted dividend yield values.
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the weighted dividend yield ratio for each asset
- in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the weighted dividend yield values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Weighted dividend yield values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the weighted dividend yield ratio for each asset
+in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the weighted dividend yield values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2344,36 +4007,52 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 weighted_dividend_yield = toolkit.ratios.get_weighted_dividend_yield()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.0048 |  0.007 | 0.0049 | 0.0039 | 0.0038 |
+| TSLA | 0      |  0     | 0      | 0      | 0      |
+
+
 ---
 
 ## get_price_to_cash_flow_ratio
 Calculate the price to cash flow ratio, a valuation ratio that compares a company's market price to its operating cash flow per share.
- The price to cash flow ratio is a key valuation metric that helps investors assess the relative value of a company's stock. It is similar to the price to earnings ratio, but uses cash flow instead of earnings in the denominator.
- The formula is as follows:
- 
+
+The price to cash flow ratio is a key valuation metric that helps investors assess the relative value of a company's stock. It is similar to the price to earnings ratio, but uses cash flow instead of earnings in the denominator.
+
+The formula is as follows:
+
 - Price to Cash Flow Ratio = Share Price / Cash Flow from Operations per Share
 
-Also known as: P/CF ratio.
+**Also known as:** P/CF ratio.
 
 **Args:**
- - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Price to cash flow ratio values.
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the price to cash flow ratio for each asset
- in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the price to cash flow ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Price to cash flow ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the price to cash flow ratio for each asset
+in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the price to cash flow ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2383,36 +4062,52 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 price_to_cash_flow_ratio = toolkit.ratios.get_price_to_cash_flow_ratio()
 ```
 
+Which returns:
+
+|      |     2021 |    2022 |    2023 |    2024 |     2025 |
+|:-----|---------:|--------:|--------:|--------:|---------:|
+| AAPL |  28.7847 | 17.3655 | 27.5403 | 32.6289 |  36.5905 |
+| TSLA | 103.745  | 29.0716 | 65.2832 | 94.6614 | 107.589  |
+
+
 ---
 
 ## get_price_to_free_cash_flow_ratio
 Calculate the price to free cash flow ratio, a valuation ratio that compares a company's market price to its free cash flow per share.
- This ratio provides insight into how the market values a company's ability to generate free cash flow.
- The formula is as follows:
- 
+
+This ratio provides insight into how the market values a company's ability to generate free cash flow.
+
+The formula is as follows:
+
 - Price to Free Cash Flow Ratio = Market Cap / Free Cash Flow
 
-Also known as: P/FCF ratio.
+**Also known as:** P/FCF ratio.
 
 **Args:**
- - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Price to free cash flow ratio values.
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Notes:**
- - The method retrieves historical data and calculates the price to free cash flow ratio for each asset
- in the Toolkit instance.
- - If `growth` is set to True, the method calculates the growth of the price to free cash flow ratio values
- using the specified `lag`.
+**Returns:**
 
- As an example:
+pd.DataFrame: Price to free cash flow ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the price to free cash flow ratio for each asset
+in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the price to free cash flow ratio values
+using the specified `lag`.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2422,30 +4117,45 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 price_to_free_cash_flow_ratio = toolkit.ratios.get_price_to_free_cash_flow_ratio()
 ```
 
+Which returns:
+
+|      |     2021 |    2022 |     2023 |     2024 |    2025 |
+|:-----|---------:|--------:|---------:|---------:|--------:|
+| AAPL |  32.2174 | 19.0341 |  30.5711 |  35.4618 |  41.301 |
+| TSLA | 342.45   | 56.6804 | 198.621  | 394.48   | 255.082 |
+
+
 ---
 
 ## get_market_cap
 Calculates the market capitalization of the company.
- Market capitalization, often referred to as "market cap," is the total value of a company's outstanding shares of stock in the stock market. It is calculated by multiplying the current market price per share by the total number of outstanding shares.
- The formula is as follows:
- 
+
+Market capitalization, often referred to as "market cap," is the total value of a company's outstanding shares of stock in the stock market. It is calculated by multiplying the current market price per share by the total number of outstanding shares.
+
+The formula is as follows:
+
 - Market Capitalization = Share Price * Weighted Average (Diluted) Shares
 
-Also known as: market capitalization.
+**Also known as:** market capitalization.
 
 **Args:**
- - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Market capitalization values.
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+**Returns:**
+
+pd.DataFrame: Market capitalization values.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2455,29 +4165,44 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 market_cap = toolkit.ratios.get_market_cap()
 ```
 
+Which returns:
+
+|      |        2021 |        2022 |        2023 |        2024 |        2025 |
+|:-----|------------:|------------:|------------:|------------:|------------:|
+| AAPL | 2.9947e+12  | 2.12121e+12 | 3.04439e+12 | 3.8585e+12  | 4.07918e+12 |
+| TSLA | 1.19275e+12 | 4.2805e+11  | 8.65394e+11 | 1.41263e+12 | 1.58661e+12 |
+
+
 ---
 
 ## get_enterprise_value
 Calculates the Enterprise Value (EV) of a company. The Enterprise Value (EV) is a measure of a company's total value, often used as a more comprehensive alternative to market capitalization. It is calculated as the sum of a company's market capitalization, outstanding debt, minority interest, and preferred equity, minus the cash and cash equivalents.
- The formula is as follows:
- 
-- Enterprise Value = Market Capitalization + Total Debt + Minority Interest + Preferred Equity - Cash and Cash Equivalents
 
-Also known as: EV, total enterprise value.
+The formula is as follows:
+
+- Enterprise Value = Market Capitalization + Total Debt + Minority Interest + Preferred Equity
+- Cash and Cash Equivalents
+
+**Also known as:** EV, total enterprise value.
 
 **Args:**
- - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Enterprise Value values.
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+**Returns:**
+
+pd.DataFrame: Enterprise Value values.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2487,30 +4212,45 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 enterprise_value = toolkit.ratios.get_enterprise_value()
 ```
 
+Which returns:
+
+|      |        2021 |        2022 |        2023 |        2024 |        2025 |
+|:-----|------------:|------------:|------------:|------------:|------------:|
+| AAPL | 3.09629e+12 | 2.23005e+12 | 3.13835e+12 | 3.94761e+12 | 4.15562e+12 |
+| TSLA | 1.18544e+12 | 4.1874e+11  | 8.59544e+11 | 1.41088e+12 | 1.5792e+12  |
+
+
 ---
 
 ## get_ev_to_sales_ratio
 Calculate the EV to sales ratio, a valuation ratio that compares a company's enterprise value (EV) to its total revenue.
- This ratio compares the enterprise value (EV) to the total revenue generated by the company. It can provide insights into how efficiently a company is using its revenue to generate value for its investors.
- The formula is as follows:
- 
+
+This ratio compares the enterprise value (EV) to the total revenue generated by the company. It can provide insights into how efficiently a company is using its revenue to generate value for its investors.
+
+The formula is as follows:
+
 - Enterprise Value to Sales Ratio = Enterprise Value / Total Revenue
 
-Also known as: EV/Sales.
+**Also known as:** EV/Sales.
 
 **Args:**
- - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: EV to Sales Ratio values.
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+**Returns:**
+
+pd.DataFrame: EV to Sales Ratio values.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2520,29 +4260,44 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 ev_to_sales_ratio = toolkit.ratios.get_ev_to_sales_ratio()
 ```
 
+Which returns:
+
+|      |    2021 |   2022 |   2023 |    2024 |    2025 |
+|:-----|--------:|-------:|-------:|--------:|--------:|
+| AAPL |  8.464  | 5.6553 | 8.188  | 10.0953 |  9.9856 |
+| TSLA | 22.0248 | 5.1403 | 8.8821 | 14.4425 | 16.6535 |
+
+
 ---
 
 ## get_ev_to_ebitda_ratio
 Calculate the enterprise value over EBITDA ratio, a valuation ratio that measures a company's total value (including debt and equity) relative to its EBITDA.
- This ratio helps investors understand how many times the enterprise value exceeds the company's EBITDA, providing insights into the company's debt load and operating performance.
- The formula is as follows:
- 
+
+This ratio helps investors understand how many times the enterprise value exceeds the company's EBITDA, providing insights into the company's debt load and operating performance.
+
+The formula is as follows:
+
 - Enterprise Value to EBITDA Ratio = Enterprise Value / EBITDA
 
-Also known as: EV/EBITDA.
+**Also known as:** EV/EBITDA.
 
 **Args:**
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: EV to EBITDA Ratio values.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+**Returns:**
+
+pd.DataFrame: EV to EBITDA Ratio values.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2552,28 +4307,43 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 ev_to_ebitda_ratio = toolkit.ratios.get_ev_to_ebitda_ratio()
 ```
 
+Which returns:
+
+|      |     2021 |    2022 |    2023 |     2024 |     2025 |
+|:-----|---------:|--------:|--------:|---------:|---------:|
+| AAPL |  25.7524 | 17.0831 | 24.9432 |  29.3152 |  28.7093 |
+| TSLA | 125.656  | 24.3467 | 63.3975 | 113.379  | 150.357  |
+
+
 ---
 
 ## get_ev_to_operating_cashflow_ratio
 Calculate the enterprise value over operating cash flow ratio, a valuation ratio that measures a company's total value (including debt and equity) relative to its operating cash flow.
- The ratio is a valuation metric that helps investors assess the company's valuation relative to its operating cash flow. This ratio provides insights into how many times the enterprise value exceeds the company's operating cash flow, indicating the company's ability to generate cash from its operations.
- The formula is as follows:
- 
+
+The ratio is a valuation metric that helps investors assess the company's valuation relative to its operating cash flow. This ratio provides insights into how many times the enterprise value exceeds the company's operating cash flow, indicating the company's ability to generate cash from its operations.
+
+The formula is as follows:
+
 - Enterprise Value to Operating Cash Flow Ratio = Enterprise Value / Operating Cash Flow
 
 **Args:**
- - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: EV to Operating Cash Flow Ratio values.
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+**Returns:**
+
+pd.DataFrame: EV to Operating Cash Flow Ratio values.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2583,31 +4353,46 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 ev_to_operating_cashflow_ratio = toolkit.ratios.get_ev_to_operating_cashflow_ratio()
 ```
 
+Which returns:
+
+|      |     2021 |    2022 |    2023 |    2024 |     2025 |
+|:-----|---------:|--------:|--------:|--------:|---------:|
+| AAPL |  29.7611 | 18.2565 | 28.3904 | 33.3825 |  37.2762 |
+| TSLA | 103.109  | 28.4392 | 64.8419 | 94.5442 | 107.086  |
+
+
 ---
 
 ## get_earnings_yield
 Calculate the earnings yield ratio, a valuation ratio that measures the earnings per share relative to the market price per share.
- The earnings yield ratio is a valuation metric that provides insights into how much a company's earnings contribute to its stock price. It compares the earnings per share to the market price per share, helping investors understand the earnings potential of the company relative to its current market value
- The formula is as follows:
- 
+
+The earnings yield ratio is a valuation metric that provides insights into how much a company's earnings contribute to its stock price. It compares the earnings per share to the market price per share, helping investors understand the earnings potential of the company relative to its current market value
+
+The formula is as follows:
+
 - Earnings Yield Ratio = Earnings per Share / Share Price
 
-Also known as: E/P ratio, inverse PE ratio.
+**Also known as:** E/P ratio, inverse PE ratio.
 
 **Args:**
- - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
- - <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Earnings Yield Ratio values.
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+**Returns:**
+
+pd.DataFrame: Earnings Yield Ratio values.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2617,28 +4402,43 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 earnings_yield_ratio = toolkit.ratios.get_earnings_yield()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.0316 | 0.047  | 0.0319 | 0.0243 | 0.0275 |
+| TSLA | 0.0046 | 0.0294 | 0.0173 | 0.005  | 0.0024 |
+
+
 ---
 
 ## get_dividend_payout_ratio
 Calculate the Dividend payout ratio, a financial metric that measures the proportion of earnings paid out as dividends to shareholders.
- The payout ratio is a financial metric that helps investors assess the portion of a company's earnings that is being distributed to shareholders in the form of dividends. It's a valuable indicator for dividend investors as it indicates the sustainability of dividend payments and the company's approach to distributing profits.
- The formula is as follows:
- 
+
+The payout ratio is a financial metric that helps investors assess the portion of a company's earnings that is being distributed to shareholders in the form of dividends. It's a valuable indicator for dividend investors as it indicates the sustainability of dividend payments and the company's approach to distributing profits.
+
+The formula is as follows:
+
 - Dividend Payout Ratio = Dividends Paid / Net Income
 
-Also known as: payout ratio.
+**Also known as:** payout ratio.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Payout Ratio values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+**Returns:**
+
+pd.DataFrame: Payout Ratio values.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2648,28 +4448,43 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 toolkit.ratios.get_dividend_payout_ratio()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.1528 | 0.1487 | 0.1549 | 0.1625 | 0.1377 |
+| TSLA | 0      | 0      | 0      | 0      | 0      |
+
+
 ---
 
 ## get_reinvestment_rate
 Calculate the Reinvestment rate, a financial metric that measures the proportion of earnings retained by the company.
- The reinvestment rate is a financial metric that helps investors assess the portion of a company's earnings that is being retained by the company for future growth. It's a valuable indicator for dividend investors as it indicates the sustainability of dividend payments and the company's approach to distributing profits.
- The formula is as follows:
- 
+
+The reinvestment rate is a financial metric that helps investors assess the portion of a company's earnings that is being retained by the company for future growth. It's a valuable indicator for dividend investors as it indicates the sustainability of dividend payments and the company's approach to distributing profits.
+
+The formula is as follows:
+
 - Reinvestment Rate = 1 - Dividend Payout Ratio
 
-Also known as: plowback ratio, retention rate.
+**Also known as:** plowback ratio, retention rate.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Reinvestment Rate values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+**Returns:**
+
+pd.DataFrame: Reinvestment Rate values.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2679,27 +4494,41 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 toolkit.ratios.get_reinvestment_rate()
 ```
 
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.8472 | 0.8513 | 0.8451 | 0.8375 | 0.8623 |
+| TSLA | 1      | 1      | 1      | 1      | 1      |
+
+
 ---
 
 ## get_tangible_asset_value
 Calculate the tangible asset value, a financial metric that represents the total value of a company's assets that can be used to generate revenue. Tangible assets are those physical assets that have a finite monetary value and can be sold, used, or consumed.
- The formula is as follows:
- 
+
+The formula is as follows:
+
 - Tangible Asset Value = Total Assets - Total Liabilities - Goodwill
 
-Also known as: tangible assets, net tangible assets.
+**Also known as:** tangible assets, net tangible assets.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Tangible Asset Value values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+**Returns:**
+
+pd.DataFrame: Tangible Asset Value values.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2709,27 +4538,41 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 tangible_asset_value = toolkit.ratios.get_tangible_asset_value()
 ```
 
+Which returns:
+
+|      |       2021 |       2022 |       2023 |       2024 |       2025 |
+|:-----|-----------:|-----------:|-----------:|-----------:|-----------:|
+| AAPL | 6.309e+10  | 5.0672e+10 | 6.2146e+10 | 5.695e+10  | 7.3733e+10 |
+| TSLA | 3.1383e+10 | 4.5704e+10 | 6.3356e+10 | 7.3436e+10 | 8.2608e+10 |
+
+
 ---
 
 ## get_net_current_asset_value
 Calculate the net current asset value, a financial metric that represents the total value of a company's current assets minus its current liabilities. It indicates the extent to which a company's short-term assets exceed its short-term liabilities.
- The formula is as follows:
- 
+
+The formula is as follows:
+
 - Net Current Asset Value = Total Current Assets - Total Current Liabilities
 
-Also known as: NCAV, net current asset value, Graham number.
+**Also known as:** NCAV, net current asset value, Graham number.
 
 **Args:**
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Net Current Asset Value values.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+**Returns:**
+
+pd.DataFrame: Net Current Asset Value values.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2739,27 +4582,41 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 net_current_asset_value = toolkit.ratios.get_net_current_asset_value()
 ```
 
+Which returns:
+
+|      |      2021 |        2022 |        2023 |        2024 |        2025 |
+|:-----|----------:|------------:|------------:|------------:|------------:|
+| AAPL | 9.355e+09 | -1.8577e+10 | -1.742e+09  | -2.3405e+10 | -1.7674e+10 |
+| TSLA | 7.395e+09 |  1.4208e+10 |  2.0868e+10 |  2.9539e+10 |  3.6928e+10 |
+
+
 ---
 
 ## get_ev_to_ebit
 Calculate the enterprise value over earnings before interest and taxes (EBIT) ratio, which is a valuation metric that compares a company's total value (including debt and equity) relative to its earnings before interest and taxes.
- The formula is as follows:
- 
+
+The formula is as follows:
+
 - Enterprise Value to EBIT Ratio = Enterprise Value / EBIT
 
 **Args:**
- - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
- - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
- - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
- - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
- - <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
- - <u>trailing (int):</u> Defines whether to select a trailing period.
- E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- **Returns:**
- pd.DataFrame: Enterprise Value over EBIT values.
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
- As an example:
+**Returns:**
+
+pd.DataFrame: Enterprise Value over EBIT values.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2768,6 +4625,221 @@ toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 ev_to_ebit_ratio = toolkit.ratios.get_ev_to_ebit()
 ```
+
+Which returns:
+
+|      |    2021 |   2022 |    2023 |     2024 |     2025 |
+|:-----|--------:|-------:|--------:|---------:|---------:|
+| AAPL |  27.682 | 18.274 | 26.671  |  31.9683 |  31.3091 |
+| TSLA | 179.531 | 30.11  | 84.6508 | 151.431  | 284.285  |
+
+
+---
+
+## get_ev_to_free_cash_flow_ratio
+Calculate the EV to free cash flow ratio, a valuation ratio that compares a company's enterprise value (EV) to its free cash flow.
+
+Unlike EV to Operating Cash Flow, this ratio nets out capital expenditures, giving a valuation multiple based on the cash actually available to all capital providers after reinvestment in the business.
+
+The formula is as follows:
+
+- EV to Free Cash Flow Ratio = Enterprise Value / Free Cash Flow
+
+**Also known as:** EV/FCF.
+
+**Args:**
+
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: EV to free cash flow ratio values.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+ev_to_fcf_ratio = toolkit.ratios.get_ev_to_free_cash_flow_ratio()
+```
+
+Which returns:
+
+|      |     2021 |    2022 |     2023 |     2024 |    2025 |
+|:-----|---------:|--------:|---------:|---------:|--------:|
+| AAPL |  33.3102 | 20.0107 |  31.5146 |  36.2809 |  42.075 |
+| TSLA | 340.351  | 55.4475 | 197.279  | 393.991  | 253.891 |
+
+
+---
+
+## get_buyback_yield
+Calculate the buyback yield, a valuation ratio that measures the net amount of common stock repurchased (net of new shares issued) relative to the company's market capitalization.
+
+A positive buyback yield means the company is a net repurchaser of its own stock (shareholder-friendly), while a negative buyback yield means the company is a net issuer of new shares (dilutive).
+
+The formula is as follows:
+
+- Buyback Yield = -(Common Stock Purchased + Common Stock Issued) / Market Capitalization
+
+**Also known as:** net repurchase yield.
+
+**Args:**
+
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Buyback yield values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the buyback yield for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+buyback_yields = toolkit.ratios.get_buyback_yield()
+```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL |  0.0283 |  0.0421 |  0.0255 |  0.0246 |  0.0222 |
+| TSLA | -0.0006 | -0.0013 | -0.0008 | -0.0009 | -0.0001 |
+
+
+---
+
+## get_shareholder_yield
+Calculate the total shareholder yield, a valuation ratio that combines the dividend yield and the buyback yield to measure the total cash returned to shareholders relative to the company's market capitalization.
+
+The formula is as follows:
+
+- Shareholder Yield = Dividend Yield + Buyback Yield
+
+**Also known as:** total shareholder yield, total return of capital.
+
+**Args:**
+
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Shareholder yield values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the shareholder yield for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+shareholder_yields = toolkit.ratios.get_shareholder_yield()
+```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL |  0.0283 |  0.0421 |  0.0255 |  0.0246 |  0.0251 |
+| TSLA | -0.0006 | -0.0013 | -0.0008 | -0.0009 | -0.0001 |
+
+
+---
+
+## get_sbc_adjusted_free_cash_flow
+Calculate the stock-based compensation (SBC) adjusted free cash flow, which deducts non-cash SBC expenses from free cash flow to give a more conservative view of the cash actually available to shareholders.
+
+Free cash flow already excludes SBC as a cash expense (it is added back in the cash flow from operations), which can overstate the cash available to shareholders. Subtracting SBC treats it as if it were a real cash cost, which is a common quality-of-earnings adjustment, especially for companies that rely heavily on equity compensation.
+
+The formula is as follows:
+
+- SBC-Adjusted Free Cash Flow = Free Cash Flow - Stock Based Compensation
+
+**Also known as:** SBC-adjusted FCF.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: SBC-adjusted free cash flow values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the SBC-adjusted free cash flow
+for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+sbc_adjusted_fcf = toolkit.ratios.get_sbc_adjusted_free_cash_flow()
+```
+
+Which returns:
+
+|      |       2021 |        2022 |       2023 |       2024 |       2025 |
+|:-----|-----------:|------------:|-----------:|-----------:|-----------:|
+| AAPL | 8.5047e+10 | 1.02405e+11 | 8.8751e+10 | 9.7119e+10 | 8.5904e+10 |
+| TSLA | 1.362e+09  | 5.992e+09   | 2.545e+09  | 1.582e+09  | 3.395e+09  |
+
 
 ---
 

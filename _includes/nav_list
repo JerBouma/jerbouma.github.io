@@ -8,7 +8,7 @@
     {% for nav in navigation %}
       <li>
         {% if nav.children != null %}
-        <details class="nav__collapsible" open>
+        <details class="nav__collapsible{% if nav.title == "Modules" %} nav__collapsible--modules{% endif %}"{% unless nav.title == "Modules" %} open{% endunless %}>
           {% if nav.url %}
             <summary class="nav__sub-title nav__collapsible-title"><a href="{{ nav.url | relative_url }}">{{ nav.title }}</a></summary>
           {% else %}

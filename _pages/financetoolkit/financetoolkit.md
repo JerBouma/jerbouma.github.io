@@ -25,6 +25,8 @@ Beyond Equities, it supports Options, Currencies, Cryptocurrencies, ETFs, Mutual
 
 The Finance Toolkit is complemented very well by the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}, a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
 
+**🔌 The Finance Toolkit is also available as an [MCP Server](https://www.jeroenbouma.com/projects/financetoolkit/mcp)**, letting you query 200+ metrics directly from Claude, Copilot, Cursor, Windsurf or any MCP-compatible client without writing any code.
+
 <img src="/assets/images/projects/FinanceToolkit.jpg" alt="Finance Toolkit" width="100%"/>
 
 ## Installation
@@ -84,7 +86,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-percentage bento-icon"></i>
       <h2>Ratios</h2>
-      <p>50+ financial ratios across five categories: efficiency, liquidity, profitability, solvency and valuation. Every formula is transparently calculated from the underlying financial statements.</p>
+      <p>80+ financial ratios across five categories: efficiency, liquidity, profitability, solvency and valuation. Every formula is transparently calculated from the underlying financial statements.</p>
     </div>
   </a>
 
@@ -108,7 +110,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-chart-line bento-icon"></i>
       <h2>Technicals</h2>
-      <p>30+ Technical Indicators across breadth, momentum, overlap and volatility categories. Use alongside fundamental data for a comprehensive view of market behaviour.</p>
+      <p>40+ Technical Indicators across breadth, momentum, overlap and volatility categories. Use alongside fundamental data for a comprehensive view of market behaviour.</p>
     </div>
   </a>
 
@@ -170,52 +172,69 @@ This section is an introduction to the Finance Toolkit. Also see [this notebook]
     <img src="https://github.com/JerBouma/FinanceToolkit/blob/main/examples/Finance%20Toolkit%20-%20Video%20Demo.gif?raw=true" alt="Finance Toolkit Illustration" width="100%" onerror="this.style.display = 'none'"/>
 </p>
 
-A basic example of how to use the Finance Toolkit is shown below.
-
+A basic example of how to use the Finance Toolkit is shown below. Every code snippet in the sections that follow builds on this same `companies` instance.
 
 ````python
 from financetoolkit import Toolkit
 
+# Initialize the Toolkit for Apple and Microsoft
 companies = Toolkit(["AAPL", "MSFT"], api_key=API_KEY, start_date="2017-12-31")
-
-# a Historical example
-historical_data = companies.get_historical_data()
-
-# a Financial Statement example
-income_statement = companies.get_income_statement()
-
-# a Ratios example
-profitability_ratios = companies.ratios.collect_profitability_ratios()
-
-# a Models example
-extended_dupont_analysis = companies.models.get_extended_dupont_analysis()
-
-# an Options example
-all_greeks = companies.options.collect_all_greeks(expiration_time_range=180)
-
-# a Performance example
-factor_asset_correlations = companies.performance.get_factor_asset_correlations(
-    period="quarterly"
-)
-
-# a Risk example
-value_at_risk = companies.risk.get_value_at_risk(period="weekly")
-
-# a Technical example
-ichimoku_cloud = companies.technicals.get_ichimoku_cloud()
-
-# a Fixed Income example
-corporate_bond_yields = companies.fixedincome.get_ice_bofa_effective_yield()
-
-# an Economics example
-unemployment_rates = companies.economics.get_unemployment_rate()
 ````
 
-Generally, the functions return a DataFrame with a multi-index in which all tickers, in this case Apple and Microsoft, are presented. To keep things manageable for this README, I select just Apple but in essence the list of tickers can be endless as I've seen DataFrames with thousands of tickers. The filtering is done through `.loc['AAPL']` and `.xs('AAPL', level=1, axis=1)` based on whether it's fundamental data or historical data respectively.
+Each ratio, indicator and metric has a corresponding function that can be called directly, for example `ratios.get_return_on_equity` or `technicals.get_relative_strength_index`. Every module also has one or more `collect_` functions that return a whole category at once, e.g. `ratios.collect_profitability_ratios`, useful when you want everything in one call instead of assembling it metric by metric.
+
+Three capabilities cut across nearly the whole toolkit:
+
+- **`rolling` and `trailing` windows.** Many metrics return one value per reporting period by default. Pass `rolling=<n>` to compute the metric over a sliding window instead, or `trailing=<n>` for a trailing sum/average (e.g. a trailing 4-quarter sum to annualize a quarterly flow) — turning a snapshot into a proper time series.
+- **`growth` and `lag`.** Pass `growth=True` on almost any `get_` or `collect_` function to return the period-over-period growth instead of the raw value. `lag` (an `int` or list of `int`s, default `1`) controls how many periods back that growth is measured against, e.g. `lag=4` for year-over-year growth on quarterly data. Combine with `trailing` (e.g. `trailing=4, growth=True`) to get TTM growth.
+- **`standardize` (Z-Score).** Most `get_*` methods across Economics, Ratios, Technicals, Risk, Performance, Models, Options and Fixed Income accept `standardize=True`, converting raw values into standard deviations from their own historical mean/std. Useful for ranking, scoring, or spotting an unusual reading across metrics that otherwise live on incompatible scales.
+
+Every module below also has a How-To Guide notebook (see the bento grid above) and full code documentation (formulas, parameters, worked examples) linked in its own section below.
+
+### Discovering Instruments & News
+
+Before analyzing a ticker you often need to find it. The Discovery module is standalone and covers among other things lists of companies, cryptocurrencies, forex, commodities, ETFs and indices.
+
+```python
+from financetoolkit import Discovery
+
+# Initialize the standalone Discovery module
+discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
+
+# Screen for stocks matching a set of criteria
+discovery.get_stock_screener(
+    market_cap_higher=1000000,
+    price_higher=100,
+    price_lower=200,
+    beta_higher=1,
+    beta_lower=1.5,
+    dividend_higher=1,
+)
+```
+
+Which returns:
+
+| Symbol   | Name              |   Market Cap | Sector            | Industry               |   Beta |   Price |   Dividend | Exchange                | Country   |
+|:---------|:------------------|-------------:|:------------------|:-----------------------|-------:|--------:|-----------:|:-------------------------|:----------|
+| NKE      | NIKE, Inc.        | 163403295604 | Consumer Cyclical | Footwear & Accessories |  1.079 | 107.36  |       1.48 | New York Stock Exchange  | US        |
+| SAF.PA   | Safran SA         |  66234006559 | Industrials       | Aerospace & Defense    |  1.339 | 160.16  |       1.35 | Paris                    | FR        |
+| ROST     | Ross Stores, Inc. |  46724188589 | Consumer Cyclical | Apparel Retail         |  1.026 | 138.785 |       1.34 | NASDAQ Global Select     | US        |
+
+Furthermore, you can find in this module [stock screeners](https://www.jeroenbouma.com/projects/financetoolkit/docs/discovery#get_stock_screener), [sector/industry performance](https://www.jeroenbouma.com/projects/financetoolkit/docs/discovery#get_sectors_performance) and [news feeds](https://www.jeroenbouma.com/projects/financetoolkit/docs/discovery#get_stock_news) and more. Find the full instrument discovery documentation [here](https://www.jeroenbouma.com/projects/financetoolkit/docs/discovery).
 
 ### Obtaining Historical Data
 
-Obtain historical data on a daily, weekly, monthly or yearly basis. This includes OHLC, volumes, dividends, returns, cumulative returns and volatility calculations for each corresponding period. For example, the a portion of the historical data for Apple is shown below.
+Obtain [historical data](https://www.jeroenbouma.com/projects/financetoolkit/docs#get_historical_data) on a daily, weekly, monthly or yearly basis. This includes OHLC, volumes, dividends, returns and cumulative returns for each corresponding period.
+
+```python
+# Obtain historical market data for all tickers
+historical_data = companies.get_historical_data()
+
+# Select the results for Apple
+historical_data.xs('AAPL', axis=1, level=1)
+```
+
+For example, a portion of the historical data for Apple is shown below.
 
 | date       |    Open |    High |     Low |   Close |   Adj Close |      Volume |   Dividends |   Return |   Volatility |   Excess Return |   Excess Volatility |   Cumulative Return |
 |:-----------|--------:|--------:|--------:|--------:|------------:|------------:|------------:|---------:|-------------:|----------------:|--------------------:|--------------------:|
@@ -229,9 +248,21 @@ And below the cumulative returns are plotted which include the S&P 500 as benchm
 
 ![HistoricalData](https://github.com/JerBouma/FinanceToolkit/assets/46355364/cd7b5029-0e66-4592-9822-42b652e7deed)
 
+Metrics such as `Volatility`, `Excess Return` and `Excess Volatility` are calculated as dedicated [Risk](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk#get_volatility) and [Performance](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance#get_excess_return) methods rather than columns on this table to create more efficient and flexible functionalities.
+
 ### Obtaining Financial Statements
 
-Obtain an Income Statement on an annual or quarterly basis. This can also be a balance statement (`companies.get_balance_sheet_statement()`) or cash flow statement (`companies.get_cash_flow_statement()`). For example, the first 5 rows of the Income Statement for Apple are shown below.
+Obtain an [Income Statement](https://www.jeroenbouma.com/projects/financetoolkit/docs#get_income_statement) on an annual or quarterly basis. This can also be a [balance statement](https://www.jeroenbouma.com/projects/financetoolkit/docs#get_balance_sheet_statement) or [cash flow statement](https://www.jeroenbouma.com/projects/financetoolkit/docs#get_cash_flow_statement).
+
+```python
+# Obtain the Income Statement for all tickers
+income_statement = companies.get_income_statement()
+
+# Select the results for Apple
+income_statement.loc['AAPL']
+```
+
+For example, the first 5 rows of the Income Statement for Apple are shown below.
 
 |                                   |        2017 |        2018 |        2019 |        2020 |        2021 |        2022 |        2023 |
 |:----------------------------------|------------:|------------:|------------:|------------:|------------:|------------:|------------:|
@@ -247,7 +278,17 @@ And below the Earnings Before Interest, Taxes, Depreciation and Amortization (EB
 
 ### Obtaining Financial Ratios
 
-Get Profitability Ratios based on the inputted balance sheet, income and cash flow statements. This can be any of the 50+ ratios within the `ratios` Notebook. The `get_` functions show a single ratio whereas the `collect_` functions show an aggregation of multiple ratios. For example, see some of the profitability ratios of Microsoft below.
+Get [Profitability Ratios](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios#collect_profitability_ratios) based on the inputted balance sheet, income and cash flow statements. This can be any of the 80+ ratios within the `ratios` module.
+
+```python
+# Collect all Profitability Ratios for all tickers
+profitability_ratios = companies.ratios.collect_profitability_ratios()
+
+# Select the results for Microsoft
+profitability_ratios.loc['MSFT']
+```
+
+For example, see some of the profitability ratios of Microsoft below.
 
 |                                 |    2017 |    2018 |    2019 |    2020 |    2021 |    2022 |    2023 |
 |:--------------------------------|--------:|--------:|--------:|--------:|--------:|--------:|--------:|
@@ -261,9 +302,21 @@ And below a few of the profitability ratios are plotted for Microsoft.
 
 ![FinancialRatios](https://github.com/JerBouma/FinanceToolkit/assets/46355364/93221f7a-face-4035-87c7-e43815e89eb4)
 
+The 80+ ratios are divided into five categories: [**Efficiency**](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios#collect_efficiency_ratios) (asset/inventory/receivables turnover, cash conversion cycle, R&D/SG&A/SBC-to-revenue), [**Liquidity**](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios#collect_liquidity_ratios) (current, quick and cash ratios, working capital), [**Profitability**](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios#collect_profitability_ratios) (margins, ROE/ROA/ROIC, cash vs. effective tax rate), [**Solvency**](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios#collect_solvency_ratios) (debt-to-equity, debt-to-capital, interest and dividend coverage) and [**Valuation**](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios#collect_valuation_ratios) (P/E, PEG, Forward P/E, EV multiples, buyback and shareholder yield). It's also possible to define fully [custom ratios](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios#collect_custom_ratios) calculated automatically from the balance sheet, income and cash flow statements.
+
 ### Obtaining Financial Models
 
-Get an Extended DuPont Analysis based on the inputted balance sheet, income and cash flow statements. This can also be an Enterprise Value Breakdown, Weighted Average Cost of Capital (WACC), Altman Z-Score and many more models. For example, this shows the Extended DuPont Analysis for Apple:
+Get an [Extended DuPont Analysis](https://www.jeroenbouma.com/projects/financetoolkit/docs/models#get_extended_dupont_analysis) based on the inputted balance sheet, income and cash flow statements.
+
+```python
+# Get the Extended DuPont Analysis for all tickers
+extended_dupont_analysis = companies.models.get_extended_dupont_analysis()
+
+# Select the results for Apple
+extended_dupont_analysis.loc['AAPL']
+```
+
+For example, this shows the Extended DuPont Analysis for Apple:
 
 |                         |     2017 |   2018 |   2019 |   2020 |   2021 |   2022 |   2023 |
 |:------------------------|---------:|-------:|-------:|-------:|-------:|-------:|-------:|
@@ -278,9 +331,21 @@ And below each component of the Extended Dupont Analysis is plotted including th
 
 ![Models](https://github.com/JerBouma/FinanceToolkit/assets/46355364/f5e1cab3-d1bd-455d-a4ba-92e1348163be)
 
+The `models` module covers 10+ models in total, for example [DuPont Analysis](https://www.jeroenbouma.com/projects/financetoolkit/docs/models#get_dupont_analysis), [WACC](https://www.jeroenbouma.com/projects/financetoolkit/docs/models#get_weighted_average_cost_of_capital), [Economic Value Added (EVA)](https://www.jeroenbouma.com/projects/financetoolkit/docs/models#get_economic_value_added), [Altman Z-Score](https://www.jeroenbouma.com/projects/financetoolkit/docs/models#get_altman_z_score), [Beneish M-Score](https://www.jeroenbouma.com/projects/financetoolkit/docs/models#get_beneish_m_score) and the [Graham Number](https://www.jeroenbouma.com/projects/financetoolkit/docs/models#get_graham_number).
+
 ### Obtaining Options and Greeks
 
-Get the Black Scholes Model for both call and put options including the relevant Greeks, in this case Delta, Gamma, Theta and Vega. This can be any of the First, Second or Third Order Greeks as found in the the `options` Notebook. The `get_` functions show a single Greek whereas the `collect_` functions show an aggregation of Greeks. For example, see the delta of the Call options for Apple for multiple expiration times and strike prices below (Stock Price: 185.92, Volatility: 31.59%, Dividend Yield: 0.49% and Risk Free Rate: 3.95%):
+Get the [Black Scholes Model](https://www.jeroenbouma.com/projects/financetoolkit/docs/options#get_black_scholes_model) for both call and put options including the relevant Greeks, in this case [Delta](https://www.jeroenbouma.com/projects/financetoolkit/docs/options#get_delta), [Gamma](https://www.jeroenbouma.com/projects/financetoolkit/docs/options#get_gamma), [Theta](https://www.jeroenbouma.com/projects/financetoolkit/docs/options#get_theta) and [Vega](https://www.jeroenbouma.com/projects/financetoolkit/docs/options#get_vega). This can be any of the First, Second or Third Order Greeks.
+
+```python
+# Get Delta for all tickers across strikes and expirations
+delta = companies.options.get_delta(expiration_time_range=180)
+
+# Select the results for Apple
+delta.loc['AAPL']
+```
+
+For example, see the delta of the Call options for Apple for multiple expiration times and strike prices below (Stock Price: 185.92, Volatility: 31.59%, Dividend Yield: 0.49% and Risk Free Rate: 3.95%):
 
 |     |   1 Month |   2 Months |   3 Months |   4 Months |   5 Months |   6 Months |
 |----:|----------:|-----------:|-----------:|-----------:|-----------:|-----------:|
@@ -294,9 +359,21 @@ Which can also be plotted together with Gamma, Theta and Vega as follows:
 
 ![Greeks](https://github.com/JerBouma/FinanceToolkit/assets/46355364/3aebe116-c4ac-4845-9801-54d2b4bde0f5)
 
+The `options` module is divided into four categories: [**Option Pricing**](https://www.jeroenbouma.com/projects/financetoolkit/docs/options#get_black_scholes_model) (Black-Scholes, Binomial Model, Implied Volatility), [**First-Order Greeks**](https://www.jeroenbouma.com/projects/financetoolkit/docs/options#collect_first_order_greeks) (Delta, Vega, Theta, Rho), [**Second-Order Greeks**](https://www.jeroenbouma.com/projects/financetoolkit/docs/options#collect_second_order_greeks) (Gamma, Vanna, Charm, Vomma) and [**Third-Order Greeks**](https://www.jeroenbouma.com/projects/financetoolkit/docs/options#collect_third_order_greeks) (Speed, Zomma, Color, Ultima).
+
 ### Obtaining Performance Metrics
 
-Get the correlations with the factors as defined by Fama-and-French. These include market, size, value, operating profitability and investment. The beauty of all functionality here is that it can be based on any period as the function accepts the period `intraday`, `weekly`, `monthly`, `quarterly` and `yearly`. For example, this shows the quarterly correlations for Apple:
+Get the correlations with the [factors as defined by Fama-and-French](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance#get_factor_asset_correlations). These include market, size, value, operating profitability and investment. The beauty of all functionality here is that it can be based on any period as the function accepts the period `intraday`, `weekly`, `monthly`, `quarterly` and `yearly`.
+
+```python
+# Get the Fama-French factor correlations for all tickers, quarterly
+factor_asset_correlations = companies.performance.get_factor_asset_correlations(period="quarterly")
+
+# Select the results for Apple
+factor_asset_correlations['AAPL']
+```
+
+For example, this shows the quarterly correlations for Apple:
 
 |        |   Mkt-RF |     SMB |     HML |     RMW |     CMA |
 |:-------|---------:|--------:|--------:|--------:|--------:|
@@ -310,9 +387,16 @@ And below the correlations with each factor are plotted over time for both Apple
 
 ![Performance](https://github.com/JerBouma/FinanceToolkit/assets/46355364/9c1eff76-b5c8-4bd2-9f47-8ce70bf002db)
 
+Beyond Beta, CAPM and the Fama-French factors, the `performance` module covers around 20+ metrics in total, for example [Sharpe Ratio](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance#get_sharpe_ratio), [Sortino Ratio](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance#get_sortino_ratio), [Calmar Ratio](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance#get_calmar_ratio), [Omega Ratio](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance#get_omega_ratio) and the [Correlation Matrix](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance#get_correlation_matrix). Most of these also support `rolling=<n>` for a value that evolves through time instead of one number per period.
+
 ### Obtaining Risk Metrics
 
-Get the Value at Risk for each week. Here, the days within each week are considered for the Value at Risk. This makes it so that you can understand within each period what is the expected Value at Risk (VaR) which can again be any period but also based on distributions such as Historical, Gaussian, Student-t, Cornish-Fisher.
+Get the [Value at Risk](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk#get_value_at_risk) for each week. Here, the days within each week are considered for the Value at Risk. This makes it so that you can understand within each period what is the expected Value at Risk (VaR) which can again be any period but also based on distributions such as Historical, Gaussian, Student-t, Cornish-Fisher, or a Peak-over-Threshold Extreme Value Theory (`distribution="evt"`) fit for the tail.
+
+```python
+# Get the weekly Value at Risk for all tickers
+companies.risk.get_value_at_risk(period="weekly")
+```
 
 |                       |    AAPL |    MSFT |   Benchmark |
 |:----------------------|--------:|--------:|------------:|
@@ -326,9 +410,21 @@ And below the Value at Risk (VaR) for Apple, Microsoft and the benchmark (S&P 50
 
 ![Risk](https://github.com/JerBouma/FinanceToolkit/assets/46355364/a95e5b51-f7fc-4a70-bbb4-bf88b346523e)
 
+Beyond VaR/CVaR/Entropic VaR, the `risk` module covers around 20+ metrics in total, for example [Conditional Drawdown at Risk](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk#get_conditional_drawdown_at_risk), [Maximum Drawdown Duration](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk#get_maximum_drawdown_duration), [EWMA Volatility](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk#get_ewma_volatility) and the [Hurst Exponent](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk#get_hurst_exponent). Most of these support `rolling=<n>` for a value that evolves through time instead of one number per period.
+
 ### Obtaining Technical Indicators
 
-Get the Ichimoku Cloud parameters based on the historical market data. This can be any of the 30+ technical indicators within the `technicals` Notebook. The `get_` functions show a single indicator whereas the `collect_` functions show an aggregation of multiple indicators. For example, see some of the parameters for Apple below:
+Get the [Ichimoku Cloud](https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals#get_ichimoku_cloud) parameters based on the historical market data. This can be any of the 40+ technical indicators within the `technicals` module.
+
+```python
+# Get the Ichimoku Cloud for all tickers
+ichimoku_cloud = companies.technicals.get_ichimoku_cloud()
+
+# Select the results for Apple
+ichimoku_cloud.xs('AAPL', axis=1, level=1)
+```
+
+For example, see some of the parameters for Apple below:
 
 | Date       |   Base Line |   Conversion Line |   Leading Span A |   Leading Span B |
 |:-----------|------------:|------------------:|-----------------:|-----------------:|
@@ -342,9 +438,18 @@ And below the Ichimoku Cloud parameters are plotted for Apple and Microsoft side
 
 ![Technicals](https://github.com/JerBouma/FinanceToolkit/assets/46355364/1ced5b34-2410-4206-8ddf-bb053bcb21b2)
 
+The 40+ indicators are divided into four categories: [**Breadth**](https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals#collect_breadth_indicators) (McClellan Oscillator, Advancers/Decliners, OBV, ADL, Chaikin Oscillator, TRIN, New Highs - New Lows), [**Momentum**](https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals#collect_momentum_indicators) (RSI, MACD, Stochastic, Williams %R, Aroon, CCI, ADX and more), [**Overlap**](https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals#collect_overlap_indicators) (SMA, EMA, DEMA, TRIX, WMA, Hull MA, VWAP, Parabolic SAR, Pivot Points, Support/Resistance) and [**Volatility**](https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals#collect_volatility_indicators) (ATR, Keltner Channels, Bollinger Bands, Donchian Channels, Volatility Cone).
+
 ### Obtaining Fixed Income Metrics
 
-Get access to the ICE BofA Corporate Bond benchmark indices and a variety of other bond and derivative related valuations within the `fixedincome` Notebook. For example, see the Effective Yield for the ICE BofA Corporate Bond Index below for each Credit Rating:
+Get access to the [ICE BofA Corporate Bond](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome#get_ice_bofa_effective_yield) benchmark indices and a variety of other bond and derivative related valuations within the `fixedincome` module.
+
+```python
+# Get the ICE BofA Effective Yield for each Credit Rating
+companies.fixedincome.get_ice_bofa_effective_yield(maturity=False)
+```
+
+For example, see the Effective Yield for the ICE BofA Corporate Bond Index below for each Credit Rating:
 
 | Date       |    AAA |     AA |      A |    BBB |     BB |      B |    CCC |
 |:-----------|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
@@ -354,13 +459,22 @@ Get access to the ICE BofA Corporate Bond benchmark indices and a variety of oth
 | 2024-04-24 | 0.0518 | 0.0531 | 0.0559 | 0.0592 | 0.0664 | 0.0778 | 0.1361 |
 | 2024-04-25 | 0.0524 | 0.0537 | 0.0564 | 0.0598 | 0.0673 | 0.079  | 0.1368 |
 
-And below a variety of Fixed Income metrics are shown all acquired from the Fixed Income Notebook.
+And below a variety of Fixed Income metrics are shown all acquired from the Fixed Income module.
 
 ![Fixed Income](https://github.com/JerBouma/FinanceToolkit/assets/46355364/dfe2a819-87d8-46be-892c-f90663bc177d)
 
+Beyond ICE BofA benchmarks, the `fixedincome` module covers [**Bond Valuations**](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome#collect_bond_statistics) (Present Value, Macaulay/Modified Duration, Convexity, Yield to Maturity), [**Derivative Valuations**](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome#get_derivative_price) (Black and Bachelier models for Swaptions), [**Government Bonds**](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome#get_government_bond_yield) (3-month and 10-year yields) and **Central Bank rates** ([Euribor](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome#get_euribor_rates), [ECB](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates) and [Federal Reserve rates](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates) incl. SOFR). It can be called via `companies.fixedincome` or standalone through `from financetoolkit import FixedIncome`.
+
 ### Understanding Key Economic Indicators
 
-Get insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and 3-month and 10-year Government Interest Rates. This is done through the `economics` Notebook and can be used as a standalone Notebook as well by using `from financetoolkit import Economics`. For example see a selection of the countries below:
+Get insights for 60+ countries into key economic indicators such as the [Consumer Price Index (CPI)](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics#get_consumer_price_index), [Gross Domestic Product (GDP)](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics#get_gross_domestic_product), [Unemployment Rates](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics#get_unemployment_rate) and [3-month](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics#get_short_term_interest_rate) and [10-year](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics#get_long_term_interest_rate) Government Interest Rates. This is done through the `economics` module and can be used as a standalone module as well by using `from financetoolkit import Economics`.
+
+```python
+# Get the Unemployment Rate for a selection of countries
+companies.economics.get_unemployment_rate()
+```
+
+For example see a selection of the countries below:
 
 |      |   Colombia |   United States |   Sweden |   Japan |   Germany |
 |:-----|-----------:|----------------:|---------:|--------:|----------:|
@@ -375,13 +489,25 @@ And below these Unemployment Rates are plotted over time:
 
 ![Economics](https://github.com/JerBouma/FinanceToolkit/assets/46355364/0bba2ce2-9846-42de-a89d-737cdcd07b31)
 
+The 40+ indicators are divided into five categories: [**Government**](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics#get_government_debt) (GDP, government debt/revenue/expenditure/deficit, trust in government), [**Economy**](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics#get_consumer_price_index) (CPI, inflation, consumer/business confidence, house/rent/share prices), [**Finance**](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics#get_money_supply) (money supply, central bank policy rate, short/long-term interest rates), [**Environment**](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics#get_renewable_energy) (renewable energy, carbon footprint) and [**Jobs & Society**](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics#get_unemployment_rate) (unemployment, labour productivity, income inequality, population, poverty rate).
+
 ### Explore your own Portfolio
 
-Through a custom XLSX, XLS or CSV file you are able to load in your own portfolio directly into the Finance Toolkit. This allows you to view your positions and performance (over time) versus a benchmark and other positions as well as your PnL development over time. Furthermore, the portfolio can be directly loaded in the core functionality of the Finance Toolkit as well making it possible to calculate all metrics and ratios for your portfolio (which is a time-weighted sum of all positions). The portfolio Notebook is a standalone Notebook and can be used as such by using `from financetoolkit import Portfolio`.
+Through a custom XLSX, XLS or CSV file you are able to load in your own portfolio directly into the Finance Toolkit. This allows you to view your positions and performance (over time) versus a benchmark and other positions as well as your PnL development over time. Furthermore, the portfolio can be directly loaded in the core functionality of the Finance Toolkit as well making it possible to calculate all metrics and ratios for your portfolio (which is a time-weighted sum of all positions). The portfolio module is a standalone module and can be used as such by using `from financetoolkit import Portfolio`.
 
 **It is important to note that it requires a specific Excel template to work, see for further instructions the following notebook <a href="https://www.jeroenbouma.com/projects/financetoolkit/portfolio-notebook" target="_blank">here</a>.**
 
-The table below shows one of the functionalities of the Portfolio Notebook but is purposely shrunken down given the >30 assets.
+```python
+from financetoolkit import Portfolio
+
+# Initialize the Portfolio module with your own dataset
+portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
+
+# Get an overview of all positions
+portfolio.get_positions_overview()
+```
+
+The table below shows one of the functionalities of the Portfolio module but is purposely shrunken down given the >30 assets.
 
 | Identifier   |   Volume |   Costs |    Price |   Invested |   Latest Price |   Latest Value |   Return |   Return Value |   Benchmark Return |   Volatility |   Benchmark Volatility |   Alpha |   Beta |   Weight |
 |:-------------|---------:|--------:|---------:|-----------:|---------------:|---------------:|---------:|---------------:|-------------------:|-------------:|-----------------------:|--------:|-------:|---------:|
@@ -397,7 +523,6 @@ The table below shows one of the functionalities of the Portfolio Notebook but i
 In which the weights and returns can be depicted as follows:
 
 ![Portfolio](https://github.com/user-attachments/assets/a5e05df5-a76a-42fa-bb30-f640cd48da62)
-
 
 # Questions & Answers
 
