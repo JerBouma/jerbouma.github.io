@@ -60,113 +60,9 @@ Through the link you are able to subscribe for the free plan and also premium pl
 
 **By default, the Finance Toolkit prioritizes Financial Modeling Prep for data retrieval. If data acquisition from Financial Modeling Prep is unsuccessful (e.g., due to plan restrictions or API key issues), the toolkit automatically switches to Yahoo Finance as a secondary source.** To disable this fallback behavior and exclusively use Financial Modeling Prep, set `enforce_source="FinancialModelingPrep"` during Toolkit initialization.
 
-## How-To Guides for the FinanceToolkit
+## Functionality
 
-Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering a distinct area of financial analysis. Click any card to open the notebook.
-
-<div class="bento-grid">
-
-  <a href="/projects/financetoolkit/getting-started" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-rocket bento-icon"></i>
-      <h2>Getting Started</h2>
-      <p>New to the Finance Toolkit? This notebook walks through every major feature with practical examples, from fetching historical prices and financial statements to running a complete financial analysis. Start here.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financetoolkit/discovery-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-compass bento-icon"></i>
-      <h2>Discovery</h2>
-      <p>Browse companies, cryptocurrencies, forex, ETFs, commodities and indices. Includes screeners, live quotes and performance metrics to help you identify and select the right tickers.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financetoolkit/ratios-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-percentage bento-icon"></i>
-      <h2>Ratios</h2>
-      <p>80+ financial ratios across five categories: efficiency, liquidity, profitability, solvency and valuation. Every formula is transparently calculated from the underlying financial statements.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financetoolkit/models-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-project-diagram bento-icon"></i>
-      <h2>Models</h2>
-      <p>Execute well-known financial models: Extended DuPont Analysis, Discounted Cash Flow (DCF), Enterprise Value Breakdown, Altman Z-Score and Weighted Average Cost of Capital (WACC).</p>
-    </div>
-  </a>
-
-  <a href="/projects/financetoolkit/options-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-sliders-h bento-icon"></i>
-      <h2>Options</h2>
-      <p>Calculate First, Second and Third Order Greeks, run the Black-Scholes model, explore Option Chains with Implied Volatilities and apply Breeden–Litzenberger to derive risk-neutral densities.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financetoolkit/technicals-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-chart-line bento-icon"></i>
-      <h2>Technicals</h2>
-      <p>40+ Technical Indicators across breadth, momentum, overlap and volatility categories. Use alongside fundamental data for a comprehensive view of market behaviour.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financetoolkit/risk-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-shield-alt bento-icon"></i>
-      <h2>Risk</h2>
-      <p>Quantify downside exposure with Value at Risk (VaR), Conditional VaR (cVaR), Maximum Drawdown, Correlation matrices, GARCH and EWMA, essential for any risk-aware investment strategy.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financetoolkit/performance-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-trophy bento-icon"></i>
-      <h2>Performance</h2>
-      <p>Evaluate strategies with Sharpe, Sortino and Treynor Ratios, Information Ratio, Jensen's Alpha, Beta and the Capital Asset Pricing Model (CAPM). Understand what truly drives returns.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financetoolkit/fixed-income-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-university bento-icon"></i>
-      <h2>Fixed Income</h2>
-      <p>Analyse bonds with Effective Yield, Macaulay Duration, Modified Duration, Convexity and Yield to Maturity. Includes derivative pricing via Black and Bachelier models for instruments such as Swaptions.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financetoolkit/economics-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-globe bento-icon"></i>
-      <h2>Economics</h2>
-      <p>Key economic indicators for 60+ countries: CPI, GDP, Unemployment Rates and Government Interest Rates at 3-month and 10-year maturities. Works as a standalone notebook as well.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financetoolkit/portfolio-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-briefcase bento-icon"></i>
-      <h2>Portfolio</h2>
-      <p>Import your own transaction data to track portfolio performance over time, identify key return drivers and benchmark against an index, directly integrated with live Finance Toolkit data.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financetoolkit/external-datasets" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-plug bento-icon"></i>
-      <h2>External Datasets</h2>
-      <p>Connect the Finance Toolkit to any data provider. Fully compatible with Yahoo Finance, OpenBB, Quandl, EODH and Bloomberg, so you can bring your preferred data without being locked to a single source.</p>
-    </div>
-  </a>
-
-</div>
-
-## Basic Usage
-
-This section is an introduction to the Finance Toolkit. Also see [this notebook](https://www.jeroenbouma.com/projects/financetoolkit/getting-started) for a detailed Getting Started guide as well as [this notebook](https://www.jeroenbouma.com/projects/financedatabase/getting-started) that includes the [Finance Database 🌎](https://www.jeroenbouma.com/projects/financedatabase). Next to that, find below a fully-fledged code documentation as well as Jupyter Notebooks in which you can see many examples ranging from basic examples to creating custom ratios to working with your own datasets.
+This section is an introduction to the Finance Toolkit. Find below a fully-fledged [code documentation](https://www.jeroenbouma.com/projects/financetoolkit/docs) as well as the How-To Guides section further down the page, in which you can see many examples ranging from basic examples to creating custom ratios to working with your own datasets.
 
 <p align="center">
     <img src="https://github.com/JerBouma/FinanceToolkit/blob/main/examples/Finance%20Toolkit%20-%20Video%20Demo.gif?raw=true" alt="Finance Toolkit Illustration" width="100%" onerror="this.style.display = 'none'"/>
@@ -189,7 +85,7 @@ Three capabilities cut across nearly the whole toolkit:
 - **`growth` and `lag`.** Pass `growth=True` on almost any `get_` or `collect_` function to return the period-over-period growth instead of the raw value. `lag` (an `int` or list of `int`s, default `1`) controls how many periods back that growth is measured against, e.g. `lag=4` for year-over-year growth on quarterly data. Combine with `trailing` (e.g. `trailing=4, growth=True`) to get TTM growth.
 - **`standardize` (Z-Score).** Most `get_*` methods across Economics, Ratios, Technicals, Risk, Performance, Models, Options and Fixed Income accept `standardize=True`, converting raw values into standard deviations from their own historical mean/std. Useful for ranking, scoring, or spotting an unusual reading across metrics that otherwise live on incompatible scales.
 
-Every module below also has a How-To Guide notebook (see the bento grid above) and full code documentation (formulas, parameters, worked examples) linked in its own section below.
+Every module below also has a How-To Guide notebook (see the How-To Guides section below) and full code documentation (formulas, parameters, worked examples) linked in its own section below.
 
 ### Discovering Instruments & News
 
@@ -523,6 +419,110 @@ The table below shows one of the functionalities of the Portfolio module but is 
 In which the weights and returns can be depicted as follows:
 
 ![Portfolio](https://github.com/user-attachments/assets/a5e05df5-a76a-42fa-bb30-f640cd48da62)
+
+## How-To Guides for the FinanceToolkit
+
+Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering a distinct area of financial analysis. Click any card to open the notebook.
+
+<div class="bento-grid">
+
+  <a href="/projects/financetoolkit/getting-started" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-rocket bento-icon"></i>
+      <h2>Getting Started</h2>
+      <p>New to the Finance Toolkit? This notebook walks through every major feature with practical examples, from fetching historical prices and financial statements to running a complete financial analysis. Start here.</p>
+    </div>
+  </a>
+
+  <a href="/projects/financetoolkit/discovery-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-compass bento-icon"></i>
+      <h2>Discovery</h2>
+      <p>Browse companies, cryptocurrencies, forex, ETFs, commodities and indices. Includes screeners, live quotes and performance metrics to help you identify and select the right tickers.</p>
+    </div>
+  </a>
+
+  <a href="/projects/financetoolkit/ratios-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-percentage bento-icon"></i>
+      <h2>Ratios</h2>
+      <p>80+ financial ratios across five categories: efficiency, liquidity, profitability, solvency and valuation. Every formula is transparently calculated from the underlying financial statements.</p>
+    </div>
+  </a>
+
+  <a href="/projects/financetoolkit/models-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-project-diagram bento-icon"></i>
+      <h2>Models</h2>
+      <p>Execute well-known financial models: Extended DuPont Analysis, Discounted Cash Flow (DCF), Enterprise Value Breakdown, Altman Z-Score and Weighted Average Cost of Capital (WACC).</p>
+    </div>
+  </a>
+
+  <a href="/projects/financetoolkit/options-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-sliders-h bento-icon"></i>
+      <h2>Options</h2>
+      <p>Calculate First, Second and Third Order Greeks, run the Black-Scholes model, explore Option Chains with Implied Volatilities and apply Breeden–Litzenberger to derive risk-neutral densities.</p>
+    </div>
+  </a>
+
+  <a href="/projects/financetoolkit/technicals-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-chart-line bento-icon"></i>
+      <h2>Technicals</h2>
+      <p>40+ Technical Indicators across breadth, momentum, overlap and volatility categories. Use alongside fundamental data for a comprehensive view of market behaviour.</p>
+    </div>
+  </a>
+
+  <a href="/projects/financetoolkit/risk-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-shield-alt bento-icon"></i>
+      <h2>Risk</h2>
+      <p>Quantify downside exposure with Value at Risk (VaR), Conditional VaR (cVaR), Maximum Drawdown, Correlation matrices, GARCH and EWMA, essential for any risk-aware investment strategy.</p>
+    </div>
+  </a>
+
+  <a href="/projects/financetoolkit/performance-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-trophy bento-icon"></i>
+      <h2>Performance</h2>
+      <p>Evaluate strategies with Sharpe, Sortino and Treynor Ratios, Information Ratio, Jensen's Alpha, Beta and the Capital Asset Pricing Model (CAPM). Understand what truly drives returns.</p>
+    </div>
+  </a>
+
+  <a href="/projects/financetoolkit/fixed-income-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-university bento-icon"></i>
+      <h2>Fixed Income</h2>
+      <p>Analyse bonds with Effective Yield, Macaulay Duration, Modified Duration, Convexity and Yield to Maturity. Includes derivative pricing via Black and Bachelier models for instruments such as Swaptions.</p>
+    </div>
+  </a>
+
+  <a href="/projects/financetoolkit/economics-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-globe bento-icon"></i>
+      <h2>Economics</h2>
+      <p>Key economic indicators for 60+ countries: CPI, GDP, Unemployment Rates and Government Interest Rates at 3-month and 10-year maturities. Works as a standalone notebook as well.</p>
+    </div>
+  </a>
+
+  <a href="/projects/financetoolkit/portfolio-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-briefcase bento-icon"></i>
+      <h2>Portfolio</h2>
+      <p>Import your own transaction data to track portfolio performance over time, identify key return drivers and benchmark against an index, directly integrated with live Finance Toolkit data.</p>
+    </div>
+  </a>
+
+  <a href="/projects/financetoolkit/external-datasets" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-plug bento-icon"></i>
+      <h2>External Datasets</h2>
+      <p>Connect the Finance Toolkit to any data provider. Fully compatible with Yahoo Finance, OpenBB, Quandl, EODH and Bloomberg, so you can bring your preferred data without being locked to a single source.</p>
+    </div>
+  </a>
+
+</div>
 
 # Questions & Answers
 

@@ -80,6 +80,8 @@ financetoolkit:
     url: /projects/financetoolkit/mcp
   - title: <font color="#d67f05">Documentation</font>
     url: /projects/financetoolkit/docs
+  - title: "Functionality"
+    url: /projects/financetoolkit#functionality
   - title: "How to Guides"
     url: /projects/financetoolkit#how-to-guides-for-the-financetoolkit
     children:
@@ -107,33 +109,6 @@ financetoolkit:
         url: /projects/financetoolkit/portfolio-notebook
       - title: External Datasets
         url: /projects/financetoolkit/external-datasets
-  - title: "Basic Usage"
-    url: /projects/financetoolkit#basic-usage
-    children:
-      - title: Discovering Instruments & News
-        url: /projects/financetoolkit#discovering-instruments--news
-      - title: Historical Data
-        url: /projects/financetoolkit#obtaining-historical-data
-      - title: Financial Statements
-        url: /projects/financetoolkit#obtaining-financial-statements
-      - title: Financial Ratios
-        url: /projects/financetoolkit#obtaining-financial-ratios
-      - title: Financial Models
-        url: /projects/financetoolkit#obtaining-financial-models
-      - title: Options and Greeks
-        url: /projects/financetoolkit#obtaining-options-and-greeks
-      - title: Performance Metrics
-        url: /projects/financetoolkit#obtaining-performance-metrics
-      - title: Risk Metrics
-        url: /projects/financetoolkit#obtaining-risk-metrics
-      - title: Technical Indicators
-        url: /projects/financetoolkit#obtaining-technical-indicators
-      - title: Fixed Income Metrics
-        url: /projects/financetoolkit#obtaining-fixed-income-metrics
-      - title: Key Economic Indicators
-        url: /projects/financetoolkit#understanding-key-economic-indicators
-      - title: Explore your own Portfolio
-        url: /projects/financetoolkit#explore-your-own-portfolio
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
 financetoolkit-mcp:
