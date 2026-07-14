@@ -5,6 +5,14 @@
 
 <div id="search-searchbar"></div>
 
+{% assign ft_modules = site.data.navigation["financetoolkit-docs"][0].children %}
+<div class="ft-module-switcher">
+  <span class="ft-module-switcher__label">Modules:</span>
+  {% for ft_module in ft_modules %}
+    <a href="{{ ft_module.url | relative_url }}" class="ft-module-pill{% if ft_module.url == page.url %} active{% endif %}">{{ ft_module.title }}</a>
+  {% endfor %}
+</div>
+
 <div id="search-hits-wrapper">
   <div id="search-results-header">
     <span id="search-results-label">Search Results</span>

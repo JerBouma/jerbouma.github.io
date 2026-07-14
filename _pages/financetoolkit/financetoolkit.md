@@ -64,10 +64,6 @@ Through the link you are able to subscribe for the free plan and also premium pl
 
 This section is an introduction to the Finance Toolkit. Find below a fully-fledged [code documentation](https://www.jeroenbouma.com/projects/financetoolkit/docs) as well as the How-To Guides section further down the page, in which you can see many examples ranging from basic examples to creating custom ratios to working with your own datasets.
 
-<p align="center">
-    <img src="https://github.com/JerBouma/FinanceToolkit/blob/main/examples/Finance%20Toolkit%20-%20Video%20Demo.gif?raw=true" alt="Finance Toolkit Illustration" width="100%" onerror="this.style.display = 'none'"/>
-</p>
-
 A basic example of how to use the Finance Toolkit is shown below. Every code snippet in the sections that follow builds on this same `companies` instance.
 
 ````python

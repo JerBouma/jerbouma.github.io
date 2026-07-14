@@ -445,6 +445,50 @@ img[width="1512"] {
   }
 }
 
+// Module switcher — makes it obvious other Finance Toolkit modules exist,
+// beyond the collapsed "Modules" sidebar section.
+.ft-module-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.ft-module-switcher__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+.ft-module-pill {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary) !important;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 5px 14px;
+  text-decoration: none !important;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: var(--accent-color) !important;
+    border-color: var(--accent-color);
+  }
+
+  &.active {
+    color: var(--accent-orange) !important;
+    border-color: var(--accent-orange);
+    background: rgba(249, 115, 22, 0.1);
+    cursor: default;
+  }
+}
+
 // Results panel wrapper
 #search-hits-wrapper {
   border: 1px solid var(--card-border);
