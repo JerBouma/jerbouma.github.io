@@ -29,7 +29,7 @@ Calculates and collects all performance metrics.
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -95,7 +95,7 @@ results in basing it off the quarterly parameter as defined in the class instanc
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -160,7 +160,7 @@ calculation. If set, Beta is estimated over a rolling window of this many period
 the full return history instead of per `period`. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -392,7 +392,7 @@ Alpha is calculated as the rolling mean excess return over this many periods acr
 the full return history instead of per `period`. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -452,7 +452,7 @@ calculation. If set, Beta is estimated over a rolling window of this many period
 the full return history instead of per `period`. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -513,7 +513,7 @@ calculation. If set, Beta is estimated over a rolling window of this many period
 the full return history instead of per `period`. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -585,7 +585,7 @@ results in basing it off the quarterly parameter as defined in the class instanc
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -654,7 +654,7 @@ the Sortino ratio is calculated over a rolling window of this many periods acros
 full return history instead of per `period`. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -709,7 +709,7 @@ results in basing it off the quarterly parameter as defined in the class instanc
 - <u>rolling (int):</u> The rolling period to use to calculate the Ulcer Index. Defaults to 14.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -755,7 +755,7 @@ The Calmar Ratio is a risk-adjusted return metric that divides the (annualized) 
 
 The formula is as follows:
 
-- Calmar Ratio = Return / |Maximum Drawdown|
+- Calmar Ratio = Return / \|Maximum Drawdown\|
 
 **See definition:** [https://en.wikipedia.org/wiki/Calmar_ratio](https://en.wikipedia.org/wiki/Calmar_ratio){:target="_blank"}
 
@@ -771,7 +771,7 @@ within a specific year (if period = 'yearly') or look at the entirety of all yea
 Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -818,7 +818,7 @@ The Sterling Ratio is a risk-adjusted return metric that divides the (annualized
 
 The formula is as follows:
 
-- Sterling Ratio = Return / (|Average Drawdown| + Adjustment)
+- Sterling Ratio = Return / (\|Average Drawdown\| + Adjustment)
 
 **Also known as:** Sterling-Calmar ratio.
 
@@ -834,7 +834,7 @@ Defaults to True.
 conventionally 0.1 (10%). Defaults to 0.1.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -892,7 +892,7 @@ period or for the entire period. Thus whether to look at the drawdowns within a 
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -954,7 +954,7 @@ the M2 ratio is calculated over a rolling window of this many periods across the
 return history instead of per `period`. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1015,7 +1015,7 @@ Tracking Error is calculated over a rolling window of this many periods across t
 full return history instead of per `period`. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1078,7 +1078,7 @@ the Information Ratio is calculated over a rolling window of this many periods a
 the full return history instead of per `period`. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1134,7 +1134,7 @@ The formula is as follows:
 results in basing it off the quarterly parameter as defined in the class instance.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1189,7 +1189,7 @@ The formula is as follows:
 results in basing it off the quarterly parameter as defined in the class instance.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1242,7 +1242,7 @@ The Win Rate is the percentage of periods in which the asset's return exceeds th
 results in basing it off the quarterly parameter as defined in the class instance.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1297,7 +1297,7 @@ results in basing it off the quarterly parameter as defined in the class instanc
 Defaults to 3.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1366,7 +1366,7 @@ return history instead of per `period`. Defaults to None.
 the threshold between gains and losses. Defaults to 0.0.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1413,7 +1413,7 @@ The Gain-to-Pain Ratio, popularized by Jack Schwager, divides the sum of all ret
 
 The formula is as follows:
 
-- Gain-to-Pain Ratio = SUM(Returns) / SUM(|Losses|)
+- Gain-to-Pain Ratio = SUM(Returns) / SUM(\|Losses\|)
 
 **Args:**
 
@@ -1425,7 +1425,7 @@ within a specific year (if period = 'yearly') or look at the entirety of all yea
 Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1532,9 +1532,9 @@ If cumulative is set to True, the period returns are compounded further into a c
 quarterly, or yearly). Defaults to "yearly".
 - <u>cumulative (bool, optional):</u> Whether to return the cumulative return over time
 instead of the discrete return per period. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Return values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1588,10 +1588,10 @@ If cumulative is set to True, the excess returns are compounded further into a c
 quarterly, or yearly). Defaults to "yearly".
 - <u>cumulative (bool, optional):</u> Whether to return the cumulative excess return over time
 instead of the discrete excess return per period. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Excess Return values over time.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1641,7 +1641,7 @@ Unlike `get_beta`, which relates a single asset to the benchmark, this computes 
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly,
 quarterly, or yearly). Defaults to "yearly".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
 **Returns:**
 
@@ -1678,7 +1678,7 @@ Unlike `get_covariance`, which relates a single asset to the benchmark, this com
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly,
 quarterly, or yearly). Defaults to "yearly".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
 **Returns:**
 

@@ -80,25 +80,25 @@ The function also allows for customization of the column names used in the datas
 
 **Args:**
 
-- <u>adjust_duplicates (bool | None):</u> Flag to indicate whether to adjust duplicate rows in the dataset.
+- <u>adjust_duplicates (bool \| None):</u> Flag to indicate whether to adjust duplicate rows in the dataset.
 If None, defaults to the configuration setting.
-- <u>date_column (list[str] | None):</u> List of column names for date information.
+- <u>date_column (list[str] \| None):</u> List of column names for date information.
 Defaults to configuration settings.
-- <u>date_format_options (list[str] | None):</u> List of date format strings to attempt when parsing
+- <u>date_format_options (list[str] \| None):</u> List of date format strings to attempt when parsing
 date columns (e.g. ['%Y-%m-%d', '%d/%m/%Y']). Defaults to configuration.
-- <u>name_columns (list[str] | None):</u> List of column names for transaction descriptions.
+- <u>name_columns (list[str] \| None):</u> List of column names for transaction descriptions.
 Defaults to configuration.
-- <u>ticker_columns (list[str] | None):</u> List of column names for asset tickers.
+- <u>ticker_columns (list[str] \| None):</u> List of column names for asset tickers.
 Defaults to configuration.
-- <u>price_columns (list[str] | None):</u> List of column names for asset prices.
+- <u>price_columns (list[str] \| None):</u> List of column names for asset prices.
 Defaults to configuration.
-- <u>volume_columns (list[str] | None):</u> List of column names for asset volumes.
+- <u>volume_columns (list[str] \| None):</u> List of column names for asset volumes.
 Defaults to configuration.
-- <u>currency_columns (list[str] | None):</u> List of column names for transaction currencies.
+- <u>currency_columns (list[str] \| None):</u> List of column names for transaction currencies.
 Defaults to configuration.
-- <u>costs_columns (list[str] | None):</u> List of column names for costs or income categories.
+- <u>costs_columns (list[str] \| None):</u> List of column names for costs or income categories.
 Defaults to configuration.
-- <u>column_mapping (dict[str, str] | None):</u> Dictionary mapping dataset columns to the appropriate field names.
+- <u>column_mapping (dict[str, str] \| None):</u> Dictionary mapping dataset columns to the appropriate field names.
 Defaults to configuration.
 
 **Returns:**
@@ -174,7 +174,7 @@ The method can retrieve data for a single benchmark ticker or for multiple bench
 
 **Args:**
 
-- <u>benchmark_ticker (str | None):</u> The default benchmark ticker symbol to use if no per-ticker mapping
+- <u>benchmark_ticker (str \| None):</u> The default benchmark ticker symbol to use if no per-ticker mapping
 is provided. If None, the default benchmark ticker is retrieved from the configuration.
 
 **Returns:**
@@ -248,7 +248,7 @@ The method uses the Toolkit class to fetch historical price data and the Currenc
 
 **Args:**
 
-- <u>rounding (int | None):</u> An optional integer specifying the number of decimal places to round the
+- <u>rounding (int \| None):</u> An optional integer specifying the number of decimal places to round the
 historical price data. If None, the default rounding value is used.
 
 **Returns:**
@@ -316,7 +316,7 @@ The resulting overview includes information about the positions, such as the val
 
 **Args:**
 
-- <u>rounding (int | None):</u> An optional integer specifying the number of decimal places to round the data.
+- <u>rounding (int \| None):</u> An optional integer specifying the number of decimal places to round the data.
 If None, the default rounding precision is used.
 
 **Returns:**
@@ -381,7 +381,7 @@ This method computes a detailed overview of the portfolio, calculating various k
 - <u>include_portfolio (bool):</u> A boolean flag indicating whether the portfolio itself should be included
 in the overview. Defaults to `True`.
 - <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions from the overview.
-- <u>rounding (int | None):</u> An optional integer specifying the number of decimal places to round the data.
+- <u>rounding (int \| None):</u> An optional integer specifying the number of decimal places to round the data.
 If None, the default rounding precision is used.
 
 **Returns:**
@@ -437,12 +437,12 @@ This method calculates key performance metrics, such as returns, for the portfol
 
 **Args:**
 
-- <u>period (str | None):</u> The time period for which portfolio performance metrics should be calculated.
+- <u>period (str \| None):</u> The time period for which portfolio performance metrics should be calculated.
 It can be one of the following: 'yearly', 'quarterly', 'monthly', 'weekly', or 'daily'.
 If None, the default period is 'quarterly' (if the 'quarterly' attribute is set to True),
 otherwise, it defaults to 'yearly'.
 - <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions.
-- <u>rounding (int | None):</u> The number of decimal places to round the output to.
+- <u>rounding (int \| None):</u> The number of decimal places to round the output to.
 If None, it defaults to the rounding precision specified in the configuration.
 
 **Returns:**
@@ -497,7 +497,7 @@ This method calculates various transaction overview ratios, such as returns, cos
 
 **Args:**
 
-- <u>rounding (int | None):</u> The number of decimal places to round the output to.
+- <u>rounding (int \| None):</u> The number of decimal places to round the output to.
 If None, it defaults to the rounding specified in the configuration.
 - <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions
 - <u>pnl_method (str):</u> The method for calculating profit & loss. Options are:
@@ -557,12 +557,12 @@ This method calculates various transaction performance metrics, such as returns,
 
 **Args:**
 
-- <u>period (str | None):</u> The time period for which transaction performance metrics
+- <u>period (str \| None):</u> The time period for which transaction performance metrics
 should be calculated. This can be one of the following: 'yearly', 'quarterly',
 'monthly', 'weekly', or 'daily'. If None, the default is 'quarterly' if
 the 'quarterly' attribute is set to True, otherwise 'yearly'.
 - <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions
-- <u>rounding (int | None):</u> The number of decimal places to round the output to.
+- <u>rounding (int \| None):</u> The number of decimal places to round the output to.
 If None, it defaults to the rounding specified in the configuration.
 
 **Returns:**

@@ -34,7 +34,7 @@ Defaults to True.
 - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -90,7 +90,7 @@ Note that any of the following characters are considered as operators: +, -, *, 
 - <u>options (bool):</u> Whether to return the available names to use in the custom ratios.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -158,7 +158,7 @@ Calculates and collects all Efficiency Ratios based on the provided data.
 - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -218,7 +218,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -271,7 +271,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -325,7 +325,7 @@ The formula is as follows:
 - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -379,7 +379,7 @@ The formula is as follows:
 - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -433,7 +433,7 @@ The formula is as follows:
 - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -486,7 +486,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -540,7 +540,7 @@ The formula is as follows:
 - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -594,7 +594,7 @@ The formula is as follows:
 - <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -645,7 +645,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -698,7 +698,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -749,7 +749,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -802,7 +802,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -855,7 +855,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -908,7 +908,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -961,7 +961,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1016,7 +1016,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1071,7 +1071,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1124,7 +1124,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1171,7 +1171,7 @@ Calculates and collects all Liquidity Ratios based on the provided data.
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1230,7 +1230,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1285,7 +1285,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1337,7 +1337,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1390,7 +1390,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1443,7 +1443,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1496,7 +1496,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1549,7 +1549,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1583,7 +1583,7 @@ Calculates and collects all Profitability Ratios based on the provided data.
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1645,7 +1645,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1698,7 +1698,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1751,7 +1751,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1804,7 +1804,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1856,7 +1856,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1909,7 +1909,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1962,7 +1962,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2017,7 +2017,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2070,7 +2070,7 @@ The formula is as follows:
 with the dividends paid. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2121,7 +2121,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2173,7 +2173,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2224,7 +2224,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2275,7 +2275,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2328,7 +2328,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2379,7 +2379,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2430,7 +2430,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2481,7 +2481,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2530,7 +2530,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2583,7 +2583,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2629,7 +2629,7 @@ Calculates and collects all Solvency Ratios based on the provided data.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2689,7 +2689,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2740,7 +2740,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2791,7 +2791,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2842,7 +2842,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2893,7 +2893,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2946,7 +2946,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares for market capitalization. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2995,7 +2995,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3044,7 +3044,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3095,7 +3095,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3146,7 +3146,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3197,7 +3197,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3238,7 +3238,7 @@ Calculate the preferred dividend coverage ratio, a solvency ratio that measures 
 
 The formula is as follows:
 
-- Preferred Dividend Coverage Ratio = Net Income / |Preferred Dividends Paid|
+- Preferred Dividend Coverage Ratio = Net Income / \|Preferred Dividends Paid\|
 
 **Also known as:** preferred dividend cover.
 
@@ -3246,7 +3246,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3298,7 +3298,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3343,7 +3343,7 @@ Calculates and collects all Valuation Ratios based on the provided data.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3407,7 +3407,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted earnings per share. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3459,7 +3459,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3514,7 +3514,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3569,7 +3569,7 @@ Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3620,7 +3620,7 @@ Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP 
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3654,7 +3654,7 @@ Calculate the forward price earnings to growth (forward PEG) ratio, a valuation 
 
 The formula is as follows:
 
-- Estimated EPS Growth Rate = (Estimated EPS - Trailing EPS) / |Trailing EPS|
+- Estimated EPS Growth Rate = (Estimated EPS - Trailing EPS) / \|Trailing EPS\|
 - Forward PEG = Forward P/E / (Estimated EPS Growth Rate * 100)
 
 Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP subscription. Analyst estimates are fetched once per Toolkit instance and cached across calls to this (or the other forward-looking ratio) method - never on initialization or on any other ratio.
@@ -3665,7 +3665,7 @@ Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP 
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3710,7 +3710,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3764,7 +3764,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3816,7 +3816,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3870,7 +3870,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3924,7 +3924,7 @@ The formula is as follows:
 - <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3979,7 +3979,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4034,7 +4034,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4089,7 +4089,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4144,7 +4144,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4191,7 +4191,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4239,7 +4239,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4286,7 +4286,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4332,7 +4332,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4381,7 +4381,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4427,7 +4427,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4473,7 +4473,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4517,7 +4517,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4561,7 +4561,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4605,7 +4605,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4653,7 +4653,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4700,7 +4700,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4752,7 +4752,7 @@ The formula is as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4805,7 +4805,7 @@ The formula is as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.

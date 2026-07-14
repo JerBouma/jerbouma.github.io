@@ -31,9 +31,9 @@ The data comes from Yahoo Finance and is not always available. If the data is no
 
 **Args:**
 
-- <u>expiration_date (str | None, optional):</u> The expiration date to use. Defaults to None which means it will
+- <u>expiration_date (str \| None, optional):</u> The expiration date to use. Defaults to None which means it will
 use the first available expiration date.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
 **Returns:**
 
@@ -102,7 +102,7 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
@@ -117,7 +117,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the dividend yield as obtained through annual historical data.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -184,7 +184,7 @@ To determine the Implied Volatility, the Black Scholes Model is used to calculat
 
 **Args:**
 
-- <u>expiration_date (str | None, optional):</u> The expiration date to use for the calculation. Defaults to None
+- <u>expiration_date (str \| None, optional):</u> The expiration date to use for the calculation. Defaults to None
 which means it will use the most recent expiration date.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
@@ -194,13 +194,13 @@ means it will use the current risk free rate.
 means it will use the dividend yield as obtained through annual historical data.
 - <u>show_expiration_dates (bool, optional):</u> Whether to show the expiration dates. Defaults to False.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
 **Returns:**
 
-pd.Series | list[str]: Implied Volatility values containing the tickers as the index and the expiration
+pd.Series \| list[str]: Implied Volatility values containing the tickers as the index and the expiration
 dates as the columns. If show_expiration_dates is True, it will return a list of expiration dates.
 
 **As an example:**
@@ -274,7 +274,7 @@ The resulting output is a DataFrame containing the tickers, strike prices and mo
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
@@ -291,7 +291,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the dividend yield as obtained through annual historical data.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -354,7 +354,7 @@ The resulting output is a DataFrame containing the tickers and movements as the 
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>time_to_expiration (int):</u> The number of year to use for the time to expiration. Defaults to 1 which equals
 one year.
@@ -365,7 +365,7 @@ means it will use the current risk free rate.
 - <u>show_unique_combinations (bool, optional):</u> Whether to show the unique combinations of the stock prices.
 Defaults to False.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -433,7 +433,7 @@ By default the most recent risk free rate, dividend yield and stock price is use
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -448,7 +448,7 @@ means it will use the dividend yield as obtained through annual historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option delta. Defaults to False which means
 it will calculate the call option delta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -499,7 +499,7 @@ By default the most recent risk free rate, dividend yield and stock price is use
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -514,7 +514,7 @@ means it will use the dividend yield as obtained through annual historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option delta. Defaults to False which means
 it will calculate the call option delta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -574,7 +574,7 @@ Note that the delta of a call option is always between 0 and 1, while the delta 
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -587,7 +587,7 @@ means it will use the current risk free rate.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option delta. Defaults to False which means
 it will calculate the call option delta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -643,7 +643,7 @@ The Dual Delta can be interpreted as the probability of an option finishing in t
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -658,7 +658,7 @@ means it will use the dividend yield as obtained through annual historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option dual delta. Defaults to False which means
 it will calculate the call option dual delta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -717,7 +717,7 @@ Note that the vega of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -730,7 +730,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the dividend yield as obtained through annual historical data.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -786,7 +786,7 @@ The Theta can be interpreted as follows:
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -801,7 +801,7 @@ means it will use the dividend yield as obtained through annual historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option theta. Defaults to False which means
 it will calculate the call option theta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -862,7 +862,7 @@ Rho is typically expressed as the amount of money, per share of the underlying, 
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -877,7 +877,7 @@ means it will use the dividend yield as obtained through annual historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option rho. Defaults to False which means
 it will calculate the call option rho.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -935,7 +935,7 @@ The Epsilon can be interpreted as follows:
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -950,7 +950,7 @@ means it will use the dividend yield as obtained through annual historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option epsilon. Defaults to False which means
 it will calculate the call option epsilon.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1010,7 +1010,7 @@ The Lambda can be interpreted as follows:
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1025,7 +1025,7 @@ means it will use the dividend yield as obtained through annual historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option lambda. Defaults to False which means
 it will calculate the call option lambda.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1073,7 +1073,7 @@ By default the most recent risk free rate, dividend yield and stock price is use
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1088,7 +1088,7 @@ means it will use the current dividend yield.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option delta. Defaults to False which means
 it will calculate the call option delta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1147,7 +1147,7 @@ Note that the gamma of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1158,7 +1158,7 @@ strike prices will be 75, 80, 85, 90, 95, 100, 105, 110, 115 and 120 if the curr
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None which
 means it will use the current risk free rate.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1214,7 +1214,7 @@ Note that the dual gamma of a call option and put option are equal to each other
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1227,7 +1227,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1287,7 +1287,7 @@ Note that the vanna of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1300,7 +1300,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1359,7 +1359,7 @@ The Charm can be interpreted as follows:
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1374,7 +1374,7 @@ means it will use the current dividend yield.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option charm. Defaults to False which means
 it will calculate the call option charm.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1432,7 +1432,7 @@ The vomma can be interpreted as follows:
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1445,7 +1445,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1505,7 +1505,7 @@ Note that the vera of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1518,7 +1518,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1578,7 +1578,7 @@ The Veta can be interpreted as follows:
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1591,7 +1591,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1643,7 +1643,7 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1656,7 +1656,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1704,7 +1704,7 @@ By default the most recent risk free rate, dividend yield and stock price is use
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1717,7 +1717,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1776,7 +1776,7 @@ Note that the speed of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1789,7 +1789,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1849,7 +1849,7 @@ Note that the zomma of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1862,7 +1862,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1922,7 +1922,7 @@ Note that the color of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -1935,7 +1935,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1995,7 +1995,7 @@ Note that the ultima of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str | None, optional):</u> The start date which determines the stock price. Defaults to None
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
@@ -2008,7 +2008,7 @@ means it will use the current risk free rate.
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 

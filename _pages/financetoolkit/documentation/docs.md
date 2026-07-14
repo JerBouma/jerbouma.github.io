@@ -470,9 +470,9 @@ Note that this information requires a Premium FMP subscription.
 **Args:**
 
 - <u>overwrite (bool, optional):</u> Defines whether to overwrite the existing data. Defaults to False.
-- <u>rounding (int | None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
 - <u>growth (bool, optional):</u> Defines whether to return the growth of the data. Defaults to False.
-- <u>lag (int | list[int], optional):</u> Defines the number of periods to lag the growth data by. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> Defines the number of periods to lag the growth data by. Defaults to 1.
 
 **Returns:**
 
@@ -827,7 +827,7 @@ Please note that this functionality is only available through Financial Modeling
 Defaults to "1hour".
 - <u>return_column (str, optional):</u> The column to use for the return calculation. Defaults to "Close".
 - <u>fill_nan (bool, optional):</u> Defines whether to forward fill NaN values. Defaults to True.
-- <u>rounding (int | None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
 
 **Returns:**
 
@@ -1124,7 +1124,7 @@ either "FinancialModelingPrep" or "YahooFinance". Defaults to None.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
-- <u>lag (int | str):</u> Defines the number of periods to lag the growth data by.
+- <u>lag (int \| str):</u> Defines the number of periods to lag the growth data by.
 E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
 **Returns:**
@@ -1208,7 +1208,7 @@ either "FinancialModelingPrep" or "YahooFinance". Defaults to None.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
-- <u>lag (int | str):</u> Defines the number of periods to lag the growth data by.
+- <u>lag (int \| str):</u> Defines the number of periods to lag the growth data by.
 - <u>trailing (int):</u> Defines whether to select a trailing period.
 E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
@@ -1277,7 +1277,7 @@ The cash flow statement is a financial statement that shows how changes in balan
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
-- <u>lag (int | str):</u> Defines the number of periods to lag the growth data by.
+- <u>lag (int \| str):</u> Defines the number of periods to lag the growth data by.
 - <u>trailing (int):</u> Defines whether to select a trailing period.
 E.g. when selecting 4 with quarterly data, the TTM is calculated.
 

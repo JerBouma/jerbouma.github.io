@@ -285,14 +285,14 @@ Note that a swaption's price scales with the tenor of the underlying swap (a rig
 
 - <u>model (str, optional):</u> The type of model to use for calculating the derivative price. Defaults to "black".
 - <u>forward_rate (float, optional):</u> The forward rate as derived from the swap curve. Defaults to None.
-- <u>strike_rate (float | list, optional):</u> The strike rate for the derivative. Defaults to None which means it calculates the
+- <u>strike_rate (float \| list, optional):</u> The strike rate for the derivative. Defaults to None which means it calculates the
 derivative price a range of strike prices. Can also be a list of strike rates (e.g. [0.01, 0.02, 0.03, 0.04, 0.05]).
 - <u>volatility (float, optional):</u> The volatility of the underlying asset. Defaults to None.
-- <u>years_to_maturity (float | list, optional):</u> The years to maturity of the derivative in years. Defaults to None which means it plots
+- <u>years_to_maturity (float \| list, optional):</u> The years to maturity of the derivative in years. Defaults to None which means it plots
 the derivative price for the next 10 years. Can also be a list of years to maturity (e.g. [1, 2.3, 2.5, 3])
 - <u>risk_free_rate (float, optional):</u> The risk-free interest rate. Defaults to None which means it is equal to the fixed rate.
 - <u>notional (float, optional):</u> The notional amount of the derivative. Defaults to 10_000_000.
-- <u>tenor (float | None, optional):</u> The tenor (length in years) of the underlying swap. Defaults to None,
+- <u>tenor (float \| None, optional):</u> The tenor (length in years) of the underlying swap. Defaults to None,
 which means it is equal to years_to_maturity for each scenario.
 - <u>payment_frequency (int, optional):</u> Number of fixed-leg payments per year on the underlying swap
 (e.g. 1 for annual, 2 for semi-annual, 4 for quarterly). Defaults to 2 (semi-annual).
@@ -352,10 +352,10 @@ Short-term interest rates are based on three-month money market rates where avai
 
 - <u>short_term (bool, optional):</u> Whether to return the short-term interest rate. Defaults to False.
 This means that the long-term interest rate will be returned.
-- <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+- <u>period (str \| None, optional):</u> Whether to return the monthly, quarterly or the annual data.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
 - <u>lag (int, optional):</u> The number of periods to lag the data by.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -404,7 +404,7 @@ See definitions:
 **Args:**
 
 - <u>maturity (bool, optional):</u> Whether to return the maturity option adjusted spread or the rating option adjusted spread.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Returns:**
@@ -458,7 +458,7 @@ See definitions:
 **Args:**
 
 - <u>maturity (bool, optional):</u> Whether to return the maturity effective yield or the rating effective yield.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Returns:**
@@ -510,7 +510,7 @@ See definitions:
 **Args:**
 
 - <u>maturity (bool, optional):</u> Whether to return the maturity total return or the rating total return.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Returns:**
@@ -562,7 +562,7 @@ See definitions:
 **Args:**
 
 - <u>maturity (bool, optional):</u> Whether to return the maturity yield to worst or the rating yield to worst.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Returns:**
@@ -612,10 +612,10 @@ For more information, see for example: [https://data.ecb.europa.eu/data/datasets
 
 **Args:**
 
-- <u>maturities (str | list | None, optional):</u> Maturities for which to retrieve rates. Defaults to None.
+- <u>maturities (str \| list \| None, optional):</u> Maturities for which to retrieve rates. Defaults to None.
 When set to None, it will retrieve rates for 1 month, 3 months, 6 months, and 12 months.
 - <u>nominal (bool, optional):</u> Flag indicating whether to retrieve nominal rates. Defaults to True.
-- <u>rounding (int | None, optional):</u> Rounding precision for the rates. Defaults to None.
+- <u>rounding (int \| None, optional):</u> Rounding precision for the rates. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Returns:**
@@ -665,7 +665,7 @@ See source: [https://data.ecb.europa.eu/main-figures/](https://data.ecb.europa.e
 
 - <u>rate (str, optional):</u> The rate to return. Defaults to None, which returns all rates.
 Choose between 'refinancing', 'lending' or 'deposit'.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Returns:**
@@ -738,7 +738,7 @@ See source: [https://www.newyorkfed.org/markets/reference-rates/](https://www.ne
 **Args:**
 
 - <u>rate (str):</u> The rate to return. Defaults to 'EFFR' (Effective Federal Funds Rate).
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Returns:**

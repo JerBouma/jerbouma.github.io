@@ -35,9 +35,9 @@ It is also possible to acquire the data from the Global Macro Database (GMDB) so
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
-- <u>gmdb_source (bool | None, optional):</u> If True, retrieves data from the GMDB source. Defaults to None.
+- <u>gmdb_source (bool \| None, optional):</u> If True, retrieves data from the GMDB source. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -45,7 +45,7 @@ It is also possible to acquire the data from the Global Macro Database (GMDB) so
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -89,7 +89,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -97,7 +97,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -141,7 +141,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
@@ -150,7 +150,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -193,7 +193,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -201,7 +201,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -244,7 +244,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -252,7 +252,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -299,7 +299,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -307,7 +307,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -349,7 +349,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -357,7 +357,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -398,7 +398,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -406,7 +406,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -467,7 +467,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -475,7 +475,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -519,7 +519,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -527,7 +527,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -571,7 +571,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -579,7 +579,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -628,7 +628,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -636,7 +636,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -680,7 +680,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -688,7 +688,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -732,7 +732,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -740,7 +740,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -785,7 +785,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -793,7 +793,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -837,7 +837,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -845,7 +845,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -889,7 +889,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -897,7 +897,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -937,7 +937,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -945,7 +945,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -996,7 +996,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1039,7 +1039,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1047,7 +1047,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1090,7 +1090,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1098,7 +1098,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1142,7 +1142,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1150,7 +1150,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1195,7 +1195,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1203,7 +1203,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1247,7 +1247,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1255,7 +1255,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1305,7 +1305,7 @@ The sample is ex ante designed to be nationally representative of the population
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1313,7 +1313,7 @@ The sample is ex ante designed to be nationally representative of the population
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1366,7 +1366,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1374,7 +1374,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1420,7 +1420,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1428,7 +1428,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1470,7 +1470,7 @@ An indicator above 100 signals a boost in the consumers’ confidence towards th
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1478,7 +1478,7 @@ An indicator above 100 signals a boost in the consumers’ confidence towards th
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1520,7 +1520,7 @@ Numbers above 100 suggest an increased confidence in near future business perfor
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1528,7 +1528,7 @@ Numbers above 100 suggest an increased confidence in near future business perfor
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1568,7 +1568,7 @@ The composite leading indicator (CLI) is designed to provide early signals of tu
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1576,7 +1576,7 @@ The composite leading indicator (CLI) is designed to provide early signals of tu
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1621,10 +1621,10 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>quarterly (bool | None, optional):</u> Whether to return the quarterly data or the annual data.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>quarterly (bool \| None, optional):</u> Whether to return the quarterly data or the annual data.
 - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data or the nominal data.
-- <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+- <u>gmdb_source (bool \| None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1632,7 +1632,7 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1680,8 +1680,8 @@ This is based on an 2015 = 100 as an index.
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>quarterly (bool | None, optional):</u> Whether to return the quarterly data or the annual data.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>quarterly (bool \| None, optional):</u> Whether to return the quarterly data or the annual data.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1689,7 +1689,7 @@ This is based on an 2015 = 100 as an index.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1739,8 +1739,8 @@ This uses 2015 as the base year (= 100)
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str \| None, optional):</u> Whether to return the monthly, quarterly or the annual data.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1748,7 +1748,7 @@ This uses 2015 as the base year (= 100)
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1795,9 +1795,9 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-- <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str \| None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+- <u>gmdb_source (bool \| None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1805,7 +1805,7 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1851,8 +1851,8 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>measure (str | None, optional):</u> The measure of money supply to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>measure (str \| None, optional):</u> The measure of money supply to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1860,7 +1860,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1907,7 +1907,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1915,7 +1915,7 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1957,9 +1957,9 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-- <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str \| None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+- <u>gmdb_source (bool \| None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -1967,7 +1967,7 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -2014,9 +2014,9 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-- <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str \| None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+- <u>gmdb_source (bool \| None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -2024,7 +2024,7 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -2072,7 +2072,7 @@ This indicator in percentage of total primary energy supply.
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -2080,7 +2080,7 @@ This indicator in percentage of total primary energy supply.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -2126,7 +2126,7 @@ The carbon footprint is a subset of the ecological footprint and of the more com
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -2134,7 +2134,7 @@ The carbon footprint is a subset of the ecological footprint and of the more com
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -2182,9 +2182,9 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str | None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-- <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str \| None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+- <u>gmdb_source (bool \| None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -2192,7 +2192,7 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -2241,7 +2241,7 @@ This uses 2015 as the base year (= 100)
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -2249,7 +2249,7 @@ This uses 2015 as the base year (= 100)
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -2294,7 +2294,7 @@ The Gini coefficient is based on the comparison of cumulative proportions of the
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -2302,7 +2302,7 @@ The Gini coefficient is based on the comparison of cumulative proportions of the
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -2365,8 +2365,8 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>gmdb_source (bool | None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>gmdb_source (bool \| None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -2374,7 +2374,7 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -2419,7 +2419,7 @@ However, two countries with the same poverty rates may differ in terms of the re
 
 **Args:**
 
-- <u>countries (list[str] | str | None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
@@ -2427,7 +2427,7 @@ However, two countries with the same poverty rates may differ in terms of the re
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 

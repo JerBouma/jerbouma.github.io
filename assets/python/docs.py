@@ -122,6 +122,7 @@ def _clean_description(text: str) -> str:
     Kramdown treats them as one tight list instead.
     """
     text = text.replace("—", "-")  # em dash -> hyphen, used for formula minus signs
+    text = text.replace("|", "\\|")  # escape so |x| (absolute value) isn't parsed as a table
 
     paragraphs = []
     for raw_paragraph in _RE_BLANK_LINE.split(_dedent_block(text)):
@@ -203,6 +204,7 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
         # Arguments (also covers Returns / Raises / Notes, which follow Args:)
         args_m = _RE_ARGUMENTS.search(docstring)
         arguments = _linkify(args_m.group(1)) if args_m else ""
+        arguments = arguments.replace("|", "\\|")  # escape so |x| (absolute value) isn't parsed as a table
         arguments = _dedent_block(arguments)
         arguments = _RE_ARG_LABEL.sub(_underline_arg, arguments)
         arguments = "\n".join(

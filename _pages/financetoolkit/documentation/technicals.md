@@ -32,7 +32,7 @@ Calculates all Technical Indicators based on the data provided.
 - <u>close_column (str, optional):</u> The column to use for the calculation. Defaults to "Adj Close".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -84,11 +84,11 @@ Calculates and collects various breadth indicators based on the provided data.
 Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -153,11 +153,11 @@ Defaults to "Adj Close".
 Defaults to 19.
 - <u>long_ema_window (int, optional):</u> The window size for the long-term EMA.
 Defaults to 39.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -219,11 +219,11 @@ The formula is a follows:
 Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -285,11 +285,11 @@ The formula is a follows:
 Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the OBV.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -350,11 +350,11 @@ The formula is a follows:
 Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Accumulation/Distribution Line.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -420,11 +420,11 @@ Defaults to "Adj Close".
 Defaults to 3.
 - <u>long_window (int, optional):</u> Number of periods for the long-term moving average.
 Defaults to 10.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Chaikin Oscillator.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -480,11 +480,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to 14.
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -547,11 +547,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods for calculating the MFI.
 Defaults to 14.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -615,11 +615,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods for calculating the Williams %R.
 Defaults to 14.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -681,11 +681,11 @@ The formula is a follows:
 Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 - <u>window (int, optional):</u> The number of periods for calculating the Aroon Indicator.
 Defaults to 14.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -752,11 +752,11 @@ the closing prices. Defaults to "Adj Close".
 Defaults to 14.
 - <u>constant (float, optional):</u> Constant multiplier used in the CCI calculation.
 Defaults to 0.015.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -820,11 +820,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 the closing prices. Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods for calculating the RVI.
 Defaults to 14.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -888,11 +888,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 the closing prices. Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods for calculating the Force Index.
 Defaults to 14.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -960,11 +960,11 @@ Defaults to 7.
 Defaults to 14.
 - <u>window_3 (int, optional):</u> The number of periods for the third long-term window.
 Defaults to 28.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1030,11 +1030,11 @@ the closing prices. Defaults to "Adj Close".
 Defaults to 7.
 - <u>long_window (int, optional):</u> The number of periods for the long-term moving average.
 Defaults to 28.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1098,11 +1098,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 the closing prices. Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods to consider for the DPO calculation.
 Defaults to 14.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1166,11 +1166,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 the closing prices. Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods to consider for the ADX calculation.
 Defaults to 14.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1234,11 +1234,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 the closing prices. Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods to consider for the CMO calculation.
 Defaults to 14.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1304,11 +1304,11 @@ Conversion Line (Tenkan-sen) calculation. Defaults to 9.
 (Kijun-sen) calculation. Defaults to 20.
 - <u>lead_span_b_window (int, optional):</u> The number of periods to shift forward for the
 Lead Span B calculation. Defaults to 40.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1377,11 +1377,11 @@ Defaults to "Adj Close".
 Defaults to 14.
 - <u>smooth_widow (int, optional):</u> The number of periods to consider for the %D line
 (slow stochastic) calculation. Defaults to 3.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the %K and %D values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1451,11 +1451,11 @@ Defaults to 12.
 Defaults to 26.
 - <u>signal_window (int, optional):</u> The number of periods for the signal line.
 Defaults to 9.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the MACD and signal values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1519,11 +1519,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods for RSI calculation. Defaults to 14.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the RSI.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1586,11 +1586,11 @@ The formula is a follows:
 Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the BOP.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1647,11 +1647,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to 14.
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1714,11 +1714,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods to consider for the moving average.
 The number of periods (time intervals) over which to calculate the MA.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the MA.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1783,11 +1783,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods for EMA calculation.
 The number of periods (time intervals) over which to calculate the EMA.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the EMA.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1852,11 +1852,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods for moving average calculation.
 The number of periods (time intervals) over which to calculate the moving average.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the DEMA.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1924,11 +1924,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods for moving average calculation.
 The number of periods (time intervals) over which to calculate the moving average.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Trix.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1997,11 +1997,11 @@ Defaults to "Adj Close".
 The number of periods (time intervals) over which to calculate the moving average.
 - <u>num_std_dev (int, optional):</u> Number of standard deviations for the bands.
 Defaults to 2.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the bands.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2066,11 +2066,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods for TMA calculation.
 The number of periods (time intervals) over which to calculate the TMA.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the TMA.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2134,11 +2134,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods to consider for the WMA.
 The number of periods (time intervals) over which to calculate the WMA.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the WMA.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2204,11 +2204,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods to consider for the HMA.
 The number of periods (time intervals) over which to calculate the HMA.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the HMA.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2274,11 +2274,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods to consider for the VWAP.
 The number of periods (time intervals) over which to calculate the VWAP.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the VWAP.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2347,11 +2347,11 @@ Defaults to "Adj Close".
 increases every time a new extreme point is reached. Defaults to 0.02.
 - <u>af_max (float, optional):</u> Maximum value the acceleration factor can reach.
 Defaults to 0.2.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Parabolic SAR.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2420,11 +2420,11 @@ The formula is a follows:
 Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Pivot Points.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2495,7 +2495,7 @@ Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods for calculating support and resistance levels.
 The number of periods (time intervals) over which to calculate the support and resistance levels.
 Defaults to 14.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 If None, the rounding value specified during the initialization of the Toolkit instance will be used.
 Defaults to None.
 
@@ -2553,11 +2553,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to 14.
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2618,11 +2618,11 @@ The formula is a follows:
 Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the True Range.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2684,11 +2684,11 @@ The formula is a follows:
 - <u>period (str):</u> Period for which to calculate the ATR.
 - <u>window (int):</u> Number of periods for ATR calculation.
 The number of periods (time intervals) over which to calculate the Average True Range.
-- <u>rounding (int | None):</u> Number of decimal places to round the resulting ATR values to.
+- <u>rounding (int \| None):</u> Number of decimal places to round the resulting ATR values to.
 If None, no rounding is performed.
 - <u>growth (bool):</u> Flag indicating whether to return the ATR growth rate.
 If True, the ATR growth rate is calculated.
-- <u>lag (int | list[int]):</u> Number of periods to lag the ATR values by.
+- <u>lag (int \| list[int]):</u> Number of periods to lag the ATR values by.
 If an integer is provided, all ATR values are lagged by the same number of periods.
 If a list of integers is provided, each ATR value is lagged by the corresponding number of periods.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2767,11 +2767,11 @@ Defaults to 14.
 Defaults to 14.
 - <u>atr_multiplier (int, optional):</u> Multiplier for ATR to determine channel width.
 Defaults to 2.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the channels.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2836,11 +2836,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods for the Donchian Channels.
 Defaults to 20.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the channels.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2893,13 +2893,13 @@ The Volatility Cone summarizes the distribution of historical annualized realize
 
 **Args:**
 
-- <u>windows (list[int] | None, optional):</u> The rolling windows (in periods) to
+- <u>windows (list[int] \| None, optional):</u> The rolling windows (in periods) to
 calculate realized volatility for. Defaults to [10, 20, 30, 60, 90, 120].
 - <u>period (str, optional):</u> The time period to consider for historical data.
 Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 If None, the rounding value specified during the initialization of the Toolkit instance will be used.
 Defaults to None.
 
@@ -2956,11 +2956,11 @@ The formula is a follows:
 Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3024,11 +3024,11 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods for the new high / new low lookback.
 Defaults to 252.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.

@@ -29,7 +29,7 @@ Calculates and collects all risk metrics.
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int | str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -91,9 +91,9 @@ of all years. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, VaR is
 calculated over a rolling window of this many periods across the full return history instead
 of per `period` (e.g. a rolling 60-day VaR). Defaults to None.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the VaR values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -163,9 +163,9 @@ of all years. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, CVaR is
 calculated over a rolling window of this many periods across the full return history instead
 of per `period` (e.g. a rolling 60-day CVaR). Defaults to None.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -230,9 +230,9 @@ Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate EVaR within the specified period or for the entire
 period. Thus whether to look at the CVaR within a specific year (if period = 'yearly') or look at the entirety
 of all years. Defaults to True.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -296,9 +296,9 @@ of all years. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, CDaR is
 calculated over a rolling window of this many periods across the full return history instead
 of per `period`. Defaults to None.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CDaR values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -356,10 +356,10 @@ for the entire period. Thus whether to look at the Tail Ratio within a specific 
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Tail
 Ratio is calculated over a rolling window of this many periods across the full return history
 instead of per `period`. Defaults to None.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Tail Ratio values over time.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -414,9 +414,9 @@ Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate CVaR within the specified period or for the entire
 period. Thus whether to look at the CVaR within a specific year (if period = 'yearly') or look at the entirety
 of all years. Defaults to True.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -475,9 +475,9 @@ Defaults to "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the duration within the specified period or
 for the entire period. Thus whether to look at the duration within a specific year (if period =
 'yearly') or look at the entirety of all years. Defaults to True.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the duration values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -530,10 +530,10 @@ Defaults to "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the recovery time within the specified period
 or for the entire period. Thus whether to look at the recovery time within a specific year (if
 period = 'yearly') or look at the entirety of all years. Defaults to True.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the recovery time values over time.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -589,9 +589,9 @@ Ulcer Index = SQRT(SUM[(Pn / Highest High)^2] / n)
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
 Defaults to "yearly".
 - <u>rolling (int, optional):</u> The rolling period to use for the calculation. Defaults to 14.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the UI values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -652,16 +652,16 @@ Defaults to "weekly".
 - <u>within_period (bool, optional):</u> Whether to calculate GARCH within the specified period or for the entire
 period. Thus whether to look at the GARCH within a specific year (if period = 'yearly') or look at the
 entirety of all years. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the GARCH values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame | pd.Series: GARCH values
+pd.DataFrame \| pd.Series: GARCH values
 
 **Notes:**
 
@@ -720,17 +720,17 @@ Defaults to "quarterly".
 - <u>within_period (bool, optional):</u> Whether to calculate GARCH within each specified period or all
 at once. Thus whether to look at the GARCH within each specific year (if period = 'yearly') or
 look at the entirety of all years. Defaults to False.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the GARCH values over time. Defaults to
 False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame | pd.Series: sigma_2 forecast values
+pd.DataFrame \| pd.Series: sigma_2 forecast values
 
 **Notes:**
 
@@ -786,9 +786,9 @@ of all years. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Skewness is
 calculated over a rolling window of this many periods across the full return history instead of
 per `period`. Defaults to None.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -845,10 +845,10 @@ for a normal distribution).
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Kurtosis is
 calculated over a rolling window of this many periods across the full return history instead of
 per `period`. Defaults to None.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time.
 efaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -903,9 +903,9 @@ quarterly, or yearly). Defaults to "yearly".
 Variance is calculated over a rolling window of this many periods (e.g. period='monthly'
 and rolling=6 gives the rolling 6-month Variance) instead of one value per `period`.
 Defaults to None.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Variance values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -961,10 +961,10 @@ quarterly, or yearly). Defaults to "yearly".
 Volatility is calculated over a rolling window of this many periods (e.g. period='monthly'
 and rolling=6 gives the rolling 6-month Volatility) instead of one value per `period`.
 Defaults to None.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Volatility values over time.
 Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1018,10 +1018,10 @@ quarterly, or yearly). Defaults to "yearly".
 Excess Volatility is calculated over a rolling window of this many periods (e.g.
 period='monthly' and rolling=6 gives the rolling 6-month Excess Volatility) instead of
 one value per `period`. Defaults to None.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Excess Volatility values
 over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1081,10 +1081,10 @@ year (if period = 'yearly') or look at the entirety of all years. Defaults to Tr
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Downside
 Deviation is calculated over a rolling window of this many periods across the full return history
 instead of per `period`. Defaults to None.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Downside Deviation values over
 time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1133,9 +1133,9 @@ MAD measures the average absolute distance of each return from the mean return. 
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly,
 quarterly, or yearly). Defaults to "yearly".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the MAD values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1185,9 +1185,9 @@ The Coefficient of Variation is the ratio of the standard deviation to the mean 
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly,
 quarterly, or yearly). Defaults to "yearly".
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CV values over time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1242,10 +1242,10 @@ The formula is as follows:
 - <u>lambda_ (float, optional):</u> The decay factor. Higher values weight the past
 more heavily (slower to react), lower values weight recent returns more
 heavily (faster to react). RiskMetrics uses 0.94 for daily data. Defaults to 0.94.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the EWMA Volatility values over
 time. Defaults to False.
-- <u>lag (int | list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1297,7 +1297,7 @@ The ACF measures the correlation between a return series and a lagged version of
 **Args:**
 
 - <u>lags (int, optional):</u> The number of lags to calculate the ACF for. Defaults to 10.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 
 **Returns:**
@@ -1345,7 +1345,7 @@ The Hurst Exponent (H) is interpreted as follows:
 
 - <u>max_lag (int, optional):</u> The maximum lag to use when estimating the exponent.
 Defaults to 20.
-- <u>rounding (int | None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 
 **Returns:**

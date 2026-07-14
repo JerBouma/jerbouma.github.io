@@ -739,7 +739,7 @@ Searches stock market news articles by one or more ticker symbols.
 
 **Args:**
 
-- <u>symbols (str | list[str]):</u> One or more ticker symbols, e.g. "AAPL" or
+- <u>symbols (str \| list[str]):</u> One or more ticker symbols, e.g. "AAPL" or
 ["AAPL", "MSFT"].
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
@@ -783,7 +783,7 @@ Searches company press releases by one or more ticker symbols.
 
 **Args:**
 
-- <u>symbols (str | list[str]):</u> One or more ticker symbols, e.g. "AAPL" or
+- <u>symbols (str \| list[str]):</u> One or more ticker symbols, e.g. "AAPL" or
 ["AAPL", "MSFT"].
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
@@ -827,7 +827,7 @@ Searches cryptocurrency news articles by one or more coin/token symbols.
 
 **Args:**
 
-- <u>symbols (str | list[str]):</u> One or more crypto symbols, e.g. "BTCUSD" or
+- <u>symbols (str \| list[str]):</u> One or more crypto symbols, e.g. "BTCUSD" or
 ["BTCUSD", "ETHUSD"].
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
@@ -869,7 +869,7 @@ Searches forex news articles by one or more currency pair symbols.
 
 **Args:**
 
-- <u>symbols (str | list[str]):</u> One or more forex pairs, e.g. "EURUSD" or
+- <u>symbols (str \| list[str]):</u> One or more forex pairs, e.g. "EURUSD" or
 ["EURUSD", "GBPUSD"].
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
