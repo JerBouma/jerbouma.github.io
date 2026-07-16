@@ -86,6 +86,8 @@ This section explains in detail how the database can be queried with the related
 import financedatabase as fd
 ```
 
+### Initializing and Querying an Asset Class
+
 Initialization of each asset class is only required <u>once</u>. It is therefore important you save the class to a variable so that you can query the database much quicker. A simple example is shown below.
 
 ```python
@@ -109,6 +111,8 @@ A sample of the output is shown below:
 | OIS      | Oil States International, Inc. | USD        | Energy                 | Energy                                         | Energy Equipment & Services            | NYQ        | New York Stock Exchange   | United States | TX      | Houston             | 77002      | http://www.oilstatesintl.com     | Small Cap    | US6780261052 | 678026105 | BBG000BDDQ06 | BBG000BDDN94     | BBG001S7WK56      |
 | CVLC.BE  | Vale S.A.                      | EUR        | Materials              | Materials                                      | Metals & Mining                        | BER        | Berlin Stock Exchange     | Brazil        | RJ      | Rio De Janeiro      | 22250-145  | http://www.vale.com              | Large Cap    | US91912E1055 | 9.19E+109 | BBG000HCJTN5 | BBG000HCJNQ5     | BBG001S7RS91      |
 
+
+### Exploring Available Options
 
 With `show_options` all possible options are given per column. **This is useful as it doesn't require loading the larger data files.** For example, obtaining all options for equities is done as follows.
 
@@ -186,6 +190,8 @@ Which returns:
 array(['Banks', 'Capital Markets', 'Consumer Finance',
        'Diversified Financial Services', 'Insurance'], dtype=object)
 ```
+
+### Filtering the Database
 
 Given this information, it then becomes possible to filter the database based on the parameters you are interested in. For example, if you are interested 'Insurance' companies in the 'Netherlands' you can use the following. Note that I omit the `sector` here, given that the selection I make is on a deeper level and therefore it is a given that the sector is 'Financials'.
 
@@ -276,6 +282,8 @@ This returns a larger selection of companies given the increased number of count
 | AEGOF    | Aegon N.V.                    | USD        | Financials | Insurance        | Insurance  | PNK        | OTC Bulletin Board      | Netherlands   | nan     | The Hague  | 2591 TV    | http://www.aegon.com     | Mid Cap      | NL0000303709 |     nan | nan          | nan              | nan               |
 
 
+### Searching the Database
+
 In case the current categorization doesn't lead to the results you are looking for, it is possible to use the `search` parameter. This allows you to filter on any column in the database via a custom string. This means that if the word or sentence you input is found somewhere in the column you select, it will return the result. 
 
 By default the result will not be case sensitive but you can adjust this by setting `case_sensitive=True`. You can also filter the index (`symbol` column) by using `index` as shown below. Just like the `select` function, you can also provide lists here.
@@ -298,6 +306,8 @@ This returns instruments that are listed on the Frankfurt Stock Exchange, are in
 | 1N1.F    | Nanalysis Scientific Corp.                                  | EUR        | Information Technology | Technology Hardware & Equipment  | Electronic Equipment, Instruments & Components | FRA        | Frankfurt Stock Exchange | Canada        | AB      | Calgary       | T2E 7C3    | http://www.nanalysis.com       | Nano Cap     | nan          | nan       | nan          | nan              | nan               |
 | 1YO.F    | Yangtze Optical Fibre And Cable Joint Stock Limited Company | EUR        | Information Technology | Technology Hardware & Equipment  | Communications Equipment                       | FRA        | Frankfurt Stock Exchange | China         | nan     | Wuhan         | 430073     | http://www.yofc.com            | Small Cap    | nan          | nan       | nan          | nan              | nan               |
 | 1ZU.F    | The Pennant Group, Inc.                                     | EUR        | Health Care            | Health Care Equipment & Services | Health Care Equipment & Supplies               | FRA        | Frankfurt Stock Exchange | United States | ID      | Eagle         | 83616      | http://pennantgroup.com        | Small Cap    | US70805E1091 | 7.08E+113 | BBG00QJ35K78 | BBG00QJ35K69     | BBG00P33SZ15      |
+
+### Combining with the Finance Toolkit
 
 Lastly, the Finance Database has a direct integration with the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} making it possible to do financial analysis on the companies you've found in the Finance Database. Returning to the earlier example of the 3 insurance companies in the Netherlands, it becomes possible to load these into the Finance Toolkit with the `to_toolkit` functionality. 
 
@@ -356,6 +366,8 @@ Which returns, selecting only "ASRNL.AS" as an example with a few ratios:
 | EBT to EBIT Ratio               | 0.7469 | 0.7611 | 0.8472 | 0.801  | 0.7654 | 0.7023 | 0.7628 | 0.6654 | 0.3289 | 0.2389 |
 | EBIT to Revenue                 | 0.1327 | 0.163  | 0.2107 | 0.1803 | 0.1885 | 0.1481 | 0.1553 | 0.2564 | 0.3196 | 0.2567 |
 | Debt-to-Assets Ratio            | 0.0442 | 0.0605 | 0.0504 | 0.0546 | 0.094  | 0.1172 | 0.0923 | 0.068  | 0.0856 | 0.0771 |
+
+### Other Asset Classes
 
 All of these methods are also available for the other asset classes. The only difference is that the class name changes and the available columns. For example, for ETFs you would use `fd.ETFs()` instead of `fd.Equities()` and the `select` option has parameters such as `category_group` and `family` instead.
 

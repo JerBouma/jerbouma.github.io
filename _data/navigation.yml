@@ -61,10 +61,23 @@ financedatabase:
     url: /projects/financedatabase#site-nav
   - title: "Installation"
     url: /projects/financedatabase#installation
+  - title: <font color="#d67f05">Getting Started Notebook</font>
+    url: /projects/financedatabase/getting-started
   - title: "Usage"
     url: /projects/financedatabase#usage
-  - title: <font color="green">Example Notebook</font>
-    url: /projects/financedatabase/getting-started
+    children:
+      - title: Initializing and Querying
+        url: /projects/financedatabase#initializing-and-querying-an-asset-class
+      - title: Exploring Available Options
+        url: /projects/financedatabase#exploring-available-options
+      - title: Filtering the Database
+        url: /projects/financedatabase#filtering-the-database
+      - title: Searching the Database
+        url: /projects/financedatabase#searching-the-database
+      - title: Combining with the Finance Toolkit
+        url: /projects/financedatabase#combining-with-the-finance-toolkit
+      - title: Other Asset Classes
+        url: /projects/financedatabase#other-asset-classes
   - title: "Questions & Answers"
     url: /projects/financedatabase#questions--answers
   - title: "Contributions"
