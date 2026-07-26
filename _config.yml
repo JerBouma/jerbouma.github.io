@@ -73,6 +73,7 @@ algolia:
   files_to_exclude       : 
     - index.md
     - _pages/*.md
+    - _pages/articles/*.md
     - _pages/coding/*.md
     - _pages/financedatabase/*.md
     - _pages/financetoolkit/financetoolkit.md
