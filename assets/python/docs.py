@@ -3,6 +3,7 @@ This file generates the Finance Toolkit documentation pages by fetching docstrin
 from the controller modules on GitHub and converting them to Jekyll Markdown.
 """
 
+import ast
 import base64
 import os
 import re
@@ -11,7 +12,6 @@ import sys
 import requests
 
 # ── Compiled regexes (module-level, compiled once) ────────────────────────────
-_RE_FUNC = re.compile(r"def\s+(\w+)\([\s\S]*?\"\"\"([\s\S]*?)\"\"\"")
 _RE_URL = re.compile(r"https?://\S+")
 _RE_ARG_LABEL = re.compile(r"\w+ \([^)]+\):")
 _RE_MULTI_SPACE = re.compile(r" +")
@@ -187,11 +187,32 @@ def _fetch_file(url: str) -> str:
     return base64.b64decode(data["content"]).decode("utf-8")
 
 
+def _iter_functions(source: str):
+    """Yield (name, docstring) for every documented function, in source order.
+
+    Pairing each `def` with whatever docstring happens to follow it in the raw
+    text silently drops a function whenever the preceding one has no docstring
+    of its own: the match runs straight past it and swallows the *next*
+    function's docstring instead. Parsing the module means a function only ever
+    gets its own docstring, or is skipped for having none.
+    """
+    def _walk(body):
+        for node in body:
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                docstring = ast.get_docstring(node, clean=False)
+                if docstring:
+                    yield node.name, docstring
+            elif isinstance(node, ast.ClassDef):
+                yield from _walk(node.body)
+
+    yield from _walk(ast.parse(source).body)
+
+
 def create_markdown_file(file_url: str, header: str, location: str) -> None:
     file_content = _fetch_file(file_url)
 
     functions_with_docstrings = []
-    for function_name, docstring in _RE_FUNC.findall(file_content):
+    for function_name, docstring in _iter_functions(file_content):
         # Skip private and dunder methods
         if function_name.startswith("_"):
             continue
@@ -458,6 +479,35 @@ sidebar:
 The Performance module calculates important performance metrics such as the Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model (CAPM), R-Squared and more.
 
 {_INSTALL_SNIPPET}""",
+    },
+    {
+        "url": f"{_BASE}/econometrics/econometrics_controller.py",
+        "location": "_pages/financetoolkit/documentation/econometrics.md",
+        "header": f"""---
+title: Econometrics
+excerpt: The Econometrics module contains statistical tests and estimators for financial time series and panel data, including unit root and cointegration tests, regression estimators, causal inference methods, diagnostics, forecasting and event studies.
+description: The Econometrics module contains statistical tests and estimators for financial time series and panel data, including unit root and cointegration tests, regression estimators, causal inference methods, diagnostics, forecasting and event studies.
+author_profile: false
+permalink: /projects/financetoolkit/docs/econometrics
+classes: wide-sidebar
+layout: single
+redirect_from:
+    - /econometrics
+sidebar:
+    nav: "financetoolkit-docs-econometrics"
+---
+
+The Econometrics module contains statistical tests and estimators for financial time series and panel data. It covers unit root and cointegration tests, regression estimators (OLS, WLS, GLS, quantile, logit, probit, Fama-MacBeth), causal inference methods (instrumental variables, difference-in-differences, regression discontinuity, propensity score matching, synthetic control), panel data estimators, specification and diagnostic tests, time series forecasting (ARIMA, VAR, VECM) and event studies.
+
+Unlike the other modules, this one depends on `statsmodels` and `linearmodels`. These are bundled in the optional `econometrics` extra, so install the Finance Toolkit with:
+
+```python
+pip install "financetoolkit[econometrics]" -U
+```
+
+{{% include algolia.html %}}
+
+""",
     },
     {
         "url": f"{_BASE}/economics/economics_controller.py",
