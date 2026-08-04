@@ -25,19 +25,7 @@ pip install financetoolkit -U
 ## collect_bond_statistics
 Collect the bond statistics for a given bond which includes the following fields:
 
-- Par Value: The face value of the bond.
-- Coupon Rate: The annual coupon rate (in decimal).
-- Years to Maturity: The number of years until the bond matures.
-- Yield to Maturity: The yield to maturity of the bond (in decimal).
-- Frequency: The number of coupon payments per year.
-- Present Value: The present value of the bond.
-- Current Yield: The annual coupon payment divided by the bond price.
-- Macaulay's Duration: The weighted average time to receive the bond's cash flows.
-- Modified Duration: The Macaulay's duration divided by 1 plus the yield to maturity.
-- Effective Duration: The percentage change in the bond price for a 1% change in the yield to maturity.
-- Dollar Duration: The modified duration multiplied by the bond price.
-- DV01: The dollar value of a 0.01% change in yield to maturity.
-- Convexity: The second derivative of the bond price with respect to the yield to maturity.
+- Par Value: The face value of the bond. - Coupon Rate: The annual coupon rate (in decimal). - Years to Maturity: The number of years until the bond matures. - Yield to Maturity: The yield to maturity of the bond (in decimal). - Frequency: The number of coupon payments per year. - Present Value: The present value of the bond. - Current Yield: The annual coupon payment divided by the bond price. - Effective Yield: The annualised yield that accounts for the compounding of the coupon payments made within the year. - Macaulay's Duration: The weighted average time to receive the bond's cash flows. - Modified Duration: The Macaulay's duration divided by 1 plus the per-period yield (yield to maturity divided by the frequency). - Effective Duration: The percentage change in the bond price for a 1% change in the yield to maturity. - Dollar Duration: The modified duration multiplied by the bond price, divided by 100. - DV01: The dollar value of a 0.01% change in yield to maturity. - Convexity: The second derivative of the bond price with respect to the yield to maturity.
 
 These statistics can be used to evaluate the bond's performance as opposed to other bonds or to estimate the bond's sensitivity to changes in interest rates to be able to apply a hedging strategy.
 
@@ -117,7 +105,7 @@ The bond price is used to determine the fair value of the bond and to compare th
 - <u>par_value (float):</u> The par value (face value) of the bond.
 - <u>coupon_rate (float, optional):</u> The coupon rate of the bond. If not provided, a range of coupon rates will be used.
 - <u>years_to_maturity (float, optional):</u> The years to maturity of the bond in years. If not provided, a range of years to maturity will be used.
-- <u>yield_to_maturity (float, optional):</u> The yield to maturity of the bond. If not provided, a default value of 0.05 will be used.
+- <u>yield_to_maturity (float, optional):</u> The yield to maturity of the bond. Defaults to 0.08.
 - <u>frequency (int, optional):</u> The frequency of coupon payments per year. Defaults to 1.
 - <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
 
@@ -154,11 +142,11 @@ Which returns:
 Calculates the bond duration for different coupon rates and years to maturity. It has the option to calculate the following type of bond durations:
 
 - Macaulay's Duration: The weighted average time to receive the bond's cash flows.
-- Modified Duration: The Macaulay's duration divided by 1 plus the yield to maturity.
+- Modified Duration: The Macaulay's duration divided by 1 plus the per-period yield (yield to maturity divided by the frequency).
 - Effective Duration: The percentage change in the bond price for a 1% change in the yield to maturity.
-- Dollar Duration: The modified duration multiplied by the bond price.
+- Dollar Duration: The modified duration multiplied by the bond price, divided by 100.
 
-These duration measures can be used to estimate the sensitivity of a bond's price to changes in interest rates as well as to compare the risk of different bonds. The modified duration is particularly useful for estimating the percentage change in the bond price for a 1% change in the yield to maturity. This is also known as the bond's price value of a basis point (PVBP), or the bond's dollar duration (DD) or dollar value of a .01% change (DV01).
+These duration measures can be used to estimate the sensitivity of a bond's price to changes in interest rates as well as to compare the risk of different bonds. The modified duration is particularly useful for estimating the percentage change in the bond price for a 1% change in the yield to maturity. Note that it is a percentage sensitivity and therefore not the same as the dollar duration, the price value of a basis point (PVBP) or the dollar value of a 0.01% change (DV01), which are all expressed as a currency amount instead. The dollar duration is available through this method via `duration_type='dollar'` and the DV01 is calculated separately, see `collect_bond_statistics`.
 
 **Also known as:** Macaulay duration, modified duration, bond price sensitivity.
 
@@ -166,13 +154,12 @@ These duration measures can be used to estimate the sensitivity of a bond's pric
 
 - <u>duration_type (str, optional):</u> The type of duration to calculate. Defaults to 'modified' but can also
 be 'macaulay', 'effective' or 'dollar'.
-- <u>par_value (float, optional):</u> The par value (face value) of the bond. Defaults to None.
+- <u>par_value (float, optional):</u> The par value (face value) of the bond. Defaults to 100.
 - <u>coupon_rate (float, optional):</u> The coupon rate of the bond. If not provided, a range of coupon
 rates will be used. Defaults to None.
 - <u>years_to_maturity (float, optional):</u> The years to maturity of the bond in years. If not provided, a range of years
 to maturity will be used. Defaults to None.
-- <u>yield_to_maturity (float, optional):</u> The yield to maturity of the bond. If not provided, a default
-value of 0.05 will be used. Defaults to None.
+- <u>yield_to_maturity (float, optional):</u> The yield to maturity of the bond. Defaults to 0.08.
 - <u>frequency (int, optional):</u> The frequency of coupon payments per year. Defaults to 1.
 - <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
 
@@ -220,14 +207,14 @@ where:
 - n = Number of periods
 - F = Face value of the bond
 
-The goal is to find the yield to maturity that satisfies the equation above. This is done using the Newton-Raphson method which is an iterative method that converges to the root of a function.
+The goal is to find the yield to maturity that satisfies the equation above. This is done using the secant method which is an iterative method that converges to the root of a function.
 
 **Also known as:** YTM, bond return to maturity.
 
 **Args:**
 
 - <u>par_value (float):</u> The par value (face value) of the bond. This is the original price when it was issued by the issuer.
-- <u>coupon_rate (float, optional):</u> The coupon rate of the bond. Defaults to None.
+- <u>coupon_rate (float, optional):</u> The coupon rate of the bond. Defaults to 0.05.
 - <u>years_to_maturity (float, optional):</u> The years to maturity of the bond in years. Defaults to None.
 - <u>bond_price (float, optional):</u> The price of the bond. Defaults to None.
 - <u>frequency (int, optional):</u> The number of coupon payments per year. Defaults to 1.
@@ -262,6 +249,438 @@ Which returns:
 |           95 | 0.0619 |  0.0567 |  0.055  |
 |          100 | 0.05   |  0.05   |  0.05   |
 |          105 | 0.0388 |  0.0437 |  0.0453 |
+
+
+---
+
+## get_forward_rate
+Calculates the implied forward rate between pairs of points on a zero-coupon (spot) yield curve. The forward rate is the interest rate, implied by today's yield curve, for a loan that starts at a future date - it is derived purely from no-arbitrage pricing rather than a forecast of future rates.
+
+The rate for each maturity is obtained by linearly interpolating the supplied spot curve, so `near_maturity` and `far_maturity` do not need to coincide exactly with a maturity present in `spot_rates`.
+
+The forward rate is calculated using the following formula:
+
+- Forward Rate = ((1 + r2)^t2 / (1 + r1)^t1)^(1 / (t2 - t1)) - 1
+
+where:
+
+- r1 = Spot rate at the near maturity
+- t1 = Near maturity, in years
+- r2 = Spot rate at the far maturity
+- t2 = Far maturity, in years
+
+**Also known as:** implied forward rate, forward-forward rate.
+
+**Args:**
+
+- <u>spot_rates (pd.Series \| dict, optional):</u> The zero-coupon (spot) yield curve,
+indexed by maturity in years (in decimal). Defaults to a sample curve.
+- <u>near_maturity (float \| list, optional):</u> The nearer maturity (or maturities),
+in years. If not provided, a range of near maturities will be used.
+- <u>far_maturity (float \| list, optional):</u> The further maturity (or maturities),
+in years. If not provided, a range of far maturities will be used.
+- <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
+
+**Returns:**
+
+pandas.DataFrame: A DataFrame containing the forward rate for each combination
+of near and far maturity. Combinations where the far maturity is not greater
+than the near maturity are returned as NaN.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_forward_rate(
+    near_maturity=[1, 2, 3],
+    far_maturity=[5, 10],
+    show_input_info=False,
+)
+```
+
+Which returns:
+
+|   Near Maturity |     5 |     10 |
+|-----------------:|------:|-------:|
+|                1 |  0.04 | 0.0456 |
+|                2 | 0.042 |  0.047 |
+|                3 | 0.044 | 0.0483 |
+
+
+---
+
+## get_par_yield
+Calculates the par yield curve implied by a zero-coupon (spot) yield curve. The par yield for a given maturity is the coupon rate that would need to be attached to a newly-issued bond of that maturity so that, once its cash flows are discounted with the spot curve, its price equals its par value exactly.
+
+This is the curve that is typically quoted for on-the-run government bonds, as opposed to the theoretical spot curve which is usually bootstrapped rather than directly observed.
+
+The par yield is calculated using the following formula:
+
+- Par Yield = frequency * (1 - DF(n)) / SUM(DF(k))
+
+where DF(k) = 1 / (1 + spot_rate(k / frequency) / frequency)^k is the discount factor for the cash flow at period k, spot_rate(t) is obtained by interpolating the spot curve at time t (in years), and n = years_to_maturity * frequency is the number of coupon periods.
+
+**Also known as:** par rate, par coupon rate.
+
+**Args:**
+
+- <u>spot_rates (pd.Series \| dict, optional):</u> The zero-coupon (spot) yield curve,
+indexed by maturity in years (in decimal). Defaults to a sample curve.
+- <u>years_to_maturity (float \| list, optional):</u> The maturity (or maturities), in
+years, to calculate the par yield for. If not provided, a range of years
+to maturity will be used.
+- <u>frequency (int, optional):</u> The number of coupon payments per year. Defaults to 1.
+- <u>par_value (float, optional):</u> The face value of the bond. Defaults to 100.
+- <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
+
+**Returns:**
+
+pandas.Series: A Series containing the par yield for each requested maturity,
+i.e. the par yield curve.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_par_yield(
+    years_to_maturity=[1, 2, 3, 5, 10],
+    show_input_info=False,
+)
+```
+
+Which returns:
+
+|   Years to Maturity |   Par Yield |
+|--------------------:|------------:|
+|                   1 |      0.03   |
+|                   2 |      0.032  |
+|                   3 |      0.0339 |
+|                   5 |      0.0377 |
+|                  10 |      0.0431 |
+
+
+---
+
+## get_yield_curve_spread
+Calculates the spread between pairs of points on a yield curve, e.g. the widely followed 10-year minus 2-year Treasury spread. A positive spread indicates a "normal" upward-sloping curve, while a negative spread ("inversion") has historically been used as a leading indicator of an economic slowdown.
+
+The rate for each maturity is obtained by linearly interpolating the supplied curve, so `long_maturity` and `short_maturity` do not need to coincide exactly with a maturity present in `spot_rates`.
+
+The yield curve spread is calculated using the following formula:
+
+- Yield Curve Spread = Long-Term Yield - Short-Term Yield
+
+**Also known as:** term spread, yield curve slope.
+
+**Args:**
+
+- <u>spot_rates (pd.Series \| dict, optional):</u> The yield curve, indexed by
+maturity in years (in decimal). Defaults to a sample curve.
+- <u>long_maturity (float \| list, optional):</u> The longer maturity (or maturities),
+in years. If not provided, a range of long maturities will be used.
+- <u>short_maturity (float \| list, optional):</u> The shorter maturity (or
+maturities), in years. If not provided, a range of short maturities
+will be used.
+- <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
+
+**Returns:**
+
+pandas.DataFrame: A DataFrame containing the yield curve spread for each
+combination of long and short maturity.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_yield_curve_spread(
+    long_maturity=[10, 30],
+    short_maturity=[1, 2],
+    show_input_info=False,
+)
+```
+
+Which returns:
+
+|   Long Maturity |     1 |     2 |
+|-----------------:|------:|------:|
+|               10 | 0.014 | 0.012 |
+|               30 |  0.02 | 0.018 |
+
+
+---
+
+## get_breakeven_inflation_rate
+Calculates the breakeven inflation rate implied by a nominal and a real (inflation-protected) yield curve, e.g. the U.S. Treasury nominal curve versus the TIPS (Treasury Inflation-Protected Securities) curve. It is the rate of inflation that would make an investor indifferent between holding a nominal bond and an inflation-protected bond of the same maturity, and is widely used as a market-implied measure of expected inflation.
+
+The rate for each maturity is obtained by linearly interpolating the supplied curves, so `maturity` does not need to coincide exactly with a maturity present in `nominal_rates` or `real_rates`.
+
+The breakeven inflation rate is calculated using the following formula:
+
+- Breakeven Inflation Rate = Nominal Yield - Real Yield
+
+**Also known as:** TIPS breakeven spread, inflation breakeven.
+
+**Args:**
+
+- <u>nominal_rates (pd.Series \| dict, optional):</u> The nominal (non-inflation-protected)
+yield curve, indexed by maturity in years (in decimal). Defaults to a sample curve.
+- <u>real_rates (pd.Series \| dict, optional):</u> The real (inflation-protected) yield
+curve, indexed by maturity in years (in decimal). Defaults to a sample curve.
+- <u>maturity (float \| list, optional):</u> The maturity (or maturities), in years,
+to calculate the breakeven inflation rate for. If not provided, a range
+of maturities will be used.
+- <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
+
+**Returns:**
+
+pandas.Series: A Series containing the breakeven inflation rate for each
+requested maturity, i.e. the breakeven inflation curve.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_breakeven_inflation_rate(
+    maturity=[1, 5, 10, 30],
+    show_input_info=False,
+)
+```
+
+Which returns:
+
+|   Maturity |   Breakeven Inflation Rate |
+|-----------:|----------------------------:|
+|          1 |                       0.022 |
+|          5 |                       0.026 |
+|         10 |                       0.028 |
+|         30 |                        0.03 |
+
+
+---
+
+## get_z_spread
+Calculates the zero-volatility spread (Z-spread) for a bond given a benchmark zero-coupon (spot) yield curve. The Z-spread is the constant spread that, when added uniformly to every point of the benchmark curve, makes the present value of the bond's discounted cash flows equal to its observed market price.
+
+Unlike a simple yield spread (the bond's yield to maturity minus a benchmark yield of the same maturity), the Z-spread is measured against the entire curve rather than a single point, which makes it a more accurate measure of the compensation an investor receives for a bond's credit and liquidity risk.
+
+The Z-spread is found iteratively using the secant method, in the same way that `get_yield_to_maturity` solves for the yield to maturity.
+
+**Also known as:** zero-volatility spread, static spread.
+
+**Args:**
+
+- <u>par_value (float):</u> The par value (face value) of the bond.
+- <u>coupon_rate (float, optional):</u> The coupon rate of the bond. Defaults to 0.05.
+- <u>years_to_maturity (float, optional):</u> The years to maturity of the bond in years. Defaults to None.
+- <u>bond_price (float, optional):</u> The price of the bond. Defaults to None.
+- <u>spot_rates (pd.Series \| dict, optional):</u> The benchmark zero-coupon (spot)
+yield curve, indexed by maturity in years (in decimal). Defaults to a sample curve.
+- <u>frequency (int, optional):</u> The number of coupon payments per year. Defaults to 1.
+- <u>guess (float, optional):</u> The initial guess for the Z-spread. Defaults to 0.01.
+- <u>tolerance (float, optional):</u> The tolerance level for convergence. Defaults to 0.0001.
+- <u>max_iterations (int, optional):</u> The maximum number of iterations for convergence. Defaults to 100.
+- <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
+
+**Returns:**
+
+pandas.DataFrame: A DataFrame containing the Z-spread for different bond prices and years to maturity.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_z_spread(
+    coupon_rate=0.05,
+    years_to_maturity=[5, 10, 15],
+    bond_price=[95, 100, 105],
+    show_input_info=False,
+)
+```
+
+Which returns:
+
+|   Bond Price |      5 |     10 |     15 |
+|-------------:|-------:|-------:|-------:|
+|            95 | 0.0243 | 0.0137 | 0.0103 |
+|           100 | 0.0124 |  0.007 | 0.0053 |
+|           105 | 0.0012 | 0.0007 | 0.0005 |
+
+
+---
+
+## get_bond_equivalent_yield
+Converts a money-market discount yield (e.g. quoted for Treasury bills) into a bond-equivalent yield (BEY). Money-market instruments are often quoted on a discount-yield basis, which understates the actual return an investor earns because it is computed on face value rather than the (lower) purchase price, and uses a 360-day rather than a 365-day year. The bond-equivalent yield restates the discount yield on a basis that is comparable to coupon-bearing bonds and notes.
+
+The bond-equivalent yield is calculated using the following formula:
+
+- BEY = 365 * Discount Yield / (360 - Days to Maturity * Discount Yield)
+
+**Also known as:** BEY, coupon-equivalent yield.
+
+**Args:**
+
+- <u>discount_yield (float \| list, optional):</u> The money-market discount yield of
+the instrument (in decimal). If not provided, a range of discount yields
+will be used.
+- <u>days_to_maturity (float \| list, optional):</u> The number of days until the
+instrument matures. If not provided, a range of typical T-bill maturities
+will be used.
+- <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
+
+**Returns:**
+
+pandas.DataFrame: A DataFrame containing the bond-equivalent yield for
+different discount yields and days to maturity.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_bond_equivalent_yield(
+    discount_yield=[0.03, 0.05, 0.07],
+    days_to_maturity=[90, 180, 360],
+    show_input_info=False,
+)
+```
+
+Which returns:
+
+|   Discount Yield |     90 |    180 |    360 |
+|------------------:|-------:|-------:|-------:|
+|              0.03 | 0.0306 | 0.0309 | 0.0314 |
+|              0.05 | 0.0513 |  0.052 | 0.0534 |
+|              0.07 | 0.0722 | 0.0735 | 0.0763 |
+
+
+---
+
+## get_key_rate_duration
+Calculates the key rate duration of a bond for one or more individual maturity points ("key rates") on the yield curve. Whereas `get_duration` with `duration_type='effective'` assumes the entire curve shifts in parallel, key rate duration measures the bond's price sensitivity to a shock at a single tenor of the curve while every other point is held fixed. Because cash flows are discounted using linear interpolation between the curve's tenors, a shock at one tenor tapers off towards its neighboring tenors and has no effect beyond them.
+
+Summing the key rate durations across every tenor of the curve approximately reproduces the bond's effective (parallel-shift) duration, but key rate duration additionally reveals which segment of the curve the bond's price is most exposed to - information that is essential for constructing curve-neutral hedges or identifying "twist" risk.
+
+**Also known as:** partial duration, rate-specific duration.
+
+**Args:**
+
+- <u>par_value (float, optional):</u> The par value (face value) of the bond. Defaults to 100.
+- <u>coupon_rate (float, optional):</u> The coupon rate of the bond. Defaults to 0.05.
+- <u>years_to_maturity (float \| list, optional):</u> The years to maturity of the
+bond (or bonds). If not provided, a range of years to maturity will be used.
+- <u>spot_rates (pd.Series \| dict, optional):</u> The zero-coupon (spot) yield curve
+used to discount the bond's cash flows, indexed by maturity in years (in
+decimal). Defaults to a sample curve.
+- <u>key_rate_maturity (float \| list, optional):</u> The maturity (or maturities), in
+years, of the curve point(s) to shock. Must be present in the index of
+`spot_rates`. Defaults to every maturity in `spot_rates`.
+- <u>frequency (int, optional):</u> The number of coupon payments per year. Defaults to 1.
+- <u>yield_change (float, optional):</u> The size of the shock applied to each key
+rate, up and down (in decimal). Defaults to 0.0001 (1 basis point).
+- <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
+
+**Returns:**
+
+pandas.DataFrame: A DataFrame containing the key rate duration for different
+bond maturities and key rate maturities.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_key_rate_duration(
+    coupon_rate=0.05,
+    years_to_maturity=[5, 10],
+    key_rate_maturity=[2, 5, 10],
+    show_input_info=False,
+)
+```
+
+Which returns:
+
+|   Years to Maturity |      2 |      5 |     10 |
+|---------------------:|-------:|-------:|-------:|
+|                    5 | 0.0862 | 4.0561 |     -0 |
+|                   10 | 0.0862 |  0.377 | 6.4666 |
+
+
+---
+
+## get_taylor_price_change
+Estimates the percentage change in a bond's price for a given change in yield, using a second-order Taylor series expansion that combines modified duration and convexity.
+
+Modified duration alone only captures the first-order (linear) relationship between a bond's price and its yield, which understates the price increase for a yield decrease and overstates the price decrease for a yield increase because the true price-yield relationship is curved (convex), not linear. Adding a convexity term corrects for this and produces a substantially more accurate estimate, especially for larger yield changes.
+
+This method calls `get_modified_duration` and `get_convexity` from `bond_model.py` directly rather than recomputing them.
+
+The Taylor approximation is calculated using the following formula:
+
+- %ΔPrice ≈ -Modified Duration * Δy + 0.5 * Convexity * Δy^2
+
+**Also known as:** duration-convexity approximation, second-order price approximation.
+
+**Args:**
+
+- <u>par_value (float, optional):</u> The par value (face value) of the bond. Defaults to 100.
+- <u>coupon_rate (float, optional):</u> The coupon rate of the bond. If not provided,
+a range of coupon rates will be used.
+- <u>years_to_maturity (float, optional):</u> The years to maturity of the bond in
+years. If not provided, a range of years to maturity will be used.
+- <u>yield_to_maturity (float, optional):</u> The current yield to maturity of the
+bond. Defaults to 0.08.
+- <u>frequency (int, optional):</u> The number of coupon payments per year. Defaults to 1.
+- <u>yield_change (float, optional):</u> The hypothetical change in yield to
+maturity, e.g. 0.01 for a 100 basis point increase. Defaults to 0.01.
+- <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
+
+**Returns:**
+
+pandas.DataFrame: A DataFrame containing the estimated percentage price
+change for different coupon rates and years to maturity.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_taylor_price_change(
+    coupon_rate=[0.03, 0.05, 0.07],
+    years_to_maturity=[5, 10, 15],
+    yield_to_maturity=0.08,
+    yield_change=0.01,
+    show_input_info=False,
+)
+```
+
+Which returns:
+
+|   Coupon Rate |       5 |      10 |      15 |
+|--------------:|--------:|--------:|--------:|
+|          0.03 | -0.0421 | -0.0744 |  -0.097 |
+|          0.05 | -0.0407 | -0.0693 |  -0.088 |
+|          0.07 | -0.0394 | -0.0656 | -0.0824 |
 
 
 ---
@@ -336,7 +755,7 @@ Which returns:
 ## get_government_bond_yield
 Long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
 
-In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
+In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth.
 
 **See definition:** [https://data.oecd.org/interest/long-term-interest-rates.htm](https://data.oecd.org/interest/long-term-interest-rates.htm){:target="_blank"}
 
@@ -387,6 +806,59 @@ Which returns:
 | 2023-09 |  0.0076 |          0.0438 |   0.07   |
 | 2023-10 |  0.0095 |          0.048  |   0.0655 |
 | 2023-11 |  0.0066 |          0.045  |   0.0655 |
+
+
+---
+
+## get_treasury_rates
+Retrieves the daily U.S. Treasury par yield curve rates as officially published by the U.S. Department of the Treasury, covering every maturity from 1 Month through 30 Year in a single dataset. This is the official, risk-free curve widely used as the discount curve for bond valuation and as the benchmark for credit spreads.
+
+**Also known as:** the Treasury yield curve, the risk-free curve.
+
+**Args:**
+
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
+- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Notes:**
+
+The underlying endpoint caps each request at 90 calendar days of data, so this method
+paginates in 90-day windows to cover the full start_date to end_date range the class
+was initialized with. A long range therefore issues many requests -- be mindful of
+this on a Free plan's daily request limit and consider a narrower start_date where
+possible.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Treasury par yield curve rates, in percentage
+points, with one column per maturity.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(
+    start_date='2024-01-01',
+    end_date='2024-01-15',
+    api_key='FINANCIAL_MODELING_PREP_KEY',
+)
+
+fixedincome.get_treasury_rates()
+```
+
+Which returns:
+
+| Date       |   1 Month |   3 Month |   1 Year |   2 Year |   10 Year |   30 Year |
+|:-----------|----------:|----------:|---------:|---------:|----------:|----------:|
+| 2024-01-02 |      5.55 |      5.46 |     4.8  |     4.33 |      3.95 |      4.08 |
+| 2024-01-03 |      5.54 |      5.48 |     4.81 |     4.33 |      3.91 |      4.05 |
+| 2024-01-04 |      5.56 |      5.48 |     4.85 |     4.38 |      3.99 |      4.13 |
+| 2024-01-05 |      5.54 |      5.47 |     4.84 |     4.4  |      4.05 |      4.21 |
 
 
 ---
@@ -446,7 +918,7 @@ Which returns:
 ## get_ice_bofa_effective_yield
 This data represents the effective yield of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
 
-The Effective Yield is the yield of a bond, calculated by dividing the bond's coupon payments by its market price. The effective yield is not the same as the stated yield, which is the yield on the bond's coupon payments divided by the bond's principal value. The effective yield is a more accurate measure of a bond's return, as it takes into account the fact that the investor will not hold the bond to maturity and will likely sell it before it matures.
+The Effective Yield is the annualised yield of a bond that accounts for the compounding of the coupon payments that are made within the year, i.e. (1 + coupon rate / frequency) ^ frequency - 1. It is therefore not the same as the nominal (stated) coupon rate, which ignores compounding, nor the same as the current yield, which simply divides the annual coupon payment by the bond's market price. Whenever coupons are paid more than once a year, the effective yield exceeds the nominal coupon rate because each coupon can be reinvested for the remainder of the year.
 
 See definitions:
 
@@ -504,8 +976,8 @@ The total return is the actual rate of return of an investment or a pool of inve
 
 See definitions:
 
-- Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY](https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY){:target="_blank"}
-- Maturity: [https://fred.stlouisfed.org/series/BAMLC1A0C13YEY](https://fred.stlouisfed.org/series/BAMLC1A0C13YEY){:target="_blank"}
+- Ratings: [https://fred.stlouisfed.org/series/BAMLCC0A4BBBTRIV](https://fred.stlouisfed.org/series/BAMLCC0A4BBBTRIV){:target="_blank"}
+- Maturity: [https://fred.stlouisfed.org/series/BAMLCC1A013YTRIV](https://fred.stlouisfed.org/series/BAMLCC1A013YTRIV){:target="_blank"}
 
 **Args:**
 
@@ -556,8 +1028,8 @@ Yield to worst is the lowest potential yield that a bond can generate without th
 
 See definitions:
 
-- Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY](https://fred.stlouisfed.org/series/BAMLC0A4CBBBEY){:target="_blank"}
-- Maturity: [https://fred.stlouisfed.org/series/BAMLC1A0C13YEY](https://fred.stlouisfed.org/series/BAMLC1A0C13YEY){:target="_blank"}
+- Ratings: [https://fred.stlouisfed.org/series/BAMLC0A4CBBBSYTW](https://fred.stlouisfed.org/series/BAMLC0A4CBBBSYTW){:target="_blank"}
+- Maturity: [https://fred.stlouisfed.org/series/BAMLC1A0C13YSYTW](https://fred.stlouisfed.org/series/BAMLC1A0C13YSYTW){:target="_blank"}
 
 **Args:**
 
@@ -567,7 +1039,7 @@ See definitions:
 
 **Returns:**
 
-pd.DataFrame: A DataFrame containing the Gross Domestic Product
+pd.DataFrame: A DataFrame containing the ICE BofA Yield to Worst
 
 **As an example:**
 
@@ -579,7 +1051,7 @@ fixedincome = FixedIncome(
     end_date='2024-01-15',
 )
 
-fixedincome.get_yield_to_worst(maturity=False)
+fixedincome.get_ice_bofa_yield_to_worst(maturity=False)
 ```
 
 Which returns:
@@ -604,7 +1076,7 @@ Which returns:
 ## get_euribor_rates
 Euribor rates, short for Euro Interbank Offered Rate, are the interest rates at which a panel of European banks lend funds to one another in the interbank market. These rates are published daily by the European Money Markets Institute (EMMI) and serve as a benchmark for various financial products and contracts, including mortgages, loans, and derivatives, across the Eurozone.
 
-The Euribor rates are determined for different maturities, typically ranging from overnight to 12 months The most common maturities are 1 month, 3 months, 6 months, and 12 months. Each maturity represents the time period for which the funds are borrowed, with longer maturities generally implying higher interest rates due to increased uncertainty and risk over longer time horizons.
+The Euribor rates are determined for different maturities, typically ranging from overnight to 12 months. The most common maturities are 1 month, 3 months, 6 months, and 12 months. Each maturity represents the time period for which the funds are borrowed, with longer maturities generally implying higher interest rates due to increased uncertainty and risk over longer time horizons.
 
 For more information, see for example: [https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA](https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA){:target="_blank"}
 

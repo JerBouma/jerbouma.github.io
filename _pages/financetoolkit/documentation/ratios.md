@@ -840,6 +840,49 @@ Which returns:
 
 ---
 
+## get_working_capital_turnover_ratio
+Calculate the working capital turnover ratio, an efficiency ratio that measures how effectively a company uses its working capital to generate revenue.
+
+A high working capital turnover ratio indicates that a company is generating a large amount of revenue relative to the working capital it employs, which can signal an efficient (or, if extreme, undercapitalized) operation. A low ratio can indicate excess inventory, slow receivables collection, or otherwise underutilized working capital.
+
+The formula is as follows:
+
+- Working Capital Turnover Ratio = Revenue / Average Working Capital
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Working capital turnover ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the working capital
+turnover ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio
+values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+working_capital_turnover_ratios = toolkit.ratios.get_working_capital_turnover_ratio()
+```
+
+---
+
 ## get_operating_ratio
 Calculate the operating ratio, a financial metric that measures the efficiency of a company's operations by comparing its operating expenses to its revenue.
 
@@ -1541,7 +1584,7 @@ The short-term coverage ratio is calculated by dividing operating cash flow by s
 
 The formula is as follows:
 
-- Short Term Coverage Ratio = Cash Flow from Operations / (Accounts Receivable + Inventory - Accounts Payable)
+- Short Term Coverage Ratio = Cash Flow from Operations / Short Term Debt
 
 **Also known as:** short-term debt coverage.
 
@@ -1573,6 +1616,55 @@ Which returns:
 | AAPL | -4.7495 | -3.9423 | -4.1291 | -4.1839 | -4.5755 |
 | TSLA | -4.882  | 27.4701 |  4.9042 |  3.7675 |  4.0998 |
 
+
+---
+
+## get_defensive_interval_ratio
+Calculate the defensive interval ratio (DIR), a liquidity ratio that measures how many days a company could continue to cover its operating expenses using only its existing defensive (most liquid) assets, without relying on additional revenue.
+
+Unlike the current, quick, and cash ratios, which express liquidity relative to current liabilities, the defensive interval ratio expresses liquidity relative to the company's actual daily cash burn rate, making it a more direct measure of how long a company could survive a sudden stop in incoming cash flow.
+
+The formula is as follows:
+
+- Defensive Interval Ratio = (Cash and Cash Equivalents + Short Term Investments + Accounts Receivable) / Daily Operating Expenses
+
+Where Daily Operating Expenses = (Operating Expenses - Depreciation and Amortization) / Days, i.e. the average cash operating expenses incurred per day, net of the largest non-cash charge (depreciation and amortization).
+
+**Also known as:** defensive interval period, basic defense interval.
+
+**Args:**
+
+- <u>days (int, optional):</u> The number of days to use for the daily operating
+expenses calculation. Defaults to 365.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Defensive interval ratio values, expressed in days.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the defensive interval
+ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio
+values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+defensive_interval_ratios = toolkit.ratios.get_defensive_interval_ratio()
+```
 
 ---
 
@@ -1789,6 +1881,51 @@ Which returns:
 
 ---
 
+## get_ebitda_margin
+Calculate the EBITDA margin, a profitability ratio that measures the percentage of revenue that remains as earnings before interest, taxes, depreciation and amortization (EBITDA).
+
+EBITDA margin approximates a company's core operating profitability before the effects of financing decisions (interest), tax jurisdictions, and non-cash accounting choices around fixed and intangible assets (depreciation and amortization). This makes it a commonly used metric to compare operating performance across companies with different capital structures, tax regimes, and depreciation policies.
+
+The formula is as follows:
+
+- EBITDA Margin = (Operating Income + Depreciation and Amortization) / Revenue
+
+**Also known as:** EBITDA-to-revenue ratio.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: EBITDA margin values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the EBITDA margin for
+each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio
+values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+ebitda_margins = toolkit.ratios.get_ebitda_margin()
+```
+
+---
+
 ## get_interest_burden_ratio
 Compute the Interest Coverage Ratio, a metric that reveals a company's ability to cover its interest expenses with its pre-tax profits. This ratio measures the proportion of pre-tax profits required to pay for interest payments and is crucial in determining a company's financial health.
 
@@ -1997,6 +2134,51 @@ Which returns:
 | AAPL | 0.2806 | 0.2836 | 0.275  | 0.2613 | 0.3093 |
 | TSLA | 0.0968 | 0.1742 | 0.1588 | 0.0624 | 0.0292 |
 
+
+---
+
+## get_cash_return_on_assets
+Calculate the cash return on assets (Cash ROA), a profitability ratio that measures how efficiently a company uses its assets to generate operating cash flow.
+
+Unlike the return on assets, which uses accrual-based net income, the cash return on assets uses operating cash flow, making it less sensitive to non-cash accounting choices (e.g. depreciation method, revenue recognition timing, working capital accruals). Comparing cash ROA to ROA is a useful earnings-quality cross-check: a cash ROA that persistently trails ROA can indicate that reported profits are not being converted into cash.
+
+The formula is as follows:
+
+- Cash Return on Assets = Cash Flow from Operations / Average Total Assets
+
+**Also known as:** cash ROA.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Cash return on assets (Cash ROA) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the cash ROA for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio
+values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+cash_roa_ratios = toolkit.ratios.get_cash_return_on_assets()
+```
 
 ---
 
@@ -2364,6 +2546,49 @@ Which returns:
 
 ---
 
+## get_free_cash_flow_margin
+Calculate the free cash flow margin, a profitability ratio that measures the percentage of revenue that is converted into free cash flow.
+
+Unlike the net profit margin, which can be distorted by non-cash accounting items (e.g. depreciation, stock-based compensation, deferred taxes) and by working capital timing, the free cash flow margin reflects the cash a company actually generates, after capital expenditures, for every dollar of revenue. A persistently low or declining free cash flow margin relative to the net profit margin can be a quality-of-earnings warning sign.
+
+The formula is as follows:
+
+- Free Cash Flow Margin = Free Cash Flow / Revenue
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Free cash flow margin values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the free cash flow
+margin for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio
+values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+free_cash_flow_margins = toolkit.ratios.get_free_cash_flow_margin()
+```
+
+---
+
 ## get_tax_burden_ratio
 Calculate the tax burden ratio, which is the ratio of a company's net income to its income before tax, indicating how much of a company's income is retained after taxes.
 
@@ -2725,6 +2950,47 @@ Which returns:
 
 ---
 
+## get_asset_coverage_ratio
+Calculate the asset coverage ratio, a solvency ratio that measures how well a company's tangible assets, after settling current liabilities, can cover its total debt.
+
+This ratio is commonly used by lenders and bondholders to assess the extent to which a company's hard (tangible) assets would be available to repay debt obligations in a liquidation scenario, since intangible assets (e.g. goodwill) typically have little to no recovery value and current liabilities are assumed to be settled first out of current assets.
+
+The formula is as follows:
+
+- Asset Coverage Ratio = (Total Assets - Intangible Assets - Total Current Liabilities) / Total Debt
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Asset coverage ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+asset_coverage_ratios = toolkit.ratios.get_asset_coverage_ratio()
+```
+
+---
+
 ## get_debt_to_equity_ratio
 Calculate the debt to equity ratio, a solvency ratio that measures the proportion of a company's equity that is financed by debt. This ratio is also known as the Gearing Ratio.
 
@@ -3028,6 +3294,47 @@ Which returns:
 | AAPL |  0.8449 |  0.8337 |  0.7468 |  0.6618 |  0.5281 |
 | TSLA | -0.9225 | -0.6108 | -0.5034 | -0.2022 | -0.7747 |
 
+
+---
+
+## get_gross_debt_to_ebitda_ratio
+Calculates the gross debt to EBITDA ratio, which measures the total (gross) debt of the company relative to its EBITDA (Earnings Before Interest, Taxes, Depreciation, and Amortization).
+
+This differs from the Net-Debt to EBITDA Ratio in that it uses total (gross) debt rather than net debt (total debt minus cash and cash equivalents). Gross debt to EBITDA is a more conservative leverage measure since it does not assume that a company's cash balance would actually be used to pay down debt, which matters when comparing companies with restricted cash, cash earmarked for other purposes, or when assessing gross refinancing risk rather than net economic leverage.
+
+The formula is as follows:
+
+- Gross Debt to EBITDA Ratio = Total Debt / EBITDA
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Gross debt to EBITDA ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+gross_debt_to_ebitda_ratios = toolkit.ratios.get_gross_debt_to_ebitda_ratio()
+```
 
 ---
 
@@ -3809,7 +4116,7 @@ The interest debt per share ratio provides insight into how much interest a comp
 
 The formula is as follows:
 
-- Interest Debt per Share = (Interest Expense / Total Debt) / Weighted Average (Diluted) Shares
+- Interest Debt per Share = (Interest Expense + Total Debt) / Weighted Average (Diluted) Shares
 
 **Args:**
 
@@ -4124,6 +4431,53 @@ Which returns:
 | AAPL |  32.2174 | 19.0341 |  30.5711 |  35.4618 |  41.301 |
 | TSLA | 342.45   | 56.6804 | 198.621  | 394.48   | 255.082 |
 
+
+---
+
+## get_price_to_sales_ratio
+Calculate the price to sales ratio (P/S), a valuation ratio that compares a company's market capitalization to its total revenue.
+
+The price to sales ratio is particularly useful for valuing companies that are not yet profitable (and therefore have no meaningful P/E ratio), since revenue is typically positive even when earnings are not, and is less susceptible to accounting distortions than earnings-based multiples. It is, however, less informative than earnings- or cash-flow-based multiples for mature, profitable companies since it ignores profitability and cost structure entirely.
+
+The formula is as follows:
+
+- Price to Sales Ratio = Market Cap / Revenue
+
+**Also known as:** P/S ratio, sales multiple.
+
+**Args:**
+
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Price to sales ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the price to sales ratio for each asset
+in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the price to sales ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+price_to_sales_ratio = toolkit.ratios.get_price_to_sales_ratio()
+```
 
 ---
 

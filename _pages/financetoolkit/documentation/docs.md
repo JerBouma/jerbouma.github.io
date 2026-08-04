@@ -209,7 +209,9 @@ Which returns:
 ---
 
 ## risk
-This gives access to the Risk module. The Risk Module is meant to calculate metrics related to risk such as Value at Risk (VaR), Conditional Value at Risk (cVaR), EMWA/GARCH models and similar models.
+This gives access to the Risk module. The Risk Module is meant to calculate metrics related to risk such as Value at Risk (VaR), Conditional Value at Risk (cVaR), EMWA/GARCH models and similar models. It also houses cross-asset systemic risk and liquidity measures (CoVaR, Tail Dependence, Amihud Illiquidity, Roll Spread).
+
+Note that the time-series diagnostic and econometric tests (unit root tests, cointegration, Granger causality, ARCH-LM, Jarque-Bera and similar tests) live in the separate Econometrics module instead.
 
 It gives insights in the risk a stock composes that is not perceived as easily by looking at the data. This class is closely related to the Performance class which highlights things such as Sharpe Ratio and Sortino Ratio.
 
@@ -241,6 +243,26 @@ Which returns:
 | 2022   | -0.8026 | -1.0046 |
 | 2023   |  1.8549 |  1.8238 |
 
+
+---
+
+## econometrics
+This gives access to the Econometrics module, a thin wrapper that funnels this Toolkit's price/return data through `statsmodels` and `linearmodels` -- regression (OLS/WLS/GLS/ Logit/Probit/Quantile), panel data (Fixed/Random Effects, Hausman), causal inference (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching), specification/hypothesis tests (Breusch-Pagan, White, Durbin-Watson, VIF, RESET, Chow, t/F/LR/Wald tests), stationarity (Augmented Dickey-Fuller, KPSS, Phillips-Perron, Zivot-Andrews unit root tests), long-run equilibrium relationships (Engle-Granger and Johansen cointegration), predictive lead-lag relationships (Granger causality), model/ residual diagnostics (ARCH-LM, Jarque-Bera, Ljung-Box, Variance Ratio, CUSUM), forecast comparison (Diebold-Mariano), and time series forecasting (ARIMA, VAR, VECM).
+
+This class is closely related to the Risk class, which houses the risk measures (VaR, CVaR, GARCH) that these tests often inform the choice of.
+
+Requires the optional `financetoolkit[econometrics]` extra (`statsmodels` and `linearmodels`) -- install with `pip install financetoolkit[econometrics]`.
+
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics){:target="_blank"}
+
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.econometrics.get_augmented_dickey_fuller(period='yearly')
+```
 
 ---
 
@@ -961,6 +983,93 @@ Which returns:
 | 2023   |                 72.89 |          58.16 |              60.65 |       63.9  |
 | 2024   |                 72.53 |          58.08 |              60.7  |       63.77 |
 | 2025   |                 71.85 |          57.64 |              59.62 |       63.04 |
+
+
+---
+
+## get_market_risk_premium
+Obtains the equity market risk premium by country -- the country default spread plus the equity risk premium, following the approach popularized by Aswath Damodaran -- which is widely used to calibrate country-specific costs of equity and discount rates in a multi-country setting.
+
+**Also known as:** country risk premium, Damodaran equity risk premium.
+
+**Args:**
+
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+
+**Raises:**
+
+ValueError: If an API key is not defined for FinancialModelingPrep.
+
+**Returns:**
+
+pd.DataFrame: The market risk premium by country, including the continent, Country
+Risk Premium and Total Equity Risk Premium (both in percentage points).
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+market_risk_premium = toolkit.get_market_risk_premium()
+
+market_risk_premium.loc[['United States', 'Germany', 'Brazil']]
+```
+
+Which returns:
+
+| Country       | Continent     |   Country Risk Premium |   Total Equity Risk Premium |
+|:--------------|:--------------|------------------------:|-----------------------------:|
+| United States | North America |                    0.23 |                          4.46 |
+| Germany       | Europe        |                    0    |                          4.23 |
+| Brazil        | South America |                    3.24 |                          7.47 |
+
+
+---
+
+## get_commitment_of_traders
+Obtains the CFTC Commitment of Traders (COT) report for the tickers the Toolkit was initialized with. Published weekly by the U.S. Commodity Futures Trading Commission, it breaks down open interest in futures markets by trader type -- Non-Commercial (large speculators), Commercial (hedgers) and Non-Reportable (small traders) -- and is widely used to gauge positioning and sentiment in commodity, currency, interest rate and stock index futures markets.
+
+Note that this data is only available for CFTC-tracked futures markets. Tickers without a corresponding futures contract (e.g. most individual equities) return no data.
+
+**Also known as:** COT report, CFTC positioning data, speculator/hedger positioning.
+
+**Args:**
+
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+
+**Raises:**
+
+ValueError: If an API key is not defined for FinancialModelingPrep.
+
+**Returns:**
+
+pd.DataFrame: The Commitment of Traders report for the specified tickers.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["NG", "GC"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+commitment_of_traders = toolkit.get_commitment_of_traders()
+
+commitment_of_traders.xs("NG", level=1, axis=1)[
+    ["Open Interest", "Non-Commercial Long", "Non-Commercial Short", "Commercial Long", "Commercial Short"]
+].tail()
+```
+
+Which returns:
+
+| date                |   Open Interest |   Non-Commercial Long |   Non-Commercial Short |   Commercial Long |   Commercial Short |
+|:--------------------|-----------------:|----------------------:|------------------------:|-------------------:|--------------------:|
+| 2024-01-30 00:00:00 |          1471807 |                 279539 |                  382722 |              526952 |               450698 |
+| 2024-02-06 00:00:00 |          1533041 |                 301020 |                  415251 |              539246 |               456560 |
+| 2024-02-13 00:00:00 |          1554063 |                 334504 |                  471061 |              552780 |               453300 |
+| 2024-02-20 00:00:00 |          1592460 |                 356334 |                  510206 |              567791 |               452247 |
+| 2024-02-27 00:00:00 |          1500882 |                 326328 |                  467881 |              545380 |               433185 |
 
 
 ---

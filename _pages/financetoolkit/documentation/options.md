@@ -242,7 +242,153 @@ Which returns:
 
 ---
 
-## objective_function
+## get_volatility_surface
+Calibrate an arbitrage-checked implied volatility surface across multiple expiries, by fitting a raw SVI (Stochastic Volatility Inspired, Gatheral 2004) curve to the market-implied smile (see `get_implied_volatility`) at each expiry, and checking the fitted surface for calendar-spread arbitrage.
+
+A single per-expiry smile only tells you the shape of the market's volatility skew at that one maturity. Stitching several calibrated SVI slices together instead gives a full surface, which is what is needed to price/interpolate options at maturities or strikes that don't trade directly, and to check for term-structure inconsistencies (see Notes).
+
+Before fitting, strikes whose market-implied volatility is a statistical outlier relative to its neighbors (a common symptom of a stale or wide-bid/ask illiquid quote) are dropped via a median-absolute-deviation filter, since a single bad quote can otherwise dominate the least-squares SVI fit for that whole expiry.
+
+See: Gatheral, J. (2004), "A parsimonious arbitrage-free implied volatility parameterization with application to the valuation of volatility derivatives", and Gatheral, J., & Jacquier, A. (2014), "Arbitrage-free SVI volatility surfaces", Quantitative Finance, 14(1), 59-71.
+
+**Also known as:** SVI surface, implied volatility surface.
+
+Notes: A warning is logged (not raised) if the fitted surface has any calendar-spread arbitrage violations, i.e. total implied variance decreasing with time to expiration at some log-moneyness -- this reflects genuine inconsistency in the underlying market quotes across expiries, not a fitting error, and is only checked, not corrected.
+
+**Args:**
+
+- <u>expiration_dates (list[str] \| None, optional):</u> The expiration dates to
+fit the surface over. Defaults to None, meaning the first
+`number_of_expirations` available expiration dates.
+- <u>put_option (bool, optional):</u> Whether to use put options instead of call
+options. Defaults to False.
+- <u>risk_free_rate (float, optional):</u> The risk free rate to use for the
+calculation. Defaults to None which means it will use the current
+risk free rate.
+- <u>dividend_yield (float, optional):</u> The dividend yield to use for the
+calculation. Defaults to None which means it will use the dividend
+yield as obtained through annual historical data.
+- <u>number_of_expirations (int, optional):</u> The number of near-term
+expiration dates to fit when `expiration_dates` is not given.
+Defaults to 6.
+- <u>outlier_threshold (float, optional):</u> The number of median absolute
+deviations from the median implied volatility beyond which a quote
+is treated as an outlier and dropped before fitting. Defaults to
+5.0.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+
+**Returns:**
+
+pd.DataFrame: The SVI-fitted implied volatility, indexed by (ticker,
+strike price), with one column per expiration date. NaN where a given
+strike wasn't part of that expiry's calibration.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+volatility_surface = toolkit.options.get_volatility_surface(number_of_expirations=3)
+
+volatility_surface.loc["AAPL"]
+```
+
+Which returns:
+
+|   Strike Price |   2026-08-05 |   2026-08-07 |
+|----------------:|-------------:|-------------:|
+|            277.5 |       0.5647 |     nan      |
+|            285   |       0.5235 |     nan      |
+|            287.5 |       0.5136 |     nan      |
+|            290   |       0.5057 |       0.4245 |
+|            292.5 |       0.5001 |       0.4166 |
+|            295   |       0.4968 |       0.4098 |
+|            297.5 |       0.4958 |       0.4043 |
+|            300   |       0.4971 |       0.4001 |
+
+
+---
+
+## get_risk_neutral_density
+Extract the market-implied risk-neutral probability density of the underlying's price at expiration, via the Breeden-Litzenberger (1978) theorem, applied to a volatility smile calibrated to real market option prices (see `get_implied_volatility`) rather than a single flat assumed volatility.
+
+`get_partial_derivative` computes the same second-derivative relationship but with one flat volatility value applied at every strike -- with a flat volatility input, the second derivative can only ever recover a lognormal density regardless of what the real market smile looks like, which defeats the entire purpose of the theorem. This method instead first calibrates a raw SVI (Gatheral 2004) curve to the actual market smile (see `get_volatility_surface`) and evaluates the density from that.
+
+The formula is as follows:
+
+- f(K) = e^(r * t) * d^2 C(K) / dK^2
+
+Where C(K) is the Black-Scholes call price at strike K, using the SVI-smoothed implied volatility at that strike, r is the risk-free rate and t is the time to expiration. The second derivative is approximated numerically via a central finite difference on a fine, evenly-spaced strike grid, since the smile only gives implied volatility at a sparse set of traded strikes.
+
+See the paper: Breeden, D.T., & Litzenberger, R.H. (1978), "Prices of State-Contingent Claims Implicit in Option Prices", Journal of Business, 51(4), 621-651. [https://www.jstor.org/stable/2352653](https://www.jstor.org/stable/2352653){:target="_blank"}
+
+**Also known as:** Breeden-Litzenberger, implied risk-neutral distribution.
+
+Notes: A warning is logged (not raised) for any ticker whose density goes negative at some strike -- this indicates a butterfly-arbitrage violation (the call price is not convex in the strike) in the underlying market quotes or the SVI fit, which a well-calibrated, liquid smile should not produce.
+
+**Args:**
+
+- <u>expiration_date (str \| None, optional):</u> The expiration date to use.
+Defaults to None which means it will use the first available
+expiration date.
+- <u>put_option (bool, optional):</u> Whether to use put options instead of call
+options. Defaults to False.
+- <u>risk_free_rate (float, optional):</u> The risk free rate to use for the
+calculation. Defaults to None which means it will use the current
+risk free rate.
+- <u>dividend_yield (float, optional):</u> The dividend yield to use for the
+calculation. Defaults to None which means it will use the dividend
+yield as obtained through annual historical data.
+- <u>strike_price_range (float, optional):</u> The range of strikes to evaluate
+the density over, as a fraction of the forward price in each
+direction. Defaults to 0.5, i.e. from 50% to 150% of the forward
+price.
+- <u>number_of_strikes (int, optional):</u> The number of strikes in the
+evaluation grid. Defaults to 200.
+- <u>outlier_threshold (float, optional):</u> The number of median absolute
+deviations from the median implied volatility beyond which a quote
+is treated as an outlier and dropped before fitting. Defaults to
+5.0.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+
+**Raises:**
+
+ValueError: If no implied volatility could be determined for the given
+expiration date.
+
+**Returns:**
+
+pd.DataFrame: The risk-neutral probability density, indexed by strike
+price, with one column per ticker.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+risk_neutral_density = toolkit.options.get_risk_neutral_density()
+```
+
+Which returns:
+
+|   Strike Price |   AAPL |
+|----------------:|-------:|
+|          277.238 | 0.0001 |
+|          278.774 | 0.0002 |
+|          280.31  | 0.0004 |
+|          281.846 | 0.0007 |
+|          283.382 | 0.0012 |
+
+
+---
+
+## get_binomial_model
 Calculate the Binomial Option Pricing Model, a mathematical model used to estimate the price of European and American style options. It does so by creating a binomial tree of price paths for the underlying asset, and then working backwards through the tree to determine the price of the option at each node.
 
 By default the most recent risk free rate, dividend yield and stock price is used, you can alter this by changing the start date. The volatility is calculated based on the daily returns of the stock price and the selected period (this can be altered by defining this accordingly when defining the Toolkit class, start_date and end_date).
@@ -409,6 +555,461 @@ Which returns:
 | DDDU       |       135.69 |      115.04  |      97.5323 |      82.6891 |      97.5323 |
 | DDDD       |       135.69 |      115.04  |      97.5323 |      82.6891 |      70.1049 |
 
+
+---
+
+## get_put_call_parity
+Calculate the Put-Call Parity gap, the amount by which Black-Scholes call and put prices deviate from the no-arbitrage relationship between them.
+
+Put-Call Parity states that, for European options sharing the same strike price and time to expiration, the following relationship must hold in order to prevent arbitrage:
+
+- C - P = S * e^(-q * t) - K * e^(-r * t)
+
+Where C is the call option price, P is the put option price, S is the stock price, K is the strike price, r is the risk-free rate, q is the dividend yield and t is the time to expiration.
+
+This method computes the Black-Scholes call and put price for each ticker, strike price and time to expiration and then calculates the parity gap, i.e. the amount by which (C - P) deviates from S * e^(-qt) - K * e^(-rt). Because both prices come from the same Black-Scholes model and inputs, the gap is (up to floating point precision) always zero - this is a useful diagnostic to confirm that a set of option prices is internally consistent, or, when plugging in externally observed call and put prices, to detect potential arbitrage.
+
+**Also known as:** Put-Call Parity, PCP, the no-arbitrage relationship between calls and puts.
+
+**Args:**
+
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
+which means it will use the most recent date.
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
+- <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+strike prices will be 75, 80, 85, 90, 95, 100, 105, 110, 115 and 120 if the current stock price is 100.
+- <u>expiration_time_range (int):</u> The number of days to use for the time to expiration. Defaults to 30 which equals
+30 days.
+- <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None which
+means it will use the current risk free rate.
+- <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
+means it will use the dividend yield as obtained through annual historical data.
+- <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
+time to expiration columns for each ticker and strike price. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: The Put-Call Parity gap containing the tickers and strike prices as the index and the
+time to expiration as the columns. Values should be (approximately) zero.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+parity_gap = toolkit.options.get_put_call_parity()
+
+parity_gap.loc['AMZN']
+```
+
+---
+
+## get_garman_kohlhagen
+Calculate the Garman-Kohlhagen Model, a variant of the Black-Scholes model used to price European-style options on foreign exchange (FX) rates.
+
+Because holding foreign currency earns the foreign risk-free rate (analogous to a continuous dividend yield on a stock), the Garman-Kohlhagen model uses the foreign risk-free rate in place of the dividend yield used in the standard Black-Scholes model.
+
+The formulas are as follows:
+
+- d1 = (ln(S / K) + (r - r_f + (σ^2) / 2) * t) / (σ * sqrt(t))
+- d2 = d1 - σ * sqrt(t)
+- Call Option Price = S * e^(-r_f * t) * N(d1) - K * e^(-r * t) * N(d2)
+- Put Option Price = K * e^(-r * t) * N(-d2) - S * e^(-r_f * t) * N(-d1)
+
+Where S is the spot exchange rate, K is the strike price, r is the domestic risk-free rate, r_f is the foreign risk-free rate, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the cumulative normal distribution of d2.
+
+**Also known as:** the Black-Scholes model for currency options, FX option pricing model.
+
+**Args:**
+
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
+which means it will use the most recent date.
+- <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
+it will calculate the call option price.
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
+- <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+strike prices will be 75, 80, 85, 90, 95, 100, 105, 110, 115 and 120 if the current stock price is 100.
+- <u>expiration_time_range (int):</u> The number of days to use for the time to expiration. Defaults to 30 which equals
+30 days.
+- <u>risk_free_rate (float, optional):</u> The domestic risk free rate to use for the calculation. Defaults to
+None which means it will use the current risk free rate.
+- <u>foreign_risk_free_rate (float, optional):</u> The foreign risk free rate to use for the calculation, which
+plays the role of the dividend yield in the standard Black-Scholes model. Defaults to 0.0.
+- <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
+time to expiration columns for each ticker and strike price. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Garman-Kohlhagen values containing the tickers and strike prices as the index and the
+time to expiration as the columns.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+garman_kohlhagen = toolkit.options.get_garman_kohlhagen(foreign_risk_free_rate=0.02)
+
+garman_kohlhagen.loc['AMZN']
+```
+
+---
+
+## get_binary_option
+Calculate the price of a Binary (Digital) Option using the Black-Scholes framework.
+
+A binary option pays out a fixed amount if the option expires in-the-money and nothing otherwise. Two variants are supported through the ``option_type`` parameter:
+
+- "cash-or-nothing": pays a fixed cash amount if the option expires in-the-money.
+- Call = cash_payout * e^(-r * t) * N(d2)
+- Put = cash_payout * e^(-r * t) * N(-d2)
+- "asset-or-nothing": pays the value of the underlying asset if the option expires in-the-money.
+- Call = S * e^(-q * t) * N(d1)
+- Put = S * e^(-q * t) * N(-d1)
+
+Where S is the stock price, r is the risk-free rate, q is the dividend yield, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the cumulative normal distribution of d2.
+
+**Also known as:** digital option, all-or-nothing option, cash-or-nothing option, asset-or-nothing option.
+
+**Args:**
+
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
+which means it will use the most recent date.
+- <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
+it will calculate the call option price.
+- <u>option_type (str, optional):</u> Either "cash-or-nothing" or "asset-or-nothing". Defaults to
+"cash-or-nothing".
+- <u>cash_payout (float, optional):</u> The fixed cash amount paid out by a cash-or-nothing option when it
+expires in-the-money. Ignored for asset-or-nothing options. Defaults to 1.0.
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
+- <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+strike prices will be 75, 80, 85, 90, 95, 100, 105, 110, 115 and 120 if the current stock price is 100.
+- <u>expiration_time_range (int):</u> The number of days to use for the time to expiration. Defaults to 30 which equals
+30 days.
+- <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None which
+means it will use the current risk free rate.
+- <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
+means it will use the dividend yield as obtained through annual historical data.
+- <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
+time to expiration columns for each ticker and strike price. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Binary Option values containing the tickers and strike prices as the index and the
+time to expiration as the columns.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+binary_option = toolkit.options.get_binary_option()
+
+binary_option.loc['AMZN']
+```
+
+---
+
+## get_bjerksund_stensland
+Calculate American option prices using the Bjerksund-Stensland (1993) closed-form analytical approximation.
+
+Unlike European options, American options can be exercised at any time up to and including expiration, which normally requires a numerical approach such as the Binomial Tree model (see ``get_binomial_model``). The Bjerksund-Stensland model instead derives a closed-form approximation by assuming the early-exercise boundary is a flat trigger price: once the stock price crosses this level, immediate exercise is assumed optimal.
+
+The approximation (call, cost of carry b = r - q smaller than r) is:
+
+- β = (0.5 - b / σ²) + sqrt((b / σ² - 0.5)² + 2r / σ²)
+- B∞ = β / (β - 1) * K
+- B0 = max(K, r / (r - b) * K)
+- h(T) = -(b * T + 2σ√T) * (B0 / (B∞ - B0))
+- I = B0 + (B∞ - B0) * (1 - e^h(T))
+
+If S ≥ I, immediate exercise is optimal and the value is S - K. American puts are priced through the put-call transformation AmericanPut(S, K, T, r, b, σ) = AmericanCall(K, S, T, r - b, -b, σ).
+
+**Also known as:** BS93, Bjerksund-Stensland approximation, American option approximation.
+
+**Args:**
+
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
+which means it will use the most recent date.
+- <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
+it will calculate the call option price.
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
+- <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+strike prices will be 75, 80, 85, 90, 95, 100, 105, 110, 115 and 120 if the current stock price is 100.
+- <u>expiration_time_range (int):</u> The number of days to use for the time to expiration. Defaults to 30 which equals
+30 days.
+- <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None which
+means it will use the current risk free rate.
+- <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
+means it will use the dividend yield as obtained through annual historical data.
+- <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
+time to expiration columns for each ticker and strike price. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Bjerksund-Stensland American option values containing the tickers and strike prices as
+the index and the time to expiration as the columns.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+bjerksund_stensland = toolkit.options.get_bjerksund_stensland()
+
+bjerksund_stensland.loc['AMZN']
+```
+
+---
+
+## get_monte_carlo_option_price
+Calculate European option prices through Monte Carlo simulation of Geometric Brownian Motion (GBM) stock price paths.
+
+The Monte Carlo method prices an option by simulating a large number of possible future paths for the underlying stock price under the risk-neutral measure, computing the option's payoff at expiration for each simulated path, and then discounting the average payoff back to the present:
+
+- S(t + Δt) = S(t) * e^((r - q - σ²/2) * Δt + σ * √Δt * Z)
+- Call Price = e^(-r * T) * mean(max(S(T) - K, 0))
+- Put Price = e^(-r * T) * mean(max(K - S(T), 0))
+
+Where S(t) is the stock price at time t, r is the risk-free rate, q is the dividend yield, σ is the volatility, Δt is the length of a single time step and Z is a standard normal random variable.
+
+As it is a simulation, the result comes with sampling error. Set ``show_standard_error=True`` to additionally return the standard error of each estimate - as a rule of thumb, the true price lies within plus or minus 2 times the standard error roughly 95% of the time. A fixed ``seed`` is used by default for reproducibility of documentation examples; set it explicitly (or leave it as None) to control this behavior.
+
+**Also known as:** Monte Carlo option pricing, simulation-based option pricing.
+
+**Args:**
+
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
+which means it will use the most recent date.
+- <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
+it will calculate the call option price.
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
+- <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+strike prices will be 75, 80, 85, 90, 95, 100, 105, 110, 115 and 120 if the current stock price is 100.
+- <u>expiration_time_range (int):</u> The number of days to use for the time to expiration. Defaults to 30 which equals
+30 days.
+- <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None which
+means it will use the current risk free rate.
+- <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
+means it will use the dividend yield as obtained through annual historical data.
+- <u>simulations (int, optional):</u> The number of simulated stock price paths. Defaults to 10,000.
+- <u>time_steps (int, optional):</u> The number of time steps used to build each simulated path. Defaults to 100.
+- <u>seed (int \| None, optional):</u> The seed used to initialize the random number generator, ensuring
+reproducible results. Defaults to None, which means the results will not be reproducible.
+- <u>show_standard_error (bool, optional):</u> Whether to also return the standard error of each Monte Carlo
+estimate as a second DataFrame. Defaults to False.
+- <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
+time to expiration columns for each ticker and strike price. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Monte Carlo option values containing the tickers and strike prices as the index and the
+time to expiration as the columns. If show_standard_error is True, a tuple of (prices, standard_errors)
+is returned instead.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+monte_carlo = toolkit.options.get_monte_carlo_option_price(seed=42)
+
+monte_carlo.loc['AMZN']
+```
+
+---
+
+## get_barrier_option
+Calculate the closed-form price of a single-barrier (knock-in or knock-out, up or down) European option using the Reiner & Rubinstein (1991) formulas.
+
+A barrier option is a path-dependent option whose payoff (and existence) depends on whether the underlying stock price touches a pre-specified barrier level at any point before expiration:
+
+- Knock-out: the option becomes worthless if the barrier is touched.
+- Knock-in: the option only comes into existence if the barrier is touched.
+- Down barrier: the barrier is below the current stock price.
+- Up barrier: the barrier is above the current stock price.
+
+The barrier level is defined relative to the current stock price through ``barrier_percentage``, e.g. a value of 0.9 sets the barrier at 90% of the current stock price (a sensible default for a down barrier).
+
+A useful identity is in-out parity: for identical parameters, a knock-in option plus its corresponding knock-out option (same direction) always equals the price of the equivalent vanilla Black-Scholes option, since the underlying either does or does not touch the barrier.
+
+**Also known as:** knock-in option, knock-out option, down-and-out, down-and-in, up-and-out, up-and-in option.
+
+**Args:**
+
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
+which means it will use the most recent date.
+- <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
+it will calculate the call option price.
+- <u>barrier_percentage (float, optional):</u> The barrier level as a percentage of the current stock price.
+Defaults to 0.9 which equals 90% of the current stock price.
+- <u>barrier_direction (str, optional):</u> Either "down" or "up". Defaults to "down".
+- <u>knock_type (str, optional):</u> Either "in" or "out". Defaults to "out".
+- <u>rebate (float, optional):</u> The fixed cash amount paid out if the option knocks out (or fails to knock
+in). Defaults to 0.0.
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
+- <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+strike prices will be 75, 80, 85, 90, 95, 100, 105, 110, 115 and 120 if the current stock price is 100.
+- <u>expiration_time_range (int):</u> The number of days to use for the time to expiration. Defaults to 30 which equals
+30 days.
+- <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None which
+means it will use the current risk free rate.
+- <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
+means it will use the dividend yield as obtained through annual historical data.
+- <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
+time to expiration columns for each ticker and strike price. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Barrier option values containing the tickers and strike prices as the index and the
+time to expiration as the columns.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+barrier_option = toolkit.options.get_barrier_option()
+
+barrier_option.loc['AMZN']
+```
+
+---
+
+## get_asian_option
+Calculate the closed-form price of a geometric-average Asian option using the Kemna & Vorst (1990) formula.
+
+An Asian option's payoff depends on the average price of the underlying stock over the option's life, rather than the price at a single point in time, which typically makes it cheaper than the equivalent vanilla option (the averaging reduces variance). The geometric-average version has a closed-form solution based on an adjusted volatility and cost of carry:
+
+- σ_A = σ / √3
+- b_A = 0.5 * (b - σ²/6), where b = r - q is the cost of carry
+- d1 = (ln(S / K) + (b_A + σ_A²/2) * t) / (σ_A * √t)
+- d2 = d1 - σ_A * √t
+- Call Price = S * e^((b_A - r) * t) * N(d1) - K * e^(-r * t) * N(d2)
+- Put Price = K * e^(-r * t) * N(-d2) - S * e^((b_A - r) * t) * N(-d1)
+
+Where S is the stock price, K is the strike price, r is the risk-free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the cumulative normal distribution of d2.
+
+**Also known as:** geometric Asian option, average rate option, average price option.
+
+**Args:**
+
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
+which means it will use the most recent date.
+- <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
+it will calculate the call option price.
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
+- <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+strike prices will be 75, 80, 85, 90, 95, 100, 105, 110, 115 and 120 if the current stock price is 100.
+- <u>expiration_time_range (int):</u> The number of days to use for the time to expiration. Defaults to 30 which equals
+30 days.
+- <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None which
+means it will use the current risk free rate.
+- <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
+means it will use the dividend yield as obtained through annual historical data.
+- <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
+time to expiration columns for each ticker and strike price. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Geometric-average Asian option values containing the tickers and strike prices as the
+index and the time to expiration as the columns.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+asian_option = toolkit.options.get_asian_option()
+
+asian_option.loc['AMZN']
+```
+
+---
+
+## get_strategy_payoff
+Calculate the net expiration profit and loss (P&L) profile of a multi-leg option (and, optionally, stock) strategy across a range of stock prices.
+
+A strategy is expressed as a list of "legs". Each leg is a dictionary describing either an option position or a stock position:
+
+- For an option leg: "instrument": "option" (default), "strike_price" (float, required), "put_option" (bool, defaults to False), "position" ("long" or "short", defaults to "long"), "premium" (float, defaults to 0). - For a stock leg: "instrument": "stock", "position" ("long" or "short", defaults to "long"), "premium" (float, the entry price, defaults to 0).
+
+This single, generic building block can express many common strategies by combining legs, for example:
+
+- Straddle: long call + long put, same strike. - Strangle: long call + long put, different (OTM) strikes. - Bull call spread: long call (lower strike) + short call (higher strike). - Bear put spread: long put (higher strike) + short put (lower strike). - Covered call: long stock + short call. - Protective put: long stock + long put. - Iron condor: short put + long put (lower strikes) + short call + long call (higher strikes).
+
+**Also known as:** option strategy payoff diagram, P&L profile.
+
+**Args:**
+
+- <u>legs (list[dict]):</u> A list of leg dictionaries as described above. Must
+contain at least one leg. The same legs are applied to every ticker, so
+strike prices should be chosen with the relevant tickers' price levels in
+mind.
+- <u>start_date (str \| None, optional):</u> The start date which determines the stock price. Defaults to None
+which means it will use the most recent date.
+- <u>stock_price_range (float):</u> The percentage range to use for the stock prices at expiration. Defaults
+to 0.5 which equals 50% and thus results in stock prices from 50 to 150 if the current stock price is
+100.
+- <u>stock_price_step_size (float):</u> The step size to use for the stock prices at expiration. Defaults to 1.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+
+**Returns:**
+
+pd.DataFrame: The strategy's net P&L with the range of stock prices at expiration as the index and the
+tickers as the columns.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "AAPL"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+straddle_legs = [
+    {"strike_price": 150, "put_option": False, "position": "long", "premium": 8},
+    {"strike_price": 150, "put_option": True, "position": "long", "premium": 6},
+]
+
+strategy_payoff = toolkit.options.get_strategy_payoff(legs=straddle_legs)
+
+strategy_payoff["AMZN"]
+```
 
 ---
 
@@ -1631,7 +2232,7 @@ Which returns:
 ## get_partial_derivative
 Calculate the partial derivative of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The partial derivative is the rate of change of the option price with respect to the strike price.
 
-The partial derivative is used in the Breeden-Litzenberger theorem is used for risk-neutral valuation and was developed by Fischer Black and Robert Litzenberger in 1978. The theorem states that the price of any derivative security can be calculated by finding the expected value of the derivative under a risk-neutral measure. The theorem is based on the Black-Scholes model and the assumption that the underlying asset follows a lognormal distribution. See the paper: [https://www.jstor.org/stable/2352653](https://www.jstor.org/stable/2352653){:target="_blank"}
+Note that this uses a single, flat assumed volatility (the same value at every strike price) rather than the market's actual implied volatility smile. This means it is NOT the Breeden-Litzenberger risk-neutral density -- with a flat volatility input the second derivative can only ever recover a lognormal density, regardless of what the real market smile looks like, which defeats the entire purpose of that theorem. For the actual market-implied (smile-consistent) risk-neutral density, see `get_risk_neutral_density`, which uses this same second-derivative relationship but applied to a volatility surface calibrated to real market option prices instead of a flat assumption.
 
 The formula is as follows:
 

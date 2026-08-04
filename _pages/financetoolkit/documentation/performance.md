@@ -89,8 +89,8 @@ For a given period, for example monthly, this translates into the following:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -153,8 +153,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -214,8 +214,8 @@ However, since the results are closely related and tend to point into the same d
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -259,8 +259,8 @@ Optionally, it is also possible to see the correlation between the risk-free rat
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
 - <u>exclude_risk_free (bool, optional):</u> Whether to exclude the risk-free rate from the results. Defaults to True.
@@ -321,7 +321,7 @@ What is relevant to look at is the influence these factors have on each stock an
 **Args:**
 
 - <u>period (str, optional):</u> The period for the calculation (e.g., "weekly", "monthly", "quarterly", "yearly").
-Defaults to None, using class-defined quarterly or yearly period.
+Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>method (str, optional):</u> The regression method to use for the calculation. Defaults to 'multi'.
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
@@ -372,6 +372,62 @@ Which returns:
 
 ---
 
+## get_carhart_four_factor_model
+Calculate Carhart Four Factor model scores for a set of financial assets.
+
+The Carhart Four Factor model extends the Fama and French Three Factor model with a momentum factor, based on the observation that stocks with high prior returns (winners) tend to keep outperforming stocks with low prior returns (losers) over the medium term:
+
+- Market Risk Premium (Mkt-RF): The excess return of the market over the risk-free rate.
+- Size Premium (SMB): The historical excess return of small-cap stocks over large-cap stocks.
+- Value Premium (HML): The historical excess return of value stocks over growth stocks.
+- Momentum (MOM): The historical excess return of prior winner stocks over prior loser stocks.
+
+The model performs a Multi Linear Regression on all four factors and defines the regression parameters for each asset over time based on its exposure to these factors:
+
+- Excess Return = Intercept + Beta1 * Mkt-RF + Beta2 * SMB + Beta3 * HML + Beta4 * MOM + Residuals
+
+For more information about the method, see the following paper:
+
+- Carhart, M.M. (1997). "On Persistence in Mutual Fund Performance." The Journal of Finance, 52(1), 57-82.
+
+**Also known as:** Carhart model, four-factor model, momentum-augmented Fama-French model.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period for the calculation (e.g., "weekly", "monthly", "quarterly", "yearly").
+Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratio values. Defaults to False.
+- <u>lag (int or list of int, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Carhart Four Factor model scores for the specified assets.
+
+**Notes:**
+
+- The dataset from Ken French is not always fully up to date. Therefore, some periods could be excluded.
+- Daily Carhart results is not an option as it would attempt to do a linear regression on a single data
+point which will not give any meaningful results.
+- The risk-free rate is the Risk Free Rate reported in the Fama and French dataset (used here, rather
+than the Toolkit's own risk-free rate, to stay consistent with the momentum factor's construction).
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.performance.get_carhart_four_factor_model(period="quarterly")["AMZN"]
+```
+
+---
+
 ## get_alpha
 Alpha, in a general sense, represents the excess return an investment generates relative to a benchmark or a risk-adjusted return. It can be positive (indicating the investment outperformed the benchmark) or negative (indicating underperformance).
 
@@ -385,8 +441,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Alpha is calculated as the rolling mean excess return over this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -445,8 +501,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -506,8 +562,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -579,8 +635,8 @@ Note that this is explicitly already subtracts the Risk Free Rate.
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -626,6 +682,147 @@ Which returns:
 
 ---
 
+## get_probabilistic_sharpe_ratio
+Calculate the Probabilistic Sharpe Ratio (PSR), the probability that the true (population) Sharpe ratio exceeds a benchmark Sharpe ratio, correcting the naive Sharpe ratio significance test for skewed and fat-tailed returns.
+
+A plain Sharpe ratio significance test (e.g. treating SR̂ as approximately normally distributed) implicitly assumes Gaussian, i.i.d. returns. Real asset and strategy returns are typically skewed and fat-tailed, which understates the true uncertainty around the Sharpe ratio estimate and makes the naive test overconfident. The PSR explicitly folds the skewness and (non-excess) kurtosis of the underlying returns into the standard error of the Sharpe ratio, giving a more honest probability that the strategy truly beats `benchmark_sharpe_ratio` rather than 0 or 0.5 simply being a coincidence of a short, lumpy sample.
+
+The formula is as follows:
+
+- PSR(SR*) = Φ( (SR̂ − SR*) · sqrt(n − 1) / sqrt(1 − γ₃·SR̂ + ((γ₄ − 1) / 4)·SR̂²) )
+
+Where SR̂ is the observed Sharpe ratio, SR* is `benchmark_sharpe_ratio`, γ₃ is skewness, γ₄ is the non-excess (raw) kurtosis, n is the number of return observations and Φ is the standard normal CDF.
+
+**Also known as:** PSR, Sharpe ratio significance probability.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
+period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Probabilistic
+Sharpe Ratio.
+- <u>benchmark_sharpe_ratio (float, optional):</u> The hypothesized or benchmark Sharpe ratio
+(SR*) to test the observed Sharpe ratio against. Defaults to 0.0, i.e. testing whether
+the strategy has any skill at all above doing nothing.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Probabilistic Sharpe Ratio values, between 0 and 1.
+
+**Notes:**
+
+- This uses the **non-excess (raw)** kurtosis convention, i.e. a Normal distribution has a
+kurtosis of 3, not 0. Internally this calls `risk_model.get_kurtosis(..., fisher=False)`.
+- The method retrieves historical data and calculates the Probabilistic Sharpe ratio for
+each asset in the Toolkit instance, using the same excess returns as `get_sharpe_ratio`.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.performance.get_probabilistic_sharpe_ratio()
+```
+
+Which returns:
+
+| Date   |   AAPL |   TSLA |
+|:-------|-------:|-------:|
+| 2021   | 0.0000 | 0.0008 |
+| 2022   | 0.0000 | 0.0000 |
+| 2023   | 0.0000 | 0.0000 |
+| 2024   | 0.0000 | 0.0000 |
+| 2025   | 0.0000 | 0.0000 |
+| 2026   | 0.0000 | 0.0000 |
+
+
+---
+
+## get_deflated_sharpe_ratio
+Calculate the Deflated Sharpe Ratio (DSR), the Probabilistic Sharpe Ratio corrected for the fact that the reported Sharpe ratio is often the best of many strategy variations, parameter combinations, or lookback windows tried during a backtest (multiple testing / selection bias / "backtest overfitting").
+
+The more variations that were tried, the more likely it is that at least one of them shows an impressive Sharpe ratio by pure chance, even with zero true skill. The DSR accounts for this by first estimating the Sharpe ratio one would expect to observe, purely by chance, as the maximum of `n_trials` independent trials under the null hypothesis of no skill, and then uses that expected maximum as the benchmark (SR*) in the Probabilistic Sharpe Ratio formula, instead of a naive benchmark such as 0.
+
+The formula for the expected maximum Sharpe ratio benchmark is as follows:
+
+- SR* = sqrt(Var[SR_trials]) · [ (1 − γ)·Φ⁻¹(1 − 1/N) + γ·Φ⁻¹(1 − 1/(N·e)) ]
+
+Where N is `n_trials`, Var[SR_trials] is the variance of the Sharpe ratios observed across those N trials, and γ ≈ 0.5772 is the Euler-Mascheroni constant. DSR = PSR(SR*), i.e. it is always less than or equal to the Probabilistic Sharpe Ratio computed against a benchmark of 0.
+
+This codebase does not track "N literal strategy trials" - there is no record of how many parameter combinations were tried before arriving at the current Toolkit configuration. As a documented approximation, `Var[SR_trials]` is estimated from the variance of an auxiliary *rolling* Sharpe ratio series (see `get_rolling_sharpe_ratio`) computed over a `trials_window`-sized window across the full return history, and `n_trials` defaults to the number of valid (non-NaN) values in that same rolling series. This treats each rolling window as if it were one "trial" - a reasonable proxy for how dispersed the Sharpe ratio could plausibly have been under different choices, but not a substitute for passing the actual number of variations tried (via `n_trials`) when that is known, since the quality of the correction depends directly on it.
+
+**Also known as:** DSR, backtest overfitting correction, selection-bias-adjusted Sharpe ratio.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>rolling (int, optional):</u> The rolling period to use for the primary Sharpe ratio
+being tested. If you select period = 'monthly' and set rolling to 12 you obtain the
+rolling 12-month Deflated Sharpe Ratio.
+- <u>trials_window (int, optional):</u> The window size (in units of `period`) used for the
+auxiliary rolling Sharpe ratio series that approximates `Var[SR_trials]` and the
+default `n_trials`, see the Notes above. Defaults to None, which uses half of the
+available return history so that enough overlapping windows exist regardless of
+`period` or date range.
+- <u>n_trials (int, optional):</u> The number of independent (or effectively independent)
+strategy variations, parameter combinations, or lookback windows tried before
+arriving at the reported Sharpe ratio. Defaults to None, which falls back to the
+number of valid values in the auxiliary rolling Sharpe ratio series described above.
+Pass this explicitly whenever the actual number of trials is known.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Deflated Sharpe Ratio values, between 0 and 1.
+
+**Notes:**
+
+- This uses the **non-excess (raw)** kurtosis convention, i.e. a Normal distribution has a
+kurtosis of 3, not 0. Internally this calls `risk_model.get_kurtosis(..., fisher=False)`.
+- The method retrieves historical data and calculates the Deflated Sharpe ratio for
+each asset in the Toolkit instance, using the same excess returns as `get_sharpe_ratio`.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.performance.get_deflated_sharpe_ratio()
+```
+
+Which returns:
+
+| Date   |   AAPL |   TSLA |
+|:-------|-------:|-------:|
+| 2021   | 0.0000 | 0.0000 |
+| 2022   | 0.0000 | 0.0000 |
+| 2023   | 0.0000 | 0.0000 |
+| 2024   | 0.0000 | 0.0000 |
+| 2025   | 0.0000 | 0.0000 |
+| 2026   | 0.0000 | 0.0000 |
+
+
+---
+
 ## get_sortino_ratio
 The Sortino Ratio is a financial metric used to assess the risk-adjusted performance of an investment portfolio or asset by considering only the downside risk. It measures the excess return generated by the portfolio per unit of downside risk, specifically, the standard deviation of negative returns. The Sortino Ratio is particularly useful for investors who are primarily concerned with minimizing the downside risk of their investments.
 
@@ -647,8 +844,8 @@ Note that this is explicitly already subtracts the Risk Free Rate.
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the Sortino ratio is calculated over a rolling window of this many periods across the
 full return history instead of per `period`. Defaults to None.
@@ -704,8 +901,8 @@ It can be used to compare volatilities in different stocks or show stocks go int
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int):</u> The rolling period to use to calculate the Ulcer Index. Defaults to 14.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -763,8 +960,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Maximum Drawdown within the
 specified period or for the entire period. Thus whether to look at the Maximum Drawdown
 within a specific year (if period = 'yearly') or look at the entirety of all years.
@@ -824,8 +1021,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Average Drawdown within the
 specified period or for the entire period. Thus whether to look at the Average Drawdown
 within a specific year (if period = 'yearly') or look at the entirety of all years.
@@ -885,8 +1082,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the drawdowns within the specified
 period or for the entire period. Thus whether to look at the drawdowns within a specific
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
@@ -939,7 +1136,9 @@ The M2 Ratio, also known as the Modigliani-Modigliani Measure, is a financial me
 
 The formula is as follows:
 
-- M2 Ratio = (Portfolio's Return - Risk-Free Rate) / Portfolio Standard Deviation
+- M2 Ratio = Risk-Free Rate + [(Portfolio's Return - Risk-Free Rate) / Portfolio Standard Deviation] × Benchmark Standard Deviation
+
+This rescales the (dimensionless) Sharpe ratio back into return-space by asking what return the portfolio would have earned had it been leveraged or de-leveraged, via risk-free borrowing or lending, to match the benchmark's volatility exactly -- producing a number directly comparable to the benchmark's actual return. Requires a `benchmark_ticker` to be set on the Toolkit instance, since the benchmark's standard deviation is part of the formula.
 
 **See definition:** [https://en.wikipedia.org/wiki/Modigliani_risk-adjusted_performance](https://en.wikipedia.org/wiki/Modigliani_risk-adjusted_performance){:target="_blank"}
 
@@ -947,8 +1146,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the M2 ratio is calculated over a rolling window of this many periods across the full
 return history instead of per `period`. Defaults to None.
@@ -1008,8 +1207,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Tracking Error is calculated over a rolling window of this many periods across the
 full return history instead of per `period`. Defaults to None.
@@ -1071,8 +1270,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the Information Ratio is calculated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -1130,8 +1329,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -1185,8 +1384,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -1238,8 +1437,8 @@ The Win Rate is the percentage of periods in which the asset's return exceeds th
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -1291,8 +1490,8 @@ Note that this already subtracts the Risk Free Rate.
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>order (int, optional):</u> The order of the lower partial moment used in the denominator.
 Defaults to 3.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1354,8 +1553,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Omega Ratio within the specified
 period or for the entire period. Thus whether to look at the Omega Ratio within a specific
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
@@ -1417,8 +1616,8 @@ The formula is as follows:
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to None which
-results in basing it off the quarterly parameter as defined in the class instance.
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Gain-to-Pain Ratio within the
 specified period or for the entire period. Thus whether to look at the Gain-to-Pain Ratio
 within a specific year (if period = 'yearly') or look at the entirety of all years.
@@ -1528,8 +1727,8 @@ If cumulative is set to True, the period returns are compounded further into a c
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly,
-quarterly, or yearly). Defaults to "yearly".
+- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
+to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>cumulative (bool, optional):</u> Whether to return the cumulative return over time
 instead of the discrete return per period. Defaults to False.
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1584,8 +1783,8 @@ If cumulative is set to True, the excess returns are compounded further into a c
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly,
-quarterly, or yearly). Defaults to "yearly".
+- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
+to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>cumulative (bool, optional):</u> Whether to return the cumulative excess return over time
 instead of the discrete excess return per period. Defaults to False.
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1639,8 +1838,8 @@ Unlike `get_beta`, which relates a single asset to the benchmark, this computes 
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly,
-quarterly, or yearly). Defaults to "yearly".
+- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
+to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
 **Returns:**
@@ -1676,8 +1875,8 @@ Unlike `get_covariance`, which relates a single asset to the benchmark, this com
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly,
-quarterly, or yearly). Defaults to "yearly".
+- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
+to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
 **Returns:**
@@ -1702,6 +1901,436 @@ Which returns:
 | AMZN      | 0.1944 | 0.2418 |      0.0592 |
 | TSLA      | 0.2418 | 0.344  |      0.0913 |
 | Benchmark | 0.0592 | 0.0913 |      0.0301 |
+
+
+---
+
+## get_appraisal_ratio
+Calculate the Appraisal Ratio, i.e. Jensen's Alpha divided by the idiosyncratic (residual, unsystematic) standard deviation left over from the CAPM regression that produced that Alpha.
+
+Jensen's Alpha (see `get_jensens_alpha`) measures how much return a manager generated above what CAPM would predict given the asset's Beta. However, a large Alpha achieved with wildly noisy, unpredictable residual returns is far less attractive than the same Alpha achieved consistently. The Appraisal Ratio normalizes Alpha by that noise (the "specific risk" not explained by market exposure), giving a Sharpe-ratio-like measure of stock-picking or timing skill per unit of idiosyncratic risk taken.
+
+The formula is as follows:
+
+- Appraisal Ratio = Jensen's Alpha / Residual Standard Deviation
+
+Where the residual standard deviation is the standard deviation of the pointwise CAPM regression residuals (Asset Excess Return − Beta * Benchmark Excess Return), reusing the exact same CAPM regression formula as `get_jensens_alpha`.
+
+**See definition:** [https://en.wikipedia.org/wiki/Information_ratio](https://en.wikipedia.org/wiki/Information_ratio){:target="_blank"}
+
+**Also known as:** Treynor-Black Appraisal Ratio.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
+calculation. If set, Beta is estimated over a rolling window of this many periods across
+the full return history instead of per `period`. Defaults to None.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Appraisal Ratio values.
+
+**Notes:**
+
+- Daily Appraisal Ratio is not an option as the standard deviation for 1 day is close to
+zero. Therefore, it does not give any useful insights.
+- The method retrieves historical data and calculates Jensen's Alpha and the CAPM
+regression residuals for each asset in the Toolkit instance, reusing the same Beta and
+CAPM formula as `get_jensens_alpha`.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.performance.get_appraisal_ratio()
+```
+
+Which returns:
+
+| Date   |    AAPL |    MSFT |
+|:-------|--------:|--------:|
+| 2020   | 37.2641 | 16.0511 |
+| 2021   | -2.5308 | 20.9479 |
+| 2022   | -1.4753 | -3.3995 |
+
+
+---
+
+## get_fama_decomposition
+Calculate the Fama (1972) decomposition of total excess return into Selectivity and Diversification.
+
+Jensen's Alpha alone conflates two very different sources of excess return: genuine stock/timing selection skill, and simply carrying more total risk than the market by holding an under-diversified portfolio (which, in a CAPM world, should be compensated with extra return even absent any skill). Fama's decomposition separates the two by comparing the portfolio's actual return against two different CAPM-implied return benchmarks: one using the portfolio's actual Beta (systematic risk only), and one using the portfolio's actual *total* risk ratio (Sigma_Portfolio / Sigma_Market) in place of Beta.
+
+The formulas are as follows:
+
+- Selectivity = (Asset Return − Risk-Free Rate) − (Sigma_Portfolio / Sigma_Market) * (Benchmark Return − Risk-Free Rate) - Diversification = [Risk-Free Rate + (Sigma_Portfolio / Sigma_Market) * (Benchmark Return − Risk-Free Rate)] − [Risk-Free Rate + Beta * (Benchmark Return − Risk-Free Rate)]
+
+Selectivity is the return earned above what would be required for a fully diversified portfolio carrying the same total risk, i.e. genuine security selection or timing skill. Diversification is the extra return the manager left on the table (if positive, it is a cost) by taking on unsystematic risk that a fully diversified portfolio of the same total risk would not have. Selectivity plus Diversification equals Jensen's Alpha (see `get_jensens_alpha`).
+
+**Also known as:** Fama's Net Selectivity, Fama performance decomposition.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
+calculation. If set, Beta is estimated over a rolling window of this many periods across
+the full return history instead of per `period`. Defaults to None.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Selectivity and Diversification values, with a Multi Index of
+(ticker, component) as the columns.
+
+**Notes:**
+
+- Daily Fama Decomposition is not an option as the standard deviation for 1 day is close
+to zero. Therefore, it does not give any useful insights.
+- The method retrieves historical data and calculates Beta, the asset's and benchmark's
+standard deviation, and the Selectivity and Diversification components for each asset in
+the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.performance.get_fama_decomposition().xs("AAPL", level=0, axis=1)
+```
+
+Which returns:
+
+| Date   |   Selectivity |   Diversification |
+|:-------|--------------:|-------------------:|
+| 2020   |        0.5708 |              0.0416 |
+| 2021   |       -0.1945 |              0.1653 |
+| 2022   |        0.0220 |             -0.0375 |
+
+
+---
+
+## get_adjusted_sharpe_ratio
+Calculate the Adjusted Sharpe Ratio (ASR) of an investment portfolio or asset's returns.
+
+The Sharpe ratio only looks at the mean and standard deviation of returns, implicitly assuming a Normal distribution. The Adjusted Sharpe Ratio (Pezier & White, 2006) penalizes (or rewards) the Sharpe ratio for negative skewness and excess kurtosis using a Cornish-Fisher-style expansion, so that two strategies with the same Sharpe ratio but different tail shapes are no longer scored identically.
+
+The formula is as follows:
+
+- ASR = SR * [1 + (S / 6) * SR − ((K − 3) / 24) * SR^2]
+
+Where SR is the (ordinary, period) Sharpe ratio, S is the skewness of the same returns, and K is the non-excess (raw) kurtosis of the same returns.
+
+**Also known as:** Pezier and White Adjusted Sharpe Ratio.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
+period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Adjusted
+Sharpe Ratio.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Adjusted Sharpe Ratio values.
+
+**Notes:**
+
+- This uses the **non-excess (raw)** kurtosis convention, i.e. a Normal distribution has a
+kurtosis of 3, not 0. Internally this calls `risk_model.get_kurtosis(..., fisher=False)`,
+the same convention documented in `get_probabilistic_sharpe_ratio`.
+- Daily Adjusted Sharpe Ratio is not an option as the standard deviation for 1 day is close
+to zero. Therefore, it does not give any useful insights.
+- The method retrieves historical data and calculates the Adjusted Sharpe ratio for each
+asset in the Toolkit instance, using the same excess returns as `get_sharpe_ratio`.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.performance.get_adjusted_sharpe_ratio()
+```
+
+Which returns:
+
+| Date   |    AAPL |    MSFT |
+|:-------|--------:|--------:|
+| 2020   | -0.2021 | -0.2502 |
+| 2021   | -0.8212 | -0.9321 |
+| 2022   | -1.2058 | -1.2489 |
+
+
+---
+
+## get_starr_ratio
+Calculate the STARR (Stable Tail Adjusted Return Ratio) of an investment portfolio or asset's returns.
+
+The Sharpe ratio penalizes upside and downside volatility equally via the standard deviation. The STARR ratio instead scales the mean excess return by the Conditional Value at Risk (CVaR / Expected Shortfall), a coherent tail-risk measure that only looks at the average magnitude of losses beyond the `alpha` quantile. This makes STARR more appropriate than the Sharpe ratio for return distributions with fat left tails.
+
+The formula is as follows:
+
+- STARR Ratio = Excess Return / \|CVaR(alpha)\|
+
+**See definition:** [https://en.wikipedia.org/wiki/Expected_shortfall](https://en.wikipedia.org/wiki/Expected_shortfall){:target="_blank"}
+
+**Also known as:** Stable Tail Adjusted Return Ratio, Conditional Sharpe Ratio.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>within_period (bool, optional):</u> Whether to calculate the CVaR within the specified
+period or for the entire period. Thus whether to look at the CVaR within a specific
+year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
+- <u>alpha (float, optional):</u> The confidence level used for the CVaR calculation (e.g. 0.05
+for the worst 5% of outcomes). Defaults to 0.05.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: STARR Ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the STARR Ratio for each asset in
+the Toolkit instance.
+- Periods with very few return observations (e.g. a partial period at the very start of
+the selected date range) can produce a degenerate (e.g. zero or ±infinite) CVaR, since
+CVaR is not a meaningful statistic with only one or two data points. This mirrors the
+analogous caveat for the Sharpe Ratio needing enough observations for its standard
+deviation to be meaningful.
+- If `growth` is set to True, the method calculates the growth of the ratio values using
+the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.performance.get_starr_ratio()
+```
+
+Which returns:
+
+| Date   |     AAPL |    MSFT |
+|:-------|---------:|--------:|
+| 2020   |  12.0414 |  6.5831 |
+| 2021   |   9.8271 | 18.3701 |
+| 2022   |  -6.7460 | -6.8990 |
+
+
+---
+
+## get_rachev_ratio
+Calculate the Rachev Ratio (R-Ratio) of an investment portfolio or asset's returns.
+
+The Rachev ratio compares the "quality" of the best outcomes to the "quality" of the worst outcomes by taking the ratio of the right-tail Expected Shortfall (the average of the best `alpha` fraction of returns) to the left-tail Expected Shortfall (the average magnitude of the worst `alpha` fraction of returns). A ratio above 1 indicates that the average size of extreme gains outweighs the average size of extreme losses.
+
+The formula is as follows:
+
+- Rachev Ratio = ES_right(alpha) / ES_left(alpha)
+
+**Also known as:** R-Ratio.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>within_period (bool, optional):</u> Whether to calculate the Rachev Ratio within the
+specified period or for the entire period. Thus whether to look at the return
+distribution within a specific year (if period = 'yearly') or look at the entirety of
+all years. Defaults to True.
+- <u>alpha (float, optional):</u> The confidence level used for both tails (e.g. 0.05 for the
+best/worst 5% of outcomes). Defaults to 0.05.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Rachev Ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the Rachev Ratio for each asset in
+the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using
+the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.performance.get_rachev_ratio()
+```
+
+Which returns:
+
+| Date   |   AAPL |   MSFT |
+|:-------|-------:|-------:|
+| 2020   | 1.0649 | 1.0946 |
+| 2021   | 0.9964 | 1.0552 |
+| 2022   | 1.0790 | 1.0200 |
+
+
+---
+
+## get_treynor_mazuy_model
+Calculate the Treynor-Mazuy market timing model for each asset in the Toolkit instance.
+
+Jensen's Alpha and Beta from a plain CAPM regression cannot distinguish stock-picking skill (selectivity) from market-timing skill (shifting exposure ahead of market moves). The Treynor-Mazuy model adds a quadratic term in the benchmark excess return to the regression: a manager who successfully increases (decreases) market exposure ahead of up (down) markets will show a return profile that curves upward as a function of the benchmark return, captured by a positive quadratic coefficient (Gamma).
+
+The formula is as follows:
+
+- Excess Return = Alpha + Beta * Benchmark Excess Return + Gamma * Benchmark Excess Return^2 + Residuals
+
+Gamma > 0 indicates positive market-timing ability; Gamma <= 0 indicates no timing ability.
+
+**Also known as:** Treynor-Mazuy quadratic timing model, TM model.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Alpha, Beta, Gamma and R Squared values, with a Multi Index of
+(ticker, parameter) as the columns.
+
+**Notes:**
+
+- Daily and weekly Treynor-Mazuy results are not an option as there would be too few
+observations within each period to run a meaningful regression.
+- The method retrieves historical data and performs a quadratic regression for each asset
+in the Toolkit instance, within each period.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.performance.get_treynor_mazuy_model().xs("AAPL", level=0, axis=1)
+```
+
+Which returns:
+
+| Date   |   Alpha |   Beta |   Gamma |   R Squared |
+|:-------|--------:|-------:|--------:|------------:|
+| 2020   |  0.0030 | 1.1648 |  0.3569 |       0.6932 |
+| 2021   |  0.0051 | 1.4745 |  5.9823 |       0.4704 |
+| 2022   |  0.0090 | 1.3691 |  1.5507 |       0.8050 |
+
+
+---
+
+## get_henriksson_merton_model
+Calculate the Henriksson-Merton market timing model for each asset in the Toolkit instance.
+
+Like the Treynor-Mazuy model (see `get_treynor_mazuy_model`), this separates market-timing skill from selectivity, but models timing as a piecewise (rather than quadratic) change in Beta: a "down-market" Beta and an "up-market" Beta.
+
+The formula is as follows:
+
+- Excess Return = Alpha + Beta * Benchmark Excess Return + Up Market Beta * max(Benchmark Excess Return, 0) + Residuals
+
+Beta is the "down-market" Beta (the portfolio's market exposure when the benchmark excess return is negative), and Beta + Up Market Beta is the "up-market" Beta. Up Market Beta > 0 indicates positive market-timing ability; Up Market Beta <= 0 indicates no timing ability.
+
+**Also known as:** Henriksson-Merton piecewise timing model, HM model.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Alpha, Beta, Up Market Beta and R Squared values, with a Multi Index of
+(ticker, parameter) as the columns.
+
+**Notes:**
+
+- Daily and weekly Henriksson-Merton results are not an option as there would be too few
+observations within each period to run a meaningful regression.
+- The method retrieves historical data and performs a piecewise regression for each asset
+in the Toolkit instance, within each period.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.performance.get_henriksson_merton_model().xs("AAPL", level=0, axis=1)
+```
+
+Which returns:
+
+| Date   |   Alpha |   Beta |   Up Market Beta |   R Squared |
+|:-------|--------:|-------:|------------------:|------------:|
+| 2020   |  0.0032 | 1.1578 |            -0.0071 |       0.6929 |
+| 2021   |  0.0033 | 1.2403 |             1.3512 |       0.4740 |
+| 2022   |  0.0068 | 1.2399 |             1.5621 |       0.8105 |
 
 
 ---
