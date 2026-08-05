@@ -114,6 +114,8 @@ financetoolkit:
         url: /projects/financetoolkit/risk-notebook
       - title: Performance Notebook
         url: /projects/financetoolkit/performance-notebook
+      - title: Econometrics Notebook
+        url: /projects/financetoolkit/econometrics-notebook
       - title: Fixed Income Notebook
         url: /projects/financetoolkit/fixed-income-notebook
       - title: Economics Notebook
