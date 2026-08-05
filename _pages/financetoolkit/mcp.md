@@ -1,8 +1,8 @@
 ---
 permalink: /projects/financetoolkit/mcp
 title: Finance Toolkit MCP
-excerpt: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 200+ live financial metrics, models, and economic indicators on your behalf.
-description: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 200+ live financial metrics, models, and economic indicators on your behalf.
+excerpt: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 470+ live financial metrics, models, and economic indicators on your behalf.
+description: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 470+ live financial metrics, models, and economic indicators on your behalf.
 classes: wide-sidebar
 author_profile: false
 layout: single
@@ -16,11 +16,11 @@ image: assets/images/projects/FinanceToolkit.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit/blob/main/MCP.md" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The Finance Toolkit MCP Server exposes 200+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP). The server is hosted at `https://financetoolkit.jeroenbouma.com/mcp`. Connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
+The Finance Toolkit MCP Server exposes 470+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP). The server is hosted at `https://financetoolkit.jeroenbouma.com/mcp`. Connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
 
 MCP is an open standard that lets AI assistants call external tools and data sources directly from the chat interface; no copy-pasting, no switching between apps. Once connected, you simply ask questions in plain English and the AI fetches live financial data on your behalf. This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all backed by the transparent, open-source calculation methods of the Finance Toolkit.
 
-The server consolidates the entire Finance Toolkit surface into a small number of categorical master tools (e.g. `get_valuation_ratios`, `get_profitability_ratios`, `get_momentum_indicators`) so that the AI can discover and call the right metric without being overwhelmed by hundreds of individual function signatures.
+The server consolidates the entire Finance Toolkit surface into a small number of categorical master tools (e.g. `valuation`, `profitability`, `momentum`, `econometrics`) so that the AI can discover and call the right metric without being overwhelmed by hundreds of individual function signatures.
 
 <div class="mcp-video-wrapper">
   <video class="mcp-demo-video" autoplay muted playsinline loop
@@ -146,6 +146,10 @@ Edit the client's JSON config directly. The `env` block takes either:
 - `FINANCETOOLKIT_ENV_FILE`: a path to a `.env` file containing `FINANCIAL_MODELING_PREP_API_KEY=your_key_here`
  
  When both are present the inline key wins. In every client `uvx` is the *command* and the rest are *args*. Pick your client:
+
+A second key, `FRED_API_KEY`, is **optional**. It is free and only unlocks a handful of US-only indicators that have no OECD or FMP equivalent, such as nonfarm payrolls, initial jobless claims, the 30-year mortgage rate, the TIPS real yield curve and breakeven inflation expectations. Everything else works without it. The setup wizard picks it up automatically if it is already in your environment or `.env` file, and you can [register for one here](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}.
+
+Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `statsmodels` and `linearmodels` come along and the `econometrics` tool works out of the box.
 
 <details class="ft-details" markdown="1">
   <summary><i class="fas fa-robot"></i> <b>Claude Desktop</b></summary>
@@ -642,7 +646,7 @@ ASML’s lead is supported by very strong component scores in 2026, which indica
 
 ## Available Tools
 
-The server groups the 200+ Finance Toolkit methods into ~21 categorical master tools, each taking an `indicator` parameter that selects the exact metric, e.g. `get_valuation_ratios` with `indicator='get_price_to_earnings_ratio'`. You never set this by hand: the assistant picks the right tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`.
+The server groups the 470+ reachable Finance Toolkit methods into 22 categorical master tools, each taking an `indicator` parameter that selects the exact metric, e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`. You never set this by hand: the assistant picks the right tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`.
 
 To explore what's available, ask the assistant to run the built-in `list_categories` or `search_metrics` tools, or launch the interactive inspector with `uvx --from "financetoolkit[mcp]" financetoolkit-mcp-inspector`. The full catalogue (every tool returns data as standardised Markdown) is grouped below. Each master tool wraps dozens of underlying Finance Toolkit functions; to understand **every** metric, model and parameter that can ultimately be reached through these tools, see the full Finance Toolkit documentation.
 
@@ -655,12 +659,23 @@ To explore what's available, ask the assistant to run the built-in `list_categor
 
 | Tool | Description |
 |:---|:---|
-| `get_discovery` | Stock and ETF screener, gainers/losers, most active |
-| `get_toolkit_data` | Historical prices, financial statements, company profile, real-time quote |
-| `get_environment` | ESG scores, carbon footprint, renewable energy usage |
-| `get_performance` | Sharpe ratio, Sortino ratio, Alpha, Beta, CAPM, Fama-French |
-| `get_risk` | Value at Risk, CVaR, GARCH volatility, max drawdown, skewness, kurtosis |
-| `get_options` | Black-Scholes pricing, binomial tree, Greeks, implied volatility |
+| `discovery` | Stock and ETF screener, gainers/losers, most active |
+| `market_data` | Historical prices, financial statements, company profile, real-time quote |
+| `environment` | ESG scores, carbon footprint, renewable energy usage |
+| `performance` | Sharpe ratio, Sortino ratio, Alpha, Beta, CAPM, Fama-French, Carhart, market timing |
+| `risk` | Value at Risk, CVaR, GARCH/EGARCH/GJR-GARCH, max drawdown, copulas, realized volatility |
+| `options` | Black-Scholes pricing, binomial tree, Greeks, implied volatility, exotic options |
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><b>Econometrics</b></summary>
+
+  This tool runs statistical tests and estimators on price and return series, for diagnosing the properties of a series or estimating causal effects rather than reading off a pre-computed metric.
+
+| Tool | Description |
+|:---|:---|
+| `econometrics` | Regression (OLS/WLS/GLS, logit, probit, quantile, Fama-MacBeth), panel data (fixed/random effects, Hausman), causal inference (IV-2SLS, difference-in-differences, regression discontinuity, propensity score matching, synthetic control), unit root and cointegration tests, Granger causality, diagnostics, ARIMA/VAR/VECM forecasting and event studies |
 
 </details>
 
@@ -671,12 +686,12 @@ To explore what's available, ask the assistant to run the built-in `list_categor
 
 | Tool | Description |
 |:---|:---|
-| `get_efficiency_ratios` | Asset/inventory turnover, days of sales outstanding, cash conversion cycle |
-| `get_liquidity_ratios` | Current ratio, quick ratio, cash ratio, working capital |
-| `get_profitability_ratios` | Gross/net/operating margin, ROE, ROA, ROIC, ROCE |
-| `get_solvency_ratios` | Debt-to-equity, interest coverage, net debt to EBITDA |
-| `get_valuation_ratios` | P/E, EPS, EV/EBITDA, P/B, P/S, dividend yield, free cash flow yield |
-| `get_models` | WACC, DuPont analysis, Altman Z-Score, Piotroski F-Score, intrinsic value |
+| `efficiency` | Asset/inventory turnover, days of sales outstanding, cash conversion cycle |
+| `liquidity` | Current ratio, quick ratio, cash ratio, working capital |
+| `profitability` | Gross/net/operating margin, ROE, ROA, ROIC, ROCE |
+| `solvency` | Debt-to-equity, interest coverage, net debt to EBITDA |
+| `valuation` | P/E, EPS, EV/EBITDA, P/B, P/S, dividend yield, free cash flow yield |
+| `models` | WACC, DuPont analysis, Altman Z-Score, Piotroski F-Score, intrinsic value, FCFF/FCFE, Tobin's Q, five bankruptcy scores |
 
 </details>
 
@@ -687,10 +702,10 @@ To explore what's available, ask the assistant to run the built-in `list_categor
 
 | Tool | Description |
 |:---|:---|
-| `get_momentum_indicators` | RSI, MACD, Stochastic oscillator, Williams %R, Aroon |
-| `get_overlap_indicators` | SMA, EMA, Bollinger Bands, Keltner Channels |
-| `get_volatility_indicators` | Average True Range, True Range, volatility series |
-| `get_breadth_indicators` | McClellan oscillator, OBV, Advance/Decline line, Chaikin |
+| `momentum` | RSI, MACD, Stochastic oscillator, Williams %R, Aroon |
+| `overlap` | SMA, EMA, Bollinger Bands, Keltner Channels |
+| `volatility` | Average True Range, True Range, volatility series |
+| `breadth` | McClellan oscillator, OBV, Advance/Decline line, Chaikin |
 
 </details>
 
@@ -701,11 +716,11 @@ To explore what's available, ask the assistant to run the built-in `list_categor
 
 | Tool | Description |
 |:---|:---|
-| `get_general_economy` | GDP, CPI, inflation, trade balances, investment, consumption |
-| `get_government_economy` | Government debt, deficit, expenditure, revenue, tax rates |
-| `get_jobs_and_society` | Unemployment, population, poverty, income inequality |
-| `get_interest_rates` | Central bank rates, government bond yields, EURIBOR |
-| `get_fixed_income_valuations` | Bond duration, present value, YTM, derivative pricing |
+| `macroeconomics` | GDP, CPI, inflation, trade balances, investment, consumption |
+| `government` | Government debt, deficit, expenditure, revenue, tax rates |
+| `jobs` | Unemployment, population, poverty, income inequality |
+| `rates` | Central bank rates, government bond yields, EURIBOR, US Treasury par yield curve, TIPS real yields |
+| `fixed_income` | Bond duration, present value, YTM, derivative pricing, par/forward rates, Z-spread, key rate duration |
 
 </details>
 
@@ -716,9 +731,8 @@ These tools help you navigate the available functionality before making any data
 
 | Tool | Description |
 |:---|:---|
-| `get_analyst_guidelines` | Returns the full analyst instructions and response style guide |
-| `list_categories` | Lists all registered categories and the number of tools each contains |
-| `list_metrics_by_category` | Lists every metric available within a given category |
+| `search_categories` | Lists all registered categories and the number of tools each contains |
+| `search_by_category` | Lists every metric available within a given category |
 | `search_metrics` | Fuzzy keyword search across all metrics with typo tolerance |
 | `search_instruments` | Look up ticker symbols by company name, ISIN, CIK, CUSIP, or symbol |
 
@@ -726,7 +740,7 @@ These tools help you navigate the available functionality before making any data
 
 ## Under the Hood
 
-The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 200+ Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into ~21 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time.
+The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 470+ reachable Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into 22 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time.
 
 **For developers.** If you just want to use the Finance Toolkit through your assistant you can stop here. Everything below is implementation detail for those who want to extend or contribute to the server.
 {: .notice--info}
@@ -833,6 +847,8 @@ The server generates and verifies all JWTs itself using a 256-bit HMAC-SHA256 se
 | 4 | `FINANCIAL_MODELING_PREP_API_KEY` env var | Local stdio transport or server-wide default |
 
 When a JWT is found in any of these positions, `verify_jwt()` validates the signature and expiry before extracting the key. A raw (non-JWT) string is accepted as a bare API key. The env-var path is checked last so that a per-request key from an OAuth flow always takes precedence.
+
+The optional FRED key follows the same pattern through `resolve_fred_api_key()`: the `x-fred-api-key` header, a `fred_api_key` claim on the bearer token, a `fred_api_key` / `fred_key` query parameter, and finally the `FRED_API_KEY` environment variable as the server-wide fallback. It is resolved per request and passed to the Economics and Fixed Income modules; when it is absent those modules simply skip the handful of FRED-backed indicators and everything else continues to work.
 
 #### Security Properties
 
