@@ -1128,6 +1128,10 @@ Retrieve daily, weekly, monthly, quarterly or yearly treasury data. This can be 
 - <u>fill_nan (bool):</u> Defines whether to forward fill NaN values. This defaults
 to True to prevent holes in the dataset. This is especially relevant for
 technical indicators.
+- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+over the source set on the Toolkit itself. Defaults to None, which falls back to
+the Toolkit's own enforce_source.
 
 **Returns:**
 
@@ -1230,8 +1234,12 @@ Note that the balance sheet statement is a financial statement that provides a s
 
 **Args:**
 
-- <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
-either "FinancialModelingPrep" or "YahooFinance". Defaults to None.
+- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+over the source set on the Toolkit itself, so one instance can pull historical
+data from the free Yahoo Finance source while still using a FinancialModelingPrep
+key for the financial statements (or the other way around). Defaults to None,
+which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
@@ -1314,8 +1322,12 @@ The income statement is a financial statement that shows a company's revenues an
 
 **Args:**
 
-- <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
-either "FinancialModelingPrep" or "YahooFinance". Defaults to None.
+- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+over the source set on the Toolkit itself, so one instance can pull historical
+data from the free Yahoo Finance source while still using a FinancialModelingPrep
+key for the financial statements (or the other way around). Defaults to None,
+which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
@@ -1384,7 +1396,12 @@ The cash flow statement is a financial statement that shows how changes in balan
 
 **Args:**
 
-- <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
+- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+over the source set on the Toolkit itself, so one instance can pull historical
+data from the free Yahoo Finance source while still using a FinancialModelingPrep
+key for the financial statements (or the other way around). Defaults to None,
+which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
@@ -1455,8 +1472,12 @@ Note that this also obtains the balance sheet statement at the same time given t
 
 **Args:**
 
-- <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
-either "FinancialModelingPrep" or "YahooFinance". Defaults to None.
+- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+over the source set on the Toolkit itself, so one instance can pull historical
+data from the free Yahoo Finance source while still using a FinancialModelingPrep
+key for the financial statements (or the other way around). Defaults to None,
+which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 
