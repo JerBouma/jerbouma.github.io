@@ -2,8 +2,8 @@
 title: Introducing the Finance Toolkit MCP Server
 date: 2026-06-12
 permalink: /articles/introducing-the-finance-toolkit-mcp-server
-excerpt: "Learn how the Finance Toolkit MCP server exposes 200+ financial ratios, indicators, and performance measurements to any AI assistant that supports the Model Context Protocol. This allows you to ask questions in plain English and receive structured answers without writing Python code."
-description: "Learn how the Finance Toolkit MCP server exposes 200+ financial ratios, indicators, and performance measurements to any AI assistant that supports the Model Context Protocol."
+excerpt: "Learn how the Finance Toolkit MCP server exposes 500+ financial methods to any AI assistant that supports the Model Context Protocol. This allows you to ask questions in plain English and receive structured answers without writing Python code."
+description: "Learn how the Finance Toolkit MCP server exposes 500+ financial methods to any AI assistant that supports the Model Context Protocol."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -13,7 +13,7 @@ share: true
 ---
 On the 6th of May, 2023, Microsoft's Price-to-Earnings ratio was reported as 28.93 by Stockopedia, 32.05 by Morningstar, 32.66 by Macrotrends, 33.67 by the Wall Street Journal, and 34.4 by Companies Market Cap. Every one of those numbers is "correct." They just use different definitions of earnings, different share counts, and different rounding. None of the providers publish the formula, so there is no way to know which one matches the calculation you actually want.
 
-That inconsistency is why I built the Finance Toolkit: an open-source Python library where every ratio, indicator, and model is implemented in plain, readable code you can audit yourself. It covers 200+ metrics across equities, options, currencies, crypto, ETFs, indices, and macroeconomic data going back over a century, all sourced from 30+ years of financial statements. On top of the library sits an MCP server that exposes the same 200+ metrics to any AI assistant that supports the Model Context Protocol, so you (or your assistant) never have to choose between writing Python and asking a question in plain English.
+That inconsistency is why I built the Finance Toolkit: an open-source Python library where every ratio, indicator, and model is implemented in plain, readable code you can audit yourself. It covers 500+ methods across equities, options, currencies, crypto, ETFs, indices, and macroeconomic data going back over a century, all sourced from 30+ years of financial statements. On top of the library sits an MCP server that exposes the same 500+ methods to any AI assistant that supports the Model Context Protocol, so you (or your assistant) never have to choose between writing Python and asking a question in plain English.
 
 **The source code for every calculation is on [GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. The MCP server documentation lives [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
 
@@ -43,7 +43,7 @@ Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:
 
 ## From Code to Conversation: the MCP Server
 
-Writing Python is not always the fastest way to get an answer, and getting an AI assistant to reason accurately over financial data by itself usually falls short: web search is unreliable, scraped data is inconsistent across sources (see the PE example above), and models hallucinate numbers when they cannot find them. The Finance Toolkit MCP server fixes this by giving any MCP-compatible assistant direct, structured access to the same 200+ metrics, backed by the transparent calculation methods in the library.
+Writing Python is not always the fastest way to get an answer, and getting an AI assistant to reason accurately over financial data by itself usually falls short: web search is unreliable, scraped data is inconsistent across sources (see the PE example above), and models hallucinate numbers when they cannot find them. The Finance Toolkit MCP server fixes this by giving any MCP-compatible assistant direct, structured access to the same 500+ methods, backed by the transparent calculation methods in the library.
 
 You do not need a local Python environment to use it. A single command configures your AI client automatically:
 
@@ -53,7 +53,7 @@ uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
 
 This supports Claude Desktop, Claude Code, GitHub Copilot in VS Code, Cursor, Windsurf, and Gemini. If you use Claude Desktop specifically, there is also a one-click MCPB bundle on the [latest GitHub release](https://github.com/JerBouma/FinanceToolkit/releases/latest){:target="_blank"} that skips the terminal entirely. Either way, you will be asked for the same FMP API key used above, and the free plan is enough to get started.
 
-Once it is running, the server groups the 200+ Finance Toolkit methods into about 21 categorical tools. You never name a function or set a parameter yourself; the assistant picks the right tool from your question and returns structured output. The depth of interpretation scales with the model: Claude Sonnet layers in qualitative reasoning on top of the numbers, while smaller models like GPT-5 mini return clean structured data without the narrative. Both work, since the server is built to support either.
+Once it is running, the server groups the 500+ Finance Toolkit methods into 22 categorical tools. You never name a function or set a parameter yourself; the assistant picks the right tool from your question and returns structured output. The depth of interpretation scales with the model: Claude Sonnet layers in qualitative reasoning on top of the numbers, while smaller models like GPT-5 mini return clean structured data without the narrative. Both work, since the server is built to support either.
 
 Within Claude Desktop, it will look like below once setup.
 

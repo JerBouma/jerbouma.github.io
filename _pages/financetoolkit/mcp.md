@@ -1,8 +1,8 @@
 ---
 permalink: /projects/financetoolkit/mcp
 title: Finance Toolkit MCP
-excerpt: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 470+ live financial metrics, models, and economic indicators on your behalf.
-description: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 470+ live financial metrics, models, and economic indicators on your behalf.
+excerpt: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 500+ live financial methods on your behalf.
+description: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 500+ live financial methods on your behalf.
 classes: wide-sidebar
 author_profile: false
 layout: single
@@ -16,7 +16,7 @@ image: assets/images/projects/FinanceToolkit.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit/blob/main/MCP.md" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The Finance Toolkit MCP Server exposes 470+ pre-computed financial metrics, models, and economic indicators directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP). The server is hosted at `https://financetoolkit.jeroenbouma.com/mcp`. Connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
+The Finance Toolkit MCP Server exposes 500+ financial methods directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP). The server is hosted at `https://financetoolkit.jeroenbouma.com/mcp`. Connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
 
 MCP is an open standard that lets AI assistants call external tools and data sources directly from the chat interface; no copy-pasting, no switching between apps. Once connected, you simply ask questions in plain English and the AI fetches live financial data on your behalf. This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all backed by the transparent, open-source calculation methods of the Finance Toolkit.
 
@@ -646,7 +646,7 @@ ASML’s lead is supported by very strong component scores in 2026, which indica
 
 ## Available Tools
 
-The server groups the 470+ reachable Finance Toolkit methods into 22 categorical master tools, each taking an `indicator` parameter that selects the exact metric, e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`. You never set this by hand: the assistant picks the right tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`.
+The server groups the 500+ Finance Toolkit methods into 22 categorical master tools, each taking an `indicator` parameter that selects the exact metric, e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`. You never set this by hand: the assistant picks the right tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`.
 
 To explore what's available, ask the assistant to run the built-in `list_categories` or `search_metrics` tools, or launch the interactive inspector with `uvx --from "financetoolkit[mcp]" financetoolkit-mcp-inspector`. The full catalogue (every tool returns data as standardised Markdown) is grouped below. Each master tool wraps dozens of underlying Finance Toolkit functions; to understand **every** metric, model and parameter that can ultimately be reached through these tools, see the full Finance Toolkit documentation.
 
@@ -740,7 +740,7 @@ These tools help you navigate the available functionality before making any data
 
 ## Under the Hood
 
-The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 470+ reachable Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into 22 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time.
+The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 500+ Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into 22 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time.
 
 **For developers.** If you just want to use the Finance Toolkit through your assistant you can stop here. Everything below is implementation detail for those who want to extend or contribute to the server.
 {: .notice--info}
