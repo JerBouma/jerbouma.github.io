@@ -74,7 +74,7 @@ Which returns:
 | EV-to-EBITDA              | 25.7524      | 17.0831      | 24.9432      | 29.3152      | 28.7093      |
 | EV-to-Operating-Cash-Flow | 29.7611      | 18.2565      | 28.3904      | 33.3825      | 37.2762      |
 | Tangible Asset Value      |  6.309e+10   |  5.0672e+10  |  6.2146e+10  |  5.695e+10   |  7.3733e+10  |
-| Net Current Asset Value   |  9.355e+09   | -1.8577e+10  | -1.742e+09   | -2.3405e+10  | -1.7674e+10  |
+| Net Current Asset Value   | -1.5308e+11  | -1.6668e+11  | -1.4687e+11  | -1.5504e+11  | -1.3755e+11  |
 
 
 ---
@@ -370,7 +370,7 @@ The days of sales outstanding (DSO) ratio is calculated by dividing the accounts
 
 The formula is as follows:
 
-- Days of Sales Outstanding Ratio = (Accounts Receivable / Total Credit Sales) * Days
+- Days of Sales Outstanding Ratio = (Average Accounts Receivable / Total Credit Sales) * Days
 
 **Also known as:** DSO, days sales outstanding, receivable days.
 
@@ -1927,15 +1927,17 @@ ebitda_margins = toolkit.ratios.get_ebitda_margin()
 ---
 
 ## get_interest_burden_ratio
-Compute the Interest Coverage Ratio, a metric that reveals a company's ability to cover its interest expenses with its pre-tax profits. This ratio measures the proportion of pre-tax profits required to pay for interest payments and is crucial in determining a company's financial health.
+Compute the Interest Burden Ratio, the component of the extended (five-step) DuPont decomposition that isolates the drag interest expense places on a company's operating profit.
 
-The Interest Coverage Ratio is calculated by dividing the earnings before interest and taxes (EBIT) by the interest expenses. A higher ratio indicates that the company has more earnings to cover its interest expenses, which is generally considered favorable.
+The Interest Burden Ratio is calculated by dividing earnings before tax (EBT) by earnings before interest and taxes (EBIT, proxied here by Operating Income). It expresses the share of operating profit that survives interest expense, so it sits between 0 and 1 for a company with debt: a value close to 1 means interest barely dents operating profit, while a low value signals a heavy interest load. Values slightly above 1 occur when non-operating income (e.g. interest income) exceeds interest expense.
+
+Note that this is the reciprocal of, and should not be confused with, the Interest Coverage Ratio (`get_interest_coverage_ratio`), which divides operating profit by interest expense and is therefore unbounded above.
 
 The formula is as follows:
 
-- Interest Coverage Ratio = EBIT (or Operating Income) / Interest Expenses
+- Interest Burden Ratio = Income Before Tax / Operating Income
 
-**Also known as:** interest burden, EBIT to EBT ratio.
+**Also known as:** EBT to EBIT ratio, interest burden.
 
 **Args:**
 
@@ -1950,11 +1952,11 @@ E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
 **Returns:**
 
-pd.DataFrame: Interest Coverage Ratio values.
+pd.DataFrame: Interest Burden Ratio values.
 
 **Notes:**
 
-- The method retrieves historical data and calculates the Interest Coverage Ratio for each
+- The method retrieves historical data and calculates the Interest Burden Ratio for each
 asset in the Toolkit instance.
 - If `growth` is set to True, the method calculates the growth of the ratio values
 using the specified `lag`.
@@ -1966,14 +1968,14 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(["TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
-interest_coverage_ratios = toolkit.ratios.get_interest_burden_ratio()
+interest_burden_ratios = toolkit.ratios.get_interest_burden_ratio()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |     2024 |     2025 |
-|:-----|--------:|--------:|--------:|---------:|---------:|
-| TSLA | 17.5822 | 71.4974 | 56.9936 |  20.2171 |  12.8846 |
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| TSLA | 0.9724 | 1.0046 | 1.1217 | 1.2705 | 1.2119 |
 
 
 ---
@@ -2282,7 +2284,7 @@ Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.5637 | 0.599  | 0.6068 | 0.6019 | 0.7038 |
+| AAPL | 0.4143 | 0.4439 | 0.444  | 0.4336 | 0.5335 |
 | TSLA | 0.1429 | 0.2733 | 0.2403 | 0.0889 | 0.0425 |
 
 
@@ -2449,7 +2451,9 @@ The net income per earnings before taxes (EBT) ratio helps evaluate the extent t
 
 The formula is as follows:
 
-- Net Income per EBT = Net Income / Income Before Tax
+- Net Income per EBT = Net Income / (Net Income + Income Tax Expense)
+
+Earnings before tax is reconstructed from the income statement as Net Income plus Income Tax Expense rather than read from the reported Income Before Tax line, so this can differ slightly from `get_tax_burden_ratio` when a company reports minority interests or discontinued operations below the tax line.
 
 **Also known as:** net income to pre-tax income.
 
@@ -2951,13 +2955,13 @@ Which returns:
 ---
 
 ## get_asset_coverage_ratio
-Calculate the asset coverage ratio, a solvency ratio that measures how well a company's tangible assets, after settling current liabilities, can cover its total debt.
+Calculate the asset coverage ratio, a solvency ratio that measures how well a company's tangible assets, after settling non-debt current liabilities, can cover its total debt.
 
-This ratio is commonly used by lenders and bondholders to assess the extent to which a company's hard (tangible) assets would be available to repay debt obligations in a liquidation scenario, since intangible assets (e.g. goodwill) typically have little to no recovery value and current liabilities are assumed to be settled first out of current assets.
+This ratio is commonly used by lenders and bondholders to assess the extent to which a company's hard (tangible) assets would be available to repay debt obligations in a liquidation scenario, since intangible assets (e.g. goodwill) typically have little to no recovery value and non-debt current liabilities are assumed to be settled first out of current assets. Short-term debt is netted out of current liabilities before subtracting, since it is already captured in total debt and would otherwise be double-counted.
 
 The formula is as follows:
 
-- Asset Coverage Ratio = (Total Assets - Intangible Assets - Total Current Liabilities) / Total Debt
+- Asset Coverage Ratio = [(Total Assets - Intangible Assets) - (Total Current Liabilities - Short Term Debt)] / Total Debt
 
 **Args:**
 
@@ -3049,7 +3053,7 @@ The interest coverage ratio evaluates a company's ability to meet its interest o
 
 The formula is as follows:
 
-- Interest Coverage Ratio = Operating Income / (Interest Expense + Depreciation and Amortization)
+- Interest Coverage Ratio = (Operating Income + Depreciation and Amortization) / Interest Expense
 
 **Also known as:** TIE, times interest earned.
 
@@ -3430,10 +3434,10 @@ capex_coverage_ratios = toolkit.ratios.get_capex_coverage_ratio()
 
 Which returns:
 
-|      |    2021 |     2022 |     2023 |     2024 |    2025 |
-|:-----|--------:|---------:|---------:|---------:|--------:|
-| AAPL | -9.3855 | -11.4075 | -10.087  | -12.5176 | -8.7678 |
-| TSLA | -1.4346 |  -2.053  |  -1.4896 |  -1.3157 | -1.7294 |
+|      |   2021 |    2022 |   2023 |    2024 |   2025 |
+|:-----|-------:|--------:|-------:|--------:|-------:|
+| AAPL | 9.3855 | 11.4075 | 10.087 | 12.5176 | 8.7678 |
+| TSLA | 1.4346 |  2.053  | 1.4896 |  1.3157 | 1.7294 |
 
 
 ---
@@ -3481,10 +3485,10 @@ capex_dividend_coverage_ratios = toolkit.ratios.get_capex_dividend_coverage_rati
 
 Which returns:
 
-|      |    2021 |   2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|-------:|--------:|--------:|--------:|
-| AAPL | -4.0716 | -4.781 | -4.2543 | -4.7913 | -3.9623 |
-| TSLA | -1.4346 | -2.053 | -1.4896 | -1.3157 | -1.7294 |
+|      |   2021 |  2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|------:|-------:|-------:|-------:|
+| AAPL | 4.0716 | 4.781 | 4.2543 | 4.7913 | 3.9623 |
+| TSLA | 1.4346 | 2.053 | 1.4896 | 1.3157 | 1.7294 |
 
 
 ---
@@ -3687,7 +3691,7 @@ Which returns:
 | EV-to-EBITDA                | 25.7524     | 17.0831      | 24.9432     | 29.3152     | 28.7093     |
 | EV-to-Operating-Cash-Flow   | 29.7611     | 18.2565      | 28.3904     | 33.3825     | 37.2762     |
 | Tangible Asset Value        |  6.309e+10  |  5.0672e+10  |  6.2146e+10 |  5.695e+10  |  7.3733e+10 |
-| Net Current Asset Value     |  9.355e+09  | -1.8577e+10  | -1.742e+09  | -2.3405e+10 | -1.7674e+10 |
+| Net Current Asset Value     | -1.5308e+11 | -1.6668e+11  | -1.4687e+11 | -1.5504e+11 | -1.3755e+11 |
 | EV-to-Free-Cash-Flow        | 33.3102     | 20.0107      | 31.5146     | 36.2809     | 42.075      |
 | Graham Number               | 21.7378     | 20.662       | 23.2902     | 22.4928     | 28.7292     |
 | Buyback Yield               |  0.0283     |  0.0421      |  0.0255     |  0.0246     |  0.0222     |
@@ -3704,7 +3708,7 @@ The earnings per share (EPS) is a widely used financial metric that helps invest
 
 The formula is as follows:
 
-- Earnings per Share (EPS) = (Net Income - Preferred Dividends Paid) / Weighted Average Shares
+- Earnings per Share (EPS) = (Net Income - \|Preferred Dividends Paid\|) / Weighted Average Shares
 
 **Also known as:** EPS, net income per share.
 
@@ -3880,8 +3884,6 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
 **Returns:**
 
@@ -4276,7 +4278,7 @@ This dividend yield ratio takes into account the (diluted) weighted average shar
 
 The formula is as follows:
 
-- Weighted Dividend Yield = Dividends Paid / Weighted Average (Diluted) Shares * Share Price
+- Weighted Dividend Yield = (\|Dividends Paid\| / Weighted Average (Diluted) Shares) / Share Price
 
 **Also known as:** blended dividend yield.
 
@@ -4903,13 +4905,13 @@ Which returns:
 ---
 
 ## get_net_current_asset_value
-Calculate the net current asset value, a financial metric that represents the total value of a company's current assets minus its current liabilities. It indicates the extent to which a company's short-term assets exceed its short-term liabilities.
+Calculate the net current asset value, a conservative liquidation-value metric introduced by Benjamin Graham that represents the total value of a company's current assets minus *all* of its liabilities (not just its current liabilities). It approximates what would be left for shareholders if the company were liquidated, paying off every liability using only the current (most liquid) assets and ignoring any value from fixed/non-current assets.
 
 The formula is as follows:
 
-- Net Current Asset Value = Total Current Assets - Total Current Liabilities
+- Net Current Asset Value = Total Current Assets - Total Liabilities
 
-**Also known as:** NCAV, net current asset value, Graham number.
+**Also known as:** NCAV. Note that NCAV is related to, but distinct from, the Graham Number (`sqrt(22.5 * Earnings per Share * Book Value per Share)`, see `Toolkit.models.get_graham_number`) - both are Benjamin Graham value-investing metrics, but NCAV is a liquidation-value estimate while the Graham Number is a fair-value price estimate based on earnings and book value.
 
 **Args:**
 
@@ -4938,10 +4940,10 @@ net_current_asset_value = toolkit.ratios.get_net_current_asset_value()
 
 Which returns:
 
-|      |      2021 |        2022 |        2023 |        2024 |        2025 |
-|:-----|----------:|------------:|------------:|------------:|------------:|
-| AAPL | 9.355e+09 | -1.8577e+10 | -1.742e+09  | -2.3405e+10 | -1.7674e+10 |
-| TSLA | 7.395e+09 |  1.4208e+10 |  2.0868e+10 |  2.9539e+10 |  3.6928e+10 |
+|      |        2021 |        2022 |        2023 |        2024 |        2025 |
+|:-----|------------:|------------:|------------:|------------:|------------:|
+| AAPL | -1.5308e+11 | -1.6668e+11 | -1.4687e+11 | -1.5504e+11 | -1.3755e+11 |
+| TSLA | -3.448e+09  |  4.477e+09  |  6.607e+09  |  9.97e+09   |  1.3701e+10 |
 
 
 ---

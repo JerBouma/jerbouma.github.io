@@ -87,16 +87,11 @@ Which returns:
 ## get_extended_dupont_analysis
 Perform an Extended Dupont analysis to breakdown the return on equity (ROE) into its components, while considering additional financial metrics.
 
-The Extended Dupont analysis is an advanced method used to break down the return on equity (ROE) into multiple components, providing a more detailed insight into the factors influencing a company's profitability. It considers additional metrics such as Return on Assets (ROA), Total Asset Turnover, Financial Leverage, and more.
+The Extended Dupont analysis splits the three-factor decomposition's Net Profit Margin into three separate drivers - the Tax Burden, the Interest Burden and the Operating Profit Margin - so that the effect of taxation, of financing costs and of operating performance on the return on equity (ROE) can be read separately.
 
 The formula is as follows:
 
-- Profit Margin = Net Income / Revenue
-- Asset Turnover = Revenue / Average Total Assets
-- Financial Leverage = Average Total Assets / Average Total Equity
-- ROA = Net Income / Average Total Assets
-- Total Asset Turnover = Revenue / Average Total Assets
-- ROE = Profit Margin * Asset Turnover * Financial Leverage * ROA * Total Asset Turnover
+- Interest Burden Ratio = Income Before Tax / Operating Income - Tax Burden Ratio = Net Income / Income Before Tax - Operating Profit Margin = Operating Income / Revenue - Asset Turnover = Revenue / Average Total Assets - Equity Multiplier = Average Total Assets / Average Total Equity - ROE = Interest Burden Ratio * Tax Burden Ratio * Operating Profit Margin * Asset Turnover * Equity Multiplier
 
 **Also known as:** extended DuPont, five-factor DuPont, ROE breakdown.
 
@@ -112,20 +107,25 @@ values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame: DataFrame containing Extended Dupont analysis results, including Profit Margin, Asset Turnover,
-Financial Leverage, ROA, Total Asset Turnover, and the calculated ROE values.
+pd.DataFrame: DataFrame containing Extended Dupont analysis results, including the Interest
+Burden Ratio, Tax Burden Ratio, Operating Profit Margin, Asset Turnover, Equity
+Multiplier, and the calculated ROE values.
 
 **Notes:**
 
-- The Profit Margin is the ratio of Net Income to Total Revenue, indicating the percentage of
-revenue that translates into profit.
+- The Interest Burden Ratio (Income Before Tax / Operating Income) measures how much of
+operating profit survives the cost of debt financing. It equals 1 for a company with no
+net interest expense and falls as interest costs rise.
+- The Tax Burden Ratio (Net Income / Income Before Tax) measures how much of pre-tax
+profit survives taxation, i.e. it equals (1 - Effective Tax Rate).
+- The Operating Profit Margin measures operating performance before financing and tax
+effects.
 - Asset Turnover measures the efficiency of a company's use of its assets to generate
 sales revenue.
-- Financial Leverage represents the use of debt to finance a company's operations, which can
-amplify returns as well as risks.
-- Return on Assets (ROA) measures the efficiency of a company's use of its assets to
-generate profit.
-- Total Asset Turnover considers all assets, including both equity and debt financing.
+- The Equity Multiplier represents the use of debt to finance a company's operations,
+which can amplify returns as well as risks.
+- Multiplying the first three components back together reproduces the Net Profit Margin
+of the three-factor `get_dupont_analysis`, so both decompositions resolve to the same ROE.
 
 **As an example:**
 
@@ -158,7 +158,7 @@ Calculate the Enterprise Value (EV) breakdown, providing a detailed view of its 
 
 The Enterprise Value breakdown includes the following components for each quarter or year:
 
-- Share Price: The market price per share of the company's stock. - Market Capitalization (Market Cap): The total value of a company's outstanding common and preferred shares. - Debt: The sum of long-term and short-term debt on the company's balance sheet. - Preferred Equity: The value of preferred shares, if applicable. - Minority Interest: The equity value of a subsidiary with less than 50% ownership. - Cash and Cash Equivalents: The total amount of liquid assets including cash, marketable securities, and short-term investments.
+- Share Price: The market price per share of the company's stock. - Market Capitalization (Market Cap): The total value of a company's outstanding common shares, i.e. the share price multiplied by the shares outstanding. Preferred shares are excluded here and enter as their own component below, so that they are counted once rather than twice. - Debt: The sum of long-term and short-term debt on the company's balance sheet. - Preferred Equity: The value of preferred shares, if applicable. - Minority Interest: The equity value of a subsidiary with less than 50% ownership. - Cash and Cash Equivalents: The total amount of liquid assets including cash, marketable securities, and short-term investments.
 
 The Enterprise Value is calculated as the sum of Market Cap, Debt, Preferred Equity, Minority Interest, minus Cash and Cash Equivalents.
 
@@ -184,8 +184,14 @@ pd.DataFrame: DataFrame containing the Enterprise Value breakdown, including the
 
 - All the inputs must be in the same currency and unit for accurate calculations.
 - The Enterprise Value is an important metric used for valuation and investment analysis.
-- A positive Enterprise Value indicates that the company is financed primarily by equity and has excess cash.
-- A negative Enterprise Value may indicate financial distress or unusual financial situations.
+It represents the cost of acquiring the entire business: the equity is bought at its market
+value, the debt (and any preferred equity and minority interest) is assumed, and the acquired
+cash reduces the effective price, which is why cash is subtracted rather than added.
+- Enterprise Value is positive for essentially every going concern. It only turns negative
+when a company's cash exceeds its market capitalization plus its debt, which is a sign of a
+cash-rich balance sheet priced below its net cash — not of financial distress. A distressed,
+heavily indebted company shows the opposite: an Enterprise Value far above its market
+capitalization.
 - Understanding the Enterprise Value breakdown can provide insights into the sources of a
 company's value and potential risks.
 
@@ -382,8 +388,10 @@ capital, i.e. it is creating value for its capital providers. A negative EVA ind
 company is destroying value.
 - EBIT is approximated as Net Income + Income Tax Expense + Interest Expense, consistent
 with the Altman Z-Score calculation elsewhere in this module.
-- Invested Capital is approximated as the average of Total Equity and Total Debt, consistent
-with the Return on Invested Capital calculation in the Ratios module.
+- Invested Capital is the sum of the two-period average of Total Equity and the two-period
+average of Total Debt, i.e. the capital employed over the course of the period rather than
+its closing balance, consistent with the Return on Invested Capital calculation in the
+Ratios module.
 
 **As an example:**
 
@@ -440,10 +448,15 @@ pd.DataFrame: DataFrame containing the MVA and its components.
 - A positive MVA indicates that the market believes management has created value in
 excess of the capital invested in the company. A negative MVA indicates the market
 values the company below the capital that has historically been invested in it.
-- The Market Value of Debt is approximated as the book value of Total Debt, and
-Invested Capital is approximated as the average of Total Equity and Total Debt,
-consistent with the same simplifications used in the Economic Value Added and
-Weighted Average Cost of Capital calculations elsewhere in this module.
+- The Market Value of Debt is approximated as the closing book value of Total Debt,
+the same simplification used in the Weighted Average Cost of Capital calculation
+elsewhere in this module.
+- Invested Capital is the sum of the two-period average of Total Equity and the
+two-period average of Total Debt, i.e. the capital that was employed *during* the
+period, matching the Economic Value Added calculation elsewhere in this module. Note
+that this leaves the two sides of the MVA measured on slightly different bases: the
+market value is a closing (point-in-time) figure while the invested capital is an
+average over the period.
 
 References:
 - Stern, Joel M., G. Bennett Stewart, and Donald H. Chew. "The EVA Financial
@@ -461,12 +474,12 @@ toolkit.models.get_market_value_added().loc["AAPL"]
 
 Which returns:
 
-|                         |        2021 |          2022 |
-|:------------------------|-------------:|-------------:|
-| Market Value of Equity  |  2.94327e+12 |  2.09689e+12 |
-| Market Value of Debt    |  1.294e+11   |  1.34501e+11 |
-| Invested Capital        |  1.93614e+11 |  1.91382e+11 |
-| Market Value Added      |  2.87905e+12 |  2.04001e+12 |
+|                        |        2021 |        2022 |        2023 |        2024 |        2025 |
+|:-----------------------|------------:|------------:|------------:|------------:|------------:|
+| Market Value of Equity | 2.92522e+12 | 2.08399e+12 | 3.00786e+12 | 3.83091e+12 | 4.06822e+12 |
+| Market Value of Debt   | 1.36522e+11 | 1.3248e+11  | 1.2393e+11  | 1.19059e+11 | 1.12377e+11 |
+| Invested Capital       | 1.93614e+11 | 1.91382e+11 | 1.84614e+11 | 1.81042e+11 | 1.8106e+11  |
+| Market Value Added     | 2.86813e+12 | 2.02509e+12 | 2.94718e+12 | 3.76893e+12 | 3.99954e+12 |
 
 
 ---
@@ -687,6 +700,11 @@ pd.DataFrame: DataFrame containing the intrinsic value for each ticker over time
 
 - The results are highly dependent on the input. Therefore, think carefully about each input parameter to
 ensure the results are accurate (given your beliefs)
+- Each historical period is valued off that period's *actual* Dividends per Share, and only the
+periods beyond the last one available are projected forward at the given growth rate. The first
+period of the historical window will therefore often be understated, since it only covers the part
+of the year that falls inside the requested date range and so captures only part of the year's
+dividends. Use a start_date at least one full period before the first period you intend to read.
 
 **As an example:**
 
@@ -702,16 +720,17 @@ Which returns:
 
 |      |   AAPL |    MSFT |
 |:-----|-------:|--------:|
-| 2022 | 0      |  0      |
-| 2023 | 0      |  0      |
-| 2024 | 0      |  0      |
-| 2025 | 5.46   | 12.18   |
-| 2026 | 5.733  | 12.789  |
-| 2027 | 6.0196 | 13.4284 |
-| 2028 | 6.3206 | 14.0999 |
-| 2029 | 6.6367 | 14.8049 |
-| 2030 | 6.9685 | 15.5451 |
-| 2031 | 7.3169 | 16.3224 |
+| 2021 | 1.54   |  8.26   |
+| 2022 | 6.37   | 17.78   |
+| 2023 | 6.65   | 19.53   |
+| 2024 | 6.93   | 21.56   |
+| 2025 | 7.21   | 23.8    |
+| 2026 | 7.5705 | 24.99   |
+| 2027 | 7.949  | 26.2395 |
+| 2028 | 8.3465 | 27.5515 |
+| 2029 | 8.7638 | 28.929  |
+| 2030 | 9.202  | 30.3755 |
+| 2031 | 9.6621 | 31.8943 |
 
 
 ---
@@ -927,7 +946,7 @@ The Piotroski Score is calculated by summing the scores assigned to each of the 
 
 Note that the Piostroski Score has been developed many decades ago and that it is important to always compare the same sectors. E.g. it could be that it is quite normal that a firm issues shares each year which nets a lower score even though it is a normal practice in that sector.
 
-Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers." Journal of Accounting Research, Vol. 38, No. 3, 1999, pp. 1-41.
+Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers." Journal of Accounting Research, Vol. 38, Supplement, 2000, pp. 1-41.
 
 **Also known as:** Piotroski F-score, financial strength, quality score.
 
@@ -953,18 +972,21 @@ toolkit.models.get_piotroski_score().loc["AAPL"]
 
 Which returns:
 
-|                                     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|                                     |   2022 |   2023 |   2024 |   2025 |   2026 |
 |:------------------------------------|-------:|-------:|-------:|-------:|-------:|
-| Return on Assets Criteria           |      1 |      1 |      1 |      1 |      1 |
-| Operating Cashflow Criteria         |      1 |      1 |      1 |      1 |      1 |
-| Change in Return on Assets Criteria |      0 |      0 |      0 |      0 |      1 |
-| Accruals Criteria                   |      1 |      1 |      1 |      1 |      1 |
-| Change in Leverage Criteria         |      0 |      1 |      1 |      1 |      1 |
-| Change in Current Ratio Criteria    |      0 |      0 |      1 |      0 |      1 |
-| Number of Shares Criteria           |      0 |      1 |      1 |      1 |      1 |
-| Gross Margin Criteria               |      1 |      1 |      1 |      1 |      1 |
-| Asset Turnover Criteria             |      0 |      1 |      0 |      1 |      1 |
-| Piotroski Score                     |      4 |      7 |      7 |      7 |      9 |
+| Return on Assets Criteria           |      1 |      1 |      1 |      1 |    nan |
+| Operating Cashflow Criteria         |      1 |      1 |      1 |      1 |    nan |
+| Change in Return on Assets Criteria |      1 |      0 |      0 |      1 |    nan |
+| Accruals Criteria                   |      1 |      1 |      1 |      0 |    nan |
+| Change in Leverage Criteria         |      1 |      1 |      1 |      1 |    nan |
+| Change in Current Ratio Criteria    |      0 |      1 |      0 |      1 |    nan |
+| Number of Shares Criteria           |      1 |      1 |      1 |      1 |    nan |
+| Gross Margin Criteria               |      1 |      1 |      1 |      1 |    nan |
+| Asset Turnover Criteria             |      1 |      0 |      1 |      1 |    nan |
+| Piotroski Score                     |      8 |      7 |      7 |      8 |    nan |
+
+Periods for which the financial statements have not been reported yet are returned as NaN
+rather than being scored zero across the board.
 
 
 ---
@@ -1065,8 +1087,7 @@ The formula is as follows:
 
 The Ohlson O-Score can be interpreted as follows:
 
-- Ohlson's (1980) original cutoff is a bankruptcy probability of approximately 0.38.
-- A higher probability indicates a higher likelihood of bankruptcy.
+- Ohlson's (1980) original cutoff is a bankruptcy probability of 0.038 (3.8%), the threshold that minimized the sum of Type I and Type II misclassification errors on his sample. It is deliberately far below the naive 0.50 midpoint because bankruptcy is a rare event. Equivalently, in raw O-Score terms the cutoff sits at ln(0.038 / 0.962), i.e. approximately -3.23. - A higher probability indicates a higher likelihood of bankruptcy.
 
 **Also known as:** Ohlson O-Score, bankruptcy prediction, financial distress score.
 
@@ -1392,8 +1413,9 @@ pd.DataFrame: DataFrame containing the Fulmer H-Score and its components.
 **Notes:**
 
 - Because V7 and V9 involve a natural logarithm, periods where Tangible Total Assets
-is zero or negative, or where EBIT and Interest Expense do not share the same sign,
-will produce NaN. This is a structural limitation of the log-linear Fulmer
+is zero or negative, where EBIT and Interest Expense do not share the same sign, or
+where the company reports no Interest Expense at all, will produce NaN and therefore
+no H-Score for that period. This is a structural limitation of the log-linear Fulmer
 specification, not a bug — the same kind of limitation documented for the Graham
 Number elsewhere in this toolkit.
 - Because V7 uses an un-normalized dollar figure, the H-Score is sensitive to the
@@ -1451,8 +1473,9 @@ The formula is as follows:
 - <u>calculate_daily (bool, optional):</u> Whether to calculate the PVGO using daily historical data.
 Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation.
-Defaults to False.
+- <u>include_dividends (bool, optional):</u> Whether to deduct Preferred Dividends Paid from Net
+Income when calculating the Earnings per Share, so that the earnings figure reflects what is
+attributable to common shareholders only. Defaults to False.
 - <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
@@ -1464,6 +1487,15 @@ values. Defaults to False.
 **Returns:**
 
 pd.DataFrame: DataFrame containing the PVGO values.
+
+**Notes:**
+
+- The textbook PVGO discounts the no-growth value of the company (Earnings per Share / r) at
+the cost of equity, since both the share price and the Earnings per Share are equity-only,
+per-share quantities. This implementation discounts at the Weighted Average Cost of Capital
+instead, which blends in the (typically lower, tax-shielded) cost of debt and therefore
+generally understates PVGO. Prefer comparing PVGO across companies, or over time for the same
+company, over reading absolute levels literally.
 
 **As an example:**
 

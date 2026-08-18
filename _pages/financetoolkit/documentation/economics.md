@@ -25,7 +25,7 @@ pip install financetoolkit -U
 ## get_gross_domestic_product
 Get the Gross Domestic Product for a variety of countries over time from the OECD. The Gross Domestic Product is the total value of goods produced and services provided in a country during one year.
 
-Note that the OECD source reports GDP on a per capita basis, i.e. the total Gross Domestic Product divided by the population of the country, whereas the Global Macro Database (GMDB) source reports the total (not per capita) figure.
+Note that the OECD source reports GDP on a per capita basis, i.e. the total Gross Domestic Product divided by the population of the country, whereas the Global Macro Database (GMDB) source reports the total (not per capita) figure. The two are also expressed in different units: the OECD source is in current-price US dollars per person converted with Purchasing Power Parities (PPPs), which makes the level comparable across countries, while the GMDB source is in millions of national currency. Both are annual.
 
 The data is returned as levels. To obtain period-on-period changes (e.g. year on year or quarter on quarter growth), set `growth=True` and use `lag` to control how many periods back the comparison is made.
 
@@ -84,6 +84,8 @@ Which returns:
 
 ## get_gross_domestic_product_deflator
 Get the Gross Domestic Product Deflator for a variety of countries over time from the Global Macro Database (GMDB). The GDP deflator is a measure of the price of all domestically produced final goods and services in an economy relative to the price level in a base year which can vary per country.
+
+The deflator is an index, set to 100 in the base year, which can vary per country, and is annual.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -239,9 +241,11 @@ A positive output gap indicates the economy is running above its long-run potent
 
 Formula:
 
-Output Gap = ((Actual GDP - Potential GDP) / Potential GDP) * 100
+Output Gap = (Actual GDP - Potential GDP) / Potential GDP
 
 This data is only available on a yearly basis, since the OECD Economic Outlook is published as a set of annual projections and estimates.
+
+Changed in v2.2.0: the result is now a decimal fraction (-0.0422) rather than the percentage of potential GDP the OECD publishes (-4.2231), matching every other rate and ratio in this class. Multiply by 100 to recover the published figure. Note that a small gap loses resolution at the default rounding of 4 decimals -- pass a larger `rounding` when the sub-basis-point detail matters.
 
 **See definition:** [https://www.oecd.org/en/data/indicators/output-gaps.html](https://www.oecd.org/en/data/indicators/output-gaps.html){:target="_blank"}
 
@@ -261,7 +265,8 @@ values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame: A DataFrame containing the Output Gap.
+pd.DataFrame: A DataFrame containing the Output Gap as a decimal fraction of
+potential GDP.
 
 **As an example:**
 
@@ -275,19 +280,21 @@ economics.get_output_gap(countries=['United States', 'Germany', 'Japan'])
 
 Which returns:
 
-|      |   United States |   Germany |    Japan |
-|:-----|-----------------:|----------:|---------:|
-| 2018 |          0.0189  |   1.896   |  1.942   |
-| 2019 |          0.1531  |   2.0146  |  0.7237  |
-| 2020 |         -4.2231  |  -3.1507  | -4.2207  |
-| 2021 |         -0.7285  |  -0.0537  | -1.3727  |
-| 2022 |         -0.6584  |   1.076   | -0.4859  |
+|      |   United States |   Germany |   Japan |
+|:-----|----------------:|----------:|--------:|
+| 2018 |          0.0002 |    0.019  |  0.0194 |
+| 2019 |          0.0015 |    0.0201 |  0.0072 |
+| 2020 |         -0.0422 |   -0.0315 | -0.0422 |
+| 2021 |         -0.0073 |   -0.0005 | -0.0137 |
+| 2022 |         -0.0066 |    0.0108 | -0.0049 |
 
 
 ---
 
 ## get_total_consumption
 Get the Total Consumption for a variety of countries over time from the Global Macro Database (GMDB). Total Consumption is the total amount of money spent by households on consumer goods and services.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -343,6 +350,10 @@ Get the Total Consumption to GDP Ratio for a variety of countries over time from
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The ratio is expressed as a decimal fraction (0.8100 for 81.00% of GDP).
+
+Changed in v2.2.0: this used to be returned in percentage points. It is now a decimal fraction, matching every other ratio in the Finance Toolkit.
+
 **Also known as:** consumption share of GDP.
 
 **Args:**
@@ -377,20 +388,22 @@ Which returns:
 
 |      |   Netherlands |   France |   Poland |
 |:-----|--------------:|---------:|---------:|
-| 2018 |       68.9658 |  78.3547 |  76.5334 |
-| 2019 |       68.2768 |  77.6248 |  75.6476 |
-| 2020 |       68.3982 |  78.92   |  75.5519 |
-| 2021 |       68.061  |  77.7649 |  74.9877 |
-| 2022 |       68.357  |  78.5937 |  76.2568 |
-| 2023 |       68.8716 |  78.8461 |  76.7188 |
-| 2024 |       69.8097 |  78.906  |  76.7534 |
-| 2025 |       70.0162 |  78.995  |  77.1961 |
+| 2018 |        0.6897 |   0.7835 |   0.7653 |
+| 2019 |        0.6828 |   0.7762 |   0.7565 |
+| 2020 |        0.684  |   0.7892 |   0.7555 |
+| 2021 |        0.6806 |   0.7776 |   0.7499 |
+| 2022 |        0.6836 |   0.7859 |   0.7626 |
+| 2023 |        0.6887 |   0.7885 |   0.7672 |
+| 2024 |        0.6981 |   0.7891 |   0.7675 |
+| 2025 |        0.7002 |   0.7899 |   0.772  |
 
 
 ---
 
 ## get_investment
 Get the Investment for a variety of countries over time from the Global Macro Database (GMDB). Investment is the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -449,6 +462,10 @@ Get the Investment to GDP Ratio for a variety of countries over time from the Gl
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The ratio is expressed as a decimal fraction (0.2248 for 22.48% of GDP).
+
+Changed in v2.2.0: this used to be returned in percentage points. It is now a decimal fraction, matching every other ratio in the Finance Toolkit.
+
 **Also known as:** investment rate.
 
 **Args:**
@@ -483,19 +500,22 @@ Which returns:
 
 |      |   Australia |   Japan |   Turkey |
 |:-----|------------:|--------:|---------:|
-| 2019 |      22.55  |  25.79  |   24.878 |
-| 2020 |      22.3   |  25.224 |   31.341 |
-| 2021 |      23.313 |  25.797 |   31.404 |
-| 2022 |      23.722 |  26.811 |   35.04  |
-| 2023 |      23.981 |  26.397 |   29.964 |
-| 2024 |      24.149 |  26.572 |   25.574 |
-| 2025 |      23.928 |  26.639 |   24.649 |
+| 2019 |      0.2255 |  0.2579 |   0.2488 |
+| 2020 |      0.223  |  0.2522 |   0.3134 |
+| 2021 |      0.2331 |  0.258  |   0.314  |
+| 2022 |      0.2372 |  0.2681 |   0.3504 |
+| 2023 |      0.2398 |  0.264  |   0.2996 |
+| 2024 |      0.2415 |  0.2657 |   0.2557 |
+| 2025 |      0.2393 |  0.2664 |   0.2465 |
+| 2026 |      0.2403 |  0.2652 |   0.254  |
 
 
 ---
 
 ## get_fixed_investment
 Get the Fixed Investment for a variety of countries over time from the Global Macro Database (GMDB). Fixed Investment is the total amount of money spent by businesses on capital goods, such as machinery, equipment, and buildings that are expected to last for more than one year.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -548,6 +568,10 @@ Get the Fixed Investment to GDP Ratio for a variety of countries over time from 
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The ratio is expressed as a decimal fraction (0.2179 for 21.79% of GDP).
+
+Changed in v2.2.0: this used to be returned in percentage points. It is now a decimal fraction, matching every other ratio in the Finance Toolkit.
+
 **Also known as:** investment to GDP ratio.
 
 **Args:**
@@ -582,38 +606,40 @@ Which returns:
 
 |      |   Austria |   Germany |   Switzerland |
 |:-----|----------:|----------:|--------------:|
-| 2000 |   25.7061 |   22.8829 |       27.512  |
-| 2001 |   24.9279 |   21.5434 |       26.8656 |
-| 2002 |   23.6231 |   19.8867 |       27.0789 |
-| 2003 |   24.1941 |   19.2639 |       26.5301 |
-| 2004 |   23.7683 |   18.8315 |       27.3119 |
-| 2005 |   23.2346 |   18.7644 |       27.263  |
-| 2006 |   22.8307 |   19.4624 |       27.0603 |
-| 2007 |   23.1394 |   19.7152 |       27.2073 |
-| 2008 |   23.5338 |   19.96   |       26.7343 |
-| 2009 |   22.6637 |   18.8314 |       25.2148 |
-| 2010 |   21.8612 |   19.1803 |       25.1886 |
-| 2011 |   22.7074 |   20.0016 |       25.5188 |
-| 2012 |   22.9528 |   19.9585 |       26.2689 |
-| 2013 |   23.3121 |   19.5717 |       26.2276 |
-| 2014 |   22.9672 |   19.7779 |       26.4182 |
-| 2015 |   22.896  |   19.7566 |       26.4112 |
-| 2016 |   23.3219 |   20.0382 |       26.4998 |
-| 2017 |   23.8459 |   20.146  |       27.1489 |
-| 2018 |   24.3136 |   20.8351 |       26.6027 |
-| 2019 |   25.0801 |   21.1667 |       26.6222 |
-| 2020 |   25.1343 |   21.3495 |       26.9939 |
-| 2021 |   25.8758 |   21.1944 |       26.3366 |
-| 2022 |   25.4742 |   21.7068 |       26.2505 |
-| 2023 |   24.9012 |   21.4997 |       25.9307 |
-| 2024 |   25.1474 |   20.6719 |       24.9148 |
-| 2025 |   25.2518 |   20.7174 |       24.8035 |
+| 2000 |    0.2571 |    0.2288 |        0.2751 |
+| 2001 |    0.2493 |    0.2154 |        0.2687 |
+| 2002 |    0.2362 |    0.1989 |        0.2708 |
+| 2003 |    0.2419 |    0.1926 |        0.2653 |
+| 2004 |    0.2377 |    0.1883 |        0.2731 |
+| 2005 |    0.2323 |    0.1876 |        0.2726 |
+| 2006 |    0.2283 |    0.1946 |        0.2706 |
+| 2007 |    0.2314 |    0.1972 |        0.2721 |
+| 2008 |    0.2353 |    0.1996 |        0.2673 |
+| 2009 |    0.2266 |    0.1883 |        0.2521 |
+| 2010 |    0.2186 |    0.1918 |        0.2519 |
+| 2011 |    0.2271 |    0.2    |        0.2552 |
+| 2012 |    0.2295 |    0.1996 |        0.2627 |
+| 2013 |    0.2331 |    0.1957 |        0.2623 |
+| 2014 |    0.2297 |    0.1978 |        0.2642 |
+| 2015 |    0.229  |    0.1976 |        0.2641 |
+| 2016 |    0.2332 |    0.2004 |        0.265  |
+| 2017 |    0.2385 |    0.2015 |        0.2715 |
+| 2018 |    0.2431 |    0.2084 |        0.266  |
+| 2019 |    0.2508 |    0.2117 |        0.2662 |
+| 2020 |    0.2513 |    0.2135 |        0.2699 |
+| 2021 |    0.2588 |    0.2119 |        0.2634 |
+| 2022 |    0.2547 |    0.2171 |        0.2625 |
+| 2023 |    0.249  |    0.215  |        0.2593 |
+| 2024 |    0.2515 |    0.2067 |        0.2491 |
+| 2025 |    0.2525 |    0.2072 |        0.248  |
 
 
 ---
 
 ## get_exports
 Get the Exports for a variety of countries over time from the Global Macro Database (GMDB). Exports are the total amount of goods and services produced in a country that are sold to other countries.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -669,6 +695,10 @@ Get the Exports to GDP Ratio for a variety of countries over time from the Globa
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The ratio is expressed as a decimal fraction (0.1016 for 10.16% of GDP).
+
+Changed in v2.2.0: this used to be returned in percentage points. It is now a decimal fraction, matching every other ratio in the Finance Toolkit.
+
 **Also known as:** exports to GDP ratio, trade openness.
 
 **Args:**
@@ -701,23 +731,26 @@ Which returns:
 
 |      |   United States |   Canada |   Russian Federation |
 |:-----|----------------:|---------:|---------------------:|
-| 2015 |         12.4112 |  31.85   |              28.7034 |
-| 2016 |         11.8882 |  31.5025 |              25.8545 |
-| 2017 |         12.1775 |  31.4544 |              26.0909 |
-| 2018 |         12.2871 |  32.3254 |              30.7933 |
-| 2019 |         11.7892 |  32.3527 |              28.4334 |
-| 2020 |         10.0736 |  29.4736 |              25.5222 |
-| 2021 |         10.791  |  31.2164 |              29.7712 |
-| 2022 |         11.6022 |  33.845  |              28.0257 |
-| 2023 |         11.0115 |  33.3693 |              23.083  |
-| 2024 |         10.7508 |  32.3514 |              21.242  |
-| 2025 |         10.5946 |  31.6492 |              21.2205 |
+| 2015 |          0.1241 |   0.3185 |               0.287  |
+| 2016 |          0.1189 |   0.315  |               0.2585 |
+| 2017 |          0.1218 |   0.3145 |               0.2609 |
+| 2018 |          0.1229 |   0.3233 |               0.3079 |
+| 2019 |          0.1179 |   0.3235 |               0.2843 |
+| 2020 |          0.1007 |   0.2947 |               0.2552 |
+| 2021 |          0.1079 |   0.3122 |               0.2977 |
+| 2022 |          0.116  |   0.3385 |               0.2803 |
+| 2023 |          0.1101 |   0.3337 |               0.2308 |
+| 2024 |          0.1075 |   0.3235 |               0.2124 |
+| 2025 |          0.1059 |   0.3165 |               0.2122 |
+| 2026 |          0.1049 |   0.3124 |               0.2123 |
 
 
 ---
 
 ## get_imports
 Get the Imports for a variety of countries over time from the Global Macro Database (GMDB). Imports are the total amount of goods and services produced in other countries that are bought by a country.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -778,6 +811,10 @@ Get the Imports to GDP Ratio for a variety of countries over time from the Globa
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The ratio is expressed as a decimal fraction (0.1213 for 12.13% of GDP).
+
+Changed in v2.2.0: this used to be returned in percentage points. It is now a decimal fraction, matching every other ratio in the Finance Toolkit.
+
 **Also known as:** imports to GDP ratio.
 
 **Args:**
@@ -810,17 +847,23 @@ Which returns:
 
 |      |   United States |   Canada |   Mexico |
 |:-----|----------------:|---------:|---------:|
-| 2010 |         15.8785 |  31.0407 |  30.2559 |
-| 2011 |         17.279  |  31.8203 |  31.7194 |
-| 2012 |         17.0378 |  32.2425 |  32.7185 |
-| 2013 |         16.3878 |  31.8991 |  31.9359 |
-| 2014 |         16.3984 |  32.6421 |  32.6354 |
-| 2015 |         15.2771 |  34.3149 |  36.2502 |
-| 2016 |         14.5644 |  33.8611 |  38.8746 |
-| 2017 |         14.9479 |  33.6467 |  39.438  |
-| 2018 |         15.1582 |  34.2745 |  41.1687 |
-| 2019 |         14.4693 |  33.8188 |  38.9323 |
-| 2020 |         13.0061 |  31.6831 |  37.6192 |
+| 2010 |          0.1588 |   0.3104 |   0.3026 |
+| 2011 |          0.1728 |   0.3182 |   0.3172 |
+| 2012 |          0.1704 |   0.3224 |   0.3272 |
+| 2013 |          0.1639 |   0.319  |   0.3194 |
+| 2014 |          0.164  |   0.3264 |   0.3264 |
+| 2015 |          0.1528 |   0.3431 |   0.3625 |
+| 2016 |          0.1456 |   0.3386 |   0.3887 |
+| 2017 |          0.1495 |   0.3365 |   0.3944 |
+| 2018 |          0.1516 |   0.3427 |   0.4117 |
+| 2019 |          0.1447 |   0.3382 |   0.3893 |
+| 2020 |          0.1301 |   0.3168 |   0.3762 |
+| 2021 |          0.1442 |   0.3121 |   0.425  |
+| 2022 |          0.1529 |   0.3371 |   0.4565 |
+| 2023 |          0.1389 |   0.3382 |   0.3718 |
+| 2024 |          0.1382 |   0.328  |   0.3491 |
+| 2025 |          0.1352 |   0.3244 |   0.3336 |
+| 2026 |          0.1313 |   0.3239 |   0.3253 |
 
 
 ---
@@ -831,6 +874,8 @@ Get the Trade Balance for a variety of countries over time from the Global Macro
 Formula:
 
 Trade Balance = Exports - Imports
+
+The balance is annual and expressed in millions of national currency, with a negative value marking a trade deficit and a positive value a surplus.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -876,6 +921,8 @@ Which returns:
 
 ## get_current_account_balance
 Get the Current Account Balance for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance is the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid).
+
+The balance is annual and expressed in millions of national currency, with a negative value marking a current account deficit and a positive value a surplus.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -931,6 +978,10 @@ Get the Current Account Balance to GDP Ratio for a variety of countries over tim
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The ratio is expressed as a decimal fraction (-0.0211 for -2.11% of GDP).
+
+Changed in v2.2.0: this used to be returned in percentage points. It is now a decimal fraction, matching every other ratio in the Finance Toolkit.
+
 **Also known as:** current account to GDP.
 
 **Args:**
@@ -964,23 +1015,26 @@ Which returns:
 
 |      |   Poland |   Turkey |   United Kingdom |
 |:-----|---------:|---------:|-----------------:|
-| 2015 |   -1.292 |   -2.463 |           -4.948 |
-| 2016 |   -1.025 |   -2.55  |           -5.448 |
-| 2017 |   -1.156 |   -4.091 |           -3.493 |
-| 2018 |   -1.926 |   -1.831 |           -3.927 |
-| 2019 |   -0.246 |    1.974 |           -2.688 |
-| 2020 |    2.483 |   -4.335 |           -2.934 |
-| 2021 |   -1.245 |   -0.796 |           -0.437 |
-| 2022 |   -2.438 |   -5.056 |           -2.102 |
-| 2023 |    1.548 |   -3.983 |           -1.961 |
-| 2024 |    0.848 |   -2.161 |           -2.787 |
-| 2025 |   -0.024 |   -2.072 |           -2.829 |
+| 2015 |  -0.0129 |  -0.0246 |          -0.0495 |
+| 2016 |  -0.0102 |  -0.0255 |          -0.0545 |
+| 2017 |  -0.0116 |  -0.0409 |          -0.0349 |
+| 2018 |  -0.0193 |  -0.0183 |          -0.0393 |
+| 2019 |  -0.0025 |   0.0197 |          -0.0269 |
+| 2020 |   0.0248 |  -0.0434 |          -0.0293 |
+| 2021 |  -0.0124 |  -0.008  |          -0.0044 |
+| 2022 |  -0.0244 |  -0.0506 |          -0.021  |
+| 2023 |   0.0155 |  -0.0398 |          -0.0196 |
+| 2024 |   0.0085 |  -0.0216 |          -0.0279 |
+| 2025 |  -0.0002 |  -0.0207 |          -0.0283 |
+| 2026 |  -0.0043 |  -0.0201 |          -0.028  |
 
 
 ---
 
 ## get_government_debt
 Get the Government Debt for a variety of countries over time from the Global Macro Database (GMDB). Government Debt is the total amount of money that a government owes to creditors.
+
+The stock is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -1036,6 +1090,10 @@ Get the Government Debt to GDP Ratio for a variety of countries over time from t
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The ratio is expressed as a decimal fraction (1.3173 for 131.73% of GDP).
+
+Changed in v2.2.0: this used to be returned in percentage points. It is now a decimal fraction, matching every other ratio in the Finance Toolkit.
+
 **Also known as:** debt-to-GDP ratio, fiscal sustainability.
 
 **Args:**
@@ -1068,23 +1126,26 @@ Which returns:
 
 |      |   Netherlands |   Germany |   China |
 |:-----|--------------:|----------:|--------:|
-| 2015 |        63.799 |    70.56  |  41.489 |
-| 2016 |        60.883 |    67.631 |  50.701 |
-| 2017 |        55.986 |    63.952 |  54.951 |
-| 2018 |        51.558 |    60.729 |  56.659 |
-| 2019 |        47.583 |    58.556 |  60.404 |
-| 2020 |        53.337 |    67.858 |  70.155 |
-| 2021 |        50.436 |    67.879 |  71.852 |
-| 2022 |        48.354 |    64.789 |  77.393 |
-| 2023 |        45.024 |    62.66  |  84.381 |
-| 2024 |        44.264 |    62.679 |  90.119 |
-| 2025 |        45.11  |    62.098 |  93.845 |
+| 2015 |        0.638  |    0.7056 |  0.4149 |
+| 2016 |        0.6088 |    0.6763 |  0.507  |
+| 2017 |        0.5599 |    0.6395 |  0.5495 |
+| 2018 |        0.5156 |    0.6073 |  0.5666 |
+| 2019 |        0.4758 |    0.5856 |  0.604  |
+| 2020 |        0.5334 |    0.6786 |  0.7016 |
+| 2021 |        0.5044 |    0.6788 |  0.7185 |
+| 2022 |        0.4835 |    0.6479 |  0.7739 |
+| 2023 |        0.4502 |    0.6266 |  0.8438 |
+| 2024 |        0.4426 |    0.6268 |  0.9012 |
+| 2025 |        0.4511 |    0.621  |  0.9384 |
+| 2026 |        0.4619 |    0.6095 |  0.9775 |
 
 
 ---
 
 ## get_government_revenue
 Get the Government Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Revenue is the total amount of money that a government collects from taxes and other sources.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -1136,6 +1197,10 @@ Get the Government Revenue to GDP Ratio for a variety of countries over time fro
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The ratio is expressed as a decimal fraction (0.3104 for 31.04% of GDP).
+
+Changed in v2.2.0: this used to be returned in percentage points. It is now a decimal fraction, matching every other ratio in the Finance Toolkit.
+
 **Also known as:** revenue to GDP ratio.
 
 **Args:**
@@ -1168,23 +1233,26 @@ Which returns:
 
 |      |   United States |   Canada |   Russian Federation |
 |:-----|----------------:|---------:|---------------------:|
-| 2015 |          31.501 |   39.957 |               31.887 |
-| 2016 |          30.977 |   40.3   |               32.916 |
-| 2017 |          30.4   |   40.343 |               33.361 |
-| 2018 |          30.014 |   41.022 |               35.544 |
-| 2019 |          30.011 |   40.572 |               35.682 |
-| 2020 |          30.646 |   41.413 |               35.164 |
-| 2021 |          31.576 |   42.519 |               35.44  |
-| 2022 |          32.385 |   41.143 |               34.2   |
-| 2023 |          29.211 |   41.919 |               34.257 |
-| 2024 |          29.897 |   41.274 |               35.446 |
-| 2025 |          30.06  |   41.238 |               36.466 |
+| 2015 |          0.315  |   0.3996 |               0.3189 |
+| 2016 |          0.3098 |   0.403  |               0.3292 |
+| 2017 |          0.304  |   0.4034 |               0.3336 |
+| 2018 |          0.3001 |   0.4102 |               0.3554 |
+| 2019 |          0.3001 |   0.4057 |               0.3568 |
+| 2020 |          0.3065 |   0.4141 |               0.3516 |
+| 2021 |          0.3158 |   0.4252 |               0.3544 |
+| 2022 |          0.3238 |   0.4114 |               0.342  |
+| 2023 |          0.2921 |   0.4192 |               0.3426 |
+| 2024 |          0.299  |   0.4127 |               0.3545 |
+| 2025 |          0.3006 |   0.4124 |               0.3647 |
+| 2026 |          0.3065 |   0.4115 |               0.365  |
 
 
 ---
 
 ## get_government_tax_revenue
 Get the Government Tax Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Tax Revenue is the total amount of money that a government collects from taxes.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -1239,6 +1307,10 @@ Get the Government Tax Revenue to GDP Ratio for a variety of countries over time
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The ratio is expressed as a decimal fraction (0.1022 for 10.22% of GDP).
+
+Changed in v2.2.0: this used to be returned in percentage points. It is now a decimal fraction, matching every other ratio in the Finance Toolkit.
+
 **Also known as:** tax burden, tax to GDP ratio.
 
 **Args:**
@@ -1272,21 +1344,23 @@ Which returns:
 
 |      |   United States |   Canada |   Mexico |
 |:-----|----------------:|---------:|---------:|
-| 2015 |         19.9356 |  12.3898 |  13.1765 |
-| 2016 |         19.5813 |  12.4966 |  13.8639 |
-| 2017 |         20.3141 |  12.612  |  13.4013 |
-| 2018 |         18.7359 |  13.0577 |  13.3632 |
-| 2019 |         18.8848 |  12.7417 |  13.4765 |
-| 2020 |         19.3433 |  13.5033 |  14.5167 |
-| 2021 |         20.6471 |  13.2199 |  14.1389 |
-| 2022 |         21.5601 |  12.826  |  13.6774 |
-| 2023 |         10.2238 |  14.0076 |  14.2666 |
+| 2015 |          0.1994 |   0.1239 |   0.1318 |
+| 2016 |          0.1958 |   0.125  |   0.1386 |
+| 2017 |          0.2031 |   0.1261 |   0.134  |
+| 2018 |          0.1874 |   0.1306 |   0.1336 |
+| 2019 |          0.1888 |   0.1274 |   0.1348 |
+| 2020 |          0.1934 |   0.135  |   0.1452 |
+| 2021 |          0.2065 |   0.1322 |   0.1414 |
+| 2022 |          0.2156 |   0.1283 |   0.1368 |
+| 2023 |          0.1022 |   0.1401 |   0.1427 |
 
 
 ---
 
 ## get_government_expenditure
 Get the Government Expenditure for a variety of countries over time from the Global Macro Database (GMDB). Government Expenditure is the total amount of money that a government spends on goods and services.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -1342,6 +1416,10 @@ Get the Government Expenditure to GDP Ratio for a variety of countries over time
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The ratio is expressed as a decimal fraction (0.3708 for 37.08% of GDP).
+
+Changed in v2.2.0: this used to be returned in percentage points. It is now a decimal fraction, matching every other ratio in the Finance Toolkit.
+
 **Also known as:** government spending to GDP.
 
 **Args:**
@@ -1375,17 +1453,18 @@ Which returns:
 
 |      |   United States |   Japan |   Netherlands |
 |:-----|----------------:|--------:|--------------:|
-| 2015 |          35.031 |  37.295 |        45.252 |
-| 2016 |          35.333 |  37.229 |        43.917 |
-| 2017 |          35.194 |  36.686 |        42.759 |
-| 2018 |          35.349 |  36.739 |        42.443 |
-| 2019 |          35.811 |  37.294 |        42.098 |
-| 2020 |          44.568 |  44.517 |        47.813 |
-| 2021 |          42.599 |  42.44  |        45.894 |
-| 2022 |          36.308 |  41.835 |        43.266 |
-| 2023 |          36.279 |  41.165 |        43.201 |
-| 2024 |          37.526 |  42.198 |        44.158 |
-| 2025 |          37.384 |  39.825 |        44.798 |
+| 2015 |          0.3503 |  0.3729 |        0.4525 |
+| 2016 |          0.3533 |  0.3723 |        0.4392 |
+| 2017 |          0.3519 |  0.3669 |        0.4276 |
+| 2018 |          0.3535 |  0.3674 |        0.4244 |
+| 2019 |          0.3581 |  0.3729 |        0.421  |
+| 2020 |          0.4457 |  0.4452 |        0.4781 |
+| 2021 |          0.426  |  0.4244 |        0.4589 |
+| 2022 |          0.3631 |  0.4184 |        0.4327 |
+| 2023 |          0.3628 |  0.4116 |        0.432  |
+| 2024 |          0.3753 |  0.422  |        0.4416 |
+| 2025 |          0.3738 |  0.3983 |        0.448  |
+| 2026 |          0.374  |  0.3963 |        0.4513 |
 
 
 ---
@@ -1394,6 +1473,8 @@ Which returns:
 Get the Government Deficit for a variety of countries over time from the Global Macro Database (GMDB). Government Deficit is the total amount of money that a government spends more than it collects from taxes and other sources. A government deficit is usually financed by borrowing money.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The series is signed as a fiscal balance rather than as a deficit, in millions of national currency: a negative value is a deficit (spending exceeding revenue) and a positive value is a surplus.
 
 **Also known as:** budget deficit, fiscal deficit.
 
@@ -1447,6 +1528,10 @@ Get the Government Deficit to GDP Ratio for a variety of countries over time fro
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The series is signed as a fiscal balance rather than as a deficit, and expressed as a decimal fraction of GDP: -0.07068 means a deficit of 7.068% of GDP, and a positive value is a surplus.
+
+Changed in v2.2.0: this used to be returned in percentage points. It is now a decimal fraction, matching every other ratio in the Finance Toolkit.
+
 **Also known as:** deficit-to-GDP, fiscal balance.
 
 **Args:**
@@ -1481,17 +1566,18 @@ Which returns:
 
 |      |   New Zealand |   Australia |   United Kingdom |
 |:-----|--------------:|------------:|-----------------:|
-| 2015 |         0.365 |      -2.785 |           -4.622 |
-| 2016 |         0.978 |      -2.422 |           -3.338 |
-| 2017 |         1.358 |      -1.716 |           -2.505 |
-| 2018 |         1.271 |      -1.257 |           -2.273 |
-| 2019 |        -2.499 |      -4.404 |           -2.481 |
-| 2020 |        -4.328 |      -8.719 |          -13.145 |
-| 2021 |        -3.237 |      -6.353 |           -7.86  |
-| 2022 |        -3.511 |      -2.187 |           -4.703 |
-| 2023 |        -3.333 |      -0.857 |           -5.964 |
-| 2024 |        -3.845 |      -1.661 |           -4.25  |
-| 2025 |        -3.493 |      -2.043 |           -3.741 |
+| 2015 |        0.0036 |     -0.0278 |          -0.0462 |
+| 2016 |        0.0098 |     -0.0242 |          -0.0334 |
+| 2017 |        0.0136 |     -0.0172 |          -0.0251 |
+| 2018 |        0.0127 |     -0.0126 |          -0.0227 |
+| 2019 |       -0.025  |     -0.044  |          -0.0248 |
+| 2020 |       -0.0433 |     -0.0872 |          -0.1314 |
+| 2021 |       -0.0324 |     -0.0635 |          -0.0786 |
+| 2022 |       -0.0351 |     -0.0219 |          -0.047  |
+| 2023 |       -0.0333 |     -0.0086 |          -0.0596 |
+| 2024 |       -0.0384 |     -0.0166 |          -0.0425 |
+| 2025 |       -0.0349 |     -0.0204 |          -0.0374 |
+| 2026 |       -0.0234 |     -0.013  |          -0.0354 |
 
 
 ---
@@ -1501,7 +1587,7 @@ Trust in government refers to the share of people who report having confidence i
 
 Due to small sample sizes, country averages for horizontal inequalities (by age, gender and education) are pooled between 2010-18 to improve the accuracy of the estimates.
 
-The sample is ex ante designed to be nationally representative of the population aged 15 and over. This indicator is measured as a percentage of all survey respondents.
+The sample is ex ante designed to be nationally representative of the population aged 15 and over. The population-wide figure is returned -- both sexes, all education levels -- as an annual decimal fraction of that population (0.3933 for 39.33%). The breakdowns by sex and education level that the OECD publishes alongside it are not returned here.
 
 **See definition:** [https://data.oecd.org/gga/trust-in-government.htm](https://data.oecd.org/gga/trust-in-government.htm){:target="_blank"}
 
@@ -1626,6 +1712,10 @@ Inflation Rate is the percentage change in the Consumer Price Index (CPI) from o
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The rate is expressed as a decimal fraction (0.0412 for 4.1166%) on an annual basis. The GMDB extends its series with IMF World Economic Outlook projections, so the current year and any later years the end_date reaches are forecasts rather than outturns.
+
+Changed in v2.2.0: this used to be returned in percentage points (4.1166 for 4.1166%). It is now a decimal fraction, matching every other rate in the Finance Toolkit.
+
 **Also known as:** CPI-based inflation, price increases, consumer prices.
 
 **Args:**
@@ -1658,13 +1748,13 @@ Which returns:
 
 |      |   Germany |   France |   Portugal |
 |:-----|----------:|---------:|-----------:|
-| 2003 |    1.0342 |   2.0985 |     3.219  |
-| 2004 |    1.6657 |   2.1421 |     2.3654 |
-| 2005 |    1.5469 |   1.7459 |     2.2772 |
-| 2006 |    1.5774 |   1.6751 |     3.1077 |
-| 2007 |    2.2983 |   1.488  |     2.454  |
-| 2008 |    2.6284 |   2.8129 |     2.5885 |
-| 2009 |    0.3127 |   0.0876 |    -0.8355 |
+| 2003 |    0.0103 |   0.021  |     0.0322 |
+| 2004 |    0.0167 |   0.0214 |     0.0237 |
+| 2005 |    0.0155 |   0.0175 |     0.0228 |
+| 2006 |    0.0158 |   0.0168 |     0.0311 |
+| 2007 |    0.023  |   0.0149 |     0.0245 |
+| 2008 |    0.0263 |   0.0281 |     0.0259 |
+| 2009 |    0.0031 |   0.0009 |    -0.0084 |
 
 
 ---
@@ -1672,7 +1762,9 @@ Which returns:
 ## get_producer_price_index
 Get the Producer Price Index (PPI) for a variety of countries over time from the OECD. The PPI measures the average change over time in the prices received by domestic producers (manufacturing) for their output. Because producers tend to pass rising input costs on to their customers with a lag, the PPI is generally seen as a leading, upstream indicator of cost pressure that later shows up in the Consumer Price Index (CPI).
 
-The index is set to 100 in the base year, which can vary per country.
+The index covers manufacturing output only, is not seasonally adjusted, and is set to 100 in the base year, which can vary per country.
+
+The OECD stopped updating this series in its Key Economic Indicators dataset during 2023: annual values end in 2022, and monthly and quarterly values end in early 2023 for all but a couple of countries. A start_date after that point returns an empty DataFrame.
 
 **See definition:** [https://www.oecd.org/en/data/indicators/producer-prices-ppi.html](https://www.oecd.org/en/data/indicators/producer-prices-ppi.html){:target="_blank"}
 
@@ -1823,6 +1915,8 @@ Which returns:
 
 ## get_composite_leading_indicator
 The composite leading indicator (CLI) is designed to provide early signals of turning points in business cycles showing fluctuation of the economic activity around its long term potential level. CLIs show short-term economic movements in qualitative rather than quantitative terms.
+
+The series returned is the OECD-harmonised, amplitude-adjusted index at monthly frequency, oscillating around a long-run average of 100: readings above 100 point to above-trend activity ahead and readings below 100 to below-trend activity. Coverage is narrower than the confidence indices -- around 22 countries and aggregates.
 
 **See definition:** [https://data.oecd.org/leadind/composite-leading-indicator-cli.htm](https://data.oecd.org/leadind/composite-leading-indicator-cli.htm){:target="_blank"}
 
@@ -1991,6 +2085,8 @@ Get the Gross Household Savings Rate for a variety of countries over time from t
 
 It is a key input to consumption-smoothing and life-cycle/permanent-income theories of household behaviour, and a closely watched signal of both near-term consumption momentum (a falling savings rate can temporarily prop up spending even as income growth slows) and a household sector's buffer against future income shocks. It complements Total Consumption (see `get_total_consumption`) - the two together show how much of household income is spent versus set aside.
 
+The rate is seasonally adjusted and returned as a decimal fraction of adjusted gross disposable income (0.1177 for 11.77%). Because the denominator is adjusted for the net change in pension entitlements and the numerator is gross rather than net saving, this sits above the personal saving rate the BEA publishes for the United States.
+
 **See definition:** [https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_HHDASH%40DF_HHDASH_INDIC](https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_HHDASH%40DF_HHDASH_INDIC){:target="_blank"}
 
 **Also known as:** household savings ratio, personal savings rate.
@@ -2038,7 +2134,7 @@ Which returns:
 ---
 
 ## get_household_debt_to_income_ratio
-Get the Household Debt to Disposable Income Ratio for a variety of countries over time from the OECD's Household Dashboard. This expresses total household gross debt (loans and debt securities) as a percentage of household gross disposable income.
+Get the Household Debt to Disposable Income Ratio for a variety of countries over time from the OECD's Household Dashboard. This expresses total household gross debt (loans and debt securities) as a share of household gross disposable income, returned as a decimal ratio (1.0014 means debt equals 100.14% of income).
 
 It is a standard household-leverage indicator used in financial-stability analysis: a high or rapidly rising ratio signals households are more exposed to income shocks or interest rate increases (debt-servicing costs rise directly with rates on variable-rate or refinanced debt), and has historically preceded credit-cycle downturns (e.g. in the lead-up to the 2008 financial crisis). It is the household- sector analogue to government debt (see `get_government_debt_to_gdp_ratio`) - the two together give a fuller picture of an economy's overall leverage.
 
@@ -2155,6 +2251,8 @@ Exchange rates are defined as the price of one country's currency in relation to
 
 It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 
+Both sources are quoted the same way (national currency per US dollar), but the OECD source omits the United States itself, since the rate is trivially 1, whereas the GMDB source carries it as 1.0. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
+
 **Also known as:** currency exchange, FX rates, foreign exchange rates.
 
 **Args:**
@@ -2259,12 +2357,16 @@ Money supply can be divided into five categories: M0, M1, M2, M3 and M4. - M0: T
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The aggregates are annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are. Not every country publishes every aggregate; the ones it does not are NaN.
+
 **Also known as:** M1, M2, M3, monetary aggregate.
 
 **Args:**
 
 - <u>countries (list[str] \| str \| None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>measure (str \| None, optional):</u> The measure of money supply to include in the data. Defaults to None.
+- <u>measure (str \| None, optional):</u> Which single aggregate to return, one of 'M0', 'M1',
+'M2', 'M3' or 'M4'. Defaults to None, which returns all five with the aggregate
+as the first level of the column index.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -2315,6 +2417,10 @@ The Central Bank Policy Rate is the interest rate that a central bank sets on it
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
+The rate is annual and expressed as a decimal fraction per annum (0.0538 for 5.375%), taken at the end of the year rather than averaged over it.
+
+Changed in v2.2.0: this used to be returned in percentage points (5.375 for 5.375%). It is now a decimal fraction, matching every other rate in the Finance Toolkit.
+
 **Also known as:** policy rate, benchmark rate, base rate.
 
 **Args:**
@@ -2347,11 +2453,11 @@ Which returns:
 
 |      |   Netherlands |   Germany |   United States |
 |:-----|--------------:|----------:|----------------:|
-| 2021 |       -0.5    |   -0.5    |           0.125 |
-| 2022 |        0.4375 |    0.4375 |           4.375 |
-| 2023 |        3.625  |    3.625  |           5.375 |
-| 2024 |        3.8125 |    3.8125 |           4.375 |
-| 2025 |        2.875  |    2.875  |           4.255 |
+| 2021 |       -0.005  |   -0.005  |          0.0012 |
+| 2022 |        0.0044 |    0.0044 |          0.0438 |
+| 2023 |        0.0362 |    0.0362 |          0.0538 |
+| 2024 |        0.0381 |    0.0381 |          0.0438 |
+| 2025 |        0.0288 |    0.0288 |          0.0426 |
 
 
 ---
@@ -2359,11 +2465,15 @@ Which returns:
 ## get_short_term_interest_rate
 Short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage.
 
-Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".
+Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate". The OECD source specifically returns the 3-month interbank offered rate.
 
 **See definition:** [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
 
 It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+
+Both sources return the rate as a decimal fraction per annum (0.0513 for 5.13%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
+
+Changed in v2.2.0: the GMDB source previously returned percentage points (5.13 for 5.13%) while the OECD source returned a decimal fraction. The GMDB series is now divided by 100 so both sources agree; divide any hard-coded comparison by 100.
 
 **Also known as:** 3-month rate, money market rate, short-term yield.
 
@@ -2394,21 +2504,28 @@ economics = Economics(start_date='2023-05-01')
 
 economics.get_short_term_interest_rate(
     countries=['Japan', 'United States', 'China'],
+    gmdb_source=False,
     period='quarterly'
 )
 ```
 
 Which returns:
 
-|        |   Japan |   United States |   China |
-|:-------|--------:|----------------:|--------:|
-| 2023Q2 | -0.0001 |          0.0513 |  0.0289 |
-| 2023Q3 |  0.0001 |          0.0543 |  0.0261 |
-| 2023Q4 |  0.0002 |          0.054  |  0.0288 |
-| 2024Q1 |  0.0005 |          0.0526 |  0.0267 |
-| 2024Q2 |  0.0013 |          0.0531 |  0.0235 |
-| 2024Q3 |  0.0023 |          0.051  |  0.021  |
-| 2024Q4 |  0.0033 |          0.0454 |  0.0205 |
+|        |    Japan |   United States |    China |
+|:-------|---------:|----------------:|---------:|
+| 2023Q2 |  -0.0001 |          0.0513 |   0.0289 |
+| 2023Q3 |   0.0001 |          0.0543 |   0.0261 |
+| 2023Q4 |   0.0002 |          0.054  |   0.0288 |
+| 2024Q1 |   0.0005 |          0.0526 |   0.0267 |
+| 2024Q2 |   0.0013 |          0.0531 |   0.0235 |
+| 2024Q3 |   0.0023 |          0.051  |   0.021  |
+| 2024Q4 |   0.0033 |          0.0454 |   0.0205 |
+| 2025Q1 |   0.0079 |          0.0432 |   0.0202 |
+| 2025Q2 |   0.0078 |          0.0431 |   0.0188 |
+| 2025Q3 |   0.0079 |          0.042  |   0.0171 |
+| 2025Q4 |   0.009  |          0.0386 |   0.0168 |
+| 2026Q1 |   0.012  |          0.0366 |   0.0172 |
+| 2026Q2 | nan      |          0.0375 | nan      |
 
 
 ---
@@ -2421,6 +2538,10 @@ In all cases, they refer to bonds whose capital repayment is guaranteed by gover
 **See definition:** [https://data.oecd.org/interest/long-term-interest-rates.htm](https://data.oecd.org/interest/long-term-interest-rates.htm){:target="_blank"}
 
 It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+
+Both sources return the rate as a decimal fraction per annum (0.0357 for 3.57%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
+
+Changed in v2.2.0: the GMDB source previously returned percentage points (3.57 for 3.57%) while the OECD source returned a decimal fraction. The GMDB series is now divided by 100 so both sources agree; divide any hard-coded comparison by 100.
 
 **Also known as:** 10-year yield, government bond rate, long-term yield.
 
@@ -2451,6 +2572,8 @@ economics = Economics(start_date='2023-05-01', end_date='2023-12-31')
 
 economics.get_long_term_interest_rate(
     countries=['Japan', 'United States', 'Brazil'],
+    gmdb_source=False,
+    period='monthly'
 )
 ```
 
@@ -2465,6 +2588,7 @@ Which returns:
 | 2023-09 |  0.0076 |          0.0438 |   0.07   |
 | 2023-10 |  0.0095 |          0.048  |   0.0655 |
 | 2023-11 |  0.0066 |          0.045  |   0.0655 |
+| 2023-12 |  0.0062 |          0.0402 |   0.0655 |
 
 
 ---
@@ -2476,7 +2600,9 @@ Formula (Fisher equation, approximation):
 
 Real Interest Rate = Nominal Interest Rate - Inflation Rate
 
-The nominal interest rate is either the Long Term Interest Rate (the 10-year government bond yield) or the Short Term Interest Rate (the 3-month money market rate), selected via the rate_type parameter. The Inflation Rate is only available on an annual basis (see get_inflation_rate), which comes from the Global Macro Database (GMDB). Both the nominal interest rate and the inflation rate are always retrieved as annual, GMDB-consistent percentage values so that they line up correctly for the subtraction: when gmdb_source is True (the default) both legs come from the GMDB, and when gmdb_source is False the OECD nominal rate (which is otherwise expressed as a fraction, e.g. 0.05 for 5%) is rescaled to a percentage (5.0) to match the GMDB inflation series it is combined with.
+The nominal interest rate is either the Long Term Interest Rate (the 10-year government bond yield) or the Short Term Interest Rate (the 3-month money market rate), selected via the rate_type parameter. The Inflation Rate is only available on an annual basis (see get_inflation_rate), which comes from the Global Macro Database (GMDB). Both legs are annual decimal fractions (0.05 for 5%) whichever source is used, so they line up directly for the subtraction and the result is itself a decimal fraction (-0.0016 for a real rate of -0.16%).
+
+Changed in v2.2.0: this used to be returned in percentage points, because the GMDB legs were percentage points and the OECD nominal rate was multiplied by 100 to match them. The GMDB series are now decimal fractions and that rescaling has been removed, so the result is 100x smaller than in v2.1.x.
 
 A negative real interest rate means that, after inflation, savers are effectively losing purchasing power and borrowers are being subsidized in real terms; this occurred in many countries during the 2021-2022 inflation surge.
 
@@ -2517,13 +2643,13 @@ economics.get_real_interest_rate(countries=['United States', 'Germany', 'Japan']
 Which returns:
 
 |      |   United States |   Germany |   Japan |
-|:-----|-----------------:|----------:|--------:|
-| 2018 |             0.47 |     -1.33 |   -0.92 |
-| 2019 |             0.33 |     -1.6  |   -0.59 |
-| 2020 |            -0.34 |     -1.02 |    0.01 |
-| 2021 |            -3.26 |     -3.52 |    0.31 |
-| 2022 |            -5.05 |     -5.73 |   -2.28 |
-| 2023 |            -0.16 |     -3.51 |   -2.71 |
+|:-----|----------------:|----------:|--------:|
+| 2018 |          0.0047 |   -0.0133 | -0.0092 |
+| 2019 |          0.0033 |   -0.016  | -0.0059 |
+| 2020 |         -0.0034 |   -0.0102 |  0.0001 |
+| 2021 |         -0.0326 |   -0.0352 |  0.0031 |
+| 2022 |         -0.0505 |   -0.0573 | -0.0228 |
+| 2023 |         -0.0016 |   -0.0351 | -0.0271 |
 
 
 ---
@@ -2536,6 +2662,10 @@ Formula:
 Yield Curve Slope = Long Term Interest Rate - Short Term Interest Rate
 
 A positive (upward-sloping) yield curve is the historical norm and reflects investors demanding a premium for locking up money for longer. A negative (inverted) yield curve, where short-term rates exceed long-term rates, has historically been one of the more reliable leading indicators of an upcoming recession, as it signals that markets expect the central bank to cut rates in response to a weakening economy.
+
+Both legs are decimal fractions (0.05 for 5%) whichever source is used, so the result is itself a decimal fraction (-0.0122 for an inversion of 1.22 percentage points), matching the convention used by get_misery_index and get_real_interest_rate.
+
+Changed in v2.2.0: this used to be returned in percentage points, because the GMDB legs were percentage points and the OECD legs were multiplied by 100 to match them. The GMDB series are now decimal fractions and that rescaling has been removed, so the result is 100x smaller than in v2.1.x.
 
 **Also known as:** term spread, 10Y-3M spread, curve inversion.
 
@@ -2573,10 +2703,10 @@ economics.get_yield_curve_slope(
 Which returns:
 
 |      |   United States |   Germany |   Japan |
-|:-----|-----------------:|----------:|--------:|
-| 2021 |             1.33 |      0.17 |    0.14 |
-| 2022 |             0.72 |      0.8  |    0.26 |
-| 2023 |            -1.22 |     -1    |    0.56 |
+|:-----|----------------:|----------:|--------:|
+| 2021 |          0.0133 |    0.0017 |  0.0014 |
+| 2022 |          0.0072 |    0.008  |  0.0026 |
+| 2023 |         -0.0122 |   -0.01   |  0.0056 |
 
 
 ---
@@ -2588,7 +2718,7 @@ Energy derived from solid biofuels, biogasoline, biodiesels, other liquid biofue
 
 This includes wood, vegetal waste (including wood waste and crops used for energy production), ethanol, animal materials/wastes and sulphite lyes. Municipal waste comprises wastes produced by the residential, commercial and public service sectors that are collected by local authorities for disposal in a central location for the production of heat and/or power.
 
-This indicator in percentage of total primary energy supply.
+This indicator is the renewable share of total primary energy supply, returned as an annual decimal fraction (0.0872 for 8.72%).
 
 **See definition:** [https://data.oecd.org/energy/renewable-energy.htm](https://data.oecd.org/energy/renewable-energy.htm){:target="_blank"}
 
@@ -2644,7 +2774,9 @@ The carbon footprint is a measure of the total amount of greenhouse gases produc
 
 The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
 
-The data is sourced from the greenhouse gas emissions per capita indicator of the OECD's How's Life? well-being database (dataset ``DSD_HSL@DF_HSL_FWB``, indicator ``12_9``), so the figures are expressed in tonnes of CO2 equivalent per person.
+The data is sourced from the greenhouse gas emissions per capita indicator of the OECD's How's Life? well-being database (dataset ``DSD_HSL@DF_HSL_FWB``, indicator ``12_9``), so the figures are expressed in tonnes of CO2 equivalent per person, on an annual basis.
+
+This series currently ends in 2020, so a date range that starts after that returns an empty DataFrame and later years are absent rather than NaN.
 
 **Also known as:** CO2 emissions, carbon emissions, greenhouse gas.
 
@@ -2702,6 +2834,10 @@ For European Union countries where monthly LFS information is not available, the
 
 It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 
+Both sources return the rate as a decimal fraction of the labour force (0.036 for 3.6%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
+
+Changed in v2.2.0: the GMDB source previously returned percentage points (3.6 for 3.6%) while the OECD source returned a decimal fraction. The GMDB series is now divided by 100 so both sources agree; divide any hard-coded comparison by 100.
+
 **Also known as:** jobless rate, labor market, unemployment level.
 
 **Args:**
@@ -2731,6 +2867,7 @@ economics = Economics(start_date='2021-03-01', end_date='2023-01-01')
 
 economics.get_unemployment_rate(
     countries=['Germany', 'United States', 'Japan'],
+    gmdb_source=False,
     period='quarterly'
 )
 ```
@@ -2739,15 +2876,15 @@ Which returns:
 
 |        |   Germany |   United States |   Japan |
 |:-------|----------:|----------------:|--------:|
-| 2021Q1 |    0.039  |          0.062  |  0.0283 |
+| 2021Q1 |    0.039  |          0.0623 |  0.0287 |
 | 2021Q2 |    0.037  |          0.0593 |  0.029  |
-| 2021Q3 |    0.0343 |          0.0513 |  0.0277 |
-| 2021Q4 |    0.0323 |          0.042  |  0.0273 |
-| 2022Q1 |    0.031  |          0.038  |  0.0267 |
-| 2022Q2 |    0.03   |          0.036  |  0.026  |
-| 2022Q3 |    0.0307 |          0.0357 |  0.0257 |
-| 2022Q4 |    0.0303 |          0.036  |  0.0253 |
-| 2023Q1 |    0.0293 |          0.035  |  0.026  |
+| 2021Q3 |    0.0343 |          0.0507 |  0.0277 |
+| 2021Q4 |    0.0337 |          0.0417 |  0.0273 |
+| 2022Q1 |    0.0323 |          0.0387 |  0.027  |
+| 2022Q2 |    0.031  |          0.0363 |  0.026  |
+| 2022Q3 |    0.031  |          0.0353 |  0.0253 |
+| 2022Q4 |    0.031  |          0.0357 |  0.0253 |
+| 2023Q1 |    0.0303 |          0.0353 |  0.026  |
 
 
 ---
@@ -2759,7 +2896,9 @@ Formula:
 
 Misery Index = Unemployment Rate + Inflation Rate
 
-The Unemployment Rate and Inflation Rate are both retrieved as annual, GMDB-consistent percentage values so that they line up correctly for the addition: when gmdb_source is True (the default) both legs come from the GMDB, and when gmdb_source is False the OECD unemployment rate (which is otherwise expressed as a fraction, e.g. 0.05 for 5%) is rescaled to a percentage (5.0) to match the GMDB inflation series it is combined with.
+The Unemployment Rate and Inflation Rate are both retrieved as annual decimal fractions (0.05 for 5%) whichever source is used, so they line up directly for the addition and the result is itself a decimal fraction (0.0774 for a Misery Index of 7.74).
+
+Changed in v2.2.0: this used to be returned in percentage points, because both GMDB legs were percentage points and the OECD unemployment rate was multiplied by 100 to match them. The GMDB series are now decimal fractions and that rescaling has been removed, so the result is 100x smaller than in v2.1.x.
 
 A higher Misery Index indicates a more uncomfortable economic climate for the average household, while a lower value indicates a more comfortable one. It was originally popularized by economist Arthur Okun.
 
@@ -2797,13 +2936,13 @@ economics.get_misery_index(countries=['United States', 'Germany', 'Japan'])
 Which returns:
 
 |      |   United States |   Germany |   Japan |
-|:-----|-----------------:|----------:|--------:|
-| 2018 |             6.33 |      4.94 |    3.41 |
-| 2019 |             5.49 |      4.32 |    2.84 |
-| 2020 |             9.33 |      4.13 |    2.78 |
-| 2021 |            10.05 |      6.72 |    2.58 |
-| 2022 |            11.64 |      9.94 |    5.1  |
-| 2023 |             7.74 |      8.97 |    5.84 |
+|:-----|----------------:|----------:|--------:|
+| 2018 |          0.0633 |    0.0494 |  0.0341 |
+| 2019 |          0.0549 |    0.0432 |  0.0284 |
+| 2020 |          0.0933 |    0.0413 |  0.0278 |
+| 2021 |          0.1005 |    0.0672 |  0.0258 |
+| 2022 |          0.1164 |    0.0994 |  0.051  |
+| 2023 |          0.0774 |    0.0897 |  0.0584 |
 
 
 ---
@@ -2813,7 +2952,7 @@ GDP per hour worked is a measure of labour productivity. It measures how efficie
 
 The ratio between the output measure and the labour input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organisational and efficiency change, economies of scale).
 
-This uses 2015 as the base year (= 100)
+The level is reported in US dollars per hour worked at constant prices (currently referenced to 2020), converted with Purchasing Power Parities (PPPs) so that it is comparable across countries, for the total economy and on an annual basis. It is a level rather than an index, so a value of 61.36 means 61.36 PPP-converted US dollars of GDP produced per hour worked.
 
 **See definition:** [https://data.oecd.org/lprdty/gdp-per-hour-worked.htm](https://data.oecd.org/lprdty/gdp-per-hour-worked.htm){:target="_blank"}
 
@@ -2849,16 +2988,16 @@ Which returns:
 
 |      |   Bulgaria |   Croatia |   Spain |
 |:-----|-----------:|----------:|--------:|
-| 2013 |     1.4736 |    0.7572 |  0.7529 |
-| 2014 |     1.4742 |    0.7629 |  0.7527 |
-| 2015 |     1.7644 |    0.9103 |  0.9013 |
-| 2016 |     1.768  |    0.9033 |  0.9034 |
-| 2017 |     1.7355 |    0.8791 |  0.8852 |
-| 2018 |     1.657  |    0.8334 |  0.8468 |
-| 2019 |     1.747  |    0.879  |  0.8933 |
-| 2020 |     1.7163 |    0.8778 |  0.8755 |
-| 2021 |     1.6538 |    0.8441 |  0.8455 |
-| 2022 |     1.8601 |    0.9503 |  0.9496 |
+| 2013 |    26.3805 |   36.169  | 59.2337 |
+| 2014 |    26.5482 |   35.2152 | 59.5158 |
+| 2015 |    27.3489 |   36.3951 | 60.1307 |
+| 2016 |    28.0515 |   37.5651 | 60.3429 |
+| 2017 |    28.3199 |   37.9134 | 60.7889 |
+| 2018 |    28.9871 |   38.9686 | 60.7456 |
+| 2019 |    30.5046 |   39.5761 | 60.8858 |
+| 2020 |    30.7971 |   37.1191 | 60.9134 |
+| 2021 |    32.9483 |   41.2317 | 60.6022 |
+| 2022 |    33.9708 |   43.6926 | 61.3551 |
 
 
 ---
@@ -2867,6 +3006,8 @@ Which returns:
 Income is defined as household disposable income in a particular year. It consists of earnings, self-employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
 
 The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
+
+One Gini coefficient is returned per country, for the total population and on the OECD's current income definition (in use since 2012). The other inequality measures published alongside it in the same dataflow (the P90/P10, P90/P50 and P50/P10 decile ratios, the Palma ratio and the S80/S20 quintile share) are not returned here.
 
 **See definition:** [https://data.oecd.org/inequality/income-inequality.htm](https://data.oecd.org/inequality/income-inequality.htm){:target="_blank"}
 
@@ -2893,24 +3034,24 @@ pd.DataFrame: A DataFrame containing the Income Inequality.
 ```python
 from financetoolkit import Economics
 
-economics = Economics(start_date='2013-01-01')
+economics = Economics(start_date='2013-01-01', end_date='2021-12-31')
 
-economics.get_income_inequality(countries="United States")
+economics.get_income_inequality(countries=['United States', 'Germany', 'Japan'])
 ```
 
 Which returns:
 
-|      |   Gini Coefficient |   P90/P10 |   P90/P50 |   P50/P10 |   Palma Ratio |   S80/S20 |
-|:-----|-------------------:|----------:|----------:|----------:|--------------:|----------:|
-| 2013 |              0.396 |       6.4 |       2.3 |       2.7 |          1.82 |       8.6 |
-| 2014 |              0.394 |       6.4 |       2.3 |       2.7 |          1.79 |       8.7 |
-| 2015 |              0.39  |       6.1 |       2.3 |       2.7 |          1.75 |       8.3 |
-| 2016 |              0.391 |       6.3 |       2.3 |       2.7 |          1.77 |       8.5 |
-| 2017 |              0.39  |       6.2 |       2.3 |       2.7 |          1.76 |       8.4 |
-| 2018 |              0.393 |       6.3 |       2.3 |       2.8 |          1.79 |       8.4 |
-| 2019 |              0.395 |       6.3 |       2.3 |       2.7 |          1.81 |       8.4 |
-| 2020 |              0.377 |       5.8 |       2.2 |       2.6 |          1.64 |       7.5 |
-| 2021 |              0.375 |       5.4 |       2.2 |       2.4 |          1.63 |       7.1 |
+|      |   United States |   Germany |   Japan |
+|:-----|----------------:|----------:|--------:|
+| 2013 |          0.396  |    0.2922 | nan     |
+| 2014 |          0.3938 |    0.2887 | nan     |
+| 2015 |          0.3896 |    0.2932 | nan     |
+| 2016 |          0.3912 |    0.2944 | nan     |
+| 2017 |          0.3899 |    0.2892 | nan     |
+| 2018 |          0.3927 |    0.2893 |   0.334 |
+| 2019 |          0.3949 |    0.2959 | nan     |
+| 2020 |          0.3773 |    0.3026 | nan     |
+| 2021 |          0.3752 |    0.3125 |   0.338 |
 
 
 ---
@@ -2931,9 +3072,9 @@ However, it excludes the following:
 - foreign diplomatic personnel located in the country;
 - civilian aliens temporarily in the country.
 
-Population projections are a common demographic tool. They provide a basis for other statistical projections, helping governments in their decision making. This indicator is measured in terms of thousands of people.
+Population projections are a common demographic tool. They provide a basis for other statistical projections, helping governments in their decision making.
 
-The Global Macro Database (GMDB) source returns a single total population series per country. The OECD source additionally breaks the total down by gender, giving a Population, Men and Women series for each country.
+The Global Macro Database (GMDB) source returns a single total population series per country, in millions of people. The OECD source additionally breaks the total down by gender, giving a Population, Men and Women series for each country, and reports a plain count of persons rather than millions. Both are annual, and the OECD source uses the historical (observed) series rather than its projections.
 
 **See definition:** [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
 
@@ -3023,23 +3164,25 @@ economics.get_poverty_rate(countries='Portugal')
 
 Which returns:
 
-|      |   Total |   0-17 Year |   18-65 Year |   66 or More |
-|:-----|--------:|------------:|-------------:|-------------:|
-| 2012 |   0.13  |       0.178 |        0.129 |        0.082 |
-| 2013 |   0.135 |       0.183 |        0.133 |        0.097 |
-| 2014 |   0.135 |       0.182 |        0.133 |        0.097 |
-| 2015 |   0.125 |       0.155 |        0.123 |        0.108 |
-| 2016 |   0.125 |       0.155 |        0.126 |        0.095 |
-| 2017 |   0.107 |       0.122 |        0.105 |        0.101 |
-| 2018 |   0.104 |       0.122 |        0.103 |        0.09  |
-| 2019 |   0.106 |       0.131 |        0.098 |        0.107 |
-| 2020 |   0.128 |       0.152 |        0.118 |        0.138 |
+|      |   Portugal |
+|:-----|-----------:|
+| 2012 |     0.1295 |
+| 2013 |     0.135  |
+| 2014 |     0.135  |
+| 2015 |     0.1255 |
+| 2016 |     0.1246 |
+| 2017 |     0.1067 |
+| 2018 |     0.1038 |
+| 2019 |     0.1058 |
+| 2020 |     0.1279 |
 
 
 ---
 
 ## get_sovereign_debt_crisis
 Get the Sovereign Debt Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a sovereign debt crisis (e.g. a default or restructuring of government debt), and 0 marks a year in which it was not.
+
+The crisis dating stops well short of the present -- the series currently ends in 2017 -- so recent years are NaN rather than 0.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -3082,6 +3225,8 @@ Which returns:
 ## get_currency_crisis
 Get the Currency Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a currency crisis (e.g. a sharp, disorderly depreciation or collapse of the exchange rate), and 0 marks a year in which it was not.
 
+The crisis dating stops well short of the present -- the series currently ends in 2017 -- so recent years are NaN rather than 0.
+
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
 **Also known as:** currency collapse, exchange rate crisis dummy.
@@ -3122,6 +3267,8 @@ Which returns:
 
 ## get_banking_crisis
 Get the Banking Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a systemic banking crisis (e.g. bank runs, large-scale bank failures or government intervention to prevent them), and 0 marks a year in which it was not.
+
+The crisis dating stops well short of the present -- the series currently ends in 2020 -- so recent years are NaN rather than 0.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -3165,6 +3312,8 @@ Which returns:
 Get Total Nonfarm Payroll Employment for the United States from the Bureau of Labor Statistics (via FRED).
 
 Nonfarm Payrolls is the headline monthly employment report and one of the most closely watched real-activity indicators in macroeconomics: it counts the number of paid US workers excluding farm employees, general government employees, private household employees and nonprofit organization employees. Sharp month-over-month changes are a core input to business-cycle dating (used directly by the NBER's Business Cycle Dating Committee) and, through Okun's Law, are closely tied to changes in the Unemployment Rate (see `get_unemployment_rate`).
+
+The series is the monthly level of employment in thousands of persons, seasonally adjusted, so 156857 means 156.857 million jobs -- not the monthly change that the headline "jobs added" number refers to. Use growth=True for that change.
 
 Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics` class.
 
@@ -3269,6 +3418,8 @@ Which returns:
 Get Advance Retail Sales (Retail and Food Services) for the United States from the Census Bureau (via FRED).
 
 Retail Sales measures nominal spending at retail and food-service establishments. Since Personal Consumption Expenditures make up roughly two-thirds to three-quarters of US GDP, this monthly, high-frequency series is a core input to real-time (nowcast) GDP estimates such as the Federal Reserve Bank of Atlanta's GDPNow.
+
+The series is monthly, in millions of US dollars, seasonally adjusted, and covers retail trade and food services. It is nominal, so growth=True mixes volume and price changes together; compare against the Consumer Price Index to separate the two.
 
 Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics` class.
 
@@ -3479,6 +3630,8 @@ Get the weekly average 30-Year Fixed Rate Mortgage from FRED (Freddie Mac's Prim
 
 The 30-year fixed mortgage rate is the primary interest rate US households actually borrow at for home purchases, and is one of the clearest single transmission points from Federal Reserve policy to the real economy: it moves with (but is not identical to) the 10-year Treasury yield plus a credit/prepayment spread, and directly drives housing affordability and demand. It is the natural interest-rate complement to Housing Starts (see `get_housing_starts`) - rate moves here lead construction activity, since higher borrowing costs price marginal buyers out of the market before builders scale back new projects.
 
+The rate is weekly (week ending Thursday), returned as a decimal fraction per annum (0.0648 for 6.48%) and not seasonally adjusted. FRED publishes it in percentage points; it is rescaled here so that every rate the Finance Toolkit returns is a decimal fraction.
+
 Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics` class.
 
 **See definition:** [https://fred.stlouisfed.org/series/MORTGAGE30US](https://fred.stlouisfed.org/series/MORTGAGE30US){:target="_blank"}
@@ -3501,7 +3654,7 @@ values. Defaults to False.
 **Returns:**
 
 pd.DataFrame: A single-column ("United States") DataFrame of the weekly
-average 30-year fixed mortgage rate, in percent.
+average 30-year fixed mortgage rate, as a decimal fraction per annum.
 
 **As an example:**
 
@@ -3517,11 +3670,11 @@ Which returns:
 
 | Date       |   United States |
 |:-----------|----------------:|
-| 2026-07-02 |            6.43 |
-| 2026-07-09 |            6.49 |
-| 2026-07-16 |            6.55 |
-| 2026-07-23 |            6.58 |
-| 2026-07-30 |            6.66 |
+| 2026-07-02 |          0.0643 |
+| 2026-07-09 |          0.0649 |
+| 2026-07-16 |          0.0655 |
+| 2026-07-23 |          0.0658 |
+| 2026-07-30 |          0.0666 |
 
 
 ---
@@ -3606,7 +3759,7 @@ values. Defaults to False.
 
 pd.DataFrame: A single-column ("United States") DataFrame of the
 quarterly Commercial Real Estate Price Index, as a year-over-year
-percent change.
+percent change expressed as a decimal fraction.
 
 **As an example:**
 
@@ -3621,12 +3774,12 @@ economics.get_commercial_real_estate_prices()
 Which returns:
 
 | Date       |   United States |
-|:-----------|-----------------:|
-| 2024-04-01 |         -10.6651 |
-| 2024-07-01 |         -10.5779 |
-| 2024-10-01 |          -2.7294 |
-| 2025-01-01 |          -3.0080 |
-| 2025-04-01 |          -7.0128 |
+|:-----------|----------------:|
+| 2024-04-01 |         -0.1067 |
+| 2024-07-01 |         -0.1058 |
+| 2024-10-01 |         -0.0273 |
+| 2025-01-01 |         -0.0301 |
+| 2025-04-01 |         -0.0701 |
 
 
 ---
@@ -3635,6 +3788,8 @@ Which returns:
 Get the daily real (TIPS-implied) U.S. Treasury yield curve from FRED -- the Market Yield on Treasury Inflation-Protected Securities at Constant Maturity, for the 5, 7, 10, 20 and 30-Year maturities.
 
 This is genuine market-observed data, as distinct from `fixedincome.get_breakeven_inflation_rate`, which is a pure formula applied to a hand-specified sample curve rather than real TIPS market data. Use this together with `get_breakeven_inflation_expectations` to get the market-implied (Q-measure) inflation expectation at each maturity.
+
+Yields are daily, returned as a decimal fraction per annum (0.0174 for 1.74%) and not seasonally adjusted. FRED publishes them in percentage points; they are rescaled here so this curve is on the same decimal scale as `fixedincome.get_treasury_rates` and can be differenced against it directly. The 20-Year series starts in July 2004 and the 30-Year in February 2010, so earlier dates are NaN for those two maturities.
 
 Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics` class.
 
@@ -3658,7 +3813,7 @@ values. Defaults to False.
 **Returns:**
 
 pd.DataFrame: A DataFrame with one column per maturity (5, 7, 10, 20, 30
-Year), in percent.
+Year), as a decimal fraction per annum.
 
 **As an example:**
 
@@ -3674,11 +3829,11 @@ Which returns:
 
 | Date       |   5 Year |   7 Year |   10 Year |   20 Year |   30 Year |
 |:-----------|---------:|---------:|----------:|----------:|----------:|
-| 2024-01-02 |     1.76 |     1.75 |      1.74 |      1.84 |      1.91 |
-| 2024-01-03 |     1.73 |     1.71 |      1.71 |      1.81 |      1.89 |
-| 2024-01-04 |     1.79 |     1.78 |      1.77 |      1.88 |      1.96 |
-| 2024-01-05 |     1.83 |     1.83 |      1.83 |      1.94 |      2.02 |
-| 2024-01-08 |     1.78 |     1.79 |      1.79 |      1.9  |      1.98 |
+| 2024-01-02 |   0.0176 |   0.0175 |    0.0174 |    0.0184 |    0.0191 |
+| 2024-01-03 |   0.0173 |   0.0171 |    0.0171 |    0.0181 |    0.0189 |
+| 2024-01-04 |   0.0179 |   0.0178 |    0.0177 |    0.0188 |    0.0196 |
+| 2024-01-05 |   0.0183 |   0.0183 |    0.0183 |    0.0194 |    0.0202 |
+| 2024-01-08 |   0.0178 |   0.0179 |    0.0179 |    0.019  |    0.0198 |
 
 
 ---
@@ -3687,6 +3842,8 @@ Which returns:
 Get the daily market-implied (Q-measure) breakeven inflation expectations from FRED -- nominal Treasury yield minus real TIPS yield -- at the 5, 7, 10, 20 and 30-Year maturities, plus the 5-Year, 5-Year Forward Inflation Expectation Rate (the market's implied average inflation rate for the five years starting five years from now).
 
 FRED only publishes ready-made daily breakeven series for the 5 and 10-Year maturities; its 7, 20 and 30-Year breakeven series only exist at monthly frequency, so those three points are instead computed as nominal minus real from FRED's own daily Treasury and TIPS series, keeping every maturity on a daily frequency. See `get_real_yield_curve` for the underlying real yields on their own.
+
+Rates are daily, returned as a decimal fraction per annum (0.0221 for 2.21%) and not seasonally adjusted. FRED publishes them in percentage points; they are rescaled here to match the decimal convention used by every other rate surface in the toolkit. The 20-Year column starts in July 2004 and the 30-Year in February 2010, limited by the TIPS leg of the calculation.
 
 Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics` class.
 
@@ -3710,7 +3867,7 @@ values. Defaults to False.
 **Returns:**
 
 pd.DataFrame: A DataFrame with one column per maturity (5, 7, 10, 20, 30
-Year) plus the 5-Year, 5-Year Forward Rate, in percent.
+Year) plus the 5-Year, 5-Year Forward Rate, as a decimal fraction per annum.
 
 **As an example:**
 
@@ -3726,11 +3883,11 @@ Which returns:
 
 | Date       |   5 Year |   7 Year |   10 Year |   20 Year |   30 Year |   5 Year, 5 Year Forward |
 |:-----------|---------:|---------:|----------:|----------:|----------:|-------------------------:|
-| 2024-01-02 |     2.17 |     2.2  |      2.21 |      2.41 |      2.17 |                     2.25 |
-| 2024-01-03 |     2.17 |     2.21 |      2.2  |      2.4  |      2.16 |                     2.23 |
-| 2024-01-04 |     2.18 |     2.21 |      2.22 |      2.42 |      2.17 |                     2.26 |
-| 2024-01-05 |     2.19 |     2.21 |      2.22 |      2.43 |      2.19 |                     2.25 |
-| 2024-01-08 |     2.19 |     2.2  |      2.22 |      2.43 |      2.19 |                     2.25 |
+| 2024-01-02 |   0.0217 |   0.022  |    0.0221 |    0.0241 |    0.0217 |                   0.0225 |
+| 2024-01-03 |   0.0217 |   0.0221 |    0.022  |    0.024  |    0.0216 |                   0.0223 |
+| 2024-01-04 |   0.0218 |   0.0221 |    0.0222 |    0.0242 |    0.0217 |                   0.0226 |
+| 2024-01-05 |   0.0219 |   0.0221 |    0.0222 |    0.0243 |    0.0219 |                   0.0225 |
+| 2024-01-08 |   0.0219 |   0.022  |    0.0222 |    0.0243 |    0.0219 |                   0.0225 |
 
 
 ---

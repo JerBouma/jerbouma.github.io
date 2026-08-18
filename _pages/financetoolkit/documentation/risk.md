@@ -90,7 +90,9 @@ period. Thus whether to look at the VaR within a specific year (if period = 'yea
 of all years. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, VaR is
 calculated over a rolling window of this many periods across the full return history instead
-of per `period` (e.g. a rolling 60-day VaR). Defaults to None.
+of per `period` (e.g. a rolling 60-day VaR). Only available for
+`distribution="historic"`; see `get_var_backtest` for a rolling, out-of-sample VaR path
+under the parametric distributions. Defaults to None.
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the VaR values over time. Defaults to False.
 - <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -165,7 +167,9 @@ period. Thus whether to look at the CVaR within a specific year (if period = 'ye
 of all years. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, CVaR is
 calculated over a rolling window of this many periods across the full return history instead
-of per `period` (e.g. a rolling 60-day CVaR). Defaults to None.
+of per `period` (e.g. a rolling 60-day CVaR). Only available for
+`distribution="historic"`; see `get_acerbi_szekely_test` for a rolling, out-of-sample CVaR
+path under the parametric distributions. Defaults to None.
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
 - <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -1218,7 +1222,9 @@ For more information about the method, see the following papers:
 - <u>ticker_a (str):</u> The first asset.
 - <u>ticker_b (str):</u> The second asset.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily", since a dependence estimate needs far more observations than a
+lower frequency provides -- at "yearly" a decade of history is only ten
+observations.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return", since
 tail dependence between return series is the standard risk management application.
 - <u>q (float, optional):</u> The threshold quantile used for the "empirical" method, in (0.5, 1).
@@ -1287,7 +1293,9 @@ tickers in the Toolkit instance is calibrated (requires `ticker_b` to also be No
 - <u>copula (str, optional):</u> The copula family to fit, one of "gaussian",
 "student-t", "clayton", "gumbel" or "frank". Defaults to "gaussian".
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily", since a dependence estimate needs far more observations than a
+lower frequency provides -- at "yearly" a decade of history is only ten
+observations.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
@@ -1351,7 +1359,9 @@ tickers in the Toolkit instance is used (requires `ticker_b` to also be None).
 - <u>copula (str, optional):</u> The copula family to fit and simulate from, one of "gaussian",
 "student-t", "clayton", "gumbel" or "frank". Defaults to "gaussian".
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily", since a dependence estimate needs far more observations than a
+lower frequency provides -- at "yearly" a decade of history is only ten
+observations.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>n_simulations (int, optional):</u> The number of joint draws to simulate. Defaults to 10,000.
 - <u>random_state (int, optional):</u> The seed for the random number generator. Defaults to 42.
@@ -1420,7 +1430,9 @@ When `ticker_a`/`ticker_b` are not given, every unique pair among the Toolkit's 
 tickers in the Toolkit instance is compared (requires `ticker_b` to also be None).
 - <u>ticker_b (str, optional):</u> The second asset. Defaults to None, see `ticker_a`.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily", since a dependence estimate needs far more observations than a
+lower frequency provides -- at "yearly" a decade of history is only ten
+observations.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>show_full_results (bool, optional):</u> Only relevant when neither ticker is given. When False
 (the default), returns a square ticker-by-ticker grid of just the winning copula family
@@ -1489,7 +1501,9 @@ For more information about the method, see the following paper:
 - <u>conditioning_ticker (str):</u> The asset (or e.g. a benchmark/index) whose distress
 `ticker` is conditioned on.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily", since a dependence estimate needs far more observations than a
+lower frequency provides -- at "yearly" a decade of history is only ten
+observations.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>alpha (float, optional):</u> The confidence level for both the tail quantile regression and
 the VaR of `conditioning_ticker` (e.g., 0.05 for 95% confidence). Defaults to 0.05.
@@ -2013,13 +2027,21 @@ Which returns:
 ---
 
 ## get_volatility
-Calculate the Volatility of an investment portfolio or asset's returns for a given period based on the daily historical returns.
+Calculate the Volatility of an investment portfolio or asset's returns for a given period based on the daily historical prices.
 
 Volatility measures the amount of dispersion or variability in returns. It is the square root of the Variance. A higher Volatility indicates greater variability, while a lower Volatility suggests that returns are closer to the mean.
 
-The daily Volatility is scaled to the given period by multiplying it with the square root of the number of trading days within that period (e.g. SQRT(252 / 52) for weekly).
+By default this is the close-to-close Volatility, i.e. the standard deviation of the daily returns. The `method` parameter selects one of four range-based estimators instead, each of which uses more of the day's price action than just the close and is therefore more statistically efficient (i.e. needs fewer observations to reach the same precision), at the cost of additional assumptions about how prices move:
 
-**Also known as:** standard deviation of returns.
+- `"parkinson"` - uses the daily trading range (High vs Low) rather than the close-to-close return, assuming prices follow a continuous geometric Brownian motion with no drift and no overnight jumps. - `"garman_klass"` - extends Parkinson by also incorporating the Open and Close, which allows it to account for the opening jump and makes it more efficient still (assuming, as Parkinson does, no drift and no overnight jumps beyond the modeled open). - `"rogers_satchell"` - drift-independent, meaning it remains unbiased even when the underlying asset has a non-zero expected return over the period, at the cost of still assuming no overnight jumps. - `"yang_zhang"` - a weighted combination of the overnight (close-to-open) Variance, the open-to-close Variance and the Rogers-Satchell Variance. It is both drift-independent and accounts for overnight jumps, which makes it the most statistically efficient of the range-based estimators implemented here.
+
+In every case the daily Volatility is scaled to the given period by multiplying the underlying Variance with the number of trading days within that period (e.g. 252 / 52 for weekly).
+
+**Also known as:** standard deviation of returns. The range-based estimators are also known as Parkinson's range-based or high-low Volatility, Garman-Klass range-based Volatility, Rogers-Satchell drift-independent Volatility and Yang-Zhang drift-independent overnight-aware Volatility.
+
+For more information about the range-based estimators, see the following papers:
+
+- Parkinson, M. (1980). "The Extreme Value Method for Estimating the Variance of the Rate of Return." Journal of Business, 53(1), 61-65. - Garman, M.B., & Klass, M.J. (1980). "On the Estimation of Security Price Volatilities from Historical Data." Journal of Business, 53(1), 67-78. - Rogers, L.C.G., & Satchell, S.E. (1991). "Estimating Variance from High, Low and Close Prices." Annals of Applied Probability, 1(4), 504-512. - Yang, D., & Zhang, Q. (2000). "Drift-Independent Volatility Estimation Based on High, Low, Open, and Close Prices." Journal of Business, 73(3), 477-491.
 
 **Args:**
 
@@ -2028,7 +2050,10 @@ to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yea
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Volatility is calculated over a rolling window of this many periods (e.g. period='monthly'
 and rolling=6 gives the rolling 6-month Volatility) instead of one value per `period`.
-Defaults to None.
+Only available for method="close_to_close". Defaults to None.
+- <u>method (str, optional):</u> Which Volatility estimator to use, one of "close_to_close",
+"parkinson", "garman_klass", "rogers_satchell" or "yang_zhang", as described above.
+Defaults to "close_to_close".
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Volatility values over time.
 Defaults to False.
@@ -2043,8 +2068,10 @@ pd.Series: Volatility values with time as the index.
 
 **Notes:**
 
-- The method retrieves the daily historical return data and calculates the Volatility for
-the specified `period` for each asset in the Toolkit instance.
+- The method retrieves the daily historical price data and calculates the Volatility for
+the specified `period` for each asset in the Toolkit instance. The close-to-close estimator
+only needs the daily returns, Parkinson needs the High and Low, and the remaining
+estimators need the Open, High, Low and Close.
 - If `growth` is set to True, the method calculates the growth of Volatility values using the specified `lag`.
 
 **As an example:**
@@ -2068,56 +2095,13 @@ Which returns:
 | 2025   | 0.3442 | 0.6349 |      0.1948 |
 | 2026   | 0.3161 | 0.4312 |      0.1414 |
 
-
----
-
-## get_parkinson_volatility
-Calculate the Parkinson Volatility of an investment portfolio or asset for a given period based on daily High and Low prices.
-
-The Parkinson estimator uses the daily trading range (High vs Low) instead of only the close-to-close return, which makes it considerably more efficient (i.e. it needs fewer observations to reach the same precision) than the standard close-to-close Volatility (see `get_volatility`), at the cost of assuming that prices follow a continuous geometric Brownian motion with no drift and no overnight jumps.
-
-The daily Volatility is scaled to the given period by multiplying the underlying Variance with the number of trading days within that period (e.g. 252 / 52 for weekly), in the same way as `get_volatility`.
-
-**Also known as:** Parkinson's range-based Volatility, high-low Volatility.
-
-For more information about the method, see the following paper:
-
-- Parkinson, M. (1980). "The Extreme Value Method for Estimating the Variance of the Rate of Return." Journal of Business, 53(1), 61-65.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the Parkinson Volatility values
-over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.Series: Parkinson Volatility values with time as the index.
-
-**Notes:**
-
-- The method retrieves the daily historical High and Low price data and calculates the
-Parkinson Volatility for the specified `period` for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of Parkinson Volatility
-values using the specified `lag`.
-
-**As an example:**
+And, using the daily trading range instead of only the closes:
 
 ```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
-
-toolkit.risk.get_parkinson_volatility(period="yearly")
+toolkit.risk.get_volatility(period="yearly", method="parkinson")
 ```
 
-Which returns:
+
 
 | Date   |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
@@ -2131,193 +2115,10 @@ Which returns:
 
 ---
 
-## get_garman_klass_volatility
-Calculate the Garman-Klass Volatility of an investment portfolio or asset for a given period based on daily Open, High, Low and Close prices.
-
-The Garman-Klass estimator extends Parkinson's range-based estimator (see `get_parkinson_volatility`) by also incorporating the Open and Close, which allows it to account for the opening jump and makes it more efficient still (assuming, as Parkinson does, no drift and no overnight jumps beyond the modeled open).
-
-The daily Volatility is scaled to the given period in the same way as `get_volatility`.
-
-**Also known as:** Garman-Klass range-based Volatility.
-
-For more information about the method, see the following paper:
-
-- Garman, M.B., & Klass, M.J. (1980). "On the Estimation of Security Price Volatilities from Historical Data." Journal of Business, 53(1), 67-78.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the Garman-Klass Volatility
-values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.Series: Garman-Klass Volatility values with time as the index.
-
-**Notes:**
-
-- The method retrieves the daily historical Open, High, Low and Close price data and
-calculates the Garman-Klass Volatility for the specified `period` for each asset in the
-Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of Garman-Klass Volatility
-values using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
-
-toolkit.risk.get_garman_klass_volatility(period="yearly")
-```
-
-Which returns:
-
-| Date   |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2021   | 0.2113 | 0.4204 |      0.1023 |
-| 2022   | 0.3709 | 0.539  |      0.188  |
-| 2023   | 0.2616 | 0.4326 |      0.1089 |
-| 2024   | 0.223  | 0.4379 |      0.0997 |
-| 2025   | 0.2654 | 0.4987 |      0.1441 |
-| 2026   | 0.2756 | 0.375  |      0.1138 |
-
-
----
-
-## get_rogers_satchell_volatility
-Calculate the Rogers-Satchell Volatility of an investment portfolio or asset for a given period based on daily Open, High, Low and Close prices.
-
-Unlike Parkinson (`get_parkinson_volatility`) and Garman-Klass (`get_garman_klass_volatility`), the Rogers-Satchell estimator is drift-independent, meaning it remains unbiased even when the underlying asset has a non-zero expected return over the period, at the cost of still assuming no overnight jumps.
-
-The daily Volatility is scaled to the given period in the same way as `get_volatility`.
-
-**Also known as:** Rogers-Satchell range-based Volatility, drift-independent Volatility.
-
-For more information about the method, see the following paper:
-
-- Rogers, L.C.G., & Satchell, S.E. (1991). "Estimating Variance from High, Low and Close Prices." Annals of Applied Probability, 1(4), 504-512.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the Rogers-Satchell
-Volatility values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.Series: Rogers-Satchell Volatility values with time as the index.
-
-**Notes:**
-
-- The method retrieves the daily historical Open, High, Low and Close price data and
-calculates the Rogers-Satchell Volatility for the specified `period` for each asset in
-the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of Rogers-Satchell
-Volatility values using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
-
-toolkit.risk.get_rogers_satchell_volatility(period="yearly")
-```
-
-Which returns:
-
-| Date   |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2021   | 0.2108 | 0.42   |      0.102  |
-| 2022   | 0.3696 | 0.5325 |      0.1852 |
-| 2023   | 0.2614 | 0.4294 |      0.1075 |
-| 2024   | 0.2235 | 0.4359 |      0.1015 |
-| 2025   | 0.2655 | 0.4949 |      0.1392 |
-| 2026   | 0.2806 | 0.3681 |      0.1144 |
-
-
----
-
-## get_yang_zhang_volatility
-Calculate the Yang-Zhang Volatility of an investment portfolio or asset for a given period based on daily Open, High, Low and Close prices.
-
-The Yang-Zhang estimator is a weighted combination of the overnight (close-to-open) Variance, the open-to-close Variance and the Rogers-Satchell Variance (see `get_rogers_satchell_volatility`). It is both drift-independent and accounts for overnight jumps, which makes it the most statistically efficient of the range-based Volatility estimators implemented here (i.e. it has the lowest variance of the estimator itself across sub-samples).
-
-The daily Volatility is scaled to the given period in the same way as `get_volatility`.
-
-**Also known as:** Yang-Zhang range-based Volatility, drift-independent overnight-aware Volatility.
-
-For more information about the method, see the following paper:
-
-- Yang, D., & Zhang, Q. (2000). "Drift-Independent Volatility Estimation Based on High, Low, Open, and Close Prices." Journal of Business, 73(3), 477-491.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the Yang-Zhang Volatility
-values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.Series: Yang-Zhang Volatility values with time as the index.
-
-**Notes:**
-
-- The method retrieves the daily historical Open, High, Low and Close price data and
-calculates the Yang-Zhang Volatility for the specified `period` for each asset in the
-Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of Yang-Zhang Volatility
-values using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
-
-toolkit.risk.get_yang_zhang_volatility(period="yearly")
-```
-
-Which returns:
-
-| Date   |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2021   | 0.2387 | 0.4859 |      0.1267 |
-| 2022   | 0.5037 | 0.6471 |      0.2321 |
-| 2023   | 0.3314 | 0.5434 |      0.1321 |
-| 2024   | 0.3067 | 0.5969 |      0.131  |
-| 2025   | 0.3806 | 0.6125 |      0.1863 |
-| 2026   | 0.3557 | 0.4404 |      0.1474 |
-
-
----
-
 ## get_har_rv_forecast
 Calculate the Corsi (2009) Heterogeneous Autoregressive Realized Volatility (HAR-RV) forecast of future daily Realized Variance, per asset.
 
-Volatility clustering happens across multiple, overlapping time horizons at once. HAR-RV captures this cheaply -- without the numerical optimization a GARCH-family fit requires (see `get_garch`) -- by regressing future daily Realized Variance on trailing daily, weekly and monthly average Realized Variance components. The daily Realized Variance itself can be constructed in several ways via `estimator`: the simplest is the squared daily return, while the OHLC range-based estimators (see `get_parkinson_volatility`, `get_garman_klass_volatility` and `get_rogers_satchell_volatility`) use the daily (pre-period-aggregation) term behind each of those estimators instead, which is more statistically efficient since it uses the daily trading range rather than only the close-to-close move.
+Volatility clustering happens across multiple, overlapping time horizons at once. HAR-RV captures this cheaply -- without the numerical optimization a GARCH-family fit requires (see `get_garch`) -- by regressing future daily Realized Variance on trailing daily, weekly and monthly average Realized Variance components. The daily Realized Variance itself can be constructed in several ways via `estimator`: the simplest is the squared daily return, while the OHLC range-based estimators (see `get_volatility`, which exposes the same estimators via its own `method` parameter) use the daily (pre-period-aggregation) term behind each of those estimators instead, which is more statistically efficient since it uses the daily trading range rather than only the close-to-close move.
 
 For more information about the method, see the following paper:
 
@@ -2482,8 +2283,7 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
-# Shown here for a single quarter (2022Q2); with the default within_period=True
-# this is computed separately for every quarter in the Toolkit's date range.
+# Shown for a single quarter; with the default within_period=True this runs separately for every quarter in range.
 toolkit.risk.get_roll_spread(period="quarterly").xs("2022Q2", level=0)
 ```
 
@@ -2860,11 +2660,11 @@ toolkit.risk.get_hurst_exponent()
 
 Which returns:
 
-|           |       0 |
-|:----------|--------:|
-| AMZN      | -0.0082 |
-| TSLA      |  0.0099 |
-| Benchmark | -0.0077 |
+|           |      0 |
+|:----------|-------:|
+| AMZN      | 0.4553 |
+| TSLA      | 0.5122 |
+| Benchmark | 0.4515 |
 
 
 ---

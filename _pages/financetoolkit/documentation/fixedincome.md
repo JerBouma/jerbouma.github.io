@@ -25,7 +25,7 @@ pip install financetoolkit -U
 ## collect_bond_statistics
 Collect the bond statistics for a given bond which includes the following fields:
 
-- Par Value: The face value of the bond. - Coupon Rate: The annual coupon rate (in decimal). - Years to Maturity: The number of years until the bond matures. - Yield to Maturity: The yield to maturity of the bond (in decimal). - Frequency: The number of coupon payments per year. - Present Value: The present value of the bond. - Current Yield: The annual coupon payment divided by the bond price. - Effective Yield: The annualised yield that accounts for the compounding of the coupon payments made within the year. - Macaulay's Duration: The weighted average time to receive the bond's cash flows. - Modified Duration: The Macaulay's duration divided by 1 plus the per-period yield (yield to maturity divided by the frequency). - Effective Duration: The percentage change in the bond price for a 1% change in the yield to maturity. - Dollar Duration: The modified duration multiplied by the bond price, divided by 100. - DV01: The dollar value of a 0.01% change in yield to maturity. - Convexity: The second derivative of the bond price with respect to the yield to maturity.
+- Par Value: The face value of the bond. - Coupon Rate: The annual coupon rate (in decimal). - Years to Maturity: The number of years until the bond matures. - Yield to Maturity: The yield to maturity of the bond (in decimal). - Frequency: The number of coupon payments per year. - Present Value: The present value of the bond. - Current Yield: The annual coupon payment divided by the bond price. - Effective Yield: The annualised yield that accounts for the compounding of the coupon payments made within the year. - Macaulay's Duration: The weighted average time to receive the bond's cash flows. - Modified Duration: The Macaulay's duration divided by 1 plus the per-period yield (yield to maturity divided by the frequency). - Effective Duration: The percentage price change per unit change in yield, obtained by repricing the bond symmetrically 1% above and 1% below the current yield. - Dollar Duration: The modified duration multiplied by the bond price, divided by 100. - DV01: The currency change in the bond's price, per par value of face, for a one basis point (0.01%) change in the yield to maturity. - Convexity: The second derivative of the bond price with respect to the yield to maturity.
 
 These statistics can be used to evaluate the bond's performance as opposed to other bonds or to estimate the bond's sensitivity to changes in interest rates to be able to apply a hedging strategy.
 
@@ -51,8 +51,7 @@ from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome()
 
-# This is one example and below a collection of different bonds
-# is shown with different characteristics
+# This is one example and below a collection of different bonds is shown with different characteristics
 fixedincome.collect_bond_statistics(
     par_value=100,
     coupon_rate=0.05,
@@ -64,22 +63,27 @@ fixedincome.collect_bond_statistics(
 
 Which returns:
 
-|                     |   Bond 1 |   Bond 2 |   Bond 3 |    Bond 4 |   Bond 5 |   Bond 6 |
-|:--------------------|---------:|---------:|---------:|----------:|---------:|---------:|
-| Par Value           | 100      | 250      |  50      | 1000      |  85      | 320      |
-| Coupon Rate         |   0.05   |   0.02   |   0.075  |    0      |   0.15   |   0.015  |
-| Years to Maturity   |   5      |  10      |   2      |   10      |   3      |   1      |
-| Yield to Maturity   |   0.08   |   0.021  |   0.03   |    0      |   0.16   |   0.04   |
-| Frequency           |   1      |   1      |   4      |    1      |   2      |  12      |
-| Present Value       |  88.0219 | 247.766  |  54.3518 | 1000      |  83.0353 | 312.171  |
-| Current Yield       |   0.0568 |   0.0202 |   0.069  |    0      |   0.1535 |   0.0154 |
-| Effective Yield     |   0.05   |   0.02   |   0.0771 |    0      |   0.1556 |   0.0151 |
-| Macaulay's Duration |   4.5116 |   9.1576 |   1.8849 |   10      |   2.5667 |   0.9932 |
-| Modified Duration   |   4.1774 |   8.9693 |   1.8709 |   10      |   2.3766 |   0.9899 |
-| Effective Duration  |   4.0677 |   8.5181 |   1.8477 |    9.4713 |   2.2952 |   0.9844 |
-| Dollar Duration     |   3.677  |  22.2228 |   1.0168 |  100      |   1.9734 |   3.0902 |
-| DV01                |   0.0004 |   0.0022 |   0      |    0.01   |   0.0001 |   0      |
-| Convexity           |  22.4017 |  93.7509 |   4.0849 |  110      |   7.0923 |   1.0662 |
+|                     |   Bond 1 |   Bond 2 |   Bond 3 |   Bond 4 |   Bond 5 |   Bond 6 |
+|:--------------------|---------:|---------:|---------:|---------:|---------:|---------:|
+| Par Value           | 100      | 250      |  50      | 1000     |  85      | 320      |
+| Coupon Rate         |   0.05   |   0.02   |   0.075  |    0     |   0.15   |   0.015  |
+| Years to Maturity   |   5      |  10      |   2      |   10     |   3      |   1      |
+| Yield to Maturity   |   0.08   |   0.021  |   0.03   |    0     |   0.16   |   0.04   |
+| Frequency           |   1      |   1      |   4      |    1     |   2      |  12      |
+| Present Value       |  88.0219 | 247.766  |  54.3518 | 1000     |  83.0353 | 312.171  |
+| Current Yield       |   0.0568 |   0.0202 |   0.069  |    0     |   0.1535 |   0.0154 |
+| Effective Yield     |   0.05   |   0.02   |   0.0771 |    0     |   0.1556 |   0.0151 |
+| Macaulay's Duration |   4.5116 |   9.1576 |   1.8819 |   10     |   2.5167 |   0.9931 |
+| Modified Duration   |   4.1774 |   8.9693 |   1.8679 |   10     |   2.3302 |   0.9898 |
+| Effective Duration  |   4.1798 |   8.9874 |   1.8681 |   10.022 |   2.3307 |   0.9898 |
+| Dollar Duration     |   3.677  |  22.2228 |   1.0152 |  100     |   1.9349 |   3.0897 |
+| DV01                |   0.0368 |   0.2222 |   0.0102 |    1     |   0.0193 |   0.0309 |
+| Convexity           |  22.4017 |  93.7509 |   4.0849 |  110     |   7.0923 |   1.0662 |
+
+Note how the effective duration sits just above the modified duration for every
+bond: the two measure the same sensitivity, and their small difference is exactly
+the convexity picked up by repricing over a 100 basis point shift rather than
+differentiating at a point.
 
 
 ---
@@ -129,11 +133,11 @@ fixedincome.get_present_value(
 
 Which returns:
 
-|   Coupon Rate |   (5,) |   (10,) |   (15,) |
-|--------------:|-------:|--------:|--------:|
-|          0.03 |  80.04 |   66.45 |   57.2  |
-|          0.05 |  88.02 |   79.87 |   74.32 |
-|          0.07 |  96.01 |   93.29 |   91.44 |
+|   Coupon Rate |     5 |    10 |    15 |
+|--------------:|------:|------:|------:|
+|          0.03 | 80.04 | 66.45 | 57.2  |
+|          0.05 | 88.02 | 79.87 | 74.32 |
+|          0.07 | 96.01 | 93.29 | 91.44 |
 
 
 ---
@@ -184,11 +188,11 @@ fixedincome.get_duration(
 
 Which returns:
 
-|   Coupon Rate |   (5,) |   (10,) |   (15,) |
-|--------------:|-------:|--------:|--------:|
-|          0.03 |   4.33 |    7.82 |   10.4  |
-|          0.05 |   4.18 |    7.26 |    9.41 |
-|          0.07 |   4.05 |    6.87 |    8.79 |
+|   Coupon Rate |    5 |   10 |    15 |
+|--------------:|-----:|-----:|------:|
+|          0.03 | 4.33 | 7.82 | 10.4  |
+|          0.05 | 4.18 | 7.26 |  9.41 |
+|          0.07 | 4.05 | 6.87 |  8.79 |
 
 
 ---
@@ -244,11 +248,11 @@ fixedincome.get_yield_to_maturity(
 
 Which returns:
 
-|   Bond Price |   (5,) |   (10,) |   (15,) |
-|-------------:|-------:|--------:|--------:|
-|           95 | 0.0619 |  0.0567 |  0.055  |
-|          100 | 0.05   |  0.05   |  0.05   |
-|          105 | 0.0388 |  0.0437 |  0.0453 |
+|   Bond Price |      5 |     10 |     15 |
+|-------------:|-------:|-------:|-------:|
+|           95 | 0.0619 | 0.0567 | 0.055  |
+|          100 | 0.05   | 0.05   | 0.05   |
+|          105 | 0.0388 | 0.0437 | 0.0453 |
 
 
 ---
@@ -530,7 +534,9 @@ The bond-equivalent yield is calculated using the following formula:
 
 - BEY = 365 * Discount Yield / (360 - Days to Maturity * Discount Yield)
 
-**Also known as:** BEY, coupon-equivalent yield.
+for a bill with half a year or less remaining. Beyond that an equivalent coupon-bearing note would have paid a coupon at the six month point, so the U.S. Treasury's semi-annually compounded solution (31 CFR 356, Appendix B) is used instead - see `bond_model.get_bond_equivalent_yield`. Applying the simple formula to a 52-week bill instead overstates its yield by roughly seven basis points.
+
+**Also known as:** BEY, coupon-equivalent yield, investment rate.
 
 **Args:**
 
@@ -564,10 +570,14 @@ fixedincome.get_bond_equivalent_yield(
 Which returns:
 
 |   Discount Yield |     90 |    180 |    360 |
-|------------------:|-------:|-------:|-------:|
-|              0.03 | 0.0306 | 0.0309 | 0.0314 |
-|              0.05 | 0.0513 |  0.052 | 0.0534 |
-|              0.07 | 0.0722 | 0.0735 | 0.0763 |
+|-----------------:|-------:|-------:|-------:|
+|             0.03 | 0.0306 | 0.0309 | 0.0311 |
+|             0.05 | 0.0513 | 0.052  | 0.0527 |
+|             0.07 | 0.0722 | 0.0735 | 0.0749 |
+
+The 360-day column is computed with the Treasury's semi-annually compounded formula
+rather than the simple one, because a bill of that length would have paid a coupon
+halfway through if it were a note.
 
 
 ---
@@ -698,6 +708,10 @@ Exercising a swaption is not a single payment at expiration - it is the right to
 
 Note that a swaption's price scales with the tenor of the underlying swap (a right to enter a longer-dated swap is worth more, since it exchanges cash flows over more payment dates) - pass `tenor` explicitly to price a swaption whose underlying swap tenor differs from its years to maturity, e.g. a 1-year option into a 5-year swap: `tenor=5, years_to_maturity=1`.
 
+The two models do not quote volatility on the same basis, and this matters a great deal. Black's model, being lognormal, reads `volatility` as a fraction of the forward rate, so 0.20 is a 20% volatility. The Bachelier model, being normal, reads it as an absolute movement in rate units, so 0.0065 is 65 basis points. On a 3.25% forward those two quotes describe the same market, but swapping one for the other misprices the swaption by a factor of roughly thirty. By default `volatility` is therefore interpreted on whichever basis the chosen model is defined in; set `volatility_type` explicitly to supply a quote on the other basis and have it converted, using the at-the-money approximation sigma_normal ≈ sigma_lognormal * forward_rate.
+
+Black's model is undefined at a zero or negative forward or strike rate because it takes the logarithm of their ratio, and raises rather than returning a silent NaN in that case. Use the Bachelier model for the negative rates seen in the euro area and Japan.
+
 **Also known as:** bond derivative pricing, fixed income derivative, swaption pricing.
 
 **Args:**
@@ -706,7 +720,9 @@ Note that a swaption's price scales with the tenor of the underlying swap (a rig
 - <u>forward_rate (float, optional):</u> The forward rate as derived from the swap curve. Defaults to None.
 - <u>strike_rate (float \| list, optional):</u> The strike rate for the derivative. Defaults to None which means it calculates the
 derivative price a range of strike prices. Can also be a list of strike rates (e.g. [0.01, 0.02, 0.03, 0.04, 0.05]).
-- <u>volatility (float, optional):</u> The volatility of the underlying asset. Defaults to None.
+- <u>volatility (float, optional):</u> The volatility of the underlying swap rate, quoted on the
+basis given by `volatility_type`. Defaults to 0.01, read as a 1% lognormal volatility
+by the Black model and as 100 basis points of normal volatility by the Bachelier model.
 - <u>years_to_maturity (float \| list, optional):</u> The years to maturity of the derivative in years. Defaults to None which means it plots
 the derivative price for the next 10 years. Can also be a list of years to maturity (e.g. [1, 2.3, 2.5, 3])
 - <u>risk_free_rate (float, optional):</u> The risk-free interest rate. Defaults to None which means it is equal to the fixed rate.
@@ -716,6 +732,10 @@ which means it is equal to years_to_maturity for each scenario.
 - <u>payment_frequency (int, optional):</u> Number of fixed-leg payments per year on the underlying swap
 (e.g. 1 for annual, 2 for semi-annual, 4 for quarterly). Defaults to 2 (semi-annual).
 - <u>is_receiver (bool, optional):</u> True if the holder is the receiver of the derivative, False if the holder is the payer. Defaults to True.
+- <u>volatility_type (str \| None, optional):</u> The convention `volatility` is quoted on, either
+'lognormal' (relative to the forward rate) or 'normal' (absolute, in rate units).
+Defaults to None, which uses the convention the chosen model is natively defined in:
+'lognormal' for the Black model and 'normal' for the Bachelier model.
 - <u>include_payoff (bool, optional):</u> True to include the payoff in the output, False otherwise. Defaults to False.
 - <u>show_input_info (bool, optional):</u> True to display input information, False otherwise. Defaults to True.
 
@@ -731,24 +751,14 @@ from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome()
 
-fixedincome.get_derivative_price(model='black', forward_rate=0.0325)
+fixedincome.get_derivative_price(
+    model='black',
+    forward_rate=0.0325,
+    strike_rate=[0.0275, 0.0325, 0.0375, 0.0425],
+    years_to_maturity=[1, 2, 5, 10],
+    show_input_info=False,
+)
 ```
-
-Which returns:
-
-|   Strike Rate |   +1Y |    +2Y |    +3Y |    +4Y |    +5Y |     +6Y |     +7Y |     +8Y |     +9Y |    +10Y |
-|--------------:|------:|-------:|-------:|-------:|-------:|--------:|--------:|--------:|--------:|--------:|
-|        0.0075 |     0 |      0 |      0 |      0 |      0 |       0 |       0 |       0 |       0 |       0 |
-|        0.0125 |     0 |      0 |      0 |      0 |      0 |       0 |       0 |       0 |       0 |       0 |
-|        0.0175 |     0 |      0 |      0 |      0 |      0 |       0 |       0 |       0 |       0 |       0 |
-|        0.0225 |     0 |      0 |      0 |      0 |      0 |       0 |       0 |       0 |       0 |       0 |
-|        0.0275 |     0 |      0 |      0 |      0 |      0 |       0 |       0 |       0 |       0 |       0 |
-|        0.0325 |  1225 |   3300 |   5776 |   8472 |  11280 |   14130 |   16968 |   19757 |   22470 |   25086 |
-|        0.0375 | 47237 |  89991 | 128592 | 163348 | 194547 |  222456 |  247325 |  269386 |  288855 |  305934 |
-|        0.0425 | 94474 | 179982 | 257184 | 326697 | 389094 |  444912 |  494650 |  538771 |  577709 |  611868 |
-|        0.0475 |141712 | 269973 | 385776 | 490045 | 583642 |  667369 |  741975 |  808157 |  866564 |  917802 |
-|        0.0525 |188949 | 359964 | 514368 | 653394 | 778189 |  889825 |  989299 | 1077540 | 1155420 | 1223740 |
-
 
 ---
 
@@ -832,10 +842,24 @@ was initialized with. A long range therefore issues many requests -- be mindful 
 this on a Free plan's daily request limit and consider a narrower start_date where
 possible.
 
+The U.S. Department of the Treasury publishes these rates in percentage points (a
+ten-year yield of 3.95%), but they are converted to decimals here (0.0395) so that
+they match every other rate method in this module -- `get_euribor_rates`,
+`get_european_central_bank_rates`, `get_federal_reserve_rates`,
+`get_government_bond_yield` and the ICE BofA yield methods -- as well as the risk-free
+rate returned by `Toolkit.get_treasury_data`. They can therefore be passed directly
+into `get_present_value`, `get_z_spread`, `get_par_yield` and `get_key_rate_duration`,
+each of which is documented as taking a rate in decimal form.
+
+This changed in v2.2.0: prior versions returned percentage points from this one method
+alone, which silently overstated a yield by a factor of 100 whenever the result was fed
+into any of the bond-pricing methods above. Multiply by 100 to recover the published
+Treasury figures.
+
 **Returns:**
 
-pd.DataFrame: A DataFrame containing the Treasury par yield curve rates, in percentage
-points, with one column per maturity.
+pd.DataFrame: A DataFrame containing the Treasury par yield curve rates, as decimals,
+with one column per maturity.
 
 **As an example:**
 
@@ -855,10 +879,10 @@ Which returns:
 
 | Date       |   1 Month |   3 Month |   1 Year |   2 Year |   10 Year |   30 Year |
 |:-----------|----------:|----------:|---------:|---------:|----------:|----------:|
-| 2024-01-02 |      5.55 |      5.46 |     4.8  |     4.33 |      3.95 |      4.08 |
-| 2024-01-03 |      5.54 |      5.48 |     4.81 |     4.33 |      3.91 |      4.05 |
-| 2024-01-04 |      5.56 |      5.48 |     4.85 |     4.38 |      3.99 |      4.13 |
-| 2024-01-05 |      5.54 |      5.47 |     4.84 |     4.4  |      4.05 |      4.21 |
+| 2024-01-02 |    0.0555 |    0.0546 |   0.048  |   0.0433 |    0.0395 |    0.0408 |
+| 2024-01-03 |    0.0554 |    0.0548 |   0.0481 |   0.0433 |    0.0391 |    0.0405 |
+| 2024-01-04 |    0.0556 |    0.0548 |   0.0485 |   0.0438 |    0.0399 |    0.0413 |
+| 2024-01-05 |    0.0554 |    0.0547 |   0.0484 |   0.044  |    0.0405 |    0.0421 |
 
 
 ---
@@ -879,9 +903,18 @@ See definitions:
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
+**Notes:**
+
+ICE restricted the history it licenses to FRED in April 2026: every ICE BofA series now
+carries only the most recent three years of observations. A start_date earlier than that
+silently returns fewer rows rather than an error, and the example below will fall out of
+range in time. Go to the ICE source directly for longer histories.
+
 **Returns:**
 
-pd.DataFrame: A DataFrame containing the Option Adjusted Spread
+pd.DataFrame: A DataFrame containing the Option Adjusted Spread, in basis points. The FRED
+series are published in percent and are multiplied by 100 here, so a 0.77% spread is
+returned as 77.
 
 **As an example:**
 
@@ -918,7 +951,9 @@ Which returns:
 ## get_ice_bofa_effective_yield
 This data represents the effective yield of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
 
-The Effective Yield is the annualised yield of a bond that accounts for the compounding of the coupon payments that are made within the year, i.e. (1 + coupon rate / frequency) ^ frequency - 1. It is therefore not the same as the nominal (stated) coupon rate, which ignores compounding, nor the same as the current yield, which simply divides the annual coupon payment by the bond's market price. Whenever coupons are paid more than once a year, the effective yield exceeds the nominal coupon rate because each coupon can be reinvested for the remainder of the year.
+The effective yield of an ICE BofA index is the yield of the index as a whole, aggregated from the yields of its constituent bonds and weighted by their market capitalisation, on the same compounded (effective annual) basis that the accompanying Semi-Annual Yield to Worst series is quoted on a semi-annual basis. It is an index-level yield of the corporate bond market segment, not a statistic derived from any single bond's coupon - for the single-bond coupon-reinvestment calculation, see the "Effective Yield" row of `collect_bond_statistics` instead.
+
+The FRED series are published in percent and are converted to decimals here, so a 5.40% BBB index yield is returned as 0.054.
 
 See definitions:
 
@@ -932,6 +967,13 @@ See definitions:
 - <u>maturity (bool, optional):</u> Whether to return the maturity effective yield or the rating effective yield.
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
+
+**Notes:**
+
+ICE restricted the history it licenses to FRED in April 2026: every ICE BofA series now
+carries only the most recent three years of observations. A start_date earlier than that
+silently returns fewer rows rather than an error, and the example below will fall out of
+range in time. Go to the ICE source directly for longer histories.
 
 **Returns:**
 
@@ -985,9 +1027,17 @@ See definitions:
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
+**Notes:**
+
+ICE restricted the history it licenses to FRED in April 2026: every ICE BofA series now
+carries only the most recent three years of observations. A start_date earlier than that
+silently returns fewer rows rather than an error, and the example below will fall out of
+range in time. Go to the ICE source directly for longer histories.
+
 **Returns:**
 
-pd.DataFrame: A DataFrame containing the ICE BofA Total Return
+pd.DataFrame: A DataFrame containing the ICE BofA Total Return, as an index level rather
+than a rate of return. It is not rescaled, since the FRED series' unit is already an index.
 
 **As an example:**
 
@@ -1037,9 +1087,17 @@ See definitions:
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
+**Notes:**
+
+ICE restricted the history it licenses to FRED in April 2026: every ICE BofA series now
+carries only the most recent three years of observations. A start_date earlier than that
+silently returns fewer rows rather than an error, and the example below will fall out of
+range in time. Go to the ICE source directly for longer histories.
+
 **Returns:**
 
-pd.DataFrame: A DataFrame containing the ICE BofA Yield to Worst
+pd.DataFrame: A DataFrame containing the ICE BofA Yield to Worst. The FRED series are
+published in percent and are converted to decimals here, so 5.42% is returned as 0.0542.
 
 **As an example:**
 
@@ -1086,7 +1144,10 @@ For more information, see for example: [https://data.ecb.europa.eu/data/datasets
 
 - <u>maturities (str \| list \| None, optional):</u> Maturities for which to retrieve rates. Defaults to None.
 When set to None, it will retrieve rates for 1 month, 3 months, 6 months, and 12 months.
-- <u>nominal (bool, optional):</u> Flag indicating whether to retrieve nominal rates. Defaults to True.
+- <u>nominal (bool, optional):</u> Whether to retrieve the nominal Euribor fixings or their real
+(inflation-adjusted) counterpart. The ECB only publishes a real Euribor for the 3-month
+maturity, so nominal=False returns that maturity alone and warns about any others that
+were requested rather than silently answering them with a nominal rate. Defaults to True.
 - <u>rounding (int \| None, optional):</u> Rounding precision for the rates. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 

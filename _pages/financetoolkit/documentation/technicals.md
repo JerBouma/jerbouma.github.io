@@ -920,7 +920,7 @@ Defaults to 1.
 
 **Returns:**
 
-Tuple[pd.Series, pd.Series] or Tuple[pd.DataFrame, pd.DataFrame]:
+pd.Series or pd.DataFrame:
 Aroon Indicator values for the upward and downward trends.
 
 **Notes:**
@@ -1547,8 +1547,7 @@ Defaults to 1.
 
 **Returns:**
 
-Tuple[pd.Series, pd.Series, pd.Series, pd.Series] or
-Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+pd.Series or pd.DataFrame:
 Conversion Line, Base Line, Lead Span A, and Lead Span B values.
 
 **Notes:**
@@ -1594,7 +1593,7 @@ The Stochastic Oscillator is a momentum indicator that shows the location of the
 The formula is a follows:
 
 - %K = 100 * ((Close - Lowest Low) / (Highest High - Lowest Low))
-- %D = SMA(%K)
+- %D = SMA(%K, smooth_window)
 
 **Also known as:** stochastic oscillator, percent K, percent D.
 
@@ -1606,22 +1605,29 @@ Can be "daily", "weekly", "quarterly", or "yearly". Defaults to "daily".
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods to consider for the %K line calculation.
 Defaults to 14.
-- <u>smooth_widow (int, optional):</u> The number of periods to consider for the %D line
-(slow stochastic) calculation. Defaults to 3.
+- <u>smooth_window (int, optional):</u> The number of periods used to smooth the %K line
+into the %D signal line. Defaults to 3.
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the %K and %D values.
 Defaults to False.
 - <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
+Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-Defaults to 1.
+- <u>smooth_widow (int \| None, optional):</u> Deprecated misspelling of `smooth_window`,
+accepted so that existing callers keep working. Passing it emits a
+DeprecationWarning and forwards the value to `smooth_window`. Defaults to None.
 
 **Returns:**
 
-Tuple[pd.Series, pd.Series] or Tuple[pd.DataFrame, pd.DataFrame]:
-%K line and %D line values.
+pd.Series or pd.DataFrame: Stochastic Oscillator (%K and %D) values.
+
+**Raises:**
+
+ValueError: If the specified `period` is not one of the valid options, or if both
+`smooth_window` and the deprecated `smooth_widow` are given conflicting values.
 
 **Notes:**
 
@@ -1694,7 +1700,7 @@ Defaults to 1.
 
 **Returns:**
 
-Tuple[pd.DataFrame, pd.DataFrame] or Tuple[pd.Series, pd.Series]:
+pd.Series or pd.DataFrame:
 MACD line and signal line values.
 
 **Notes:**
@@ -1978,7 +1984,7 @@ Defaults to 1.
 
 **Returns:**
 
-Tuple[pd.Series, pd.Series] or Tuple[pd.DataFrame, pd.DataFrame]:
+pd.Series or pd.DataFrame:
 VI+ and VI- values.
 
 **Notes:**
@@ -2050,7 +2056,7 @@ Defaults to 1.
 
 **Returns:**
 
-Tuple[pd.Series, pd.Series] or Tuple[pd.DataFrame, pd.DataFrame]:
+pd.Series or pd.DataFrame:
 Bull Power and Bear Power values.
 
 **Notes:**
@@ -2244,7 +2250,7 @@ Defaults to 1.
 
 **Returns:**
 
-Tuple[pd.Series, pd.Series] or Tuple[pd.DataFrame, pd.DataFrame]:
+pd.Series or pd.DataFrame:
 KST and Signal Line values.
 
 **Notes:**
@@ -2617,6 +2623,8 @@ The formula is a follows:
 - Upper Band = Middle Band + (Num Std Dev * Std Dev)
 - Lower Band = Middle Band - (Num Std Dev * Std Dev)
 
+The standard deviation is the *population* standard deviation (dividing by n), as Bollinger himself specifies and as TA-Lib and StockCharts both implement, not pandas' default sample standard deviation.
+
 **Also known as:** Bollinger Bands, BB, volatility bands, price channels.
 
 **Args:**
@@ -2641,7 +2649,7 @@ Defaults to 1.
 
 **Returns:**
 
-Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame] or Tuple[pd.Series, pd.Series, pd.Series]:
+pd.Series or pd.DataFrame:
 Bollinger Bands (upper, middle, lower).
 
 **Notes:**
@@ -2686,8 +2694,7 @@ The Triangular Moving Average (TMA) is a smoothed version of the Simple Moving A
 
 The formula is a follows:
 
-- Sub-window Length = round((Window + 1) / 2)
-- TMA = SMA(SMA(Close, Sub-window Length), Sub-window Length)
+- For an odd window: Sub-window Length = (Window + 1) / 2, applied for both passes. - For an even window: the two passes use different sub-window lengths, Window / 2 and Window / 2 + 1 (matching TA-Lib's TRIMA convention). - TMA = SMA(SMA(Close, Sub-window Length 1), Sub-window Length 2)
 
 **Also known as:** TMA, triangular MA.
 
@@ -3129,7 +3136,7 @@ Defaults to 1.
 
 **Returns:**
 
-Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame] or Tuple[pd.Series, pd.Series, pd.Series]:
+pd.Series or pd.DataFrame:
 Pivot Points (pivot, resistance 1-3, support 1-3).
 
 **Notes:**
@@ -3195,10 +3202,17 @@ Defaults to 14.
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
 If None, the rounding value specified during the initialization of the Toolkit instance will be used.
 Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the levels.
+Defaults to False.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation.
+Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame: The support and resistance levels for each asset.
+pd.Series or pd.DataFrame: The support and resistance levels for each asset.
 
 **Raises:**
 
@@ -3209,8 +3223,13 @@ ValueError: If the specified `period` is not one of the valid options.
 - The method retrieves historical data based on the specified `period` and calculates the
 support and resistance levels for each asset in the Toolkit instance.
 - A level is only identified on the handful of dates where a new local maximum or minimum
-is detected. The result is forward-filled so every date shows the most recently
-established level (NaN before the first level is found for that asset).
+is confirmed. The result is forward-filled so every date shows the most recently
+confirmed level (NaN before the first level is confirmed for that asset).
+- Levels are identified with a centred pivot window, which cannot confirm an extreme
+until `window` further periods have printed without exceeding it. Every level is
+therefore published with a confirmation lag of exactly `window` periods, and the
+series is append-only: a value read at any date is exactly the value that was
+available at that date, so the output is safe to use in a backtest.
 
 **As an example:**
 
@@ -3565,7 +3584,7 @@ Defaults to 1.
 
 **Returns:**
 
-Tuple[pd.Series, pd.Series] or Tuple[pd.DataFrame, pd.DataFrame]:
+pd.Series or pd.DataFrame:
 Supertrend (the trailing indicator line) and Trend Direction (1 for an uptrend
 and -1 for a downtrend) values.
 
@@ -3632,7 +3651,7 @@ Defaults to 1.
 
 **Returns:**
 
-pd.DataFrame or Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]: Keltner Channels (upper, middle, lower).
+pd.Series or pd.DataFrame: Keltner Channels (upper, middle, lower).
 
 **Notes:**
 
@@ -3671,13 +3690,15 @@ Which returns:
 ## get_donchian_channels
 Calculate the Donchian Channels for a given price series.
 
-Donchian Channels plot the highest high and lowest low over a specified window, with the middle line being the average of the two. They are used to identify breakouts and the overall volatility of the price range.
+Donchian Channels plot the highest high and lowest low over the `window` periods *preceding* the current one, with the middle line being the average of the two. They are used to identify breakouts and the overall volatility of the price range.
 
 The formula is a follows:
 
-- Upper Channel = Highest High over Window
-- Lower Channel = Lowest Low over Window
+- Upper Channel = Highest High over Window, ending one period ago
+- Lower Channel = Lowest Low over Window, ending one period ago
 - Middle Channel = (Upper Channel + Lower Channel) / 2
+
+The current period is deliberately excluded from the lookback, per Donchian's original breakout rule and StockCharts' Price Channels definition - including it would make a channel break impossible by construction.
 
 **Also known as:** Donchian Channels, price channel breakout.
 
@@ -3701,7 +3722,7 @@ Defaults to 1.
 
 **Returns:**
 
-pd.DataFrame or Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]: Donchian Channels (upper, middle, lower).
+pd.Series or pd.DataFrame: Donchian Channels (upper, middle, lower).
 
 **Notes:**
 

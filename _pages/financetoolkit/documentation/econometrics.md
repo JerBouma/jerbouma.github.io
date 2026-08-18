@@ -269,22 +269,15 @@ CUSUM test for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2019-01-01",
+    end_date="2023-12-31",
+)
 
 toolkit.econometrics.get_cusum_test(period="quarterly", within_period=False)
 ```
-
-Which returns:
-
-|                        |    AAPL |    MSFT |
-|:-----------------------|--------:|--------:|
-| CUSUM Statistic        |  2.4844 |  2.2885 |
-| Observations           | 12      | 12      |
-| Critical Value 1%      |  6.5991 |  9.2388 |
-| Critical Value 5%      |  5.4733 |  7.6626 |
-| Critical Value 10%     |  4.9075 |  6.8705 |
-| Reject Stability (5%)  |  0      |  0      |
-
 
 ---
 
@@ -328,7 +321,12 @@ test for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2019-01-01",
+    end_date="2023-12-31",
+)
 
 toolkit.econometrics.get_augmented_dickey_fuller(period="quarterly")
 ```
@@ -337,13 +335,14 @@ Which returns:
 
 |                       |     AMZN |     TSLA |
 |:----------------------|---------:|---------:|
-| ADF Statistic         |   0.2892 |   0.1023 |
-| Lags Used             |  11      |  11      |
-| Observations          |  47      |  47      |
-| Critical Value 1%     |  -3.43   |  -3.43   |
-| Critical Value 5%     |  -2.86   |  -2.86   |
-| Critical Value 10%    |  -2.57   |  -2.57   |
-| Reject Unit Root (5%) |   0      |   0      |
+| ADF Statistic         |  -7.1569 |  -2.2371 |
+| P-Value               |   0      |   0.1931 |
+| Lags Used             |   8      |   8      |
+| Observations          |  11      |  11      |
+| Critical Value 1%     |  -4.2232 |  -4.2232 |
+| Critical Value 5%     |  -3.1894 |  -3.1894 |
+| Critical Value 10%    |  -2.7298 |  -2.7298 |
+| Reject Unit Root (5%) |   1      |   0      |
 
 
 ---
@@ -390,7 +389,12 @@ KPSS test for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2019-01-01",
+    end_date="2023-12-31",
+)
 
 toolkit.econometrics.get_kpss_test(period="quarterly")
 ```
@@ -399,14 +403,15 @@ Which returns:
 
 |                           |    AMZN |    TSLA |
 |:--------------------------|--------:|--------:|
-| KPSS Statistic            |  0.5683 |  0.542  |
-| Lags Used                 |  9      |  9      |
-| Observations              | 47      | 47      |
+| KPSS Statistic            |  0.1739 |  0.5193 |
+| P-Value                   |  0.1    |  0.0373 |
+| Lags Used                 |  2      |  2      |
+| Observations              | 20      | 20      |
 | Critical Value 1%         |  0.739  |  0.739  |
 | Critical Value 2.5%       |  0.574  |  0.574  |
 | Critical Value 5%         |  0.463  |  0.463  |
 | Critical Value 10%        |  0.347  |  0.347  |
-| Reject Stationarity (5%)  |  1      |  1      |
+| Reject Stationarity (5%)  |  0      |  1      |
 
 
 ---
@@ -516,7 +521,12 @@ Zivot-Andrews test for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2019-01-01",
+    end_date="2023-12-31",
+)
 
 toolkit.econometrics.get_zivot_andrews_test(period="weekly")
 ```
@@ -525,10 +535,11 @@ Which returns:
 
 |                         |     AAPL |     MSFT |
 |:------------------------|---------:|---------:|
-| Zivot-Andrews Statistic |  -2.0684 |  -2.4191 |
-| Break Index             | 117      | 117      |
-| Lags Used               |  14      |  14      |
-| Observations            | 142      | 142      |
+| Zivot-Andrews Statistic |  -4.7109 |  -4.4313 |
+| P-Value                 |   0.0686 |   0.1414 |
+| Break Index             | 169      | 169      |
+| Observations            | 261      | 261      |
+| Lags Used               |   0      |   0      |
 | Critical Value 1%       |  -5.2764 |  -5.2764 |
 | Critical Value 5%       |  -4.8107 |  -4.8107 |
 | Critical Value 10%      |  -4.5662 |  -4.5662 |
@@ -612,8 +623,9 @@ For more information about the method, see the following papers:
 "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
 - <u>det_order (int, optional):</u> Which deterministic term to include: -1 (none), 0 (a
-constant, restricted to lie in the cointegrating relation) or 1 (a constant plus a
-linear trend, both restricted to lie in the cointegrating relation). Defaults to 0.
+constant, restricted to lie in the cointegrating relation) or 1 (a linear trend
+restricted to the cointegrating relation, alongside an unrestricted constant in
+the short-run dynamics). Defaults to 0.
 - <u>k_ar_diff (int, optional):</u> The number of lagged first differences to include as
 short-run dynamics. Defaults to 1.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
@@ -808,7 +820,10 @@ Use `get_breusch_pagan_test`/`get_white_test` to check for heteroskedasticity an
 `get_ljung_box_test` to check for autocorrelation first. Defaults to "nonrobust".
 - <u>clusters (pd.Series \| None, optional):</u> The cluster label for each observation
 (e.g. a coarser time bucket derived from the return index, to correct for
-within-period correlation), required when `cov_type="cluster"`. Defaults to None.
+within-period correlation), required when `cov_type="cluster"`. Aligned to the
+regression's own index before use, so it may be indexed by the full period
+index even though the regression drops periods with missing data. Defaults
+to None.
 - <u>maxlags (int \| None, optional):</u> The maximum lag to include when estimating the
 HAC (Newey-West) covariance matrix, required when `cov_type="HAC"`. A common
 rule of thumb is `floor(4 * (n / 100)^(2/9))` (Newey & West, 1994). Defaults to

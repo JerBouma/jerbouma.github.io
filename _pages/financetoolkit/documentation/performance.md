@@ -27,18 +27,21 @@ Calculates and collects all performance metrics.
 
 **Args:**
 
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the
+Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
 **Returns:**
 
-pd.Series or pd.DataFrame: Performance metrics calculated based on the specified parameters.
+pd.DataFrame: Performance metrics calculated based on the specified parameters, with a
+Multi Index of (metric, ticker) as the columns. For a single-ticker Toolkit the ticker
+level is dropped. `Returns` and `Excess Return` are only included when `period` is not
+"daily".
 
 **Notes:**
 
@@ -60,12 +63,12 @@ Which returns:
 
 |      |   Win Rate |   Upside Capture Ratio |   Downside Capture Ratio |   M2 Ratio |   Tracking Error |
 |:-----|-----------:|-----------------------:|-------------------------:|-----------:|-----------------:|
-| 2021 |     0.4921 |                 1.3754 |                   1.4016 |     1.2868 |           0.0118 |
-| 2022 |     0.4821 |                 1.3044 |                   1.3043 |    -0.8603 |           0.0115 |
-| 2023 |     0.576  |                 1.1783 |                   0.9486 |     2.1832 |           0.009  |
-| 2024 |     0.504  |                 1.1158 |                   1.0337 |     1.1242 |           0.0121 |
-| 2025 |     0.472  |                 1.0162 |                   1.0842 |     0.1354 |           0.0139 |
-| 2026 |     0.504  |                 0.766  |                   0.5691 |     0.3377 |           0.0154 |
+| 2021 |     0.5253 |                 1.4003 |                   1.1039 |     0.0065 |           0.0108 |
+| 2022 |     0.4781 |                 1.3096 |                   1.3186 |    -0.1669 |           0.0115 |
+| 2023 |     0.576  |                 1.1815 |                   0.9655 |     0.3293 |           0.009  |
+| 2024 |     0.5    |                 1.117  |                   1.0492 |     0.1905 |           0.0121 |
+| 2025 |     0.472  |                 1.0324 |                   1.1132 |     0.0709 |           0.0139 |
+| 2026 |     0.5099 |                 0.678  |                   0.5418 |     0.0919 |           0.0169 |
 
 
 ---
@@ -219,10 +222,13 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>show_columns (list of str, optional):</u> Restrict the result to these top level columns.
+Defaults to None, which returns every column.
 
 **Returns:**
 
-pd.DataFrame: Factor Asset Correlations.
+pd.DataFrame: Factor Asset Correlations, with a Multi Index of (ticker, factor)
+as the columns and one row per period.
 
 **As an example:**
 
@@ -231,19 +237,19 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
-toolkit.performance.get_factor_asset_correlations()
+toolkit.performance.get_factor_asset_correlations()["AAPL"]
 ```
 
 Which returns:
 
-|      |   AAPL |   TSLA |
-|:-----|-------:|-------:|
-| 2021 | 0.6688 | 0.5063 |
-| 2022 | 0.8365 | 0.6432 |
-| 2023 | 0.6986 | 0.5615 |
-| 2024 | 0.518  | 0.4874 |
-| 2025 | 0.7403 | 0.6978 |
-| 2026 | 0.4834 | 0.6055 |
+|      |   Mkt-RF |     SMB |     HML |     RMW |     CMA |
+|:-----|---------:|--------:|--------:|--------:|--------:|
+| 2021 |   0.6626 | -0.0091 | -0.3248 | -0.0655 | -0.0029 |
+| 2022 |   0.8796 |  0.0561 | -0.5479 | -0.2577 | -0.4763 |
+| 2023 |   0.6988 | -0.0083 | -0.2833 | -0.1014 | -0.463  |
+| 2024 |   0.5184 |  0.0358 | -0.3171 | -0.0563 | -0.0977 |
+| 2025 |   0.7408 |  0.0646 | -0.2085 | -0.1108 |  0.0761 |
+| 2026 |   0.4609 |  0.0502 | -0.1759 | -0.0847 | -0.0546 |
 
 
 ---
@@ -268,27 +274,29 @@ Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
 
 **Returns:**
 
-pd.DataFrame: Factor Correlations.
+pd.DataFrame: Factor Correlations. One correlation matrix per period, stacked
+into a Multi Index of (period, factor) rows with the factors as the columns and
+restricted to the Toolkit's date range.
 
 **As an example:**
 
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2023-01-01")
 
 toolkit.performance.get_factor_correlations()
 ```
 
 Which returns:
 
-|        |   Mkt-RF |     SMB |     HML |     RMW |     CMA |
-|:-------|---------:|--------:|--------:|--------:|--------:|
-| Mkt-RF |   1      | -0.4121 |  0.332  |  0.014  | -0.4682 |
-| SMB    |  -0.4121 |  1      | -0.1718 | -0.2326 |  0.1379 |
-| HML    |   0.332  | -0.1718 |  1      | -0.4551 |  0.184  |
-| RMW    |   0.014  | -0.2326 | -0.4551 |  1      | -0.4106 |
-| CMA    |  -0.4682 |  0.1379 |  0.184  | -0.4106 |  1      |
+|                 |   Mkt-RF |     SMB |     HML |     RMW |     CMA |
+|:----------------|---------:|--------:|--------:|--------:|--------:|
+| (2026, 'Mkt-RF')|   1      |  0.1702 | -0.4054 | -0.5902 | -0.4198 |
+| (2026, 'SMB')   |   0.1702 |  1      |  0.2113 | -0.1127 |  0.2437 |
+| (2026, 'HML')   |  -0.4054 |  0.2113 |  1      |  0.3432 |  0.7051 |
+| (2026, 'RMW')   |  -0.5902 | -0.1127 |  0.3432 |  1      |  0.4182 |
+| (2026, 'CMA')   |  -0.4198 |  0.2437 |  0.7051 |  0.4182 |  1      |
 
 
 ---
@@ -304,7 +312,7 @@ The model can perform both a Simple Linear Regression on each factor as well as 
 
 The model performs a Linear Regression on each factor and defines the regression parameters and residuals for each asset over time based on its exposure to these factors.
 
-These results can be validated by comparing them to the period returns obtained from the historical data. E.g. the regression formula is as follows for the Multi Linear Regression:
+The regression formula is as follows for the Multi Linear Regression:
 
 - Excess Return = Intercept + Beta1 * Mkt-RF + Beta2 * SMB + Beta3 * HML + Beta4 * RMW + Beta5 * CMA + Residuals
 
@@ -313,6 +321,8 @@ And the following for the Simple Linear Regression:
 - Excess Return = Intercept + Slope * Factor Value + Residuals
 
 So for a given factor, it should hold that the Excess Return equals the entire regression. Note that in this calculation the Excess Return refers to the Asset Return minus the Risk Free Rate as reported in the Fama and French dataset and will not be the same as the defined Excess Return in the historical data given that this is based on the Risk Free Rate defined in the initialization.
+
+The regression is estimated on the daily observations falling inside each period, so its Intercept, Slope and Residuals are all on a daily scale. The `Factor Value` and `Residuals` columns reported by the Simple Linear Regression therefore describe the **last daily observation** within the period, which is the only reading for which the identity above holds - they are not period-aggregated quantities.
 
 What is relevant to look at is the influence these factors have on each stock and how much each factor explains the stock return. E.g. you will generally see a pretty high influence (Beta or Slope) for the Market Risk Premium (Mkt-RF) factor as this is the main factor that explains the stock return (as also prevalent in the CAPM). The other factors can fluctuate greatly between stocks depending on which stocks you look at.
 
@@ -325,17 +335,22 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 - <u>method (str, optional):</u> The regression method to use for the calculation. Defaults to 'multi'.
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
-- <u>include_residuals (bool, optional):</u> Whether to include residuals in the results. Defaults to False.
+- <u>include_daily_residuals (bool, optional):</u> Whether to also return the pointwise (daily)
+regression residuals as a second DataFrame. Defaults to False.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratio values. Defaults to False.
 - <u>lag (int or list of int, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (list of str, optional):</u> Restrict the result to these top level columns.
+Defaults to None, which returns every column.
 
 **Returns:**
 
-pd.DataFrame: Fama and French 5 Factor model scores for the specified assets.
+pd.DataFrame: Fama and French 5 Factor model scores for the specified assets, with a
+Multi Index of (ticker, parameter) as the columns and one row per period. When
+`include_daily_residuals` is True a tuple of (scores, residuals) is returned instead.
 
 **Notes:**
 
@@ -355,20 +370,8 @@ from financetoolkit import Toolkit
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 # Calculate Fama and French 5 Factor model scores
-toolkit.performance.get_fama_and_french_model()
+toolkit.performance.get_fama_and_french_model()["AAPL"]
 ```
-
-Which returns:
-
-|      |    AAPL |    TSLA |
-|:-----|--------:|--------:|
-| 2021 | -0.0051 | -0.0195 |
-| 2022 | -0.0196 | -0.02   |
-| 2023 | -0.013  |  0.0045 |
-| 2024 |  0.0022 | -0.0059 |
-| 2025 | -0.0191 | -0.0191 |
-| 2026 | -0.0204 | -0.0153 |
-
 
 ---
 
@@ -402,16 +405,23 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (list of str, optional):</u> Restrict the result to these top level columns.
+Defaults to None, which returns every column.
 
 **Returns:**
 
-pd.DataFrame: Carhart Four Factor model scores for the specified assets.
+pd.DataFrame: Carhart Four Factor model scores for the specified assets, with a Multi
+Index of (ticker, parameter) as the columns and one row per period.
 
 **Notes:**
 
 - The dataset from Ken French is not always fully up to date. Therefore, some periods could be excluded.
 - Daily Carhart results is not an option as it would attempt to do a linear regression on a single data
 point which will not give any meaningful results.
+- The factors come from the Fama and French **three** factor file rather than the five factor file
+used by `get_fama_and_french_model`. The two files agree on Mkt-RF, HML and RF but not on SMB: the
+five factor SMB averages three separate size legs, while Carhart (1997) extends the three factor
+model and therefore requires the three factor SMB.
 - The risk-free rate is the Risk Free Rate reported in the Fama and French dataset (used here, rather
 than the Toolkit's own risk-free rate, to stay consistent with the momentum factor's construction).
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
@@ -619,19 +629,34 @@ The formula is as follows:
 
 - Sharpe Ratio = Excess Return / Excess Standard Deviation
 
-For a given period, for example monthly, this translates into the following:
+By default one Sharpe ratio is reported per `period`, computed from the **daily** excess returns falling inside that period. For a given period, for example monthly, this translates into the following:
 
-- Sharpe Ratio = Average Monthly Excess Return / Standard Deviation of Monthly Excess Returns
+- Sharpe Ratio = Average Daily Excess Return within the Month / Standard Deviation of the Daily Excess Returns within the Month
 
-For a rolling period, this translates into the following:
+For a rolling period, `period` instead sets the frequency of the returns themselves and the ratio is computed over a rolling window of `rolling` such returns:
 
 - Sharpe Ratio = Average Rolling Excess Return / Standard Deviation of Rolling Excess Returns
 
 Note that this is explicitly already subtracts the Risk Free Rate.
 
+The result is **not annualized**: it is a per-observation Sharpe ratio, so a value computed from daily returns is roughly SQRT(252) smaller than the annualized figure usually quoted in the literature (SQRT(52), SQRT(12) and SQRT(4) for weekly, monthly and quarterly returns respectively). Multiply by that factor before comparing against published annualized Sharpe ratios.
+
+The plain Sharpe ratio only looks at the mean and standard deviation of returns, implicitly assuming Gaussian, i.i.d. returns and ignoring how much uncertainty surrounds the estimate itself. The `method` parameter selects one of three corrections for that, each keeping the same excess returns and therefore the same underlying Sharpe ratio as its starting point:
+
+- `"adjusted"` - the Adjusted Sharpe Ratio (ASR, Pezier & White, 2006) penalizes (or rewards) the Sharpe ratio for negative skewness and excess kurtosis using a Cornish-Fisher-style expansion, so that two strategies with the same Sharpe ratio but different tail shapes are no longer scored identically:
+- ASR = SR * [1 + (S / 6) * SR − ((K − 3) / 24) * SR^2]
+- `"probabilistic"` - the Probabilistic Sharpe Ratio (PSR) is the probability that the true (population) Sharpe ratio exceeds `benchmark_sharpe_ratio`, folding the skewness and (non-excess) kurtosis of the underlying returns into the standard error of the Sharpe ratio so that a short, lumpy sample no longer looks more convincing than it is:
+- PSR(SR*) = Φ( (SR̂ − SR*) · sqrt(n − 1) / sqrt(1 − γ₃·SR̂ + ((γ₄ − 1) / 4)·SR̂²) )
+- `"deflated"` - the Deflated Sharpe Ratio (DSR) is the Probabilistic Sharpe Ratio corrected for the fact that a reported Sharpe ratio is often the best of many strategy variations, parameter combinations, or lookback windows tried during a backtest (multiple testing / selection bias / "backtest overfitting"). It estimates the Sharpe ratio one would expect to observe purely by chance as the maximum of `n_trials` independent trials under the null hypothesis of no skill, and uses that expected maximum as the benchmark SR* in the Probabilistic Sharpe Ratio formula instead of a naive benchmark such as 0:
+- SR* = sqrt(Var[SR_trials]) · [ (1 − γ)·Φ⁻¹(1 − 1/N) + γ·Φ⁻¹(1 − 1/(N·e)) ]
+
+Where SR̂ is the observed Sharpe ratio, S (γ₃) is the skewness and K (γ₄) the non-excess (raw) kurtosis of the same returns, n is the number of return observations, N is `n_trials`, Var[SR_trials] is the variance of the Sharpe ratios observed across those N trials, γ ≈ 0.5772 is the Euler-Mascheroni constant and Φ is the standard normal CDF. Since DSR = PSR(SR*), it is always less than or equal to the Probabilistic Sharpe Ratio computed against a benchmark of 0.
+
+This codebase does not track "N literal strategy trials" - there is no record of how many parameter combinations were tried before arriving at the current Toolkit configuration. As a documented approximation, `Var[SR_trials]` is estimated from the variance of an auxiliary *rolling* Sharpe ratio series (see `get_rolling_sharpe_ratio`) computed over a `trials_window`-sized window across the full return history, and `n_trials` defaults to the number of valid (non-NaN) values in that same rolling series. This treats each rolling window as if it were one "trial" - a reasonable proxy for how dispersed the Sharpe ratio could plausibly have been under different choices, but not a substitute for passing the actual number of variations tried (via `n_trials`) when that is known, since the quality of the correction depends directly on it.
+
 **See definition:** [https://en.wikipedia.org/wiki/Sharpe_ratio](https://en.wikipedia.org/wiki/Sharpe_ratio){:target="_blank"}
 
-**Also known as:** risk-adjusted return, reward-to-variability ratio.
+**Also known as:** risk-adjusted return, reward-to-variability ratio. The variants are also known as the Pezier and White Adjusted Sharpe Ratio (ASR), the Sharpe ratio significance probability (PSR) and the backtest overfitting or selection-bias-adjusted Sharpe ratio (DSR).
 
 **Args:**
 
@@ -639,6 +664,22 @@ Note that this is explicitly already subtracts the Risk Free Rate.
 initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
+- <u>method (str, optional):</u> Which Sharpe ratio to calculate, one of "standard", "adjusted",
+"probabilistic" or "deflated", as described above. Defaults to "standard".
+- <u>benchmark_sharpe_ratio (float, optional):</u> The hypothesized or benchmark Sharpe ratio
+(SR*) to test the observed Sharpe ratio against. Only used when method="probabilistic".
+Defaults to 0.0, i.e. testing whether the strategy has any skill at all above doing nothing.
+- <u>trials_window (int, optional):</u> The window size (in units of `period`) used for the
+auxiliary rolling Sharpe ratio series that approximates `Var[SR_trials]` and the
+default `n_trials`, see above. Only used when method="deflated". Defaults to None, which
+uses half of the available return history so that enough overlapping windows exist
+regardless of `period` or date range.
+- <u>n_trials (int, optional):</u> The number of independent (or effectively independent)
+strategy variations, parameter combinations, or lookback windows tried before
+arriving at the reported Sharpe ratio. Only used when method="deflated". Defaults to
+None, which falls back to the number of valid values in the auxiliary rolling Sharpe
+ratio series described above. Pass this explicitly whenever the actual number of trials
+is known.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -648,7 +689,8 @@ values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame: Sharpe ratio values.
+pd.DataFrame: Sharpe ratio values. For method="probabilistic" and method="deflated"
+these are probabilities between 0 and 1 rather than ratios.
 
 **Notes:**
 
@@ -656,6 +698,9 @@ pd.DataFrame: Sharpe ratio values.
 not give any useful insights.
 - The method retrieves historical data and calculates the Sharpe ratio for each asset in the Toolkit instance.
 - The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
+- The "adjusted", "probabilistic" and "deflated" variants use the **non-excess (raw)** kurtosis
+convention, i.e. a Normal distribution has a kurtosis of 3, not 0. Internally this calls
+`risk_model.get_kurtosis(..., fisher=False)`.
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
@@ -672,153 +717,29 @@ Which returns:
 
 | Date   |    AAPL |    TSLA |
 |:-------|--------:|--------:|
-| 2021   | -0.8286 | -0.3537 |
-| 2022   | -1.2859 | -0.7606 |
-| 2023   | -2.7296 | -1.0402 |
-| 2024   | -2.8575 | -0.9845 |
-| 2025   | -2.0637 | -1.0411 |
-| 2026   | -2.4952 | -1.6057 |
+| 2021   |  0.1277 |  0.1334 |
+| 2022   | -0.0482 | -0.0812 |
+| 2023   |  0.1189 |  0.095  |
+| 2024   |  0.07   |  0.0637 |
+| 2025   |  0.0188 |  0.0263 |
+| 2026   |  0.0475 | -0.0604 |
 
-
----
-
-## get_probabilistic_sharpe_ratio
-Calculate the Probabilistic Sharpe Ratio (PSR), the probability that the true (population) Sharpe ratio exceeds a benchmark Sharpe ratio, correcting the naive Sharpe ratio significance test for skewed and fat-tailed returns.
-
-A plain Sharpe ratio significance test (e.g. treating SR̂ as approximately normally distributed) implicitly assumes Gaussian, i.i.d. returns. Real asset and strategy returns are typically skewed and fat-tailed, which understates the true uncertainty around the Sharpe ratio estimate and makes the naive test overconfident. The PSR explicitly folds the skewness and (non-excess) kurtosis of the underlying returns into the standard error of the Sharpe ratio, giving a more honest probability that the strategy truly beats `benchmark_sharpe_ratio` rather than 0 or 0.5 simply being a coincidence of a short, lumpy sample.
-
-The formula is as follows:
-
-- PSR(SR*) = Φ( (SR̂ − SR*) · sqrt(n − 1) / sqrt(1 − γ₃·SR̂ + ((γ₄ − 1) / 4)·SR̂²) )
-
-Where SR̂ is the observed Sharpe ratio, SR* is `benchmark_sharpe_ratio`, γ₃ is skewness, γ₄ is the non-excess (raw) kurtosis, n is the number of return observations and Φ is the standard normal CDF.
-
-**Also known as:** PSR, Sharpe ratio significance probability.
-
-**Args:**
-
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
-period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Probabilistic
-Sharpe Ratio.
-- <u>benchmark_sharpe_ratio (float, optional):</u> The hypothesized or benchmark Sharpe ratio
-(SR*) to test the observed Sharpe ratio against. Defaults to 0.0, i.e. testing whether
-the strategy has any skill at all above doing nothing.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.DataFrame: Probabilistic Sharpe Ratio values, between 0 and 1.
-
-**Notes:**
-
-- This uses the **non-excess (raw)** kurtosis convention, i.e. a Normal distribution has a
-kurtosis of 3, not 0. Internally this calls `risk_model.get_kurtosis(..., fisher=False)`.
-- The method retrieves historical data and calculates the Probabilistic Sharpe ratio for
-each asset in the Toolkit instance, using the same excess returns as `get_sharpe_ratio`.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
-
-**As an example:**
+And, asking for the probability that these Sharpe ratios are genuine instead:
 
 ```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
-
-toolkit.performance.get_probabilistic_sharpe_ratio()
+toolkit.performance.get_sharpe_ratio(method="probabilistic")
 ```
 
-Which returns:
+
 
 | Date   |   AAPL |   TSLA |
 |:-------|-------:|-------:|
-| 2021   | 0.0000 | 0.0008 |
-| 2022   | 0.0000 | 0.0000 |
-| 2023   | 0.0000 | 0.0000 |
-| 2024   | 0.0000 | 0.0000 |
-| 2025   | 0.0000 | 0.0000 |
-| 2026   | 0.0000 | 0.0000 |
-
-
----
-
-## get_deflated_sharpe_ratio
-Calculate the Deflated Sharpe Ratio (DSR), the Probabilistic Sharpe Ratio corrected for the fact that the reported Sharpe ratio is often the best of many strategy variations, parameter combinations, or lookback windows tried during a backtest (multiple testing / selection bias / "backtest overfitting").
-
-The more variations that were tried, the more likely it is that at least one of them shows an impressive Sharpe ratio by pure chance, even with zero true skill. The DSR accounts for this by first estimating the Sharpe ratio one would expect to observe, purely by chance, as the maximum of `n_trials` independent trials under the null hypothesis of no skill, and then uses that expected maximum as the benchmark (SR*) in the Probabilistic Sharpe Ratio formula, instead of a naive benchmark such as 0.
-
-The formula for the expected maximum Sharpe ratio benchmark is as follows:
-
-- SR* = sqrt(Var[SR_trials]) · [ (1 − γ)·Φ⁻¹(1 − 1/N) + γ·Φ⁻¹(1 − 1/(N·e)) ]
-
-Where N is `n_trials`, Var[SR_trials] is the variance of the Sharpe ratios observed across those N trials, and γ ≈ 0.5772 is the Euler-Mascheroni constant. DSR = PSR(SR*), i.e. it is always less than or equal to the Probabilistic Sharpe Ratio computed against a benchmark of 0.
-
-This codebase does not track "N literal strategy trials" - there is no record of how many parameter combinations were tried before arriving at the current Toolkit configuration. As a documented approximation, `Var[SR_trials]` is estimated from the variance of an auxiliary *rolling* Sharpe ratio series (see `get_rolling_sharpe_ratio`) computed over a `trials_window`-sized window across the full return history, and `n_trials` defaults to the number of valid (non-NaN) values in that same rolling series. This treats each rolling window as if it were one "trial" - a reasonable proxy for how dispersed the Sharpe ratio could plausibly have been under different choices, but not a substitute for passing the actual number of variations tried (via `n_trials`) when that is known, since the quality of the correction depends directly on it.
-
-**Also known as:** DSR, backtest overfitting correction, selection-bias-adjusted Sharpe ratio.
-
-**Args:**
-
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>rolling (int, optional):</u> The rolling period to use for the primary Sharpe ratio
-being tested. If you select period = 'monthly' and set rolling to 12 you obtain the
-rolling 12-month Deflated Sharpe Ratio.
-- <u>trials_window (int, optional):</u> The window size (in units of `period`) used for the
-auxiliary rolling Sharpe ratio series that approximates `Var[SR_trials]` and the
-default `n_trials`, see the Notes above. Defaults to None, which uses half of the
-available return history so that enough overlapping windows exist regardless of
-`period` or date range.
-- <u>n_trials (int, optional):</u> The number of independent (or effectively independent)
-strategy variations, parameter combinations, or lookback windows tried before
-arriving at the reported Sharpe ratio. Defaults to None, which falls back to the
-number of valid values in the auxiliary rolling Sharpe ratio series described above.
-Pass this explicitly whenever the actual number of trials is known.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.DataFrame: Deflated Sharpe Ratio values, between 0 and 1.
-
-**Notes:**
-
-- This uses the **non-excess (raw)** kurtosis convention, i.e. a Normal distribution has a
-kurtosis of 3, not 0. Internally this calls `risk_model.get_kurtosis(..., fisher=False)`.
-- The method retrieves historical data and calculates the Deflated Sharpe ratio for
-each asset in the Toolkit instance, using the same excess returns as `get_sharpe_ratio`.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
-
-toolkit.performance.get_deflated_sharpe_ratio()
-```
-
-Which returns:
-
-| Date   |   AAPL |   TSLA |
-|:-------|-------:|-------:|
-| 2021   | 0.0000 | 0.0000 |
-| 2022   | 0.0000 | 0.0000 |
-| 2023   | 0.0000 | 0.0000 |
-| 2024   | 0.0000 | 0.0000 |
-| 2025   | 0.0000 | 0.0000 |
-| 2026   | 0.0000 | 0.0000 |
+| 2021   | 0.8922 | 0.9022 |
+| 2022   | 0.225  | 0.0998 |
+| 2023   | 0.9684 | 0.9323 |
+| 2024   | 0.8693 | 0.8496 |
+| 2025   | 0.618  | 0.6618 |
+| 2026   | 0.7167 | 0.2264 |
 
 
 ---
@@ -828,17 +749,20 @@ The Sortino Ratio is a financial metric used to assess the risk-adjusted perform
 
 The formula is as follows:
 
-- Sortino Ratio = Excess Return / Excess Downside Risk
+- Sortino Ratio = Excess Return / Downside Deviation
+- Downside Deviation = SQRT( (1 / N) * SUM( MIN(Excess Return, 0)^2 ) )
 
-For a given period, for example monthly, this translates into the following:
+Where N is the *total* number of observations, not just the negative ones, following Sortino & Price (1994). By default one Sortino ratio is reported per `period`, computed from the **daily** excess returns falling inside that period. For a given period, for example monthly, this translates into the following:
 
-- Sortino Ratio = Average Monthly Excess Return / Average Monthly Excess Downside Risk
+- Sortino Ratio = Average Daily Excess Return within the Month / Downside Deviation of the Daily Excess Returns within the Month
 
-For a rolling period, this translates into the following:
+For a rolling period, `period` instead sets the frequency of the returns themselves and the ratio is computed over a rolling window of `rolling` such returns:
 
-- Sortino Ratio = Average Rolling Excess Return / Rolling Downside Risk
+- Sortino Ratio = Average Rolling Excess Return / Rolling Downside Deviation
 
 Note that this is explicitly already subtracts the Risk Free Rate.
+
+As with the Sharpe Ratio, the result is **not annualized**: it is a per-observation ratio, so multiply by SQRT(252), SQRT(52), SQRT(12) or SQRT(4) for daily, weekly, monthly or quarterly returns respectively before comparing against published annualized figures.
 
 **See definition:** [https://en.wikipedia.org/wiki/Sortino_ratio](https://en.wikipedia.org/wiki/Sortino_ratio){:target="_blank"}
 
@@ -882,12 +806,12 @@ Which returns:
 
 | Date   |    AAPL |    TSLA |
 |:-------|--------:|--------:|
-| 2021   | -1.0988 | -0.5282 |
-| 2022   | -1.5168 | -0.9959 |
-| 2023   | -2.8934 | -1.3591 |
-| 2024   | -3.097  | -1.3744 |
-| 2025   | -2.4472 | -1.3183 |
-| 2026   | -2.5624 | -1.7784 |
+| 2021   |  0.197  |  0.2049 |
+| 2022   | -0.0675 | -0.1069 |
+| 2023   |  0.1839 |  0.1462 |
+| 2024   |  0.1071 |  0.1044 |
+| 2025   |  0.0283 |  0.0391 |
+| 2026   |  0.0665 | -0.0789 |
 
 
 ---
@@ -935,12 +859,12 @@ Which returns:
 
 | Date   |    AAPL |    TSLA |
 |:-------|--------:|--------:|
-| 2021   |  8.5991 |  5.6729 |
-| 2022   | -4.5711 | -5.0182 |
-| 2023   | 13.3465 | 11.6618 |
-| 2024   |  7.4872 |  6.3795 |
-| 2025   |  0.8946 |  0.7159 |
-| 2026   |  2.3126 | -2.6591 |
+| 2021   | -0.4626 | -0.2002 |
+| 2022   | -4.5193 | -5.0182 |
+| 2023   | 13.6486 | 11.6618 |
+| 2024   |  7.6983 |  6.3795 |
+| 2025   |  0.9945 |  0.7159 |
+| 2026   |  2.2021 | -3.5198 |
 
 
 ---
@@ -1184,12 +1108,12 @@ Which returns:
 
 | Date   |    AAPL |    TSLA |
 |:-------|--------:|--------:|
-| 2021   |  1.2868 |  0.8811 |
-| 2022   | -0.8603 | -1.0335 |
-| 2023   |  2.1832 |  1.8102 |
-| 2024   |  1.1242 |  0.9127 |
-| 2025   |  0.1354 |  0.1134 |
-| 2026   |  0.3377 | -0.3943 |
+| 2021   |  0.0065 |  0.0112 |
+| 2022   | -0.1669 | -0.2118 |
+| 2023   |  0.3293 |  0.2753 |
+| 2024   |  0.1905 |  0.1604 |
+| 2025   |  0.0709 |  0.0637 |
+| 2026   |  0.0919 | -0.0461 |
 
 
 ---
@@ -1530,12 +1454,12 @@ Which returns:
 
 | Date   |    AAPL |    TSLA |
 |:-------|--------:|--------:|
-| 2021   | -0.5191 | -0.2779 |
-| 2022   | -0.6896 | -0.4956 |
-| 2023   | -0.8901 | -0.6046 |
-| 2024   | -0.9024 | -0.6129 |
-| 2025   | -0.8423 | -0.6148 |
-| 2026   | -0.8718 | -0.7635 |
+| 2021   |  0.1414 |  0.1382 |
+| 2022   | -0.052  | -0.0816 |
+| 2023   |  0.1284 |  0.1026 |
+| 2024   |  0.0767 |  0.0749 |
+| 2025   |  0.0186 |  0.0275 |
+| 2026   |  0.0441 | -0.0538 |
 
 
 ---
@@ -1703,13 +1627,13 @@ toolkit.performance.get_compound_growth_rate()
 
 Which returns:
 
-|                                       |   AAPL |   TSLA |   Benchmark |
-|:--------------------------------------|-------:|-------:|------------:|
-| Compound Annual Growth Rate (CAGR)    | 0.0965 | 0.0186 |      0.0779 |
-| Compound Quarterly Growth Rate (CQGR) | 0.0124 | 0.0089 |      0.0087 |
-| Compound Monthly Growth Rate (CMGR)   | 0.0124 | 0.0089 |      0.0087 |
-| Compound Weekly Growth Rate (CWGR)    | 0.0029 | 0.0022 |      0.0021 |
-| Compound Daily Growth Rate (CDGR)     | 0.0006 | 0.0005 |      0.0004 |
+|                                       |   AAPL |    TSLA |   Benchmark |
+|:--------------------------------------|-------:|--------:|------------:|
+| Compound Annual Growth Rate (CAGR)    | 0.1219 | -0.0124 |      0.1158 |
+| Compound Quarterly Growth Rate (CQGR) | 0.041  |  0.0124 |      0.0332 |
+| Compound Monthly Growth Rate (CMGR)   | 0.0123 |  0.005  |      0.0101 |
+| Compound Weekly Growth Rate (CWGR)    | 0.0029 |  0.0012 |      0.0024 |
+| Compound Daily Growth Rate (CDGR)     | 0.0006 |  0.0003 |      0.0005 |
 
 
 ---
@@ -1832,7 +1756,7 @@ Which returns:
 ---
 
 ## get_correlation_matrix
-Calculate the full pairwise Correlation Matrix across all assets (and the benchmark) in the Toolkit instance, based on the daily historical returns.
+Calculate the full pairwise Correlation Matrix across all assets (and the benchmark) in the Toolkit instance, based on the returns at the frequency given by `period`.
 
 Unlike `get_beta`, which relates a single asset to the benchmark, this computes the correlation between every pair of assets at once. This is a prerequisite for portfolio variance calculations and any mean-variance optimization work.
 
@@ -1869,7 +1793,7 @@ Which returns:
 ---
 
 ## get_covariance_matrix
-Calculate the full pairwise Covariance Matrix across all assets (and the benchmark) in the Toolkit instance, based on the daily historical returns.
+Calculate the full pairwise Covariance Matrix across all assets (and the benchmark) in the Toolkit instance, based on the returns at the frequency given by `period`.
 
 Unlike `get_covariance`, which relates a single asset to the benchmark, this computes the covariance between every pair of assets at once. This is a prerequisite for portfolio variance calculations and any mean-variance optimization work.
 
@@ -1959,11 +1883,13 @@ toolkit.performance.get_appraisal_ratio()
 
 Which returns:
 
-| Date   |    AAPL |    MSFT |
+| Date   |    AAPL |    TSLA |
 |:-------|--------:|--------:|
-| 2020   | 37.2641 | 16.0511 |
-| 2021   | -2.5308 | 20.9479 |
-| 2022   | -1.4753 | -3.3995 |
+| 2022   | -0.0946 | -0.5928 |
+| 2023   |  1.4422 |  1.0563 |
+| 2024   |  0.3371 |  0.1716 |
+| 2025   | -0.5687 | -0.5019 |
+| 2026   |  0.1411 | -1.8633 |
 
 
 ---
@@ -2022,73 +1948,13 @@ toolkit.performance.get_fama_decomposition().xs("AAPL", level=0, axis=1)
 Which returns:
 
 | Date   |   Selectivity |   Diversification |
-|:-------|--------------:|-------------------:|
-| 2020   |        0.5708 |              0.0416 |
-| 2021   |       -0.1945 |              0.1653 |
-| 2022   |        0.0220 |             -0.0375 |
-
-
----
-
-## get_adjusted_sharpe_ratio
-Calculate the Adjusted Sharpe Ratio (ASR) of an investment portfolio or asset's returns.
-
-The Sharpe ratio only looks at the mean and standard deviation of returns, implicitly assuming a Normal distribution. The Adjusted Sharpe Ratio (Pezier & White, 2006) penalizes (or rewards) the Sharpe ratio for negative skewness and excess kurtosis using a Cornish-Fisher-style expansion, so that two strategies with the same Sharpe ratio but different tail shapes are no longer scored identically.
-
-The formula is as follows:
-
-- ASR = SR * [1 + (S / 6) * SR − ((K − 3) / 24) * SR^2]
-
-Where SR is the (ordinary, period) Sharpe ratio, S is the skewness of the same returns, and K is the non-excess (raw) kurtosis of the same returns.
-
-**Also known as:** Pezier and White Adjusted Sharpe Ratio.
-
-**Args:**
-
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
-period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Adjusted
-Sharpe Ratio.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.DataFrame: Adjusted Sharpe Ratio values.
-
-**Notes:**
-
-- This uses the **non-excess (raw)** kurtosis convention, i.e. a Normal distribution has a
-kurtosis of 3, not 0. Internally this calls `risk_model.get_kurtosis(..., fisher=False)`,
-the same convention documented in `get_probabilistic_sharpe_ratio`.
-- Daily Adjusted Sharpe Ratio is not an option as the standard deviation for 1 day is close
-to zero. Therefore, it does not give any useful insights.
-- The method retrieves historical data and calculates the Adjusted Sharpe ratio for each
-asset in the Toolkit instance, using the same excess returns as `get_sharpe_ratio`.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
-
-toolkit.performance.get_adjusted_sharpe_ratio()
-```
-
-Which returns:
-
-| Date   |    AAPL |    MSFT |
-|:-------|--------:|--------:|
-| 2020   | -0.2021 | -0.2502 |
-| 2021   | -0.8212 | -0.9321 |
-| 2022   | -1.2058 | -1.2489 |
+|:-------|--------------:|------------------:|
+| 2021   |        0.0113 |           -0.0084 |
+| 2022   |        0.022  |           -0.0375 |
+| 2023   |        0.1048 |            0.0979 |
+| 2024   |       -0.1053 |            0.1698 |
+| 2025   |       -0.1774 |            0.056  |
+| 2026   |       -0.0958 |            0.1246 |
 
 
 ---
@@ -2150,11 +2016,13 @@ toolkit.performance.get_starr_ratio()
 
 Which returns:
 
-| Date   |     AAPL |    MSFT |
-|:-------|---------:|--------:|
-| 2020   |  12.0414 |  6.5831 |
-| 2021   |   9.8271 | 18.3701 |
-| 2022   |  -6.7460 | -6.8990 |
+| Date   |    AAPL |    TSLA |
+|:-------|--------:|--------:|
+| 2022   | -0.4203 | -0.4759 |
+| 2023   |  1.0763 |  0.8716 |
+| 2024   |  0.5566 |  0.4707 |
+| 2025   |  0.0677 |  0.0554 |
+| 2026   |  0.1743 | -0.3805 |
 
 
 ---
@@ -2210,11 +2078,13 @@ toolkit.performance.get_rachev_ratio()
 
 Which returns:
 
-| Date   |   AAPL |   MSFT |
+| Date   |   AAPL |   TSLA |
 |:-------|-------:|-------:|
-| 2020   | 1.0649 | 1.0946 |
-| 2021   | 0.9964 | 1.0552 |
-| 2022   | 1.0790 | 1.0200 |
+| 2022   | 1.0788 | 0.9467 |
+| 2023   | 1.0726 | 1.1169 |
+| 2024   | 1.1443 | 1.3081 |
+| 2025   | 1.0729 | 1.0925 |
+| 2026   | 0.8627 | 0.8404 |
 
 
 ---
@@ -2270,9 +2140,9 @@ Which returns:
 
 | Date   |   Alpha |   Beta |   Gamma |   R Squared |
 |:-------|--------:|-------:|--------:|------------:|
-| 2020   |  0.0030 | 1.1648 |  0.3569 |       0.6932 |
-| 2021   |  0.0051 | 1.4745 |  5.9823 |       0.4704 |
-| 2022   |  0.0090 | 1.3691 |  1.5507 |       0.8050 |
+| 2024   |  0.0009 | 0.944  | -9.4286 |      0.294  |
+| 2025   | -0.0005 | 1.2237 |  1.6352 |      0.5693 |
+| 2026   |  0.0006 | 0.6632 | -2.6122 |      0.1087 |
 
 
 ---
@@ -2327,10 +2197,10 @@ toolkit.performance.get_henriksson_merton_model().xs("AAPL", level=0, axis=1)
 Which returns:
 
 | Date   |   Alpha |   Beta |   Up Market Beta |   R Squared |
-|:-------|--------:|-------:|------------------:|------------:|
-| 2020   |  0.0032 | 1.1578 |            -0.0071 |       0.6929 |
-| 2021   |  0.0033 | 1.2403 |             1.3512 |       0.4740 |
-| 2022   |  0.0068 | 1.2399 |             1.5621 |       0.8105 |
+|:-------|--------:|-------:|-----------------:|------------:|
+| 2024   |  0.0013 | 1.1387 |          -0.3553 |      0.2926 |
+| 2025   | -0.0009 | 1.1732 |           0.152  |      0.5673 |
+| 2026   |  0.0008 | 0.7243 |          -0.1232 |      0.1088 |
 
 
 ---
