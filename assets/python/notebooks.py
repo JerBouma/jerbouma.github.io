@@ -79,6 +79,10 @@ NOTEBOOKS = [
         "assets/notebooks/financetoolkit/portfolio-module.ipynb",
     ),
     (
+        f"{_FT_BASE}/Finance%20Toolkit%20-%2012.%20Econometrics%20Module.ipynb",
+        "assets/notebooks/financetoolkit/econometrics-module.ipynb",
+    ),
+    (
         f"{_FT_BASE}/Finance%20Toolkit%20-%20Using%20External%20Datasets.ipynb",
         "assets/notebooks/financetoolkit/external-datasets.ipynb",
     ),

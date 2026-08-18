@@ -87,16 +87,11 @@ Which returns:
 ## get_extended_dupont_analysis
 Perform an Extended Dupont analysis to breakdown the return on equity (ROE) into its components, while considering additional financial metrics.
 
-The Extended Dupont analysis is an advanced method used to break down the return on equity (ROE) into multiple components, providing a more detailed insight into the factors influencing a company's profitability. It considers additional metrics such as Return on Assets (ROA), Total Asset Turnover, Financial Leverage, and more.
+The Extended Dupont analysis splits the three-factor decomposition's Net Profit Margin into three separate drivers - the Tax Burden, the Interest Burden and the Operating Profit Margin - so that the effect of taxation, of financing costs and of operating performance on the return on equity (ROE) can be read separately.
 
 The formula is as follows:
 
-- Profit Margin = Net Income / Revenue
-- Asset Turnover = Revenue / Average Total Assets
-- Financial Leverage = Average Total Assets / Average Total Equity
-- ROA = Net Income / Average Total Assets
-- Total Asset Turnover = Revenue / Average Total Assets
-- ROE = Profit Margin * Asset Turnover * Financial Leverage * ROA * Total Asset Turnover
+- Interest Burden Ratio = Income Before Tax / Operating Income - Tax Burden Ratio = Net Income / Income Before Tax - Operating Profit Margin = Operating Income / Revenue - Asset Turnover = Revenue / Average Total Assets - Equity Multiplier = Average Total Assets / Average Total Equity - ROE = Interest Burden Ratio * Tax Burden Ratio * Operating Profit Margin * Asset Turnover * Equity Multiplier
 
 **Also known as:** extended DuPont, five-factor DuPont, ROE breakdown.
 
@@ -112,20 +107,25 @@ values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame: DataFrame containing Extended Dupont analysis results, including Profit Margin, Asset Turnover,
-Financial Leverage, ROA, Total Asset Turnover, and the calculated ROE values.
+pd.DataFrame: DataFrame containing Extended Dupont analysis results, including the Interest
+Burden Ratio, Tax Burden Ratio, Operating Profit Margin, Asset Turnover, Equity
+Multiplier, and the calculated ROE values.
 
 **Notes:**
 
-- The Profit Margin is the ratio of Net Income to Total Revenue, indicating the percentage of
-revenue that translates into profit.
+- The Interest Burden Ratio (Income Before Tax / Operating Income) measures how much of
+operating profit survives the cost of debt financing. It equals 1 for a company with no
+net interest expense and falls as interest costs rise.
+- The Tax Burden Ratio (Net Income / Income Before Tax) measures how much of pre-tax
+profit survives taxation, i.e. it equals (1 - Effective Tax Rate).
+- The Operating Profit Margin measures operating performance before financing and tax
+effects.
 - Asset Turnover measures the efficiency of a company's use of its assets to generate
 sales revenue.
-- Financial Leverage represents the use of debt to finance a company's operations, which can
-amplify returns as well as risks.
-- Return on Assets (ROA) measures the efficiency of a company's use of its assets to
-generate profit.
-- Total Asset Turnover considers all assets, including both equity and debt financing.
+- The Equity Multiplier represents the use of debt to finance a company's operations,
+which can amplify returns as well as risks.
+- Multiplying the first three components back together reproduces the Net Profit Margin
+of the three-factor `get_dupont_analysis`, so both decompositions resolve to the same ROE.
 
 **As an example:**
 
@@ -158,7 +158,7 @@ Calculate the Enterprise Value (EV) breakdown, providing a detailed view of its 
 
 The Enterprise Value breakdown includes the following components for each quarter or year:
 
-- Share Price: The market price per share of the company's stock. - Market Capitalization (Market Cap): The total value of a company's outstanding common and preferred shares. - Debt: The sum of long-term and short-term debt on the company's balance sheet. - Preferred Equity: The value of preferred shares, if applicable. - Minority Interest: The equity value of a subsidiary with less than 50% ownership. - Cash and Cash Equivalents: The total amount of liquid assets including cash, marketable securities, and short-term investments.
+- Share Price: The market price per share of the company's stock. - Market Capitalization (Market Cap): The total value of a company's outstanding common shares, i.e. the share price multiplied by the shares outstanding. Preferred shares are excluded here and enter as their own component below, so that they are counted once rather than twice. - Debt: The sum of long-term and short-term debt on the company's balance sheet. - Preferred Equity: The value of preferred shares, if applicable. - Minority Interest: The equity value of a subsidiary with less than 50% ownership. - Cash and Cash Equivalents: The total amount of liquid assets including cash, marketable securities, and short-term investments.
 
 The Enterprise Value is calculated as the sum of Market Cap, Debt, Preferred Equity, Minority Interest, minus Cash and Cash Equivalents.
 
@@ -184,8 +184,14 @@ pd.DataFrame: DataFrame containing the Enterprise Value breakdown, including the
 
 - All the inputs must be in the same currency and unit for accurate calculations.
 - The Enterprise Value is an important metric used for valuation and investment analysis.
-- A positive Enterprise Value indicates that the company is financed primarily by equity and has excess cash.
-- A negative Enterprise Value may indicate financial distress or unusual financial situations.
+It represents the cost of acquiring the entire business: the equity is bought at its market
+value, the debt (and any preferred equity and minority interest) is assumed, and the acquired
+cash reduces the effective price, which is why cash is subtracted rather than added.
+- Enterprise Value is positive for essentially every going concern. It only turns negative
+when a company's cash exceeds its market capitalization plus its debt, which is a sign of a
+cash-rich balance sheet priced below its net cash — not of financial distress. A distressed,
+heavily indebted company shows the opposite: an Enterprise Value far above its market
+capitalization.
 - Understanding the Enterprise Value breakdown can provide insights into the sources of a
 company's value and potential risks.
 
@@ -212,6 +218,71 @@ Which returns:
 | Preferred Equity          |   0           |   0           |   0           |   0           |   0           |
 | Cash and Cash Equivalents |   3.494e+10   |   2.3646e+10  |   2.9965e+10  |   2.9943e+10  |   3.5934e+10  |
 | Enterprise Value          |   3.09629e+12 |   2.23005e+12 |   3.13835e+12 |   3.94761e+12 |   4.15562e+12 |
+
+
+---
+
+## get_tobins_q_ratio
+Calculate Tobin's Q Ratio, a valuation metric developed by economist James Tobin that compares the market value of a company to the cost of replacing its assets.
+
+The formula is as follows:
+
+- Market Value of Equity = Share Price * Total Shares Outstanding
+- Tobin's Q Ratio = (Market Value of Equity + Total Liabilities) / Total Assets
+
+Tobin's Q Ratio can be interpreted as follows:
+
+- A Q ratio greater than 1 indicates that the market values the company above the cost of replacing its assets, which can reflect growth expectations, unrecognized intangible value, or overvaluation. - A Q ratio less than 1 indicates that the market values the company below the cost of replacing its assets, which can reflect undervaluation or declining growth prospects.
+
+**Also known as:** Tobin's Q, Q ratio.
+
+**Args:**
+
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+columns will be shown. Defaults to None.
+
+**Returns:**
+
+pd.DataFrame: DataFrame containing the Market Value of Equity, Total Liabilities,
+Total Assets and Tobin's Q Ratio.
+
+**Notes:**
+
+- This implementation approximates the market value of debt with the book value of
+Total Liabilities, and the replacement cost of assets with the book value of Total
+Assets, consistent with the simplifications used in the Weighted Average Cost of
+Capital calculation elsewhere in this module.
+
+References:
+- Tobin, James. "A General Equilibrium Approach to Monetary Theory." Journal of Money,
+Credit and Banking, Vol. 1, No. 1, 1969, pp. 15-29.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.models.get_tobins_q_ratio().loc["AAPL"]
+```
+
+Which returns:
+
+|                        |        2021 |        2022 |
+|:-----------------------|------------:|------------:|
+| Market Value of Equity | 2.94327e+12 | 2.09689e+12 |
+| Total Liabilities      | 2.87912e+11 | 3.02083e+11 |
+| Total Assets           | 3.51002e+11 | 3.52755e+11 |
+| Tobin's Q Ratio        | 9.2056      | 6.8007      |
 
 
 ---
@@ -317,8 +388,10 @@ capital, i.e. it is creating value for its capital providers. A negative EVA ind
 company is destroying value.
 - EBIT is approximated as Net Income + Income Tax Expense + Interest Expense, consistent
 with the Altman Z-Score calculation elsewhere in this module.
-- Invested Capital is approximated as the average of Total Equity and Total Debt, consistent
-with the Return on Invested Capital calculation in the Ratios module.
+- Invested Capital is the sum of the two-period average of Total Equity and the two-period
+average of Total Debt, i.e. the capital employed over the course of the period rather than
+its closing balance, consistent with the Return on Invested Capital calculation in the
+Ratios module.
 
 **As an example:**
 
@@ -338,6 +411,75 @@ Which returns:
 | Invested Capital                  |  1.93614e+11 |  1.91382e+11 |
 | Weighted Average Cost of Capital  |       0.3598 |      -0.2326 |
 | Economic Value Added              |  2.73107e+10 |  1.46775e+11 |
+
+
+---
+
+## get_market_value_added
+Market Value Added (MVA) is a measure of a company's financial performance that represents the difference between the current market value of a company (both its equity and its debt) and the total capital that has historically been invested in it. It is the market-priced counterpart to Economic Value Added (EVA): where EVA measures a single period's excess return over the cost of capital, MVA reflects the market's cumulative, forward-looking verdict on all of a company's expected future EVA.
+
+The formula is as follows:
+
+- Market Value of Equity = Share Price * Total Shares Outstanding
+- Invested Capital = Total Equity + Total Debt
+- MVA = (Market Value of Equity + Market Value of Debt) - Invested Capital
+
+**Also known as:** MVA, market value added.
+
+**Args:**
+
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+columns will be shown. Defaults to None.
+
+**Returns:**
+
+pd.DataFrame: DataFrame containing the MVA and its components.
+
+**Notes:**
+
+- A positive MVA indicates that the market believes management has created value in
+excess of the capital invested in the company. A negative MVA indicates the market
+values the company below the capital that has historically been invested in it.
+- The Market Value of Debt is approximated as the closing book value of Total Debt,
+the same simplification used in the Weighted Average Cost of Capital calculation
+elsewhere in this module.
+- Invested Capital is the sum of the two-period average of Total Equity and the
+two-period average of Total Debt, i.e. the capital that was employed *during* the
+period, matching the Economic Value Added calculation elsewhere in this module. Note
+that this leaves the two sides of the MVA measured on slightly different bases: the
+market value is a closing (point-in-time) figure while the invested capital is an
+average over the period.
+
+References:
+- Stern, Joel M., G. Bennett Stewart, and Donald H. Chew. "The EVA Financial
+Management System." Journal of Applied Corporate Finance, Vol. 8, No. 2, 1995, pp. 32-46.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.models.get_market_value_added().loc["AAPL"]
+```
+
+Which returns:
+
+|                        |        2021 |        2022 |        2023 |        2024 |        2025 |
+|:-----------------------|------------:|------------:|------------:|------------:|------------:|
+| Market Value of Equity | 2.92522e+12 | 2.08399e+12 | 3.00786e+12 | 3.83091e+12 | 4.06822e+12 |
+| Market Value of Debt   | 1.36522e+11 | 1.3248e+11  | 1.2393e+11  | 1.19059e+11 | 1.12377e+11 |
+| Invested Capital       | 1.93614e+11 | 1.91382e+11 | 1.84614e+11 | 1.81042e+11 | 1.8106e+11  |
+| Market Value Added     | 2.86813e+12 | 2.02509e+12 | 2.94718e+12 | 3.76893e+12 | 3.99954e+12 |
 
 
 ---
@@ -403,6 +545,129 @@ Which returns:
 
 ---
 
+## get_free_cash_flow_to_firm
+Free Cash Flow to the Firm (FCFF) is the cash flow available to all providers of capital, both debt and equity holders, after the company has paid all of its operating expenses and invested in the assets needed to sustain its operations. Because it is measured before any financing cash flows, FCFF is capital-structure neutral, making it the cash flow base typically discounted at the Weighted Average Cost of Capital (WACC) when valuing the Enterprise Value of a company directly.
+
+The formula is as follows:
+
+- NOPAT = EBIT * (1 - Effective Tax Rate) - FCFF = NOPAT + Depreciation and Amortization - Capital Expenditure - Change in Net Working Capital
+
+**Also known as:** FCFF, unlevered free cash flow.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+columns will be shown. Defaults to None.
+
+**Returns:**
+
+pd.DataFrame: DataFrame containing the FCFF and its components.
+
+**Notes:**
+
+- EBIT is approximated as Net Income + Income Tax Expense + Interest Expense,
+consistent with the Altman Z-Score and Economic Value Added calculations elsewhere
+in this module.
+- The Capital Expenditure and Change in Working Capital line items from the cash flow
+statement are stored using a cash-flow-impact sign convention (a use of cash is
+negative). This method negates them internally so that they represent positive
+magnitudes (amount spent / amount of the increase), matching the standard academic
+FCFF formula. See `get_free_cash_flow_to_firm` in the Intrinsic module for details.
+- FCFF can be used together with the Weighted Average Cost of Capital in
+`get_intrinsic_valuation` (set `cash_flow_type` appropriately, or supply this
+result as a custom base cash flow) as an alternative to the reported Free Cash Flow.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.models.get_free_cash_flow_to_firm().loc["AAPL"]
+```
+
+Which returns:
+
+|                                   |        2021 |          2022 |
+|:----------------------------------|-------------:|-------------:|
+| Net Operating Profit After Taxes  |  9.69732e+10 |  1.02259e+11 |
+| Depreciation and Amortization     |  1.1284e+10  |  1.1104e+10  |
+| Capital Expenditure               |  1.1085e+10  |  1.0708e+10  |
+| Change in Net Working Capital     |  4.911e+09   | -1.2e+09     |
+| Free Cash Flow to Firm            |  9.22612e+10 |  1.03855e+11 |
+
+
+---
+
+## get_free_cash_flow_to_equity
+Free Cash Flow to Equity (FCFE) is the cash flow available to a company's common equity holders after all operating expenses, reinvestment needs, and net payments to (or from) debt holders have been accounted for. Unlike FCFF, FCFE is a levered cash flow measure and should be discounted at the Cost of Equity, not the Weighted Average Cost of Capital, when used to value equity directly.
+
+The formula is as follows:
+
+- FCFE = Net Income + Depreciation and Amortization - Capital Expenditure - Change in Net Working Capital + Net Borrowing
+
+**Also known as:** FCFE, levered free cash flow.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+columns will be shown. Defaults to None.
+
+**Returns:**
+
+pd.DataFrame: DataFrame containing the FCFE and its components.
+
+**Notes:**
+
+- The Capital Expenditure and Change in Working Capital line items from the cash flow
+statement are stored using a cash-flow-impact sign convention (a use of cash is
+negative). This method negates them internally so that they represent positive
+magnitudes, matching the standard academic FCFE formula. Net Debt Issued (used as
+Net Borrowing) is already reported using the cash-flow-impact convention (a positive
+value means the company was a net borrower) and is therefore used as-is.
+- FCFE is the natural cash-flow-based counterpart to Residual Income
+(`get_residual_income`) for equity-only valuation, in the same way FCFF is the
+counterpart to Economic Value Added for firm-level valuation.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.models.get_free_cash_flow_to_equity().loc["AAPL"]
+```
+
+Which returns:
+
+|                                   |        2021 |          2022 |
+|:----------------------------------|-------------:|-------------:|
+| Net Income                        |  9.4680e+10  |  9.9803e+10  |
+| Depreciation and Amortization     |  1.1284e+10  |  1.1104e+10  |
+| Capital Expenditure               |  1.1085e+10  |  1.0708e+10  |
+| Change in Net Working Capital     |  4.911e+09   | -1.2e+09     |
+| Net Borrowing                     |  1.1643e+10  | -4.078e+09   |
+| Free Cash Flow to Equity          |  1.01611e+11 |  9.7321e+10  |
+
+
+---
+
 ## get_gorden_growth_model
 The Gordon Growth Model, also known as the Dividend Discount Model (DDM) with Constant Growth, is a method used to estimate the intrinsic value of a stock based on its expected future dividends. The model assumes that dividends will grow at a constant rate indefinitely.
 
@@ -435,6 +700,11 @@ pd.DataFrame: DataFrame containing the intrinsic value for each ticker over time
 
 - The results are highly dependent on the input. Therefore, think carefully about each input parameter to
 ensure the results are accurate (given your beliefs)
+- Each historical period is valued off that period's *actual* Dividends per Share, and only the
+periods beyond the last one available are projected forward at the given growth rate. The first
+period of the historical window will therefore often be understated, since it only covers the part
+of the year that falls inside the requested date range and so captures only part of the year's
+dividends. Use a start_date at least one full period before the first period you intend to read.
 
 **As an example:**
 
@@ -450,16 +720,144 @@ Which returns:
 
 |      |   AAPL |    MSFT |
 |:-----|-------:|--------:|
-| 2022 | 0      |  0      |
-| 2023 | 0      |  0      |
-| 2024 | 0      |  0      |
-| 2025 | 5.46   | 12.18   |
-| 2026 | 5.733  | 12.789  |
-| 2027 | 6.0196 | 13.4284 |
-| 2028 | 6.3206 | 14.0999 |
-| 2029 | 6.6367 | 14.8049 |
-| 2030 | 6.9685 | 15.5451 |
-| 2031 | 7.3169 | 16.3224 |
+| 2021 | 1.54   |  8.26   |
+| 2022 | 6.37   | 17.78   |
+| 2023 | 6.65   | 19.53   |
+| 2024 | 6.93   | 21.56   |
+| 2025 | 7.21   | 23.8    |
+| 2026 | 7.5705 | 24.99   |
+| 2027 | 7.949  | 26.2395 |
+| 2028 | 8.3465 | 27.5515 |
+| 2029 | 8.7638 | 28.929  |
+| 2030 | 9.202  | 30.3755 |
+| 2031 | 9.6621 | 31.8943 |
+
+
+---
+
+## get_two_stage_dividend_discount_model
+The Two-Stage Dividend Discount Model extends the (single-stage) Gordon Growth Model to companies that are not expected to grow at a constant rate forever. It explicitly projects and discounts dividends over an initial high-growth phase, and then values everything from the end of that phase onward as a perpetuity growing at a lower, more sustainable stable rate (a Gordon Growth terminal value).
+
+The formula is as follows:
+
+- Dividend Projection_t = Dividends Per Share * (1 + High Growth Rate)^t - High-Growth Phase Present Value = Sum of Dividend Projection_t / (1 + Rate of Return)^t, for t = 1, ..., High Growth Periods - Terminal Value = Last Dividend Projection * (1 + Stable Growth Rate) / (Rate of Return - Stable Growth Rate) - Intrinsic Value = High-Growth Phase Present Value + (Terminal Value / (1 + Rate of Return)^High Growth Periods)
+
+**Also known as:** two-stage DDM, two-stage dividend discount model.
+
+**Args:**
+
+- <u>rate_of_return (float, list or dict):</u> The required rate of return (discount rate)
+used to discount both phases. Can be one number to use for all tickers, or a list
+or dict that contains a rate of return for each ticker.
+- <u>high_growth_rate (float, list or dict):</u> The constant growth rate applied to
+dividends during the explicit high-growth phase. Can be one number to use for all
+tickers, or a list or dict that contains a high growth rate for each ticker.
+- <u>stable_growth_rate (float, list or dict):</u> The perpetual (terminal) growth rate
+applied to dividends from the end of the high-growth phase onward. Can be one
+number to use for all tickers, or a list or dict that contains a stable growth
+rate for each ticker.
+- <u>high_growth_periods (int, optional):</u> The number of periods in the explicit
+high-growth phase. Defaults to 5.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+
+**Returns:**
+
+pd.DataFrame: DataFrame containing the intrinsic value and its components for
+each ticker.
+
+**Notes:**
+
+- The results are highly dependent on the input. Therefore, think carefully about
+each input parameter to ensure the results are accurate (given your beliefs).
+- The Rate of Return must be greater than the Stable Growth Rate, otherwise the
+Terminal Value formula divides by a non-positive number.
+- The base dividend used for the projection is the most recent available Dividends
+Per Share for each ticker. For companies that do not pay a dividend, this model is
+not meaningful (the projections and resulting intrinsic value will be zero).
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.models.get_two_stage_dividend_discount_model(0.10, 0.12, 0.03).loc["AAPL"]
+```
+
+Which returns:
+
+|                                   |   High-Growth Periods = 5 |
+|:----------------------------------|---------------------------:|
+| Final High-Growth Dividend        |                     1.6037 |
+| High-Growth Phase Present Value   |                     4.8043 |
+| Terminal Value                    |                    23.5978 |
+| Terminal Value Present Value      |                    14.6523 |
+| Intrinsic Value                   |                    19.4566 |
+
+
+---
+
+## get_residual_income
+Residual Income is a measure of the profit a company generates in excess of the return required by its equity holders. It is the equity-side counterpart to Economic Value Added (EVA), and underpins the Residual Income Model, an alternative equity valuation lens to a traditional Discounted Cash Flow (DCF) that is particularly useful when a company's free cash flows are negative or unpredictable but its accounting earnings are more stable.
+
+The formula is as follows:
+
+- Residual Income = Net Income - (Cost of Equity * Book Value of Equity)
+
+**Also known as:** RI, economic profit (equity variant), abnormal earnings.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+columns will be shown. Defaults to None.
+
+**Returns:**
+
+pd.DataFrame: DataFrame containing the Residual Income and its components.
+
+**Notes:**
+
+- A positive Residual Income indicates that the company generated more profit than
+equity holders required given the capital they have invested. A negative Residual
+Income indicates the company failed to earn its equity holders' required return, even
+if it still reported a positive Net Income.
+- The Cost of Equity is approximated with the Capital Asset Pricing Model (CAPM),
+consistent with the Weighted Average Cost of Capital calculation elsewhere in this
+module.
+- The Book Value of Equity is approximated as the average of Total Shareholder Equity
+minus Preferred Stock over the current and prior period, excluding preferred equity
+since Residual Income (like Net Income) belongs to common equity holders only.
+
+References:
+- Ohlson, James A. "Earnings, Book Values, and Dividends in Equity Valuation."
+Contemporary Accounting Research, Vol. 11, No. 2, 1995, pp. 661-687.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.models.get_residual_income().loc["AAPL"]
+```
+
+Which returns:
+
+|                          |        2021 |          2022 |
+|:-------------------------|-------------:|-------------:|
+| Net Income               |  9.4680e+10  |  9.9803e+10  |
+| Cost of Equity           |       0.3757 |      -0.2485 |
+| Book Value of Equity     |  6.4215e+10  |  5.6881e+10  |
+| Residual Income          |  7.0554e+10  |  1.1394e+11  |
 
 
 ---
@@ -548,7 +946,7 @@ The Piotroski Score is calculated by summing the scores assigned to each of the 
 
 Note that the Piostroski Score has been developed many decades ago and that it is important to always compare the same sectors. E.g. it could be that it is quite normal that a firm issues shares each year which nets a lower score even though it is a normal practice in that sector.
 
-Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers." Journal of Accounting Research, Vol. 38, No. 3, 1999, pp. 1-41.
+Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers." Journal of Accounting Research, Vol. 38, Supplement, 2000, pp. 1-41.
 
 **Also known as:** Piotroski F-score, financial strength, quality score.
 
@@ -574,18 +972,21 @@ toolkit.models.get_piotroski_score().loc["AAPL"]
 
 Which returns:
 
-|                                     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|                                     |   2022 |   2023 |   2024 |   2025 |   2026 |
 |:------------------------------------|-------:|-------:|-------:|-------:|-------:|
-| Return on Assets Criteria           |      1 |      1 |      1 |      1 |      1 |
-| Operating Cashflow Criteria         |      1 |      1 |      1 |      1 |      1 |
-| Change in Return on Assets Criteria |      0 |      0 |      0 |      0 |      1 |
-| Accruals Criteria                   |      1 |      1 |      1 |      1 |      1 |
-| Change in Leverage Criteria         |      0 |      1 |      1 |      1 |      1 |
-| Change in Current Ratio Criteria    |      0 |      0 |      1 |      0 |      1 |
-| Number of Shares Criteria           |      0 |      1 |      1 |      1 |      1 |
-| Gross Margin Criteria               |      1 |      1 |      1 |      1 |      1 |
-| Asset Turnover Criteria             |      0 |      1 |      0 |      1 |      1 |
-| Piotroski Score                     |      4 |      7 |      7 |      7 |      9 |
+| Return on Assets Criteria           |      1 |      1 |      1 |      1 |    nan |
+| Operating Cashflow Criteria         |      1 |      1 |      1 |      1 |    nan |
+| Change in Return on Assets Criteria |      1 |      0 |      0 |      1 |    nan |
+| Accruals Criteria                   |      1 |      1 |      1 |      0 |    nan |
+| Change in Leverage Criteria         |      1 |      1 |      1 |      1 |    nan |
+| Change in Current Ratio Criteria    |      0 |      1 |      0 |      1 |    nan |
+| Number of Shares Criteria           |      1 |      1 |      1 |      1 |    nan |
+| Gross Margin Criteria               |      1 |      1 |      1 |      1 |    nan |
+| Asset Turnover Criteria             |      1 |      0 |      1 |      1 |    nan |
+| Piotroski Score                     |      8 |      7 |      7 |      8 |    nan |
+
+Periods for which the financial statements have not been reported yet are returned as NaN
+rather than being scored zero across the board.
 
 
 ---
@@ -666,6 +1067,398 @@ Which returns:
 
 ---
 
+## get_ohlson_o_score
+Calculates the Ohlson O-Score, a financial metric used to predict the likelihood of a company going bankrupt. Unlike the Altman Z-Score, which is built with multiple discriminant analysis, the O-Score's coefficients come from a fitted logistic regression (logit) model. This is why the two models are usually reported side by side rather than one being treated as a replacement for the other: the Z-Score is only meaningful compared against Altman's empirically derived threshold bands, while the O-Score is directly interpretable as a probability of bankruptcy once passed through the logistic transform.
+
+The formula is as follows:
+
+- SIZE = ln(Total Assets)
+- TLTA = Total Liabilities / Total Assets
+- WCTA = Working Capital / Total Assets
+- CLCA = Current Liabilities / Current Assets
+- OENEG = 1 if Total Liabilities > Total Assets else 0
+- NITA = Net Income / Total Assets
+- FUTL = Operating Cash Flow / Total Liabilities
+- INTWO = 1 if Net Income was negative for the last two years else 0
+- CHIN = (Net Income (t) - Net Income (t-1)) / (\|Net Income (t)\| + \|Net Income (t-1)\|)
+- O-Score = -1.32 - 0.407 * SIZE + 6.03 * TLTA - 1.43 * WCTA + 0.0757 * CLCA
+- 1.72 * OENEG - 2.37 * NITA - 1.83 * FUTL + 0.285 * INTWO - 0.521 * CHIN
+- Bankruptcy Probability = 1 / (1 + e^(-O-Score))
+
+The Ohlson O-Score can be interpreted as follows:
+
+- Ohlson's (1980) original cutoff is a bankruptcy probability of 0.038 (3.8%), the threshold that minimized the sum of Type I and Type II misclassification errors on his sample. It is deliberately far below the naive 0.50 midpoint because bankruptcy is a rare event. Equivalently, in raw O-Score terms the cutoff sits at ln(0.038 / 0.962), i.e. approximately -3.23. - A higher probability indicates a higher likelihood of bankruptcy.
+
+**Also known as:** Ohlson O-Score, bankruptcy prediction, financial distress score.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+columns will be shown. Defaults to None.
+
+**Returns:**
+
+pd.DataFrame: DataFrame containing the Ohlson O-Score, its bankruptcy probability, and its
+components.
+
+**Notes:**
+
+- Ohlson's (1980) original SIZE term deflates Total Assets by the US GNP price-level index
+(rebased to 1968), a US-specific 1970s macro series that isn't available in this toolkit and
+isn't meaningful outside the original US sample. This implementation simplifies/omits that
+deflator and uses ln(Total Assets) in nominal terms instead. This shifts the O-Score (and
+resulting probability) by roughly a constant amount across all observations in a given
+currency/period — it does not change the *ranking* of companies relative to one another, but
+the absolute probability estimate should not be compared directly to studies that apply the
+deflator.
+- Ohlson's original FUTL term uses "Funds from Operations", an accounting-flow concept that
+predates standardized cash flow statements. This implementation approximates Funds from
+Operations with Operating Cash Flow, the standard simplification used in modern
+reproductions of the O-Score.
+- The Beneish M-Score, Altman Z-Score, Piotroski F-Score and Ohlson O-Score are natural
+companions, using the same normalized financial statements as their input.
+- As with the other bankruptcy and distress models, this is a probabilistic, not a
+definitive, indicator and should be combined with further fundamental analysis.
+
+References:
+- Ohlson, James A. "Financial Ratios and the Probabilistic Prediction of Bankruptcy." Journal of
+Accounting Research, Vol. 18, No. 1, 1980, pp. 109-131.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+ohlson_o_score = toolkit.models.get_ohlson_o_score()
+
+ohlson_o_score.loc["AAPL"]
+```
+
+Which returns:
+
+|                                             |     2020 |     2021 |     2022 |     2023 |
+|:--------------------------------------------|---------:|---------:|---------:|---------:|
+| Log of Total Assets                         |  26.5037 |  26.5841 |  26.589  |  26.5886 |
+| Total Liabilities to Total Assets            |   0.7983 |   0.8203 |   0.8564 |   0.8237 |
+| Working Capital to Total Assets              |   0.1183 |   0.0267 |  -0.0527 |  -0.0049 |
+| Current Liabilities to Current Assets        |   0.7334 |   0.9306 |   1.1372 |   1.0121 |
+| Negative Equity Indicator                    |   0      |   0      |   0      |   0      |
+| Net Income to Total Assets                   |   0.1773 |   0.2697 |   0.2829 |   0.2751 |
+| Funds from Operations to Total Liabilities   |   0.312  |   0.3614 |   0.4044 |   0.3806 |
+| Negative Income Indicator                    |   0      |   0      |   0      |   0      |
+| Change in Net Income                         | nan      |   0.245  |   0.0263 |  -0.0143 |
+| Ohlson O-Score                               | nan      |  -8.5895 |  -8.2408 |  -8.4318 |
+| Ohlson Bankruptcy Probability                | nan      |   0.0002 |   0.0003 |   0.0002 |
+
+Note that the first period is NaN because the Change in Net Income and Negative Income
+Indicator components require a prior period to compare against.
+
+
+---
+
+## get_zmijewski_score
+Calculates the Zmijewski Score, a financial metric used to predict the likelihood of a company going bankrupt. It is a simpler, three-variable model compared to both the Altman Z-Score and the Ohlson O-Score, and is commonly used as a robustness check when those two models disagree, since it is estimated on a different sample and with a different statistical technique (a probit model rather than discriminant analysis or logistic regression).
+
+The formula is as follows:
+
+- Net Income to Total Assets = Net Income / Total Assets
+- Total Liabilities to Total Assets = Total Liabilities / Total Assets
+- Current Assets to Current Liabilities = Current Assets / Current Liabilities
+- X = -4.3 - 4.5 * Net Income to Total Assets + 5.7 * Total Liabilities to Total Assets
+- 0.004 * Current Assets to Current Liabilities
+- Bankruptcy Probability = Phi(X), the standard normal cumulative distribution function
+
+The Zmijewski Score can be interpreted as follows:
+
+- A higher X (and therefore a higher bankruptcy probability) indicates a higher likelihood of financial distress.
+
+**Also known as:** Zmijewski Score, ZFC score, bankruptcy prediction, financial distress score.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+columns will be shown. Defaults to None.
+
+**Returns:**
+
+pd.DataFrame: DataFrame containing the Zmijewski Score, its bankruptcy probability, and its
+components.
+
+**Notes:**
+
+- Unlike the Ohlson O-Score, which uses a logistic (sigmoid) link to convert its score into
+a probability, the Zmijewski Score uses a probit link (the standard normal CDF). Applying a
+logistic transform to the Zmijewski Score instead would produce an incorrect probability.
+- As with the Altman Z-Score, Piotroski F-Score, Beneish M-Score and Ohlson O-Score, this is
+a probabilistic, not a definitive, indicator and should be combined with further fundamental
+analysis.
+
+References:
+- Zmijewski, Mark E. "Methodological Issues Related to the Estimation of Financial Distress
+Prediction Models." Journal of Accounting Research, Vol. 22, 1984, pp. 59-82.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+zmijewski_score = toolkit.models.get_zmijewski_score()
+
+zmijewski_score.loc["AAPL"]
+```
+
+Which returns:
+
+|                                          |    2020 |    2021 |    2022 |    2023 |
+|:-----------------------------------------|--------:|--------:|--------:|--------:|
+| Net Income to Total Assets               |  0.1773 |  0.2697 |  0.2829 |  0.2751 |
+| Total Liabilities to Total Assets         |  0.7983 |  0.8203 |  0.8564 |  0.8237 |
+| Current Assets to Current Liabilities     |  1.3636 |  1.0746 |  0.8794 |  0.988  |
+| Zmijewski Score                           | -0.553  | -0.8427 | -0.6955 | -0.8466 |
+| Zmijewski Bankruptcy Probability          |  0.2901 |  0.1997 |  0.2434 |  0.1986 |
+
+
+---
+
+## get_springate_score
+Calculates the Springate Score, a financial metric used to predict the likelihood of a company going bankrupt. It follows the same multiple discriminant analysis methodology as the Altman Z-Score, but was calibrated on a smaller, Canadian-firm sample using four financial ratios instead of five.
+
+The formula is as follows:
+
+- Working Capital to Total Assets = Working Capital / Total Assets - EBIT to Total Assets = EBIT / Total Assets - EBT to Current Liabilities = Earnings Before Taxes / Total Current Liabilities - Sales to Total Assets = Sales / Total Assets - Springate Score = 1.03 * Working Capital to Total Assets + 3.07 * EBIT to Total Assets + 0.66 * EBT to Current Liabilities + 0.4 * Sales to Total Assets
+
+The Springate Score can be interpreted as follows:
+
+- A Springate Score of less than 0.862 indicates a high likelihood of bankruptcy.
+- A Springate Score of greater than 0.862 indicates a low likelihood of bankruptcy.
+
+**Also known as:** Springate Score, S-Score, bankruptcy prediction, financial distress score.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+columns will be shown. Defaults to None.
+
+**Returns:**
+
+pd.DataFrame: DataFrame containing the Springate Score and its components.
+
+**Notes:**
+
+- As with the Altman Z-Score, Piotroski F-Score, Beneish M-Score, Ohlson O-Score and
+Zmijewski Score, this is a probabilistic, not a definitive, indicator and should be
+combined with further fundamental analysis.
+- EBIT is approximated as Net Income + Income Tax Expense + Interest Expense,
+consistent with the Altman Z-Score calculation elsewhere in this module.
+
+References:
+- Springate, Gordon L.V. "Predicting the Possibility of Failure in a Canadian Firm."
+Unpublished M.B.A. Research Project, Simon Fraser University, 1978.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.models.get_springate_score().loc["AAPL"]
+```
+
+Which returns:
+
+|                                   |    2021 |    2022 |
+|:----------------------------------|--------:|--------:|
+| Working Capital to Total Assets   |  0.0267 | -0.0527 |
+| EBIT to Total Assets              |  0.3187 |  0.3459 |
+| EBT to Current Liabilities        |  0.8703 |  0.7735 |
+| Sales to Total Assets             |  1.0422 |  1.1179 |
+| Springate Score                   |  1.997  |  1.9655 |
+
+
+---
+
+## get_grover_score
+Calculates the Grover Score, a financial metric used to predict the likelihood of a company going bankrupt. It was developed by re-estimating the coefficients of a reduced-form Altman Z-Score and adding a Return on Assets term, using a sample that paired each of Altman's original bankrupt firms with a matched non-bankrupt firm from the same industry and year.
+
+The formula is as follows:
+
+- Working Capital to Total Assets = Working Capital / Total Assets - EBIT to Total Assets = EBIT / Total Assets - Return on Assets = Net Income / Total Assets - Grover Score = 1.65 * Working Capital to Total Assets + 3.404 * EBIT to Total Assets - 0.016 * Return on Assets + 0.057
+
+The Grover Score can be interpreted as follows:
+
+- A Grover Score of -0.02 or lower indicates a high likelihood of bankruptcy. - A Grover Score of 0.01 or higher indicates a low likelihood of bankruptcy (per some secondary sources), leaving a gray area in between the two thresholds.
+
+**Also known as:** Grover Score, G-Score, bankruptcy prediction, financial distress score.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+columns will be shown. Defaults to None.
+
+**Returns:**
+
+pd.DataFrame: DataFrame containing the Grover Score and its components.
+
+**Notes:**
+
+- As with the Altman Z-Score, Springate Score, Ohlson O-Score and Zmijewski Score,
+this is a probabilistic, not a definitive, indicator and should be combined with
+further fundamental analysis.
+- EBIT is approximated as Net Income + Income Tax Expense + Interest Expense,
+consistent with the Altman Z-Score calculation elsewhere in this module. Return on
+Assets uses the point-in-time Total Assets balance (not averaged), matching the
+original Grover (2001) specification.
+
+References:
+- Grover, Jeffrey S. "Validating the Grover Bankruptcy Model." Doctoral dissertation,
+University of North Texas, 2003.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.models.get_grover_score().loc["AAPL"]
+```
+
+Which returns:
+
+|                                   |    2021 |    2022 |
+|:----------------------------------|--------:|--------:|
+| Working Capital to Total Assets   |  0.0267 | -0.0527 |
+| EBIT to Total Assets              |  0.3187 |  0.3459 |
+| Return on Assets                  |  0.2697 |  0.2829 |
+| Grover Score                      |  1.1814 |  1.1432 |
+
+
+---
+
+## get_fulmer_h_score
+Calculates the Fulmer H-Score, a financial metric used to predict the likelihood of a company going bankrupt. Unlike the Altman Z-Score, which was built on relatively large, listed manufacturing companies, the Fulmer H-Score was calibrated on a matched-pair sample of small, failed and non-failed U.S. companies, using nine financial ratios selected via step-wise multiple discriminant analysis.
+
+The formula is as follows:
+
+H-Score = 5.528 * V1 + 0.212 * V2 + 0.073 * V3 + 1.270 * V4 - 0.120 * V5 + 2.335 * V6 + 0.575 * V7 + 1.083 * V8 + 0.894 * V9 - 6.075
+
+The nine variables are:
+
+- V1: Retained Earnings to Total Assets
+- V2: Sales to Total Assets
+- V3: EBT to Total Equity
+- V4: Cash Flow (Operating Cash Flow) to Total Liabilities
+- V5: Total Debt to Total Assets
+- V6: Current Liabilities to Total Assets
+- V7: Log of Tangible Total Assets (Total Assets less Goodwill and Intangible Assets)
+- V8: Working Capital to Total Liabilities
+- V9: Log of EBIT to Interest Expense
+
+The Fulmer H-Score can be interpreted as follows:
+
+- An H-Score of less than 0 predicts failure.
+- An H-Score of greater than 0 predicts non-failure.
+
+**Also known as:** Fulmer H-Score, H factor, bankruptcy prediction, financial distress score.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+columns will be shown. Defaults to None.
+
+**Returns:**
+
+pd.DataFrame: DataFrame containing the Fulmer H-Score and its components.
+
+**Notes:**
+
+- Because V7 and V9 involve a natural logarithm, periods where Tangible Total Assets
+is zero or negative, where EBIT and Interest Expense do not share the same sign, or
+where the company reports no Interest Expense at all, will produce NaN and therefore
+no H-Score for that period. This is a structural limitation of the log-linear Fulmer
+specification, not a bug — the same kind of limitation documented for the Graham
+Number elsewhere in this toolkit.
+- Because V7 uses an un-normalized dollar figure, the H-Score is sensitive to the
+absolute scale of a company's total assets; treat results for very large companies
+(far outside the small-firm sample the model was calibrated on) with additional
+caution.
+- As with the Altman Z-Score, Springate Score and Grover Score, this is a
+probabilistic, not a definitive, indicator and should be combined with further
+fundamental analysis.
+
+References:
+- Fulmer, John G., James E. Moon, Thomas A. Gavin, and Michael J. Erwin. "A
+Bankruptcy Classification Model for Small Firms." Journal of Commercial Bank
+Lending, Vol. 66, No. 11, 1984, pp. 25-37.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.models.get_fulmer_h_score().loc["AAPL"]
+```
+
+Which returns:
+
+|                                       |    2021 |    2022 |
+|:--------------------------------------|--------:|--------:|
+| Retained Earnings to Total Assets     |  0.0158 | -0.0087 |
+| Sales to Total Assets                 |  1.0422 |  1.1179 |
+| EBT to Total Equity                   |  1.731  |  2.3505 |
+| Cash Flow to Total Liabilities        |  0.3614 |  0.4044 |
+| Debt to Total Assets                  |  0.3889 |  0.3756 |
+| Current Liabilities to Total Assets   |  0.3575 |  0.4365 |
+| Log of Tangible Total Assets          | 26.5841 | 26.589  |
+| Working Capital to Total Liabilities  |  0.0325 | -0.0615 |
+| Log of EBIT to Interest Expense       |  3.7445 |  3.729  |
+| Fulmer H-Score                        | 14.2755 | 14.329  |
+
+
+---
+
 ## get_present_value_of_growth_opportunities
 The Present Value of Growth Opportunities (PVGO) is a financial metric that represents the present value of a company's future growth opportunities. It is calculated as the difference between the company's current stock price and the discounted value of its future cash flows.
 
@@ -680,8 +1473,9 @@ The formula is as follows:
 - <u>calculate_daily (bool, optional):</u> Whether to calculate the PVGO using daily historical data.
 Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation.
-Defaults to False.
+- <u>include_dividends (bool, optional):</u> Whether to deduct Preferred Dividends Paid from Net
+Income when calculating the Earnings per Share, so that the earnings figure reflects what is
+attributable to common shareholders only. Defaults to False.
 - <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
@@ -693,6 +1487,15 @@ values. Defaults to False.
 **Returns:**
 
 pd.DataFrame: DataFrame containing the PVGO values.
+
+**Notes:**
+
+- The textbook PVGO discounts the no-growth value of the company (Earnings per Share / r) at
+the cost of equity, since both the share price and the Earnings per Share are equity-only,
+per-share quantities. This implementation discounts at the Weighted Average Cost of Capital
+instead, which blends in the (typically lower, tax-shielded) cost of debt and therefore
+generally understates PVGO. Prefer comparing PVGO across companies, or over time for the same
+company, over reading absolute levels literally.
 
 **As an example:**
 

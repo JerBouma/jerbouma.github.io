@@ -1,7 +1,7 @@
 ---
 title: Documentation
-excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 200+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
-description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 200+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method.
+excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 500+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
+description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 500+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
 author_profile: false
 permalink: /projects/financetoolkit/docs
 classes: wide-sidebar
@@ -12,7 +12,7 @@ sidebar:
     nav: "financetoolkit-docs"
 ---
 
-This page includes all the documentation for the Finance Toolkit, an open-source toolkit in which all relevant financial ratios (200+), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
+This page includes all the documentation for the Finance Toolkit, an open-source toolkit in which all relevant financial methods (500+) are written down in the most simplistic way allowing for complete transparency of the calculation method. Each functionality includes an example of how to use it and is therefore an excellent way to better understand how to use each functionality. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the example notebooks as found [here](/projects/financetoolkit#how-to-guides-for-the-financetoolkit).
 
 The Toolkit Module is a collection of functions that collect and parse data, including historical data, fundamental data (balance, income and cash flow statements) and metrics from Financial Modeling Prep such as enterprise values, company profiles and more. From this module you can access all related sub-modules.
 
@@ -209,7 +209,9 @@ Which returns:
 ---
 
 ## risk
-This gives access to the Risk module. The Risk Module is meant to calculate metrics related to risk such as Value at Risk (VaR), Conditional Value at Risk (cVaR), EMWA/GARCH models and similar models.
+This gives access to the Risk module. The Risk Module is meant to calculate metrics related to risk such as Value at Risk (VaR), Conditional Value at Risk (cVaR), EMWA/GARCH models and similar models. It also houses cross-asset systemic risk and liquidity measures (CoVaR, Tail Dependence, Amihud Illiquidity, Roll Spread).
+
+Note that the time-series diagnostic and econometric tests (unit root tests, cointegration, Granger causality, ARCH-LM, Jarque-Bera and similar tests) live in the separate Econometrics module instead.
 
 It gives insights in the risk a stock composes that is not perceived as easily by looking at the data. This class is closely related to the Performance class which highlights things such as Sharpe Ratio and Sortino Ratio.
 
@@ -241,6 +243,26 @@ Which returns:
 | 2022   | -0.8026 | -1.0046 |
 | 2023   |  1.8549 |  1.8238 |
 
+
+---
+
+## econometrics
+This gives access to the Econometrics module, a thin wrapper that funnels this Toolkit's price/return data through `statsmodels` and `linearmodels` -- regression (OLS/WLS/GLS/ Logit/Probit/Quantile), panel data (Fixed/Random Effects, Hausman), causal inference (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching), specification/hypothesis tests (Breusch-Pagan, White, Durbin-Watson, VIF, RESET, Chow, t/F/LR/Wald tests), stationarity (Augmented Dickey-Fuller, KPSS, Phillips-Perron, Zivot-Andrews unit root tests), long-run equilibrium relationships (Engle-Granger and Johansen cointegration), predictive lead-lag relationships (Granger causality), model/ residual diagnostics (ARCH-LM, Jarque-Bera, Ljung-Box, Variance Ratio, CUSUM), forecast comparison (Diebold-Mariano), and time series forecasting (ARIMA, VAR, VECM).
+
+This class is closely related to the Risk class, which houses the risk measures (VaR, CVaR, GARCH) that these tests often inform the choice of.
+
+Requires the optional `financetoolkit[econometrics]` extra (`statsmodels` and `linearmodels`) -- install with `pip install financetoolkit[econometrics]`.
+
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics){:target="_blank"}
+
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.econometrics.get_augmented_dickey_fuller(period='yearly')
+```
 
 ---
 
@@ -475,6 +497,8 @@ Note that this information requires a Premium FMP subscription.
 - <u>rounding (int \| None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
 - <u>growth (bool, optional):</u> Defines whether to return the growth of the data. Defaults to False.
 - <u>lag (int \| list[int], optional):</u> Defines the number of periods to lag the growth data by. Defaults to 1.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -532,6 +556,10 @@ Note that this information requires a Premium FMP subscription.
 
 - <u>actual_dates (bool):</u> Defines whether to return the actual dates or the corresponding quarters.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
+- <u>rounding (int \| None):</u> The number of decimals to round the results to. Defaults to None,
+which uses the rounding set on the Toolkit.
 
 **Returns:**
 
@@ -581,6 +609,8 @@ Obtain the latest stock market news articles for the tickers of this Toolkit ins
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -621,6 +651,8 @@ Obtain the latest official company press releases for the tickers of this Toolki
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -661,6 +693,8 @@ Note that this information requires a Premium FMP subscription.
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -703,6 +737,8 @@ Note that this information requires a Premium FMP subscription.
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -830,6 +866,8 @@ Defaults to "1hour".
 - <u>return_column (str, optional):</u> The column to use for the return calculation. Defaults to "Close".
 - <u>fill_nan (bool, optional):</u> Defines whether to forward fill NaN values. Defaults to True.
 - <u>rounding (int \| None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -879,6 +917,8 @@ If a company does not pay any dividend, the function will mention that it was no
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -934,6 +974,8 @@ ESG scores provide investors with a holistic view of a company's sustainability 
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -961,6 +1003,93 @@ Which returns:
 | 2023   |                 72.89 |          58.16 |              60.65 |       63.9  |
 | 2024   |                 72.53 |          58.08 |              60.7  |       63.77 |
 | 2025   |                 71.85 |          57.64 |              59.62 |       63.04 |
+
+
+---
+
+## get_market_risk_premium
+Obtains the equity market risk premium by country -- the country default spread plus the equity risk premium, following the approach popularized by Aswath Damodaran -- which is widely used to calibrate country-specific costs of equity and discount rates in a multi-country setting.
+
+**Also known as:** country risk premium, Damodaran equity risk premium.
+
+**Args:**
+
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+
+**Raises:**
+
+ValueError: If an API key is not defined for FinancialModelingPrep.
+
+**Returns:**
+
+pd.DataFrame: The market risk premium by country, including the continent, Country
+Risk Premium and Total Equity Risk Premium (both in percentage points).
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+market_risk_premium = toolkit.get_market_risk_premium()
+
+market_risk_premium.loc[['United States', 'Germany', 'Brazil']]
+```
+
+Which returns:
+
+| Country       | Continent     |   Country Risk Premium |   Total Equity Risk Premium |
+|:--------------|:--------------|------------------------:|-----------------------------:|
+| United States | North America |                    0.23 |                          4.46 |
+| Germany       | Europe        |                    0    |                          4.23 |
+| Brazil        | South America |                    3.24 |                          7.47 |
+
+
+---
+
+## get_commitment_of_traders
+Obtains the CFTC Commitment of Traders (COT) report for the tickers the Toolkit was initialized with. Published weekly by the U.S. Commodity Futures Trading Commission, it breaks down open interest in futures markets by trader type -- Non-Commercial (large speculators), Commercial (hedgers) and Non-Reportable (small traders) -- and is widely used to gauge positioning and sentiment in commodity, currency, interest rate and stock index futures markets.
+
+Note that this data is only available for CFTC-tracked futures markets. Tickers without a corresponding futures contract (e.g. most individual equities) return no data.
+
+**Also known as:** COT report, CFTC positioning data, speculator/hedger positioning.
+
+**Args:**
+
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+
+**Raises:**
+
+ValueError: If an API key is not defined for FinancialModelingPrep.
+
+**Returns:**
+
+pd.DataFrame: The Commitment of Traders report for the specified tickers.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["NG", "GC"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+commitment_of_traders = toolkit.get_commitment_of_traders()
+
+commitment_of_traders.xs("NG", level=1, axis=1)[
+    ["Open Interest", "Non-Commercial Long", "Non-Commercial Short", "Commercial Long", "Commercial Short"]
+].tail()
+```
+
+Which returns:
+
+| date                |   Open Interest |   Non-Commercial Long |   Non-Commercial Short |   Commercial Long |   Commercial Short |
+|:--------------------|-----------------:|----------------------:|------------------------:|-------------------:|--------------------:|
+| 2024-01-30 00:00:00 |          1471807 |                 279539 |                  382722 |              526952 |               450698 |
+| 2024-02-06 00:00:00 |          1533041 |                 301020 |                  415251 |              539246 |               456560 |
+| 2024-02-13 00:00:00 |          1554063 |                 334504 |                  471061 |              552780 |               453300 |
+| 2024-02-20 00:00:00 |          1592460 |                 356334 |                  510206 |              567791 |               452247 |
+| 2024-02-27 00:00:00 |          1500882 |                 326328 |                  467881 |              545380 |               433185 |
 
 
 ---
@@ -1019,6 +1148,18 @@ Retrieve daily, weekly, monthly, quarterly or yearly treasury data. This can be 
 - <u>fill_nan (bool):</u> Defines whether to forward fill NaN values. This defaults
 to True to prevent holes in the dataset. This is especially relevant for
 technical indicators.
+- <u>risk_free_rate (str \| None, optional):</u> The maturity to return as the risk free rate
+('13w', '5y', '10y' or '30y'). Defaults to None, which uses the maturity set on
+the Toolkit.
+- <u>divide_ohlc_by (int \| float \| None, optional):</u> A value to divide the yields by. Treasury
+yields are published in percent, so this defaults to 100 to return decimals.
+- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding set on the Toolkit.
+- <u>show_errors (bool, optional):</u> Whether to report retrieval errors. Defaults to False.
+- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+over the source set on the Toolkit itself. Defaults to None, which falls back to
+the Toolkit's own enforce_source.
 
 **Returns:**
 
@@ -1060,8 +1201,6 @@ Important to note is that when an api_key is included in the Toolkit initializat
 
 **Args:**
 
-- <u>start (str):</u> The start date for the exchange data. Defaults to None.
-- <u>end (str):</u> The end date for the exchange data. Defaults to None.
 - <u>period (str):</u> The interval at which the historical data should be
 returned - daily, weekly, monthly, quarterly, or yearly.
 Defaults to "daily".
@@ -1121,13 +1260,19 @@ Note that the balance sheet statement is a financial statement that provides a s
 
 **Args:**
 
-- <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
-either "FinancialModelingPrep" or "YahooFinance". Defaults to None.
+- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+over the source set on the Toolkit itself, so one instance can pull historical
+data from the free Yahoo Finance source while still using a FinancialModelingPrep
+key for the financial statements (or the other way around). Defaults to None,
+which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
 - <u>lag (int \| str):</u> Defines the number of periods to lag the growth data by.
 E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1205,14 +1350,20 @@ The income statement is a financial statement that shows a company's revenues an
 
 **Args:**
 
-- <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
-either "FinancialModelingPrep" or "YahooFinance". Defaults to None.
+- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+over the source set on the Toolkit itself, so one instance can pull historical
+data from the free Yahoo Finance source while still using a FinancialModelingPrep
+key for the financial statements (or the other way around). Defaults to None,
+which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
 - <u>lag (int \| str):</u> Defines the number of periods to lag the growth data by.
 - <u>trailing (int):</u> Defines whether to select a trailing period.
 E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1275,13 +1426,20 @@ The cash flow statement is a financial statement that shows how changes in balan
 
 **Args:**
 
-- <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
+- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+over the source set on the Toolkit itself, so one instance can pull historical
+data from the free Yahoo Finance source while still using a FinancialModelingPrep
+key for the financial statements (or the other way around). Defaults to None,
+which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
 - <u>lag (int \| str):</u> Defines the number of periods to lag the growth data by.
 - <u>trailing (int):</u> Defines whether to select a trailing period.
 E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1346,10 +1504,16 @@ Note that this also obtains the balance sheet statement at the same time given t
 
 **Args:**
 
-- <u>enforce_source (bool):</u> Defines whether to enforce the source of the data. This can be
-either "FinancialModelingPrep" or "YahooFinance". Defaults to None.
+- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+over the source set on the Toolkit itself, so one instance can pull historical
+data from the free Yahoo Finance source while still using a FinancialModelingPrep
+key for the financial statements (or the other way around). Defaults to None,
+which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
+- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1393,6 +1557,84 @@ This function is relevant if you want to supply your own datasets. See for a pro
 **Returns:**
 
 Three csv files saved to the desired location.
+
+---
+
+## get_cache_contents
+Show what the cache currently holds, grouped by source and dataset.
+
+The cache stores data per source, per dataset and per entity (a ticker, a country, a series identifier), which makes it possible to remove part of it rather than all of it. This method is the counterpart to clear_cache: it shows what is there so that removing something is an informed decision.
+
+The cache is inspected regardless of whether this Toolkit was created with use_cached_data enabled, so a cache filled by an earlier session can always be reviewed.
+
+Returns: pd.DataFrame: One row per source and dataset combination, with the number of entities, the number of stored entries and when they were written. An empty DataFrame when the cache holds nothing.
+
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", use_cached_data=True)
+
+toolkit.get_historical_data()
+
+toolkit.get_cache_contents()
+```
+
+Which returns:
+
+| source   | dataset    |   entities |   entries | oldest_write        | newest_write        |
+|:---------|:-----------|-----------:|----------:|:--------------------|:--------------------|
+| market   | historical |          3 |         3 | 2026-08-06 14:02:11 | 2026-08-06 14:02:12 |
+
+
+---
+
+## clear_cache
+Remove cached data, either all of it or only the part you specify.
+
+The Finance Toolkit never clears the cache on its own. A cache can represent a large amount of downloaded data and a meaningful part of an API quota, so discarding it is always an explicit action. Even a change in the cache's own internal structure only produces a warning pointing at this method rather than removing anything.
+
+Because the cache is stored per source, per dataset and per entity, removal can be narrowed instead of wholesale. Clearing a single stale ticker, or everything retrieved from one provider, leaves the rest of the cache intact.
+
+**Args:**
+
+- <u>source (str \| None):</u> Only remove data from this source, for example
+"FinancialModelingPrep", "YahooFinance", "OECD", "FRED" or
+"GlobalMacroDatabase". These match the names used by enforce_source.
+Defaults to None, which matches every source.
+- <u>dataset (str \| None):</u> Only remove this dataset within the source, for
+example "historical", "intraday" or "statements". Defaults to None,
+which matches every dataset.
+- <u>ticker (str \| None):</u> Only remove this entity, for example "AAPL" or a
+country code for macroeconomic data. Defaults to None, which matches
+every entity.
+- <u>confirm (bool):</u> Required to be True when no source, dataset or ticker is
+given, since that removes the entire cache. Defaults to False.
+
+**Raises:**
+
+ValueError: If the whole cache would be removed without confirm being set.
+
+**Returns:**
+
+int: The number of stored entries that were removed.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", use_cached_data=True)
+
+# Remove only the price history of a single ticker
+toolkit.clear_cache(source="YahooFinance", ticker="AAPL")
+
+# Remove everything retrieved from the OECD
+toolkit.clear_cache(source=policy_model.OECD)
+
+# Remove the entire cache
+toolkit.clear_cache(confirm=True)
+```
 
 ---
 

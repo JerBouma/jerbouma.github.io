@@ -74,7 +74,7 @@ Which returns:
 | EV-to-EBITDA              | 25.7524      | 17.0831      | 24.9432      | 29.3152      | 28.7093      |
 | EV-to-Operating-Cash-Flow | 29.7611      | 18.2565      | 28.3904      | 33.3825      | 37.2762      |
 | Tangible Asset Value      |  6.309e+10   |  5.0672e+10  |  6.2146e+10  |  5.695e+10   |  7.3733e+10  |
-| Net Current Asset Value   |  9.355e+09   | -1.8577e+10  | -1.742e+09   | -2.3405e+10  | -1.7674e+10  |
+| Net Current Asset Value   | -1.5308e+11  | -1.6668e+11  | -1.4687e+11  | -1.5504e+11  | -1.3755e+11  |
 
 
 ---
@@ -370,7 +370,7 @@ The days of sales outstanding (DSO) ratio is calculated by dividing the accounts
 
 The formula is as follows:
 
-- Days of Sales Outstanding Ratio = (Accounts Receivable / Total Credit Sales) * Days
+- Days of Sales Outstanding Ratio = (Average Accounts Receivable / Total Credit Sales) * Days
 
 **Also known as:** DSO, days sales outstanding, receivable days.
 
@@ -837,6 +837,49 @@ Which returns:
 | AAPL | 1.846  | 1.8192 | 1.7979 | 1.8576 | 1.9664 |
 | TSLA | 1.7804 | 2.1312 | 1.9665 | 1.6185 | 1.4273 |
 
+
+---
+
+## get_working_capital_turnover_ratio
+Calculate the working capital turnover ratio, an efficiency ratio that measures how effectively a company uses its working capital to generate revenue.
+
+A high working capital turnover ratio indicates that a company is generating a large amount of revenue relative to the working capital it employs, which can signal an efficient (or, if extreme, undercapitalized) operation. A low ratio can indicate excess inventory, slow receivables collection, or otherwise underutilized working capital.
+
+The formula is as follows:
+
+- Working Capital Turnover Ratio = Revenue / Average Working Capital
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Working capital turnover ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the working capital
+turnover ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio
+values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+working_capital_turnover_ratios = toolkit.ratios.get_working_capital_turnover_ratio()
+```
 
 ---
 
@@ -1541,7 +1584,7 @@ The short-term coverage ratio is calculated by dividing operating cash flow by s
 
 The formula is as follows:
 
-- Short Term Coverage Ratio = Cash Flow from Operations / (Accounts Receivable + Inventory - Accounts Payable)
+- Short Term Coverage Ratio = Cash Flow from Operations / Short Term Debt
 
 **Also known as:** short-term debt coverage.
 
@@ -1573,6 +1616,55 @@ Which returns:
 | AAPL | -4.7495 | -3.9423 | -4.1291 | -4.1839 | -4.5755 |
 | TSLA | -4.882  | 27.4701 |  4.9042 |  3.7675 |  4.0998 |
 
+
+---
+
+## get_defensive_interval_ratio
+Calculate the defensive interval ratio (DIR), a liquidity ratio that measures how many days a company could continue to cover its operating expenses using only its existing defensive (most liquid) assets, without relying on additional revenue.
+
+Unlike the current, quick, and cash ratios, which express liquidity relative to current liabilities, the defensive interval ratio expresses liquidity relative to the company's actual daily cash burn rate, making it a more direct measure of how long a company could survive a sudden stop in incoming cash flow.
+
+The formula is as follows:
+
+- Defensive Interval Ratio = (Cash and Cash Equivalents + Short Term Investments + Accounts Receivable) / Daily Operating Expenses
+
+Where Daily Operating Expenses = (Operating Expenses - Depreciation and Amortization) / Days, i.e. the average cash operating expenses incurred per day, net of the largest non-cash charge (depreciation and amortization).
+
+**Also known as:** defensive interval period, basic defense interval.
+
+**Args:**
+
+- <u>days (int, optional):</u> The number of days to use for the daily operating
+expenses calculation. Defaults to 365.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Defensive interval ratio values, expressed in days.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the defensive interval
+ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio
+values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+defensive_interval_ratios = toolkit.ratios.get_defensive_interval_ratio()
+```
 
 ---
 
@@ -1789,16 +1881,16 @@ Which returns:
 
 ---
 
-## get_interest_burden_ratio
-Compute the Interest Coverage Ratio, a metric that reveals a company's ability to cover its interest expenses with its pre-tax profits. This ratio measures the proportion of pre-tax profits required to pay for interest payments and is crucial in determining a company's financial health.
+## get_ebitda_margin
+Calculate the EBITDA margin, a profitability ratio that measures the percentage of revenue that remains as earnings before interest, taxes, depreciation and amortization (EBITDA).
 
-The Interest Coverage Ratio is calculated by dividing the earnings before interest and taxes (EBIT) by the interest expenses. A higher ratio indicates that the company has more earnings to cover its interest expenses, which is generally considered favorable.
+EBITDA margin approximates a company's core operating profitability before the effects of financing decisions (interest), tax jurisdictions, and non-cash accounting choices around fixed and intangible assets (depreciation and amortization). This makes it a commonly used metric to compare operating performance across companies with different capital structures, tax regimes, and depreciation policies.
 
 The formula is as follows:
 
-- Interest Coverage Ratio = EBIT (or Operating Income) / Interest Expenses
+- EBITDA Margin = (Operating Income + Depreciation and Amortization) / Revenue
 
-**Also known as:** interest burden, EBIT to EBT ratio.
+**Also known as:** EBITDA-to-revenue ratio.
 
 **Args:**
 
@@ -1813,11 +1905,58 @@ E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
 **Returns:**
 
-pd.DataFrame: Interest Coverage Ratio values.
+pd.DataFrame: EBITDA margin values.
 
 **Notes:**
 
-- The method retrieves historical data and calculates the Interest Coverage Ratio for each
+- The method retrieves historical data and calculates the EBITDA margin for
+each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio
+values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+ebitda_margins = toolkit.ratios.get_ebitda_margin()
+```
+
+---
+
+## get_interest_burden_ratio
+Compute the Interest Burden Ratio, the component of the extended (five-step) DuPont decomposition that isolates the drag interest expense places on a company's operating profit.
+
+The Interest Burden Ratio is calculated by dividing earnings before tax (EBT) by earnings before interest and taxes (EBIT, proxied here by Operating Income). It expresses the share of operating profit that survives interest expense, so it sits between 0 and 1 for a company with debt: a value close to 1 means interest barely dents operating profit, while a low value signals a heavy interest load. Values slightly above 1 occur when non-operating income (e.g. interest income) exceeds interest expense.
+
+Note that this is the reciprocal of, and should not be confused with, the Interest Coverage Ratio (`get_interest_coverage_ratio`), which divides operating profit by interest expense and is therefore unbounded above.
+
+The formula is as follows:
+
+- Interest Burden Ratio = Income Before Tax / Operating Income
+
+**Also known as:** EBT to EBIT ratio, interest burden.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Interest Burden Ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the Interest Burden Ratio for each
 asset in the Toolkit instance.
 - If `growth` is set to True, the method calculates the growth of the ratio values
 using the specified `lag`.
@@ -1829,14 +1968,14 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(["TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
-interest_coverage_ratios = toolkit.ratios.get_interest_burden_ratio()
+interest_burden_ratios = toolkit.ratios.get_interest_burden_ratio()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |     2024 |     2025 |
-|:-----|--------:|--------:|--------:|---------:|---------:|
-| TSLA | 17.5822 | 71.4974 | 56.9936 |  20.2171 |  12.8846 |
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| TSLA | 0.9724 | 1.0046 | 1.1217 | 1.2705 | 1.2119 |
 
 
 ---
@@ -2000,6 +2139,51 @@ Which returns:
 
 ---
 
+## get_cash_return_on_assets
+Calculate the cash return on assets (Cash ROA), a profitability ratio that measures how efficiently a company uses its assets to generate operating cash flow.
+
+Unlike the return on assets, which uses accrual-based net income, the cash return on assets uses operating cash flow, making it less sensitive to non-cash accounting choices (e.g. depreciation method, revenue recognition timing, working capital accruals). Comparing cash ROA to ROA is a useful earnings-quality cross-check: a cash ROA that persistently trails ROA can indicate that reported profits are not being converted into cash.
+
+The formula is as follows:
+
+- Cash Return on Assets = Cash Flow from Operations / Average Total Assets
+
+**Also known as:** cash ROA.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Cash return on assets (Cash ROA) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the cash ROA for each
+asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio
+values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+cash_roa_ratios = toolkit.ratios.get_cash_return_on_assets()
+```
+
+---
+
 ## get_return_on_equity
 Calculate the return on equity (ROE), a profitability ratio that measures how efficiently a company generates profits using its shareholders' equity.
 
@@ -2100,7 +2284,7 @@ Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.5637 | 0.599  | 0.6068 | 0.6019 | 0.7038 |
+| AAPL | 0.4143 | 0.4439 | 0.444  | 0.4336 | 0.5335 |
 | TSLA | 0.1429 | 0.2733 | 0.2403 | 0.0889 | 0.0425 |
 
 
@@ -2267,7 +2451,9 @@ The net income per earnings before taxes (EBT) ratio helps evaluate the extent t
 
 The formula is as follows:
 
-- Net Income per EBT = Net Income / Income Before Tax
+- Net Income per EBT = Net Income / (Net Income + Income Tax Expense)
+
+Earnings before tax is reconstructed from the income statement as Net Income plus Income Tax Expense rather than read from the reported Income Before Tax line, so this can differ slightly from `get_tax_burden_ratio` when a company reports minority interests or discontinued operations below the tax line.
 
 **Also known as:** net income to pre-tax income.
 
@@ -2361,6 +2547,49 @@ Which returns:
 | AAPL | 0.8935 | 0.9123 | 0.9009 | 0.9201 | 0.8859 |
 | TSLA | 0.3029 | 0.5129 | 0.3287 | 0.24   | 0.4218 |
 
+
+---
+
+## get_free_cash_flow_margin
+Calculate the free cash flow margin, a profitability ratio that measures the percentage of revenue that is converted into free cash flow.
+
+Unlike the net profit margin, which can be distorted by non-cash accounting items (e.g. depreciation, stock-based compensation, deferred taxes) and by working capital timing, the free cash flow margin reflects the cash a company actually generates, after capital expenditures, for every dollar of revenue. A persistently low or declining free cash flow margin relative to the net profit margin can be a quality-of-earnings warning sign.
+
+The formula is as follows:
+
+- Free Cash Flow Margin = Free Cash Flow / Revenue
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Free cash flow margin values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the free cash flow
+margin for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio
+values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+free_cash_flow_margins = toolkit.ratios.get_free_cash_flow_margin()
+```
 
 ---
 
@@ -2725,6 +2954,47 @@ Which returns:
 
 ---
 
+## get_asset_coverage_ratio
+Calculate the asset coverage ratio, a solvency ratio that measures how well a company's tangible assets, after settling non-debt current liabilities, can cover its total debt.
+
+This ratio is commonly used by lenders and bondholders to assess the extent to which a company's hard (tangible) assets would be available to repay debt obligations in a liquidation scenario, since intangible assets (e.g. goodwill) typically have little to no recovery value and non-debt current liabilities are assumed to be settled first out of current assets. Short-term debt is netted out of current liabilities before subtracting, since it is already captured in total debt and would otherwise be double-counted.
+
+The formula is as follows:
+
+- Asset Coverage Ratio = [(Total Assets - Intangible Assets) - (Total Current Liabilities - Short Term Debt)] / Total Debt
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Asset coverage ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+asset_coverage_ratios = toolkit.ratios.get_asset_coverage_ratio()
+```
+
+---
+
 ## get_debt_to_equity_ratio
 Calculate the debt to equity ratio, a solvency ratio that measures the proportion of a company's equity that is financed by debt. This ratio is also known as the Gearing Ratio.
 
@@ -2783,7 +3053,7 @@ The interest coverage ratio evaluates a company's ability to meet its interest o
 
 The formula is as follows:
 
-- Interest Coverage Ratio = Operating Income / (Interest Expense + Depreciation and Amortization)
+- Interest Coverage Ratio = (Operating Income + Depreciation and Amortization) / Interest Expense
 
 **Also known as:** TIE, times interest earned.
 
@@ -3031,6 +3301,47 @@ Which returns:
 
 ---
 
+## get_gross_debt_to_ebitda_ratio
+Calculates the gross debt to EBITDA ratio, which measures the total (gross) debt of the company relative to its EBITDA (Earnings Before Interest, Taxes, Depreciation, and Amortization).
+
+This differs from the Net-Debt to EBITDA Ratio in that it uses total (gross) debt rather than net debt (total debt minus cash and cash equivalents). Gross debt to EBITDA is a more conservative leverage measure since it does not assume that a company's cash balance would actually be used to pay down debt, which matters when comparing companies with restricted cash, cash earmarked for other purposes, or when assessing gross refinancing risk rather than net economic leverage.
+
+The formula is as follows:
+
+- Gross Debt to EBITDA Ratio = Total Debt / EBITDA
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Gross debt to EBITDA ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+gross_debt_to_ebitda_ratios = toolkit.ratios.get_gross_debt_to_ebitda_ratio()
+```
+
+---
+
 ## get_cash_flow_coverage_ratio
 Calculate the cash flow coverage ratio, a solvency ratio that measures a company's ability to pay off its debt with its operating cash flow.
 
@@ -3123,10 +3434,10 @@ capex_coverage_ratios = toolkit.ratios.get_capex_coverage_ratio()
 
 Which returns:
 
-|      |    2021 |     2022 |     2023 |     2024 |    2025 |
-|:-----|--------:|---------:|---------:|---------:|--------:|
-| AAPL | -9.3855 | -11.4075 | -10.087  | -12.5176 | -8.7678 |
-| TSLA | -1.4346 |  -2.053  |  -1.4896 |  -1.3157 | -1.7294 |
+|      |   2021 |    2022 |   2023 |    2024 |   2025 |
+|:-----|-------:|--------:|-------:|--------:|-------:|
+| AAPL | 9.3855 | 11.4075 | 10.087 | 12.5176 | 8.7678 |
+| TSLA | 1.4346 |  2.053  | 1.4896 |  1.3157 | 1.7294 |
 
 
 ---
@@ -3174,10 +3485,10 @@ capex_dividend_coverage_ratios = toolkit.ratios.get_capex_dividend_coverage_rati
 
 Which returns:
 
-|      |    2021 |   2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|-------:|--------:|--------:|--------:|
-| AAPL | -4.0716 | -4.781 | -4.2543 | -4.7913 | -3.9623 |
-| TSLA | -1.4346 | -2.053 | -1.4896 | -1.3157 | -1.7294 |
+|      |   2021 |  2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|------:|-------:|-------:|-------:|
+| AAPL | 4.0716 | 4.781 | 4.2543 | 4.7913 | 3.9623 |
+| TSLA | 1.4346 | 2.053 | 1.4896 | 1.3157 | 1.7294 |
 
 
 ---
@@ -3380,7 +3691,7 @@ Which returns:
 | EV-to-EBITDA                | 25.7524     | 17.0831      | 24.9432     | 29.3152     | 28.7093     |
 | EV-to-Operating-Cash-Flow   | 29.7611     | 18.2565      | 28.3904     | 33.3825     | 37.2762     |
 | Tangible Asset Value        |  6.309e+10  |  5.0672e+10  |  6.2146e+10 |  5.695e+10  |  7.3733e+10 |
-| Net Current Asset Value     |  9.355e+09  | -1.8577e+10  | -1.742e+09  | -2.3405e+10 | -1.7674e+10 |
+| Net Current Asset Value     | -1.5308e+11 | -1.6668e+11  | -1.4687e+11 | -1.5504e+11 | -1.3755e+11 |
 | EV-to-Free-Cash-Flow        | 33.3102     | 20.0107      | 31.5146     | 36.2809     | 42.075      |
 | Graham Number               | 21.7378     | 20.662       | 23.2902     | 22.4928     | 28.7292     |
 | Buyback Yield               |  0.0283     |  0.0421      |  0.0255     |  0.0246     |  0.0222     |
@@ -3397,7 +3708,7 @@ The earnings per share (EPS) is a widely used financial metric that helps invest
 
 The formula is as follows:
 
-- Earnings per Share (EPS) = (Net Income - Preferred Dividends Paid) / Weighted Average Shares
+- Earnings per Share (EPS) = (Net Income - \|Preferred Dividends Paid\|) / Weighted Average Shares
 
 **Also known as:** EPS, net income per share.
 
@@ -3573,8 +3884,6 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
 **Returns:**
 
@@ -3809,7 +4118,7 @@ The interest debt per share ratio provides insight into how much interest a comp
 
 The formula is as follows:
 
-- Interest Debt per Share = (Interest Expense / Total Debt) / Weighted Average (Diluted) Shares
+- Interest Debt per Share = (Interest Expense + Total Debt) / Weighted Average (Diluted) Shares
 
 **Args:**
 
@@ -3969,7 +4278,7 @@ This dividend yield ratio takes into account the (diluted) weighted average shar
 
 The formula is as follows:
 
-- Weighted Dividend Yield = Dividends Paid / Weighted Average (Diluted) Shares * Share Price
+- Weighted Dividend Yield = (\|Dividends Paid\| / Weighted Average (Diluted) Shares) / Share Price
 
 **Also known as:** blended dividend yield.
 
@@ -4124,6 +4433,53 @@ Which returns:
 | AAPL |  32.2174 | 19.0341 |  30.5711 |  35.4618 |  41.301 |
 | TSLA | 342.45   | 56.6804 | 198.621  | 394.48   | 255.082 |
 
+
+---
+
+## get_price_to_sales_ratio
+Calculate the price to sales ratio (P/S), a valuation ratio that compares a company's market capitalization to its total revenue.
+
+The price to sales ratio is particularly useful for valuing companies that are not yet profitable (and therefore have no meaningful P/E ratio), since revenue is typically positive even when earnings are not, and is less susceptible to accounting distortions than earnings-based multiples. It is, however, less informative than earnings- or cash-flow-based multiples for mature, profitable companies since it ignores profitability and cost structure entirely.
+
+The formula is as follows:
+
+- Price to Sales Ratio = Market Cap / Revenue
+
+**Also known as:** P/S ratio, sales multiple.
+
+**Args:**
+
+- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int):</u> Defines whether to select a trailing period.
+E.g. when selecting 4 with quarterly data, the TTM is calculated.
+
+**Returns:**
+
+pd.DataFrame: Price to sales ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the price to sales ratio for each asset
+in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the price to sales ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+price_to_sales_ratio = toolkit.ratios.get_price_to_sales_ratio()
+```
 
 ---
 
@@ -4549,13 +4905,13 @@ Which returns:
 ---
 
 ## get_net_current_asset_value
-Calculate the net current asset value, a financial metric that represents the total value of a company's current assets minus its current liabilities. It indicates the extent to which a company's short-term assets exceed its short-term liabilities.
+Calculate the net current asset value, a conservative liquidation-value metric introduced by Benjamin Graham that represents the total value of a company's current assets minus *all* of its liabilities (not just its current liabilities). It approximates what would be left for shareholders if the company were liquidated, paying off every liability using only the current (most liquid) assets and ignoring any value from fixed/non-current assets.
 
 The formula is as follows:
 
-- Net Current Asset Value = Total Current Assets - Total Current Liabilities
+- Net Current Asset Value = Total Current Assets - Total Liabilities
 
-**Also known as:** NCAV, net current asset value, Graham number.
+**Also known as:** NCAV. Note that NCAV is related to, but distinct from, the Graham Number (`sqrt(22.5 * Earnings per Share * Book Value per Share)`, see `Toolkit.models.get_graham_number`) - both are Benjamin Graham value-investing metrics, but NCAV is a liquidation-value estimate while the Graham Number is a fair-value price estimate based on earnings and book value.
 
 **Args:**
 
@@ -4584,10 +4940,10 @@ net_current_asset_value = toolkit.ratios.get_net_current_asset_value()
 
 Which returns:
 
-|      |      2021 |        2022 |        2023 |        2024 |        2025 |
-|:-----|----------:|------------:|------------:|------------:|------------:|
-| AAPL | 9.355e+09 | -1.8577e+10 | -1.742e+09  | -2.3405e+10 | -1.7674e+10 |
-| TSLA | 7.395e+09 |  1.4208e+10 |  2.0868e+10 |  2.9539e+10 |  3.6928e+10 |
+|      |        2021 |        2022 |        2023 |        2024 |        2025 |
+|:-----|------------:|------------:|------------:|------------:|------------:|
+| AAPL | -1.5308e+11 | -1.6668e+11 | -1.4687e+11 | -1.5504e+11 | -1.3755e+11 |
+| TSLA | -3.448e+09  |  4.477e+09  |  6.607e+09  |  9.97e+09   |  1.3701e+10 |
 
 
 ---

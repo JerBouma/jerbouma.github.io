@@ -1,8 +1,8 @@
 ---
 permalink: projects/financetoolkit
 title: Finance Toolkit
-excerpt: This is a free open-source toolkit written in Python in which 200+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
-description: This is a free open-source toolkit written in Python in which 200+ financial ratios, indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+excerpt: This is a free open-source toolkit written in Python in which 500+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+description: This is a free open-source toolkit written in Python in which 500+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
 classes: wide-sidebar
 author_profile: false
 redirect_from:
@@ -19,13 +19,13 @@ While browsing a variety of websites, I kept finding that the same financial met
 
 For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is reported to be 28.93 (Stockopedia), 32.05 (Morningstar), 32.66 (Macrotrends), 33.09 (Finance Charts), 33.66 (Y Charts), 33.67 (Wall Street Journal), 33.80 (Yahoo Finance) and 34.4 (Companies Market Cap). All of these calculations are correct, however the method applied varies leading to different results. Therefore, collecting data from multiple sources can lead to wrong interpretation of the results given that one source could be applying a different calculation method than another. And that is, if it is even freely available. Often the calculation is hidden behind a paid subscription.
 
-**This is why I designed the FinanceToolkit**, this is an open-source toolkit in which all relevant financial ratios ([200+](https://www.jeroenbouma.com/projects/financetoolkit/docs)), indicators and performance measurements are written down in the most simplistic way allowing for complete transparency of the calculation method ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py){:target="_blank"}). This enables you to avoid dependence on metrics from other providers that do not provide their methods. With a large selection of financial statements in hand, it facilitates streamlined calculations, promoting the adoption of a consistent and universally understood methods and formulas.
+**This is why I designed the FinanceToolkit**, this is an open-source toolkit in which all relevant financial methods ([500+](https://www.jeroenbouma.com/projects/financetoolkit/docs)) are written down in the most simplistic way allowing for complete transparency of the calculation method ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py){:target="_blank"}). This enables you to avoid dependence on metrics from other providers that do not provide their methods. With a large selection of financial statements in hand, it facilitates streamlined calculations, promoting the adoption of a consistent and universally understood methods and formulas.
 
 Beyond Equities, it supports Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities, Key Economic Indicators and more, allowing you to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
 
 The Finance Toolkit is complemented very well by the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}, a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
 
-**🔌 The Finance Toolkit is also available as an [MCP Server](https://www.jeroenbouma.com/projects/financetoolkit/mcp)**, letting you query 200+ metrics directly from Claude, Copilot, Cursor, Windsurf or any MCP-compatible client without writing any code.
+**🔌 The Finance Toolkit is also available as an [MCP Server](https://www.jeroenbouma.com/projects/financetoolkit/mcp)**, letting you query 500+ methods directly from Claude, Copilot, Cursor, Windsurf or any MCP-compatible client without writing any code.
 
 <img src="/assets/images/projects/FinanceToolkit.jpg" alt="Finance Toolkit" width="100%"/>
 
@@ -416,6 +416,38 @@ In which the weights and returns can be depicted as follows:
 
 ![Portfolio](https://github.com/user-attachments/assets/a5e05df5-a76a-42fa-bb30-f640cd48da62)
 
+### Applying Econometric Techniques
+
+The `econometrics` module provides [regression](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics#get_ols), [hypothesis testing](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics#get_jarque_bera_test), [unit root and cointegration](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics#get_augmented_dickey_fuller), [Granger causality](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics#get_granger_causality) and [panel data](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics#get_fixed_effects) methods built on `statsmodels` and `linearmodels`. Unlike the other modules it depends on those two packages, so it ships as an optional extra:
+
+```bash
+pip install "financetoolkit[econometrics]" -U
+```
+
+```python
+# AAPL is the Toolkit's first ticker, so it's the default dependent ticker;
+# every other ticker becomes the default independent set
+companies.econometrics.get_ols(period="weekly")
+```
+
+Regressing Apple's returns on a mix of its chip suppliers, megacap peers and two unrelated names (Benchmark excluded) gives:
+
+|           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
+|:----------|--------------:|-------------:|--------------:|----------:|
+| Intercept |        0.0028 |       0.0017 |        1.6815 |    0.0943 |
+| TSM       |       -0.0054 |       0.0523 |       -0.1028 |    0.9182 |
+| QCOM      |        0.1432 |       0.0361 |        3.9717 |    0.0001 |
+| SWKS      |        0.2141 |       0.0484 |        4.4221 |    0.0000 |
+| MSFT      |        0.3036 |       0.0864 |        3.5144 |    0.0005 |
+| GOOGL     |        0.1448 |       0.0689 |        2.1015 |    0.0369 |
+| AMZN      |        0.0617 |       0.0529 |        1.1664 |    0.2448 |
+| META      |       -0.0132 |       0.0389 |       -0.3398 |    0.7343 |
+| NVDA      |       -0.0024 |       0.0415 |       -0.0575 |    0.9542 |
+| XOM       |       -0.0291 |       0.0373 |       -0.7799 |    0.4364 |
+| PG        |        0.2858 |       0.0707 |        4.0393 |    0.0001 |
+
+Only `QCOM`, `SWKS`, `MSFT` and `GOOGL` come out statistically significant once every regressor is controlled for at once. The module covers 48 methods in total, including [unit root tests](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics#get_augmented_dickey_fuller) (ADF, KPSS, Phillips-Perron, Zivot-Andrews), [cointegration and Granger causality](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics#get_engle_granger_cointegration), [panel data estimators](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics#get_fixed_effects) (Fixed/Random Effects, Hausman), [causal inference](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics#get_propensity_score_matching) (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching, Synthetic Control), [time-series forecasting](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics#get_arima_forecast) (ARIMA, VAR, VECM, impulse response) and [event studies](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics#get_event_study). Find the full econometrics documentation [here](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics).
+
 ## How-To Guides for the FinanceToolkit
 
 Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering a distinct area of financial analysis. Click any card to open the notebook.
@@ -486,6 +518,14 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     </div>
   </a>
 
+  <a href="/projects/financetoolkit/econometrics-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-square-root-variable bento-icon"></i>
+      <h2>Econometrics</h2>
+      <p>Test the statistical properties of return series and estimate causal effects: OLS and panel regression, unit root and cointegration tests, Granger causality, ARIMA/VAR forecasting, event studies and synthetic control.</p>
+    </div>
+  </a>
+
   <a href="/projects/financetoolkit/fixed-income-notebook" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-university bento-icon"></i>
@@ -538,23 +578,42 @@ Most functions will have the option to define the `trailing` parameter. This let
 
 > **How can I save the data periodically so that I don't have to retrieve it every single time again?**
 
-The Toolkit has the option to work with cached data through `use_cached_data=True` when initializing the Toolkit class. If you then use any of the functionalities of the Toolkit itself (e.g. `get_balance_sheet_statement`) it will store the data in a pickle file. When initializing the Toolkit class again with `use_cached_data=True`, it will load the data from the pickle file including all other previously set parameters (e.g. start_date and quarterly). You are also able to select a specific location to store the cached data by providing a string to the `use_cached_data` parameter. This will store the data in the provided location (with the assumption the folder exists).
+The Toolkit has the option to work with cached data through `use_cached_data=True` when initializing the Toolkit class. Any data that comes from an external source (financial statements, historical prices, economic indicators, and so on) is then stored in a local SQLite database and reused on the next run. Anything the Toolkit calculates itself is never cached, it is always derived from that data on demand.
 
-As an example:
+The cache keeps track of what it already holds per ticker and per date range, which means changing a parameter does not throw the rest away:
 
-<img width="1000" alt="image" src="https://github.com/user-attachments/assets/943a1cfb-95ad-4455-90f0-0b33dcd7b0df" />
+- Repeating the same request retrieves nothing at all.
+- Widening the period only retrieves the years that were missing.
+- Adding a new ticker to an existing Toolkit only retrieves that ticker.
 
-If I wish to receive this data again, I no longer need an API key or set the tickers and can simply keep `use_cached_data=True`.
+By default the database lives in your user configuration directory, which is the same one the MCP server uses, so both share a single cache. You can also select a specific location by providing a string to the `use_cached_data` parameter, which will store the database in the provided folder.
 
-<img width="1000" alt="image" src="https://github.com/user-attachments/assets/29ef58ca-e208-4c9a-b663-f66b299d3188" />
+To see what is currently stored, use `toolkit.get_cache_contents()`. It reports the entries grouped by source and dataset:
 
-Please note that it will force the settings as found in the pickle files so if you wish to use a different time period, you will have to recollect.
+```python
+from financetoolkit import Toolkit
 
-<img width="1000" alt="image" src="https://github.com/user-attachments/assets/40229dcb-18f0-4e73-8a43-017b1b25d33f" />
+toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", use_cached_data=True)
 
-You can also change the folder by entering a string instead of a boolean for the `use_cached_data` parameter.
+toolkit.get_balance_sheet_statement()
 
-<img width="1000" alt="image" src="https://github.com/user-attachments/assets/a6710d20-55b9-48f1-812e-4ff4fbe06a15" />
+toolkit.get_cache_contents()
+```
+
+The Finance Toolkit never clears the cache on its own, not even when its own internal structure changes. Removing data is always something you ask for explicitly with `toolkit.clear_cache()`, and it can be narrowed instead of wholesale:
+
+```python
+# Remove only the price history of a single ticker
+toolkit.clear_cache(source="FinancialModelingPrep", ticker="AAPL")
+
+# Remove everything retrieved from the OECD
+toolkit.clear_cache(source="OECD")
+
+# Remove the entire cache, which has to be confirmed
+toolkit.clear_cache(confirm=True)
+```
+
+The `source` names match the ones used by the `enforce_source` parameter, so "FinancialModelingPrep" and "YahooFinance" mean the same thing in both places.
 
 > **What is the "Benchmark" that is automatically obtained when acquiring historical data?**
 
