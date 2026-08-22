@@ -16,7 +16,21 @@
 
 <!-- MathJax — only on the Finance Toolkit documentation pages, which render formulas as \[...\] math blocks -->
 {% if page.permalink contains "financetoolkit/docs" %}
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  window.MathJax = {
+    output: { displayOverflow: "linebreak" }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+<style>
+  /* Fallback for formulas the line-breaker can't split (e.g. one huge \text). */
+  mjx-container[display="true"] {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+</style>
 {% endif %}
 
 <!-- Preconnect to external origins for faster resource loading -->
