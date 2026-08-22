@@ -25,7 +25,20 @@ pip install financetoolkit -U
 ## collect_bond_statistics
 Collect the bond statistics for a given bond which includes the following fields:
 
-- Par Value: The face value of the bond. - Coupon Rate: The annual coupon rate (in decimal). - Years to Maturity: The number of years until the bond matures. - Yield to Maturity: The yield to maturity of the bond (in decimal). - Frequency: The number of coupon payments per year. - Present Value: The present value of the bond. - Current Yield: The annual coupon payment divided by the bond price. - Effective Yield: The annualised yield that accounts for the compounding of the coupon payments made within the year. - Macaulay's Duration: The weighted average time to receive the bond's cash flows. - Modified Duration: The Macaulay's duration divided by 1 plus the per-period yield (yield to maturity divided by the frequency). - Effective Duration: The percentage price change per unit change in yield, obtained by repricing the bond symmetrically 1% above and 1% below the current yield. - Dollar Duration: The modified duration multiplied by the bond price, divided by 100. - DV01: The currency change in the bond's price, per par value of face, for a one basis point (0.01%) change in the yield to maturity. - Convexity: The second derivative of the bond price with respect to the yield to maturity.
+- Par Value: The face value of the bond.
+- Coupon Rate: The annual coupon rate (in decimal).
+- Years to Maturity: The number of years until the bond matures.
+- Yield to Maturity: The yield to maturity of the bond (in decimal).
+- Frequency: The number of coupon payments per year.
+- Present Value: The present value of the bond.
+- Current Yield: The annual coupon payment divided by the bond price.
+- Effective Yield: The annualised yield that accounts for the compounding of the coupon payments made within the year.
+- Macaulay's Duration: The weighted average time to receive the bond's cash flows.
+- Modified Duration: The Macaulay's duration divided by 1 plus the per-period yield (yield to maturity divided by the frequency).
+- Effective Duration: The percentage price change per unit change in yield, obtained by repricing the bond symmetrically 1% above and 1% below the current yield.
+- Dollar Duration: The modified duration multiplied by the bond price, divided by 100.
+- DV01: The currency change in the bond's price, per par value of face, for a one basis point (0.01%) change in the yield to maturity.
+- Convexity: The second derivative of the bond price with respect to the yield to maturity.
 
 These statistics can be used to evaluate the bond's performance as opposed to other bonds or to estimate the bond's sensitivity to changes in interest rates to be able to apply a hedging strategy.
 
@@ -85,7 +98,6 @@ bond: the two measure the same sensitivity, and their small difference is exactl
 the convexity picked up by repricing over a 100 basis point shift rather than
 differentiating at a point.
 
-
 ---
 
 ## get_present_value
@@ -138,7 +150,6 @@ Which returns:
 |          0.03 | 80.04 | 66.45 | 57.2  |
 |          0.05 | 88.02 | 79.87 | 74.32 |
 |          0.07 | 96.01 | 93.29 | 91.44 |
-
 
 ---
 
@@ -193,7 +204,6 @@ Which returns:
 |          0.03 | 4.33 | 7.82 | 10.4  |
 |          0.05 | 4.18 | 7.26 |  9.41 |
 |          0.07 | 4.05 | 6.87 |  8.79 |
-
 
 ---
 
@@ -254,7 +264,6 @@ Which returns:
 |          100 | 0.05   | 0.05   | 0.05   |
 |          105 | 0.0388 | 0.0437 | 0.0453 |
 
-
 ---
 
 ## get_forward_rate
@@ -313,7 +322,6 @@ Which returns:
 |                2 | 0.042 |  0.047 |
 |                3 | 0.044 | 0.0483 |
 
-
 ---
 
 ## get_par_yield
@@ -368,7 +376,6 @@ Which returns:
 |                   5 |      0.0377 |
 |                  10 |      0.0431 |
 
-
 ---
 
 ## get_yield_curve_spread
@@ -418,7 +425,6 @@ Which returns:
 |-----------------:|------:|------:|
 |               10 | 0.014 | 0.012 |
 |               30 |  0.02 | 0.018 |
-
 
 ---
 
@@ -471,7 +477,6 @@ Which returns:
 |         10 |                       0.028 |
 |         30 |                        0.03 |
 
-
 ---
 
 ## get_z_spread
@@ -523,7 +528,6 @@ Which returns:
 |            95 | 0.0243 | 0.0137 | 0.0103 |
 |           100 | 0.0124 |  0.007 | 0.0053 |
 |           105 | 0.0012 | 0.0007 | 0.0005 |
-
 
 ---
 
@@ -579,7 +583,6 @@ The 360-day column is computed with the Treasury's semi-annually compounded form
 rather than the simple one, because a bill of that length would have paid a coupon
 halfway through if it were a note.
 
-
 ---
 
 ## get_key_rate_duration
@@ -632,7 +635,6 @@ Which returns:
 |---------------------:|-------:|-------:|-------:|
 |                    5 | 0.0862 | 4.0561 |     -0 |
 |                   10 | 0.0862 |  0.377 | 6.4666 |
-
 
 ---
 
@@ -692,7 +694,6 @@ Which returns:
 |          0.05 | -0.0407 | -0.0693 |  -0.088 |
 |          0.07 | -0.0394 | -0.0656 | -0.0824 |
 
-
 ---
 
 ## get_derivative_price
@@ -700,7 +701,8 @@ Calculates the derivative price for a fixed income instrument.
 
 It is possible to use two different models to calculate the derivative price:
 
-- Black Model: A mathematical model used for pricing financial derivatives, its primary applications are for pricing options on future contracts, bond options, interest rate cap and floors, and swaptions. For more information, see: [https://en.wikipedia.org/wiki/Black_model](https://en.wikipedia.org/wiki/Black_model){:target="_blank"} - Bachelier Model: A deviation of the Black Model that is used for pricing future contracts. It is a simple model that assumes the price of the underlying asset follows a normal distribution with constant volatility. This is in contrast to the Black Model which assumes the price of the underlying asset follows a log-normal distribution. For more information, see: [https://en.wikipedia.org/wiki/Bachelier_model](https://en.wikipedia.org/wiki/Bachelier_model){:target="_blank"}
+- Black Model: A mathematical model used for pricing financial derivatives, its primary applications are for pricing options on future contracts, bond options, interest rate cap and floors, and swaptions. For more information, see: [https://en.wikipedia.org/wiki/Black_model](https://en.wikipedia.org/wiki/Black_model){:target="_blank"}
+- Bachelier Model: A deviation of the Black Model that is used for pricing future contracts. It is a simple model that assumes the price of the underlying asset follows a normal distribution with constant volatility. This is in contrast to the Black Model which assumes the price of the underlying asset follows a log-normal distribution. For more information, see: [https://en.wikipedia.org/wiki/Bachelier_model](https://en.wikipedia.org/wiki/Bachelier_model){:target="_blank"}
 
 It is possible to alter all parameters within the models, e.g. strike rate, volatility, years to maturity, risk-free rate, notional amount, and whether the holder is the receiver or payer of the derivative. Next to that, you can provide lists of values for the fixed rate, strike rate, volatility, and years to maturity to calculate the derivative price for multiple scenarios outside of the standard sample.
 
@@ -817,7 +819,6 @@ Which returns:
 | 2023-10 |  0.0095 |          0.048  |   0.0655 |
 | 2023-11 |  0.0066 |          0.045  |   0.0655 |
 
-
 ---
 
 ## get_treasury_rates
@@ -884,7 +885,6 @@ Which returns:
 | 2024-01-04 |    0.0556 |    0.0548 |   0.0485 |   0.0438 |    0.0399 |    0.0413 |
 | 2024-01-05 |    0.0554 |    0.0547 |   0.0484 |   0.044  |    0.0405 |    0.0421 |
 
-
 ---
 
 ## get_ice_bofa_option_adjusted_spread
@@ -944,7 +944,6 @@ Which returns:
 | 2024-01-11 |          75 |          94 |       107   |          128 |         127   |         113 |
 | 2024-01-12 |          74 |          94 |       107   |          128 |         126   |         112 |
 | 2024-01-15 |          74 |          94 |       107   |          128 |         125   |         111 |
-
 
 ---
 
@@ -1008,7 +1007,6 @@ Which returns:
 | 2024-01-12 | 0.0451 | 0.0467 | 0.0502 | 0.0534 | 0.0613 | 0.0753 | 0.1338 |
 | 2024-01-15 | 0.0451 | 0.0467 | 0.0501 | 0.0533 | 0.0611 | 0.0751 | 0.1328 |
 
-
 ---
 
 ## get_ice_bofa_total_return
@@ -1067,7 +1065,6 @@ Which returns:
 | 2024-01-11 |     1918.28 |     2492.25 |      809.94 |      583.92  |       4200.49 |     4330.72 |
 | 2024-01-12 |     1922.1  |     2498.89 |      812.41 |      585.2   |       4213.47 |     4338.43 |
 | 2024-01-15 |     1922.67 |     2499.76 |      812.67 |      585.41  |       4215.34 |     4340.24 |
-
 
 ---
 
@@ -1128,7 +1125,6 @@ Which returns:
 | 2024-01-12 | 0.0453 | 0.0468 | 0.0499 | 0.0537 | 0.0642 | 0.0786 | 0.1335 |
 | 2024-01-15 | 0.0452 | 0.0468 | 0.0498 | 0.0537 | 0.064  | 0.0784 | 0.1325 |
 
-
 ---
 
 ## get_euribor_rates
@@ -1173,7 +1169,6 @@ Which returns:
 | 2024-01 |    0.0387 |    0.0393 |    0.0389 |     0.0361 |
 | 2024-02 |    0.0387 |    0.0392 |    0.039  |     0.0367 |
 | 2024-03 |    0.0385 |    0.0392 |    0.0389 |     0.0372 |
-
 
 ---
 
@@ -1237,7 +1232,6 @@ Which returns:
 | 2023-12-16 |         0.045 |    0.0475 |      0.04 |
 | 2023-12-17 |         0.045 |    0.0475 |      0.04 |
 | 2023-12-18 |         0.045 |    0.0475 |      0.04 |
-
 
 ---
 
@@ -1305,7 +1299,6 @@ Which returns:
 | 2023-12-12       | 0.0533 |            0.053 |            0.0531 |            0.0533 |            0.0544 |
 | 2023-12-13       | 0.0533 |            0.053 |            0.0531 |            0.0533 |            0.0545 |
 | 2023-12-14       | 0.0533 |            0.053 |            0.0531 |            0.0533 |            0.0535 |
-
 
 ---
 

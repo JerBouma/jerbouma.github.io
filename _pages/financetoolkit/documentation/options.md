@@ -70,7 +70,6 @@ Which returns:
 |          182.5 | AAPL240112C00182500 | USD        |         3.25 |        0 |                0 |    14721 |               0 |     0 |     0 | 2024-01-12   | 2024-01-11        |                    0 | True           |
 |          185   | AAPL240112C00185000 | USD        |         1.18 |        0 |                0 |   102803 |               0 |     0 |     0 | 2024-01-12   | 2024-01-11        |                    0 | True           |
 
-
 ---
 
 ## get_black_scholes_model
@@ -155,7 +154,6 @@ Which returns:
 |            165 |       0.0001 |       0.0081 |       0.0378 |       0.0889 |       0.1563 |       0.235  |       0.3213 |       0.413  |       0.5081 |       0.6055 |       0.7043 |       0.804  |       0.9039 |       1.0039 |       1.1036 |       1.2029 |       1.3017 |       1.3999 |       1.4974 |       1.5941 |       1.69   |       1.7852 |       1.8795 |       1.973  |       2.0657 |       2.1576 |       2.2487 |       2.339  |       2.4285 |
 |            170 |       0      |       0.0001 |       0.0017 |       0.0079 |       0.0208 |       0.0412 |       0.0689 |       0.103  |       0.143  |       0.1879 |       0.237  |       0.2897 |       0.3454 |       0.4037 |       0.4641 |       0.5263 |       0.59   |       0.6549 |       0.721  |       0.7878 |       0.8555 |       0.9237 |       0.9923 |       1.0614 |       1.1307 |       1.2003 |       1.27   |       1.3398 |       1.4096 |
 
-
 ---
 
 ## get_implied_volatility
@@ -239,7 +237,6 @@ Which returns:
 | 205   |       0.4452 |
 | 207.5 |       0.518  |
 
-
 ---
 
 ## get_volatility_surface
@@ -308,7 +305,6 @@ Which returns:
 |            295   |       0.4968 |       0.4098 |
 |            297.5 |       0.4958 |       0.4043 |
 |            300   |       0.4971 |       0.4001 |
-
 
 ---
 
@@ -384,7 +380,6 @@ Which returns:
 |          280.31  | 0.0004 |
 |          281.846 | 0.0007 |
 |          283.382 | 0.0012 |
-
 
 ---
 
@@ -476,7 +471,6 @@ Which returns:
 | UDDDDDDDDD |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |       0      |       0      |
 | DDDDDDDDDD |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |       0      |
 
-
 ---
 
 ## get_stock_price_simulation
@@ -554,7 +548,6 @@ Which returns:
 | DDUD       |       135.69 |      115.04  |      97.5323 |     115.04   |      97.5323 |
 | DDDU       |       135.69 |      115.04  |      97.5323 |      82.6891 |      97.5323 |
 | DDDD       |       135.69 |      115.04  |      97.5323 |      82.6891 |      70.1049 |
-
 
 ---
 
@@ -967,11 +960,18 @@ Calculate the net expiration profit and loss (P&L) profile of a multi-leg option
 
 A strategy is expressed as a list of "legs". Each leg is a dictionary describing either an option position or a stock position:
 
-- For an option leg: "instrument": "option" (default), "strike_price" (float, required), "put_option" (bool, defaults to False), "position" ("long" or "short", defaults to "long"), "premium" (float, defaults to 0). - For a stock leg: "instrument": "stock", "position" ("long" or "short", defaults to "long"), "premium" (float, the entry price, defaults to 0).
+- For an option leg: "instrument": "option" (default), "strike_price" (float, required), "put_option" (bool, defaults to False), "position" ("long" or "short", defaults to "long"), "premium" (float, defaults to 0).
+- For a stock leg: "instrument": "stock", "position" ("long" or "short", defaults to "long"), "premium" (float, the entry price, defaults to 0).
 
 This single, generic building block can express many common strategies by combining legs, for example:
 
-- Straddle: long call + long put, same strike. - Strangle: long call + long put, different (OTM) strikes. - Bull call spread: long call (lower strike) + short call (higher strike). - Bear put spread: long put (higher strike) + short put (lower strike). - Covered call: long stock + short call. - Protective put: long stock + long put. - Iron condor: short put + long put (lower strikes) + short call + long call (higher strikes).
+- Straddle: long call + long put, same strike.
+- Strangle: long call + long put, different (OTM) strikes.
+- Bull call spread: long call (lower strike) + short call (higher strike).
+- Bear put spread: long put (higher strike) + short put (lower strike).
+- Covered call: long stock + short call.
+- Protective put: long stock + long put.
+- Iron condor: short put + long put (lower strikes) + short call + long call (higher strikes).
 
 **Also known as:** option strategy payoff diagram, P&L profile.
 
@@ -1018,15 +1018,31 @@ Calculate all Greeks of an option based on the Black Scholes Model. This will re
 
 **First Order Greeks:**
 
-- Delta: measures the rate of change of the theoretical option value with respect to changes in the underlying asset's price. - Dual Delta: the first derivative of the option price with respect to the strike price. Up to the discount factor and a sign it is the risk-neutral probability of the option finishing in the money, negative for a call and positive for a put. - Vega: measures sensitivity to volatility. Vega is the derivative of the option value with respect to the volatility of the underlying asset. - Theta: measures the sensitivity of the value of the derivative to the passage of time, the "time decay." - Rho: measures sensitivity to the interest rate: it is the derivative of the option value with respect to the risk-free interest rate (for the relevant outstanding term). - Epsilon: measures the percentage change in option value per percentage change in the underlying dividend yield, a measure of the dividend risk. - Lambda: measures the percentage change in option value per percentage change in the underlying price, a measure of leverage, sometimes called gearing. This greek is also sometimes called Omega or Elasticity.
+- Delta: measures the rate of change of the theoretical option value with respect to changes in the underlying asset's price.
+- Dual Delta: the first derivative of the option price with respect to the strike price. Up to the discount factor and a sign it is the risk-neutral probability of the option finishing in the money, negative for a call and positive for a put.
+- Vega: measures sensitivity to volatility. Vega is the derivative of the option value with respect to the volatility of the underlying asset.
+- Theta: measures the sensitivity of the value of the derivative to the passage of time, the "time decay."
+- Rho: measures sensitivity to the interest rate: it is the derivative of the option value with respect to the risk-free interest rate (for the relevant outstanding term).
+- Epsilon: measures the percentage change in option value per percentage change in the underlying dividend yield, a measure of the dividend risk.
+- Lambda: measures the percentage change in option value per percentage change in the underlying price, a measure of leverage, sometimes called gearing. This greek is also sometimes called Omega or Elasticity.
 
 **Second Order Greeks:**
 
-- Gamma: measures the rate of change in the delta with respect to changes in the underlying price. Gamma is the second derivative of the value function with respect to the underlying price. - Dual Gamma: the second derivative of the option value with respect to the strike price rather than the underlying price. It is the discounted risk-neutral probability density of the underlying at expiration. - Vanna: also referred to as DvegaDspot and DdeltaDvol, is a second-order derivative of the option value, once to the underlying spot price and once to volatility. - Charm: Charm or delta decay measures the instantaneous rate of change of delta over the passage of time. - Vomma: also referred to as volga, vega convexity, or DvegaDvol measures second-order sensitivity to volatility. Vomma is the second derivative of the option value with respect to the volatility, or, stated another way, vomma measures the rate of change to vega as volatility changes. - Veta: also referred to as DvegaDtime, measures the rate of change in the vega with respect to the passage of time. Veta is the second derivative of the value function; once to volatility and once to time. - Vera: also referred to as rhova, measures the rate of change in rho with respect to volatility. Vera is the second derivative of the value function; once to volatility and once to interest rate. - Partial Derivative: measures the rate of change in the option price with respect to the strike price.
+- Gamma: measures the rate of change in the delta with respect to changes in the underlying price. Gamma is the second derivative of the value function with respect to the underlying price.
+- Dual Gamma: the second derivative of the option value with respect to the strike price rather than the underlying price. It is the discounted risk-neutral probability density of the underlying at expiration.
+- Vanna: also referred to as DvegaDspot and DdeltaDvol, is a second-order derivative of the option value, once to the underlying spot price and once to volatility.
+- Charm: Charm or delta decay measures the instantaneous rate of change of delta over the passage of time.
+- Vomma: also referred to as volga, vega convexity, or DvegaDvol measures second-order sensitivity to volatility. Vomma is the second derivative of the option value with respect to the volatility, or, stated another way, vomma measures the rate of change to vega as volatility changes.
+- Veta: also referred to as DvegaDtime, measures the rate of change in the vega with respect to the passage of time. Veta is the second derivative of the value function; once to volatility and once to time.
+- Vera: also referred to as rhova, measures the rate of change in rho with respect to volatility. Vera is the second derivative of the value function; once to volatility and once to interest rate.
+- Partial Derivative: measures the rate of change in the option price with respect to the strike price.
 
 **Third Order Greeks:**
 
-- Speed: measures the rate of change in Gamma with respect to changes in the underlying price. - Zomma: measures the rate of change of Gamma with respect to changes in volatility. - Color: also referred to as gamma decay or DgammaDtime measures the rate of change of gamma over the passage of time. - Ultima: measures the sensitivity of the option vomma with respect to change in volatility.
+- Speed: measures the rate of change in Gamma with respect to changes in the underlying price.
+- Zomma: measures the rate of change of Gamma with respect to changes in volatility.
+- Color: also referred to as gamma decay or DgammaDtime measures the rate of change of gamma over the passage of time.
+- Ultima: measures the sensitivity of the option vomma with respect to change in volatility.
 
 For a deeper explanation, please have a look at: [https://en.wikipedia.org/wiki/Greeks_(finance)](https://en.wikipedia.org/wiki/Greeks_(finance)){:target="_blank"} and the references to the literature as found on this page.
 
@@ -1086,13 +1102,18 @@ Which returns:
 |            260 |  0.0016 |      -0.0015 | 0.0006 | -0.018  | 0      |   -0.001  |   1.205  |  0.0007 |       0.0006 |  0.0276 |  -2.8148 |  1.0161 |  0.0179 |  421.028  | 0.0006 |  0.0003 |  0.0104 |  1.0578 |   0.1054 |
 |            265 |  0.0002 |      -0.0001 | 0.0001 | -0.0021 | 0      |   -0.0001 |   1.4049 |  0.0001 |       0.0001 |  0.004  |  -0.4041 |  0.1783 |  0.0026 |   71.3544 | 0.0001 |  0      |  0.0019 |  0.1933 |   0.0322 |
 
-
 ---
 
 ## collect_first_order_greeks
 Calculate the first order Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
 
-- Delta: measures the rate of change of the theoretical option value with respect to changes in the underlying asset's price. - Dual Delta: the first derivative of the option price with respect to the strike price. Up to the discount factor and a sign it is the risk-neutral probability of the option finishing in the money, negative for a call and positive for a put. - Vega: measures sensitivity to volatility. Vega is the derivative of the option value with respect to the volatility of the underlying asset. - Theta: measures the sensitivity of the value of the derivative to the passage of time, the "time decay." - Rho: measures sensitivity to the interest rate: it is the derivative of the option value with respect to the risk-free interest rate (for the relevant outstanding term). - Epsilon: measures the percentage change in option value per percentage change in the underlying dividend yield, a measure of the dividend risk. - Lambda: measures the percentage change in option value per percentage change in the underlying price, a measure of leverage, sometimes called gearing. This greek is also sometimes called Omega or Elasticity.
+- Delta: measures the rate of change of the theoretical option value with respect to changes in the underlying asset's price.
+- Dual Delta: the first derivative of the option price with respect to the strike price. Up to the discount factor and a sign it is the risk-neutral probability of the option finishing in the money, negative for a call and positive for a put.
+- Vega: measures sensitivity to volatility. Vega is the derivative of the option value with respect to the volatility of the underlying asset.
+- Theta: measures the sensitivity of the value of the derivative to the passage of time, the "time decay."
+- Rho: measures sensitivity to the interest rate: it is the derivative of the option value with respect to the risk-free interest rate (for the relevant outstanding term).
+- Epsilon: measures the percentage change in option value per percentage change in the underlying dividend yield, a measure of the dividend risk.
+- Lambda: measures the percentage change in option value per percentage change in the underlying price, a measure of leverage, sometimes called gearing. This greek is also sometimes called Omega or Elasticity.
 
 For a deeper explanation, please have a look at: [https://en.wikipedia.org/wiki/Greeks_(finance)](https://en.wikipedia.org/wiki/Greeks_(finance)){:target="_blank"} and the references to the literature as found on this page.
 
@@ -1149,7 +1170,6 @@ Which returns:
 |            375 |                                 43.2383 |                                 0.0062 |                                     -0.005  |                                0.0153 |                                -0.0073 |                               0.1494 |                                  -0.1531 |                                 41.9667 |
 |            380 |                                 45.3195 |                                 0.0038 |                                     -0.003  |                                0.0097 |                                -0.0046 |                               0.0899 |                                  -0.092  |                                 43.97   |
 
-
 ---
 
 ## get_delta
@@ -1167,7 +1187,8 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 The Delta can be interpreted as follows:
 
-- For call options, Delta is positive, indicating that the option price tends to move in the same direction as the underlying asset's price. - For put options, Delta is negative, indicating that the option price tends to move in the opposite direction to the underlying asset's price.
+- For call options, Delta is positive, indicating that the option price tends to move in the same direction as the underlying asset's price.
+- For put options, Delta is negative, indicating that the option price tends to move in the opposite direction to the underlying asset's price.
 
 Note that the delta of a call option is always between 0 and e^(-q * t), while the delta of a put option is always between -e^(-q * t) and 0. Without a dividend yield those bounds collapse to the familiar 0 to 1 and -1 to 0.
 
@@ -1221,7 +1242,6 @@ Which returns:
 |            370 |       0.0036 |       0.0043 |       0.0051 |       0.006  |       0.007  |       0.008  |       0.009  |       0.0102 |
 |            375 |       0.0019 |       0.0024 |       0.0029 |       0.0034 |       0.0041 |       0.0047 |       0.0055 |       0.0062 |
 |            380 |       0.001  |       0.0013 |       0.0016 |       0.0019 |       0.0023 |       0.0027 |       0.0032 |       0.0038 |
-
 
 ---
 
@@ -1294,7 +1314,6 @@ Which returns:
 |            375 |      -0.0015 |      -0.0019 |      -0.0023 |      -0.0028 |      -0.0033 |      -0.0038 |      -0.0044 |      -0.005  |
 |            380 |      -0.0008 |      -0.001  |      -0.0012 |      -0.0015 |      -0.0018 |      -0.0022 |      -0.0026 |      -0.003  |
 
-
 ---
 
 ## get_vega
@@ -1313,7 +1332,8 @@ The division by 100 expresses Vega per 1 percentage point change in volatility, 
 
 The Vega can be interpreted as follows:
 
-- If Vega is positive, it indicates that the option value will increase as the volatility increases, and vice versa. - If Vega is negative, it implies that the option value will decrease as the volatility increases, and vice versa.
+- If Vega is positive, it indicates that the option value will increase as the volatility increases, and vice versa.
+- If Vega is negative, it implies that the option value will decrease as the volatility increases, and vice versa.
 
 Note that the vega of a call option and put option are equal to each other.
 
@@ -1368,7 +1388,6 @@ Which returns:
 |            375 |       0.0046 |       0.0057 |       0.007  |       0.0084 |       0.0099 |       0.0116 |       0.0134 |       0.0153 |
 |            380 |       0.0025 |       0.0032 |       0.004  |       0.0049 |       0.0059 |       0.0071 |       0.0083 |       0.0097 |
 
-
 ---
 
 ## get_theta
@@ -1378,7 +1397,11 @@ The theta calculation is the theoretical value of the theta. The actual theta ca
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t)) - d2 = d1 - σ * sqrt(t) - Call Theta = [-e^(-q * t) * (S * N'(d1) * σ) / (2 * sqrt(t)) - r * K * e^(-r * t) * N(d2) + q * S * e^(-q * t) * N(d1)] / 365 - Put Theta = [-e^(-q * t) * (S * N'(d1) * σ) / (2 * sqrt(t)) + r * K * e^(-r * t) * N(-d2) - q * S * e^(-q * t) * N(-d1)] / 365
+- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
+- d2 = d1 - σ * sqrt(t)
+- Call Theta = [-e^(-q * t) * (S * N'(d1) * σ) / (2 * sqrt(t)) - r * K * e^(-r * t) * N(d2) + q * S * e^(-q * t) * N(d1)] / 365
+- Put Theta = [-e^(-q * t) * (S * N'(d1) * σ) / (2 * sqrt(t)) + r * K * e^(-r * t) * N(-d2)
+- q * S * e^(-q * t) * N(-d1)] / 365
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
 
@@ -1386,7 +1409,8 @@ Theta is the derivative with respect to calendar time elapsed, not with respect 
 
 The Theta can be interpreted as follows:
 
-- If Theta is negative, the option loses value with each day that passes, all else equal. This is the normal case for a long option, whose time value erodes towards expiration. - If Theta is positive, the option gains value with each day that passes. This happens for instance on a deep in-the-money European put, where the discounting of the strike dominates.
+- If Theta is negative, the option loses value with each day that passes, all else equal. This is the normal case for a long option, whose time value erodes towards expiration.
+- If Theta is positive, the option gains value with each day that passes. This happens for instance on a deep in-the-money European put, where the discounting of the strike dominates.
 
 **Also known as:** time decay, option time value erosion.
 
@@ -1441,7 +1465,6 @@ Which returns:
 |            375 |      -0.0029 |      -0.0034 |      -0.004  |      -0.0046 |      -0.0052 |      -0.0059 |      -0.0066 |      -0.0073 |
 |            380 |      -0.0016 |      -0.0019 |      -0.0023 |      -0.0027 |      -0.0031 |      -0.0036 |      -0.0041 |      -0.0046 |
 
-
 ---
 
 ## get_rho
@@ -1460,7 +1483,8 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 The Rho can be interpreted as follows:
 
-- If Rho is positive, it indicates that the option value will increase as the risk free rate increases, and vice versa. - If Rho is negative, it implies that the option value will decrease as the risk free rate increases, and vice versa.
+- If Rho is positive, it indicates that the option value will increase as the risk free rate increases, and vice versa.
+- If Rho is negative, it implies that the option value will decrease as the risk free rate increases, and vice versa.
 
 Rho is reported unscaled, as the amount of money per share of the underlying that the value of the option gains or loses per 1.00 change in the risk-free rate. Divide by 100 for the more commonly quoted move per 1.0% per annum (100 basis points). Epsilon and Vera follow the same unscaled convention, while Vega and Veta are already divided by 100.
 
@@ -1517,7 +1541,6 @@ Which returns:
 |            375 |       0.035  |       0.0452 |       0.0572 |       0.0711 |       0.0872 |       0.1056 |       0.1263 |       0.1494 |
 |            380 |       0.0181 |       0.024  |       0.0311 |       0.0397 |       0.0497 |       0.0613 |       0.0747 |       0.0899 |
 
-
 ---
 
 ## get_epsilon
@@ -1537,7 +1560,8 @@ Epsilon is reported unscaled, per 1.00 change in the dividend yield, matching Rh
 
 The Epsilon can be interpreted as follows:
 
-- If Epsilon is positive, it indicates that the option value will increase as the dividend yield increases, and vice versa. - If Epsilon is negative, it implies that the option value will decrease as the dividend yield increases, and vice versa.
+- If Epsilon is positive, it indicates that the option value will increase as the dividend yield increases, and vice versa.
+- If Epsilon is negative, it implies that the option value will decrease as the dividend yield increases, and vice versa.
 
 **Also known as:** option sensitivity to dividend yield.
 
@@ -1592,7 +1616,6 @@ Which returns:
 |            375 |      -0.0357 |      -0.0461 |      -0.0583 |      -0.0727 |      -0.0892 |      -0.108  |      -0.1293 |      -0.1531 |
 |            380 |      -0.0185 |      -0.0245 |      -0.0318 |      -0.0405 |      -0.0507 |      -0.0627 |      -0.0764 |      -0.092  |
 
-
 ---
 
 ## get_lambda
@@ -1613,7 +1636,8 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 The Lambda can be interpreted as follows:
 
-- If Lambda is positive, it indicates that the option value will increase as the underlying price increases, and vice versa. - If Lambda is negative, it implies that the option value will decrease as the underlying price increases, and vice versa.
+- If Lambda is positive, it indicates that the option value will increase as the underlying price increases, and vice versa.
+- If Lambda is negative, it implies that the option value will decrease as the underlying price increases, and vice versa.
 
 **Also known as:** option elasticity, leverage factor.
 
@@ -1668,13 +1692,19 @@ Which returns:
 |            375 |      53.2287 |      51.2097 |      49.3558 |      47.6471 |      46.0671 |      44.6016 |      43.2383 |      41.9667 |
 |            380 |      55.9315 |      53.7858 |      51.8158 |      50.0008 |      48.3228 |      46.7667 |      45.3195 |      43.97   |
 
-
 ---
 
 ## collect_second_order_greeks
 Calculate the second order Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
 
-- Gamma: measures the rate of change in the delta with respect to changes in the underlying price. Gamma is the second derivative of the value function with respect to the underlying price. - Dual Gamma: the second derivative of the option value with respect to the strike price rather than the underlying price. It is the discounted risk-neutral probability density of the underlying at expiration. - Vanna: also referred to as DvegaDspot and DdeltaDvol, is a second-order derivative of the option value, once to the underlying spot price and once to volatility. - Charm: Charm or delta decay measures the instantaneous rate of change of delta over the passage of time. - Vomma: also referred to as volga, vega convexity, or DvegaDvol measures second-order sensitivity to volatility. Vomma is the second derivative of the option value with respect to the volatility, or, stated another way, vomma measures the rate of change to vega as volatility changes. - Veta: also referred to as DvegaDtime, measures the rate of change in the vega with respect to the passage of time. Veta is the second derivative of the value function; once to volatility and once to time. - Vera: also referred to as rhova, measures the rate of change in rho with respect to volatility. Vera is the second derivative of the value function; once to volatility and once to interest rate. - Partial Derivative: measures the rate of change in the option price with respect to the strike price.
+- Gamma: measures the rate of change in the delta with respect to changes in the underlying price. Gamma is the second derivative of the value function with respect to the underlying price.
+- Dual Gamma: the second derivative of the option value with respect to the strike price rather than the underlying price. It is the discounted risk-neutral probability density of the underlying at expiration.
+- Vanna: also referred to as DvegaDspot and DdeltaDvol, is a second-order derivative of the option value, once to the underlying spot price and once to volatility.
+- Charm: Charm or delta decay measures the instantaneous rate of change of delta over the passage of time.
+- Vomma: also referred to as volga, vega convexity, or DvegaDvol measures second-order sensitivity to volatility. Vomma is the second derivative of the option value with respect to the volatility, or, stated another way, vomma measures the rate of change to vega as volatility changes.
+- Veta: also referred to as DvegaDtime, measures the rate of change in the vega with respect to the passage of time. Veta is the second derivative of the value function; once to volatility and once to time.
+- Vera: also referred to as rhova, measures the rate of change in rho with respect to volatility. Vera is the second derivative of the value function; once to volatility and once to interest rate.
+- Partial Derivative: measures the rate of change in the option price with respect to the strike price.
 
 For a deeper explanation, please have a look at: [https://en.wikipedia.org/wiki/Greeks_(finance)](https://en.wikipedia.org/wiki/Greeks_(finance)){:target="_blank"} and the references to the literature as found on this page.
 
@@ -1731,7 +1761,6 @@ Which returns:
 |            375 |                                 0.0008 |                                      0.0005 |                                 0.1693 |                                -0.2953 |                                36.7917 |                                4.0297 |                               269.421 |                              0.0005 |
 |            380 |                                 0.0005 |                                      0.0003 |                                 0.1149 |                                -0.1999 |                                26.7166 |                                2.7394 |                               192.07  |                              0.0003 |
 
-
 ---
 
 ## get_gamma
@@ -1748,7 +1777,8 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 The Gamma can be interpreted as follows:
 
-- If Gamma is high, it indicates that the option's Delta is highly sensitive to changes in the underlying asset's price. The option's Delta will change more significantly with small movements in the stock price. - If Gamma is low, it suggests that the option's Delta is relatively insensitive to changes in the underlying asset's price. The option's Delta changes more gradually with movements in the stock price.
+- If Gamma is high, it indicates that the option's Delta is highly sensitive to changes in the underlying asset's price. The option's Delta will change more significantly with small movements in the stock price.
+- If Gamma is low, it suggests that the option's Delta is relatively insensitive to changes in the underlying asset's price. The option's Delta changes more gradually with movements in the stock price.
 
 Note that the gamma of a call option and put option are equal to each other.
 
@@ -1800,7 +1830,6 @@ Which returns:
 |            370 |       0.0005 |       0.0006 |       0.0007 |       0.0008 |       0.0009 |       0.001  |       0.0011 |       0.0012 |
 |            375 |       0.0003 |       0.0004 |       0.0004 |       0.0005 |       0.0005 |       0.0006 |       0.0007 |       0.0008 |
 |            380 |       0.0002 |       0.0002 |       0.0002 |       0.0003 |       0.0003 |       0.0004 |       0.0004 |       0.0005 |
-
 
 ---
 
@@ -1870,7 +1899,6 @@ Which returns:
 |            375 |       0.0002 |       0.0002 |       0.0003 |       0.0003 |       0.0004 |       0.0004 |       0.0005 |       0.0005 |
 |            380 |       0.0001 |       0.0001 |       0.0002 |       0.0002 |       0.0002 |       0.0002 |       0.0003 |       0.0003 |
 
-
 ---
 
 ## get_vanna
@@ -1888,7 +1916,8 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 The Vanna can be interpreted as follows:
 
-- If Vanna is positive, it indicates that the Delta of the option becomes more positive as both the underlying asset's price and implied volatility increase, and more negative as they both decrease. - If Vanna is negative, it suggests that the Delta of the option becomes more negative as both the underlying asset's price and implied volatility increase, and more positive as they both decrease.
+- If Vanna is positive, it indicates that the Delta of the option becomes more positive as both the underlying asset's price and implied volatility increase, and more negative as they both decrease.
+- If Vanna is negative, it suggests that the Delta of the option becomes more negative as both the underlying asset's price and implied volatility increase, and more positive as they both decrease.
 
 Note that the vanna of a call option and put option are equal to each other.
 
@@ -1943,7 +1972,6 @@ Which returns:
 |            375 |       0.0675 |       0.0798 |       0.0931 |       0.1071 |       0.1218 |       0.1372 |       0.153  |       0.1693 |
 |            380 |       0.0394 |       0.0479 |       0.0573 |       0.0674 |       0.0783 |       0.0899 |       0.1021 |       0.1149 |
 
-
 ---
 
 ## get_charm
@@ -1964,7 +1992,8 @@ Charm is the derivative with respect to calendar time elapsed, in the same direc
 
 The Charm can be interpreted as follows:
 
-- If Charm is positive, it suggests that the option's Delta is becoming more positive over time. In other words, the option is gaining sensitivity to changes in the underlying asset's price as time passes. - If Charm is negative, it indicates that the option's Delta is becoming more negative over time. The option is losing sensitivity to changes in the underlying asset's price as time passes.
+- If Charm is positive, it suggests that the option's Delta is becoming more positive over time. In other words, the option is gaining sensitivity to changes in the underlying asset's price as time passes.
+- If Charm is negative, it indicates that the option's Delta is becoming more negative over time. The option is losing sensitivity to changes in the underlying asset's price as time passes.
 
 **Also known as:** delta time decay, delta bleed.
 
@@ -2019,7 +2048,6 @@ Which returns:
 |            375 |      -0.1538 |      -0.1743 |      -0.195  |      -0.2157 |      -0.2362 |      -0.2563 |      -0.2761 |      -0.2953 |
 |            380 |      -0.0897 |      -0.1045 |      -0.1198 |      -0.1355 |      -0.1515 |      -0.1676 |      -0.1838 |      -0.1999 |
 
-
 ---
 
 ## get_vomma
@@ -2037,7 +2065,8 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 The vomma can be interpreted as follows:
 
-- If Vomma is high, it indicates that the option's Vega is highly sensitive to changes in implied volatility. The option's value will experience more significant fluctuations with variations in implied volatility. - If Vomma is low, it suggests that the option's Vega is relatively less sensitive to changes in implied volatility.
+- If Vomma is high, it indicates that the option's Vega is highly sensitive to changes in implied volatility. The option's value will experience more significant fluctuations with variations in implied volatility.
+- If Vomma is low, it suggests that the option's Vega is relatively less sensitive to changes in implied volatility.
 
 **Also known as:** volga, vega convexity.
 
@@ -2090,7 +2119,6 @@ Which returns:
 |            375 |      14.776  |      17.4675 |      20.3425 |      23.3816 |      26.5652 |      29.8738 |      33.2886 |      36.7917 |
 |            380 |       9.2386 |      11.2195 |      13.3929 |      15.7475 |      18.271  |      20.9498 |      23.7698 |      26.7166 |
 
-
 ---
 
 ## get_vera
@@ -2110,7 +2138,8 @@ Vera is reported unscaled, per 1.00 of volatility and per 1.00 of the risk free 
 
 The Vera can be interpreted as follows:
 
-- If Vera is positive, it indicates that the option's Rho becomes more positive as implied volatility rises. In other words, the option gains sensitivity to the risk free rate when volatility increases. - If Vera is negative, it suggests that the option's Rho becomes more negative as implied volatility rises. The option loses sensitivity to the risk free rate when volatility increases.
+- If Vera is positive, it indicates that the option's Rho becomes more positive as implied volatility rises. In other words, the option gains sensitivity to the risk free rate when volatility increases.
+- If Vera is negative, it suggests that the option's Rho becomes more negative as implied volatility rises. The option loses sensitivity to the risk free rate when volatility increases.
 
 Note that the vera of a call option and put option are equal to each other.
 
@@ -2165,7 +2194,6 @@ Which returns:
 |            375 |       1.2269 |       1.5164 |       1.843  |       2.2068 |       2.6078 |       3.0457 |       3.52   |       4.0297 |
 |            380 |       0.7181 |       0.9119 |       1.1359 |       1.3914 |       1.6791 |       1.9996 |       2.353  |       2.7394 |
 
-
 ---
 
 ## get_veta
@@ -2187,7 +2215,8 @@ It is common practice to divide the mathematical result of veta by 100 times the
 
 The Veta can be interpreted as follows:
 
-- If Veta is positive, it indicates that the option's Vega is becoming more positive over time. In other words, the option is gaining sensitivity to changes in implied volatility as time passes. - If Veta is negative, it suggests that the option's Vega is becoming more negative over time. The option is losing sensitivity to changes in implied volatility as time passes.
+- If Veta is positive, it indicates that the option's Vega is becoming more positive over time. In other words, the option is gaining sensitivity to changes in implied volatility as time passes.
+- If Veta is negative, it suggests that the option's Vega is becoming more negative over time. The option is losing sensitivity to changes in implied volatility as time passes.
 
 **Also known as:** vega time decay.
 
@@ -2239,7 +2268,6 @@ Which returns:
 |            370 |     213.191  |     236.54   |      259.579 |      282.151 |      304.131 |      325.422 |      345.951 |      365.664 |
 |            375 |     136.99   |     155.808  |      174.905 |      194.113 |      213.286 |      232.298 |      251.039 |      269.421 |
 |            380 |      84.4307 |      98.5912 |      113.375 |      128.643 |      144.263 |      160.113 |      176.082 |      192.07  |
-
 
 ---
 
@@ -2305,13 +2333,15 @@ Which returns:
 |            375 |       0.0002 |       0.0002 |       0.0003 |       0.0003 |       0.0004 |       0.0004 |       0.0005 |       0.0005 |
 |            380 |       0.0001 |       0.0001 |       0.0002 |       0.0002 |       0.0002 |       0.0002 |       0.0003 |       0.0003 |
 
-
 ---
 
 ## collect_third_order_greeks
 Calculate the third order Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
 
-- Speed: measures the rate of change in Gamma with respect to changes in the underlying price. - Zomma: measures the rate of change of gamma with respect to changes in volatility. - Color: also referred to as gamma decay or DgammaDtime measures the rate of change of gamma over the passage of time. - Ultima: measures the sensitivity of the option vomma with respect to change in volatility.
+- Speed: measures the rate of change in Gamma with respect to changes in the underlying price.
+- Zomma: measures the rate of change of gamma with respect to changes in volatility.
+- Color: also referred to as gamma decay or DgammaDtime measures the rate of change of gamma over the passage of time.
+- Ultima: measures the sensitivity of the option vomma with respect to change in volatility.
 
 For a deeper explanation, please have a look at: [https://en.wikipedia.org/wiki/Greeks_(finance)](https://en.wikipedia.org/wiki/Greeks_(finance)){:target="_blank"} and the references to the literature as found on this page.
 
@@ -2366,7 +2396,6 @@ Which returns:
 |           1210 |                                      0 |                                -0.0004 |                                -0.0024 |                                 -1.6806 |                                      0 |                                -0.0005 |                                -0.0025 |                                 -1.6898 |
 |           1215 |                                      0 |                                -0.0004 |                                -0.0021 |                                 -1.7049 |                                      0 |                                -0.0004 |                                -0.0022 |                                 -1.716  |
 
-
 ---
 
 ## get_speed
@@ -2383,7 +2412,8 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 The Speed can be interpreted as follows:
 
-- If Speed is positive, the option's Gamma rises as the underlying price rises, so the position's convexity builds up on the way up. - If Speed is negative, the option's Gamma falls as the underlying price rises, which is the usual case just below the strike where Gamma is already close to its peak.
+- If Speed is positive, the option's Gamma rises as the underlying price rises, so the position's convexity builds up on the way up.
+- If Speed is negative, the option's Gamma falls as the underlying price rises, which is the usual case just below the strike where Gamma is already close to its peak.
 
 Note that the speed of a call option and put option are equal to each other.
 
@@ -2438,7 +2468,6 @@ Which returns:
 |            375 |       0      |       0      |       0.0001 |       0.0001 |       0.0001 |       0.0001 |       0.0001 |       0.0001 |
 |            380 |       0      |       0      |       0      |       0      |       0      |       0      |       0      |       0.0001 |
 
-
 ---
 
 ## get_zomma
@@ -2456,7 +2485,8 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 The Zomma can be interpreted as follows:
 
-- If Zomma is positive, the option's Gamma rises as implied volatility rises, which is typical for strikes well away from the money. - If Zomma is negative, the option's Gamma falls as implied volatility rises, which is typical for strikes near the money where Gamma is already at its peak.
+- If Zomma is positive, the option's Gamma rises as implied volatility rises, which is typical for strikes well away from the money.
+- If Zomma is negative, the option's Gamma falls as implied volatility rises, which is typical for strikes near the money where Gamma is already at its peak.
 
 Note that the zomma of a call option and put option are equal to each other.
 
@@ -2511,7 +2541,6 @@ Which returns:
 |            375 |       0.0085 |       0.0096 |       0.0106 |       0.0116 |       0.0126 |       0.0136 |       0.0145 |       0.0154 |
 |            380 |       0.0054 |       0.0063 |       0.0071 |       0.008  |       0.0089 |       0.0097 |       0.0106 |       0.0114 |
 
-
 ---
 
 ## get_color
@@ -2531,7 +2560,8 @@ The formula as usually published carries a leading minus sign because it differe
 
 The Color can be interpreted as follows:
 
-- If Color is positive, the option's Gamma builds up with each day that passes, which is what happens to a near-the-money option as expiration approaches. - If Color is negative, the option's Gamma bleeds away with each day that passes, which is what happens to a strike far from the money that is running out of time to reach it.
+- If Color is positive, the option's Gamma builds up with each day that passes, which is what happens to a near-the-money option as expiration approaches.
+- If Color is negative, the option's Gamma bleeds away with each day that passes, which is what happens to a strike far from the money that is running out of time to reach it.
 
 Note that the color of a call option and put option are equal to each other.
 
@@ -2586,7 +2616,6 @@ Which returns:
 |            375 |       0.0194 |       0.0209 |       0.0223 |       0.0235 |       0.0245 |       0.0255 |       0.0263 |       0.0269 |
 |            380 |       0.0123 |       0.0136 |       0.0149 |       0.0161 |       0.0172 |       0.0182 |       0.0191 |       0.0199 |
 
-
 ---
 
 ## get_ultima
@@ -2604,7 +2633,8 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 The Ultima can be interpreted as follows:
 
-- If Ultima is positive, the option's Vomma rises as implied volatility rises, so the volatility convexity of the position builds up in a rising volatility regime. - If Ultima is negative, the option's Vomma falls as implied volatility rises, which is the usual case for strikes near the money.
+- If Ultima is positive, the option's Vomma rises as implied volatility rises, so the volatility convexity of the position builds up in a rising volatility regime.
+- If Ultima is negative, the option's Vomma falls as implied volatility rises, which is the usual case for strikes near the money.
 
 Note that the ultima of a call option and put option are equal to each other.
 
@@ -2658,7 +2688,6 @@ Which returns:
 |            370 |       3.7098 |       3.9531 |       4.1616 |       4.3339 |       4.4697 |       4.5694 |       4.6338 |       4.6641 |
 |            375 |       3.0622 |       3.3708 |       3.6596 |       3.925  |       4.1644 |       4.3759 |       4.5583 |       4.7109 |
 |            380 |       2.3353 |       2.6535 |       2.9678 |       3.2735 |       3.5666 |       3.8438 |       4.1024 |       4.3401 |
-
 
 ---
 

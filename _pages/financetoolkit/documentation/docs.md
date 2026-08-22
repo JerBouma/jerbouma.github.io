@@ -67,7 +67,6 @@ Which returns:
 | EBT to EBIT Ratio                           | 0.957448 | 0.948408 | 0.958936 | 0.976353 | 0.975982 |
 | EBIT to Revenue                             | 0.286688 | 0.26641  | 0.254864 | 0.305759 | 0.309473 |
 
-
 ---
 
 ## models
@@ -96,7 +95,6 @@ Which returns:
 | Asset Turnover          | nan         | 0.299735  |  0.3349     | 0.274759  | 0.285319  |
 | Equity Multiplier       | nan         | 3.15403   |  3.14263    | 3.08433   | 2.91521   |
 | Return on Equity        | nan         | 0.0213618 |  0.00196098 | 0.0211066 | 0.0417791 |
-
 
 ---
 
@@ -147,7 +145,6 @@ Which returns:
 |            290 |  0      |      -0      | 0      | -0      | 0      |   -0      |   2.401  |  0      |       0      |  0      |  -0      |  0      |  0      |    0      | 0      |  0      |  0      |  0      |   0      |
 |            295 |  0      |      -0      | 0      | -0      | 0      |   -0      |   2.595  |  0      |       0      |  0      |  -0      |  0      |  0      |    0      | 0      |  0      |  0      |  0      |   0      |
 
-
 ---
 
 ## technicals
@@ -176,7 +173,6 @@ Which returns:
 | 2023-08-24 | 66.4527 | 35.4399 |
 | 2023-08-25 | 63.4837 | 32.3323 |
 
-
 ---
 
 ## performance
@@ -204,7 +200,6 @@ Which returns:
 | 2023Q1 |  0.075  |  0.1121 |
 | 2023Q2 |  0.0922 |  0.1342 |
 | 2023Q3 |  0.0052 | -0.0482 |
-
 
 ---
 
@@ -242,7 +237,6 @@ Which returns:
 | 2021   |  1.3179 |  0.8797 |
 | 2022   | -0.8026 | -1.0046 |
 | 2023   |  1.8549 |  1.8238 |
-
 
 ---
 
@@ -303,7 +297,6 @@ Which returns:
 | 2024-01-12 | 0.0451 | 0.0467 | 0.0502 | 0.0534 | 0.0613 | 0.0753 | 0.1338 |
 | 2024-01-15 | 0.0451 | 0.0467 | 0.0501 | 0.0533 | 0.0611 | 0.0751 | 0.1328 |
 
-
 ---
 
 ## economics
@@ -336,7 +329,6 @@ Which returns:
 | 2020 |         109.195 |       107.51  | 101.799  |
 | 2021 |         114.325 |       110.387 | 101.561  |
 | 2022 |         123.474 |       121.427 | 104.098  |
-
 
 ---
 
@@ -391,7 +383,6 @@ Which returns:
 | DCF                   | 243.594                   | 150.082               |
 | IPO Date              | 1986-03-13                | 1980-12-12            |
 
-
 ---
 
 ## get_quote
@@ -432,7 +423,6 @@ Which returns:
 | Open                   | 444.355             | 254.64               |
 | Previous Close         | 440.4               | 255.46               |
 | Timestamp              | 2025-09-29 20:00:00 | 2025-09-29 20:00:01  |
-
 
 ---
 
@@ -480,7 +470,6 @@ Which returns:
 | 2025-09-25 00:00:00 | B+       |              3 |           2 |           5 |           5 |          3 |          2 |          1 |
 | 2025-09-26 00:00:00 | B+       |              3 |           2 |           5 |           5 |          3 |          2 |          1 |
 | 2025-09-29 00:00:00 | B+       |              3 |           2 |           5 |           5 |          3 |          2 |          1 |
-
 
 ---
 
@@ -542,7 +531,6 @@ Which returns:
 | Estimated EPS Low             |  6.139       |  7.2358      |  7.6936      |  7.9284      |  8.9681      |
 | Number of Analysts            | 25           | 29           | 30           | 19           |  9           |
 
-
 ---
 
 ## get_earnings_calendar
@@ -596,7 +584,6 @@ Which returns:
 | 2025-05-01 00:00:00 |  1.59 |            1.37 | 1.55667e+11 |         1.55148e+11 | 2025-08-01     |
 | 2025-07-31 00:00:00 |  1.68 |            1.31 | 1.67702e+11 |         1.61776e+11 | 2025-09-30     |
 
-
 ---
 
 ## get_stock_news
@@ -638,7 +625,6 @@ Which returns:
 | 2026-07-07 09:59:19  | MSFT     | Benzinga      | Michael Burry's $700 Microsoft Bet: Should You Copy His LEAP Trade?                            |
 | 2026-07-07 09:26:50  | AAPL     | Benzinga      | Forget the iPhone. Apple's AI Story May Belong to Macs                                         |
 
-
 ---
 
 ## get_press_releases
@@ -679,7 +665,6 @@ Which returns:
 | 2026-07-06 15:34:00  | MSFT     | GlobeNewsWire | MICROSOFT CLASS ACTION ALERT: Bragar Eagel & Squire, P.C. Urges Microsoft Corporation...         |
 | 2026-07-06 13:24:00  | MSFT     | GlobeNewsWire | Deadline Alert: Microsoft Corporation (MSFT) Shareholders Who Lost Money Urged To Contact...     |
 | 2026-07-06 10:07:00  | MSFT     | GlobeNewsWire | Levi & Korsinsky Reminds Shareholders of a Lead Plaintiff Deadline of August 11, 2026...         |
-
 
 ---
 
@@ -723,7 +708,6 @@ Which returns:
 | China        | 2.1313e+10 | 2.5783e+10 | 2.3905e+10 | 1.5758e+10 |
 | Europe       | 2.7306e+10 | 2.9749e+10 | 2.7681e+10 | 2.0205e+10 |
 | Japan        | 8.285e+09  | 7.107e+09  | 6.755e+09  | 4.821e+09  |
-
 
 ---
 
@@ -771,7 +755,6 @@ Which returns:
 | Search And News Advertising        | 2.926e+09  | 2.928e+09  | 3.223e+09  | 3.045e+09  |  3.012e+09  |
 | Server Products And Cloud Services | 1.8839e+10 | 1.8388e+10 | 1.9594e+10 | 2.0025e+10 |  2.1963e+10 |
 | Windows                            | 6.408e+09  | 5.313e+09  | 4.808e+09  | 5.328e+09  |  6.058e+09  |
-
 
 ---
 
@@ -843,7 +826,6 @@ Which returns:
 | 2022   | 128.41   | 129.95   | 127.43   | 129.93   |    129.378  | 7.70342e+07 |    0.91     | -0.264042  |             7.35566 |
 | 2023   | 187.84   | 188.51   | 187.68   | 188.108  |    188.108  | 4.72009e+06 |    0.71     |  0.453941  |            10.6947  |
 
-
 ---
 
 ## get_intraday_data
@@ -903,7 +885,6 @@ Which returns:
 | 2024-01-19 15:58 | 398.46 | 398.47 | 398.29  | 398.35  |   278802 |  -0.0002 |              1.0278 |
 | 2024-01-19 15:59 | 398.35 | 398.66 | 398.22  | 398.66  |   586344 |   0.0008 |              1.0286 |
 
-
 ---
 
 ## get_dividend_calendar
@@ -956,7 +937,6 @@ Which returns:
 | 2025-05-12 |           0.26 |       0.26 |  0.4791 | 2025-05-12    | 2025-05-15     | 2025-05-01         |
 | 2025-08-11 |           0.26 |       0.26 |  0.449  | 2025-08-11    | 2025-08-14     | 2025-07-31         |
 
-
 ---
 
 ## get_esg_scores
@@ -1004,7 +984,6 @@ Which returns:
 | 2024   |                 72.53 |          58.08 |              60.7  |       63.77 |
 | 2025   |                 71.85 |          57.64 |              59.62 |       63.04 |
 
-
 ---
 
 ## get_market_risk_premium
@@ -1044,7 +1023,6 @@ Which returns:
 | United States | North America |                    0.23 |                          4.46 |
 | Germany       | Europe        |                    0    |                          4.23 |
 | Brazil        | South America |                    3.24 |                          7.47 |
-
 
 ---
 
@@ -1091,7 +1069,6 @@ Which returns:
 | 2024-02-20 00:00:00 |          1592460 |                 356334 |                  510206 |              567791 |               452247 |
 | 2024-02-27 00:00:00 |          1500882 |                 326328 |                  467881 |              545380 |               433185 |
 
-
 ---
 
 ## get_historical_statistics
@@ -1133,7 +1110,6 @@ Which returns:
 | GMT Offset             | -14400           | 28800          | 7200             | 32400          |
 | Timezone               | EDT              | HKT            | CEST             | JST            |
 | Exchange Timezone Name | America/New_York | Asia/Hong_Kong | Europe/Amsterdam | Asia/Tokyo     |
-
 
 ---
 
@@ -1184,7 +1160,6 @@ Which returns:
 | 2023-10-18 |    0.0533 |   0.0492 |    0.049  |    0.05   |
 | 2023-10-19 |    0.0531 |   0.0496 |    0.0499 |    0.051  |
 | 2023-10-20 |    0.053  |   0.0491 |    0.0496 |    0.0512 |
-
 
 ---
 
@@ -1246,13 +1221,14 @@ Which returns:
 | 2023-11 | 1.0973 | 1.0984 | 1.0878 |  1.0892 |      1.0974 |   173646 |   0.0338 |              0.7946 |
 | 2023-12 | 1.088  | 1.0898 | 1.0848 |  1.0871 |      1.0871 |    90494 |  -0.0094 |              0.7872 |
 
-
 ---
 
 ## get_balance_sheet_statement
 Retrieves the balance sheet statement data for the specified tickers. The balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. It shows the company's assets, liabilities, and shareholders' equity. The balance sheet statement is divided into three main sections:
 
-- Assets: Assets are resources owned by the company that have economic value and can be used to generate revenue. Assets are typically divided into current assets and non-current assets. - Liabilities: Liabilities are obligations that the company owes to external parties. Liabilities are also divided into current liabilities and non-current liabilities. - Shareholders' Equity: Shareholders' equity represents the company's net worth or book value. It is calculated as the difference between the company's assets and liabilities.
+- Assets: Assets are resources owned by the company that have economic value and can be used to generate revenue. Assets are typically divided into current assets and non-current assets.
+- Liabilities: Liabilities are obligations that the company owes to external parties. Liabilities are also divided into current liabilities and non-current liabilities.
+- Shareholders' Equity: Shareholders' equity represents the company's net worth or book value. It is calculated as the difference between the company's assets and liabilities.
 
 Note that the balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. Therefore, trailing results are not available for this statement.
 
@@ -1338,7 +1314,6 @@ Which returns:
 | Total Debt                               |  7.592e+09  |  7.516e+09  |  1.089e+10  |  1.2884e+10 |  1.3848e+10 |
 | Net Debt                                 | -1.565e+09  | -7.46e+08   |  1.316e+09  |  3.086e+09  |  4.55e+09   |
 
-
 ---
 
 ## get_income_statement
@@ -1413,7 +1388,6 @@ Which returns:
 | EPS Diluted                                  | 0.65       |  0.95       |  1.07       |  0.73       | 0.78       |
 | Weighted Average Shares                      | 3.111e+09  |  3.146e+09  |  3.16e+09   |  3.166e+09  | 3.171e+09  |
 | Weighted Average Shares Diluted              | 3.465e+09  |  3.468e+09  |  3.471e+09  |  3.468e+09  | 3.478e+09  |
-
 
 ---
 
@@ -1492,7 +1466,6 @@ Which returns:
 | Capital Expenditure           | -1.6378e+10 | -1.6592e+10 | -1.4207e+10 | -1.1455e+10 |
 | Free Cash Flow                | -4.974e+09  |  1.2581e+10 | -9.419e+09  |  5.021e+09  |
 
-
 ---
 
 ## get_statistics_statement
@@ -1542,7 +1515,6 @@ Which returns:
 | SEC Link          | https://www.sec.gov/Archives/edgar/data/1318605/000095017023033872/0000950170-23-033872-index.htm |
 | Document Link     | https://www.sec.gov/Archives/edgar/data/1318605/000095017023033872/tsla-20230630.htm              |
 
-
 ---
 
 ## get_normalization_files
@@ -1585,7 +1557,6 @@ Which returns:
 | source   | dataset    |   entities |   entries | oldest_write        | newest_write        |
 |:---------|:-----------|-----------:|----------:|:--------------------|:--------------------|
 | market   | historical |          3 |         3 | 2026-08-06 14:02:11 | 2026-08-06 14:02:12 |
-
 
 ---
 

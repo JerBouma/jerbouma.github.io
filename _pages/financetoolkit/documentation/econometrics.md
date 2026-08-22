@@ -36,10 +36,10 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the test within the specified period or for
 the entire period. Thus whether to look at the test within a specific year (if period = 'yearly')
-or look at the entirety of all years. Defaults to True.
+or look at the entirety of all years. Defaults to False.
 - <u>lags (int, optional):</u> The number of lags to test for ARCH effects. Defaults to 5.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
@@ -71,7 +71,6 @@ Which returns:
 | ARCH-LM Statistic |   4.0116 | 3.7793 |
 | P-Value           |   0.548  | 0.5817 |
 
-
 ---
 
 ## get_jarque_bera_test
@@ -88,10 +87,10 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the test within the specified period or for
 the entire period. Thus whether to look at the test within a specific year (if period = 'yearly')
-or look at the entirety of all years. Defaults to True.
+or look at the entirety of all years. Defaults to False.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -122,7 +121,6 @@ Which returns:
 | Jarque-Bera Statistic |  3.0505 |  1.9354 |
 | P-Value               |  0.2175 |  0.38   |
 
-
 ---
 
 ## get_ljung_box_test
@@ -139,10 +137,10 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the test within the specified period or for
 the entire period. Thus whether to look at the test within a specific year (if period = 'yearly')
-or look at the entirety of all years. Defaults to True.
+or look at the entirety of all years. Defaults to False.
 - <u>lags (int, optional):</u> The number of lags to test for autocorrelation up to. Defaults to 10.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
@@ -174,7 +172,6 @@ Which returns:
 | Ljung-Box Statistic | 8.7703 | 7.1814 |
 | P-Value             | 0.554  | 0.7082 |
 
-
 ---
 
 ## get_variance_ratio_test
@@ -191,10 +188,10 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the test within the specified period or for
 the entire period. Thus whether to look at the test within a specific year (if period = 'yearly')
-or look at the entirety of all years. Defaults to True.
+or look at the entirety of all years. Defaults to False.
 - <u>q (int, optional):</u> The number of periods to compound returns over. Defaults to 2.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
@@ -228,7 +225,6 @@ Which returns:
 | Variance Ratio Statistic | -0.6757 | -1.1353 |
 | P-Value                  |  0.4993 |  0.2563 |
 
-
 ---
 
 ## get_cusum_test
@@ -245,10 +241,10 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the test within the specified period or for
 the entire period. Thus whether to look at the test within a specific year (if period = 'yearly')
-or look at the entirety of all years. Defaults to True.
+or look at the entirety of all years. Defaults to False.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -295,7 +291,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
 - <u>max_lag (int, optional):</u> The maximum number of lagged differences to consider. Defaults to
 the Schwert (1989) rule of thumb.
@@ -344,7 +340,6 @@ Which returns:
 | Critical Value 10%    |  -2.7298 |  -2.7298 |
 | Reject Unit Root (5%) |   1      |   0      |
 
-
 ---
 
 ## get_kpss_test
@@ -361,7 +356,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
 - <u>regression (str, optional):</u> Which deterministic term to remove before testing, one of "c"
 (constant, level-stationarity) or "ct" (constant and trend, trend-stationarity).
@@ -413,7 +408,6 @@ Which returns:
 | Critical Value 10%        |  0.347  |  0.347  |
 | Reject Stationarity (5%)  |  0      |  1      |
 
-
 ---
 
 ## get_phillips_perron_test
@@ -430,7 +424,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
 - <u>regression (str, optional):</u> Which deterministic term to include, one of "c" (constant) or
 "ct" (constant and trend). Defaults to "c". Note "n" (no constant) is not supported, see
@@ -474,7 +468,6 @@ Which returns:
 | Critical Value 10%       |  -2.57   |  -2.57   |
 | Reject Unit Root (5%)     |   0      |   0      |
 
-
 ---
 
 ## get_zivot_andrews_test
@@ -484,14 +477,15 @@ The (A)DF/KPSS/PP tests above all assume the deterministic component of the seri
 
 For more information about the method, see the following papers:
 
-- Zivot, E., & Andrews, D.W.K. (1992). "Further Evidence on the Great Crash, the Oil-Price Shock, and the Unit-Root Hypothesis." Journal of Business & Economic Statistics, 10(3), 251-270. - Perron, P. (1989). "The Great Crash, the Oil Price Shock, and the Unit Root Hypothesis." Econometrica, 57(6), 1361-1401.
+- Zivot, E., & Andrews, D.W.K. (1992). "Further Evidence on the Great Crash, the Oil-Price Shock, and the Unit-Root Hypothesis." Journal of Business & Economic Statistics, 10(3), 251-270.
+- Perron, P. (1989). "The Great Crash, the Oil Price Shock, and the Unit Root Hypothesis." Econometrica, 57(6), 1361-1401.
 
 **Also known as:** ZA test, structural break unit root test.
 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
 - <u>max_lag (int, optional):</u> The maximum number of lagged differences to consider when
 selecting the (single, reused) lag length. Defaults to the Schwert (1989) rule of thumb.
@@ -545,7 +539,6 @@ Which returns:
 | Critical Value 10%      |  -4.5662 |  -4.5662 |
 | Reject Unit Root (5%)   |   0      |   0      |
 
-
 ---
 
 ## get_engle_granger_cointegration
@@ -562,7 +555,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
 - <u>max_lag (int, optional):</u> The maximum number of lagged differences to consider in the
 underlying ADF test on the residuals. Defaults to `statsmodels`' automatic selection.
@@ -603,7 +596,6 @@ Which returns:
 | AAPL        | MSFT          |        -1.4334 |    0.7858 |    -3.8927 | False               |
 | MSFT        | AAPL          |        -2.8297 |    0.1564 |    -3.8927 | False               |
 
-
 ---
 
 ## get_johansen_cointegration
@@ -613,14 +605,15 @@ The Engle-Granger test only handles two assets and imposes an arbitrary normaliz
 
 For more information about the method, see the following papers:
 
-- Johansen, S. (1988). "Statistical Analysis of Cointegration Vectors." Journal of Economic Dynamics and Control, 12(2-3), 231-254. - Johansen, S. (1991). "Estimation and Hypothesis Testing of Cointegration Vectors in Gaussian Vector Autoregressive Models." Econometrica, 59(6), 1551-1580.
+- Johansen, S. (1988). "Statistical Analysis of Cointegration Vectors." Journal of Economic Dynamics and Control, 12(2-3), 231-254.
+- Johansen, S. (1991). "Estimation and Hypothesis Testing of Cointegration Vectors in Gaussian Vector Autoregressive Models." Econometrica, 59(6), 1551-1580.
 
 **Also known as:** Johansen test, Johansen procedure, VECM rank test.
 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
 - <u>det_order (int, optional):</u> Which deterministic term to include: -1 (none), 0 (a
 constant, restricted to lie in the cointegrating relation) or 1 (a linear trend
@@ -665,7 +658,6 @@ columns follow the same pattern)
 | r <= 0 |       0.5653 |             14.1993 |                       15.4943 | False                   |
 | r <= 1 |       0.3674 |              5.0363 |                        3.8415 | True                    |
 
-
 ---
 
 ## get_granger_causality
@@ -682,7 +674,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to test. Defaults to "Return", since
 Granger causality assumes a stationary series (unlike the ADF/Engle-Granger tests, which
 operate on price levels on purpose).
@@ -721,7 +713,6 @@ Which returns:
 |:------------|:--------------|--------------:|----------:|:----------------------|
 | AAPL        | MSFT          |        2.4852 |    0.0630 | False                 |
 | MSFT        | AAPL          |        0.3750 |    0.7712 | False                 |
-
 
 ---
 
@@ -788,7 +779,6 @@ Which returns:
 | Mean Loss Differential    |  -0.0000 |  -0.0000 |
 | Observations              | 735      | 735      |
 
-
 ---
 
 ## get_ols
@@ -809,7 +799,7 @@ the Toolkit instance besides `dependent_ticker`.
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
 - <u>cov_type (str, optional):</u> Which covariance estimator to use for the standard errors --
@@ -871,7 +861,6 @@ Which returns:
 | Intercept |        0.0134 |       0.026  |        0.5143 |    0.6119 |
 | TSLA      |        0.2479 |       0.0817 |        3.0331 |    0.0059 |
 
-
 ---
 
 ## get_wls
@@ -894,7 +883,7 @@ the Toolkit instance besides `dependent_ticker`.
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
 - <u>cov_type (str, optional):</u> Which covariance estimator to use, applied to the weighted/
@@ -935,7 +924,6 @@ Which returns:
 | Intercept |        0.0016 |       0.0024 |        0.6712 |    0.5031 |
 | MSFT      |        0.8681 |       0.0596 |       14.5659 |    0      |
 
-
 ---
 
 ## get_gls
@@ -958,7 +946,7 @@ the Toolkit instance besides `dependent_ticker`.
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
@@ -993,7 +981,6 @@ Which returns:
 | Intercept |        0.0016 |       0.0024 |        0.6712 |    0.5031 |
 | MSFT      |        0.8681 |       0.0596 |       14.5659 |    0      |
 
-
 ---
 
 ## get_logistic_regression
@@ -1015,7 +1002,7 @@ the Toolkit instance besides `dependent_ticker`.
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to derive returns from. Defaults to
 "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
@@ -1054,7 +1041,6 @@ Which returns:
 | MSFT      |       24.8481 |      10.1178 |        2.4559 |    0.0141 |
 | Benchmark |       63.677  |      15.5493 |        4.0952 |    0      |
 
-
 ---
 
 ## get_probit_regression
@@ -1076,7 +1062,7 @@ the Toolkit instance besides `dependent_ticker`.
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to derive returns from. Defaults to
 "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
@@ -1115,7 +1101,6 @@ Which returns:
 | MSFT      |       15.7063 |       5.7385 |        2.737  |    0.0062 |
 | Benchmark |       35.3471 |       8.1355 |        4.3448 |    0      |
 
-
 ---
 
 ## get_quantile_regression
@@ -1137,7 +1122,7 @@ default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
 - <u>tau (float, optional):</u> The quantile to fit, in (0, 1). Defaults to 0.5 (the median).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
 - <u>n_bootstrap (int, optional):</u> The number of bootstrap resamples used for coefficient
@@ -1171,7 +1156,6 @@ Which returns:
 | MSFT      |        0.3593 |       0.0854 |
 | Benchmark |        0.6885 |       0.1037 |
 
-
 ---
 
 ## get_fama_macbeth_regression
@@ -1190,7 +1174,7 @@ single-factor/CAPM-style test). Defaults to None, meaning `["Benchmark"]`.
 cross-section of test assets. Defaults to None, meaning every Toolkit
 ticker (including "Benchmark") not already used as a factor.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the
 second-pass cross-sectional regression. Defaults to True.
@@ -1231,7 +1215,6 @@ Which returns:
 |:----------|---------------:|-------------:|--------------:|----------:|
 | Benchmark |         0.0032 |       0.0016 |        1.9798 |    0.0486 |
 
-
 ---
 
 ## get_two_sample_t_test
@@ -1244,7 +1227,7 @@ For more information about the method, see `hypothesis_testing_model.get_two_sam
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to compare. Defaults to "Return".
 - <u>equal_variance (bool, optional):</u> Whether to assume the two samples share a common
 variance (Student's pooled t-test) instead of Welch's (unequal-variance) t-test.
@@ -1281,7 +1264,6 @@ Which returns:
 |:-----------|:-----------|--------------:|----------------------:|----------:|---------:|---------:|
 | AAPL       | MSFT       |        0.2318 |               306.6549 |    0.8168 |   0.0047 |   0.0036 |
 
-
 ---
 
 ## get_f_test
@@ -1299,7 +1281,7 @@ restricted (smaller) model.
 - <u>unrestricted_independent_tickers (str \| list[str]):</u> The independent asset(s) in the
 unrestricted (larger) model -- must be a superset of `restricted_independent_tickers`.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly".
+Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in both models. Defaults
 to True.
@@ -1333,7 +1315,6 @@ Which returns:
 | P-Value                      |    0.0000 |
 | Reject Restrictions (5%)      |    1      |
 
-
 ---
 
 ## get_likelihood_ratio_test
@@ -1351,7 +1332,7 @@ restricted (smaller) model.
 - <u>unrestricted_independent_tickers (str \| list[str]):</u> The independent asset(s) in the
 unrestricted (larger) model -- must be a superset of `restricted_independent_tickers`.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly".
+Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in both models. Defaults
 to True.
@@ -1384,7 +1365,6 @@ Which returns:
 | P-Value                       |   0.0000 |
 | Reject Restrictions (5%)       |   1      |
 
-
 ---
 
 ## get_wald_test
@@ -1412,7 +1392,7 @@ explicitly). Defaults to False.
 - <u>restriction_values (pd.Series \| np.ndarray \| None, optional):</u> The length-`q` vector of
 hypothesized values. Defaults to None, i.e. all restrictions equal zero.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly".
+Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
@@ -1449,7 +1429,6 @@ Which returns:
 | Restrictions (q)              |    2      |
 | Reject Restrictions (5%)       |    1      |
 
-
 ---
 
 ## get_hausman_wu_test
@@ -1469,7 +1448,7 @@ with `dependent_ticker`'s error term.
 - <u>other_independent_tickers (str \| list[str] \| None, optional):</u> Any other (assumed
 exogenous) independent asset(s) to include. Defaults to None.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
@@ -1501,7 +1480,6 @@ Which returns:
 | P-Value                   |   0.0000 |
 | Endogenous (5%)            |   1      |
 
-
 ---
 
 ## get_breusch_pagan_test
@@ -1522,7 +1500,7 @@ the Toolkit instance besides `dependent_ticker`.
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly".
+Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the underlying
 regression. Defaults to True.
@@ -1555,7 +1533,6 @@ Which returns:
 | P-Value                       |  0.4597 |
 | Reject Homoskedasticity (5%)  |  0      |
 
-
 ---
 
 ## get_white_test
@@ -1576,7 +1553,7 @@ the Toolkit instance besides `dependent_ticker`.
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly".
+Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the underlying
 regression. Defaults to True.
@@ -1609,7 +1586,6 @@ Which returns:
 | P-Value                        |  0.8079 |
 | Reject Homoskedasticity (5%)   |  0      |
 
-
 ---
 
 ## get_durbin_watson_test
@@ -1630,7 +1606,7 @@ the Toolkit instance besides `dependent_ticker`.
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly".
+Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the underlying
 regression. Defaults to True.
@@ -1666,7 +1642,6 @@ Which returns:
 | Durbin-Watson Statistic    | 2.0538               |
 | Interpretation             | No Strong Evidence   |
 
-
 ---
 
 ## get_vif
@@ -1679,7 +1654,7 @@ For more information about the method, see `specification_tests_model.get_vif`.
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 regressors tested. Defaults to False.
@@ -1713,7 +1688,6 @@ Which returns:
 | AAPL | 2.3688 |
 | MSFT | 2.3688 |
 
-
 ---
 
 ## get_ramsey_reset_test
@@ -1734,7 +1708,7 @@ the Toolkit instance besides `dependent_ticker`.
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly".
+Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the underlying
 regression. Defaults to True.
@@ -1768,7 +1742,6 @@ Which returns:
 | P-Value                              |  0.3165 |
 | Reject Correct Specification (5%)    |  0      |
 
-
 ---
 
 ## get_chow_test
@@ -1792,7 +1765,7 @@ the Toolkit instance besides `dependent_ticker`.
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the underlying
 regression(s). Defaults to True.
@@ -1832,7 +1805,6 @@ Which returns:
 | P-Value                              |  0.1736 |
 | Reject No Structural Break (5%)      |  0      |
 
-
 ---
 
 ## get_iv_2sls
@@ -1855,7 +1827,7 @@ term. Must supply at least as many instruments as endogenous regressors.
 - <u>exogenous_tickers (str \| list[str] \| None, optional):</u> Other, non-instrumented
 control asset(s) included as-is in both stages. Defaults to None.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to
 "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
@@ -1886,7 +1858,6 @@ Which returns:
 | Intercept |         0.0006 |        0.0025 |         0.2336 |     0.8156 |
 | MSFT      |         1.1453 |        0.0813 |        14.0938 |     0.0000 |
 
-
 ---
 
 ## get_difference_in_differences
@@ -1907,7 +1878,7 @@ accepted by `pd.Timestamp`. Observations on or after this date are `Post = 1`.
 asset(s). Defaults to None, which uses every ticker (and "Benchmark", if
 present) NOT in `treated_tickers`.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to use as the outcome.
 Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
@@ -1941,7 +1912,6 @@ Which returns:
 | Post            |        -0.0074 |        0.0045 |        -1.6572 |     0.0982 |
 | Treated x Post  |        -0.0020 |        0.0077 |        -0.2571 |     0.7972 |
 
-
 ---
 
 ## get_regression_discontinuity
@@ -1961,7 +1931,7 @@ which side of `cutoff` an observation falls on.
 - <u>cutoff (float):</u> The threshold value of `running_variable_ticker` at which the
 discontinuity is estimated.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to use for both series.
 Defaults to "Return".
 - <u>bandwidth (float \| None, optional):</u> The maximum distance from `cutoff` an
@@ -2003,7 +1973,6 @@ Which returns:
 | N Left        |  71      |
 | N Right       |  85      |
 
-
 ---
 
 ## get_propensity_score_matching
@@ -2026,7 +1995,7 @@ selection into "treatment".
 - <u>treatment_threshold (float, optional):</u> The return threshold defining
 treatment. Defaults to 0.0.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>caliper (float \| None, optional):</u> The maximum allowed logit-propensity-score
 matching distance. Defaults to None, which uses Austin's (2011) rule of thumb
@@ -2065,7 +2034,6 @@ Which returns:
 | N Treated     |  84      |
 | N Control     |  73      |
 
-
 ---
 
 ## get_synthetic_control
@@ -2087,7 +2055,7 @@ weights).
 the donor pool the synthetic control is built from. Defaults to None,
 meaning every other Toolkit ticker (subject to `include_benchmark`).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
 default donor pool (has no effect when donor_tickers is given explicitly).
@@ -2136,7 +2104,6 @@ Which returns:
 | N Pre-Periods             | 78      |
 | N Post-Periods            | 79      |
 
-
 ---
 
 ## get_fixed_effects
@@ -2146,7 +2113,8 @@ Fit a Fixed Effects ("within") estimator explaining a panel of `dependent_ticker
 
 Unlike this module's other regression methods (`get_ols`, `get_wls`, ...), which each compare a handful of individual ticker return series on equal footing, this treats `dependent_tickers` as a genuine panel of entities -- e.g. every stock in the `Toolkit` instance -- observed over time. The regressor `x` is built in exactly one of two ways (provide exactly one of the two arguments below):
 
-- `independent_tickers`: a COMMON factor (or factors) applied identically to every entity at each date (e.g. a market benchmark, mirroring a Fama-French-style factor regression). - `independent_column`: a PER-ENTITY regressor -- each entity's own value of a *different* historical data column (e.g. does `"Volume"` explain `"Return"`, across the panel).
+- `independent_tickers`: a COMMON factor (or factors) applied identically to every entity at each date (e.g. a market benchmark, mirroring a Fama-French-style factor regression).
+- `independent_column`: a PER-ENTITY regressor -- each entity's own value of a *different* historical data column (e.g. does `"Volume"` explain `"Return"`, across the panel).
 
 Fixed Effects removes any purely entity-specific, time-invariant characteristic (e.g. a stock's typical risk premium) before estimating the regressor's coefficient(s), by demeaning every variable by its entity's mean. See `panel_data_model.get_fixed_effects` for the full formula and references.
 
@@ -2162,7 +2130,7 @@ use as the regressor. Mutually exclusive with `independent_tickers`.
 entity tickers to explain. Defaults to None, meaning every ticker in
 the `Toolkit` instance (other than `independent_tickers`, if given).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
-quarterly, or yearly). Defaults to "quarterly".
+quarterly, or yearly). Defaults to "daily".
 - <u>column (str, optional):</u> The dependent variable's historical data
 column. Defaults to "Return".
 - <u>entity_effects (bool, optional):</u> Whether to control for time-invariant
@@ -2206,7 +2174,6 @@ Which returns:
 | Entity Effect: AAPL    |         0.0022 |      nan      |       nan      |   nan      |
 | Entity Effect: MSFT    |         0.0017 |      nan      |       nan      |   nan      |
 
-
 ---
 
 ## get_random_effects
@@ -2234,7 +2201,7 @@ use as the regressor. Mutually exclusive with `independent_tickers`.
 entity tickers to explain. Defaults to None, meaning every ticker in
 the `Toolkit` instance (other than `independent_tickers`, if given).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
-quarterly, or yearly). Defaults to "quarterly".
+quarterly, or yearly). Defaults to "daily".
 - <u>column (str, optional):</u> The dependent variable's historical data
 column. Defaults to "Return".
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the
@@ -2273,7 +2240,6 @@ Which returns:
 | Intercept |         0.0094 |        0.0012 |         7.7341 |     0.0000 |
 | Volume    |        -0.0000 |        0.0000 |        -5.1258 |     0.0000 |
 
-
 ---
 
 ## get_hausman_test
@@ -2295,7 +2261,7 @@ use as the regressor. Mutually exclusive with `independent_tickers`.
 entity tickers to explain. Defaults to None, meaning every ticker in
 the `Toolkit` instance (other than `independent_tickers`, if given).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
-quarterly, or yearly). Defaults to "quarterly".
+quarterly, or yearly). Defaults to "daily".
 - <u>column (str, optional):</u> The dependent variable's historical data
 column. Defaults to "Return".
 - <u>rounding (int \| None, optional):</u> The number of decimals to round the
@@ -2337,7 +2303,6 @@ Which returns:
 | P-Value                     |  0.0044 |
 | Prefer Fixed Effects (5%)   |  1      |
 
-
 ---
 
 ## get_arima_forecast
@@ -2350,7 +2315,7 @@ An ARIMA(p, d, q) model differences the series `d` times to remove a (stochastic
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to fit. Defaults to
 "Adj Close".
 - <u>p (int, optional):</u> The autoregressive order. Defaults to 1.
@@ -2400,7 +2365,6 @@ Which returns:
 |    4 | 162.323 | 264.014 |
 |    5 | 169.180 | 270.922 |
 
-
 ---
 
 ## get_var_forecast
@@ -2413,7 +2377,7 @@ A VAR jointly models every ticker's series, regressing each of them on `lags` la
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to model. Defaults to
 "Return".
 - <u>lags (int, optional):</u> The VAR order. Defaults to 1.
@@ -2459,7 +2423,6 @@ Which returns:
 |    4 | 0.0661 | 0.0454 |
 |    5 | 0.0716 | 0.0496 |
 
-
 ---
 
 ## get_impulse_response_function
@@ -2472,7 +2435,7 @@ A natural companion to `get_var_forecast`: rather than forecasting the levels fo
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to model. Defaults to
 "Return".
 - <u>lags (int, optional):</u> The VAR order. Defaults to 1.
@@ -2521,7 +2484,6 @@ Which returns:
 | 4         |              0.0033 |              0.0032 |              -0.0054|             -0.002  |
 | 5         |              0.0019 |              0.0008 |               0.0007|              0.0013 |
 
-
 ---
 
 ## get_variance_decomposition
@@ -2534,7 +2496,7 @@ The other natural companion to `get_var_forecast` (alongside `get_impulse_respon
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to model. Defaults to
 "Return".
 - <u>lags (int, optional):</u> The VAR order. Defaults to 1.
@@ -2576,7 +2538,6 @@ Which returns:
 | 4         |              0.7942 |              0.2058 |              0.502  |              0.498  |
 | 5         |              0.7936 |              0.2064 |              0.5022 |              0.4978 |
 
-
 ---
 
 ## get_vecm_forecast
@@ -2589,7 +2550,7 @@ A VECM keeps a VAR's short-run dynamics while ALSO letting each asset's price ch
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to model. Defaults to
 "Adj Close" -- a VECM needs price LEVELS (non-stationary, cointegrated
 series), not returns, the same input `get_johansen_cointegration` expects.
@@ -2646,7 +2607,6 @@ Which returns:
 |    4 | 154.833 | 289.048 |     413.568 |
 |    5 | 152.306 | 273.929 |     396.546 |
 
-
 ---
 
 ## get_rmse
@@ -2659,7 +2619,7 @@ See `forecast_evaluation_model.get_rmse` for the formula. This controller method
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to compare. Defaults to
 "Return".
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
@@ -2687,7 +2647,6 @@ Which returns:
 |:-----------|:-----------|-------:|
 | AAPL       | MSFT       | 0.1084 |
 
-
 ---
 
 ## get_mae
@@ -2700,7 +2659,7 @@ See `forecast_evaluation_model.get_mae` for the formula, and `get_rmse`'s docstr
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to compare. Defaults to
 "Return".
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
@@ -2728,7 +2687,6 @@ Which returns:
 |:-----------|:-----------|-------:|
 | AAPL       | MSFT       | 0.0887 |
 
-
 ---
 
 ## get_out_of_sample_validation
@@ -2738,12 +2696,13 @@ Out-of-sample validate an ARIMA or VAR forecast of every ticker in the Toolkit i
 
 See `forecast_evaluation_model.get_out_of_sample_validation` for the general harness this wraps. Since that function takes a raw Python callable (not serializable for e.g. the MCP-facing tool layer), this controller method instead hardcodes the choice between the two Part-1 forecasting models via the `model` string:
 
-- `model="arima"`: `time_series_model.get_arima_forecast` is fit on each ticker's own training-period series (`p`, `d`, `q`, `include_constant` control the model, same as `get_arima_forecast`). - `model="var"`: `time_series_model.get_var_forecast` is fit on the training-period series of each ticker together with `other_tickers` (`lags` controls the VAR order, defaulting to every other ticker in the Toolkit instance if not given); only that ticker's own forecast column is scored against its holdout.
+- `model="arima"`: `time_series_model.get_arima_forecast` is fit on each ticker's own training-period series (`p`, `d`, `q`, `include_constant` control the model, same as `get_arima_forecast`).
+- `model="var"`: `time_series_model.get_var_forecast` is fit on the training-period series of each ticker together with `other_tickers` (`lags` controls the VAR order, defaulting to every other ticker in the Toolkit instance if not given); only that ticker's own forecast column is scored against its holdout.
 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"daily".
 - <u>column (str, optional):</u> The historical data column to validate. Defaults
 to "Adj Close".
 - <u>model (str, optional):</u> Either "arima" or "var". Defaults to "arima".
@@ -2796,7 +2755,6 @@ Which returns:
 | RMSE                  | 12.9091 | 24.2258 |
 | MAE                   | 10.2476 | 20.6824 |
 | Holdout Observations  | 32      | 32      |
-
 
 ---
 
@@ -2859,7 +2817,6 @@ Which returns:
 | Alpha                          |   0.0005 |
 | Beta                           |   1.294  |
 | Estimation Window Observations | 250      |
-
 
 ---
 

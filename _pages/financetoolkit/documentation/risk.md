@@ -67,7 +67,6 @@ Which returns:
 | 2025 |        0.0492 |  0.2452 |     1.1284 |    16.8074 |               0.0149 |     0.1056 |       0.3249 |
 | 2026 |        0.0391 |  0.2585 |    -0.2958 |     4.5239 |               0.0119 |     0.0717 |       0.2677 |
 
-
 ---
 
 ## get_value_at_risk
@@ -144,7 +143,6 @@ Which returns:
 | 2022 | -0.0518 | -0.0713 |
 | 2023 | -0.0271 | -0.054  |
 
-
 ---
 
 ## get_conditional_value_at_risk
@@ -218,7 +216,6 @@ Which returns:
 | 2022 | -0.0685 | -0.0914 |
 | 2023 | -0.0397 | -0.0747 |
 
-
 ---
 
 ## get_entropic_value_at_risk
@@ -283,7 +280,6 @@ Which returns:
 | 2022 | -0.0758 | -0.1012 | -0.0362 |
 | 2023 | -0.0471 | -0.0793 | -0.0188 |
 
-
 ---
 
 ## get_conditional_drawdown_at_risk
@@ -342,7 +338,6 @@ Which returns:
 | 2024 | -0.1612 | -0.3662 |     -0.0576 |
 | 2025 | -0.2721 | -0.4558 |     -0.1459 |
 | 2026 | -0.1869 | -0.2267 |     -0.072  |
-
 
 ---
 
@@ -403,7 +398,6 @@ Which returns:
 | 2024 | 1.1246 | 1.1942 |      0.9049 |
 | 2025 | 0.9359 | 1.0702 |      0.93   |
 | 2026 | 1.0012 | 0.9592 |      0.8828 |
-
 
 ---
 
@@ -466,7 +460,6 @@ Which returns:
 | 2022 | -0.5198 | -0.7272 |
 | 2023 | -0.1964 | -0.2823 |
 
-
 ---
 
 ## get_maximum_drawdown_duration
@@ -520,7 +513,6 @@ Which returns:
 | 2024 |     23 |     76 |          14 |
 | 2025 |     52 |     57 |          34 |
 | 2026 |     24 |     64 |          43 |
-
 
 ---
 
@@ -577,7 +569,6 @@ Which returns:
 | 2024 |     66 |     51 |          32 |
 | 2025 |    135 |    114 |          55 |
 | 2026 |     40 |    nan |          11 |
-
 
 ---
 
@@ -650,7 +641,6 @@ Which returns:
 | 2022 | 0.1081 | 0.1373 |      0.0492 |
 | 2023 | 0.0475 | 0.0815 |      0.0186 |
 
-
 ---
 
 ## get_garch
@@ -710,7 +700,6 @@ Which returns:
 | 2026Q1 | 0.0265 | 0.1495 |      0.0058 |
 | 2026Q2 | 0.0265 | 0.1523 |      0.0054 |
 | 2026Q3 | 0.0266 | 0.1507 |      0.0083 |
-
 
 ---
 
@@ -781,7 +770,6 @@ Which returns:
 | 2028Q4 | 0.0266 | 0.1747 |      0.0065 |
 | 2029Q1 | 0.0266 | 0.1747 |      0.0066 |
 
-
 ---
 
 ## get_garch_parameters
@@ -835,7 +823,6 @@ Which returns:
 | Omega | 0.0191 | 0.1379 |      0.0011 |
 | Alpha | 0.0038 | 0.143  |      0.1528 |
 | Beta  | 0.278  | 0.0677 |      0.6939 |
-
 
 ---
 
@@ -903,7 +890,6 @@ Which returns:
 | 2026Q2 | 0.0267 | 0.1506 |      0.0066 |
 | 2026Q3 | 0.0265 | 0.1513 |      0.0061 |
 
-
 ---
 
 ## get_gjr_garch_forecast
@@ -967,7 +953,6 @@ Which returns:
 | 2028Q4 | 0.0278 | 0.168  |      0.0104 |
 | 2029Q1 | 0.0279 | 0.168  |      0.0105 |
 
-
 ---
 
 ## get_gjr_garch_parameters
@@ -1017,7 +1002,6 @@ Which returns:
 | Alpha | 0      |  0.1492 |      0.0699 |
 | Gamma | 0.0428 | -0.0828 |      1      |
 | Beta  | 0.7156 |  0.0711 |      0      |
-
 
 ---
 
@@ -1085,7 +1069,6 @@ Which returns:
 | 2026Q2 | 0.0251 | 0.1238 |      0.0079 |
 | 2026Q3 | 0.0261 | 0.1672 |      0.0053 |
 
-
 ---
 
 ## get_egarch_forecast
@@ -1149,7 +1132,6 @@ Which returns:
 | 2028Q4 | 0.0255 | 0.1447 |      0.0067 |
 | 2029Q1 | 0.0255 | 0.1447 |      0.0067 |
 
-
 ---
 
 ## get_egarch_parameters
@@ -1203,7 +1185,6 @@ Which returns:
 | Gamma |  0.0286 |  0.3887 |     -0.4054 |
 | Beta  |  0.0196 |  0.0844 |      0.0651 |
 
-
 ---
 
 ## get_tail_dependence_coefficient
@@ -1213,7 +1194,8 @@ Correlation only captures the *average* co-movement between two assets -- it say
 
 For more information about the method, see the following papers:
 
-- Embrechts, P., McNeil, A., & Straumann, D. (1999). "Correlation: Pitfalls and Alternatives." RISK Magazine, 12, 69-71. - Poon, S.H., Rockinger, M., & Tawn, J. (2004). "Extreme Value Dependence in Financial Markets: Diagnostics, Models, and Financial Implications." Review of Financial Studies, 17(2), 581-610.
+- Embrechts, P., McNeil, A., & Straumann, D. (1999). "Correlation: Pitfalls and Alternatives." RISK Magazine, 12, 69-71.
+- Poon, S.H., Rockinger, M., & Tawn, J. (2004). "Extreme Value Dependence in Financial Markets: Diagnostics, Models, and Financial Implications." Review of Financial Studies, 17(2), 581-610.
 
 **Also known as:** tail dependence, extremal dependence coefficient.
 
@@ -1265,7 +1247,6 @@ Which returns:
 | Correlation            |  0.7602 |
 | Observations           | 157      |
 
-
 ---
 
 ## get_copula_parameters
@@ -1275,13 +1256,19 @@ When `ticker_a`/`ticker_b` are not given, every unique pair among the Toolkit's 
 
 A copula separates the dependence structure between two assets from their individual (marginal) return distributions (Sklar's theorem), letting the two be modeled independently. Five families are supported, each capturing a different shape of dependence:
 
-- "gaussian": zero tail dependence -- crashes and rallies are no more likely to happen together than the correlation alone implies. Included mainly as a baseline, since real asset returns typically show more joint tail risk than this. - "student-t": symmetric, nonzero tail dependence in both tails. - "clayton": nonzero *lower* tail dependence only -- assets crash together more than they rally together. The most common choice for equity return pairs. - "gumbel": nonzero *upper* tail dependence only -- assets rally together more than they crash together. - "frank": zero tail dependence in both tails, but (unlike gaussian) can represent negative dependence and is symmetric around independence.
+- "gaussian": zero tail dependence -- crashes and rallies are no more likely to happen together than the correlation alone implies. Included mainly as a baseline, since real asset returns typically show more joint tail risk than this.
+- "student-t": symmetric, nonzero tail dependence in both tails.
+- "clayton": nonzero *lower* tail dependence only -- assets crash together more than they rally together. The most common choice for equity return pairs.
+- "gumbel": nonzero *upper* tail dependence only -- assets rally together more than they crash together.
+- "frank": zero tail dependence in both tails, but (unlike gaussian) can represent negative dependence and is symmetric around independence.
 
 See `get_best_fitting_copula` to compare all five by AIC on the same pair of assets, and see `get_copula_simulation` to draw joint scenarios from the fitted copula.
 
 For more information about the method, see:
 
-- Sklar, A. (1959). Publications de l'Institut de Statistique de l'Universite de Paris, 8, 229-231. - McNeil, A.J., Frey, R., & Embrechts, P. (2015). "Quantitative Risk Management: Concepts, Techniques and Tools." Princeton University Press. - Demarta, S., & McNeil, A.J. (2005). "The T Copula and Related Copulas." International Statistical Review, 73(1), 111-129.
+- Sklar, A. (1959). Publications de l'Institut de Statistique de l'Universite de Paris, 8, 229-231.
+- McNeil, A.J., Frey, R., & Embrechts, P. (2015). "Quantitative Risk Management: Concepts, Techniques and Tools." Princeton University Press.
+- Demarta, S., & McNeil, A.J. (2005). "The T Copula and Related Copulas." International Statistical Review, 73(1), 111-129.
 
 **Also known as:** copula calibration, copula fit, dependence modeling.
 
@@ -1338,7 +1325,6 @@ Which returns:
 | Log-Likelihood        |  33.6247 |
 | AIC                   | -65.2495 |
 | Observations          | 314      |
-
 
 ---
 
@@ -1414,7 +1400,6 @@ Which returns:
 | 75%   |    0.0261     |    0.0213    |
 | max   |    0.1315     |    0.2169    |
 
-
 ---
 
 ## get_best_fitting_copula
@@ -1481,7 +1466,6 @@ Which returns:
 | Gaussian  |                  0      |                  0      |            42.908  | -83.816  |
 | Clayton   |                  0.389  |                  0      |            33.6247 | -65.2495 |
 
-
 ---
 
 ## get_covar
@@ -1540,7 +1524,6 @@ Which returns:
 | Quantile Regression Intercept   | -0.0508 |
 | Observations                    | 157     |
 
-
 ---
 
 ## get_marginal_value_at_risk
@@ -1556,7 +1539,9 @@ An asset with Beta_i > 1 contributes disproportionately to portfolio risk, while
 
 For more information about the method, see the following sources:
 
-- Garman, M.B. (1997). "Taking VaR to Pieces." Risk, 10(10), 70-71. - Litterman, R. (1996). "Hot Spots and Hedges." Goldman Sachs Risk Management Series. - Jorion, P. (2006). "Value at Risk: The New Benchmark for Managing Financial Risk." 3rd ed., McGraw-Hill, Chapter 7.
+- Garman, M.B. (1997). "Taking VaR to Pieces." Risk, 10(10), 70-71.
+- Litterman, R. (1996). "Hot Spots and Hedges." Goldman Sachs Risk Management Series.
+- Jorion, P. (2006). "Value at Risk: The New Benchmark for Managing Financial Risk." 3rd ed., McGraw-Hill, Chapter 7.
 
 **Also known as:** Marginal VaR, MVaR.
 
@@ -1605,7 +1590,6 @@ Which returns:
 | TSLA |        -0.0698 |
 | MSFT |        -0.0331 |
 
-
 ---
 
 ## get_component_value_at_risk
@@ -1620,7 +1604,9 @@ Where Marginal VaR measures each asset's risk *sensitivity*, Component VaR measu
 
 For more information about the method, see the following sources:
 
-- Garman, M.B. (1997). "Taking VaR to Pieces." Risk, 10(10), 70-71. - Litterman, R. (1996). "Hot Spots and Hedges." Goldman Sachs Risk Management Series. - Jorion, P. (2006). "Value at Risk: The New Benchmark for Managing Financial Risk." 3rd ed., McGraw-Hill, Chapter 7.
+- Garman, M.B. (1997). "Taking VaR to Pieces." Risk, 10(10), 70-71.
+- Litterman, R. (1996). "Hot Spots and Hedges." Goldman Sachs Risk Management Series.
+- Jorion, P. (2006). "Value at Risk: The New Benchmark for Managing Financial Risk." 3rd ed., McGraw-Hill, Chapter 7.
 
 **Also known as:** Component VaR, risk contribution.
 
@@ -1671,7 +1657,6 @@ Which returns:
 | MSFT      |          -0.0066 |
 | Portfolio |          -0.0531 |
 
-
 ---
 
 ## get_var_backtest
@@ -1681,7 +1666,8 @@ A Value at Risk estimate is only useful if it is actually well-calibrated agains
 
 For more information about the methods, see the following papers:
 
-- Kupiec, P.H. (1995). "Techniques for Verifying the Accuracy of Risk Measurement Models." The Journal of Derivatives, 3(2), 73-84. - Christoffersen, P.F. (1998). "Evaluating Interval Forecasts." International Economic Review, 39(4), 841-862.
+- Kupiec, P.H. (1995). "Techniques for Verifying the Accuracy of Risk Measurement Models." The Journal of Derivatives, 3(2), 73-84.
+- Christoffersen, P.F. (1998). "Evaluating Interval Forecasts." International Economic Review, 39(4), 841-862.
 
 **Also known as:** VaR validation, VaR backtest, POF test.
 
@@ -1728,7 +1714,6 @@ Which returns:
 | P-Value                 |  0.7749 |  0.1995 |      0.9662 |
 | Christoffersen Statistic |  0.0631 |  0.4302 |      1.0847 |
 | P-Value                 |  0.8017 |  0.512  |      0.2977 |
-
 
 ---
 
@@ -1790,7 +1775,6 @@ Which returns:
 | P-Value                   |  0.6185 |  0.9558 |      0.9858 |
 | Breaches                  | 37      | 33      |     33      |
 
-
 ---
 
 ## get_skewness
@@ -1847,7 +1831,6 @@ Which returns:
 | 2021 | -0.0194 | -0.0716 |  0.6572 |
 | 2022 |  0.1478 |  0.3164 | -0.0263 |
 | 2023 |  0.5252 |  0.0318 | -0.0972 |
-
 
 ---
 
@@ -1908,7 +1891,6 @@ Which returns:
 | 2022 | 3.852  |  4.0085 | 3.3553 |
 | 2023 | 4.2908 |  4.4568 | 4.07   |
 
-
 ---
 
 ## get_hill_estimator
@@ -1964,7 +1946,6 @@ Which returns:
 | Hill Shape (xi)        | 0.3713 | 0.1981 |      0.4578 |
 | Standard Error         | 1.018  | 1.9079 |      0.8256 |
 | Observations Used (k)  | 7      | 7      |      7      |
-
 
 ---
 
@@ -2023,7 +2004,6 @@ Which returns:
 | 2025   | 0.1184 | 0.4031 |      0.0379 |
 | 2026   | 0.0999 | 0.1859 |      0.02   |
 
-
 ---
 
 ## get_volatility
@@ -2033,7 +2013,10 @@ Volatility measures the amount of dispersion or variability in returns. It is th
 
 By default this is the close-to-close Volatility, i.e. the standard deviation of the daily returns. The `method` parameter selects one of four range-based estimators instead, each of which uses more of the day's price action than just the close and is therefore more statistically efficient (i.e. needs fewer observations to reach the same precision), at the cost of additional assumptions about how prices move:
 
-- `"parkinson"` - uses the daily trading range (High vs Low) rather than the close-to-close return, assuming prices follow a continuous geometric Brownian motion with no drift and no overnight jumps. - `"garman_klass"` - extends Parkinson by also incorporating the Open and Close, which allows it to account for the opening jump and makes it more efficient still (assuming, as Parkinson does, no drift and no overnight jumps beyond the modeled open). - `"rogers_satchell"` - drift-independent, meaning it remains unbiased even when the underlying asset has a non-zero expected return over the period, at the cost of still assuming no overnight jumps. - `"yang_zhang"` - a weighted combination of the overnight (close-to-open) Variance, the open-to-close Variance and the Rogers-Satchell Variance. It is both drift-independent and accounts for overnight jumps, which makes it the most statistically efficient of the range-based estimators implemented here.
+- `"parkinson"` - uses the daily trading range (High vs Low) rather than the close-to-close return, assuming prices follow a continuous geometric Brownian motion with no drift and no overnight jumps.
+- `"garman_klass"` - extends Parkinson by also incorporating the Open and Close, which allows it to account for the opening jump and makes it more efficient still (assuming, as Parkinson does, no drift and no overnight jumps beyond the modeled open).
+- `"rogers_satchell"` - drift-independent, meaning it remains unbiased even when the underlying asset has a non-zero expected return over the period, at the cost of still assuming no overnight jumps.
+- `"yang_zhang"` - a weighted combination of the overnight (close-to-open) Variance, the open-to-close Variance and the Rogers-Satchell Variance. It is both drift-independent and accounts for overnight jumps, which makes it the most statistically efficient of the range-based estimators implemented here.
 
 In every case the daily Volatility is scaled to the given period by multiplying the underlying Variance with the number of trading days within that period (e.g. 252 / 52 for weekly).
 
@@ -2041,7 +2024,10 @@ In every case the daily Volatility is scaled to the given period by multiplying 
 
 For more information about the range-based estimators, see the following papers:
 
-- Parkinson, M. (1980). "The Extreme Value Method for Estimating the Variance of the Rate of Return." Journal of Business, 53(1), 61-65. - Garman, M.B., & Klass, M.J. (1980). "On the Estimation of Security Price Volatilities from Historical Data." Journal of Business, 53(1), 67-78. - Rogers, L.C.G., & Satchell, S.E. (1991). "Estimating Variance from High, Low and Close Prices." Annals of Applied Probability, 1(4), 504-512. - Yang, D., & Zhang, Q. (2000). "Drift-Independent Volatility Estimation Based on High, Low, Open, and Close Prices." Journal of Business, 73(3), 477-491.
+- Parkinson, M. (1980). "The Extreme Value Method for Estimating the Variance of the Rate of Return." Journal of Business, 53(1), 61-65.
+- Garman, M.B., & Klass, M.J. (1980). "On the Estimation of Security Price Volatilities from Historical Data." Journal of Business, 53(1), 67-78.
+- Rogers, L.C.G., & Satchell, S.E. (1991). "Estimating Variance from High, Low and Close Prices." Annals of Applied Probability, 1(4), 504-512.
+- Yang, D., & Zhang, Q. (2000). "Drift-Independent Volatility Estimation Based on High, Low, Open, and Close Prices." Journal of Business, 73(3), 477-491.
 
 **Args:**
 
@@ -2112,7 +2098,6 @@ toolkit.risk.get_volatility(period="yearly", method="parkinson")
 | 2025   | 0.267  | 0.5062 |      0.152  |
 | 2026   | 0.2681 | 0.3781 |      0.1111 |
 
-
 ---
 
 ## get_har_rv_forecast
@@ -2176,7 +2161,6 @@ Which returns:
 | 2022-12-30 | NaN    | NaN    |    NaN      |
 
 The last row is NaN since there is no `2022-12-31` return yet to forecast against.
-
 
 ---
 
@@ -2242,7 +2226,6 @@ stocks with very high dollar trading volume relative to their typical daily
 price move -- the default `scale` of 1,000,000 (as used in Amihud's original
 1980s/1990s-era paper) would round these to 0.0 at the default precision.
 
-
 ---
 
 ## get_roll_spread
@@ -2295,7 +2278,6 @@ Which returns:
 | Roll Spread (%) |  2.1859 |  1.9159 |      1.0603 |
 | Autocovariance  | -2.7396 | -6.7598 |     -4.7167 |
 | Valid Estimate  |  1      |  1      |      1      |
-
 
 ---
 
@@ -2354,7 +2336,6 @@ Which returns:
 | 2024   | 0.2841 | 0.6346 |      0.1336 |
 | 2025   | 0.3435 | 0.635  |      0.1946 |
 | 2026   | 0.3196 | 0.4331 |      0.1446 |
-
 
 ---
 
@@ -2417,7 +2398,6 @@ Which returns:
 | 2025 | 0.0146 | 0.0257 |      0.0096 |
 | 2026 | 0.0123 | 0.0165 |      0.0061 |
 
-
 ---
 
 ## get_mean_absolute_deviation
@@ -2466,7 +2446,6 @@ Which returns:
 | 2024   | 0.0132 | 0.0286 |      0.0058 |
 | 2025   | 0.015  | 0.0292 |      0.0074 |
 | 2026   | 0.0157 | 0.0216 |      0.0067 |
-
 
 ---
 
@@ -2518,7 +2497,6 @@ Which returns:
 | 2024   |  10.9398 |   14.7623 |      9.1557 |
 | 2025   |  49.9543 |   32.8037 |     18.0122 |
 | 2026   |  31.132  | -163.952  |     11.047  |
-
 
 ---
 
@@ -2582,7 +2560,6 @@ Which returns:
 | 2026-07-02 | 0.0218 | 0.037  |      0.0094 |
 | 2026-07-06 | 0.0211 | 0.0395 |      0.0093 |
 
-
 ---
 
 ## get_autocorrelation
@@ -2625,7 +2602,6 @@ Which returns:
 |  9 |  0.0017 |  0.0675 |      0.0529 |
 | 10 | -0.0162 | -0.0293 |     -0.0133 |
 
-
 ---
 
 ## get_hurst_exponent
@@ -2665,7 +2641,6 @@ Which returns:
 | AMZN      | 0.4553 |
 | TSLA      | 0.5122 |
 | Benchmark | 0.4515 |
-
 
 ---
 

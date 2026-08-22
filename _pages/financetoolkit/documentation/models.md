@@ -81,7 +81,6 @@ Which returns:
 | Equity Multiplier | 5.255  | 6.1862 | 6.252  | 6.0251 | 5.5418 |
 | Return on Equity  | 1.4744 | 1.7546 | 1.7195 | 1.5741 | 1.7142 |
 
-
 ---
 
 ## get_extended_dupont_analysis
@@ -91,7 +90,12 @@ The Extended Dupont analysis splits the three-factor decomposition's Net Profit 
 
 The formula is as follows:
 
-- Interest Burden Ratio = Income Before Tax / Operating Income - Tax Burden Ratio = Net Income / Income Before Tax - Operating Profit Margin = Operating Income / Revenue - Asset Turnover = Revenue / Average Total Assets - Equity Multiplier = Average Total Assets / Average Total Equity - ROE = Interest Burden Ratio * Tax Burden Ratio * Operating Profit Margin * Asset Turnover * Equity Multiplier
+- Interest Burden Ratio = Income Before Tax / Operating Income
+- Tax Burden Ratio = Net Income / Income Before Tax
+- Operating Profit Margin = Operating Income / Revenue
+- Asset Turnover = Revenue / Average Total Assets
+- Equity Multiplier = Average Total Assets / Average Total Equity
+- ROE = Interest Burden Ratio * Tax Burden Ratio * Operating Profit Margin * Asset Turnover * Equity Multiplier
 
 **Also known as:** extended DuPont, five-factor DuPont, ROE breakdown.
 
@@ -150,7 +154,6 @@ Which returns:
 | Equity Multiplier       | 5.255  | 6.1862 | 6.252  | 6.0251 | 5.5418 |
 | Return on Equity        | 1.4744 | 1.7546 | 1.7195 | 1.5741 | 1.7142 |
 
-
 ---
 
 ## get_enterprise_value_breakdown
@@ -158,7 +161,12 @@ Calculate the Enterprise Value (EV) breakdown, providing a detailed view of its 
 
 The Enterprise Value breakdown includes the following components for each quarter or year:
 
-- Share Price: The market price per share of the company's stock. - Market Capitalization (Market Cap): The total value of a company's outstanding common shares, i.e. the share price multiplied by the shares outstanding. Preferred shares are excluded here and enter as their own component below, so that they are counted once rather than twice. - Debt: The sum of long-term and short-term debt on the company's balance sheet. - Preferred Equity: The value of preferred shares, if applicable. - Minority Interest: The equity value of a subsidiary with less than 50% ownership. - Cash and Cash Equivalents: The total amount of liquid assets including cash, marketable securities, and short-term investments.
+- Share Price: The market price per share of the company's stock.
+- Market Capitalization (Market Cap): The total value of a company's outstanding common shares, i.e. the share price multiplied by the shares outstanding. Preferred shares are excluded here and enter as their own component below, so that they are counted once rather than twice.
+- Debt: The sum of long-term and short-term debt on the company's balance sheet.
+- Preferred Equity: The value of preferred shares, if applicable.
+- Minority Interest: The equity value of a subsidiary with less than 50% ownership.
+- Cash and Cash Equivalents: The total amount of liquid assets including cash, marketable securities, and short-term investments.
 
 The Enterprise Value is calculated as the sum of Market Cap, Debt, Preferred Equity, Minority Interest, minus Cash and Cash Equivalents.
 
@@ -219,7 +227,6 @@ Which returns:
 | Cash and Cash Equivalents |   3.494e+10   |   2.3646e+10  |   2.9965e+10  |   2.9943e+10  |   3.5934e+10  |
 | Enterprise Value          |   3.09629e+12 |   2.23005e+12 |   3.13835e+12 |   3.94761e+12 |   4.15562e+12 |
 
-
 ---
 
 ## get_tobins_q_ratio
@@ -232,7 +239,8 @@ The formula is as follows:
 
 Tobin's Q Ratio can be interpreted as follows:
 
-- A Q ratio greater than 1 indicates that the market values the company above the cost of replacing its assets, which can reflect growth expectations, unrecognized intangible value, or overvaluation. - A Q ratio less than 1 indicates that the market values the company below the cost of replacing its assets, which can reflect undervaluation or declining growth prospects.
+- A Q ratio greater than 1 indicates that the market values the company above the cost of replacing its assets, which can reflect growth expectations, unrecognized intangible value, or overvaluation.
+- A Q ratio less than 1 indicates that the market values the company below the cost of replacing its assets, which can reflect undervaluation or declining growth prospects.
 
 **Also known as:** Tobin's Q, Q ratio.
 
@@ -284,7 +292,6 @@ Which returns:
 | Total Assets           | 3.51002e+11 | 3.52755e+11 |
 | Tobin's Q Ratio        | 9.2056      | 6.8007      |
 
-
 ---
 
 ## get_weighted_average_cost_of_capital
@@ -292,7 +299,12 @@ The Weighted Average Cost of Capital (WACC) is a financial metric used to estima
 
 The formula is as follows:
 
-- Market Value of Equity = Share Price * Total Shares Outstanding - Market Value of Debt = Total Debt - Total Market Value = Market Value of Equity + Market Value of Debt - Cost of Equity = Risk Free Rate + Beta * (Benchmark Return - Risk Free Rate) - Cost of Debt = Interest Expense / Total Debt - WACC = (Market Value of Equity / Total Market Value) * Cost of Equity + (Market Value of Debt / Total Market Value) * Cost of Debt * (1 - Corporate Tax Rate)
+- Market Value of Equity = Share Price * Total Shares Outstanding
+- Market Value of Debt = Total Debt
+- Total Market Value = Market Value of Equity + Market Value of Debt
+- Cost of Equity = Risk Free Rate + Beta * (Benchmark Return - Risk Free Rate)
+- Cost of Debt = Interest Expense / Total Debt
+- WACC = (Market Value of Equity / Total Market Value) * Cost of Equity + (Market Value of Debt / Total Market Value) * Cost of Debt * (1 - Corporate Tax Rate)
 
 Cost of Equity (Re): The cost of equity represents the return required by the company's shareholders or equity investors. It is the cost of raising funds by selling equity (such as common stock). The cost of equity is often estimated using methods like the Capital Asset Pricing Model (CAPM) or the Dividend Discount Model (DDM).
 
@@ -350,7 +362,6 @@ Which returns:
 | Cost of Debt                     | 0.0194      |  0.0221      | 0.0317      | 0           | 0           |
 | Corporate Tax Rate               | 0.133       |  0.162       | 0.1472      | 0.2409      | 0.1561      |
 | Weighted Average Cost of Capital | 0.3349      | -0.248       | 0.2541      | 0.2198      | 0.1886      |
-
 
 ---
 
@@ -411,7 +422,6 @@ Which returns:
 | Invested Capital                  |  1.93614e+11 |  1.91382e+11 |
 | Weighted Average Cost of Capital  |       0.3598 |      -0.2326 |
 | Economic Value Added              |  2.73107e+10 |  1.46775e+11 |
-
 
 ---
 
@@ -481,7 +491,6 @@ Which returns:
 | Invested Capital       | 1.93614e+11 | 1.91382e+11 | 1.84614e+11 | 1.81042e+11 | 1.8106e+11  |
 | Market Value Added     | 2.86813e+12 | 2.02509e+12 | 2.94718e+12 | 3.76893e+12 | 3.99954e+12 |
 
-
 ---
 
 ## get_intrinsic_valuation
@@ -491,7 +500,11 @@ This functionality uses DCF, or Discounted Cash Flow which is a widely used fina
 
 The formula is as follows:
 
-- Cash Flow Projection_t = Cash Flow_t-1 * (1 + Growth Rate) - Terminal Value = Last Cash Flow Projection * (1 + Perpetual Growth Rate) / (Weighted Average Cost of Capital - Perpetual Growth Rate) - Enterprise Value = Sum of Present Value of Cash Flow Projections + Terminal Value - Equity Value = Enterprise Value - Total Debt + Cash and Cash Equivalents - Intrinsic Value = Equity Value / Total Shares Outstanding
+- Cash Flow Projection_t = Cash Flow_t-1 * (1 + Growth Rate)
+- Terminal Value = Last Cash Flow Projection * (1 + Perpetual Growth Rate) / (Weighted Average Cost of Capital - Perpetual Growth Rate)
+- Enterprise Value = Sum of Present Value of Cash Flow Projections + Terminal Value
+- Equity Value = Enterprise Value - Total Debt + Cash and Cash Equivalents
+- Intrinsic Value = Equity Value / Total Shares Outstanding
 
 **Also known as:** DCF, discounted cash flow, fair value, intrinsic value.
 
@@ -542,7 +555,6 @@ Which returns:
 | Equity Value         |   1.50588e+12 |
 | Intrinsic Value      | 100.36        |
 
-
 ---
 
 ## get_free_cash_flow_to_firm
@@ -550,7 +562,8 @@ Free Cash Flow to the Firm (FCFF) is the cash flow available to all providers of
 
 The formula is as follows:
 
-- NOPAT = EBIT * (1 - Effective Tax Rate) - FCFF = NOPAT + Depreciation and Amortization - Capital Expenditure - Change in Net Working Capital
+- NOPAT = EBIT * (1 - Effective Tax Rate)
+- FCFF = NOPAT + Depreciation and Amortization - Capital Expenditure - Change in Net Working Capital
 
 **Also known as:** FCFF, unlevered free cash flow.
 
@@ -603,7 +616,6 @@ Which returns:
 | Capital Expenditure               |  1.1085e+10  |  1.0708e+10  |
 | Change in Net Working Capital     |  4.911e+09   | -1.2e+09     |
 | Free Cash Flow to Firm            |  9.22612e+10 |  1.03855e+11 |
-
 
 ---
 
@@ -664,7 +676,6 @@ Which returns:
 | Change in Net Working Capital     |  4.911e+09   | -1.2e+09     |
 | Net Borrowing                     |  1.1643e+10  | -4.078e+09   |
 | Free Cash Flow to Equity          |  1.01611e+11 |  9.7321e+10  |
-
 
 ---
 
@@ -732,7 +743,6 @@ Which returns:
 | 2030 | 9.202  | 30.3755 |
 | 2031 | 9.6621 | 31.8943 |
 
-
 ---
 
 ## get_two_stage_dividend_discount_model
@@ -740,7 +750,10 @@ The Two-Stage Dividend Discount Model extends the (single-stage) Gordon Growth M
 
 The formula is as follows:
 
-- Dividend Projection_t = Dividends Per Share * (1 + High Growth Rate)^t - High-Growth Phase Present Value = Sum of Dividend Projection_t / (1 + Rate of Return)^t, for t = 1, ..., High Growth Periods - Terminal Value = Last Dividend Projection * (1 + Stable Growth Rate) / (Rate of Return - Stable Growth Rate) - Intrinsic Value = High-Growth Phase Present Value + (Terminal Value / (1 + Rate of Return)^High Growth Periods)
+- Dividend Projection_t = Dividends Per Share * (1 + High Growth Rate)^t
+- High-Growth Phase Present Value = Sum of Dividend Projection_t / (1 + Rate of Return)^t, for t = 1, ..., High Growth Periods
+- Terminal Value = Last Dividend Projection * (1 + Stable Growth Rate) / (Rate of Return - Stable Growth Rate)
+- Intrinsic Value = High-Growth Phase Present Value + (Terminal Value / (1 + Rate of Return)^High Growth Periods)
 
 **Also known as:** two-stage DDM, two-stage dividend discount model.
 
@@ -794,7 +807,6 @@ Which returns:
 | Terminal Value                    |                    23.5978 |
 | Terminal Value Present Value      |                    14.6523 |
 | Intrinsic Value                   |                    19.4566 |
-
 
 ---
 
@@ -859,7 +871,6 @@ Which returns:
 | Book Value of Equity     |  6.4215e+10  |  5.6881e+10  |
 | Residual Income          |  7.0554e+10  |  1.1394e+11  |
 
-
 ---
 
 ## get_altman_z_score
@@ -867,7 +878,12 @@ Calculates the Altman Z-Score, a financial metric used to predict the likelihood
 
 The formula is as follows:
 
-- Working Capital to Total Assets = Working Capital / Total Assets - Retained Earnings to Total Assets = Retained Earnings / Total Assets - EBIT to Total Assets = EBIT / Total Assets - Market Value to Total Liabilities = Market Value of Equity / Total Liabilities - Sales to Total Assets = Sales / Total Assets - Altman Z-Score = 1.2 * Working Capital to Total Assets + 1.4 * Retained Earnings to Total Assets + 3.3 * EBIT to Total Assets + 0.6 * Market Value to Total Liabilities + 1.0 * Sales to Total Assets
+- Working Capital to Total Assets = Working Capital / Total Assets
+- Retained Earnings to Total Assets = Retained Earnings / Total Assets
+- EBIT to Total Assets = EBIT / Total Assets
+- Market Value to Total Liabilities = Market Value of Equity / Total Liabilities
+- Sales to Total Assets = Sales / Total Assets
+- Altman Z-Score = 1.2 * Working Capital to Total Assets + 1.4 * Retained Earnings to Total Assets + 3.3 * EBIT to Total Assets + 0.6 * Market Value to Total Liabilities + 1.0 * Sales to Total Assets
 
 The Altman Z-Score can be interpreted as follows:
 
@@ -925,7 +941,6 @@ Which returns:
 | Market Value to Total Liabilities | 10.4015 |  7.022  | 10.4821 | 12.5264 | 14.2874 |
 | Sales to Total Assets             |  1.0422 |  1.1179 |  1.0871 |  1.0714 |  1.1584 |
 | Altman Z-Score                    |  8.3888 |  6.3973 |  8.4709 |  9.5533 | 10.8355 |
-
 
 ---
 
@@ -987,7 +1002,6 @@ Which returns:
 
 Periods for which the financial statements have not been reported yet are returned as NaN
 rather than being scored zero across the board.
-
 
 ---
 
@@ -1064,7 +1078,6 @@ Which returns:
 | Total Accruals to Total Assets   | -0.0267 | -0.0634 | -0.0384 |
 | Beneish M-Score                  | -2.2503 | -2.6691 | -2.6802 |
 
-
 ---
 
 ## get_ohlson_o_score
@@ -1087,7 +1100,8 @@ The formula is as follows:
 
 The Ohlson O-Score can be interpreted as follows:
 
-- Ohlson's (1980) original cutoff is a bankruptcy probability of 0.038 (3.8%), the threshold that minimized the sum of Type I and Type II misclassification errors on his sample. It is deliberately far below the naive 0.50 midpoint because bankruptcy is a rare event. Equivalently, in raw O-Score terms the cutoff sits at ln(0.038 / 0.962), i.e. approximately -3.23. - A higher probability indicates a higher likelihood of bankruptcy.
+- Ohlson's (1980) original cutoff is a bankruptcy probability of 0.038 (3.8%), the threshold that minimized the sum of Type I and Type II misclassification errors on his sample. It is deliberately far below the naive 0.50 midpoint because bankruptcy is a rare event. Equivalently, in raw O-Score terms the cutoff sits at ln(0.038 / 0.962), i.e. approximately -3.23.
+- A higher probability indicates a higher likelihood of bankruptcy.
 
 **Also known as:** Ohlson O-Score, bankruptcy prediction, financial distress score.
 
@@ -1162,7 +1176,6 @@ Which returns:
 Note that the first period is NaN because the Change in Net Income and Negative Income
 Indicator components require a prior period to compare against.
 
-
 ---
 
 ## get_zmijewski_score
@@ -1235,7 +1248,6 @@ Which returns:
 | Zmijewski Score                           | -0.553  | -0.8427 | -0.6955 | -0.8466 |
 | Zmijewski Bankruptcy Probability          |  0.2901 |  0.1997 |  0.2434 |  0.1986 |
 
-
 ---
 
 ## get_springate_score
@@ -1243,7 +1255,11 @@ Calculates the Springate Score, a financial metric used to predict the likelihoo
 
 The formula is as follows:
 
-- Working Capital to Total Assets = Working Capital / Total Assets - EBIT to Total Assets = EBIT / Total Assets - EBT to Current Liabilities = Earnings Before Taxes / Total Current Liabilities - Sales to Total Assets = Sales / Total Assets - Springate Score = 1.03 * Working Capital to Total Assets + 3.07 * EBIT to Total Assets + 0.66 * EBT to Current Liabilities + 0.4 * Sales to Total Assets
+- Working Capital to Total Assets = Working Capital / Total Assets
+- EBIT to Total Assets = EBIT / Total Assets
+- EBT to Current Liabilities = Earnings Before Taxes / Total Current Liabilities
+- Sales to Total Assets = Sales / Total Assets
+- Springate Score = 1.03 * Working Capital to Total Assets + 3.07 * EBIT to Total Assets + 0.66 * EBT to Current Liabilities + 0.4 * Sales to Total Assets
 
 The Springate Score can be interpreted as follows:
 
@@ -1300,7 +1316,6 @@ Which returns:
 | Sales to Total Assets             |  1.0422 |  1.1179 |
 | Springate Score                   |  1.997  |  1.9655 |
 
-
 ---
 
 ## get_grover_score
@@ -1308,11 +1323,15 @@ Calculates the Grover Score, a financial metric used to predict the likelihood o
 
 The formula is as follows:
 
-- Working Capital to Total Assets = Working Capital / Total Assets - EBIT to Total Assets = EBIT / Total Assets - Return on Assets = Net Income / Total Assets - Grover Score = 1.65 * Working Capital to Total Assets + 3.404 * EBIT to Total Assets - 0.016 * Return on Assets + 0.057
+- Working Capital to Total Assets = Working Capital / Total Assets
+- EBIT to Total Assets = EBIT / Total Assets
+- Return on Assets = Net Income / Total Assets
+- Grover Score = 1.65 * Working Capital to Total Assets + 3.404 * EBIT to Total Assets - 0.016 * Return on Assets + 0.057
 
 The Grover Score can be interpreted as follows:
 
-- A Grover Score of -0.02 or lower indicates a high likelihood of bankruptcy. - A Grover Score of 0.01 or higher indicates a low likelihood of bankruptcy (per some secondary sources), leaving a gray area in between the two thresholds.
+- A Grover Score of -0.02 or lower indicates a high likelihood of bankruptcy.
+- A Grover Score of 0.01 or higher indicates a low likelihood of bankruptcy (per some secondary sources), leaving a gray area in between the two thresholds.
 
 **Also known as:** Grover Score, G-Score, bankruptcy prediction, financial distress score.
 
@@ -1364,7 +1383,6 @@ Which returns:
 | EBIT to Total Assets              |  0.3187 |  0.3459 |
 | Return on Assets                  |  0.2697 |  0.2829 |
 | Grover Score                      |  1.1814 |  1.1432 |
-
 
 ---
 
@@ -1456,7 +1474,6 @@ Which returns:
 | Log of EBIT to Interest Expense       |  3.7445 |  3.729  |
 | Fulmer H-Score                        | 14.2755 | 14.329  |
 
-
 ---
 
 ## get_present_value_of_growth_opportunities
@@ -1517,7 +1534,6 @@ Which returns:
 | 2024 | 222.742 | 399.662 |
 | 2025 | 232.279 | 446.273 |
 
-
 ---
 
 ## get_sustainable_growth_rate
@@ -1565,7 +1581,6 @@ Which returns:
 |:-----|-------:|-------:|-------:|
 | AAPL | 1.2491 | 1.4937 | 1.4531 |
 | MSFT | 0.3438 | 0.354  | 0.282  |
-
 
 ---
 
@@ -1616,7 +1631,6 @@ Which returns:
 | AAPL | 0.3118 | 0.3183 | 0.3028 |
 | MSFT | 0.164  | 0.1853 | 0.1565 |
 
-
 ---
 
 ## get_graham_number
@@ -1661,7 +1675,6 @@ Which returns:
 |:-----|--------:|--------:|--------:|--------:|--------:|
 | AAPL | 21.7378 | 20.662  | 23.2901 | 22.4927 | 28.7292 |
 | TSLA | 18.1054 | 32.3757 | 41.7451 | 30.9185 | 23.7345 |
-
 
 ---
 

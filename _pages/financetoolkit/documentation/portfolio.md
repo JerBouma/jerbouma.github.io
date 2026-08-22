@@ -68,7 +68,6 @@ Which returns:
 | WMT       |  0.0284 | 0.0242 |  0.0239 | 0.0191 |   0.0239 |
 | Portfolio |  0.2373 | 0.2183 |  0.2001 | 0.2098 |   0.202  |
 
-
 ---
 
 ## read_portfolio_dataset
@@ -148,7 +147,6 @@ Which returns:
 | 2024-11-13 | VOO    | 552.136  |       11 |       0 | USD        |
 | 2024-12-05 | OXY    |  48.2517 |       -2 |       0 | USD        |
 
-
 ---
 
 ## collect_benchmark_historical_data
@@ -222,7 +220,6 @@ Which returns:
 | 2025-02-27 | 5981.88 | 5993.69 | 5858.78 | 5861.57 |     5861.57 | 5.05768e+09 |           0 |  -0.0159 |               4.0664 |
 | 2025-02-28 | 5856.74 | 5959.4  | 5837.66 | 5954.5  |     5954.5  | 6.44114e+09 |           0 |   0.0159 |               4.1309 |
 
-
 ---
 
 ## collect_historical_data
@@ -294,7 +291,6 @@ Which returns:
 | 2025-02-27 |  48.9  |  49.43 | 48.34 |   48.65 |       48.65 | 1.04084e+07 |           0 |   0.0021 |               9.3303 |
 | 2025-02-28 |  48.48 |  48.93 | 47.75 |   48.84 |       48.84 | 1.26817e+07 |           0 |   0.0039 |               9.3667 |
 
-
 ---
 
 ## get_positions_overview
@@ -302,7 +298,14 @@ Calculate and provide an overview of the portfolio's positions, including key st
 
 The following columns are included:
 
-- Volume: the net volume of each asset over time, i.e. every buy minus every sell. - Costs: the cumulative transaction costs of each asset over time. - Invested Amount: the cumulative capital deployed over time, i.e. the value of every buy plus the absolute transaction costs. Sale proceeds are not netted off. - Realized Proceeds: the cumulative cash received from selling units of the asset over time. - Current Value: the value of the position still held, marked at the dividend-adjusted closing price of that day. - Cumulative Return: the total return on the capital deployed, i.e. (Current Value + Realized Proceeds - Invested Amount) / Invested Amount. - Invested Weight: the weight of the asset in the portfolio based on the invested amount over time. - Current Weight: the weight of the asset in the portfolio based on the current value over time.
+- Volume: the net volume of each asset over time, i.e. every buy minus every sell.
+- Costs: the cumulative transaction costs of each asset over time.
+- Invested Amount: the cumulative capital deployed over time, i.e. the value of every buy plus the absolute transaction costs. Sale proceeds are not netted off.
+- Realized Proceeds: the cumulative cash received from selling units of the asset over time.
+- Current Value: the value of the position still held, marked at the dividend-adjusted closing price of that day.
+- Cumulative Return: the total return on the capital deployed, i.e. (Current Value + Realized Proceeds - Invested Amount) / Invested Amount.
+- Invested Weight: the weight of the asset in the portfolio based on the invested amount over time.
+- Current Weight: the weight of the asset in the portfolio based on the current value over time.
 
 Positions are marked at the adjusted closing price, so the cumulative return is a total return that includes reinvested dividends. The historical "Current Value" is therefore a total-return equivalent value rather than the price quoted on that date; the two coincide on the latest date.
 
@@ -360,7 +363,6 @@ Which returns:
 | 2026-08-07 |       92 |     -18 |           1779.63 |             118.103 |         10290.2 |              4.8486 |            0.0128 |           0.0091 |
 | 2026-08-10 |       92 |     -18 |           1779.63 |             118.103 |         10364.7 |              4.8904 |            0.0128 |           0.0092 |
 
-
 ---
 
 ## get_portfolio_overview
@@ -368,7 +370,21 @@ Calculate and provide an overview of the portfolio's key statistics, including p
 
 The following columns are included:
 
-- Identifier: The name of the asset, specifically the ticker (e.g. AAPL) - Volume: The net volume of the asset, i.e. every buy minus every sell. - Costs: The total costs associated with the asset transactions. - Price: The volume-weighted average price paid for the units that were bought. Sells do not enter this figure, so it stays a purchase price rather than a net cash figure. - Invested: The total capital deployed in the asset, i.e. the value of every buy plus the absolute transaction costs. Sale proceeds are deliberately not netted off, because a denominator that shrinks with every profitable sale inflates the reported return and flips its sign once more cash has come out than went in. - Latest Price: The latest available price of the asset obtained from historical data. - Latest Value: The market value of the position still held, i.e. Volume times Latest Price. - Return: The total return on the capital deployed, i.e. Return Value divided by Invested. This covers realized and unrealized results together and is NaN when nothing was invested. - Return Value: The absolute profit or loss, i.e. Latest Value plus all sale proceeds minus Invested. This equals realized PnL plus unrealized PnL minus the transaction costs, where the realized PnL is the figure reported by get_transactions_overview. - Benchmark Return: The return the identical cash flows would have produced in the benchmark. Every transaction buys or sells benchmark units for the exact cash amount of that transaction on that date, so the comparison is matched in money rather than in share count. - Volatility: The annualized volatility of the asset over the most recent year, calculated via the Risk module (risk_model.get_volatility). For the aggregated "Portfolio" row, this is derived from the full covariance matrix of the underlying asset returns (Var_p = w^T * Cov * w, Markowitz, 1952) rather than a weighted average of individual volatilities, since the latter ignores diversification from imperfectly correlated assets. - Benchmark Volatility: The annualized volatility of the asset's benchmark over the most recent year, calculated via the Risk module (risk_model.get_volatility). - Alpha: The alpha is based on the difference between the asset's return and the benchmark return. - Beta: The beta is based on the asset's return and the benchmark return. It measures the asset's volatility compared to the benchmark. A beta >1 indicates that the asset is more volatile than the benchmark and a beta <1 indicates that the asset is less volatile than the benchmark. - Weight: The weight of the asset in the portfolio based on the latest market value and the total market value of the portfolio.
+- Identifier: The name of the asset, specifically the ticker (e.g. AAPL)
+- Volume: The net volume of the asset, i.e. every buy minus every sell.
+- Costs: The total costs associated with the asset transactions.
+- Price: The volume-weighted average price paid for the units that were bought. Sells do not enter this figure, so it stays a purchase price rather than a net cash figure.
+- Invested: The total capital deployed in the asset, i.e. the value of every buy plus the absolute transaction costs. Sale proceeds are deliberately not netted off, because a denominator that shrinks with every profitable sale inflates the reported return and flips its sign once more cash has come out than went in.
+- Latest Price: The latest available price of the asset obtained from historical data.
+- Latest Value: The market value of the position still held, i.e. Volume times Latest Price.
+- Return: The total return on the capital deployed, i.e. Return Value divided by Invested. This covers realized and unrealized results together and is NaN when nothing was invested.
+- Return Value: The absolute profit or loss, i.e. Latest Value plus all sale proceeds minus Invested. This equals realized PnL plus unrealized PnL minus the transaction costs, where the realized PnL is the figure reported by get_transactions_overview.
+- Benchmark Return: The return the identical cash flows would have produced in the benchmark. Every transaction buys or sells benchmark units for the exact cash amount of that transaction on that date, so the comparison is matched in money rather than in share count.
+- Volatility: The annualized volatility of the asset over the most recent year, calculated via the Risk module (risk_model.get_volatility). For the aggregated "Portfolio" row, this is derived from the full covariance matrix of the underlying asset returns (Var_p = w^T * Cov * w, Markowitz, 1952) rather than a weighted average of individual volatilities, since the latter ignores diversification from imperfectly correlated assets.
+- Benchmark Volatility: The annualized volatility of the asset's benchmark over the most recent year, calculated via the Risk module (risk_model.get_volatility).
+- Alpha: The alpha is based on the difference between the asset's return and the benchmark return.
+- Beta: The beta is based on the asset's return and the benchmark return. It measures the asset's volatility compared to the benchmark. A beta >1 indicates that the asset is more volatile than the benchmark and a beta <1 indicates that the asset is less volatile than the benchmark.
+- Weight: The weight of the asset in the portfolio based on the latest market value and the total market value of the portfolio.
 
 No inventory method (FIFO, LIFO or average cost) is applied here: "Return" measures the result of every unit of currency put into the position rather than the basis of the units that happen to remain. The inventory methods drive the realized PnL in get_transactions_overview instead.
 
@@ -429,7 +445,6 @@ Which returns:
 | WMT          |       92 |     -18 |  17.4419 |    1779.63 |        112.66  |      10364.7   |   4.8904 |        8703.19 |             3.3096 |       0.2607 |                 0.1389 |  1.5808 | 0.4848 |   0.0092 |
 | Portfolio    |     2142 |    -532 |  57.823  |  139539    |        523.214 |          1.12e+06 |   7.1016 |      990950 |             1.6887 |       0.3058 |                 0.1389 |  5.413  | 1.3848 |   1      |
 
-
 ---
 
 ## get_portfolio_performance
@@ -488,7 +503,6 @@ Which returns:
 | 2026-08-10/2026-08-16 | VOO          |       77 |     -12 |          18684.8  |            308.375  |        54720.1  |            0.1339 |           0.0488 |   1.9451 |
 | 2026-08-10/2026-08-16 | VSS          |       98 |     -21 |           8433.99 |            797.842  |        15521.2  |            0.0604 |           0.0138 |   0.9349 |
 | 2026-08-10/2026-08-16 | WMT          |       92 |     -18 |           1779.63 |            118.103  |        10364.7  |            0.0128 |           0.0092 |   4.8904 |
-
 
 ---
 
@@ -558,7 +572,6 @@ Which returns:
 | 2024-10-25 | MCHI   |  48.8436 |        6 |       0 | USD        |           293.062 |          341.58 |     0.1656 |   48.5183 |     0 |          -4.77   |
 | 2024-11-13 | VOO    | 552.136  |       11 |       0 | USD        |          6073.5   |         7817.15 |     0.2871 | 1743.65   |     0 |         131.082  |
 
-
 ---
 
 ## get_transactions_performance
@@ -620,7 +633,6 @@ Which returns:
 | 2024Q2 |       14 | 847.6    |      -1 |         11867.4   |                   0 |        11330.1  |  -0.0453 |            -0.0049 | -0.0404 |
 | 2024Q4 |        6 |  48.8436 |       0 |           293.062 |                   0 |          273.24 |  -0.0676 |             0.0127 | -0.0803 |
 | 2024Q4 |       11 | 552.136  |       0 |          6073.5   |                   0 |         5819.66 |  -0.0418 |            -0.0173 | -0.0245 |
-
 
 ---
 

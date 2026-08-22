@@ -57,7 +57,6 @@ Which returns:
 | META.MI  | WisdomTree Industrial Metals Enhanced | EUR        | Milan                  | MIL             |
 | META.JK  | PT Nusantara Infrastructure Tbk       | IDR        | Jakarta Stock Exchange | JKT             |
 
-
 ---
 
 ## get_stock_screener
@@ -131,7 +130,6 @@ Which returns:
 | ROST     | Ross Stores, Inc. |  46724188589 | Consumer Cyclical | Apparel Retail         |  1.026 | 138.785 |       1.34 |   169879 | NASDAQ Global Select    | NASDAQ          | US        |
 | HES      | Hess Corporation  |  44694706090 | Energy            | Oil & Gas E&P          |  1.464 | 145.51  |       1.75 |   123147 | New York Stock Exchange | NYSE            | US        |
 
-
 ---
 
 ## get_stock_list
@@ -166,7 +164,6 @@ Which returns:
 | LESHAIND.BO | Lesha Industries Limited     |   4.68  | Bombay Stock Exchange           | BSE             |
 | LESL        | Leslie's, Inc.               |   6.91  | NASDAQ Global Select            | NASDAQ          |
 
-
 ---
 
 ## get_stock_shares_float
@@ -199,7 +196,6 @@ Which returns:
 | OR.PA    | 2024-01-02 07:57:35 |     45.2727  |      242084445 |          5.34725e+08 |
 | OR.SW    | 2023-12-31 13:38:10 |     45.2727  |      355743960 |          7.8578e+08  |
 | OR.TO    | 2023-12-31 17:56:33 |     99.3317  |      183928535 |          1.85166e+08 |
-
 
 ---
 
@@ -241,7 +237,6 @@ Which returns:
 | 2024-02-29 |           -1.3336 |                   0.7907 |              1.2483 |               3.4536 |   0.6259 |              -0.5633 |      -1.4379 |       -4.1022 |        1.7541 |       1.2096 |      9.9286 |
 | 2024-03-01 |            0.8526 |                   0.0092 |              1.5435 |              -3.7427 |   1.399  |              -0.8531 |       2.544  |        0.1322 |        0.1964 |       1.6327 |     -2.0912 |
 
-
 ---
 
 ## get_biggest_gainers
@@ -274,7 +269,6 @@ Which returns:
 | ASTR     | Astra Space, Inc.                                      |   0.55   |  2.28   |    31.7919 |
 | BHG      | Bright Health Group, Inc.                              |   2.37   |  7.63   |    45.057  |
 | BROG     | Brooge Energy Limited                                  |   0.73   |  3.68   |    24.7458 |
-
 
 ---
 
@@ -309,7 +303,6 @@ Which returns:
 | BTDR     | Bitdeer Technologies Group                 |  -3.36   |  9.86   |   -25.416  |
 | BYN      | Banyan Acquisition Corporation             |  -2.035  | 10.9    |   -15.7325 |
 
-
 ---
 
 ## get_most_active_stocks
@@ -342,7 +335,6 @@ Which returns:
 | CAN      | Canaan Inc.                    |    -0.5  |    2.31 |   -17.7936 |
 | CLSK     | CleanSpark, Inc.               |    -2.08 |   11.03 |   -15.8657 |
 | DISH     | DISH Network Corporation       |     0.11 |    5.77 |     1.9435 |
-
 
 ---
 
@@ -387,7 +379,6 @@ Which returns:
 | ASPAU    | Abri SPAC I, Inc.                            | NASDAQ     | 2021-08-10 | 2023-11-02      |
 | AVID     | Avid Technology, Inc.                        | NASDAQ     | 1993-03-12 | 2023-11-07      |
 
-
 ---
 
 ## get_crypto_list
@@ -420,7 +411,6 @@ Which returns:
 | 0XENCRYPTUSD | Encryption AI USD                    | CCC        | 2023-04-27 |          8.68563e+08 |  nan           |
 | 0XGASUSD     | 0xGasless USD                        | CCC        | 2023-06-07 |          9.52864e+06 |  nan           |
 | 0XMRUSD      | 0xMonero USD                         | CCC        | 2022-09-01 |          1.86525e+06 |    1.86525e+06 |
-
 
 ---
 
@@ -455,7 +445,6 @@ Which returns:
 | AEDINR   | AED             | INR           | United Arab Emirates Dirham | Indian Rupee           |
 | AEDJOD   | AED             | JOD           | United Arab Emirates Dirham | Jordanian Dinar        |
 
-
 ---
 
 ## get_commodity_list
@@ -488,7 +477,6 @@ Which returns:
 | ESUSD    | E-Mini S&P 500         |        nan | Jun           | USD        |
 | GCUSD    | Gold Futures           |        nan | Dec           | USD        |
 | GFUSX    | Feeder Cattle Futures  |        nan | Oct           | USX        |
-
 
 ---
 
@@ -523,7 +511,6 @@ Which returns:
 | 091160.KS | Samsung KODEX Semicon ETF                          |
 | 091170.KS | Kodex Banks                                        |
 
-
 ---
 
 ## get_index_list
@@ -556,7 +543,6 @@ Which returns:
 | IMOEX.ME        | MOEX Russia Index                             | MCX        | RUB        |
 | ITLMS.MI        | FTSE Italia All-Share Index                   | MIL        | EUR        |
 | KOSPI200.KS     | KOSPI 200 Index                               | KSC        | KRW        |
-
 
 ---
 
@@ -599,7 +585,6 @@ Which returns:
 | 2026-07-07 11:01:10  | AMAT     | Zacks Investment Research  | Best Momentum Stock to Buy for July 7th                                       |
 | 2026-07-07 11:01:09  | GS       | Zacks Investment Research  | Goldman Sachs (GS) Earnings Expected to Grow: What to Know Ahead of Next Week's Release |
 
-
 ---
 
 ## get_general_news
@@ -638,7 +623,6 @@ Which returns:
 | 2026-07-07 10:41:20  | Zacks Investment Research   | Why LATAM (LTM) is a Top Value Stock for the Long-Term                     |
 | 2026-07-07 10:35:53  | Reuters                     | AI startup CEO pleaded guilty in US to trading on insider tips from lawyers |
 | 2026-07-07 10:30:10  | Fox Business                | TENSIONS RISING: Trump delivers unmistakable warning                       |
-
 
 ---
 
@@ -681,7 +665,6 @@ Which returns:
 | 2026-07-07 10:59:00  | SRAD     | GlobeNewsWire | Portnoy Law Firm Announces Class Action on Behalf of Sportradar Group AG Investors   |
 | 2026-07-07 10:58:00  | CVLT     | GlobeNewsWire | Portnoy Law Firm Announces Class Action on Behalf of Commvault Systems, Inc. Investors |
 
-
 ---
 
 ## get_crypto_news
@@ -721,7 +704,6 @@ Which returns:
 | 2026-07-07 10:38:15  | BTCUSD   | Crypto Economy  | Binance Rolls Out New Bitcoin Yield Product to Help Holders Boost Returns Without Selling |
 | 2026-07-07 10:37:19  | BTCUSD   | Crypto Briefing | $470B of Bitcoin at risk from advancing quantum computing               |
 
-
 ---
 
 ## get_forex_news
@@ -760,7 +742,6 @@ Which returns:
 | 2026-07-07 09:59:12  | GBPUSD   | FX Street    | British Pound: Capped by layered resistance against US Dollar – Scotiabank      |
 | 2026-07-07 09:29:14  | XAUUSD   | FXEmpire     | Gold Price Analysis – Gold Clings to $4,000 Floor Facing Heavy MA Resistance    |
 | 2026-07-07 09:21:33  | XAGUSD   | FXEmpire     | Silver Price Analysis – Silver Holds Above $60 as Strong Dollar Restricts Gains |
-
 
 ---
 
@@ -805,7 +786,6 @@ Which returns:
 | 2026-07-07 08:55:03  | AAPL     | 247 Wallst      | Stock Market Live July 7, 2026: S&P 500 (SPY) Drops on Tech Concerns          |
 | 2026-07-07 08:44:43  | AAPL     | The Motley Fool | How Apple Can Actually Benefit From the Memory Supply Shortage               |
 
-
 ---
 
 ## search_press_releases
@@ -849,7 +829,6 @@ Which returns:
 | 2026-06-09 14:28:00  | AAPL     | GlobeNewsWire | Charlotte Volsch, Apple Valley, California Broker, Named Among Real Trends 2026...  |
 | 2026-06-09 09:58:00  | AAPL     | Business Wire | MIKROE develops Spatial Anchor R1 & S1 for Apple Vision Pro                         |
 
-
 ---
 
 ## search_crypto_news
@@ -890,7 +869,6 @@ Which returns:
 | 2026-07-07 10:38:15  | BTCUSD   | Crypto Economy  | Binance Rolls Out New Bitcoin Yield Product to Help Holders Boost Returns Without Selling |
 | 2026-07-07 10:37:19  | BTCUSD   | Crypto Briefing | $470B of Bitcoin at risk from advancing quantum computing                    |
 | 2026-07-07 10:27:30  | BTCUSD   | CryptoSlate     | Bitcoin dominance hits one-month low as altcoin winners start breaking away  |
-
 
 ---
 
@@ -933,7 +911,6 @@ Which returns:
 | 2026-07-07 02:15:13  | EURUSD   | FX Street    | Euro Summer range holds against US Dollar – Commerzbank                  |
 | 2026-07-07 01:58:21  | EURUSD   | FX Street    | EUR/USD Price Forecast: Turns broadly sideways below 20-day EMA          |
 
-
 ---
 
 ## get_ipo_calendar
@@ -974,7 +951,6 @@ Which returns:
 | KDLYW    | 2024-05-31 | Kindly MD, Inc. Warrants                       | NASDAQ     | Expected |        nan |               |          nan |
 | SECR     | 2024-05-31 | IndexIQ Active ETF Trust                       | NYSE       | Expected |        nan |               |          nan |
 
-
 ---
 
 ## get_ipo_disclosures
@@ -1013,7 +989,6 @@ Which returns:
 | NAKAW    | 2024-05-31    | 2024-05-31       | 2024-05-31             | 0001946573 | CERT   |
 | BIPI     | 2024-05-31    | 2024-05-31       | 2024-05-31             | 0001406234 | CERT   |
 
-
 ---
 
 ## get_ipo_prospectuses
@@ -1051,7 +1026,6 @@ Which returns:
 | CDIX     | 2005-12-21 |                      5    |                8000000 | S-1/A  |
 | LUCY     | 2022-08-13 |                     73    |                4024429 | S-1    |
 | ERES     | 2023-07-02 |                      0.02 |                    100 | S-1/A  |
-
 
 ---
 
@@ -1092,7 +1066,6 @@ Which returns:
 | BFG.NZ       | 2024-05-31 |           3 |             10 | stock-split  |
 | CRTX.L       | 2024-05-31 |           1 |            160 | stock-split  |
 | DAVANGERE.NS | 2024-05-31 |          10 |              1 | stock-split  |
-
 
 ---
 
@@ -1137,7 +1110,6 @@ Which returns:
 | Consumer Defensive      | 2024-02-01 | NASDAQ     |           1.74347 |
 | Energy                  | 2024-02-01 | NASDAQ     |           0.63975 |
 
-
 ---
 
 ## get_industry_performance
@@ -1180,7 +1152,6 @@ Which returns:
 | Agricultural Farm Products   | 2024-02-01 | NASDAQ     |            1.6564 |
 | Agricultural Inputs          | 2024-02-01 | NASDAQ     |            0.5436 |
 | Agricultural - Machinery     | 2024-02-01 | NASDAQ     |            1.4934 |
-
 
 ---
 
@@ -1225,7 +1196,6 @@ Which returns:
 | Consumer Defensive      | 2024-02-01 | NASDAQ     |     31.7298 |
 | Energy                  | 2024-02-01 | NASDAQ     |     14.4114 |
 
-
 ---
 
 ## get_industry_pe
@@ -1269,7 +1239,6 @@ Which returns:
 | Agricultural Inputs          | 2024-02-01 | NASDAQ     |     58.9849 |
 | Agricultural - Machinery     | 2024-02-01 | NASDAQ     |     10.3538 |
 
-
 ---
 
 ## get_mergers_acquisitions_latest
@@ -1307,7 +1276,6 @@ Which returns:
 | DBCA     | D. Boral Acquisition I Corp.   | D. Boral ARC Acquisition I Corp. Cl A     | 2026-07-01            |
 | CYCCP    | Cyclacel Pharmaceuticals, Inc. | Bio Green Med Solution, Inc.              | 2026-06-16            |
 | CYCC     | Cyclacel Pharmaceuticals, Inc. | Bio Green Med Solution, Inc.              | 2026-06-16            |
-
 
 ---
 

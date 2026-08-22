@@ -108,9 +108,13 @@ def _clean_description(text: str) -> str:
     """Turn a raw docstring description into clean Markdown.
 
     Paragraphs are detected via blank lines (the only reliable signal in the
-    source). A paragraph is treated as a bullet list only if *every* one of
-    its lines already starts with "- " once dedented - anything else
-    (formula minus signs, hyphenated words, negative numbers) is left alone.
+    source). A paragraph is treated as a bullet list whenever its first line
+    starts with "- " once dedented - anything else (formula minus signs,
+    hyphenated words, negative numbers) is left alone. Wrapped continuation
+    lines that don't themselves start with "- " (Google-style docstrings
+    often indent a bullet's second line instead of repeating the marker) are
+    folded back onto the bullet they continue, rather than breaking list
+    detection for the whole paragraph.
 
     Source docstrings often put a blank line between each bullet (for their
     own readability). If that blank line survived into the Markdown, Kramdown
@@ -136,14 +140,17 @@ def _clean_description(text: str) -> str:
                 lines[0] = f"**{header}**{lines[0][len(header):]}"
                 break
 
-        is_bullet_list = all(line.startswith("- ") for line in lines)
-        # A paragraph "is" a bullet (for joining purposes) whenever it starts
-        # with "- ", even if it's really one bullet whose continuation lines
-        # got wrapped without a "- " prefix (is_bullet_list is False for
-        # those, but they still need to join tightly with neighbouring
-        # bullets rather than getting a blank line before them).
         starts_as_bullet = lines[0].startswith("- ")
-        paragraph = "\n".join(lines) if is_bullet_list else " ".join(lines)
+        if starts_as_bullet:
+            merged = []
+            for line in lines:
+                if line.startswith("- ") or not merged:
+                    merged.append(line)
+                else:
+                    merged[-1] = f"{merged[-1]} {line}"  # fold wrapped continuation into its bullet
+            paragraph = "\n".join(merged)
+        else:
+            paragraph = " ".join(lines)
         paragraphs.append((paragraph, starts_as_bullet))
 
     parts = []
@@ -273,7 +280,7 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
 
         if fn["example_result"]:
             result_body = fn["example_result"].replace("Which returns:", "").strip()
-            markdown_content += f"\nWhich returns:\n\n{result_body}\n\n"
+            markdown_content += f"\nWhich returns:\n\n{result_body}\n"
 
         markdown_content += "\n---\n\n"
 

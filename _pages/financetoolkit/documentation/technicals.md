@@ -72,7 +72,6 @@ Which returns:
 | 2026-07-01 |                305.81  |                 291.799 |                277.788 |         7.39 |
 | 2026-07-02 |                309.318 |                 292.727 |                276.137 |        15.74 |
 
-
 ---
 
 ## collect_breadth_indicators
@@ -128,7 +127,6 @@ Which returns:
 | 2026-06-30 |                 0.9039 |                  289.36 |         4.50563e+09 |
 | 2026-07-01 |                 0.9476 |                  294.38 |         4.55579e+09 |
 | 2026-07-02 |                 1.6926 |                  308.63 |         4.63119e+09 |
-
 
 ---
 
@@ -199,7 +197,6 @@ Which returns:
 | 2026-07-01 | 0.9476 | -10.6039 |      5.228  |
 | 2026-07-02 | 1.6926 |  -9.8173 |      5.1538 |
 
-
 ---
 
 ## get_advancers_decliners
@@ -265,7 +262,6 @@ Which returns:
 | 2026-07-01 | 294.38 | 384.28 |      745.76 |
 | 2026-07-02 | 308.63 | 390.49 |      744.78 |
 
-
 ---
 
 ## get_on_balance_volume
@@ -329,7 +325,6 @@ Which returns:
 | 2026-06-30 | 4.50563e+09 | 4.1623e+08  | 1.32268e+09 |
 | 2026-07-01 | 4.55579e+09 | 4.64295e+08 | 1.27558e+09 |
 | 2026-07-02 | 4.63119e+09 | 5.0649e+08  | 1.21807e+09 |
-
 
 ---
 
@@ -395,7 +390,6 @@ Which returns:
 | 2026-06-30 | 4.87922e+09 | 1.8407e+09  | 9.17476e+09 |
 | 2026-07-01 | 4.89938e+09 | 1.85739e+09 | 9.17276e+09 |
 | 2026-07-02 | 4.96721e+09 | 1.8826e+09  | 9.16369e+09 |
-
 
 ---
 
@@ -465,7 +459,6 @@ Which returns:
 | 2026-06-30 | -7.75122e+06 |  2.18471e+07 |  1.4324e+06  |
 | 2026-07-01 |  1.01493e+07 |  3.09708e+07 |  1.0421e+07  |
 | 2026-07-02 |  3.81324e+07 |  3.99114e+07 |  1.02634e+07 |
-
 
 ---
 
@@ -752,7 +745,6 @@ Which returns:
 | 2026-07-01 |                   302.39  |                   291.235 |         71.9567 |         51.4243 |
 | 2026-07-02 |                   302.39  |                   291.235 |         97.7853 |         74.7297 |
 
-
 ---
 
 ## get_money_flow_index
@@ -819,7 +811,6 @@ Which returns:
 | 2026-06-30 | 65.173  | 46.3834 |     44.023  |
 | 2026-07-01 | 70.4341 | 51.8574 |     49.9149 |
 | 2026-07-02 | 71.4645 | 57.9088 |     41.6417 |
-
 
 ---
 
@@ -888,7 +879,6 @@ Which returns:
 | 2026-07-01 | -28.0433 | -33.2445 |    -27.2319 |
 | 2026-07-02 |  -2.2147 | -21.4272 |    -29.6758 |
 
-
 ---
 
 ## get_aroon_indicator
@@ -954,7 +944,6 @@ Which returns:
 | 2026-06-30 |      28.5714 |    50      |
 | 2026-07-01 |      35.7143 |    57.1429 |
 | 2026-07-02 |      42.8571 |     7.1429 |
-
 
 ---
 
@@ -1025,7 +1014,6 @@ Which returns:
 | 2026-07-01 |   11.4352 |  12.9724 |     53.1052 |
 | 2026-07-02 |  102.962  |  33.0344 |     43.6351 |
 
-
 ---
 
 ## get_relative_vigor_index
@@ -1092,7 +1080,6 @@ Which returns:
 | 2026-06-30 | 0.7891 | 0.4475 |      0.6846 |
 | 2026-07-01 | 0.7922 | 0.5237 |      0.9267 |
 | 2026-07-02 | 1.1745 | 0.7045 |      0.5225 |
-
 
 ---
 
@@ -1161,7 +1148,6 @@ Which returns:
 | 2026-06-30 |  7.61233e+09 |  3.37872e+09 |  5.23673e+09 |
 | 2026-07-01 |  5.00175e+09 |  8.72373e+09 | -9.03283e+08 |
 | 2026-07-02 |  1.4666e+10  |  4.77999e+09 | -8.48204e+08 |
-
 
 ---
 
@@ -1235,7 +1221,6 @@ Which returns:
 | 2026-07-01 | 4.2231 |  4.5312 |      6.0908 |
 | 2026-07-02 | 5.615  |  5.5004 |      6.4095 |
 
-
 ---
 
 ## get_percentage_price_oscillator
@@ -1305,7 +1290,6 @@ Which returns:
 | 2026-07-01 | -1.304  | -4.2572 |      0.2353 |
 | 2026-07-02 | -0.022  | -3.2398 |      0.3068 |
 
-
 ---
 
 ## get_detrended_price_oscillator
@@ -1374,7 +1358,6 @@ Which returns:
 | 2026-07-01 |  -3.0679 | -34.5314 |     -0.3893 |
 | 2026-07-02 |  -4.285  | -23.1193 |     -9.3429 |
 
-
 ---
 
 ## get_average_directional_index
@@ -1441,7 +1424,6 @@ Which returns:
 | 2026-06-30 | 27.545  | 44.9576 |     33.0473 |
 | 2026-07-01 | 27.4563 | 45.3851 |     31.753  |
 | 2026-07-02 | 27.743  | 43.8357 |     30.2519 |
-
 
 ---
 
@@ -1510,7 +1492,6 @@ Which returns:
 | 2026-07-01 |   4.1068 | -11.1036 |     23.1787 |
 | 2026-07-02 |  16.5859 |   0.1282 |      9.1933 |
 
-
 ---
 
 ## get_ichimoku_cloud
@@ -1520,7 +1501,10 @@ The Ichimoku Cloud, also known as the Ichimoku Kinko Hyo, is a versatile indicat
 
 The formula is a follows:
 
-- Conversion Line = (Highest High + Lowest Low) / 2, over conversion_window periods - Base Line = (Highest High + Lowest Low) / 2, over base_window periods - Leading Span A = ((Conversion Line + Base Line) / 2), shifted forward base_window periods - Leading Span B = (Highest High + Lowest Low) / 2 over lead_span_b_window periods, shifted forward base_window periods
+- Conversion Line = (Highest High + Lowest Low) / 2, over conversion_window periods
+- Base Line = (Highest High + Lowest Low) / 2, over base_window periods
+- Leading Span A = ((Conversion Line + Base Line) / 2), shifted forward base_window periods
+- Leading Span B = (Highest High + Lowest Low) / 2 over lead_span_b_window periods, shifted forward base_window periods
 
 **Also known as:** Ichimoku Kinko Hyo, cloud indicator. The default windows (9, 26, 52) are Goichi Hosoda's original values, both leading spans are conventionally displaced forward by the base (Kijun-sen) period.
 
@@ -1581,7 +1565,6 @@ Which returns:
 | 2026-06-30 |     295.575 |           288.085 |          302.39  |          291.235 |
 | 2026-07-01 |     295.575 |           288.085 |          302.39  |          291.235 |
 | 2026-07-02 |     295.575 |           291.585 |          302.39  |          291.235 |
-
 
 ---
 
@@ -1661,7 +1644,6 @@ Which returns:
 | 2026-07-01 |         51.4243 |         71.9567 |
 | 2026-07-02 |         74.7297 |         97.7853 |
 
-
 ---
 
 ## get_moving_average_convergence_divergence
@@ -1735,7 +1717,6 @@ Which returns:
 | 2026-07-01 |     -2.2633 |       -1.0125 |
 | 2026-07-02 |     -0.6862 |       -0.9473 |
 
-
 ---
 
 ## get_relative_strength_index
@@ -1803,7 +1784,6 @@ Which returns:
 | 2026-07-01 | 52.0534 | 44.4482 |     61.5893 |
 | 2026-07-02 | 58.2929 | 50.0641 |     54.5966 |
 
-
 ---
 
 ## get_balance_of_power
@@ -1869,7 +1849,6 @@ Which returns:
 | 2026-06-30 |  0.8864 |  0.297  |      0.7686 |
 | 2026-07-01 |  0.1272 |  0.2475 |      0.1076 |
 | 2026-07-02 |  0.9219 |  0.7071 |     -0.2323 |
-
 
 ---
 
@@ -1947,7 +1926,6 @@ Which returns:
 | 2022-12-29 | -12.1821 | -7.321  |    -12.6508 |
 | 2022-12-30 | -12.5038 | -7.2199 |    -12.3585 |
 
-
 ---
 
 ## get_vortex_indicator
@@ -2021,7 +1999,6 @@ Which returns:
 | 2022-12-29 | 0.6859 | 1.0921 |
 | 2022-12-30 | 0.6736 | 1.1363 |
 
-
 ---
 
 ## get_elder_ray_index
@@ -2094,7 +2071,6 @@ Which returns:
 | 2022-12-28 |      -7.2695 |      -2.1095 |
 | 2022-12-29 |      -4.6924 |      -1.9424 |
 | 2022-12-30 |      -4.4235 |      -1.9035 |
-
 
 ---
 
@@ -2330,7 +2306,6 @@ Which returns:
 | 2026-07-01 |                       291.799 |                            291.616 |
 | 2026-07-02 |                       292.727 |                            293.884 |
 
-
 ---
 
 ## get_moving_average
@@ -2398,7 +2373,6 @@ Which returns:
 | 2026-06-30 | 291.599 | 378.891 |     740.005 |
 | 2026-07-01 | 291.799 | 377.956 |     741.457 |
 | 2026-07-02 | 292.727 | 377.967 |     741.959 |
-
 
 ---
 
@@ -2468,7 +2442,6 @@ Which returns:
 | 2026-07-01 | 291.616 | 380.681 |     741.107 |
 | 2026-07-02 | 293.884 | 381.989 |     741.597 |
 
-
 ---
 
 ## get_double_exponential_moving_average
@@ -2536,7 +2509,6 @@ Which returns:
 | 2026-06-30 | 286.188 | 364.591 |     739.187 |
 | 2026-07-01 | 287.649 | 367.696 |     740.684 |
 | 2026-07-02 | 292.412 | 371.868 |     741.654 |
-
 
 ---
 
@@ -2608,7 +2580,6 @@ Which returns:
 | 2026-06-30 | -0.0765 | -0.4481 |      0.0154 |
 | 2026-07-01 | -0.0937 | -0.4554 |      0.0122 |
 | 2026-07-02 | -0.0914 | -0.4477 |      0.0107 |
-
 
 ---
 
@@ -2684,7 +2655,6 @@ Which returns:
 | 2026-07-01 |  294.38 |      277.788 |       291.799 |      305.81  |
 | 2026-07-02 |  308.63 |      276.137 |       292.727 |      309.318 |
 
-
 ---
 
 ## get_triangular_moving_average
@@ -2694,7 +2664,9 @@ The Triangular Moving Average (TMA) is a smoothed version of the Simple Moving A
 
 The formula is a follows:
 
-- For an odd window: Sub-window Length = (Window + 1) / 2, applied for both passes. - For an even window: the two passes use different sub-window lengths, Window / 2 and Window / 2 + 1 (matching TA-Lib's TRIMA convention). - TMA = SMA(SMA(Close, Sub-window Length 1), Sub-window Length 2)
+- For an odd window: Sub-window Length = (Window + 1) / 2, applied for both passes.
+- For an even window: the two passes use different sub-window lengths, Window / 2 and Window / 2 + 1 (matching TA-Lib's TRIMA convention).
+- TMA = SMA(SMA(Close, Sub-window Length 1), Sub-window Length 2)
 
 **Also known as:** TMA, triangular MA.
 
@@ -2751,7 +2723,6 @@ Which returns:
 | 2026-06-30 | 544.317 | 707.263 |     1381.34 |
 | 2026-07-01 | 544.691 | 705.519 |     1384.05 |
 | 2026-07-02 | 546.424 | 705.539 |     1384.99 |
-
 
 ---
 
@@ -2821,7 +2792,6 @@ Which returns:
 | 2026-07-01 | 291.799 | 377.956 |     741.457 |
 | 2026-07-02 | 292.727 | 377.967 |     741.959 |
 
-
 ---
 
 ## get_hull_moving_average
@@ -2890,7 +2860,6 @@ Which returns:
 | 2026-06-30 | 291.599 | 378.891 |     740.005 |
 | 2026-07-01 | 291.799 | 377.956 |     741.457 |
 | 2026-07-02 | 292.727 | 377.967 |     741.959 |
-
 
 ---
 
@@ -3025,7 +2994,6 @@ Which returns:
 | 2026-07-01 | 291.799 | 377.956 |     741.457 |
 | 2026-07-02 | 292.727 | 377.967 |     741.959 |
 
-
 ---
 
 ## get_parabolic_sar
@@ -3097,7 +3065,6 @@ Which returns:
 | 2026-06-30 | 291.599 | 378.891 |     740.005 |
 | 2026-07-01 | 291.799 | 377.956 |     741.457 |
 | 2026-07-02 | 292.727 | 377.967 |     741.959 |
-
 
 ---
 
@@ -3171,7 +3138,6 @@ Which returns:
 | 2026-07-01 |       291.799 |          295.81  |      287.788 |
 | 2026-07-02 |       292.727 |          299.318 |      286.137 |
 
-
 ---
 
 ## get_support_resistance_levels
@@ -3179,11 +3145,13 @@ Retrieves the support and resistance levels for the specified period and assets.
 
 The Support and Resistance Levels are price levels where the price tends to stop and reverse.
 
-- Support Levels: These are the valleys where the price tends to stop going down and may start to go up. Think of support levels as "floors" that the price has trouble falling below. - Resistance Levels: These are the peaks where the price tends to stop going up and may start to go down. Think of resistance levels as "ceilings" that the price has trouble breaking through.
+- Support Levels: These are the valleys where the price tends to stop going down and may start to go up. Think of support levels as "floors" that the price has trouble falling below.
+- Resistance Levels: These are the peaks where the price tends to stop going up and may start to go down. Think of resistance levels as "ceilings" that the price has trouble breaking through.
 
 It does so by:
 
-- Looking for Peaks and Valleys: The function looks at the stock prices and finds the high points (peaks) and low points (valleys) over time. - Grouping Similar Peaks and Valleys: Sometimes, prices will stop at similar points multiple times. The function groups these similar peaks and valleys together to identify key resistance and support levels.
+- Looking for Peaks and Valleys: The function looks at the stock prices and finds the high points (peaks) and low points (valleys) over time.
+- Grouping Similar Peaks and Valleys: Sometimes, prices will stop at similar points multiple times. The function groups these similar peaks and valleys together to identify key resistance and support levels.
 
 **Also known as:** support levels, resistance levels, pivot points.
 
@@ -3254,7 +3222,6 @@ Which returns:
 | 2026-06-30 |      174.201 |   128.17  |
 | 2026-07-01 |      174.201 |   128.17  |
 | 2026-07-02 |      174.201 |   128.17  |
-
 
 ---
 
@@ -3350,7 +3317,6 @@ multi-column indicator in this module (e.g. Pivot Points' Resistance/Support lev
 | 2022-12-29 | 149.97 |   125.87 | 144.282 | 140.764 | 137.92  | 135.076 | 131.027 |
 | 2022-12-30 | 149.97 |   125.87 | 144.282 | 140.764 | 137.92  | 135.076 | 131.027 |
 
-
 ---
 
 ## collect_volatility_indicators
@@ -3408,7 +3374,6 @@ Which returns:
 | 2026-06-30 |                305.53  |                 291.599 |                277.667 |         9.24 |
 | 2026-07-01 |                305.81  |                 291.799 |                277.788 |         7.39 |
 | 2026-07-02 |                309.318 |                 292.727 |                276.137 |        15.74 |
-
 
 ---
 
@@ -3474,7 +3439,6 @@ Which returns:
 | 2026-06-30 |   9.24 |   6.7  |        7.13 |
 | 2026-07-01 |   7.39 |  15.81 |        7.06 |
 | 2026-07-02 |  15.74 |   8.5  |       11.28 |
-
 
 ---
 
@@ -3548,7 +3512,6 @@ Which returns:
 | 2026-07-01 | 8.3464 | 13.5143 |     10.7443 |
 | 2026-07-02 | 8.9414 | 13.1671 |     10.4364 |
 
-
 ---
 
 ## get_supertrend
@@ -3558,7 +3521,11 @@ The Supertrend indicator plots a single trailing line that flips between sitting
 
 The formula is a follows:
 
-- Basic Upper Band = (High + Low) / 2 + multiplier * ATR(window) - Basic Lower Band = (High + Low) / 2 - multiplier * ATR(window) - Final Upper Band(t) = Basic Upper Band(t) if Basic Upper Band(t) < Final Upper Band(t-1) or Close(t-1) > Final Upper Band(t-1), else Final Upper Band(t-1) - Final Lower Band(t) = Basic Lower Band(t) if Basic Lower Band(t) > Final Lower Band(t-1) or Close(t-1) < Final Lower Band(t-1), else Final Lower Band(t-1) - While in an uptrend, Supertrend = Final Lower Band, until Close crosses below it, at which point the trend flips to a downtrend and Supertrend = Final Upper Band (and vice versa)
+- Basic Upper Band = (High + Low) / 2 + multiplier * ATR(window)
+- Basic Lower Band = (High + Low) / 2 - multiplier * ATR(window)
+- Final Upper Band(t) = Basic Upper Band(t) if Basic Upper Band(t) < Final Upper Band(t-1) or Close(t-1) > Final Upper Band(t-1), else Final Upper Band(t-1)
+- Final Lower Band(t) = Basic Lower Band(t) if Basic Lower Band(t) > Final Lower Band(t-1) or Close(t-1) < Final Lower Band(t-1), else Final Lower Band(t-1)
+- While in an uptrend, Supertrend = Final Lower Band, until Close crosses below it, at which point the trend flips to a downtrend and Supertrend = Final Upper Band (and vice versa)
 
 **Also known as:** Supertrend, SuperTrend.
 
@@ -3684,7 +3651,6 @@ Which returns:
 | 2026-07-01 |      274.923 |       291.616 |      308.309 |
 | 2026-07-02 |      276.002 |       293.884 |      311.767 |
 
-
 ---
 
 ## get_donchian_channels
@@ -3755,7 +3721,6 @@ Which returns:
 | 2026-07-01 |           275.15 |            296.87 |           318.6  |
 | 2026-07-02 |           275.15 |            296.87 |           318.6  |
 
-
 ---
 
 ## get_volatility_cone
@@ -3809,7 +3774,6 @@ Which returns:
 | 10       |  0.12 |     0.24 |  0.58 |      0.27 |
 | 20       |  0.14 |     0.23 |  0.52 |      0.25 |
 | 30       |  0.15 |     0.22 |  0.47 |      0.24 |
-
 
 ---
 
@@ -3875,7 +3839,6 @@ Which returns:
 | 2026-06-30 |   0.88 |   0.88 |        0.88 |
 | 2026-07-01 |   0.94 |   0.94 |        0.94 |
 | 2026-07-02 |   1.02 |   1.02 |        1.02 |
-
 
 ---
 
@@ -3943,7 +3906,6 @@ Which returns:
 | 2026-06-30 |      1 |      1 |           1 |
 | 2026-07-01 |      1 |      1 |           1 |
 | 2026-07-02 |      1 |      1 |           1 |
-
 
 ---
 

@@ -70,7 +70,6 @@ Which returns:
 | 2025 |     0.472  |                 1.0324 |                   1.1132 |     0.0709 |           0.0139 |
 | 2026 |     0.5099 |                 0.678  |                   0.5418 |     0.0919 |           0.0169 |
 
-
 ---
 
 ## get_beta
@@ -136,13 +135,14 @@ Which returns:
 | 2025   | 1.2485 | 1.3264 |
 | 2026   | 0.7887 | 1.281  |
 
-
 ---
 
 ## get_capital_asset_pricing_model
 CAPM, or the Capital Asset Pricing Model, is a financial model used to estimate the expected return on an investment, such as a stock or portfolio of stocks. It provides a framework for evaluating the risk and return trade-off of an asset or portfolio in relation to the overall market. CAPM is based on the following key components:
 
-- Risk-Free Rate (Rf): This is the theoretical return an investor could earn from an investment with no risk of financial loss. It is typically based on the yield of a government bond. - Market Risk Premium (Rm - Rf): This represents the additional return that investors expect to earn for taking on the risk of investing in the overall market as opposed to a risk-free asset. It is calculated as the difference between the expected return of the market (Rm) and the risk-free rate (Rf). - Beta (β): Beta is a measure of an asset's or portfolio's sensitivity to market movements. It quantifies how much an asset's returns are expected to move in relation to changes in the overall market. A beta of 1 indicates that the asset moves in line with the market, while a beta greater than 1 suggests higher volatility, and a beta less than 1 indicates lower volatility.
+- Risk-Free Rate (Rf): This is the theoretical return an investor could earn from an investment with no risk of financial loss. It is typically based on the yield of a government bond.
+- Market Risk Premium (Rm - Rf): This represents the additional return that investors expect to earn for taking on the risk of investing in the overall market as opposed to a risk-free asset. It is calculated as the difference between the expected return of the market (Rm) and the risk-free rate (Rf).
+- Beta (β): Beta is a measure of an asset's or portfolio's sensitivity to market movements. It quantifies how much an asset's returns are expected to move in relation to changes in the overall market. A beta of 1 indicates that the asset moves in line with the market, while a beta greater than 1 suggests higher volatility, and a beta less than 1 indicates lower volatility.
 
 The Capital Asset Pricing Model (CAPM) is a widely used financial model that helps in determining the expected return of an asset or portfolio based on its systematic risk and the prevailing risk-free rate in the market. CAPM provides insights into how an asset or investment should be priced in order to offer an appropriate rate of return, given its level of risk compared to the overall market.
 
@@ -201,7 +201,6 @@ Which returns:
 | 2025   |  0.1938 |  0.3135 |
 | 2026   |  0.0822 |  0.1364 |
 
-
 ---
 
 ## get_factor_asset_correlations
@@ -251,13 +250,16 @@ Which returns:
 | 2025 |   0.7408 |  0.0646 | -0.2085 | -0.1108 |  0.0761 |
 | 2026 |   0.4609 |  0.0502 | -0.1759 | -0.0847 | -0.0546 |
 
-
 ---
 
 ## get_factor_correlations
 Calculates factor correlations between each factor. This is useful to understand how correlated each factor is to each other. This is based off the Fama and French 5 Factor model which includes:
 
-- Market Risk Premium (Mkt-RF): Represents the additional return that investors expect to earn for taking on the risk of investing in the overall market as opposed to a risk-free asset. - Size Premium (SMB): Reflects the historical excess return of small-cap stocks over large-cap stocks. - Value Premium (HML): Captures the historical excess return of value stocks over growth stocks. - Profitability (RMW): Measures the historical excess return of high profitability stocks over low profitability stocks. - Investment (CMA): Quantifies the historical excess return of low investment stocks over high investment stocks.
+- Market Risk Premium (Mkt-RF): Represents the additional return that investors expect to earn for taking on the risk of investing in the overall market as opposed to a risk-free asset.
+- Size Premium (SMB): Reflects the historical excess return of small-cap stocks over large-cap stocks.
+- Value Premium (HML): Captures the historical excess return of value stocks over growth stocks.
+- Profitability (RMW): Measures the historical excess return of high profitability stocks over low profitability stocks.
+- Investment (CMA): Quantifies the historical excess return of low investment stocks over high investment stocks.
 
 Optionally, it is also possible to see the correlation between the risk-free rate and each factor.
 
@@ -298,7 +300,6 @@ Which returns:
 | (2026, 'RMW')   |  -0.5902 | -0.1127 |  0.3432 |  1      |  0.4182 |
 | (2026, 'CMA')   |  -0.4198 |  0.2437 |  0.7051 |  0.4182 |  1      |
 
-
 ---
 
 ## get_fama_and_french_model
@@ -306,7 +307,11 @@ Calculate Fama and French 5 Factor model scores and residuals for a set of finan
 
 The Fama and French 5 Factor model is a widely used financial model that helps estimate the expected return of financial assets, such as stocks or portfolios, based on five key factors:
 
-- Market Risk Premium (Mkt-RF): Represents the additional return that investors expect to earn for taking on the risk of investing in the overall market as opposed to a risk-free asset. - Size Premium (SMB): Reflects the historical excess return of small-cap stocks over large-cap stocks. - Value Premium (HML): Captures the historical excess return of value stocks over growth stocks. - Profitability (RMW): Measures the historical excess return of high profitability stocks over low profitability stocks. - Investment (CMA): Quantifies the historical excess return of low investment stocks over high investment stocks.
+- Market Risk Premium (Mkt-RF): Represents the additional return that investors expect to earn for taking on the risk of investing in the overall market as opposed to a risk-free asset.
+- Size Premium (SMB): Reflects the historical excess return of small-cap stocks over large-cap stocks.
+- Value Premium (HML): Captures the historical excess return of value stocks over growth stocks.
+- Profitability (RMW): Measures the historical excess return of high profitability stocks over low profitability stocks.
+- Investment (CMA): Quantifies the historical excess return of low investment stocks over high investment stocks.
 
 The model can perform both a Simple Linear Regression on each factor as well as a Multi Linear Regression which includes all factors. Generally, a multi linear regression is applied but if you wish to see individual R-squared values for each factor you can select the simple linear regression method.
 
@@ -493,7 +498,6 @@ Which returns:
 | 2025   | -0.0779 | -0.0499 |
 | 2026   |  0.0431 | -0.2173 |
 
-
 ---
 
 ## get_jensens_alpha
@@ -556,7 +560,6 @@ Which returns:
 | 2025   | -0.1082 | -0.1999 |
 | 2026   |  0.0531 | -0.2615 |
 
-
 ---
 
 ## get_treynor_ratio
@@ -616,7 +619,6 @@ Which returns:
 | 2024   |  0.2641 |  0.243  |
 | 2025   |  0.0352 |  0.0323 |
 | 2026   |  0.1146 | -0.0879 |
-
 
 ---
 
@@ -741,7 +743,6 @@ toolkit.performance.get_sharpe_ratio(method="probabilistic")
 | 2025   | 0.618  | 0.6618 |
 | 2026   | 0.7167 | 0.2264 |
 
-
 ---
 
 ## get_sortino_ratio
@@ -813,7 +814,6 @@ Which returns:
 | 2025   |  0.0283 |  0.0391 |
 | 2026   |  0.0665 | -0.0789 |
 
-
 ---
 
 ## get_ulcer_performance_index
@@ -865,7 +865,6 @@ Which returns:
 | 2024   |  7.6983 |  6.3795 |
 | 2025   |  0.9945 |  0.7159 |
 | 2026   |  2.2021 | -3.5198 |
-
 
 ---
 
@@ -929,7 +928,6 @@ Which returns:
 | 2025   |  0.2834 |  0.2356 |
 | 2026   |  1.0648 | -0.5212 |
 
-
 ---
 
 ## get_sterling_ratio
@@ -992,7 +990,6 @@ Which returns:
 | 2025   |  0.4371 |  0.3785 |
 | 2026   |  0.886  | -0.6097 |
 
-
 ---
 
 ## get_burke_ratio
@@ -1051,7 +1048,6 @@ Which returns:
 | 2024   |  0.2519 |  0.1765 |
 | 2025   |  0.0246 |  0.0195 |
 | 2026   |  0.1417 | -0.1284 |
-
 
 ---
 
@@ -1115,7 +1111,6 @@ Which returns:
 | 2025   |  0.0709 |  0.0637 |
 | 2026   |  0.0919 | -0.0461 |
 
-
 ---
 
 ## get_tracking_error
@@ -1176,13 +1171,14 @@ Which returns:
 | 2025   | 0.0139 | 0.0328 |
 | 2026   | 0.0154 | 0.0226 |
 
-
 ---
 
 ## get_information_ratio
 The Information Ratio (IR), also known as the Information Coefficient, is a financial metric that assesses the risk-adjusted performance of a portfolio or investment strategy relative to a benchmark index. It quantifies how much excess return the portfolio generates for each unit of tracking error (volatility of tracking error). The Information Ratio is commonly used by portfolio managers, financial analysts, and investors to evaluate the skill of a portfolio manager in generating returns beyond what would be expected based on the risk taken.
 
-- IR > 0: A positive Information Ratio indicates that the portfolio has generated excess returns compared to the benchmark, suggesting that the portfolio manager has added value. - IR = 0: An Information Ratio of zero implies that the portfolio's excess return is in line with the benchmark, meaning the portfolio manager has not added or lost value relative to the benchmark. - IR < 0: A negative Information Ratio suggests that the portfolio has underperformed the benchmark, potentially indicating that the portfolio manager has detracted value.
+- IR > 0: A positive Information Ratio indicates that the portfolio has generated excess returns compared to the benchmark, suggesting that the portfolio manager has added value.
+- IR = 0: An Information Ratio of zero implies that the portfolio's excess return is in line with the benchmark, meaning the portfolio manager has not added or lost value relative to the benchmark.
+- IR < 0: A negative Information Ratio suggests that the portfolio has underperformed the benchmark, potentially indicating that the portfolio manager has detracted value.
 
 The formula is as follows:
 
@@ -1239,7 +1235,6 @@ Which returns:
 | 2025   | -0.0106 |  0.0164 |
 | 2026   |  0.0269 | -0.0641 |
 
-
 ---
 
 ## get_upside_capture_ratio
@@ -1293,7 +1288,6 @@ Which returns:
 | 2024   | 1.1158 | 2.5976 |
 | 2025   | 1.0162 | 2.2065 |
 | 2026   | 0.766  | 1.593  |
-
 
 ---
 
@@ -1349,7 +1343,6 @@ Which returns:
 | 2025   | 1.0842 | 2.2603 |
 | 2026   | 0.5691 | 2.2236 |
 
-
 ---
 
 ## get_win_rate
@@ -1401,7 +1394,6 @@ Which returns:
 | 2024   | 0.504  | 0.4683 |
 | 2025   | 0.472  | 0.468  |
 | 2026   | 0.504  | 0.472  |
-
 
 ---
 
@@ -1460,7 +1452,6 @@ Which returns:
 | 2024   |  0.0767 |  0.0749 |
 | 2025   |  0.0186 |  0.0275 |
 | 2026   |  0.0441 | -0.0538 |
-
 
 ---
 
@@ -1526,7 +1517,6 @@ Which returns:
 | 2025 | 1.0873 | 1.0871 |
 | 2026 | 1.2062 | 0.9358 |
 
-
 ---
 
 ## get_gain_to_pain_ratio
@@ -1585,7 +1575,6 @@ Which returns:
 | 2025 |  0.0873 |  0.0871 |
 | 2026 |  0.2062 | -0.0642 |
 
-
 ---
 
 ## get_compound_growth_rate
@@ -1634,7 +1623,6 @@ Which returns:
 | Compound Monthly Growth Rate (CMGR)   | 0.0123 |  0.005  |      0.0101 |
 | Compound Weekly Growth Rate (CWGR)    | 0.0029 |  0.0012 |      0.0024 |
 | Compound Daily Growth Rate (CDGR)     | 0.0006 |  0.0003 |      0.0005 |
-
 
 ---
 
@@ -1692,7 +1680,6 @@ Which returns:
 | 2024   |  0.4449 |  0.6255 |      0.2339 |
 | 2025   |  0.0516 |  0.1129 |      0.1638 |
 | 2026   |  0.0508 | -0.1254 |      0.0918 |
-
 
 ---
 
@@ -1752,7 +1739,6 @@ Which returns:
 | 2025   |  0.01   |  0.0713 |      0.1222 |
 | 2026   |  0.0059 | -0.1703 |      0.0469 |
 
-
 ---
 
 ## get_correlation_matrix
@@ -1789,7 +1775,6 @@ Which returns:
 | TSLA      | 0.935  | 1      |      0.8982 |
 | Benchmark | 0.7751 | 0.8982 |      1      |
 
-
 ---
 
 ## get_covariance_matrix
@@ -1825,7 +1810,6 @@ Which returns:
 | AMZN      | 0.1944 | 0.2418 |      0.0592 |
 | TSLA      | 0.2418 | 0.344  |      0.0913 |
 | Benchmark | 0.0592 | 0.0913 |      0.0301 |
-
 
 ---
 
@@ -1891,7 +1875,6 @@ Which returns:
 | 2025   | -0.5687 | -0.5019 |
 | 2026   |  0.1411 | -1.8633 |
 
-
 ---
 
 ## get_fama_decomposition
@@ -1901,7 +1884,8 @@ Jensen's Alpha alone conflates two very different sources of excess return: genu
 
 The formulas are as follows:
 
-- Selectivity = (Asset Return − Risk-Free Rate) − (Sigma_Portfolio / Sigma_Market) * (Benchmark Return − Risk-Free Rate) - Diversification = [Risk-Free Rate + (Sigma_Portfolio / Sigma_Market) * (Benchmark Return − Risk-Free Rate)] − [Risk-Free Rate + Beta * (Benchmark Return − Risk-Free Rate)]
+- Selectivity = (Asset Return − Risk-Free Rate) − (Sigma_Portfolio / Sigma_Market) * (Benchmark Return − Risk-Free Rate)
+- Diversification = [Risk-Free Rate + (Sigma_Portfolio / Sigma_Market) * (Benchmark Return − Risk-Free Rate)] − [Risk-Free Rate + Beta * (Benchmark Return − Risk-Free Rate)]
 
 Selectivity is the return earned above what would be required for a fully diversified portfolio carrying the same total risk, i.e. genuine security selection or timing skill. Diversification is the extra return the manager left on the table (if positive, it is a cost) by taking on unsystematic risk that a fully diversified portfolio of the same total risk would not have. Selectivity plus Diversification equals Jensen's Alpha (see `get_jensens_alpha`).
 
@@ -1955,7 +1939,6 @@ Which returns:
 | 2024   |       -0.1053 |            0.1698 |
 | 2025   |       -0.1774 |            0.056  |
 | 2026   |       -0.0958 |            0.1246 |
-
 
 ---
 
@@ -2024,7 +2007,6 @@ Which returns:
 | 2025   |  0.0677 |  0.0554 |
 | 2026   |  0.1743 | -0.3805 |
 
-
 ---
 
 ## get_rachev_ratio
@@ -2086,7 +2068,6 @@ Which returns:
 | 2025   | 1.0729 | 1.0925 |
 | 2026   | 0.8627 | 0.8404 |
 
-
 ---
 
 ## get_treynor_mazuy_model
@@ -2144,7 +2125,6 @@ Which returns:
 | 2025   | -0.0005 | 1.2237 |  1.6352 |      0.5693 |
 | 2026   |  0.0006 | 0.6632 | -2.6122 |      0.1087 |
 
-
 ---
 
 ## get_henriksson_merton_model
@@ -2201,7 +2181,6 @@ Which returns:
 | 2024   |  0.0013 | 1.1387 |          -0.3553 |      0.2926 |
 | 2025   | -0.0009 | 1.1732 |           0.152  |      0.5673 |
 | 2026   |  0.0008 | 0.7243 |          -0.1232 |      0.1088 |
-
 
 ---
 
