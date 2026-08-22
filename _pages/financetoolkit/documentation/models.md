@@ -29,10 +29,21 @@ The Dupont analysis is a method used to dissect and understand the factors that 
 
 The formula is as follows:
 
-- Profit Margin = Net Income / Revenue
-- Asset Turnover = Revenue / Average Total Assets
-- Financial Leverage = Average Total Assets / Average Total Equity
-- ROE = Profit Margin * Asset Turnover * Financial Leverage
+$$
+\text{Profit Margin} = \text{Net Income} / \text{Revenue}
+$$
+
+$$
+\text{Asset Turnover} = \text{Revenue} / \text{Average Total Assets}
+$$
+
+$$
+\text{Financial Leverage} = \text{Average Total Assets} / \text{Average Total Equity}
+$$
+
+$$
+\text{ROE} = \text{Profit Margin} \cdot \text{Asset Turnover} \cdot \text{Financial Leverage}
+$$
 
 **Also known as:** DuPont, ROE decomposition, three-factor DuPont.
 
@@ -90,12 +101,29 @@ The Extended Dupont analysis splits the three-factor decomposition's Net Profit 
 
 The formula is as follows:
 
-- Interest Burden Ratio = Income Before Tax / Operating Income
-- Tax Burden Ratio = Net Income / Income Before Tax
-- Operating Profit Margin = Operating Income / Revenue
-- Asset Turnover = Revenue / Average Total Assets
-- Equity Multiplier = Average Total Assets / Average Total Equity
-- ROE = Interest Burden Ratio * Tax Burden Ratio * Operating Profit Margin * Asset Turnover * Equity Multiplier
+$$
+\text{Interest Burden Ratio} = \text{Income Before Tax} / \text{Operating Income}
+$$
+
+$$
+\text{Tax Burden Ratio} = \text{Net Income} / \text{Income Before Tax}
+$$
+
+$$
+\text{Operating Profit Margin} = \text{Operating Income} / \text{Revenue}
+$$
+
+$$
+\text{Asset Turnover} = \text{Revenue} / \text{Average Total Assets}
+$$
+
+$$
+\text{Equity Multiplier} = \text{Average Total Assets} / \text{Average Total Equity}
+$$
+
+$$
+\text{ROE} = \text{Interest Burden Ratio} \cdot \text{Tax Burden Ratio} \cdot \text{Operating Profit Margin} \cdot \text{Asset Turnover} \cdot \text{Equity Multiplier}
+$$
 
 **Also known as:** extended DuPont, five-factor DuPont, ROE breakdown.
 
@@ -234,8 +262,13 @@ Calculate Tobin's Q Ratio, a valuation metric developed by economist James Tobin
 
 The formula is as follows:
 
-- Market Value of Equity = Share Price * Total Shares Outstanding
-- Tobin's Q Ratio = (Market Value of Equity + Total Liabilities) / Total Assets
+$$
+\text{Market Value of Equity} = \text{Share Price} \cdot \text{Total Shares Outstanding}
+$$
+
+$$
+\text{Tobin's} Q \text{Ratio} = (\text{Market Value of Equity} + \text{Total Liabilities}) / \text{Total Assets}
+$$
 
 Tobin's Q Ratio can be interpreted as follows:
 
@@ -299,12 +332,29 @@ The Weighted Average Cost of Capital (WACC) is a financial metric used to estima
 
 The formula is as follows:
 
-- Market Value of Equity = Share Price * Total Shares Outstanding
-- Market Value of Debt = Total Debt
-- Total Market Value = Market Value of Equity + Market Value of Debt
-- Cost of Equity = Risk Free Rate + Beta * (Benchmark Return - Risk Free Rate)
-- Cost of Debt = Interest Expense / Total Debt
-- WACC = (Market Value of Equity / Total Market Value) * Cost of Equity + (Market Value of Debt / Total Market Value) * Cost of Debt * (1 - Corporate Tax Rate)
+$$
+\text{Market Value of Equity} = \text{Share Price} \cdot \text{Total Shares Outstanding}
+$$
+
+$$
+\text{Market Value of Debt} = \text{Total Debt}
+$$
+
+$$
+\text{Total Market Value} = \text{Market Value of Equity} + \text{Market Value of Debt}
+$$
+
+$$
+\text{Cost of Equity} = \text{Risk Free Rate} + \text{Beta} \cdot (\text{Benchmark Return} - \text{Risk Free Rate})
+$$
+
+$$
+\text{Cost of Debt} = \text{Interest Expense} / \text{Total Debt}
+$$
+
+$$
+\text{WACC} = (\text{Market Value of Equity} / \text{Total Market Value}) \cdot \text{Cost of Equity} + (\text{Market Value of Debt} / \text{Total Market Value}) \cdot \text{Cost of Debt} \cdot (1 - \text{Corporate Tax Rate})
+$$
 
 Cost of Equity (Re): The cost of equity represents the return required by the company's shareholders or equity investors. It is the cost of raising funds by selling equity (such as common stock). The cost of equity is often estimated using methods like the Capital Asset Pricing Model (CAPM) or the Dividend Discount Model (DDM).
 
@@ -370,9 +420,17 @@ Economic Value Added (EVA) is a measure of a company's financial performance tha
 
 The formula is as follows:
 
-- NOPAT = EBIT * (1 - Effective Tax Rate)
-- Invested Capital = Total Equity + Total Debt
-- EVA = NOPAT - (Weighted Average Cost of Capital * Invested Capital)
+$$
+\text{NOPAT} = \text{EBIT} \cdot (1 - \text{Effective Tax Rate})
+$$
+
+$$
+\text{Invested Capital} = \text{Total Equity} + \text{Total Debt}
+$$
+
+$$
+\text{EVA} = \text{NOPAT} - (\text{Weighted Average Cost of Capital} \cdot \text{Invested Capital})
+$$
 
 **Also known as:** EVA, economic profit.
 
@@ -430,9 +488,17 @@ Market Value Added (MVA) is a measure of a company's financial performance that 
 
 The formula is as follows:
 
-- Market Value of Equity = Share Price * Total Shares Outstanding
-- Invested Capital = Total Equity + Total Debt
-- MVA = (Market Value of Equity + Market Value of Debt) - Invested Capital
+$$
+\text{Market Value of Equity} = \text{Share Price} \cdot \text{Total Shares Outstanding}
+$$
+
+$$
+\text{Invested Capital} = \text{Total Equity} + \text{Total Debt}
+$$
+
+$$
+\text{MVA} = (\text{Market Value of Equity} + \text{Market Value of Debt}) - \text{Invested Capital}
+$$
 
 **Also known as:** MVA, market value added.
 
@@ -500,11 +566,25 @@ This functionality uses DCF, or Discounted Cash Flow which is a widely used fina
 
 The formula is as follows:
 
-- Cash Flow Projection_t = Cash Flow_t-1 * (1 + Growth Rate)
-- Terminal Value = Last Cash Flow Projection * (1 + Perpetual Growth Rate) / (Weighted Average Cost of Capital - Perpetual Growth Rate)
-- Enterprise Value = Sum of Present Value of Cash Flow Projections + Terminal Value
-- Equity Value = Enterprise Value - Total Debt + Cash and Cash Equivalents
-- Intrinsic Value = Equity Value / Total Shares Outstanding
+$$
+\text{Cash Flow Projection}_{t} = \text{Cash Flow}_{t-1} \cdot (1 + \text{Growth Rate})
+$$
+
+$$
+\text{Terminal Value} = \text{Last Cash Flow Projection} \cdot (1 + \text{Perpetual Growth Rate}) / (\text{Weighted Average Cost of Capital} - \text{Perpetual Growth Rate})
+$$
+
+$$
+\text{Enterprise Value} = \text{Sum of Present Value of Cash Flow Projections} + \text{Terminal Value}
+$$
+
+$$
+\text{Equity Value} = \text{Enterprise Value} - \text{Total Debt} + \text{Cash and Cash Equivalents}
+$$
+
+$$
+\text{Intrinsic Value} = \text{Equity Value} / \text{Total Shares Outstanding}
+$$
 
 **Also known as:** DCF, discounted cash flow, fair value, intrinsic value.
 
@@ -562,8 +642,13 @@ Free Cash Flow to the Firm (FCFF) is the cash flow available to all providers of
 
 The formula is as follows:
 
-- NOPAT = EBIT * (1 - Effective Tax Rate)
-- FCFF = NOPAT + Depreciation and Amortization - Capital Expenditure - Change in Net Working Capital
+$$
+\text{NOPAT} = \text{EBIT} \cdot (1 - \text{Effective Tax Rate})
+$$
+
+$$
+\text{FCFF} = \text{NOPAT} + \text{Depreciation and Amortization} - \text{Capital Expenditure} - \text{Change in Net Working Capital}
+$$
 
 **Also known as:** FCFF, unlevered free cash flow.
 
@@ -624,7 +709,9 @@ Free Cash Flow to Equity (FCFE) is the cash flow available to a company's common
 
 The formula is as follows:
 
-- FCFE = Net Income + Depreciation and Amortization - Capital Expenditure - Change in Net Working Capital + Net Borrowing
+$$
+\text{FCFE} = \text{Net Income} + \text{Depreciation and Amortization} - \text{Capital Expenditure} - \text{Change in Net Working Capital} + \text{Net Borrowing}
+$$
 
 **Also known as:** FCFE, levered free cash flow.
 
@@ -684,7 +771,9 @@ The Gordon Growth Model, also known as the Dividend Discount Model (DDM) with Co
 
 The formula is as follows:
 
-- Intrinsic Value = (Dividends Per Share * (1 + Growth Rate)) / (Rate of Return - Growth Rate)
+$$
+\text{Intrinsic Value} = (\text{Dividends Per Share} \cdot (1 + \text{Growth Rate})) / (\text{Rate of Return} - \text{Growth Rate})
+$$
 
 The formula essentially discounts the future expected dividends to their present value, taking into account the required rate of return and the growth rate. The numerator represents the expected dividend in the next period. The denominator represents the required rate of return minus the growth rate.
 
@@ -750,10 +839,21 @@ The Two-Stage Dividend Discount Model extends the (single-stage) Gordon Growth M
 
 The formula is as follows:
 
-- Dividend Projection_t = Dividends Per Share * (1 + High Growth Rate)^t
-- High-Growth Phase Present Value = Sum of Dividend Projection_t / (1 + Rate of Return)^t, for t = 1, ..., High Growth Periods
-- Terminal Value = Last Dividend Projection * (1 + Stable Growth Rate) / (Rate of Return - Stable Growth Rate)
-- Intrinsic Value = High-Growth Phase Present Value + (Terminal Value / (1 + Rate of Return)^High Growth Periods)
+$$
+\text{Dividend Projection}_{t} = \text{Dividends Per Share} \cdot (1 + \text{High Growth Rate}) ^{t}
+$$
+
+$$
+\text{High-Growth Phase Present Value} = \text{Sum of Dividend Projection}_{t} / (1 + \text{Rate of Return}) ^{t},\;\; \text{for} \;\; t = 1,\;\; \text{...},\;\; \text{High Growth Periods}
+$$
+
+$$
+\text{Terminal Value} = \text{Last Dividend Projection} \cdot (1 + \text{Stable Growth Rate}) / (\text{Rate of Return} - \text{Stable Growth Rate})
+$$
+
+$$
+\text{Intrinsic Value} = \text{High-Growth Phase Present Value} + (\text{Terminal Value} / (1 + \text{Rate of Return}) ^{\text{High}} \text{Growth Periods})
+$$
 
 **Also known as:** two-stage DDM, two-stage dividend discount model.
 
@@ -815,7 +915,9 @@ Residual Income is a measure of the profit a company generates in excess of the 
 
 The formula is as follows:
 
-- Residual Income = Net Income - (Cost of Equity * Book Value of Equity)
+$$
+\text{Residual Income} = \text{Net Income} - (\text{Cost of Equity} \cdot \text{Book Value of Equity})
+$$
 
 **Also known as:** RI, economic profit (equity variant), abnormal earnings.
 
@@ -878,12 +980,29 @@ Calculates the Altman Z-Score, a financial metric used to predict the likelihood
 
 The formula is as follows:
 
-- Working Capital to Total Assets = Working Capital / Total Assets
-- Retained Earnings to Total Assets = Retained Earnings / Total Assets
-- EBIT to Total Assets = EBIT / Total Assets
-- Market Value to Total Liabilities = Market Value of Equity / Total Liabilities
-- Sales to Total Assets = Sales / Total Assets
-- Altman Z-Score = 1.2 * Working Capital to Total Assets + 1.4 * Retained Earnings to Total Assets + 3.3 * EBIT to Total Assets + 0.6 * Market Value to Total Liabilities + 1.0 * Sales to Total Assets
+$$
+\text{Working Capital to Total Assets} = \text{Working Capital} / \text{Total Assets}
+$$
+
+$$
+\text{Retained Earnings to Total Assets} = \text{Retained Earnings} / \text{Total Assets}
+$$
+
+$$
+\text{EBIT to Total Assets} = \text{EBIT} / \text{Total Assets}
+$$
+
+$$
+\text{Market Value to Total Liabilities} = \text{Market Value of Equity} / \text{Total Liabilities}
+$$
+
+$$
+\text{Sales to Total Assets} = \text{Sales} / \text{Total Assets}
+$$
+
+$$
+\text{Altman Z-Score} = 1.2 \cdot \text{Working Capital to Total Assets} + 1.4 \cdot \text{Retained Earnings to Total Assets} + 3.3 \cdot \text{EBIT to Total Assets} + 0.6 \cdot \text{Market Value to Total Liabilities} + 1.0 \cdot \text{Sales to Total Assets}
+$$
 
 The Altman Z-Score can be interpreted as follows:
 
@@ -1085,18 +1204,53 @@ Calculates the Ohlson O-Score, a financial metric used to predict the likelihood
 
 The formula is as follows:
 
-- SIZE = ln(Total Assets)
-- TLTA = Total Liabilities / Total Assets
-- WCTA = Working Capital / Total Assets
-- CLCA = Current Liabilities / Current Assets
-- OENEG = 1 if Total Liabilities > Total Assets else 0
-- NITA = Net Income / Total Assets
-- FUTL = Operating Cash Flow / Total Liabilities
-- INTWO = 1 if Net Income was negative for the last two years else 0
-- CHIN = (Net Income (t) - Net Income (t-1)) / (\|Net Income (t)\| + \|Net Income (t-1)\|)
-- O-Score = -1.32 - 0.407 * SIZE + 6.03 * TLTA - 1.43 * WCTA + 0.0757 * CLCA
-- 1.72 * OENEG - 2.37 * NITA - 1.83 * FUTL + 0.285 * INTWO - 0.521 * CHIN
-- Bankruptcy Probability = 1 / (1 + e^(-O-Score))
+$$
+\text{SIZE} = \ln(\text{Total Assets})
+$$
+
+$$
+\text{TLTA} = \text{Total Liabilities} / \text{Total Assets}
+$$
+
+$$
+\text{WCTA} = \text{Working Capital} / \text{Total Assets}
+$$
+
+$$
+\text{CLCA} = \text{Current Liabilities} / \text{Current Assets}
+$$
+
+$$
+\text{OENEG} = 1 \text{if Total Liabilities} > \text{Total Assets else} 0
+$$
+
+$$
+\text{NITA} = \text{Net Income} / \text{Total Assets}
+$$
+
+$$
+\text{FUTL} = \text{Operating Cash Flow} / \text{Total Liabilities}
+$$
+
+$$
+\text{INTWO} = 1 \text{if Net Income was negative for the last two years else} 0
+$$
+
+$$
+\text{CHIN} = (\text{Net Income} (t) - \text{Net Income} (t-1)) / (| \text{Net Income} (t) | + | \text{Net Income} (t-1) |)
+$$
+
+$$
+\text{O-Score} = - 1.32 - 0.407 \cdot \text{SIZE} + 6.03 \cdot \text{TLTA} - 1.43 \cdot \text{WCTA} + 0.0757 \cdot \text{CLCA}
+$$
+
+$$
+1.72 \cdot \text{OENEG} - 2.37 \cdot \text{NITA} - 1.83 \cdot \text{FUTL} + 0.285 \cdot \text{INTWO} - 0.521 \cdot \text{CHIN}
+$$
+
+$$
+\text{Bankruptcy Probability} = 1 / (1 + e ^{- \text{O-Score}})
+$$
 
 The Ohlson O-Score can be interpreted as follows:
 
@@ -1183,12 +1337,29 @@ Calculates the Zmijewski Score, a financial metric used to predict the likelihoo
 
 The formula is as follows:
 
-- Net Income to Total Assets = Net Income / Total Assets
-- Total Liabilities to Total Assets = Total Liabilities / Total Assets
-- Current Assets to Current Liabilities = Current Assets / Current Liabilities
-- X = -4.3 - 4.5 * Net Income to Total Assets + 5.7 * Total Liabilities to Total Assets
-- 0.004 * Current Assets to Current Liabilities
-- Bankruptcy Probability = Phi(X), the standard normal cumulative distribution function
+$$
+\text{Net Income to Total Assets} = \text{Net Income} / \text{Total Assets}
+$$
+
+$$
+\text{Total Liabilities to Total Assets} = \text{Total Liabilities} / \text{Total Assets}
+$$
+
+$$
+\text{Current Assets to Current Liabilities} = \text{Current Assets} / \text{Current Liabilities}
+$$
+
+$$
+X = - 4.3 - 4.5 \cdot \text{Net Income to Total Assets} + 5.7 \cdot \text{Total Liabilities to Total Assets}
+$$
+
+$$
+0.004 \cdot \text{Current Assets to Current Liabilities}
+$$
+
+$$
+\text{Bankruptcy Probability} = \Phi(X),\;\; \text{the standard normal cumulative distribution function}
+$$
 
 The Zmijewski Score can be interpreted as follows:
 
@@ -1255,11 +1426,25 @@ Calculates the Springate Score, a financial metric used to predict the likelihoo
 
 The formula is as follows:
 
-- Working Capital to Total Assets = Working Capital / Total Assets
-- EBIT to Total Assets = EBIT / Total Assets
-- EBT to Current Liabilities = Earnings Before Taxes / Total Current Liabilities
-- Sales to Total Assets = Sales / Total Assets
-- Springate Score = 1.03 * Working Capital to Total Assets + 3.07 * EBIT to Total Assets + 0.66 * EBT to Current Liabilities + 0.4 * Sales to Total Assets
+$$
+\text{Working Capital to Total Assets} = \text{Working Capital} / \text{Total Assets}
+$$
+
+$$
+\text{EBIT to Total Assets} = \text{EBIT} / \text{Total Assets}
+$$
+
+$$
+\text{EBT to Current Liabilities} = \text{Earnings Before Taxes} / \text{Total Current Liabilities}
+$$
+
+$$
+\text{Sales to Total Assets} = \text{Sales} / \text{Total Assets}
+$$
+
+$$
+\text{Springate Score} = 1.03 \cdot \text{Working Capital to Total Assets} + 3.07 \cdot \text{EBIT to Total Assets} + 0.66 \cdot \text{EBT to Current Liabilities} + 0.4 \cdot \text{Sales to Total Assets}
+$$
 
 The Springate Score can be interpreted as follows:
 
@@ -1323,10 +1508,21 @@ Calculates the Grover Score, a financial metric used to predict the likelihood o
 
 The formula is as follows:
 
-- Working Capital to Total Assets = Working Capital / Total Assets
-- EBIT to Total Assets = EBIT / Total Assets
-- Return on Assets = Net Income / Total Assets
-- Grover Score = 1.65 * Working Capital to Total Assets + 3.404 * EBIT to Total Assets - 0.016 * Return on Assets + 0.057
+$$
+\text{Working Capital to Total Assets} = \text{Working Capital} / \text{Total Assets}
+$$
+
+$$
+\text{EBIT to Total Assets} = \text{EBIT} / \text{Total Assets}
+$$
+
+$$
+\text{Return on Assets} = \text{Net Income} / \text{Total Assets}
+$$
+
+$$
+\text{Grover Score} = 1.65 \cdot \text{Working Capital to Total Assets} + 3.404 \cdot \text{EBIT to Total Assets} - 0.016 \cdot \text{Return on Assets} + 0.057
+$$
 
 The Grover Score can be interpreted as follows:
 
@@ -1481,7 +1677,9 @@ The Present Value of Growth Opportunities (PVGO) is a financial metric that repr
 
 The formula is as follows:
 
-- PVGO = Stock Price - Earnings Per Share / Weighted Average Cost of Capital
+$$
+\text{PVGO} = \text{Stock Price} - \text{Earnings Per Share} / \text{Weighted Average Cost of Capital}
+$$
 
 **Also known as:** PVGO, growth value.
 
@@ -1541,8 +1739,13 @@ The Sustainable Growth Rate (SGR) is the maximum rate at which a company can gro
 
 The formula is as follows:
 
-- Retention Ratio = 1 - Dividend Payout Ratio
-- SGR = Return on Equity * Retention Ratio
+$$
+\text{Retention Ratio} = 1 - \text{Dividend Payout Ratio}
+$$
+
+$$
+\text{SGR} = \text{Return on Equity} \cdot \text{Retention Ratio}
+$$
 
 **Also known as:** SGR, self-sustainable growth rate.
 
@@ -1589,8 +1792,13 @@ The Internal Growth Rate (IGR) is the maximum rate at which a company can grow i
 
 The formula is as follows:
 
-- Retention Ratio = 1 - Dividend Payout Ratio
-- IGR = (Return on Assets * Retention Ratio) / (1 - (Return on Assets * Retention Ratio))
+$$
+\text{Retention Ratio} = 1 - \text{Dividend Payout Ratio}
+$$
+
+$$
+\text{IGR} = (\text{Return on Assets} \cdot \text{Retention Ratio}) / (1 - (\text{Return on Assets} \cdot \text{Retention Ratio}))
+$$
 
 **Also known as:** IGR.
 
@@ -1640,7 +1848,9 @@ The Graham Number is intended as an upper bound on the price a defensive investo
 
 The formula is as follows:
 
-- Graham Number = √(22.5 x Earnings per Share x Book Value per Share)
+$$
+\text{Graham Number} = \sqrt{22.5 x \text{Earnings per Share} x \text{Book Value per Share}}
+$$
 
 **Also known as:** Graham fair value.
 

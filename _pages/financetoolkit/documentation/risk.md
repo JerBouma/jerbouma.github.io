@@ -710,7 +710,9 @@ GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic 
 
 The forecasting with GARCH is done with the following formula:
 
-- sigma_l ** 2 + (sigma_t ** 2 - sigma_l ** 2) * (alpha + beta) ** (t - 1)
+$$
+\sigma_{l} ^{2} + (\sigma_{t} ^{2} - \sigma_{l} ^{2}) \cdot (\alpha + \beta) ^{t - 1}
+$$
 
 For more information about the method, see the following book:
 
@@ -777,7 +779,9 @@ Fits a GARCH(1, 1) model to the historical returns and returns the estimated Ome
 
 GARCH (Generalized autoregressive conditional heteroskedasticity) is a stochastic model for time series, used to model volatility clustering. A GARCH(1, 1) model expresses the conditional variance sigma_t^2 as:
 
-- sigma_t^2 = Omega + Alpha * u_(t-1)^2 + Beta * sigma_(t-1)^2
+$$
+\sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot \operatorname{u\_}(t-1) ^{2} + \text{Beta} \cdot \operatorname{sigma\_}(t-1) ^{2}
+$$
 
 With the constraints Omega, Alpha, Beta > 0 and Alpha + Beta < 1. The parameters are estimated via simulated annealing, maximizing the GARCH log-likelihood function.
 
@@ -1597,8 +1601,13 @@ Calculate the Component Value at Risk (Component VaR) of each asset in a portfol
 
 Component VaR allocates total portfolio VaR across its constituent assets, such that the allocations sum exactly back to the portfolio VaR - an "Euler" (or "fully consistent") risk decomposition:
 
-- Component VaR_i = weight_i * Marginal VaR_i (see `get_marginal_value_at_risk`)
-- SUM(Component VaR_i) = Portfolio VaR
+$$
+\text{Component VaR}_{i} = \text{weight}_{i} \cdot \text{Marginal VaR}_{i} (\text{see} \text{get\_marginal\_value\_at\_risk})
+$$
+
+$$
+\operatorname{SUM}(\text{Component VaR}_{i}) = \text{Portfolio VaR}
+$$
 
 Where Marginal VaR measures each asset's risk *sensitivity*, Component VaR measures its actual *contribution* in the same units as portfolio VaR, making it directly usable to identify which holdings account for the largest share of portfolio risk.
 
@@ -2507,7 +2516,9 @@ Unlike a fixed-window rolling Volatility, EWMA Volatility weights recent observa
 
 The formula is as follows:
 
-- EWMA Variance(t) = lambda * EWMA Variance(t-1) + (1 - lambda) * Return(t-1) ** 2
+$$
+\text{EWMA Variance} (t) = \lambda \cdot \text{EWMA Variance} (t-1) + (1 - \lambda) \cdot \operatorname{Return}(t-1) ^{2}
+$$
 
 **Also known as:** RiskMetrics volatility, exponentially weighted volatility.
 

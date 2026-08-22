@@ -135,9 +135,11 @@ Calculate the McClellan Oscillator for a given price series.
 
 The McClellan Oscillator is a breadth indicator that measures the difference between the exponential moving average of advancing stocks and the exponential moving average of declining stocks.
 
-The formula is a follows:
+The formula is as follows:
 
-- McClellan Oscillator = EMA(Advancers) - EMA(Decliners)
+$$
+\text{McClellan Oscillator} = \operatorname{EMA}(\text{Advancers}) - \operatorname{EMA}(\text{Decliners})
+$$
 
 **Also known as:** McClellan oscillator, market breadth.
 
@@ -204,9 +206,11 @@ Calculate the Advancers/Decliners ratio for a given price series.
 
 The Advancers/Decliners ratio is a breadth indicator that measures the number of advancing stocks (stocks with positive price changes) versus the number of declining stocks (stocks with negative price changes).
 
-The formula is a follows:
+The formula is as follows:
 
-- Advancers/Decliners = Advancers / Decliners
+$$
+\text{Advancers} / \text{Decliners} = \text{Advancers} / \text{Decliners}
+$$
 
 **Also known as:** advance decline ratio, market breadth.
 
@@ -269,9 +273,11 @@ Calculate the On-Balance Volume (OBV) for a given price series.
 
 The On-Balance Volume (OBV) is a technical indicator that uses volume flow to predict changes in stock price. It accumulates the volume on up days and subtracts the volume on down days. The resulting OBV line provides insights into the buying and selling pressure behind price movements.
 
-The formula is a follows:
+The formula is as follows:
 
-- OBV = Previous OBV + Current Volume if Close > Previous Close
+$$
+\text{OBV} = \text{Previous OBV} + \text{Current Volume if Close} > \text{Previous Close}
+$$
 
 **Also known as:** OBV, volume momentum.
 
@@ -333,9 +339,11 @@ Calculate the Accumulation/Distribution Line for a given price series.
 
 The Accumulation/Distribution Line is a technical indicator that evaluates the flow of money into or out of an asset. It takes into account both price and volume information to identify whether an asset is being accumulated (bought) or distributed (sold) by investors.
 
-The formula is a follows:
+The formula is as follows:
 
-- ADL = Previous ADL + Current ADL
+$$
+\text{ADL} = \text{Previous ADL} + \text{Current ADL}
+$$
 
 **Also known as:** ADL, Chaikin ADL, volume-price trend.
 
@@ -398,9 +406,11 @@ Calculate the Chaikin Oscillator for a given price series.
 
 The Chaikin Oscillator is a momentum-based indicator that combines price and volume to help identify potential trends and reversals in the market. It is calculated as the difference between the 3-day and 10-day Accumulation/Distribution Line.
 
-The formula is a follows:
+The formula is as follows:
 
-- Chaikin Oscillator = EMA(short-window ADL) - EMA(long-window ADL)
+$$
+\text{Chaikin Oscillator} = \operatorname{EMA}(\text{short-window ADL}) - \operatorname{EMA}(\text{long-window ADL})
+$$
 
 **Also known as:** Chaikin oscillator, volume accumulation.
 
@@ -467,11 +477,19 @@ Calculate the Chaikin Money Flow (CMF) for a given price series.
 
 The Chaikin Money Flow sums the same Money Flow Volume used by the Accumulation/ Distribution Line over a rolling window and normalizes it by the window's total volume, turning the running (unbounded) Accumulation/Distribution Line into a bounded oscillator. Sustained readings above zero indicate buying pressure (accumulation) is dominating over the window, while sustained readings below zero indicate selling pressure (distribution).
 
-The formula is a follows:
+The formula is as follows:
 
-- Money Flow Multiplier = ((Close - Low) - (High - Close)) / (High - Low)
-- Money Flow Volume = Money Flow Multiplier * Volume
-- CMF = Sum(Money Flow Volume, window) / Sum(Volume, window)
+$$
+\text{Money Flow Multiplier} = ((\text{Close} - \text{Low}) - (\text{High} - \text{Close})) / (\text{High} - \text{Low})
+$$
+
+$$
+\text{Money Flow Volume} = \text{Money Flow Multiplier} \cdot \text{Volume}
+$$
+
+$$
+\text{CMF} = \operatorname{Sum}(\text{Money Flow Volume},\; \text{window}) / \operatorname{Sum}(\text{Volume},\; \text{window})
+$$
 
 **Also known as:** CMF, Chaikin Money Flow.
 
@@ -524,12 +542,23 @@ Calculate the Ease of Movement (EMV) for a given price series.
 
 The Ease of Movement indicator relates how far price moved (the change in the midpoint of the high-low range from one period to the next) to the volume required to move it (via the "Box Ratio", volume scaled down and divided by the period's high-low range). High positive readings mean price is moving up easily on relatively little volume; high negative readings mean price is moving down easily on relatively little volume. The raw daily reading is smoothed with a Simple Moving Average to reduce noise.
 
-The formula is a follows:
+The formula is as follows:
 
-- Distance Moved = (High(t) + Low(t)) / 2 - (High(t-1) + Low(t-1)) / 2
-- Box Ratio = (Volume / volume_divisor) / (High - Low)
-- Raw EMV = Distance Moved / Box Ratio
-- EMV = SMA(Raw EMV, window)
+$$
+\text{Distance Moved} = (\operatorname{High}(t) + \operatorname{Low}(t)) / 2 - (\operatorname{High}(t-1) + \operatorname{Low}(t-1)) / 2
+$$
+
+$$
+\text{Box Ratio} = (\text{Volume} / \text{volume\_divisor}) / (\text{High} - \text{Low})
+$$
+
+$$
+\text{Raw EMV} = \text{Distance Moved} / \text{Box Ratio}
+$$
+
+$$
+\text{EMV} = \operatorname{SMA}(\text{Raw EMV},\; \text{window})
+$$
 
 **Also known as:** EMV, Ease of Movement.
 
@@ -584,10 +613,15 @@ Calculate the Negative Volume Index (NVI) for a given price series.
 
 The Negative Volume Index is a cumulative index that only updates on days where volume decreases from the prior period, compounding that day's percentage price change onto the running index; on days where volume increases (or stays flat), the index is carried forward unchanged. The premise, per Fosback, is that "smart money" tends to be active on low-volume (quiet) days, so tracking price behaviour specifically on those days isolates informed trading from the noise of high-volume, crowd-driven days.
 
-The formula is a follows:
+The formula is as follows:
 
-- Index(t) = Index(t-1) * (1 + (Close(t) / Close(t-1) - 1)) if Volume(t) < Volume(t-1)
-- Index(t) = Index(t-1) otherwise
+$$
+\operatorname{Index}(t) = \operatorname{Index}(t-1) \cdot (1 + (\operatorname{Close}(t) / \operatorname{Close}(t-1) - 1)) \text{if Volume} (t) < \operatorname{Volume}(t-1)
+$$
+
+$$
+\operatorname{Index}(t) = \operatorname{Index}(t-1) \text{otherwise}
+$$
 
 **Also known as:** NVI, Negative Volume Index.
 
@@ -639,10 +673,15 @@ Calculate the Positive Volume Index (PVI) for a given price series.
 
 The Positive Volume Index mirrors the Negative Volume Index: it is a cumulative index that only updates on days where volume increases from the prior period, compounding that day's percentage price change onto the running index; on days where volume decreases (or stays flat), the index is carried forward unchanged. Per Fosback, the Positive Volume Index isolates price behaviour on high-volume (crowd-driven) days, which is traditionally read as tracking less-informed, sentiment-driven trading.
 
-The formula is a follows:
+The formula is as follows:
 
-- Index(t) = Index(t-1) * (1 + (Close(t) / Close(t-1) - 1)) if Volume(t) > Volume(t-1)
-- Index(t) = Index(t-1) otherwise
+$$
+\operatorname{Index}(t) = \operatorname{Index}(t-1) \cdot (1 + (\operatorname{Close}(t) / \operatorname{Close}(t-1) - 1)) \text{if Volume} (t) > \operatorname{Volume}(t-1)
+$$
+
+$$
+\operatorname{Index}(t) = \operatorname{Index}(t-1) \text{otherwise}
+$$
 
 **Also known as:** PVI, Positive Volume Index.
 
@@ -752,9 +791,11 @@ Calculate the Money Flow Index (MFI) for a given price series.
 
 The Money Flow Index is a momentum indicator that measures the strength and direction of money flowing in and out of a security by considering both price and volume.
 
-The formula is a follows:
+The formula is as follows:
 
-- MFI = 100 - (100 / (1 + (positive_money_flow / negative_money_flow)))
+$$
+\text{MFI} = 100 - (100 / (1 + (\text{positive\_money\_flow} / \text{negative\_money\_flow})))
+$$
 
 **Also known as:** MFI, volume-weighted RSI.
 
@@ -819,9 +860,11 @@ Calculate the Williams Percent R (Williams %R) for a given price series.
 
 The Williams %R is a momentum indicator that measures the level of the close price relative to the high-low range over a certain number of periods.
 
-The formula is a follows:
+The formula is as follows:
 
-- Williams %R = (Highest High - Close) / (Highest High - Lowest Low) * -100
+$$
+\text{Williams} \%R = (\text{Highest High} - \text{Close}) / (\text{Highest High} - \text{Lowest Low}) \cdot - 100
+$$
 
 **Also known as:** Williams percent R, overbought oversold oscillator.
 
@@ -886,9 +929,11 @@ Calculate the Aroon Indicator for a given price series.
 
 The Aroon Indicator is an oscillator that measures the strength of a trend and the likelihood of its continuation or reversal.
 
-The formula is a follows:
+The formula is as follows:
 
-- Aroon Up = ((Number of periods) - (Number of periods since highest high)) / (Number of periods) * 100
+$$
+\text{Aroon Up} = ((\text{Number of periods}) - (\text{Number of periods since highest high})) / (\text{Number of periods}) \cdot 100
+$$
 
 **Also known as:** Aroon Up, Aroon Down, trend strength.
 
@@ -952,9 +997,11 @@ Calculate the Commodity Channel Index (CCI) for a given price series.
 
 The Commodity Channel Index is an oscillator that measures the current price level relative to an average price level over a specified period.
 
-The formula is a follows:
+The formula is as follows:
 
-- CCI = (Typical Price - SMA(Typical Price)) / (constant * Mean Deviation)
+$$
+\text{CCI} = (\text{Typical Price} - \operatorname{SMA}(\text{Typical Price})) / (\text{constant} \cdot \text{Mean Deviation})
+$$
 
 **Also known as:** CCI, cyclical trend indicator.
 
@@ -1021,9 +1068,11 @@ Calculate the Relative Vigor Index (RVI) for a given price series.
 
 The Relative Vigor Index is an oscillator that measures the conviction of a current price trend using the relationship between closing and opening prices.
 
-The formula is a follows:
+The formula is as follows:
 
-- RVI = Sum(Upward Close-Open Movement, window) / (Sum(Upward Close-Open Movement, window) + Sum(Downward Close-Open Movement, window))
+$$
+\text{RVI} = \operatorname{Sum}(\text{Upward Close-Open Movement},\; \text{window}) / (\operatorname{Sum}(\text{Upward Close-Open Movement},\; \text{window}) + \operatorname{Sum}(\text{Downward Close-Open Movement},\; \text{window}))
+$$
 
 **Also known as:** vigor index. Note this is a bounded [0, 1] measure of the proportion of upward close-open movement, related in spirit to (but not numerically the same as) John Ehlers' published Relative Vigor Index. See `momentum_model.get_relative_vigor_index` for the full formula and caveats.
 
@@ -1088,10 +1137,15 @@ Calculate the Force Index for a given price series.
 
 The Force Index is an indicator that measures the strength behind price movements.
 
-The formula is a follows:
+The formula is as follows:
 
-- Raw Force Index = (Close - Close(1)) * Volume
-- Force Index = EMA(Raw Force Index, window)
+$$
+\text{Raw Force Index} = (\text{Close} - \operatorname{Close}(1)) \cdot \text{Volume}
+$$
+
+$$
+\text{Force Index} = \operatorname{EMA}(\text{Raw Force Index},\; \text{window})
+$$
 
 **Also known as:** FI, Elder's Force Index.
 
@@ -1156,10 +1210,15 @@ Calculate the Ultimate Oscillator for a given price series.
 
 The Ultimate Oscillator is a momentum oscillator that combines short-term, mid-term, and long-term price momentum into a single value.
 
-The formula is a follows:
+The formula is as follows:
 
-- Average(i) = Sum(Buying Pressure, window_i) / Sum(True Range, window_i)
-- Ultimate Oscillator = 100 * [(4 * Average_1) + (2 * Average_2) + Average_3] / 7
+$$
+\operatorname{Average}(i) = \operatorname{Sum}(\text{Buying Pressure},\; \text{window}_{i}) / \operatorname{Sum}(\text{True Range},\; \text{window}_{i})
+$$
+
+$$
+\text{Ultimate Oscillator} = 100 \cdot \left[(4 \cdot \text{Average}_{1}) + (2 \cdot \text{Average}_{2}) + \text{Average}_{3}\right] / 7
+$$
 
 **Also known as:** UO, ultimate momentum oscillator. See `momentum_model.get_ultimate_oscillator` for the Buying Pressure and True Range definitions.
 
@@ -1228,9 +1287,11 @@ Calculate the Percentage Price Oscillator (PPO) for a given price series.
 
 The Percentage Price Oscillator (PPO) is a momentum oscillator that measures the difference between two moving averages as a percentage of the longer moving average.
 
-The formula is a follows:
+The formula is as follows:
 
-- PPO = ((Long-term EMA - Short-term EMA) / Short-term EMA) * 100
+$$
+\text{PPO} = ((\text{Long-term EMA} - \text{Short-term EMA}) / \text{Short-term EMA}) \cdot 100
+$$
 
 **Also known as:** PPO, price oscillator.
 
@@ -1297,10 +1358,15 @@ Calculate the Detrended Price Oscillator (DPO) for a given price series.
 
 The Detrended Price Oscillator (DPO) is an indicator that helps identify short-term cycles by removing longer-term trends from prices.
 
-The formula is a follows:
+The formula is as follows:
 
-- Displacement = floor(Number of Periods / 2) + 1
-- DPO = Close(t - Displacement) - SMA(Close, Number of Periods)(t)
+$$
+\text{Displacement} = \operatorname{floor}(\text{Number of Periods} / 2) + 1
+$$
+
+$$
+\text{DPO} = \operatorname{Close}(t - \text{Displacement}) - \operatorname{SMA}(\text{Close},\; \text{Number of Periods}) (t)
+$$
 
 **Also known as:** DPO, detrended price oscillator. Note the moving average itself is not shifted - only the close price used for the comparison is looked up further back in time; see `momentum_model.get_detrended_price_oscillator` for the full explanation.
 
@@ -1365,9 +1431,11 @@ Calculate the Average Directional Index (ADX) for a given price series.
 
 The Average Directional Index (ADX) is an indicator that measures the strength of a trend, whether it's an uptrend or a downtrend.
 
-The formula is a follows:
+The formula is as follows:
 
-- ADX = Wilder's Smoothed Moving Average of DX, where DX = 100 * \|+DI - -DI\| / (+DI + -DI)
+$$
+\text{ADX} = \text{Wilder's Smoothed Moving Average of DX},\;\; \text{where} \;\; \text{DX} = 100 \cdot | \text{+DI} - \text{-DI} | / (\text{+DI} + \text{-DI})
+$$
 
 **Also known as:** ADX, trend strength indicator. See `momentum_model.get_average_directional_index` for the full formula, which uses Wilder's smoothing (not a plain SMA) throughout.
 
@@ -1432,9 +1500,11 @@ Calculate the Chande Momentum Oscillator (CMO) for a given price series.
 
 The Chande Momentum Oscillator is an indicator that measures the momentum of a price series and identifies overbought and oversold conditions.
 
-The formula is a follows:
+The formula is as follows:
 
-- CMO = ((Sum of Upward Change) - (Sum of Downward Change)) / ((Sum of Upward Change) + (Sum of Downward Change))
+$$
+\text{CMO} = ((\text{Sum of Upward Change}) - (\text{Sum of Downward Change})) / ((\text{Sum of Upward Change}) + (\text{Sum of Downward Change}))
+$$
 
 **Also known as:** CMO, Chande momentum.
 
@@ -1499,12 +1569,23 @@ Calculate the Ichimoku Cloud indicator for a given price series.
 
 The Ichimoku Cloud, also known as the Ichimoku Kinko Hyo, is a versatile indicator that defines support and resistance, identifies trend direction, gauges momentum, and provides trading signals.
 
-The formula is a follows:
+The formula is as follows:
 
-- Conversion Line = (Highest High + Lowest Low) / 2, over conversion_window periods
-- Base Line = (Highest High + Lowest Low) / 2, over base_window periods
-- Leading Span A = ((Conversion Line + Base Line) / 2), shifted forward base_window periods
-- Leading Span B = (Highest High + Lowest Low) / 2 over lead_span_b_window periods, shifted forward base_window periods
+$$
+\text{Conversion Line} = (\text{Highest High} + \text{Lowest Low}) / 2,\;\; \text{over conversion\_window periods}
+$$
+
+$$
+\text{Base Line} = (\text{Highest High} + \text{Lowest Low}) / 2,\;\; \text{over base\_window periods}
+$$
+
+$$
+\text{Leading Span} A = ((\text{Conversion Line} + \text{Base Line}) / 2),\;\; \text{shifted forward base\_window periods}
+$$
+
+$$
+\text{Leading Span} B = (\text{Highest High} + \text{Lowest Low}) / 2 \text{over} \text{lead\_span\_b\_window} \text{periods},\;\; \text{shifted forward base\_window periods}
+$$
 
 **Also known as:** Ichimoku Kinko Hyo, cloud indicator. The default windows (9, 26, 52) are Goichi Hosoda's original values, both leading spans are conventionally displaced forward by the base (Kijun-sen) period.
 
@@ -1573,10 +1654,15 @@ Calculate the Stochastic Oscillator indicator for a given price series.
 
 The Stochastic Oscillator is a momentum indicator that shows the location of the close relative to the high-low range over a set number of periods. It consists of the %K line (fast) and the %D line (slow).
 
-The formula is a follows:
+The formula is as follows:
 
-- %K = 100 * ((Close - Lowest Low) / (Highest High - Lowest Low))
-- %D = SMA(%K, smooth_window)
+$$
+\%K = 100 \cdot ((\text{Close} - \text{Lowest Low}) / (\text{Highest High} - \text{Lowest Low}))
+$$
+
+$$
+\%D = \operatorname{SMA}(\%K,\; \text{smooth\_window})
+$$
 
 **Also known as:** stochastic oscillator, percent K, percent D.
 
@@ -1651,10 +1737,15 @@ Calculate the Moving Average Convergence Divergence (MACD) indicator for a given
 
 The Moving Average Convergence Divergence (MACD) is a trend-following momentum indicator that shows the relationship between two moving averages of a security's price. It consists of the MACD line, signal line, and MACD histogram.
 
-The formula is a follows:
+The formula is as follows:
 
-- MACD Line = Short-term EMA - Long-term EMA
-- Signal Line = SMA(MACD Line)
+$$
+\text{MACD Line} = \text{Short-term EMA} - \text{Long-term EMA}
+$$
+
+$$
+\text{Signal Line} = \operatorname{SMA}(\text{MACD Line})
+$$
 
 **Also known as:** MACD, momentum indicator.
 
@@ -1724,9 +1815,11 @@ Calculate the Relative Strength Index (RSI) indicator for a given price series.
 
 The Relative Strength Index (RSI) is a momentum oscillator that measures the speed and change of price movements. It ranges from 0 to 100 and is used to identify overbought or oversold conditions in an asset's price.
 
-The formula is a follows:
+The formula is as follows:
 
-- RSI = 100 - (100 / (1 + RS))
+$$
+\text{RSI} = 100 - (100 / (1 + \text{RS}))
+$$
 
 **Also known as:** RSI, momentum oscillator, overbought, oversold.
 
@@ -1791,9 +1884,11 @@ Calculate the Balance of Power (BOP) indicator for a given price series.
 
 The Balance of Power (BOP) indicator measures the strength of buyers versus sellers in the market. It relates the price change to the change in the asset's trading range.
 
-The formula is a follows:
+The formula is as follows:
 
-- BOP = (Close - Open) / (High - Low)
+$$
+\text{BOP} = (\text{Close} - \text{Open}) / (\text{High} - \text{Low})
+$$
 
 **Also known as:** BOP, bull bear power.
 
@@ -1857,10 +1952,15 @@ Calculate the Awesome Oscillator (AO) for a given price series.
 
 The Awesome Oscillator measures market momentum by comparing a short-term and a long-term Simple Moving Average of the median price (the midpoint of each period's high and low, rather than the closing price). It was developed by Bill Williams as part of his broader "Trading Chaos" collection of momentum indicators.
 
-The formula is a follows:
+The formula is as follows:
 
-- Median Price = (High + Low) / 2
-- AO = SMA(Median Price, short_window) - SMA(Median Price, long_window)
+$$
+\text{Median Price} = (\text{High} + \text{Low}) / 2
+$$
+
+$$
+\text{AO} = \operatorname{SMA}(\text{Median Price},\; \text{short\_window}) - \operatorname{SMA}(\text{Median Price},\; \text{long\_window})
+$$
 
 **Also known as:** AO, Bill Williams Awesome Oscillator.
 
@@ -1933,12 +2033,23 @@ Calculate the Vortex Indicator for a given price series.
 
 The Vortex Indicator quantifies the presence and strength of a directional trend by comparing each period's price movement away from the prior period's range to the period's overall volatility (True Range). It consists of two lines, VI+ and VI-, whose crossovers signal potential trend changes: VI+ above VI- suggests an uptrend is in control, VI- above VI+ suggests a downtrend is in control.
 
-The formula is a follows:
+The formula is as follows:
 
-- VM+ = \|High(t) - Low(t-1)\|
-- VM- = \|Low(t) - High(t-1)\|
-- VI+ = Sum(VM+, window) / Sum(True Range, window)
-- VI- = Sum(VM-, window) / Sum(True Range, window)
+$$
+\text{VM} + = | \operatorname{High}(t) - \operatorname{Low}(t-1) |
+$$
+
+$$
+\text{VM} - = | \operatorname{Low}(t) - \operatorname{High}(t-1) |
+$$
+
+$$
+\text{VI} + = \operatorname{Sum}(\text{VM} +,\; \text{window}) / \operatorname{Sum}(\text{True Range},\; \text{window})
+$$
+
+$$
+\text{VI} - = \operatorname{Sum}(\text{VM} -,\; \text{window}) / \operatorname{Sum}(\text{True Range},\; \text{window})
+$$
 
 **Also known as:** VI, Vortex Indicator +/-, trend direction indicator.
 
@@ -2006,10 +2117,15 @@ Calculate the Elder Ray Index (Bull Power and Bear Power) for a given price seri
 
 The Elder Ray Index measures buying and selling pressure in the market relative to a trend baseline (an Exponential Moving Average of the closing price). Bull Power captures how far the high extends above the EMA (buying pressure), while Bear Power captures how far the low extends below the EMA (selling pressure).
 
-The formula is a follows:
+The formula is as follows:
 
-- Bull Power = High - EMA(Close, window)
-- Bear Power = Low - EMA(Close, window)
+$$
+\text{Bull Power} = \text{High} - \operatorname{EMA}(\text{Close},\; \text{window})
+$$
+
+$$
+\text{Bear Power} = \text{Low} - \operatorname{EMA}(\text{Close},\; \text{window})
+$$
 
 **Also known as:** Elder Ray, Bull Power, Bear Power.
 
@@ -2079,9 +2195,11 @@ Calculate the Rate of Change (ROC) for a given price series.
 
 The Rate of Change is a pure momentum oscillator that measures the percentage change in price between the current period and the price a fixed number of periods ago. It oscillates around zero: positive values indicate price is higher than `window` periods ago (upward momentum), while negative values indicate price is lower (downward momentum).
 
-The formula is a follows:
+The formula is as follows:
 
-- ROC = (Close(t) / Close(t - window) - 1) * 100
+$$
+\text{ROC} = (\operatorname{Close}(t) / \operatorname{Close}(t - \text{window}) - 1) \cdot 100
+$$
 
 **Also known as:** ROC, Price Rate of Change, momentum.
 
@@ -2133,9 +2251,11 @@ Calculate the Choppiness Index (CHOP) for a given price series.
 
 The Choppiness Index quantifies whether the market is trending or moving sideways ("choppy") by comparing the sum of True Range over the window (a measure of the total price path travelled) to the net range the price actually covered over that same window (the distance between the highest high and the lowest low). When price travels a long, winding path but ends up covering little net ground, the index is high (near 100), signalling a choppy, range-bound market. When price travels efficiently in one direction, the index is low (near 0), signalling a trending market.
 
-The formula is a follows:
+The formula is as follows:
 
-- CHOP = 100 * log10( Sum(True Range, window) / (Max(High, window) - Min(Low, window)) ) / log10(window)
+$$
+\text{CHOP} = 100 \cdot \log_{10}(\operatorname{Sum}(\text{True Range},\; \text{window}) / (\max(\text{High},\; \text{window}) - \min(\text{Low},\; \text{window}))) / \log_{10}(\text{window})
+$$
 
 **Also known as:** CHOP, Choppiness Index.
 
@@ -2190,11 +2310,19 @@ Calculate the Know Sure Thing (KST) for a given price series.
 
 The Know Sure Thing is a momentum oscillator developed by Martin Pring that combines four smoothed Rate of Change series, each calculated over a progressively longer lookback period, into a single weighted sum. Smoothing each Rate of Change with a Simple Moving Average before combining them reduces noise, while the increasing weights on the longer lookback periods give more influence to the more significant, longer-term price cycles. A signal line (a Simple Moving Average of the KST itself) is used to spot crossovers, in the same way the MACD line is compared to its signal line.
 
-The formula is a follows:
+The formula is as follows:
 
-- RCMA(i) = SMA(ROC(Close, roc_windows[i]), sma_windows[i])
-- KST = Sum(RCMA(i) * weights[i]) for i = 1..4
-- Signal Line = SMA(KST, signal_window)
+$$
+\operatorname{RCMA}(i) = \operatorname{SMA}(\operatorname{ROC}(\text{Close},\; \text{roc\_windows} \left[i\right]),\; \text{sma\_windows} \left[i\right])
+$$
+
+$$
+\text{KST} = \operatorname{Sum}(\operatorname{RCMA}(i) \cdot \text{weights} \left[i\right]) \text{for} i = 1..4
+$$
+
+$$
+\text{Signal Line} = \operatorname{SMA}(\text{KST},\; \text{signal\_window})
+$$
 
 **Also known as:** KST, Pring's Know Sure Thing, Summed Rate of Change.
 
@@ -2313,9 +2441,11 @@ Calculate the Moving Average (MA) for a given price series.
 
 The Moving Average (MA) is a commonly used technical indicator that smooths out price data by calculating the average price over a specified number of periods.
 
-The formula is a follows:
+The formula is as follows:
 
-- MA = (Sum of Prices) / (Number of Prices)
+$$
+\text{MA} = (\text{Sum of Prices}) / (\text{Number of Prices})
+$$
 
 **Also known as:** SMA, simple moving average, MA.
 
@@ -2381,9 +2511,11 @@ Calculate the Exponential Moving Average (EMA) for a given price series.
 
 EMA is a technical indicator that gives more weight to recent price data, providing a smoothed moving average that reacts faster to price changes.
 
-The formula is a follows:
+The formula is as follows:
 
-- EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
+$$
+\text{EMA} = (\text{Close} - \text{Previous EMA}) \cdot (2 / (1 + \text{Window})) + \text{Previous EMA}
+$$
 
 **Also known as:** EMA.
 
@@ -2449,9 +2581,11 @@ Calculate the Double Exponential Moving Average (DEMA) for a given price series.
 
 DEMA is a technical indicator that attempts to reduce the lag from traditional moving averages by using a combination of two exponential moving averages.
 
-The formula is a follows:
+The formula is as follows:
 
-- EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
+$$
+\text{EMA} = (\text{Close} - \text{Previous EMA}) \cdot (2 / (1 + \text{Window})) + \text{Previous EMA}
+$$
 
 **Also known as:** DEMA, double EMA.
 
@@ -2517,12 +2651,23 @@ Calculate the Trix (Triple Exponential Moving Average) for a given price series.
 
 Trix is a momentum oscillator that calculates the percentage rate of change of a triple exponentially smoothed moving average. It helps identify overbought and oversold conditions in a market.
 
-The formula is a follows:
+The formula is as follows:
 
-- EMA1 = EMA(Close, Window)
-- EMA2 = EMA(EMA1, Window)
-- EMA3 = EMA(EMA2, Window)
-- TRIX = 100 * ((EMA3 - EMA3[-1]) / EMA3[-1])
+$$
+\text{EMA1} = \operatorname{EMA}(\text{Close},\; \text{Window})
+$$
+
+$$
+\text{EMA2} = \operatorname{EMA}(\text{EMA1},\; \text{Window})
+$$
+
+$$
+\text{EMA3} = \operatorname{EMA}(\text{EMA2},\; \text{Window})
+$$
+
+$$
+\text{TRIX} = 100 \cdot ((\text{EMA3} - \text{EMA3} \left[- 1\right]) / \text{EMA3} \left[- 1\right])
+$$
 
 **Also known as:** triple smoothed EMA, rate of change oscillator.
 
@@ -2588,11 +2733,19 @@ Calculate the Bollinger Bands for a given price series.
 
 Bollinger Bands are a volatility indicator that consists of three lines: an upper band, a middle band (simple moving average), and a lower band. The upper and lower bands are calculated as the moving average plus and minus a specified number of standard deviations, respectively.
 
-The formula is a follows:
+The formula is as follows:
 
-- Middle Band = SMA(Close, Window)
-- Upper Band = Middle Band + (Num Std Dev * Std Dev)
-- Lower Band = Middle Band - (Num Std Dev * Std Dev)
+$$
+\text{Middle Band} = \operatorname{SMA}(\text{Close},\; \text{Window})
+$$
+
+$$
+\text{Upper Band} = \text{Middle Band} + (\text{Num Std Dev} \cdot \text{Std Dev})
+$$
+
+$$
+\text{Lower Band} = \text{Middle Band} - (\text{Num Std Dev} \cdot \text{Std Dev})
+$$
 
 The standard deviation is the *population* standard deviation (dividing by n), as Bollinger himself specifies and as TA-Lib and StockCharts both implement, not pandas' default sample standard deviation.
 
@@ -2662,11 +2815,19 @@ Calculate the Triangular Moving Average (TMA) for a given price series.
 
 The Triangular Moving Average (TMA) is a smoothed version of the Simple Moving Average (SMA) that uses multiple SMAs to reduce noise and provide a smoother trendline.
 
-The formula is a follows:
+The formula is as follows:
 
-- For an odd window: Sub-window Length = (Window + 1) / 2, applied for both passes.
-- For an even window: the two passes use different sub-window lengths, Window / 2 and Window / 2 + 1 (matching TA-Lib's TRIMA convention).
-- TMA = SMA(SMA(Close, Sub-window Length 1), Sub-window Length 2)
+$$
+\text{For an odd window:}\;\; \text{Sub-window Length} = (\text{Window} + 1) / 2,\;\; \text{applied for both passes}
+$$
+
+$$
+\text{For an even window:}\;\; \text{the two passes use different sub-window lengths},\;\; \text{Window} / 2 \text{and Window} / 2 + 1 (\text{matching TA-Lib's TRIMA convention})
+$$
+
+$$
+\text{TMA} = \operatorname{SMA}(\operatorname{SMA}(\text{Close},\; \text{Sub-window Length} 1),\; \text{Sub-window Length} 2)
+$$
 
 **Also known as:** TMA, triangular MA.
 
@@ -2731,9 +2892,11 @@ Calculate the Weighted Moving Average (WMA) for a given price series.
 
 The Weighted Moving Average (WMA) is a moving average that assigns a linearly increasing weight to more recent prices, making it more responsive to recent price changes than a Simple Moving Average.
 
-The formula is a follows:
+The formula is as follows:
 
-- WMA = (Sum of (Price * Weight)) / (Sum of Weights)
+$$
+\text{WMA} = (\text{Sum of} (\text{Price} \cdot \text{Weight})) / (\text{Sum of Weights})
+$$
 
 **Also known as:** WMA, linearly weighted moving average.
 
@@ -2799,10 +2962,15 @@ Calculate the Hull Moving Average (HMA) for a given price series.
 
 The Hull Moving Average (HMA) reduces the lag typically associated with moving averages while improving smoothing, by combining a Weighted Moving Average (WMA) of half the window length, a WMA of the full window length, and a further WMA over the square root of the window length.
 
-The formula is a follows:
+The formula is as follows:
 
-- Raw HMA = (2 * WMA(Close, Window / 2)) - WMA(Close, Window)
-- HMA = WMA(Raw HMA, sqrt(Window))
+$$
+\text{Raw HMA} = (2 \cdot \operatorname{WMA}(\text{Close},\; \text{Window} / 2)) - \operatorname{WMA}(\text{Close},\; \text{Window})
+$$
+
+$$
+\text{HMA} = \operatorname{WMA}(\text{Raw HMA},\; \sqrt{\text{Window}})
+$$
 
 **Also known as:** HMA, Hull MA.
 
@@ -2868,14 +3036,31 @@ Calculate the Kaufman Adaptive Moving Average (KAMA) for a given price series.
 
 The Kaufman Adaptive Moving Average adjusts its own responsiveness to price changes based on how "efficiently" price is moving. It compares the net directional move over the window to the total (sum of absolute) movement over that same window - the Efficiency Ratio. When price trends strongly in one direction (an efficient move), the Efficiency Ratio is close to 1 and KAMA tracks price closely, behaving like a fast EMA. When price whipsaws sideways (an inefficient move), the Efficiency Ratio is close to 0 and KAMA flattens out, behaving like a slow EMA - reducing whipsaw signals in choppy markets while still reacting quickly during strong trends.
 
-The formula is a follows:
+The formula is as follows:
 
-- Change = \|Close(t) - Close(t - window)\|
-- Volatility = Sum(\|Close(i) - Close(i - 1)\|, window)
-- Efficiency Ratio (ER) = Change / Volatility
-- Fastest SC = 2 / (fast_window + 1), Slowest SC = 2 / (slow_window + 1)
-- Smoothing Constant (SC) = [ER * (Fastest SC - Slowest SC) + Slowest SC]^2
-- KAMA(t) = KAMA(t-1) + SC * (Close(t) - KAMA(t-1))
+$$
+\text{Change} = | \operatorname{Close}(t) - \operatorname{Close}(t - \text{window}) |
+$$
+
+$$
+\text{Volatility} = \operatorname{Sum}(| \operatorname{Close}(i) - \operatorname{Close}(i - 1) |,\; \text{window})
+$$
+
+$$
+\text{Efficiency Ratio} (\text{ER}) = \text{Change} / \text{Volatility}
+$$
+
+$$
+\text{Fastest SC} = 2 / (\text{fast\_window} + 1),\;\; \text{Slowest SC} = 2 / (\text{slow\_window} + 1)
+$$
+
+$$
+\text{Smoothing Constant} (\text{SC}) = \left[\text{ER} \cdot (\text{Fastest SC} - \text{Slowest SC}) + \text{Slowest SC}\right] ^{2}
+$$
+
+$$
+\operatorname{KAMA}(t) = \operatorname{KAMA}(t-1) + \text{SC} \cdot (\operatorname{Close}(t) - \operatorname{KAMA}(t-1))
+$$
 
 **Also known as:** KAMA, Kaufman's Adaptive Moving Average.
 
@@ -2932,10 +3117,15 @@ Calculate the Volume Weighted Average Price (VWAP) for a given price series.
 
 The Volume Weighted Average Price (VWAP) weighs the typical price of each period by its traded volume over a rolling window, giving a more volume-informed view of the average price than a plain moving average.
 
-The formula is a follows:
+The formula is as follows:
 
-- Typical Price = (High + Low + Close) / 3
-- VWAP = Sum(Typical Price * Volume, Window) / Sum(Volume, Window)
+$$
+\text{Typical Price} = (\text{High} + \text{Low} + \text{Close}) / 3
+$$
+
+$$
+\text{VWAP} = \operatorname{Sum}(\text{Typical Price} \cdot \text{Volume},\; \text{Window}) / \operatorname{Sum}(\text{Volume},\; \text{Window})
+$$
 
 **Also known as:** VWAP.
 
@@ -3001,10 +3191,15 @@ Calculate the Parabolic Stop and Reverse (SAR) for a given price series.
 
 The Parabolic SAR is a trend-following indicator that trails price action, flipping from below to above price (and vice versa) whenever the trend reverses. The acceleration factor increases as the trend extends, causing the SAR to converge towards price over time.
 
-The formula is a follows:
+The formula is as follows:
 
-- Uptrend SAR = Prior SAR + AF * (Extreme Point - Prior SAR)
-- Downtrend SAR = Prior SAR - AF * (Prior SAR - Extreme Point)
+$$
+\text{Uptrend SAR} = \text{Prior SAR} + \text{AF} \cdot (\text{Extreme Point} - \text{Prior SAR})
+$$
+
+$$
+\text{Downtrend SAR} = \text{Prior SAR} - \text{AF} \cdot (\text{Prior SAR} - \text{Extreme Point})
+$$
 
 **Also known as:** Parabolic SAR, stop and reverse, PSAR.
 
@@ -3073,15 +3268,35 @@ Calculate the Pivot Points for a given price series.
 
 Pivot Points are calculated from the previous period's high, low and close prices and are used to identify potential support and resistance levels for the current period.
 
-The formula is a follows:
+The formula is as follows:
 
-- Pivot Point = (Previous High + Previous Low + Previous Close) / 3
-- Resistance 1 = (2 * Pivot Point) - Previous Low
-- Support 1 = (2 * Pivot Point) - Previous High
-- Resistance 2 = Pivot Point + (Previous High - Previous Low)
-- Support 2 = Pivot Point - (Previous High - Previous Low)
-- Resistance 3 = Previous High + 2 * (Pivot Point - Previous Low)
-- Support 3 = Previous Low - 2 * (Previous High - Pivot Point)
+$$
+\text{Pivot Point} = (\text{Previous High} + \text{Previous Low} + \text{Previous Close}) / 3
+$$
+
+$$
+\text{Resistance} 1 = (2 \cdot \text{Pivot Point}) - \text{Previous Low}
+$$
+
+$$
+\text{Support} 1 = (2 \cdot \text{Pivot Point}) - \text{Previous High}
+$$
+
+$$
+\text{Resistance} 2 = \text{Pivot Point} + (\text{Previous High} - \text{Previous Low})
+$$
+
+$$
+\text{Support} 2 = \text{Pivot Point} - (\text{Previous High} - \text{Previous Low})
+$$
+
+$$
+\text{Resistance} 3 = \text{Previous High} + 2 \cdot (\text{Pivot Point} - \text{Previous Low})
+$$
+
+$$
+\text{Support} 3 = \text{Previous Low} - 2 \cdot (\text{Previous High} - \text{Pivot Point})
+$$
 
 **Also known as:** pivot points, floor trader pivots.
 
@@ -3230,10 +3445,15 @@ Calculate the Fibonacci Retracement Levels for a given price series.
 
 Fibonacci Retracement Levels are horizontal price levels, derived from ratios found in the Fibonacci sequence, that traders watch as potential support (during a pullback within an uptrend) or resistance (during a bounce within a downtrend) zones. For every date, the swing high and swing low are taken as the rolling maximum high and rolling minimum low over the specified `window`, and the retracement levels are derived from that high/low pair.
 
-The formula is a follows:
+The formula is as follows:
 
-- Uptrend (retracing down from the high): Level = High - Ratio * (High - Low)
-- Downtrend (retracing up from the low): Level = Low + Ratio * (High - Low)
+$$
+\text{Uptrend (retracing down from the high):}\;\; \text{Level} = \text{High} - \text{Ratio} \cdot (\text{High} - \text{Low})
+$$
+
+$$
+\text{Downtrend (retracing up from the low):}\;\; \text{Level} = \text{Low} + \text{Ratio} \cdot (\text{High} - \text{Low})
+$$
 
 **Also known as:** Fibonacci retracement, Fib levels, retracement levels.
 
@@ -3382,9 +3602,11 @@ Calculate the True Range (TR) for a given price series.
 
 The True Range (TR) is a measure of market volatility that considers the differences between the high and low prices and the previous closing price. It provides insights into the price movement of an asset.
 
-The formula is a follows:
+The formula is as follows:
 
-- TR = max(high - low, abs(high - previous_close), abs(low - previous_close))
+$$
+\text{TR} = \max(\text{high} - \text{low},\; \operatorname{abs}(\text{high} - \text{previous\_close}),\; \operatorname{abs}(\text{low} - \text{previous\_close}))
+$$
 
 **Also known as:** TR, true range.
 
@@ -3447,10 +3669,15 @@ Calculate the Average True Range (ATR) of a given price series.
 
 The Average True Range (ATR) is a technical indicator that measures the volatility of an asset's price movements over a specified number of periods. It provides insights into the potential price range of an asset, which can help traders and investors make more informed decisions.
 
-The formula is a follows:
+The formula is as follows:
 
-- TR = max(high - low, abs(high - previous_close), abs(low - previous_close))
-- ATR = Wilder's Smoothed Moving Average of TR over `window` periods
+$$
+\text{TR} = \max(\text{high} - \text{low},\; \operatorname{abs}(\text{high} - \text{previous\_close}),\; \operatorname{abs}(\text{low} - \text{previous\_close}))
+$$
+
+$$
+\text{ATR} = \text{Wilder's Smoothed Moving Average of TR over} \text{window} \text{periods}
+$$
 
 **Also known as:** ATR, volatility indicator. See `volatility_model.get_average_true_range` for the full formula; Wilder's smoothing constant (1/window) is slower than a standard EMA's (2/(window+1)) of the same window.
 
@@ -3519,13 +3746,27 @@ Calculate the Supertrend indicator for a given price series.
 
 The Supertrend indicator plots a single trailing line that flips between sitting below price (in an uptrend) and above price (in a downtrend). The line is built from two bands offset from the median price ((High + Low) / 2) by a multiple of the Average True Range, which are then "ratcheted" period over period - each band can only move in the direction that tightens around price - so that the active band only flips to the other side once the closing price actually crosses it. This makes Supertrend both a trend filter (the flip direction signals a trend change) and a trailing stop-loss level.
 
-The formula is a follows:
+The formula is as follows:
 
-- Basic Upper Band = (High + Low) / 2 + multiplier * ATR(window)
-- Basic Lower Band = (High + Low) / 2 - multiplier * ATR(window)
-- Final Upper Band(t) = Basic Upper Band(t) if Basic Upper Band(t) < Final Upper Band(t-1) or Close(t-1) > Final Upper Band(t-1), else Final Upper Band(t-1)
-- Final Lower Band(t) = Basic Lower Band(t) if Basic Lower Band(t) > Final Lower Band(t-1) or Close(t-1) < Final Lower Band(t-1), else Final Lower Band(t-1)
-- While in an uptrend, Supertrend = Final Lower Band, until Close crosses below it, at which point the trend flips to a downtrend and Supertrend = Final Upper Band (and vice versa)
+$$
+\text{Basic Upper Band} = (\text{High} + \text{Low}) / 2 + \text{multiplier} \cdot \operatorname{ATR}(\text{window})
+$$
+
+$$
+\text{Basic Lower Band} = (\text{High} + \text{Low}) / 2 - \text{multiplier} \cdot \operatorname{ATR}(\text{window})
+$$
+
+$$
+\text{Final Upper Band} (t) = \text{Basic Upper Band} (t) \text{if Basic Upper Band} (t) < \text{Final Upper Band} (t-1) \text{or Close} (t-1) > \text{Final Upper Band} (t-1),\;\; \text{else Final Upper Band(t-1)}
+$$
+
+$$
+\text{Final Lower Band} (t) = \text{Basic Lower Band} (t) \text{if Basic Lower Band} (t) > \text{Final Lower Band} (t-1) \text{or Close} (t-1) < \text{Final Lower Band} (t-1),\;\; \text{else Final Lower Band(t-1)}
+$$
+
+$$
+\text{While in an uptrend},\;\; \text{Supertrend} = \text{Final Lower Band},\;\; \text{until Close crosses below it},\;\; \text{at which point the trend flips to} a \text{downtrend and Supertrend} = \text{Final Upper Band} (\text{and vice versa})
+$$
 
 **Also known as:** Supertrend, SuperTrend.
 
@@ -3584,13 +3825,27 @@ Calculate the Keltner Channels for a given price series.
 
 The Keltner Channels consist of three lines: - Upper Channel Line = Exponential Moving Average (EMA) of High Prices + ATR * ATR Multiplier - Middle Channel Line = Exponential Moving Average (EMA) of Closing Prices - Lower Channel Line = Exponential Moving Average (EMA) of Low Prices - ATR * ATR Multiplier
 
-The formula is a follows:
+The formula is as follows:
 
-- EMA = (Close - Previous EMA) * (2 / (1 + Window)) + Previous EMA
-- ATR = EMA(TR, ATR Window)
-- Upper Channel Line = EMA(High, Window) + ATR * ATR Multiplier
-- Middle Channel Line = EMA(Close, Window)
-- Lower Channel Line = EMA(Low, Window) - ATR * ATR Multiplier
+$$
+\text{EMA} = (\text{Close} - \text{Previous EMA}) \cdot (2 / (1 + \text{Window})) + \text{Previous EMA}
+$$
+
+$$
+\text{ATR} = \operatorname{EMA}(\text{TR},\; \text{ATR Window})
+$$
+
+$$
+\text{Upper Channel Line} = \operatorname{EMA}(\text{High},\; \text{Window}) + \text{ATR} \cdot \text{ATR Multiplier}
+$$
+
+$$
+\text{Middle Channel Line} = \operatorname{EMA}(\text{Close},\; \text{Window})
+$$
+
+$$
+\text{Lower Channel Line} = \operatorname{EMA}(\text{Low},\; \text{Window}) - \text{ATR} \cdot \text{ATR Multiplier}
+$$
 
 **Also known as:** ATR-based bands, volatility channels.
 
@@ -3658,11 +3913,19 @@ Calculate the Donchian Channels for a given price series.
 
 Donchian Channels plot the highest high and lowest low over the `window` periods *preceding* the current one, with the middle line being the average of the two. They are used to identify breakouts and the overall volatility of the price range.
 
-The formula is a follows:
+The formula is as follows:
 
-- Upper Channel = Highest High over Window, ending one period ago
-- Lower Channel = Lowest Low over Window, ending one period ago
-- Middle Channel = (Upper Channel + Lower Channel) / 2
+$$
+\text{Upper Channel} = \text{Highest High over Window},\;\; \text{ending one period ago}
+$$
+
+$$
+\text{Lower Channel} = \text{Lowest Low over Window},\;\; \text{ending one period ago}
+$$
+
+$$
+\text{Middle Channel} = (\text{Upper Channel} + \text{Lower Channel}) / 2
+$$
 
 The current period is deliberately excluded from the lookback, per Donchian's original breakout rule and StockCharts' Price Channels definition - including it would make a channel break impossible by construction.
 
@@ -3782,9 +4045,11 @@ Calculate the TRIN (Arms Index) for a given price series.
 
 TRIN compares the ratio of advancing to declining issues against the ratio of volume in advancing issues to volume in declining issues. It is a market-wide breadth reading computed across all tickers in the Toolkit instance (excluding the synthetic "Portfolio" and "Benchmark" columns), and the resulting single reading is broadcast to every ticker column so it lines up with the other breadth indicators.
 
-The formula is a follows:
+The formula is as follows:
 
-- TRIN = (Advancing Issues / Declining Issues) / (Advancing Volume / Declining Volume)
+$$
+\text{TRIN} = (\text{Advancing Issues} / \text{Declining Issues}) / (\text{Advancing Volume} / \text{Declining Volume})
+$$
 
 **Also known as:** Arms Index, TRIN.
 
@@ -3847,9 +4112,11 @@ Calculate the New Highs - New Lows for a given price series.
 
 New Highs - New Lows measures the number of tickers reaching a new high over the specified window minus the number of tickers reaching a new low over the same window. It is a market-wide breadth reading computed across all tickers in the Toolkit instance (excluding the synthetic "Portfolio" and "Benchmark" columns), and the resulting single reading is broadcast to every ticker column so it lines up with the other breadth indicators.
 
-The formula is a follows:
+The formula is as follows:
 
-- New Highs - New Lows = (Number of tickers at a window-period high) - (Number of tickers at a window-period low)
+$$
+\text{New Highs} - \text{New Lows} = (\text{Number of tickers at} a \text{window-period high}) - (\text{Number of tickers at} a \text{window-period low})
+$$
 
 **Also known as:** new highs minus new lows, record high percent.
 

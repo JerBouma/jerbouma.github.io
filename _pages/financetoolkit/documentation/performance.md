@@ -79,11 +79,15 @@ Beta is a financial metric used to assess the systematic risk of a stock or inve
 
 The formula is as follows:
 
-- Beta = Covariance of Asset Returns and Benchmark Returns / Variance of Benchmark Returns
+$$
+\text{Beta} = \text{Covariance of Asset Returns and Benchmark Returns} / \text{Variance of Benchmark Returns}
+$$
 
 For a given period, for example monthly, this translates into the following:
 
-- Beta = Monthly Covariance of Asset Returns and Benchmark Returns / Monthly Variance of Benchmark Returns
+$$
+\text{Beta} = \text{Monthly Covariance of Asset Returns and Benchmark Returns} / \text{Monthly Variance of Benchmark Returns}
+$$
 
 **See definition:** [https://en.wikipedia.org/wiki/Beta_(finance)](https://en.wikipedia.org/wiki/Beta_(finance)){:target="_blank"}
 
@@ -148,7 +152,9 @@ The Capital Asset Pricing Model (CAPM) is a widely used financial model that hel
 
 The formula is as follows:
 
-- Capital Asset Pricing Model = Risk Free Rate + Beta * (Benchmark Returns - Risk Free Rate)
+$$
+\text{Capital Asset Pricing Model} = \text{Risk Free Rate} + \text{Beta} \cdot (\text{Benchmark Returns} - \text{Risk Free Rate})
+$$
 
 **See definition:** [https://en.wikipedia.org/wiki/Capital_asset_pricing_model](https://en.wikipedia.org/wiki/Capital_asset_pricing_model){:target="_blank"}
 
@@ -319,7 +325,9 @@ The model performs a Linear Regression on each factor and defines the regression
 
 The regression formula is as follows for the Multi Linear Regression:
 
-- Excess Return = Intercept + Beta1 * Mkt-RF + Beta2 * SMB + Beta3 * HML + Beta4 * RMW + Beta5 * CMA + Residuals
+$$
+\text{Excess Return} = \text{Intercept} + \text{Beta1} \cdot \text{Mkt-RF} + \text{Beta2} \cdot \text{SMB} + \text{Beta3} \cdot \text{HML} + \text{Beta4} \cdot \text{RMW} + \text{Beta5} \cdot \text{CMA} + \text{Residuals}
+$$
 
 And the following for the Simple Linear Regression:
 
@@ -448,7 +456,9 @@ Alpha, in a general sense, represents the excess return an investment generates 
 
 The formula is as follows:
 
-- Alpha = Asset's Actual Return - Benchmark's Actual Return
+$$
+\text{Alpha} = \text{Asset's Actual Return} - \text{Benchmark's Actual Return}
+$$
 
 **See definition:** [https://en.wikipedia.org/wiki/Alpha_(finance)](https://en.wikipedia.org/wiki/Alpha_(finance)){:target="_blank"}
 
@@ -507,7 +517,9 @@ Jensen's Alpha is used to assess whether an investment has outperformed or under
 
 The formula is as follows:
 
-- Jensen's Alpha = Asset's Actual Return - [Risk-Free Rate + Beta * (Benchmark Return - Risk-Free Rate)]
+$$
+\text{Jensen's Alpha} = \text{Asset's Actual Return} - \left[\text{Risk-Free Rate} + \text{Beta} \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})\right]
+$$
 
 **See definition:** [https://en.wikipedia.org/wiki/Jensen%27s_alpha](https://en.wikipedia.org/wiki/Jensen%27s_alpha){:target="_blank"}
 
@@ -567,7 +579,9 @@ The Treynor Ratio, also known as Treynor's Measure or the Reward-to-Variability 
 
 The formula is as follows:
 
-- Treynor Ratio = (Portfolio's Return - Risk-Free Rate) / Portfolio Beta
+$$
+\text{Treynor Ratio} = (\text{Portfolio's Return} - \text{Risk-Free Rate}) / \text{Portfolio Beta}
+$$
 
 **See definition:** [https://en.wikipedia.org/wiki/Treynor_ratio](https://en.wikipedia.org/wiki/Treynor_ratio){:target="_blank"}
 
@@ -629,15 +643,21 @@ The Sharpe ratio is calculated as the difference between the expected return of 
 
 The formula is as follows:
 
-- Sharpe Ratio = Excess Return / Excess Standard Deviation
+$$
+\text{Sharpe Ratio} = \text{Excess Return} / \text{Excess Standard Deviation}
+$$
 
 By default one Sharpe ratio is reported per `period`, computed from the **daily** excess returns falling inside that period. For a given period, for example monthly, this translates into the following:
 
-- Sharpe Ratio = Average Daily Excess Return within the Month / Standard Deviation of the Daily Excess Returns within the Month
+$$
+\text{Sharpe Ratio} = \text{Average Daily Excess Return within the Month} / \text{Standard Deviation of the Daily Excess Returns within the Month}
+$$
 
 For a rolling period, `period` instead sets the frequency of the returns themselves and the ratio is computed over a rolling window of `rolling` such returns:
 
-- Sharpe Ratio = Average Rolling Excess Return / Standard Deviation of Rolling Excess Returns
+$$
+\text{Sharpe Ratio} = \text{Average Rolling Excess Return} / \text{Standard Deviation of Rolling Excess Returns}
+$$
 
 Note that this is explicitly already subtracts the Risk Free Rate.
 
@@ -650,7 +670,10 @@ The plain Sharpe ratio only looks at the mean and standard deviation of returns,
 - `"probabilistic"` - the Probabilistic Sharpe Ratio (PSR) is the probability that the true (population) Sharpe ratio exceeds `benchmark_sharpe_ratio`, folding the skewness and (non-excess) kurtosis of the underlying returns into the standard error of the Sharpe ratio so that a short, lumpy sample no longer looks more convincing than it is:
 - PSR(SR*) = Φ( (SR̂ − SR*) · sqrt(n − 1) / sqrt(1 − γ₃·SR̂ + ((γ₄ − 1) / 4)·SR̂²) )
 - `"deflated"` - the Deflated Sharpe Ratio (DSR) is the Probabilistic Sharpe Ratio corrected for the fact that a reported Sharpe ratio is often the best of many strategy variations, parameter combinations, or lookback windows tried during a backtest (multiple testing / selection bias / "backtest overfitting"). It estimates the Sharpe ratio one would expect to observe purely by chance as the maximum of `n_trials` independent trials under the null hypothesis of no skill, and uses that expected maximum as the benchmark SR* in the Probabilistic Sharpe Ratio formula instead of a naive benchmark such as 0:
-- SR* = sqrt(Var[SR_trials]) · [ (1 − γ)·Φ⁻¹(1 − 1/N) + γ·Φ⁻¹(1 − 1/(N·e)) ]
+
+$$
+\text{SR} \cdot = \sqrt{\text{Var} \left[\text{SR\_trials}\right]} \cdot \left[(1 - \text{γ}) \cdot \operatorname{Phi⁻¹}(1 - 1 / N) + \text{γ} \cdot \operatorname{Phi⁻¹}(1 - 1 / (N \cdot e))\right]
+$$
 
 Where SR̂ is the observed Sharpe ratio, S (γ₃) is the skewness and K (γ₄) the non-excess (raw) kurtosis of the same returns, n is the number of return observations, N is `n_trials`, Var[SR_trials] is the variance of the Sharpe ratios observed across those N trials, γ ≈ 0.5772 is the Euler-Mascheroni constant and Φ is the standard normal CDF. Since DSR = PSR(SR*), it is always less than or equal to the Probabilistic Sharpe Ratio computed against a benchmark of 0.
 
@@ -750,16 +773,25 @@ The Sortino Ratio is a financial metric used to assess the risk-adjusted perform
 
 The formula is as follows:
 
-- Sortino Ratio = Excess Return / Downside Deviation
-- Downside Deviation = SQRT( (1 / N) * SUM( MIN(Excess Return, 0)^2 ) )
+$$
+\text{Sortino Ratio} = \text{Excess Return} / \text{Downside Deviation}
+$$
+
+$$
+\text{Downside Deviation} = \sqrt{(1 / N) \cdot \operatorname{SUM}(\min(\text{Excess Return},\; 0) ^{2})}
+$$
 
 Where N is the *total* number of observations, not just the negative ones, following Sortino & Price (1994). By default one Sortino ratio is reported per `period`, computed from the **daily** excess returns falling inside that period. For a given period, for example monthly, this translates into the following:
 
-- Sortino Ratio = Average Daily Excess Return within the Month / Downside Deviation of the Daily Excess Returns within the Month
+$$
+\text{Sortino Ratio} = \text{Average Daily Excess Return within the Month} / \text{Downside Deviation of the Daily Excess Returns within the Month}
+$$
 
 For a rolling period, `period` instead sets the frequency of the returns themselves and the ratio is computed over a rolling window of `rolling` such returns:
 
-- Sortino Ratio = Average Rolling Excess Return / Rolling Downside Deviation
+$$
+\text{Sortino Ratio} = \text{Average Rolling Excess Return} / \text{Rolling Downside Deviation}
+$$
 
 Note that this is explicitly already subtracts the Risk Free Rate.
 
@@ -875,7 +907,9 @@ The Calmar Ratio is a risk-adjusted return metric that divides the (annualized) 
 
 The formula is as follows:
 
-- Calmar Ratio = Return / \|Maximum Drawdown\|
+$$
+\text{Calmar Ratio} = \text{Return} / | \text{Maximum Drawdown} |
+$$
 
 **See definition:** [https://en.wikipedia.org/wiki/Calmar_ratio](https://en.wikipedia.org/wiki/Calmar_ratio){:target="_blank"}
 
@@ -937,7 +971,9 @@ The Sterling Ratio is a risk-adjusted return metric that divides the (annualized
 
 The formula is as follows:
 
-- Sterling Ratio = Return / (\|Average Drawdown\| + Adjustment)
+$$
+\text{Sterling Ratio} = \text{Return} / (| \text{Average Drawdown} | + \text{Adjustment})
+$$
 
 **Also known as:** Sterling-Calmar ratio.
 
@@ -999,7 +1035,9 @@ The Burke Ratio is a risk-adjusted return metric that divides the excess return 
 
 The formula is as follows:
 
-- Burke Ratio = (Return - Risk-Free Rate) / SQRT(SUM(Drawdowns^2))
+$$
+\text{Burke Ratio} = (\text{Return} - \text{Risk-Free Rate}) / \sqrt{\operatorname{SUM}(\text{Drawdowns} ^{2})}
+$$
 
 **Args:**
 
@@ -1056,7 +1094,9 @@ The M2 Ratio, also known as the Modigliani-Modigliani Measure, is a financial me
 
 The formula is as follows:
 
-- M2 Ratio = Risk-Free Rate + [(Portfolio's Return - Risk-Free Rate) / Portfolio Standard Deviation] × Benchmark Standard Deviation
+$$
+M_{2} \text{Ratio} = \text{Risk-Free Rate} + \left[(\text{Portfolio's Return} - \text{Risk-Free Rate}) / \text{Portfolio Standard Deviation}\right] \cdot \text{Benchmark Standard Deviation}
+$$
 
 This rescales the (dimensionless) Sharpe ratio back into return-space by asking what return the portfolio would have earned had it been leveraged or de-leveraged, via risk-free borrowing or lending, to match the benchmark's volatility exactly -- producing a number directly comparable to the benchmark's actual return. Requires a `benchmark_ticker` to be set on the Toolkit instance, since the benchmark's standard deviation is part of the formula.
 
@@ -1118,7 +1158,9 @@ Tracking Error is a financial metric that quantifies the volatility or dispersio
 
 The formula is as follows:
 
-- Tracking Error (TE) = Standard Deviation of (Portfolio Returns - Benchmark Returns)
+$$
+\text{Tracking Error} (\text{TE}) = \text{Standard Deviation of} (\text{Portfolio Returns} - \text{Benchmark Returns})
+$$
 
 **See definition:** [https://en.wikipedia.org/wiki/Tracking_error](https://en.wikipedia.org/wiki/Tracking_error){:target="_blank"}
 
@@ -1182,7 +1224,9 @@ The Information Ratio (IR), also known as the Information Coefficient, is a fina
 
 The formula is as follows:
 
-- Information Ratio (IR) = (Portfolio's Excess Return - Benchmark's Excess Return) / Tracking Error
+$$
+\text{Information Ratio} (\text{IR}) = (\text{Portfolio's Excess Return} - \text{Benchmark's Excess Return}) / \text{Tracking Error}
+$$
 
 **See definition:** [https://en.wikipedia.org/wiki/Information_ratio](https://en.wikipedia.org/wiki/Information_ratio){:target="_blank"}
 
@@ -1244,7 +1288,9 @@ The Upside Capture Ratio measures how well an investment portfolio or asset perf
 
 The formula is as follows:
 
-- Upside Capture Ratio = Average Return in Up Periods / Average Benchmark Return in Up Periods
+$$
+\text{Upside Capture Ratio} = \text{Average Return in Up Periods} / \text{Average Benchmark Return in Up Periods}
+$$
 
 **Args:**
 
@@ -1298,7 +1344,9 @@ The Downside Capture Ratio measures how well an investment portfolio or asset pe
 
 The formula is as follows:
 
-- Downside Capture Ratio = Average Return in Down Periods / Average Benchmark Return in Down Periods
+$$
+\text{Downside Capture Ratio} = \text{Average Return in Down Periods} / \text{Average Benchmark Return in Down Periods}
+$$
 
 **Args:**
 
@@ -1462,7 +1510,9 @@ The Omega Ratio is a risk-return measure that divides the sum of gains above a m
 
 The formula is as follows:
 
-- Omega Ratio = SUM(Gains above MAR) / SUM(Losses below MAR)
+$$
+\text{Omega Ratio} = \operatorname{SUM}(\text{Gains above MAR}) / \operatorname{SUM}(\text{Losses below MAR})
+$$
 
 **See definition:** [https://en.wikipedia.org/wiki/Omega_ratio](https://en.wikipedia.org/wiki/Omega_ratio){:target="_blank"}
 
@@ -1526,7 +1576,9 @@ The Gain-to-Pain Ratio, popularized by Jack Schwager, divides the sum of all ret
 
 The formula is as follows:
 
-- Gain-to-Pain Ratio = SUM(Returns) / SUM(\|Losses\|)
+$$
+\text{Gain-to-Pain Ratio} = \operatorname{SUM}(\text{Returns}) / \operatorname{SUM}(| \text{Losses} |)
+$$
 
 **Args:**
 
@@ -1584,7 +1636,9 @@ The CGR is a measure that provides the mean growth rate of an investment over a 
 
 The formula is as follows:
 
-- CGR = (Final Value / Initial Value) ^ (1 / Number of Periods) - 1
+$$
+\text{CGR} = (\text{Final Value} / \text{Initial Value}) ^{1 / \text{Number of Periods}} - 1
+$$
 
 **Also known as:** CAGR, compound annual growth rate, annualized return.
 
@@ -1631,7 +1685,9 @@ Calculate the Return of an investment portfolio or asset for a given period base
 
 The period Return is obtained by compounding the daily returns within each period, following the formula:
 
-- Period Return = ((1 + Return 1) * (1 + Return 2) * ... * (1 + Return N)) - 1
+$$
+\text{Period Return} = ((1 + \text{Return} 1) \cdot (1 + \text{Return} 2) \cdot ... \cdot (1 + \text{Return} N)) - 1
+$$
 
 If cumulative is set to True, the period returns are compounded further into a cumulative return over time instead. The cumulative return is always rebased to start at 1 at the beginning of the selected date range.
 
@@ -1820,7 +1876,9 @@ Jensen's Alpha (see `get_jensens_alpha`) measures how much return a manager gene
 
 The formula is as follows:
 
-- Appraisal Ratio = Jensen's Alpha / Residual Standard Deviation
+$$
+\text{Appraisal Ratio} = \text{Jensen's Alpha} / \text{Residual Standard Deviation}
+$$
 
 Where the residual standard deviation is the standard deviation of the pointwise CAPM regression residuals (Asset Excess Return − Beta * Benchmark Excess Return), reusing the exact same CAPM regression formula as `get_jensens_alpha`.
 
@@ -1884,8 +1942,13 @@ Jensen's Alpha alone conflates two very different sources of excess return: genu
 
 The formulas are as follows:
 
-- Selectivity = (Asset Return − Risk-Free Rate) − (Sigma_Portfolio / Sigma_Market) * (Benchmark Return − Risk-Free Rate)
-- Diversification = [Risk-Free Rate + (Sigma_Portfolio / Sigma_Market) * (Benchmark Return − Risk-Free Rate)] − [Risk-Free Rate + Beta * (Benchmark Return − Risk-Free Rate)]
+$$
+\text{Selectivity} = (\text{Asset Return} - \text{Risk-Free Rate}) - (\text{Sigma\_Portfolio} / \text{Sigma\_Market}) \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})
+$$
+
+$$
+\text{Diversification} = \left[\text{Risk-Free Rate} + (\text{Sigma\_Portfolio} / \text{Sigma\_Market}) \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})\right] - \left[\text{Risk-Free Rate} + \text{Beta} \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})\right]
+$$
 
 Selectivity is the return earned above what would be required for a fully diversified portfolio carrying the same total risk, i.e. genuine security selection or timing skill. Diversification is the extra return the manager left on the table (if positive, it is a cost) by taking on unsystematic risk that a fully diversified portfolio of the same total risk would not have. Selectivity plus Diversification equals Jensen's Alpha (see `get_jensens_alpha`).
 
@@ -1949,7 +2012,9 @@ The Sharpe ratio penalizes upside and downside volatility equally via the standa
 
 The formula is as follows:
 
-- STARR Ratio = Excess Return / \|CVaR(alpha)\|
+$$
+\text{STARR Ratio} = \text{Excess Return} / | \operatorname{CVaR}(\alpha) |
+$$
 
 **See definition:** [https://en.wikipedia.org/wiki/Expected_shortfall](https://en.wikipedia.org/wiki/Expected_shortfall){:target="_blank"}
 
@@ -2016,7 +2081,9 @@ The Rachev ratio compares the "quality" of the best outcomes to the "quality" of
 
 The formula is as follows:
 
-- Rachev Ratio = ES_right(alpha) / ES_left(alpha)
+$$
+\text{Rachev Ratio} = \operatorname{ES\_right}(\alpha) / \operatorname{ES\_left}(\alpha)
+$$
 
 **Also known as:** R-Ratio.
 
@@ -2077,7 +2144,9 @@ Jensen's Alpha and Beta from a plain CAPM regression cannot distinguish stock-pi
 
 The formula is as follows:
 
-- Excess Return = Alpha + Beta * Benchmark Excess Return + Gamma * Benchmark Excess Return^2 + Residuals
+$$
+\text{Excess Return} = \text{Alpha} + \text{Beta} \cdot \text{Benchmark Excess Return} + \text{Gamma} \cdot \text{Benchmark Excess Return} ^{2} + \text{Residuals}
+$$
 
 Gamma > 0 indicates positive market-timing ability; Gamma <= 0 indicates no timing ability.
 
@@ -2134,7 +2203,9 @@ Like the Treynor-Mazuy model (see `get_treynor_mazuy_model`), this separates mar
 
 The formula is as follows:
 
-- Excess Return = Alpha + Beta * Benchmark Excess Return + Up Market Beta * max(Benchmark Excess Return, 0) + Residuals
+$$
+\text{Excess Return} = \text{Alpha} + \text{Beta} \cdot \text{Benchmark Excess Return} + \text{Up Market Beta} \cdot \max(\text{Benchmark Excess Return},\; 0) + \text{Residuals}
+$$
 
 Beta is the "down-market" Beta (the portfolio's market exposure when the benchmark excess return is negative), and Beta + Up Market Beta is the "up-market" Beta. Up Market Beta > 0 indicates positive market-timing ability; Up Market Beta <= 0 indicates no timing ability.
 

@@ -90,10 +90,21 @@ By default the most recent risk free rate, dividend yield and stock price is use
 
 The formulas are as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Call Option Price = S * e^(-q * t) * N(d1) - K * e^(-r * t) * N(d2)
-- Put Option Price = K * e^(-r * t) * N(-d2) - S * e^(-q * t) * N(-d1)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Call Option Price} = S \cdot e ^{- q \cdot t} \cdot N(d_{1}) - K \cdot e ^{- r \cdot t} \cdot N(d_{2})
+$$
+
+$$
+\text{Put Option Price} = K \cdot e ^{- r \cdot t} \cdot N(- d_{2}) - S \cdot e ^{- q \cdot t} \cdot N(- d_{1})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
@@ -165,16 +176,29 @@ By default the most recent risk free rate, dividend yield and stock price is use
 
 The formulas are as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Call Option Price = S * e^(-q * t) * N(d1) - K * e^(-r * t) * N(d2)
-- Put Option Price = K * e^(-r * t) * N(-d2) - S * e^(-q * t) * N(-d1)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Call Option Price} = S \cdot e ^{- q \cdot t} \cdot N(d_{1}) - K \cdot e ^{- r \cdot t} \cdot N(d_{2})
+$$
+
+$$
+\text{Put Option Price} = K \cdot e ^{- r \cdot t} \cdot N(- d_{2}) - S \cdot e ^{- q \cdot t} \cdot N(- d_{1})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
 In which the Implied Volatility is then calculated as follows:
 
-- Implied Volatility = MINIMIZE(Black Scholes Theoretical Price - Actual Option Price)
+$$
+\text{Implied Volatility} = \operatorname{MINIMIZE}(\text{Black Scholes Theoretical Price} - \text{Actual Option Price})
+$$
 
 To determine the Implied Volatility, the Black Scholes Model is used to calculate the theoretical option price in which sigma (σ) is the only unknown variable. The actual option price is then used to determine the implied volatility by minimizing the difference between the theoretical and actual option price.
 
@@ -315,7 +339,9 @@ Extract the market-implied risk-neutral probability density of the underlying's 
 
 The formula is as follows:
 
-- f(K) = e^(r * t) * d^2 C(K) / dK^2
+$$
+f(K) = e ^{r \cdot t} \cdot d ^{2} C(K) / \text{dK} ^{2}
+$$
 
 Where C(K) is the Black-Scholes call price at strike K, using the SVI-smoothed implied volatility at that strike, r is the risk-free rate and t is the time to expiration. The second derivative is approximated numerically via a central finite difference on a fine, evenly-spaced strike grid, since the smile only gives implied volatility at a sparse set of traded strikes.
 
@@ -390,22 +416,49 @@ By default the most recent risk free rate, dividend yield and stock price is use
 
 The formulas are as follows:
 
-- up movement (u) = e^(σ * sqrt(t))
-- down movement (d) = 1 / u
-- risk neutral probability (p) = (e^((r - q) * t) - d) / (u - d)
-- stock price at each node = S * u^j * d^(n - j)
-- call option price at expiration date = max(S - K, 0)
-- put option price at expiration date = max(K - S, 0)
+$$
+\text{up movement} (u) = e ^{\sigma \cdot \sqrt{t}}
+$$
+
+$$
+\text{down movement} (d) = 1 / u
+$$
+
+$$
+\text{risk neutral probability} (p) = (e ^{(r - q) \cdot t} - d) / (u - d)
+$$
+
+$$
+\text{stock price at each node} = S \cdot u ^{j} \cdot d ^{n - j}
+$$
+
+$$
+\text{call option price at expiration date} = \max(S - K,\; 0)
+$$
+
+$$
+\text{put option price at expiration date} = \max(K - S,\; 0)
+$$
 
 For European Style options:
 
-- call option price at each node = (p * C_u + (1 - p) * C_d) * e^(-r * t)
-- put option price at each node = (p * P_u + (1 - p) * P_d) * e^(-r * t)
+$$
+\text{call option price at each node} = (p \cdot C_{u} + (1 - p) \cdot C_{d}) \cdot e ^{- r \cdot t}
+$$
+
+$$
+\text{put option price at each node} = (p \cdot P_{u} + (1 - p) \cdot P_{d}) \cdot e ^{- r \cdot t}
+$$
 
 For American Style options:
 
-- call option price at each node = max(S - K, (p * C_u + (1 - p) * C_d) * e^(-r * t))
-- put option price at each node = max(K - S, (p * P_u + (1 - p) * P_d) * e^(-r * t))
+$$
+\text{call option price at each node} = \max(S - K,\; (p \cdot C_{u} + (1 - p) \cdot C_{d}) \cdot e ^{- r \cdot t})
+$$
+
+$$
+\text{put option price at each node} = \max(K - S,\; (p \cdot P_{u} + (1 - p) \cdot P_{d}) \cdot e ^{- r \cdot t})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, σ is the volatility, t is the time to expiration, j is the number of up movements, n is the number of time steps, C_u is the call option price at the up movement, C_d is the call option price at the down movement, P_u is the put option price at the up movement and P_d is the put option price at the down movement.
 
@@ -480,9 +533,17 @@ By default the most recent risk free rate and stock price is used, you can alter
 
 The formulas are as follows:
 
-- up movement (u) = e^(σ * sqrt(t))
-- down movement (d) = 1 / u
-- stock price at each node = S * u^j * d^(n - j)
+$$
+\text{up movement} (u) = e ^{\sigma \cdot \sqrt{t}}
+$$
+
+$$
+\text{down movement} (d) = 1 / u
+$$
+
+$$
+\text{stock price at each node} = S \cdot u ^{j} \cdot d ^{n - j}
+$$
 
 Where S is the stock price, r is the risk free rate, σ is the volatility, t is the time to expiration, j is the number of up movements, n is the number of time steps.
 
@@ -556,7 +617,9 @@ Calculate the Put-Call Parity gap, the amount by which Black-Scholes call and pu
 
 Put-Call Parity states that, for European options sharing the same strike price and time to expiration, the following relationship must hold in order to prevent arbitrage:
 
-- C - P = S * e^(-q * t) - K * e^(-r * t)
+$$
+C - P = S \cdot e ^{- q \cdot t} - K \cdot e ^{- r \cdot t}
+$$
 
 Where C is the call option price, P is the put option price, S is the stock price, K is the strike price, r is the risk-free rate, q is the dividend yield and t is the time to expiration.
 
@@ -609,10 +672,21 @@ Because holding foreign currency earns the foreign risk-free rate (analogous to 
 
 The formulas are as follows:
 
-- d1 = (ln(S / K) + (r - r_f + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Call Option Price = S * e^(-r_f * t) * N(d1) - K * e^(-r * t) * N(d2)
-- Put Option Price = K * e^(-r * t) * N(-d2) - S * e^(-r_f * t) * N(-d1)
+$$
+d_{1} = (\ln(S / K) + (r - r_{f} + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Call Option Price} = S \cdot e ^{- r_{f} \cdot t} \cdot N(d_{1}) - K \cdot e ^{- r \cdot t} \cdot N(d_{2})
+$$
+
+$$
+\text{Put Option Price} = K \cdot e ^{- r \cdot t} \cdot N(- d_{2}) - S \cdot e ^{- r_{f} \cdot t} \cdot N(- d_{1})
+$$
 
 Where S is the spot exchange rate, K is the strike price, r is the domestic risk-free rate, r_f is the foreign risk-free rate, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the cumulative normal distribution of d2.
 
@@ -1179,9 +1253,17 @@ The delta calculation is the theoretical value of the delta. The actual delta ca
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- Call Option Delta = e^(-q * t) * N(d1)
-- Put Option Delta = -e^(-q * t) * N(-d1)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+\text{Call Option} \Delta = e ^{- q \cdot t} \cdot N(d_{1})
+$$
+
+$$
+\text{Put Option} \Delta = - e ^{- q \cdot t} \cdot N(- d_{1})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
@@ -1252,10 +1334,21 @@ The dual delta calculation is the theoretical value of the dual delta. The actua
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Call Dual Delta = -e^(-r * t) * N(d2)
-- Put Dual Delta = e^(-r * t) * N(-d2)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Call Dual} \Delta = - e ^{- r \cdot t} \cdot N(d_{2})
+$$
+
+$$
+\text{Put Dual} \Delta = e ^{- r \cdot t} \cdot N(- d_{2})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
@@ -1323,8 +1416,13 @@ The vega calculation is the theoretical value of the vega. The actual vega can d
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- Vega = S * e^(-q * t) * N'(d1) * sqrt(t) / 100
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+\text{Vega} = S \cdot e ^{- q \cdot t} \cdot N'(d_{1}) \cdot \sqrt{t} / 100
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
 
@@ -1397,11 +1495,25 @@ The theta calculation is the theoretical value of the theta. The actual theta ca
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Call Theta = [-e^(-q * t) * (S * N'(d1) * σ) / (2 * sqrt(t)) - r * K * e^(-r * t) * N(d2) + q * S * e^(-q * t) * N(d1)] / 365
-- Put Theta = [-e^(-q * t) * (S * N'(d1) * σ) / (2 * sqrt(t)) + r * K * e^(-r * t) * N(-d2)
-- q * S * e^(-q * t) * N(-d1)] / 365
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Call} \Theta = \left[- e ^{- q \cdot t} \cdot (S \cdot N'(d_{1}) \cdot \sigma) / (2 \cdot \sqrt{t}) - r \cdot K \cdot e ^{- r \cdot t} \cdot N(d_{2}) + q \cdot S \cdot e ^{- q \cdot t} \cdot N(d_{1})\right] / 365
+$$
+
+$$
+\text{Put} \Theta = \left[- e ^{- q \cdot t} \cdot (S \cdot N'(d_{1}) \cdot \sigma) / (2 \cdot \sqrt{t}) + r \cdot K \cdot e ^{- r \cdot t} \cdot N(- d_{2})\right]
+$$
+
+$$
+q \cdot S \cdot e ^{- q \cdot t} \cdot N(- d_{1}) \text{]} / 365
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
 
@@ -1474,10 +1586,21 @@ The rho calculation is the theoretical value of the rho. The actual rho can diff
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Call Rho = K * t * e^(-r * t) * N(d2)
-- Put Rho = -K * t * e^(-r * t) * N(-d2)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Call Rho} = K \cdot t \cdot e ^{- r \cdot t} \cdot N(d_{2})
+$$
+
+$$
+\text{Put Rho} = - K \cdot t \cdot e ^{- r \cdot t} \cdot N(- d_{2})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
@@ -1550,9 +1673,17 @@ The epsilon calculation is the theoretical value of the epsilon. The actual epsi
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- Call Epsilon = -S * t * e^(-q * t) * N(d1)
-- Put Epsilon = S * t * e^(-q * t) * N(-d1)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+\text{Call Epsilon} = - S \cdot t \cdot e ^{- q \cdot t} \cdot N(d_{1})
+$$
+
+$$
+\text{Put Epsilon} = S \cdot t \cdot e ^{- q \cdot t} \cdot N(- d_{1})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
@@ -1625,12 +1756,29 @@ The lambda calculation is the theoretical value of the lambda. The actual lambda
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Call Delta = e^(-q * t) * N(d1), Put Delta = -e^(-q * t) * N(-d1)
-- Call Option Price = S * e^(-q * t) * N(d1) - K * e^(-r * t) * N(d2)
-- Put Option Price = K * e^(-r * t) * N(-d2) - S * e^(-q * t) * N(-d1)
-- Lambda = Delta * (Stock Price / Call Option Price or Put Option Price)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Call} \Delta = e ^{- q \cdot t} \cdot N(d_{1}),\;\; \text{Put} \Delta = - e ^{- q \cdot t} \cdot N(- d_{1})
+$$
+
+$$
+\text{Call Option Price} = S \cdot e ^{- q \cdot t} \cdot N(d_{1}) - K \cdot e ^{- r \cdot t} \cdot N(d_{2})
+$$
+
+$$
+\text{Put Option Price} = K \cdot e ^{- r \cdot t} \cdot N(- d_{2}) - S \cdot e ^{- q \cdot t} \cdot N(- d_{1})
+$$
+
+$$
+\text{Lambda} = \Delta \cdot (\text{Stock Price} / \text{Call Option Price or Put Option Price})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
@@ -1770,8 +1918,13 @@ The gamma calculation is the theoretical value of the gamma. The actual gamma ca
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- Gamma = e^(-q * t) * N'(d1) / (S * σ * sqrt(t))
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+\text{Gamma} = e ^{- q \cdot t} \cdot N'(d_{1}) / (S \cdot \sigma \cdot \sqrt{t})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
 
@@ -1840,9 +1993,17 @@ The gamma calculation is the theoretical value of the gamma. The actual gamma ca
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Dual Gamma = e^(-r * t) * N'(d2) / (K * σ * sqrt(t))
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Dual Gamma} = e ^{- r \cdot t} \cdot N'(d_{2}) / (K \cdot \sigma \cdot \sqrt{t})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d2) is the standard normal probability density at d2 and N(d1) is the cumulative normal distribution of d1. Note that Dual Gamma is a second derivative with respect to the strike price, so it is the strike and not the stock price that appears in the denominator.
 
@@ -1908,9 +2069,17 @@ The vanna calculation is the theoretical value of the vanna. The actual vanna ca
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Vanna = -e^(-q * t) * N'(d1) * (d2 / σ)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Vanna} = - e ^{- q \cdot t} \cdot N'(d_{1}) \cdot (d_{2} / \sigma)
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
@@ -1981,10 +2150,21 @@ The charm calculation is the theoretical value of the charm. The actual charm ca
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Call Charm = q * e^(-q * t) * N(d1) - e^(-q * t) * N'(d1) * (2 * (r - q) * t - d2 * σ * sqrt(t)) / (2 * t * σ * sqrt(t))
-- Put Charm = -q * e^(-q * t) * N(-d1) - e^(-q * t) * N'(d1) * (2 * (r - q) * t - d2 * σ * sqrt(t)) / (2 * t * σ * sqrt(t))
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Call Charm} = q \cdot e ^{- q \cdot t} \cdot N(d_{1}) - e ^{- q \cdot t} \cdot N'(d_{1}) \cdot (2 \cdot (r - q) \cdot t - d_{2} \cdot \sigma \cdot \sqrt{t}) / (2 \cdot t \cdot \sigma \cdot \sqrt{t})
+$$
+
+$$
+\text{Put Charm} = - q \cdot e ^{- q \cdot t} \cdot N(- d_{1}) - e ^{- q \cdot t} \cdot N'(d_{1}) \cdot (2 \cdot (r - q) \cdot t - d_{2} \cdot \sigma \cdot \sqrt{t}) / (2 \cdot t \cdot \sigma \cdot \sqrt{t})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d1) is the cumulative normal distribution of d1.
 
@@ -2057,9 +2237,17 @@ The vomma calculation is the theoretical value of the vomma. The actual vomma ca
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Vomma = S * e^(-q * t) * N'(d1) * sqrt(t) * (d1 * d2) / σ
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Vomma} = S \cdot e ^{- q \cdot t} \cdot N'(d_{1}) \cdot \sqrt{t} \cdot (d_{1} \cdot d_{2}) / \sigma
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
@@ -2128,9 +2316,17 @@ The vera calculation is the theoretical value of the vera. The actual vera can d
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Vera = -K * t * e^(-r * t) * N'(d2) * (d1 / σ)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Vera} = - K \cdot t \cdot e ^{- r \cdot t} \cdot N'(d_{2}) \cdot (d_{1} / \sigma)
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d2) is the standard normal probability density at d2 and N(d1) is the cumulative normal distribution of d1.
 
@@ -2203,9 +2399,17 @@ The veta calculation is the theoretical value of the veta. The actual veta can d
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Veta = S * e^(-q * t) * N'(d1) * sqrt(t) * (q + ((r - q) * d1) / (σ * sqrt(t)) - (1 + d1 * d2) / (2 * t)) / (100 * 365)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Veta} = S \cdot e ^{- q \cdot t} \cdot N'(d_{1}) \cdot \sqrt{t} \cdot (q + ((r - q) \cdot d_{1}) / (\sigma \cdot \sqrt{t}) - (1 + d_{1} \cdot d_{2}) / (2 \cdot t)) / (100 \cdot 365)
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
 
@@ -2278,7 +2482,9 @@ Note that this uses a single, flat assumed volatility (the same value at every s
 
 The formula is as follows:
 
-- Partial Derivative (PD) = e^(-r * t) * (1 / K) * (1 / sqrt(2 * pi * σ ** 2 * t)) * e^(-(1 / (2 * σ ** 2 * t)) * (ln(K / S) - ((r - q) - (0.5 * σ ** 2)) * t) ** 2)
+$$
+\text{Partial Derivative} (\text{PD}) = e ^{- r \cdot t} \cdot (1 / K) \cdot (1 / \sqrt{2 \cdot \pi \cdot \sigma ^{2} \cdot t}) \cdot e ^{- (1 / (2 \cdot \sigma ^{2} \cdot t)) \cdot (\ln(K / S) - ((r - q) - (0.5 \cdot \sigma ^{2})) \cdot t) ^{2}}
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility and t is the time to expiration. This expression is algebraically identical to e^(-r * t) * N'(d2) / (K * σ * sqrt(t)), i.e. to the Dual Gamma, since both are the second derivative of the option price with respect to the strike price.
 
@@ -2405,8 +2611,13 @@ The speed calculation is the theoretical value of the speed. The actual speed ca
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- Speed = -e^(-q * t) * ((N'(d1) / (S ** 2 * σ * sqrt(t)))) * ((d1 / (σ * sqrt(t))) + 1)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+\text{Speed} = - e ^{- q \cdot t} \cdot ((N'(d_{1}) / (S ^{2} \cdot \sigma \cdot \sqrt{t}))) \cdot ((d_{1} / (\sigma \cdot \sqrt{t})) + 1)
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration and N'(d1) is the standard normal probability density at d1.
 
@@ -2477,9 +2688,17 @@ The zomma calculation is the theoretical value of the zomma. The actual zomma ca
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Zomma = e^(-q * t) * (N'(d1) * (d1 * d2 - 1)) / (S * σ **2 * sqrt(t))
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Zomma} = e ^{- q \cdot t} \cdot (N'(d_{1}) \cdot (d_{1} \cdot d_{2} - 1)) / (S \cdot \sigma ^{2} \cdot \sqrt{t})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration and N'(d1) is the standard normal probability density at d1. This is equivalently Gamma * (d1 * d2 - 1) / σ, and it is reported unscaled, per 1.00 of volatility.
 
@@ -2550,9 +2769,17 @@ The color calculation is the theoretical value of the color. The actual color ca
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Color = e^(-q * t) * (N'(d1) / (2 * S * t * σ * sqrt(t))) * (2 * q * t + 1 + ((2 * (r - q) * t - d2 * σ * sqrt(t)) / (σ * sqrt(t))) * d1)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Color} = e ^{- q \cdot t} \cdot (N'(d_{1}) / (2 \cdot S \cdot t \cdot \sigma \cdot \sqrt{t})) \cdot (2 \cdot q \cdot t + 1 + ((2 \cdot (r - q) \cdot t - d_{2} \cdot \sigma \cdot \sqrt{t}) / (\sigma \cdot \sqrt{t})) \cdot d_{1})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration and N'(d1) is the standard normal probability density at d1.
 
@@ -2625,9 +2852,17 @@ The ultima calculation is the theoretical value of the ultima. The actual gamma 
 
 The formula is as follows:
 
-- d1 = (ln(S / K) + (r - q + (σ^2) / 2) * t) / (σ * sqrt(t))
-- d2 = d1 - σ * sqrt(t)
-- Ultima = (-vega / σ ** 2) * (d1 * d2 * (1 - d1 * d2) + d1 ** 2 + d2 ** 2)
+$$
+d_{1} = (\ln(S / K) + (r - q + (\sigma ^{2}) / 2) \cdot t) / (\sigma \cdot \sqrt{t})
+$$
+
+$$
+d_{2} = d_{1} - \sigma \cdot \sqrt{t}
+$$
+
+$$
+\text{Ultima} = (- \text{vega} / \sigma ^{2}) \cdot (d_{1} \cdot d_{2} \cdot (1 - d_{1} \cdot d_{2}) + d_{1} ^{2} + d_{2} ^{2})
+$$
 
 Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration and vega is the unscaled S * e^(-q * t) * N'(d1) * sqrt(t), i.e. the Vega before the division by 100 that `get_vega` applies. Ultima itself is likewise reported unscaled, per 1.00 of volatility.
 

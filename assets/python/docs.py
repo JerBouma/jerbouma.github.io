@@ -24,6 +24,278 @@ _RE_RESULT = re.compile(r"Which returns:[\s\S]*$", re.DOTALL)
 # Section headers that get bolded wherever they appear as their own paragraph.
 _BOLD_HEADERS = ("Also known as:", "See definition:", "See Definition:")
 
+# ── Formula → LaTeX conversion ────────────────────────────────────────────────
+# A bullet paragraph is treated as a set of formulas when the paragraph before
+# it ends in a colon and reads like a formula introduction. Each such bullet is
+# rendered as a $$ display-math block (kramdown turns those into \[...\] which
+# MathJax picks up, see _includes/head/custom.html).
+_RE_FORMULA_INTRO = re.compile(
+    r"(?<!interpreted as )(formula|follows|translates into the following"
+    r"|expresses the conditional variance|must hold|risk decomposition"
+    r"|such returns|style options)[^:]*:$",
+    re.IGNORECASE,
+)
+
+# Greek names spelled out in docstrings, mapped to their LaTeX symbols.
+_GREEK = {
+    "alpha": r"\alpha", "beta": r"\beta", "gamma": r"\gamma", "delta": r"\delta",
+    "Delta": r"\Delta", "sigma": r"\sigma", "Sigma": r"\Sigma", "theta": r"\theta",
+    "Theta": r"\Theta", "rho": r"\rho", "epsilon": r"\epsilon", "lambda": r"\lambda",
+    "mu": r"\mu", "pi": r"\pi", "Phi": r"\Phi", "phi": r"\phi", "tau": r"\tau",
+    "omega": r"\omega", "kappa": r"\kappa", "nu": r"\nu",
+}
+
+# Unicode used in docstring formulas, normalised to ASCII before tokenizing.
+_UNICODE_MATH = {
+    "σ": "sigma", "β": "beta", "α": "alpha", "Δ": "Delta ", "θ": "theta",
+    "ρ": "rho", "ε": "epsilon", "π": "pi", "Φ": "Phi", "μ": "mu", "λ": "lambda",
+    "²": "^2", "³": "^3", "−": "-", "×": "*", "·": "*", "≈": " ≈ ",
+    "≤": " <= ", "≥": " >= ",
+}
+
+# Function-style names that get a proper LaTeX operator instead of \operatorname.
+_FUNC_MAP = {
+    "log10": r"\log_{10}", "log": r"\log", "ln": r"\ln", "exp": r"\exp",
+    "max": r"\max", "Max": r"\max", "MAX": r"\max",
+    "min": r"\min", "Min": r"\min", "MIN": r"\min",
+}
+
+# Literal indicator names that would otherwise be mangled by the tokenizer
+# (leading +/- signs read as operators). Wrapped into opaque text atoms first.
+_LITERAL_ATOMS = ("+DI", "-DI")
+
+_RE_MATHY = re.compile(r" = | ≈ | \* | / |\*\*|\^")
+
+
+def _text_escape(text: str) -> str:
+    """Escape LaTeX specials inside \\text{...} and drop markdown backticks."""
+    for char, escaped in (("\\", ""), ("`", ""), ("_", r"\_"), ("%", r"\%"),
+                          ("&", r"\&"), ("#", r"\#"), ("{", r"\{"), ("}", r"\}")):
+        text = text.replace(char, escaped)
+    return text
+
+
+def _format_word(word: str) -> str:
+    """Render one identifier token as LaTeX math."""
+    if word.startswith("⟦") and word.endswith("⟧"):
+        return r"\text{" + _text_escape(word[1:-1]) + "}"
+    if word in _GREEK:
+        return _GREEK[word]
+    base, sep, sub = word.partition("_")
+    if sep:
+        sub = "t-1" if sub == "tminusone" else sub
+        # Single-char suffixes are true subscripts; longer ones are snake_case names.
+        if len(sub) <= 1 or sub == "t-1":
+            return f"{_format_word(base)}_{{{sub}}}"
+        return r"\text{" + _text_escape(word) + "}"
+    match = re.match(r"^([A-Za-z])(\d+)$", word)
+    if match:
+        return f"{match.group(1)}_{{{match.group(2)}}}"
+    if re.match(r"^[A-Za-z]'*(-\d+)?$", word):
+        return word
+    if word.startswith("%"):
+        return r"\%" + _format_word(word[1:]) if len(word) > 1 else r"\%"
+    if re.match(r"^[0-9.]+[A-Za-z]?%?$", word):
+        return word.replace("%", r"\%")
+    return r"\text{" + _text_escape(word) + "}"
+
+
+def _format_word_run(words: list[str]) -> str:
+    """Render a run of space-separated words, merging adjacent prose into \\text."""
+    def is_prose(word: str) -> bool:
+        return (word not in _GREEK and len(word) > 1 and not word.startswith("⟦")
+                and re.match(r"^[A-Za-z][A-Za-z'\-]*$", word) is not None
+                and re.match(r"^[A-Za-z]'+$", word) is None)
+
+    # A subscript on the final word applies to the whole phrase before it,
+    # e.g. "Cash Flow Projection_t" becomes \text{Cash Flow Projection}_t.
+    subscript = ""
+    if words and "_" in words[-1]:
+        base, _, sub = words[-1].partition("_")
+        if is_prose(base) and (len(sub) <= 1 or sub in ("t-1", "tminusone")):
+            words = words[:-1] + [base]
+            sub = "t-1" if sub == "tminusone" else sub
+            subscript = f"_{{{sub}}}"
+
+    parts: list[str] = []
+    prose_run: list[str] = []
+    for word in words:
+        if is_prose(word):
+            prose_run.append(word)
+            continue
+        if prose_run:
+            parts.append(r"\text{" + _text_escape(" ".join(prose_run)) + "}")
+            prose_run = []
+        parts.append(_format_word(word))
+    if prose_run:
+        parts.append(r"\text{" + _text_escape(" ".join(prose_run)) + "}")
+    return " ".join(parts) + subscript
+
+
+def _tokenize_formula(text: str, pos: int = 0, closer: str = "") -> tuple[list, int]:
+    """Split a formula into atoms, operators and (recursive) paren groups."""
+    tokens: list = []
+    word = ""
+
+    def flush():
+        nonlocal word
+        if word:
+            tokens.append(("word", word))
+            word = ""
+
+    while pos < len(text):
+        char = text[pos]
+        if char == closer:
+            flush()
+            return tokens, pos + 1
+        if char == "⟦":
+            end = text.find("⟧", pos)
+            word += text[pos:end + 1]
+            pos = end + 1
+            continue
+        if char in "([":
+            flush()
+            group, pos = _tokenize_formula(text, pos + 1, ")" if char == "(" else "]")
+            tokens.append(("group", char, group))
+            continue
+        if char in "=+-*/^,|<>≈":
+            # A hyphen glued between word characters is part of the name, not a minus.
+            if char == "-" and word and pos + 1 < len(text) and text[pos + 1].isalnum() \
+                    and text[pos - 1].isalnum() and word[-1] != " ":
+                word += char
+                pos += 1
+                continue
+            flush()
+            if text[pos:pos + 2] == "**":
+                tokens.append(("op", "^"))
+                pos += 2
+                continue
+            tokens.append(("op", char))
+            pos += 1
+            continue
+        if char == " ":
+            if word:
+                word += char
+            pos += 1
+            continue
+        word += char
+        pos += 1
+    flush()
+    return tokens, pos
+
+
+def _render_tokens(tokens: list) -> str:
+    """Render a token list to LaTeX, handling word runs, functions and exponents."""
+    parts: list[str] = []
+    i = 0
+    while i < len(tokens):
+        token = tokens[i]
+        if token[0] == "word":
+            words = [w for w in token[1].split(" ") if w]
+            trailing_space = token[1].endswith(" ")
+            # A single word glued to a following group is a function call.
+            if (len(words) == 1 and not trailing_space and i + 1 < len(tokens)
+                    and tokens[i + 1][0] == "group" and tokens[i + 1][1] == "("):
+                name = words[0]
+                group = _render_tokens(tokens[i + 1][2])
+                if name in ("sqrt", "SQRT", "√"):
+                    parts.append(r"\sqrt{" + group + "}")
+                elif name in _FUNC_MAP:
+                    parts.append(_FUNC_MAP[name] + "(" + group + ")")
+                elif name in _GREEK or re.match(r"^[A-Za-z]'*$", name):
+                    parts.append(_format_word(name) + "(" + group + ")")
+                else:
+                    parts.append(r"\operatorname{" + _text_escape(name) + "}(" + group + ")")
+                i += 2
+                continue
+            parts.append(_format_word_run(words))
+            i += 1
+            continue
+        if token[0] == "group":
+            inner = _render_tokens(token[2])
+            parts.append(f"({inner})" if token[1] == "(" else r"\left[" + inner + r"\right]")
+            i += 1
+            continue
+        op = token[1]
+        if op == "^":
+            exponent = ""
+            j = i + 1
+            if j < len(tokens) and tokens[j][0] == "op" and tokens[j][1] == "-":
+                exponent = "-"
+                j += 1
+            if j < len(tokens) and tokens[j][0] == "group":
+                exponent += _render_tokens(tokens[j][2])
+                j += 1
+            elif j < len(tokens) and tokens[j][0] == "word":
+                first_word = tokens[j][1].split(" ")[0]
+                exponent += _format_word(first_word)
+                remainder = tokens[j][1][len(first_word):].strip()
+                tokens[j] = ("word", remainder)
+                if not remainder:
+                    j += 1
+            parts.append("^{" + exponent + "}")
+            i = j
+            continue
+        parts.append({"*": r"\cdot", "≈": r"\approx", ",": ",\\;"}.get(op, op))
+        i += 1
+    return " ".join(parts).replace(" ,\\;", ",\\;")
+
+
+def _formula_to_latex(line: str) -> str:
+    """Convert one plain-text formula bullet into a $$ display-math block."""
+    formula = line.lstrip("- ").rstrip().rstrip(".")
+    formula = formula.replace("\\|", "|")
+    for literal in _LITERAL_ATOMS:
+        formula = formula.replace(literal, f"⟦{literal}⟧")
+    for char, replacement in _UNICODE_MATH.items():
+        formula = formula.replace(char, replacement)
+    formula = formula.replace("_t-1", "_tminusone")
+    formula = re.sub(r"√\s*([A-Za-z0-9.]+)", r"sqrt(\1)", formula)
+
+    # A leading "Label: formula" keeps the label as one prose chunk.
+    label = ""
+    match = re.match(r"^([^=^]+?):\s+(.*)$", formula)
+    if match and _RE_MATHY.search(match.group(2)):
+        label = r"\text{" + _text_escape(match.group(1)) + r":}\;\; "
+        formula = match.group(2)
+
+    # Split into top-level comma segments so trailing prose clauses stay prose.
+    segments: list[str] = []
+    depth = 0
+    current = ""
+    for char in formula:
+        if char in "([":
+            depth += 1
+        elif char in ")]":
+            depth -= 1
+        if char == "," and depth == 0:
+            segments.append(current)
+            current = ""
+        else:
+            current += char
+    segments.append(current)
+
+    rendered: list[str] = []
+    for segment in segments:
+        segment = segment.strip()
+        if not segment:
+            continue
+        prefix = ""
+        match = re.match(r"^(where|over|for)\s+(.*)$", segment)
+        if match and _RE_MATHY.search(match.group(2)):
+            prefix = r"\text{" + match.group(1) + r"} \;\; "
+            segment = match.group(2)
+        if _RE_MATHY.search(segment) or " = " in f" {segment} ":
+            tokens, _ = _tokenize_formula(segment)
+            rendered.append(prefix + _render_tokens(tokens))
+        else:
+            rendered.append(r"\text{" + _text_escape(segment) + "}")
+    return "$$\n" + label + ",\\;\\; ".join(rendered) + "\n$$"
+
+
+def _looks_like_formula(line: str) -> bool:
+    return _RE_MATHY.search(line) is not None
+
 _GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 _REQUEST_TIMEOUT = 30
 
@@ -127,6 +399,7 @@ def _clean_description(text: str) -> str:
     """
     text = text.replace("—", "-")  # em dash -> hyphen, used for formula minus signs
     text = text.replace("|", "\\|")  # escape so |x| (absolute value) isn't parsed as a table
+    text = text.replace("The formula is a follows:", "The formula is as follows:")
 
     paragraphs = []
     for raw_paragraph in _RE_BLANK_LINE.split(_dedent_block(text)):
@@ -152,6 +425,18 @@ def _clean_description(text: str) -> str:
         else:
             paragraph = " ".join(lines)
         paragraphs.append((paragraph, starts_as_bullet))
+
+    # Bullet paragraphs directly after a formula introduction become math blocks.
+    for i, (paragraph, starts_as_bullet) in enumerate(paragraphs):
+        if not starts_as_bullet or i == 0:
+            continue
+        intro = paragraphs[i - 1][0].rstrip()
+        if not _RE_FORMULA_INTRO.search(intro):
+            continue
+        blocks = []
+        for line in paragraph.split("\n"):
+            blocks.append(_formula_to_latex(line) if _looks_like_formula(line) else line)
+        paragraphs[i] = ("\n\n".join(blocks), False)
 
     parts = []
     for i, (paragraph, starts_as_bullet) in enumerate(paragraphs):

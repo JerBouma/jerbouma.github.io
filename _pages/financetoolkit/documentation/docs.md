@@ -430,11 +430,17 @@ Which returns:
 Get the rating of the specified tickers. These scores and recommendations are categorized as follows:
 
 - An overall rating
+
 - Discounted Cash Flow (DCF)
+
 - Return on Equity (ROE)
+
 - Return on Assets (ROA)
+
 - Debt to Equity (DE)
+
 - Price Earnings (PE)
+
 - Price to Book (PB)
 
 **Also known as:** analyst consensus, buy sell hold recommendation.

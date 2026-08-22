@@ -103,7 +103,9 @@ differentiating at a point.
 ## get_present_value
 Calculates the bond prices for different coupon rates and years to maturity. The bond price is the present value of the bond's future cash flows, which includes the coupon payments and the par value of the bond at maturity. The bond price is calculated using the following formula:
 
-- Bond Price = (C / r) * (1 - (1 + r)^-n) + F / (1 + r)^n
+$$
+\text{Bond Price} = (C / r) \cdot (1 - (1 + r) ^{-n}) + F / (1 + r) ^{n}
+$$
 
 where:
 
@@ -212,7 +214,9 @@ Calculates the yield to maturity for a bond. The yield to maturity is the intern
 
 The yield to maturity is calculated using the following formula:
 
-- Bond Price = (C / r) * (1 - (1 + r)^-n) + F / (1 + r)^n
+$$
+\text{Bond Price} = (C / r) \cdot (1 - (1 + r) ^{-n}) + F / (1 + r) ^{n}
+$$
 
 where:
 
@@ -273,7 +277,9 @@ The rate for each maturity is obtained by linearly interpolating the supplied sp
 
 The forward rate is calculated using the following formula:
 
-- Forward Rate = ((1 + r2)^t2 / (1 + r1)^t1)^(1 / (t2 - t1)) - 1
+$$
+\text{Forward Rate} = ((1 + r_{2}) ^{t_{2}} / (1 + r_{1}) ^{t_{1}}) ^{1 / (t_{2} - t_{1})} - 1
+$$
 
 where:
 
@@ -331,7 +337,9 @@ This is the curve that is typically quoted for on-the-run government bonds, as o
 
 The par yield is calculated using the following formula:
 
-- Par Yield = frequency * (1 - DF(n)) / SUM(DF(k))
+$$
+\text{Par Yield} = \text{frequency} \cdot (1 - \operatorname{DF}(n)) / \operatorname{SUM}(\operatorname{DF}(k))
+$$
 
 where DF(k) = 1 / (1 + spot_rate(k / frequency) / frequency)^k is the discount factor for the cash flow at period k, spot_rate(t) is obtained by interpolating the spot curve at time t (in years), and n = years_to_maturity * frequency is the number of coupon periods.
 
@@ -385,7 +393,9 @@ The rate for each maturity is obtained by linearly interpolating the supplied cu
 
 The yield curve spread is calculated using the following formula:
 
-- Yield Curve Spread = Long-Term Yield - Short-Term Yield
+$$
+\text{Yield Curve Spread} = \text{Long-Term Yield} - \text{Short-Term Yield}
+$$
 
 **Also known as:** term spread, yield curve slope.
 
@@ -435,7 +445,9 @@ The rate for each maturity is obtained by linearly interpolating the supplied cu
 
 The breakeven inflation rate is calculated using the following formula:
 
-- Breakeven Inflation Rate = Nominal Yield - Real Yield
+$$
+\text{Breakeven Inflation Rate} = \text{Nominal Yield} - \text{Real Yield}
+$$
 
 **Also known as:** TIPS breakeven spread, inflation breakeven.
 
@@ -536,7 +548,9 @@ Converts a money-market discount yield (e.g. quoted for Treasury bills) into a b
 
 The bond-equivalent yield is calculated using the following formula:
 
-- BEY = 365 * Discount Yield / (360 - Days to Maturity * Discount Yield)
+$$
+\text{BEY} = 365 \cdot \text{Discount Yield} / (360 - \text{Days to Maturity} \cdot \text{Discount Yield})
+$$
 
 for a bill with half a year or less remaining. Beyond that an equivalent coupon-bearing note would have paid a coupon at the six month point, so the U.S. Treasury's semi-annually compounded solution (31 CFR 356, Appendix B) is used instead - see `bond_model.get_bond_equivalent_yield`. Applying the simple formula to a 52-week bill instead overstates its yield by roughly seven basis points.
 
@@ -647,7 +661,9 @@ This method calls `get_modified_duration` and `get_convexity` from `bond_model.p
 
 The Taylor approximation is calculated using the following formula:
 
-- %ΔPrice ≈ -Modified Duration * Δy + 0.5 * Convexity * Δy^2
+$$
+\%\Delta \text{Price} \approx - \text{Modified Duration} \cdot \Delta y + 0.5 \cdot \text{Convexity} \cdot \Delta y ^{2}
+$$
 
 **Also known as:** duration-convexity approximation, second-order price approximation.
 
