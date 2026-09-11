@@ -2,7 +2,7 @@
 permalink: /projects/personalfinance
 title: Personal Finance
 excerpt: With PersonalFinance I want to make it easier to manage your personal finance. Through defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you. This results in Morty's Place being correctly categorised as a Bakery.
-description: With PersonalFinance I want to make it easier to manage your personal finance. Through defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you. This results in Morty's Place being correctly categorised as a Bakery.
+description: "PersonalFinance is an open-source Python tool that categorises your bank transactions with keywords you define, trained on your own data."
 classes: wide-sidebar
 author_profile: false
 redirect_from:
@@ -25,7 +25,8 @@ By doing most of these things through Python and Excel, you have the complete fr
     <img src="https://github.com/JerBouma/PersonalFinance/raw/main/examples/Personal%20Finance%20-%203.%20Video%20Demo.gif" alt="Personal Finance Illustration" width="100%" onerror="this.style.display = 'none'"/>
 </p>
 
-# Installation
+## Installation
+{: .heading-as-h1}
 
 Before installation, consider starring the project on GitHub which helps others find the project as well. **Click the image to visit the repository and Star the project.**
 
@@ -86,7 +87,7 @@ cashflows = Cashflow(example=True)
 cashflows.perform_analysis()
 ```
 
-Before it does anything, it will download the example datasets as found [here](https://github.com/JerBouma/PersonalFinance/tree/main/examples){:target="_blank"}. This is merely meant for you to understand how the functionality works. When you are ready to use it for your own cashflows, you can simply remove the `example=True` argument and supply your own configuration file. If you don't have one yet, it will automatically supply one if you use `Cashflow()`. **See the Notebooks as found [here](https://www.jeroenbouma.com/projects/personalfinance) for an in-depth explanation.**
+Before it does anything, it will download the example datasets as found [here](https://github.com/JerBouma/PersonalFinance/tree/main/examples){:target="_blank"}. This is merely meant for you to understand how the functionality works. When you are ready to use it for your own cashflows, you can simply remove the `example=True` argument and supply your own configuration file. If you don't have one yet, it will automatically supply one if you use `Cashflow()`. **See the Notebooks as found [here](/projects/personalfinance) for an in-depth explanation.**
 
 The `perform_analysis` functionality does the following things:
 

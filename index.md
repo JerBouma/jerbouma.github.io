@@ -1,7 +1,7 @@
 ---
 layout: splash
 title: "Jeroen Bouma"
-description: "Jeroen Bouma, Quantitative Investment Strategist and Python developer. Creator of Finance Toolkit and Finance Database, open-source financial analysis libraries with 10,000+ GitHub stars."
+description: "Jeroen Bouma, Quantitative Investment Strategist, creator of the open-source Finance Toolkit and Finance Database Python libraries (10,000+ GitHub stars)."
 excerpt: "Quantitative Investment Strategist and Python developer. Creator of Finance Toolkit and Finance Database."
 classes: custom-splash
 ---
@@ -25,20 +25,28 @@ classes: custom-splash
 
 <div class="stats-band" aria-label="Key statistics">
   <a href="/projects" class="stat-item">
-    <span class="stat-number" data-stat="stars" data-target="12000" data-suffix="+">0+</span>
+    <span class="stat-number" data-stat="stars" data-target="12000" data-suffix="+">12,000+</span>
     <span class="stat-label">GitHub Stars</span>
   </a>
   <a href="/projects/financetoolkit" class="stat-item">
-    <span class="stat-number" data-stat="ratios" data-target="200" data-suffix="+">0+</span>
+    <span class="stat-number" data-stat="ratios" data-target="500" data-suffix="+">500+</span>
     <span class="stat-label">Financial Metrics</span>
   </a>
   <a href="/projects" class="stat-item">
-    <span class="stat-number" data-stat="downloads" data-target="50000" data-suffix="+">0+</span>
+    <span class="stat-number" data-stat="downloads" data-target="50000" data-suffix="+">50,000+</span>
     <span class="stat-label" style="font-size: 0.60rem;">Downloads per Month</span>
   </a>
 </div>
 
 <div class="bento-grid">
+
+  <a href="/projects/financetoolkit/mcp" class="bento-card" style="grid-column: span 12;">
+    <div class="bento-content">
+      <i class="fas fa-plug bento-icon"></i>
+      <h2>Finance Toolkit MCP Server</h2>
+      <p>Connect Claude, ChatGPT, Cursor or VS Code to 500+ financial metrics, valuation models, technical indicators and macro data. Ask questions in plain English, no installation required.</p>
+    </div>
+  </a>
 
   <a href="/resume" class="bento-card">
     <div class="bento-content">
@@ -56,7 +64,7 @@ classes: custom-splash
     </div>
   </a>
 
-  <a href="/modelling" class="bento-card">
+  <a href="/modelling/introduction" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-chart-line bento-icon"></i>
       <h2>Financial Modelling</h2>
@@ -64,7 +72,7 @@ classes: custom-splash
     </div>
   </a>
 
-  <a href="/talks" class="bento-card">
+  <a href="/appearances" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-microphone bento-icon"></i>
       <h2>Appearances</h2>

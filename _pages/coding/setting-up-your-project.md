@@ -1,5 +1,6 @@
 ---
 title: Setting up your Project
+seo_title: Set Up a Python Financial Modelling Project
 excerpt: Master setting up financial models in Python. Explore project management, directory structure, dependency management, Git workflow, and exceptions.
 description: Master setting up financial models in Python. Explore project management, directory structure, dependency management, Git workflow, and exceptions.
 author_profile: true
@@ -35,11 +36,11 @@ The objective of these files is to increase the longevity of the model. For exam
 
 The folder structure could look like the following, with emphasis on the `financetoolkit` folder containing the actual financial models:
 
-![](/assets/images/modelling/setting-up-your-project/financetoolkit.png)
+![Folder structure of the financetoolkit package showing its module layout](/assets/images/modelling/setting-up-your-project/financetoolkit.png)
 
 The `tests` folder mirrors this structure but contains unit tests for `pytest`:
 
-![](/assets/images/modelling/setting-up-your-project/tests.png)
+![Folder structure of the tests directory mirroring the financetoolkit package](/assets/images/modelling/setting-up-your-project/tests.png)
 
 While this structure can be modified, the key is to organize the model in a way that is understandable and maintainable for yourself and others.
 

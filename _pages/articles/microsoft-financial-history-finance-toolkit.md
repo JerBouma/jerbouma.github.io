@@ -1,6 +1,7 @@
 ---
 title: How Microsoft Has Changed Since Its IPO
 date: 2026-06-14
+last_modified_at: 2026-06-26
 permalink: /articles/microsoft-financial-history-finance-toolkit
 excerpt: "Explore Microsoft's financial journey over 40 years using the Finance Toolkit. This article analyzes revenue, net income, and other key metrics to understand the company's transformation."
 description: "Learn how Microsoft's financials have evolved since its IPO, with detailed analysis and Python code using the Finance Toolkit."
@@ -16,7 +17,7 @@ March 13, 1986. Microsoft went public at $21 per share ([Wikipedia](https://en.w
 
 But the stock price alone obscures something more interesting. The Microsoft that went public in 1986 and the Microsoft that generates $282 billion in annual revenue today are not the same company. The financials show three distinct businesses operating under the same name, each shaped by a different CEO, a different product strategy, and a different relationship with capital. Pulling 40 years of data through the Finance Toolkit makes that transformation visible in a way that no headline number can.
 
-This blogpost demonstrates using the Finance Toolkit to analyze Microsoft's financial history. It also includes MCP prompts at the end of each section so you can run the same analysis yourself. **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To explore the Finance Toolkit MCP, see [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
+This blogpost demonstrates using the Finance Toolkit to analyze Microsoft's financial history. It also includes MCP prompts at the end of each section so you can run the same analysis yourself. **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
 ## Setting Things Up
 
@@ -38,7 +39,7 @@ company = Toolkit(
 )
 ```
 
-Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}. The free plan covers five years of history; a paid plan unlocks the full 40-year dataset used here.
+Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history; a paid plan unlocks the full 40-year dataset used here.
 
 ## Revenue: Three Very Different Eras
 

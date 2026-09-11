@@ -1,8 +1,9 @@
 ---
 title: Discovery Notebook
+seo_title: Ticker Discovery Notebook – Finance Toolkit
 permalink: /projects/financetoolkit/discovery-notebook
 excerpt: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit. 
-description: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit. 
+description: "Worked example notebook for the Finance Toolkit's Discovery module: screen and list stocks, crypto, forex, commodities, ETFs and indices to find tickers."
 classes: wide-no-sidebar no-title
 author_profile: false   
 ---

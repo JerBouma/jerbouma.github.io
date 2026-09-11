@@ -1,8 +1,9 @@
 ---
 title: Fixed Income Notebook
+seo_title: Fixed Income Notebook – Finance Toolkit
 permalink: /projects/financetoolkit/fixed-income-notebook
 excerpt: The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
-description: The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
+description: "Worked example notebook for the Finance Toolkit's Fixed Income module: bond yields, Macaulay and modified duration, convexity and swaption pricing."
 classes: wide-no-sidebar no-title
 author_profile: false   
 ---

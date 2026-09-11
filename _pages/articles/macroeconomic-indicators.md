@@ -1,9 +1,10 @@
 ---
 title: Tracking Macroeconomic Indicators with the Finance Toolkit
 date: 2026-07-14
+last_modified_at: 2026-07-26
 permalink: /articles/macroeconomic-indicators-finance-toolkit
 excerpt: "Compare inflation, central bank policy rates, unemployment, and government debt across five major economies using the Finance Toolkit's Economics module, no API key required."
-description: "Track macroeconomic indicators including inflation rate, central bank policy rate, unemployment rate, and government debt-to-GDP across the United States, United Kingdom, Germany, Japan, and Brazil with the Finance Toolkit."
+description: "Track inflation, policy rates, unemployment and debt-to-GDP across the US, UK, Germany, Japan and Brazil with the Finance Toolkit's Economics module."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -16,7 +17,7 @@ In 2022, Brazil's central bank had its policy rate at 13.75%. The Bank of Japan'
 
 That divergence is the most interesting thing macro data shows you: not that economies move together, but how differently they move through the same event. The Finance Toolkit's Economics module pulls unemployment, GDP growth, inflation, government debt, central bank rates, and bond yields for 60+ countries going back, in some series, over a century, sourced from the OECD and the Global Macro Database. Unlike the rest of the Toolkit, none of this requires an FMP API key. It is public macro data, free to query.
 
-This article tracks five economies, the United States, United Kingdom, Germany, Japan, and Brazil, through the 2021-2023 inflation shock and the years since. **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To explore the Finance Toolkit MCP, see [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
+This article tracks five economies, the United States, United Kingdom, Germany, Japan, and Brazil, through the 2021-2023 inflation shock and the years since. **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
 ## Setting Things Up
 
@@ -32,7 +33,7 @@ from financetoolkit import Economics
 economics = Economics(start_date="2019-01-01")
 ```
 
-Every method below takes a `countries` argument. The full list of supported countries and indicators is in the [documentation](https://www.jeroenbouma.com/projects/financetoolkit/docs); this article sticks to five economies chosen for contrast rather than completeness.
+Every method below takes a `countries` argument. The full list of supported countries and indicators is in the [documentation](/projects/financetoolkit/docs); this article sticks to five economies chosen for contrast rather than completeness.
 
 ## Inflation: One Shock, Different Timing
 

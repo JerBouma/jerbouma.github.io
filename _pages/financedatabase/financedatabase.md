@@ -1,8 +1,8 @@
 ---
-permalink: projects/financedatabase
+permalink: /projects/financedatabase
 title: Finance Database
 excerpt: The Finance Database features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
-description: The Finance Database features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
+description: "The Finance Database is an open-source Python package with 300,000+ symbols: equities, ETFs, funds, indices, currencies, crypto and money markets."
 classes: wide-sidebar
 author_profile: false
 redirect_from:
@@ -79,8 +79,9 @@ Then within Python use:
 import financedatabase as fd
 ```
 
-# Usage
-This section explains in detail how the database can be queried with the related `financedatabase` package. Note that examples here are purposely cut off to a maximum of 10 entries due to the sheer size of the database. Furthermore, the summary column is also taken out for readability. For the full detailed results, see the Notebook [here](https://www.jeroenbouma.com/projects/financedatabase/getting-started). Let's start by importing the package:
+## Usage
+{: .heading-as-h1}
+This section explains in detail how the database can be queried with the related `financedatabase` package. Note that examples here are purposely cut off to a maximum of 10 entries due to the sheer size of the database. Furthermore, the summary column is also taken out for readability. For the full detailed results, see the Notebook [here](/projects/financedatabase/getting-started). Let's start by importing the package:
 
 ```python
 import financedatabase as fd
@@ -313,7 +314,7 @@ Lastly, the Finance Database has a direct integration with the [Finance Toolkit]
 
 To be able to get started, you need to obtain an API Key from FinancialModelingPrep. This is used to gain access to 30+ years of financial statement both annually and quarterly. Note that the Free plan is limited to 250 requests each day, 5 years of data and only features companies listed on US exchanges.
 
-[Obtain an API Key from FinancialModelingPrep](https://www.jeroenbouma.com/fmp){: .btn .btn--warning .btn--large .align-center target="_blank"}
+[Obtain an API Key from FinancialModelingPrep](/fmp){: .btn .btn--warning .btn--large .align-center target="_blank"}
 
 Then you can go ahead and run the following code, changing the `API_KEY` to your own API Key.
 
@@ -348,7 +349,7 @@ Which returns, selecting only "ASRNL.AS" as an example:
 | 2025-04-03 |  52.32 |  53.22 | 52.18 |   52.42 |       52.42 |   567242 |           0 |  -0.0165 |       0.0175 |         -0.057  |              0.0206 |              4.2274 |
 | 2025-04-04 |  52    |  52.5  | 49.45 |   50.4  |       50.4  |   485024 |           0 |  -0.0385 |       0.0175 |         -0.0775 |              0.0206 |              4.0645 |
 
-And now let's make it more advanced by automatically calculating 60+ financial ratios for each. **This is just a small snippet of what is available within the Finance Toolkit, see for more information the GitHub page of the Finance Toolkit [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} or the example Notebook [here](https://www.jeroenbouma.com/projects/financetoolkit/getting-started).**
+And now let's make it more advanced by automatically calculating 60+ financial ratios for each. **This is just a small snippet of what is available within the Finance Toolkit, see for more information the GitHub page of the Finance Toolkit [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} or the example Notebook [here](/projects/financetoolkit/getting-started).**
 
 ```python
 toolkit.ratios.collect_all_ratios()
@@ -467,7 +468,8 @@ A sample of the output is shown below, focussig on ETH-BTC:
 | 2025Q2 | 0.0218 | 0.0217 | 0.0216 |  0.0216 |      0.0216 |   195229 |           0 |  -0.0137 |       0.1415 |         -0.053  |              0.1361 |              1.0435 |
 
 
-# Questions & Answers
+## Questions & Answers
+{: .heading-as-h1}
 In this section you can find answers to commonly asked questions. In case the answer to your question is not here, 
 consider creating an [Issue](https://github.com/JerBouma/FinanceDatabase/issues){:target="_blank"}.
 
@@ -501,7 +503,8 @@ Most companies don't change so rapidly that the database becomes obsolete - majo
 
 If you notice outdated information, please consider contributing through the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"}.
 
-# Contributions
+## Contributions
+{: .heading-as-h1}
 
 This section is meant to thank those that contributed to the project. Looking to contribute as well? Have a look [here](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"}.
 
@@ -511,7 +514,8 @@ This section is meant to thank those that contributed to the project. Looking to
 | [nindogo](https://github.com/nindogo){:target="_blank"}        | Introduced a variety of new equities from the Nairobi Securities Exchange and introduced the country Kenya into the dataset. |
 | [colin99d](https://github.com/colin99d){:target="_blank"}        | Helped in the conversion of the Finance Database package to Object-Orientated, making the code much more efficient. |
 
-# Contact
+## Contact
+{: .heading-as-h1}
 If you have any questions about the FinanceDatabase or would like to share with me what you have been working on, feel free to reach out to me via:
 
 - **Website**: https://jeroenbouma.com/

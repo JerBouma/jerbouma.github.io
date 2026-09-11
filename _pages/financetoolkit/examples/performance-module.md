@@ -1,8 +1,9 @@
 ---
 title: Performance Notebook
+seo_title: Performance Metrics Notebook – Finance Toolkit
 permalink: /projects/financetoolkit/performance-notebook
 excerpt: The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, R-Squared and more.
-description: The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, R-Squared and more.
+description: "Worked example notebook for the Finance Toolkit's Performance module: Sharpe, Sortino, Treynor and Information ratios, Jensen's Alpha, Beta and CAPM."
 classes: wide-no-sidebar no-title
 author_profile: false   
 ---

@@ -2,7 +2,7 @@
 permalink: /projects/thepassiveinvestor
 title: The Passive Investor
 excerpt: With a large increase in ETFs available (over 5,000 in 2020), it can become difficult to make the best choice in what you wish to invest. There are many different providers (iShares, Vanguard, Invesco) as well as with changes to the underlying stocks (i.e. High Yield, Super Dividends, Equal Weighted). This is quickly reflected when looking for a S&P 500 ETF as there are over 20 different ETFs available. With this package, I wish to make investment decisions easier to make and manage.
-description: With a large increase in ETFs available (over 5,000 in 2020), it can become difficult to make the best choice in what you wish to invest. There are many different providers (iShares, Vanguard, Invesco) as well as with changes to the underlying stocks (i.e. High Yield, Super Dividends, Equal Weighted). This is quickly reflected when looking for a S&P 500 ETF as there are over 20 different ETFs available. With this package, I wish to make investment decisions easier to make and manage.
+description: "The Passive Investor is a Python package that compares thousands of ETFs on holdings, sectors, providers and performance to simplify fund selection."
 classes: wide-sidebar
 author_profile: false
 redirect_from:

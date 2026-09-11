@@ -87,15 +87,15 @@
   "publisher": {
     "@type": "Person",
     "name": {{ site.name | jsonify }}
-  }{% if page.header.og_image %},
-  "image": {{ page.header.og_image | absolute_url | jsonify }}{% endif %}
+  }{% assign _article_img = page.header.og_image | default: page.image %}{% if _article_img %},
+  "image": {{ _article_img | absolute_url | jsonify }}{% endif %}
 }
 </script>
 {% endif %}
 
 <!-- Twitter Card fallback when no Twitter username is configured -->
 {% unless site.twitter.username and site.twitter.username != "" %}
-{% assign _og_img = page.header.og_image | default: site.og_image %}
+{% assign _og_img = page.header.og_image | default: page.image | default: site.og_image %}
 {% if _og_img and _og_img != "" %}
 <meta name="twitter:card" content="summary_large_image">
 {% else %}

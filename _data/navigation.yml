@@ -90,7 +90,7 @@ financetoolkit:
   - title: "Installation"
     url: /projects/financetoolkit#installation
   - title: "MCP Server"
-    url: /projects/financetoolkit/mcp
+    url: /projects/financetoolkit#mcp-server
   - title: <font color="#d67f05">Documentation</font>
     url: /projects/financetoolkit/docs
   - title: "Functionality"
@@ -136,6 +136,10 @@ financetoolkit-mcp:
         url: /projects/financetoolkit/mcp#remote-server
       - title: Local Clients
         url: /projects/financetoolkit/mcp#local-clients
+  - title: "Why this MCP"
+    url: /projects/financetoolkit/mcp#why-the-finance-toolkit-mcp
+  - title: "Example Prompts"
+    url: /projects/financetoolkit/mcp#example-prompts
   - title: "Example Conversations"
     url: /projects/financetoolkit/mcp#example-conversations
     children:
@@ -153,21 +157,25 @@ financetoolkit-mcp:
         url: /projects/financetoolkit/mcp#ex-semiconductor-esg
   - title: "Available Tools"
     url: /projects/financetoolkit/mcp#available-tools
-  - title: "Under the Hood"
-    url: /projects/financetoolkit/mcp#under-the-hood
+  - title: "FAQ"
+    url: /projects/financetoolkit/mcp#faq
+  - title: "Architecture"
+    url: /projects/financetoolkit/mcp/architecture
     children:
       - title: Modules
-        url: /projects/financetoolkit/mcp#module-overview
+        url: /projects/financetoolkit/mcp/architecture#module-overview
       - title: Startup
-        url: /projects/financetoolkit/mcp#startup-sequence
+        url: /projects/financetoolkit/mcp/architecture#startup-sequence
       - title: Router Pattern
-        url: /projects/financetoolkit/mcp#the-router-pattern
+        url: /projects/financetoolkit/mcp/architecture#the-router-pattern
       - title: Dispatch
-        url: /projects/financetoolkit/mcp#dispatch-categories
+        url: /projects/financetoolkit/mcp/architecture#dispatch-categories
+      - title: OAuth & API Keys
+        url: /projects/financetoolkit/mcp/architecture#oauth-21-and-api-key-resolution
       - title: Utilities
-        url: /projects/financetoolkit/mcp#utility-tools
+        url: /projects/financetoolkit/mcp/architecture#utility-tools
       - title: Setup Wizard
-        url: /projects/financetoolkit/mcp#setup-wizard
+        url: /projects/financetoolkit/mcp/architecture#setup-wizard
 financetoolkit-docs:
   - title: Modules
     children:
@@ -195,6 +203,8 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: Finance Toolkit
     url: /projects/financetoolkit/docs#site-nav
     children:
@@ -289,6 +299,8 @@ financetoolkit-docs-discovery:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: Search Instruments
     url: /projects/financetoolkit/docs/discovery#search_instruments
   - title: Stock Screener
@@ -396,6 +408,8 @@ financetoolkit-docs-ratios:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: All Ratios
     url: /projects/financetoolkit/docs/ratios#collect_all_ratios
   - title: Custom Ratios
@@ -635,6 +649,8 @@ financetoolkit-docs-models:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: Models
     children:
       - title: DuPont Analysis
@@ -714,6 +730,8 @@ financetoolkit-docs-options:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: Option Pricing
     children:
       - title: Option Chains
@@ -822,6 +840,8 @@ financetoolkit-docs-technicals:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: All Indicators
     url: /projects/financetoolkit/docs/technicals#collect_all_indicators
   - title: Breadth Indicators
@@ -973,6 +993,8 @@ financetoolkit-docs-risk:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: Risk
     children:
     - title: All Risk Metrics
@@ -1096,6 +1118,8 @@ financetoolkit-docs-performance:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: Performance
     children:
     - title: All Performance Metrics
@@ -1203,6 +1227,8 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: Bond Valuations
     children:
     - title: General Statistics
@@ -1300,6 +1326,8 @@ financetoolkit-docs-econometrics:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: Unit Root & Stationarity
     children:
       - title: Augmented Dickey-Fuller (ADF)
@@ -1445,6 +1473,8 @@ financetoolkit-docs-economics:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: Government
     children:
     - title: Gross Domestic Product (GDP)
@@ -1627,6 +1657,8 @@ financetoolkit-docs-portfolio:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+  - title: "MCP Server"
+    url: /projects/financetoolkit/mcp
   - title: Toolkit Integration
     url: /projects/financetoolkit/docs/portfolio#toolkit
   - title: Read Portfolio Dataset

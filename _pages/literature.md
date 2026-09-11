@@ -578,7 +578,7 @@ Most of the modelling I undertake is grounded in established financial literatur
   <div class="lit-card__header">
     <span class="lit-badge"><i class="fas fa-file-alt"></i> Article</span>
   </div>
-  <a href="http://www.jstor.org/stable/2975974" class="lit-card__title" target="_blank" rel="noopener">Portfolio Selection</a>
+  <a href="https://www.jstor.org/stable/2975974" class="lit-card__title" target="_blank" rel="noopener">Portfolio Selection</a>
   <p class="lit-card__authors">Harry Markowitz</p>
   <p class="lit-card__summary">The hypothesis (or maxim) that the investor does (or should) maximize discounted return must be rejected. If we ignore market imperfections the foregoing rule never implies that there is a diversified portfolio which is preferable to all non-diversified portfolios. Diversification is both observed and sensible; a rule of behavior which does not imply the superiority of diversification must be rejected both as a hypothesis and as a maxim.</p>
   <div class="lit-card__tags"><span class="lit-tag">Portfolio Optimisation</span></div>

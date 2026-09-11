@@ -1,6 +1,7 @@
 ---
 title: Binomial Trees in the Finance Toolkit
 date: 2024-02-09
+last_modified_at: 2026-06-16
 permalink: /articles/binomial-trees
 excerpt: "Binomial trees are a popular method for pricing options and other derivatives. The Finance Toolkit includes a function for binomial trees, which can price European and American options. This article provides an overview of the binomial tree module and demonstrates its use in option pricing."
 description: "Learn how binomial trees work for pricing European and American options, with worked examples and Python code using the Finance Toolkit."

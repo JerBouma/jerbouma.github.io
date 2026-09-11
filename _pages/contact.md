@@ -1,7 +1,7 @@
 ---
 title: Contact
 excerpt: I am always open to discuss financial theory.
-description: I am always open to discuss financial theory.
+description: "Get in touch with Jeroen Bouma to discuss financial theory, quantitative finance, open-source Python projects like the Finance Toolkit, or collaborations."
 permalink: /contact
 redirect_from:
   - /contacting

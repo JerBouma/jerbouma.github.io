@@ -23,7 +23,7 @@ Below is my journey from education through certifications, open-source projects,
 
 <div markdown="1" class="thirty-column">
 
-<img src="assets/images/default/bio-photo.jpg" class='testimoninals'>
+<img src="/assets/images/default/bio-photo.jpg" alt="Portrait photo of Jeroen Bouma" class='testimoninals'>
 
 </div>
 </div>
@@ -51,7 +51,7 @@ Below is my journey from education through certifications, open-source projects,
 </div>
 </div>
 <div class="timeline-logo">
-<img src="assets/images/resume/asr.png">
+<img src="/assets/images/resume/asr.png" alt="a.s.r. asset management logo">
 </div>
 </div>
 </div>
@@ -78,7 +78,7 @@ Below is my journey from education through certifications, open-source projects,
 </div>
 </div>
 <div class="timeline-logo">
-<img src="assets/images/resume/asr.png">
+<img src="/assets/images/resume/asr.png" alt="a.s.r. asset management logo">
 </div>
 </div>
 </div>
@@ -121,7 +121,7 @@ Below is my journey from education through certifications, open-source projects,
 </div>
 </div>
 <div class="timeline-logo">
-<img src="assets/images/resume/openbb.png">
+<img src="/assets/images/resume/openbb.png" alt="OpenBB logo">
 </div>
 </div>
 <div class="timeline-testimonials">
@@ -129,7 +129,7 @@ Below is my journey from education through certifications, open-source projects,
 <summary><i class="fas fa-quote-left"></i> Testimonials <span class="testimonial-count">3</span></summary>
 <div class="timeline-testimonial">
 <div class="timeline-testimonial-header">
-<img src="assets/images/testimonials/DidierLopes.jpeg" alt="Didier Lopes" class="testimonial-avatar">
+<img src="/assets/images/testimonials/DidierLopes.jpeg" alt="Didier Lopes" class="testimonial-avatar">
 <div>
 <strong><a href="https://www.linkedin.com/in/didier-lopes/" target="_blank">Didier Lopes</a></strong>
 <span>CEO at OpenBB</span>
@@ -147,7 +147,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 </div>
 <div class="timeline-testimonial">
 <div class="timeline-testimonial-header">
-<img src="assets/images/testimonials/MinhHoang.jpeg" alt="Minh Hoang" class="testimonial-avatar">
+<img src="/assets/images/testimonials/MinhHoang.jpeg" alt="Minh Hoang" class="testimonial-avatar">
 <div>
 <strong><a href="https://www.linkedin.com/in/minhhoang95/" target="_blank">Minh Hoang</a></strong>
 <span>Product Manager at OpenBB</span>
@@ -159,7 +159,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 </div>
 <div class="timeline-testimonial">
 <div class="timeline-testimonial-header">
-<img src="assets/images/testimonials/SriChilukuri.jpeg" alt="Sri Chilukuri" class="testimonial-avatar">
+<img src="/assets/images/testimonials/SriChilukuri.jpeg" alt="Sri Chilukuri" class="testimonial-avatar">
 <div>
 <strong><a href="https://www.linkedin.com/in/srichilukuri/" target="_blank">Sri Chilukuri</a></strong>
 <span>VP of Product Marketing at OpenBB</span>
@@ -192,7 +192,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 </div>
 </div>
 <div class="timeline-logo">
-<img src="assets/images/resume/cfasocietynetherlands.png">
+<img src="/assets/images/resume/cfasocietynetherlands.png" alt="CFA Society Netherlands logo">
 </div>
 </div>
 </div>
@@ -233,7 +233,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 </div>
 </div>
 <div class="timeline-logo">
-<img src="assets/images/projects/FinanceDatabase.jpg">
+<img src="/assets/images/projects/FinanceDatabase.jpg" alt="Finance Database logo">
 </div>
 </div>
 </div>
@@ -261,7 +261,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 </div>
 </div>
 <div class="timeline-logo">
-<img src="assets/images/resume/pggm.png">
+<img src="/assets/images/resume/pggm.png" alt="PGGM logo">
 </div>
 </div>
 <div class="timeline-testimonials">
@@ -269,7 +269,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <summary><i class="fas fa-quote-left"></i> Testimonials <span class="testimonial-count">2</span></summary>
 <div class="timeline-testimonial">
 <div class="timeline-testimonial-header">
-<img src="assets/images/testimonials/LuukvanBenthem.jpeg" alt="Luuk van Benthem" class="testimonial-avatar">
+<img src="/assets/images/testimonials/LuukvanBenthem.jpeg" alt="Luuk van Benthem" class="testimonial-avatar">
 <div>
 <strong><a href="https://www.linkedin.com/in/luuk-van-benthem-b817a765/" target="_blank">Luuk van Benthem</a></strong>
 <span>Senior ALM Adviseur at PGGM</span>
@@ -281,7 +281,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 </div>
 <div class="timeline-testimonial">
 <div class="timeline-testimonial-header">
-<img src="assets/images/testimonials/PascalJanssen.jpeg" alt="Pascal Janssen" class="testimonial-avatar">
+<img src="/assets/images/testimonials/PascalJanssen.jpeg" alt="Pascal Janssen" class="testimonial-avatar">
 <div>
 <strong><a href="https://www.linkedin.com/in/pascal-janssen-225b345/" target="_blank">Pascal Janssen</a></strong>
 <span>Strategisch ALM Adviseur at PGGM</span>
@@ -315,7 +315,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 </div>
 </div>
 <div class="timeline-logo">
-<img src="assets/images/projects/FinanceToolkit.jpg">
+<img src="/assets/images/projects/FinanceToolkit.jpg" alt="Finance Toolkit logo">
 </div>
 </div>
 </div>
@@ -341,7 +341,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 </div>
 </div>
 <div class="timeline-logo">
-<img src="assets/images/resume/utrechtuniversity.png">
+<img src="/assets/images/resume/utrechtuniversity.png" alt="Utrecht University logo">
 </div>
 </div>
 </div>
@@ -361,7 +361,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <p>Gained a broad perspective on Economics with a strong focus on communication, teamwork, analytical skills, and adaptability. Served as an Ambassador for the Green Quest, an initiative aiming for zero emissions and minimal waste for the University.</p>
 </div>
 <div class="timeline-logo">
-<img src="assets/images/resume/hanzeuniversityofappliedsciences.png">
+<img src="/assets/images/resume/hanzeuniversityofappliedsciences.png" alt="Hanze University of Applied Sciences logo">
 </div>
 </div>
 </div>
