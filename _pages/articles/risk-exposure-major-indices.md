@@ -1,9 +1,10 @@
 ---
 title: Understanding Risk Exposure Across Major Indices
 date: 2026-07-21
+last_modified_at: 2026-07-26
 permalink: /articles/risk-exposure-major-indices-finance-toolkit
 excerpt: "Compare Value at Risk, Conditional Value at Risk, maximum drawdown, skewness, and kurtosis across the S&P 500, Nasdaq 100, Dow Jones, Russell 2000, EAFE, and Emerging Markets with the Finance Toolkit."
-description: "Use the Finance Toolkit's risk module to measure tail risk across SPY, QQQ, DIA, IWM, EFA, and EEM with Value at Risk, CVaR, maximum drawdown, skewness, and kurtosis."
+description: "Measure tail risk across SPY, QQQ, DIA, IWM, EFA and EEM with Value at Risk, CVaR, maximum drawdown, skewness and kurtosis in the Finance Toolkit."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -14,7 +15,7 @@ share: true
 
 In the week of March 31 to April 6, 2025, the S&P 500 ETF fell 5.85%. That alone is not unusual; weekly moves like that happen most years. What is unusual is what the rest of 2025 looked like around it: a year that otherwise behaved close to normal, with one week that did not. That single week is enough to push the S&P 500's kurtosis for the year to 26, roughly six times its typical reading in a calmer year like 2023. Volatility alone would not tell you that. Kurtosis does.
 
-That is the case for looking past plain volatility when measuring risk. The Finance Toolkit's risk module covers Value at Risk, Conditional Value at Risk, maximum drawdown, the Ulcer Index, GARCH volatility, skewness, and kurtosis, each describing a different shape of risk that a single standard deviation number flattens into one figure. This article runs all five across six major indices: the S&P 500 (SPY), Nasdaq 100 (QQQ), Dow Jones (DIA), Russell 2000 (IWM), MSCI EAFE developed markets (EFA), and MSCI Emerging Markets (EEM). **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To explore the Finance Toolkit MCP, see [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
+That is the case for looking past plain volatility when measuring risk. The Finance Toolkit's risk module covers Value at Risk, Conditional Value at Risk, maximum drawdown, the Ulcer Index, GARCH volatility, skewness, and kurtosis, each describing a different shape of risk that a single standard deviation number flattens into one figure. This article runs all five across six major indices: the S&P 500 (SPY), Nasdaq 100 (QQQ), Dow Jones (DIA), Russell 2000 (IWM), MSCI EAFE developed markets (EFA), and MSCI Emerging Markets (EEM). **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
 ## Setting Things Up
 
@@ -32,7 +33,7 @@ indices = Toolkit(
 )
 ```
 
-Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}. The free plan covers five years of history, enough to span the period used here.
+Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history, enough to span the period used here.
 
 ## Value at Risk and Conditional VaR: How Bad Could a Bad Week Get?
 

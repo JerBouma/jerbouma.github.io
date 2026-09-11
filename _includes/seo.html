@@ -7,8 +7,19 @@
 {% assign title_separator = site.title_separator | default: '-' | replace: '|', '&#124;' %}
 
 
+{% comment %}
+  `seo_title` in a page's front matter overrides the <title> without touching the
+  rendered H1 (page.title). `seo_title_suffix: false` drops the " | Jeroen Bouma"
+  suffix for pages whose title already needs the full ~60 characters.
+{% endcomment %}
 {% if page.url == "/" %}
   {%- assign seo_title = site.title -%}
+{% elsif page.seo_title %}
+  {%- if page.seo_title_suffix == false -%}
+    {%- assign seo_title = page.seo_title -%}
+  {%- else -%}
+    {%- assign seo_title = page.seo_title | append: " " | append: title_separator | append: " " | append: site.title -%}
+  {%- endif -%}
 {% else %}
   {%- if page.title -%}
     {%- assign seo_title = page.title | append: " " | append: title_separator | append: " " | append: site.title -%}
@@ -37,8 +48,19 @@
   {%- assign author_twitter = author.twitter | replace: "@", "" -%}
 {%- endif -%}
 
-{%- assign page_large_image = page.header.og_image | default: page.header.overlay_image | default: page.header.image | absolute_url -%}
-{%- assign page_large_image = page_large_image | escape -%}
+{% comment %}
+  Share image: page.header.og_image / overlay_image / image (theme keys) or the
+  simpler top-level `image:` key. Paths without a leading slash are normalised so
+  `image: assets/...` and `image: /assets/...` both resolve.
+{% endcomment %}
+{%- assign page_large_image = page.header.og_image | default: page.header.overlay_image | default: page.header.image | default: page.image -%}
+{%- if page_large_image -%}
+  {%- assign image_first_char = page_large_image | slice: 0, 1 -%}
+  {%- unless page_large_image contains "://" or image_first_char == "/" -%}
+    {%- assign page_large_image = "/" | append: page_large_image -%}
+  {%- endunless -%}
+  {%- assign page_large_image = page_large_image | absolute_url | escape -%}
+{%- endif -%}
 
 {%- assign page_teaser_image = page.header.teaser | default: site.og_image | absolute_url -%}
 {%- assign page_teaser_image = page_teaser_image | escape -%}

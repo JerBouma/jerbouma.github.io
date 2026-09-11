@@ -1,7 +1,8 @@
 ---
 title: Getting Started with Python
+seo_title: Getting Started with Python for Finance
 excerpt: Embark on your Python journey! From basics to project ideas, learn with Kaggle, build Financial Models, and manage projects with tips on Git and code editors.
-description: Embark on your Python journey! From basics to project ideas, learn with Kaggle, build Financial Models, and manage projects with tips on Git and code editors.
+description: "Start your Python journey for finance: learn the basics with Kaggle, build your first financial models and manage projects with Git and a code editor."
 author_profile: true
 permalink: /modelling/getting-started
 classes: wide-sidebar
@@ -33,7 +34,7 @@ I recommend starting with a project that interests you. All the projects listed 
 <div class="row">
 <div markdown="1" class="thirty-three-column mobile-max-column-width">
 
-<a href="/projects/financetoolkit"><img src="https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg" width="400"></a>
+<a href="/projects/financetoolkit"><img src="https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg" alt="Finance Toolkit project banner" width="400"></a>
 
 With the **Finance Toolkit**, I wanted to see if I could improve my fundamental analysis using Python while also getting familiar with NumPy and Pandas.
 
@@ -41,7 +42,7 @@ With the **Finance Toolkit**, I wanted to see if I could improve my fundamental 
 
 <div markdown="1" class="thirty-three-column mobile-max-column-width">
 
-<a href="/projects/financedatabase"><img src="https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg" width="400"></a>
+<a href="/projects/financedatabase"><img src="https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg" alt="Finance Database project banner" width="400"></a>
 
 With the **Finance Database**, I aimed to create a database to find products compatible with the Finance Toolkit functions.
 
@@ -49,7 +50,7 @@ With the **Finance Database**, I aimed to create a database to find products com
 
 <div markdown="1" class="thirty-three-column mobile-max-column-width" style="padding-right:0px">
 
-<a href="/projects/personalfinance"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" width="400"></a>
+<a href="/projects/personalfinance"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" alt="Personal Finance project banner" width="400"></a>
 
 With **Personal Finance**, I wanted to understand my spending habits and determine how much money would be left at the end of the month for investing. This also allowed me to experiment with Excel and Power BI integrations.
 

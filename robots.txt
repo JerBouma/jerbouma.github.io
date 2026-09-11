@@ -1,10 +1,8 @@
 ---
 layout: null
 ---
-
 User-agent: *
 Allow: /
-Disallow: /assets/js/
-Disallow: /assets/css/
+Disallow: /fmp
 
 Sitemap: {{ site.url }}/sitemap.xml

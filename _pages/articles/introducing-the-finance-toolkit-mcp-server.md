@@ -1,6 +1,7 @@
 ---
 title: Introducing the Finance Toolkit MCP Server
 date: 2026-06-12
+last_modified_at: 2026-08-05
 permalink: /articles/introducing-the-finance-toolkit-mcp-server
 excerpt: "Learn how the Finance Toolkit MCP server exposes 500+ financial methods to any AI assistant that supports the Model Context Protocol. This allows you to ask questions in plain English and receive structured answers without writing Python code."
 description: "Learn how the Finance Toolkit MCP server exposes 500+ financial methods to any AI assistant that supports the Model Context Protocol."
@@ -15,7 +16,7 @@ On the 6th of May, 2023, Microsoft's Price-to-Earnings ratio was reported as 28.
 
 That inconsistency is why I built the Finance Toolkit: an open-source Python library where every ratio, indicator, and model is implemented in plain, readable code you can audit yourself. It covers 500+ methods across equities, options, currencies, crypto, ETFs, indices, and macroeconomic data going back over a century, all sourced from 30+ years of financial statements. On top of the library sits an MCP server that exposes the same 500+ methods to any AI assistant that supports the Model Context Protocol, so you (or your assistant) never have to choose between writing Python and asking a question in plain English.
 
-**The source code for every calculation is on [GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. The MCP server documentation lives [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
+**The source code for every calculation is on [GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. The full documentation lives on the [Finance Toolkit MCP server](/projects/financetoolkit/mcp) page.**
 
 ## Setting Things Up
 
@@ -39,7 +40,7 @@ companies = Toolkit(
 )
 ```
 
-Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}. The free plan covers five years of history and 250 requests a day; a paid plan unlocks the full 30+ years and quarterly data, at a 15% discount through that (affiliat) link. I do provide means to provide your own data as well, see [here](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets).
+Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history and 250 requests a day; a paid plan unlocks the full 30+ years and quarterly data, at a 15% discount through that (affiliat) link. I do provide means to provide your own data as well, see [here](/projects/financetoolkit/external-datasets).
 
 ## From Code to Conversation: the MCP Server
 

@@ -1,29 +1,35 @@
 ---
 permalink: /projects/financetoolkit/mcp
-title: Finance Toolkit MCP
-excerpt: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 500+ live financial methods on your behalf.
-description: Connect any MCP-compatible AI assistant to the hosted Finance Toolkit server at financetoolkit.jeroenbouma.com/mcp with no installation required. Ask questions in plain English and let the AI fetch 500+ live financial methods on your behalf.
+title: Finance Toolkit MCP Server
+seo_title: "Finance Toolkit MCP Server: Financial Data & Stock Analysis for Claude, ChatGPT & Cursor"
+seo_title_suffix: false
+excerpt: "Connect Claude, ChatGPT, Cursor, VS Code or any other MCP client to the hosted Finance Toolkit server and analyse stocks, financial statements, technical indicators and macro data in plain English. No installation required."
+description: "Open-source MCP server for stock analysis: 500+ financial ratios, valuation models, technical indicators and macro data in Claude, ChatGPT or Cursor."
 classes: wide-sidebar
 author_profile: false
 layout: single
+last_modified_at: 2026-09-11
 redirect_from:
   - /mcp
   - /projects/financetoolkit/mcp-server
 sidebar:
   nav: "financetoolkit-mcp"
-image: assets/images/projects/FinanceToolkit.jpg
+image: /assets/images/projects/FinanceToolkitMCP.jpg
 ---
 
-<div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit/blob/main/MCP.md" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
+<div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit#mcp-server" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The Finance Toolkit MCP Server exposes 500+ financial methods directly to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP). The server is hosted at `https://financetoolkit.jeroenbouma.com/mcp`. Connect any MCP-compatible client to that URL and you are up and running with no local installation whatsoever.
+The Finance Toolkit MCP Server is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that gives AI assistants such as Claude, ChatGPT, Cursor, GitHub Copilot and Gemini direct access to financial data and 500+ financial analysis methods. It is hosted at `https://financetoolkit.jeroenbouma.com/mcp`: point any MCP-compatible client at that URL and you can run stock analysis, compare financial statements, screen on ratios, compute technical indicators and pull macroeconomic data from a normal chat, with no local installation whatsoever.
 
-MCP is an open standard that lets AI assistants call external tools and data sources directly from the chat interface; no copy-pasting, no switching between apps. Once connected, you simply ask questions in plain English and the AI fetches live financial data on your behalf. This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all backed by the transparent, open-source calculation methods of the Finance Toolkit.
+MCP is an open standard that lets AI assistants call external tools and data sources directly from the chat interface; no copy-pasting, no switching between apps. Once connected, you simply ask questions in plain English and the AI fetches live financial data on your behalf. This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all backed by the transparent, open-source calculation methods of the [Finance Toolkit](/projects/financetoolkit).
 
 The server consolidates the entire Finance Toolkit surface into a small number of categorical master tools (e.g. `valuation`, `profitability`, `momentum`, `econometrics`) so that the AI can discover and call the right metric without being overwhelmed by hundreds of individual function signatures.
 
+**What you need.** A [Financial Modeling Prep API key](/fmp){:target="_blank"} is the only requirement: the hosted server asks for it once through a standard OAuth login and never stores it. FMP's free plan (250 requests a day, 5 years of history, US-listed companies) is enough to try the server; the paid plans, 15% off through the link, unlock the full history, all exchanges and higher request limits. An optional [FRED API key](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"} adds a handful of US-only indicators.
+{: .notice--info}
+
 <div class="mcp-video-wrapper">
-  <video class="mcp-demo-video" autoplay muted playsinline loop
+  <video class="mcp-demo-video" autoplay muted playsinline loop preload="metadata"
          poster="/assets/images/projects/FinanceToolkitMCP.jpg">
     <source src="/assets/video/mcp-demo.mp4" type="video/mp4">
   </video>
@@ -35,7 +41,7 @@ The fastest way to get started is to point any MCP-compatible client at the host
 
 ### Remote Server
 
-**No installation required, works with any MCP-compatible client.** Connect directly to the hosted Finance Toolkit MCP server by adding the URL below. The server runs in the cloud; nothing needs to be installed locally. On first connection your client will open an OAuth consent page asking for your [Financial Modeling Prep API key](https://www.jeroenbouma.com/fmp){:target="_blank"}; enter it once and the server handles authentication from there.
+**No installation required, works with any MCP-compatible client.** Connect directly to the hosted Finance Toolkit MCP server by adding the URL below. The server runs in the cloud; nothing needs to be installed locally. On first connection your client will open an OAuth consent page asking for your [Financial Modeling Prep API key](/fmp){:target="_blank"}; enter it once and the server handles authentication from there.
 
 ```
 https://financetoolkit.jeroenbouma.com/mcp
@@ -43,8 +49,8 @@ https://financetoolkit.jeroenbouma.com/mcp
 
 For detailed instructions on how to connect your client, see the sections below.
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fas fa-robot"></i> <b>Claude Desktop</b></summary>
+<details class="ft-details" id="remote-claude-desktop" markdown="1">
+  <summary><i class="fas fa-robot"></i> <h3>Claude Desktop</h3></summary>
 
   1. Open **Claude Desktop** and click on **Customize**.
   2. Go to the **Connectors** tab, click on the "+" button and select **Add custom connector**.
@@ -53,12 +59,12 @@ For detailed instructions on how to connect your client, see the sections below.
      https://financetoolkit.jeroenbouma.com/mcp
      ```
   4. Click "Add" to add the Finance Toolkit MCP server to your list of connectors.
-  5. On first use Claude Desktop opens a browser window asking for your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}. Enter it once and the server remembers it.
+  5. On first use Claude Desktop opens a browser window asking for your [FMP API key](/fmp){:target="_blank"}. Enter it once and the server remembers it.
 
 </details>
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fas fa-globe"></i> <b>Claude.ai</b></summary>
+<details class="ft-details" id="remote-claude-ai" markdown="1">
+  <summary><i class="fas fa-globe"></i> <h3>Claude.ai</h3></summary>
 
   1. Open [claude.ai](https://claude.ai){:target="_blank"} and click on **Customize** in the left sidebar.
   2. Go to the **Connectors** tab, click on the "+" button and select **Add custom connector**.
@@ -67,34 +73,61 @@ For detailed instructions on how to connect your client, see the sections below.
      https://financetoolkit.jeroenbouma.com/mcp
      ```
   4. Click "Add" to add the Finance Toolkit MCP server to your list of connectors.
-  5. On first use Claude.ai opens a browser window asking for your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}. Enter it once and the server remembers it.
+  5. On first use Claude.ai opens a browser window asking for your [FMP API key](/fmp){:target="_blank"}. Enter it once and the server remembers it.
 
 </details>
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fas fa-terminal"></i> <b>Claude Code</b></summary>
+<details class="ft-details" id="remote-claude-code" markdown="1">
+  <summary><i class="fas fa-terminal"></i> <h3>Claude Code</h3></summary>
 
   1. Run the following command once in your terminal:
      ```bash
      claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp
      ```
-  2. Restart Claude Code and the Finance Toolkit tools appear automatically.
+  2. Restart Claude Code and the Finance Toolkit tools appear automatically. The first tool call opens the browser for the OAuth step where you enter your [FMP API key](/fmp){:target="_blank"}.
 
 </details>
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fab fa-microsoft"></i> <b>VS Code</b></summary>
+<details class="ft-details" id="remote-chatgpt" markdown="1">
+  <summary><i class="fas fa-comment-dots"></i> <h3>ChatGPT</h3></summary>
+
+  ChatGPT connects to custom MCP servers through **Developer mode** (available on paid ChatGPT plans):
+
+  1. Open **Settings → Apps & Connectors → Advanced settings** and enable **Developer mode**.
+  2. Back in **Apps & Connectors**, click **Create** and enter a name, e.g. *Finance Toolkit*, and the MCP server URL:
+     ```
+     https://financetoolkit.jeroenbouma.com/mcp
+     ```
+  3. Select **OAuth** as the authentication method and click **Create**. A browser window asks for your [FMP API key](/fmp){:target="_blank"}; enter it once.
+  4. In a new chat, open the **+** menu, enable the *Finance Toolkit* connector under **Developer mode** and start asking questions.
+
+</details>
+
+<details class="ft-details" id="remote-codex" markdown="1">
+  <summary><i class="fas fa-code"></i> <h3>Codex CLI</h3></summary>
+
+  1. Run the following command once in your terminal:
+     ```bash
+     codex mcp add finance-toolkit --url https://financetoolkit.jeroenbouma.com/mcp
+     ```
+  2. Authenticate with `codex mcp login finance-toolkit`, which opens the browser for the OAuth step where you enter your [FMP API key](/fmp){:target="_blank"}.
+  3. Start `codex` and the Finance Toolkit tools are available in every session.
+
+</details>
+
+<details class="ft-details" id="remote-vs-code" markdown="1">
+  <summary><i class="fab fa-microsoft"></i> <h3>VS Code and GitHub Copilot</h3></summary>
 
   1. Open the **Command Palette** (`Cmd+Shift+P` / `Ctrl+Shift+P`) and run **MCP: Add Server**.
   2. Select **HTTP** as the server type.
   3. Enter the URL `https://financetoolkit.jeroenbouma.com/mcp` and name it *finance-toolkit*.
-  4. VS Code writes the entry to `.vscode/mcp.json` automatically.
-  5. On first tool call VS Code opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}.
+  4. VS Code writes the entry to `.vscode/mcp.json` (or your user profile) automatically and the tools show up in Copilot's **Agent** mode.
+  5. On first tool call VS Code opens an OAuth prompt for your [FMP API key](/fmp){:target="_blank"}.
 
 </details>
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fas fa-i-cursor"></i> <b>Cursor</b></summary>
+<details class="ft-details" id="remote-cursor" markdown="1">
+  <summary><i class="fas fa-i-cursor"></i> <h3>Cursor</h3></summary>
 
   1. Open **Cursor Settings** (`Cmd+,` / `Ctrl+,`) and navigate to **Features → MCP Servers**.
   2. Click **+ Add new MCP server**.
@@ -103,57 +136,64 @@ For detailed instructions on how to connect your client, see the sections below.
      https://financetoolkit.jeroenbouma.com/mcp
      ```
   4. Name it *finance-toolkit* and click **Save**.
-  5. On first tool call Cursor opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}.
+  5. On first tool call Cursor opens an OAuth prompt for your [FMP API key](/fmp){:target="_blank"}.
 
 </details>
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fas fa-wind"></i> <b>Windsurf</b></summary>
+<details class="ft-details" id="remote-windsurf" markdown="1">
+  <summary><i class="fas fa-wind"></i> <h3>Windsurf</h3></summary>
 
   1. Open **Windsurf Settings** and navigate to **MCP Servers**.
   2. Click **Add Server** and select **Remote / HTTP**.
   3. Paste the URL `https://financetoolkit.jeroenbouma.com/mcp` and name it *finance-toolkit*.
   4. Click **Save** and reload the window.
-  5. On first tool call Windsurf opens an OAuth prompt for your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}.
+  5. On first tool call Windsurf opens an OAuth prompt for your [FMP API key](/fmp){:target="_blank"}.
 
 </details>
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fab fa-google"></i> <b>Gemini</b></summary>
+<details class="ft-details" id="remote-gemini" markdown="1">
+  <summary><i class="fab fa-google"></i> <h3>Gemini CLI</h3></summary>
 
-  1. Open **Gemini CLI** settings or the **Google AI Studio** integrations panel.
-  2. Add a new MCP server entry, set the type to **http**, and paste the URL:
+  1. Run the following command once in your terminal:
+     ```bash
+     gemini mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp
      ```
-     https://financetoolkit.jeroenbouma.com/mcp
+     Alternatively, add the entry to `~/.gemini/settings.json` by hand:
+     ```json
+     {
+       "mcpServers": {
+         "finance-toolkit": {
+           "httpUrl": "https://financetoolkit.jeroenbouma.com/mcp"
+         }
+       }
+     }
      ```
-  3. Name it *finance-toolkit* and save.
-  4. On first tool call follow the OAuth prompt to enter your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}.
+  2. Start `gemini` and run `/mcp` to confirm the server is connected; the first tool call opens the OAuth prompt for your [FMP API key](/fmp){:target="_blank"}.
 
 </details>
 
 ### Local Clients
 
-For a local setup, a setup wizard is available that handles configuration automatically:
+For a local setup the server runs on your own machine through `uvx`, which keeps your API key on your device and works with clients that only support the `stdio` transport. A setup wizard handles the configuration automatically:
 
 ```bash
 uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
 ```
 
-For manual configuration, edit the client's JSON config directly. To use the hosted remote server instead, replace the `command`/`args`/`env` block with a single `url` entry pointing to `https://financetoolkit.jeroenbouma.com/mcp`.
+For manual configuration, edit the client's JSON config directly using the snippets below. In every client `uvx` is the *command* and the rest are *args*. The `env` block takes either:
 
-Edit the client's JSON config directly. The `env` block takes either:
 - `FINANCIAL_MODELING_PREP_API_KEY`: the API key directly inline.
 - `FINANCETOOLKIT_ENV_FILE`: a path to a `.env` file containing `FINANCIAL_MODELING_PREP_API_KEY=your_key_here`
- 
- When both are present the inline key wins. In every client `uvx` is the *command* and the rest are *args*. Pick your client:
+
+When both are present the inline key wins. To use the hosted remote server instead, replace the `command`/`args`/`env` block with a single `url` entry pointing to `https://financetoolkit.jeroenbouma.com/mcp`.
 
 A second key, `FRED_API_KEY`, is **optional**. It is free and only unlocks a handful of US-only indicators that have no OECD or FMP equivalent, such as nonfarm payrolls, initial jobless claims, the 30-year mortgage rate, the TIPS real yield curve and breakeven inflation expectations. Everything else works without it. The setup wizard picks it up automatically if it is already in your environment or `.env` file, and you can [register for one here](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}.
 
 Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `statsmodels` and `linearmodels` come along and the `econometrics` tool works out of the box.
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fas fa-robot"></i> <b>Claude Desktop</b></summary>
-  
+<details class="ft-details" id="local-claude-desktop" markdown="1">
+  <summary><i class="fas fa-robot"></i> <h3>Claude Desktop</h3></summary>
+
   **Easiest installation is via the MCPB bundle**, which handles configuration automatically. Download the [Finance Toolkit MCPB bundle](https://github.com/JerBouma/FinanceToolkit/releases/latest/download/financetoolkit.mcpb){:target="_blank"} and double-click it to start installation.
 
   Alternatively, edit `claude_desktop_config.json` and add the entry inside `mcpServers`:
@@ -176,10 +216,10 @@ Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `s
 
 </details>
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fas fa-robot"></i> <b>Claude Code</b></summary>
+<details class="ft-details" id="local-claude-code" markdown="1">
+  <summary><i class="fas fa-terminal"></i> <h3>Claude Code</h3></summary>
 
-  Run the following command once in your terminal (replace `YOUR_API_KEY_HERE` with your [FMP API key](https://www.jeroenbouma.com/fmp){:target="_blank"}):
+  Run the following command once in your terminal (replace `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}):
 
   ```bash
   claude mcp add --transport stdio finance-toolkit --env FINANCIAL_MODELING_PREP_API_KEY=YOUR_API_KEY_HERE -- uvx --from "financetoolkit[mcp]" financetoolkit-mcp
@@ -201,8 +241,28 @@ Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `s
 
 </details>
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fab fa-microsoft"></i> <b>VS Code</b></summary>
+<details class="ft-details" id="local-codex" markdown="1">
+  <summary><i class="fas fa-code"></i> <h3>Codex CLI</h3></summary>
+
+  Run the following command once in your terminal (replace `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}):
+
+  ```bash
+  codex mcp add finance-toolkit --env FINANCIAL_MODELING_PREP_API_KEY=YOUR_API_KEY_HERE -- uvx --from "financetoolkit[mcp]" financetoolkit-mcp
+  ```
+
+  Or add the entry to `~/.codex/config.toml`:
+
+  ```toml
+  [mcp_servers.finance-toolkit]
+  command = "uvx"
+  args = ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"]
+  env = { FINANCIAL_MODELING_PREP_API_KEY = "YOUR_API_KEY_HERE" }
+  ```
+
+</details>
+
+<details class="ft-details" id="local-vs-code" markdown="1">
+  <summary><i class="fab fa-microsoft"></i> <h3>VS Code and GitHub Copilot</h3></summary>
 
   **Workspace** — create or edit `.vscode/mcp.json` in your workspace root. VS Code uses `servers` as the top-level key (not `mcpServers`):
 
@@ -240,8 +300,8 @@ Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `s
 
 </details>
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fas fa-i-cursor"></i> <b>Cursor</b></summary>
+<details class="ft-details" id="local-cursor" markdown="1">
+  <summary><i class="fas fa-i-cursor"></i> <h3>Cursor</h3></summary>
 
   **Workspace** — create or edit `.cursor/mcp.json` in your workspace root:
 
@@ -273,8 +333,8 @@ Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `s
 
 </details>
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fab fa-google"></i> <b>Gemini</b></summary>
+<details class="ft-details" id="local-gemini" markdown="1">
+  <summary><i class="fab fa-google"></i> <h3>Gemini CLI</h3></summary>
 
   Edit `~/.gemini/settings.json` (create it if needed):
 
@@ -292,8 +352,8 @@ Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `s
 
 </details>
 
-<details class="ft-details" markdown="1">
-  <summary><i class="fas fa-wind"></i> <b>Windsurf</b></summary>
+<details class="ft-details" id="local-windsurf" markdown="1">
+  <summary><i class="fas fa-wind"></i> <h3>Windsurf</h3></summary>
 
   Edit `~/.codeium/windsurf/mcp_config.json` (create it if needed):
 
@@ -311,6 +371,54 @@ Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `s
 
 </details>
 
+## Why the Finance Toolkit MCP
+
+There are a growing number of MCP servers for financial data, from the official Financial Modeling Prep and Yahoo Finance servers to dozens of community wrappers. Most of them do one thing: expose raw API endpoints (a quote, an income statement, a list of prices) and leave the analysis to the language model. That is exactly where models are least reliable: an LLM asked to compute a return on invested capital or a Sharpe ratio from raw statements will happily make arithmetic and definitional mistakes, and two chats will rarely agree on the same number.
+
+The Finance Toolkit MCP takes the opposite approach. It is a thin layer over the [Finance Toolkit](/projects/financetoolkit), a Python package with 500+ financial methods that has been downloaded well over a million times, and every number the assistant reports is computed by the same open-source code you can read on GitHub:
+
+- **Analysis, not just data.** 150+ financial ratios, valuation and credit models (WACC, DuPont, Altman Z-Score, intrinsic value), performance and risk metrics (Sharpe, Sortino, alpha, beta, Value at Risk, GARCH), 30+ technical indicators, options pricing and Greeks, fixed income and a full econometrics toolbox.
+- **Macro included.** GDP, inflation, unemployment, interest rates and government finances for 60+ countries from the OECD and FRED, next to the company data from Financial Modeling Prep.
+- **Transparent and consistent.** Every formula is documented in the [Finance Toolkit documentation](/projects/financetoolkit/docs), so the same question returns the same number regardless of which model asks it.
+- **Hosted and open source.** Connect to the hosted server in a minute, or run it locally with a single `uvx` command. The [source code](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} is MIT-licensed.
+- **Model-agnostic.** The 22 categorical tools are designed to be understood by small and large models alike, from GPT-5 mini to Claude Opus; the [example conversations](#example-conversations) below show both ends of that range.
+
+If you only need a quote or a headline number, a raw data server is fine. If you want to ask *"which of these banks is the most solvent and why"* and get a defensible answer, this is the server built for it.
+
+## Example Prompts
+
+The server works with plain English; you never need to name a tool or an indicator. The prompts below are a good starting point and can all be adapted to other tickers, countries and date ranges.
+
+**Company analysis**
+
+- Compare the gross, operating and net margins of Apple and Microsoft over the last five years. Which one is more profitable?
+- Run a DuPont analysis on Coca-Cola and PepsiCo and tell me what drives the difference in return on equity.
+- What is the intrinsic value of Nvidia based on a discounted cash flow, and how does it compare to the current share price?
+- Calculate the Altman Z-Score and Piotroski F-Score for Ford, General Motors and Stellantis.
+
+**Screening and discovery**
+
+- Find European banks with a price-to-book below 1 and a return on equity above 10%.
+- Which semiconductor companies have the highest ESG scores?
+- Show me the top gainers in the S&P 500 today and their valuation multiples.
+
+**Technical analysis**
+
+- Is the semiconductor sector overbought? Look at RSI, MACD and Bollinger Bands for NVDA, AMD, TSM and ASML.
+- Plot the 50-day and 200-day moving averages for Tesla and tell me whether there has been a golden or death cross this year.
+
+**Portfolio, performance and risk**
+
+- Compute the Sharpe ratio, Sortino ratio, alpha and beta of Amazon, Alphabet and Meta against the S&P 500 since 2020.
+- What is the 95% Value at Risk and the maximum drawdown of a portfolio of Berkshire Hathaway, Visa and Costco?
+- Run a Fama-French three-factor regression on Netflix.
+
+**Macroeconomics and rates**
+
+- Show me the unemployment rate for the United States, Germany and Japan since 2010.
+- Compare inflation and central bank interest rates in the Eurozone and the United States over the last three years.
+- What does the US Treasury yield curve look like today versus a year ago?
+
 ## Example Conversations
 
 A core goal in building this MCP was to make it useful across the full spectrum of models: the server should return the right data regardless of which AI you use, and the depth of interpretation should scale naturally with the model's capability. The conversations below show that in practice.
@@ -318,7 +426,7 @@ A core goal in building this MCP was to make it useful across the full spectrum 
 <details class="mcp-chat" id="ex-apple-microsoft" markdown="1">
 <summary class="mcp-chat__bar">
 <span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<span class="mcp-chat__q">Compare Apple with Microsoft, what company is the most profitable?</span>
+<h3 class="mcp-chat__q">Compare Apple with Microsoft, what company is the most profitable?</h3>
 <span class="mcp-chat__model"><i class="fas fa-brain"></i>Claude Sonnet 4.6</span>
 <span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
 </summary>
@@ -362,7 +470,7 @@ For a more complete picture, the analysis could be extended into DuPont decompos
 <details class="mcp-chat" id="ex-bank-solvency" markdown="1">
 <summary class="mcp-chat__bar">
 <span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<span class="mcp-chat__q">When looking at biggest banks in Europe, which one seems to be the most solvent?</span>
+<h3 class="mcp-chat__q">When looking at biggest banks in Europe, which one seems to be the most solvent?</h3>
 <span class="mcp-chat__model"><i class="fas fa-brain"></i>Claude Sonnet 4.6</span>
 <span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
 </summary>
@@ -424,7 +532,7 @@ Logical extensions of this analysis within the Finance Toolkit ecosystem would i
 <details class="mcp-chat" id="ex-semiconductor-overbought" markdown="1">
 <summary class="mcp-chat__bar">
 <span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<span class="mcp-chat__q">Tell me something about the Semiconductor industry, is it overbought?</span>
+<h3 class="mcp-chat__q">Tell me something about the Semiconductor industry, is it overbought?</h3>
 <span class="mcp-chat__model"><i class="fas fa-brain"></i>Claude Sonnet 4.6</span>
 <span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
 </summary>
@@ -434,24 +542,24 @@ Logical extensions of this analysis within the Finance Toolkit ecosystem would i
 
 The following analysis covers eight representative semiconductor names spanning the full value chain: fabless designers (NVDA, AMD, QCOM), integrated device manufacturers (INTC, MU), a pure-play foundry (TSM), a diversified chip infrastructure leader (AVGO), and the European lithography monopoly (ASML), using RSI momentum, trailing P/E multiples, and risk-adjusted Sharpe ratios sourced entirely from the Finance Toolkit MCP server.
 
-**Momentum: The Sector Was Overbought in May and Has Since Corrected**
+**Momentum: The Sector Was Overbought in Late April and Early May and Has Since Cooled**
 
-The most telling technical story of 2026 is a sharp but short-lived overbought surge in May, now substantially unwound as of the June 4 close. The table below presents trailing 14-day RSI readings across the cohort for the last ten trading sessions. Readings above 70 flag overbought conditions; readings below 30 indicate oversold pressure.
+The most telling technical story of 2026 is a sharp overbought surge that peaked between late April and mid-May and has since largely normalised as of the June 4 close. The table below presents trailing 14-day RSI readings (Wilder smoothing) across the cohort for the last ten trading sessions. Readings above 70 flag overbought conditions; readings below 30 indicate oversold pressure.
 
 | Date       | NVDA  | AMD   | INTC  | QCOM  | AVGO  | TSM   | MU    | ASML  | SPY (Benchmark) |
 |:-----------|------:|------:|------:|------:|------:|------:|------:|------:|----------------:|
-| 2026-05-19 | 58.45 | 66.12 | 60.91 | 62.48 | 52.18 | 49.43 | 67.19 | 55.28 | 67.57 |
-| 2026-05-20 | 69.80 | 68.27 | 65.02 | 58.07 | 50.13 | 52.43 | 69.30 | 58.35 | 67.79 |
-| 2026-05-21 | 66.66 | 67.75 | 62.29 | 62.11 | 47.27 | 54.00 | 69.58 | 61.87 | 67.52 |
-| 2026-05-22 | 62.51 | 75.22 | 66.19 | 70.96 | 49.00 | 51.24 | 66.21 | 67.74 | 71.84 |
-| 2026-05-26 | 63.94 | 77.28 | 61.71 | 69.59 | 47.68 | 57.60 | 70.64 | 64.79 | 71.48 |
-| 2026-05-27 | 54.20 | 67.28 | 57.01 | 62.13 | 48.42 | 51.57 | 70.92 | 54.65 | 65.84 |
-| 2026-05-28 | 52.51 | 74.45 | 59.39 | 62.11 | 56.65 | 55.36 | 72.68 | 58.08 | 71.16 |
-| 2026-05-29 | 46.25 | 66.97 | 39.94 | 60.01 | 57.75 | 53.26 | 70.09 | 52.15 | 68.77 |
-| 2026-06-03 | 41.65 | 74.14 | 42.23 | 61.96 | 73.63 | 64.73 | 74.99 | 65.57 | 61.53 |
-| 2026-06-04 | **35.85** | 67.01 | 45.42 | 64.32 | **43.84** | 61.77 | 68.09 | 67.54 | 59.15 |
+| 2026-05-21 | 57.76 | 69.90 | 67.42 | 64.93 | 53.30 | 56.91 | 66.92 | 59.44 | 67.29 |
+| 2026-05-22 | 53.71 | **72.59** | 68.18 | **71.75** | 53.09 | 55.47 | 65.07 | 62.23 | 68.86 |
+| 2026-05-26 | 53.26 | **77.07** | **70.23** | **74.09** | 56.46 | 58.79 | **74.86** | 62.13 | **71.36** |
+| 2026-05-27 | 51.04 | **74.08** | 67.99 | 65.63 | 56.38 | 62.79 | **76.45** | 58.26 | **71.20** |
+| 2026-05-28 | 52.60 | **76.71** | 66.83 | 68.14 | 58.45 | 63.56 | **75.68** | 58.89 | **73.28** |
+| 2026-05-29 | 49.41 | **75.98** | 59.19 | 69.99 | 65.92 | 59.53 | **78.01** | 59.48 | **74.19** |
+| 2026-06-01 | 60.39 | **73.70** | 53.51 | 59.41 | 69.75 | 65.80 | **80.73** | 60.85 | **75.18** |
+| 2026-06-02 | 58.79 | **75.23** | 52.10 | 62.68 | **74.75** | 69.11 | **81.80** | 66.73 | **75.69** |
+| 2026-06-03 | 51.14 | **77.78** | 56.33 | 65.03 | **73.34** | 63.15 | **82.37** | 68.14 | 67.97 |
+| 2026-06-04 | 54.44 | **70.57** | 55.31 | 62.03 | 48.08 | 65.77 | 69.66 | **70.16** | 69.74 |
 
-The data paints a diverging picture within the sector. NVDA is the clearest outlier: its RSI has collapsed from a local peak of ~70 in mid-May to 35.85 on June 4, approaching oversold territory and suggesting near-term selling pressure has been substantial. AVGO echoes a similar dynamic, dropping from an intraday peak above 73 to 43.84 in just two sessions, possibly reflecting rotation out of AI-infrastructure adjacent names. In contrast, AMD, QCOM, MU, and ASML remain in the 60–75 band, elevated but not technically overbought as of the last close. The broader SPY benchmark sits at 59.15, meaning several semiconductor names (AMD at 67, QCOM at 64, MU at 68, ASML at 68) are trading with more momentum than the broad market, but not yet at alarming levels. Notably, the sector as a whole touched genuinely overbought readings of 80–89 on INTC, QCOM, and MU in the first two weeks of May, coinciding with the US-China trade truce news and renewed AI capex guidance from hyperscalers. That wave has receded.
+The data paints a diverging picture within the sector. AMD and MU have been the momentum leaders: AMD has printed an RSI above 70 in every one of the last nine sessions and MU pushed as high as 82 on June 3 before cooling to 69.66 on the last close. AVGO is the clearest reversal: it climbed from the low 50s to 74.75 on June 2 and then collapsed to 48.08 in just two sessions, possibly reflecting rotation out of AI-infrastructure adjacent names. NVDA, by contrast, has spent the entire window in neutral territory between 49 and 60, and INTC has faded from a 70 reading on May 26 to 55. The broader SPY benchmark sits at 69.74, itself just below the overbought line after six consecutive sessions above 70 through June 2, meaning much of the sector's momentum is a broad-market phenomenon rather than a semiconductor-specific one. Notably, the cohort touched genuinely overbought readings of 85–89 on AMD (April 24), INTC (May 1), QCOM and MU (May 11) earlier in the spring, coinciding with the US-China trade truce news and renewed AI capex guidance from hyperscalers. That wave has largely receded.
 
 **Valuation: Multiples Remain Structurally Elevated for AI-Exposed Names**
 
@@ -470,24 +578,24 @@ The overbought question cannot be answered through momentum alone: RSI describes
 
 NVDA's P/E compression from its stratospheric 284x in 2023 to 44.6x on a current-year basis is meaningful progress, but at 44x it still prices in enormous earnings growth expectations that leave little room for execution disappointment. AMD at 80.8x and AVGO at 72.6x for 2025 are similarly demanding. In contrast, TSM trades at a comparatively modest 28x, QCOM at 34x, and ASML at 37x, multiples that, while not cheap, are more defensible given their structural moat positions in leading-edge foundry, mobile/auto connectivity, and EUV lithography respectively. INTC remains the sector's distressed outlier, posting deeply negative earnings in 2024 and 2025 as its restructuring and process-technology catch-up remains unresolved.
 
-**Risk-Adjusted Returns: The Sector Has Not Rewarded Shareholders Proportionally**
+**Risk-Adjusted Returns: 2022 Was the Only Losing Year, and 2026 Is Off to a Strong Start**
 
-Sharpe ratios on an annual basis tell a sobering story. The table below shows risk-adjusted excess return (versus the risk-free rate) for each name since 2021.
+Sharpe ratios on an annual basis show how much excess return (versus the 10-year Treasury yield) each name delivered per unit of volatility. The Finance Toolkit reports these on a per-observation basis, i.e. the mean of the daily excess returns within each year divided by their standard deviation, so the figures are not annualised (multiply by roughly 15.9, the square root of 252, to compare against published annual Sharpe ratios). The table below covers each name since 2021, with 2026 running through June 4.
 
-| Year | NVDA   | AMD    | INTC   | QCOM   | AVGO   | TSM    | MU     | ASML   |
-|:-----|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
-| 2021 | -0.38  | -0.46  | -0.70  | -0.62  | -0.70  | -0.66  | -0.53  | -0.51  |
-| 2022 | -0.79  | -0.82  | -1.27  | -1.03  | -1.23  | -1.19  | -1.04  | -0.93  |
-| 2023 | -1.10  | -1.20  | -1.49  | -1.90  | -1.77  | -1.91  | -1.59  | -1.90  |
-| 2024 | -1.13  | -1.39  | -1.40  | -1.71  | -1.14  | -1.53  | -1.27  | -1.48  |
-| 2025 | -1.32  | -1.05  | -0.98  | -1.75  | -1.22  | -1.57  | -0.94  | -1.61  |
-| 2026 | -1.73  | -0.74  | -0.57  | -1.03  | -1.41  | -1.53  | -0.59  | -1.24  |
+| Year | NVDA   | AMD    | INTC   | QCOM   | AVGO   | TSM    | MU     | ASML   | SPY    |
+|:-----|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
+| 2021 | 0.126  | 0.078  | 0.019  | 0.045  | 0.105  | 0.029  | 0.045  | 0.092  | 0.120  |
+| 2022 | -0.053 | -0.066 | -0.096 | -0.055 | -0.017 | -0.064 | -0.071 | -0.032 | -0.052 |
+| 2023 | 0.170  | 0.121  | 0.116  | 0.063  | 0.144  | 0.074  | 0.100  | 0.071  | 0.098  |
+| 2024 | 0.131  | -0.017 | -0.099 | 0.018  | 0.099  | 0.108  | 0.010  | -0.003 | 0.095  |
+| 2025 | 0.052  | 0.074  | 0.076  | 0.027  | 0.061  | 0.075  | 0.140  | 0.076  | 0.046  |
+| 2026 | 0.069  | 0.205  | 0.217  | 0.104  | 0.072  | 0.149  | 0.255  | 0.166  | 0.106  |
 
-These uniformly negative Sharpe ratios indicate that, in every period, volatility has outpaced risk-compensated returns across the cohort. NVDA stands out negatively in 2026 with a Sharpe of -1.73, confirming that its recent price drawdown has been accompanied by elevated volatility, consistent with the RSI collapse observed above. AMD and MU register the least-negative 2026 ratios (-0.74 and -0.59 respectively), suggesting comparatively less turbulent price action relative to their returns. QCOM and INTC are also showing improvement in 2026 versus 2025, which aligns with their RSI readings reflecting a less extended momentum condition.
+Two patterns stand out. First, 2022 is the only year in which every name in the cohort posted a negative Sharpe ratio, the rate-shock year in which the sector sold off alongside the broader market. Second, the leadership has rotated: NVDA and AVGO were the standout risk-adjusted performers in 2023 and 2024, but in 2026 year-to-date MU (0.255), INTC (0.217) and AMD (0.205) lead by a wide margin while NVDA (0.069) has dropped to the bottom of the group, below the SPY benchmark (0.106). This is consistent with the RSI picture above: the momentum has migrated from the AI-accelerator leader toward memory, foundry and the turnaround names. AVGO's 2026 reading of 0.072 also confirms that its early-June reversal has eroded most of its risk-adjusted lead for the year.
 
-**Synthesis: Mixed Signals, Sector Was Overbought, Now Normalizing**
+**Synthesis: Pockets of Overbought Momentum, Not a Sector-Wide Extreme**
 
-The semiconductor sector is not uniformly overbought as of June 4, 2026. The data reveals a sector mid-cycle in a technical correction from a genuine May overbought peak. NVDA and AVGO have unwound their momentum surges most aggressively and now flash caution signals in the opposite direction, with NVDA approaching oversold territory. AMD, MU, QCOM, and ASML remain mildly elevated on momentum but well below the threshold that would warrant an overbought classification. Valuations remain the persistent structural concern: NVDA, AMD, and AVGO carry multiples that require continued AI-driven earnings acceleration to justify, while ASML, QCOM, and TSM offer more moderate entry points from a fundamental standpoint. For investors monitoring the sector, the logical next steps within the Finance Toolkit ecosystem would include drilling into individual-name volatility profiles using GARCH forecasts, running rolling Sharpe analyses to capture momentum-regime shifts, or examining sector-level factor exposures through Fama-French decomposition to isolate whether excess returns are attributable to market beta, size, or value factors.
+The semiconductor sector is not uniformly overbought as of June 4, 2026. The data reveals a sector that has already corrected from a genuine late-April to mid-May overbought peak and now shows selective, rather than broad, momentum excess. AMD and ASML still sit just above the 70 line and MU only dipped below it on the last session, so those three warrant caution on a pure momentum basis. AVGO has unwound its surge most aggressively, NVDA has spent the entire window in neutral territory, and INTC, QCOM and TSM are elevated but well below the overbought threshold. Valuations remain the persistent structural concern: NVDA, AMD, and AVGO carry multiples that require continued AI-driven earnings acceleration to justify, while ASML, QCOM, and TSM offer more moderate entry points from a fundamental standpoint. For investors monitoring the sector, the logical next steps within the Finance Toolkit ecosystem would include drilling into individual-name volatility profiles using GARCH forecasts, running rolling Sharpe analyses to capture momentum-regime shifts, or examining sector-level factor exposures through Fama-French decomposition to isolate whether excess returns are attributable to market beta, size, or value factors.
 
 </div>
 </details>
@@ -497,7 +605,7 @@ The examples above use **Claude Sonnet 4.6**, which layers substantial qualitati
 <details class="mcp-chat" id="ex-alibaba-amazon" markdown="1">
 <summary class="mcp-chat__bar">
 <span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<span class="mcp-chat__q">Compare the financial performance of Alibaba and Amazon over the last 5 years</span>
+<h3 class="mcp-chat__q">Compare the financial performance of Alibaba and Amazon over the last 5 years</h3>
 <span class="mcp-chat__model"><i class="fas fa-microchip"></i>GPT-5 mini</span>
 <span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
 </summary>
@@ -507,7 +615,7 @@ The examples above use **Claude Sonnet 4.6**, which layers substantial qualitati
 
 Over the last five years Amazon has outgrown Alibaba in absolute scale and delivered larger revenue and market‑cap expansion, while Alibaba showed steadier margin improvement and a sharp profitability rebound by 2025.  
 
-Below are the core yearly figures (2021–2025) used to compare scale and bottom‑line performance; revenue and net income are in USD and rounded to one decimal where helpful.
+Below are the core yearly figures (2021–2025) used to compare scale and bottom‑line performance; revenue, net income and market capitalization are in USD (Alibaba's CNY statements converted at the prevailing exchange rate) and rounded to one decimal where helpful. Alibaba's fiscal year ends in March, so its "2025" column covers April 2024 to March 2025.
 
 Looking at revenue and net income, Amazon is much larger in absolute revenue and produced a large net‑income rebound after 2022.
 
@@ -521,21 +629,20 @@ Looking at revenue and net income, Amazon is much larger in absolute revenue and
 
 When we compare per‑share and profitability metrics, both companies recovered after mid‑period weakness but Amazon delivered higher EPS and stronger returns on capital in recent years.
 
-Looking at EPS (annual):
+Looking at EPS (annual). Note that Alibaba reports earnings per share in CNY and per American Depositary Share (one ADS equals eight ordinary shares), so the two columns are not directly comparable in level, only in trend:
 
-| Year | AMZN EPS | BABA EPS |
-|:-----|---------:|---------:|
+| Year | AMZN EPS (USD) | BABA EPS (CNY per ADS) |
+|:-----|---------------:|-----------------------:|
 | 2021 | 3.24     | 55.60    |
 | 2022 | -0.27    | 22.96    |
 | 2023 | 2.90     | 27.68    |
 | 2024 | 5.53     | 31.60    |
 | 2025 | 7.17     | 55.12    |
 
-Return on equity (ROE) shows Amazon moving to materially higher ROE from 2023 onward; Alibaba improved but stayed below Amazon’s peak ROE.
+Return on equity (ROE) shows Amazon moving to materially higher ROE from 2023 onward; Alibaba improved but stayed below Amazon’s peak ROE. ROE and ROIC are computed on average balances, so the first year of the window is omitted.
 
 | Year | AMZN ROE | BABA ROE |
 |:-----|---------:|---------:|
-| 2021 |         |         |
 | 2022 | -0.0191 | 0.0546  |
 | 2023 | 0.1749  | 0.0650  |
 | 2024 | 0.2429  | 0.0702  |
@@ -545,7 +652,6 @@ Return on invested capital (ROIC) follows the same pattern: Amazon shows larger 
 
 | Year | AMZN ROIC | BABA ROIC |
 |:-----|----------:|----------:|
-| 2021 |           |          |
 | 2022 | -0.0101  | 0.0468   |
 | 2023 | 0.0976   | 0.0556   |
 | 2024 | 0.1571   | 0.0730   |
@@ -569,7 +675,7 @@ Amazon is the dominant scale and value creator by revenue and market cap and con
 <details class="mcp-chat" id="ex-unemployment" markdown="1">
 <summary class="mcp-chat__bar">
 <span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<span class="mcp-chat__q">Show me the unemployment rate for the United States and Germany since 2010.</span>
+<h3 class="mcp-chat__q">Show me the unemployment rate for the United States and Germany since 2010.</h3>
 <span class="mcp-chat__model"><i class="fas fa-microchip"></i>GPT-5 mini</span>
 <span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
 </summary>
@@ -577,7 +683,7 @@ Amazon is the dominant scale and value creator by revenue and market cap and con
 <div class="mcp-chat__reply" markdown="1">
 <div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
 
-Since 2010 Germany's unemployment rate fell from about 6.6% to roughly 3.0% and has stayed near that level, while the United States fell from about 9.6% in 2010, spiked in 2020, and averaged roughly 4.3% by 2026. The table below shows the annual unemployment rates (percent) for the United States and Germany from 2010 through 2026.
+Since 2010 Germany's unemployment rate fell from about 6.6% to roughly 3.0% and has stayed near that level, while the United States fell from about 9.6% in 2010, spiked in 2020, and is averaging roughly 4.3% so far in 2026. The table below shows the annual average unemployment rates (percent, OECD harmonised definition) for the United States and Germany from 2010 through 2026, where the 2026 figure is the year-to-date average.
 
 |      |   Germany |   United States |
 |:-----|----------:|----------------:|
@@ -597,7 +703,7 @@ Since 2010 Germany's unemployment rate fell from about 6.6% to roughly 3.0% and 
 | 2023 |     3.025 |           3.625 |
 | 2024 |     3.352 |           4.081 |
 | 2025 |     3.152 |           4.369 |
-| 2026 |     3.061 |           4.307 |
+| 2026 (YTD) |     3.061 |           4.307 |
 
 </div>
 </details>
@@ -606,7 +712,7 @@ Since 2010 Germany's unemployment rate fell from about 6.6% to roughly 3.0% and 
 <details class="mcp-chat" id="ex-semiconductor-esg" markdown="1">
 <summary class="mcp-chat__bar">
 <span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<span class="mcp-chat__q">When looking at the Semiconductor industry, what company seems to be the most sustainable?</span>
+<h3 class="mcp-chat__q">When looking at the Semiconductor industry, what company seems to be the most sustainable?</h3>
 <span class="mcp-chat__model"><i class="fas fa-microchip"></i>GPT-5 mini</span>
 <span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
 </summary>
@@ -627,9 +733,9 @@ The latest (2026) ESG scores for the sampled semiconductor companies are shown b
 | INTC   |             80.08  |
 | TXN    |             78.38  |
 | AMD    |             78.02  |
+| ON     |             68.06  |
 | NVDA   |             67.99  |
 | MRVL   |             67.59  |
-| ON     |             68.06  |
 | QCOM   |             67.36  |
 | AVGO   |             62.56  |
 
@@ -648,12 +754,12 @@ ASML’s lead is supported by very strong component scores in 2026, which indica
 
 The server groups the 500+ Finance Toolkit methods into 22 categorical master tools, each taking an `indicator` parameter that selects the exact metric, e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`. You never set this by hand: the assistant picks the right tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`.
 
-To explore what's available, ask the assistant to run the built-in `list_categories` or `search_metrics` tools, or launch the interactive inspector with `uvx --from "financetoolkit[mcp]" financetoolkit-mcp-inspector`. The full catalogue (every tool returns data as standardised Markdown) is grouped below. Each master tool wraps dozens of underlying Finance Toolkit functions; to understand **every** metric, model and parameter that can ultimately be reached through these tools, see the full Finance Toolkit documentation.
+To explore what's available, ask the assistant to run the built-in `search_categories`, `search_by_category` or `search_metrics` tools, or launch the interactive inspector with `uvx --from "financetoolkit[mcp]" financetoolkit-mcp-inspector`. The full catalogue (every tool returns data as standardised Markdown) is grouped below. Each master tool wraps dozens of underlying Finance Toolkit functions; to understand **every** metric, model and parameter that can ultimately be reached through these tools, see the full Finance Toolkit documentation.
 
 [Browse the Finance Toolkit Documentation](/projects/financetoolkit/docs){: .btn .btn--info .btn--large}
 
 <details class="ft-details" markdown="1">
-  <summary><b>Fundamentals</b></summary>
+  <summary><h3>Fundamentals</h3></summary>
 
   These tools provide a wide range of fundamental data points and financial metrics for companies, including historical prices, financial statements, company profiles, ESG scores, and performance/risk metrics.
 
@@ -669,7 +775,7 @@ To explore what's available, ask the assistant to run the built-in `list_categor
 </details>
 
 <details class="ft-details" markdown="1">
-  <summary><b>Econometrics</b></summary>
+  <summary><h3>Econometrics</h3></summary>
 
   This tool runs statistical tests and estimators on price and return series, for diagnosing the properties of a series or estimating causal effects rather than reading off a pre-computed metric.
 
@@ -680,7 +786,7 @@ To explore what's available, ask the assistant to run the built-in `list_categor
 </details>
 
 <details class="ft-details" markdown="1">
-  <summary><b>Financial Ratios and Models</b></summary>
+  <summary><h3>Financial Ratios and Models</h3></summary>
 
   These tools compute a wide range of financial ratios and models that are commonly used for fundamental analysis, valuation, and credit risk assessment. They can be applied to any company with available financial statement data.
 
@@ -696,7 +802,7 @@ To explore what's available, ask the assistant to run the built-in `list_categor
 </details>
 
 <details class="ft-details" markdown="1">
-  <summary><b>Technical Indicators</b></summary>
+  <summary><h3>Technical Indicators</h3></summary>
 
   These tools compute a wide range of technical indicators used for momentum, trend, volatility, and breadth analysis. They can be applied to any instrument with historical price data.
 
@@ -710,7 +816,7 @@ To explore what's available, ask the assistant to run the built-in `list_categor
 </details>
 
 <details class="ft-details" markdown="1">
-  <summary><b>Macro Economics and Fixed Income</b></summary>
+  <summary><h3>Macro Economics and Fixed Income</h3></summary>
 
   These tools provide insights into the broader economic environment and fixed income valuations, helping you understand the macro conditions that can impact financial markets.
 
@@ -725,7 +831,7 @@ To explore what's available, ask the assistant to run the built-in `list_categor
 </details>
 
 <details class="ft-details" markdown="1">
-  <summary><b>Utility Tools</b></summary>
+  <summary><h3>Utility Tools</h3></summary>
 
 These tools help you navigate the available functionality before making any data call.
 
@@ -738,139 +844,175 @@ These tools help you navigate the available functionality before making any data
 
 </details>
 
+## FAQ
+
+<details class="ft-details" markdown="1">
+  <summary><h3>Is the Finance Toolkit MCP server free?</h3></summary>
+
+  Yes. The server and the Finance Toolkit it is built on are open source (MIT license) and the hosted server at financetoolkit.jeroenbouma.com is free to use. The only thing you need is a Financial Modeling Prep API key; FMP offers a free plan (250 requests a day, 5 years of history, US-listed companies) that is enough to try the server, and paid plans for full history, all exchanges and higher request limits.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>Which AI assistants and clients does it work with?</h3></summary>
+
+  Any client that supports the Model Context Protocol: Claude Desktop, claude.ai, Claude Code, ChatGPT (Developer mode), Codex CLI, Cursor, VS Code with GitHub Copilot, Windsurf, Gemini CLI and many more. The hosted server uses the standard streamable HTTP transport with OAuth 2.1, and the local server uses stdio.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>Do I need to install Python?</h3></summary>
+
+  No. The hosted server requires no installation at all: add the URL to your client and enter your FMP API key once. Python (or rather uv) is only needed if you prefer to run the server locally with uvx.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>Is my Financial Modeling Prep API key stored on the server?</h3></summary>
+
+  No. During the OAuth login your key is sealed inside a signed token that your MCP client holds and sends with every request. The server reads the key from that token for the duration of a single request and never writes it to disk or to a database. The full flow is documented on the architecture page.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>What data does the server cover?</h3></summary>
+
+  Company data comes from Financial Modeling Prep: historical prices, financial statements, profiles, ESG scores and estimates for stocks and ETFs on exchanges worldwide, subject to your FMP plan. Macroeconomic data (GDP, inflation, unemployment, interest rates, government finances) comes from the OECD and, optionally, FRED, and needs no additional key except for a handful of US-only FRED series.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>How is this different from the Financial Modeling Prep or Yahoo Finance MCP servers?</h3></summary>
+
+  Those servers return raw data and leave the calculations to the language model. The Finance Toolkit MCP computes 500+ metrics, ratios, models and indicators with the open-source Finance Toolkit code, so the numbers are consistent, documented and reproducible regardless of which model you use.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>Can I run the server locally?</h3></summary>
+
+  Yes. Run uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup to configure Claude Desktop, Claude Code, Cursor, VS Code, Gemini CLI or Windsurf automatically, or add the uvx command to your client's MCP configuration by hand. Claude Desktop users can also install the one-click MCPB bundle.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>Does the server work with ChatGPT?</h3></summary>
+
+  Yes. ChatGPT supports custom MCP servers through Developer mode on its paid plans: create a connector with the server URL, choose OAuth authentication and enter your FMP API key once.
+
+</details>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is the Finance Toolkit MCP server free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The server and the Finance Toolkit it is built on are open source (MIT license) and the hosted server at financetoolkit.jeroenbouma.com is free to use. The only thing you need is a Financial Modeling Prep API key; FMP offers a free plan (250 requests a day, 5 years of history, US-listed companies) that is enough to try the server, and paid plans for full history, all exchanges and higher request limits."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which AI assistants and clients does it work with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any client that supports the Model Context Protocol: Claude Desktop, claude.ai, Claude Code, ChatGPT (Developer mode), Codex CLI, Cursor, VS Code with GitHub Copilot, Windsurf, Gemini CLI and many more. The hosted server uses the standard streamable HTTP transport with OAuth 2.1, and the local server uses stdio."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to install Python?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The hosted server requires no installation at all: add the URL to your client and enter your FMP API key once. Python (or rather uv) is only needed if you prefer to run the server locally with uvx."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my Financial Modeling Prep API key stored on the server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. During the OAuth login your key is sealed inside a signed token that your MCP client holds and sends with every request. The server reads the key from that token for the duration of a single request and never writes it to disk or to a database. The full flow is documented on the architecture page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What data does the server cover?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Company data comes from Financial Modeling Prep: historical prices, financial statements, profiles, ESG scores and estimates for stocks and ETFs on exchanges worldwide, subject to your FMP plan. Macroeconomic data (GDP, inflation, unemployment, interest rates, government finances) comes from the OECD and, optionally, FRED, and needs no additional key except for a handful of US-only FRED series."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is this different from the Financial Modeling Prep or Yahoo Finance MCP servers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Those servers return raw data and leave the calculations to the language model. The Finance Toolkit MCP computes 500+ metrics, ratios, models and indicators with the open-source Finance Toolkit code, so the numbers are consistent, documented and reproducible regardless of which model you use."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I run the server locally?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Run uvx --from \"financetoolkit[mcp]\" financetoolkit-mcp-setup to configure Claude Desktop, Claude Code, Cursor, VS Code, Gemini CLI or Windsurf automatically, or add the uvx command to your client's MCP configuration by hand. Claude Desktop users can also install the one-click MCPB bundle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the server work with ChatGPT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. ChatGPT supports custom MCP servers through Developer mode on its paid plans: create a connector with the server URL, choose OAuth authentication and enter your FMP API key once."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Finance Toolkit MCP Server",
+  "alternateName": "FinanceToolkit MCP",
+  "url": "https://www.jeroenbouma.com/projects/financetoolkit/mcp",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "softwareVersion": "2.2.0",
+  "license": "https://github.com/JerBouma/FinanceToolkit/blob/main/LICENSE",
+  "codeRepository": "https://github.com/JerBouma/FinanceToolkit",
+  "installUrl": "https://financetoolkit.jeroenbouma.com/mcp",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Jeroen Bouma",
+    "url": "https://www.jeroenbouma.com"
+  },
+  "description": "Open-source Model Context Protocol server that gives Claude, ChatGPT, Cursor, VS Code and other AI assistants access to 500+ financial analysis methods: ratios, valuation models, technical indicators, risk metrics and macroeconomic data.",
+  "featureList": [
+    "500+ financial ratios, models and indicators",
+    "Hosted server, no installation required",
+    "OAuth 2.1 with PKCE, API key never stored",
+    "Macroeconomic data for 60+ countries",
+    "Works with any MCP-compatible client"
+  ]
+}
+</script>
+
 ## Under the Hood
 
-The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 500+ Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into 22 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time.
+The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 500+ Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into 22 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time. The module layout, startup sequence, dispatch categories and the OAuth 2.1 flow that keeps your API key off the server are documented on a dedicated page for those who want to extend or contribute to the server.
 
-**For developers.** If you just want to use the Finance Toolkit through your assistant you can stop here. Everything below is implementation detail for those who want to extend or contribute to the server.
-{: .notice--info}
-
-### Module Overview
-
-| Module | Role |
-|:---|:---|
-| `mcp_controller.py` | Entry points (`main`, `setup`, `inspector`), config loading, server assembly, transport wiring |
-| `auth_model.py` | Per-request FMP API key resolution, JWT signing/verification, OAuth 2.1 routes, HTTP auth middleware |
-| `registry_controller.py` | Builds and registers the categorical router tools on the FastMCP instance |
-| `inspection_controller.py` | Static introspection of controller classes: method discovery and signature building |
-| `provider_model.py` | Routes tool calls to the correct Finance Toolkit module; manages Toolkit instance caching |
-| `cache_model.py` | Thread-safe SQLite cache for DataFrame results with TTL-based eviction |
-| `tools_model.py` | Registers the four built-in utility tools (list, search, instrument lookup) |
-| `formatting_model.py` | Converts any Finance Toolkit result (DataFrame, Series, dict, scalar) to Markdown |
-| `coercion_model.py` | Best-effort type coercion for string values arriving from LLMs |
-| `setup_model.py` | Interactive and CLI setup wizard: writes client configs |
-
-### Startup Sequence
-
-When the server process starts (`uvx … financetoolkit-mcp`), `mcp_controller._build_mcp_app()` runs the following steps in order:
-
-1. **Load environment**: resolves the FMP API key from the process environment, a local `.env` file, or the global Finance Toolkit config path (`~/.config/financetoolkit/.env`). When the key is already present in the environment (e.g. injected by the client's `env` block) the file lookup is skipped entirely.
-2. **Read `config.yaml`**: a single YAML file in the same package directory drives all registration: which controller classes exist (`module_class_map`), which methods to skip (`skip_methods`), which parameters the wrapper always handles (`init_handled_params`), and the full ordered list of tool groups (`tool_groups`).
-3. **Instantiate subsystems**: a `ToolkitProvider` (with its `SQLiteCache`), a `ControllerInspector`, a `ToolRegistry`, and a `UtilityToolRegistry` are all constructed and wired together.
-4. **Register tools**: `ToolRegistry.register_all_tools()` registers the router groups, then `UtilityToolRegistry.register_all_tools()` registers the utility tools.
-5. **Register OAuth routes**: `register_auth_routes(mcp)` attaches the OAuth 2.1 endpoints and the `/health` route to the FastMCP instance.
-6. **Start transport**: the `MCP_TRANSPORT` environment variable selects the runtime mode. `stdio` (the default) is used for local clients; `sse` and `streamable-http` are used for hosted deployments. For HTTP transports, `MCPAuthMiddleware` and `CORSMiddleware` are layered onto the Starlette app before Uvicorn starts.
-
-### The Router Pattern
-
-`ToolRegistry` reads the `tool_groups` list from `config.yaml`. Each entry is converted to a `RouterGroupSpec` NamedTuple that describes one master tool: its name, the controller class to introspect, and how methods are discovered.
-
-For each group, `ControllerInspector` either:
-- **Parses the source** of a nominated `collect_*` method on the controller class to find every `self.get_*()` call in the order they appear, or
-- **Falls back** to an alphabetical scan of all `get_` methods on the class.
-
-This produces an ordered list of indicator names. `_build_router_wrapper()` then constructs a single `wrapper(**kwargs)` closure that:
-
-1. Reads the `indicator` argument and matches it to the method list (with fuzzy-match suggestions on typos).
-2. Coerces all typed parameters from strings via `coercion_model.coerce_value()`.
-3. Validates required inputs (`tickers` for equity tools, date formats).
-4. Delegates to `ToolkitProvider.call_method()`.
-5. Passes the result through `formatting_model.format_result()` and returns a Markdown string.
-
-The wrapper's `__signature__` is replaced with a proper `inspect.Signature` so that FastMCP can introspect it and generate accurate JSON Schema for the LLM.
-
-### Dispatch Categories
-
-Every tool group has a `category` that controls how `ToolkitProvider` routes the call:
-
-| Category | Behaviour |
-|:---|:---|
-| `ticker` | Instantiates a `Toolkit(tickers=…)` object and calls a method on one of its sub-modules (e.g. `ratios`, `models`, `options`) |
-| `toolkit` | Same Toolkit instance, but calls a method directly on the `Toolkit` class (e.g. `get_historical_data`) |
-| `standalone` | Instantiates `Economics` or `FixedIncome` directly, no tickers required |
-| `discovery` | Instantiates `Discovery(api_key=…)`, no tickers or dates required |
-| `mixed` | Per-method routing table: each indicator maps to its own `(module, category)` pair |
-
-`ToolkitProvider` caches `Toolkit` instances by a key derived from tickers, date range, quarterly flag, and a hash of the API key, so repeated calls for the same parameters reuse an existing instance. Standalone module instances are cached the same way. Full DataFrame results are written to and read from `SQLiteCache` with configurable TTL.
-
-### OAuth 2.1 and API Key Resolution
-
-This section is only relevant for **hosted deployments** that run the server over an HTTP transport (`MCP_TRANSPORT=sse` or `MCP_TRANSPORT=streamable-http`). For local clients running over stdio the API key comes from the environment and no OAuth handshake is needed.
-
-#### Why OAuth at all?
-
-When the server is hosted at a remote URL, MCP clients (Claude Desktop, VS Code, Cursor, …) need a standard way to authenticate without the user manually pasting credentials into a config file. The MCP specification defines an OAuth 2.1 profile for exactly this purpose. The Finance Toolkit server implements that profile in full, including the PKCE extension that protects against authorization code interception.
-
-Crucially, the server carries **no persistent user database**: it never stores the FMP API key on disk or in memory beyond the lifetime of a single request. Instead, the key is sealed inside a cryptographically signed JWT that travels with the request.
-
-#### The OAuth Flow Step by Step
-
-The complete flow from first connection to authorized tool call:
-
-1. **Discovery:** The MCP client connects to `/mcp` or `/sse` without a token. `MCPAuthMiddleware` returns HTTP 401 with a `WWW-Authenticate: Bearer resource_metadata="…/.well-known/oauth-protected-resource"` header. The client fetches that URL to learn the authorization server location, then fetches `/.well-known/oauth-authorization-server` for the full OAuth metadata (authorization endpoint, token endpoint, PKCE methods, scopes).
-
-2. **Dynamic client registration:** The client POSTs its `client_name` and `redirect_uris` to `/oauth/register`. The server issues a random `client_id` without storing anything server-side; the client holds onto it for the rest of the flow.
-
-3. **Authorization request:** The client generates a PKCE `code_verifier` (a cryptographically random string) and derives `code_challenge = BASE64URL(SHA-256(code_verifier))`. It redirects the user's browser to `/oauth/authorize?client_id=…&redirect_uri=…&code_challenge=…&code_challenge_method=S256&state=…`.
-
-4. **User consent:** The server renders a branded HTML page asking for the user's FMP API key. The user enters the key and clicks "Authorize". The form POSTs to `/oauth/authorize`.
-
-5. **Authorization code issuance:** The server bundles the FMP key, `client_id`, `redirect_uri`, `code_challenge`, and `code_challenge_method` into a JWT payload, signs it with HMAC-SHA256 using the server secret, and sets a 5-minute expiry. The resulting signed token is the authorization code. The browser is redirected to `redirect_uri?code=<jwt>&state=<state>`.
-
-6. **Token exchange:** The client POSTs to `/oauth/token` with `grant_type=authorization_code`, the `code` JWT, and the original `code_verifier`. The server: (a) verifies the JWT signature and expiry, (b) checks `client_id` and `redirect_uri` match what is in the code payload, and (c) validates PKCE by computing `BASE64URL(SHA-256(code_verifier))` and comparing it with the `code_challenge` stored in the code using a constant-time `hmac.compare_digest`. If all checks pass, the server issues a long-lived access token: another HMAC-SHA256 JWT containing the FMP key, this time with a one-year expiry.
-
-7. **Authorized requests:** The client sends every subsequent MCP request with an `Authorization: Bearer <access_token>` header. `MCPAuthMiddleware` intercepts the request, calls `get_api_key_from_request()`, which calls `verify_jwt()` to check the signature and expiry, and extracts the FMP key from the token payload. The key is then available to `ToolkitProvider.call_method()` via `resolve_api_key()` for the lifetime of that request only. Nothing is written to disk.
-
-#### JWT Signing
-
-The server generates and verifies all JWTs itself using a 256-bit HMAC-SHA256 secret. The secret is loaded from the `FT_MCP_SECRET_KEY` environment variable if set, or automatically generated on first run and persisted to `~/.config/financetoolkit/.mcp_secret`. All comparisons use `hmac.compare_digest` to prevent timing attacks.
-
-#### API Key Resolution Order
-
-`resolve_api_key()` checks the following sources in priority order for every tool call:
-
-| Priority | Source | Used when |
-|:---|:---|:---|
-| 1 | `x-fmp-api-key` / `x-financial-modeling-prep-api-key` header | Direct header injection (advanced clients) |
-| 2 | `Authorization: Bearer <token>` header | Standard OAuth access token (JWT containing the FMP key) |
-| 3 | `fmp_api_key` / `api_key` / `fmp_key` query parameter | Query-string access (fallback) |
-| 4 | `FINANCIAL_MODELING_PREP_API_KEY` env var | Local stdio transport or server-wide default |
-
-When a JWT is found in any of these positions, `verify_jwt()` validates the signature and expiry before extracting the key. A raw (non-JWT) string is accepted as a bare API key. The env-var path is checked last so that a per-request key from an OAuth flow always takes precedence.
-
-The optional FRED key follows the same pattern through `resolve_fred_api_key()`: the `x-fred-api-key` header, a `fred_api_key` claim on the bearer token, a `fred_api_key` / `fred_key` query parameter, and finally the `FRED_API_KEY` environment variable as the server-wide fallback. It is resolved per request and passed to the Economics and Fixed Income modules; when it is absent those modules simply skip the handful of FRED-backed indicators and everything else continues to work.
-
-#### Security Properties
-
-- **No server-side credential storage**: the FMP API key lives only in the user's browser during the consent step, in the short-lived authorization code JWT (5 minutes), and in the long-lived access token JWT (1 year) held by the MCP client. The server never writes it to a database or log.
-- **PKCE (S256)**: prevents an attacker who intercepts the authorization code redirect from exchanging the code for a token, because they do not have the `code_verifier` that only the originating client holds.
-- **Signed tokens**: HMAC-SHA256 signatures mean forged or tampered tokens are rejected before any key is extracted.
-- **Constant-time comparison**: `hmac.compare_digest` is used for both PKCE validation and JWT signature verification, removing timing side-channels.
-- **Endpoint isolation**: `MCPAuthMiddleware` only protects `/sse`, `/messages`, and `/mcp`. The discovery endpoints (`/.well-known/*`), OAuth routes (`/oauth/*`), and `/health` are always open so clients can complete the authorization flow without a chicken-and-egg problem.
-- **stdio is unaffected**: all of the above is bypassed entirely for local stdio clients. The FMP key is read once at startup from the process environment and never touches the HTTP layer.
-
-### Utility Tools
-
-`UtilityToolRegistry` registers four tools that operate on the tool index rather than routing to a controller:
-
-- `list_categories`: returns a Markdown table of all registered categories and tool counts.
-- `list_metrics_by_category`: lists every indicator within a given category.
-- `search_metrics`: token-based fuzzy search across all tool names and descriptions, with typo tolerance via `difflib.get_close_matches`.
-- `search_instruments`: proxies a live `Discovery.search_instruments()` call for ticker/ISIN/name lookups.
-
-### Setup Wizard
-
-`setup_model.py` powers both the interactive wizard (`financetoolkit-mcp-setup`) and the non-interactive `--client` CLI path. It locates and merges the `finance-toolkit` MCP entry into each client's JSON config file without disturbing other server entries, and writes the FMP API key to `~/.config/financetoolkit/.env`.
+[Read the MCP Architecture](/projects/financetoolkit/mcp/architecture){: .btn .btn--info .btn--large}
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {

@@ -1,9 +1,10 @@
 ---
 title: "The Research Team You Can't Afford to Hire: Equity Research for Family Offices with the FMP MCP Server"
 date: 2026-07-23
+last_modified_at: 2026-07-26
 permalink: /articles/equity-research-family-offices-fmp-mcp
 excerpt: "A practical look at running equity research diligence for a concentrated portfolio using the FMP MCP server in Claude Desktop, prompt by prompt."
-description: "How family offices and small investment funds can run equity research diligence, from financial health to insider activity to institutional ownership, using the FMP MCP server directly in Claude Desktop."
+description: "How family offices can run equity research diligence, from financial health to insider activity and ownership, with the FMP MCP server in Claude Desktop."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -18,7 +19,7 @@ That's the gap the FMP MCP server is actually useful for. Not because it replace
 
 This piece walks through a real equity research pass on Axon Enterprise (AXON), the maker of Tasers and body cameras for law enforcement, using the FMP MCP server end to end. Every prompt below was run against the FMP MCP before writing this, so what's described is what it actually gave back, not a guess at what it might say.
 
-**For more information on the FMP MCP server, see [FMP's documentation](https://site.financialmodelingprep.com/developer/docs/mcp-server){:target="_blank"}. To see what the Finance Toolkit MCP adds on top of it, see [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
+**For more information on the FMP MCP server, see [FMP's documentation](https://site.financialmodelingprep.com/developer/docs/mcp-server){:target="_blank"}. To see what it adds on top of FMP, have a look at the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
 ## Setting Things Up
 
@@ -30,7 +31,7 @@ https://financialmodelingprep.com/mcp?apikey=YOUR_API_KEY
 
 Paste that in with your key, give it a name, and Claude has direct access to FMP's statements, analyst data, insider filings, and institutional ownership records for the rest of the session.
 
-Get an API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}. The free tier covers 250 requests a day, which is plenty to run everything below.
+Get an API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free tier covers 250 requests a day, which is plenty to run everything below.
 
 ## Building the Diligence File: Financial Health at a Glance
 
@@ -96,7 +97,7 @@ What comes back tells a more complicated story than a single snapshot would. Tot
 
 Everything above comes straight out of FMP's raw endpoints, and for pulling a specific number, a specific filing, a specific quarter, that's exactly the right tool. What it only does to a more limited extent is combine those raw numbers into the kind of computed research output an analyst would also like to see, such as a Piotroski score, a Sharpe ratio against a benchmark, a five-factor Fama-French regression, or a DuPont breakdown of what's actually driving ROE.
 
-That's what the [Finance Toolkit MCP](https://www.jeroenbouma.com/projects/financetoolkit/mcp) extends FMP's endpoints into. It's built directly on top of FMP's data, using the same API key, so there's no second account or separate integration to manage.
+That's what the [Finance Toolkit MCP](/projects/financetoolkit/mcp) extends FMP's endpoints into. It's built directly on top of FMP's data, using the same API key, so there's no second account or separate integration to manage.
 
 ![Claude Desktop response showing the Finance Toolkit MCP's health overview across efficiency, liquidity, profitability, solvency, valuation, performance, and risk for AXON](/assets/images/articles/equity-research-family-offices-fmp-mcp/finance-toolkit-health-overview.png)
 

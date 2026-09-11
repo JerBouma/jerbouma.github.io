@@ -2,7 +2,7 @@
 permalink: /projects/openbbterminal
 title: OpenBB Terminal
 excerpt: During my time at OpenBB, I have made major code contributions to the OpenBB Platform, formerly known as the OpenBB Terminal. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. I am proud to have worked on this project and I am excited to see where it will go in the future. Being a competitor to Bloomberg, Reuters and FactSet, OpenBB is a platform that is here to stay.
-description: During my time at OpenBB, I have made major code contributions to the OpenBB Platform, formerly known as the OpenBB Terminal. These are in the area of Macro and Micro Economics, Econometrics, Fundamental Analysis and much more. I am proud to have worked on this project and I am excited to see where it will go in the future. Being a competitor to Bloomberg, Reuters and FactSet, OpenBB is a platform that is here to stay.
+description: "Jeroen Bouma's contributions to the OpenBB Terminal and OpenBB Platform, an open-source Bloomberg alternative: economics, econometrics and fundamentals."
 classes: wide-no-sidebar
 author_profile: false
 redirect_from:

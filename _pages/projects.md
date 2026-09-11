@@ -71,7 +71,7 @@ The Finance Toolkit complements the Finance Database well. By utilizing both, yo
 [View this Project](/projects/financetoolkit){: .btn .btn--info}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="/projects/financetoolkit"><img src="https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg" width="400"></a>
+<a href="/projects/financetoolkit"><img src="https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg" alt="Finance Toolkit project banner" width="400"></a>
 
 [![GitHub Stars](https://img.shields.io/github/stars/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
 [![GitHub Forks](https://img.shields.io/github/forks/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
@@ -91,7 +91,7 @@ Once connected, you can ask Claude, Copilot, Cursor, or any other MCP-compatible
 [View this Project](/projects/financetoolkit/mcp){: .btn .btn--info}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="/projects/financetoolkit/mcp"><img src="/assets/images/projects/FinanceToolkitMCP.jpg" width="400"></a>
+<a href="/projects/financetoolkit/mcp"><img src="/assets/images/projects/FinanceToolkitMCP.jpg" alt="Finance Toolkit MCP Server project banner" width="400"></a>
 
 [![GitHub Stars](https://img.shields.io/github/stars/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
 [![GitHub Forks](https://img.shields.io/github/forks/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
@@ -111,7 +111,7 @@ The explicit aim of this database is not to provide up-to-date fundamentals or s
 [View this Project](/projects/financedatabase){: .btn .btn--info}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="/projects/financedatabase"><img src="https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg" width="400"></a>
+<a href="/projects/financedatabase"><img src="https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg" alt="Finance Database project banner" width="400"></a>
 
 [![GitHub Stars](https://img.shields.io/github/stars/JerBouma/financedatabase?style=social)](https://github.com/JerBouma/financedatabase){:target="_blank"}
 [![GitHub Forks](https://img.shields.io/github/forks/JerBouma/financedatabase?style=social)](https://github.com/JerBouma/financedatabase){:target="_blank"}
@@ -131,7 +131,7 @@ During my time at OpenBB, I made significant code contributions to the OpenBB Pl
 [View this Project](/projects/openbbterminal){: .btn .btn--info}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="/projects/openbbterminal"><img src="https://github.com/OpenBB-finance/OpenBBTerminal/raw/develop/images/openbb_gradient.png" width="400"></a>
+<a href="/projects/openbbterminal"><img src="https://github.com/OpenBB-finance/OpenBBTerminal/raw/develop/images/openbb_gradient.png" alt="OpenBB Terminal project banner" width="400"></a>
 
 [![GitHub Stars](https://img.shields.io/github/stars/OpenBB-finance/OpenBBTerminal?style=social)](https://github.com/OpenBB-finance/OpenBBTerminal){:target="_blank"}
 [![GitHub Forks](https://img.shields.io/github/forks/OpenBB-finance/OpenBBTerminal?style=social)](https://github.com/OpenBB-finance/OpenBBTerminal){:target="_blank"}
@@ -152,7 +152,7 @@ This variety is evident when searching for an S&P 500 ETF, where over 20 differe
 
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="/projects/thepassiveinvestor"><img src="https://github.com/JerBouma/ThePassiveInvestor/assets/46355364/48f40d07-bbc7-47c0-ae22-9cdb30a9308f" width="400"></a>
+<a href="/projects/thepassiveinvestor"><img src="https://github.com/JerBouma/ThePassiveInvestor/assets/46355364/48f40d07-bbc7-47c0-ae22-9cdb30a9308f" alt="The Passive Investor project banner" width="400"></a>
 
 [![GitHub Stars](https://img.shields.io/github/stars/JerBouma/thepassiveinvestor?style=social)](https://github.com/JerBouma/thepassiveinvestor){:target="_blank"}
 [![GitHub Forks](https://img.shields.io/github/forks/JerBouma/thepassiveinvestor?style=social)](https://github.com/JerBouma/thepassiveinvestor){:target="_blank"}
@@ -174,7 +174,7 @@ To handle variations without requiring exact matches, the package uses the Leven
 [View this Project](/projects/personalfinance){: .btn .btn--warning}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="/projects/personalfinance"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" width="400"></a>
+<a href="/projects/personalfinance"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" alt="Personal Finance project banner" width="400"></a>
 
 [![GitHub Stars](https://img.shields.io/github/stars/JerBouma/personalfinance?style=social)](https://github.com/JerBouma/personalfinance){:target="_blank"}
 [![GitHub Forks](https://img.shields.io/github/forks/JerBouma/personalfinance?style=social)](https://github.com/JerBouma/personalfinance){:target="_blank"}

@@ -1,8 +1,9 @@
 ---
 title: External Datasets in the Finance Toolkit
+seo_title: External Datasets Notebook – Finance Toolkit
 permalink: /projects/financetoolkit/external-datasets
 excerpt: The Finance Toolkit has the ability to leverage custom datasets from any data provider as well. This makes it possible to work with your preferred data and not be limited to the data source the Finance Toolkit currently provides.
-description: The Finance Toolkit has the ability to leverage custom datasets from any data provider as well. This makes it possible to work with your preferred data and not be limited to the data source the Finance Toolkit currently provides.
+description: "Worked example notebook showing how to load custom datasets from any data provider into the Finance Toolkit and use your own financial data in Python."
 classes: wide-no-sidebar no-title
 author_profile: false
 ---

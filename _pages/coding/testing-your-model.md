@@ -1,5 +1,6 @@
 ---
 title: Test your Model
+seo_title: Test a Financial Model in Python with Pytest
 excerpt: Explore model testing with Pytest. Set up tests mirroring model structure, ensuring accurate results through data recording and comparison.
 description: Explore model testing with Pytest. Set up tests mirroring model structure, ensuring accurate results through data recording and comparison.
 author_profile: true

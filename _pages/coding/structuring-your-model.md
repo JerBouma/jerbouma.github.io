@@ -1,5 +1,6 @@
 ---
 title: Structure your Model
+seo_title: Structure a Financial Model in Python (MVC)
 excerpt: Learn to structure your financial model with the MVC pattern. Code in Python, manage dependencies, and follow clear separation of concerns.
 description: Learn to structure your financial model with the MVC pattern. Code in Python, manage dependencies, and follow clear separation of concerns.
 author_profile: true

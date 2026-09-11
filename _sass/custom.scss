@@ -5469,8 +5469,70 @@ table.highlight {
 
 // Offset anchored MCP cards/sections so they clear the sticky masthead
 .mcp-chat[id],
+.ft-details[id],
 #run-the-setup-wizard, #enter-your-api-key, #select-your-clients, #manual-setup,
 #module-overview, #startup-sequence, #the-router-pattern,
 #dispatch-categories, #utility-tools, #setup-wizard {
   scroll-margin-top: 90px;
+}
+
+// ── Semantic headings that must not change how the page looks ───────────
+// Pages get a single H1 (the page title); former in-body `# Heading` lines are
+// now `## Heading {: .heading-as-h1}` and keep the exact H1 typography.
+.page__content h2.heading-as-h1 {
+  font-size: 2.2rem !important;
+  letter-spacing: -1px;
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+// The MCP architecture page promotes its former `###`/`####` sections one
+// level (so the page outline starts at H2) while keeping the H3/H4 look.
+.page__content h2.heading-as-h3 {
+  font-size: 1.3rem !important;
+  letter-spacing: normal;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.page__content h3.heading-as-h4 {
+  font-size: 1.0625em !important;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+// Headings inside collapsible summaries (client install cards and example
+// conversations) inherit the summary's typography 1:1. The theme's
+// `h3::before` anchor-offset block is disabled here because it would break the
+// flex row; the `scroll-margin-top` rules above handle the masthead offset.
+.ft-details > summary h3,
+.mcp-chat__bar h3.mcp-chat__q {
+  display: inline;
+  font-size: inherit !important;
+  font-weight: 600;
+  line-height: inherit;
+  letter-spacing: normal;
+  margin: 0 !important;
+  padding: 0;
+  border: none;
+  color: inherit !important;
+
+  &::before {
+    content: none;
+    display: none;
+  }
+}
+
+.mcp-chat__bar h3.mcp-chat__q {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.92rem !important;
+  line-height: 1.4;
+
+  @media (max-width: 600px) { font-size: 0.86rem !important; }
 }

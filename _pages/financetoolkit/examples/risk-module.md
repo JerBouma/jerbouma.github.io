@@ -1,8 +1,9 @@
 ---
 title: Risk Notebook
+seo_title: Risk Metrics Notebook – Finance Toolkit
 permalink: /projects/financetoolkit/risk-notebook
 excerpt: The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
-description: The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
+description: "Worked example notebook for the Finance Toolkit's Risk module: calculate Value at Risk, Conditional VaR, maximum drawdown, correlations, GARCH and EWMA."
 classes: wide-no-sidebar no-title
 author_profile: false   
 ---

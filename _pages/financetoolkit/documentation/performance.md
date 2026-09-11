@@ -1,7 +1,8 @@
 ---
 title: Performance
+seo_title: Performance Module Documentation – Finance Toolkit
 excerpt: The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, R-Squared and more.
-description: The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, R-Squared and more.
+description: "Reference for every function and parameter in the Finance Toolkit's Performance module: Sharpe, Sortino, Treynor ratios, Jensen's Alpha, Beta and CAPM."
 author_profile: false
 permalink: /projects/financetoolkit/docs/performance
 classes: wide-sidebar

@@ -1,8 +1,9 @@
 ---
 title: Getting Started with the Finance Toolkit
+seo_title: Getting Started Notebook – Finance Toolkit
 permalink: /projects/financetoolkit/getting-started
 excerpt: Demonstrates the basic usage of the Finance Toolkit by showing each functionality and how to use it. This includes company profiles, company quotes, historical data, enterprise and market values, company ratings, financial statements, financial ratios and models like DUPONT.
-description: Demonstrates the basic usage of the Finance Toolkit by showing each functionality and how to use it. This includes company profiles, company quotes, historical data, enterprise and market values, company ratings, financial statements, financial ratios and models like DUPONT.
+description: "Worked example notebook introducing the Finance Toolkit in Python: company profiles, quotes, historical data, financial statements and ratios."
 classes: wide-no-sidebar no-title
 author_profile: false   
 redirect_from:

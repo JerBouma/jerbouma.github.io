@@ -1,9 +1,10 @@
 ---
 title: Competitor and Sector Analysis with the Finance Toolkit
 date: 2026-07-07
+last_modified_at: 2026-07-26
 permalink: /articles/semiconductor-sector-analysis-finance-toolkit
 excerpt: "Analyze the semiconductor sector from 2010 to 2025 using the Finance Toolkit. Track revenue shifts, gross margin divergence, and the two genuine competitive battles that define the industry: Intel vs AMD and NVIDIA vs AMD."
-description: "Semiconductor sector analysis using Python and the Finance Toolkit MCP. Revenue, margins, ROIC, and competitor analysis across Intel, AMD, NVIDIA, Qualcomm, Broadcom, and Texas Instruments."
+description: "Semiconductor sector analysis with the Finance Toolkit in Python: revenue, margins and ROIC across Intel, AMD, NVIDIA, Qualcomm, Broadcom and TI."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -18,7 +19,7 @@ By 2025, the same six companies tell a radically different story. NVIDIA has gro
 
 The Finance Toolkit makes it straightforward to track this transformation through financial data, both via Python code and the MCP server for those who prefer conversational analysis.
 
-**For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To explore the Finance Toolkit MCP, see [here](https://www.jeroenbouma.com/projects/financetoolkit/mcp).**
+**For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
 > **Try this with the Finance Toolkit MCP:** *"Let's do a deep dive in the Semiconductor industry. What trends do you see in the last 10 years? And what about the fundamentals?"*
 
@@ -43,7 +44,7 @@ sector = Toolkit(
 )
 ```
 
-Get your FMP API key at [jeroenbouma.com/fmp](https://www.jeroenbouma.com/fmp){:target="_blank"}. A paid plan is required to access the full 15-year history used here.
+Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. A paid plan is required to access the full 15-year history used here.
 
 ## Revenue: How the Landscape Shifted
 

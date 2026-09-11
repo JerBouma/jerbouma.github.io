@@ -1,7 +1,8 @@
 ---
 title: Documentation
+seo_title: Finance Toolkit Documentation
 excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 500+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
-description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 500+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
+description: "Documentation for the Finance Toolkit, an open-source Python package with 500+ transparent financial methods: a reference for every module and function."
 author_profile: false
 permalink: /projects/financetoolkit/docs
 classes: wide-sidebar
@@ -33,7 +34,7 @@ Some examples of ratios are the Current Ratio, Debt to Equity Ratio, Return on A
 
 Next to that, it is also possible to define custom ratios.
 
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios](https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios){:target="_blank"}
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/ratios](/projects/financetoolkit/docs/ratios){:target="_blank"}
 
 
 ```python
@@ -72,7 +73,7 @@ Which returns:
 ## models
 Gives access to the Models module. The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
 
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/models](https://www.jeroenbouma.com/projects/financetoolkit/docs/models){:target="_blank"}
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/models](/projects/financetoolkit/docs/models){:target="_blank"}
 
 
 ```python
@@ -103,7 +104,7 @@ This gives access to the Options module. The Options Module is meant to provide 
 
 It gives insights in the sensitivity of an option to changes in the underlying asset price, volatility, years to maturity, dividend yilds and interest rates and several derivatives of these sensitivities.
 
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/options](https://www.jeroenbouma.com/projects/financetoolkit/docs/options){:target="_blank"}
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/options](/projects/financetoolkit/docs/options){:target="_blank"}
 
 
 ```python
@@ -152,7 +153,7 @@ This gives access to the Technicals module. The Technicals Module contains nearl
 
 Some examples of technical indicators are the Average Directional Index (ADX), the Accumulation/Distribution Line (ADL), the Average True Range (ATR), the Bollinger Bands (BBANDS), the Commodity Channel Index (CCI), the Chaikin Oscillator (CHO), the Chaikin Money Flow (CMF), the Double Exponential Moving Average (DEMA), the Exponential Moving Average (EMA) and the Moving Average Convergence Divergence (MACD).
 
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals](https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals){:target="_blank"}
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/technicals](/projects/financetoolkit/docs/technicals){:target="_blank"}
 
 
 ```python
@@ -180,7 +181,7 @@ This gives access to the Performance module. The Performance Module is meant to 
 
 It gives insights in the performance a stock has to e.g. a benchmark that is not easily identified by looking at the raw data. This class is closely related to the Risk class which highlights things such as Value at Risk (VaR) and Maximum Drawdown.
 
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/performance](https://www.jeroenbouma.com/projects/financetoolkit/docs/performance){:target="_blank"}
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/performance](/projects/financetoolkit/docs/performance){:target="_blank"}
 
 
 ```python
@@ -210,7 +211,7 @@ Note that the time-series diagnostic and econometric tests (unit root tests, coi
 
 It gives insights in the risk a stock composes that is not perceived as easily by looking at the data. This class is closely related to the Performance class which highlights things such as Sharpe Ratio and Sortino Ratio.
 
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/risk](https://www.jeroenbouma.com/projects/financetoolkit/docs/risk){:target="_blank"}
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/risk](/projects/financetoolkit/docs/risk){:target="_blank"}
 
 
 ```python
@@ -247,7 +248,7 @@ This class is closely related to the Risk class, which houses the risk measures 
 
 Requires the optional `financetoolkit[econometrics]` extra (`statsmodels` and `linearmodels`) -- install with `pip install financetoolkit[econometrics]`.
 
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics){:target="_blank"}
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics](/projects/financetoolkit/docs/econometrics){:target="_blank"}
 
 
 ```python
@@ -267,7 +268,7 @@ Next to that, it is also possible to acquire Central Bank Rates and ICE BofA Ind
 
 Note that this class can also be directly accessed by importing the FixedIncome class directly via from financetoolkit import FixedIncome. This is useful if you only want to use the FixedIncome class and not the other classes within the Toolkit module.
 
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome](https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome){:target="_blank"}
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome](/projects/financetoolkit/docs/fixedincome){:target="_blank"}
 
 
 ```python
@@ -304,7 +305,7 @@ This gives access to the Economics module. This module contains a wide variety o
 
 Note that this class can also be directly accessed by importing the Economics class directly via from financetoolkit import Economics. This is useful if you only want to use the Economics class and not the other classes within the Toolkit module.
 
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/economics](https://www.jeroenbouma.com/projects/financetoolkit/docs/economics){:target="_blank"}
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/economics](/projects/financetoolkit/docs/economics){:target="_blank"}
 
 
 ```python
@@ -1526,7 +1527,7 @@ Which returns:
 ## get_normalization_files
 Copies the normalization files to a folder based on path. By default, this is the path of the 'Downloads' folder.
 
-This function is relevant if you want to supply your own datasets. See for a proper guide the following notebook: [https://www.jeroenbouma.com/projects/financetoolkit/external-datasets](https://www.jeroenbouma.com/projects/financetoolkit/external-datasets){:target="_blank"}
+This function is relevant if you want to supply your own datasets. See for a proper guide the following notebook: [https://www.jeroenbouma.com/projects/financetoolkit/external-datasets](/projects/financetoolkit/external-datasets){:target="_blank"}
 
 **Args:**
 

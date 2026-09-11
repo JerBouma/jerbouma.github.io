@@ -1,5 +1,6 @@
 ---
 title: Build your Model
+seo_title: Build a Financial Model in Python
 excerpt: Build robust financial models with modular programming, styling, and PEP 8 conventions.
 description: Build robust financial models with modular programming, styling, and PEP 8 conventions.
 author_profile: true
