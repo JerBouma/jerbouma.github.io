@@ -81,6 +81,9 @@
 {% endif %}
 
 <meta name="description" content="{{ seo_description }}">
+{% if page.noindex %}
+  <meta name="robots" content="noindex, nofollow">
+{% endif %}
 
 {% if author.name %}
   <meta name="author" content="{{ author.name | default: author }}">

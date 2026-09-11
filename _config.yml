@@ -147,6 +147,9 @@ include:
   - _pages
   - .well-known
 exclude:
+  - CLAUDE.md
+  - poetry.lock
+  - requirements.txt
   - "*.sublime-project"
   - "*.sublime-workspace"
   - vendor
