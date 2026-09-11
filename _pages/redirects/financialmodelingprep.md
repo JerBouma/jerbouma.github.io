@@ -7,6 +7,7 @@ redirect_from:
   - /financialmodelingprep
 layout: splash
 sitemap: false
+noindex: true
 author_profile: false
 ---
 

@@ -1,8 +1,40 @@
 ---
 layout: null
 ---
+# Search engines and AI assistants (search indexers and user-triggered
+# fetchers such as OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User,
+# PerplexityBot) are welcome everywhere. Pages that should stay out of search
+# results carry a noindex tag instead of being blocked here, so crawlers can
+# actually see it. Assets (CSS, JS, notebooks) must stay crawlable: the
+# notebook pages fetch their .ipynb files client-side.
 User-agent: *
 Allow: /
-Disallow: /fmp
+
+# Opt out of AI model training. Cloudflare's managed robots.txt prepends the
+# same opt-outs at the edge; they are repeated here so the policy lives in the
+# repository and survives if that toggle is ever switched off.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
 
 Sitemap: {{ site.url }}/sitemap.xml
