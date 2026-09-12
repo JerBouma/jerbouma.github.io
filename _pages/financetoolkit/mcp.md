@@ -21,7 +21,7 @@ image: /assets/images/projects/FinanceToolkitMCP.jpg
 
 The Finance Toolkit MCP Server is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that gives AI assistants such as Claude, ChatGPT, Cursor, GitHub Copilot and Gemini access to financial data and the 500+ analysis methods of the [Finance Toolkit](/projects/financetoolkit). Ask a question in plain English and the assistant fetches the data and runs the calculation for you: compare financial statements, screen on ratios, compute technical indicators or pull macroeconomic data, all with the same transparent, open-source formulas as the Python package.
 
-The server comes in two flavours that expose exactly the same tools. The **remote server** is hosted at `https://financetoolkit.jeroenbouma.com/mcp` and needs nothing installed; the **local server** runs on your own machine through `uvx`. Both need a [Financial Modeling Prep API key](/fmp){:target="_blank"} for company data.
+The server comes in two flavours that expose exactly the same tools. The **remote server** is hosted and needs nothing installed; the **local server** runs on your own machine through `uvx`. Both need a [Financial Modeling Prep API key](/fmp){:target="_blank"} for company data.
 
 <div class="mcp-video-wrapper">
   <video class="mcp-demo-video" autoplay muted playsinline loop preload="metadata"
