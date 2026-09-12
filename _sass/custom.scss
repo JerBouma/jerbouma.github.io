@@ -5385,7 +5385,11 @@ table.highlight {
   .mcp-demo-video {
     display: block;
     width: 100%;
-    aspect-ratio: 16 / 9; // reserve the space before the poster/video arrives
+    // the width/height attributes reserve the space before the poster/video
+    // arrives; height must follow the width or the 720px attribute wins on
+    // narrow screens and the player letterboxes inside a too-tall box
+    height: auto;
+    aspect-ratio: 16 / 9;
     background: #000;
   }
 }
