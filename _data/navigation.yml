@@ -503,9 +503,9 @@ financetoolkit-docs-ratios:
       - title: Tax Burden Ratio
         url: /projects/financetoolkit/docs/ratios#get_tax_burden_ratio
       - title: EBT to EBIT
-        url: /projects/financetoolkit/docs/ratios#get_EBT_to_EBIT
+        url: /projects/financetoolkit/docs/ratios#get_ebt_to_ebit
       - title: EBIT to Revenue
-        url: /projects/financetoolkit/docs/ratios#get_EBIT_to_revenue
+        url: /projects/financetoolkit/docs/ratios#get_ebit_to_revenue
       - title: Cash Tax Rate
         url: /projects/financetoolkit/docs/ratios#get_cash_tax_rate
       - title: Tax Rate Divergence
@@ -1054,13 +1054,13 @@ financetoolkit-docs-risk:
     - title: HAR-RV Forecast
       url:  /projects/financetoolkit/docs/risk#get_har_rv_forecast
     - title: Parkinson Volatility
-      url:  /projects/financetoolkit/docs/risk#get_parkinson_volatility
+      url:  /projects/financetoolkit/docs/risk#get_volatility
     - title: Garman-Klass Volatility
-      url:  /projects/financetoolkit/docs/risk#get_garman_klass_volatility
+      url:  /projects/financetoolkit/docs/risk#get_volatility
     - title: Rogers-Satchell Volatility
-      url:  /projects/financetoolkit/docs/risk#get_rogers_satchell_volatility
+      url:  /projects/financetoolkit/docs/risk#get_volatility
     - title: Yang-Zhang Volatility
-      url:  /projects/financetoolkit/docs/risk#get_yang_zhang_volatility
+      url:  /projects/financetoolkit/docs/risk#get_volatility
     - title: Hill Estimator
       url:  /projects/financetoolkit/docs/risk#get_hill_estimator
     - title: Best Fitting Copula
@@ -1165,11 +1165,11 @@ financetoolkit-docs-performance:
     - title: Carhart Four-Factor Model
       url:  /projects/financetoolkit/docs/performance#get_carhart_four_factor_model
     - title: Adjusted Sharpe Ratio
-      url:  /projects/financetoolkit/docs/performance#get_adjusted_sharpe_ratio
+      url:  /projects/financetoolkit/docs/performance#get_sharpe_ratio
     - title: Probabilistic Sharpe Ratio (PSR)
-      url:  /projects/financetoolkit/docs/performance#get_probabilistic_sharpe_ratio
+      url:  /projects/financetoolkit/docs/performance#get_sharpe_ratio
     - title: Deflated Sharpe Ratio (DSR)
-      url:  /projects/financetoolkit/docs/performance#get_deflated_sharpe_ratio
+      url:  /projects/financetoolkit/docs/performance#get_sharpe_ratio
     - title: Appraisal Ratio
       url:  /projects/financetoolkit/docs/performance#get_appraisal_ratio
     - title: Rachev Ratio
@@ -1684,7 +1684,7 @@ personalfinance:
     url: /projects/personalfinance#getting-started
 modelling:
   - title: "Introduction"
-    url: /modelling
+    url: /modelling/introduction
   - title: "Getting Started"
     url: /modelling/getting-started
     children:

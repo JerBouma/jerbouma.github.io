@@ -32,7 +32,7 @@ The data is returned as levels. To obtain period-on-period changes (e.g. year on
 
 **See definition:** [https://data.oecd.org/gdp/gross-domestic-product-gdp.htm](https://data.oecd.org/gdp/gross-domestic-product-gdp.htm){:target="_blank"}
 
-It is also possible to acquire the data from the Global Macro Database (GMDB) source which also provides inflation adjusted data. For more information see: [https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf](https://www.globalmacrodata.com/files/documentations/Variables/nGDP.pdf){:target="_blank"}
+It is also possible to acquire the data from the Global Macro Database (GMDB) source which also provides inflation adjusted data. For more information see: [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
 **Also known as:** GDP, national income, economic growth.
 

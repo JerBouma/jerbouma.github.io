@@ -1202,7 +1202,7 @@ The marginal lending facility rate is the interest rate banks pay when they borr
 
 The deposit facility rate is one of the three interest rates the ECB sets every six weeks as part of its monetary policy. The rate defines the interest banks receive for depositing money with the central bank overnight.
 
-See source: [https://data.ecb.europa.eu/main-figures/](https://data.ecb.europa.eu/main-figures/){:target="_blank"}
+See source: [https://data.ecb.europa.eu/key-figures](https://data.ecb.europa.eu/key-figures){:target="_blank"}
 
 **Also known as:** ECB rates, deposit facility rate.
 

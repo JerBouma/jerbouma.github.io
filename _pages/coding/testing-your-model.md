@@ -13,7 +13,7 @@ sidebar:
 
 {% include mermaid.html %}
 
-As defined in [Setting up your Project](/modelling/setting-up-your-project), the model should always include a `tests` folder. This folder utilizes [Pytest](https://docs.pytest.org/en/){: target="_blank"} to run tests. The test structure should mirror the model structure, essentially duplicating it. The primary difference is that each test module filename is prefixed with `test_` so Pytest can discover it.
+As defined in [Setting up your Project](/modelling/setting-up-your-project), the model should always include a `tests` folder. This folder utilizes [Pytest](https://docs.pytest.org/en/stable/){: target="_blank"} to run tests. The test structure should mirror the model structure, essentially duplicating it. The primary difference is that each test module filename is prefixed with `test_` so Pytest can discover it.
 
 For example, to test the Gross Margin functionality from `profitability_model.py`, create a test function with the same name prefixed by `test_`. This looks like the following:
 

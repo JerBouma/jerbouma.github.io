@@ -44,7 +44,7 @@ The `tests` folder mirrors this structure but contains unit tests for `pytest`:
 
 While this structure can be modified, the key is to organize the model in a way that is understandable and maintainable for yourself and others.
 
-For instance, my [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} package follows this exact structure. This isn't an isolated case; you'll find a similar structure in projects like [OpenBB](https://github.com/OpenBB-finance/OpenBBTerminal){: target="_blank"}, a major open-source finance project. This structure can also be expanded, for example, by adding `_view` modules.
+For instance, my [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} package follows this exact structure. This isn't an isolated case; you'll find a similar structure in projects like [OpenBB](https://github.com/OpenBB-finance/OpenBB){: target="_blank"}, a major open-source finance project. This structure can also be expanded, for example, by adding `_view` modules.
 
 In any case, using the structure described above clarifies the location and purpose of each file, as discussed further in [Structure your Model](/modelling/structure-your-model).
 
@@ -147,7 +147,7 @@ dependencies = [
 Linters are tools that analyze code to detect errors, enforce style guidelines, and suggest improvements. They range from code formatters and spell checkers to tools identifying potential bugs or security vulnerabilities. The following linters are recommended to ensure code quality and consistency before committing changes via Git:
 
 - [**Black**](https://github.com/psf/black): A PEP 8 compliant opinionated formatter, maintained by the Python Software Foundation.
-- [**Ruff**](https://github.com/charliermarsh/ruff): An extremely fast linter that consolidates the functionality of tools like Flake8 (and its plugins), isort, pydocstyle, yesqa, eradicate, pyupgrade, and autoflake.
+- [**Ruff**](https://github.com/astral-sh/ruff): An extremely fast linter that consolidates the functionality of tools like Flake8 (and its plugins), isort, pydocstyle, yesqa, eradicate, pyupgrade, and autoflake.
 - [**ty**](https://docs.astral.sh/ty/): An extremely fast type checker by Astral (the creators of Ruff and uv) that verifies type hints to help ensure correct usage of variables and functions.
 - [**bandit**](https://github.com/PyCQA/bandit): Designed to find common security vulnerabilities in Python code.
 - [**codespell**](https://github.com/codespell-project/codespell): Identifies common misspellings in code and text files.
