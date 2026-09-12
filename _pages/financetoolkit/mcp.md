@@ -8,7 +8,7 @@ description: "Open-source MCP server for stock analysis: 500+ financial ratios, 
 classes: wide-sidebar
 author_profile: false
 layout: single
-last_modified_at: 2026-09-11
+last_modified_at: 2026-09-12
 redirect_from:
   - /mcp
   - /projects/financetoolkit/mcp-server
@@ -727,100 +727,6 @@ ASML’s lead is supported by very strong component scores in 2026, which indica
 </div>
 </details>
 
-## Available Tools
-
-The server groups the 500+ Finance Toolkit methods into 22 categorical master tools, each taking an `indicator` parameter that selects the exact metric, e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`. You never set this by hand: the assistant picks the right tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`.
-
-To explore what's available, ask the assistant to run the built-in `search_categories`, `search_by_category` or `search_metrics` tools, or launch the interactive inspector with `uvx --from "financetoolkit[mcp]" financetoolkit-mcp-inspector`. The full catalogue (every tool returns data as standardised Markdown) is grouped below. Each master tool wraps dozens of underlying Finance Toolkit functions; to understand **every** metric, model and parameter that can ultimately be reached through these tools, see the full Finance Toolkit documentation.
-
-[Browse the Finance Toolkit Documentation](/projects/financetoolkit/docs){: .btn .btn--info .btn--large}
-
-<details class="ft-details" markdown="1">
-  <summary><h3>Fundamentals</h3></summary>
-
-  These tools provide a wide range of fundamental data points and financial metrics for companies, including historical prices, financial statements, company profiles, ESG scores, and performance/risk metrics.
-
-| Tool | Description |
-|:---|:---|
-| `discovery` | Stock and ETF screener, gainers/losers, most active |
-| `market_data` | Historical prices, financial statements, company profile, real-time quote |
-| `environment` | ESG scores, carbon footprint, renewable energy usage |
-| `performance` | Sharpe ratio, Sortino ratio, Alpha, Beta, CAPM, Fama-French, Carhart, market timing |
-| `risk` | Value at Risk, CVaR, GARCH/EGARCH/GJR-GARCH, max drawdown, copulas, realized volatility |
-| `options` | Black-Scholes pricing, binomial tree, Greeks, implied volatility, exotic options |
-
-</details>
-
-<details class="ft-details" markdown="1">
-  <summary><h3>Econometrics</h3></summary>
-
-  This tool runs statistical tests and estimators on price and return series, for diagnosing the properties of a series or estimating causal effects rather than reading off a pre-computed metric.
-
-| Tool | Description |
-|:---|:---|
-| `econometrics` | Regression (OLS/WLS/GLS, logit, probit, quantile, Fama-MacBeth), panel data (fixed/random effects, Hausman), causal inference (IV-2SLS, difference-in-differences, regression discontinuity, propensity score matching, synthetic control), unit root and cointegration tests, Granger causality, diagnostics, ARIMA/VAR/VECM forecasting and event studies |
-
-</details>
-
-<details class="ft-details" markdown="1">
-  <summary><h3>Financial Ratios and Models</h3></summary>
-
-  These tools compute a wide range of financial ratios and models that are commonly used for fundamental analysis, valuation, and credit risk assessment. They can be applied to any company with available financial statement data.
-
-| Tool | Description |
-|:---|:---|
-| `efficiency` | Asset/inventory turnover, days of sales outstanding, cash conversion cycle |
-| `liquidity` | Current ratio, quick ratio, cash ratio, working capital |
-| `profitability` | Gross/net/operating margin, ROE, ROA, ROIC, ROCE |
-| `solvency` | Debt-to-equity, interest coverage, net debt to EBITDA |
-| `valuation` | P/E, EPS, EV/EBITDA, P/B, P/S, dividend yield, free cash flow yield |
-| `models` | WACC, DuPont analysis, Altman Z-Score, Piotroski F-Score, intrinsic value, FCFF/FCFE, Tobin's Q, five bankruptcy scores |
-
-</details>
-
-<details class="ft-details" markdown="1">
-  <summary><h3>Technical Indicators</h3></summary>
-
-  These tools compute a wide range of technical indicators used for momentum, trend, volatility, and breadth analysis. They can be applied to any instrument with historical price data.
-
-| Tool | Description |
-|:---|:---|
-| `momentum` | RSI, MACD, Stochastic oscillator, Williams %R, Aroon |
-| `overlap` | SMA, EMA, Bollinger Bands, Keltner Channels |
-| `volatility` | Average True Range, True Range, volatility series |
-| `breadth` | McClellan oscillator, OBV, Advance/Decline line, Chaikin |
-
-</details>
-
-<details class="ft-details" markdown="1">
-  <summary><h3>Macro Economics and Fixed Income</h3></summary>
-
-  These tools provide insights into the broader economic environment and fixed income valuations, helping you understand the macro conditions that can impact financial markets.
-
-| Tool | Description |
-|:---|:---|
-| `macroeconomics` | GDP, CPI, inflation, trade balances, investment, consumption |
-| `government` | Government debt, deficit, expenditure, revenue, tax rates |
-| `jobs` | Unemployment, population, poverty, income inequality |
-| `rates` | Central bank rates, government bond yields, EURIBOR, US Treasury par yield curve, TIPS real yields |
-| `fixed_income` | Bond duration, present value, YTM, derivative pricing, par/forward rates, Z-spread, key rate duration |
-
-</details>
-
-<details class="ft-details" markdown="1">
-  <summary><h3>Utility Tools</h3></summary>
-
-These tools help you navigate the available functionality before making any data call.
-
-| Tool | Description |
-|:---|:---|
-| `search_categories` | Lists all registered categories and the number of tools each contains |
-| `search_by_category` | Lists every metric available within a given category |
-| `search_metrics` | Fuzzy keyword search across all metrics with typo tolerance |
-| `search_instruments` | Look up ticker symbols by company name, ISIN, CIK, CUSIP, or symbol |
-
-</details>
-
 ## FAQ
 
 The questions that come up most often about the server, its data sources and how it compares to other financial MCP servers. Anything missing? Open an issue on [GitHub](https://github.com/JerBouma/FinanceToolkit/issues){:target="_blank"}.
@@ -908,7 +814,45 @@ The questions that come up most often about the server, its data sources and how
 <details class="ft-details" markdown="1">
   <summary><h3>What data does the server cover?</h3></summary>
 
-  Company data comes from [Financial Modeling Prep](/fmp){:target="_blank"}: historical prices, financial statements, profiles, ESG scores and estimates for stocks and ETFs on exchanges worldwide, subject to your FMP plan. Macroeconomic data comes from the OECD and, optionally, [FRED](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}. The [Available Tools](#available-tools) section lists what is computed on top of that, and the [Finance Toolkit documentation](/projects/financetoolkit/docs) describes every metric and model in detail.
+  Company data comes from [Financial Modeling Prep](/fmp){:target="_blank"}: historical prices, financial statements, profiles, ESG scores and estimates for stocks and ETFs on exchanges worldwide, subject to your FMP plan. Macroeconomic data comes from the OECD and, optionally, [FRED](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}. [Which tools does the server expose?](#faq-tools) lists what is computed on top of that, and the [Finance Toolkit documentation](/projects/financetoolkit/docs) describes every metric and model in detail.
+
+</details>
+
+<details class="ft-details" id="faq-tools" markdown="1">
+  <summary><h3>Which tools does the server expose?</h3></summary>
+
+  The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an `indicator` parameter that selects the exact metric (e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`), plus four search tools to navigate them. You never pick these by hand: the assistant chooses the tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`. Every tool returns data as standardised Markdown.
+
+| Category | Tool | Description |
+|:---|:---|:---|
+| Fundamentals | `discovery` | Stock and ETF screener, gainers/losers, most active |
+| Fundamentals | `market_data` | Historical prices, financial statements, company profile, real-time quote |
+| Fundamentals | `environment` | ESG scores, carbon footprint, renewable energy usage |
+| Fundamentals | `performance` | Sharpe ratio, Sortino ratio, Alpha, Beta, CAPM, Fama-French, Carhart, market timing |
+| Fundamentals | `risk` | Value at Risk, CVaR, GARCH/EGARCH/GJR-GARCH, max drawdown, copulas, realized volatility |
+| Fundamentals | `options` | Black-Scholes pricing, binomial tree, Greeks, implied volatility, exotic options |
+| Econometrics | `econometrics` | Regression (OLS/WLS/GLS, logit, probit, quantile, Fama-MacBeth), panel data, causal inference (IV-2SLS, difference-in-differences, regression discontinuity, propensity score matching, synthetic control), unit root and cointegration tests, Granger causality, ARIMA/VAR/VECM forecasting and event studies |
+| Ratios and Models | `efficiency` | Asset/inventory turnover, days of sales outstanding, cash conversion cycle |
+| Ratios and Models | `liquidity` | Current ratio, quick ratio, cash ratio, working capital |
+| Ratios and Models | `profitability` | Gross/net/operating margin, ROE, ROA, ROIC, ROCE |
+| Ratios and Models | `solvency` | Debt-to-equity, interest coverage, net debt to EBITDA |
+| Ratios and Models | `valuation` | P/E, EPS, EV/EBITDA, P/B, P/S, dividend yield, free cash flow yield |
+| Ratios and Models | `models` | WACC, DuPont analysis, Altman Z-Score, Piotroski F-Score, intrinsic value, FCFF/FCFE, Tobin's Q, five bankruptcy scores |
+| Technical Indicators | `momentum` | RSI, MACD, Stochastic oscillator, Williams %R, Aroon |
+| Technical Indicators | `overlap` | SMA, EMA, Bollinger Bands, Keltner Channels |
+| Technical Indicators | `volatility` | Average True Range, True Range, volatility series |
+| Technical Indicators | `breadth` | McClellan oscillator, OBV, Advance/Decline line, Chaikin |
+| Macro and Fixed Income | `macroeconomics` | GDP, CPI, inflation, trade balances, investment, consumption |
+| Macro and Fixed Income | `government` | Government debt, deficit, expenditure, revenue, tax rates |
+| Macro and Fixed Income | `jobs` | Unemployment, population, poverty, income inequality |
+| Macro and Fixed Income | `rates` | Central bank rates, government bond yields, EURIBOR, US Treasury par yield curve, TIPS real yields |
+| Macro and Fixed Income | `fixed_income` | Bond duration, present value, YTM, derivative pricing, par/forward rates, Z-spread, key rate duration |
+| Search | `search_categories` | Lists all categories and the number of tools each contains |
+| Search | `search_by_category` | Lists every metric available within a given category |
+| Search | `search_metrics` | Fuzzy keyword search across all metrics with typo tolerance |
+| Search | `search_instruments` | Look up ticker symbols by company name, ISIN, CIK, CUSIP or symbol |
+
+  Each tool wraps dozens of underlying Finance Toolkit functions; the [Finance Toolkit documentation](/projects/financetoolkit/docs) describes every metric, model and parameter that can be reached through them. To explore interactively, run `uvx --from "financetoolkit[mcp]" financetoolkit-mcp-inspector`.
 
 </details>
 
@@ -977,7 +921,15 @@ The questions that come up most often about the server, its data sources and how
       "name": "What data does the server cover?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Company data comes from Financial Modeling Prep: historical prices, financial statements, profiles, ESG scores and estimates for stocks and ETFs on exchanges worldwide, subject to your FMP plan. Macroeconomic data comes from the OECD and, optionally, FRED. The Available Tools section lists what is computed on top of that, and the Finance Toolkit documentation describes every metric and model in detail."
+        "text": "Company data comes from Financial Modeling Prep: historical prices, financial statements, profiles, ESG scores and estimates for stocks and ETFs on exchanges worldwide, subject to your FMP plan. Macroeconomic data comes from the OECD and, optionally, FRED. The question on which tools the server exposes lists what is computed on top of that, and the Finance Toolkit documentation describes every metric and model in detail."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which tools does the server expose?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an indicator parameter that selects the exact metric, plus four search tools to navigate them: discovery, market_data, environment, performance, risk, options, econometrics, efficiency, liquidity, profitability, solvency, valuation, models, momentum, overlap, volatility, breadth, macroeconomics, government, jobs, rates, fixed_income, search_categories, search_by_category, search_metrics and search_instruments. The assistant chooses the tool and indicator from your plain-English question; equity tools accept tickers, macro tools accept countries, and all accept start_date, end_date and quarterly. Every tool returns data as standardised Markdown."
       }
     },
     {
