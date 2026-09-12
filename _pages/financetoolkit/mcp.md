@@ -3,7 +3,7 @@ permalink: /projects/financetoolkit/mcp
 title: Finance Toolkit MCP Server
 seo_title: "Finance Toolkit MCP Server: Financial Data & Stock Analysis for Claude, ChatGPT & Cursor"
 seo_title_suffix: false
-excerpt: "Connect Claude, ChatGPT, Cursor, VS Code or any other MCP client to the hosted Finance Toolkit server and analyse stocks, financial statements, technical indicators and macro data in plain English. No installation required."
+excerpt: "Connect Claude, ChatGPT, Cursor, VS Code or any other MCP client to the Finance Toolkit, hosted or on your own machine, and analyse stocks, financial statements, technical indicators and macro data in plain English."
 description: "Open-source MCP server for stock analysis: 500+ financial ratios, valuation models, technical indicators and macro data in Claude, ChatGPT or Cursor."
 classes: wide-sidebar
 author_profile: false
@@ -19,14 +19,9 @@ image: /assets/images/projects/FinanceToolkitMCP.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit#mcp-server" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The Finance Toolkit MCP Server is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that gives AI assistants such as Claude, ChatGPT, Cursor, GitHub Copilot and Gemini direct access to financial data and 500+ financial analysis methods. It is hosted at `https://financetoolkit.jeroenbouma.com/mcp`: point any MCP-compatible client at that URL and you can run stock analysis, compare financial statements, screen on ratios, compute technical indicators and pull macroeconomic data from a normal chat, with no local installation whatsoever.
+The Finance Toolkit MCP Server is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that gives AI assistants such as Claude, ChatGPT, Cursor, GitHub Copilot and Gemini access to financial data and the 500+ analysis methods of the [Finance Toolkit](/projects/financetoolkit). Ask a question in plain English and the assistant fetches the data and runs the calculation for you: compare financial statements, screen on ratios, compute technical indicators or pull macroeconomic data, all with the same transparent, open-source formulas as the Python package.
 
-MCP is an open standard that lets AI assistants call external tools and data sources directly from the chat interface; no copy-pasting, no switching between apps. Once connected, you simply ask questions in plain English and the AI fetches live financial data on your behalf. This means you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all backed by the transparent, open-source calculation methods of the [Finance Toolkit](/projects/financetoolkit).
-
-The server consolidates the entire Finance Toolkit surface into a small number of categorical master tools (e.g. `valuation`, `profitability`, `momentum`, `econometrics`) so that the AI can discover and call the right metric without being overwhelmed by hundreds of individual function signatures.
-
-**What you need.** A [Financial Modeling Prep API key](/fmp){:target="_blank"} is the only requirement: the hosted server asks for it once through a standard OAuth login and never stores it. FMP's free plan (250 requests a day, 5 years of history, US-listed companies) is enough to try the server; the paid plans, 15% off through the link, unlock the full history, all exchanges and higher request limits. An optional [FRED API key](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"} adds a handful of US-only indicators.
-{: .notice--info}
+The server comes in two flavours that expose exactly the same tools. The **remote server** is hosted at `https://financetoolkit.jeroenbouma.com/mcp` and needs nothing installed; the **local server** runs on your own machine through `uvx` and keeps your API key on your device. Both need a [Financial Modeling Prep API key](/fmp){:target="_blank"} for company data.
 
 <div class="mcp-video-wrapper">
   <video class="mcp-demo-video" autoplay muted playsinline loop preload="metadata"
@@ -37,17 +32,15 @@ The server consolidates the entire Finance Toolkit surface into a small number o
 
 ## Installation
 
-The fastest way to get started is to point any MCP-compatible client at the hosted server, with no Python, no terminal, and no local process needed. For Claude Desktop users, a one-click MCPB bundle is the next easiest option. For local client setup, a setup wizard or manual configuration is available.
+Pick the [remote server](#remote-server) if you want to get going without installing anything, or the [local server](#local-clients) if you prefer to run the process yourself. Each section lists the same clients, so you can switch between the two at any time.
 
 ### Remote Server
 
-**No installation required, works with any MCP-compatible client.** Connect directly to the hosted Finance Toolkit MCP server by adding the URL below. The server runs in the cloud; nothing needs to be installed locally. On first connection your client will open an OAuth consent page asking for your [Financial Modeling Prep API key](/fmp){:target="_blank"}; enter it once and the server handles authentication from there.
+Point your client at the URL below. On first use it opens an OAuth page asking for your [FMP API key](/fmp){:target="_blank"}; enter it once and the server takes it from there.
 
 ```
 https://financetoolkit.jeroenbouma.com/mcp
 ```
-
-For detailed instructions on how to connect your client, see the sections below.
 
 <details class="ft-details" id="remote-claude-desktop" markdown="1">
   <summary><i class="fas fa-robot"></i> <h3>Claude Desktop</h3></summary>
@@ -174,22 +167,13 @@ For detailed instructions on how to connect your client, see the sections below.
 
 ### Local Clients
 
-For a local setup the server runs on your own machine through `uvx`, which keeps your API key on your device and works with clients that only support the `stdio` transport. A setup wizard handles the configuration automatically:
+The local server runs on your own machine through `uvx` and works with every client that supports the `stdio` transport. The setup wizard finds your client's config file and writes the entry, including your API key, for you:
 
 ```bash
 uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
 ```
 
-For manual configuration, edit the client's JSON config directly using the snippets below. In every client `uvx` is the *command* and the rest are *args*. The `env` block takes either:
-
-- `FINANCIAL_MODELING_PREP_API_KEY`: the API key directly inline.
-- `FINANCETOOLKIT_ENV_FILE`: a path to a `.env` file containing `FINANCIAL_MODELING_PREP_API_KEY=your_key_here`
-
-When both are present the inline key wins. To use the hosted remote server instead, replace the `command`/`args`/`env` block with a single `url` entry pointing to `https://financetoolkit.jeroenbouma.com/mcp`.
-
-A second key, `FRED_API_KEY`, is **optional**. It is free and only unlocks a handful of US-only indicators that have no OECD or FMP equivalent, such as nonfarm payrolls, initial jobless claims, the 30-year mortgage rate, the TIPS real yield curve and breakeven inflation expectations. Everything else works without it. The setup wizard picks it up automatically if it is already in your environment or `.env` file, and you can [register for one here](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}.
-
-Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `statsmodels` and `linearmodels` come along and the `econometrics` tool works out of the box.
+Prefer to do it by hand? Use the snippets below and replace `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}. See [API keys and environment variables](#local-api-keys) for the `.env` file option and the optional FRED key.
 
 <details class="ft-details" id="local-claude-desktop" markdown="1">
   <summary><i class="fas fa-robot"></i> <h3>Claude Desktop</h3></summary>
@@ -216,10 +200,17 @@ Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `s
 
 </details>
 
+<details class="ft-details" id="local-claude-ai" markdown="1">
+  <summary><i class="fas fa-globe"></i> <h3>Claude.ai</h3></summary>
+
+  Claude.ai runs in the browser and cannot start a process on your machine, so it only connects to servers over HTTP. Use the [remote server](#remote-claude-ai) instead, or run the local server with `MCP_TRANSPORT=streamable-http` behind a public URL of your own.
+
+</details>
+
 <details class="ft-details" id="local-claude-code" markdown="1">
   <summary><i class="fas fa-terminal"></i> <h3>Claude Code</h3></summary>
 
-  Run the following command once in your terminal (replace `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}):
+  Run the following command once in your terminal:
 
   ```bash
   claude mcp add --transport stdio finance-toolkit --env FINANCIAL_MODELING_PREP_API_KEY=YOUR_API_KEY_HERE -- uvx --from "financetoolkit[mcp]" financetoolkit-mcp
@@ -241,10 +232,17 @@ Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `s
 
 </details>
 
+<details class="ft-details" id="local-chatgpt" markdown="1">
+  <summary><i class="fas fa-comment-dots"></i> <h3>ChatGPT</h3></summary>
+
+  ChatGPT only connects to MCP servers over HTTP and cannot start a local process. Use the [remote server](#remote-chatgpt) instead, or run the local server with `MCP_TRANSPORT=streamable-http` behind a public URL of your own.
+
+</details>
+
 <details class="ft-details" id="local-codex" markdown="1">
   <summary><i class="fas fa-code"></i> <h3>Codex CLI</h3></summary>
 
-  Run the following command once in your terminal (replace `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}):
+  Run the following command once in your terminal:
 
   ```bash
   codex mcp add finance-toolkit --env FINANCIAL_MODELING_PREP_API_KEY=YOUR_API_KEY_HERE -- uvx --from "financetoolkit[mcp]" financetoolkit-mcp
@@ -333,25 +331,6 @@ Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `s
 
 </details>
 
-<details class="ft-details" id="local-gemini" markdown="1">
-  <summary><i class="fab fa-google"></i> <h3>Gemini CLI</h3></summary>
-
-  Edit `~/.gemini/settings.json` (create it if needed):
-
-  ```json
-  {
-    "mcpServers": {
-      "finance-toolkit": {
-        "command": "uvx",
-        "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
-        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
-      }
-    }
-  }
-  ```
-
-</details>
-
 <details class="ft-details" id="local-windsurf" markdown="1">
   <summary><i class="fas fa-wind"></i> <h3>Windsurf</h3></summary>
 
@@ -371,6 +350,36 @@ Note that `financetoolkit[mcp]` installs the `econometrics` extra as well, so `s
 
 </details>
 
+<details class="ft-details" id="local-gemini" markdown="1">
+  <summary><i class="fab fa-google"></i> <h3>Gemini CLI</h3></summary>
+
+  Edit `~/.gemini/settings.json` (create it if needed):
+
+  ```json
+  {
+    "mcpServers": {
+      "finance-toolkit": {
+        "command": "uvx",
+        "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
+        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+      }
+    }
+  }
+  ```
+
+</details>
+
+<details class="ft-details" id="local-api-keys" markdown="1">
+  <summary><i class="fas fa-key"></i> <h3>API keys and environment variables</h3></summary>
+
+  In every snippet `uvx` is the *command* and the rest are *args*. The `env` block takes either `FINANCIAL_MODELING_PREP_API_KEY` with the key inline, or `FINANCETOOLKIT_ENV_FILE` with the path to a `.env` file that contains `FINANCIAL_MODELING_PREP_API_KEY=your_key_here`; when both are present the inline key wins.
+
+  A second key, `FRED_API_KEY`, is optional and free. It only unlocks a handful of US-only indicators without an OECD or FMP equivalent (nonfarm payrolls, initial jobless claims, the 30-year mortgage rate, the TIPS real yield curve and breakeven inflation expectations). The setup wizard picks it up automatically from your environment or `.env` file; [register for one here](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}.
+
+  `financetoolkit[mcp]` also installs the `econometrics` extra, so `statsmodels` and `linearmodels` come along and the `econometrics` tool works out of the box.
+
+</details>
+
 ## Why the Finance Toolkit MCP
 
 There are a growing number of MCP servers for financial data, from the official Financial Modeling Prep and Yahoo Finance servers to dozens of community wrappers. Most of them do one thing: expose raw API endpoints (a quote, an income statement, a list of prices) and leave the analysis to the language model. That is exactly where models are least reliable: an LLM asked to compute a return on invested capital or a Sharpe ratio from raw statements will happily make arithmetic and definitional mistakes, and two chats will rarely agree on the same number.
@@ -384,40 +393,6 @@ The Finance Toolkit MCP takes the opposite approach. It is a thin layer over the
 - **Model-agnostic.** The 22 categorical tools are designed to be understood by small and large models alike, from GPT-5 mini to Claude Opus; the [example conversations](#example-conversations) below show both ends of that range.
 
 If you only need a quote or a headline number, a raw data server is fine. If you want to ask *"which of these banks is the most solvent and why"* and get a defensible answer, this is the server built for it.
-
-## Example Prompts
-
-The server works with plain English; you never need to name a tool or an indicator. The prompts below are a good starting point and can all be adapted to other tickers, countries and date ranges.
-
-**Company analysis**
-
-- Compare the gross, operating and net margins of Apple and Microsoft over the last five years. Which one is more profitable?
-- Run a DuPont analysis on Coca-Cola and PepsiCo and tell me what drives the difference in return on equity.
-- What is the intrinsic value of Nvidia based on a discounted cash flow, and how does it compare to the current share price?
-- Calculate the Altman Z-Score and Piotroski F-Score for Ford, General Motors and Stellantis.
-
-**Screening and discovery**
-
-- Find European banks with a price-to-book below 1 and a return on equity above 10%.
-- Which semiconductor companies have the highest ESG scores?
-- Show me the top gainers in the S&P 500 today and their valuation multiples.
-
-**Technical analysis**
-
-- Is the semiconductor sector overbought? Look at RSI, MACD and Bollinger Bands for NVDA, AMD, TSM and ASML.
-- Plot the 50-day and 200-day moving averages for Tesla and tell me whether there has been a golden or death cross this year.
-
-**Portfolio, performance and risk**
-
-- Compute the Sharpe ratio, Sortino ratio, alpha and beta of Amazon, Alphabet and Meta against the S&P 500 since 2020.
-- What is the 95% Value at Risk and the maximum drawdown of a portfolio of Berkshire Hathaway, Visa and Costco?
-- Run a Fama-French three-factor regression on Netflix.
-
-**Macroeconomics and rates**
-
-- Show me the unemployment rate for the United States, Germany and Japan since 2010.
-- Compare inflation and central bank interest rates in the Eurozone and the United States over the last three years.
-- What does the US Treasury yield curve look like today versus a year ago?
 
 ## Example Conversations
 
@@ -846,6 +821,8 @@ These tools help you navigate the available functionality before making any data
 
 ## FAQ
 
+The questions that come up most often about the server, its data sources and how it compares to other financial MCP servers. Anything missing? Open an issue on [GitHub](https://github.com/JerBouma/FinanceToolkit/issues){:target="_blank"}.
+
 <details class="ft-details" markdown="1">
   <summary><h3>Is the Finance Toolkit MCP server free?</h3></summary>
 
@@ -1007,12 +984,6 @@ These tools help you navigate the available functionality before making any data
   ]
 }
 </script>
-
-## Under the Hood
-
-The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 500+ Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into 22 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time. The module layout, startup sequence, dispatch categories and the OAuth 2.1 flow that keeps your API key off the server are documented on a dedicated page for those who want to extend or contribute to the server.
-
-[Read the MCP Architecture](/projects/financetoolkit/mcp/architecture){: .btn .btn--info .btn--large}
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {

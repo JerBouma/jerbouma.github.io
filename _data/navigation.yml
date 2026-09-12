@@ -138,8 +138,6 @@ financetoolkit-mcp:
         url: /projects/financetoolkit/mcp#local-clients
   - title: "Why this MCP"
     url: /projects/financetoolkit/mcp#why-the-finance-toolkit-mcp
-  - title: "Example Prompts"
-    url: /projects/financetoolkit/mcp#example-prompts
   - title: "Example Conversations"
     url: /projects/financetoolkit/mcp#example-conversations
     children:
@@ -159,7 +157,7 @@ financetoolkit-mcp:
     url: /projects/financetoolkit/mcp#available-tools
   - title: "FAQ"
     url: /projects/financetoolkit/mcp#faq
-  - title: "Architecture"
+  - title: "Under the Hood"
     url: /projects/financetoolkit/mcp/architecture
     children:
       - title: Modules
