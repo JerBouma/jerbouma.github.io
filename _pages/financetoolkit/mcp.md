@@ -828,56 +828,94 @@ The questions that come up most often about the server, its data sources and how
 <details class="ft-details" markdown="1">
   <summary><h3>Is the Finance Toolkit MCP server free?</h3></summary>
 
-  Yes. The server and the Finance Toolkit it is built on are open source (MIT license) and the hosted server at financetoolkit.jeroenbouma.com is free to use. The only thing you need is a Financial Modeling Prep API key; FMP offers a free plan (250 requests a day, 5 years of history, US-listed companies) that is enough to try the server, and paid plans for full history, all exchanges and higher request limits.
+  Yes. The server and the [Finance Toolkit](/projects/financetoolkit) it is built on are open source under the MIT license (see the [repository](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}) and the hosted server is free to use. The only thing you need is a [Financial Modeling Prep API key](/fmp){:target="_blank"}; the free plan is enough to try the server, the paid plans unlock full history, all exchanges and higher request limits.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><h3>Which AI assistants and clients does it work with?</h3></summary>
 
-  Any client that supports the Model Context Protocol: Claude Desktop, claude.ai, Claude Code, ChatGPT (Developer mode), Codex CLI, Cursor, VS Code with GitHub Copilot, Windsurf, Gemini CLI and many more. The hosted server uses the standard streamable HTTP transport with OAuth 2.1, and the local server uses stdio.
+  Any client that speaks the Model Context Protocol. There are step-by-step cards for Claude Desktop, claude.ai, Claude Code, ChatGPT, Codex CLI, VS Code, Cursor, Windsurf and Gemini CLI under [Remote Server](#remote-server) and [Local Clients](#local-clients); other clients work the same way with the URL or the `uvx` command from those cards.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>How do I add the server to my client?</h3></summary>
+
+  For the remote server, give your client the URL and enter your FMP API key on the OAuth page that opens the first time:
+
+  ```
+  https://financetoolkit.jeroenbouma.com/mcp
+  ```
+
+  Clients with a command line take it in one go, for example Claude Code:
+
+  ```bash
+  claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp
+  ```
+
+  For the local server, let the wizard write the config entry for you:
+
+  ```bash
+  uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
+  ```
+
+  The exact steps and settings dialogs per client are in the [Remote Server](#remote-server) and [Local Clients](#local-clients) cards.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><h3>Do I need to install Python?</h3></summary>
 
-  No. The hosted server requires no installation at all: add the URL to your client and enter your FMP API key once. Python (or rather uv) is only needed if you prefer to run the server locally with uvx.
-
-</details>
-
-<details class="ft-details" markdown="1">
-  <summary><h3>Is my Financial Modeling Prep API key stored on the server?</h3></summary>
-
-  No. During the OAuth login your key is sealed inside a signed token that your MCP client holds and sends with every request. The server reads the key from that token for the duration of a single request and never writes it to disk or to a database. The full flow is documented on the architecture page.
-
-</details>
-
-<details class="ft-details" markdown="1">
-  <summary><h3>What data does the server cover?</h3></summary>
-
-  Company data comes from Financial Modeling Prep: historical prices, financial statements, profiles, ESG scores and estimates for stocks and ETFs on exchanges worldwide, subject to your FMP plan. Macroeconomic data (GDP, inflation, unemployment, interest rates, government finances) comes from the OECD and, optionally, FRED, and needs no additional key except for a handful of US-only FRED series.
-
-</details>
-
-<details class="ft-details" markdown="1">
-  <summary><h3>How is this different from the Financial Modeling Prep or Yahoo Finance MCP servers?</h3></summary>
-
-  Those servers return raw data and leave the calculations to the language model. The Finance Toolkit MCP computes 500+ metrics, ratios, models and indicators with the open-source Finance Toolkit code, so the numbers are consistent, documented and reproducible regardless of which model you use.
+  No. The [remote server](#remote-server) needs nothing installed. The [local server](#local-clients) runs through [uv](https://docs.astral.sh/uv/getting-started/installation/){:target="_blank"}, which downloads the right Python and the package by itself, so even then you never install Python or run `pip` yourself.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><h3>Can I run the server locally?</h3></summary>
 
-  Yes. Run uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup to configure Claude Desktop, Claude Code, Cursor, VS Code, Gemini CLI or Windsurf automatically, or add the uvx command to your client's MCP configuration by hand. Claude Desktop users can also install the one-click MCPB bundle.
+  Yes. Run the setup wizard and pick your client, it writes the config entry including your API key:
+
+  ```bash
+  uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
+  ```
+
+  Or add the entry to your client's MCP config by hand:
+
+  ```json
+  {
+    "mcpServers": {
+      "finance-toolkit": {
+        "command": "uvx",
+        "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
+        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+      }
+    }
+  }
+  ```
+
+  Config file locations per client are in the [Local Clients](#local-clients) cards, the `.env` file option and the optional FRED key in the [API keys and environment variables](#local-api-keys) card, and Claude Desktop users can skip all of this with the [MCPB bundle](#local-claude-desktop).
 
 </details>
 
 <details class="ft-details" markdown="1">
-  <summary><h3>Does the server work with ChatGPT?</h3></summary>
+  <summary><h3>Is my Financial Modeling Prep API key stored on the server?</h3></summary>
 
-  Yes. ChatGPT supports custom MCP servers through Developer mode on its paid plans: create a connector with the server URL, choose OAuth authentication and enter your FMP API key once.
+  No. During the OAuth login your key is sealed inside a signed token that your MCP client holds and sends with every request; the server reads it for the duration of that request and never writes it to disk or a database. The full flow is on the [Under the Hood](/projects/financetoolkit/mcp/architecture#oauth-21-and-api-key-resolution) page.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>What data does the server cover?</h3></summary>
+
+  Company data comes from [Financial Modeling Prep](/fmp){:target="_blank"}: historical prices, financial statements, profiles, ESG scores and estimates for stocks and ETFs on exchanges worldwide, subject to your FMP plan. Macroeconomic data comes from the OECD and, optionally, [FRED](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}. The [Available Tools](#available-tools) section lists what is computed on top of that, and the [Finance Toolkit documentation](/projects/financetoolkit/docs) describes every metric and model in detail.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>How is this different from the Financial Modeling Prep or Yahoo Finance MCP servers?</h3></summary>
+
+  Those servers return raw data and leave the calculations to the language model. The Finance Toolkit MCP computes 500+ metrics, ratios, models and indicators with the open-source [Finance Toolkit](/projects/financetoolkit) code, so the numbers are consistent, documented and reproducible regardless of which model you use. [Why the Finance Toolkit MCP](#why-the-finance-toolkit-mcp) goes into this in more depth.
 
 </details>
 
@@ -891,7 +929,7 @@ The questions that come up most often about the server, its data sources and how
       "name": "Is the Finance Toolkit MCP server free?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The server and the Finance Toolkit it is built on are open source (MIT license) and the hosted server at financetoolkit.jeroenbouma.com is free to use. The only thing you need is a Financial Modeling Prep API key; FMP offers a free plan (250 requests a day, 5 years of history, US-listed companies) that is enough to try the server, and paid plans for full history, all exchanges and higher request limits."
+        "text": "Yes. The server and the Finance Toolkit it is built on are open source under the MIT license (see the repository) and the hosted server is free to use. The only thing you need is a Financial Modeling Prep API key; the free plan is enough to try the server, the paid plans unlock full history, all exchanges and higher request limits."
       }
     },
     {
@@ -899,7 +937,15 @@ The questions that come up most often about the server, its data sources and how
       "name": "Which AI assistants and clients does it work with?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Any client that supports the Model Context Protocol: Claude Desktop, claude.ai, Claude Code, ChatGPT (Developer mode), Codex CLI, Cursor, VS Code with GitHub Copilot, Windsurf, Gemini CLI and many more. The hosted server uses the standard streamable HTTP transport with OAuth 2.1, and the local server uses stdio."
+        "text": "Any client that speaks the Model Context Protocol. There are step-by-step cards for Claude Desktop, claude.ai, Claude Code, ChatGPT, Codex CLI, VS Code, Cursor, Windsurf and Gemini CLI under Remote Server and Local Clients; other clients work the same way with the URL or the uvx command from those cards."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I add the server to my client?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For the remote server, give your client the URL and enter your FMP API key on the OAuth page that opens the first time: https://financetoolkit.jeroenbouma.com/mcp Clients with a command line take it in one go, for example Claude Code: claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp For the local server, let the wizard write the config entry for you: uvx --from \"financetoolkit[mcp]\" financetoolkit-mcp-setup The exact steps and settings dialogs per client are in the Remote Server and Local Clients cards."
       }
     },
     {
@@ -907,31 +953,7 @@ The questions that come up most often about the server, its data sources and how
       "name": "Do I need to install Python?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. The hosted server requires no installation at all: add the URL to your client and enter your FMP API key once. Python (or rather uv) is only needed if you prefer to run the server locally with uvx."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is my Financial Modeling Prep API key stored on the server?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. During the OAuth login your key is sealed inside a signed token that your MCP client holds and sends with every request. The server reads the key from that token for the duration of a single request and never writes it to disk or to a database. The full flow is documented on the architecture page."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What data does the server cover?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Company data comes from Financial Modeling Prep: historical prices, financial statements, profiles, ESG scores and estimates for stocks and ETFs on exchanges worldwide, subject to your FMP plan. Macroeconomic data (GDP, inflation, unemployment, interest rates, government finances) comes from the OECD and, optionally, FRED, and needs no additional key except for a handful of US-only FRED series."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How is this different from the Financial Modeling Prep or Yahoo Finance MCP servers?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Those servers return raw data and leave the calculations to the language model. The Finance Toolkit MCP computes 500+ metrics, ratios, models and indicators with the open-source Finance Toolkit code, so the numbers are consistent, documented and reproducible regardless of which model you use."
+        "text": "No. The remote server needs nothing installed. The local server runs through uv, which downloads the right Python and the package by itself, so even then you never install Python or run pip yourself."
       }
     },
     {
@@ -939,15 +961,31 @@ The questions that come up most often about the server, its data sources and how
       "name": "Can I run the server locally?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Run uvx --from \"financetoolkit[mcp]\" financetoolkit-mcp-setup to configure Claude Desktop, Claude Code, Cursor, VS Code, Gemini CLI or Windsurf automatically, or add the uvx command to your client's MCP configuration by hand. Claude Desktop users can also install the one-click MCPB bundle."
+        "text": "Yes. Run the setup wizard and pick your client, it writes the config entry including your API key: uvx --from \"financetoolkit[mcp]\" financetoolkit-mcp-setup Or add the entry to your client's MCP config by hand: { \"mcpServers\": { \"finance-toolkit\": { \"command\": \"uvx\", \"args\": [\"--from\", \"financetoolkit[mcp]\", \"financetoolkit-mcp\"], \"env\": { \"FINANCIAL_MODELING_PREP_API_KEY\": \"YOUR_API_KEY_HERE\" } } } } Config file locations per client are in the Local Clients cards, the .env file option and the optional FRED key in the API keys and environment variables card, and Claude Desktop users can skip all of this with the MCPB bundle."
       }
     },
     {
       "@type": "Question",
-      "name": "Does the server work with ChatGPT?",
+      "name": "Is my Financial Modeling Prep API key stored on the server?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. ChatGPT supports custom MCP servers through Developer mode on its paid plans: create a connector with the server URL, choose OAuth authentication and enter your FMP API key once."
+        "text": "No. During the OAuth login your key is sealed inside a signed token that your MCP client holds and sends with every request; the server reads it for the duration of that request and never writes it to disk or a database. The full flow is on the Under the Hood page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What data does the server cover?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Company data comes from Financial Modeling Prep: historical prices, financial statements, profiles, ESG scores and estimates for stocks and ETFs on exchanges worldwide, subject to your FMP plan. Macroeconomic data comes from the OECD and, optionally, FRED. The Available Tools section lists what is computed on top of that, and the Finance Toolkit documentation describes every metric and model in detail."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is this different from the Financial Modeling Prep or Yahoo Finance MCP servers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Those servers return raw data and leave the calculations to the language model. The Finance Toolkit MCP computes 500+ metrics, ratios, models and indicators with the open-source Finance Toolkit code, so the numbers are consistent, documented and reproducible regardless of which model you use. Why the Finance Toolkit MCP goes into this in more depth."
       }
     }
   ]
