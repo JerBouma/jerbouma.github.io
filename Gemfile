@@ -5,8 +5,10 @@ gem "kramdown-parser-gfm"
 gem 'jekyll', '~> 4.3'
 # image dimensions for the width/height attributes added by _plugins/image_attributes.rb
 gem "fastimage"
-# not a default gem any more from Ruby 4.0 on, but still required by jekyll/mercenary
+# not default gems any more from Ruby 4.0 on, but still required by jekyll/mercenary (logger)
+# and jekyll-algolia (ostruct)
 gem "logger"
+gem "ostruct"
 
 group :jekyll_plugins do
   gem "jekyll-include-cache", group: :jekyll_plugins
