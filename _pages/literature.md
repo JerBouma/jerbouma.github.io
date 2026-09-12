@@ -78,7 +78,7 @@ Most of the modelling I undertake is grounded in established financial literatur
   <div class="lit-card__header">
     <span class="lit-badge"><i class="fas fa-file-alt"></i> Article</span>
   </div>
-  <a href="https://caia.org/sites/default/files/artificial_intelligence_0.pdf" class="lit-card__title" target="_blank" rel="noopener">Artificial Intelligence</a>
+  <a href="https://meketa.com/wp-content/uploads/2012/10/Artifical-Intelligence-FINAL.pdf" class="lit-card__title" target="_blank" rel="noopener">Artificial Intelligence</a>
   <p class="lit-card__authors">Frank Benham, Roberto Obregon, Timur Kaya Yontar</p>
   <p class="lit-card__summary">As a result, a successful implementation of A.I. leads to more informed decision making. Any investor should only invest in areas or use tools in their process that they understand and feel comfortable with, and this remains true with artificial intelligence.</p>
   <div class="lit-card__tags"><span class="lit-tag">Artificial Intelligence</span><span class="lit-tag">Finance</span></div>
@@ -178,7 +178,7 @@ Most of the modelling I undertake is grounded in established financial literatur
   <div class="lit-card__header">
     <span class="lit-badge"><i class="fas fa-file-alt"></i> Article</span>
   </div>
-  <a href="https://rady.ucsd.edu/faculty/directory/valkanov/pub/classes/mfe/docs/fama_french_jfe_1993.pdf" class="lit-card__title" target="_blank" rel="noopener">Common risk factors in the returns on stocks and bonds</a>
+  <a href="https://www.bauer.uh.edu/rsusmel/phd/Fama-French_JFE93.pdf" class="lit-card__title" target="_blank" rel="noopener">Common risk factors in the returns on stocks and bonds</a>
   <p class="lit-card__authors">Eugene F. Fama, Kenneth R. French</p>
   <p class="lit-card__summary">This paper identities five common risk factors in the returns on stocks and bonds. Most important, the five factors seem to explain average returns on stocks and bonds.</p>
   <div class="lit-card__tags"><span class="lit-tag">Factor Investing</span><span class="lit-tag">Finance</span></div>
@@ -238,7 +238,7 @@ Most of the modelling I undertake is grounded in established financial literatur
   <div class="lit-card__header">
     <span class="lit-badge"><i class="fas fa-file-alt"></i> Article</span>
   </div>
-  <a href="https://eprints.whiterose.ac.uk/147571/1/Does risk explain persistence in private equity performance.pdf" class="lit-card__title" target="_blank" rel="noopener">Does Risk Explain Persistence in PE Performance</a>
+  <a href="https://eprints.whiterose.ac.uk/id/eprint/147571/1/Does%20risk%20explain%20persistence%20in%20private%20equity%20performance.pdf" class="lit-card__title" target="_blank" rel="noopener">Does Risk Explain Persistence in PE Performance</a>
   <p class="lit-card__authors">Abdulkadir Mohamed, Armin Schwienbacher, Axel Buchner</p>
   <p class="lit-card__summary">This study examines the impact of fund-level risk on performance persistence as well as risk persistence in private equity. Consistent with Kaplan and Schoar (2005), we find that returns are persistent for VC and buyout funds for US funds.</p>
   <div class="lit-card__tags"><span class="lit-tag">Finance</span><span class="lit-tag">Private Equity</span></div>
@@ -258,7 +258,7 @@ Most of the modelling I undertake is grounded in established financial literatur
   <div class="lit-card__header">
     <span class="lit-badge"><i class="fas fa-file-alt"></i> Article</span>
   </div>
-  <a href="https://caia.org/sites/default/files/dynamic_strategies_for_asset_allocation.pdf" class="lit-card__title" target="_blank" rel="noopener">Dynamic Strategies for Asset Allocation</a>
+  <a href="https://web.stanford.edu/class/msande348/papers/PeroldSharpe.pdf" class="lit-card__title" target="_blank" rel="noopener">Dynamic Strategies for Asset Allocation</a>
   <p class="lit-card__authors">André F. Perold, William F. Sharpe</p>
   <p class="lit-card__summary">The article compares multiple investment strategies. However, the key message is that none of the strategies dominate the others and are completely based on the behavior of the market.</p>
   <div class="lit-card__tags"><span class="lit-tag">Finance</span></div>
@@ -278,7 +278,7 @@ Most of the modelling I undertake is grounded in established financial literatur
   <div class="lit-card__header">
     <span class="lit-badge"><i class="fas fa-file-alt"></i> Article</span>
   </div>
-  <a href="https://www.cfainstitute.org/-/media/documents/article/position-paper/investment-policy-statement-individual-investors.pdf" class="lit-card__title" target="_blank" rel="noopener">Elements of an Investment Policy Statement for Individual Investors</a>
+  <a href="https://rpc.cfainstitute.org/sites/default/files/-/media/documents/article/position-paper/investment-policy-statement-individual-investors.pdf" class="lit-card__title" target="_blank" rel="noopener">Elements of an Investment Policy Statement for Individual Investors</a>
   <p class="lit-card__authors">CFA Institute</p>
   <p class="lit-card__summary">The investment policy statement (IPS) serves as a strategic guide to the planning and implementation of an investment program. When implemented successfully, the IPS anticipates issues related to governance of the investment program, planning for appropriate asset allocation, implementing an investment program with internal and/or external managers, monitoring the results, risk management, and appropriate reporting.</p>
   <div class="lit-card__tags"><span class="lit-tag">Finance</span></div>

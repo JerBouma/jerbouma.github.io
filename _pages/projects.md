@@ -76,7 +76,7 @@ The Finance Toolkit complements the Finance Database well. By utilizing both, yo
 [![GitHub Stars](https://img.shields.io/github/stars/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
 [![GitHub Forks](https://img.shields.io/github/forks/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
 [![PyPi Version](https://img.shields.io/pypi/v/financetoolkit)](https://pypi.org/project/financetoolkit/){:target="_blank"}
-[![PYPI Downloads](https://static.pepy.tech/badge/financetoolkit/month)](https://pepy.tech/project/financetoolkit){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/financetoolkit/month)](https://pepy.tech/projects/financetoolkit){:target="_blank"}
 </div>
 </div>
 
@@ -96,7 +96,7 @@ The server is available in two flavours that expose exactly the same tools: a ho
 [![GitHub Stars](https://img.shields.io/github/stars/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
 [![GitHub Forks](https://img.shields.io/github/forks/JerBouma/financetoolkit?style=social)](https://github.com/JerBouma/financetoolkit){:target="_blank"}
 [![PyPi Version](https://img.shields.io/pypi/v/financetoolkit)](https://pypi.org/project/financetoolkit/){:target="_blank"}
-[![PYPI Downloads](https://static.pepy.tech/badge/financetoolkit/month)](https://pepy.tech/project/financetoolkit){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/financetoolkit/month)](https://pepy.tech/projects/financetoolkit){:target="_blank"}
 </div>
 </div>
 
@@ -116,7 +116,7 @@ The explicit aim of this database is not to provide up-to-date fundamentals or s
 [![GitHub Stars](https://img.shields.io/github/stars/JerBouma/financedatabase?style=social)](https://github.com/JerBouma/financedatabase){:target="_blank"}
 [![GitHub Forks](https://img.shields.io/github/forks/JerBouma/financedatabase?style=social)](https://github.com/JerBouma/financedatabase){:target="_blank"}
 [![PyPi Version](https://img.shields.io/pypi/v/financedatabase)](https://pypi.org/project/financedatabase/){:target="_blank"}
-[![PYPI Downloads](https://static.pepy.tech/badge/financedatabase/month)](https://pepy.tech/project/financedatabase){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/financedatabase/month)](https://pepy.tech/projects/financedatabase){:target="_blank"}
 </div>
 </div>
 
@@ -131,12 +131,12 @@ During my time at OpenBB, I made significant code contributions to the OpenBB Pl
 [View this Project](/projects/openbbterminal){: .btn .btn--info}
 </div>
 <div markdown="1" class="fourty-column mobile-max-column-width">
-<a href="/projects/openbbterminal"><img src="https://github.com/OpenBB-finance/OpenBBTerminal/raw/develop/images/openbb_gradient.png" alt="OpenBB Terminal project banner" width="400"></a>
+<a href="/projects/openbbterminal"><img src="https://github.com/OpenBB-finance/OpenBB/raw/develop/images/openbb_gradient.png" alt="OpenBB Terminal project banner" width="400"></a>
 
-[![GitHub Stars](https://img.shields.io/github/stars/OpenBB-finance/OpenBBTerminal?style=social)](https://github.com/OpenBB-finance/OpenBBTerminal){:target="_blank"}
-[![GitHub Forks](https://img.shields.io/github/forks/OpenBB-finance/OpenBBTerminal?style=social)](https://github.com/OpenBB-finance/OpenBBTerminal){:target="_blank"}
+[![GitHub Stars](https://img.shields.io/github/stars/OpenBB-finance/OpenBB?style=social)](https://github.com/OpenBB-finance/OpenBB){:target="_blank"}
+[![GitHub Forks](https://img.shields.io/github/forks/OpenBB-finance/OpenBB?style=social)](https://github.com/OpenBB-finance/OpenBB){:target="_blank"}
 [![PyPi Version](https://img.shields.io/pypi/v/openbb)](https://pypi.org/project/openbb/){:target="_blank"}
-[![PYPI Downloads](https://static.pepy.tech/badge/openbb/month)](https://pepy.tech/project/openbb){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/openbb/month)](https://pepy.tech/projects/openbb){:target="_blank"}
 </div>
 </div>
 
@@ -157,7 +157,7 @@ This variety is evident when searching for an S&P 500 ETF, where over 20 differe
 [![GitHub Stars](https://img.shields.io/github/stars/JerBouma/thepassiveinvestor?style=social)](https://github.com/JerBouma/thepassiveinvestor){:target="_blank"}
 [![GitHub Forks](https://img.shields.io/github/forks/JerBouma/thepassiveinvestor?style=social)](https://github.com/JerBouma/thepassiveinvestor){:target="_blank"}
 [![PyPi Version](https://img.shields.io/pypi/v/thepassiveinvestor)](https://pypi.org/project/thepassiveinvestor/){:target="_blank"}
-[![PYPI Downloads](https://static.pepy.tech/badge/thepassiveinvestor/month)](https://pepy.tech/project/thepassiveinvestor){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/thepassiveinvestor/month)](https://pepy.tech/projects/thepassiveinvestor){:target="_blank"}
 
 *This project has been archived due to being a project that I no longer maintain.*
 </div>
@@ -179,7 +179,7 @@ To handle variations without requiring exact matches, the package uses the Leven
 [![GitHub Stars](https://img.shields.io/github/stars/JerBouma/personalfinance?style=social)](https://github.com/JerBouma/personalfinance){:target="_blank"}
 [![GitHub Forks](https://img.shields.io/github/forks/JerBouma/personalfinance?style=social)](https://github.com/JerBouma/personalfinance){:target="_blank"}
 [![PyPi Version](https://img.shields.io/pypi/v/personalfinance)](https://pypi.org/project/personalfinance/){:target="_blank"}
-[![PYPI Downloads](https://static.pepy.tech/badge/personalfinance/month)](https://pepy.tech/project/personalfinance){:target="_blank"}
+[![PYPI Downloads](https://static.pepy.tech/badge/personalfinance/month)](https://pepy.tech/projects/personalfinance){:target="_blank"}
 
 *This project has been archived due to being a project that I no longer maintain.*
 </div>
