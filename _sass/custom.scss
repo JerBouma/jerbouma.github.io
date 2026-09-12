@@ -5541,12 +5541,14 @@ table.highlight {
 // variables card under the local MCP setup so it stands apart from the client
 // cards. Same orange as the site's warning buttons and the docs "Modules" block.
 .ft-details--warning {
-  border-color: color-mix(in srgb, var(--accent-orange) 45%, var(--card-border));
+  border-color: color-mix(in srgb, var(--accent-orange) 70%, var(--card-border));
 
   &:hover,
   &[open] { border-color: var(--accent-orange); }
 
   > summary {
+    background: color-mix(in srgb, var(--card-bg) 90%, var(--accent-orange) 10%);
+
     &::before {
       background: var(--accent-orange);
       box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-orange) 20%, transparent);
@@ -5556,10 +5558,13 @@ table.highlight {
     h3 { color: var(--accent-orange) !important; }
 
     &:hover {
-      background: color-mix(in srgb, var(--card-bg) 80%, var(--accent-orange) 7%);
+      background: color-mix(in srgb, var(--card-bg) 82%, var(--accent-orange) 18%);
       &::after { color: var(--accent-orange); }
     }
   }
 
-  &[open] > summary::after { color: var(--accent-orange); }
+  &[open] > summary {
+    border-bottom-color: color-mix(in srgb, var(--accent-orange) 40%, var(--card-border));
+    &::after { color: var(--accent-orange); }
+  }
 }
