@@ -1,7 +1,7 @@
 # Builds the site on every pull request so a broken build is caught before it
 # reaches main (where a push deploys straight to the live site). Nothing is
-# deployed from here. Ruby 4.0 is checked as well but allowed to fail, to see
-# when the toolchain is ready for it.
+# deployed from here. Both Rubies in use are checked: 4.0 builds the live site,
+# 3.4 runs the Algolia reindex.
 name: Build check
 
 on:
@@ -18,10 +18,9 @@ jobs:
       fail-fast: false
       matrix:
         ruby: ['3.4', '4.0']
-    continue-on-error: ${{ matrix.ruby == '4.0' }}
     name: Jekyll build (Ruby ${{ matrix.ruby }})
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
