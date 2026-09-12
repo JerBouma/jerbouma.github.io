@@ -92,7 +92,7 @@ yandex_site_verification :
 baidu_site_verification  :
 
 # Social Sharing
-og_image                 : "/assets/images/default/socialmediabanner.png"
+og_image                 : "/assets/images/default/socialmediabanner.jpg"
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
@@ -224,7 +224,6 @@ plugins:
   - jekyll-redirect-from
   - jekyll-paginate
   - jekyll-sitemap
-  - jekyll-gist
   - jekyll-feed
   - jekyll-include-cache
   - jekyll-seo-tag

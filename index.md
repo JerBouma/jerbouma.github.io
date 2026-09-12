@@ -18,7 +18,7 @@ classes: custom-splash
       </p>
     </div>
     <div class="hero-photo">
-      <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma">
+      <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma" width="640" height="654" fetchpriority="high">
     </div>
   </div>
 </div>
