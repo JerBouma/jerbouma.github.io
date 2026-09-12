@@ -86,7 +86,7 @@ The Finance Toolkit complements the Finance Database well. By utilizing both, yo
 <div markdown="1" class="sixty-column mobile-max-column-width">
 The Finance Toolkit MCP Server brings the 500+ methods of the Finance Toolkit to any AI assistant that supports the Model Context Protocol (MCP). Ask Claude, ChatGPT, Cursor, Copilot or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions or run technical indicators in plain English, with every number computed by the same transparent, open-source formulas as the Python package.
 
-The server is available in two flavours that expose exactly the same tools: a hosted remote server that needs nothing installed, and a local server that runs on your own machine through `uvx` and keeps your API key on your device.
+The server is available in two flavours that expose exactly the same tools: a hosted remote server that needs nothing installed, and a local server that runs on your own machine through `uvx`. Neither stores your API key: the remote server passes it along per request, the local server never sends it anywhere.
 
 [View this Project](/projects/financetoolkit/mcp){: .btn .btn--info}
 </div>
