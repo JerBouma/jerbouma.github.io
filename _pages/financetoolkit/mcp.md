@@ -42,6 +42,8 @@ Point your client at the URL below. On first use it opens an OAuth page asking f
 https://financetoolkit.jeroenbouma.com/mcp
 ```
 
+Open the card for your client below for the exact steps; most clients accept the URL through their settings or with a single command.
+
 <details class="ft-details" id="remote-claude-desktop" markdown="1">
   <summary><i class="fas fa-robot"></i> <h3>Claude Desktop</h3></summary>
 
@@ -173,7 +175,7 @@ The local server runs on your own machine through `uvx` and works with every cli
 uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
 ```
 
-Prefer to do it by hand? Use the snippets below and replace `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}. See [API keys and environment variables](#local-api-keys) for the `.env` file option and the optional FRED key.
+Prefer to do it by hand? Open the card for your client below and add the snippet to its config file, replacing `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}. The [API keys and environment variables](#local-api-keys) card at the end covers the `.env` file option and the optional FRED key.
 
 <details class="ft-details" id="local-claude-desktop" markdown="1">
   <summary><i class="fas fa-robot"></i> <h3>Claude Desktop</h3></summary>
@@ -369,7 +371,7 @@ Prefer to do it by hand? Use the snippets below and replace `YOUR_API_KEY_HERE` 
 
 </details>
 
-<details class="ft-details" id="local-api-keys" markdown="1">
+<details class="ft-details ft-details--warning" id="local-api-keys" markdown="1">
   <summary><i class="fas fa-key"></i> <h3>API keys and environment variables</h3></summary>
 
   In every snippet `uvx` is the *command* and the rest are *args*. The `env` block takes either `FINANCIAL_MODELING_PREP_API_KEY` with the key inline, or `FINANCETOOLKIT_ENV_FILE` with the path to a `.env` file that contains `FINANCIAL_MODELING_PREP_API_KEY=your_key_here`; when both are present the inline key wins.

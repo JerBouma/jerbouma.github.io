@@ -5536,3 +5536,30 @@ table.highlight {
 
   @media (max-width: 600px) { font-size: 0.86rem !important; }
 }
+
+// Orange variant of the collapsible card, used for the API key / environment
+// variables card under the local MCP setup so it stands apart from the client
+// cards. Same orange as the site's warning buttons and the docs "Modules" block.
+.ft-details--warning {
+  border-color: color-mix(in srgb, var(--accent-orange) 45%, var(--card-border));
+
+  &:hover,
+  &[open] { border-color: var(--accent-orange); }
+
+  > summary {
+    &::before {
+      background: var(--accent-orange);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-orange) 20%, transparent);
+    }
+
+    i { color: var(--accent-orange); }
+    h3 { color: var(--accent-orange) !important; }
+
+    &:hover {
+      background: color-mix(in srgb, var(--card-bg) 80%, var(--accent-orange) 7%);
+      &::after { color: var(--accent-orange); }
+    }
+  }
+
+  &[open] > summary::after { color: var(--accent-orange); }
+}
