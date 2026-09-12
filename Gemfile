@@ -3,6 +3,10 @@ source "https://rubygems.org"
 gem "minimal-mistakes-jekyll"
 gem "kramdown-parser-gfm"
 gem 'jekyll', '~> 4.3'
+# image dimensions for the width/height attributes added by _plugins/image_attributes.rb
+gem "fastimage"
+# not a default gem any more from Ruby 4.0 on, but still required by jekyll/mercenary
+gem "logger"
 
 group :jekyll_plugins do
   gem "jekyll-include-cache", group: :jekyll_plugins

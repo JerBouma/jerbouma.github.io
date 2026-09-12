@@ -30,7 +30,7 @@ The other speaker, Vladimir Mikirtumov, discussed the potential role of Cryptocu
 
 </div>
 <div markdown="1" class="fifty-column-right mobile-max-column-width">
-  <img src="/assets/images/appearances/RotterdamSociety.png" alt="Student Capital Society Rotterdam Event" loading="lazy">
+  <img src="/assets/images/appearances/RotterdamSociety.jpg" alt="Student Capital Society Rotterdam Event" loading="lazy">
 </div>
 </div>
 
