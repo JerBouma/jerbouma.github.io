@@ -40,14 +40,6 @@ classes: custom-splash
 
 <div class="bento-grid">
 
-  <a href="/projects/financetoolkit/mcp" class="bento-card" style="grid-column: span 12;">
-    <div class="bento-content">
-      <i class="fas fa-plug bento-icon"></i>
-      <h2>Finance Toolkit MCP Server</h2>
-      <p>Connect Claude, ChatGPT, Cursor or VS Code to 500+ financial metrics, valuation models, technical indicators and macro data. Ask questions in plain English, no installation required.</p>
-    </div>
-  </a>
-
   <a href="/resume" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-briefcase bento-icon"></i>
