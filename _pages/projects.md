@@ -84,9 +84,9 @@ The Finance Toolkit complements the Finance Database well. By utilizing both, yo
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width">
-The Finance Toolkit MCP Server exposes 500+ financial methods directly to any AI assistant that supports the Model Context Protocol (MCP). The fastest way to get started is to connect any MCP-compatible client to the hosted server at `https://financetoolkit.jeroenbouma.com/mcp`, with no installation required.
+The Finance Toolkit MCP Server brings the 500+ methods of the Finance Toolkit to any AI assistant that supports the Model Context Protocol (MCP). Ask Claude, ChatGPT, Cursor, Copilot or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions or run technical indicators in plain English, with every number computed by the same transparent, open-source formulas as the Python package.
 
-Once connected, you can ask Claude, Copilot, Cursor, or any other MCP-compatible assistant to analyse equities, benchmark performance, inspect macro conditions, and run technical indicators, all in plain English. The server builds on the same transparent, open-source calculation methods of the Finance Toolkit.
+The server is available in two flavours that expose exactly the same tools: a hosted remote server that needs nothing installed, and a local server that runs on your own machine through `uvx` and keeps your API key on your device.
 
 [View this Project](/projects/financetoolkit/mcp){: .btn .btn--info}
 </div>
