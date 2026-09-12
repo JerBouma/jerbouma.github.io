@@ -9,9 +9,11 @@ jobs:
   algolia-search:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ruby/setup-ruby@v1
         with:
+          # jekyll-algolia (last release 2021) loads fine on Ruby 4.0 in the build check,
+          # but the actual indexing run has only been exercised on 3.4; bump once verified.
           ruby-version: '3.4'
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Exec jekyll algolia
