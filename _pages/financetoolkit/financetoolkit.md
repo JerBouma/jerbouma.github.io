@@ -25,8 +25,6 @@ Beyond Equities, it supports Options, Currencies, Cryptocurrencies, ETFs, Mutual
 
 The Finance Toolkit is complemented very well by the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}, a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
 
-**🔌 The Finance Toolkit is also available as an [MCP Server](/projects/financetoolkit/mcp)**, letting you query 500+ methods directly from Claude, Copilot, Cursor, Windsurf or any MCP-compatible client without writing any code.
-
 <img src="/assets/images/projects/FinanceToolkit.jpg" alt="Finance Toolkit" width="100%"/>
 
 ## Installation
@@ -59,12 +57,6 @@ To be able to get started, you need to obtain an API Key from FinancialModelingP
 Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time. I have chosen FinancialModelingPrep as a source as I find it to be the most transparent, reliable and at an affordable price. I have yet to find a platform offering such low prices for the amount of data offered. When you notice that the data is inaccurate or have any other issue related to the data, note that I simply provide the means to access this data and I am not responsible for the accuracy of the data itself. For this, use [their contact form](https://site.financialmodelingprep.com/contact){:target="_blank"} or provide the data yourself.
 
 **By default, the Finance Toolkit prioritizes Financial Modeling Prep for data retrieval. If data acquisition from Financial Modeling Prep is unsuccessful (e.g., due to plan restrictions or API key issues), the toolkit automatically switches to Yahoo Finance as a secondary source.** To disable this fallback behavior and exclusively use Financial Modeling Prep, set `enforce_source="FinancialModelingPrep"` during Toolkit initialization.
-
-## MCP Server
-
-The Finance Toolkit is also available as an [MCP server](/projects/financetoolkit/mcp), which lets AI assistants such as Claude, ChatGPT, Cursor, GitHub Copilot and Gemini call the same 500+ methods directly from a chat. Point your client at the hosted server (`https://financetoolkit.jeroenbouma.com/mcp`), enter your FinancialModelingPrep API key once, and ask questions in plain English: compare the profitability of Apple and Microsoft, check whether the semiconductor sector is overbought, or pull the unemployment rate for the United States and Germany. Every answer is computed by the exact same open-source code as the Python package, so the numbers are transparent and reproducible regardless of the model you use.
-
-[Set up the Finance Toolkit MCP Server](/projects/financetoolkit/mcp){: .btn .btn--info .btn--large}
 
 ## Functionality
 
