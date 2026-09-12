@@ -21,6 +21,8 @@ jobs:
     name: Jekyll build (Ruby ${{ matrix.ruby }})
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # same as the deploy: _plugins/last_modified.rb reads git log
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}

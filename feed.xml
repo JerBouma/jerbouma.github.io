@@ -1,0 +1,40 @@
+---
+layout: null
+sitemap: false
+---
+{%- comment -%}
+The articles live under _pages rather than _posts, so jekyll-feed would publish
+an empty feed. This template replaces it with the dated article pages, newest
+first, using the same fields the articles index and the SEO tags already use.
+{%- endcomment -%}
+{%- assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse -%}
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ site.locale | default: 'en' }}">
+  <generator uri="https://jekyllrb.com/" version="{{ jekyll.version }}">Jekyll</generator>
+  <id>{{ page.url | absolute_url | xml_escape }}</id>
+  <link href="{{ page.url | absolute_url | xml_escape }}" rel="self" type="application/atom+xml" />
+  <link href="{{ '/' | absolute_url | xml_escape }}" rel="alternate" type="text/html" />
+  <title>{{ site.title | xml_escape }}</title>
+  <subtitle>{{ site.description | xml_escape }}</subtitle>
+  <updated>{% if articles.first %}{{ articles.first.last_modified_at | default: articles.first.date | date_to_xmlschema }}{% else %}{{ site.time | date_to_xmlschema }}{% endif %}</updated>
+  <author>
+    <name>{{ site.author.name | xml_escape }}</name>
+    <uri>{{ '/' | absolute_url | xml_escape }}</uri>
+  </author>
+{%- for article in articles %}
+  <entry>
+    <id>{{ article.url | absolute_url | xml_escape }}</id>
+    <title>{{ article.title | xml_escape }}</title>
+    <link href="{{ article.url | absolute_url | xml_escape }}" rel="alternate" type="text/html" title="{{ article.title | xml_escape }}" />
+    <published>{{ article.date | date_to_xmlschema }}</published>
+    <updated>{{ article.last_modified_at | default: article.date | date_to_xmlschema }}</updated>
+    <author>
+      <name>{{ article.author | default: site.author.name | xml_escape }}</name>
+    </author>
+    {%- for tag in article.tags %}
+    <category term="{{ tag | xml_escape }}" />
+    {%- endfor %}
+    <summary type="text">{{ article.description | default: article.excerpt | strip_html | normalize_whitespace | xml_escape }}</summary>
+  </entry>
+{%- endfor %}
+</feed>
