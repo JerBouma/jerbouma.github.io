@@ -14,8 +14,12 @@ classes: custom-splash
       <h1 class="hero-title">Hi there, I'm  <span class="hero-signature">Jeroen Bouma</span></h1>
       <p class="hero-tagline">Quantitative Investment Strategist</p>
       <p class="hero-bio">
-        I combine a formal Quantitative Finance background with deep Python expertise across Asset-Liability Management (ALM), Solvency II Legislation, Portfolio Optimization and Artificial Intelligence. My Open-Source projects, including the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a>, have over 10,000 GitHub Stars combined.
+        I combine a formal Quantitative Finance background with deep Python expertise. This site collects my open-source projects, including the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a> with over 10,000 GitHub Stars combined, articles on applied financial analysis and guides on building financial models in Python.
       </p>
+      <div class="hero-actions">
+        <a href="/projects" class="btn btn--info">Explore the Projects</a>
+        <a href="/articles" class="btn btn--outline">Read the Articles</a>
+      </div>
     </div>
     <div class="hero-photo">
       <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma" width="640" height="654" fetchpriority="high">
@@ -38,21 +42,21 @@ classes: custom-splash
   </a>
 </div>
 
-<div class="bento-grid">
-
-  <a href="/resume" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-briefcase bento-icon"></i>
-      <h2>Professional Experience</h2>
-      <p>A career spanning Quantitative Asset Management, Open Source development, and Finance education.</p>
-    </div>
-  </a>
+<div class="bento-grid bento-grid--three">
 
   <a href="/projects" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-code-branch bento-icon"></i>
       <h2>Open-Source Projects</h2>
-      <p>Python libraries for Financial Datasets and Financial Modelling built for Transparency and Reusability.</p>
+      <p>Python libraries for Financial Datasets and Financial Modelling, including the Finance Toolkit MCP Server that brings them to AI assistants.</p>
+    </div>
+  </a>
+
+  <a href="/articles" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-newspaper bento-icon"></i>
+      <h2>Articles</h2>
+      <p>Applied write-ups on Valuation, Risk, Macro and AI-assisted analysis, each backed by the open-source code that produced it.</p>
     </div>
   </a>
 
@@ -64,11 +68,27 @@ classes: custom-splash
     </div>
   </a>
 
+  <a href="/resume" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-briefcase bento-icon"></i>
+      <h2>Professional Experience</h2>
+      <p>A career spanning Quantitative Asset Management, Open Source development, and Finance education.</p>
+    </div>
+  </a>
+
   <a href="/appearances" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-microphone bento-icon"></i>
       <h2>Appearances</h2>
-      <p>Recorded Talks, Articles, and a curated reading list on Financial Markets and Open Source.</p>
+      <p>Recorded Talks and public appearances on Financial Markets, Python and Open Source.</p>
+    </div>
+  </a>
+
+  <a href="/literature" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-book-open bento-icon"></i>
+      <h2>Literature</h2>
+      <p>A curated reading list of Papers, Books and Articles on Quantitative Finance and Investing.</p>
     </div>
   </a>
 </div>
@@ -120,22 +140,27 @@ classes: custom-splash
     [starsEl, ratiosEl, dlEl].forEach(function (el) { if (el) countUp(el); });
   });
 
-  /* -- Rotating tagline -- */
-  var rotating = document.querySelector('.hero-rotating');
-  if (!rotating || reduced) return;
-  var words = (rotating.getAttribute('data-words') || '').split('|').filter(Boolean);
-  if (words.length < 2) return;
-  var idx = 0;
-  setInterval(function () {
-    rotating.style.opacity = '0';
-    setTimeout(function () {
-      idx = (idx + 1) % words.length;
-      rotating.textContent = words[idx];
-      rotating.style.opacity = '1';
-    }, 300);
-  }, 3200);
 }());
 </script>
+
+<div class="section-divider"></div>
+
+<h2 class="section-title text-center gradient-title">Latest Articles</h2>
+
+{% assign latest_articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
+<div class="article-list home-articles">
+{% for article in latest_articles limit: 3 %}
+  <a href="{{ article.url | relative_url }}" class="article-card">
+    <div class="article-card__meta">
+      <span class="article-card__date">{{ article.date | date: "%-d %B %Y" }}</span>
+    </div>
+    <h3 class="article-card__title">{{ article.title }}</h3>
+    {% if article.excerpt %}<p class="article-card__excerpt">{{ article.excerpt | strip_html }}</p>{% endif %}
+  </a>
+{% endfor %}
+</div>
+
+<p class="home-articles__more"><a href="/articles" class="btn btn--outline">All Articles</a></p>
 
 <div class="section-divider"></div>
 
@@ -272,3 +297,11 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 </script>
+
+<div class="section-divider"></div>
+
+<div class="home-contact">
+  <h2 class="section-title gradient-title">Let's Talk</h2>
+  <p>Questions about the projects, an idea for a collaboration or a talk, or just want to discuss financial theory? I am always happy to hear from you.</p>
+  <a href="/contact" class="btn btn--info">Get in Touch</a>
+</div>

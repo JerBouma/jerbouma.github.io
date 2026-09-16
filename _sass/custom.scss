@@ -700,6 +700,23 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+// Secondary button next to the gradient one: same shape, transparent fill
+.btn.btn--outline {
+  background: transparent !important;
+  border: 1px solid var(--card-border) !important;
+  border-radius: 8px !important;
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+  padding: 9px 20px !important;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease !important;
+
+  &:hover {
+    transform: translateY(-2px) !important;
+    border-color: var(--card-hover-border) !important;
+    background: color-mix(in srgb, var(--card-bg) 96%, var(--accent-color) 4%) !important;
+  }
+}
+
 // Glassmorphism Testimonials Slider
 .testimonial-slider {
   display: flex !important;
@@ -3376,6 +3393,11 @@ body.wide-no-sidebar:not(.no-title) {
   margin-bottom: 52px;
 }
 
+// Three cards per row on the homepage; the 768px rule below still stacks them
+.bento-grid--three .bento-card {
+  grid-column: span 4;
+}
+
 .bento-grid--compact {
   gap: 10px;
   margin-bottom: 32px;
@@ -3844,6 +3866,38 @@ body.wide-no-sidebar:not(.no-title) {
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+}
+
+// Homepage: latest three articles reuse the article cards, plus the closing
+// contact block
+.home-articles {
+  margin-top: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.home-articles__more {
+  text-align: center;
+  margin: 28px 0 0;
+}
+
+.home-contact {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 52px;
+
+  .section-title {
+    margin-bottom: 16px !important;
+  }
+
+  p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 24px;
   }
 }
 
