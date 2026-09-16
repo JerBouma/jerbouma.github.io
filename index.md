@@ -16,10 +16,6 @@ classes: custom-splash
       <p class="hero-bio">
         I combine a formal Quantitative Finance background with deep Python expertise. This site collects my open-source projects, including the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a> with over 10,000 GitHub Stars combined, articles on applied financial analysis and guides on building financial models in Python.
       </p>
-      <div class="hero-actions">
-        <a href="/projects" class="btn btn--info">Explore the Projects</a>
-        <a href="/articles" class="btn btn--outline">Read the Articles</a>
-      </div>
     </div>
     <div class="hero-photo">
       <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma" width="640" height="654" fetchpriority="high">
