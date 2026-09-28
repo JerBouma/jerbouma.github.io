@@ -130,6 +130,10 @@ module DocsMetricPages
     module_name = MODULES[key]
     out = +""
     out << parts[:description] << "\n\n"
+    # for readers who would rather ask an AI assistant than write Python
+    out << "**No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), "
+    out << "AI assistants such as Claude and ChatGPT can calculate the #{name} for you. "
+    out << "Just ask in plain English.\n{: .notice--info}\n\n"
     unless parts[:example].empty?
       out << "## Calculate the #{name} in Python\n\n"
       out << "The #{name} is available in the #{module_name} module of the open-source "
