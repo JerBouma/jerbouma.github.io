@@ -118,6 +118,12 @@ module DocsMetricPages
     title.sub(" | ", " &#124; ")
   end
 
+  # just the argument bullets from the Args block, without Returns/Raises/Notes
+  def arguments_for(block)
+    args = block[/\*\*Args:\*\*\s*(.*?)(?=\*\*(?:Returns|Raises|Notes|As an example):\*\*|\z)/m, 1].to_s.strip
+    args.start_with?("- ") ? args : ""
+  end
+
   def content_for(name, key, fn_name, anchor, parts, related, module_url)
     module_name = MODULES[key]
     out = +""
@@ -129,16 +135,16 @@ module DocsMetricPages
       out << "and call `#{fn_name}` as shown below.\n\n"
       out << parts[:example] << "\n\n"
     end
-    unless parts[:arguments].empty?
-      out << "## Parameters\n\n" << parts[:arguments].sub(/\A\*\*Args:\*\*\s*/, "") << "\n\n"
+    arguments = arguments_for(parts[:arguments])
+    unless arguments.empty?
+      out << "## Parameters\n\n"
+      out << "`#{fn_name}` accepts the following parameters:\n\n"
+      out << arguments << "\n\n"
     end
-    out << "## Use it in an AI Assistant\n\n"
-    out << "The [Finance Toolkit MCP server](/projects/financetoolkit/mcp) exposes the #{name} to Claude, "
-    out << "ChatGPT, Cursor and other AI assistants, so you can ask for it in plain English "
-    out << "without writing any code.\n\n"
-    unless related.empty?
-      group = related.first[:group]
-      out << (group == module_name ? "## More from the #{module_name} Module\n\n" : "## Related #{group}\n\n")
+    # only a real sidebar group gives a meaningful "related" list; the modules
+    # without groups would just list the rest of the module
+    if !related.empty? && related.first[:group] != module_name
+      out << "## Related #{related.first[:group]}\n\n"
       related.each { |r| out << "- [#{r[:title]}](#{r[:url]})\n" }
       out << "\n"
     end
