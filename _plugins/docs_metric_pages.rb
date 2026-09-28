@@ -111,12 +111,8 @@ module DocsMetricPages
   # title into a table, so the separator is written as an entity (as the
   # theme's own title_separator is); lengths are measured with a plain "|".
   def seo_title_for(name)
-    title = [
-      "#{name}: Formula and Python Example | Finance Toolkit",
-      "#{name}: Formula and Python Example",
-      "#{name} in Python | Finance Toolkit",
-      "#{name} in Python",
-    ].find { |t| t.length <= 65 } || name
+    title = "#{name} | Finance Toolkit"
+    title = name if title.length > 65
     title.sub(" | ", " &#124; ")
   end
 
