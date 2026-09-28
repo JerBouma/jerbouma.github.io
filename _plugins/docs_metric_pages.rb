@@ -110,9 +110,13 @@ module DocsMetricPages
   # The theme runs <title> through markdownify, where a bare "|" turns the
   # title into a table, so the separator is written as an entity (as the
   # theme's own title_separator is); lengths are measured with a plain "|".
+  # "Altman Z-Score | Finance Toolkit". When that runs past 65 characters the
+  # bracketed acronym goes first ("Forward Price to Earnings Growth Ratio
+  # (Forward PEG)" loses "(Forward PEG)"), and only then the suffix.
   def seo_title_for(name)
-    title = "#{name} | Finance Toolkit"
-    title = name if title.length > 65
+    short = name.sub(/\s*\([^()]*\)\s*\z/, "")
+    title = ["#{name} | Finance Toolkit", "#{short} | Finance Toolkit", short]
+              .find { |t| t.length <= 65 } || short
     title.sub(" | ", " &#124; ")
   end
 
