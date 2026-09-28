@@ -210,8 +210,10 @@
     {
       "@type": "ListItem",
       "position": {{ forloop.index | plus: 1 }},
-      "name": {% if forloop.last %}{{ page.title | default: crumb | replace: '-', ' ' | capitalize | jsonify }}{% else %}{{ crumb | replace: '-', ' ' | capitalize | jsonify }}{% endif %},
-      "item": {% assign crumb_path = crumb_path | append: '/' | append: crumb %}{{ crumb_path | append: '/' | absolute_url | jsonify }}
+      {%- assign crumb_path = crumb_path | append: '/' | append: crumb -%}
+      {%- assign crumb_page = site.pages | where: "url", crumb_path | first -%}
+      "name": {% if forloop.last %}{{ page.title | default: crumb | replace: '-', ' ' | capitalize | jsonify }}{% elsif crumb_page.title %}{{ crumb_page.title | jsonify }}{% else %}{{ crumb | replace: '-', ' ' | capitalize | jsonify }}{% endif %},
+      "item": {% if crumb_page.redirect.to %}{{ crumb_page.redirect.to | jsonify }}{% else %}{{ crumb_path | absolute_url | jsonify }}{% endif %}
     }{% endfor %}
   ]
 }
