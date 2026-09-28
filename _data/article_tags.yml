@@ -1,0 +1,9 @@
+# The only tags articles may use. They double as the filter buttons on
+# /articles, so keep this list short and topic-based: give each article one or
+# two of these rather than inventing a new tag per article. Adding a tag here
+# is a deliberate choice; _plugins/article_tags.rb fails the build when an
+# article uses a tag that is not listed.
+- Fundamental Analysis
+- Macroeconomics
+- Risk & Derivatives
+- MCP Server

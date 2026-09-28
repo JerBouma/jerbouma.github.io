@@ -9,7 +9,7 @@ layout: single
 classes: wide-sidebar article-document
 author_profile: false
 collection: article
-tags: [Finance Toolkit, Fundamental Analysis, MCP Server]
+tags: [MCP Server]
 share: true
 ---
 On the 6th of May, 2023, Microsoft's Price-to-Earnings ratio was reported as 28.93 by Stockopedia, 32.05 by Morningstar, 32.66 by Macrotrends, 33.67 by the Wall Street Journal, and 34.4 by Companies Market Cap. Every one of those numbers is "correct." They just use different definitions of earnings, different share counts, and different rounding. None of the providers publish the formula, so there is no way to know which one matches the calculation you actually want.
