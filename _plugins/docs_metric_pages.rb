@@ -1,3 +1,5 @@
+require "cgi"
+
 # Gives every metric in the Finance Toolkit documentation its own page.
 #
 # The module pages (/projects/financetoolkit/docs/ratios and friends) are
@@ -141,16 +143,32 @@ module DocsMetricPages
       out << "`#{fn_name}` accepts the following parameters:\n\n"
       out << arguments << "\n\n"
     end
-    # only a real sidebar group gives a meaningful "related" list; the modules
-    # without groups would just list the rest of the module
-    if !related.empty? && related.first[:group] != module_name
-      out << "## Related #{related.first[:group]}\n\n"
-      related.each { |r| out << "- [#{r[:title]}](#{r[:url]})\n" }
-      out << "\n"
+    unless related.empty?
+      group = related.first[:group]
+      heading = if group != module_name then "Related #{group}"
+                elsif module_name == "Models" then "Related Models"
+                else "Related #{module_name} Metrics"
+                end
+      # same pill buttons as the module switcher on the docs pages
+      pills = related.map do |r|
+        %(<a href="#{r[:url]}" class="ft-module-pill">#{CGI.escapeHTML(r[:title])}</a>)
+      end
+      out << "## #{heading}\n\n"
+      out << %(<div class="ft-module-switcher docs-related">\n  #{pills.join("\n  ")}\n</div>\n\n)
     end
     out << "The [#{module_name} module documentation](#{module_url}##{anchor}) lists every "
     out << "function of the module on a single page.\n"
     out
+  end
+
+  # up to twelve metrics from the same sidebar group, nearest to this one in
+  # the sidebar order first, so neighbouring metrics link to each other
+  def related_for(anchor, group_anchors, urls, limit = 12)
+    list = group_anchors.select { |a| urls[a] }
+    index = list.index(anchor) || 0
+    (list - [anchor]).sort_by { |a| [(list.index(a) - index).abs, list.index(a)] }
+                     .first(limit)
+                     .sort_by { |a| list.index(a) }
   end
 
   def unique_description(name, text, seen)
@@ -195,8 +213,12 @@ module DocsMetricPages
         info    = metrics[anchor]
         fn_name, body = sections[anchor]
         parts   = parse(body)
-        related = groups[info[:group]].reject { |a| a == anchor || !urls[a] }.first(12).map do |a|
-          { :title => metrics[a][:title], :url => urls[a], :group => info[:group] }
+        # a metric alone in its sidebar group falls back to its neighbours in
+        # the whole module, so every page links onwards
+        pool    = groups[info[:group]].count { |a| urls[a] } > 1 ? groups[info[:group]] : metrics.keys
+        group   = pool.equal?(groups[info[:group]]) ? info[:group] : MODULES[key]
+        related = related_for(anchor, pool, urls).map do |a|
+          { :title => metrics[a][:title], :url => urls[a], :group => group }
         end
 
         description = unique_description(info[:title], description_for(info[:title], parts[:description]), seen_descriptions)

@@ -5626,3 +5626,9 @@ table.highlight {
     }
   }
 }
+
+// Related-metric buttons on the generated metric pages reuse the module
+// switcher pills; only the spacing differs.
+.ft-module-switcher.docs-related {
+  margin: 0 0 28px;
+}
