@@ -35,7 +35,7 @@ Calculates and collects all risk metrics.
 Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -96,9 +96,9 @@ calculated over a rolling window of this many periods across the full return his
 of per `period` (e.g. a rolling 60-day VaR). Only available for
 `distribution="historic"`; see `get_var_backtest` for a rolling, out-of-sample VaR path
 under the parametric distributions. Defaults to None.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the VaR values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -172,9 +172,9 @@ calculated over a rolling window of this many periods across the full return his
 of per `period` (e.g. a rolling 60-day CVaR). Only available for
 `distribution="historic"`; see `get_acerbi_szekely_test` for a rolling, out-of-sample CVaR
 path under the parametric distributions. Defaults to None.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -240,9 +240,9 @@ Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate EVaR within the specified period or for the entire
 period. Thus whether to look at the CVaR within a specific year (if period = 'yearly') or look at the entirety
 of all years. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -305,9 +305,9 @@ of all years. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, CDaR is
 calculated over a rolling window of this many periods across the full return history instead
 of per `period`. Defaults to None.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CDaR values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -364,10 +364,10 @@ for the entire period. Thus whether to look at the Tail Ratio within a specific 
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Tail
 Ratio is calculated over a rolling window of this many periods across the full return history
 instead of per `period`. Defaults to None.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Tail Ratio values over time.
 Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -419,10 +419,10 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 - <u>within_period (bool, optional):</u> Whether to calculate the Maximum Drawdown within the specified period
 or for the entire period. Thus whether to look at the Maximum Drawdown within a specific year
 (if period = 'yearly') or look at the entirety of all years. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Maximum Drawdown values over time.
 Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -480,9 +480,9 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 - <u>within_period (bool, optional):</u> Whether to calculate the duration within the specified period or
 for the entire period. Thus whether to look at the duration within a specific year (if period =
 'yearly') or look at the entirety of all years. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the duration values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -534,10 +534,10 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 - <u>within_period (bool, optional):</u> Whether to calculate the recovery time within the specified period
 or for the entire period. Thus whether to look at the recovery time within a specific year (if
 period = 'yearly') or look at the entirety of all years. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the recovery time values over time.
 Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -591,7 +591,7 @@ Ulcer Index = SQRT(SUM[((Pn - Highest High) / Highest High)^2] / n)
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rolling (int \| None, optional):</u> The trailing lookback window used as the high-water
+- <u>rolling (int &#124; None, optional):</u> The trailing lookback window used as the high-water
 mark reference for each day's drawdown. Pass None for an expanding
 (since-inception) high-water mark instead -- this is what the "Highest High"
 in the formula above literally refers to; a fixed int window is a common,
@@ -601,9 +601,9 @@ return series does NOT give you the since-inception result -- pandas only
 starts producing a rolling value once the full window is filled, so it would
 silently degenerate to just the final period's drawdown; use `rolling=None`
 instead. Defaults to 14.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the UI values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -663,16 +663,16 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 - <u>within_period (bool, optional):</u> Whether to calculate GARCH within the specified period or for the entire
 period. Thus whether to look at the GARCH within a specific year (if period = 'yearly') or look at the
 entirety of all years. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the GARCH values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame \| pd.Series: GARCH values
+pd.DataFrame &#124; pd.Series: GARCH values
 
 **Notes:**
 
@@ -732,17 +732,17 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 - <u>within_period (bool, optional):</u> Whether to calculate GARCH within each specified period or all
 at once. Thus whether to look at the GARCH within each specific year (if period = 'yearly') or
 look at the entirety of all years. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the GARCH values over time. Defaults to
 False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame \| pd.Series: sigma_2 forecast values
+pd.DataFrame &#124; pd.Series: sigma_2 forecast values
 
 **Notes:**
 
@@ -803,7 +803,7 @@ For more information about the method, see the following book:
 Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>optimization_t (int, optional):</u> Time steps of the returns series to use for the optimization.
 Defaults to the full length of the returns series.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -854,17 +854,17 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 weights are given.
 - <u>within_period (bool, optional):</u> Whether to calculate GJR-GARCH within the specified period or
 for the entire period. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the GJR-GARCH values over time.
 Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame \| pd.Series: GJR-GARCH values
+pd.DataFrame &#124; pd.Series: GJR-GARCH values
 
 **Notes:**
 
@@ -916,18 +916,18 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 - <u>time_steps (int, optional):</u> Time steps to calculate GJR-GARCH and to forecast sigma_2 values for.
 - <u>within_period (bool, optional):</u> Whether to calculate GJR-GARCH within each specified period or
 all at once. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the GJR-GARCH values over time.
 Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame \| pd.Series: sigma_2 forecast values
+pd.DataFrame &#124; pd.Series: sigma_2 forecast values
 
 **Notes:**
 
@@ -980,7 +980,7 @@ For more information about the method, see the following paper:
 Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>optimization_t (int, optional):</u> Time steps of the returns series to use for the optimization.
 Defaults to the full length of the returns series.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1033,17 +1033,17 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 weights are given.
 - <u>within_period (bool, optional):</u> Whether to calculate EGARCH within the specified period or
 for the entire period. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the EGARCH values over time.
 Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame \| pd.Series: EGARCH values
+pd.DataFrame &#124; pd.Series: EGARCH values
 
 **Notes:**
 
@@ -1095,18 +1095,18 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 - <u>time_steps (int, optional):</u> Time steps to calculate EGARCH and to forecast sigma_2 values for.
 - <u>within_period (bool, optional):</u> Whether to calculate EGARCH within each specified period or
 all at once. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the EGARCH values over time.
 Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame \| pd.Series: sigma_2 forecast values
+pd.DataFrame &#124; pd.Series: sigma_2 forecast values
 
 **Notes:**
 
@@ -1159,7 +1159,7 @@ For more information about the method, see the following paper:
 Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>optimization_t (int, optional):</u> Time steps of the returns series to use for the optimization.
 Defaults to the full length of the returns series.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1223,7 +1223,7 @@ Defaults to 0.95.
 "student-t". Defaults to "empirical".
 - <u>dof (float, optional):</u> The degrees of freedom of the Student-T copula, only used when
 `method="student-t"`. Defaults to 4.0.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1292,7 +1292,7 @@ tickers in the Toolkit instance is calibrated (requires `ticker_b` to also be No
 lower frequency provides -- at "yearly" a decade of history is only ten
 observations.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Raises:**
@@ -1303,7 +1303,7 @@ up when neither is given, or if fewer than 10 paired, non-missing observations a
 
 **Returns:**
 
-pd.Series \| pd.DataFrame: The fitted copula parameter(s), the Lower and Upper Tail
+pd.Series &#124; pd.DataFrame: The fitted copula parameter(s), the Lower and Upper Tail
 Dependence implied by them, the Log-Likelihood, the AIC and the number of observations used
 -- a Series for a single given pair, or a DataFrame indexed by every (Ticker A, Ticker B)
 pair when neither ticker is given.
@@ -1363,7 +1363,7 @@ observations.
 to realistic returns via each asset's own empirical (historical) quantile function.
 Defaults to True. When False, the raw pseudo-observations (each in (0, 1)) are returned
 instead.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Raises:**
@@ -1432,7 +1432,7 @@ observations.
 per pair. When True, returns one row per pair instead, with the winning family's fitted
 parameter(s), Lower and Upper Tail Dependence, Log-Likelihood, AIC and the number of
 observations used. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Raises:**
@@ -1499,7 +1499,7 @@ observations.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>alpha (float, optional):</u> The confidence level for both the tail quantile regression and
 the VaR of `conditioning_ticker` (e.g., 0.05 for 95% confidence). Defaults to 0.05.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1555,7 +1555,7 @@ For more information about the method, see the following sources:
 
 **Args:**
 
-- <u>weights (dict[str, float] \| None, optional):</u> Portfolio weights
+- <u>weights (dict[str, float] &#124; None, optional):</u> Portfolio weights
 keyed by ticker. Normalized internally to sum to 1. Defaults to None, which
 uses equal weights across every ticker in the Toolkit instance (excluding
 the "Portfolio" and "Benchmark" pseudo-tickers, if present).
@@ -1567,7 +1567,7 @@ Defaults to 0.05.
 - <u>distribution (str, optional):</u> The distribution to use for the underlying portfolio
 VaR calculation (historic, gaussian, cornish-fisher or studentt). Defaults to
 "historic".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None.
 
 **Returns:**
@@ -1625,7 +1625,7 @@ For more information about the method, see the following sources:
 
 **Args:**
 
-- <u>weights (dict[str, float] \| None, optional):</u> Portfolio weights
+- <u>weights (dict[str, float] &#124; None, optional):</u> Portfolio weights
 keyed by ticker. Normalized internally to sum to 1. Defaults to None, which
 uses equal weights across every ticker in the Toolkit instance (excluding
 the "Portfolio" and "Benchmark" pseudo-tickers, if present).
@@ -1637,7 +1637,7 @@ Defaults to 0.05.
 - <u>distribution (str, optional):</u> The distribution to use for the underlying portfolio
 VaR calculation (historic, gaussian, cornish-fisher or studentt). Defaults to
 "historic".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None.
 
 **Returns:**
@@ -1697,7 +1697,7 @@ confidence). Defaults to 0.05.
 estimate each VaR value. Defaults to 252 (approximately one trading year of daily returns).
 - <u>test (str, optional):</u> Which test(s) to run, one of "kupiec", "christoffersen" or "both". Defaults
 to "both".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1756,7 +1756,7 @@ returns).
 Error of Z2. Defaults to 1000.
 - <u>random_state (int, optional):</u> The seed for the bootstrap random number generator. Defaults to
 42.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -1807,10 +1807,10 @@ at the entirety of all years. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Skewness is
 calculated over a rolling window of this many periods across the full return history instead of
 per `period`. Defaults to None.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Skewness values over time.
 Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1866,10 +1866,10 @@ for a normal distribution). Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Kurtosis is
 calculated over a rolling window of this many periods across the full return history instead of
 per `period`. Defaults to None.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Kurtosis values over time.
 Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1923,12 +1923,12 @@ For more information about the method, see the following paper:
 Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the estimator within the specified period
 or for the entire period. Defaults to True.
-- <u>k (int \| float, optional):</u> The number of upper order statistics to use. If a float in (0, 1)
+- <u>k (int &#124; float, optional):</u> The number of upper order statistics to use. If a float in (0, 1)
 it is interpreted as the fraction of the strictly positive observations to use. Defaults to
 0.1 (the top 10%).
 - <u>tail (str, optional):</u> Which tail to estimate, one of "left" (the loss tail) or "right" (the
 gain tail). Defaults to "left".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1979,9 +1979,9 @@ to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yea
 Variance is calculated over a rolling window of this many periods (e.g. period='monthly'
 and rolling=6 gives the rolling 6-month Variance) instead of one value per `period`.
 Defaults to None.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Variance values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2053,10 +2053,10 @@ Only available for method="close_to_close". Defaults to None.
 - <u>method (str, optional):</u> Which Volatility estimator to use, one of "close_to_close",
 "parkinson", "garman_klass", "rogers_satchell" or "yang_zhang", as described above.
 Defaults to "close_to_close".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Volatility values over time.
 Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2134,10 +2134,10 @@ component. Defaults to 5.
 - <u>monthly_window (int, optional):</u> The trailing window (in trading days) for the monthly RV
 component. Defaults to 22.
 - <u>horizon (int, optional):</u> The number of days ahead to forecast. Defaults to 1.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the HAR-RV forecast values over
 time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2196,10 +2196,10 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 for the entire period. Defaults to True.
 - <u>scale (float, optional):</u> A multiplier applied to the resulting ratio purely for readability.
 Defaults to 1,000,000.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Amihud Illiquidity values over
 time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2258,7 +2258,7 @@ For more information about the method, see the following paper:
 "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the spread within the specified period or
 for the entire period. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -2309,10 +2309,10 @@ to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yea
 Excess Volatility is calculated over a rolling window of this many periods (e.g.
 period='monthly' and rolling=6 gives the rolling 6-month Excess Volatility) instead of
 one value per `period`. Defaults to None.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Excess Volatility values
 over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2371,10 +2371,10 @@ year (if period = 'yearly') or look at the entirety of all years. Defaults to Tr
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Downside
 Deviation is calculated over a rolling window of this many periods across the full return history
 instead of per `period`. Defaults to None.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Downside Deviation values over
 time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2422,9 +2422,9 @@ MAD measures the average absolute distance of each return from the mean return. 
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
 to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the MAD values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2473,9 +2473,9 @@ The Coefficient of Variation is the ratio of the standard deviation to the mean 
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
 to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CV values over time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2531,10 +2531,10 @@ $$
 - <u>lambda_ (float, optional):</u> The decay factor. Higher values weight the past
 more heavily (slower to react), lower values weight recent returns more
 heavily (faster to react). RiskMetrics uses 0.94 for daily data. Defaults to 0.94.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the EWMA Volatility values over
 time. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2585,7 +2585,7 @@ The ACF measures the correlation between a return series and a lagged version of
 **Args:**
 
 - <u>lags (int, optional):</u> The number of lags to calculate the ACF for. Defaults to 10.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 
 **Returns:**
@@ -2632,7 +2632,7 @@ The Hurst Exponent (H) is interpreted as follows:
 
 - <u>max_lag (int, optional):</u> The maximum lag to use when estimating the exponent.
 Defaults to 20.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 
 **Returns:**

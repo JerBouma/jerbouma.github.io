@@ -493,10 +493,10 @@ Note that this information requires a Premium FMP subscription.
 **Args:**
 
 - <u>overwrite (bool, optional):</u> Defines whether to overwrite the existing data. Defaults to False.
-- <u>rounding (int \| None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
 - <u>growth (bool, optional):</u> Defines whether to return the growth of the data. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> Defines the number of periods to lag the growth data by. Defaults to 1.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>lag (int &#124; list[int], optional):</u> Defines the number of periods to lag the growth data by. Defaults to 1.
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -554,9 +554,9 @@ Note that this information requires a Premium FMP subscription.
 
 - <u>actual_dates (bool):</u> Defines whether to return the actual dates or the corresponding quarters.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
-- <u>rounding (int \| None):</u> The number of decimals to round the results to. Defaults to None,
+- <u>rounding (int &#124; None):</u> The number of decimals to round the results to. Defaults to None,
 which uses the rounding set on the Toolkit.
 
 **Returns:**
@@ -606,7 +606,7 @@ Obtain the latest stock market news articles for the tickers of this Toolkit ins
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -647,7 +647,7 @@ Obtain the latest official company press releases for the tickers of this Toolki
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -688,7 +688,7 @@ Note that this information requires a Premium FMP subscription.
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -731,7 +731,7 @@ Note that this information requires a Premium FMP subscription.
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -857,8 +857,8 @@ Please note that this functionality is only available through Financial Modeling
 Defaults to "1hour".
 - <u>return_column (str, optional):</u> The column to use for the return calculation. Defaults to "Close".
 - <u>fill_nan (bool, optional):</u> Defines whether to forward fill NaN values. Defaults to True.
-- <u>rounding (int \| None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>rounding (int &#124; None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -908,7 +908,7 @@ If a company does not pay any dividend, the function will mention that it was no
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -964,7 +964,7 @@ ESG scores provide investors with a holistic view of a company's sustainability 
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -1134,15 +1134,15 @@ Retrieve daily, weekly, monthly, quarterly or yearly treasury data. This can be 
 - <u>fill_nan (bool):</u> Defines whether to forward fill NaN values. This defaults
 to True to prevent holes in the dataset. This is especially relevant for
 technical indicators.
-- <u>risk_free_rate (str \| None, optional):</u> The maturity to return as the risk free rate
+- <u>risk_free_rate (str &#124; None, optional):</u> The maturity to return as the risk free rate
 ('13w', '5y', '10y' or '30y'). Defaults to None, which uses the maturity set on
 the Toolkit.
-- <u>divide_ohlc_by (int \| float \| None, optional):</u> A value to divide the yields by. Treasury
+- <u>divide_ohlc_by (int &#124; float &#124; None, optional):</u> A value to divide the yields by. Treasury
 yields are published in percent, so this defaults to 100 to return decimals.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding set on the Toolkit.
 - <u>show_errors (bool, optional):</u> Whether to report retrieval errors. Defaults to False.
-- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+- <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
 source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
 over the source set on the Toolkit itself. Defaults to None, which falls back to
 the Toolkit's own enforce_source.
@@ -1246,7 +1246,7 @@ Note that the balance sheet statement is a financial statement that provides a s
 
 **Args:**
 
-- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+- <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
 source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
 data from the free Yahoo Finance source while still using a FinancialModelingPrep
@@ -1255,9 +1255,9 @@ which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
-- <u>lag (int \| str):</u> Defines the number of periods to lag the growth data by.
+- <u>lag (int &#124; str):</u> Defines the number of periods to lag the growth data by.
 E.g. when selecting 4 with quarterly data, the TTM is calculated.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -1335,7 +1335,7 @@ The income statement is a financial statement that shows a company's revenues an
 
 **Args:**
 
-- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+- <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
 source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
 data from the free Yahoo Finance source while still using a FinancialModelingPrep
@@ -1344,10 +1344,10 @@ which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
-- <u>lag (int \| str):</u> Defines the number of periods to lag the growth data by.
+- <u>lag (int &#124; str):</u> Defines the number of periods to lag the growth data by.
 - <u>trailing (int):</u> Defines whether to select a trailing period.
 E.g. when selecting 4 with quarterly data, the TTM is calculated.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -1410,7 +1410,7 @@ The cash flow statement is a financial statement that shows how changes in balan
 
 **Args:**
 
-- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+- <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
 source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
 data from the free Yahoo Finance source while still using a FinancialModelingPrep
@@ -1419,10 +1419,10 @@ which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
 - <u>growth (bool):</u> Defines whether to return the growth of the data.
-- <u>lag (int \| str):</u> Defines the number of periods to lag the growth data by.
+- <u>lag (int &#124; str):</u> Defines the number of periods to lag the growth data by.
 - <u>trailing (int):</u> Defines whether to select a trailing period.
 E.g. when selecting 4 with quarterly data, the TTM is calculated.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -1487,7 +1487,7 @@ Note that this also obtains the balance sheet statement at the same time given t
 
 **Args:**
 
-- <u>enforce_source (str \| None, optional):</u> Forces this specific call to use a given
+- <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
 source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
 data from the free Yahoo Finance source while still using a FinancialModelingPrep
@@ -1495,7 +1495,7 @@ key for the financial statements (or the other way around). Defaults to None,
 which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to.
-- <u>show_columns (list[str] \| None):</u> A list of column names to keep in the result. Invalid
+- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
 **Returns:**
@@ -1579,14 +1579,14 @@ Because the cache is stored per source, per dataset and per entity, removal can 
 
 **Args:**
 
-- <u>source (str \| None):</u> Only remove data from this source, for example
+- <u>source (str &#124; None):</u> Only remove data from this source, for example
 "FinancialModelingPrep", "YahooFinance", "OECD", "FRED" or
 "GlobalMacroDatabase". These match the names used by enforce_source.
 Defaults to None, which matches every source.
-- <u>dataset (str \| None):</u> Only remove this dataset within the source, for
+- <u>dataset (str &#124; None):</u> Only remove this dataset within the source, for
 example "historical", "intraday" or "statements". Defaults to None,
 which matches every dataset.
-- <u>ticker (str \| None):</u> Only remove this entity, for example "AAPL" or a
+- <u>ticker (str &#124; None):</u> Only remove this entity, for example "AAPL" or a
 country code for macroeconomic data. Defaults to None, which matches
 every entity.
 - <u>confirm (bool):</u> Required to be True when no source, dataset or ticker is

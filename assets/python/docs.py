@@ -244,7 +244,7 @@ def _render_tokens(tokens: list) -> str:
 def _formula_to_latex(line: str) -> str:
     """Convert one plain-text formula bullet into a $$ display-math block."""
     formula = line.lstrip("- ").rstrip().rstrip(".")
-    formula = formula.replace("\\|", "|")
+    formula = formula.replace("&#124;", "|")
     for literal in _LITERAL_ATOMS:
         formula = formula.replace(literal, f"⟦{literal}⟧")
     for char, replacement in _UNICODE_MATH.items():
@@ -345,6 +345,19 @@ def _trim_url(url: str) -> tuple[str, str]:
     return url, trailing
 
 
+def _escape_pipes(text: str) -> str:
+    """Write | as &#124; outside inline code.
+
+    A bare pipe (|x| as an absolute value, or "int | str" in a type) can make
+    kramdown read the line as a table, and a backslash escape shows up
+    literally inside the <u> argument labels. The HTML entity renders as a
+    plain | everywhere and never starts a table. Inside backticks the entity
+    would be shown as-is, so code spans keep their real pipe.
+    """
+    parts = re.split(r"(`[^`\n]*`)", text)
+    return "".join(p if p.startswith("`") else p.replace("|", "&#124;") for p in parts)
+
+
 def _linkify(text: str) -> str:
     def _replace(match: re.Match) -> str:
         url, trailing = _trim_url(match.group(0))
@@ -406,7 +419,7 @@ def _clean_description(text: str) -> str:
     Kramdown treats them as one tight list instead.
     """
     text = text.replace("—", "-")  # em dash -> hyphen, used for formula minus signs
-    text = text.replace("|", "\\|")  # escape so |x| (absolute value) isn't parsed as a table
+    text = _escape_pipes(text)  # so |x| (absolute value) isn't parsed as a table
     text = text.replace("The formula is a follows:", "The formula is as follows:")
 
     paragraphs = []
@@ -525,7 +538,7 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
         # Arguments (also covers Returns / Raises / Notes, which follow Args:)
         args_m = _RE_ARGUMENTS.search(docstring)
         arguments = _linkify(args_m.group(1)) if args_m else ""
-        arguments = arguments.replace("|", "\\|")  # escape so |x| (absolute value) isn't parsed as a table
+        arguments = _escape_pipes(arguments)  # so "int | str" isn't parsed as a table
         arguments = _dedent_block(arguments)
         arguments = _RE_ARG_LABEL.sub(_underline_arg, arguments)
         arguments = "\n".join(
