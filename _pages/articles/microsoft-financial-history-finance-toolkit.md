@@ -201,7 +201,7 @@ The early numbers show what a capital-light monopoly looks like. An ROE of 38% i
 
 The 2015 figures are distorted by the Nokia write-down, which depressed net income and inflated the apparent collapse in ROA and ROE. By 2020 ROE had rebounded to 40%, though this partly reflects the equity base shrinking from buybacks rather than purely improved profitability. ROIC strips out the effects of capital structure and gives a cleaner picture: Microsoft earns roughly 30-31% on invested capital today, which is strong but not far from what it earned in the 1990s. The quality of the business has held up; what changed is how the returns are distributed to shareholders.
 
-Return on assets shows something similar. ROA of 18% in 2025 reflects that Microsoft now carries a much heavier asset base of cloud infrastructure, acquisitions, and data centers than the software company of the 1990s. The high-30s ROA of the Gates era is gone, but 18% is a strong number for a company of this size and scope.
+Return on assets shows something similar. ROA of 18% in 2025 reflects that Microsoft now carries a much heavier asset base of cloud infrastructure, acquisitions, and data centers than the software company of the 1990s. The 30%-plus ROA of the Gates era (30.6% in 1990) is gone, but 18% is a strong number for a company of this size and scope.
 
 ## Looking Ahead
 

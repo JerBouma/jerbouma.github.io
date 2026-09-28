@@ -51,7 +51,7 @@ A small fund without in-house sell-side coverage can still use consensus, as lon
 
 *"Show me the current analyst price target range and consensus for AXON, plus 2026 through 2028 revenue and EPS estimates."*
 
-The response comes back in two parts. The price targets show a consensus of $658.56 against a share price of $510.28 that day, roughly 29% below where analysts collectively see it heading. The estimates further out are more revealing: by 2028, the analysts covering AXON put net income anywhere from $573 million to $1.81 billion, a range wider than the company's entire 2025 net income. They agree on the revenue trajectory and disagree sharply on what margin structure survives three years out, and that disagreement says more than the consensus price target does.
+The response comes back in two parts. The price targets show a consensus of $658.56 against a share price of $510.28 that day, about 22.5% below where analysts collectively see it heading, or roughly 29% upside. The estimates further out are more revealing: by 2028, the analysts covering AXON put net income anywhere from $573 million to $1.81 billion, a range wider than the company's entire 2025 net income. They agree on the revenue trajectory and disagree sharply on what margin structure survives three years out, and that disagreement says more than the consensus price target does.
 
 ## A Sanity Check on Valuation
 
