@@ -1,9 +1,7 @@
 {%- comment -%}
   Share row for articles and other pages with `share: true`. Each platform is
   a round icon button (the label is in title/aria-label); "Copy link" keeps its
-  text. The "More" button only appears where the browser supports the native
-  share sheet (mostly phones), which covers every app the reader has installed.
-  url_encode writes spaces as "+", which several intents show literally, so
+  text. url_encode writes spaces as "+", which several intents show literally, so
   they are swapped for %20.
 {%- endcomment -%}
 {%- assign share_url = page.url | absolute_url -%}
@@ -41,32 +39,11 @@
       <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i>
     </a>
 
-    <a href="https://www.threads.com/intent/post?text={{ t }}%20{{ u }}"
-       class="article-share__btn article-share__btn--icon article-share__btn--threads"
-       target="_blank" rel="noopener noreferrer" data-popup
-       title="Share on Threads" aria-label="Share on Threads">
-      <i class="fab fa-fw fa-threads" aria-hidden="true"></i>
-    </a>
-
-    <a href="https://s2f.kytta.dev/?text={{ t }}%20{{ u }}"
-       class="article-share__btn article-share__btn--icon article-share__btn--mastodon"
-       target="_blank" rel="noopener noreferrer" data-popup
-       title="Share on Mastodon" aria-label="Share on Mastodon">
-      <i class="fab fa-fw fa-mastodon" aria-hidden="true"></i>
-    </a>
-
     <a href="https://www.reddit.com/submit?url={{ u }}&amp;title={{ t }}"
        class="article-share__btn article-share__btn--icon article-share__btn--reddit"
        target="_blank" rel="noopener noreferrer" data-popup
        title="Share on Reddit" aria-label="Share on Reddit">
       <i class="fab fa-fw fa-reddit" aria-hidden="true"></i>
-    </a>
-
-    <a href="https://news.ycombinator.com/submitlink?u={{ u }}&amp;t={{ t }}"
-       class="article-share__btn article-share__btn--icon article-share__btn--hackernews"
-       target="_blank" rel="noopener noreferrer" data-popup
-       title="Share on Hacker News" aria-label="Share on Hacker News">
-      <i class="fab fa-fw fa-hacker-news" aria-hidden="true"></i>
     </a>
 
     <a href="https://wa.me/?text={{ t }}%20{{ u }}"
@@ -76,24 +53,11 @@
       <i class="fab fa-fw fa-whatsapp" aria-hidden="true"></i>
     </a>
 
-    <a href="https://t.me/share/url?url={{ u }}&amp;text={{ t }}"
-       class="article-share__btn article-share__btn--icon article-share__btn--telegram"
-       target="_blank" rel="noopener noreferrer" data-popup
-       title="Share on Telegram" aria-label="Share on Telegram">
-      <i class="fab fa-fw fa-telegram" aria-hidden="true"></i>
-    </a>
-
     <a href="mailto:?subject={{ t }}&amp;body={{ u }}"
        class="article-share__btn article-share__btn--icon article-share__btn--email"
        title="Share by email" aria-label="Share by email">
       <i class="fas fa-fw fa-envelope" aria-hidden="true"></i>
     </a>
-
-    <button type="button"
-            class="article-share__btn article-share__btn--icon article-share__btn--more"
-            title="More sharing options" aria-label="More sharing options" hidden>
-      <i class="fas fa-fw fa-share-nodes" aria-hidden="true"></i>
-    </button>
 
     <button type="button" class="article-share__btn article-share__btn--copy"
             data-url="{{ share_url }}" title="Copy link to clipboard">
@@ -109,7 +73,6 @@
   var section = document.currentScript.previousElementSibling;
   if (!section) return;
   var url = {{ share_url | jsonify }};
-  var title = {{ page.title | strip_html | jsonify }};
 
   // web intents open in a small window on desktop; phones follow the link
   section.querySelectorAll('a[data-popup]').forEach(function (a) {
@@ -119,14 +82,6 @@
       if (w) e.preventDefault();
     });
   });
-
-  var more = section.querySelector('.article-share__btn--more');
-  if (more && navigator.share) {
-    more.hidden = false;
-    more.addEventListener('click', function () {
-      navigator.share({ title: title, url: url }).catch(function () {});
-    });
-  }
 
   var copy = section.querySelector('.article-share__btn--copy');
   if (copy) copy.addEventListener('click', function () {
