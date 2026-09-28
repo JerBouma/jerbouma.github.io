@@ -133,8 +133,9 @@ module DocsMetricPages
     unless parts[:example].empty?
       out << "## Calculate the #{name} in Python\n\n"
       out << "The #{name} is available in the #{module_name} module of the open-source "
-      out << "[Finance Toolkit](/projects/financetoolkit). Install it with `pip install financetoolkit -U` "
-      out << "and call `#{fn_name}` as shown below.\n\n"
+      out << "[Finance Toolkit](/projects/financetoolkit). Install it with:\n\n"
+      out << "```python\npip install financetoolkit -U\n```\n\n"
+      out << "Then call `#{fn_name}` as shown below.\n\n"
       out << parts[:example] << "\n\n"
     end
     arguments = arguments_for(parts[:arguments])
@@ -169,6 +170,13 @@ module DocsMetricPages
     (list - [anchor]).sort_by { |a| [(list.index(a) - index).abs, list.index(a)] }
                      .first(limit)
                      .sort_by { |a| list.index(a) }
+  end
+
+  # the docstring's "Also known as: PE ratio, P/E ratio, ..." names, used as
+  # alternate names in the structured data
+  def also_known_as(desc)
+    line = desc[/\*\*Also known as:\*\*\s*(.+)/, 1].to_s
+    line.sub(/\.\s*\z/, "").split(/,\s*/).map(&:strip).reject(&:empty?)
   end
 
   def unique_description(name, text, seen)
@@ -237,7 +245,11 @@ module DocsMetricPages
           "sidebar"              => { "nav" => "financetoolkit-docs-#{key}" },
           "redirect_from"        => ["#{url}/"],
           "docs_module"          => MODULES[key],
+          "docs_module_url"      => module_url,
           "docs_function"        => fn_name,
+          "docs_aka"             => also_known_as(parts[:description]),
+          "image"                => "/assets/images/projects/FinanceToolkit.jpg",
+          "share"                => true,
           "last_modified_at"     => module_page.data["last_modified_at"],
           "last_modified_at_from_git" => module_page.data["last_modified_at_from_git"]
         )
