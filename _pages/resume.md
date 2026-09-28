@@ -1,7 +1,7 @@
 ---
 title: Resume
-excerpt: Quantitative Investment Strategist combining formal finance education with deep Python expertise and open-source contributions.
-description: Quantitative Investment Strategist combining formal finance education with deep Python expertise and open-source contributions.
+excerpt: "Quantitative Investment Strategist with a background in quantitative finance, years of Python work and a number of open-source projects."
+description: "Quantitative Investment Strategist with a background in quantitative finance, years of Python work and a number of open-source projects."
 permalink: /resume
 redirect_from:
   - /cv
@@ -13,11 +13,11 @@ author_profile: false
 <div class="row">
 <div markdown="1" class="seventy-column">
 
-With a formal background in Quantitative Finance and deep Python expertise, I work at the intersection of investment theory and technology. I currently serve as Quantitative Investment Strategist at a.s.r. asset management, where I apply portfolio optimization, ALM, and AI-driven analytics across multi-billion euro portfolios.
+My background is in Quantitative Finance and most of my work comes down to putting investment theory into practice with Python. I am currently a Quantitative Investment Strategist at a.s.r. asset management, where I work on portfolio optimization, ALM and AI-driven analytics for multi-billion euro portfolios.
 
-Beyond my professional career, I’ve built open-source Python libraries such as the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a> that together have earned over 10,000 GitHub Stars and are used by thousands of analysts, developers, and students worldwide.
+Outside of my day job, I’ve built open-source Python libraries such as the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a>. Together they have over 10,000 GitHub Stars and are used by thousands of analysts, developers and students worldwide.
 
-Below is my journey from education through certifications, open-source projects, and professional experience with testimonials from colleagues along the way.
+Below you can find my education, certifications, open-source projects and work experience, together with testimonials from colleagues.
 
 </div>
 
@@ -41,7 +41,7 @@ Below is my journey from education through certifications, open-source projects,
 <div class="timeline-info">
 <h3>a.s.r. asset management</h3>
 <h4>Quantitative Investment Strategist</h4>
-<p>Spearheading innovative initiatives within the asset management divisions using Python, particularly in portfolio analytics and optimization. Analyzing profitability and investment risks across different risk frameworks (Solvency II and internal models), providing insights into portfolio sensitivities and their relationship with liabilities, and applying Artificial Intelligence to uncover new insights. Conducting Asset Liability Management (ALM) and Strategic Asset Allocation (SAA) analyses, covering topics such as hedging strategies, liquidity risk management, Solvency II optimization, and asset-only studies.</p>
+<p>I lead new Python initiatives within the asset management divisions, mostly in portfolio analytics and optimization. I analyze profitability and investment risk under different risk frameworks (Solvency II and internal models), look at portfolio sensitivities and how they relate to the liabilities, and apply Artificial Intelligence to find new insights. I also run Asset Liability Management (ALM) and Strategic Asset Allocation (SAA) analyses on topics such as hedging strategies, liquidity risk management, Solvency II optimization and asset-only studies.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>
 <span class="skill-pill">SQL</span>
@@ -68,7 +68,7 @@ Below is my journey from education through certifications, open-source projects,
 <div class="timeline-info">
 <h3>a.s.r. asset management</h3>
 <h4>Financial Risk Analyst</h4>
-<p>Analyzed profitability and investment risks within different risk frameworks (Solvency II and internal models), provided insights into portfolio sensitivities and their relationship with liabilities, assessed the impact of month-to-month changes, and contributed to the development of Python models for improved valuation and financial risk measurement.</p>
+<p>I analyzed profitability and investment risk under different risk frameworks (Solvency II and internal models), looked at portfolio sensitivities and how they relate to the liabilities, and assessed the impact of month-to-month changes. I also helped develop Python models to improve valuation and financial risk measurement.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>
 <span class="skill-pill">SQL</span>
@@ -95,7 +95,7 @@ Below is my journey from education through certifications, open-source projects,
 <div class="timeline-info">
 <h3>Certified ScrumMaster (CSM)</h3>
 <h4>Product Owner</h4>
-<p>Centered around the Scrum methodology and leading a team as Product Owner. Obtained during my time at OpenBB where I led a multi-disciplinary Go-to-Market team.</p>
+<p>Covers the Scrum methodology and how to lead a team as Product Owner. I obtained it during my time at OpenBB, where I led a multi-disciplinary Go-to-Market team.</p>
 </div>
 </div>
 </div>
@@ -112,7 +112,7 @@ Below is my journey from education through certifications, open-source projects,
 <div class="timeline-info">
 <h3>OpenBB</h3>
 <h4>Product Manager</h4>
-<p>Oversaw Product Marketing initiatives, including designing the strategy for Academia outreach, identifying market gaps within the financial sector and strategizing accordingly, leading a multi-disciplinary Go-to-Market team, and coordinating Engineering developments requiring significant financial knowledge, either by developing quantitative models or guiding engineering professionals in design and implementation.</p>
+<p>I was responsible for Product Marketing. That included designing the strategy for Academia outreach, finding gaps in the financial sector and deciding how to respond to them, and leading a multi-disciplinary Go-to-Market team. I also coordinated Engineering work that required a lot of financial knowledge, either by developing the quantitative models myself or by guiding the engineers through design and implementation.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>
 <span class="skill-pill">Git</span>
@@ -185,7 +185,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-info">
 <h3>CFA Society Netherlands</h3>
 <h4>Register Beleggingsanalist (RBA)</h4>
-<p>The RBA Program (formerly VBA), organized by the CFA Institute, is a modular program tailored for experienced investment professionals. Provides insights into the entire investment cycle, new market innovations, and the role of investment leadership shaping the future of the industry. Completed alongside professional roles at PGGM and OpenBB.</p>
+<p>The RBA Program (formerly VBA), organized by the CFA Institute, is a modular program for experienced investment professionals. It covers the entire investment cycle, new developments in the market and the role investment leadership plays in where the industry is heading. I completed it alongside my jobs at PGGM and OpenBB.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>
 <span class="skill-pill">Git</span>
@@ -209,7 +209,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-info">
 <h3>Chartered Financial Analyst (CFA)</h3>
 <h4>Level 1</h4>
-<p>Focused on knowledge and comprehension of investment tools and asset classes. Obtained during my first year at PGGM. </p>
+<p>Focused on knowledge and comprehension of investment tools and asset classes. I obtained it during my first year at PGGM.</p>
 </div>
 </div>
 </div>
@@ -226,7 +226,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-info">
 <h3>Finance Database</h3>
 <h4>Creator &amp; Maintainer (7,000+ GitHub Stars)</h4>
-<p>An open-source database featuring 300,000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies, and Money Markets. Provides a broad overview of sectors, industries, and investment types across 111 countries. Born from the frustration of not knowing what financial products exist, this project was later noticed by OpenBB and led to a job offer.</p>
+<p>An open-source database with 300,000+ symbols covering Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It gives an overview of sectors, industries and investment types across 111 countries. I started it out of frustration that I did not know which financial products existed. OpenBB later came across the project, which led to a job offer.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>
 <span class="skill-pill">Git</span>
@@ -250,7 +250,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-info">
 <h3>PGGM</h3>
 <h4>ALM Advisor</h4>
-<p>Provided actuarial and strategic recommendations for several Dutch pension funds. Responsible for the development and maintenance of the econometric model in MATLAB and led most technical developments for the new econometric model in Python. These models performed ALM, URM, and VEV calculations. Actively contributed to developing interactive dashboards and GUIs and implementing Machine Learning techniques.</p>
+<p>I gave actuarial and strategic advice to several Dutch pension funds. I was responsible for developing and maintaining the econometric model in MATLAB and led most of the technical development of the new econometric model in Python. These models performed the ALM, URM and VEV calculations. I also worked on interactive dashboards and GUIs and on applying Machine Learning techniques.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>
 <span class="skill-pill">MATLAB</span>
@@ -307,7 +307,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-info">
 <h3>Finance Toolkit</h3>
 <h4>Creator &amp; Maintainer (5,000+ GitHub Stars)</h4>
-<p>An open-source toolkit providing 500+ financial methods written in the most transparent way possible. Supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Complements the Finance Database to enable fully-fledged competitive analyses. Used by thousands of analysts, developers and students worldwide.</p>
+<p>An open-source toolkit with 500+ financial methods, each written to be as transparent as possible. It supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Combined with the Finance Database, it lets you do a full competitive analysis. It is used by thousands of analysts, developers and students worldwide.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>
 <span class="skill-pill">GitHub Actions</span>
@@ -332,7 +332,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-info">
 <h3>Utrecht University</h3>
 <h4>MSc Banking &amp; Finance</h4>
-<p>Completed the quantitative track with courses in Investment Management, Advanced Econometrics, Asset Pricing, Risk Management, and Python courses in Algorithmic Trading, Risk Management, and Data Science. Master's thesis on the impact of interest rate deductibility limits on capital structure decisions was awarded a 7.5. Prior to this, completed a Pre-Master of Finance.</p>
+<p>I completed the quantitative track, with courses in Investment Management, Advanced Econometrics, Asset Pricing and Risk Management, and Python courses in Algorithmic Trading, Risk Management and Data Science. My Master's thesis on the impact of interest rate deductibility limits on capital structure decisions was graded a 7.5. Before this, I completed a Pre-Master of Finance.</p>
 <div class="timeline-skills">
 <span class="skill-pill">Python</span>
 <span class="skill-pill">MATLAB</span>
@@ -358,7 +358,7 @@ Apart from his financial expertise, I always admired Jeroen’s work ethic and o
 <div class="timeline-info">
 <h3>Hanze University of Applied Sciences</h3>
 <h4>Bachelor of Economics (BEc)</h4>
-<p>Gained a broad perspective on Economics with a strong focus on communication, teamwork, analytical skills, and adaptability. Served as an Ambassador for the Green Quest, an initiative aiming for zero emissions and minimal waste for the University.</p>
+<p>A broad program in Economics with a focus on communication, teamwork, analytical skills and adaptability. I also served as an Ambassador for the Green Quest, the University's initiative aiming for zero emissions and minimal waste.</p>
 </div>
 <div class="timeline-logo">
 <img src="/assets/images/resume/hanzeuniversityofappliedsciences.png" alt="Hanze University of Applied Sciences logo">

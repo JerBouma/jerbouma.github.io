@@ -15,15 +15,15 @@ image: assets/images/projects/FinanceToolkit.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-While browsing a variety of websites, I kept finding that the same financial metric can greatly vary per source and so do the financial statements reported while little information is given how the metric was calculated.
+While browsing a variety of websites, I kept finding that the same financial metric can vary a lot per source, and so do the reported financial statements, while little information is given on how the metric was calculated.
 
-For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is reported to be 28.93 (Stockopedia), 32.05 (Morningstar), 32.66 (Macrotrends), 33.09 (Finance Charts), 33.66 (Y Charts), 33.67 (Wall Street Journal), 33.80 (Yahoo Finance) and 34.4 (Companies Market Cap). All of these calculations are correct, however the method applied varies leading to different results. Therefore, collecting data from multiple sources can lead to wrong interpretation of the results given that one source could be applying a different calculation method than another. And that is, if it is even freely available. Often the calculation is hidden behind a paid subscription.
+For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is reported to be 28.93 (Stockopedia), 32.05 (Morningstar), 32.66 (Macrotrends), 33.09 (Finance Charts), 33.66 (Y Charts), 33.67 (Wall Street Journal), 33.80 (Yahoo Finance) and 34.4 (Companies Market Cap). All of these calculations are correct, but each source applies a different method, which leads to different results. Collecting data from multiple sources can therefore lead to a wrong interpretation of the results, since one source could be using a different calculation method than another. That is, if the method is freely available at all; often it is hidden behind a paid subscription.
 
-**This is why I designed the FinanceToolkit**, this is an open-source toolkit in which all relevant financial methods ([500+](/projects/financetoolkit/docs)) are written down in the most simplistic way allowing for complete transparency of the calculation method ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py){:target="_blank"}). This enables you to avoid dependence on metrics from other providers that do not provide their methods. With a large selection of financial statements in hand, it facilitates streamlined calculations, promoting the adoption of a consistent and universally understood methods and formulas.
+**This is why I designed the FinanceToolkit**, an open-source toolkit in which all relevant financial methods ([500+](/projects/financetoolkit/docs)) are written down in the simplest way possible so that the calculation method is completely transparent ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py){:target="_blank"}). This way you don't have to depend on metrics from providers that don't share their methods. Given a set of financial statements, you can do the calculations yourself with one consistent set of formulas that anyone can read and understand.
 
 Beyond Equities, it supports Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities, Key Economic Indicators and more, allowing you to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
 
-The Finance Toolkit is complemented very well by the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}, a database that features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By utilising both, it is possible to do a fully-fledged competitive analysis with the tickers found from the FinanceDatabase inputted into the FinanceToolkit.
+The Finance Toolkit works well together with the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}, a database of 300.000+ symbols covering Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By using both, you can do a full competitive analysis: find the tickers in the FinanceDatabase and feed them into the FinanceToolkit.
 
 <img src="/assets/images/projects/FinanceToolkit.jpg" alt="Finance Toolkit" width="100%"/>
 
@@ -33,7 +33,7 @@ Before installation, consider starring the project on GitHub which helps others 
 
 <a href="https://github.com/JerBouma/FinanceToolkit" target="_blank"><img width="1415" alt="image" src="https://github.com/JerBouma/FinanceToolkit/assets/46355364/014109fe-0c68-47d4-99bd-217c69dcea8d" target="_blank"></a>
 
-To install the FinanceToolkit it simply requires the following:
+Installing the FinanceToolkit only requires the following:
 
 ```bash
 pip install financetoolkit -U
@@ -50,17 +50,17 @@ companies = Toolkit(
 )
 ```
 
-To be able to get started, you need to obtain an API Key from FinancialModelingPrep. This is used to gain access to 30+ years of financial statement both annually and quarterly. Note that the Free plan is limited to 250 requests each day, 5 years of data and only features companies listed on US exchanges.
+To be able to get started, you need to obtain an API Key from FinancialModelingPrep. This gives access to 30+ years of financial statements, both annual and quarterly. Note that the Free plan is limited to 250 requests each day, 5 years of data and only features companies listed on US exchanges.
 
 [Obtain an API Key from FinancialModelingPrep](/fmp){: .btn .btn--warning .btn--large .align-center target="_blank"}
 
-Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time. I have chosen FinancialModelingPrep as a source as I find it to be the most transparent, reliable and at an affordable price. I have yet to find a platform offering such low prices for the amount of data offered. When you notice that the data is inaccurate or have any other issue related to the data, note that I simply provide the means to access this data and I am not responsible for the accuracy of the data itself. For this, use [their contact form](https://site.financialmodelingprep.com/contact){:target="_blank"} or provide the data yourself.
+Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time. I chose FinancialModelingPrep as a source because I find it the most transparent and reliable option at an affordable price. I have yet to find a platform offering such low prices for the amount of data offered. If you notice that the data is inaccurate or have any other issue with the data, note that I only provide the means to access it and am not responsible for its accuracy. For that, use [their contact form](https://site.financialmodelingprep.com/contact){:target="_blank"} or provide the data yourself.
 
 **By default, the Finance Toolkit prioritizes Financial Modeling Prep for data retrieval. If data acquisition from Financial Modeling Prep is unsuccessful (e.g., due to plan restrictions or API key issues), the toolkit automatically switches to Yahoo Finance as a secondary source.** To disable this fallback behavior and exclusively use Financial Modeling Prep, set `enforce_source="FinancialModelingPrep"` during Toolkit initialization.
 
 ## Functionality
 
-This section is an introduction to the Finance Toolkit. Find below a fully-fledged [code documentation](/projects/financetoolkit/docs) as well as the How-To Guides section further down the page, in which you can see many examples ranging from basic examples to creating custom ratios to working with your own datasets.
+This section is an introduction to the Finance Toolkit. There is also full [code documentation](/projects/financetoolkit/docs) and, further down the page, the How-To Guides section with many examples, from the basics to creating custom ratios and working with your own datasets.
 
 A basic example of how to use the Finance Toolkit is shown below. Every code snippet in the sections that follow builds on this same `companies` instance.
 
@@ -75,11 +75,11 @@ Each ratio, indicator and metric has a corresponding function that can be called
 
 Three capabilities cut across nearly the whole toolkit:
 
-- **`rolling` and `trailing` windows.** Many metrics return one value per reporting period by default. Pass `rolling=<n>` to compute the metric over a sliding window instead, or `trailing=<n>` for a trailing sum/average (e.g. a trailing 4-quarter sum to annualize a quarterly flow) — turning a snapshot into a proper time series.
+- **`rolling` and `trailing` windows.** Many metrics return one value per reporting period by default. Pass `rolling=<n>` to compute the metric over a sliding window instead, or `trailing=<n>` for a trailing sum/average (e.g. a trailing 4-quarter sum to annualize a quarterly flow). This turns a snapshot into a proper time series.
 - **`growth` and `lag`.** Pass `growth=True` on almost any `get_` or `collect_` function to return the period-over-period growth instead of the raw value. `lag` (an `int` or list of `int`s, default `1`) controls how many periods back that growth is measured against, e.g. `lag=4` for year-over-year growth on quarterly data. Combine with `trailing` (e.g. `trailing=4, growth=True`) to get TTM growth.
-- **`standardize` (Z-Score).** Most `get_*` methods across Economics, Ratios, Technicals, Risk, Performance, Models, Options and Fixed Income accept `standardize=True`, converting raw values into standard deviations from their own historical mean/std. Useful for ranking, scoring, or spotting an unusual reading across metrics that otherwise live on incompatible scales.
+- **`standardize` (Z-Score).** Most `get_*` methods across Economics, Ratios, Technicals, Risk, Performance, Models, Options and Fixed Income accept `standardize=True`, converting raw values into standard deviations from their own historical mean/std. This is useful for ranking, scoring, or spotting an unusual reading across metrics that otherwise live on incompatible scales.
 
-Every module below also has a How-To Guide notebook (see the How-To Guides section below) and full code documentation (formulas, parameters, worked examples) linked in its own section below.
+Every module below also has a How-To Guide notebook (see the How-To Guides section) and full code documentation (formulas, parameters, worked examples), linked from its own section.
 
 ### Discovering Instruments & News
 
@@ -110,7 +110,7 @@ Which returns:
 | SAF.PA   | Safran SA         |  66234006559 | Industrials       | Aerospace & Defense    |  1.339 | 160.16  |       1.35 | Paris                    | FR        |
 | ROST     | Ross Stores, Inc. |  46724188589 | Consumer Cyclical | Apparel Retail         |  1.026 | 138.785 |       1.34 | NASDAQ Global Select     | US        |
 
-Furthermore, you can find in this module [stock screeners](/projects/financetoolkit/docs/discovery#get_stock_screener), [sector/industry performance](/projects/financetoolkit/docs/discovery#get_sectors_performance) and [news feeds](/projects/financetoolkit/docs/discovery#get_stock_news) and more. Find the full instrument discovery documentation [here](/projects/financetoolkit/docs/discovery).
+This module also includes [stock screeners](/projects/financetoolkit/docs/discovery#get_stock_screener), [sector/industry performance](/projects/financetoolkit/docs/discovery#get_sectors_performance), [news feeds](/projects/financetoolkit/docs/discovery#get_stock_news) and more. Find the full instrument discovery documentation [here](/projects/financetoolkit/docs/discovery).
 
 ### Obtaining Historical Data
 
@@ -253,7 +253,7 @@ The `options` module is divided into four categories: [**Option Pricing**](/proj
 
 ### Obtaining Performance Metrics
 
-Get the correlations with the [factors as defined by Fama-and-French](/projects/financetoolkit/docs/performance#get_factor_asset_correlations). These include market, size, value, operating profitability and investment. The beauty of all functionality here is that it can be based on any period as the function accepts the period `intraday`, `weekly`, `monthly`, `quarterly` and `yearly`.
+Get the correlations with the [factors as defined by Fama-and-French](/projects/financetoolkit/docs/performance#get_factor_asset_correlations). These include market, size, value, operating profitability and investment. All functionality here can be based on any period, as the functions accept the periods `intraday`, `weekly`, `monthly`, `quarterly` and `yearly`.
 
 ```python
 # Get the Fama-French factor correlations for all tickers, quarterly
@@ -281,7 +281,7 @@ Beyond Beta, CAPM and the Fama-French factors, the `performance` module covers a
 
 ### Obtaining Risk Metrics
 
-Get the [Value at Risk](/projects/financetoolkit/docs/risk#get_value_at_risk) for each week. Here, the days within each week are considered for the Value at Risk. This makes it so that you can understand within each period what is the expected Value at Risk (VaR) which can again be any period but also based on distributions such as Historical, Gaussian, Student-t, Cornish-Fisher, or a Peak-over-Threshold Extreme Value Theory (`distribution="evt"`) fit for the tail.
+Get the [Value at Risk](/projects/financetoolkit/docs/risk#get_value_at_risk) for each week. Here, the days within each week are used to calculate the Value at Risk, so you can see the expected Value at Risk (VaR) within each period. The period can again be anything, and the VaR can be based on distributions such as Historical, Gaussian, Student-t, Cornish-Fisher, or a Peak-over-Threshold Extreme Value Theory (`distribution="evt"`) fit for the tail.
 
 ```python
 # Get the weekly Value at Risk for all tickers
@@ -383,9 +383,9 @@ The 40+ indicators are divided into five categories: [**Government**](/projects/
 
 ### Explore your own Portfolio
 
-Through a custom XLSX, XLS or CSV file you are able to load in your own portfolio directly into the Finance Toolkit. This allows you to view your positions and performance (over time) versus a benchmark and other positions as well as your PnL development over time. Furthermore, the portfolio can be directly loaded in the core functionality of the Finance Toolkit as well making it possible to calculate all metrics and ratios for your portfolio (which is a time-weighted sum of all positions). The portfolio module is a standalone module and can be used as such by using `from financetoolkit import Portfolio`.
+Through a custom XLSX, XLS or CSV file you can load your own portfolio directly into the Finance Toolkit. This lets you view your positions and performance over time versus a benchmark and other positions, as well as how your PnL develops over time. The portfolio can also be loaded into the core functionality of the Finance Toolkit, which makes it possible to calculate all metrics and ratios for your portfolio (a time-weighted sum of all positions). The portfolio module is standalone and can be used on its own through `from financetoolkit import Portfolio`.
 
-**It is important to note that it requires a specific Excel template to work, see for further instructions the following notebook <a href="/projects/financetoolkit/portfolio-notebook" target="_blank">here</a>.**
+**Note that it requires a specific Excel template to work. See the notebook <a href="/projects/financetoolkit/portfolio-notebook" target="_blank">here</a> for further instructions.**
 
 ```python
 from financetoolkit import Portfolio
@@ -397,7 +397,7 @@ portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
 portfolio.get_positions_overview()
 ```
 
-The table below shows one of the functionalities of the Portfolio module but is purposely shrunken down given the >30 assets.
+The table below shows one of the functionalities of the Portfolio module but is purposely cut down given the >30 assets.
 
 | Identifier   |   Volume |   Costs |    Price |   Invested |   Latest Price |   Latest Value |   Return |   Return Value |   Benchmark Return |   Volatility |   Benchmark Volatility |   Alpha |   Beta |   Weight |
 |:-------------|---------:|--------:|---------:|-----------:|---------------:|---------------:|---------:|---------------:|-------------------:|-------------:|-----------------------:|--------:|-------:|---------:|
@@ -448,7 +448,7 @@ Only `QCOM`, `SWKS`, `MSFT` and `GOOGL` come out statistically significant once 
 
 ## How-To Guides for the FinanceToolkit
 
-Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering a distinct area of financial analysis. Click any card to open the notebook.
+Each of the Jupyter Notebooks below covers a different area of financial analysis. Click any card to open the notebook.
 
 <div class="bento-grid">
 
@@ -456,7 +456,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-rocket bento-icon"></i>
       <h2>Getting Started</h2>
-      <p>New to the Finance Toolkit? This notebook walks through every major feature with practical examples, from fetching historical prices and financial statements to running a complete financial analysis. Start here.</p>
+      <p>If you are new to the Finance Toolkit, start here. This notebook walks through every major feature with practical examples, from fetching historical prices and financial statements to running a complete financial analysis.</p>
     </div>
   </a>
 
@@ -496,7 +496,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-chart-line bento-icon"></i>
       <h2>Technicals</h2>
-      <p>40+ Technical Indicators across breadth, momentum, overlap and volatility categories. Use alongside fundamental data for a comprehensive view of market behaviour.</p>
+      <p>40+ Technical Indicators across breadth, momentum, overlap and volatility categories. Use them alongside fundamental data to get a fuller view of market behaviour.</p>
     </div>
   </a>
 
@@ -504,7 +504,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-shield-alt bento-icon"></i>
       <h2>Risk</h2>
-      <p>Quantify downside exposure with Value at Risk (VaR), Conditional VaR (cVaR), Maximum Drawdown, Correlation matrices, GARCH and EWMA, essential for any risk-aware investment strategy.</p>
+      <p>Quantify downside exposure with Value at Risk (VaR), Conditional VaR (cVaR), Maximum Drawdown, Correlation matrices, GARCH and EWMA.</p>
     </div>
   </a>
 
@@ -512,7 +512,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-trophy bento-icon"></i>
       <h2>Performance</h2>
-      <p>Evaluate strategies with Sharpe, Sortino and Treynor Ratios, Information Ratio, Jensen's Alpha, Beta and the Capital Asset Pricing Model (CAPM). Understand what truly drives returns.</p>
+      <p>Evaluate strategies with Sharpe, Sortino and Treynor Ratios, Information Ratio, Jensen's Alpha, Beta and the Capital Asset Pricing Model (CAPM). See what drives the returns.</p>
     </div>
   </a>
 
@@ -552,7 +552,7 @@ Explore the Finance Toolkit through a series of Jupyter Notebooks, each covering
     <div class="bento-content">
       <i class="fas fa-plug bento-icon"></i>
       <h2>External Datasets</h2>
-      <p>Connect the Finance Toolkit to any data provider. Fully compatible with Yahoo Finance, OpenBB, Quandl, EODH and Bloomberg, so you can bring your preferred data without being locked to a single source.</p>
+      <p>Connect the Finance Toolkit to any data provider. It works with Yahoo Finance, OpenBB, Quandl, EODH and Bloomberg, so you can use your preferred data instead of being tied to a single source.</p>
     </div>
   </a>
 
@@ -569,7 +569,7 @@ For any financial statement, I make sure to line it up with the corresponding *c
 
 > **Why do the numbers in the financial statements sometimes deviate from the data from FinancialModelingPrep?**
 
-When looking at a company such as Hyundai Motor Company (ticker: 005380.KS), you will notice that the financial statements are reported in KRW (South Korean won). As this specific ticker is listed on the Korean Exchange, the historical market data will also be reported in KRW. However, if you use the ticker HYMTF, which is listed on the American OTC market, the historical market data will be reported in USD. To deal with this discrepancy, the end of year or end of quarter exchange rate is retrieved which is used to convert the financial statements to USD. This is done to prevent ratio calculations such as the Free Cash Flow Yield (which is based on the market capitalization) or Price Earnings Ratio (which is based on the stock price) from being incorrect. This can be disabled by setting `convert_currency=False` in the Toolkit initialization. It is recommended to always use the ticker that is listed on the exchange where the company is based.
+When looking at a company such as Hyundai Motor Company (ticker: 005380.KS), you will notice that the financial statements are reported in KRW (South Korean won). As this specific ticker is listed on the Korean Exchange, the historical market data will also be reported in KRW. However, if you use the ticker HYMTF, which is listed on the American OTC market, the historical market data will be reported in USD. To deal with this discrepancy, the end of year or end of quarter exchange rate is retrieved which is used to convert the financial statements to USD. This is done to prevent ratio calculations such as the Free Cash Flow Yield (which is based on the market capitalization) or Price Earnings Ratio (which is based on the stock price) from being incorrect. This can be disabled by setting `convert_currency=False` in the Toolkit initialization. I recommend always using the ticker that is listed on the exchange where the company is based.
 
 > **How can I get TTM (Trailing Twelve Months) and Growth metrics?**
 
@@ -577,7 +577,7 @@ Most functions will have the option to define the `trailing` parameter. This let
 
 > **How can I save the data periodically so that I don't have to retrieve it every single time again?**
 
-The Toolkit has the option to work with cached data through `use_cached_data=True` when initializing the Toolkit class. Any data that comes from an external source (financial statements, historical prices, economic indicators, and so on) is then stored in a local SQLite database and reused on the next run. Anything the Toolkit calculates itself is never cached, it is always derived from that data on demand.
+The Toolkit has the option to work with cached data through `use_cached_data=True` when initializing the Toolkit class. Any data that comes from an external source (financial statements, historical prices, economic indicators, and so on) is then stored in a local SQLite database and reused on the next run. Anything the Toolkit calculates itself is never cached; it is always derived from that data on demand.
 
 The cache keeps track of what it already holds per ticker and per date range, which means changing a parameter does not throw the rest away:
 
@@ -620,7 +620,7 @@ This is related to the `benchmark_ticker` parameter which is set to "SPY" (S&P 5
 
 > **Data collection seems to be slow, what could be the issue?**
 
-Generally, it should take less than 15 seconds to retrieve the historical data of 100 tickers. If it takes much longer, this could be due to reaching the API limit (the Starter plan has 250 requests per minute), due to a slow internet connection or due to unoptimized code. As the Finance Toolkit makes use of threading, initializing the Toolkit with a single ticker will result in a slow process. This is because the Toolkit will have to wait for the previous request to finish before it can start the next one. Therefore, it is recommended to initialize the Toolkit with all tickers you want to analyze. If it is taking 10+ minutes consider having a look at [this issue](https://github.com/JerBouma/FinanceToolkit/issues/99#issuecomment-1889726000){:target="_blank"} that managed to resolve the problem.
+Generally, it should take less than 15 seconds to retrieve the historical data of 100 tickers. If it takes much longer, this could be due to reaching the API limit (the Starter plan has 250 requests per minute), due to a slow internet connection or due to unoptimized code. As the Finance Toolkit makes use of threading, initializing the Toolkit with a single ticker will result in a slow process. This is because the Toolkit will have to wait for the previous request to finish before it can start the next one. I therefore recommend initializing the Toolkit with all the tickers you want to analyze. If it is taking 10+ minutes consider having a look at [this issue](https://github.com/JerBouma/FinanceToolkit/issues/99#issuecomment-1889726000){:target="_blank"} that managed to resolve the problem.
 
 > **Are you part of FinancialModelingPrep?**
 

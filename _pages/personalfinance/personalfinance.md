@@ -13,13 +13,13 @@ sidebar:
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/PersonalFinance" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-Tracking personal finances can be tedious. It either requires a massive time investment to keep everything well categorized as new transactions come in or it is far from accurate with tools that try to do prediction to define categories for you. Perhaps it works fine for names such as "Wall Mart" or "Starbucks" but your local bakery called "Morty's Place" is definitely not going to get picked up by the model. Many personal finance tools allow you to manually adjust these categories but that is just as tedious as doing it from scratch.
+Tracking personal finances can be tedious. Either it takes a lot of time to keep everything well categorized as new transactions come in, or it is far from accurate because a tool tries to predict the categories for you. That might work fine for names such as "Wall Mart" or "Starbucks", but your local bakery called "Morty's Place" is not going to get picked up by the model. Many personal finance tools let you adjust these categories manually, but that is just as tedious as doing it from scratch.
 
-**With PersonalFinance I want to make it easier to manage your finances.** Through defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you. This results in Morty's Place being correctly categorised as a Bakery.
+**With PersonalFinance I want to make it easier to manage your finances.** By defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you. This results in Morty's Place being correctly categorised as a Bakery.
 
-To assist in not needing to get *exact* matches, the package makes use of the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance){:target="_blank"} to determine how similar two strings are. This means that if you have a category called "Groceries" with the keyword "Supermarket" and a transaction comes in with the name "Rick's Super Market", it will still be categorised as "Groceries". **There is a limited amount of Mumbo Jumbo going on here on purpose so that it still becomes logical why it is categorised as such.**
+So that you don't need *exact* matches, the package uses the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance){:target="_blank"} to determine how similar two strings are. This means that if you have a category called "Groceries" with the keyword "Supermarket" and a transaction comes in with the name "Rick's Super Market", it will still be categorised as "Groceries". **I purposely kept the Mumbo Jumbo to a minimum so that it stays clear why a transaction is categorised the way it is.**
 
-By doing most of these things through Python and Excel, you have the complete freedom to decide what to do with the output. For example, you can use it to create your own personalized dashboards via any programming language or application such as Excel, PowerBI, Tableau, etc. **I don't want to bore you with custom dashboards that I tailored to myself just so that you can come to the conclusion that it isn't a perfect fit for you.**
+By doing most of these things through Python and Excel, you have complete freedom to decide what to do with the output. For example, you can use it to create your own personalized dashboards via any programming language or application such as Excel, PowerBI, Tableau, etc. **I don't want to bore you with custom dashboards that I tailored to myself just so that you can come to the conclusion that it isn't a perfect fit for you.**
 
 <p align="center">
     <img src="https://github.com/JerBouma/PersonalFinance/raw/main/examples/Personal%20Finance%20-%203.%20Video%20Demo.gif" alt="Personal Finance Illustration" width="100%" onerror="this.style.display = 'none'"/>
@@ -32,7 +32,7 @@ Before installation, consider starring the project on GitHub which helps others 
 
 <a href="https://github.com/JerBouma/PersonalFinance" target="_blank"><img width="1415" alt="image" src="https://github.com/JerBouma/PersonalFinance/assets/46355364/6138cce1-87be-43f5-8f9f-f647bba9844e"></a>
 
-To install the PersonalFinance it simply requires the following:
+Installing PersonalFinance only requires the following:
 
 ```bash
 pip install personalfinance -U
@@ -46,18 +46,18 @@ from personalfinance import Cashflow
 cashflow = Cashflow()
 ```
 
-This will generate the configuration file for you to use which you can supply again by using `configuration_file='cashflow.yaml'`. See below for more information about each capability and what you can do with this file.
+This generates a configuration file, which you can supply again later with `configuration_file='cashflow.yaml'`. See below for more on each capability and what you can do with this file.
 
 ## How-To Guides for PersonalFinance
 
-This section contains a list of How-To guides for Personal Finance. These guides are meant to show you how to use Personal Finance to gain insights into your own personal finances. The guides are written in the form of Jupyter Notebooks. You can view the notebooks by clicking on the button below the description.
+The How-To guides below show how to use Personal Finance to gain insight into your own finances. They are written as Jupyter Notebooks, which you can open with the button below each description.
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 
 ### Getting Started with Personal Finance
 
-This notebook demonstrates an example how to use Personal Finance to understand what the application offers and how you can leverage it for your own personal finance. It helps in understanding how the package is created and how you can use it both in Python and Excel.
+This notebook walks through an example so you can see what Personal Finance offers and how to use it for your own finances. It also shows how the package is put together and how you can use it in both Python and Excel.
 
 [Open the Notebook](/projects/personalfinance/getting-started){: .btn .btn--info}
 
@@ -66,7 +66,7 @@ This notebook demonstrates an example how to use Personal Finance to understand 
 
 ### Managing your Personal Finances
 
-This notebook explains in detail how to use your own transaction files to manage your personal finances. It explains in detail how to use the configuration file and how you can leverage the created datasets to gain insights into your personal finances.
+This notebook explains how to use your own transaction files to manage your personal finances. It goes through the configuration file in detail and shows how you can use the created datasets to gain insight into your finances.
 
 [Open the Notebook](/projects/personalfinance/using-your-files){: .btn .btn--info}
 
@@ -75,7 +75,7 @@ This notebook explains in detail how to use your own transaction files to manage
 
 ## Getting Started
 
-To get started, you need to acquire a configuration file that defines your transactions. This file consists of things such as the location of the datasets, the columns that define e.g. the name, the amount, the date and the categories and keywords that can be used to categorize transactions. The configuration file is automatically downloaded on initialization.
+To get started, you need a configuration file that defines your transactions. It contains things such as the location of the datasets, the columns that hold e.g. the name, amount and date, and the categories and keywords used to categorize transactions. The configuration file is automatically downloaded on initialization.
 
 To see an example, you can run the following code:
 
@@ -87,12 +87,12 @@ cashflows = Cashflow(example=True)
 cashflows.perform_analysis()
 ```
 
-Before it does anything, it will download the example datasets as found [here](https://github.com/JerBouma/PersonalFinance/tree/main/examples){:target="_blank"}. This is merely meant for you to understand how the functionality works. When you are ready to use it for your own cashflows, you can simply remove the `example=True` argument and supply your own configuration file. If you don't have one yet, it will automatically supply one if you use `Cashflow()`. **See the Notebooks as found [here](/projects/personalfinance) for an in-depth explanation.**
+Before it does anything, it will download the example datasets as found [here](https://github.com/JerBouma/PersonalFinance/tree/main/examples){:target="_blank"}. This is only meant to show you how the functionality works. When you are ready to use it for your own cashflows, remove the `example=True` argument and supply your own configuration file. If you don't have one yet, `Cashflow()` will supply one automatically. **See the Notebooks [here](/projects/personalfinance) for an in-depth explanation.**
 
 The `perform_analysis` functionality does the following things:
 
-1. **It reads all the cashflow datasets** based on the configuration file's `file_location` parameter. This can be a single file, a selection of files or an entire folder. It also applies the cost or income indicator if the numbers in your file are all positive (e.g. a column that says "Plus" or "Minus") if chosen.
-3. **It starts applying categorization** based on the `categories` section in the configuration file. It uses [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance){:target="_blank"} to find matches that are closely related (e.g. 'Tim's Bakery' and 'Bakery' would fit in the same category)
+1. **It reads all the cashflow datasets** based on the configuration file's `file_location` parameter. This can be a single file, a selection of files or an entire folder. If chosen, it also applies a cost or income indicator when the numbers in your file are all positive (e.g. a column that says "Plus" or "Minus").
+3. **It starts applying categorization** based on the `categories` section in the configuration file. It uses [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance){:target="_blank"} to find matches that are closely related (e.g. 'Tim's Bakery' and 'Bakery' would fit in the same category).
 4. **It generates multiple transactional and categorized overviews** on a weekly, monthly, quarterly and yearly basis.
 4. **It generates an Excel file** in which all of the results are displayed in a neat format based on the `excel` section of the configuration file. This is optional and can be disabled by setting `write_to_excel` to `False`.
 
@@ -100,7 +100,7 @@ See the resulting image for the file that is generated based on the example data
 
 ![Quarterly Overview Excel Example](https://github.com/JerBouma/PersonalFinance/assets/46355364/5cafc317-19c8-4c02-b46e-7e79e3e90b11)
 
-Besides that, you don't have to continue in Excel if you are handy with Python as all created datasets can be directly accessed in Python as well. All of the datasets can be accessed through the related `get` functions for example:
+You don't have to continue in Excel if you are handy with Python, as all created datasets can also be accessed directly in Python through the related `get` functions, for example:
 
 
 ```python
@@ -137,7 +137,7 @@ Which returns:
 | 2023-09-11/2023-09-17 | 2023-09-12 | geldmaat - Omitted due to Privacy Reasons     |  -18.43 | geldmaat - Omitted due to Privacy Reasons     | Transactions    | geldmaat     |           100% |
 | 2023-09-11/2023-09-17 | 2023-09-13 | asr - Omitted due to Privacy Reasons          |   12.2  | asr - Omitted due to Privacy Reasons          | Income          | asr          |           100% |
 
-These datasets make it possible to plot the spending pattern over time for each category. This can be simply by selecting the column and using `.plot()` from Pandas but it also possible to create a larger overview as shown below:
+These datasets make it possible to plot the spending pattern over time for each category. This can be done simply by selecting the column and using `.plot()` from Pandas, but it is also possible to create a larger overview as shown below:
 
 ```python
 import matplotlib.pyplot as plt

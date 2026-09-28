@@ -1,7 +1,7 @@
 ---
 title: Financial Modelling with Python
-excerpt: Explore Financial Modeling with Python, develop robust models, avoid pitfalls, and learn from practical experience for professional insights.
-description: Explore Financial Modeling with Python, develop robust models, avoid pitfalls, and learn from practical experience for professional insights.
+excerpt: "What I learned building financial models in Python at financial institutions: how to set them up, avoid the usual pitfalls and keep them maintainable."
+description: "What I learned building financial models in Python at financial institutions: how to set them up, avoid the usual pitfalls and keep them maintainable."
 author_profile: true
 permalink: /modelling/introduction
 classes: wide-sidebar
@@ -12,11 +12,11 @@ sidebar:
   nav: "modelling"
 ---
 
-Python, a versatile and powerful programming language, has made significant inroads into the financial industry in recent years. Its simplicity, readability, and extensive libraries have made it a preferred tool among financial analysts and quantitative researchers. Personally, I have dedicated thousands of hours to using Python for both individual projects and institutional applications.
+Python has found its way into the financial industry in recent years. It is simple, readable and has an extensive set of libraries, which is why many financial analysts and quantitative researchers now prefer it. I have spent thousands of hours using Python, both for my own projects and for institutional applications.
 
-Through this experience, I've developed a solid understanding of designing financially sophisticated models and algorithms, focusing on creating structures that are robust, effective, and easily maintainable. Maintaining models, ensuring they handle new data effectively, and adapting them to changing situations are areas where I've made mistakes and learned valuable lessons. These pages aim to share my knowledge and experience, helping you learn from my journey and potentially avoid similar pitfalls.
+Along the way I learned how to design sophisticated financial models and algorithms, with a structure that holds up, does its job and stays easy to maintain. Maintaining models, making sure they handle new data correctly and adapting them when the situation changes are exactly the areas where I made mistakes and learned the most. On these pages I share that knowledge and experience, so that you can hopefully avoid the same pitfalls.
 
-This financial modeling guide provides information on getting started with Python, setting up a project, and structuring, building, and testing a model. Here, I share practices that have proven effective, drawing from my experiences across various roles. **You can navigate the content using the sidebar or the cards below.**
+This guide covers getting started with Python, setting up a project, and structuring, building, and testing a model. The practices I describe are the ones that worked for me across the different roles I have had. **You can browse the content using the sidebar or the cards below.**
 
 <div class="bento-grid bento-grid--compact">
 
@@ -24,7 +24,7 @@ This financial modeling guide provides information on getting started with Pytho
     <div class="bento-content">
       <i class="fas fa-graduation-cap bento-icon"></i>
       <h2>Getting Started with Python</h2>
-      <p>New to Python? Start here. Learn the basics, set up Jupyter Notebooks, and work toward your first project with practical tips on coding tools, Git, and building financial models from scratch.</p>
+      <p>Where to begin if you are new to Python: the basics, setting up Jupyter Notebooks, and working toward your first project, with practical tips on coding tools, Git, and building financial models from scratch.</p>
     </div>
   </a>
 
@@ -32,7 +32,7 @@ This financial modeling guide provides information on getting started with Pytho
     <div class="bento-content">
       <i class="fas fa-folder-open bento-icon"></i>
       <h2>Setting up your Project</h2>
-      <p>Master the essentials of project setup: directory structure, dependency management with uv, Git workflows, linters, and the configuration files that keep your model maintainable for years.</p>
+      <p>The basics of setting up a project: directory structure, dependency management with uv, Git workflows, linters, and the configuration files that keep your model maintainable for years.</p>
     </div>
   </a>
 
@@ -40,7 +40,7 @@ This financial modeling guide provides information on getting started with Pytho
     <div class="bento-content">
       <i class="fas fa-sitemap bento-icon"></i>
       <h2>Structure your Model</h2>
-      <p>Apply the Model-View-Controller (MVC) pattern to financial models. Understand the data, visualization, and control layers and why separating concerns is critical for maintainable code.</p>
+      <p>How to apply the Model-View-Controller (MVC) pattern to financial models, what the data, visualization, and control layers do, and why keeping them separate matters for maintainable code.</p>
     </div>
   </a>
 
@@ -48,7 +48,7 @@ This financial modeling guide provides information on getting started with Pytho
     <div class="bento-content">
       <i class="fas fa-code bento-icon"></i>
       <h2>Build your Model</h2>
-      <p>Write clean, consistent, professional-grade Python. Covers PEP 8 styling, naming conventions, docstrings, type annotations, and the coding patterns that make models easy to read and collaborate on.</p>
+      <p>Writing clean and consistent Python: PEP 8 styling, naming conventions, docstrings, type annotations, and the coding patterns that make a model easy to read and work on together.</p>
     </div>
   </a>
 
@@ -56,7 +56,7 @@ This financial modeling guide provides information on getting started with Pytho
     <div class="bento-content">
       <i class="fas fa-vial bento-icon"></i>
       <h2>Test your Model</h2>
-      <p>Use Pytest to build a robust test suite that mirrors your model structure. Record expected outputs to CSV and automatically detect regressions whenever the underlying calculations change.</p>
+      <p>Using Pytest to build a test suite that mirrors the structure of your model, with expected outputs recorded to CSV so that regressions are detected automatically whenever the underlying calculations change.</p>
     </div>
   </a>
 

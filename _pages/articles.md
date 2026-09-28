@@ -7,7 +7,7 @@ classes: custom-document
 author_profile: false
 ---
 
-A selection of articles I have written connecting my open-source projects with my financial background. The goal is to explain financial theory and demonstrate its practical application within these projects.
+A selection of articles I have written that connect my open-source projects with my background in finance. In each one I explain a piece of financial theory and show how it is applied in these projects.
 
 {% assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
 

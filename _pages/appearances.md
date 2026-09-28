@@ -12,7 +12,7 @@ classes: custom-document
 author_profile: false
 ---
 
-A collection of my public talks and appearances connecting finance theory with open-source Python. **Interested in partnering with me? Reach out via the [contact page](/contact)!**
+My public talks and appearances, mostly about finance theory and open-source Python. **If you would like to work together, reach out via the [contact page](/contact).**
 
 
 <h3>Speaker at the Student Capital Society Rotterdam</h3>
@@ -20,11 +20,11 @@ A collection of my public talks and appearances connecting finance theory with o
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 
-As a relatively new society, the Student Capital Society Rotterdam hosted its first event, which I had the pleasure of attending. The event was a great success, with over 100 students in attendance. I was invited to give a presentation about my role in the financial sector and how I perceive the role of Python within the industry.
+The Student Capital Society Rotterdam is a relatively new society, and I was glad to be part of its first event. It went well, with over 100 students attending. I was invited to give a presentation about my role in the financial sector and how I see the role of Python in the industry.
 
-It was a great opportunity to share my experiences and discuss with the students how institutional investors bring financial theory into practice.
+It was a good opportunity to share my experience and talk with the students about how institutional investors put financial theory into practice.
 
-The other speaker, Vladimir Mikirtumov, discussed the potential role of Cryptocurrencies in the financial sector, specifically focusing on institutional investors. It was a compelling story that left plenty of room for discussion.
+The other speaker, Vladimir Mikirtumov, talked about the potential role of Cryptocurrencies in the financial sector, with a focus on institutional investors. It was an interesting talk that left plenty of room for discussion.
 
 [Read More](https://www.linkedin.com/feed/update/urn:li:activity:7263214411874463746/){: .btn .btn--info target="_blank"}
 
@@ -39,11 +39,11 @@ The other speaker, Vladimir Mikirtumov, discussed the potential role of Cryptocu
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 
-I had the privilege of serving as a jury member for a Hackathon aimed at Finance students. Their objective was to develop a Robo Advisor using Python, utilizing a dataset comprising nearly 2,500 ETFs.
+I was a jury member for a Hackathon for Finance students. The task was to build a Robo Advisor in Python using a dataset of nearly 2,500 ETFs.
 
-What made this challenge particularly interesting was the need for students to balance using Python for quantitative portfolio construction tailored to a given investor profile, while ensuring the optimized portfolio made practical sense. My role was to guide the students in combining their knowledge of financial theory with their Python skills to provide sound investment advice.
+What made the challenge interesting was that students had to use Python to construct a portfolio for a given investor profile, while making sure the optimized portfolio still made practical sense. My role was to help the students combine their knowledge of financial theory with their Python skills to give sound investment advice.
 
-I strongly believe the importance of Python in the financial industry will continue to grow, which is why I keep coming back each year.
+I believe Python will keep becoming more important in the financial industry, which is why I keep coming back each year.
 
 [Read More](https://www.linkedin.com/feed/update/urn:li:activity:7127300810450853888/){: .btn .btn--info target="_blank"}
 
@@ -70,9 +70,9 @@ I strongly believe the importance of Python in the financial industry will conti
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-I gave presentations at the University of Loughborough and the University of Warwick. It was very rewarding to see the high level of interest from students, as both sessions had well over 100 attendees.
+I gave presentations at the University of Loughborough and the University of Warwick. It was good to see how interested the students were: both sessions had well over 100 attendees.
 
-These presentations aimed to inform students about the OpenBB Terminal and OpenBB's future goals. This recording was made at the University of Warwick in collaboration with the Warwick Finance Society.
+In these presentations I introduced students to the OpenBB Terminal and OpenBB's goals for the future. This recording was made at the University of Warwick in collaboration with the Warwick Finance Society.
 
 [Read More](https://www.linkedin.com/feed/update/urn:li:activity:7001557427250720768/){: .btn .btn--info target="_blank"}
 </div>
@@ -87,9 +87,9 @@ These presentations aimed to inform students about the OpenBB Terminal and OpenB
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-I was approached by Utrecht University about providing a guest lecture to Finance students taking a Python workshop. As an alumnus myself and enthusiastic about Python, I couldn't pass up the opportunity to return to my alma mater.
+Utrecht University asked me to give a guest lecture to Finance students taking a Python workshop. As an alumnus who enjoys working with Python, I was happy to go back to my old university.
 
-Therefore, I gave four presentations to nearly one hundred Master's students on campus. My goal was to encourage students to take Python seriously for their careers in the financial sector, explaining its practical applications based on my personal experience.
+I gave four presentations to nearly one hundred Master's students on campus. I wanted to encourage them to take Python seriously for a career in the financial sector, and explained how it is used in practice based on my own experience.
 
 [Read More](https://www.linkedin.com/posts/boumajeroen_openbb-investment-research-for-everyone-activity-6987449395252191232-ET6W/){: .btn .btn--info target="_blank"}
 
@@ -105,9 +105,9 @@ Therefore, I gave four presentations to nearly one hundred Master's students on 
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-In this webinar, I explored how to perform financial due diligence using the OpenBB Terminal, which involves examining financial records before entering into a proposed transaction with another party.
+In this webinar, I showed how to perform financial due diligence using the OpenBB Terminal, which involves examining financial records before entering into a proposed transaction with another party.
 
-I covered key areas such as main revenue streams, historical stock prices, dividends and stock splits, understanding management, ownership, market capitalization, revenue and profit margins, and future expectations.
+I covered areas such as main revenue streams, historical stock prices, dividends and stock splits, understanding management, ownership, market capitalization, revenue and profit margins, and future expectations.
 
 [Read More](https://www.youtube.com/watch?v=Bq7aLH4HY8Y){: .btn .btn--info target="_blank"}
 
@@ -125,7 +125,7 @@ I covered key areas such as main revenue streams, historical stock prices, divid
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
 As part of my initiative to present OpenBB to students and professors, I introduced the OpenBB Terminal to students at Athens University, covering its structure, basics, and two use cases.
 
-The goal was to provide a clear overview of the OpenBB Terminal's capabilities and explain how students can use it for their market and investment reports.
+The goal was to show what the OpenBB Terminal can do and how students can use it for their market and investment reports.
 
 [Read More](https://www.youtube.com/watch?v=HLead2WTnIs&t=1s){: .btn .btn--info target="_blank"}
 
@@ -141,9 +141,9 @@ The goal was to provide a clear overview of the OpenBB Terminal's capabilities a
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
-In this webinar, OpenBB introduced the OpenBB Terminal 3.0. This release included interactive tables and graphs, a brand new fixed income menu developed by me, and numerous back-end improvements.
+In this webinar, OpenBB introduced the OpenBB Terminal 3.0. This release included interactive tables and graphs, a new fixed income menu that I developed, and many back-end improvements.
 
-This marked another step towards becoming the next-generation financial data and analytics platform, designed to revolutionize how analysts access and analyze financial and economic data.
+It was another step towards OpenBB's goal of becoming the next-generation financial data and analytics platform and changing how analysts access and analyze financial and economic data.
 
 [Read More](https://www.youtube.com/watch?v=_4dQs_q_Jtk){: .btn .btn--info target="_blank"}
 

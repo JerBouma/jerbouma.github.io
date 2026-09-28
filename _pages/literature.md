@@ -7,7 +7,7 @@ classes: custom-document
 author_profile: false
 ---
 
-Most of the modelling I undertake is grounded in established financial literature. This is my repository of articles, books, and papers that capture my interest, primarily focusing on investing, economics, and behavioural finance. Click any title to access the source.
+Most of the modelling I do is based on established financial literature. This page collects the articles, books and papers I have found interesting, mostly on investing, economics and behavioural finance. Click any title to go to the source.
 
 <div class="lit-filters" id="lit-filters">
   <button class="lit-filter active" data-filter="all">All <span class="lit-count" data-count="all"></span></button>

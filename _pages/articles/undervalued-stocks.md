@@ -3,7 +3,7 @@ title: Screening for Undervalued Stocks with the Finance Toolkit
 date: 2026-06-14
 last_modified_at: 2026-06-26
 permalink: /articles/screening-undervalued-stocks-finance-toolkit
-excerpt: "Learn how to build a systematic stock screen using the Finance Toolkit. Pull valuation multiples across a universe of stocks, apply multi-metric filters, and overlay profitability metrics to separate genuine value from value traps."
+excerpt: "How to build a systematic stock screen with the Finance Toolkit: pull valuation multiples across a universe of stocks, filter on several metrics at once and add profitability metrics to tell real value from value traps."
 description: "Build a Python-based stock screener using P/E, EV/EBITDA, ROIC, and gross margins with the Finance Toolkit."
 layout: single
 classes: wide-sidebar article-document
@@ -13,9 +13,9 @@ tags: [Fundamental Analysis]
 share: true
 ---
 
-With thousands of publicly listed companies, finding undervalued stocks by hand is impractical. A systematic screen changes that: pull valuation multiples across an entire universe, filter by multiple criteria simultaneously, and overlay profitability metrics to separate genuine value from value traps. The Finance Toolkit makes each of those steps a few lines of Python.
+With thousands of publicly listed companies, finding undervalued stocks by hand is impractical. A systematic screen makes it manageable: you pull valuation multiples across an entire universe, filter on several criteria at once, and overlay profitability metrics to separate real value from value traps. With the Finance Toolkit, each of those steps takes a few lines of Python.
 
-This article walks through a complete screening process from universe definition to a final shortlist. It uses 15 stocks across five sectors to illustrate the logic, a real screen would cast a wider net, and the Discovery module supports that too.
+In this article I walk through a complete screening process, from defining the universe to a final shortlist. It uses 15 stocks across five sectors to illustrate the logic. A real screen would cast a wider net, which the Discovery module also supports.
 
 **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
@@ -49,7 +49,7 @@ screener = Toolkit(
 )
 ```
 
-Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history; a paid plan unlocks deeper history and a larger universe.
+Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history; a paid plan gives access to deeper history and a larger universe.
 
 ## Step 1: Pulling Valuation Multiples
 
@@ -91,9 +91,9 @@ Which returns:
 | AAPL | 36.4 | 41.3 | 55.3 | 28.7 |
 | WMT | 46.3 | 71.1 | 9.9 | 22.6 |
 
-The spread is immediately visible. BAC and MRK trade below 15x earnings. WMT trades at 46x. INTC appears at the top of the sort only because its P/E is negative (the company reported a net loss), which is why sorting by a single metric is dangerous without additional filters.
+The spread is wide: BAC and MRK trade below 15x earnings while WMT trades at 46x. INTC appears at the top of the sort only because its P/E is negative (the company reported a net loss), which is why sorting by a single metric is misleading without additional filters.
 
-A few other readings worth noting. KO trades at 57x free cash flow despite a relatively modest P/E of 23x, suggesting either elevated CapEx or capital structure effects. P/B of 55.3x for AAPL reflects the reality that Apple has bought back so much equity it has almost none left, a reminder that P/B is most useful for asset-heavy sectors like financials and energy.
+A few other readings are worth noting. KO trades at 57x free cash flow despite a relatively modest P/E of 23x, suggesting either elevated CapEx or capital structure effects. The P/B of 55.3x for AAPL reflects that Apple has bought back so much equity that it has almost none left, which is a reminder that P/B is most useful for asset-heavy sectors like financials and energy.
 
 ## Step 2: Applying the Filter
 
@@ -123,7 +123,7 @@ Note that EV/EBITDA is less meaningful for banks, where the concept of enterpris
 
 ## Step 3: The Quality Overlay
 
-Cheap on valuation is not the same as undervalued. The value trap problem is real: stocks trade at low multiples because investors expect deteriorating earnings, balance sheet stress, or structural decline. Before acting on any of the five candidates, the profitability picture needs to hold up.
+A low valuation does not automatically make a stock undervalued. Stocks often trade at low multiples because investors expect deteriorating earnings, balance sheet stress, or structural decline, which is the classic value trap. Before acting on any of the five candidates, the profitability picture needs to hold up.
 
 ```python
 # Collect data from the most recent year
@@ -152,16 +152,16 @@ Which returns:
 | PFE | 8.8% | 11.3% | 70.3% |
 | XOM | 10.7% | 14.8% | 21.7% |
 
-The table separates the field. JNJ and MRK both earn above 28% on invested capital with gross margins above 71%. These are not cheap because the business is deteriorating; they are cheap because pharmaceutical stocks have faced broader sector pressure, patent cliff concerns (MRK), and litigation overhangs (JNJ). The underlying profitability is intact.
+This table separates the candidates. JNJ and MRK both earn above 28% on invested capital with gross margins above 71%. Their low valuations come from broader pressure on pharmaceutical stocks, patent cliff concerns (MRK), and litigation overhangs (JNJ) rather than from a deteriorating business, and the underlying profitability is intact.
 
-XOM earns 14.8% ROIC, which is solid for an energy company operating with significant fixed asset bases. The thin gross margin of 21.7% reflects the commodity economics of oil refining and distribution rather than a structural weakness. The risk here is cyclical: energy earnings compress when oil prices fall.
+XOM earns 14.8% ROIC, which is solid for an energy company operating with large fixed asset bases. The thin gross margin of 21.7% reflects the commodity economics of oil refining and distribution rather than a structural weakness. The risk here is cyclical: energy earnings compress when oil prices fall.
 
-PFE at 11.3% ROIC is borderline. Its gross margin of 70.3% confirms the underlying pharmaceutical business generates strong economics, but the headline return metrics are depressed by the revenue reset after COVID vaccine revenues ran off. Whether this is a genuine recovery opportunity or a prolonged restructuring depends on the pipeline.
+PFE at 11.3% ROIC is borderline. Its gross margin of 70.3% confirms the underlying pharmaceutical business generates strong economics, but the headline return metrics are depressed by the revenue reset after COVID vaccine revenues ran off. Whether this is a real recovery opportunity or a prolonged restructuring depends on the pipeline.
 
 BAC at 4.8% ROIC would look like a disqualifier in an industrial context. For a bank, where assets are funded by deposits rather than equity, ROE of 9.7% is the more relevant metric. That said, it suggests the market's discount is modest rather than an obvious bargain.
 
 ## Step 4: The Final Screen
-This is where the rubber meets the road. After narrowing our universe down to fundamentally sound businesses, the final screen applies a strict Return on Invested Capital (ROIC) threshold albeit somewhat arbitrary defined.
+After narrowing the universe down to fundamentally sound businesses, the final screen applies a strict, if somewhat arbitrarily chosen, Return on Invested Capital (ROIC) threshold.
 
 ```python
 # Apply a strict threshold on ROIC
@@ -178,12 +178,12 @@ Which returns:
 | XOM | 10.7% | 14.8% | 21.7% |
 | PFE | 8.8% | 11.3% | 70.3% |
 
-BAC falls out at 4.8% ROIC under the industrial threshold, though the banking context warrants separate analysis. The remaining four represent meaningfully different risk profiles.
+BAC falls out at 4.8% ROIC under the industrial threshold, though the banking context warrants separate analysis. The remaining four have quite different risk profiles.
 
-JNJ and MRK are the strongest combination of value and quality in this screen. Both earn well above their cost of capital, carry strong franchise positions, and trade at multiples that imply no earnings growth, which is conservative given both have significant product pipelines. XOM offers commodity exposure with decent capital efficiency and a low EV/EBITDA of 9.3x, appropriate for investors comfortable with oil cycle risk. PFE is the speculative recovery candidate: the business model is intact, the discount is real, but the recovery timeline is uncertain.
+JNJ and MRK are the strongest combination of value and quality in this screen. Both earn well above their cost of capital, carry strong franchise positions, and trade at multiples that imply no earnings growth, which is conservative given both have significant product pipelines. XOM offers commodity exposure with decent capital efficiency and a low EV/EBITDA of 9.3x, appropriate for investors comfortable with oil cycle risk. PFE is the speculative recovery candidate: the business model is intact and the discount is real, but the recovery timeline is uncertain.
 
 ## Conclusion
 
 Each of these names requires analysis the Toolkit can support but cannot automate: debt maturity profiles, near-term earnings catalysts, management capital allocation track records, and sector-specific risk factors. MRK’s patent cliff on Keytruda is a known risk not captured in trailing ROIC. XOM’s capital expenditure plans depend heavily on a commodity price path no screen can forecast.
 
-The output of this screen is a watchlist, not a buy list. What it does efficiently is eliminate the 11 stocks where the combination of price and quality does not justify closer attention.
+The output of this screen is a watchlist rather than a buy list. What it does well is eliminate the 11 stocks where the combination of price and quality does not justify closer attention.
