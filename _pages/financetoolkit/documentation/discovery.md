@@ -91,11 +91,11 @@ currency of the listing rather than in millions.
 - <u>dividend_higher (int):</u> The minimum dividend of the stock, as an amount per share
 over the last annual period rather than as a yield.
 - <u>dividend_lower (int):</u> The maximum dividend of the stock.
-- <u>sector (str \| None):</u> The sector to restrict the screen to, e.g. "Energy".
-- <u>industry (str \| None):</u> The industry to restrict the screen to, e.g. "Biotechnology".
-- <u>country (str \| None):</u> The two-letter country code to restrict the screen to, e.g. "US".
-- <u>exchange (str \| None):</u> The exchange code to restrict the screen to, e.g. "NASDAQ".
-- <u>is_etf (bool \| None):</u> Whether to restrict the screen to ETFs or to exclude them.
+- <u>sector (str &#124; None):</u> The sector to restrict the screen to, e.g. "Energy".
+- <u>industry (str &#124; None):</u> The industry to restrict the screen to, e.g. "Biotechnology".
+- <u>country (str &#124; None):</u> The two-letter country code to restrict the screen to, e.g. "US".
+- <u>exchange (str &#124; None):</u> The exchange code to restrict the screen to, e.g. "NASDAQ".
+- <u>is_etf (bool &#124; None):</u> Whether to restrict the screen to ETFs or to exclude them.
 - <u>limit (int):</u> The maximum number of companies to return. Defaults to 1000.
 
 **Returns:**
@@ -212,8 +212,8 @@ Without a date range the API hands back only the earliest days it holds, so pass
 
 **Args:**
 
-- <u>start_date (str \| None):</u> The start date to filter data with, e.g. "2024-01-01".
-- <u>end_date (str \| None):</u> The end date to filter data with, e.g. "2024-12-31".
+- <u>start_date (str &#124; None):</u> The start date to filter data with, e.g. "2024-01-01".
+- <u>end_date (str &#124; None):</u> The end date to filter data with, e.g. "2024-12-31".
 
 **Returns:**
 
@@ -756,7 +756,7 @@ Searches stock market news articles by one or more ticker symbols.
 
 **Args:**
 
-- <u>symbols (str \| list[str]):</u> One or more ticker symbols, e.g. "AAPL" or
+- <u>symbols (str &#124; list[str]):</u> One or more ticker symbols, e.g. "AAPL" or
 ["AAPL", "MSFT"].
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
@@ -799,7 +799,7 @@ Searches company press releases by one or more ticker symbols.
 
 **Args:**
 
-- <u>symbols (str \| list[str]):</u> One or more ticker symbols, e.g. "AAPL" or
+- <u>symbols (str &#124; list[str]):</u> One or more ticker symbols, e.g. "AAPL" or
 ["AAPL", "MSFT"].
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
@@ -842,7 +842,7 @@ Searches cryptocurrency news articles by one or more coin/token symbols.
 
 **Args:**
 
-- <u>symbols (str \| list[str]):</u> One or more crypto symbols, e.g. "BTCUSD" or
+- <u>symbols (str &#124; list[str]):</u> One or more crypto symbols, e.g. "BTCUSD" or
 ["BTCUSD", "ETHUSD"].
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
@@ -883,7 +883,7 @@ Searches forex news articles by one or more currency pair symbols.
 
 **Args:**
 
-- <u>symbols (str \| list[str]):</u> One or more forex pairs, e.g. "EURUSD" or
+- <u>symbols (str &#124; list[str]):</u> One or more forex pairs, e.g. "EURUSD" or
 ["EURUSD", "GBPUSD"].
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.

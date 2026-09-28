@@ -47,7 +47,7 @@ or look at the entirety of all years. Defaults to False.
 - <u>lags (int, optional):</u> The number of lags to test for ARCH effects. Defaults to 5.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -97,7 +97,7 @@ the entire period. Thus whether to look at the test within a specific year (if p
 or look at the entirety of all years. Defaults to False.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -148,7 +148,7 @@ or look at the entirety of all years. Defaults to False.
 - <u>lags (int, optional):</u> The number of lags to test for autocorrelation up to. Defaults to 10.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -199,7 +199,7 @@ or look at the entirety of all years. Defaults to False.
 - <u>q (int, optional):</u> The number of periods to compound returns over. Defaults to 2.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -251,7 +251,7 @@ the entire period. Thus whether to look at the test within a specific year (if p
 or look at the entirety of all years. Defaults to False.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 
 **Returns:**
 
@@ -303,7 +303,7 @@ the Schwert (1989) rule of thumb.
 (constant) or "ct" (constant and trend). Defaults to "c".
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -369,7 +369,7 @@ Defaults to "c".
 to `statsmodels`' automatic (Hobijn, Franses & Ooms, 2004) bandwidth selection.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -437,7 +437,7 @@ For more information about the method, see the following paper:
 Defaults to the Schwert (1989) rule of thumb.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -499,7 +499,7 @@ level/intercept), "t" (a break in the trend slope) or "ct" (both). Defaults to "
 date search at the start and end of the sample. Must be in [0, 1/3). Defaults to 0.15.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -565,7 +565,7 @@ For more information about the method, see the following paper:
 underlying ADF test on the residuals. Defaults to `statsmodels`' automatic selection.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 tickers paired up. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -627,7 +627,7 @@ the short-run dynamics). Defaults to 0.
 short-run dynamics. Defaults to 1.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 tickers tested jointly. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -686,7 +686,7 @@ operate on price levels on purpose).
 Defaults to 5.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 tickers paired up. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -747,7 +747,7 @@ or "rolling". Defaults to "rolling".
 "absolute". Defaults to "squared".
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -794,9 +794,9 @@ For more information about the method, see `regression_model.get_ols`.
 
 **Args:**
 
-- <u>dependent_ticker (str \| None, optional):</u> The dependent (predicted) asset.
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s). Defaults to None, meaning every other ticker in
 the Toolkit instance besides `dependent_ticker`.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
@@ -812,17 +812,17 @@ one of "nonrobust" (classical, assumes homoskedastic errors), "HC0"/"HC1"/"HC2"/
 (Newey-West, heteroskedasticity-and-autocorrelation-consistent, requires `maxlags`).
 Use `get_breusch_pagan_test`/`get_white_test` to check for heteroskedasticity and
 `get_ljung_box_test` to check for autocorrelation first. Defaults to "nonrobust".
-- <u>clusters (pd.Series \| None, optional):</u> The cluster label for each observation
+- <u>clusters (pd.Series &#124; None, optional):</u> The cluster label for each observation
 (e.g. a coarser time bucket derived from the return index, to correct for
 within-period correlation), required when `cov_type="cluster"`. Aligned to the
 regression's own index before use, so it may be indexed by the full period
 index even though the regression drops periods with missing data. Defaults
 to None.
-- <u>maxlags (int \| None, optional):</u> The maximum lag to include when estimating the
+- <u>maxlags (int &#124; None, optional):</u> The maximum lag to include when estimating the
 HAC (Newey-West) covariance matrix, required when `cov_type="HAC"`. A common
 rule of thumb is `floor(4 * (n / 100)^(2/9))` (Newey & West, 1994). Defaults to
 None.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -878,9 +878,9 @@ For more information about the method, see `regression_model.get_wls`.
 
 - <u>weights (pd.Series):</u> The (positive) weight of each observation, aligned to
 the same period index as the return data (e.g. `1 / rolling_variance`).
-- <u>dependent_ticker (str \| None, optional):</u> The dependent (predicted) asset.
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s). Defaults to None, meaning every other ticker in
 the Toolkit instance besides `dependent_ticker`.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
@@ -893,12 +893,12 @@ explicitly). Defaults to False.
 - <u>cov_type (str, optional):</u> Which covariance estimator to use, applied to the weighted/
 transformed problem -- see `get_ols`'s `cov_type` for the full list of options.
 Defaults to "nonrobust".
-- <u>clusters (pd.Series \| None, optional):</u> The cluster label for each observation,
+- <u>clusters (pd.Series &#124; None, optional):</u> The cluster label for each observation,
 required when `cov_type="cluster"`. Defaults to None.
-- <u>maxlags (int \| None, optional):</u> The maximum lag to include when estimating the
+- <u>maxlags (int &#124; None, optional):</u> The maximum lag to include when estimating the
 HAC (Newey-West) covariance matrix, required when `cov_type="HAC"`. See
 `get_ols`'s `maxlags` for the rule-of-thumb formula. Defaults to None.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -941,9 +941,9 @@ For more information about the method, see `regression_model.get_gls`.
 
 - <u>omega (pd.DataFrame):</u> The (symmetric, positive-definite) error covariance
 structure, up to a scalar, shape `(n, n)`.
-- <u>dependent_ticker (str \| None, optional):</u> The dependent (predicted) asset.
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s). Defaults to None, meaning every other ticker in
 the Toolkit instance besides `dependent_ticker`.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
@@ -953,7 +953,7 @@ explicitly). Defaults to False.
 "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -996,10 +996,10 @@ For more information about the method, see `regression_model.get_logistic_regres
 
 **Args:**
 
-- <u>dependent_ticker (str \| None, optional):</u> The dependent asset (whose
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent asset (whose
 up/down direction is predicted). Defaults to None, meaning the Toolkit
 instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s). Defaults to None, meaning every other ticker in
 the Toolkit instance besides `dependent_ticker`.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
@@ -1010,7 +1010,7 @@ explicitly). Defaults to False.
 - <u>column (str, optional):</u> The historical data column to derive returns from. Defaults to
 "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1056,10 +1056,10 @@ For more information about the method, see `regression_model.get_probit_regressi
 
 **Args:**
 
-- <u>dependent_ticker (str \| None, optional):</u> The dependent asset (whose
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent asset (whose
 up/down direction is predicted). Defaults to None, meaning the Toolkit
 instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s). Defaults to None, meaning every other ticker in
 the Toolkit instance besides `dependent_ticker`.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
@@ -1070,7 +1070,7 @@ explicitly). Defaults to False.
 - <u>column (str, optional):</u> The historical data column to derive returns from. Defaults to
 "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1116,9 +1116,9 @@ For more information about the method, see `regression_model.get_quantile_regres
 
 **Args:**
 
-- <u>dependent_ticker (str \| None, optional):</u> The dependent (predicted) asset.
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s). Defaults to None, meaning every other ticker in
 the Toolkit instance besides `dependent_ticker`.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
@@ -1132,7 +1132,7 @@ explicitly). Defaults to False.
 - <u>n_bootstrap (int, optional):</u> The number of bootstrap resamples used for coefficient
 standard errors, overriding `statsmodels`' default analytic (kernel density-based)
 standard errors. Defaults to 0 (use the analytic standard errors).
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1171,10 +1171,10 @@ For more information about the method, see `fama_macbeth_model.get_fama_macbeth_
 
 **Args:**
 
-- <u>factor_tickers (str \| list[str] \| None, optional):</u> The ticker(s) whose
+- <u>factor_tickers (str &#124; list[str] &#124; None, optional):</u> The ticker(s) whose
 returns are used as the risk factor(s) (e.g. "Benchmark" for a
 single-factor/CAPM-style test). Defaults to None, meaning `["Benchmark"]`.
-- <u>asset_tickers (str \| list[str] \| None, optional):</u> The ticker(s) forming the
+- <u>asset_tickers (str &#124; list[str] &#124; None, optional):</u> The ticker(s) forming the
 cross-section of test assets. Defaults to None, meaning every Toolkit
 ticker (including "Benchmark") not already used as a factor.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
@@ -1182,7 +1182,7 @@ ticker (including "Benchmark") not already used as a factor.
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the
 second-pass cross-sectional regression. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1238,7 +1238,7 @@ variance (Student's pooled t-test) instead of Welch's (unequal-variance) t-test.
 Defaults to False.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 tickers paired up. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1280,16 +1280,16 @@ Fits both a "restricted" and an "unrestricted" OLS regression of `dependent_tick
 **Args:**
 
 - <u>dependent_ticker (str):</u> The dependent (predicted) asset.
-- <u>restricted_independent_tickers (str \| list[str]):</u> The independent asset(s) in the
+- <u>restricted_independent_tickers (str &#124; list[str]):</u> The independent asset(s) in the
 restricted (smaller) model.
-- <u>unrestricted_independent_tickers (str \| list[str]):</u> The independent asset(s) in the
+- <u>unrestricted_independent_tickers (str &#124; list[str]):</u> The independent asset(s) in the
 unrestricted (larger) model -- must be a superset of `restricted_independent_tickers`.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in both models. Defaults
 to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1331,16 +1331,16 @@ Fits both a "restricted" and an "unrestricted" OLS regression of `dependent_tick
 **Args:**
 
 - <u>dependent_ticker (str):</u> The dependent (predicted) asset.
-- <u>restricted_independent_tickers (str \| list[str]):</u> The independent asset(s) in the
+- <u>restricted_independent_tickers (str &#124; list[str]):</u> The independent asset(s) in the
 restricted (smaller) model.
-- <u>unrestricted_independent_tickers (str \| list[str]):</u> The independent asset(s) in the
+- <u>unrestricted_independent_tickers (str &#124; list[str]):</u> The independent asset(s) in the
 unrestricted (larger) model -- must be a superset of `restricted_independent_tickers`.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in both models. Defaults
 to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1380,12 +1380,12 @@ Fits a single OLS regression internally (via `regression_model.get_ols`) and tes
 
 **Args:**
 
-- <u>restriction_matrix (pd.DataFrame \| np.ndarray):</u> The `(q, k)` restriction matrix `R`, one
+- <u>restriction_matrix (pd.DataFrame &#124; np.ndarray):</u> The `(q, k)` restriction matrix `R`, one
 row per restriction, one column per coefficient in the same order as `add_constant`
 (if True, "Intercept" first) followed by the independent ticker(s).
-- <u>dependent_ticker (str \| None, optional):</u> The dependent (predicted) asset.
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s), in the order the restriction matrix's columns
 (after "Intercept", if `add_constant`) refer to them. Defaults to None,
 meaning every other ticker in the Toolkit instance besides
@@ -1393,13 +1393,13 @@ meaning every other ticker in the Toolkit instance besides
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
-- <u>restriction_values (pd.Series \| np.ndarray \| None, optional):</u> The length-`q` vector of
+- <u>restriction_values (pd.Series &#124; np.ndarray &#124; None, optional):</u> The length-`q` vector of
 hypothesized values. Defaults to None, i.e. all restrictions equal zero.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1446,15 +1446,15 @@ For more information about the method, see `hypothesis_testing_model.get_hausman
 
 - <u>dependent_ticker (str):</u> The dependent (predicted) asset.
 - <u>suspect_ticker (str):</u> The (possibly endogenous) asset being tested.
-- <u>instrument_tickers (str \| list[str]):</u> One or more instrument asset(s) for
+- <u>instrument_tickers (str &#124; list[str]):</u> One or more instrument asset(s) for
 `suspect_ticker` -- assets correlated with `suspect_ticker` but assumed uncorrelated
 with `dependent_ticker`'s error term.
-- <u>other_independent_tickers (str \| list[str] \| None, optional):</u> Any other (assumed
+- <u>other_independent_tickers (str &#124; list[str] &#124; None, optional):</u> Any other (assumed
 exogenous) independent asset(s) to include. Defaults to None.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
 "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1495,9 +1495,9 @@ For more information about the method, see `specification_tests_model.get_breusc
 
 **Args:**
 
-- <u>dependent_ticker (str \| None, optional):</u> The dependent (predicted) asset.
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s). Defaults to None, meaning every other ticker in
 the Toolkit instance besides `dependent_ticker`.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
@@ -1508,7 +1508,7 @@ Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the underlying
 regression. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1548,9 +1548,9 @@ For more information about the method, see `specification_tests_model.get_white_
 
 **Args:**
 
-- <u>dependent_ticker (str \| None, optional):</u> The dependent (predicted) asset.
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s). Defaults to None, meaning every other ticker in
 the Toolkit instance besides `dependent_ticker`.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
@@ -1561,7 +1561,7 @@ Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the underlying
 regression. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1601,9 +1601,9 @@ For more information about the method, see `specification_tests_model.get_durbin
 
 **Args:**
 
-- <u>dependent_ticker (str \| None, optional):</u> The dependent (predicted) asset.
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s). Defaults to None, meaning every other ticker in
 the Toolkit instance besides `dependent_ticker`.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
@@ -1614,7 +1614,7 @@ Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the underlying
 regression. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1662,7 +1662,7 @@ For more information about the method, see `specification_tests_model.get_vif`.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 regressors tested. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1703,9 +1703,9 @@ For more information about the method, see `specification_tests_model.get_ramsey
 
 **Args:**
 
-- <u>dependent_ticker (str \| None, optional):</u> The dependent (predicted) asset.
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s). Defaults to None, meaning every other ticker in
 the Toolkit instance besides `dependent_ticker`.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
@@ -1717,7 +1717,7 @@ Defaults to "daily".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the underlying
 regression. Defaults to True.
 - <u>power (int, optional):</u> The highest power of the fitted values to add. Defaults to 3.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1760,9 +1760,9 @@ For more information about the method, see `specification_tests_model.get_chow_t
 - <u>break_date (str):</u> The date (e.g. "2021-06-30") at which to split the sample -- all
 periods starting on or after this date form the "after" sub-sample, everything
 before it forms the "before" sub-sample.
-- <u>dependent_ticker (str \| None, optional):</u> The dependent (predicted) asset.
+- <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The independent
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
 (predictor) asset(s). Defaults to None, meaning every other ticker in
 the Toolkit instance besides `dependent_ticker`.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
@@ -1773,7 +1773,7 @@ explicitly). Defaults to False.
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the underlying
 regression(s). Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -1823,19 +1823,19 @@ A natural use case in a multi-asset return panel: suppose `endogenous_ticker`'s 
 **Args:**
 
 - <u>dependent_ticker (str):</u> The dependent (predicted) asset.
-- <u>endogenous_ticker (str \| list[str]):</u> The endogenous regressor asset(s) --
+- <u>endogenous_ticker (str &#124; list[str]):</u> The endogenous regressor asset(s) --
 suspected correlated with the error term.
-- <u>instrument_tickers (str \| list[str]):</u> The excluded instrument asset(s),
+- <u>instrument_tickers (str &#124; list[str]):</u> The excluded instrument asset(s),
 correlated with `endogenous_ticker` but assumed uncorrelated with the error
 term. Must supply at least as many instruments as endogenous regressors.
-- <u>exogenous_tickers (str \| list[str] \| None, optional):</u> Other, non-instrumented
+- <u>exogenous_tickers (str &#124; list[str] &#124; None, optional):</u> Other, non-instrumented
 control asset(s) included as-is in both stages. Defaults to None.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
 "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to
 "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None.
 
 **Returns:**
@@ -1875,10 +1875,10 @@ Builds a stacked (ticker, date) panel from every ticker in `treated_tickers` and
 
 **Args:**
 
-- <u>treated_tickers (str \| list[str]):</u> The asset(s) subject to the event/treatment.
+- <u>treated_tickers (str &#124; list[str]):</u> The asset(s) subject to the event/treatment.
 - <u>treatment_date (str):</u> The date the event/treatment occurs, in the same format
 accepted by `pd.Timestamp`. Observations on or after this date are `Post = 1`.
-- <u>control_tickers (str \| list[str] \| None, optional):</u> The untreated comparison
+- <u>control_tickers (str &#124; list[str] &#124; None, optional):</u> The untreated comparison
 asset(s). Defaults to None, which uses every ticker (and "Benchmark", if
 present) NOT in `treated_tickers`.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
@@ -1886,7 +1886,7 @@ present) NOT in `treated_tickers`.
 - <u>column (str, optional):</u> The historical data column to use as the outcome.
 Defaults to "Return".
 - <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None.
 
 **Returns:**
@@ -1938,13 +1938,13 @@ discontinuity is estimated.
 "daily".
 - <u>column (str, optional):</u> The historical data column to use for both series.
 Defaults to "Return".
-- <u>bandwidth (float \| None, optional):</u> The maximum distance from `cutoff` an
+- <u>bandwidth (float &#124; None, optional):</u> The maximum distance from `cutoff` an
 observation may be to be included in either local regression. Defaults to
 None, which uses half of the running variable's observed range -- see
 `causal_inference_model.get_regression_discontinuity` for why this is a
 deliberately naive default.
 - <u>kernel (str, optional):</u> One of "uniform" or "triangular". Defaults to "uniform".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None.
 
 **Returns:**
@@ -1993,7 +1993,7 @@ Derives a binary "treatment" indicator the same way `get_logistic_regression` de
 - <u>dependent_ticker (str):</u> The outcome asset.
 - <u>treatment_ticker (str):</u> The asset whose return, once it exceeds
 `treatment_threshold`, defines the treatment indicator.
-- <u>covariate_tickers (str \| list[str]):</u> The asset(s) used as covariates to
+- <u>covariate_tickers (str &#124; list[str]):</u> The asset(s) used as covariates to
 estimate the propensity score -- should include asset(s) believed to drive
 selection into "treatment".
 - <u>treatment_threshold (float, optional):</u> The return threshold defining
@@ -2001,12 +2001,12 @@ treatment. Defaults to 0.0.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
 "daily".
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
-- <u>caliper (float \| None, optional):</u> The maximum allowed logit-propensity-score
+- <u>caliper (float &#124; None, optional):</u> The maximum allowed logit-propensity-score
 matching distance. Defaults to None, which uses Austin's (2011) rule of thumb
 -- see `causal_inference_model.get_propensity_score_matching`.
 - <u>add_constant (bool, optional):</u> Whether to include an intercept in the
 propensity score model. Defaults to True.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None.
 
 **Returns:**
@@ -2055,7 +2055,7 @@ intervention starting at `treatment_period`.
 after this value (within `period`'s index) are treated as post-treatment,
 everything before as pre-treatment (used to fit the synthetic control's
 weights).
-- <u>donor_tickers (str \| list[str] \| None, optional):</u> The ticker(s) forming
+- <u>donor_tickers (str &#124; list[str] &#124; None, optional):</u> The ticker(s) forming
 the donor pool the synthetic control is built from. Defaults to None,
 meaning every other Toolkit ticker (subject to `include_benchmark`).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
@@ -2064,7 +2064,7 @@ meaning every other Toolkit ticker (subject to `include_benchmark`).
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
 default donor pool (has no effect when donor_tickers is given explicitly).
 Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
 **Returns:**
@@ -2124,13 +2124,13 @@ Fixed Effects removes any purely entity-specific, time-invariant characteristic 
 
 **Args:**
 
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The factor
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The factor
 ticker(s), whose `column` values are broadcast identically to every
 entity at each date. Mutually exclusive with `independent_column`.
-- <u>independent_column (str \| None, optional):</u> A different historical data
+- <u>independent_column (str &#124; None, optional):</u> A different historical data
 column, taken per-entity from each of `dependent_tickers`' own data, to
 use as the regressor. Mutually exclusive with `independent_tickers`.
-- <u>dependent_tickers (str \| list[str] \| None, optional):</u> The panel of
+- <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The panel of
 entity tickers to explain. Defaults to None, meaning every ticker in
 the `Toolkit` instance (other than `independent_tickers`, if given).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
@@ -2141,7 +2141,7 @@ column. Defaults to "Return".
 entity-specific characteristics. Defaults to True.
 - <u>time_effects (bool, optional):</u> Whether to control for entity-invariant,
 time-specific shocks. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**
@@ -2189,7 +2189,7 @@ See `get_fixed_effects` for how `dependent_tickers`/`independent_tickers`/ `inde
 
 **Args:**
 
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The factor
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The factor
 ticker(s), whose `column` values are broadcast identically to every
 entity at each date. Mutually exclusive with `independent_column`.
 Note: since this `Toolkit` instance's historical data is aligned onto a
@@ -2198,17 +2198,17 @@ identical for every entity, leaving no between-entity variation to
 identify Random Effects' between-regression step -- prefer
 `independent_column` here unless `dependent_tickers` genuinely differ
 in their date coverage (e.g. different listing histories).
-- <u>independent_column (str \| None, optional):</u> A different historical data
+- <u>independent_column (str &#124; None, optional):</u> A different historical data
 column, taken per-entity from each of `dependent_tickers`' own data, to
 use as the regressor. Mutually exclusive with `independent_tickers`.
-- <u>dependent_tickers (str \| list[str] \| None, optional):</u> The panel of
+- <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The panel of
 entity tickers to explain. Defaults to None, meaning every ticker in
 the `Toolkit` instance (other than `independent_tickers`, if given).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
 quarterly, or yearly). Defaults to "daily".
 - <u>column (str, optional):</u> The dependent variable's historical data
 column. Defaults to "Return".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**
@@ -2255,20 +2255,20 @@ Random Effects is more efficient than Fixed Effects but relies on entity effects
 
 **Args:**
 
-- <u>independent_tickers (str \| list[str] \| None, optional):</u> The factor
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The factor
 ticker(s), whose `column` values are broadcast identically to every
 entity at each date. Mutually exclusive with `independent_column`.
-- <u>independent_column (str \| None, optional):</u> A different historical data
+- <u>independent_column (str &#124; None, optional):</u> A different historical data
 column, taken per-entity from each of `dependent_tickers`' own data, to
 use as the regressor. Mutually exclusive with `independent_tickers`.
-- <u>dependent_tickers (str \| list[str] \| None, optional):</u> The panel of
+- <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The panel of
 entity tickers to explain. Defaults to None, meaning every ticker in
 the `Toolkit` instance (other than `independent_tickers`, if given).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
 quarterly, or yearly). Defaults to "daily".
 - <u>column (str, optional):</u> The dependent variable's historical data
 column. Defaults to "Return".
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**
@@ -2333,7 +2333,7 @@ Defaults to True -- see `time_series_model.get_arima_forecast` for when
 to set this to False.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
 the tickers forecast. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**
@@ -2389,7 +2389,7 @@ A VAR jointly models every ticker's series, regressing each of them on `lags` la
 Defaults to 5.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
 the tickers modeled jointly. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**
@@ -2450,7 +2450,7 @@ Cholesky decomposition of the residual covariance matrix -- see
 `time_series_model.get_impulse_response_function`. Defaults to True.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
 the tickers modeled jointly. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**
@@ -2508,7 +2508,7 @@ The other natural companion to `get_var_forecast` (alongside `get_impulse_respon
 Defaults to 10.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
 the tickers modeled jointly. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**
@@ -2567,7 +2567,7 @@ Defaults to 5.
 Defaults to 0.05.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
 the tickers modeled jointly. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**
@@ -2628,7 +2628,7 @@ See `forecast_evaluation_model.get_rmse` for the formula. This controller method
 "Return".
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 tickers paired up. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**
@@ -2668,7 +2668,7 @@ See `forecast_evaluation_model.get_mae` for the formula, and `get_rmse`'s docstr
 "Return".
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 tickers paired up. Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**
@@ -2721,13 +2721,13 @@ Defaults to 1.
 - <u>include_constant (bool, optional):</u> Whether the ARIMA model estimates a
 free intercept (`model="arima"` only). Defaults to True.
 - <u>lags (int, optional):</u> The VAR order (`model="var"` only). Defaults to 1.
-- <u>other_tickers (list[str] \| None, optional):</u> The other assets to include in
+- <u>other_tickers (list[str] &#124; None, optional):</u> The other assets to include in
 the VAR system alongside the ticker being validated (`model="var"` only).
 Defaults to None, meaning every other ticker in the Toolkit instance.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
 the tickers validated (and, for `model="var"`, among the default
 `other_tickers`). Defaults to False.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**
@@ -2773,7 +2773,7 @@ A market model (`Return_t = alpha + beta * Benchmark_Return_t + e_t`) is fit via
 
 - <u>event_date (str):</u> The date of the event (e.g. "2023-05-04"). Must fall
 within the Toolkit instance's daily historical data.
-- <u>dependent_ticker (str \| None, optional):</u> The ticker being studied.
+- <u>dependent_ticker (str &#124; None, optional):</u> The ticker being studied.
 Defaults to the first ticker in the Toolkit instance.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to
 "Return".
@@ -2785,7 +2785,7 @@ estimation window and the event date. Defaults to 30.
 date included in the event window. Defaults to 10.
 - <u>post_event_days (int, optional):</u> Number of trading days after the event
 date included in the event window. Defaults to 10.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
 
 **Returns:**

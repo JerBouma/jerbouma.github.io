@@ -296,11 +296,11 @@ where:
 
 **Args:**
 
-- <u>spot_rates (pd.Series \| dict, optional):</u> The zero-coupon (spot) yield curve,
+- <u>spot_rates (pd.Series &#124; dict, optional):</u> The zero-coupon (spot) yield curve,
 indexed by maturity in years (in decimal). Defaults to a sample curve.
-- <u>near_maturity (float \| list, optional):</u> The nearer maturity (or maturities),
+- <u>near_maturity (float &#124; list, optional):</u> The nearer maturity (or maturities),
 in years. If not provided, a range of near maturities will be used.
-- <u>far_maturity (float \| list, optional):</u> The further maturity (or maturities),
+- <u>far_maturity (float &#124; list, optional):</u> The further maturity (or maturities),
 in years. If not provided, a range of far maturities will be used.
 - <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
 
@@ -351,9 +351,9 @@ where DF(k) = 1 / (1 + spot_rate(k / frequency) / frequency)^k is the discount f
 
 **Args:**
 
-- <u>spot_rates (pd.Series \| dict, optional):</u> The zero-coupon (spot) yield curve,
+- <u>spot_rates (pd.Series &#124; dict, optional):</u> The zero-coupon (spot) yield curve,
 indexed by maturity in years (in decimal). Defaults to a sample curve.
-- <u>years_to_maturity (float \| list, optional):</u> The maturity (or maturities), in
+- <u>years_to_maturity (float &#124; list, optional):</u> The maturity (or maturities), in
 years, to calculate the par yield for. If not provided, a range of years
 to maturity will be used.
 - <u>frequency (int, optional):</u> The number of coupon payments per year. Defaults to 1.
@@ -405,11 +405,11 @@ $$
 
 **Args:**
 
-- <u>spot_rates (pd.Series \| dict, optional):</u> The yield curve, indexed by
+- <u>spot_rates (pd.Series &#124; dict, optional):</u> The yield curve, indexed by
 maturity in years (in decimal). Defaults to a sample curve.
-- <u>long_maturity (float \| list, optional):</u> The longer maturity (or maturities),
+- <u>long_maturity (float &#124; list, optional):</u> The longer maturity (or maturities),
 in years. If not provided, a range of long maturities will be used.
-- <u>short_maturity (float \| list, optional):</u> The shorter maturity (or
+- <u>short_maturity (float &#124; list, optional):</u> The shorter maturity (or
 maturities), in years. If not provided, a range of short maturities
 will be used.
 - <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
@@ -457,11 +457,11 @@ $$
 
 **Args:**
 
-- <u>nominal_rates (pd.Series \| dict, optional):</u> The nominal (non-inflation-protected)
+- <u>nominal_rates (pd.Series &#124; dict, optional):</u> The nominal (non-inflation-protected)
 yield curve, indexed by maturity in years (in decimal). Defaults to a sample curve.
-- <u>real_rates (pd.Series \| dict, optional):</u> The real (inflation-protected) yield
+- <u>real_rates (pd.Series &#124; dict, optional):</u> The real (inflation-protected) yield
 curve, indexed by maturity in years (in decimal). Defaults to a sample curve.
-- <u>maturity (float \| list, optional):</u> The maturity (or maturities), in years,
+- <u>maturity (float &#124; list, optional):</u> The maturity (or maturities), in years,
 to calculate the breakeven inflation rate for. If not provided, a range
 of maturities will be used.
 - <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
@@ -510,7 +510,7 @@ The Z-spread is found iteratively using the secant method, in the same way that 
 - <u>coupon_rate (float, optional):</u> The coupon rate of the bond. Defaults to 0.05.
 - <u>years_to_maturity (float, optional):</u> The years to maturity of the bond in years. Defaults to None.
 - <u>bond_price (float, optional):</u> The price of the bond. Defaults to None.
-- <u>spot_rates (pd.Series \| dict, optional):</u> The benchmark zero-coupon (spot)
+- <u>spot_rates (pd.Series &#124; dict, optional):</u> The benchmark zero-coupon (spot)
 yield curve, indexed by maturity in years (in decimal). Defaults to a sample curve.
 - <u>frequency (int, optional):</u> The number of coupon payments per year. Defaults to 1.
 - <u>guess (float, optional):</u> The initial guess for the Z-spread. Defaults to 0.01.
@@ -562,10 +562,10 @@ for a bill with half a year or less remaining. Beyond that an equivalent coupon-
 
 **Args:**
 
-- <u>discount_yield (float \| list, optional):</u> The money-market discount yield of
+- <u>discount_yield (float &#124; list, optional):</u> The money-market discount yield of
 the instrument (in decimal). If not provided, a range of discount yields
 will be used.
-- <u>days_to_maturity (float \| list, optional):</u> The number of days until the
+- <u>days_to_maturity (float &#124; list, optional):</u> The number of days until the
 instrument matures. If not provided, a range of typical T-bill maturities
 will be used.
 - <u>show_input_info (bool, optional):</u> Whether to display input information. Defaults to True.
@@ -614,12 +614,12 @@ Summing the key rate durations across every tenor of the curve approximately rep
 
 - <u>par_value (float, optional):</u> The par value (face value) of the bond. Defaults to 100.
 - <u>coupon_rate (float, optional):</u> The coupon rate of the bond. Defaults to 0.05.
-- <u>years_to_maturity (float \| list, optional):</u> The years to maturity of the
+- <u>years_to_maturity (float &#124; list, optional):</u> The years to maturity of the
 bond (or bonds). If not provided, a range of years to maturity will be used.
-- <u>spot_rates (pd.Series \| dict, optional):</u> The zero-coupon (spot) yield curve
+- <u>spot_rates (pd.Series &#124; dict, optional):</u> The zero-coupon (spot) yield curve
 used to discount the bond's cash flows, indexed by maturity in years (in
 decimal). Defaults to a sample curve.
-- <u>key_rate_maturity (float \| list, optional):</u> The maturity (or maturities), in
+- <u>key_rate_maturity (float &#124; list, optional):</u> The maturity (or maturities), in
 years, of the curve point(s) to shock. Must be present in the index of
 `spot_rates`. Defaults to every maturity in `spot_rates`.
 - <u>frequency (int, optional):</u> The number of coupon payments per year. Defaults to 1.
@@ -740,21 +740,21 @@ Black's model is undefined at a zero or negative forward or strike rate because 
 
 - <u>model (str, optional):</u> The type of model to use for calculating the derivative price. Defaults to "black".
 - <u>forward_rate (float, optional):</u> The forward rate as derived from the swap curve. Defaults to None.
-- <u>strike_rate (float \| list, optional):</u> The strike rate for the derivative. Defaults to None which means it calculates the
+- <u>strike_rate (float &#124; list, optional):</u> The strike rate for the derivative. Defaults to None which means it calculates the
 derivative price a range of strike prices. Can also be a list of strike rates (e.g. [0.01, 0.02, 0.03, 0.04, 0.05]).
 - <u>volatility (float, optional):</u> The volatility of the underlying swap rate, quoted on the
 basis given by `volatility_type`. Defaults to 0.01, read as a 1% lognormal volatility
 by the Black model and as 100 basis points of normal volatility by the Bachelier model.
-- <u>years_to_maturity (float \| list, optional):</u> The years to maturity of the derivative in years. Defaults to None which means it plots
+- <u>years_to_maturity (float &#124; list, optional):</u> The years to maturity of the derivative in years. Defaults to None which means it plots
 the derivative price for the next 10 years. Can also be a list of years to maturity (e.g. [1, 2.3, 2.5, 3])
 - <u>risk_free_rate (float, optional):</u> The risk-free interest rate. Defaults to None which means it is equal to the fixed rate.
 - <u>notional (float, optional):</u> The notional amount of the derivative. Defaults to 10_000_000.
-- <u>tenor (float \| None, optional):</u> The tenor (length in years) of the underlying swap. Defaults to None,
+- <u>tenor (float &#124; None, optional):</u> The tenor (length in years) of the underlying swap. Defaults to None,
 which means it is equal to years_to_maturity for each scenario.
 - <u>payment_frequency (int, optional):</u> Number of fixed-leg payments per year on the underlying swap
 (e.g. 1 for annual, 2 for semi-annual, 4 for quarterly). Defaults to 2 (semi-annual).
 - <u>is_receiver (bool, optional):</u> True if the holder is the receiver of the derivative, False if the holder is the payer. Defaults to True.
-- <u>volatility_type (str \| None, optional):</u> The convention `volatility` is quoted on, either
+- <u>volatility_type (str &#124; None, optional):</u> The convention `volatility` is quoted on, either
 'lognormal' (relative to the forward rate) or 'normal' (absolute, in rate units).
 Defaults to None, which uses the convention the chosen model is natively defined in:
 'lognormal' for the Black model and 'normal' for the Bachelier model.
@@ -803,10 +803,10 @@ Short-term interest rates are based on three-month money market rates where avai
 
 - <u>short_term (bool, optional):</u> Whether to return the short-term interest rate. Defaults to False.
 This means that the long-term interest rate will be returned.
-- <u>period (str \| None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
 - <u>lag (int, optional):</u> The number of periods to lag the data by.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -848,7 +848,7 @@ Retrieves the daily U.S. Treasury par yield curve rates as officially published 
 
 **Args:**
 
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
 - <u>lag (int, optional):</u> The number of periods to lag the data by.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -920,7 +920,7 @@ See definitions:
 **Args:**
 
 - <u>maturity (bool, optional):</u> Whether to return the maturity option adjusted spread or the rating option adjusted spread.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Notes:**
@@ -984,7 +984,7 @@ See definitions:
 **Args:**
 
 - <u>maturity (bool, optional):</u> Whether to return the maturity effective yield or the rating effective yield.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Notes:**
@@ -1042,7 +1042,7 @@ See definitions:
 **Args:**
 
 - <u>maturity (bool, optional):</u> Whether to return the maturity total return or the rating total return.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Notes:**
@@ -1101,7 +1101,7 @@ See definitions:
 **Args:**
 
 - <u>maturity (bool, optional):</u> Whether to return the maturity yield to worst or the rating yield to worst.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Notes:**
@@ -1158,13 +1158,13 @@ For more information, see for example: [https://data.ecb.europa.eu/data/datasets
 
 **Args:**
 
-- <u>maturities (str \| list \| None, optional):</u> Maturities for which to retrieve rates. Defaults to None.
+- <u>maturities (str &#124; list &#124; None, optional):</u> Maturities for which to retrieve rates. Defaults to None.
 When set to None, it will retrieve rates for 1 month, 3 months, 6 months, and 12 months.
 - <u>nominal (bool, optional):</u> Whether to retrieve the nominal Euribor fixings or their real
 (inflation-adjusted) counterpart. The ECB only publishes a real Euribor for the 3-month
 maturity, so nominal=False returns that maturity alone and warns about any others that
 were requested rather than silently answering them with a nominal rate. Defaults to True.
-- <u>rounding (int \| None, optional):</u> Rounding precision for the rates. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> Rounding precision for the rates. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Returns:**
@@ -1213,7 +1213,7 @@ See source: [https://data.ecb.europa.eu/key-figures](https://data.ecb.europa.eu/
 
 - <u>rate (str, optional):</u> The rate to return. Defaults to None, which returns all rates.
 Choose between 'refinancing', 'lending' or 'deposit'.
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Returns:**
@@ -1285,7 +1285,7 @@ See source: [https://www.newyorkfed.org/markets/reference-rates/](https://www.ne
 **Args:**
 
 - <u>rate (str):</u> The rate to return. Defaults to 'EFFR' (Effective Federal Funds Rate).
-- <u>rounding (int \| None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 
 **Returns:**

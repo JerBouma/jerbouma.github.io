@@ -55,11 +55,11 @@ $$
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 
 **Returns:**
 
@@ -135,11 +135,11 @@ $$
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 
 **Returns:**
 
@@ -211,7 +211,7 @@ This breakdown is displayed in a DataFrame for each company and includes the opt
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -286,12 +286,12 @@ Tobin's Q Ratio can be interpreted as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -381,11 +381,11 @@ Defaults to True.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 
 **Returns:**
 
@@ -442,12 +442,12 @@ $$
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -511,12 +511,12 @@ $$
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -606,7 +606,7 @@ weighted average cost of capital for each ticker.
 - <u>cash_flow_type (str, optional):</u> The type of cash flow to use for the cash flow projections.
 Defaults to "Free Cash Flow". Other options are "Operating Cash Flow", "Change in Working Capital",
 and "Capital Expenditure".
-- <u>trailing (int \| None, optional):</u> The number of trailing periods to sum for the base cash flow.
+- <u>trailing (int &#124; None, optional):</u> The number of trailing periods to sum for the base cash flow.
 When set, uses the sum of the last N periods instead of only the most recent period. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
@@ -660,12 +660,12 @@ $$
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -723,12 +723,12 @@ $$
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -929,12 +929,12 @@ $$
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -1021,11 +1021,11 @@ The Altman Z-Score can be interpreted as follows:
 - <u>diluted (bool, optional):</u> Whether to use diluted shares outstanding in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 
 **Returns:**
 
@@ -1090,8 +1090,8 @@ Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financia
 
 **Args:**
 
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all columns
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all columns
 will be shown. Defaults to None.
 
 **Returns:**
@@ -1152,12 +1152,12 @@ The eight variables are:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -1267,12 +1267,12 @@ The Ohlson O-Score can be interpreted as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -1375,12 +1375,12 @@ The Zmijewski Score can be interpreted as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -1461,12 +1461,12 @@ The Springate Score can be interpreted as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -1539,12 +1539,12 @@ The Grover Score can be interpreted as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -1616,12 +1616,12 @@ The Fulmer H-Score can be interpreted as follows:
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] \| None, optional):</u> List of columns to show in the results. If None, all
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
 **Returns:**
@@ -1695,10 +1695,10 @@ Defaults to False.
 - <u>include_dividends (bool, optional):</u> Whether to deduct Preferred Dividends Paid from Net
 Income when calculating the Earnings per Share, so that the earnings figure reflects what is
 attributable to common shareholders only. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1757,11 +1757,11 @@ $$
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 
 **Returns:**
 
@@ -1810,11 +1810,11 @@ $$
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 
 **Returns:**
 
@@ -1861,10 +1861,10 @@ $$
 **Args:**
 
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>trailing (int \| None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int \| list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
