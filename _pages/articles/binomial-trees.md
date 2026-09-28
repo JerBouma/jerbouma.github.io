@@ -196,7 +196,7 @@ To interpret these results, the option price at the root node (time 0) represent
 
 ## American Options
 
-A key difference exists between European and American options: European options can only be exercised at expiration, whereas American options can be exercised at any time up to and including expiration. The binomial tree for American options is constructed similarly to the European one, but the calculation at each node incorporates the possibility of early exercise. The value at each node is the maximum of the option's intrinsic value (if exercised immediately) and its expected discounted value (if held).
+The main difference between European and American options is that European options can only be exercised at expiration, whereas American options can be exercised at any time up to and including expiration. The binomial tree for American options is constructed similarly to the European one, but the calculation at each node incorporates the possibility of early exercise. The value at each node is the maximum of the option's intrinsic value (if exercised immediately) and its expected discounted value (if held).
 
 This leads to the following formulas for the option price at each node for an American Call Option:
 
@@ -418,7 +418,7 @@ binomial_results = companies.options.get_binomial_model(
 )
 ```
 
-Setting `show_input_info=True` provides insights into the parameters used for the calculation, which is helpful for understanding the model's inputs. The output might look similar to this (based on data up to February 7, 2024):
+Setting `show_input_info=True` prints the parameters used for the calculation, which is helpful for understanding the model's inputs. The output might look similar to this (based on data up to February 7, 2024):
 
 ```plaintext
 Based on the period 2013-02-11 to 2024-02-07 the following parameters were used:

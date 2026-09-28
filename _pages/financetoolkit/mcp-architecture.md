@@ -94,7 +94,7 @@ This section is only relevant for **hosted deployments** that run the server ove
 
 When the server is hosted at a remote URL, MCP clients (Claude Desktop, VS Code, Cursor, …) need a standard way to authenticate without the user manually pasting credentials into a config file. The MCP specification defines an OAuth 2.1 profile for exactly this purpose. The Finance Toolkit server implements that profile in full, including the PKCE extension that protects against authorization code interception.
 
-Crucially, the server carries **no persistent user database**: it never stores the FMP API key on disk or in memory beyond the lifetime of a single request. Instead, the key is sealed inside a cryptographically signed JWT that travels with the request.
+The server carries **no persistent user database**: it never stores the FMP API key on disk or in memory beyond the lifetime of a single request. Instead, the key is sealed inside a cryptographically signed JWT that travels with the request.
 
 ### The OAuth Flow Step by Step
 {: .heading-as-h4}

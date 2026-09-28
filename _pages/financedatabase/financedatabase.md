@@ -13,11 +13,11 @@ sidebar:
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceDatabase" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-As a private investor, the sheer amount of information that can be found on the internet is rather daunting. Trying to understand what type of companies or ETFs are available is incredibly challenging with there being millions of companies and derivatives available on the market. Sure, the most traded companies and ETFs can quickly be found simply because they are known to the public (for example, Microsoft, Tesla, S&P500 ETF or an All-World ETF). However, what else is out there is often unknown.
+As a private investor, the amount of information you can find on the internet is rather daunting. With millions of companies and derivatives on the market, it is hard to understand what types of companies or ETFs are available. The most traded companies and ETFs are easy to find because they are known to the public (for example, Microsoft, Tesla, S&P500 ETF or an All-World ETF), but what else is out there is often unknown.
 
 **This database tries to solve that**. It features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
 
-The aim of this database is explicitly _not_ to provide up-to-date fundamentals or stock data as those can be obtained with ease (with the help of this database) by using the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. Instead, it gives insights into the products that exist in each country, industry and sector and gives the most essential information about each product. With this information, you can analyse specific areas of the financial world and/or find a product that is hard to find. See for examples on how you can combine this database, and the earlier mentioned packages the section [Usage](#usage).
+The database is explicitly _not_ meant to provide up-to-date fundamentals or stock data, as those are easy to obtain (with the help of this database) through the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. Instead, it shows which products exist in each country, industry and sector and gives the most essential information about each of them. With this information, you can analyse specific areas of the financial world or find a product that is otherwise hard to find. See the [Usage](#usage) section for examples of how to combine this database with the FinanceToolkit.
 
 Some key statistics of the database:
 
@@ -67,7 +67,7 @@ Before installation, consider starring the project on GitHub which helps others 
 
 <a href="https://github.com/JerBouma/FinanceDatabase" target="_blank"><img width="1353" alt="image" src="https://github.com/JerBouma/FinanceDatabase/assets/46355364/4132edde-72f9-4e32-adfe-8872207f46ff"></a>
 
-To install the FinanceDatabase it simply requires the following:
+Installing the FinanceDatabase only requires the following:
 
 ```bash
 pip install financedatabase -U
@@ -81,7 +81,7 @@ import financedatabase as fd
 
 ## Usage
 {: .heading-as-h1}
-This section explains in detail how the database can be queried with the related `financedatabase` package. Note that examples here are purposely cut off to a maximum of 10 entries due to the sheer size of the database. Furthermore, the summary column is also taken out for readability. For the full detailed results, see the Notebook [here](/projects/financedatabase/getting-started). Let's start by importing the package:
+This section explains in detail how the database can be queried with the related `financedatabase` package. Note that examples here are purposely cut off to a maximum of 10 entries due to the size of the database. The summary column is also left out for readability. For the full detailed results, see the Notebook [here](/projects/financedatabase/getting-started). Let's start by importing the package:
 
 ```python
 import financedatabase as fd
@@ -89,7 +89,7 @@ import financedatabase as fd
 
 ### Initializing and Querying an Asset Class
 
-Initialization of each asset class is only required <u>once</u>. It is therefore important you save the class to a variable so that you can query the database much quicker. A simple example is shown below.
+Initialization of each asset class is only required <u>once</u>. It is therefore important to save the class to a variable so that later queries are much quicker. A simple example is shown below.
 
 ```python
 equities = fd.Equities()
@@ -147,7 +147,7 @@ This returns all available options for each column.
        dtype=object)}
 ```
 
-As the equities database has already been loaded in, it is also possible to use a similar functionality from within the class as follows. The main difference is that this functionality allows you to see the options based on a specific filtering. For example.
+As the equities database has already been loaded, you can also use similar functionality from within the class. The main difference is that this lets you see the options for a specific filter. For example:
 
 ```python
 equities.show_options(country='Netherlands')
@@ -194,7 +194,7 @@ array(['Banks', 'Capital Markets', 'Consumer Finance',
 
 ### Filtering the Database
 
-Given this information, it then becomes possible to filter the database based on the parameters you are interested in. For example, if you are interested 'Insurance' companies in the 'Netherlands' you can use the following. Note that I omit the `sector` here, given that the selection I make is on a deeper level and therefore it is a given that the sector is 'Financials'.
+Given this information, it then becomes possible to filter the database based on the parameters you are interested in. For example, if you are interested in 'Insurance' companies in the 'Netherlands' you can use the following. Note that I omit the `sector` here, given that the selection I make is on a deeper level and therefore it is a given that the sector is 'Financials'.
 
 ```python
 equities.select(
@@ -217,9 +217,9 @@ This returns a small selection of companies on all exchanges the companies are l
 You'll see that the same company can appear multiple times. This is because by default all exchanges are shown. There are two methods to focus on one entry:
 
 - Use the `only_primary_listing` parameter. This will only show the primary listing of each company. This is useful mostly if you are looking into the US exchanges.
-- Use the `exchange` or `market` parameter. This will allow you to filter on a specific exchange or market. This is useful when you not necessarily looking into US exchanges and are already filtering on a specific country.
+- Use the `exchange` or `market` parameter. This will allow you to filter on a specific exchange or market. This is useful when you are not looking into US exchanges and are already filtering on a specific country.
 
-For example, filtering on the Netherlands it makes sense to select a Dutch exchange as well. This is for example the exchange "AMS" or the market "Euronext Amsterdam". This will already give you a much smaller selection.
+For example, when filtering on the Netherlands it makes sense to select a Dutch exchange as well. This is for example the exchange "AMS" or the market "Euronext Amsterdam". This will already give you a much smaller selection.
 
 ```python
 equities.select(
@@ -229,7 +229,7 @@ equities.select(
 )
 ```
 
-This gives the following three companies (not shortenend):
+This gives the following three companies (not shortened):
 
 | symbol   | name               | currency   | sector     | industry_group   | industry   | exchange   | market             | country     |   state | city      | zipcode   | website                 | market_cap   | isin         |   cusip | figi         | composite_figi   | shareclass_figi   |
 |:---------|:-------------------|:-----------|:-----------|:-----------------|:-----------|:-----------|:-------------------|:------------|--------:|:----------|:----------|:------------------------|:-------------|:-------------|--------:|:-------------|:-----------------|:------------------|
@@ -237,7 +237,7 @@ This gives the following three companies (not shortenend):
 | ASRNL.AS | ASR Nederland N.V. | EUR        | Financials | Insurance        | Insurance  | AMS        | Euronext Amsterdam | Netherlands |     nan | Utrecht   | 3584 BA   | http://www.asrnl.com    | Mid Cap      | NL0011872643 |     nan | BBG00CWZ0HG5 | BBG00CWZ0HF6     | BBG00CWZ0HK0      |
 | NN.AS    | NN Group N.V.      | EUR        | Financials | Insurance        | Insurance  | AMS        | Euronext Amsterdam | Netherlands |     nan | The Hague | 2595 AS   | http://www.nn-group.com | Large Cap    | nan          |     nan | nan          | nan              | nan               |
 
-Given that the Netherlands is a relatively small country, it is not uncommon for the list to become small quick. For example, the same selection for the United States is already much larger, also utilizing the `only_primary_listing` parameter.
+Given that the Netherlands is a relatively small country, it is not uncommon for the list to get small quickly. The same selection for the United States, also using the `only_primary_listing` parameter, is much larger.
 
 ```python
 equities.select(
@@ -247,7 +247,7 @@ equities.select(
 )
 ```
 
-While not immediately obvious in this shortenend output, it returns about 180 different companies.
+While not immediately obvious in this shortened output, it returns about 180 different companies.
 
 
 | symbol   | name                             | currency   | sector     | industry_group   | industry   | exchange   | market                  | country       | state   | city            | zipcode    | website                    | market_cap   | isin         | cusip     | figi         | composite_figi   | shareclass_figi   |
@@ -258,7 +258,7 @@ While not immediately obvious in this shortenend output, it returns about 180 di
 | BRO      | Brown & Brown, Inc.              | USD        | Financials | Insurance        | Insurance  | NYQ        | New York Stock Exchange | United States | FL      | Daytona Beach   | 32114      | http://www.bbinsurance.com | Large Cap    | US1152361010 | 115236101 | BBG000BWSJ77 | BBG000BWSGF4     | BBG001S5XFN0      |
 | CINF     | Cincinnati Financial Corporation | USD        | Financials | Insurance        | Insurance  | NMS        | NASDAQ Global Select    | United States | OH      | Fairfield       | 45014-5141 | http://www.cinfin.com      | Large Cap    | US1720621010 | 172062101 | BBG000BFPVV3 | BBG000BFPK65     | BBG001S5PTM0      |
 
-For any of the variables, it is also possible to provide a list instead. Which means that it will return all entries that match any of the variables. As an example, the queries above can be combined into one.
+For any of the variables you can also provide a list, in which case it returns all entries that match any of the values. As an example, the queries above can be combined into one.
 
     
 ```python
@@ -312,7 +312,7 @@ This returns instruments that are listed on the Frankfurt Stock Exchange, are in
 
 Lastly, the Finance Database has a direct integration with the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} making it possible to do financial analysis on the companies you've found in the Finance Database. Returning to the earlier example of the 3 insurance companies in the Netherlands, it becomes possible to load these into the Finance Toolkit with the `to_toolkit` functionality. 
 
-To be able to get started, you need to obtain an API Key from FinancialModelingPrep. This is used to gain access to 30+ years of financial statement both annually and quarterly. Note that the Free plan is limited to 250 requests each day, 5 years of data and only features companies listed on US exchanges.
+To be able to get started, you need to obtain an API Key from FinancialModelingPrep. This gives access to 30+ years of financial statements, both annual and quarterly. Note that the Free plan is limited to 250 requests each day, 5 years of data and only features companies listed on US exchanges.
 
 [Obtain an API Key from FinancialModelingPrep](/fmp){: .btn .btn--warning .btn--large .align-center target="_blank"}
 
@@ -349,7 +349,7 @@ Which returns, selecting only "ASRNL.AS" as an example:
 | 2025-04-03 |  52.32 |  53.22 | 52.18 |   52.42 |       52.42 |   567242 |           0 |  -0.0165 |       0.0175 |         -0.057  |              0.0206 |              4.2274 |
 | 2025-04-04 |  52    |  52.5  | 49.45 |   50.4  |       50.4  |   485024 |           0 |  -0.0385 |       0.0175 |         -0.0775 |              0.0206 |              4.0645 |
 
-And now let's make it more advanced by automatically calculating 60+ financial ratios for each. **This is just a small snippet of what is available within the Finance Toolkit, see for more information the GitHub page of the Finance Toolkit [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} or the example Notebook [here](/projects/financetoolkit/getting-started).**
+Now let's make it more advanced by automatically calculating 60+ financial ratios for each company. **This is only a small part of what is available within the Finance Toolkit. For more information, see the GitHub page of the Finance Toolkit [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} or the example Notebook [here](/projects/financetoolkit/getting-started).**
 
 ```python
 toolkit.ratios.collect_all_ratios()
@@ -421,7 +421,7 @@ A sample of the output is shown below:
         'Treasury Bonds', 'Utilities', 'Value'], dtype=object)}
 ```
 
-And lastly, both the `search` and `to_toolkit` metrics also apply to each of the asset classes, using `fd.Funds()` and `fd.Cryptos()` respectively. For example, let's find the funds that focus around pension plans.
+Lastly, the `search` and `to_toolkit` methods apply to each of the asset classes as well, shown here with `fd.Funds()` and `fd.Cryptos()` respectively. For example, let's find the funds that focus on pension plans.
 
 ```python
 funds = fd.Funds()
@@ -457,7 +457,7 @@ cryptos_toolkit = eth_cryptos.to_toolkit(
 cryptos_toolkit.get_historical_data(period='quarterly')
 ```
 
-A sample of the output is shown below, focussig on ETH-BTC:
+A sample of the output is shown below, focussing on ETH-BTC:
 
 | Date   |   Open |   High |    Low |   Close |   Adj Close |   Volume |   Dividends |   Return |   Volatility |   Excess Return |   Excess Volatility |   Cumulative Return |
 |:-------|-------:|-------:|-------:|--------:|------------:|---------:|------------:|---------:|-------------:|----------------:|--------------------:|--------------------:|
@@ -489,7 +489,7 @@ Please see the [Contributing Guidelines](https://github.com/JerBouma/FinanceData
 
 For this you can use the `show_options` function from the package attached to this database within a specific asset class or on a higher level without requiring any data to be loaded beforehand. See [Usage](#usage) for more information.
 
-> **When I try collect data I notice that not all tickers return output, why is that?**
+> **When I try to collect data I notice that not all tickers return output, why is that?**
 
 Some tickers are merely holdings of companies and therefore do not really have any data attached to them. Therefore, it makes sense that not all tickers return data. If you are still in doubt, search the ticker on Google to see if there is really no data available. If you can't find anything about the ticker, consider updating the database by visiting the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"}.
 
@@ -497,7 +497,7 @@ Some tickers are merely holdings of companies and therefore do not really have a
 
 For American exchanges, the database automatically updates every Sunday using data from [this repository](https://github.com/rreichel3/US-Stock-Symbols){:target="_blank"}. This process includes checks for market cap changes and updates asset classifications accordingly. Delisted tickers are intentionally retained for historical research purposes.
 
-While professional financial data services like Bloomberg charge over $25,000 annually for comprehensive market data maintenance, this database relies on community contributions. When companies outside American exchanges undergo changes (migrations, mergers, bankruptcies), we depend on community members to identify and update these entries.
+While professional financial data services like Bloomberg charge over $25,000 annually for maintaining market data, this database relies on community contributions. When companies outside American exchanges undergo changes (migrations, mergers, bankruptcies), we depend on community members to identify and update these entries.
 
 Most companies don't change so rapidly that the database becomes obsolete - major changes like Facebook's rebrand to META are quickly incorporated. Even when companies go bankrupt, their ticker information remains valuable for historical analysis.
 

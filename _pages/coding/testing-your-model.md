@@ -13,7 +13,7 @@ sidebar:
 
 {% include mermaid.html %}
 
-As defined in [Setting up your Project](/modelling/setting-up-your-project), the model should always include a `tests` folder. This folder utilizes [Pytest](https://docs.pytest.org/en/stable/){: target="_blank"} to run tests. The test structure should mirror the model structure, essentially duplicating it. The primary difference is that each test module filename is prefixed with `test_` so Pytest can discover it.
+As defined in [Setting up your Project](/modelling/setting-up-your-project), the model should always include a `tests` folder. The tests in this folder are run with [Pytest](https://docs.pytest.org/en/stable/){: target="_blank"}. The structure of the tests should mirror the structure of the model, in effect duplicating it. The main difference is that each test module filename is prefixed with `test_` so Pytest can discover it.
 
 For example, to test the Gross Margin functionality from `profitability_model.py`, create a test function with the same name prefixed by `test_`. This looks like the following:
 
@@ -71,7 +71,7 @@ tests/technical/test_volatility_model.py ....                                   
 ============================= 277 passed in 65.18s (0:01:05) =============================
 ```
 
-The `conftest.py` can define ways to rewrite the test output files when there are expected or validated differences. This is controlled by the `record-mode` option; setting it to `rewrite` redefines the expected output for failing tests. The output is stored in individual data files. This provides a robust method to ensure results remain consistent. If discrepancies occur, they can be verified before accepting the changes. Use the following command:
+The `conftest.py` can define ways to rewrite the test output files when there are expected or validated differences. This is controlled by the `record-mode` option; setting it to `rewrite` redefines the expected output for failing tests. The output is stored in individual data files. This gives you a reliable way to check that results stay consistent. If discrepancies occur, you can verify them before accepting the changes. Use the following command:
 
 ```shell
 pytest tests --record-mode="rewrite"

@@ -56,7 +56,6 @@ The package outputs an overview of each fund on a separate sheet or column. In t
 The functions within this package are:
 
 - `collect_data(ticker)` - collects the most important data for ETFs as listed in the Functionality section.
-  section.
 - `create_ETF_report(tickers, filename, folder=None)` - uses collect_data to create an Excel report with data, as
   depicted in the GIF above, per sheet for each ticker.
 

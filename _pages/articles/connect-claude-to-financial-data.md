@@ -15,9 +15,9 @@ tags: [MCP Server]
 share: true
 image: /assets/images/projects/FinanceToolkitMCP.jpg
 ---
-Ask Claude "what is Apple's operating margin this year?" and you get one of two answers: a polite explanation that it has no access to live data, or a confident number from its training data that may be a year or more out of date. Neither is useful when you are trying to analyse a stock. Large language models are excellent at reasoning about numbers but they are not a data source, and asking them to compute a return on invested capital from memory is a recipe for plausible-sounding mistakes.
+Ask Claude "what is Apple's operating margin this year?" and you get one of two answers: a polite explanation that it has no access to live data, or a confident number from its training data that may be a year or more out of date. Neither is useful when you are trying to analyse a stock. Large language models are good at reasoning about numbers, but they are not a data source, and if you ask them to compute a return on invested capital from memory you tend to get plausible-sounding mistakes.
 
-The fix is to give Claude a tool that fetches and computes the numbers for it. The [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) is the open standard Anthropic built for exactly this, and the [Finance Toolkit MCP server](/projects/financetoolkit/mcp) is a free, hosted MCP server that gives Claude access to financial statements, 150+ financial ratios, valuation models, technical indicators, performance and risk metrics and macroeconomic data for 60+ countries. Every calculation runs through the open-source [Finance Toolkit](/projects/financetoolkit) Python library, so the number Claude reports is the same number you would get by running the code yourself.
+The fix is to give Claude a tool that fetches and computes the numbers for it. The [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) is the open standard Anthropic built for this purpose, and the [Finance Toolkit MCP server](/projects/financetoolkit/mcp) is a free, hosted MCP server that gives Claude access to financial statements, 150+ financial ratios, valuation models, technical indicators, performance and risk metrics and macroeconomic data for 60+ countries. Every calculation runs through the open-source [Finance Toolkit](/projects/financetoolkit) Python library, so the number Claude reports is the same number you would get by running the code yourself.
 
 This article walks through the setup for Claude Desktop, claude.ai and Claude Code, shows what you can ask once it is connected, and ends with a worked example. The whole thing takes about a minute.
 
@@ -25,10 +25,10 @@ This article walks through the setup for Claude Desktop, claude.ai and Claude Co
 
 ## What You Need
 
-Two things, both free:
+You need two things, both free:
 
 1. **A Claude account.** Custom MCP connectors are available on claude.ai and in Claude Desktop on every plan, including the free one (which is limited to a single custom connector, so this can be it). Claude Code supports MCP servers on every plan and through the API.
-2. **A Financial Modeling Prep (FMP) API key.** The server pulls company data from [Financial Modeling Prep](/fmp){:target="_blank"}; the free plan (250 requests a day, 5 years of history, US-listed companies) is enough to follow this article. Paid plans unlock the full history and all exchanges. Macroeconomic data comes from the OECD and does not need a key.
+2. **A Financial Modeling Prep (FMP) API key.** The server pulls company data from [Financial Modeling Prep](/fmp){:target="_blank"}; the free plan (250 requests a day, 5 years of history, US-listed companies) is enough to follow this article. Paid plans add the full history and all exchanges. Macroeconomic data comes from the OECD and does not need a key.
 
 You enter the FMP key once, through a standard OAuth login page that the hosted server opens on first use. The server never stores it; it is passed along with each request and forgotten afterwards. If you would rather not use the hosted version at all, the [local installation](/projects/financetoolkit/mcp#local-clients) runs the exact same server on your own machine with a single `uvx` command.
 
@@ -47,7 +47,7 @@ The steps are identical for the desktop app and the web app:
 4. Click **Add**. The Finance Toolkit now appears in your list of connectors.
 5. Start a new chat and ask a financial question. On the first tool call Claude opens a browser window asking for your FMP API key; enter it once and you are done.
 
-That is the entire setup. There is no package to install, no configuration file to edit and nothing to keep up to date: the hosted server always runs the latest Finance Toolkit release.
+There is no package to install, no configuration file to edit and nothing to keep up to date, because the hosted server always runs the latest Finance Toolkit release.
 
 ## Connecting Claude Code
 
@@ -57,7 +57,7 @@ If you work in the terminal, one command registers the server for every future s
 claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp
 ```
 
-Restart Claude Code and the Finance Toolkit tools are available. The first tool call triggers the same OAuth step for the FMP API key. This is a particularly powerful combination: Claude Code can pull the data through the MCP server and then write the Python, notebook or report around it, with the numbers coming from a real calculation rather than from the model's memory.
+Restart Claude Code and the Finance Toolkit tools are available. The first tool call triggers the same OAuth step for the FMP API key. This combination works well: Claude Code can pull the data through the MCP server and then write the Python, notebook or report around it, with the numbers coming from a real calculation rather than from the model's memory.
 
 ## What You Can Ask
 
@@ -100,7 +100,7 @@ Take the first prompt above. Asked *"Compare Apple with Microsoft, which company
 | Net Profit Margin | AAPL | 25.88% | 25.31% | 25.31% | 23.97% | 26.92% |
 | Net Profit Margin | MSFT | 36.45% | 36.69% | 34.15% | 35.96% | 36.15% |
 
-On margins alone the answer is Microsoft, by a wide and consistent gap: roughly 22 percentage points more net income per dollar of revenue in fiscal 2025. What makes the MCP server more useful than a raw data feed is what happens next. Without being asked, Claude follows up with a second tool call for capital-efficiency metrics and finds that Apple's return on invested capital (70.38% in 2025 versus 30.64% for Microsoft) and return on assets (30.93% versus 18.00%) point the other way. Its conclusion, that Microsoft is the more profitable business per dollar of revenue while Apple extracts more value per dollar of capital, is the kind of nuance that a single headline number hides.
+On margins alone the answer is Microsoft, by a wide and consistent gap: roughly 22 percentage points more net income per dollar of revenue in fiscal 2025. The next step is where the MCP server does more than a raw data feed would. Without being asked, Claude follows up with a second tool call for capital-efficiency metrics and finds that Apple's return on invested capital (70.38% in 2025 versus 30.64% for Microsoft) and return on assets (30.93% versus 18.00%) point the other way. Its conclusion, that Microsoft is the more profitable business per dollar of revenue while Apple extracts more value per dollar of capital, is the kind of nuance that a single headline number hides.
 
 The [full conversation](/projects/financetoolkit/mcp#ex-apple-microsoft), along with five other examples covering European bank solvency, semiconductor momentum, Alibaba versus Amazon, unemployment rates and ESG scores, is on the MCP server page.
 
@@ -111,7 +111,7 @@ A few habits that make a noticeable difference when using Claude with financial 
 - **Name the period.** "Over the last five years" or "since 2020" avoids Claude defaulting to whatever range it feels like. Note that company data is reported per fiscal year, which for Apple ends in September and for Microsoft in June.
 - **Ask for the definition when it matters.** Ratios such as P/E or ROIC have several accepted definitions. Ask Claude "which formula was used?" and it will tell you; the Finance Toolkit documents each one.
 - **Let it chain.** The best answers come from letting Claude make several tool calls in a row: margins, then returns, then valuation. If it stops early, ask it to keep going.
-- **Use a capable model for interpretation.** The server returns the same data to every model, but the depth of the analysis scales with the model. Claude Sonnet and Opus write genuinely useful narratives; smaller models return clean tables with less commentary.
+- **Use a capable model for interpretation.** The server returns the same data to every model, but the depth of the analysis scales with the model. Claude Sonnet and Opus write useful narratives; smaller models return clean tables with less commentary.
 - **Mind the free-plan limits.** The FMP free plan allows 250 requests a day; a broad screen across many tickers can use those up quickly. Start with a handful of companies.
 
 ## Not a Claude User?

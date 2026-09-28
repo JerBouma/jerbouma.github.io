@@ -14,7 +14,7 @@ classes: custom-splash
       <h1 class="hero-title">Hi there, I'm  <span class="hero-signature">Jeroen Bouma</span></h1>
       <p class="hero-tagline">Quantitative Investment Strategist</p>
       <p class="hero-bio">
-        I combine a formal Quantitative Finance background with deep Python expertise. This site collects my open-source projects, including the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a> with over 10,000 GitHub Stars combined, articles on applied financial analysis and guides on building financial models in Python.
+        My background is in Quantitative Finance and I do most of my work in Python. This site collects my open-source projects, including the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a> (over 10,000 GitHub Stars combined), my articles on applied financial analysis and my guides on building financial models in Python.
       </p>
     </div>
     <div class="hero-photo">
@@ -52,7 +52,7 @@ classes: custom-splash
     <div class="bento-content">
       <i class="fas fa-newspaper bento-icon"></i>
       <h2>Articles</h2>
-      <p>Applied write-ups on Valuation, Risk, Macro and AI-assisted analysis, each backed by the open-source code that produced it.</p>
+      <p>Write-ups on Valuation, Risk, Macro and AI-assisted analysis, each with the open-source code that produced the results.</p>
     </div>
   </a>
 
@@ -60,7 +60,7 @@ classes: custom-splash
     <div class="bento-content">
       <i class="fas fa-chart-line bento-icon"></i>
       <h2>Financial Modelling</h2>
-      <p>In-depth guides on using Python to create Professional Financial Models that last.</p>
+      <p>Guides on building Professional Financial Models in Python that last.</p>
     </div>
   </a>
 
@@ -68,7 +68,7 @@ classes: custom-splash
     <div class="bento-content">
       <i class="fas fa-briefcase bento-icon"></i>
       <h2>Professional Experience</h2>
-      <p>A career spanning Quantitative Asset Management, Open Source development, and Finance education.</p>
+      <p>My work so far in Quantitative Asset Management, Open Source development and Finance education.</p>
     </div>
   </a>
 
@@ -84,7 +84,7 @@ classes: custom-splash
     <div class="bento-content">
       <i class="fas fa-book-open bento-icon"></i>
       <h2>Literature</h2>
-      <p>A curated reading list of Papers, Books and Articles on Quantitative Finance and Investing.</p>
+      <p>A reading list of Papers, Books and Articles on Quantitative Finance and Investing.</p>
     </div>
   </a>
 </div>
@@ -298,6 +298,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <div class="home-contact">
   <h2 class="section-title gradient-title">Let's Talk</h2>
-  <p>Questions about the projects, an idea for a collaboration or a talk, or just want to discuss financial theory? I am always happy to hear from you.</p>
+  <p>If you have a question about the projects, an idea for a collaboration or a talk, or just want to discuss financial theory, feel free to send me a message.</p>
   <a href="/contact" class="btn btn--info">Get in Touch</a>
 </div>

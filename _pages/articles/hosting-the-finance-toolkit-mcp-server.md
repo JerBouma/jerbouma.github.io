@@ -17,18 +17,21 @@ image: /assets/images/projects/FinanceToolkitMCP.jpg
 ---
 When people connect Claude, ChatGPT or Cursor to `https://financetoolkit.jeroenbouma.com/mcp`, they usually assume it runs on a cloud platform somewhere. It does not. The [Finance Toolkit MCP server](/projects/financetoolkit/mcp) runs on a Mini PC at my home, inside a Linux container managed by [Proxmox](https://www.proxmox.com/en/proxmox-virtual-environment/overview){:target="_blank"}, and [Cloudflare](https://www.cloudflare.com){:target="_blank"} handles everything between that container and the internet.
 
-That may sound like a hobby setup for a public service, but an MCP server is an unusually good fit for it. It needs little compute, it holds no user data, and the parts that matter for a public endpoint (TLS, protection against abuse, a stable address) are exactly what Cloudflare already provides for free. This article explains how the pieces fit together and what to think about if you want to host an MCP server of your own.
+That may sound like a hobby setup for a public service, but an MCP server is an unusually good fit for it. It needs little compute, it holds no user data, and the parts that matter for a public endpoint (TLS, protection against abuse, a stable address) are what Cloudflare already provides for free. This article explains how the pieces fit together and what to think about if you want to host an MCP server of your own.
 
 **The code side of the server (the router pattern behind its 22 tools, the OAuth 2.1 flow and how API keys are handled) is covered on the [Under the Hood](/projects/financetoolkit/mcp/architecture) page. This article is about where and how it runs.**
 
 ## Why Not a Cloud Platform?
 
-Cloud platforms are the obvious choice, and the server would run fine on any of them. For this particular workload, though, running it myself has a few clear advantages:
+Cloud platforms are the obvious choice, and the server would run fine on any of them. For this particular workload, though, running it myself has a few advantages.
 
-- **The workload is small.** The server does not run a language model. The assistant on the user's side does the reasoning; the server fetches data from [Financial Modeling Prep](/fmp){:target="_blank"} and the OECD and runs pandas calculations on it. That is a few hundred milliseconds of CPU per tool call, which any modern Mini PC handles without noticing.
-- **The cost is predictable.** A Mini PC draws only a few watts when idle and already runs other services anyway. A free tool that gets popular on a pay-per-use platform can turn into a bill you did not plan for.
-- **Nothing sensitive is stored.** Every user brings their own FMP API key, and that key travels inside a signed token held by their MCP client, not in a database on my side. If the machine disappeared tomorrow, no user data would go with it.
-- **Full control.** Updating the server, reading its logs or trying a new version next to the live one is a matter of seconds, not a deployment pipeline.
+First, the workload is small. The server does not run a language model: the assistant on the user's side does the reasoning, and the server fetches data from [Financial Modeling Prep](/fmp){:target="_blank"} and the OECD and runs pandas calculations on it. That is a few hundred milliseconds of CPU per tool call, which any modern Mini PC handles without noticing.
+
+The cost is also predictable. A Mini PC draws only a few watts when idle and already runs other services anyway, whereas a free tool that gets popular on a pay-per-use platform can turn into a bill you did not plan for.
+
+Nothing sensitive is stored either. Every user brings their own FMP API key, and that key travels inside a signed token held by their MCP client, not in a database on my side. If the machine disappeared tomorrow, no user data would go with it.
+
+Finally, I have full control. Updating the server, reading its logs or trying a new version next to the live one takes seconds and needs no deployment pipeline.
 
 The trade-off is that I am responsible for uptime and security myself. Most of this article is about how the setup keeps both of those manageable.
 
@@ -78,7 +81,7 @@ Three settings do most of the work:
 
 - **`MCP_TRANSPORT=streamable-http`** turns the server from a local stdio process into a web service. It also switches on the OAuth routes and the middleware that requires a valid token on `/mcp`.
 - **`FT_MCP_SECRET_KEY`** is the secret used to sign every OAuth token. It belongs in an environment file on the host, never in the repository. If it changes, every issued token becomes invalid and users have to log in again, so it is set once and left alone.
-- **The `/health` endpoint** gives Docker a way to check the server is actually answering, not just running. `restart: unless-stopped` brings it back after a crash or a reboot of the Mini PC.
+- **The `/health` endpoint** gives Docker a way to check that the server is answering requests rather than merely running. `restart: unless-stopped` brings it back after a crash or a reboot of the Mini PC.
 
 Hosted mode also changes one behaviour on purpose: caching is off by default. Locally, the server caches downloaded data in a small SQLite database because there is only one user. On a shared server that would mean one user's data, fetched with their own paid FMP plan, could be served to someone else. So the hosted server fetches everything live, per request, with the caller's own key.
 
@@ -97,11 +100,7 @@ curl http://localhost:8000/health
 
 Proxmox offers two kinds of guests: full virtual machines and LXC containers. Containers share the host's kernel, so they start in seconds and use far less memory than a virtual machine, while still being isolated from each other with their own file system, network address and resource limits. For a Python web service that is the right trade-off, and the MCP server has its own container that runs nothing else.
 
-That separation pays off in a few ways:
-
-- **Isolation.** The MCP server is the only public-facing service in its container. Whatever happens inside it, it cannot touch the other containers on the machine.
-- **Resource limits.** The container gets a fixed share of CPU cores and memory. A burst of heavy requests slows the MCP server down, but it cannot starve anything else on the host.
-- **Snapshots and backups.** Proxmox can snapshot a container before an upgrade, so a version that misbehaves is rolled back in one click, and scheduled backups are built in.
+That separation helps in a few ways. The MCP server is the only public-facing service in its container, and whatever happens inside it cannot touch the other containers on the machine. The container also gets a fixed share of CPU cores and memory, so a burst of heavy requests slows the MCP server down but cannot starve anything else on the host. And Proxmox can snapshot a container before an upgrade, so a version that misbehaves is rolled back in one click, with scheduled backups built in.
 
 ## Cloudflare: The Only Way In
 

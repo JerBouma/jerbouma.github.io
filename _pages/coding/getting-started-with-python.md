@@ -1,8 +1,8 @@
 ---
 title: Getting Started with Python
 seo_title: Getting Started with Python for Finance
-excerpt: Embark on your Python journey! From basics to project ideas, learn with Kaggle, build Financial Models, and manage projects with tips on Git and code editors.
-description: "Start your Python journey for finance: learn the basics with Kaggle, build your first financial models and manage projects with Git and a code editor."
+excerpt: "Where to start with Python: the basics on Kaggle, first project ideas for financial models, and tips on Git and code editors."
+description: "Getting started with Python for finance: the basics on Kaggle, your first financial models and managing projects with Git and a code editor."
 author_profile: true
 permalink: /modelling/getting-started
 classes: wide-sidebar
@@ -27,9 +27,9 @@ If you are completely new to Python or need a refresher, I recommend going throu
 I recommend Kaggle because it is an entirely free platform (no annoying paywalls). Familiarizing yourself with Kaggle can be a great way to start your own projects, as it offers plenty of datasets to experiment with.
 
 {: .notice--info}
-Once you have finished these courses, the most important advice I can offer is: **absolutely do <u>not</u> enroll in any "Python Certification", watch someone else code, or read books solely about "How to Program in Python"**. Learning Python isn't just about syntax; it's about learning how to solve problems using Python. This skill is best acquired through practice, not just through courses, videos, or books about the process. Exceptions include higher-level content such as model architecture.
+Once you have finished these courses, the most important advice I can offer is: **absolutely do <u>not</u> enroll in any "Python Certification", watch someone else code, or read books solely about "How to Program in Python"**. Learning Python means learning how to solve problems with it, and the syntax is only a small part of that. You acquire this skill through practice, which courses, videos, or books about the process cannot replace. Exceptions include higher-level content such as model architecture.
 
-I recommend starting with a project that interests you. All the projects listed below originated from a personal need and significantly helped develop my Python skills, especially through building open-source projects and occasionally receiving feedback from others.
+I recommend starting with a project that interests you. All the projects listed below originated from a personal need and helped me develop my Python skills a lot, especially through building open-source projects and occasionally receiving feedback from others.
 
 <div class="row">
 <div markdown="1" class="thirty-three-column mobile-max-column-width">
@@ -77,11 +77,11 @@ One of my first projects was simply a collection of Jupyter Notebooks (see [here
 
 Some tips to focus on while learning Python:
 
-- **Work primarily with foundational packages like NumPy, Pandas, and SciPy.** These packages are commonly used in most projects. Avoid diving into Machine Learning packages like Scikit-learn or TensorFlow until you have a solid grasp of the basics. You don't want to constantly copy and paste code from StackOverflow without understanding it.
-- **Acquire (financial) datasets to experiment with**. Visit [Kaggle](https://www.kaggle.com/learn/python){: target="_blank"} or use the [Finance Toolkit](/projects/financetoolkit). Install it via `pip install financetoolkit` or use `!pip install financetoolkit` in a Jupyter Notebook. The examples found [here](/projects/financetoolkit) should help you get started quickly. Since they rely on NumPy, Pandas, and SciPy, you should be able to work with the data quickly.
-- **Google any issue you don't understand.** Someone has likely encountered the same problem, and a solution probably exists. This is where the open-source community shines, offering solutions for nearly everything.
+- **Work primarily with foundational packages like NumPy, Pandas, and SciPy.** These packages are commonly used in most projects. Hold off on Machine Learning packages like Scikit-learn or TensorFlow until you have a solid grasp of the basics. You don't want to constantly copy and paste code from StackOverflow without understanding it.
+- **Acquire (financial) datasets to experiment with**. Visit [Kaggle](https://www.kaggle.com/learn/python){: target="_blank"} or use the [Finance Toolkit](/projects/financetoolkit). Install it via `pip install financetoolkit` or use `!pip install financetoolkit` in a Jupyter Notebook. The examples found [here](/projects/financetoolkit) should help you get started. Since they rely on NumPy, Pandas, and SciPy, you should be able to work with the data quickly.
+- **Google any issue you don't understand.** Someone has likely encountered the same problem, and a solution probably exists. The open-source community has answers for nearly everything.
 - **Definitely use ChatGPT whenever you are stuck with your code.** While AI tools like ChatGPT can generate code, the quality can vary. Remember: code is read much more often than it is written. Use ChatGPT to fix mistakes and get a general idea for solving a problem, but write the code yourself. Don't limit yourself by avoiding AI due to concerns about "cheating" or originality.
-- **Don't worry about dependency management, linters, pytest, styling, etc., initially.** Until you have a solid understanding of the basics, these tools will likely only confuse you. Although crucial for developing robust models later, they will complicate things while you are still learning.
+- **Don't worry about dependency management, linters, pytest, styling, etc., initially.** Until you have a solid understanding of the basics, these tools will likely only confuse you. You will need them later to build models that last, but while you are still learning they only complicate things.
 
 Looking for project ideas? Google and ChatGPT offer plenty. Don't be discouraged if your idea has already been implemented. For example, while multiple applications similar to my Personal Finance tracker exist, I designed mine to provide the specific insights I needed.
 
@@ -89,9 +89,9 @@ Looking for project ideas? Google and ChatGPT offer plenty. Don't be discouraged
 
 Once you are comfortable working with Python, you can start using the following tools to improve your programming skills and code quality:
 
-1. **Install a Code Editor like Visual Studio Code or PyCharm.** These editors help in building actual models using `.py` files and facilitate interaction between multiple files. Packages like Pandas and NumPy, which you've likely used, are developed using such editors as they involve multiple interacting files.
+1. **Install a Code Editor like Visual Studio Code or PyCharm.** These editors help in building actual models using `.py` files and make it easier to work with multiple files that interact with each other. Packages like Pandas and NumPy, which you've likely used, are developed using such editors as they involve multiple interacting files.
 2. **Create a public or private project on a platform like [GitHub](https://github.com/){: target="_blank"}.** GitHub is a platform where over 100 million developers collaborate on open-source projects and manage Git repositories (e.g., my own [here](https://github.com/JerBouma/FinanceToolkit){: target="_blank"}). Platforms often used within companies include Azure DevOps or BitBucket, which share similar functionality. See a guide about GitHub [here](https://docs.github.com/en/get-started/using-github/hello-world){: target="_blank"}.
-3. **Download [Git](https://git-scm.com/){: target="_blank"} to version control your project.** Using commands like `git add`, `git commit -m "Initial commit"`, and `git push`, you can create a version history. This makes it possible to track project evolution and revert changes if necessary. Using Git is extremely important, and the subsequent pages assume you have it set up.
+3. **Download [Git](https://git-scm.com/){: target="_blank"} to version control your project.** Using commands like `git add`, `git commit -m "Initial commit"`, and `git push`, you can create a version history. This makes it possible to track project evolution and revert changes if necessary. You will need Git, and the pages that follow assume you have it set up.
 
 Once you have completed these steps, it's time to start setting up your project. Visit [Setting up your Project](/modelling/setting-up-your-project) to continue!
 

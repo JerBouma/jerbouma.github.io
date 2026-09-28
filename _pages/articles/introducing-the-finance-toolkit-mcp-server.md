@@ -22,7 +22,7 @@ That inconsistency is why I built the Finance Toolkit: an open-source Python lib
 
 The Python library and the MCP server are the same engine with two different front doors. Start with the Python side, since understanding it makes the MCP tool calls easier to reason about later.
 
-Start by installing the Finance Toolkit:
+First, install the Finance Toolkit:
 
 ```bash
 pip install financetoolkit -U
@@ -40,7 +40,7 @@ companies = Toolkit(
 )
 ```
 
-Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history and 250 requests a day; a paid plan unlocks the full 30+ years and quarterly data, at a 15% discount through that (affiliat) link. I do provide means to provide your own data as well, see [here](/projects/financetoolkit/external-datasets).
+Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history and 250 requests a day; a paid plan adds the full 30+ years and quarterly data, at a 15% discount through that (affiliate) link. You can also use your own data instead, as explained [here](/projects/financetoolkit/external-datasets).
 
 ## From Code to Conversation: the MCP Server
 
@@ -56,11 +56,11 @@ This supports Claude Desktop, Claude Code, GitHub Copilot in VS Code, Cursor, Wi
 
 Once it is running, the server groups the 500+ Finance Toolkit methods into 22 categorical tools. You never name a function or set a parameter yourself; the assistant picks the right tool from your question and returns structured output. The depth of interpretation scales with the model: Claude Sonnet layers in qualitative reasoning on top of the numbers, while smaller models like GPT-5 mini return clean structured data without the narrative. Both work, since the server is built to support either.
 
-Within Claude Desktop, it will look like below once setup.
+Once set up, it looks like this in Claude Desktop.
 
 <p align="center">
   <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q0o5322rfem76oub01l5.png" alt="Finance Toolkit MCP server configured in Claude Desktop" width="600">
-  <br><em>Once everything is setup, you should see the Finance Toolkit as one of the available connectors.</em>
+  <br><em>Once everything is set up, you should see the Finance Toolkit as one of the available connectors.</em>
 </p>
 
 ## Equity Analysis: Margins, Returns, and Multiples Side by Side
@@ -97,13 +97,13 @@ Which returns:
 | TXN | +585% | 31.9x | 21.3x | +4.8% | $19.37 |
 | INTC | +352% | - | 19.1x | -98.75% | $10.88 |
 
-The dispersion inside one industry is the whole story here: NVDA turned a 2015 position into roughly 421 times its starting value, while INTC is (compared to NVDA) essentially flat a decade later, its P/E reported as negative because it posted a net loss and its EPS collapsing 98.75% in 2025 alone. AVGO's EPS growth of 286.2% outpaces even NVDA, reflecting the VMware acquisition layered on top of its AI networking business rather than organic chip sales growth, worth separating out before reading too much into the headline number. ASML trades at the richest EV/EBITDA multiple in the group (28.0x) despite the slowest revenue-per-share base of the bunch in absolute growth terms, a premium the market assigns to its effective monopoly on the EUV lithography machines every leading-edge fab depends on.
+What stands out is the dispersion inside one industry. NVDA turned a 2015 position into roughly 421 times its starting value, while INTC is (compared to NVDA) essentially flat a decade later, its P/E reported as negative because it posted a net loss and its EPS collapsing 98.75% in 2025 alone. AVGO's EPS growth of 286.2% outpaces even NVDA, reflecting the VMware acquisition layered on top of its AI networking business rather than organic chip sales growth, worth separating out before reading too much into the headline number. ASML trades at the richest EV/EBITDA multiple in the group (28.0x) despite the slowest revenue-per-share base of the bunch in absolute growth terms, a premium the market assigns to its effective monopoly on the EUV lithography machines every leading-edge fab depends on.
 
-A call with the Finance Toolkit MCP would return an answer such as below.
+Asking the Finance Toolkit MCP the same question returns an answer like the one below.
 
 <p align="center">
   <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hbwucatw62srxqu3qc3v.png" alt="Finance Toolkit MCP response comparing semiconductor equity ratios" width="600">
-  <br><em>Semiconductors went from a cyclical industrial sector to the backbone of AI infrastructure over the last decade and the market priced that transition in full. NVDA and AMD returned over 150x since 2015 while the S&P 500 compounded quietly at the bottom of the same chart.</em>
+  <br><em>Over the last decade semiconductors went from a cyclical industrial sector to the backbone of AI infrastructure, and the market priced that transition in. NVDA and AMD returned over 150x since 2015, while the S&P 500 sits at the bottom of the same chart.</em>
 </p>
 
 ## Technical Analysis: Is the Market Overbought?
@@ -137,13 +137,13 @@ Which returns:
 
 Oil & Gas was the most oversold sector of the whole crisis, bottoming at an RSI of 19.3 in September 2020, well past the typical oversold line of 30, and it stayed depressed there for most of the year as travel demand collapse fed straight through to fuel demand. Banks were close behind, troughing at 26.2 in June 2020 and not climbing back above the 40 mark until November, longer than any other sector here took to recover. Health Care and Technology never came close to oversold even at the worst of the March 2020 crash, with RSI bottoming at 65.9 and 53.2 respectively, the closest thing to a flight-to-quality signal in this dataset.
 
-The more striking part is the reversal. The same two sectors that bottomed hardest, Oil & Gas and Banks, both closed 2021 deep in overbought territory at 76.3 and 79.5, a swing of roughly 50 to 60 RSI points in eighteen months. That is the kind of regime change a single point-in-time RSI reading would never catch; it only shows up when you pull the full series.
+The reversal is more interesting. The same two sectors that bottomed hardest, Oil & Gas and Banks, both closed 2021 deep in overbought territory at 76.3 and 79.5, a swing of roughly 50 to 60 RSI points in eighteen months. That is the kind of regime change a single point-in-time RSI reading would never catch; it only shows up when you pull the full series.
 
-A call with the Finance Toolkit MCP is showing what I mean:
+The Finance Toolkit MCP shows the same pattern when you ask it:
 
 <p align="center">
   <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ef2dxd12heokum126nsl.png" alt="Finance Toolkit MCP response on European sector RSI during the 2020 crash" width="600">
-  <br><em>The COVID crash was swift but uneven. Airlines collapsed into extreme oversold territory with RSI hitting 22 in April 2020. Alevel that signals panic selling, not fundamental repricing. Technology barely dipped. Oil & Gas, untouched by the initial shock, swung to RSI 91 a year later as the energy cycle turned.</em>
+  <br><em>The COVID crash was swift but uneven. Airlines collapsed into extreme oversold territory with RSI hitting 22 in April 2020, a level that signals panic selling rather than a fundamental repricing. Technology barely dipped. Oil & Gas, untouched by the initial shock, swung to RSI 91 a year later as the energy cycle turned.</em>
 </p>
 
 ## Risk and Performance: What the Fama-French Factors Reveal About South American Stocks
@@ -186,11 +186,11 @@ That gap widens when you look at the trend across years rather than a single sna
 
 MELI's R-squared has fallen almost every year since 2021, from 0.619 to 0.122, meaning the five-factor model explains less and less of its return over time as the stock has decoupled further from traditional risk factors. VALE and SCCO show the opposite pattern, with explanatory power roughly tripling over the same five years as both mining names became more tightly linked to broad market and value-style risk during the commodity cycle. None of that shows up in a beta or alpha calculation alone, which is the case for running the full factor model instead of stopping at single-factor CAPM.
 
-A call with the Finance Toolkit MCP would return an answer such as below.
+Through the Finance Toolkit MCP, the answer looks like this.
 
 <p align="center">
   <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mcpyhbr1gwkezepzvss0.png" alt="Finance Toolkit MCP response on the Fama-French factor model for South American equities" width="600">
-  <br><em>The Fama-French 5-factor model decomposes stock returns into market beta, size, value, profitability, and investment exposure. Applied to South American industries, it reveals that MercadoLibre behaves more like a US growth stock than a Latin American consumer play while energy names like Petrobras and YPF are primarily market-beta bets with a secondary value tilt.</em>
+  <br><em>The Fama-French 5-factor model decomposes stock returns into market beta, size, value, profitability, and investment exposure. Applied to South American industries, it shows that MercadoLibre behaves more like a US growth stock than a Latin American consumer play, while energy names like Petrobras and YPF are primarily market-beta bets with a secondary value tilt.</em>
 </p>
 
 ## Macroeconomic Analysis: Tracking Asia's Growth Engines
@@ -220,9 +220,9 @@ Which returns:
 
 India has held growth above 9.5% every year since the 2020 contraction, while China has settled into a slower mid-single-digit pace after its 2021 reopening spike. South Korea, the most mature economy in this group, tracks closest to developed-market growth rates throughout. None of this required scraping a single government website or reconciling conflicting definitions across sources, which is the same problem this whole project started from.
 
-A call with the Finance Toolkit MCP would return an answer such as below.
+Asking the Finance Toolkit MCP gives an answer like the one below.
 
 <p align="center">
   <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6o1jp35n33itf807nhx5.png" alt="Finance Toolkit MCP response on GDP growth across Asian economies" width="600">
-  <br><em>Investment as a share of GDP is one of the cleanest leading indicators of structural economic development. Vietnam and India led the region in the 2000s, fuelling their infrastructure and manufacturing buildouts. Bangladesh has been rising steadily since 2010. The hallmark of an economy still in the upgrading phase, not yet plateauing like Malaysia or Thailand.</em>
+  <br><em>Investment as a share of GDP is one of the cleanest leading indicators of structural economic development. Vietnam and India led the region in the 2000s, fuelling their infrastructure and manufacturing buildouts. Bangladesh has been rising steadily since 2010, which is typical of an economy still in the upgrading phase rather than one that has plateaued like Malaysia or Thailand.</em>
 </p>

@@ -175,7 +175,7 @@ The local server runs on your own machine through `uvx` and works with every cli
 uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
 ```
 
-Prefer to do it by hand? Open the card for your client below and add the snippet to its config file, replacing `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}. The [API keys and environment variables](#local-api-keys) card at the end covers the `.env` file option and the optional FRED key.
+If you prefer to do it by hand, open the card for your client below and add the snippet to its config file, replacing `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}. The [API keys and environment variables](#local-api-keys) card at the end covers the `.env` file option and the optional FRED key.
 
 <details class="ft-details" id="local-claude-desktop" markdown="1">
   <summary><i class="fas fa-robot"></i> <h3>Claude Desktop</h3></summary>
@@ -264,7 +264,7 @@ Prefer to do it by hand? Open the card for your client below and add the snippet
 <details class="ft-details" id="local-vs-code" markdown="1">
   <summary><i class="fab fa-microsoft"></i> <h3>VS Code and GitHub Copilot</h3></summary>
 
-  **Workspace** — create or edit `.vscode/mcp.json` in your workspace root. VS Code uses `servers` as the top-level key (not `mcpServers`):
+  **Workspace**: create or edit `.vscode/mcp.json` in your workspace root. VS Code uses `servers` as the top-level key (not `mcpServers`):
 
   ```json
   {
@@ -278,7 +278,7 @@ Prefer to do it by hand? Open the card for your client below and add the snippet
   }
   ```
 
-  **Global (all workspaces)** — add the same block under `"mcp"` in your user `settings.json`:
+  **Global (all workspaces)**: add the same block under `"mcp"` in your user `settings.json`:
 
   - macOS: `~/Library/Application Support/Code/User/settings.json`
   - Windows: `%APPDATA%\Code\User\settings.json`
@@ -303,7 +303,7 @@ Prefer to do it by hand? Open the card for your client below and add the snippet
 <details class="ft-details" id="local-cursor" markdown="1">
   <summary><i class="fas fa-i-cursor"></i> <h3>Cursor</h3></summary>
 
-  **Workspace** — create or edit `.cursor/mcp.json` in your workspace root:
+  **Workspace**: create or edit `.cursor/mcp.json` in your workspace root:
 
   ```json
   {
@@ -317,7 +317,7 @@ Prefer to do it by hand? Open the card for your client below and add the snippet
   }
   ```
 
-  **Global (all projects)** — create or edit `~/.cursor/mcp.json`:
+  **Global (all projects)**: create or edit `~/.cursor/mcp.json`:
 
   ```json
   {
@@ -376,7 +376,7 @@ Prefer to do it by hand? Open the card for your client below and add the snippet
 
   In every snippet `uvx` is the *command* and the rest are *args*. The `env` block takes either `FINANCIAL_MODELING_PREP_API_KEY` with the key inline, or `FINANCETOOLKIT_ENV_FILE` with the path to a `.env` file that contains `FINANCIAL_MODELING_PREP_API_KEY=your_key_here`; when both are present the inline key wins.
 
-  A second key, `FRED_API_KEY`, is optional and free. It only unlocks a handful of US-only indicators without an OECD or FMP equivalent (nonfarm payrolls, initial jobless claims, the 30-year mortgage rate, the TIPS real yield curve and breakeven inflation expectations). The setup wizard picks it up automatically from your environment or `.env` file; [register for one here](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}.
+  A second key, `FRED_API_KEY`, is optional and free. It is only needed for a handful of US-only indicators without an OECD or FMP equivalent (nonfarm payrolls, initial jobless claims, the 30-year mortgage rate, the TIPS real yield curve and breakeven inflation expectations). The setup wizard picks it up automatically from your environment or `.env` file; [register for one here](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}.
 
   `financetoolkit[mcp]` also installs the `econometrics` extra, so `statsmodels` and `linearmodels` come along and the `econometrics` tool works out of the box.
 
@@ -384,21 +384,19 @@ Prefer to do it by hand? Open the card for your client below and add the snippet
 
 ## Why the Finance Toolkit MCP
 
-There are a growing number of MCP servers for financial data, from the official Financial Modeling Prep and Yahoo Finance servers to dozens of community wrappers. Most of them do one thing: expose raw API endpoints (a quote, an income statement, a list of prices) and leave the analysis to the language model. That is exactly where models are least reliable: an LLM asked to compute a return on invested capital or a Sharpe ratio from raw statements will happily make arithmetic and definitional mistakes, and two chats will rarely agree on the same number.
+There is a growing number of MCP servers for financial data, from the official Financial Modeling Prep and Yahoo Finance servers to dozens of community wrappers. Most of them expose raw API endpoints (a quote, an income statement, a list of prices) and leave the analysis to the language model. That is where models are least reliable. An LLM asked to compute a return on invested capital or a Sharpe ratio from raw statements will make arithmetic and definitional mistakes, and two chats will rarely agree on the same number.
 
-The Finance Toolkit MCP takes the opposite approach. It is a thin layer over the [Finance Toolkit](/projects/financetoolkit), a Python package with 500+ financial methods that has been downloaded well over a million times, and every number the assistant reports is computed by the same open-source code you can read on GitHub:
+The Finance Toolkit MCP works the other way around. It is a thin layer over the [Finance Toolkit](/projects/financetoolkit), a Python package with 500+ financial methods that has been downloaded well over a million times, and every number the assistant reports is computed by the same open-source code you can read on GitHub.
 
-- **Analysis, not just data.** 150+ financial ratios, valuation and credit models (WACC, DuPont, Altman Z-Score, intrinsic value), performance and risk metrics (Sharpe, Sortino, alpha, beta, Value at Risk, GARCH), 30+ technical indicators, options pricing and Greeks, fixed income and a full econometrics toolbox.
-- **Macro included.** GDP, inflation, unemployment, interest rates and government finances for 60+ countries from the OECD and FRED, next to the company data from Financial Modeling Prep.
-- **Transparent and consistent.** Every formula is documented in the [Finance Toolkit documentation](/projects/financetoolkit/docs), so the same question returns the same number regardless of which model asks it.
-- **Hosted and open source.** Connect to the hosted server in a minute, or run it locally with a single `uvx` command. The [source code](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} is MIT-licensed.
-- **Model-agnostic.** The 22 categorical tools are designed to be understood by small and large models alike, from GPT-5 mini to Claude Opus; the [example conversations](#example-conversations) below show both ends of that range.
+That means the assistant does the analysis with the Finance Toolkit instead of only fetching data: 150+ financial ratios, valuation and credit models (WACC, DuPont, Altman Z-Score, intrinsic value), performance and risk metrics (Sharpe, Sortino, alpha, beta, Value at Risk, GARCH), 30+ technical indicators, options pricing and Greeks, fixed income and a full econometrics toolbox. Macro data is included as well: GDP, inflation, unemployment, interest rates and government finances for 60+ countries from the OECD and FRED, next to the company data from Financial Modeling Prep.
 
-If you only need a quote or a headline number, a raw data server is fine. If you want to ask *"which of these banks is the most solvent and why"* and get a defensible answer, this is the server built for it.
+Every formula is documented in the [Finance Toolkit documentation](/projects/financetoolkit/docs), so the same question returns the same number regardless of which model asks it. You can connect to the hosted server in a minute or run it locally with a single `uvx` command, and the [source code](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} is MIT-licensed. I designed the 22 categorical tools so that small and large models alike can work with them, from GPT-5 mini to Claude Opus; the [example conversations](#example-conversations) below show both ends of that range.
+
+If you only need a quote or a headline number, a raw data server is fine. If you want to ask *"which of these banks is the most solvent and why"* and get a defensible answer, that is what I built this server for.
 
 ## Example Conversations
 
-A core goal in building this MCP was to make it useful across the full spectrum of models: the server should return the right data regardless of which AI you use, and the depth of interpretation should scale naturally with the model's capability. The conversations below show that in practice.
+When building this MCP I wanted it to be useful across the whole range of models: the server should return the right data regardless of which AI you use, and the depth of interpretation should scale with the model's capability. The conversations below show what that looks like in practice.
 
 <details class="mcp-chat" id="ex-apple-microsoft" markdown="1">
 <summary class="mcp-chat__bar">
@@ -577,7 +575,7 @@ The semiconductor sector is not uniformly overbought as of June 4, 2026. The dat
 </div>
 </details>
 
-The examples above use **Claude Sonnet 4.6**, which layers substantial qualitative reasoning on top of the raw numbers. The examples below use **GPT-5 mini**, a lighter, faster model that returns clean, structured data without the added narrative. Both work well with the Finance Toolkit MCP; the depth of interpretation scales with the model you choose.
+The examples above use **Claude Sonnet 4.6**, which adds a lot of qualitative reasoning on top of the raw numbers. The examples below use **GPT-5 mini**, a lighter and faster model that returns clean, structured data without the narrative. Both work well with the Finance Toolkit MCP; how much interpretation you get depends on the model you choose.
 
 <details class="mcp-chat" id="ex-alibaba-amazon" markdown="1">
 <summary class="mcp-chat__bar">
@@ -734,7 +732,7 @@ The questions that come up most often about the server, its data sources and how
 <details class="ft-details" markdown="1">
   <summary><h3>Is the Finance Toolkit MCP server free?</h3></summary>
 
-  Yes. The server and the [Finance Toolkit](/projects/financetoolkit) it is built on are open source under the MIT license (see the [repository](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}) and the hosted server is free to use. The only thing you need is a [Financial Modeling Prep API key](/fmp){:target="_blank"}; the free plan is enough to try the server, the paid plans unlock full history, all exchanges and higher request limits.
+  Yes. The server and the [Finance Toolkit](/projects/financetoolkit) it is built on are open source under the MIT license (see the [repository](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}) and the hosted server is free to use. The only thing you need is a [Financial Modeling Prep API key](/fmp){:target="_blank"}; the free plan is enough to try the server, and the paid plans add full history, all exchanges and higher request limits.
 
 </details>
 
@@ -873,7 +871,7 @@ The questions that come up most often about the server, its data sources and how
       "name": "Is the Finance Toolkit MCP server free?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The server and the Finance Toolkit it is built on are open source under the MIT license (see the repository) and the hosted server is free to use. The only thing you need is a Financial Modeling Prep API key; the free plan is enough to try the server, the paid plans unlock full history, all exchanges and higher request limits."
+        "text": "Yes. The server and the Finance Toolkit it is built on are open source under the MIT license (see the repository) and the hosted server is free to use. The only thing you need is a Financial Modeling Prep API key; the free plan is enough to try the server, and the paid plans add full history, all exchanges and higher request limits."
       }
     },
     {

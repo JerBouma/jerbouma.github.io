@@ -1,8 +1,8 @@
 ---
 title: Build your Model
 seo_title: Build a Financial Model in Python
-excerpt: Build robust financial models with modular programming, styling, and PEP 8 conventions.
-description: Build robust financial models with modular programming, styling, and PEP 8 conventions.
+excerpt: "Build financial models that last, with modular code, clear styling and the PEP 8 conventions."
+description: "Build financial models that last, with modular code, clear styling and the PEP 8 conventions."
 author_profile: true
 permalink: /modelling/build-your-model
 classes: wide-sidebar
@@ -11,21 +11,21 @@ sidebar:
     nav: "modelling"
 ---
 
-A financial model can serve multiple purposes, ranging from simple data aggregation to complex forecasting and scenario analysis. Regardless of its complexity, the model should be built for clarity, maintainability, and extensibility. This is where the concept of modular programming, as discussed in [Structure your Model](/modelling/structure-your-model), becomes crucial. For examples of this method and inspiration for building your own model, explore projects like the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"}, [Finance Database](https://github.com/JerBouma/FinanceDatabase){: target="_blank"}, [OpenBB Terminal](https://github.com/OpenBB-finance/OpenBB){: target="_blank"}, [yfinance](https://github.com/ranaroussi/yfinance){: target="_blank"}, and [Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){: target="_blank"}.
+A financial model can serve multiple purposes, ranging from simple data aggregation to complex forecasting and scenario analysis. However complex it is, the model should be clear, maintainable, and easy to extend. That is why the modular programming discussed in [Structure your Model](/modelling/structure-your-model) matters so much. For examples of this method and inspiration for building your own model, have a look at projects like the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"}, [Finance Database](https://github.com/JerBouma/FinanceDatabase){: target="_blank"}, [OpenBB Terminal](https://github.com/OpenBB-finance/OpenBB){: target="_blank"}, [yfinance](https://github.com/ranaroussi/yfinance){: target="_blank"}, and [Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){: target="_blank"}.
 
-Regardless of the model's purpose, applying consistent styling and coding guidelines helps remove the subjective nature of coding. A style guide ensures code consistency, making it easier to read and maintain. This consistency is crucial when multiple developers collaborate on the same codebase or when colleagues transition between teams and need to understand unfamiliar models.
+Regardless of the model's purpose, applying consistent styling and coding guidelines helps remove the subjective nature of coding. A style guide ensures code consistency, making it easier to read and maintain. This matters most when multiple developers work on the same codebase or when colleagues move between teams and need to understand models they haven't seen before.
 
-Linters, as discussed in [Setting up your Project](/modelling/setting-up-your-project#setting-up-linters), automate much of the initial code styling. However, linters cannot enforce choices regarding coding methods, variable naming conventions, or docstring structures. This is where style guides like [**PEP 8**](https://peps.python.org/pep-0008/){: target="_blank"} are essential.
+Linters, as discussed in [Setting up your Project](/modelling/setting-up-your-project#setting-up-linters), automate much of the initial code styling. However, linters cannot enforce choices regarding coding methods, variable naming conventions, or docstring structures. For those choices you need a style guide such as [**PEP 8**](https://peps.python.org/pep-0008/){: target="_blank"}.
 
 {: .notice--info}
 **Why a Universal Style is Important**<br>
-You might be accustomed to specific styling methods from your firm or university. However, adopting universally accepted styles like PEP 8 is highly recommended, as countless developers use them. This standardisation significantly eases collaboration, allowing developers to quickly understand your code. Furthermore, adhering to PEP standards provides clear guidelines and avoids conflicts with automated linters, simplifying the development process.
+You might be accustomed to specific styling methods from your firm or university. However, I recommend adopting a universally accepted style like PEP 8, as countless developers use it. This standardisation makes collaboration much easier, because other developers can quickly understand your code. Adhering to PEP standards also gives you clear guidelines and avoids conflicts with automated linters.
 
 ## Default Styling
 
-Throughout this page, PEP (Python Enhancement Proposal) is frequently referenced. A PEP is a technical design document for the Python community, outlining new features, processes, or environmental standards for the language. These proposals represent community consensus, providing established best practices.
+Throughout this page, PEP (Python Enhancement Proposal) is frequently referenced. A PEP is a technical design document for the Python community, outlining new features, processes, or environmental standards for the language. These proposals represent community consensus and therefore describe established best practices.
 
-The styles described by **PEP 8** (see [here](https://peps.python.org/pep-0008/){: target="_blank"}) define conventions for general code structure. As the default style adopted by numerous developers, it ensures consistency across both internal and external tooling. Reviewing the PEP 8 documentation is recommended for a thorough understanding; this section summarizes the major components.
+The styles described by **PEP 8** (see [here](https://peps.python.org/pep-0008/){: target="_blank"}) define conventions for general code structure. As the default style adopted by numerous developers, it ensures consistency across both internal and external tooling. I recommend reading the PEP 8 documentation itself for a thorough understanding; this section summarizes the main components.
 
 Key aspects of code layout include:
 
@@ -49,7 +49,7 @@ Recommended naming conventions include:
 
 The goal of these conventions is to make code more readable by indicating the intended use of a name (e.g., class, function, variable, constant) simply by its format. For instance, `calculate_gross_margin` clearly suggests a function, while `gross_margin` suggests a variable and `PERIOD` suggests a constant.
 
-Choose descriptive names over overly abbreviated ones. For example, `microsoft_trailing_gross_margin` is preferable to `msft_ttm_gm`. While brevity has its place, clarity is paramount, especially considering that *code is read far more often than it is written.* Avoid generic names like `df` unless the scope is very limited and the meaning is obvious from context.
+Choose descriptive names over overly abbreviated ones. For example, `microsoft_trailing_gross_margin` is preferable to `msft_ttm_gm`. Brevity has its place, but clarity matters more, especially considering that *code is read far more often than it is written.* Avoid generic names like `df` unless the scope is very limited and the meaning is obvious from context.
 
 When collaborating, remember that your code needs to be understandable by others, even in your absence (e.g., during holidays, sick leave, or after you've left the team).
 
@@ -147,7 +147,7 @@ def function_name(param1: type, param2: type) -> return_type:
 
 While this example uses the Google format, other formats like [reStructuredText (reST)](https://docutils.sourceforge.io/rst.html){: target="_blank"} or NumPy style are also common. The chosen format is less important than ensuring the docstring clearly explains the function's purpose, arguments (including types), return value(s), and any exceptions raised. The goal is to allow users to understand the function without needing to inspect its source code.
 
-Aim for comprehensive docstrings; it's generally better to provide too much detail than too little. Docstrings are an excellent place to explain underlying financial theory or complex logic within the function. Below is an extensive example (from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/performance/performance_model.py#L129-L174){: target="_blank"}) demonstrating the level of detail possible:
+Aim for complete docstrings; it's generally better to provide too much detail than too little. Docstrings are a good place to explain underlying financial theory or complex logic within the function. Below is an extensive example (from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/performance/performance_model.py#L129-L174){: target="_blank"}) demonstrating the level of detail possible:
 
 ```python
 def get_capital_asset_pricing_model(
@@ -215,20 +215,20 @@ def get_capital_asset_pricing_model(
 
 ## Creating Documentation
 
-Besides styling and docstrings, documentation is actually pretty important if you want to share your code with others. This is where [Sphinx](https://www.sphinx-doc.org/en/master/){: target="_blank"} comes in. Sphinx is a tool that makes it easy to create intelligent and beautiful documentation for Python projects (or other documents consisting of multiple reStructuredText or Markdown files).
+Besides styling and docstrings, documentation is actually pretty important if you want to share your code with others. This is where [Sphinx](https://www.sphinx-doc.org/en/master/){: target="_blank"} comes in. Sphinx makes it easy to create well-structured, good-looking documentation for Python projects (or other documents consisting of multiple reStructuredText or Markdown files).
 
-Other popular documentation generators include [MkDocs](https://www.mkdocs.org/){: target="_blank"}. Additionally, platforms like [Read the Docs](https://readthedocs.org/){: target="_blank"} can host documentation generated by these tools. The [Finance Toolkit documentation](/projects/financetoolkit/docs){: target="_blank"} serves as an example, showcasing a polished result achievable with such tools (though this specific example uses custom elements alongside standard tooling).
+Other popular documentation generators include [MkDocs](https://www.mkdocs.org/){: target="_blank"}. Additionally, platforms like [Read the Docs](https://readthedocs.org/){: target="_blank"} can host documentation generated by these tools. The [Finance Toolkit documentation](/projects/financetoolkit/docs){: target="_blank"} is an example of what you can achieve with such tools (though it uses custom elements alongside standard tooling).
 
 [![Alt text](/assets/images/modelling/build-your-model/image-2.png)](/projects/financetoolkit/docs){: target="_blank"}
 
-Effective documentation goes beyond API references (descriptions of individual functions). It should include tutorials, conceptual explanations, and practical examples, often using Jupyter Notebooks to demonstrate use cases. These examples help users understand the model's logic and applications. Store such examples in a dedicated `examples` directory, as suggested in [Structure your Model](/modelling/structure-your-model). See a snippet from the [Finance Toolkit's Getting Started Notebook](/projects/financetoolkit/getting-started){: target="_blank"} below:
+Good documentation contains more than API references (descriptions of individual functions). It should also include tutorials, conceptual explanations, and practical examples, often using Jupyter Notebooks to demonstrate use cases. These examples help users understand the model's logic and applications. Store such examples in a dedicated `examples` directory, as suggested in [Structure your Model](/modelling/structure-your-model). See a snippet from the [Finance Toolkit's Getting Started Notebook](/projects/financetoolkit/getting-started){: target="_blank"} below:
 
 [![Alt text](/assets/images/modelling/build-your-model/image.png)](/projects/financetoolkit/getting-started){: target="_blank"}
 
-In corporate environments, internal wikis (like those in [Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/project/wiki/wiki-create-repo?view=azure-devops&tabs=browser){: target="_blank"} or Confluence) are valuable for sharing higher-level project information, architectural decisions, and team processes, often using Markdown and benefiting from version control.
+In corporate environments, internal wikis (like those in [Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/project/wiki/wiki-create-repo?view=azure-devops&tabs=browser){: target="_blank"} or Confluence) are useful for sharing higher-level project information, architectural decisions, and team processes, often using Markdown and benefiting from version control.
 
-Well-written docstrings allow the main documentation to focus on the model's overall structure, usage patterns, and concepts, rather than repeating low-level function details. This approach is particularly helpful when the model serves as a back-end, enabling non-programmers (like Financial Analysts or Portfolio Managers) to understand its capabilities and assumptions, bridging the gap between technical and domain experts.
+Well-written docstrings allow the main documentation to focus on the model's overall structure, usage patterns, and concepts, rather than repeating low-level function details. This helps in particular when the model serves as a back-end, because it lets non-programmers (like Financial Analysts or Portfolio Managers) understand what the model can do and what it assumes.
 
-After establishing these coding and documentation practices, the next crucial step is testing. Proceed to [Test your Model](/modelling/test-your-model) to learn more.
+After establishing these coding and documentation practices, the next step is testing. Proceed to [Test your Model](/modelling/test-your-model) to learn more.
 
 [Test your Model](/modelling/test-your-model){: .btn .btn--info .btn--large .align-center}

@@ -13,9 +13,9 @@ sidebar:
 
 {% include mermaid.html %}
 
-The following guidelines explain how to structure a model. These guidelines serve as a reference, not strict rules. The primary goal is a structure that is understandable and maintainable.
+The following guidelines explain how to structure a model. Treat them as a reference rather than as strict rules. What matters most is a structure that is understandable and maintainable.
 
-The preferred approach for structuring a model is the **Model, View, Controller (MVC)** pattern. This software design pattern is commonly used to separate user interfaces, data, and controlling logic. It emphasizes separating the software's business logic from its presentation. This "separation of concerns" facilitates a better division of labor and improves maintainability. Models and Views should ideally function independently, while Controllers depend on Models or a combination of Models and Views. Note that while many variations of this pattern exist (see [here](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller#See_also){: target="_blank"}), they all adhere to the same core principles.
+My preferred approach for structuring a model is the **Model, View, Controller (MVC)** pattern. This software design pattern is commonly used to separate user interfaces, data, and controlling logic. It emphasizes separating the software's business logic from its presentation. This "separation of concerns" makes it easier to divide the work and to maintain the code. Models and Views should ideally function independently, while Controllers depend on Models or a combination of Models and Views. Note that while many variations of this pattern exist (see [here](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller#See_also){: target="_blank"}), they all adhere to the same core principles.
 
 The following diagrams illustrate different data flows within the MVC pattern, depending on the model's structure and purpose.
 
@@ -50,10 +50,10 @@ Step2["Controller 2"] -- Sees --> Step0["User"]
 
 </div>
 
-The power of the MVC pattern lies in its clear structure, making it immediately apparent which modules perform specific functions. For instance, if you need to find the Gross Margin ratio calculation or understand the data used for it, you know to look in the Model and Controller, respectively.
+The main advantage of the MVC pattern is its clear structure, which makes it obvious which module does what. For instance, if you need to find the Gross Margin ratio calculation or understand the data used for it, you know to look in the Model and Controller, respectively.
 
 {: .notice--info }
-**The Importance of Separation of Concerns for Financial Modelling**<br>The Model, View, Controller (MVC) structure is particularly effective for financial models because they often combine diverse datasets and complex calculations, requiring overarching logic to manage data flow correctly.<br><br>For example, during scenario analysis or time-based simulations, a dedicated module is needed to track the current period, scenario, dataset, etc. This is where the Controller comes in. The actual calculations should be independent of this tracking logic, which is why they are separated into the Model. Similarly, visualization is distinct from both calculation and control logic and is thus separated into the View.<br><br>This modular structure simplifies debugging, as each component has a specific purpose, making it easier to pinpoint formula or data issues. Conversely, combining calculation and data components makes identifying the source of issues more difficult.
+**The Importance of Separation of Concerns for Financial Modelling**<br>The Model, View, Controller (MVC) structure works well for financial models because they often combine different datasets and complex calculations, which requires overarching logic to manage the data flow correctly.<br><br>For example, during scenario analysis or time-based simulations, a dedicated module is needed to track the current period, scenario, dataset, etc. This is where the Controller comes in. The actual calculations should be independent of this tracking logic, which is why they are separated into the Model. Similarly, visualization is distinct from both calculation and control logic and is thus separated into the View.<br><br>This modular structure simplifies debugging, as each component has a specific purpose, making it easier to pinpoint formula or data issues. When calculation and data components are combined, it becomes harder to find where an issue comes from.
 
 ### The Data Layer
 
@@ -67,9 +67,9 @@ Step2["Profitability Model"] <-- "2. Calculates Gross Margin" -->  Step3["Get Gr
 Step2["Profitability Model"]  -- "3. Returns Gross Margin" --> Step0["User"]
 </div>
 
-For example, a Gross Margin calculation function shouldn't require input data with specific column names. Instead, it should accept generic inputs like two Series, Arrays, Floats, or Integers. This approach promotes creating "dumb" calculation functions, devoid of application-specific logic.
+For example, a Gross Margin calculation function shouldn't require input data with specific column names. Instead, it should accept generic inputs like two Series, Arrays, Floats, or Integers. This leads to "dumb" calculation functions that contain no application-specific logic.
 
-See the simplicity of such a model [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/profitability_model.py){:target="_blank"} and below:
+You can see how simple such a model is [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/profitability_model.py){:target="_blank"} and below:
 
 ```python
 def get_gross_margin(revenue: pd.Series, cost_of_goods_sold: pd.Series) -> pd.Series:
@@ -104,7 +104,7 @@ Step4["Profitability View"] <-- "5. Plot Gross Margin" -->  Step5["Plot Gross Ma
 Step4["Profitability View"] -- "6. Shows Plot" --> Step0["User"]
 </div>
 
-See below how such a view could look like:
+Below is an example of what such a view could look like:
 
 ```python
 def plot_gross_margin(gross_margin: pd.Series) -> pd.Series:
@@ -141,7 +141,7 @@ Step3["Ratios Controller"] <-- "2. Calculates Gross Margin" --> Step2["Profitabi
 Step3["Ratios Controller"] -- "3. Shows Gross Margin" --> Step0["User"]
 </div>
 
-Crucially, the Controller should perform <u>no</u> core calculations; its role is purely to orchestrate data flow between the Model and View. Controller logic is often encapsulated within classes. For instance, the Gross Margin calculation might be accessed via a method within a `Ratios` class (see the actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/ratios_controller.py#L2310-L2374){: target="_blank"}):
+The Controller should perform <u>no</u> core calculations. Its only job is to direct the data flow between the Model and View. Controller logic is often encapsulated within classes. For instance, the Gross Margin calculation might be accessed via a method within a `Ratios` class (see the actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/ratios_controller.py#L2310-L2374){: target="_blank"}):
 
 ```python
 class Ratios:
@@ -188,7 +188,7 @@ class Ratios:
 
 Unlike the Model and View layers, a single Controller module might handle multiple related functionalities. This is because the Controller acts as the central coordinator or "glue." So in this case, this function would fit in the `ratios_controller.py` module.
 
-It's also possible, and sometimes beneficial, to have multiple Controllers. For example, the Finance Toolkit uses a main `toolkit_controller.py` for initialization.
+It's also possible, and sometimes useful, to have multiple Controllers. For example, the Finance Toolkit uses a main `toolkit_controller.py` for initialization.
 
 <div class="mermaid">
 flowchart LR;
@@ -242,7 +242,7 @@ class Toolkit:
 
 ### The Supportive Layer
 
-In addition to the Model, View, and Controller modules, a `helpers` module can be beneficial. This module houses utility functions used across different parts of the application.
+In addition to the Model, View, and Controller modules, a `helpers` module is useful. This module houses utility functions used across different parts of the application.
 
 <div class="mermaid">
 flowchart LR;
@@ -285,7 +285,7 @@ Other examples of helper functions include reading data from files (e.g., XLSX, 
 
 As discussed in the [Setting up your Project](/modelling/setting-up-your-project) page, the Model, View, and Controller components for Gross Margin calculations would typically reside in `profitability_model.py`, `profitability_view.py`, and `profitability_controller.py`, respectively. The `helpers.py` module is usually placed at the package's root level.
 
-The Finance Toolkit applies this methodology, utilizing the structure shown in the final diagram:
+The Finance Toolkit applies this approach and uses the structure shown in the final diagram:
 
 <div class="mermaid">
 flowchart TB;
@@ -309,7 +309,7 @@ companies = Toolkit(['AMZN', 'ASML', 'META'], api_key='YOUR_API_KEY')
 companies.ratios.get_gross_margin()
 ```
 
-Which returns the following dataset leveraging the actual financial statements:
+Which returns the following dataset based on the actual financial statements:
 
 |      |   2013 |   2014 |   2015 |   2016 |   2017 |   2018 |   2019 |   2020 |   2021 |   2022 |
 |:-----|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
@@ -323,7 +323,7 @@ Alternatively, the growth of the Gross Margin can be calculated as follows:
 companies.ratios.get_gross_margin(growth=True)
 ```
 
-Which returns the growth of the Gross Margin leveraging the same financial statements:
+Which returns the growth of the Gross Margin based on the same financial statements:
 
 |      |   2013 |   2014 |   2015 |    2016 |   2017 |    2018 |    2019 |    2020 |   2021 |    2022 |
 |:-----|-------:|-------:|-------:|--------:|-------:|--------:|--------:|--------:|-------:|--------:|

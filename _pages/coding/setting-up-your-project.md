@@ -1,8 +1,8 @@
 ---
 title: Setting up your Project
 seo_title: Set Up a Python Financial Modelling Project
-excerpt: Master setting up financial models in Python. Explore project management, directory structure, dependency management, Git workflow, and exceptions.
-description: Master setting up financial models in Python. Explore project management, directory structure, dependency management, Git workflow, and exceptions.
+excerpt: "How to set up a financial model in Python: project management, directory structure, dependency management, a Git workflow and exceptions."
+description: "How to set up a financial model in Python: project management, directory structure, dependency management, a Git workflow and exceptions."
 author_profile: true
 permalink: /modelling/setting-up-your-project
 classes: wide-sidebar
@@ -13,24 +13,24 @@ sidebar:
 
 {% include mermaid.html %}
 
-Once you get the hang of Python and have installed a code editor such as Visual Studio Code, it's time to start working on your own project and utilize the various tools that greatly improve the quality of a model.
+Once you get the hang of Python and have installed a code editor such as Visual Studio Code, it's time to start working on your own project and use the tools that improve the quality of a model.
 
-By applying the structure described here right from the start, you ensure that anything you build is maintainable and scalable. This is especially important when sharing your model with others or using it long-term.
+By applying the structure described here right from the start, you make sure that anything you build stays maintainable and can scale. This matters most when you share your model with others or plan to use it for a long time.
 
 ## Managing your Project
 
 Starting a new project begins with creating an empty folder named after the project (e.g., "FinanceToolkit"). Then, open this folder in your code editor and initialize Git using `git init` (or clone an existing remote repository using `git clone URL`). Afterwards, I typically connect to a remote repository using `git remote add origin URL`, enabling me to commit, push, and pull changes.
 
-Once this is done, I include the following files to help manage the project. These files are always present in my projects; in fact, I often copy them from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} repository as it serves as an excellent starting template. This applies to both personal and professional projects.
+Once this is done, I include the following files to help manage the project. These files are always present in my projects; in fact, I often copy them from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} repository because it works well as a starting template. This applies to both personal and professional projects.
 
 This consists of the following files:
 
 - **README.md**: Includes a (short) description of the repository with useful links, similar to the file you are currently reading.
 - **.gitignore**: Includes Python-specific and project-specific exclusions (e.g., `.idea`, `.vscode`, `.venv`, `.pytest_cache`, `.DS_Store`). See an example [here](https://github.com/JerBouma/FinanceToolkit/blob/main/.gitignore){: target="_blank"}.
 - **pyproject.toml**: Includes build setups, linter configurations, and dependencies ([example](https://github.com/JerBouma/FinanceToolkit/blob/main/pyproject.toml){: target="_blank"}). This file is central to the project, containing all necessary information to run it. It succeeds the older `setup.py` and `setup.cfg` files. Read more about it in [PEP 518](https://peps.python.org/pep-0518/){: target="_blank"}.
-- **.pre-commit-config.yaml**: A configuration file for `pre-commit`. It specifies which linters should run before code is committed, helping maintain high code quality ([example](https://github.com/JerBouma/FinanceToolkit/blob/main/.pre-commit-config.yaml){: target="_blank"}). Activate it by running `pre-commit install` in the terminal.
+- **.pre-commit-config.yaml**: A configuration file for `pre-commit`. It specifies which linters should run before code is committed, which helps keep the code quality high ([example](https://github.com/JerBouma/FinanceToolkit/blob/main/.pre-commit-config.yaml){: target="_blank"}). Activate it by running `pre-commit install` in the terminal.
 
-The objective of these files is to increase the longevity of the model. For example, if you are still using `append` in Pandas, you haven't kept up with package dependencies, as this functionality was deprecated in v1.4.0 ([January 2022](https://pandas.pydata.org/docs/whatsnew/v1.4.0.html#deprecated-dataframe-append-and-series-append){: target="_blank"}). Failing to keep up with these developments means that without code changes, you'll be stuck on older versions like Pandas v1.4.0 and consequently, older Python versions like 3.8 and 3.9.
+These files are there to make the model last. For example, if you are still using `append` in Pandas, you haven't kept up with package dependencies, as this functionality was deprecated in v1.4.0 ([January 2022](https://pandas.pydata.org/docs/whatsnew/v1.4.0.html#deprecated-dataframe-append-and-series-append){: target="_blank"}). Failing to keep up with these developments means that without code changes, you'll be stuck on older versions like Pandas v1.4.0 and consequently, older Python versions like 3.8 and 3.9.
 
 ## Directory Structure
 
@@ -42,15 +42,15 @@ The `tests` folder mirrors this structure but contains unit tests for `pytest`:
 
 ![Folder structure of the tests directory mirroring the financetoolkit package](/assets/images/modelling/setting-up-your-project/tests.png)
 
-While this structure can be modified, the key is to organize the model in a way that is understandable and maintainable for yourself and others.
+You can modify this structure, as long as the model is organized in a way that you and others can understand and maintain.
 
-For instance, my [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} package follows this exact structure. This isn't an isolated case; you'll find a similar structure in projects like [OpenBB](https://github.com/OpenBB-finance/OpenBB){: target="_blank"}, a major open-source finance project. This structure can also be expanded, for example, by adding `_view` modules.
+For instance, my [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} package follows this exact structure. You'll find a similar structure in other projects such as [OpenBB](https://github.com/OpenBB-finance/OpenBB){: target="_blank"}, a major open-source finance project. This structure can also be expanded, for example, by adding `_view` modules.
 
 In any case, using the structure described above clarifies the location and purpose of each file, as discussed further in [Structure your Model](/modelling/structure-your-model).
 
 ## Dependency Management
 
-The chances of your model remaining functional over the next few years increase significantly if you keep its dependencies up to date. This involves defining the <u>minimum</u> required versions of Python, Pandas, NumPy, SciPy, and other libraries for the model to function correctly. It would look something like this in the `pyproject.toml` file:
+Your model is much more likely to keep working over the next few years if you keep its dependencies up to date. This involves defining the <u>minimum</u> required versions of Python, Pandas, NumPy, SciPy, and other libraries for the model to function correctly. It would look something like this in the `pyproject.toml` file:
 
 ```toml
 [project]
@@ -76,13 +76,13 @@ dev = [
 ]
 ```
 
-This example uses the dependency manager **uv**, an extremely fast tool written in Rust that handles dependency resolution, virtual environment creation, and package installation. It is significantly faster than alternatives like pip or Poetry and supports the standard `pyproject.toml` format. uv has excellent documentation, which is recommended reading [here](https://docs.astral.sh/uv/){: target="_blank"}.
+This example uses the dependency manager **uv**, a fast tool written in Rust that handles dependency resolution, virtual environment creation, and package installation. It is much faster than alternatives like pip or Poetry and supports the standard `pyproject.toml` format. The uv documentation is well written and worth reading, see [here](https://docs.astral.sh/uv/){: target="_blank"}.
 
-Once set up, you can add dependencies using `uv add` (e.g., `uv add pandas`). This command adds the package (like pandas) to the `[project]` dependencies section. With dependencies listed, running `uv sync` installs them all within a virtual environment that uv manages automatically. This command also creates a `uv.lock` file, which records the exact versions of all installed packages and their sub-dependencies. This file ensures reproducible builds by locking dependency versions.
+Once set up, you can add dependencies using `uv add` (e.g., `uv add pandas`). This command adds the package (like pandas) to the `[project]` dependencies section. With dependencies listed, running `uv sync` installs them all within a virtual environment that uv manages automatically. This command also creates a `uv.lock` file, which records the exact versions of all installed packages and their sub-dependencies. Because the versions are locked, builds are reproducible.
 
 ___
 
-**Pro-tip:** Keeping track of new versions for every package can be tedious. Therefore, consider using `extras` as defined with Pandas. These optional dependency groups bundle related packages (like those needed for data wrangling), simplifying maintenance. See [here](https://pandas.pydata.org/docs/getting_started/install.html#install-recommended-dependencies).
+**Pro-tip:** Keeping track of new versions for every package can be tedious, so consider using `extras` as defined with Pandas. These optional dependency groups bundle related packages (like those needed for data wrangling), simplifying maintenance. See [here](https://pandas.pydata.org/docs/getting_started/install.html#install-recommended-dependencies).
 
 ___
 
@@ -90,9 +90,9 @@ Additionally, the `[dependency-groups]` section lists dependencies relevant only
 
 
 {: .notice--info}
-<b>Why uv over requirements.txt or pip?</b><br>uv is a true dependency manager that understands the relationships between packages. Unlike `requirements.txt`, which merely lists packages and doesn't prevent incompatible installations, uv resolves dependencies intelligently, and does so extremely fast thanks to its Rust-based implementation. Pip is a package installer, <u>not</u> a dependency manager, making it less suitable for maintaining consistent environments. While alternatives like Poetry and `pipenv` exist, uv is preferred here due to its speed, adherence to Python standards, and [rapidly growing adoption](https://docs.astral.sh/uv/){: target="_blank"}.
+<b>Why uv over requirements.txt or pip?</b><br>uv is a proper dependency manager that understands the relationships between packages. A `requirements.txt` only lists packages and doesn't prevent incompatible installations, whereas uv resolves the dependencies, and does so quickly thanks to its Rust-based implementation. Pip is a package installer, <u>not</u> a dependency manager, making it less suitable for maintaining consistent environments. While alternatives like Poetry and `pipenv` exist, I prefer uv because of its speed, its adherence to Python standards, and its [rapidly growing adoption](https://docs.astral.sh/uv/){: target="_blank"}.
 
-Here's an example of what the installation process looks like:
+This is what the installation process looks like:
 
 ```shell
 FinanceToolkit % uv sync
@@ -107,7 +107,7 @@ Installed 72 packages in 1.2s
  + platformdirs==3.11.0
  + ...
 ```
-And here's how adding a new dependency (including extras) appears:
+And this is what adding a new dependency (including extras) looks like:
 
 ```shell
 FinanceToolkit % uv add "pandas[computation,performance,plot]"
@@ -144,11 +144,11 @@ dependencies = [
 
 ### Setting up Linters
 
-Linters are tools that analyze code to detect errors, enforce style guidelines, and suggest improvements. They range from code formatters and spell checkers to tools identifying potential bugs or security vulnerabilities. The following linters are recommended to ensure code quality and consistency before committing changes via Git:
+Linters are tools that analyze code to detect errors, enforce style guidelines, and suggest improvements. They range from code formatters and spell checkers to tools identifying potential bugs or security vulnerabilities. I recommend the following linters to check code quality and consistency before committing changes via Git:
 
 - [**Black**](https://github.com/psf/black): A PEP 8 compliant opinionated formatter, maintained by the Python Software Foundation.
-- [**Ruff**](https://github.com/astral-sh/ruff): An extremely fast linter that consolidates the functionality of tools like Flake8 (and its plugins), isort, pydocstyle, yesqa, eradicate, pyupgrade, and autoflake.
-- [**ty**](https://docs.astral.sh/ty/): An extremely fast type checker by Astral (the creators of Ruff and uv) that verifies type hints to help ensure correct usage of variables and functions.
+- [**Ruff**](https://github.com/astral-sh/ruff): A fast linter that combines the functionality of tools like Flake8 (and its plugins), isort, pydocstyle, yesqa, eradicate, pyupgrade, and autoflake.
+- [**ty**](https://docs.astral.sh/ty/): A fast type checker by Astral (the creators of Ruff and uv) that verifies type hints to help ensure correct usage of variables and functions.
 - [**bandit**](https://github.com/PyCQA/bandit): Designed to find common security vulnerabilities in Python code.
 - [**codespell**](https://github.com/codespell-project/codespell): Identifies common misspellings in code and text files.
 
@@ -232,10 +232,10 @@ ty.......................................................................Passed
 
 ### Creating a Git Workflow
 
-When working with code, it's important to follow a solid Git workflow that separates development from production environments. The complexity of the workflow can depend on whether you are working alone or in a team; avoid unnecessary complexity. For example, requiring self-approval of Pull Requests (PRs) from a feature branch is unnecessary if you are the sole developer.
+When working with code, you should follow a Git workflow that separates development from production environments. The complexity of the workflow can depend on whether you are working alone or in a team; avoid unnecessary complexity. For example, requiring self-approval of Pull Requests (PRs) from a feature branch is unnecessary if you are the sole developer.
 
 {: .notice--info}
-Using Git is highly recommended even for private projects. Platforms like GitHub offer private repositories for this purpose. The key benefit of Git is version control: you can easily track changes, revert to previous states if mistakes are made, and manage different versions or features concurrently.
+I recommend using Git even for private projects. Platforms like GitHub offer private repositories for this purpose. The main benefit of Git is version control: you can easily track changes, revert to previous states if mistakes are made, and manage different versions or features concurrently.
 
 A common approach, especially for solo developers, involves at least these branches:
 
@@ -267,7 +267,7 @@ gitGraph LR:
     merge develop tag:"v1.2.0"
 </div>
 
-When working in a team, a more structured workflow involving code reviews and testing is crucial before merging into the `develop` branch. This prevents issues in one feature branch from affecting others. Additional branches often used in team workflows include:
+When working in a team, you need a more structured workflow with code reviews and testing before merging into the `develop` branch. This prevents issues in one feature branch from affecting others. Additional branches often used in team workflows include:
 
 -   **feature/***: These branches are created for specific new features or tasks. Work is done here, and changes are merged into `develop` (usually via Pull Requests). Feature branches are typically deleted after merging. The graph below simplifies this by showing a single 'feature' branch, but many exist in practice.
 -   **hotfix/***: These branches are used to address critical bugs found in the production (`main`) branch that require immediate fixes. They branch off `main` and are merged back into both `main` and `develop`.
@@ -301,11 +301,11 @@ gitGraph LR:
     merge develop tag:"v1.2.0"
 </div>
 
-This is one common way to structure Git workflows; many variations exist (e.g., Gitflow, GitHub Flow). The key principle is to establish a workflow that suits your project and team, clearly separating production code from ongoing development.
+This is one common way to structure Git workflows; many variations exist (e.g., Gitflow, GitHub Flow). What matters is that the workflow suits your project and team and clearly separates production code from ongoing development.
 
 ### Adding Git Exceptions
 
-The `.gitignore` file specifies intentionally untracked files that Git should ignore. This is useful for excluding generated files (like compiled code), local configuration (IDE settings), sensitive data, or temporary files (like Jupyter Notebook checkpoints). This file is essential when using version control. If you aren't already using Git, consider adopting it for its powerful change tracking and versioning capabilities.
+The `.gitignore` file specifies intentionally untracked files that Git should ignore. This is useful for excluding generated files (like compiled code), local configuration (IDE settings), sensitive data, or temporary files (like Jupyter Notebook checkpoints). This file is essential when using version control. If you aren't using Git yet, consider adopting it for its change tracking and versioning.
 
 An example `.gitignore` file might look like this:
 
