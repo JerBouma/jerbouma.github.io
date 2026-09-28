@@ -653,7 +653,7 @@ financetoolkit-docs-models:
         url:  /projects/financetoolkit/docs/models#get_economic_value_added
       - title: Intrinsic Valuation
         url:  /projects/financetoolkit/docs/models#get_intrinsic_valuation
-      - title: Gorden Growth Model (GGM)
+      - title: Gordon Growth Model (GGM)
         url:  /projects/financetoolkit/docs/models#get_gorden_growth_model
       - title: Altman Z-Score
         url:  /projects/financetoolkit/docs/models#get_altman_z_score
@@ -999,9 +999,9 @@ financetoolkit-docs-risk:
       url:  /projects/financetoolkit/docs/risk#get_maximum_drawdown_recovery_time
     - title: Ulcer Index (UI)
       url:  /projects/financetoolkit/docs/risk#get_ulcer_index
-    - title: GARCH Volatilty Model
+    - title: GARCH Volatility Model
       url:  /projects/financetoolkit/docs/risk#get_garch
-    - title: GARCH Volatilty Forecast
+    - title: GARCH Volatility Forecast
       url:  /projects/financetoolkit/docs/risk#get_garch_forecast
     - title: Variance
       url:  /projects/financetoolkit/docs/risk#get_variance
