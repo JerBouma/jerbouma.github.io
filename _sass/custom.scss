@@ -3955,10 +3955,32 @@ body.wide-no-sidebar:not(.no-title) {
       transform: translateY(-1px);
     }
 
-    &--bluesky:hover  { background: #0085ff; }
-    &--facebook:hover { background: #1877f2; }
-    &--linkedin:hover { background: #0a66c2; }
-    &--copy:hover     { background: var(--accent-color); }
+    // round icon-only buttons for the platforms; the name is in title/aria-label
+    &--icon {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      justify-content: center;
+      gap: 0;
+
+      i { font-size: 0.95rem; }
+    }
+
+    &[hidden] { display: none; }
+
+    &--x:hover          { background: #000; }
+    &--linkedin:hover   { background: #0a66c2; }
+    &--facebook:hover   { background: #1877f2; }
+    &--bluesky:hover    { background: #0085ff; }
+    &--threads:hover    { background: #000; }
+    &--mastodon:hover   { background: #6364ff; }
+    &--reddit:hover     { background: #ff4500; }
+    &--hackernews:hover { background: #ff6600; }
+    &--whatsapp:hover   { background: #25d366; }
+    &--telegram:hover   { background: #26a5e4; }
+    &--email:hover,
+    &--more:hover,
+    &--copy:hover       { background: var(--accent-color); }
 
     &--copy {
       .copy-success { display: none; }
