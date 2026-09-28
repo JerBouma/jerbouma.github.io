@@ -15,6 +15,9 @@ sidebar:
 
 The Risk module calculates important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (CVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
 
+**No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), AI assistants such as Claude and ChatGPT can run every function on this page for you. Just ask in plain English.
+{: .notice--info}
+
 To install the FinanceToolkit it simply requires the following:
 
 ```python

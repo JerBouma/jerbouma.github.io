@@ -15,6 +15,9 @@ sidebar:
 
 The Portfolio module calculates important portfolio metrics, allowing you to compare your portfolio against a benchmark, analyse individual asset performance and load your portfolio directly into the Finance Toolkit.
 
+**No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), AI assistants such as Claude and ChatGPT can run every function on this page for you. Just ask in plain English.
+{: .notice--info}
+
 To install the FinanceToolkit it simply requires the following:
 
 ```python
