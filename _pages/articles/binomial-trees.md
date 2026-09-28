@@ -9,7 +9,7 @@ layout: single
 classes: wide-sidebar article-document
 author_profile: false
 collection: article
-tags: [Finance Toolkit, Options, Derivatives, Binomial Trees]
+tags: [Risk & Derivatives]
 share: true
 ---
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>

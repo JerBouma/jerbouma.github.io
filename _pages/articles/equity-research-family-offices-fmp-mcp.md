@@ -9,7 +9,7 @@ layout: single
 classes: wide-sidebar article-document
 author_profile: false
 collection: article
-tags: [Finance Toolkit, Fundamental Analysis, MCP Server]
+tags: [MCP Server, Fundamental Analysis]
 share: true
 ---
 

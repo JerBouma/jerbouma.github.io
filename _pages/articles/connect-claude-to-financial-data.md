@@ -11,7 +11,7 @@ layout: single
 classes: wide-sidebar article-document
 author_profile: false
 collection: article
-tags: [Finance Toolkit, MCP Server, Claude]
+tags: [MCP Server]
 share: true
 image: /assets/images/projects/FinanceToolkitMCP.jpg
 ---
