@@ -180,7 +180,7 @@ Most of the modelling I do is based on established financial literature. This pa
   </div>
   <a href="https://www.bauer.uh.edu/rsusmel/phd/Fama-French_JFE93.pdf" class="lit-card__title" target="_blank" rel="noopener">Common risk factors in the returns on stocks and bonds</a>
   <p class="lit-card__authors">Eugene F. Fama, Kenneth R. French</p>
-  <p class="lit-card__summary">This paper identities five common risk factors in the returns on stocks and bonds. Most important, the five factors seem to explain average returns on stocks and bonds.</p>
+  <p class="lit-card__summary">This paper identifies five common risk factors in the returns on stocks and bonds. Most important, the five factors seem to explain average returns on stocks and bonds.</p>
   <div class="lit-card__tags"><span class="lit-tag">Factor Investing</span><span class="lit-tag">Finance</span></div>
 </div>
 
@@ -320,7 +320,7 @@ Most of the modelling I do is based on established financial literature. This pa
   </div>
   <a href="https://research.vu.nl/en/publications/fundamental-factors-that-improve-your-investments-a-practical-gui" class="lit-card__title" target="_blank" rel="noopener">Fundamental Factors That Improve Your Investments: A Practical Guide</a>
   <p class="lit-card__authors">Alfred Slager, Philip Stork, Pim Lausberg</p>
-  <p class="lit-card__summary">The development of a bespoke factor-based investing method will add to a thorough under standing of portfolio risks. This approach could increase the robustness of investment portfolios and improves diversification across the various asset categories.</p>
+  <p class="lit-card__summary">The development of a bespoke factor-based investing method will add to a thorough understanding of portfolio risks. This approach could increase the robustness of investment portfolios and improves diversification across the various asset categories.</p>
   <div class="lit-card__tags"><span class="lit-tag">Factor Investing</span><span class="lit-tag">Finance</span></div>
 </div>
 
@@ -340,7 +340,7 @@ Most of the modelling I do is based on established financial literature. This pa
   </div>
   <a href="https://www.amazon.com/High-Growth-Handbook-Elad-Gil/dp/1732265100" class="lit-card__title" target="_blank" rel="noopener">High Growth Handbook</a>
   <p class="lit-card__authors">Elad Gil</p>
-  <p class="lit-card__summary">This books gives a lot of insights on how to scale a start-up by sketching the neccesary roles and the common mistakes start-ups make during the scaling process.</p>
+  <p class="lit-card__summary">This book gives a lot of insights on how to scale a start-up by sketching the necessary roles and the common mistakes start-ups make during the scaling process.</p>
   <div class="lit-card__tags"><span class="lit-tag">Finance</span></div>
 </div>
 
@@ -480,7 +480,7 @@ Most of the modelling I do is based on established financial literature. This pa
   </div>
   <a href="https://www.amazon.com/Microeconomic-Theory-Basic-Principles-Extensions/dp/1305505794" class="lit-card__title" target="_blank" rel="noopener">Microeconomic Theory</a>
   <p class="lit-card__authors">Christopher Snyder, Walter Nicholson</p>
-  <p class="lit-card__summary">This books aims at explaining Microeconomic theories like Utility functions, Supply/demand functions, Game Theory and Consumption models.</p>
+  <p class="lit-card__summary">This book aims at explaining Microeconomic theories like Utility functions, Supply/demand functions, Game Theory and Consumption models.</p>
   <div class="lit-card__tags"><span class="lit-tag">Finance</span></div>
 </div>
 

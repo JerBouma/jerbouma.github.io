@@ -13,7 +13,7 @@ tags: [Risk & Derivatives]
 share: true
 ---
 
-In the week of March 31 to April 6, 2025, the S&P 500 ETF fell 5.85%. A weekly move like that is not unusual in itself; it happens most years. What stands out is that the rest of 2025 behaved close to normal around it. That single week is enough to push the S&P 500's kurtosis for the year to 26, roughly six times its typical reading in a calmer year like 2023. Volatility alone would not show this, but kurtosis does.
+In the week of March 31 to April 6, 2025, the S&P 500 ETF fell 5.85%. A weekly move like that is not unusual in itself; it happens most years. What stands out is that the rest of 2025 behaved close to normal around it. That single week is enough to push the S&P 500's kurtosis for the year to 26, roughly nine times its typical reading in a calmer year like 2023. Volatility alone would not show this, but kurtosis does.
 
 That is a good reason to look beyond plain volatility when measuring risk. The Finance Toolkit's risk module covers Value at Risk, Conditional Value at Risk, maximum drawdown, the Ulcer Index, GARCH volatility, skewness, and kurtosis, each describing a different shape of risk that a single standard deviation number flattens into one figure. In this article I run all five across six major indices: the S&P 500 (SPY), Nasdaq 100 (QQQ), Dow Jones (DIA), Russell 2000 (IWM), MSCI EAFE developed markets (EFA), and MSCI Emerging Markets (EEM). **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
@@ -92,7 +92,7 @@ Which returns:
 | 2024 | -8.4% | -13.5% | -6.1% | -10.1% | -11.1% | -11.7% |
 | 2025 | -19.0% | -22.9% | -16.1% | -23.9% | -14.1% | -15.0% |
 
-2020's COVID crash hit IWM hardest at -41.1%, deeper than any other index in any year of this dataset, consistent with small-caps having less balance sheet cushion and less liquid trading during a panic. DIA, by contrast, never has the worst drawdown of any year, its blue-chip composition acting as the most resilient of the six across both 2020 and 2022. In the 2022 bear market it was tech's turn: QQQ's -35.2% drawdown was the worst of that year, driven by the same rate-hike sensitivity that put growth stocks at the center of the selloff. EEM had the worst showing in 2019 and 2021, both years with no broad global crisis, which shows that emerging markets can draw down on their own schedule, independent of US conditions.
+2020's COVID crash hit IWM hardest at -41.1%, deeper than any other index in any year of this dataset, consistent with small-caps having less balance sheet cushion and less liquid trading during a panic. DIA, by contrast, never has the worst drawdown of any year. Its blue-chip composition made it the most resilient of the six in 2022 (-22.0%), although in the 2020 crash only IWM fell further. In the 2022 bear market it was tech's turn: QQQ's -35.2% drawdown was the worst of that year, driven by the same rate-hike sensitivity that put growth stocks at the center of the selloff. EEM had the worst showing in 2019 and 2021, both years with no broad global crisis, which shows that emerging markets can draw down on their own schedule, independent of US conditions.
 
 > **Try this with the Finance Toolkit MCP:** *"Show the yearly maximum drawdown for SPY, QQQ, DIA, IWM, EFA, and EEM from 2019 to 2025. Which index had the single worst drawdown, and which index was most resilient across all years?"*
 
