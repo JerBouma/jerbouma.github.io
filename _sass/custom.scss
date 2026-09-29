@@ -5625,3 +5625,10 @@ table.highlight {
 .ft-module-switcher.docs-related {
   margin: 0 0 28px;
 }
+
+// The theme sets list items to 0.8em, which compounds in a nested list (a
+// bullet under a numbered item ends up at 0.64em). Nested items keep the size
+// of the item they belong to.
+.page__content li li {
+  font-size: 1em;
+}

@@ -2315,7 +2315,13 @@ Which returns:
 ## get_money_supply
 Money Supply is the total amount of money that is in circulation in a country. It includes currency, demand deposits, and other liquid assets that can be easily converted into cash. Money supply is an important economic indicator that the Federal Reserve uses to implement its monetary policy.
 
-Money supply can be divided into five categories: M0, M1, M2, M3 and M4. - M0: The total of all physical currency, plus accounts at the central bank that can be exchanged for physical currency. - M1: The total of all physical currency part of bank reserves + the amount in demand accounts ("checking" or "current" accounts). - M2: M1 + most savings accounts, money market accounts, retail money market mutual funds, and small denomination time deposits. - M3: M2 + large time deposits, institutional money market funds, short-term repurchase agreements, and other larger liquid assets. - M4: M3 + all other financial assets.
+Money supply can be divided into five categories: M0, M1, M2, M3 and M4.
+
+- M0: The total of all physical currency, plus accounts at the central bank that can be exchanged for physical currency.
+- M1: The total of all physical currency part of bank reserves + the amount in demand accounts ("checking" or "current" accounts).
+- M2: M1 + most savings accounts, money market accounts, retail money market mutual funds, and small denomination time deposits.
+- M3: M2 + large time deposits, institutional money market funds, short-term repurchase agreements, and other larger liquid assets.
+- M4: M3 + all other financial assets.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
