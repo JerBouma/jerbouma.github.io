@@ -1,0 +1,212 @@
+---
+layout: null
+permalink: /resume/cv
+sitemap: false
+title: "Jeroen Bouma - CV"
+---
+{%- comment -%}
+  Printable CV, rendered from _data/resume.yml. The deploy prints this page to
+  /assets/files/jeroen-bouma-cv.pdf with _scripts/build-cv-pdf.js; it is not
+  meant to be browsed, so it stays out of search engines and the sitemap.
+{%- endcomment -%}
+{%- assign cv = site.data.resume -%}
+{%- assign experience = cv.entries | where: "type", "experience" -%}
+{%- assign opensource = cv.entries | where: "type", "opensource" -%}
+{%- assign education = cv.entries | where: "type", "education" -%}
+{%- assign certifications = cv.entries | where: "type", "certification" -%}
+{%- assign skills = "" | split: "" -%}
+{%- for e in experience %}{% assign skills = skills | concat: e.skills %}{% endfor -%}
+{%- for e in opensource %}{% assign skills = skills | concat: e.skills %}{% endfor -%}
+{%- for e in education %}{% if e.skills %}{% assign skills = skills | concat: e.skills %}{% endif %}{% endfor -%}
+{%- assign skills = skills | compact | uniq -%}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<title>Jeroen Bouma - Curriculum Vitae</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Mr+Dafoe&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css">
+<style>
+  @page { size: A4; margin: 14mm 15mm 14mm 15mm; }
+  :root {
+    --ink: #1c2433;
+    --muted: #5b6474;
+    --soft: #8a93a3;
+    --rule: #dde2ea;
+    --accent: #1f3a5f;
+    --panel: #f4f6f9;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font: 400 9.2pt/1.45 "Inter", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #fff;
+  }
+  a { color: inherit; text-decoration: none; }
+  .sheet { width: 180mm; margin: 0 auto; }
+  @media screen { body { background: #e9ecf1; } .sheet { background: #fff; padding: 14mm 15mm; width: 210mm; margin: 10mm auto; box-shadow: 0 6px 30px rgba(0,0,0,.12); } }
+
+  /* header */
+  .head { display: flex; align-items: center; gap: 8mm; padding-bottom: 5.5mm; border-bottom: 1.2pt solid var(--accent); margin-bottom: 6mm; }
+  .head img { width: 27mm; height: 27mm; border-radius: 50%; object-fit: cover; border: 1pt solid var(--rule); }
+  .head h1 { margin: 0; font-size: 25pt; line-height: 1.05; letter-spacing: -0.4pt; font-weight: 700; color: var(--accent); }
+  .head .headline { margin: 2mm 0 3.5mm; font-size: 11.5pt; font-weight: 500; color: var(--muted); }
+  .contact { display: flex; flex-wrap: wrap; gap: 1.5mm 5mm; font-size: 8.4pt; color: var(--muted); }
+  .contact i { color: var(--accent); width: 3.6mm; text-align: center; margin-right: 1mm; }
+
+  /* columns */
+  .cols { display: grid; grid-template-columns: 1fr 58mm; gap: 9mm; }
+  .side { background: var(--panel); border-radius: 3mm; padding: 6mm 5mm; align-self: start; }
+
+  h2 {
+    margin: 0 0 3.2mm; padding-bottom: 1.4mm; border-bottom: 0.6pt solid var(--rule);
+    font-size: 8.6pt; font-weight: 700; letter-spacing: 1.2pt; text-transform: uppercase; color: var(--accent);
+  }
+  section { margin-bottom: 5.5mm; }
+  section:last-child { margin-bottom: 0; }
+  .profile p { margin: 0 0 2.2mm; color: var(--ink); }
+
+  .item { margin-bottom: 4mm; break-inside: avoid; }
+  .item:last-child { margin-bottom: 0; }
+  .item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; }
+  .item h3 { margin: 0; font-size: 10.2pt; font-weight: 600; color: var(--ink); }
+  .date { flex-shrink: 0; font-size: 8pt; color: var(--soft); font-weight: 500; }
+  .org { margin: 0.4mm 0 1.4mm; font-size: 8.8pt; font-weight: 500; color: var(--accent); }
+  .item p { margin: 0; color: #3a4252; font-size: 8.7pt; }
+  .tags { display: flex; flex-wrap: wrap; gap: 1.2mm; margin-top: 1.8mm; }
+  .tag { padding: 0.5mm 2mm; border-radius: 3mm; background: var(--panel); color: var(--muted); font-size: 7.4pt; font-weight: 500; }
+
+  .side .item { margin-bottom: 3.8mm; }
+  .side .item h3 { font-size: 9.2pt; }
+  .side .org { margin: 0.3mm 0 0.4mm; font-size: 8.4pt; }
+  .side .date { display: block; font-size: 7.8pt; }
+  .side .cred { font-size: 7.8pt; color: var(--accent); }
+  .side .cred i { font-size: 6.5pt; margin-left: 0.8mm; }
+  .side .tags { margin-top: 0; }
+  .side .tag { background: #fff; border: 0.5pt solid var(--rule); }
+
+  /* references */
+  .refs { margin-top: 5mm; break-before: auto; }
+  .refs-intro { margin: -1mm 0 3.5mm; font-size: 8pt; color: var(--muted); }
+  .refs-intro a { color: var(--accent); }
+  .ref-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm 6mm; }
+  .ref .note { font-style: normal; color: var(--soft); font-size: 7.4pt; }
+  .ref { break-inside: avoid; display: grid; grid-template-columns: 10mm 1fr; gap: 2.5mm; }
+  .ref img { width: 10mm; height: 10mm; border-radius: 50%; object-fit: cover; }
+  .ref strong { display: block; font-size: 9.2pt; font-weight: 600; }
+  .ref .role { display: block; font-size: 8pt; color: var(--muted); margin-bottom: 1.2mm; }
+  .ref blockquote { margin: 0; font-size: 8.2pt; line-height: 1.45; color: #3a4252; font-style: italic; }
+  .ref .li { display: inline-block; margin-top: 1mm; font-size: 7.6pt; color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="head">
+    <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma">
+    <div>
+      <h1>{{ site.author.name }}</h1>
+      <p class="headline">{{ cv.headline }}</p>
+      <div class="contact">
+        <a href="mailto:{{ site.author.email }}"><i class="fas fa-envelope"></i>{{ site.author.email }}</a>
+        <a href="https://www.jeroenbouma.com"><i class="fas fa-globe"></i>jeroenbouma.com</a>
+        <a href="https://www.linkedin.com/in/boumajeroen/"><i class="fab fa-linkedin"></i>linkedin.com/in/boumajeroen</a>
+        <a href="https://github.com/JerBouma"><i class="fab fa-github"></i>github.com/JerBouma</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="cols">
+    <main>
+      <section class="profile">
+        <h2>Profile</h2>
+        {%- for paragraph in cv.intro limit: 2 %}
+        <p>{{ paragraph | strip_html }}</p>
+        {%- endfor %}
+      </section>
+
+      <section>
+        <h2>Experience</h2>
+        {%- for e in experience %}
+        <div class="item">
+          <div class="item-head"><h3>{{ e.subtitle }}</h3><span class="date">{{ e.date }}</span></div>
+          <div class="org">{{ e.title }}</div>
+          <p>{{ e.description | strip_html }}</p>
+        </div>
+        {%- endfor %}
+      </section>
+
+      <section>
+        <h2>Open Source</h2>
+        {%- for e in opensource %}
+        <div class="item">
+          <div class="item-head"><h3>{{ e.title }}</h3><span class="date">{{ e.date }}</span></div>
+          <div class="org">{{ e.subtitle }}</div>
+          <p>{{ e.description | strip_html }}</p>
+        </div>
+        {%- endfor %}
+      </section>
+    </main>
+
+    <aside class="side">
+      <section>
+        <h2>Education</h2>
+        {%- for e in education %}
+        <div class="item">
+          <h3>{{ e.subtitle }}</h3>
+          <div class="org">{{ e.title }}</div>
+          <span class="date">{{ e.date }}</span>
+        </div>
+        {%- endfor %}
+      </section>
+
+      <section>
+        <h2>Certifications</h2>
+        {%- for e in certifications %}
+        <div class="item">
+          <h3>{{ e.title }}</h3>
+          <div class="org">{{ e.subtitle }}</div>
+          <span class="date">{{ e.date }}</span>
+          {%- if e.link %}
+          <a class="cred" href="{{ e.link.url }}">Verify credential<i class="fas fa-arrow-up-right-from-square"></i></a>
+          {%- endif %}
+        </div>
+        {%- endfor %}
+      </section>
+
+      <section>
+        <h2>Skills</h2>
+        <div class="tags">
+          {%- for s in skills %}<span class="tag">{{ s }}</span>{% endfor %}
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <section class="refs">
+    <h2>References</h2>
+    <p class="refs-intro">Excerpts from testimonials by former colleagues; the full texts are on <a href="https://www.jeroenbouma.com/resume">jeroenbouma.com/resume</a>.</p>
+    <div class="ref-grid">
+      {%- for e in cv.entries %}{% for t in e.testimonials %}{% unless t.cv_reference %}{% continue %}{% endunless %}
+      {%- assign quote = t.excerpt | default: t.quote | strip_html %}
+      <div class="ref">
+        <img src="{{ t.image }}" alt="{{ t.name }}">
+        <div>
+          <strong>{{ t.name }}</strong>
+          <span class="role">{{ t.role }}</span>
+          <blockquote>“{{ quote }}”{% if t.excerpt_note %} <span class="note">({{ t.excerpt_note }})</span>{% endif %}</blockquote>
+          <a class="li" href="{{ t.linkedin }}"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        </div>
+      </div>
+      {%- endfor %}{% endfor %}
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

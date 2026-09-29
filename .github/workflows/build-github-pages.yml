@@ -49,6 +49,16 @@ jobs:
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
+      - name: Print the CV to PDF
+        # Renders /resume/cv (built from _data/resume.yml) to
+        # _site/assets/files/jeroen-bouma-cv.pdf so the download always matches
+        # the resume. If this step fails, the copy committed in assets/files/
+        # is deployed instead, so it never blocks a deploy.
+        continue-on-error: true
+        run: |
+          npm install --no-save --no-package-lock --prefix _scripts playwright@1.63.0
+          npx --prefix _scripts playwright install --with-deps chromium
+          NODE_PATH=_scripts/node_modules node _scripts/build-cv-pdf.js
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v4
