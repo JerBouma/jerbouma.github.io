@@ -1074,11 +1074,18 @@ The Piotroski Score was developed by Joseph Piotroski and is based on a set of n
 
 The nine criteria are categorized into three groups:
 
-1. Profitability: - Return on Assets (ROA) Criteria: Measures the profitability of the company. - Operating Cash Flow Criteria: Evaluates the company's ability to generate cash from its operations. - Change in ROA Criteria: Assesses the trend in ROA over time. - Accruals Criteria: Examines the quality of earnings.
-
-2. Leverage, Liquidity, and Operating Efficiency: - Change in Leverage Criteria: Analyzes changes in the company's leverage (debt). - Change in Current Ratio Criteria: Evaluates changes in the current ratio. - Number of Shares Criteria: Assesses the issuance of common shares.
-
-3. Operating Efficiency and Asset Utilization: - Gross Margin Criteria: Examines the company's gross margin, a measure of profitability. - Asset Turnover Ratio Criteria: Evaluates the efficiency of asset utilization and sales generation.
+1. Profitability:
+   - Return on Assets (ROA) Criteria: Measures the profitability of the company.
+   - Operating Cash Flow Criteria: Evaluates the company's ability to generate cash from its operations.
+   - Change in ROA Criteria: Assesses the trend in ROA over time.
+   - Accruals Criteria: Examines the quality of earnings.
+2. Leverage, Liquidity, and Operating Efficiency:
+   - Change in Leverage Criteria: Analyzes changes in the company's leverage (debt).
+   - Change in Current Ratio Criteria: Evaluates changes in the current ratio.
+   - Number of Shares Criteria: Assesses the issuance of common shares.
+3. Operating Efficiency and Asset Utilization:
+   - Gross Margin Criteria: Examines the company's gross margin, a measure of profitability.
+   - Asset Turnover Ratio Criteria: Evaluates the efficiency of asset utilization and sales generation.
 
 The Piotroski Score is calculated by summing the scores assigned to each of the nine criteria. The maximum possible score is 9, indicating the highest financial strength, while the minimum score is 0, suggesting potential financial weaknesses.
 

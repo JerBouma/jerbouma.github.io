@@ -20,6 +20,8 @@ _RE_DESCRIPTION = re.compile(r"([\s\S]*?)(?:Args:|As an example:|$)", re.DOTALL)
 _RE_ARGUMENTS = re.compile(r"(Args:[\s\S]*?)(```python|$)", re.DOTALL)
 _RE_CODE = re.compile(r"```python([\s\S]*?)```", re.DOTALL)
 _RE_RESULT = re.compile(r"Which returns:[\s\S]*$", re.DOTALL)
+_RE_NUMBERED = re.compile(r"^\d+\. ")
+_RE_LIST_ITEM = re.compile(r"^(- |\d+\. )")
 
 # Section headers that get bolded wherever they appear as their own paragraph.
 _BOLD_HEADERS = ("Also known as:", "See definition:", "See Definition:")
@@ -434,17 +436,31 @@ def _clean_description(text: str) -> str:
                 lines[0] = f"**{header}**{lines[0][len(header):]}"
                 break
 
-        starts_as_bullet = lines[0].startswith("- ")
-        if starts_as_bullet:
+        # A list can start part-way through a paragraph ("It contains the
+        # following columns:" directly followed by "- Open: ..."), and
+        # numbered items can carry their own bullets (the Piotroski criteria).
+        # Two or more list lines make it a list; a single line that happens to
+        # start with "- " is more likely a wrapped dash in running text.
+        item_lines = [i for i, line in enumerate(lines) if _RE_LIST_ITEM.match(line)]
+        if len(item_lines) >= 2 or (item_lines and item_lines[0] == 0):
+            first = item_lines[0]
+            if first > 0:
+                paragraphs.append((" ".join(lines[:first]), False))  # the lead-in sentence
             merged = []
-            for line in lines:
-                if line.startswith("- ") or not merged:
+            in_numbered = False
+            for line in lines[first:]:
+                if _RE_NUMBERED.match(line):
                     merged.append(line)
+                    in_numbered = True
+                elif line.startswith("- "):
+                    merged.append(("   " if in_numbered else "") + line)  # nest under the number
                 else:
-                    merged[-1] = f"{merged[-1]} {line}"  # fold wrapped continuation into its bullet
+                    merged[-1] = f"{merged[-1]} {line}"  # fold wrapped continuation into its item
             paragraph = "\n".join(merged)
+            starts_as_bullet = True
         else:
             paragraph = " ".join(lines)
+            starts_as_bullet = False
         paragraphs.append((paragraph, starts_as_bullet))
 
     # Bullet paragraphs directly after a formula introduction become math blocks.

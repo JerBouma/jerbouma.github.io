@@ -258,7 +258,7 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#get_commitment_of_traders
     - title: "Balance Sheet Statements"
       url: /projects/financetoolkit/docs#get_balance_sheet_statement
-    - title: "Income Sheet Statements"
+    - title: "Income Statements"
       url: /projects/financetoolkit/docs#get_income_statement
     - title: "Cash Flow Statements"
       url: /projects/financetoolkit/docs#get_cash_flow_statement
@@ -944,7 +944,7 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_true_range
       - title: Average True Range (ATR)
         url: /projects/financetoolkit/docs/technicals#get_average_true_range
-      - title: Keltners Channels
+      - title: Keltner Channels
         url: /projects/financetoolkit/docs/technicals#get_keltner_channels
       - title: Bollinger Bands
         url: /projects/financetoolkit/docs/technicals#get_bollinger_bands

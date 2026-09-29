@@ -769,7 +769,17 @@ Which returns:
 ---
 
 ## get_historical_data
-Returns historical data for the specified tickers. This contains the following columns: - Open: The opening price for the period. - High: The highest price for the period. - Low: The lowest price for the period. - Close: The closing price for the period. - Adj Close: The adjusted closing price for the period. - Volume: The volume for the period. - Dividends: The dividends for the period. - Return: The return for the period. - Cumulative Return: The cumulative return for the period.
+Returns historical data for the specified tickers. This contains the following columns:
+
+- Open: The opening price for the period.
+- High: The highest price for the period.
+- Low: The lowest price for the period.
+- Close: The closing price for the period.
+- Adj Close: The adjusted closing price for the period.
+- Volume: The volume for the period.
+- Dividends: The dividends for the period.
+- Return: The return for the period.
+- Cumulative Return: The cumulative return for the period.
 
 Volatility, Excess Return and Excess Volatility are not included here. These are available as dedicated calculations in the Risk module (e.g. toolkit.risk.get_volatility, toolkit.risk.get_excess_volatility) and the Performance module (e.g. toolkit.performance.get_excess_return) instead.
 
@@ -839,7 +849,15 @@ Which returns:
 ---
 
 ## get_intraday_data
-Returns intraday historical data for the specified tickers. This contains the following columns: - Open: The opening price for the period. - High: The highest price for the period. - Low: The lowest price for the period. - Close: The closing price for the period. - Volume: The volume for the period. - Return: The return for the period. - Cumulative Return: The cumulative return for the period.
+Returns intraday historical data for the specified tickers. This contains the following columns:
+
+- Open: The opening price for the period.
+- High: The highest price for the period.
+- Low: The lowest price for the period.
+- Close: The closing price for the period.
+- Volume: The volume for the period.
+- Return: The return for the period.
+- Cumulative Return: The cumulative return for the period.
 
 Volatility is not included here. This is available as a dedicated calculation in the Risk module instead (e.g. toolkit.risk.get_volatility).
 
@@ -898,7 +916,14 @@ Which returns:
 ---
 
 ## get_dividend_calendar
-Obtain Dividend Calendars for any range of companies. It includes the following columns: - Date: The date of the dividend. - Adj Dividend: The adjusted dividend amount. - Dividend: The dividend amount. - Record Date: The record date of the dividend. - Payment Date: The payment date of the dividend. - Declaration Date: The declaration date of the dividend.
+Obtain Dividend Calendars for any range of companies. It includes the following columns:
+
+- Date: The date of the dividend.
+- Adj Dividend: The adjusted dividend amount.
+- Dividend: The dividend amount.
+- Record Date: The record date of the dividend.
+- Payment Date: The payment date of the dividend.
+- Declaration Date: The declaration date of the dividend.
 
 If a company does not pay any dividend, the function will mention that it was not able to find any dividend data for that company.
 

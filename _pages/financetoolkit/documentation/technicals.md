@@ -3827,7 +3827,11 @@ toolkit.technicals.get_supertrend().xs("AAPL", level=1, axis="columns")
 ## get_keltner_channels
 Calculate the Keltner Channels for a given price series.
 
-The Keltner Channels consist of three lines: - Upper Channel Line = Exponential Moving Average (EMA) of High Prices + ATR * ATR Multiplier - Middle Channel Line = Exponential Moving Average (EMA) of Closing Prices - Lower Channel Line = Exponential Moving Average (EMA) of Low Prices - ATR * ATR Multiplier
+The Keltner Channels consist of three lines:
+
+- Upper Channel Line = Exponential Moving Average (EMA) of High Prices + ATR * ATR Multiplier
+- Middle Channel Line = Exponential Moving Average (EMA) of Closing Prices
+- Lower Channel Line = Exponential Moving Average (EMA) of Low Prices - ATR * ATR Multiplier
 
 The formula is as follows:
 

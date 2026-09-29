@@ -119,6 +119,13 @@ module DocsMetricPages
                      .reject { |p| p.lstrip.start_with?("- ", "$$", "|") }
                      .map { |p| plain(p) }
                      .reject { |p| p.empty? || (p.end_with?(":") && p.length < 40) }
+    # a sentence that only introduces a list ("It contains the following
+    # columns:") means nothing once the list is left out
+    paragraphs = paragraphs.map do |p|
+      next p unless p.end_with?(":")
+      lead = p.sub(/(?<=[.!?])\s+[^.!?]*:\z/, "")
+      lead == p ? p : lead
+    end
     text = paragraphs.shift.to_s
     text = "#{text} #{paragraphs.shift}" while text.length < 110 && !paragraphs.empty?
     text = "#{text} Parameters and a Python example with the Finance Toolkit." if text.length < 110
