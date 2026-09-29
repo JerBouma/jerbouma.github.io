@@ -16,6 +16,11 @@ author_profile: false
 {% for paragraph in site.data.resume.intro %}{{ paragraph }}
 
 {% endfor %}
+<div class="resume-facts">
+<div class="resume-facts__row"><span class="resume-facts__label">Expertise</span><span class="resume-facts__items">{% for x in site.data.resume.expertise %}<span class="skill-pill">{{ x }}</span>{% endfor %}</span></div>
+<div class="resume-facts__row"><span class="resume-facts__label">Languages</span><span class="resume-facts__items resume-facts__text">{% for l in site.data.resume.languages %}{{ l.name }}{% unless forloop.last %}, {% endunless %}{% endfor %} (professional)</span></div>
+</div>
+
 <p class="resume-download"><a href="/assets/files/jeroen-bouma-cv.pdf" class="btn btn--outline" download="Jeroen Bouma - CV.pdf"><i class="fas fa-file-pdf" aria-hidden="true"></i> Download CV (PDF)</a></p>
 
 </div>

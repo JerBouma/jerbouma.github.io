@@ -5896,10 +5896,37 @@ body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
   border-color: var(--card-border) !important;
 }
 
+// Resume: expertise and languages under the intro
+.resume-facts {
+  margin: 1.2em 0 1.6em;
+  display: grid;
+  gap: 10px;
+
+  &__row { display: flex; gap: 12px; align-items: baseline; }
+
+  &__label {
+    flex: 0 0 5.5rem;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__items { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  &__text { color: var(--text-secondary); font-size: 0.85rem; }
+
+  @media (max-width: 600px) {
+    &__row { flex-direction: column; gap: 6px; }
+    &__label { flex: none; }
+  }
+}
+
 // Resume: download button under the intro and the credential link in a
 // timeline card
 .resume-download {
-  margin-top: 1.4em;
+  margin-top: 0;
 
   .btn i { margin-right: 6px; }
 }
