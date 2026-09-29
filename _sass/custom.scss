@@ -5676,6 +5676,10 @@ table.highlight {
 
 // First-visit card in the docs about the MCP server (_includes/mcp-notice.html).
 // Sits in the bottom-right corner just above the back-to-top arrow.
+// The site's aside styles override the browser's own [hidden] rule, so the
+// hidden state is spelled out here.
+.mcp-notice[hidden] { display: none !important; }
+
 .mcp-notice {
   position: fixed;
   right: 1.5rem;
@@ -5738,4 +5742,156 @@ table.highlight {
 @keyframes mcp-notice-in {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: none; }
+}
+
+// ── Docs sidebar (Finance Toolkit documentation) ───────────────────────────
+// The docs sidebar is how readers move through the documentation, so it gets
+// a calmer, clearer design than the generic sidebar: a module switcher that
+// names the current module, quiet group headings with a count, plain links on
+// a thin guide line and a short accent bar for the current page. The markup
+// comes from _includes/nav_list (nav__list--docs).
+$docs-grey-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+
+.nav__list.nav__list--docs {
+  margin-top: 0 !important;
+
+  > ul.nav__items > li { margin-bottom: 2px; }
+
+  // module switcher
+  details.nav__module-switch {
+    margin: 0 0 18px;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    background: rgba(128, 128, 128, 0.06);
+
+    > summary.nav__collapsible-title {
+      align-items: center;
+      gap: 8px;
+      margin: 0 !important;
+      padding: 9px 12px !important;
+      border-radius: 10px;
+      color: var(--text-primary) !important;
+      font-size: 0.9rem !important;
+      font-weight: 600 !important;
+      text-transform: none;
+      letter-spacing: 0;
+
+      &::after,
+      &:hover::after { background-image: $docs-grey-chevron; }
+
+      &:hover { color: var(--text-primary) !important; background: rgba(128, 128, 128, 0.06); }
+    }
+
+    .nav__module-label {
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav__module-name { flex: 1; font-size: 0.9rem; }
+
+    > ul {
+      margin: 0 !important;
+      padding: 4px 6px 8px !important;
+      border-top: 1px solid var(--card-border);
+
+      a {
+        margin: 0 !important;
+        padding: 6px 10px !important;
+        border-left: none !important;
+        border-radius: 6px;
+      }
+    }
+  }
+
+  // group headings: sentence case, quiet, with a count
+  .nav__group > details:not(.nav__module-switch) > summary.nav__collapsible-title {
+    align-items: center;
+    margin: 10px 0 2px !important;
+    padding: 6px 8px !important;
+    color: var(--text-secondary) !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    text-transform: none;
+    letter-spacing: 0;
+
+    &:hover { color: var(--text-primary) !important; background: transparent; }
+  }
+
+  .nav__count {
+    margin: 0 8px 0 auto;
+    padding: 1px 7px;
+    border-radius: 10px;
+    background: rgba(128, 128, 128, 0.12);
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  // links inside a group hang off a thin guide line
+  .nav__group > details:not(.nav__module-switch) > ul {
+    margin: 2px 0 6px 10px !important;
+    padding-left: 0 !important;
+    border-left: 1px solid var(--card-border);
+  }
+
+  .nav__group > details:not(.nav__module-switch) > ul a,
+  .nav__single > a .nav__sub-title {
+    margin: 0 0 0 -1px !important;
+    padding: 5px 10px 5px 14px !important;
+    border-left: 2px solid transparent;
+    border-radius: 0 6px 6px 0;
+    color: var(--text-secondary) !important;
+    font-size: 0.85rem !important;
+    font-weight: 400 !important;
+    line-height: 1.4;
+    text-transform: none;
+    letter-spacing: 0;
+    background: transparent;
+  }
+
+  // standalone links (All Ratios, Search Instruments) read as links, not headings
+  .nav__single > a .nav__sub-title {
+    margin: 0 !important;
+    padding: 6px 10px !important;
+    border-radius: 6px;
+    font-weight: 500 !important;
+  }
+
+  .nav__group > details:not(.nav__module-switch) > ul a:hover,
+  .nav__single > a:hover .nav__sub-title {
+    color: var(--text-primary) !important;
+    background: rgba(128, 128, 128, 0.08);
+    border-left-color: rgba(128, 128, 128, 0.35);
+  }
+
+  .nav__group > details:not(.nav__module-switch) > ul a.active,
+  .nav__single > a.active .nav__sub-title {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    background: rgba(128, 128, 128, 0.1);
+    border-left-color: var(--accent-color);
+  }
+
+  .nav__module-switch > ul a.active {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    background: rgba(128, 128, 128, 0.1);
+  }
+}
+
+// the sidebar's small scripts must never show as text (something in the
+// sidebar styles sets its children to display:block)
+.sidebar script { display: none !important; }
+
+// the Documentation menu button stays neutral, open or hovered (the generic
+// sidebar turns it blue; this selector has to outrank that rule)
+body.wide-sidebar .sidebar .nav__list.nav__list--docs label:hover,
+body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
+  color: var(--text-primary) !important;
+  background: rgba(128, 128, 128, 0.12) !important;
+  border-color: var(--card-border) !important;
 }
