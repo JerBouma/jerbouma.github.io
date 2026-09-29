@@ -15,7 +15,7 @@ sidebar:
 
 The Models module executes well-known models such as DuPont analysis and the Discounted Cash Flow (DCF) model, using data retrieved from the Toolkit module.
 
-**No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), AI assistants such as Claude and ChatGPT can run every function on this page for you. Just ask in plain English.
+**No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), AI assistants such as Claude and ChatGPT can run every function of this module for you. Just ask in plain English.
 {: .notice--info .docs-mcp-note}
 
 To install the FinanceToolkit it simply requires the following:
