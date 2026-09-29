@@ -5664,8 +5664,8 @@ table.highlight {
   .docs-browse-hint__narrow { display: none; }
 
   .docs-browse-hint__open {
-    display: inline-block;
-    margin-top: 10px;
+    display: table; // own line, as wide as its label
+    margin-top: 12px;
     padding: 8px 16px;
     border: 1px solid var(--accent-color);
     border-radius: 20px;

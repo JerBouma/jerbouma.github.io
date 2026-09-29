@@ -202,18 +202,28 @@ module DocsMetricPages
     { "nav" => nav, "hint" => hint, "menu_label" => "Browse all functions" }
   end
 
-  # a line under the class intro pointing at the sidebar; on phones, where the
-  # sidebar is folded away, it opens the list instead
-  def browse_hint(name)
+  # A line pointing at the sidebar, used under the class intro and at the end
+  # of Getting Started. On phones, where the sidebar is folded away, it ends
+  # with a button that opens the list instead.
+  def browse_hint(sentence, action = "Pick one from the sidebar to open it.")
     <<~HTML.gsub("\n", "")
       <p class="docs-browse-hint">
-      <span class="docs-browse-hint__wide"><i class="fas fa-arrow-left" aria-hidden="true"></i>
-       Every function of the #{name} module has its own page with an example and its parameters.
-       Pick one from the sidebar to open it.</span>
-      <span class="docs-browse-hint__narrow">Every function of the #{name} module has its own page with an example and its parameters.
+      <span class="docs-browse-hint__wide"><i class="fas fa-arrow-left" aria-hidden="true"></i> #{sentence} #{action}</span>
+      <span class="docs-browse-hint__narrow">#{sentence}
        <label for="ac-toc" class="docs-browse-hint__open" onclick="setTimeout(function(){var s=document.querySelector('.sidebar');if(s)s.scrollIntoView({behavior:'smooth'});},50)">Browse all functions</label></span>
       </p>
     HTML
+  end
+
+  def intro_hint(key)
+    browse_hint("Every function of the #{CLASSES[key][:name]} module has its own page with an example and its parameters.")
+  end
+
+  # closes Getting Started: the sidebar is the way to every metric (or, for the
+  # data classes, every function) of the class
+  def getting_started_hint(key)
+    kind = DATA_CLASSES.include?(key) ? "function" : "metric"
+    browse_hint("The sidebar gives access to every #{kind} in the #{CLASSES[key][:name]} module, each on its own page with a description, an example and its parameters.", "Pick one to open it.")
   end
 
   # up to twelve functions from the same sidebar group, nearest to this one in
@@ -284,7 +294,7 @@ module DocsMetricPages
     end
     lead = case key
            when "toolkit" then "Create a `Toolkit` instance with the tickers you want to analyse and your Financial Modeling Prep API key. Every module is then available as an attribute of that instance, for example `toolkit.ratios`, and the Toolkit's own functions retrieve the underlying data."
-           else "Import the `#{klass}` class and create an instance as shown below. The sidebar lists every function it offers."
+           else "Import the `#{klass}` class and create an instance as shown below."
            end
     "## Getting Started\n\n#{lead}\n\n```python\n#{lines.join.rstrip}\n```\n"
   end
@@ -373,8 +383,9 @@ module DocsMetricPages
       if key == "toolkit"
         CLASSES.each { |k, c| forward[k] = c[:url] if toolkit_sections.key?(k) }
       end
+      started = started.rstrip + "\n\n" + getting_started_hint(key) + "\n" unless started.empty?
       # the hint goes right under the intro, ahead of the MCP note
-      hint = browse_hint(cls[:name]) + "\n\n"
+      hint = intro_hint(key) + "\n\n"
       intro = intro.include?("**No programming experience?**") ? intro.sub("**No programming experience?**", hint + "**No programming experience?**") : hint + intro
       class_page.data["sidebar"] = sidebar_data(cls[:nav], "Pick a function to open its page")
       class_page.content = intro.rstrip + "\n\n" + started + "\n" + remaining + <<~HTML
