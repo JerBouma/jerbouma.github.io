@@ -17,6 +17,15 @@ intro:
   - "Below you can find my education, certifications, open-source projects and work experience, together with testimonials from colleagues."
 
 
+# areas of expertise, shown under the intro on /resume and in the CV side panel
+expertise: ["Portfolio Optimization", "Strategic Asset Allocation", "Asset Liability Management", "Solvency II", "Risk Management", "Econometrics", "Financial Modelling", "Fundamental Analysis", "Applied AI", "Product Management"]
+
+languages:
+  - name: "Dutch"
+    level: "Professional"
+  - name: "English"
+    level: "Professional"
+
 entries:
   - type: certification
     date: "June 2026"
@@ -36,7 +45,7 @@ entries:
     title: "a.s.r. asset management"
     subtitle: "Quantitative Investment Strategist"
     description: "I lead innovation within the asset management divisions at the intersection of quantitative finance and AI. I build Python solutions for portfolio analytics and optimization, and use existing large language models, with agentic frameworks and retrieval-augmented generation (RAG), to improve how we analyze portfolios and risk. I analyze profitability and investment risk under different risk frameworks (Solvency II and internal models) and look at portfolio sensitivities and how they relate to the liabilities. I also run Asset Liability Management (ALM) and Strategic Asset Allocation (SAA) analyses on topics such as hedging strategies, liquidity risk management, Solvency II optimization and asset-only studies."
-    skills: ["Python", "Agentic Frameworks", "RAG", "SQL", "Databricks", "Azure", "PowerBI", "Git"]
+    skills: ["Python", "Machine Learning", "Agentic Frameworks", "RAG", "SQL", "Databricks", "Azure", "PowerBI", "Git"]
     logo: "/assets/images/resume/asr.png"
     logo_alt: "a.s.r. asset management logo"
 
@@ -63,7 +72,7 @@ entries:
     title: "OpenBB"
     subtitle: "Product Manager"
     description: "I was responsible for Product Marketing. That included designing the strategy for Academia outreach, finding gaps in the financial sector and deciding how to respond to them, and leading a multi-disciplinary Go-to-Market team. I also coordinated Engineering work that required a lot of financial knowledge, either by developing the quantitative models myself or by guiding the engineers through design and implementation."
-    skills: ["Python", "Git", "HTML/CSS", "JavaScript"]
+    skills: ["Python", "Git", "JavaScript"]
     logo: "/assets/images/resume/openbb.png"
     logo_alt: "OpenBB logo"
     testimonials:
@@ -121,7 +130,7 @@ entries:
     title: "PGGM"
     subtitle: "ALM Advisor"
     description: "I gave actuarial and strategic advice to several Dutch pension funds. I was responsible for developing and maintaining the econometric model in MATLAB and led most of the technical development of the new econometric model in Python. These models performed the ALM, URM and VEV calculations. I also worked on interactive dashboards and GUIs and on applying Machine Learning techniques."
-    skills: ["Python", "MATLAB", "Azure", "VBA", "PowerBI", "Git"]
+    skills: ["Python", "Machine Learning", "MATLAB", "Azure", "VBA", "PowerBI", "Git"]
     logo: "/assets/images/resume/pggm.png"
     logo_alt: "PGGM logo"
     testimonials:
@@ -148,7 +157,7 @@ entries:
     title: "Finance Toolkit"
     subtitle: "Creator &amp; Maintainer (5,000+ GitHub Stars)"
     description: "An open-source toolkit with 500+ financial methods, each written to be as transparent as possible. It supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Combined with the Finance Database, it lets you do a full competitive analysis. It is used by thousands of analysts, developers and students worldwide."
-    skills: ["Python", "GitHub Actions", "Git"]
+    skills: ["Python", "MCP", "Docker", "GitHub Actions", "Git"]
     logo: "/assets/images/projects/FinanceToolkit.jpg"
     logo_alt: "Finance Toolkit logo"
 
@@ -158,7 +167,7 @@ entries:
     title: "Utrecht University"
     subtitle: "MSc Banking &amp; Finance"
     description: "I completed the quantitative track, with courses in Investment Management, Advanced Econometrics, Asset Pricing and Risk Management, and Python courses in Algorithmic Trading, Risk Management and Data Science. My Master's thesis on the impact of interest rate deductibility limits on capital structure decisions was graded a 7.5. Before this, I completed a Pre-Master of Finance."
-    skills: ["Python", "MATLAB", "R Studio", "Git"]
+    skills: ["Python", "MATLAB", "R", "Git"]
     logo: "/assets/images/resume/utrechtuniversity.png"
     logo_alt: "Utrecht University logo"
 

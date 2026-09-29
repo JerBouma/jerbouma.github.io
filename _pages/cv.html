@@ -90,6 +90,10 @@ title: "Jeroen Bouma - CV"
   .side .tags { margin-top: 0; }
   .side .tag { background: #fff; border: 0.5pt solid var(--rule); }
 
+  .expertise { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 6mm; }
+  .expertise li { position: relative; padding-left: 3mm; font-size: 8.4pt; line-height: 1.55; color: var(--ink); }
+  .expertise li::before { content: ""; position: absolute; left: 0; top: 2.1mm; width: 1.1mm; height: 1.1mm; border-radius: 50%; background: var(--accent); }
+
   /* references */
   .refs { margin-top: 5mm; break-before: auto; }
   .refs-intro { margin: -1mm 0 3.5mm; font-size: 8pt; color: var(--muted); }
@@ -117,6 +121,7 @@ title: "Jeroen Bouma - CV"
         <a href="https://www.jeroenbouma.com"><i class="fas fa-globe"></i>jeroenbouma.com</a>
         <a href="https://www.linkedin.com/in/boumajeroen/"><i class="fab fa-linkedin"></i>linkedin.com/in/boumajeroen</a>
         <a href="https://github.com/JerBouma"><i class="fab fa-github"></i>github.com/JerBouma</a>
+        <span><i class="fas fa-language"></i>{% for l in cv.languages %}{{ l.name }}{% unless forloop.last %} and {% endunless %}{% endfor %} (professional)</span>
       </div>
     </div>
   </header>
@@ -128,6 +133,13 @@ title: "Jeroen Bouma - CV"
         {%- for paragraph in cv.intro limit: 2 %}
         <p>{{ paragraph | strip_html }}</p>
         {%- endfor %}
+      </section>
+
+      <section>
+        <h2>Expertise</h2>
+        <ul class="expertise">
+          {%- for x in cv.expertise %}<li>{{ x }}</li>{% endfor %}
+        </ul>
       </section>
 
       <section>
