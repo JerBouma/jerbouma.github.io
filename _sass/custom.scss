@@ -6012,4 +6012,9 @@ body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
   &:hover { background: rgba(128, 128, 128, 0.08); }
 }
 
-.timeline-entry .timeline-skills { gap: 6px; }
+.timeline-entry .timeline-skills {
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--card-border);
+}
