@@ -5895,3 +5895,19 @@ body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
   background: rgba(128, 128, 128, 0.12) !important;
   border-color: var(--card-border) !important;
 }
+
+// Resume: download button under the intro and the credential link in a
+// timeline card
+.resume-download {
+  margin-top: 1.4em;
+
+  .btn i { margin-right: 6px; }
+}
+
+.timeline-info p.timeline-link {
+  margin: -4px 0 10px;
+  font-size: 0.85rem;
+
+  a { text-decoration: none; }
+  i { font-size: 0.75em; margin-left: 3px; }
+}

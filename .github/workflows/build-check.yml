@@ -31,5 +31,12 @@ jobs:
         run: bundle exec jekyll build --strict_front_matter
         env:
           JEKYLL_ENV: production
+      - name: Print the CV to PDF
+        # the same step as the deploy, so a change that breaks the CV shows up here
+        if: matrix.ruby == '4.0'
+        run: |
+          npm install --no-save --no-package-lock --prefix _scripts playwright@1.63.0
+          npx --prefix _scripts playwright install --with-deps chromium
+          NODE_PATH=_scripts/node_modules node _scripts/build-cv-pdf.js
       - name: Report output size
         run: du -sh _site && find _site -type f -size +1M -printf '%s %p\n' | sort -rn | awk '{printf "%6.1fMB %s\n",$1/1048576,$2}'
