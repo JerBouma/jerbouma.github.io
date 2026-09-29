@@ -5923,6 +5923,60 @@ body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
   }
 }
 
+// Resume: expertise per timeline entry, grouped and marked by a coloured dot
+// per group (Quantitative Finance, Artificial Intelligence, Product &
+// Delivery). The colours differ from the entry-type colours of the timeline.
+.expertise-quant   { --expertise-dot: #f97316; }
+.expertise-ai      { --expertise-dot: #e879f9; }
+.expertise-product { --expertise-dot: #34d399; }
+
+:root[data-theme="light"] {
+  .expertise-quant   { --expertise-dot: #ea580c; }
+  .expertise-ai      { --expertise-dot: #c026d3; }
+  .expertise-product { --expertise-dot: #059669; }
+}
+
+.timeline-expertise {
+  display: grid;
+  gap: 6px;
+  margin: 2px 0 10px;
+}
+
+.expertise-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.expertise-pill,
+.expertise-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  &::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--expertise-dot);
+    flex-shrink: 0;
+  }
+}
+
+.expertise-pill {
+  padding: 3px 10px;
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  background: rgba(128, 128, 128, 0.06);
+  color: var(--text-primary);
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.expertise-key { margin-right: 14px; }
+
 // Resume: download button under the intro and the credential link in a
 // timeline card
 .resume-download {

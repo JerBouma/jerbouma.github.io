@@ -19,6 +19,21 @@
 {%- if e.link %}
 <p class="timeline-link"><a href="{{ e.link.url }}" target="_blank">{{ e.link.label }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></p>
 {%- endif %}
+{%- if e.expertise %}
+<div class="timeline-expertise">
+{%- for g in site.data.resume.expertise %}
+{%- assign shown = "" | split: "" %}
+{%- for x in e.expertise %}{% if g.items contains x %}{% assign shown = shown | push: x %}{% endif %}{% endfor %}
+{%- if shown.size > 0 %}
+<div class="expertise-group expertise-{{ g.key }}" title="{{ g.group }}">
+{%- for x in shown %}
+<span class="expertise-pill">{{ x }}</span>
+{%- endfor %}
+</div>
+{%- endif %}
+{%- endfor %}
+</div>
+{%- endif %}
 {%- if e.skills %}
 <div class="timeline-skills">
 {%- for s in e.skills %}
