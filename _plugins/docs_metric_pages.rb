@@ -196,34 +196,37 @@ module DocsMetricPages
   end
 
   # The docs sidebar is how readers move through the documentation, so it says
-  # so: a line at its top on wide screens, and "Browse all functions" instead
-  # of "Toggle menu" on the button that opens it on phones.
+  # so: a line at its top on wide screens, and "Documentation menu" instead of
+  # "Toggle menu" on the button that opens it on phones.
   def sidebar_data(nav, hint)
-    { "nav" => nav, "hint" => hint, "menu_label" => "Browse all functions" }
+    { "nav" => nav, "hint" => hint, "menu_label" => "Documentation menu" }
   end
 
-  # A line pointing at the sidebar, used under the class intro and at the end
-  # of Getting Started. On phones, where the sidebar is folded away, it ends
-  # with a button that opens the list instead.
-  def browse_hint(sentence, action = "Pick one from the sidebar to open it.")
+  # A quiet line pointing at the sidebar, used under the class intro and at the
+  # end of Getting Started. On phones, where the sidebar is folded behind the
+  # "Documentation menu" button, it links to that menu instead.
+  OPEN_MENU = %(<label for="ac-toc" class="docs-browse-hint__open" onclick="setTimeout(function(){var s=document.querySelector('.sidebar');if(s)s.scrollIntoView({behavior:'smooth'});},50)">documentation menu</label>).freeze
+
+  def browse_hint(sentence, wide_action, narrow_action)
     <<~HTML.gsub("\n", "")
       <p class="docs-browse-hint">
-      <span class="docs-browse-hint__wide"><i class="fas fa-arrow-left" aria-hidden="true"></i> #{sentence} #{action}</span>
-      <span class="docs-browse-hint__narrow">#{sentence}
-       <label for="ac-toc" class="docs-browse-hint__open" onclick="setTimeout(function(){var s=document.querySelector('.sidebar');if(s)s.scrollIntoView({behavior:'smooth'});},50)">Browse all functions</label></span>
+      <span class="docs-browse-hint__wide">#{sentence} #{wide_action}</span>
+      <span class="docs-browse-hint__narrow">#{sentence} #{narrow_action.sub('%menu%', OPEN_MENU)}</span>
       </p>
     HTML
   end
 
   def intro_hint(key)
-    browse_hint("Every function of the #{CLASSES[key][:name]} module has its own page with an example and its parameters.")
+    browse_hint("Every function of the #{CLASSES[key][:name]} module has its own page with an example and its parameters.",
+                "Pick one from the sidebar on the left.", "Pick one from the %menu%.")
   end
 
   # closes Getting Started: the sidebar is the way to every metric (or, for the
   # data classes, every function) of the class
   def getting_started_hint(key)
     kind = DATA_CLASSES.include?(key) ? "function" : "metric"
-    browse_hint("The sidebar gives access to every #{kind} in the #{CLASSES[key][:name]} module, each on its own page with a description, an example and its parameters.", "Pick one to open it.")
+    browse_hint("The sidebar gives access to every #{kind} in the #{CLASSES[key][:name]} module, each on its own page with a description, an example and its parameters.",
+                "Pick one there to open it.", "On a phone, open the %menu% to pick one.")
   end
 
   # up to twelve functions from the same sidebar group, nearest to this one in
