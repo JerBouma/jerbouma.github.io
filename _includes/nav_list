@@ -22,7 +22,7 @@
         </details>
         {% else %}
         {% if nav.url %}
-          <a href="{{ nav.url | relative_url }}"><span class="nav__sub-title">{{ nav.title }}</span></a>
+          <a href="{{ nav.url | relative_url }}"{% if nav.url == page.url %} class="active"{% endif %}><span class="nav__sub-title">{{ nav.title }}</span></a>
         {% else %}
           <span class="nav__sub-title">{{ nav.title }}</span>
         {% endif %}
@@ -31,3 +31,15 @@
     {% endfor %}
   </ul>
 </nav>
+<script>
+  // Long docs sidebars: bring the current page's link into view inside the
+  // sidebar (not the page) so readers can see where they are.
+  (function () {
+    var nav = document.currentScript.previousElementSibling;
+    var link = nav && nav.querySelector('a.active');
+    if (!link) return;
+    var box = nav.closest('.sidebar') || nav;
+    var linkTop = link.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop;
+    if (box.scrollHeight > box.clientHeight) box.scrollTop = Math.max(0, linkTop - box.clientHeight / 3);
+  })();
+</script>

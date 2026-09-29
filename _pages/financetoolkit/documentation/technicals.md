@@ -16,7 +16,7 @@ sidebar:
 The Technicals Module contains 30+ technical indicators divided into 4 categories: breadth, momentum, overlap and volatility.
 
 **No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), AI assistants such as Claude and ChatGPT can run every function on this page for you. Just ask in plain English.
-{: .notice--info}
+{: .notice--info .docs-mcp-note}
 
 To install the FinanceToolkit it simply requires the following:
 
