@@ -37,8 +37,7 @@ module DocsMetricPages
 
   SECTION = /^## (get_\w+)\n(.*?)(?=^## |\z)/m
 
-  # generated page paths, so the Algolia hook below can leave them out of the
-  # search index (the module pages already cover the same text there)
+  # generated page paths (kept for reference by other plugins and tests)
   GENERATED = []
 
   class Page < Jekyll::PageWithoutAFile; end
@@ -133,19 +132,19 @@ module DocsMetricPages
     # for readers who would rather ask an AI assistant than write Python
     out << "**No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), "
     out << "AI assistants such as Claude and ChatGPT can calculate the #{name} for you. "
-    out << "Just ask in plain English.\n{: .notice--info}\n\n"
+    out << "Just ask in plain English.\n{: .notice--info .docs-mcp-note}\n\n"
     unless parts[:example].empty?
       out << "## Calculate the #{name} in Python\n\n"
       out << "The #{name} is available in the #{module_name} module of the open-source "
-      out << "[Finance Toolkit](/projects/financetoolkit). Install it with:\n\n"
+      out << "[Finance Toolkit](/projects/financetoolkit). Install it with:\n{: .docs-boilerplate}\n\n"
       out << "```python\npip install financetoolkit -U\n```\n\n"
-      out << "Then call `#{fn_name}` as shown below.\n\n"
+      out << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n"
       out << parts[:example] << "\n\n"
     end
     arguments = arguments_for(parts[:arguments])
     unless arguments.empty?
       out << "## Parameters\n\n"
-      out << "`#{fn_name}` accepts the following parameters:\n\n"
+      out << "`#{fn_name}` accepts the following parameters:\n{: .docs-boilerplate}\n\n"
       out << arguments << "\n\n"
     end
     unless related.empty?
@@ -161,9 +160,15 @@ module DocsMetricPages
       out << "## #{heading}\n\n"
       out << %(<div class="ft-module-switcher docs-related">\n  #{pills.join("\n  ")}\n</div>\n\n)
     end
-    out << "The [#{module_name} module documentation](#{module_url}##{anchor}) lists every "
-    out << "function of the module on a single page.\n"
+    out << "The [#{module_name} module overview](#{module_url}##{anchor}) lists every "
+    out << "function in the module.\n{: .docs-boilerplate}\n"
     out
+  end
+
+  # the first plain paragraph of a description (not a list or formula)
+  def overview_summary(desc)
+    desc.split(/\n\s*\n/).map(&:strip)
+        .find { |p| !p.empty? && !p.start_with?("- ", "$$", "|", "**") } || ""
   end
 
   # up to twelve metrics from the same sidebar group, nearest to this one in
@@ -261,12 +266,18 @@ module DocsMetricPages
         GENERATED << page.relative_path
       end
 
-      # a small link under every function heading on the module page itself
-      module_page.content = module_page.content.gsub(/^## (get_\w+)\n/) do
-        fn = Regexp.last_match(1)
+      # The module page becomes an overview: every function with its own page
+      # keeps its heading (so the anchors linked from the README keep working),
+      # the first paragraph of its description and a link to the full page.
+      # Functions without a page of their own (collect_*) keep their full text.
+      module_page.content = module_page.content.gsub(SECTION) do
+        fn, body = Regexp.last_match(1), Regexp.last_match(2)
         anchor = fn.downcase
         next Regexp.last_match(0) unless urls[anchor]
-        "## #{fn}\n<p class=\"docs-metric-link\"><a href=\"#{urls[anchor]}\">#{metrics[anchor][:title]}: formula, example and related metrics</a></p>\n\n"
+        summary = overview_summary(parse(body)[:description])
+        link = %(<p class="docs-metric-link"><a href="#{urls[anchor]}">) +
+               %(#{CGI.escapeHTML(metrics[anchor][:title])}: formula, example and parameters</a></p>)
+        "## #{fn}\n\n#{summary}\n\n#{link}\n\n"
       end
     end
   end
@@ -284,21 +295,20 @@ module DocsMetricPages
   end
 end
 
-# Keep the generated pages out of the Algolia index; the module pages hold the
-# same text and search results should point there, not show every hit twice.
+# Search: the metric pages hold the full text now that the module pages are
+# overviews, so they are indexed. Paragraphs that repeat on every page (the
+# links to the metric pages, the install and parameter lead-ins, the MCP note)
+# are skipped so they do not flood the results.
 # (This site defines no other Algolia hooks; move them here if that changes.)
 if defined?(Jekyll::Algolia::Hooks)
   module Jekyll
     module Algolia
       module Hooks
-        def self.should_be_excluded?(filepath)
-          DocsMetricPages::GENERATED.any? { |path| filepath.to_s.end_with?(path) }
-        end
+        SKIPPED_CLASSES = %w[docs-metric-link docs-boilerplate docs-mcp-note].freeze
 
-        # the "formula, example and related metrics" links on the module pages
-        # are navigation, not content worth a search result of their own
         def self.before_indexing_each(record, node, _context)
-          return nil if node.respond_to?(:[]) && node["class"].to_s.split.include?("docs-metric-link")
+          classes = node.respond_to?(:[]) ? node["class"].to_s.split : []
+          return nil if (classes & SKIPPED_CLASSES).any?
           record
         end
       end

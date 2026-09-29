@@ -18,7 +18,7 @@ This page includes all the documentation for the Finance Toolkit, an open-source
 The Toolkit Module is a collection of functions that collect and parse data, including historical data, fundamental data (balance, income and cash flow statements) and metrics from Financial Modeling Prep such as enterprise values, company profiles and more. From this module you can access all related sub-modules.
 
 **No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), AI assistants such as Claude and ChatGPT can run every function on this page for you. Just ask in plain English.
-{: .notice--info}
+{: .notice--info .docs-mcp-note}
 
 To install the FinanceToolkit it simply requires the following:
 

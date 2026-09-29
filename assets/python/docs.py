@@ -312,7 +312,7 @@ if "--local" in sys.argv and not _LOCAL_PATH:
 # who would rather use the Toolkit through an AI assistant than write code.
 _MCP_NOTE = """\
 **No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), AI assistants such as Claude and ChatGPT can run every function on this page for you. Just ask in plain English.
-{: .notice--info}
+{: .notice--info .docs-mcp-note}
 
 """
 
