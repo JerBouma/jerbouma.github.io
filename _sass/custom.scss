@@ -5635,8 +5635,8 @@ table.highlight {
 
 // Docs: make it clear, quietly, that the sidebar is how you move through the
 // documentation (see _plugins/docs_metric_pages.rb and _includes/nav_list).
-// On wide screens a line at the top of the sidebar and one under the class
-// intro point at it; below $large the theme folds the sidebar behind the
+// On wide screens a line at the top of the sidebar and plain lines in the
+// class page point at it; below $large the theme folds the sidebar behind the
 // "Documentation menu" button, so the lines link to that menu instead.
 .nav__list .nav__hint {
   display: flex;
@@ -5656,8 +5656,6 @@ table.highlight {
 
 .page__content p.docs-browse-hint {
   margin: 0 0 1.4em;
-  padding-left: 12px;
-  border-left: 2px solid var(--card-border);
   color: var(--text-secondary);
 
   .docs-browse-hint__narrow { display: none; }
