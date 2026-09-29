@@ -195,6 +195,27 @@ module DocsMetricPages
     out
   end
 
+  # The docs sidebar is how readers move through the documentation, so it says
+  # so: a line at its top on wide screens, and "Browse all functions" instead
+  # of "Toggle menu" on the button that opens it on phones.
+  def sidebar_data(nav, hint)
+    { "nav" => nav, "hint" => hint, "menu_label" => "Browse all functions" }
+  end
+
+  # a line under the class intro pointing at the sidebar; on phones, where the
+  # sidebar is folded away, it opens the list instead
+  def browse_hint(name)
+    <<~HTML.gsub("\n", "")
+      <p class="docs-browse-hint">
+      <span class="docs-browse-hint__wide"><i class="fas fa-arrow-left" aria-hidden="true"></i>
+       Every function of the #{name} module has its own page with an example and its parameters.
+       Pick one from the sidebar to open it.</span>
+      <span class="docs-browse-hint__narrow">Every function of the #{name} module has its own page with an example and its parameters.
+       <label for="ac-toc" class="docs-browse-hint__open" onclick="setTimeout(function(){var s=document.querySelector('.sidebar');if(s)s.scrollIntoView({behavior:'smooth'});},50)">Browse all functions</label></span>
+      </p>
+    HTML
+  end
+
   # up to twelve functions from the same sidebar group, nearest to this one in
   # the sidebar order first, so neighbouring functions link to each other
   def related_for(anchor, group_anchors, urls, limit = 12)
@@ -318,7 +339,7 @@ module DocsMetricPages
           "permalink"            => url,
           "classes"              => "wide-sidebar",
           "author_profile"       => false,
-          "sidebar"              => { "nav" => cls[:nav] },
+          "sidebar"              => sidebar_data(cls[:nav], "Pick another function to open its page"),
           "redirect_from"        => ["#{url}/"],
           "docs_module"          => cls[:name],
           "docs_module_url"      => cls[:url],
@@ -352,6 +373,10 @@ module DocsMetricPages
       if key == "toolkit"
         CLASSES.each { |k, c| forward[k] = c[:url] if toolkit_sections.key?(k) }
       end
+      # the hint goes right under the intro, ahead of the MCP note
+      hint = browse_hint(cls[:name]) + "\n\n"
+      intro = intro.include?("**No programming experience?**") ? intro.sub("**No programming experience?**", hint + "**No programming experience?**") : hint + intro
+      class_page.data["sidebar"] = sidebar_data(cls[:nav], "Pick a function to open its page")
       class_page.content = intro.rstrip + "\n\n" + started + "\n" + remaining + <<~HTML
 
         <script>

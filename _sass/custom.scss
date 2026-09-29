@@ -5632,3 +5632,49 @@ table.highlight {
 .page__content li li {
   font-size: 1em;
 }
+
+// Docs: make it obvious that the sidebar is how you move through the
+// documentation (see _plugins/docs_metric_pages.rb and _includes/nav_list).
+// On wide screens a line at the top of the sidebar and one under the class
+// intro point at it; below $large the theme folds the sidebar behind a button,
+// so the intro line becomes a button that opens it instead.
+.nav__list .nav__hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(56, 189, 248, 0.08);
+  color: var(--accent-color);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.4;
+
+  @media (max-width: 1023px) { display: none; }
+}
+
+.page__content p.docs-browse-hint {
+  margin: 0 0 1.2em;
+  color: var(--accent-color);
+  font-weight: 500;
+
+  i { margin-right: 6px; }
+
+  .docs-browse-hint__narrow { display: none; }
+
+  .docs-browse-hint__open {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: 1px solid var(--accent-color);
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  @media (max-width: 1023px) {
+    .docs-browse-hint__wide { display: none; }
+    .docs-browse-hint__narrow { display: inline; color: var(--text-secondary); }
+  }
+}
