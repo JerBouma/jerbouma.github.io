@@ -36,7 +36,7 @@ entries:
     title: "a.s.r. asset management"
     subtitle: "Quantitative Investment Strategist"
     description: "I lead innovation within the asset management divisions at the intersection of quantitative finance and AI. I build Python solutions for portfolio analytics and optimization, and use existing large language models, with agentic frameworks and retrieval-augmented generation (RAG), to improve how we analyze portfolios and risk. I analyze profitability and investment risk under different risk frameworks (Solvency II and internal models) and look at portfolio sensitivities and how they relate to the liabilities. I also run Asset Liability Management (ALM) and Strategic Asset Allocation (SAA) analyses on topics such as hedging strategies, liquidity risk management, Solvency II optimization and asset-only studies."
-    skills: ["Python", "LLMs", "Agentic Frameworks", "RAG", "SQL", "Databricks", "Azure", "PowerBI", "Git"]
+    skills: ["Python", "Agentic Frameworks", "RAG", "SQL", "Databricks", "Azure", "PowerBI", "Git"]
     logo: "/assets/images/resume/asr.png"
     logo_alt: "a.s.r. asset management logo"
 
