@@ -1,0 +1,37 @@
+{%- comment -%}
+  A small card in the bottom-right corner of the Finance Toolkit docs that
+  tells readers without programming experience about the MCP server. It shows
+  on someone's first visit to the docs and follows them from page to page
+  during that visit until they close it; after closing it, or in any later
+  visit, it stays away. The state lives in the reader's own browser only
+  (localStorage and sessionStorage), and without storage the card never shows.
+{%- endcomment -%}
+<aside class="mcp-notice" id="mcp-notice" role="complementary" aria-label="Using the Finance Toolkit without code" hidden>
+  <button type="button" class="mcp-notice__close" aria-label="Close">&times;</button>
+  <p class="mcp-notice__title">No programming experience?</p>
+  <p class="mcp-notice__text">With the <a href="/projects/financetoolkit/mcp">Finance Toolkit MCP server</a>, AI assistants such as Claude and ChatGPT can run every function in these docs for you. Just ask in plain English.</p>
+</aside>
+<script>
+  (function () {
+    var card = document.getElementById('mcp-notice');
+    if (!card) return;
+    var DISMISSED = 'ft-mcp-notice-dismissed', SEEN = 'ft-mcp-notice-seen';
+    var show = false;
+    try {
+      if (!localStorage.getItem(DISMISSED)) {
+        // first visit ever, or still the same visit in which it first appeared
+        show = !localStorage.getItem(SEEN) || sessionStorage.getItem(SEEN) === '1';
+        if (show) {
+          localStorage.setItem(SEEN, '1');
+          sessionStorage.setItem(SEEN, '1');
+        }
+      }
+    } catch (e) { show = false; }
+    if (!show) return;
+    card.hidden = false;
+    card.querySelector('.mcp-notice__close').addEventListener('click', function () {
+      card.hidden = true;
+      try { localStorage.setItem(DISMISSED, '1'); } catch (e) {}
+    });
+  })();
+</script>

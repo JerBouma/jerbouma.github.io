@@ -15,9 +15,6 @@ sidebar:
 
 The Ratios Module contains 50+ ratios divided into 5 categories: efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
 
-**No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), AI assistants such as Claude and ChatGPT can run every function of this module for you. Just ask in plain English.
-{: .notice--info .docs-mcp-note}
-
 To install the FinanceToolkit it simply requires the following:
 
 ```python

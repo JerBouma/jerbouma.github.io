@@ -166,10 +166,6 @@ module DocsMetricPages
     cls = CLASSES[key]
     out = +""
     out << parts[:description] << "\n\n"
-    # for readers who would rather ask an AI assistant than write Python
-    out << "**No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), "
-    out << "AI assistants such as Claude and ChatGPT can run this for you. "
-    out << "Just ask in plain English.\n{: .notice--info .docs-mcp-note}\n\n"
     unless parts[:example].empty?
       out << "## #{name} in Python\n\n"
       out << "`#{fn_name}` is part of the [#{cls[:name]} module](#{cls[:url]}) of the open-source "
@@ -387,9 +383,14 @@ module DocsMetricPages
         CLASSES.each { |k, c| forward[k] = c[:url] if toolkit_sections.key?(k) }
       end
       started = started.rstrip + "\n\n" + getting_started_hint(key) + "\n" unless started.empty?
-      # the hint goes right under the intro, ahead of the MCP note
+      # the hint goes under the intro text, just before the install instructions
       hint = intro_hint(key) + "\n\n"
-      intro = intro.include?("**No programming experience?**") ? intro.sub("**No programming experience?**", hint + "**No programming experience?**") : hint + intro
+      install = intro.index(/^(To install the FinanceToolkit|Unlike the other modules)/)
+      intro = if install then intro.dup.insert(install, hint)
+              else
+                paragraphs = intro.strip.split(/\n\s*\n/, 2)
+                ([paragraphs.first, hint.strip] + paragraphs.drop(1)).join("\n\n")
+              end
       class_page.data["sidebar"] = sidebar_data(cls[:nav], "Pick a function to open its page")
       class_page.content = intro.rstrip + "\n\n" + started + "\n" + remaining + <<~HTML
 
@@ -470,8 +471,7 @@ end
 
 # Search: the function pages hold the full text now that the class pages are
 # introductions, so they are indexed. Paragraphs that repeat on every page (the
-# install and parameter lead-ins, the MCP note) are skipped so they do not
-# flood the results.
+# install and parameter lead-ins) are skipped so they do not flood the results.
 # (This site defines no other Algolia hooks; move them here if that changes.)
 if defined?(Jekyll::Algolia::Hooks)
   module Jekyll
