@@ -90,10 +90,9 @@ title: "Jeroen Bouma - CV"
   .side .tags { margin-top: 0; }
   .side .tag { background: #fff; border: 0.5pt solid var(--rule); }
 
-  .exp { margin-bottom: 1.8mm; font-size: 8.4pt; line-height: 1.45; break-inside: avoid; }
-  .exp:last-child { margin-bottom: 0; }
-  .exp-label { display: block; font-weight: 600; color: var(--accent); }
-  .exp-items { color: var(--ink); }
+  .expertise { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 6mm; }
+  .expertise li { position: relative; padding-left: 3mm; font-size: 8.4pt; line-height: 1.55; color: var(--ink); break-inside: avoid; }
+  .expertise li::before { content: ""; position: absolute; left: 0; top: 2.1mm; width: 1.1mm; height: 1.1mm; border-radius: 50%; background: var(--accent); }
 
   /* references */
   .refs { margin-top: 5mm; break-before: auto; }
@@ -138,12 +137,9 @@ title: "Jeroen Bouma - CV"
 
       <section>
         <h2>Expertise</h2>
-        {%- for g in cv.expertise %}
-        <div class="exp">
-          <span class="exp-label">{{ g.group }}</span>
-          <span class="exp-items">{{ g.items | join: " · " }}</span>
-        </div>
-        {%- endfor %}
+        <ul class="expertise">
+          {%- for g in cv.expertise %}{% for x in g.items %}<li>{{ x }}</li>{% endfor %}{% endfor %}
+        </ul>
       </section>
 
       <section>
