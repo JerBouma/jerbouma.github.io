@@ -5936,17 +5936,16 @@ body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
   .expertise-product { --expertise-dot: #059669; }
 }
 
+// all groups flow on in one wrapping row; the group wrappers only carry the
+// dot colour
 .timeline-expertise {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
   margin: 2px 0 10px;
 }
 
-.expertise-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
+.expertise-group { display: contents; }
 
 .expertise-pill,
 .expertise-key {
@@ -5982,7 +5981,12 @@ body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
 .resume-download {
   margin-top: 0;
 
-  .btn i { margin-right: 6px; }
+  .btn {
+    font-size: 0.95rem !important;
+    padding: 12px 24px !important;
+  }
+
+  .btn i { margin-right: 8px; }
 }
 
 .timeline-info p.timeline-link {
@@ -5992,3 +5996,20 @@ body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
   a { text-decoration: none; }
   i { font-size: 0.75em; margin-left: 3px; }
 }
+
+// Resume: the tool skills under each timeline entry share the shape of the
+// expertise pills above them (neutral, no dot, lighter text) instead of the
+// coloured pills per entry type, so the two rows read as one set.
+.timeline-entry .timeline-skills .skill-pill {
+  padding: 3px 10px;
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 500;
+
+  &:hover { background: rgba(128, 128, 128, 0.08); }
+}
+
+.timeline-entry .timeline-skills { gap: 6px; }
