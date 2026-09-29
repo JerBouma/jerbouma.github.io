@@ -266,6 +266,10 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs#get_statistics_statement
     - title: "Normalization Files"
       url: /projects/financetoolkit/docs#get_normalization_files
+    - title: "Cache Contents"
+      url: /projects/financetoolkit/docs#get_cache_contents
+    - title: "Clear Cache"
+      url: /projects/financetoolkit/docs#clear_cache
 financetoolkit-docs-discovery:
   - title: Modules
     children:
