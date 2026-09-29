@@ -44,7 +44,7 @@ title: "Jeroen Bouma - CV"
   body {
     margin: 0;
     color: var(--ink);
-    font: 400 9.2pt/1.45 "Inter", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font: 400 9pt/1.42 "Inter", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background: #fff;
   }
   a { color: inherit; text-decoration: none; }
@@ -69,15 +69,15 @@ title: "Jeroen Bouma - CV"
   }
   section { margin-bottom: 5.5mm; }
   section:last-child { margin-bottom: 0; }
-  .profile p { margin: 0 0 2.2mm; color: var(--ink); }
+  .profile p { margin: 0 0 1.8mm; color: var(--ink); font-size: 8.8pt; }
 
-  .item { margin-bottom: 4mm; break-inside: avoid; }
+  .item { margin-bottom: 3.6mm; break-inside: avoid; }
   .item:last-child { margin-bottom: 0; }
   .item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; }
   .item h3 { margin: 0; font-size: 10.2pt; font-weight: 600; color: var(--ink); }
   .date { flex-shrink: 0; font-size: 8pt; color: var(--soft); font-weight: 500; }
   .org { margin: 0.4mm 0 1.4mm; font-size: 8.8pt; font-weight: 500; color: var(--accent); }
-  .item p { margin: 0; color: #3a4252; font-size: 8.7pt; }
+  .item p { margin: 0; color: #3a4252; font-size: 8.4pt; line-height: 1.42; }
   .tags { display: flex; flex-wrap: wrap; gap: 1.2mm; margin-top: 1.8mm; }
   .tag { padding: 0.5mm 2mm; border-radius: 3mm; background: var(--panel); color: var(--muted); font-size: 7.4pt; font-weight: 500; }
 
@@ -90,9 +90,10 @@ title: "Jeroen Bouma - CV"
   .side .tags { margin-top: 0; }
   .side .tag { background: #fff; border: 0.5pt solid var(--rule); }
 
-  .expertise { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 6mm; }
-  .expertise li { position: relative; padding-left: 3mm; font-size: 8.4pt; line-height: 1.55; color: var(--ink); }
-  .expertise li::before { content: ""; position: absolute; left: 0; top: 2.1mm; width: 1.1mm; height: 1.1mm; border-radius: 50%; background: var(--accent); }
+  .exp { display: grid; grid-template-columns: 22mm 1fr; gap: 2.5mm; margin-bottom: 1.6mm; font-size: 8.4pt; line-height: 1.45; break-inside: avoid; }
+  .exp:last-child { margin-bottom: 0; }
+  .exp-label { font-weight: 600; color: var(--accent); }
+  .exp-items { color: var(--ink); }
 
   /* references */
   .refs { margin-top: 5mm; break-before: auto; }
@@ -137,9 +138,12 @@ title: "Jeroen Bouma - CV"
 
       <section>
         <h2>Expertise</h2>
-        <ul class="expertise">
-          {%- for x in cv.expertise %}<li>{{ x }}</li>{% endfor %}
-        </ul>
+        {%- for g in cv.expertise %}
+        <div class="exp">
+          <span class="exp-label">{{ g.group }}</span>
+          <span class="exp-items">{{ g.items | join: " · " }}</span>
+        </div>
+        {%- endfor %}
       </section>
 
       <section>

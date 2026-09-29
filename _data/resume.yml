@@ -17,8 +17,15 @@ intro:
   - "Below you can find my education, certifications, open-source projects and work experience, together with testimonials from colleagues."
 
 
-# areas of expertise, shown under the intro on /resume and in the CV side panel
-expertise: ["Portfolio Optimization", "Strategic Asset Allocation", "Asset Liability Management", "Solvency II", "Risk Management", "Econometrics", "Financial Modelling", "Fundamental Analysis", "Applied AI", "Product Management"]
+# areas of expertise in three groups, shown under the intro on /resume and
+# under the profile on the CV
+expertise:
+  - group: "Quant Finance"
+    items: ["Strategic Asset Allocation", "Asset Liability Management", "Portfolio Construction & Optimization", "Liability Hedging", "Investment Risk & Solvency II", "Economic Scenario Modelling", "Econometrics & Time Series"]
+  - group: "AI"
+    items: ["LLM Applications in Finance", "Retrieval-Augmented Generation (RAG)", "Agentic Frameworks & Tool Use", "Model Context Protocol (MCP)", "Machine Learning", "LLM Evaluation & Guardrails"]
+  - group: "Product"
+    items: ["Product Ownership (Scrum)", "AI Use-Case Design", "Stakeholder Management", "Open-Source Development"]
 
 languages:
   - name: "Dutch"
