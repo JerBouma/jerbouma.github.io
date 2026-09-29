@@ -38,18 +38,6 @@ languages:
     level: "Professional"
 
 entries:
-  - type: certification
-    date: "June 2026"
-    badge: "Certification"
-    title: "Transforming Your Business with AI"
-    subtitle: "INSEAD"
-    description: "An executive education programme on how AI is used in business: what it can and cannot do for an organisation, with practical frameworks for working with data scientists and programmers, commissioning analysis and assessing the results. I completed it online between April and June 2026."
-    expertise: ["AI Use-Case Design", "Stakeholder Management"]
-    skills: ["Analytical thinking", "Data-driven decision making", "AI and big data"]
-    link:
-      url: "https://certificates.insead.edu/292ec6af-707c-4563-8d59-185d31d342d9"
-      label: "View the credential"
-
   - type: experience
     active: true
     date: "February 2024 – Present"
@@ -61,6 +49,18 @@ entries:
     skills: ["Python", "Machine Learning", "Agentic Frameworks", "RAG", "SQL", "Databricks", "Azure", "PowerBI", "Git"]
     logo: "/assets/images/resume/asr.png"
     logo_alt: "a.s.r. asset management logo"
+
+  - type: certification
+    date: "June 2026"
+    badge: "Certification"
+    title: "Transforming Your Business with AI"
+    subtitle: "INSEAD"
+    description: "An executive education programme on how AI is used in business: what it can and cannot do for an organisation, with practical frameworks for working with data scientists and programmers, commissioning analysis and assessing the results. I completed it online between April and June 2026."
+    expertise: ["AI Use-Case Design", "Stakeholder Management"]
+    skills: ["Analytical thinking", "Data-driven decision making", "AI and big data"]
+    link:
+      url: "https://certificates.insead.edu/292ec6af-707c-4563-8d59-185d31d342d9"
+      label: "View the credential"
 
   - type: experience
     date: "June 2023 – February 2024"

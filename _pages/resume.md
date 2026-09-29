@@ -21,7 +21,7 @@ author_profile: false
 <div class="resume-facts__row"><span class="resume-facts__label">Languages</span><span class="resume-facts__items resume-facts__text">{% for l in site.data.resume.languages %}{{ l.name }}{% unless forloop.last %}, {% endunless %}{% endfor %} (professional)</span></div>
 </div>
 
-<p class="resume-download"><a href="/assets/files/jeroen-bouma-cv.pdf" class="btn btn--outline" download="Jeroen Bouma - CV.pdf"><i class="fas fa-file-pdf" aria-hidden="true"></i> Download CV (PDF)</a></p>
+<p class="resume-download"><a href="/assets/files/jeroen-bouma-cv.pdf" class="btn btn--info" download="Jeroen Bouma - CV.pdf"><i class="fas fa-file-pdf" aria-hidden="true"></i> Download CV (PDF)</a></p>
 
 </div>
 
