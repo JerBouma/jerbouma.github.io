@@ -79,6 +79,8 @@ search.addWidget(
   instantsearch.widgets.searchBox({
     container: '#search-searchbar',
     placeholder: 'Search the documentation...',
+    // no focus on load: on phones that pops up the keyboard over the page
+    autofocus: false,
   })
 );
 
