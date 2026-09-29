@@ -5673,3 +5673,69 @@ table.highlight {
     .docs-browse-hint__narrow { display: inline; }
   }
 }
+
+// First-visit card in the docs about the MCP server (_includes/mcp-notice.html).
+// Sits in the bottom-right corner just above the back-to-top arrow.
+.mcp-notice {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 5.5rem;
+  z-index: 50;
+  width: min(340px, calc(100vw - 2rem));
+  padding: 14px 40px 14px 16px;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  // the card colours at full opacity: page text must not show through
+  background: rgb(30, 41, 59);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  animation: mcp-notice-in 0.3s ease-out;
+
+  :root[data-theme="light"] & {
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  }
+
+  p { margin: 0; }
+
+  .mcp-notice__title {
+    margin-bottom: 4px;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .mcp-notice__text { color: var(--text-secondary); }
+
+  .mcp-notice__close {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+
+    &:hover { color: var(--text-primary); background: rgba(128, 128, 128, 0.12); }
+  }
+
+  @media (max-width: 600px) {
+    right: 1rem;
+    left: 1rem;
+    bottom: 4.75rem;
+    width: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) { animation: none; }
+}
+
+@keyframes mcp-notice-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}

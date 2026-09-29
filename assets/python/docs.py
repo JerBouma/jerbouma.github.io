@@ -310,15 +310,7 @@ _LOCAL_PATH = os.environ.get("DOCS_LOCAL_PATH", "")
 if "--local" in sys.argv and not _LOCAL_PATH:
     _LOCAL_PATH = _DEFAULT_LOCAL_PATH
 
-# Shown on every module page, ahead of the install instructions, for readers
-# who would rather use the Toolkit through an AI assistant than write code.
-_MCP_NOTE = """\
-**No programming experience?** With the [Finance Toolkit MCP server](/projects/financetoolkit/mcp), AI assistants such as Claude and ChatGPT can run every function of this module for you. Just ask in plain English.
-{: .notice--info .docs-mcp-note}
-
-"""
-
-_INSTALL_SNIPPET = _MCP_NOTE + """\
+_INSTALL_SNIPPET = """\
 To install the FinanceToolkit it simply requires the following:
 
 ```python
@@ -828,7 +820,7 @@ sidebar:
 
 The Econometrics module contains statistical tests and estimators for financial time series and panel data. It covers unit root and cointegration tests, regression estimators (OLS, WLS, GLS, quantile, logit, probit, Fama-MacBeth), causal inference methods (instrumental variables, difference-in-differences, regression discontinuity, propensity score matching, synthetic control), panel data estimators, specification and diagnostic tests, time series forecasting (ARIMA, VAR, VECM) and event studies.
 
-{_MCP_NOTE}Unlike the other modules, this one depends on `statsmodels` and `linearmodels`. These are bundled in the optional `econometrics` extra, so install the Finance Toolkit with:
+Unlike the other modules, this one depends on `statsmodels` and `linearmodels`. These are bundled in the optional `econometrics` extra, so install the Finance Toolkit with:
 
 ```python
 pip install "financetoolkit[econometrics]" -U
