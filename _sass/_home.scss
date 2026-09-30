@@ -438,7 +438,7 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
 
   &__row {
     display: grid;
-    grid-template-columns: 2.4fr repeat(calc(var(--cols, 4) - 1), 1fr);
+    grid-template-columns: 1.4fr repeat(calc(var(--cols, 4) - 1), 1fr);
     gap: 8px;
     padding: 7px 12px;
     color: #c9d1d9;

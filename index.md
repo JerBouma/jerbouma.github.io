@@ -85,67 +85,68 @@ classes: custom-splash home-v2
   <div class="hp-code" data-tabs aria-label="Finance Toolkit examples">
     <div class="hp-code__bar"><span></span><span></span><span></span>
       <div class="hp-code__tabs" role="tablist">
-        <button type="button" role="tab" class="hp-code__tab is-active" aria-selected="true" data-tab="valuation">Valuation</button>
-        <button type="button" role="tab" class="hp-code__tab" aria-selected="false" data-tab="risk">Risk</button>
-        <button type="button" role="tab" class="hp-code__tab" aria-selected="false" data-tab="macro">Macro</button>
-        <button type="button" role="tab" class="hp-code__tab" aria-selected="false" data-tab="ratios">Ratios</button>
+        <button type="button" role="tab" class="hp-code__tab is-active" aria-selected="true" data-tab="copulas">Copulas</button>
+        <button type="button" role="tab" class="hp-code__tab" aria-selected="false" data-tab="cointegration">Cointegration</button>
+        <button type="button" role="tab" class="hp-code__tab" aria-selected="false" data-tab="sharpe">Sharpe</button>
+        <button type="button" role="tab" class="hp-code__tab" aria-selected="false" data-tab="garch">GARCH</button>
       </div>
     </div>
-    <div class="hp-code__panel" role="tabpanel" data-panel="valuation">
+    <div class="hp-code__panel" role="tabpanel" data-panel="copulas">
+<div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
+
+toolkit = Toolkit([<span class="s">"AAPL"</span>, <span class="s">"MSFT"</span>], api_key=API_KEY)
+
+<span class="c"># Which copula best describes how the two move together?</span>
+toolkit.risk.<span class="f">get_best_fitting_copula</span>(
+    <span class="s">"AAPL"</span>, <span class="s">"MSFT"</span>, period=<span class="s">"weekly"</span>)</div>
+      <div class="hp-code__out" style="--cols:4">
+        <div class="hp-code__row hp-code__row--head"><span>Copula</span><span>Lower tail</span><span>Upper tail</span><span>AIC</span></div>
+        <div class="hp-code__row"><span>Student-T</span><span>0.19</span><span>0.19</span><span>-99.99</span></div>
+        <div class="hp-code__row"><span>Frank</span><span>0.00</span><span>0.00</span><span>-96.49</span></div>
+        <div class="hp-code__row"><span>Gumbel</span><span>0.00</span><span>0.43</span><span>-95.83</span></div>
+        <div class="hp-code__row"><span>Clayton</span><span>0.39</span><span>0.00</span><span>-65.25</span></div>
+      </div>
+    </div>
+    <div class="hp-code__panel" role="tabpanel" data-panel="cointegration" hidden>
+<div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
+
+toolkit = Toolkit([<span class="s">"AAPL"</span>, <span class="s">"MSFT"</span>], api_key=API_KEY)
+
+<span class="c"># Johansen test for a long-run equilibrium</span>
+toolkit.econometrics.<span class="f">get_johansen_cointegration</span>(
+    period=<span class="s">"quarterly"</span>)</div>
+      <div class="hp-code__out" style="--cols:4">
+        <div class="hp-code__row hp-code__row--head"><span>Hypothesis</span><span>Trace stat.</span><span>Critical</span><span>Reject</span></div>
+        <div class="hp-code__row"><span>r ≤ 0</span><span>14.20</span><span>15.49</span><span>False</span></div>
+        <div class="hp-code__row"><span>r ≤ 1</span><span>5.04</span><span>3.84</span><span>True</span></div>
+      </div>
+    </div>
+    <div class="hp-code__panel" role="tabpanel" data-panel="sharpe" hidden>
 <div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
 toolkit = Toolkit([<span class="s">"AAPL"</span>, <span class="s">"TSLA"</span>], api_key=API_KEY)
 
-<span class="c"># Bankruptcy risk, built up from five balance sheet ratios</span>
-toolkit.models.<span class="f">get_altman_z_score</span>().loc[<span class="s">"AAPL"</span>]</div>
-      <div class="hp-code__out" style="--cols:4">
-        <div class="hp-code__row hp-code__row--head"><span>AAPL</span><span>2023</span><span>2024</span><span>2025</span></div>
-        <div class="hp-code__row"><span>EBIT / Total Assets</span><span>0.33</span><span>0.34</span><span>0.37</span></div>
-        <div class="hp-code__row"><span>Market Value / Liabilities</span><span>10.48</span><span>12.53</span><span>14.29</span></div>
-        <div class="hp-code__row"><span>Sales / Total Assets</span><span>1.09</span><span>1.07</span><span>1.16</span></div>
-        <div class="hp-code__row"><span>Altman Z-Score</span><span>8.47</span><span>9.55</span><span>10.84</span></div>
+<span class="c"># Probability that each Sharpe ratio is genuine</span>
+toolkit.performance.<span class="f">get_sharpe_ratio</span>(
+    method=<span class="s">"probabilistic"</span>)</div>
+      <div class="hp-code__out" style="--cols:5">
+        <div class="hp-code__row hp-code__row--head"><span></span><span>2022</span><span>2023</span><span>2024</span><span>2025</span></div>
+        <div class="hp-code__row"><span>AAPL</span><span>22.5%</span><span>96.8%</span><span>86.9%</span><span>61.8%</span></div>
+        <div class="hp-code__row"><span>TSLA</span><span>10.0%</span><span>93.2%</span><span>85.0%</span><span>66.2%</span></div>
       </div>
     </div>
-    <div class="hp-code__panel" role="tabpanel" data-panel="risk" hidden>
+    <div class="hp-code__panel" role="tabpanel" data-panel="garch" hidden>
 <div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
 toolkit = Toolkit([<span class="s">"AMZN"</span>, <span class="s">"TSLA"</span>], api_key=API_KEY)
 
-<span class="c"># Worst peak-to-trough decline in each year</span>
-toolkit.risk.<span class="f">get_maximum_drawdown</span>()</div>
-      <div class="hp-code__out" style="--cols:5">
-        <div class="hp-code__row hp-code__row--head"><span></span><span>2020</span><span>2021</span><span>2022</span><span>2023</span></div>
-        <div class="hp-code__row"><span>AMZN</span><span>-22.7%</span><span>-14.6%</span><span>-52.0%</span><span>-19.6%</span></div>
-        <div class="hp-code__row"><span>TSLA</span><span>-60.6%</span><span>-36.3%</span><span>-72.7%</span><span>-28.2%</span></div>
-      </div>
-    </div>
-    <div class="hp-code__panel" role="tabpanel" data-panel="macro" hidden>
-<div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Economics
-
-<span class="c"># No API key needed for macroeconomic data</span>
-economics = Economics(start_date=<span class="s">"2022-01-01"</span>)
-
-economics.<span class="f">get_unemployment_rate</span>(
-    countries=[<span class="s">"Germany"</span>, <span class="s">"United States"</span>, <span class="s">"Japan"</span>],
-    period=<span class="s">"quarterly"</span>)</div>
+<span class="c"># Forecast volatility with a fitted GARCH model</span>
+toolkit.risk.<span class="f">get_garch_forecast</span>(period=<span class="s">"quarterly"</span>)</div>
       <div class="hp-code__out" style="--cols:4">
-        <div class="hp-code__row hp-code__row--head"><span></span><span>Germany</span><span>United States</span><span>Japan</span></div>
-        <div class="hp-code__row"><span>2022Q2</span><span>3.1%</span><span>3.6%</span><span>2.6%</span></div>
-        <div class="hp-code__row"><span>2022Q4</span><span>3.1%</span><span>3.6%</span><span>2.5%</span></div>
-        <div class="hp-code__row"><span>2023Q1</span><span>3.0%</span><span>3.5%</span><span>2.6%</span></div>
-      </div>
-    </div>
-    <div class="hp-code__panel" role="tabpanel" data-panel="ratios" hidden>
-<div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
-
-toolkit = Toolkit([<span class="s">"AAPL"</span>, <span class="s">"TSLA"</span>], api_key=API_KEY)
-
-<span class="c"># One of 150+ ratios, each with its formula documented</span>
-toolkit.ratios.<span class="f">get_price_to_earnings_ratio</span>()</div>
-      <div class="hp-code__out" style="--cols:4">
-        <div class="hp-code__row hp-code__row--head"><span></span><span>2023</span><span>2024</span><span>2025</span></div>
-        <div class="hp-code__row"><span>AAPL</span><span>31.39</span><span>41.16</span><span>36.42</span></div>
-        <div class="hp-code__row"><span>TSLA</span><span>57.70</span><span>198.13</span><span>418.19</span></div>
+        <div class="hp-code__row hp-code__row--head"><span></span><span>AMZN</span><span>TSLA</span><span>Benchmark</span></div>
+        <div class="hp-code__row"><span>2026Q4</span><span>0.0267</span><span>0.1703</span><span>0.0053</span></div>
+        <div class="hp-code__row"><span>2027Q2</span><span>0.0267</span><span>0.1738</span><span>0.0056</span></div>
+        <div class="hp-code__row"><span>2027Q4</span><span>0.0266</span><span>0.1747</span><span>0.0060</span></div>
       </div>
     </div>
   </div>
