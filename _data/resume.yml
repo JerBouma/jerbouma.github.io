@@ -17,19 +17,16 @@ intro:
   - "Below you can find my education, certifications, open-source projects and work experience, together with testimonials from colleagues."
 
 
-# areas of expertise in three groups. The CV lists them under the profile; on
+# areas of expertise in two groups. The CV lists them under the profile; on
 # /resume each timeline entry shows the ones it covers (its expertise list),
 # marked with the colour of the group (key).
 expertise:
   - group: "Quantitative Finance"
     key: quant
-    items: ["Strategic Asset Allocation", "Asset Liability Management", "Portfolio Optimization", "Liability Hedging", "Risk & Solvency II", "Scenario Modelling", "Econometrics & Time Series"]
+    items: ["Strategic Asset Allocation", "Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Economic Scenarios", "Econometrics & Time Series", "Factor Models"]
   - group: "Artificial Intelligence"
     key: ai
-    items: ["LLM Applications in Finance", "RAG Pipelines", "Agentic Frameworks", "MCP Servers", "Machine Learning", "LLM Evaluation & Guardrails"]
-  - group: "Product & Delivery"
-    key: product
-    items: ["Product Ownership (Scrum)", "AI Use-Case Design", "Stakeholder Management", "Open-Source Development"]
+    items: ["Generative AI in Finance", "Agentic Frameworks", "RAG Pipelines", "Machine Learning", "AI Evaluation & Guardrails"]
 
 languages:
   - name: "Dutch"
@@ -45,7 +42,7 @@ entries:
     title: "a.s.r. asset management"
     subtitle: "Quantitative Investment Strategist"
     description: "I work within the asset management divisions at the intersection of quantitative finance and AI. As part of the team I have contributed significantly to both building and using the models behind our Solvency II internal model calculations, lifecycle investing and portfolio optimization, as well as to forecasting and generative AI applications built on agentic frameworks and RAG that help us analyze portfolios and risk. I also contribute to the yearly SAA through the economic scenario calibrations and guide several working students in their day-to-day work and with their theses."
-    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Portfolio Optimization", "Liability Hedging", "Risk & Solvency II", "LLM Applications in Finance", "RAG Pipelines", "Agentic Frameworks", "Machine Learning", "LLM Evaluation & Guardrails", "AI Use-Case Design", "Stakeholder Management"]
+    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Economic Scenarios", "Generative AI in Finance", "Agentic Frameworks", "RAG Pipelines", "Machine Learning", "AI Evaluation & Guardrails"]
     skills: ["Python", "Machine Learning", "Agentic Frameworks", "RAG", "GLASS", "SQL", "Databricks", "Azure", "PowerBI", "Git"]
     logo: "/assets/images/resume/asr.png"
     logo_alt: "a.s.r. asset management logo"
@@ -56,7 +53,7 @@ entries:
     title: "Transforming Your Business with AI"
     subtitle: "INSEAD"
     description: "An executive education programme on how AI is used in business: what it can and cannot do for an organisation, with practical frameworks for working with data scientists and programmers, commissioning analysis and assessing the results. I completed it online between April and June 2026."
-    expertise: ["AI Use-Case Design", "Stakeholder Management"]
+    expertise: ["Generative AI in Finance"]
     skills: ["Analytical thinking", "Data-driven decision making", "AI and big data"]
     link:
       url: "https://certificates.insead.edu/292ec6af-707c-4563-8d59-185d31d342d9"
@@ -68,7 +65,7 @@ entries:
     title: "a.s.r. asset management"
     subtitle: "Financial Risk Analyst"
     description: "I analyzed profitability and investment risk under different risk frameworks (Solvency II and internal models), looked at portfolio sensitivities and how they relate to the liabilities, and assessed the impact of month-to-month changes. I also helped develop Python models to improve valuation and financial risk measurement."
-    expertise: ["Risk & Solvency II", "Asset Liability Management"]
+    expertise: ["Solvency II Internal Models", "Asset Liability Management"]
     skills: ["Python", "SQL", "Azure", "PowerBI", "Git"]
     logo: "/assets/images/resume/asr.png"
     logo_alt: "a.s.r. asset management logo"
@@ -79,7 +76,6 @@ entries:
     title: "Certified ScrumMaster (CSM)"
     subtitle: "Product Owner"
     description: "Covers the Scrum methodology and how to lead a team as Product Owner. I obtained it during my time at OpenBB, where I led a multi-disciplinary team as Product Manager."
-    expertise: ["Product Ownership (Scrum)"]
 
   - type: experience
     date: "February 2022 – June 2023"
@@ -87,7 +83,7 @@ entries:
     title: "OpenBB"
     subtitle: "Product Manager"
     description: "OpenBB set out to compete with Bloomberg through open source. As Product Manager I led a multi-disciplinary team of engineers and finance professionals using Scrum, and focused on translating financial theory into code, building features such as the economy, portfolio and fixed income menus myself. Towards the end I also led product marketing and the outreach to universities."
-    expertise: ["Econometrics & Time Series", "Product Ownership (Scrum)", "Stakeholder Management", "Open-Source Development"]
+    expertise: ["Econometrics & Time Series"]
     skills: ["Python", "Git", "JavaScript"]
     logo: "/assets/images/resume/openbb.png"
     logo_alt: "OpenBB logo"
@@ -138,7 +134,6 @@ entries:
     github: "https://github.com/JerBouma/FinanceDatabase"
     subtitle: "Creator &amp; Maintainer (7,000+ GitHub Stars)"
     description: "An open-source database with 300,000+ symbols covering Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It gives an overview of sectors, industries and investment types across 111 countries. I started it out of frustration that I did not know which financial products existed. OpenBB later came across the project, which led to a job offer."
-    expertise: ["Open-Source Development"]
     skills: ["Python", "Git"]
     logo: "/assets/images/projects/FinanceDatabase.jpg"
     logo_alt: "Finance Database logo"
@@ -149,7 +144,7 @@ entries:
     title: "PGGM"
     subtitle: "ALM Advisor"
     description: "I gave actuarial and strategic advice to several Dutch pension funds. I was responsible for developing and maintaining the econometric model in MATLAB and led most of the technical development of the new econometric model in Python. These models performed the ALM, URM and VEV calculations. I also worked on interactive dashboards and GUIs and on applying Machine Learning techniques."
-    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Scenario Modelling", "Econometrics & Time Series", "Machine Learning"]
+    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Economic Scenarios", "Econometrics & Time Series", "Machine Learning"]
     skills: ["Python", "Machine Learning", "MATLAB", "Azure", "VBA", "PowerBI", "Git"]
     logo: "/assets/images/resume/pggm.png"
     logo_alt: "PGGM logo"
@@ -178,7 +173,7 @@ entries:
     github: "https://github.com/JerBouma/FinanceToolkit"
     subtitle: "Creator &amp; Maintainer (5,000+ GitHub Stars)"
     description: "An open-source toolkit with 500+ financial methods, each written to be as transparent as possible. It supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Combined with the Finance Database, it lets you do a full competitive analysis. It is used by thousands of analysts, developers and students worldwide."
-    expertise: ["Portfolio Optimization", "Econometrics & Time Series", "MCP Servers", "Agentic Frameworks", "Open-Source Development"]
+    expertise: ["Portfolio Optimization", "Econometrics & Time Series", "Factor Models", "Agentic Frameworks"]
     skills: ["Python", "MCP", "Docker", "GitHub Actions", "Git"]
     logo: "/assets/images/projects/FinanceToolkit.jpg"
     logo_alt: "Finance Toolkit logo"
