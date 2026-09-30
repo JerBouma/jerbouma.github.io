@@ -78,7 +78,7 @@ entries:
     badge: "Certification"
     title: "Certified ScrumMaster (CSM)"
     subtitle: "Product Owner"
-    description: "Covers the Scrum methodology and how to lead a team as Product Owner. I obtained it during my time at OpenBB, where I led a multi-disciplinary Go-to-Market team."
+    description: "Covers the Scrum methodology and how to lead a team as Product Owner. I obtained it during my time at OpenBB, where I led a multi-disciplinary team as Product Manager."
     expertise: ["Product Ownership (Scrum)"]
 
   - type: experience
@@ -86,7 +86,7 @@ entries:
     badge: "Experience"
     title: "OpenBB"
     subtitle: "Product Manager"
-    description: "I was responsible for Product Marketing. That included designing the strategy for Academia outreach, finding gaps in the financial sector and deciding how to respond to them, and leading a multi-disciplinary Go-to-Market team. I also coordinated Engineering work that required a lot of financial knowledge, either by developing the quantitative models myself or by guiding the engineers through design and implementation."
+    description: "OpenBB set out to compete with Bloomberg by making investment research open source. As Product Manager I led a multi-disciplinary team of engineers and finance professionals, working in Scrum sprints and setting priorities together with stakeholders. My focus was translating financial theory into code: I developed quantitative features such as the economy, portfolio, econometrics and fixed income menus myself and guided the engineers wherever financial knowledge was needed. Towards the end I moved into product marketing, leading the go-to-market strategy and the outreach to universities."
     expertise: ["Econometrics & Time Series", "Product Ownership (Scrum)", "Stakeholder Management", "Open-Source Development"]
     skills: ["Python", "Git", "JavaScript"]
     logo: "/assets/images/resume/openbb.png"
