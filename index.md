@@ -48,7 +48,7 @@ classes: custom-splash home-v2
     </a>
     <a class="hp-pillar" href="/projects">
       <i class="fas fa-code-branch" aria-hidden="true"></i>
-      <h3>Open Source</h3>
+      <h3>Open Source Projects</h3>
       <p>The Finance Toolkit, Finance Database and an MCP server that brings them to AI assistants.</p>
       <span class="hp-more">Projects <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
     </a>
@@ -82,17 +82,71 @@ classes: custom-splash home-v2
       <a href="/projects/financetoolkit/mcp" class="hp-btn hp-btn--ghost">Use it with AI</a>
     </div>
   </div>
-  <div class="hp-code" aria-label="Finance Toolkit example">
-    <div class="hp-code__bar"><span></span><span></span><span></span><em>example.py</em></div>
+  <div class="hp-code" data-tabs aria-label="Finance Toolkit examples">
+    <div class="hp-code__bar"><span></span><span></span><span></span>
+      <div class="hp-code__tabs" role="tablist">
+        <button type="button" role="tab" class="hp-code__tab is-active" aria-selected="true" data-tab="valuation">Valuation</button>
+        <button type="button" role="tab" class="hp-code__tab" aria-selected="false" data-tab="risk">Risk</button>
+        <button type="button" role="tab" class="hp-code__tab" aria-selected="false" data-tab="macro">Macro</button>
+        <button type="button" role="tab" class="hp-code__tab" aria-selected="false" data-tab="ratios">Ratios</button>
+      </div>
+    </div>
+    <div class="hp-code__panel" role="tabpanel" data-panel="valuation">
 <div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
 toolkit = Toolkit([<span class="s">"AAPL"</span>, <span class="s">"TSLA"</span>], api_key=API_KEY)
 
+<span class="c"># Bankruptcy risk, built up from five balance sheet ratios</span>
+toolkit.models.<span class="f">get_altman_z_score</span>().loc[<span class="s">"AAPL"</span>]</div>
+      <div class="hp-code__out" style="--cols:4">
+        <div class="hp-code__row hp-code__row--head"><span>AAPL</span><span>2023</span><span>2024</span><span>2025</span></div>
+        <div class="hp-code__row"><span>EBIT / Total Assets</span><span>0.33</span><span>0.34</span><span>0.37</span></div>
+        <div class="hp-code__row"><span>Market Value / Liabilities</span><span>10.48</span><span>12.53</span><span>14.29</span></div>
+        <div class="hp-code__row"><span>Sales / Total Assets</span><span>1.09</span><span>1.07</span><span>1.16</span></div>
+        <div class="hp-code__row"><span>Altman Z-Score</span><span>8.47</span><span>9.55</span><span>10.84</span></div>
+      </div>
+    </div>
+    <div class="hp-code__panel" role="tabpanel" data-panel="risk" hidden>
+<div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
+
+toolkit = Toolkit([<span class="s">"AMZN"</span>, <span class="s">"TSLA"</span>], api_key=API_KEY)
+
+<span class="c"># Worst peak-to-trough decline in each year</span>
+toolkit.risk.<span class="f">get_maximum_drawdown</span>()</div>
+      <div class="hp-code__out" style="--cols:5">
+        <div class="hp-code__row hp-code__row--head"><span></span><span>2020</span><span>2021</span><span>2022</span><span>2023</span></div>
+        <div class="hp-code__row"><span>AMZN</span><span>-22.7%</span><span>-14.6%</span><span>-52.0%</span><span>-19.6%</span></div>
+        <div class="hp-code__row"><span>TSLA</span><span>-60.6%</span><span>-36.3%</span><span>-72.7%</span><span>-28.2%</span></div>
+      </div>
+    </div>
+    <div class="hp-code__panel" role="tabpanel" data-panel="macro" hidden>
+<div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Economics
+
+<span class="c"># No API key needed for macroeconomic data</span>
+economics = Economics(start_date=<span class="s">"2022-01-01"</span>)
+
+economics.<span class="f">get_unemployment_rate</span>(
+    countries=[<span class="s">"Germany"</span>, <span class="s">"United States"</span>, <span class="s">"Japan"</span>],
+    period=<span class="s">"quarterly"</span>)</div>
+      <div class="hp-code__out" style="--cols:4">
+        <div class="hp-code__row hp-code__row--head"><span></span><span>Germany</span><span>United States</span><span>Japan</span></div>
+        <div class="hp-code__row"><span>2022Q2</span><span>3.1%</span><span>3.6%</span><span>2.6%</span></div>
+        <div class="hp-code__row"><span>2022Q4</span><span>3.1%</span><span>3.6%</span><span>2.5%</span></div>
+        <div class="hp-code__row"><span>2023Q1</span><span>3.0%</span><span>3.5%</span><span>2.6%</span></div>
+      </div>
+    </div>
+    <div class="hp-code__panel" role="tabpanel" data-panel="ratios" hidden>
+<div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
+
+toolkit = Toolkit([<span class="s">"AAPL"</span>, <span class="s">"TSLA"</span>], api_key=API_KEY)
+
+<span class="c"># One of 150+ ratios, each with its formula documented</span>
 toolkit.ratios.<span class="f">get_price_to_earnings_ratio</span>()</div>
-    <div class="hp-code__out" role="table" aria-label="Price to earnings ratio">
-      <div class="hp-code__row hp-code__row--head" role="row"><span role="columnheader"></span><span role="columnheader">2023</span><span role="columnheader">2024</span><span role="columnheader">2025</span></div>
-      <div class="hp-code__row" role="row"><span role="rowheader">AAPL</span><span role="cell">31.39</span><span role="cell">41.16</span><span role="cell">36.42</span></div>
-      <div class="hp-code__row" role="row"><span role="rowheader">TSLA</span><span role="cell">57.70</span><span role="cell">198.13</span><span role="cell">418.19</span></div>
+      <div class="hp-code__out" style="--cols:4">
+        <div class="hp-code__row hp-code__row--head"><span></span><span>2023</span><span>2024</span><span>2025</span></div>
+        <div class="hp-code__row"><span>AAPL</span><span>31.39</span><span>41.16</span><span>36.42</span></div>
+        <div class="hp-code__row"><span>TSLA</span><span>57.70</span><span>198.13</span><span>418.19</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -169,6 +223,26 @@ toolkit.ratios.<span class="f">get_price_to_earnings_ratio</span>()</div>
       entries.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); co.unobserve(e.target); } });
     }, { threshold: 0.6 });
     counters.forEach(function (c) { co.observe(c); });
+  }
+})();
+
+(function () {
+  // Finance Toolkit example tabs: click to switch, rotate on their own until
+  // someone picks one
+  var box = document.querySelector('[data-tabs]');
+  if (!box) return;
+  var tabs = [].slice.call(box.querySelectorAll('[data-tab]'));
+  function show(key) {
+    tabs.forEach(function (t) { var on = t.getAttribute('data-tab') === key; t.classList.toggle('is-active', on); t.setAttribute('aria-selected', on); });
+    box.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== key; });
+  }
+  var timer = null;
+  tabs.forEach(function (t) { t.addEventListener('click', function () { clearInterval(timer); show(t.getAttribute('data-tab')); }); });
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) {
+    var i = 0;
+    timer = setInterval(function () { i = (i + 1) % tabs.length; show(tabs[i].getAttribute('data-tab')); }, 6000);
+    box.addEventListener('mouseenter', function () { clearInterval(timer); });
   }
 })();
 
