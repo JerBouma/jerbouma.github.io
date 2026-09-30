@@ -50,7 +50,7 @@ entries:
     badge: "Experience"
     title: "a.s.r. asset management"
     subtitle: "Quantitative Investment Strategist"
-    description: "I work within the asset management divisions at the intersection of quantitative finance and AI. As part of the team I have contributed significantly to both building and using the models behind our Solvency II internal model calculations, lifecycle investing and portfolio optimization, as well as to forecasting and generative AI applications built on agentic frameworks and RAG that help us analyze portfolios and risk. I also contribute to the yearly SAA through the economic scenario calibrations and guide several working students in their day-to-day work and with their theses."
+    description: "As part of the team I have contributed significantly to both building and using the models behind our Solvency II internal model calculations, lifecycle investing and portfolio optimization, as well as to forecasting and generative AI applications built on agentic frameworks and RAG that help us analyze portfolios and risk. I also contribute to the yearly SAA through the economic scenario calibrations and guide several working students in their day-to-day work and with their theses."
     expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Economic Scenario Generation", "Agentic Frameworks", "RAG Pipelines", "Machine Learning", "AI Evaluation & Guardrails"]
     skills: ["Python", "Machine Learning", "Agentic Frameworks", "RAG", "GLASS", "SQL", "Databricks", "Azure", "PowerBI", "Git"]
     logo: "/assets/images/resume/asr.png"
