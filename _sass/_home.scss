@@ -388,13 +388,13 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
 
   &__tabs {
     display: flex;
-    gap: 4px;
-    margin-left: 10px;
+    gap: 2px;
+    margin-left: 6px;
     overflow-x: auto;
   }
 
   &__tab {
-    padding: 4px 10px;
+    padding: 4px 8px;
     border: 1px solid transparent;
     border-radius: 7px;
     background: transparent;
@@ -433,12 +433,15 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
     background: rgba(255, 255, 255, 0.03);
     font-size: 0.8rem;
     font-variant-numeric: tabular-nums;
+    overflow-x: auto;
     font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
   }
 
   &__row {
     display: grid;
-    grid-template-columns: 1.4fr repeat(calc(var(--cols, 4) - 1), 1fr);
+    grid-template-columns: minmax(3.2em, 1.4fr) repeat(calc(var(--cols, 4) - 1), minmax(0, 1fr));
+    // wide tables keep readable columns and scroll sideways on phones
+    min-width: calc(var(--cols, 4) * 4.4em);
     gap: 8px;
     padding: 7px 12px;
     color: #c9d1d9;
@@ -448,6 +451,7 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
     span:first-child { text-align: left; color: #e6edf3; font-weight: 600; }
 
     &--head { color: #8b949e; font-weight: 500; }
+    span { white-space: nowrap; }
   }
 }
 
