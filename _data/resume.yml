@@ -14,7 +14,6 @@ headline: "Quantitative Investment Strategist"
 intro:
   - "My background is in Quantitative Finance and most of my work comes down to putting investment theory into practice with Python. I am currently a Quantitative Investment Strategist at a.s.r. asset management, where I help build, maintain and use the models for Solvency II internal model calculations, lifecycle investing, portfolio optimization and ALM across multi-billion euro portfolios. I also contribute to our work at the intersection of quantitative finance and AI, from forecasting models to generative AI built on agentic frameworks and retrieval-augmented generation (RAG)."
   - "Outside of my day job, I’ve built open-source Python libraries such as the <a href=\"https://github.com/JerBouma/FinanceToolkit\">Finance Toolkit</a> and <a href=\"https://github.com/JerBouma/FinanceDatabase\">Finance Database</a>. They are used by thousands of analysts, developers and students worldwide."
-  - "Below you can find my education, certifications, open-source projects and work experience, together with testimonials from colleagues."
 
 
 # areas of expertise in two groups. The CV lists them under the profile; on
@@ -43,10 +42,37 @@ hobbies:
   - label: "Sports"
     text: "I stay active through running, swimming and cycling. Combining the three into a triathlon is on my list for some day."
 
+
+# the /resume journey, oldest first. Every entry below names its chapter and
+# a start (YYYY-MM) that orders it within the chapter.
+chapters:
+  - id: studies
+    short: "Studies"
+    years: "2013 – 2019"
+    title: "Learning the foundations"
+    blurb: "Economics in Groningen, then Banking & Finance in Utrecht. The quantitative track and its Python courses set the direction, and just before graduating I started the Finance Toolkit."
+  - id: pggm
+    short: "PGGM"
+    years: "2019 – 2022"
+    title: "Modelling for pension funds"
+    blurb: "My first job put that into practice with models for Dutch pension funds. Next to it I studied for the CFA and RBA, and in my own time the open-source projects kept growing."
+  - id: openbb
+    short: "OpenBB"
+    years: "2022 – 2023"
+    title: "Open-source finance at OpenBB"
+    blurb: "The Finance Database brought me to a start-up building open-source investment research. Here I learned to lead a team and to turn financial theory into a product people use."
+  - id: asr
+    short: "a.s.r."
+    years: "2023 – now"
+    title: "Quant and AI in asset management"
+    blurb: "Back in institutional asset management, first in financial risk and now as Quantitative Investment Strategist, where quantitative models and AI come together."
+
 entries:
   - type: experience
     active: true
     date: "February 2024 – Present"
+    chapter: asr
+    start: "2024-02"
     badge: "Experience"
     title: "a.s.r. asset management"
     subtitle: "Quantitative Investment Strategist"
@@ -58,6 +84,8 @@ entries:
 
   - type: certification
     date: "June 2026"
+    chapter: asr
+    start: "2026-06"
     badge: "Certification"
     title: "Transforming Your Business with AI"
     subtitle: "INSEAD"
@@ -69,6 +97,8 @@ entries:
 
   - type: experience
     date: "June 2023 – February 2024"
+    chapter: asr
+    start: "2023-06"
     badge: "Experience"
     title: "a.s.r. asset management"
     subtitle: "Financial Risk Analyst"
@@ -80,6 +110,8 @@ entries:
 
   - type: certification
     date: "August 2022"
+    chapter: openbb
+    start: "2022-08"
     badge: "Certification"
     title: "Certified ScrumMaster (CSM)"
     subtitle: "Product Owner"
@@ -87,6 +119,8 @@ entries:
 
   - type: experience
     date: "February 2022 – June 2023"
+    chapter: openbb
+    start: "2022-02"
     badge: "Experience"
     title: "OpenBB"
     subtitle: "Product Manager"
@@ -118,6 +152,8 @@ entries:
 
   - type: education
     date: "September 2020 – June 2023"
+    chapter: pggm
+    start: "2020-09"
     badge: "Education"
     title: "CFA Society Netherlands"
     subtitle: "Register Beleggingsanalist (RBA)"
@@ -129,6 +165,8 @@ entries:
 
   - type: certification
     date: "January 2020"
+    chapter: pggm
+    start: "2020-01"
     badge: "Certification"
     title: "Chartered Financial Analyst (CFA)"
     subtitle: "Level 1"
@@ -137,8 +175,11 @@ entries:
   - type: opensource
     active: true
     date: "2020 – Present"
+    chapter: pggm
+    start: "2020-06"
     badge: "Open Source"
     title: "Finance Database"
+    icon: "fa-database"
     github: "https://github.com/JerBouma/FinanceDatabase"
     subtitle: "Creator &amp; Maintainer (7,000+ GitHub Stars)"
     description: "An open-source database with 300,000+ symbols covering Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It gives an overview of sectors, industries and investment types across 111 countries. I started it out of frustration that I did not know which financial products existed. OpenBB later came across the project, which led to a job offer."
@@ -148,6 +189,8 @@ entries:
 
   - type: experience
     date: "July 2019 – February 2022"
+    chapter: pggm
+    start: "2019-07"
     badge: "Experience"
     title: "PGGM"
     subtitle: "ALM Advisor"
@@ -176,8 +219,11 @@ entries:
   - type: opensource
     active: true
     date: "May 2019 – Present"
+    chapter: studies
+    start: "2019-05"
     badge: "Open Source"
     title: "Finance Toolkit"
+    icon: "fa-toolbox"
     github: "https://github.com/JerBouma/FinanceToolkit"
     subtitle: "Creator &amp; Maintainer (5,000+ GitHub Stars)"
     description: "An open-source toolkit with 500+ financial methods, each written to be as transparent as possible. It supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Combined with the Finance Database, it lets you do a full competitive analysis. It is used by thousands of analysts, developers and students worldwide."
@@ -188,6 +234,8 @@ entries:
 
   - type: education
     date: "September 2017 – June 2019"
+    chapter: studies
+    start: "2017-09"
     badge: "Education"
     title: "Utrecht University"
     subtitle: "MSc Banking &amp; Finance"
@@ -199,6 +247,8 @@ entries:
 
   - type: education
     date: "September 2013 – July 2017"
+    chapter: studies
+    start: "2013-09"
     badge: "Education"
     title: "Hanze University of Applied Sciences"
     subtitle: "Bachelor of Economics (BEc)"

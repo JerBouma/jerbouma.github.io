@@ -1,0 +1,85 @@
+{%- comment -%}
+  The /resume journey, rendered from _data/resume.yml: one section per
+  chapter (oldest first), each with a short story and its entries ordered by
+  start. Certifications are small milestones; the other entries are cards.
+{%- endcomment -%}
+{%- assign r = site.data.resume -%}
+<div class="rj-journey" id="journey">
+  <div class="rj-rail" aria-hidden="true"><span class="rj-rail__fill"></span></div>
+  {%- for ch in r.chapters %}
+  {%- assign items = r.entries | where: "chapter", ch.id | sort: "start" %}
+  <section class="rj-chapter" id="{{ ch.id }}">
+    <header class="rj-chapter__head" data-reveal>
+      <span class="rj-chapter__marker" aria-hidden="true">{{ forloop.index }}</span>
+      <p class="hp-kicker">Chapter {{ forloop.index }} · {{ ch.years }}</p>
+      <h2 class="hp-h2">{{ ch.title }}</h2>
+      <p class="rj-chapter__blurb">{{ ch.blurb }}</p>
+    </header>
+    <div class="rj-items">
+      {%- for e in items %}
+      {%- if e.type == "certification" %}
+      <div class="rj-milestone" data-reveal>
+        <span class="rj-milestone__icon" aria-hidden="true"><i class="fas fa-award"></i></span>
+        <div class="rj-milestone__body">
+          <p class="rj-meta"><span class="rj-badge rj-badge--certification">Certification</span><span class="rj-date">{{ e.date }}</span></p>
+          <h3>{{ e.title }} <span>· {{ e.subtitle }}</span></h3>
+          <p class="rj-milestone__text">{{ e.description }}</p>
+          {%- if e.link %}
+          <a class="hp-link rj-milestone__link" href="{{ e.link.url }}" target="_blank" rel="noopener">{{ e.link.label }} <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+          {%- endif %}
+        </div>
+      </div>
+      {%- else %}
+      {%- if e.type == "opensource" %}{% assign heading = e.title %}{% assign sub = e.subtitle %}{% else %}{% assign heading = e.subtitle %}{% assign sub = e.title %}{% endif %}
+      <article class="rj-card rj-card--{{ e.type }}{% if e.active %} is-active{% endif %}" data-reveal>
+        <div class="rj-card__head">
+          {%- if e.icon %}
+          <span class="rj-card__logo rj-card__logo--icon" aria-hidden="true"><i class="fas {{ e.icon }}"></i></span>
+          {%- elsif e.logo %}
+          <span class="rj-card__logo"><img src="{{ e.logo }}" alt="{{ e.logo_alt }}" loading="lazy"></span>
+          {%- endif %}
+          <div>
+            <p class="rj-meta"><span class="rj-badge rj-badge--{{ e.type }}">{% if e.active and e.type == "experience" %}Current role{% else %}{{ e.badge }}{% endif %}</span><span class="rj-date">{{ e.date }}</span></p>
+            <h3>{{ heading }}</h3>
+            <p class="rj-card__org">{{ sub }}</p>
+          </div>
+        </div>
+        <p class="rj-card__text">{{ e.description }}</p>
+        {%- if e.expertise %}
+        <div class="rj-tags">
+          {%- for g in r.expertise %}{% for x in e.expertise %}{% if g.items contains x %}<span class="rj-tag rj-tag--{{ g.key }}">{{ x }}</span>{% endif %}{% endfor %}{% endfor %}
+        </div>
+        {%- endif %}
+        {%- if e.skills or e.github %}
+        <div class="rj-card__foot">
+          {%- if e.skills %}<p class="rj-tools"><span>Tools</span>{{ e.skills | join: " · " }}</p>{% endif %}
+          {%- if e.github %}<a class="hp-link" href="{{ e.github }}" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> View on GitHub</a>{% endif %}
+        </div>
+        {%- endif %}
+        {%- if e.testimonials %}
+        {%- assign first = e.testimonials | first %}
+        <figure class="rj-quote">
+          <blockquote>“{{ first.excerpt | default: first.quote | strip_html }}”</blockquote>
+          <figcaption><img src="{{ first.image }}" alt="{{ first.name }}" loading="lazy"><span><strong>{{ first.name }}</strong>{{ first.role }}</span></figcaption>
+        </figure>
+        <details class="rj-testimonials">
+          <summary>Read {% if e.testimonials.size > 1 %}all {{ e.testimonials.size }} testimonials{% else %}the full testimonial{% endif %} <i class="fas fa-chevron-down" aria-hidden="true"></i></summary>
+          {%- for t in e.testimonials %}
+          <div class="rj-testimonial">
+            <div class="rj-testimonial__who"><img src="{{ t.image }}" alt="{{ t.name }}" loading="lazy"><span><a href="{{ t.linkedin }}" target="_blank" rel="noopener">{{ t.name }}</a>{{ t.role }}</span></div>
+            <blockquote>{{ t.quote }}</blockquote>
+          </div>
+          {%- endfor %}
+        </details>
+        {%- endif %}
+      </article>
+      {%- endif %}
+      {%- endfor %}
+    </div>
+  </section>
+  {%- endfor %}
+  <div class="rj-now" data-reveal>
+    <span class="rj-now__dot" aria-hidden="true"></span>
+    <p><strong>Today</strong> I'm a Quantitative Investment Strategist at a.s.r. asset management, and I still maintain the Finance Toolkit and Finance Database in my own time.</p>
+  </div>
+</div>
