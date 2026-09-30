@@ -23,7 +23,7 @@ intro:
 expertise:
   - group: "Quantitative Finance"
     key: quant
-    items: ["Strategic Asset Allocation", "Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Economic Scenarios", "Econometrics & Time Series", "Factor Models"]
+    items: ["Strategic Asset Allocation", "Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Economic Scenario Generation", "Econometrics & Time Series", "Factor Models"]
   - group: "Artificial Intelligence"
     key: ai
     items: ["Agentic Frameworks", "RAG Pipelines", "Machine Learning", "AI Evaluation & Guardrails"]
@@ -34,6 +34,15 @@ languages:
   - name: "English"
     level: "Professional"
 
+# shown at the bottom of /resume and of the CV
+hobbies:
+  - label: "Tinkering"
+    text: "Home automation, mini PCs and home servers, and many programming experiments in the financial domain"
+  - label: "Food & Wine"
+    text: "Cooking and wine tasting"
+  - label: "Sports"
+    text: "Running, swimming and cycling, with a triathlon on the list some day"
+
 entries:
   - type: experience
     active: true
@@ -42,7 +51,7 @@ entries:
     title: "a.s.r. asset management"
     subtitle: "Quantitative Investment Strategist"
     description: "I work within the asset management divisions at the intersection of quantitative finance and AI. As part of the team I have contributed significantly to both building and using the models behind our Solvency II internal model calculations, lifecycle investing and portfolio optimization, as well as to forecasting and generative AI applications built on agentic frameworks and RAG that help us analyze portfolios and risk. I also contribute to the yearly SAA through the economic scenario calibrations and guide several working students in their day-to-day work and with their theses."
-    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Economic Scenarios", "Agentic Frameworks", "RAG Pipelines", "Machine Learning", "AI Evaluation & Guardrails"]
+    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Economic Scenario Generation", "Agentic Frameworks", "RAG Pipelines", "Machine Learning", "AI Evaluation & Guardrails"]
     skills: ["Python", "Machine Learning", "Agentic Frameworks", "RAG", "GLASS", "SQL", "Databricks", "Azure", "PowerBI", "Git"]
     logo: "/assets/images/resume/asr.png"
     logo_alt: "a.s.r. asset management logo"
@@ -143,7 +152,7 @@ entries:
     title: "PGGM"
     subtitle: "ALM Advisor"
     description: "I gave actuarial and strategic advice to several Dutch pension funds. I was responsible for developing and maintaining the econometric model in MATLAB and led most of the technical development of the new econometric model in Python. These models performed the ALM, URM and VEV calculations. I also worked on interactive dashboards and GUIs and on applying Machine Learning techniques."
-    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Economic Scenarios", "Econometrics & Time Series", "Machine Learning"]
+    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Economic Scenario Generation", "Econometrics & Time Series", "Machine Learning"]
     skills: ["Python", "Machine Learning", "MATLAB", "Azure", "VBA", "PowerBI", "Git"]
     logo: "/assets/images/resume/pggm.png"
     logo_alt: "PGGM logo"

@@ -92,10 +92,11 @@ title: "Jeroen Bouma - CV"
   .side .tags { margin-top: 0; }
   .side .tag { background: #fff; border: 0.5pt solid var(--rule); }
 
-  .exp-group { display: grid; grid-template-columns: 22mm 1fr; gap: 3mm; margin-bottom: 2.2mm; padding-bottom: 2.2mm; border-bottom: 0.5pt solid var(--rule); break-inside: avoid; }
+  .exp-group { display: grid; grid-template-columns: 20mm 1fr; gap: 2.5mm; margin-bottom: 2.2mm; padding-bottom: 2.2mm; border-bottom: 0.5pt solid var(--rule); break-inside: avoid; }
   .exp-group:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .hobby { margin: 0; font-size: 8.4pt; line-height: 1.35; color: var(--ink); }
   .exp-title { margin: 0; font-size: 8.4pt; line-height: 1.35; font-weight: 600; color: var(--accent); }
-  .expertise { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 4mm; }
+  .expertise { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 3mm; }
   .expertise li { position: relative; padding-left: 2.8mm; font-size: 8pt; line-height: 1.45; color: var(--ink); break-inside: avoid; }
   .expertise li::before { content: ""; position: absolute; left: 0; top: 1.9mm; width: 1.1mm; height: 1.1mm; border-radius: 50%; background: var(--accent); }
 
@@ -171,6 +172,16 @@ title: "Jeroen Bouma - CV"
           <div class="org">{{ e.subtitle }}</div>
           {%- if e.github %}<a class="gh" href="{{ e.github }}"><i class="fab fa-github"></i> {{ e.github | remove: "https://" }}</a>{% endif %}
           <p>{{ e.description | strip_html }}</p>
+        </div>
+        {%- endfor %}
+      </section>
+
+      <section>
+        <h2>Hobbies</h2>
+        {%- for h in cv.hobbies %}
+        <div class="exp-group">
+          <h3 class="exp-title">{{ h.label }}</h3>
+          <p class="hobby">{{ h.text }}</p>
         </div>
         {%- endfor %}
       </section>

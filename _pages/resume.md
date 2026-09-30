@@ -33,3 +33,12 @@ author_profile: false
 </div>
 
 {% include resume-timeline.html %}
+
+<div class="resume-hobbies">
+<h2>Hobbies</h2>
+<div class="resume-facts">
+{%- for h in site.data.resume.hobbies %}
+<div class="resume-facts__row"><span class="resume-facts__label">{{ h.label }}</span><span class="resume-facts__text">{{ h.text }}</span></div>
+{%- endfor %}
+</div>
+</div>
