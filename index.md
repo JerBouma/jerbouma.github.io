@@ -3,301 +3,190 @@ layout: splash
 title: "Jeroen Bouma"
 description: "Jeroen Bouma, Quantitative Investment Strategist, creator of the open-source Finance Toolkit and Finance Database Python libraries (10,000+ GitHub stars)."
 excerpt: "Quantitative Investment Strategist and Python developer. Creator of Finance Toolkit and Finance Database."
-classes: custom-splash
+classes: custom-splash home-v2
 ---
+{%- assign latest_articles = site.pages | where: "collection", "article" | sort: "date" | reverse -%}
+<div class="hp">
 
-<div class="hero-section">
-  <div class="hero-glow blob-1"></div>
-  <div class="hero-glow blob-2"></div>
-  <div class="hero-inner">
-    <div class="hero-text">
-      <h1 class="hero-title">Hi there, I'm  <span class="hero-signature">Jeroen Bouma</span></h1>
-      <p class="hero-tagline">Quantitative Investment Strategist</p>
-      <p class="hero-bio">
-        My background is in Quantitative Finance and I do most of my work in Python. This site collects my open-source projects, including the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a> (over 10,000 GitHub Stars combined), my articles on applied financial analysis and my guides on building financial models in Python.
-      </p>
-    </div>
-    <div class="hero-photo">
-      <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma" width="640" height="654" fetchpriority="high">
+<section class="hp-hero">
+  <div class="hp-hero__glow" aria-hidden="true"></div>
+  <div class="hp-hero__text">
+    <p class="hp-eyebrow"><span class="hp-dot"></span>Quantitative Investment Strategist at a.s.r. asset management</p>
+    <h1 class="hp-title">Where quantitative finance <span class="hp-accent">meets AI.</span></h1>
+    <p class="hp-lead">I'm <strong>Jeroen Bouma</strong>. I turn investment theory into working models, from strategic asset allocation and ALM to AI-assisted analysis, and share the tools I build as open source.</p>
+    <div class="hp-actions">
+      <a href="/resume" class="hp-btn hp-btn--primary">View my resume <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      <a href="/projects" class="hp-btn hp-btn--ghost">Explore my projects</a>
     </div>
   </div>
-</div>
-
-<div class="stats-band" aria-label="Key statistics">
-  <a href="/projects" class="stat-item">
-    <span class="stat-number" data-stat="stars" data-target="12000" data-suffix="+">12,000+</span>
-    <span class="stat-label">GitHub Stars</span>
-  </a>
-  <a href="/projects/financetoolkit" class="stat-item">
-    <span class="stat-number" data-stat="ratios" data-target="500" data-suffix="+">500+</span>
-    <span class="stat-label">Financial Metrics</span>
-  </a>
-  <a href="/projects" class="stat-item">
-    <span class="stat-number" data-stat="downloads" data-target="50000" data-suffix="+">50,000+</span>
-    <span class="stat-label" style="font-size: 0.60rem;">Downloads per Month</span>
-  </a>
-</div>
-
-<div class="bento-grid bento-grid--three">
-
-  <a href="/projects" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-code-branch bento-icon"></i>
-      <h2>Open-Source Projects</h2>
-      <p>Python libraries for Financial Datasets and Financial Modelling, including the Finance Toolkit MCP Server that brings them to AI assistants.</p>
+  <div class="hp-hero__visual">
+    <div class="hp-portrait">
+      <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma" width="640" height="654" fetchpriority="high">
     </div>
-  </a>
+    <div class="hp-chip hp-chip--a"><i class="fab fa-github" aria-hidden="true"></i><span><strong data-stars>15,500+</strong> GitHub stars</span></div>
+    <div class="hp-chip hp-chip--b"><i class="fas fa-chart-line" aria-hidden="true"></i><span><strong>500+</strong> financial metrics</span></div>
+  </div>
+</section>
 
-  <a href="/articles" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-newspaper bento-icon"></i>
-      <h2>Articles</h2>
-      <p>Write-ups on Valuation, Risk, Macro and AI-assisted analysis, each with the open-source code that produced the results.</p>
-    </div>
-  </a>
+<section data-reveal class="hp-logos" aria-label="Where I have worked and studied">
+  <p class="hp-logos__label">Experience and education</p>
+  <div class="hp-logos__row">
+    <span class="hp-logos__tile"><img src="/assets/images/resume/asr.png" alt="a.s.r. asset management" loading="lazy"></span>
+    <span class="hp-logos__tile"><img src="/assets/images/resume/pggm.png" alt="PGGM" loading="lazy"></span>
+    <span class="hp-logos__tile"><img src="/assets/images/resume/openbb.png" alt="OpenBB" loading="lazy"></span>
+    <span class="hp-logos__tile"><img src="/assets/images/resume/cfasocietynetherlands.png" alt="CFA Society Netherlands" loading="lazy"></span>
+    <span class="hp-logos__tile"><img src="/assets/images/resume/utrechtuniversity.png" alt="Utrecht University" loading="lazy"></span>
+  </div>
+</section>
 
-  <a href="/modelling/introduction" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-chart-line bento-icon"></i>
-      <h2>Financial Modelling</h2>
-      <p>Guides on building Professional Financial Models in Python that last.</p>
-    </div>
-  </a>
+<section data-reveal class="hp-section">
+  <p class="hp-kicker">Explore</p>
+  <h2 class="hp-h2">Everything in one place</h2>
+  <div class="hp-pillars">
+    <a class="hp-pillar" href="/resume">
+      <i class="fas fa-briefcase" aria-hidden="true"></i>
+      <h3>Experience</h3>
+      <p>Investment strategy at a.s.r., ALM at PGGM and product management at OpenBB.</p>
+      <span class="hp-more">Resume <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+    </a>
+    <a class="hp-pillar" href="/projects">
+      <i class="fas fa-code-branch" aria-hidden="true"></i>
+      <h3>Open Source</h3>
+      <p>The Finance Toolkit, Finance Database and an MCP server that brings them to AI assistants.</p>
+      <span class="hp-more">Projects <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+    </a>
+    <a class="hp-pillar" href="/modelling/introduction">
+      <i class="fas fa-cubes" aria-hidden="true"></i>
+      <h3>Financial Modelling</h3>
+      <p>A practical guide to building financial models in Python that stay maintainable.</p>
+      <span class="hp-more">Guide <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+    </a>
+    <a class="hp-pillar" href="/appearances">
+      <i class="fas fa-microphone" aria-hidden="true"></i>
+      <h3>Talks &amp; Writing</h3>
+      <p>Talks at universities and conferences, articles and a curated reading list.</p>
+      <span class="hp-more">Media <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+    </a>
+  </div>
+</section>
 
-  <a href="/resume" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-briefcase bento-icon"></i>
-      <h2>Professional Experience</h2>
-      <p>My work so far in Quantitative Asset Management, Open Source development and Finance education.</p>
+<section data-reveal class="hp-spotlight">
+  <div class="hp-spotlight__text">
+    <p class="hp-kicker">Featured project</p>
+    <h2 class="hp-h2">The Finance Toolkit</h2>
+    <p>An open-source Python library with 500+ financial methods, from ratios and valuation models to risk, performance and econometrics. Every formula is written out, so you can see exactly how a number is calculated. The MCP server makes all of it available to AI assistants such as Claude and ChatGPT.</p>
+    <div class="hp-stats">
+      <div><strong data-stars data-count>15,500+</strong><span>GitHub stars</span></div>
+      <div><strong data-count>500+</strong><span>financial methods</span></div>
+      <div><strong data-count>50,000+</strong><span>downloads a month</span></div>
     </div>
-  </a>
+    <div class="hp-actions">
+      <a href="/projects/financetoolkit" class="hp-btn hp-btn--primary">Explore the Finance Toolkit</a>
+      <a href="/projects/financetoolkit/mcp" class="hp-btn hp-btn--ghost">Use it with AI</a>
+    </div>
+  </div>
+  <div class="hp-code" aria-label="Finance Toolkit example">
+    <div class="hp-code__bar"><span></span><span></span><span></span><em>example.py</em></div>
+<div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
-  <a href="/appearances" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-microphone bento-icon"></i>
-      <h2>Appearances</h2>
-      <p>Recorded Talks and public appearances on Financial Markets, Python and Open Source.</p>
-    </div>
-  </a>
+toolkit = Toolkit([<span class="s">"AAPL"</span>, <span class="s">"TSLA"</span>], api_key=API_KEY)
 
-  <a href="/literature" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-book-open bento-icon"></i>
-      <h2>Literature</h2>
-      <p>A reading list of Papers, Books and Articles on Quantitative Finance and Investing.</p>
+toolkit.ratios.<span class="f">get_price_to_earnings_ratio</span>()</div>
+    <div class="hp-code__out" role="table" aria-label="Price to earnings ratio">
+      <div class="hp-code__row hp-code__row--head" role="row"><span role="columnheader"></span><span role="columnheader">2023</span><span role="columnheader">2024</span><span role="columnheader">2025</span></div>
+      <div class="hp-code__row" role="row"><span role="rowheader">AAPL</span><span role="cell">31.39</span><span role="cell">41.16</span><span role="cell">36.42</span></div>
+      <div class="hp-code__row" role="row"><span role="rowheader">TSLA</span><span role="cell">57.70</span><span role="cell">198.13</span><span role="cell">418.19</span></div>
     </div>
-  </a>
+  </div>
+</section>
+
+<section data-reveal class="hp-section hp-writing">
+  <div class="hp-writing__head">
+    <div>
+      <p class="hp-kicker">Writing</p>
+      <h2 class="hp-h2">Latest articles</h2>
+    </div>
+    <a href="/articles" class="hp-link">All articles <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+  </div>
+  <div class="hp-list">
+    {%- for article in latest_articles limit: 3 %}
+    <a class="hp-list__item" href="{{ article.url | relative_url }}">
+      <span class="hp-list__date">{{ article.date | date: "%b %Y" }}</span>
+      <span class="hp-list__title">{{ article.title }}</span>
+      <i class="fas fa-arrow-right" aria-hidden="true"></i>
+    </a>
+    {%- endfor %}
+  </div>
+</section>
+
+<section data-reveal class="hp-quote">
+  <blockquote>“Jeroen was at the intersection of finance, programming and open source, which is a combination that is very hard to find.”</blockquote>
+  <div class="hp-quote__who">
+    <img src="/assets/images/testimonials/DidierLopes.jpeg" alt="Didier Lopes" loading="lazy">
+    <div><strong>Didier Lopes</strong><span>CEO at OpenBB</span></div>
+  </div>
+  <a href="/resume" class="hp-link">Read more testimonials <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</section>
+
+<section data-reveal class="hp-cta">
+  <h2 class="hp-h2">Let's talk</h2>
+  <p>A question about the projects, an idea for a collaboration or a talk? I'm always happy to hear from you.</p>
+  <div class="hp-actions hp-actions--center">
+    <a href="/contact" class="hp-btn hp-btn--primary">Get in touch</a>
+    <a href="https://www.linkedin.com/in/boumajeroen/" class="hp-btn hp-btn--ghost" target="_blank"><i class="fab fa-linkedin" aria-hidden="true"></i> LinkedIn</a>
+  </div>
+</section>
+
 </div>
 
 <script>
 (function () {
-  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* -- Count-up -- */
-  function fmt(n, target) {
-    return target >= 1000 ? n.toLocaleString('en-US') : String(n);
+  // fade sections in as they scroll into view
+  var sections = document.querySelectorAll('[data-reveal]');
+  if (!reduce && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('hp-js');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    sections.forEach(function (s) { io.observe(s); });
   }
+
+  // count the spotlight numbers up once they are visible
   function countUp(el) {
-    var target = parseInt(el.getAttribute('data-target'), 10);
-    var suffix = el.getAttribute('data-suffix') || '';
-    if (reduced) { el.textContent = fmt(target, target) + suffix; return; }
-    var duration = 1600, start = null;
+    var text = el.textContent, target = parseInt(text.replace(/[^0-9]/g, ''), 10);
+    if (!target || reduce) return;
+    var start = null;
     function step(ts) {
       if (!start) start = ts;
-      var p = Math.min((ts - start) / duration, 1);
-      var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = fmt(Math.round(eased * target), target) + (p >= 1 ? suffix : '');
+      var p = Math.min((ts - start) / 1400, 1), v = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      el.textContent = v.toLocaleString('en-US') + (p === 1 ? '+' : '');
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   }
+  var counters = document.querySelectorAll('[data-count]');
+  if ('IntersectionObserver' in window) {
+    var co = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); co.unobserve(e.target); } });
+    }, { threshold: 0.6 });
+    counters.forEach(function (c) { co.observe(c); });
+  }
+})();
 
-  var starsEl = document.querySelector('.stat-number[data-stat="stars"]');
-  var ratiosEl = document.querySelector('.stat-number[data-stat="ratios"]');
-  var dlEl = document.querySelector('.stat-number[data-stat="downloads"]');
-
-  /* -- Live GitHub stars -- */
-  var ghRepos = ['JerBouma/FinanceToolkit', 'JerBouma/FinanceDatabase', 'JerBouma/ThePassiveInvestor', 'JerBouma/PersonalFinance'];
-  var starsPromise = starsEl ? Promise.all(ghRepos.map(function (repo) {
-    return fetch('https://api.github.com/repos/' + repo)
-      .then(function (r) { return r.json(); })
-      .then(function (d) { return d.stargazers_count || 0; })
-      .catch(function () { return 0; });
+(function () {
+  // live GitHub star total across the main repositories, rounded down to the hundred
+  var targets = document.querySelectorAll('[data-stars]');
+  if (!targets.length || !window.fetch) return;
+  var repos = ['JerBouma/FinanceToolkit', 'JerBouma/FinanceDatabase', 'JerBouma/ThePassiveInvestor', 'JerBouma/PersonalFinance'];
+  Promise.all(repos.map(function (r) {
+    return fetch('https://api.github.com/repos/' + r).then(function (x) { return x.json(); }).then(function (d) { return d.stargazers_count || 0; }).catch(function () { return 0; });
   })).then(function (counts) {
     var total = counts.reduce(function (a, b) { return a + b; }, 0);
-    if (total > 0) starsEl.setAttribute('data-target', Math.floor(total / 100) * 100);
-  }).catch(function () {}) : Promise.resolve();
-
-  /* -- Live PyPI monthly downloads disabled, fixed at 50k+ -- */
-  var dlPromise = Promise.resolve();
-
-  /* -- Animate after live data resolves (falls back to hardcoded targets on error) -- */
-  Promise.all([starsPromise, dlPromise]).then(function () {
-    [starsEl, ratiosEl, dlEl].forEach(function (el) { if (el) countUp(el); });
+    if (total < 1000) return;
+    var text = (Math.floor(total / 100) * 100).toLocaleString('en-US') + '+';
+    targets.forEach(function (el) { el.textContent = text; });
   });
-
-}());
+})();
 </script>
-
-<div class="section-divider"></div>
-
-<h2 class="section-title text-center gradient-title">Latest Articles</h2>
-
-{% assign latest_articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
-<div class="article-list home-articles">
-{% for article in latest_articles limit: 3 %}
-  <a href="{{ article.url | relative_url }}" class="article-card">
-    <div class="article-card__meta">
-      <span class="article-card__date">{{ article.date | date: "%-d %B %Y" }}</span>
-    </div>
-    <h3 class="article-card__title">{{ article.title }}</h3>
-    {% if article.excerpt %}<p class="article-card__excerpt">{{ article.excerpt | strip_html }}</p>{% endif %}
-  </a>
-{% endfor %}
-</div>
-
-<p class="home-articles__more"><a href="/articles" class="btn btn--outline">All Articles</a></p>
-
-<div class="section-divider"></div>
-
-<h2 class="section-title text-center gradient-title">Testimonials</h2>
-
-<div class="testimonial-slider">
-
-  <div class="testimonial-slide">
-    <div class="testimonial-content">
-      <div class="testimonial-image">
-        <a href="/resume"><img src="/assets/images/testimonials/MinhHoang.jpeg" alt="MinhHoang" class="testimoninals"></a>
-      </div>
-      <div class="testimonial-text">
-        <strong>Minh Hoang - Product Manager at OpenBB</strong>
-        <em>"I highly recommend Jeroen as an asset in any organization. Jeroen led and executed OpenBB's go-to-market initiatives, including Academia, with exceptional skill. It is not easy to find Jeroen's combination of solid finance knowledge and Programming knowledge."</em>
-        <div class="testimonial-action">
-          <a href="/resume" class="btn btn--info">Read More</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="testimonial-slide">
-    <div class="testimonial-content">
-      <div class="testimonial-image">
-        <a href="/resume"><img src="/assets/images/testimonials/SriChilukuri.jpeg" alt="SriChilukuri" class="testimoninals"></a>
-      </div>
-      <div class="testimonial-text">
-        <strong>Sri Chilukuri - VP of Product Marketing at OpenBB</strong>
-        <em>"Jeroen has been a delight to work with. With his expertise in investment research and "can do" attitude, he quickly transformed himself into an excellent product marketing manager at OpenBB. In fact, I would not hesitate to say that he was often the lone sane voice in helping steer the heavily engineering-centric company in the right business direction."</em>
-        <div class="testimonial-action">
-          <a href="/resume" class="btn btn--info">Read More</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="testimonial-slide">
-    <div class="testimonial-content">
-      <div class="testimonial-image">
-        <a href="/resume"><img src="/assets/images/testimonials/LuukvanBenthem.jpeg" alt="LuukvanBenthem" class="testimoninals"></a>
-      </div>
-      <div class="testimonial-text">
-        <strong>Luuk van Benthem - Senior ALM Adviseur at PGGM</strong>
-        <em>"Jeroen joined our team just at the right time. As we were considering a full redevelopment of our ALM model, Jeroen's knowledge of Python first greatly helped us in the decision process. In the implementation phase Jeroen played a key role on the development of the technical side of the model. Meanwhile he did a good job at educating our team on these new topics and providing good documentation."</em>
-        <div class="testimonial-action">
-          <a href="/resume" class="btn btn--info">Read More</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="testimonial-slide">
-    <div class="testimonial-content">
-      <div class="testimonial-image">
-        <a href="/resume"><img src="/assets/images/testimonials/PascalJanssen.jpeg" alt="PascalJanssen" class="testimoninals"></a>
-      </div>
-      <div class="testimonial-text">
-        <strong>Pascal Janssen - Strategisch ALM Adviseur at PGGM</strong>
-        <em>"(Written in Dutch) Jeroen is zeer bedreven in alle facetten van programmeren in Python. Zijn kennis en ervaring op het gebied van Python hebben een grote meerwaarde geleverd voor mijn afdeling. Jeroen is scherp als het aankomt op het juist implementeren van code in Python. Daarnaast is hij ook bedreven in het draaiend krijgen en houden van Python op werkplekken en de ondersteuning die hierbij nodig is."</em>
-        <div class="testimonial-action">
-          <a href="/resume" class="btn btn--info">Read More</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="testimonial-slide">
-    <div class="testimonial-content">
-      <div class="testimonial-image">
-        <a href="/resume"><img src="/assets/images/testimonials/DidierLopes.jpeg" alt="DidierLopes" class="testimoninals"></a>
-      </div>
-      <div class="testimonial-text">
-        <strong>Didier Lopes - CEO at OpenBB</strong>
-        <em>"On the 13th of October 2021, I received an email from Jeroen about adding one of his finance GitHub packages to the OpenBB Terminal. After digging into his open source projects and his achievements I was very impressed. When we had a chat regarding how to work together, I offered him a job on the spot. Jeroen was at the intersection of finance, programming and open source - which is a combination that is very hard to find - even today."</em>
-        <div class="testimonial-action">
-          <a href="/resume" class="btn btn--info">Read More</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div class="testimonial-controls">
-  <button class="testimonial-btn" id="testimonial-prev" aria-label="Previous testimonial"><i class="fas fa-chevron-left"></i></button>
-  <div class="testimonial-dots" id="testimonial-dots"></div>
-  <button class="testimonial-btn" id="testimonial-next" aria-label="Next testimonial"><i class="fas fa-chevron-right"></i></button>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const slides = document.querySelectorAll('.testimonial-slide');
-  const dotsContainer = document.getElementById('testimonial-dots');
-  let currentIndex = 0;
-  let timer;
-
-  // Build dots
-  slides.forEach((_, i) => {
-    const dot = document.createElement('button');
-    dot.className = 'testimonial-dot' + (i === 0 ? ' active' : '');
-    dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
-    dot.addEventListener('click', () => { goTo(i); resetTimer(); });
-    dotsContainer.appendChild(dot);
-  });
-
-  function goTo(index) {
-    currentIndex = index;
-    slides.forEach((slide) => {
-      slide.style.transform = `translateX(-${currentIndex * 100}%)`;
-    });
-    document.querySelectorAll('.testimonial-dot').forEach((dot, i) => {
-      dot.classList.toggle('active', i === currentIndex);
-    });
-  }
-
-  function resetTimer() {
-    clearInterval(timer);
-    timer = setInterval(() => goTo((currentIndex + 1) % slides.length), 10000);
-  }
-
-  document.getElementById('testimonial-prev').addEventListener('click', () => {
-    goTo((currentIndex - 1 + slides.length) % slides.length);
-    resetTimer();
-  });
-
-  document.getElementById('testimonial-next').addEventListener('click', () => {
-    goTo((currentIndex + 1) % slides.length);
-    resetTimer();
-  });
-
-  if (slides.length > 1) {
-    resetTimer();
-  }
-});
-</script>
-
-<div class="section-divider"></div>
-
-<div class="home-contact">
-  <h2 class="section-title gradient-title">Let's Talk</h2>
-  <p>If you have a question about the projects, an idea for a collaboration or a talk, or just want to discuss financial theory, feel free to send me a message.</p>
-  <a href="/contact" class="btn btn--info">Get in Touch</a>
-</div>
