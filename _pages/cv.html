@@ -111,7 +111,9 @@ title: "Jeroen Bouma - CV"
   .ref strong { display: block; font-size: 9.2pt; font-weight: 600; }
   .ref .role { display: block; font-size: 8pt; color: var(--muted); margin-bottom: 1.2mm; }
   .ref blockquote { margin: 0; font-size: 8.2pt; line-height: 1.45; color: #3a4252; font-style: italic; }
-  .ref .li { display: inline-block; margin-top: 1mm; font-size: 7.6pt; color: var(--accent); }
+  .refs-more { margin: 4.5mm 0 0; padding-top: 3mm; border-top: 0.5pt solid var(--rule); font-size: 7.8pt; line-height: 1.45; color: var(--muted); }
+  .refs-more a { color: var(--accent); }
+  .refs-more i { color: var(--accent); margin-right: 0.8mm; }
 </style>
 </head>
 <body>
@@ -231,11 +233,11 @@ title: "Jeroen Bouma - CV"
               <strong>{{ t.name }}</strong>
               <span class="role">{{ t.role }}</span>
               <blockquote>“{{ quote }}”{% if t.excerpt_note %} <span class="note">({{ t.excerpt_note }})</span>{% endif %}</blockquote>
-              <a class="li" href="https://www.linkedin.com/in/boumajeroen/details/recommendations/"><i class="fab fa-linkedin"></i> Read in full on LinkedIn</a>
             </div>
           </div>
           {%- endfor %}{% endfor %}
         </div>
+        <p class="refs-more"><i class="fab fa-linkedin"></i> More about my referees and their full recommendations on <a href="https://www.linkedin.com/in/boumajeroen/">linkedin.com/in/boumajeroen</a></p>
       </section>
     </aside>
   </div>
