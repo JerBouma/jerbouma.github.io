@@ -5928,12 +5928,10 @@ body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
 // Delivery). The colours differ from the entry-type colours of the timeline.
 .expertise-quant   { --expertise-dot: #f97316; }
 .expertise-ai      { --expertise-dot: #e879f9; }
-.expertise-product { --expertise-dot: #34d399; }
 
 :root[data-theme="light"] {
   .expertise-quant   { --expertise-dot: #ea580c; }
   .expertise-ai      { --expertise-dot: #c026d3; }
-  .expertise-product { --expertise-dot: #059669; }
 }
 
 // all groups flow on in one wrapping row; the group wrappers only carry the
