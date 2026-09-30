@@ -140,28 +140,6 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
   z-index: -1;
 }
 
-.hp-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 22px !important;
-  padding: 7px 14px;
-  border: 1px solid var(--card-border);
-  border-radius: 999px;
-  background: rgba(128, 128, 128, 0.06);
-  color: var(--text-secondary) !important;
-  font-size: 0.85rem !important;
-  font-weight: 500;
-}
-
-.hp-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #34d399;
-  box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.18);
-}
-
 .hp .hp-title {
   margin: 0 0 22px !important;
   color: var(--text-primary) !important;
