@@ -186,6 +186,14 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
   line-height: 1.65 !important;
 
   strong { color: var(--text-primary); font-weight: 600; }
+
+  a {
+    color: var(--text-primary) !important;
+    text-decoration: underline !important;
+    text-decoration-color: rgba(56, 189, 248, 0.55) !important;
+    text-underline-offset: 4px;
+    &:hover { color: var(--accent-color) !important; }
+  }
 }
 
 .hp-hero__visual {
