@@ -5924,8 +5924,7 @@ body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
 }
 
 // Resume: expertise per timeline entry, grouped and marked by a coloured dot
-// per group (Quantitative Finance, Artificial Intelligence, Product &
-// Delivery). The colours differ from the entry-type colours of the timeline.
+// per group (Quantitative Finance, Artificial Intelligence). The colours differ from the entry-type colours of the timeline.
 .expertise-quant   { --expertise-dot: #f97316; }
 .expertise-ai      { --expertise-dot: #e879f9; }
 
