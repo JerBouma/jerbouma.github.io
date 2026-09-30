@@ -386,6 +386,31 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
     em { margin-left: 8px; color: #8b949e; font-style: normal; font-size: 0.78rem; }
   }
 
+  &__tabs {
+    display: flex;
+    gap: 4px;
+    margin-left: 10px;
+    overflow-x: auto;
+  }
+
+  &__tab {
+    padding: 4px 10px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: transparent;
+    color: #8b949e;
+    font: 500 0.76rem/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover { color: #e6edf3; }
+    &.is-active { color: #e6edf3; background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.08); }
+  }
+
+  // every example gets the same height so switching tabs does not jump
+  &__panel { min-height: 330px; }
+  &__panel[hidden] { display: none; }
+
   &__src {
     padding: 18px 20px;
     overflow-x: auto;
@@ -398,6 +423,7 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
     .k { color: #ff7b72; }
     .s { color: #a5d6ff; }
     .f { color: #d2a8ff; }
+    .c { color: #8b949e; font-style: italic; }
   }
 
   &__out {
@@ -412,7 +438,8 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
 
   &__row {
     display: grid;
-    grid-template-columns: 1fr repeat(3, 1fr);
+    grid-template-columns: 2.4fr repeat(calc(var(--cols, 4) - 1), 1fr);
+    gap: 8px;
     padding: 7px 12px;
     color: #c9d1d9;
     text-align: right;
@@ -576,3 +603,9 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
 // viewport edge so the page never scrolls sideways (clip keeps sticky working)
 html:has(body.home-v2),
 body.home-v2 { overflow-x: clip; }
+
+// the theme adds an invisible 80px block above every content heading (an
+// anchor offset); on the stacked homepage cards it covered the card above
+// and swallowed its taps
+.hp h2::before,
+.hp h3::before { display: none !important; }
