@@ -94,14 +94,14 @@ classes: custom-splash home-v2
     <div class="hp-code__panel" role="tabpanel" data-panel="roic">
 <div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
-toolkit = Toolkit([<span class="s">"AAPL"</span>, <span class="s">"TSLA"</span>], api_key=API_KEY)
+toolkit = Toolkit([<span class="s">"INTC"</span>, <span class="s">"AMD"</span>], api_key=API_KEY)
 
 <span class="c"># Return on invested capital, from the financial statements</span>
 toolkit.ratios.<span class="f">get_return_on_invested_capital</span>()</div>
       <div class="hp-code__out" style="--cols:5">
-        <div class="hp-code__row hp-code__row--head"><span></span><span>2022</span><span>2023</span><span>2024</span><span>2025</span></div>
-        <div class="hp-code__row"><span>AAPL</span><span>44.4%</span><span>44.4%</span><span>43.4%</span><span>53.4%</span></div>
-        <div class="hp-code__row"><span>TSLA</span><span>27.3%</span><span>24.0%</span><span>8.9%</span><span>4.3%</span></div>
+        <div class="hp-code__row hp-code__row--head"><span></span><span>2020</span><span>2022</span><span>2024</span><span>2025</span></div>
+        <div class="hp-code__row"><span>INTC</span><span>23.6%</span><span>10.1%</span><span>-10.9%</span><span>-0.2%</span></div>
+        <div class="hp-code__row"><span>AMD</span><span>50.2%</span><span>4.0%</span><span>2.8%</span><span>6.8%</span></div>
       </div>
     </div>
     <div class="hp-code__panel" role="tabpanel" data-panel="fama" hidden>
@@ -138,15 +138,17 @@ toolkit.risk.<span class="f">get_garch_forecast</span>(period=<span class="s">"q
     <div class="hp-code__panel" role="tabpanel" data-panel="cointegration" hidden>
 <div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
-toolkit = Toolkit([<span class="s">"AAPL"</span>, <span class="s">"MSFT"</span>], api_key=API_KEY)
+toolkit = Toolkit(
+    [<span class="s">"AAPL"</span>, <span class="s">"TSM"</span>], api_key=API_KEY,
+    start_date=<span class="s">"2019-01-01"</span>, end_date=<span class="s">"2023-01-01"</span>)
 
-<span class="c"># Johansen test for a long-run equilibrium</span>
-toolkit.econometrics.<span class="f">get_johansen_cointegration</span>(
+<span class="c"># Engle-Granger test for a long-run equilibrium</span>
+toolkit.econometrics.<span class="f">get_engle_granger_cointegration</span>(
     period=<span class="s">"quarterly"</span>)</div>
       <div class="hp-code__out" style="--cols:4">
-        <div class="hp-code__row hp-code__row--head"><span>Hypothesis</span><span>Trace stat.</span><span>Critical</span><span>Reject</span></div>
-        <div class="hp-code__row"><span>r ≤ 0</span><span>14.20</span><span>15.49</span><span>False</span></div>
-        <div class="hp-code__row"><span>r ≤ 1</span><span>5.04</span><span>3.84</span><span>True</span></div>
+        <div class="hp-code__row hp-code__row--head"><span>Pair</span><span>Statistic</span><span>P-value</span><span>Result</span></div>
+        <div class="hp-code__row"><span>AAPL ~ TSM</span><span>-1.06</span><span>0.89</span><span>No link</span></div>
+        <div class="hp-code__row"><span>TSM ~ AAPL</span><span>-2.37</span><span>0.34</span><span>No link</span></div>
       </div>
     </div>
   </div>
