@@ -12,7 +12,7 @@ headline: "Quantitative Investment Strategist"
 
 # the paragraphs at the top of /resume; the CV uses the first two as its profile
 intro:
-  - "My background is in Quantitative Finance and most of my work comes down to putting investment theory into practice with Python. I am currently a Quantitative Investment Strategist at a.s.r. asset management, where I work on portfolio optimization and ALM for multi-billion euro portfolios and lead innovation at the intersection of quantitative finance and AI, putting large language models to work through agentic frameworks and retrieval-augmented generation (RAG)."
+  - "My background is in Quantitative Finance and most of my work comes down to putting investment theory into practice with Python. I am currently a Quantitative Investment Strategist at a.s.r. asset management, where I design and maintain models for Solvency II internal model calculations, lifecycle investing, portfolio optimization and ALM across multi-billion euro portfolios. I also lead innovation at the intersection of quantitative finance and AI, from forecasting models to generative AI built on large language models, agentic frameworks and retrieval-augmented generation (RAG)."
   - "Outside of my day job, I’ve built open-source Python libraries such as the <a href=\"/projects/financetoolkit\">Finance Toolkit</a> and <a href=\"/projects/financedatabase\">Finance Database</a>. They are used by thousands of analysts, developers and students worldwide."
   - "Below you can find my education, certifications, open-source projects and work experience, together with testimonials from colleagues."
 

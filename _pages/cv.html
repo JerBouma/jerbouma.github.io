@@ -210,7 +210,6 @@ title: "Jeroen Bouma - CV"
 
   <section class="refs">
     <h2>References</h2>
-    <p class="refs-intro">Excerpts from testimonials by former colleagues; the full texts are on <a href="https://www.jeroenbouma.com/resume">jeroenbouma.com/resume</a>.</p>
     <div class="ref-grid">
       {%- for e in cv.entries %}{% for t in e.testimonials %}{% unless t.cv_reference %}{% continue %}{% endunless %}
       {%- assign quote = t.excerpt | default: t.quote | strip_html %}
@@ -220,7 +219,7 @@ title: "Jeroen Bouma - CV"
           <strong>{{ t.name }}</strong>
           <span class="role">{{ t.role }}</span>
           <blockquote>“{{ quote }}”{% if t.excerpt_note %} <span class="note">({{ t.excerpt_note }})</span>{% endif %}</blockquote>
-          <a class="li" href="{{ t.linkedin }}"><i class="fab fa-linkedin"></i> LinkedIn</a>
+          <a class="li" href="https://www.linkedin.com/in/boumajeroen/details/recommendations/"><i class="fab fa-linkedin"></i> Read in full on LinkedIn</a>
         </div>
       </div>
       {%- endfor %}{% endfor %}
