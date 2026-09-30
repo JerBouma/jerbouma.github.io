@@ -23,8 +23,6 @@ classes: custom-splash home-v2
     <div class="hp-portrait">
       <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma" width="640" height="654" fetchpriority="high">
     </div>
-    <div class="hp-chip hp-chip--a"><i class="fab fa-github" aria-hidden="true"></i><span><strong data-stars>15,500+</strong> GitHub stars</span></div>
-    <div class="hp-chip hp-chip--b"><i class="fas fa-chart-line" aria-hidden="true"></i><span><strong>500+</strong> financial metrics</span></div>
   </div>
 </section>
 
@@ -76,9 +74,9 @@ classes: custom-splash home-v2
     <h2 class="hp-h2">The Finance Toolkit</h2>
     <p>An open-source Python library with 500+ financial methods, from ratios and valuation models to risk, performance and econometrics. Every formula is written out, so you can see exactly how a number is calculated. The MCP server makes all of it available to AI assistants such as Claude and ChatGPT.</p>
     <div class="hp-stats">
-      <div><strong data-stars data-count>15,500+</strong><span>GitHub stars</span></div>
+      <div><strong data-stars data-count>5,300+</strong><span>GitHub stars</span></div>
       <div><strong data-count>500+</strong><span>financial methods</span></div>
-      <div><strong data-count>50,000+</strong><span>downloads a month</span></div>
+      <div><strong data-count>600,000+</strong><span>downloads</span></div>
     </div>
     <div class="hp-actions">
       <a href="/projects/financetoolkit" class="hp-btn hp-btn--primary">Explore the Finance Toolkit</a>
@@ -176,10 +174,10 @@ toolkit.ratios.<span class="f">get_price_to_earnings_ratio</span>()</div>
 })();
 
 (function () {
-  // live GitHub star total across the main repositories, rounded down to the hundred
+  // live Finance Toolkit star count, rounded down to the hundred
   var targets = document.querySelectorAll('[data-stars]');
   if (!targets.length || !window.fetch) return;
-  var repos = ['JerBouma/FinanceToolkit', 'JerBouma/FinanceDatabase', 'JerBouma/ThePassiveInvestor', 'JerBouma/PersonalFinance'];
+  var repos = ['JerBouma/FinanceToolkit'];
   Promise.all(repos.map(function (r) {
     return fetch('https://api.github.com/repos/' + r).then(function (x) { return x.json(); }).then(function (d) { return d.stargazers_count || 0; }).catch(function () { return 0; });
   })).then(function (counts) {

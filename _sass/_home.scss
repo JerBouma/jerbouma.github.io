@@ -221,29 +221,6 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
   }
 }
 
-.hp-chip {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border: 1px solid var(--card-border);
-  border-radius: 14px;
-  background: var(--card-bg);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  white-space: nowrap;
-
-  i { color: var(--accent-color); font-size: 1.05rem; }
-  strong { color: var(--text-primary); }
-
-  &--a { left: -64px; bottom: 4%; }
-  &--b { right: -52px; top: 2%; }
-}
-
 // ── logo strip ────────────────────────────────────────────────────────────
 .hp-logos {
   padding: 28px 0 8px;
@@ -556,8 +533,6 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
 // ── small screens ─────────────────────────────────────────────────────────
 @media (max-width: 1024px) {
   .hp-pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  // the floating stat chips need the desktop room; the spotlight repeats them
-  .hp-chip { display: none; }
   .hp-hero { grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); }
   .hp-spotlight { grid-template-columns: 1fr; }
 }
@@ -570,7 +545,6 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
   }
 
   .hp-hero__visual { order: -1; width: min(240px, 70%); justify-self: start; }
-  .hp-chip { display: none; }
   // on phones the four pillars become compact rows: icon, title, arrow
   .hp-pillars { grid-template-columns: 1fr; gap: 10px; }
   .hp-pillar {
