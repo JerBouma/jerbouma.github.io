@@ -13,7 +13,7 @@ classes: custom-splash home-v2
   <div class="hp-hero__text">
     <p class="hp-eyebrow"><span class="hp-dot"></span>Quantitative Investment Strategist at a.s.r. asset management</p>
     <h1 class="hp-title">Where quantitative finance <span class="hp-accent">meets AI.</span></h1>
-    <p class="hp-lead">I'm <strong>Jeroen Bouma</strong>. At a.s.r. asset management I work on quantitative models and AI, from strategic asset allocation and ALM to AI-driven analysis. Outside my day job, I build open-source Python tools for financial analysis, used by thousands of analysts, developers and students.</p>
+    <p class="hp-lead">I'm <strong>Jeroen Bouma</strong>. I build quantitative and AI models for institutional investors, from strategic asset allocation to ALM for multi-billion euro portfolios. In my own time I create open-source tools like the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a> to make financial analysis transparent for anyone.</p>
     <div class="hp-actions">
       <a href="/resume" class="hp-btn hp-btn--primary">View my resume <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
       <a href="/projects" class="hp-btn hp-btn--ghost">Explore my projects</a>
