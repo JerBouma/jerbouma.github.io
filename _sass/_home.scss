@@ -109,7 +109,7 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
   grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.55fr);
   align-items: center;
   gap: 48px;
-  padding: clamp(56px, 9vw, 120px) 0 clamp(48px, 7vw, 88px);
+  padding: clamp(40px, 6vw, 80px) 0 clamp(44px, 6vw, 72px);
 }
 
 .hp-hero::before {
@@ -181,8 +181,10 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
 .hp-lead {
   max-width: 36em;
   margin: 0 !important;
+
+  & + & { margin-top: 14px !important; }
   color: var(--text-secondary) !important;
-  font-size: clamp(1.05rem, 1.5vw, 1.2rem) !important;
+  font-size: clamp(1rem, 1.35vw, 1.1rem) !important;
   line-height: 1.65 !important;
 
   strong { color: var(--text-primary); font-weight: 600; }

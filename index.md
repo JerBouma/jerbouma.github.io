@@ -13,7 +13,8 @@ classes: custom-splash home-v2
   <div class="hp-hero__text">
     <p class="hp-eyebrow"><span class="hp-dot"></span>Quantitative Investment Strategist at a.s.r. asset management</p>
     <h1 class="hp-title">Where quantitative finance <span class="hp-accent">meets AI.</span></h1>
-    <p class="hp-lead">I'm <strong>Jeroen Bouma</strong>. I build quantitative and AI models within asset management, from strategic asset allocation to front-office portfolio construction and analytics for multi-billion euro portfolios. In my own time I create open-source tools like the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a> to make financial analysis transparent for anyone.</p>
+    <p class="hp-lead">I'm <strong>Jeroen Bouma</strong>. I build quantitative and AI models within asset management, from strategic asset allocation to front-office portfolio construction and analytics for multi-billion euro portfolios.</p>
+    <p class="hp-lead">In my own time I build open-source tools that make financial analysis transparent. The same ratio often differs from one data provider to the next, so the <a href="/projects/financetoolkit">Finance Toolkit</a> writes out 500+ financial metrics in plain, readable code, and the <a href="/projects/financedatabase">Finance Database</a> maps 300,000+ securities so you can see what is out there. Thousands of analysts, developers and students use them worldwide.</p>
     <div class="hp-actions">
       <a href="/resume" class="hp-btn hp-btn--primary">View my resume <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
       <a href="/projects" class="hp-btn hp-btn--ghost">Explore my projects</a>
