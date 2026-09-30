@@ -61,7 +61,7 @@ title: "Jeroen Bouma - CV"
 
   /* columns */
   .cols { display: grid; grid-template-columns: 1fr 58mm; gap: 9mm; }
-  .side { background: var(--panel); border-radius: 3mm; padding: 6mm 5mm; align-self: start; }
+  .side { background: var(--panel); border-radius: 3mm; padding: 6mm 5mm; align-self: start; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 
   h2 {
     margin: 0 0 3.2mm; padding-bottom: 1.4mm; border-bottom: 0.6pt solid var(--rule);
@@ -100,10 +100,10 @@ title: "Jeroen Bouma - CV"
   .expertise li::before { content: ""; position: absolute; left: 0; top: 1.9mm; width: 1.1mm; height: 1.1mm; border-radius: 50%; background: var(--accent); }
 
   /* references */
-  .refs { margin-top: 5mm; break-before: auto; }
   .refs-intro { margin: -1mm 0 3.5mm; font-size: 8pt; color: var(--muted); }
   .refs-intro a { color: var(--accent); }
-  .ref-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm 6mm; }
+  .refs h2 { break-after: avoid; }
+  .ref-grid { display: grid; grid-template-columns: 1fr; gap: 4.5mm; }
   .ref .note { font-style: normal; color: var(--soft); font-size: 7.4pt; }
   .ref { break-inside: avoid; display: grid; grid-template-columns: 10mm 1fr; gap: 2.5mm; }
   .ref img { width: 10mm; height: 10mm; border-radius: 50%; object-fit: cover; }
@@ -208,26 +208,26 @@ title: "Jeroen Bouma - CV"
           {%- for s in skills %}<span class="tag">{{ s }}</span>{% endfor %}
         </div>
       </section>
+
+      <section class="refs">
+        <h2>References</h2>
+        <div class="ref-grid">
+          {%- for e in cv.entries %}{% for t in e.testimonials %}{% unless t.cv_reference %}{% continue %}{% endunless %}
+          {%- assign quote = t.excerpt | default: t.quote | strip_html %}
+          <div class="ref">
+            <img src="{{ t.image }}" alt="{{ t.name }}">
+            <div>
+              <strong>{{ t.name }}</strong>
+              <span class="role">{{ t.role }}</span>
+              <blockquote>“{{ quote }}”{% if t.excerpt_note %} <span class="note">({{ t.excerpt_note }})</span>{% endif %}</blockquote>
+              <a class="li" href="https://www.linkedin.com/in/boumajeroen/details/recommendations/"><i class="fab fa-linkedin"></i> Read in full on LinkedIn</a>
+            </div>
+          </div>
+          {%- endfor %}{% endfor %}
+        </div>
+      </section>
     </aside>
   </div>
-
-  <section class="refs">
-    <h2>References</h2>
-    <div class="ref-grid">
-      {%- for e in cv.entries %}{% for t in e.testimonials %}{% unless t.cv_reference %}{% continue %}{% endunless %}
-      {%- assign quote = t.excerpt | default: t.quote | strip_html %}
-      <div class="ref">
-        <img src="{{ t.image }}" alt="{{ t.name }}">
-        <div>
-          <strong>{{ t.name }}</strong>
-          <span class="role">{{ t.role }}</span>
-          <blockquote>“{{ quote }}”{% if t.excerpt_note %} <span class="note">({{ t.excerpt_note }})</span>{% endif %}</blockquote>
-          <a class="li" href="https://www.linkedin.com/in/boumajeroen/details/recommendations/"><i class="fab fa-linkedin"></i> Read in full on LinkedIn</a>
-        </div>
-      </div>
-      {%- endfor %}{% endfor %}
-    </div>
-  </section>
 
 </div>
 </body>
