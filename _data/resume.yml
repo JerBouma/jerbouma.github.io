@@ -26,7 +26,7 @@ expertise:
     items: ["Strategic Asset Allocation", "Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Economic Scenarios", "Econometrics & Time Series", "Factor Models"]
   - group: "Artificial Intelligence"
     key: ai
-    items: ["Generative AI in Finance", "Agentic Frameworks", "RAG Pipelines", "Machine Learning", "AI Evaluation & Guardrails"]
+    items: ["Agentic Frameworks", "RAG Pipelines", "Machine Learning", "AI Evaluation & Guardrails"]
 
 languages:
   - name: "Dutch"
@@ -42,7 +42,7 @@ entries:
     title: "a.s.r. asset management"
     subtitle: "Quantitative Investment Strategist"
     description: "I work within the asset management divisions at the intersection of quantitative finance and AI. As part of the team I have contributed significantly to both building and using the models behind our Solvency II internal model calculations, lifecycle investing and portfolio optimization, as well as to forecasting and generative AI applications built on agentic frameworks and RAG that help us analyze portfolios and risk. I also contribute to the yearly SAA through the economic scenario calibrations and guide several working students in their day-to-day work and with their theses."
-    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Economic Scenarios", "Generative AI in Finance", "Agentic Frameworks", "RAG Pipelines", "Machine Learning", "AI Evaluation & Guardrails"]
+    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Economic Scenarios", "Agentic Frameworks", "RAG Pipelines", "Machine Learning", "AI Evaluation & Guardrails"]
     skills: ["Python", "Machine Learning", "Agentic Frameworks", "RAG", "GLASS", "SQL", "Databricks", "Azure", "PowerBI", "Git"]
     logo: "/assets/images/resume/asr.png"
     logo_alt: "a.s.r. asset management logo"
@@ -53,7 +53,6 @@ entries:
     title: "Transforming Your Business with AI"
     subtitle: "INSEAD"
     description: "An executive education programme on how AI is used in business: what it can and cannot do for an organisation, with practical frameworks for working with data scientists and programmers, commissioning analysis and assessing the results. I completed it online between April and June 2026."
-    expertise: ["Generative AI in Finance"]
     skills: ["Analytical thinking", "Data-driven decision making", "AI and big data"]
     link:
       url: "https://certificates.insead.edu/292ec6af-707c-4563-8d59-185d31d342d9"
