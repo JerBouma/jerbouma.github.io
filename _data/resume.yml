@@ -37,11 +37,11 @@ languages:
 # shown at the bottom of /resume and of the CV
 hobbies:
   - label: "Tinkering"
-    text: "Home automation, mini PCs and home servers, and many programming experiments in the financial domain"
+    text: "I like to tinker with technology at home, from home automation to mini PCs and home servers. Lately that includes experimenting with LLMs and agentic setups, next to the many programming experiments I run in the financial domain."
   - label: "Food & Wine"
-    text: "Cooking and wine tasting"
+    text: "I love cooking and wine tasting, with a real adoration for champagne."
   - label: "Sports"
-    text: "Running, swimming and cycling, with a triathlon on the list some day"
+    text: "I stay active through running, swimming and cycling. Combining the three into a triathlon is on my list for some day."
 
 entries:
   - type: experience
@@ -92,7 +92,7 @@ entries:
     subtitle: "Product Manager"
     description: "OpenBB set out to compete with Bloomberg through open source. As Product Manager I led a multi-disciplinary team of engineers and finance professionals using Scrum, and focused on translating financial theory into code, building features such as the economy, portfolio and fixed income menus myself. Towards the end I also led product marketing and the outreach to universities."
     expertise: ["Econometrics & Time Series"]
-    skills: ["Python", "Git", "JavaScript"]
+    skills: ["Python", "Git", "JavaScript", "Jira", "Confluence"]
     logo: "/assets/images/resume/openbb.png"
     logo_alt: "OpenBB logo"
     testimonials:
@@ -182,7 +182,7 @@ entries:
     subtitle: "Creator &amp; Maintainer (5,000+ GitHub Stars)"
     description: "An open-source toolkit with 500+ financial methods, each written to be as transparent as possible. It supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Combined with the Finance Database, it lets you do a full competitive analysis. It is used by thousands of analysts, developers and students worldwide."
     expertise: ["Portfolio Optimization", "Econometrics & Time Series", "Factor Models", "Agentic Frameworks"]
-    skills: ["Python", "MCP", "Docker", "GitHub Actions", "Git"]
+    skills: ["Python", "MCP", "Docker", "GitHub", "Git"]
     logo: "/assets/images/projects/FinanceToolkit.jpg"
     logo_alt: "Finance Toolkit logo"
 
