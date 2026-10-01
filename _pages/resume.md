@@ -5,35 +5,39 @@ description: "Quantitative Investment Strategist with a background in quantitati
 permalink: /resume
 redirect_from:
   - /cv
-layout: splash
-classes: custom-splash home-v2 resume-v2
+layout: single
+classes: custom-document resume-v2
+author_profile: false
 ---
-{%- assign r = site.data.resume -%}
-<div class="hp rj">
+{%- assign r = site.data.resume %}
 
-<section class="hp-hero rj-hero">
-  <div class="hp-hero__glow" aria-hidden="true"></div>
-  <div class="hp-hero__text">
-    <p class="hp-kicker">Resume</p>
-    <h1 class="hp-title">From economics to <span class="hp-accent">quant &amp; AI.</span></h1>
-    {%- for paragraph in r.intro %}
-    <p class="hp-lead">{{ paragraph }}</p>
-    {%- endfor %}
-    <div class="hp-actions">
-      <a href="/assets/files/jeroen-bouma-cv.pdf" class="hp-btn hp-btn--primary" download="Jeroen Bouma - CV.pdf"><i class="fas fa-file-pdf" aria-hidden="true"></i> Download CV (PDF)</a>
-      <a href="#journey" class="hp-btn hp-btn--ghost">Follow the journey <i class="fas fa-arrow-down" aria-hidden="true"></i></a>
-    </div>
-  </div>
-  <div class="hp-hero__visual">
-    <div class="hp-portrait">
-      <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma" width="640" height="654" fetchpriority="high">
-    </div>
-  </div>
-</section>
+<div class="row">
+<div markdown="1" class="seventy-column">
+
+{% for paragraph in r.intro %}{{ paragraph }}
+
+{% endfor %}
+<div class="resume-facts">
+<div class="resume-facts__row"><span class="resume-facts__label">Expertise</span><span class="resume-facts__items resume-facts__text">{% for g in r.expertise %}<span class="expertise-key expertise-{{ g.key }}">{{ g.group }}</span>{% endfor %}</span></div>
+<div class="resume-facts__row"><span class="resume-facts__label">Languages</span><span class="resume-facts__items resume-facts__text">{% for l in r.languages %}{{ l.name }}{% unless forloop.last %}, {% endunless %}{% endfor %} (professional)</span></div>
+</div>
+
+<p class="resume-download"><a href="/assets/files/jeroen-bouma-cv.pdf" class="btn btn--info" download="Jeroen Bouma - CV.pdf"><i class="fas fa-file-pdf" aria-hidden="true"></i> Download CV (PDF)</a></p>
+
+</div>
+
+<div markdown="1" class="thirty-column">
+
+<img src="/assets/images/default/bio-photo.jpg" alt="Portrait photo of Jeroen Bouma" class='testimoninals'>
+
+</div>
+</div>
+
+<div class="hp rj">
 
 <nav class="rj-map" aria-label="Chapters">
   {%- for ch in r.chapters %}
-  <a class="rj-map__step{% if forloop.last %} is-now{% endif %}" href="#{{ ch.id }}">
+  <a class="rj-map__step{% if forloop.first %} is-now{% endif %}" href="#{{ ch.id }}">
     <span class="rj-map__dot" aria-hidden="true"></span>
     <span class="rj-map__years">{{ ch.years }}</span>
     <span class="rj-map__name">{{ ch.short }}</span>

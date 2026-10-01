@@ -1,20 +1,23 @@
 {%- comment -%}
   The /resume journey, rendered from _data/resume.yml: one section per
-  chapter (oldest first), each with a short story and its entries ordered by
-  start. Certifications are small milestones; the other entries are cards.
+  chapter (newest first), each with a short story and its entries: the jobs
+  first, then studies, projects and certifications, each newest first. Certifications are small milestones; the other entries are cards.
 {%- endcomment -%}
 {%- assign r = site.data.resume -%}
 <div class="rj-journey" id="journey">
   <div class="rj-rail" aria-hidden="true"><span class="rj-rail__fill"></span></div>
   {%- for ch in r.chapters %}
-  {%- assign items = r.entries | where: "chapter", ch.id | sort: "start" %}
+  {%- assign all = r.entries | where: "chapter", ch.id | sort: "start" | reverse %}
+  {%- assign jobs = all | where: "type", "experience" %}
+  {%- assign rest = all | where_exp: "e", "e.type != 'experience'" %}
+  {%- assign items = jobs | concat: rest %}
   <section class="rj-chapter" id="{{ ch.id }}">
-    <header class="rj-chapter__head" data-reveal>
-      <span class="rj-chapter__marker" aria-hidden="true">{{ forloop.index }}</span>
-      <p class="hp-kicker">Chapter {{ forloop.index }} · {{ ch.years }}</p>
+    <div class="rj-chapter__head" data-reveal>
+      <span class="rj-chapter__marker{% if forloop.first %} is-now{% endif %}" aria-hidden="true"><i class="fas {{ ch.icon }}"></i></span>
+      <p class="hp-kicker">{{ ch.years }}</p>
       <h2 class="hp-h2">{{ ch.title }}</h2>
       <p class="rj-chapter__blurb">{{ ch.blurb }}</p>
-    </header>
+    </div>
     <div class="rj-items">
       {%- for e in items %}
       {%- if e.type == "certification" %}
@@ -78,8 +81,4 @@
     </div>
   </section>
   {%- endfor %}
-  <div class="rj-now" data-reveal>
-    <span class="rj-now__dot" aria-hidden="true"></span>
-    <p><strong>Today</strong> I'm a Quantitative Investment Strategist at a.s.r. asset management, and I still maintain the Finance Toolkit and Finance Database in my own time.</p>
-  </div>
 </div>

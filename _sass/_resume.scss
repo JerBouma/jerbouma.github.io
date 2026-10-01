@@ -1,5 +1,6 @@
-// Resume (/resume, body.resume-v2): the homepage's hero and building blocks
-// (.hp) plus a journey through the chapters in _data/resume.yml (.rj).
+// Resume (/resume, body.resume-v2): the intro with expertise, languages and
+// the CV download, then a journey through the chapters in _data/resume.yml
+// (.rj), built from the homepage's building blocks (.hp).
 // Rules that style content images repeat the homepage's two :not()s so they
 // beat custom.scss's generic content-image rule.
 
@@ -27,17 +28,64 @@ $rj-img: 'img:not([data-hp-a]):not([data-hp-b])';
   --rj-cert: #d97706;
 }
 
-// ── hero ──────────────────────────────────────────────────────────────────
-.rj-hero { padding-bottom: clamp(32px, 4vw, 48px); }
-.rj .hp-hero .hp-title { font-size: clamp(2.4rem, 5vw, 3.9rem) !important; }
-.rj .hp-accent { white-space: nowrap; }
-.rj-hero .hp-lead + .hp-lead { font-size: 0.98rem !important; color: var(--text-muted) !important; }
+// ── intro ─────────────────────────────────────────────────────────────────
+.resume-facts {
+  margin: 1.2em 0 1.6em;
+  display: grid;
+  gap: 10px;
+
+  &__row { display: flex; gap: 12px; align-items: baseline; }
+
+  &__label {
+    flex: 0 0 7.5rem;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__items { display: flex; flex-wrap: wrap; gap: 6px; }
+  &__text { color: var(--text-secondary); font-size: 0.85rem; }
+
+  @media (max-width: 600px) {
+    &__row { flex-direction: column; gap: 6px; }
+    &__label { flex: none; }
+  }
+}
+
+.expertise-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 14px;
+
+  &::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--expertise-dot);
+    flex-shrink: 0;
+  }
+}
+
+.expertise-quant { --expertise-dot: #f97316; }
+.expertise-ai { --expertise-dot: #e879f9; }
+
+.resume-download {
+  margin-top: 0;
+
+  .btn { font-size: 0.95rem !important; padding: 12px 24px !important; }
+  .btn i { margin-right: 8px; }
+}
 
 // ── chapter map ───────────────────────────────────────────────────────────
 .rj-map {
   position: relative;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 40px;
   padding-top: 28px;
   border-top: 1px solid var(--card-border);
 
@@ -157,9 +205,10 @@ $rj-img: 'img:not([data-hp-a]):not([data-hp-b])';
     linear-gradient(135deg, #38bdf8, #c084fc) border-box;
   box-shadow: 0 0 0 6px var(--rj-bg);
   color: var(--text-primary);
-  font-size: 0.95rem;
-  font-weight: 800;
+  font-size: 0.9rem;
   z-index: 1;
+
+  &.is-now { animation: rj-pulse 2.4s ease-out infinite; }
 }
 
 .rj-chapter__blurb {
@@ -504,34 +553,9 @@ body .page__content .hp.rj blockquote {
   &__link { margin-top: 8px; font-size: 0.86rem; }
 }
 
-// ── today ─────────────────────────────────────────────────────────────────
-.rj-now {
-  position: relative;
-  margin: 48px 0 0 calc(var(--rj-head) + var(--rj-gutter));
-
-  p {
-    margin: 0 !important;
-    color: var(--text-secondary) !important;
-    font-size: 1.02rem !important;
-
-    strong { color: var(--text-primary); }
-  }
-
-  &__dot {
-    position: absolute;
-    top: 4px;
-    left: calc(var(--rj-dot-x) - 8px);
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #38bdf8, #c084fc);
-    box-shadow: 0 0 0 0 rgba(192, 132, 252, 0.5);
-    animation: rj-pulse 2.4s ease-out infinite;
-  }
-}
-
+// ── the current chapter ───────────────────────────────────────────────────
 @keyframes rj-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(192, 132, 252, 0.5); }
+  0% { box-shadow: 0 0 0 0 rgba(192, 132, 252, 0.45); }
   70%, 100% { box-shadow: 0 0 0 14px rgba(192, 132, 252, 0); }
 }
 
@@ -607,7 +631,6 @@ body .page__content .hp.rj blockquote {
   .rj-chapter__head { position: relative; top: 0; margin-bottom: 28px; }
   .rj-chapter__head .hp-h2 { font-size: clamp(1.6rem, 4vw, 2.2rem) !important; }
   .rj-chapter__marker { top: -4px; left: calc(var(--rj-dot-x) - 20px); }
-  .rj-now { margin-left: 0; }
 }
 
 @media (max-width: 760px) {
@@ -645,5 +668,5 @@ body .page__content .hp.rj blockquote {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rj-now__dot { animation: none; }
+  .rj-chapter__marker.is-now { animation: none; }
 }
