@@ -4009,7 +4009,8 @@ body.wide-sidebar {
   }
 }
 
-/* Blog-post reading layout — narrow centered column, dev.to/Medium style */
+/* Blog-post reading layout — a centred column that uses the room next to the
+   sidebar on wide screens, but stays a comfortable line length */
 body.article-document {
   header,
   .page__content,
@@ -4017,7 +4018,7 @@ body.article-document {
   .article-share,
   .pagination {
     float: none !important;
-    max-width: 760px !important;
+    max-width: min(100%, 880px) !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
@@ -4082,8 +4083,8 @@ body.article-document {
 }
 
 // "More Articles" sidebar panel on individual article pages
-.article-sidebar__title {
-  font-size: 0.78rem;
+.sidebar .article-sidebar__title {
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -4100,7 +4101,7 @@ body.article-document {
 
 .article-sidebar__item {
   display: block;
-  padding: 10px 4px;
+  padding: 7px 4px;
   border-radius: 8px;
   text-decoration: none !important;
   transition: background 0.2s ease;
@@ -4116,17 +4117,34 @@ body.article-document {
 
 .article-sidebar__item-title {
   display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--text-primary) !important;
-  margin-bottom: 3px;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-secondary) !important;
+  margin-bottom: 2px;
+  transition: color 0.2s ease;
 }
+
+.article-sidebar__item:hover .article-sidebar__item-title { color: var(--accent-color) !important; }
 
 .article-sidebar__item-date {
   display: block;
-  font-size: 0.72rem;
+  font-size: 11.5px;
   color: var(--text-muted);
+}
+
+.article-sidebar__all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 4px 0;
+  color: var(--accent-color) !important;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none !important;
+
+  i { font-size: 0.8em; transition: transform 0.2s ease; }
+  &:hover i { transform: translateX(3px); }
 }
 
 // Sticky in-page TOC, sits above "More Articles" in the sidebar
@@ -4134,7 +4152,7 @@ body.article-document {
   list-style: none;
   margin: 0;
   padding: 0;
-  font-size: 0.85rem;
+  font-size: 13.5px;
 
   li {
     margin: 0;
@@ -4143,6 +4161,7 @@ body.article-document {
   a {
     display: block;
     padding: 6px 4px;
+    font-size: 13.5px !important;
     color: var(--text-secondary) !important;
     text-decoration: none !important;
     line-height: 1.4;
@@ -4161,7 +4180,7 @@ body.article-document {
     padding-left: 14px;
 
     a {
-      font-size: 0.8rem;
+      font-size: 12.5px !important;
       color: var(--text-muted) !important;
     }
   }
