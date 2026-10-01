@@ -62,9 +62,14 @@ jobs:
         # is deployed instead, so it never blocks a deploy.
         continue-on-error: true
         run: |
-          npm install --no-save --no-package-lock --prefix _scripts playwright@1.63.0
-          npx --prefix _scripts playwright install --with-deps chromium
-          NODE_PATH=_scripts/node_modules node _scripts/build-cv-pdf.js
+          # GitHub's runners come with Google Chrome, so use it instead of
+          # downloading Chromium and its system packages on every run (that
+          # download took 30 seconds to 5+ minutes). Falls back to the download
+          # only when Chrome is missing.
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || true)"
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install --no-save --no-package-lock --prefix _scripts playwright@1.63.0
+          if [ -z "$CHROME" ]; then npx --prefix _scripts playwright install --with-deps chromium; fi
+          CHROME="$CHROME" NODE_PATH=_scripts/node_modules node _scripts/build-cv-pdf.js
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v4
