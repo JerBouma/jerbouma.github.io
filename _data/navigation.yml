@@ -1696,6 +1696,8 @@ modelling:
         url: /modelling/getting-started#learning-the-basics
       - title: "Installing and Working with Python"
         url: /modelling/getting-started#installing-and-working-with-python
+      - title: "Jupyter Notebooks as your Playground"
+        url: /modelling/getting-started#jupyter-notebooks-as-your-playground
       - title: "From the Basics to an AI Assistant"
         url: /modelling/getting-started#from-the-basics-to-an-ai-assistant
       - title: "The Next Steps"

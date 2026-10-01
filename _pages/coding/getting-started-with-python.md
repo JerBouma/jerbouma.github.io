@@ -60,25 +60,28 @@ With **Personal Finance**, I wanted to understand my spending habits and determi
 
 ## Installing and Working with Python
 
-To get started, download the Anaconda Distribution and use a Jupyter Notebook as follows:
+Today, most Python is written in a code editor with an AI assistant built in, and that is the setup I recommend starting with as well. The most common choice is **Visual Studio Code** with **GitHub Copilot** and/or **Claude Code**:
 
-1. Go to [https://www.anaconda.com/download](https://www.anaconda.com/download){: target="_blank"} and install the application.
-2. Open the "Anaconda Navigator" and launch "Jupyter Notebook". Alternatively, use `jupyter notebook` in the command line.
-3. Create a new notebook and start coding!
+1. **Install Python.** Download the latest version from [python.org](https://www.python.org/downloads/){: target="_blank"}, or install [uv](https://docs.astral.sh/uv/){: target="_blank"}, which manages Python versions and packages for you and is used throughout this guide.
+2. **Install [Visual Studio Code](https://code.visualstudio.com/){: target="_blank"}** and add the **Python** and **Jupyter** extensions from the Extensions view.
+3. **Add an AI assistant.** Sign in to [GitHub Copilot](https://code.visualstudio.com/docs/copilot/setup){: target="_blank"}, which is built into VS Code and has a free tier, and/or install the [Claude Code](https://docs.anthropic.com/en/docs/claude-code/ide-integrations){: target="_blank"} extension. Both can explain code, answer questions about your project and, in agent mode, create and edit files and run commands for you.
+4. **Open a folder and start.** Create a folder for your first project, open it in VS Code and create a file ending in `.ipynb` to start a notebook.
 
-Jupyter Notebooks are the best place to learn, because you see the result of every step. Write your first analyses here yourself, cell by cell, until reading and writing Pandas feels natural. See an example of how such a Notebook could look below.
+![VS Code with GitHub Copilot in agent mode, editing files and running tests](/assets/images/modelling/getting-started-with-python/vscode-copilot-agent.png)
+<p class="image-credit">VS Code with GitHub Copilot in agent mode. Image: <a href="https://code.visualstudio.com/docs/copilot/overview" target="_blank">Visual Studio Code documentation</a>, <a href="https://creativecommons.org/licenses/by/3.0/us/" target="_blank">CC BY 3.0</a>.</p>
+
+### Jupyter Notebooks as your Playground
+
+While you learn the basics, a Jupyter Notebook is the best place to work. It runs code in small blocks (cells) and shows the result of each step immediately, so you can experiment with a dataset, try a calculation and see what happens. Notebooks run directly inside VS Code, so you don't need anything else. Write your first analyses here yourself, cell by cell, until reading and writing Pandas feels natural. See an example of how such a Notebook could look below.
 
 ![Jupyter Notebook](/assets/images/modelling/getting-started-with-python/notebook.png)
 
-One of my first projects was simply a collection of Jupyter Notebooks (see [here](https://github.com/JerBouma/AlgorithmicTrading){: target="_blank"}). This was a university project where we used Python for Pairs Trading. It's by no means perfect, but it demonstrates the utility of Jupyter Notebooks for getting started.
-
-{: .notice--info}
-**Why work with Jupyter Notebooks?**<br>Jupyter Notebooks are popular because you can easily run code in blocks and see the output immediately. This allows for experimentation and quick feedback. Once you are more familiar with the syntax, you can transition to a code editor like Visual Studio Code or PyCharm. These editors also support Jupyter Notebooks, which remain useful for debugging functions and testing code.
+One of my first projects was simply a collection of Jupyter Notebooks (see [here](https://github.com/JerBouma/AlgorithmicTrading){: target="_blank"}). This was a university project where we used Python for Pairs Trading. It's by no means perfect, but it demonstrates how far you can get with notebooks alone. Once your analyses grow into something you want to reuse, you move them into `.py` files and a proper project, which is what the next pages are about.
 
 Some tips to focus on while learning:
 
 - **Stick to foundational packages like NumPy, Pandas, and SciPy.** These are used in almost every financial model. Hold off on Machine Learning packages like Scikit-learn until you have a solid grasp of the basics. Knowing these few packages well means you can follow almost any financial model, including the ones an assistant builds for you later.
-- **Acquire (financial) datasets to experiment with**. Visit [Kaggle](https://www.kaggle.com/learn/python){: target="_blank"} or use the [Finance Toolkit](/projects/financetoolkit). Install it via `pip install financetoolkit` or use `!pip install financetoolkit` in a Jupyter Notebook. The examples found [here](/projects/financetoolkit) should help you get started. Since they rely on NumPy, Pandas, and SciPy, you should be able to work with the data quickly.
+- **Acquire (financial) datasets to experiment with**. Visit [Kaggle](https://www.kaggle.com/learn/python){: target="_blank"} or use the [Finance Toolkit](/projects/financetoolkit). Install it via `pip install financetoolkit` (or `uv add financetoolkit`), or run `%pip install financetoolkit` in a notebook cell. The examples found [here](/projects/financetoolkit) should help you get started. Since they rely on NumPy, Pandas, and SciPy, you should be able to work with the data quickly.
 - **Look up anything you don't understand.** Someone has likely run into the same problem before, and the documentation of packages like Pandas is excellent.
 - **Don't worry about dependency management, linters, pytest, styling, etc., initially.** Until you have a solid understanding of the basics, these tools will likely only confuse you. You will need them later to build models that last, but while you are still learning they only complicate things.
 
@@ -98,9 +101,9 @@ While you learn the basics, use an AI assistant as a tutor: ask it to explain an
 
 ## The Next Steps
 
-Once you have the basics down, move from notebooks to real projects. These are the tools you will work with every day, and from here on the assistant does more and more of the hands-on work:
+Once you have the basics down, move from notebooks to real projects:
 
-1. **Install a Code Editor like Visual Studio Code or PyCharm.** These editors help in building actual models using `.py` files and make it easier to work with multiple files that interact with each other. Packages like Pandas and NumPy, which you've likely used, are developed using such editors as they involve multiple interacting files. This is where you work with your assistant: GitHub Copilot in VS Code, editors built around AI such as Cursor, or Claude Code, which works on a whole project from the terminal or your editor. These assistants become far more capable once your project has a clear structure, as described in the next pages.
+1. **Move from notebooks to `.py` files.** Real models consist of multiple files that interact with each other, the way packages like Pandas and NumPy are built. You already have the editor for it; the next pages explain how to organise those files. Your assistant becomes far more capable once your project has a clear structure, and from here on it does more and more of the hands-on work.
 2. **Create a public or private project on a platform like [GitHub](https://github.com/){: target="_blank"}.** GitHub is a platform where over 100 million developers collaborate on open-source projects and manage Git repositories (e.g., my own [here](https://github.com/JerBouma/FinanceToolkit){: target="_blank"}). Platforms often used within companies include Azure DevOps or BitBucket, which share similar functionality. See a guide about GitHub [here](https://docs.github.com/en/get-started/using-github/hello-world){: target="_blank"}.
 3. **Download [Git](https://git-scm.com/){: target="_blank"} to version control your project.** Using commands like `git add`, `git commit -m "Initial commit"`, and `git push`, you can create a version history. Your assistant will usually run these commands for you, but understand what they do: every commit is a checkpoint you can return to, which is exactly what you want when an assistant changes many files at once. The pages that follow assume you have Git set up.
 
