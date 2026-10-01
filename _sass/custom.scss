@@ -1455,9 +1455,11 @@ body.custom-splash .masthead .site-title {
 }
 
 // ── Breadcrumbs ────────────────────────────────────────────
+// same box as the page content below it (#main), so the trail lines up with
+// the card's edge at every screen width
 nav.breadcrumbs {
-  max-width: 1400px !important;
-  width: 92% !important;
+  max-width: var(--site-max-width) !important;
+  width: calc(100% - var(--site-h-padding) * 2) !important;
   margin: 0 auto !important;
   padding: 16px 0 12px !important;
   border-bottom: 1px solid var(--sidebar-border) !important;

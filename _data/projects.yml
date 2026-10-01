@@ -1,0 +1,69 @@
+# The /projects overview. The stats are refreshed at every build by
+# _plugins/live_stats.rb (GitHub for stars and forks, pepy.tech for all-time
+# PyPI downloads, rounded down); the values here are the fallback.
+
+github:
+  stars: "17,000+"      # all of @JerBouma's own repositories
+  downloads: "1.4M+"    # the four PyPI packages below together
+  followers: "1,500+"
+
+maintained:
+  - name: "Finance Toolkit"
+    url: /projects/financetoolkit
+    github: "https://github.com/JerBouma/FinanceToolkit"
+    image: "https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg"
+    since: "2019"
+    lead: "500+ financial methods, from ratios and valuation models to risk, performance and econometrics, each written out so you can see exactly how a number is calculated."
+    text: "You calculate every metric directly from the financial statements, with the same method every time, instead of relying on numbers from external providers that you cannot check."
+    covers: ["Ratios", "Models", "Risk", "Performance", "Technicals", "Economics", "Fixed Income", "Options", "Portfolio"]
+    stats:
+      - { icon: "fa-star", value: "5,300+", label: "stars" }
+      - { icon: "fa-download", value: "640,000+", label: "downloads" }
+      - { icon: "fa-code-fork", value: "600+", label: "forks" }
+    links:
+      - { label: "Documentation", url: /projects/financetoolkit/docs }
+    extra:
+      title: "Also available for AI assistants"
+      text: "The MCP server makes all 500+ methods available in Claude, ChatGPT, Cursor and Copilot. Ask in plain English, and every number is still computed with the same open-source formulas."
+      url: /projects/financetoolkit/mcp
+      label: "Finance Toolkit MCP"
+  - name: "Finance Database"
+    url: /projects/financedatabase
+    github: "https://github.com/JerBouma/FinanceDatabase"
+    image: "https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg"
+    since: "2020"
+    lead: "300,000+ symbols across Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets, organised by country, sector and industry."
+    text: "It deliberately leaves out prices and fundamentals, which you can get elsewhere. What it shows is which products exist, so you can map out a part of the market or find products that are otherwise hard to find."
+    covers: ["Equities", "ETFs", "Funds", "Indices", "Currencies", "Cryptos", "Money Markets"]
+    stats:
+      - { icon: "fa-star", value: "9,300+", label: "stars" }
+      - { icon: "fa-download", value: "600,000+", label: "downloads" }
+      - { icon: "fa-code-fork", value: "950+", label: "forks" }
+    links:
+      - { label: "Getting started", url: /projects/financedatabase/getting-started }
+
+contributed:
+  - name: "OpenBB"
+    url: /projects/openbbterminal
+    github: "https://github.com/OpenBB-finance/OpenBB"
+    image: "https://github.com/OpenBB-finance/OpenBB/raw/develop/images/openbb_gradient.png"
+    years: "2022 – 2023"
+    text: "An open-source investment research platform that set out to compete with Bloomberg, Reuters and FactSet. As Product Manager I also wrote a lot of its code, mostly the Economy, Econometrics and Fundamental Analysis parts of what is now the OpenBB Platform."
+    stats:
+      - { icon: "fa-star", value: "73,000+", label: "stars on the repository" }
+
+archived:
+  - name: "The Passive Investor"
+    url: /projects/thepassiveinvestor
+    github: "https://github.com/JerBouma/ThePassiveInvestor"
+    text: "Compares ETFs side by side, to make choosing between the many similar funds easier."
+    stats:
+      - { icon: "fa-star", value: "600+", label: "stars" }
+      - { icon: "fa-download", value: "160,000+", label: "downloads" }
+  - name: "Personal Finance"
+    url: /projects/personalfinance
+    github: "https://github.com/JerBouma/PersonalFinance"
+    text: "Sorts your bank transactions into your own categories, learning from your own data instead of a generic dataset."
+    stats:
+      - { icon: "fa-star", value: "120+", label: "stars" }
+      - { icon: "fa-download", value: "4,000+", label: "downloads" }
