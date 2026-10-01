@@ -55,6 +55,9 @@ jobs:
         env:
           JEKYLL_ENV: production
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # higher GitHub API limit for the live stats
+      - name: Zip the agent kit
+        # agent-kit/ is excluded from Jekyll; it is offered as one download
+        run: bash _scripts/build-agent-kit.sh
       - name: Print the CV to PDF
         # Renders /resume/cv (built from _data/resume.yml) to
         # _site/assets/files/jeroen-bouma-cv.pdf so the download always matches

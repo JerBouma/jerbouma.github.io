@@ -149,6 +149,7 @@ include:
   - .well-known
 exclude:
   - CLAUDE.md
+  - agent-kit # zipped into the site by the deploy workflow, see _scripts/build-agent-kit.sh
   - poetry.lock
   - requirements.txt
   - "*.sublime-project"
