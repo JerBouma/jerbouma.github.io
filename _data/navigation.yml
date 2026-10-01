@@ -32,6 +32,8 @@ main:
         url: /modelling/build-your-model
       - title: Test your model
         url: /modelling/test-your-model
+      - title: Working with AI
+        url: /modelling/working-with-ai
   - title: "Media"
     url: /appearances
     sublinks:
@@ -1694,8 +1696,8 @@ modelling:
         url: /modelling/getting-started#learning-the-basics
       - title: "Installing and Working with Python"
         url: /modelling/getting-started#installing-and-working-with-python
-      - title: "Learning with an AI Assistant"
-        url: /modelling/getting-started#learning-with-an-ai-assistant
+      - title: "From the Basics to an AI Assistant"
+        url: /modelling/getting-started#from-the-basics-to-an-ai-assistant
       - title: "The Next Steps"
         url: /modelling/getting-started#the-next-steps
   - title: 'Setting up your Project'
@@ -1750,6 +1752,23 @@ modelling:
     children:
       - title: "Tests and AI Assistants"
         url: /modelling/test-your-model#tests-and-ai-assistants
+  - title: "Working with AI"
+    url: /modelling/working-with-ai
+    children:
+      - title: "The Building Blocks"
+        url: /modelling/working-with-ai#the-building-blocks
+      - title: "Instruction Files"
+        url: /modelling/working-with-ai#instruction-files
+      - title: "Rules"
+        url: /modelling/working-with-ai#rules
+      - title: "Skills"
+        url: /modelling/working-with-ai#skills
+      - title: "Hooks"
+        url: /modelling/working-with-ai#hooks
+      - title: "MCP Servers"
+        url: /modelling/working-with-ai#mcp-servers
+      - title: "A Workflow that Keeps You in Control"
+        url: /modelling/working-with-ai#a-workflow-that-keeps-you-in-control
 articles:
   - title: "Options"
     children:

@@ -14,9 +14,11 @@ sidebar:
 
 Python has become the language of choice for many financial analysts and quantitative researchers. It is readable, has an extensive set of libraries and is used across the industry. I have spent thousands of hours with it, both for my own projects and for models at financial institutions.
 
-Today, AI assistants such as ChatGPT, Claude and GitHub Copilot can write a large part of that code for you. That changes how models are built, but not what makes a model good. A model still needs a structure that holds up, calculations you can verify and tests that tell you when something breaks. If anything, understanding these components has become more important: when an assistant drafts a model in seconds, you are the one who has to judge whether it is correct, whether it fits the rest of the model and whether it will still work next year.
+How models are built has changed. AI coding assistants such as Claude Code, GitHub Copilot, Cursor and Codex now write most of the code, and I don't think anyone should build a financial model by hand anymore. What has not changed is what makes a model good: a structure that holds up, calculations you can verify and tests that tell you when something breaks. Your role moves from typing code to designing the model, directing the assistant and judging the result. That requires a deeper understanding of each component, not a shallower one.
 
-That is the focus of this guide. It is not a recipe that you should follow by hand step by step, but an explanation of what each part of a financial model does and why it is there, from the project setup to the structure, the code and the tests. Whether you type the code yourself or let an assistant draft it, knowing these components is what lets you steer, review and maintain the result. The practices I describe are the ones that worked for me, including the mistakes I learned the most from. **You can browse the content using the sidebar or the cards below.**
+That is what this guide is about. Every page explains what a part of a financial model does and why it is there, and how you work on it together with an assistant: what to ask for, what to write down so the assistant gets it right, and what to check before you accept the result. It is not a recipe to follow by hand, but the knowledge you need to steer an assistant towards a model you can trust. The practices I describe are the ones that worked for me, including the mistakes I learned the most from.
+
+Whether you want to understand the code of a financial model in depth or mainly want to work well with AI assistants, the two go hand in hand: the better you understand the components, the better you can instruct and check the assistant. The last page, Working with AI, covers the files and tools that connect both. **You can browse the content using the sidebar or the cards below.**
 
 <div class="bento-grid bento-grid--compact">
 
@@ -57,6 +59,14 @@ That is the focus of this guide. It is not a recipe that you should follow by ha
       <i class="fas fa-vial bento-icon"></i>
       <h2>Test your Model</h2>
       <p>Using Pytest to build a test suite that mirrors your model, with recorded expected outputs that catch every change in a calculation, whether you or an assistant made it.</p>
+    </div>
+  </a>
+
+  <a href="/modelling/working-with-ai" class="bento-card" style="grid-column: span 12;">
+    <div class="bento-content">
+      <i class="fas fa-robot bento-icon"></i>
+      <h2>Working with AI</h2>
+      <p>Setting up your project for AI coding assistants: instruction files like CLAUDE.md and AGENTS.md, rules, Skills, hooks and MCP servers, and a workflow that keeps every result verifiable.</p>
     </div>
   </a>
 

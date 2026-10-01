@@ -13,17 +13,17 @@ sidebar:
 
 {% include mermaid.html %}
 
-Once you get the hang of Python and have installed a code editor such as Visual Studio Code, it's time to start working on your own project and use the tools that improve the quality of a model.
+Once you can read Python comfortably and have a code editor with an assistant, it's time to start your own project and set up the tools that keep a model's quality high.
 
 By applying the structure described here right from the start, you make sure that anything you build stays maintainable and can scale. This matters most when you share your model with others or plan to use it for a long time.
 
-An AI assistant can generate most of these files for you in seconds. That is fine, but only if you know what each file is for and what its settings do, because these files decide how your model is installed, checked and versioned. This page therefore focuses on the purpose of each part.
+Your assistant will create most of this setup for you, often in a single request. You don't need to write these files yourself, but you do need to know what each one is for and what its settings do, because together they decide how your model is installed, checked and versioned, and how well the assistant can work in it. This page explains the purpose of each part and what to check.
 
 ## Managing your Project
 
-Starting a new project begins with creating an empty folder named after the project (e.g., "FinanceToolkit"). Then, open this folder in your code editor and initialize Git using `git init` (or clone an existing remote repository using `git clone URL`). Afterwards, I typically connect to a remote repository using `git remote add origin URL`, enabling me to commit, push, and pull changes.
+Starting a new project begins with an empty folder named after the project (e.g., "FinanceToolkit"), opened in your editor, with Git initialised (`git init`) and connected to a remote repository (`git remote add origin URL`). You can ask your assistant to do all of this.
 
-Once this is done, I include the following files to help manage the project. These files are always present in my projects; in fact, I often copy them from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} repository because it works well as a starting template. This applies to both personal and professional projects.
+Every project of mine contains the files below. A good request is to point the assistant to an existing project you trust, such as the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} repository, and ask it to set up the same files for your new project. Then check each one against the descriptions here. This applies to both personal and professional projects.
 
 This consists of the following files:
 
@@ -80,7 +80,7 @@ dev = [
 
 This example uses the dependency manager **uv**, a fast tool written in Rust that handles dependency resolution, virtual environment creation, and package installation. It is much faster than alternatives like pip or Poetry and supports the standard `pyproject.toml` format. The uv documentation is well written and worth reading, see [here](https://docs.astral.sh/uv/){: target="_blank"}.
 
-Once set up, you can add dependencies using `uv add` (e.g., `uv add pandas`). This command adds the package (like pandas) to the `[project]` dependencies section. With dependencies listed, running `uv sync` installs them all within a virtual environment that uv manages automatically. This command also creates a `uv.lock` file, which records the exact versions of all installed packages and their sub-dependencies. Because the versions are locked, builds are reproducible.
+In practice your assistant runs these commands when it needs a new package, so review what it adds: every dependency is code you rely on and have to keep up to date. Once set up, you can add dependencies using `uv add` (e.g., `uv add pandas`). This command adds the package (like pandas) to the `[project]` dependencies section. With dependencies listed, running `uv sync` installs them all within a virtual environment that uv manages automatically. This command also creates a `uv.lock` file, which records the exact versions of all installed packages and their sub-dependencies. Because the versions are locked, builds are reproducible.
 
 ___
 
@@ -234,7 +234,7 @@ ty.......................................................................Passed
 
 ### Creating a Git Workflow
 
-When working with code, you should follow a Git workflow that separates development from production environments. The complexity of the workflow can depend on whether you are working alone or in a team; avoid unnecessary complexity. For example, requiring self-approval of Pull Requests (PRs) from a feature branch is unnecessary if you are the sole developer.
+When working with code, you should follow a Git workflow that separates development from production environments. This matters even more with an assistant: let it work on a separate branch, review its changes as a pull request, and only then merge them into the code you rely on. The complexity of the workflow can depend on whether you are working alone or in a team; avoid unnecessary complexity. For example, requiring self-approval of Pull Requests (PRs) from a feature branch is unnecessary if you are the sole developer.
 
 {: .notice--info}
 I recommend using Git even for private projects. Platforms like GitHub offer private repositories for this purpose. The main benefit of Git is version control: you can easily track changes, revert to previous states if mistakes are made, and manage different versions or features concurrently.
@@ -345,7 +345,7 @@ Keep it short and specific. For a financial model it could cover:
 - **The workflow:** which commands install the project (`uv sync`) and run the tests (`pytest tests`), and that recorded test output is never rewritten without a review.
 - **The domain rules:** for example, that ratios are calculated from the reported statements, that percentages are stored as fractions, or which data sources may be used.
 
-Writing this file is also a good test of your own understanding: if you can't describe your project's structure in a few lines, it is probably not clear enough yet.
+Writing this file is also a good test of your own understanding: if you can't describe your project's structure in a few lines, it is probably not clear enough yet. [Working with AI](/modelling/working-with-ai) covers these files in depth, together with rules, Skills, hooks and MCP servers.
 
 Once these setup steps are complete, it's time to focus on structuring your model's code. Visit [Structure your Model](/modelling/structure-your-model) to continue!
 
