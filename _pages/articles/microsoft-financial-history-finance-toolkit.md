@@ -34,7 +34,7 @@ from financetoolkit import Toolkit
 
 company = Toolkit(
     tickers=["MSFT"],
-    api_key="YOUR_FMP_API_KEY",
+    api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="1986-01-01"
 )
 ```

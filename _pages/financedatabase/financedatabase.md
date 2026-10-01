@@ -320,7 +320,7 @@ Then you can go ahead and run the following code, changing the `API_KEY` to your
 
 
 ```python
-API_KEY = "FINANCIAL_MODELING_PREP_API_KEY"
+API_KEY = "FINANCIAL_MODELING_PREP_KEY"
 
 dutch_insurance_companies = equities.select(
     country='Netherlands',
