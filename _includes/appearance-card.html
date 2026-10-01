@@ -1,0 +1,26 @@
+{%- assign a = include.item -%}
+<article class="pj-card ap-card" data-reveal>
+  <div class="pj-card__top">
+    <div class="ap-card__media">
+      {%- if a.video %}
+      <div class="embed-youtube" data-video-id="{{ a.video }}" role="button" tabindex="0" aria-label="Play {{ a.title }}">
+        <div class="embed-youtube-play"></div>
+      </div>
+      {%- elsif a.photos %}
+      <div class="ap-card__grid">{% for p in a.photos %}<img src="{{ p }}" alt="{{ a.title }}" loading="lazy">{% endfor %}</div>
+      {%- else %}
+      <img src="{{ a.photo }}" alt="{{ a.title }}" loading="lazy">
+      {%- endif %}
+    </div>
+    <div class="pj-card__body">
+      <p class="pj-card__since">{{ a.date }} · {{ a.place }}</p>
+      <h3>{{ a.title }}</h3>
+      {%- for t in a.text %}
+      <p class="pj-card__lead">{{ t }}</p>
+      {%- endfor %}
+      <div class="pj-card__actions">
+        <a class="hp-link" href="{{ a.link.url }}" target="_blank" rel="noopener">{{ a.link.label }} <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </div>
+</article>
