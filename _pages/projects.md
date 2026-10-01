@@ -79,12 +79,22 @@ At financial institutions I kept seeing the same models and calculations being b
         </div>
       </div>
     </div>
-    <div class="pj-card__more">
-      <div>
-        {%- if p.text %}<p class="pj-card__text">{{ p.text }}</p>{% endif %}
-        <div class="pj-chips">{% for c in p.covers %}{% if c.url %}<a href="{{ c.url }}">{{ c.name }}</a>{% else %}<span>{{ c }}</span>{% endif %}{% endfor %}</div>
+    {%- if p.companion %}{% assign c = p.companion %}
+    <div class="pj-card__top pj-companion">
+      <a class="pj-card__media" href="{{ c.url }}"><img src="{{ c.image }}" alt="{{ c.name }} banner" loading="lazy"></a>
+      <div class="pj-card__body">
+        <p class="pj-card__since">Since {{ c.since }}</p>
+        <h3><a href="{{ c.url }}">{{ c.name }}</a></h3>
+        <p class="pj-card__lead">{{ c.lead }}</p>
+        <div class="pj-card__actions">
+          <a class="hp-btn hp-btn--primary" href="{{ c.url }}">Explore <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+          {%- for l in c.links %}
+          <a class="hp-link" href="{{ l.url }}">{{ l.label }} <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+          {%- endfor %}
+        </div>
       </div>
     </div>
+    {%- endif %}
   </article>
   {%- endfor %}
 </section>
