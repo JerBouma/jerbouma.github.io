@@ -5526,3 +5526,27 @@ body.ft-overview .page__content {
     max-height: none;
   }
 }
+
+// ── OpenBB contributions (/projects/openbbterminal) ─────────────────────────
+.obb-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 1.6em 0 0.4em;
+
+  span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 16px 18px;
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    background: var(--card-bg);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  strong { color: var(--text-primary); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
+
+  @media (max-width: 760px) { grid-template-columns: 1fr; }
+}
