@@ -11,9 +11,9 @@ author_profile: false
 
 <div class="row">
 <div markdown="1" class="sixty-column mobile-max-column-width" markdown="1">
-I discovered Python during my university studies and quickly saw how much it could do in finance. Since then I have spent a lot of my time programming in it, both building internal models at companies like a.s.r. asset management and PGGM and working on the open-source projects on this page.
+Next to my work in asset management, I build open-source Python tools for financial analysis in my own time. They started from a simple observation: across the financial sector, the same calculations are rebuilt again and again, often in ways no one outside can check. Writing them out in the open means anyone can see how a number is calculated, verify it and build on it.
 
-At financial institutions I kept seeing the same models and calculations being built again and again. That made me a strong advocate for open source, because it means people and firms no longer have to rely only on proprietary models. By sharing my work openly, I want to make financial knowledge and tools available to anyone who wants to use them, and give others something to build on.
+Today the Finance Toolkit and Finance Database are used worldwide by developers, researchers and investors. Below you'll find the tools I maintain, my contributions to OpenBB and a few earlier projects.
 </div>
 <div class="fourty-column mobile-max-column-width">
 <div class="pj-gh">
@@ -64,11 +64,11 @@ At financial institutions I kept seeing the same models and calculations being b
     <div class="pj-card__top">
       <div class="pj-card__side">
         <a class="pj-card__media" href="{{ p.url }}"><img src="{{ p.image }}" alt="{{ p.name }} banner" loading="lazy"></a>
-        <div class="pj-figures">{% for s in p.stats %}<span><i class="fas {{ s.icon }}" aria-hidden="true"></i><strong>{{ s.value }}</strong>{{ s.label }}</span>{% endfor %}</div>
       </div>
       <div class="pj-card__body">
         <p class="pj-card__since">Since {{ p.since }}</p>
         <h3><a href="{{ p.url }}">{{ p.name }}</a></h3>
+        <div class="pj-stats pj-card__stats">{% for s in p.stats %}<span><i class="fas {{ s.icon }}" aria-hidden="true"></i><strong>{{ s.value }}</strong> {{ s.label }}</span>{% endfor %}</div>
         <p class="pj-card__lead">{{ p.lead }}</p>
         <div class="pj-card__actions">
           <a class="hp-btn hp-btn--primary" href="{{ p.url }}">Explore <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
