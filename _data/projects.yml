@@ -14,7 +14,6 @@ maintained:
     image: "https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg"
     since: "2019"
     lead: "500+ financial methods, from ratios and valuation models to risk, performance and econometrics, each written out so you can see exactly how a number is calculated."
-    text: "You calculate every metric directly from the financial statements, with the same method every time, instead of relying on numbers from external providers that you cannot check."
     # each module links to its notebook
     covers:
       - { name: "Discovery", url: /projects/financetoolkit/discovery-notebook }
@@ -34,18 +33,37 @@ maintained:
       - { icon: "fa-code-fork", value: "600+", label: "forks" }
     links:
       - { label: "Documentation", url: /projects/financetoolkit/docs }
-    extra:
-      title: "Also available for AI assistants"
-      text: "The MCP server makes all 500+ methods available in Claude, ChatGPT, Cursor and Copilot. Ask in plain English, and every number is still computed with the same open-source formulas."
-      url: /projects/financetoolkit/mcp
-      label: "Finance Toolkit MCP"
+  - name: "Finance Toolkit MCP"
+    url: /projects/financetoolkit/mcp
+    github: "https://github.com/JerBouma/FinanceToolkit"
+    image: "/assets/images/projects/FinanceToolkitMCP.jpg"
+    since: "2026"
+    lead: "The Finance Toolkit for AI assistants. Ask a question in plain English and the assistant fetches the data and runs the calculation, with every number computed by the same open-source formulas."
+    # each assistant links to its setup instructions
+    covers:
+      - { name: "Claude Desktop", url: "/projects/financetoolkit/mcp#remote-claude-desktop" }
+      - { name: "Claude.ai", url: "/projects/financetoolkit/mcp#remote-claude-ai" }
+      - { name: "Claude Code", url: "/projects/financetoolkit/mcp#remote-claude-code" }
+      - { name: "ChatGPT", url: "/projects/financetoolkit/mcp#remote-chatgpt" }
+      - { name: "Codex", url: "/projects/financetoolkit/mcp#remote-codex" }
+      - { name: "VS Code (Copilot)", url: "/projects/financetoolkit/mcp#remote-vs-code" }
+      - { name: "Cursor", url: "/projects/financetoolkit/mcp#remote-cursor" }
+      - { name: "Windsurf", url: "/projects/financetoolkit/mcp#remote-windsurf" }
+      - { name: "Gemini", url: "/projects/financetoolkit/mcp#remote-gemini" }
+    # fixed facts about the server, not GitHub numbers (the repository is shared
+    # with the Finance Toolkit)
+    stats:
+      - { icon: "fa-screwdriver-wrench", value: "22", label: "tools" }
+      - { icon: "fa-calculator", value: "500+", label: "methods" }
+      - { icon: "fa-server", value: "2", label: "ways to run" }
+    links:
+      - { label: "Example conversations", url: "/projects/financetoolkit/mcp#example-conversations" }
   - name: "Finance Database"
     url: /projects/financedatabase
     github: "https://github.com/JerBouma/FinanceDatabase"
     image: "https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg"
     since: "2020"
     lead: "300,000+ symbols across Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets, organised by country, sector and industry."
-    text: "It deliberately leaves out prices and fundamentals, which you can get elsewhere. What it shows is which products exist, so you can map out a part of the market or find products that are otherwise hard to find."
     covers: ["Equities", "ETFs", "Funds", "Indices", "Currencies", "Cryptos", "Money Markets"]
     stats:
       - { icon: "fa-star", value: "9,300+", label: "stars" }
