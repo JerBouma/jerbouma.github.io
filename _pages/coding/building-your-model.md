@@ -1,8 +1,8 @@
 ---
 title: Build your Model
 seo_title: Build a Financial Model in Python
-excerpt: "Build financial models that last, with modular code, clear styling and the PEP 8 conventions."
-description: "Build financial models that last, with modular code, clear styling and the PEP 8 conventions."
+excerpt: "Build financial models that last, with modular code, clear styling, the PEP 8 conventions and a careful review of AI-written code."
+description: "Build financial models that last, with modular code, clear styling, the PEP 8 conventions and a careful review of AI-written code."
 author_profile: true
 permalink: /modelling/build-your-model
 classes: wide-sidebar
@@ -16,6 +16,8 @@ A financial model can serve multiple purposes, ranging from simple data aggregat
 Regardless of the model's purpose, applying consistent styling and coding guidelines helps remove the subjective nature of coding. A style guide ensures code consistency, making it easier to read and maintain. This matters most when multiple developers work on the same codebase or when colleagues move between teams and need to understand models they haven't seen before.
 
 Linters, as discussed in [Setting up your Project](/modelling/setting-up-your-project#setting-up-linters), automate much of the initial code styling. However, linters cannot enforce choices regarding coding methods, variable naming conventions, or docstring structures. For those choices you need a style guide such as [**PEP 8**](https://peps.python.org/pep-0008/){: target="_blank"}.
+
+These conventions also matter when an AI assistant writes part of the code. Assistants follow the patterns they see in a codebase, so a consistent style leads to consistent generated code. And clear names, type hints and docstrings are the context an assistant relies on to understand what a function is supposed to do.
 
 {: .notice--info}
 **Why a Universal Style is Important**<br>
@@ -147,7 +149,7 @@ def function_name(param1: type, param2: type) -> return_type:
 
 While this example uses the Google format, other formats like [reStructuredText (reST)](https://docutils.sourceforge.io/rst.html){: target="_blank"} or NumPy style are also common. The chosen format is less important than ensuring the docstring clearly explains the function's purpose, arguments (including types), return value(s), and any exceptions raised. The goal is to allow users to understand the function without needing to inspect its source code.
 
-Aim for complete docstrings; it's generally better to provide too much detail than too little. Docstrings are a good place to explain underlying financial theory or complex logic within the function. Below is an extensive example (from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/performance/performance_model.py#L129-L174){: target="_blank"}) demonstrating the level of detail possible:
+Aim for complete docstrings; it's generally better to provide too much detail than too little. Docstrings are a good place to explain underlying financial theory or complex logic within the function. AI assistants are good at drafting them, but check that the formula and assumptions described actually match what the code does: a docstring that is confidently wrong is worse than none. Below is an extensive example (from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/performance/performance_model.py#L129-L174){: target="_blank"}) demonstrating the level of detail possible:
 
 ```python
 def get_capital_asset_pricing_model(
@@ -228,6 +230,19 @@ Good documentation contains more than API references (descriptions of individual
 In corporate environments, internal wikis (like those in [Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/project/wiki/wiki-create-repo?view=azure-devops&tabs=browser){: target="_blank"} or Confluence) are useful for sharing higher-level project information, architectural decisions, and team processes, often using Markdown and benefiting from version control.
 
 Well-written docstrings allow the main documentation to focus on the model's overall structure, usage patterns, and concepts, rather than repeating low-level function details. This helps in particular when the model serves as a back-end, because it lets non-programmers (like Financial Analysts or Portfolio Managers) understand what the model can do and what it assumes.
+
+## Reviewing AI-Written Code
+
+Whether a function was written by you, a colleague or an AI assistant, the same question applies: is it correct, and does it belong in this model? Generated code often looks clean and runs without errors, which makes its mistakes easy to miss. In financial models, those mistakes are rarely syntax errors. They are usually in the finance or the data. Before accepting a change, I check the following:
+
+- **The formula.** Does it match the definition you intend to use? Many metrics have several accepted definitions (think of the many ways to calculate a P/E ratio), and an assistant will pick one without telling you.
+- **Units and conventions.** Are percentages stored as fractions or as whole numbers? Are returns simple or logarithmic? Is a cost negative or positive in the data?
+- **Periods and alignment.** Does the calculation mix annual and quarterly data, shift a series by the wrong lag, or annualise with the wrong factor (252 trading days versus 365 calendar days)?
+- **Missing data.** What happens with a missing quarter, a division by zero or a company without a specific line item? Silent `NaN` values or forward-filled gaps can change the outcome without any error.
+- **Hidden assumptions.** Look for hardcoded numbers, such as a risk-free rate or a tax rate, that should be inputs or named constants.
+- **Fit with the model.** Is the code in the right layer, does it reuse existing helpers, and does it follow the conventions on this page?
+
+Reading generated code with these questions in mind is quicker than writing it yourself, but only if you understand each of these topics. That is why the earlier pages focus on understanding rather than on rules.
 
 After establishing these coding and documentation practices, the next step is testing. Proceed to [Test your Model](/modelling/test-your-model) to learn more.
 

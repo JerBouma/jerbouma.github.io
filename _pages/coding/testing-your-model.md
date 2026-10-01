@@ -13,6 +13,8 @@ sidebar:
 
 {% include mermaid.html %}
 
+Tests are what make a model trustworthy over time. Every change, whether it's a new feature, an updated dependency or code written by an AI assistant, can quietly change a result. A good test suite tells you exactly which number changed and where, so you can decide whether that change is correct.
+
 As defined in [Setting up your Project](/modelling/setting-up-your-project), the model should always include a `tests` folder. The tests in this folder are run with [Pytest](https://docs.pytest.org/en/stable/){: target="_blank"}. The structure of the tests should mirror the structure of the model, in effect duplicating it. The main difference is that each test module filename is prefixed with `test_` so Pytest can discover it.
 
 For example, to test the Gross Margin functionality from `profitability_model.py`, create a test function with the same name prefixed by `test_`. This looks like the following:
@@ -134,3 +136,14 @@ tests/conftest.py:226: AssertionError
 ERROR tests/ratios/test_profitability_model.py::test_get_gross_margin - Change detected
 ================================ 16 passed, 1 error in 1.99s ============================
 ```
+
+The test caught the mistake immediately and shows both the expected and the actual values, so you can see at a glance that every gross margin has dropped by exactly 1.
+
+## Tests and AI Assistants
+
+AI assistants are good at writing tests, and they can save you a lot of time here. There are two things to watch, though.
+
+- **The expected values must come from somewhere independent.** A test that records whatever the function currently returns only proves that the function is consistent, not that it is correct. For a new calculation, verify the first recorded output yourself: calculate a few values by hand, compare them with a source such as an annual report, or use a textbook example. Only then does the recorded CSV become a trustworthy reference.
+- **Never let an assistant rewrite recorded results to make a test pass.** When a test fails after a change, the failure is the information you need. Rerunning with `--record-mode="rewrite"` silences it. Look at the difference between the expected and actual values first, understand why the number changed, and only rewrite the recording when you are sure the new result is the correct one.
+
+With these two habits, the test suite becomes the safety net that lets you work quickly, whether you write the code yourself or let an assistant draft it. That brings this guide to an end. If you have suggestions, the [source of this website](https://github.com/JerBouma/jerbouma.github.io){: target="_blank"} is open, so feel free to contribute.
