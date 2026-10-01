@@ -1105,86 +1105,95 @@ financetoolkit-docs-performance:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Performance
+  - title: All Performance Metrics
+    url: /projects/financetoolkit/docs/performance#collect_all_metrics
+  - title: Factors and Alpha
     children:
-    - title: All Performance Metrics
-      url:  /projects/financetoolkit/docs/performance#collect_all_metrics
-    - title: Beta
-      url:  /projects/financetoolkit/docs/performance#get_beta
-    - title: Capital Asset Pricing Model (CAPM)
-      url:  /projects/financetoolkit/docs/performance#get_capital_asset_pricing_model
-    - title: Factor Asset Correlations
-      url:  /projects/financetoolkit/docs/performance#get_factor_asset_correlations
-    - title: Factor Correlations
-      url:  /projects/financetoolkit/docs/performance#get_factor_correlations
-    - title: Fama and French Model (FF)
-      url:  /projects/financetoolkit/docs/performance#get_fama_and_french_model
-    - title: Alpha
-      url:  /projects/financetoolkit/docs/performance#get_alpha
-    - title: Jensen's Alpha
-      url:  /projects/financetoolkit/docs/performance#get_jensens_alpha
-    - title: Treynor Ratio
-      url:  /projects/financetoolkit/docs/performance#get_treynor_ratio
-    - title: Sharpe Ratio
-      url:  /projects/financetoolkit/docs/performance#get_sharpe_ratio
-    - title: Sortino Ratio
-      url:  /projects/financetoolkit/docs/performance#get_sortino_ratio
-    - title: Ulcer Performance Index (UPI)
-      url:  /projects/financetoolkit/docs/performance#get_ulcer_performance_index
-    - title: Calmar Ratio
-      url:  /projects/financetoolkit/docs/performance#get_calmar_ratio
-    - title: Sterling Ratio
-      url:  /projects/financetoolkit/docs/performance#get_sterling_ratio
-    - title: Burke Ratio
-      url:  /projects/financetoolkit/docs/performance#get_burke_ratio
-    - title: M2 Ratio
-      url:  /projects/financetoolkit/docs/performance#get_m2_ratio
-    - title: Tracking Error
-      url:  /projects/financetoolkit/docs/performance#get_tracking_error
-    - title: Information Ratio
-      url:  /projects/financetoolkit/docs/performance#get_information_ratio
-    - title: Upside Capture Ratio
-      url:  /projects/financetoolkit/docs/performance#get_upside_capture_ratio
-    - title: Downside Capture Ratio
-      url:  /projects/financetoolkit/docs/performance#get_downside_capture_ratio
-    - title: Win Rate
-      url:  /projects/financetoolkit/docs/performance#get_win_rate
-    - title: Kappa Ratio
-      url:  /projects/financetoolkit/docs/performance#get_kappa_ratio
-    - title: Omega Ratio
-      url:  /projects/financetoolkit/docs/performance#get_omega_ratio
-    - title: Gain-to-Pain Ratio
-      url:  /projects/financetoolkit/docs/performance#get_gain_to_pain_ratio
-    - title: Compound Growth Rate
-      url:  /projects/financetoolkit/docs/performance#get_compound_growth_rate
-    - title: Returns
-      url:  /projects/financetoolkit/docs/performance#get_returns
-    - title: Excess Return
-      url:  /projects/financetoolkit/docs/performance#get_excess_return
-    - title: Correlation Matrix
-      url:  /projects/financetoolkit/docs/performance#get_correlation_matrix
-    - title: Covariance Matrix
-      url:  /projects/financetoolkit/docs/performance#get_covariance_matrix
-    - title: Carhart Four-Factor Model
-      url:  /projects/financetoolkit/docs/performance#get_carhart_four_factor_model
-    - title: Adjusted Sharpe Ratio
-      url:  /projects/financetoolkit/docs/performance#get_sharpe_ratio
-    - title: Probabilistic Sharpe Ratio (PSR)
-      url:  /projects/financetoolkit/docs/performance#get_sharpe_ratio
-    - title: Deflated Sharpe Ratio (DSR)
-      url:  /projects/financetoolkit/docs/performance#get_sharpe_ratio
-    - title: Appraisal Ratio
-      url:  /projects/financetoolkit/docs/performance#get_appraisal_ratio
-    - title: Rachev Ratio
-      url:  /projects/financetoolkit/docs/performance#get_rachev_ratio
-    - title: STARR Ratio
-      url:  /projects/financetoolkit/docs/performance#get_starr_ratio
-    - title: Treynor-Mazuy Model
-      url:  /projects/financetoolkit/docs/performance#get_treynor_mazuy_model
-    - title: Henriksson-Merton Model
-      url:  /projects/financetoolkit/docs/performance#get_henriksson_merton_model
-    - title: Fama Decomposition
-      url:  /projects/financetoolkit/docs/performance#get_fama_decomposition
+      - title: "Beta"
+        url: /projects/financetoolkit/docs/performance#get_beta
+      - title: "Capital Asset Pricing Model (CAPM)"
+        url: /projects/financetoolkit/docs/performance#get_capital_asset_pricing_model
+      - title: "Fama and French Model (FF)"
+        url: /projects/financetoolkit/docs/performance#get_fama_and_french_model
+      - title: "Carhart Four-Factor Model"
+        url: /projects/financetoolkit/docs/performance#get_carhart_four_factor_model
+      - title: "Factor Asset Correlations"
+        url: /projects/financetoolkit/docs/performance#get_factor_asset_correlations
+      - title: "Factor Correlations"
+        url: /projects/financetoolkit/docs/performance#get_factor_correlations
+      - title: "Alpha"
+        url: /projects/financetoolkit/docs/performance#get_alpha
+      - title: "Jensen's Alpha"
+        url: /projects/financetoolkit/docs/performance#get_jensens_alpha
+      - title: "Treynor-Mazuy Model"
+        url: /projects/financetoolkit/docs/performance#get_treynor_mazuy_model
+      - title: "Henriksson-Merton Model"
+        url: /projects/financetoolkit/docs/performance#get_henriksson_merton_model
+      - title: "Fama Decomposition"
+        url: /projects/financetoolkit/docs/performance#get_fama_decomposition
+  - title: Risk-Adjusted
+    children:
+      - title: "Sharpe Ratio"
+        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio
+      - title: "Adjusted Sharpe Ratio"
+        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio
+      - title: "Probabilistic Sharpe Ratio (PSR)"
+        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio
+      - title: "Deflated Sharpe Ratio (DSR)"
+        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio
+      - title: "Sortino Ratio"
+        url: /projects/financetoolkit/docs/performance#get_sortino_ratio
+      - title: "Treynor Ratio"
+        url: /projects/financetoolkit/docs/performance#get_treynor_ratio
+      - title: "M2 Ratio"
+        url: /projects/financetoolkit/docs/performance#get_m2_ratio
+      - title: "Appraisal Ratio"
+        url: /projects/financetoolkit/docs/performance#get_appraisal_ratio
+      - title: "Kappa Ratio"
+        url: /projects/financetoolkit/docs/performance#get_kappa_ratio
+      - title: "Omega Ratio"
+        url: /projects/financetoolkit/docs/performance#get_omega_ratio
+      - title: "Rachev Ratio"
+        url: /projects/financetoolkit/docs/performance#get_rachev_ratio
+      - title: "STARR Ratio"
+        url: /projects/financetoolkit/docs/performance#get_starr_ratio
+  - title: Drawdown Ratios
+    children:
+      - title: "Calmar Ratio"
+        url: /projects/financetoolkit/docs/performance#get_calmar_ratio
+      - title: "Sterling Ratio"
+        url: /projects/financetoolkit/docs/performance#get_sterling_ratio
+      - title: "Burke Ratio"
+        url: /projects/financetoolkit/docs/performance#get_burke_ratio
+      - title: "Ulcer Performance Index (UPI)"
+        url: /projects/financetoolkit/docs/performance#get_ulcer_performance_index
+      - title: "Gain-to-Pain Ratio"
+        url: /projects/financetoolkit/docs/performance#get_gain_to_pain_ratio
+  - title: Vs. Benchmark
+    children:
+      - title: "Tracking Error"
+        url: /projects/financetoolkit/docs/performance#get_tracking_error
+      - title: "Information Ratio"
+        url: /projects/financetoolkit/docs/performance#get_information_ratio
+      - title: "Upside Capture Ratio"
+        url: /projects/financetoolkit/docs/performance#get_upside_capture_ratio
+      - title: "Downside Capture Ratio"
+        url: /projects/financetoolkit/docs/performance#get_downside_capture_ratio
+      - title: "Win Rate"
+        url: /projects/financetoolkit/docs/performance#get_win_rate
+  - title: Returns
+    children:
+      - title: "Returns"
+        url: /projects/financetoolkit/docs/performance#get_returns
+      - title: "Excess Return"
+        url: /projects/financetoolkit/docs/performance#get_excess_return
+      - title: "Compound Growth Rate"
+        url: /projects/financetoolkit/docs/performance#get_compound_growth_rate
+      - title: "Correlation Matrix"
+        url: /projects/financetoolkit/docs/performance#get_correlation_matrix
+      - title: "Covariance Matrix"
+        url: /projects/financetoolkit/docs/performance#get_covariance_matrix
+
 financetoolkit-docs-fixedincome:
   - title: Modules
     children:
