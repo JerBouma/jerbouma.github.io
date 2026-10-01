@@ -6,7 +6,8 @@
 # certification or opensource; active marks the ones that are ongoing.
 # description may contain HTML. testimonials also appear as references on
 # the CV when cv_reference is true, with their excerpt (verbatim, "…" marks
-# skipped text).
+# skipped text). stats on the open-source entries come from GitHub (stars,
+# forks) and pepy.tech (all-time PyPI downloads), rounded down.
 
 headline: "Quantitative Investment Strategist"
 
@@ -186,7 +187,11 @@ entries:
     title: "Finance Database"
     icon: "fa-database"
     github: "https://github.com/JerBouma/FinanceDatabase"
-    subtitle: "Creator &amp; Maintainer (7,000+ GitHub Stars)"
+    subtitle: "Creator &amp; Maintainer"
+    stats:
+      - { icon: "fa-star", value: "9,300+", label: "GitHub stars" }
+      - { icon: "fa-download", value: "600,000+", label: "downloads" }
+      - { icon: "fa-code-fork", value: "950+", label: "forks" }
     description: "An open-source database with 300,000+ symbols covering Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It gives an overview of sectors, industries and investment types across 111 countries. I started it out of frustration that I did not know which financial products existed. OpenBB later came across the project, which led to a job offer."
     skills: ["Python", "Git"]
     logo: "/assets/images/projects/FinanceDatabase.jpg"
@@ -230,7 +235,11 @@ entries:
     title: "Finance Toolkit"
     icon: "fa-toolbox"
     github: "https://github.com/JerBouma/FinanceToolkit"
-    subtitle: "Creator &amp; Maintainer (5,000+ GitHub Stars)"
+    subtitle: "Creator &amp; Maintainer"
+    stats:
+      - { icon: "fa-star", value: "5,300+", label: "GitHub stars" }
+      - { icon: "fa-download", value: "640,000+", label: "downloads" }
+      - { icon: "fa-code-fork", value: "600+", label: "forks" }
     description: "An open-source toolkit with 500+ financial methods, each written to be as transparent as possible. It supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Combined with the Finance Database, it lets you do a full competitive analysis. It is used by thousands of analysts, developers and students worldwide."
     expertise: ["Portfolio Optimization", "Econometrics & Time Series", "Factor Models", "Agentic Frameworks"]
     skills: ["Python", "MCP", "Docker", "GitHub", "Git"]

@@ -47,6 +47,9 @@
             <p class="rj-card__org">{{ sub }}</p>
           </div>
         </div>
+        {%- if e.stats %}
+        <div class="rj-stats">{% for s in e.stats %}<span><i class="fas {{ s.icon }}" aria-hidden="true"></i><strong>{{ s.value }}</strong> {{ s.label }}</span>{% endfor %}</div>
+        {%- endif %}
         <p class="rj-card__text">{{ e.description }}</p>
         {%- if e.expertise %}
         <div class="rj-tags">
