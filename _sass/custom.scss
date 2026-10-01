@@ -5485,3 +5485,51 @@ body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
   background: rgba(128, 128, 128, 0.12) !important;
   border-color: var(--card-border) !important;
 }
+
+// ── Finance Toolkit overview (/projects/financetoolkit) ─────────────────────
+// The example charts were shown at the full content width, so the taller ones
+// filled the whole screen. They now sit centred at a readable size in a light
+// frame, the banner is a compact strip and the "star it" screenshot is smaller.
+body.ft-overview .page__content {
+  > p > img[src*="github.com/JerBouma/FinanceToolkit/assets"],
+  > p > img[src*="user-attachments"] {
+    display: block;
+    width: auto !important;
+    max-width: min(100%, 760px) !important;
+    max-height: 460px;
+    margin: 1.6em auto !important;
+    padding: 14px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 14px;
+    object-fit: contain;
+  }
+
+  // the banner at the top
+  > p > img[src$="FinanceToolkit.jpg"] {
+    display: block;
+    width: 100% !important;
+    max-width: 720px !important;
+    margin: 1.8em auto !important;
+    border-radius: 16px;
+  }
+
+  // the "please star the project" screenshot
+  > p > a > img[src*="014109fe"] {
+    display: block;
+    width: 100% !important;
+    max-width: 620px !important;
+    margin: 1em auto !important;
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media (max-width: 760px) {
+  body.ft-overview .page__content > p > img[src*="github.com/JerBouma/FinanceToolkit/assets"],
+  body.ft-overview .page__content > p > img[src*="user-attachments"] {
+    padding: 8px;
+    max-height: none;
+  }
+}

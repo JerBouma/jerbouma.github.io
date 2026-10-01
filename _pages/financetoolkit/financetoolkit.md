@@ -3,7 +3,7 @@ permalink: /projects/financetoolkit
 title: Finance Toolkit
 excerpt: This is a free open-source toolkit written in Python in which 500+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
 description: "The Finance Toolkit is a free open-source Python package with 500+ transparent financial ratios, metrics and models computed from financial statements."
-classes: wide-sidebar
+classes: wide-sidebar ft-overview
 author_profile: false
 redirect_from:
   - /financetoolkit
