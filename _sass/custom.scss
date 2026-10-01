@@ -5569,3 +5569,66 @@ body.ft-overview .page__content {
 
   @media (max-width: 760px) { grid-template-columns: 1fr; }
 }
+
+// ── Client tabs on the MCP page ─────────────────────────────────────────────
+// .ft-tabs groups the client cards; the page script adds a tab bar and the
+// is-tabbed class, after which only the selected client's steps are shown.
+.ft-tabs.is-tabbed {
+  margin: 18px 0 8px;
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  background: var(--card-bg);
+  overflow: hidden;
+
+  > details { display: none; margin: 0; border: none; border-radius: 0; background: none; box-shadow: none !important; backdrop-filter: none; }
+  > details.is-active { display: block; }
+  > details > summary { display: none; }
+  > details > :not(summary) { margin-left: 22px; margin-right: 22px; }
+  > details.is-active { padding: 6px 0 10px; }
+}
+
+.ft-tabs__bar {
+  display: flex;
+  flex-wrap: wrap;
+
+  // on phones the tabs stay on one row that scrolls sideways
+  @media (max-width: 760px) {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  gap: 6px;
+  padding: 12px;
+  border-bottom: 1px solid var(--card-border);
+  background: rgba(128, 128, 128, 0.04);
+}
+
+.ft-tabs__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+  i { font-size: 0.9em; opacity: 0.8; }
+
+  &:hover { color: var(--text-primary); background: rgba(128, 128, 128, 0.08); }
+
+  &.is-active {
+    color: var(--accent-color);
+    border-color: var(--card-hover-border);
+    background: rgba(56, 189, 248, 0.1);
+  }
+}
