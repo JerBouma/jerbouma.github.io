@@ -20,7 +20,7 @@ intro:
 
 # areas of expertise in two groups. The CV lists them under the profile; on
 # /resume each timeline entry shows the ones it covers (its expertise list),
-# marked with the colour of the group (key).
+# marked with the color of the group (key).
 expertise:
   - group: "Quantitative Finance"
     key: quant

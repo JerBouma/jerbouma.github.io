@@ -1,8 +1,6 @@
 ---
 permalink: /projects/financetoolkit/mcp
 title: Finance Toolkit MCP Server
-seo_title: "Finance Toolkit MCP Server: Financial Data & Stock Analysis for Claude, ChatGPT & Cursor"
-seo_title_suffix: false
 excerpt: "Connect Claude, ChatGPT, Cursor, VS Code or any other MCP client to the Finance Toolkit, hosted or on your own machine, and analyze stocks, financial statements, technical indicators and macro data in plain English."
 description: "Open-source MCP server for stock analysis: 500+ financial methods, valuation models, technical indicators and macro data in Claude, ChatGPT or Cursor."
 classes: wide-sidebar
@@ -527,7 +525,7 @@ The following analysis covers eight representative semiconductor names spanning 
 
 **Momentum: The Sector Was Overbought in Late April and Early May and Has Since Cooled**
 
-The most telling technical story of 2026 is a sharp overbought surge that peaked between late April and mid-May and has since largely normalised as of the June 4 close. The table below presents trailing 14-day RSI readings (Wilder smoothing) across the cohort for the last ten trading sessions. Readings above 70 flag overbought conditions; readings below 30 indicate oversold pressure.
+The most telling technical story of 2026 is a sharp overbought surge that peaked between late April and mid-May and has since largely normalized as of the June 4 close. The table below presents trailing 14-day RSI readings (Wilder smoothing) across the cohort for the last ten trading sessions. Readings above 70 flag overbought conditions; readings below 30 indicate oversold pressure.
 
 | Date       | NVDA  | AMD   | INTC  | QCOM  | AVGO  | TSM   | MU    | ASML  | SPY (Benchmark) |
 |:-----------|------:|------:|------:|------:|------:|------:|------:|------:|----------------:|
@@ -563,7 +561,7 @@ NVDA's P/E compression from its stratospheric 284x in 2023 to 44.6x on a current
 
 **Risk-Adjusted Returns: 2022 Was the Only Losing Year, and 2026 Is Off to a Strong Start**
 
-Sharpe ratios on an annual basis show how much excess return (versus the 10-year Treasury yield) each name delivered per unit of volatility. The Finance Toolkit reports these on a per-observation basis, i.e. the mean of the daily excess returns within each year divided by their standard deviation, so the figures are not annualised (multiply by roughly 15.9, the square root of 252, to compare against published annual Sharpe ratios). The table below covers each name since 2021, with 2026 running through June 4.
+Sharpe ratios on an annual basis show how much excess return (versus the 10-year Treasury yield) each name delivered per unit of volatility. The Finance Toolkit reports these on a per-observation basis, i.e. the mean of the daily excess returns within each year divided by their standard deviation, so the figures are not annualized (multiply by roughly 15.9, the square root of 252, to compare against published annual Sharpe ratios). The table below covers each name since 2021, with 2026 running through June 4.
 
 | Year | NVDA   | AMD    | INTC   | QCOM   | AVGO   | TSM    | MU     | ASML   | SPY    |
 |:-----|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|

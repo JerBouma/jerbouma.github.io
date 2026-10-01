@@ -33,7 +33,7 @@ Collect the bond statistics for a given bond which includes the following fields
 - Frequency: The number of coupon payments per year.
 - Present Value: The present value of the bond.
 - Current Yield: The annual coupon payment divided by the bond price.
-- Effective Yield: The annualised yield that accounts for the compounding of the coupon payments made within the year.
+- Effective Yield: The annualized yield that accounts for the compounding of the coupon payments made within the year.
 - Macaulay's Duration: The weighted average time to receive the bond's cash flows.
 - Modified Duration: The Macaulay's duration divided by 1 plus the per-period yield (yield to maturity divided by the frequency).
 - Effective Duration: The percentage price change per unit change in yield, obtained by repricing the bond symmetrically 1% above and 1% below the current yield.
@@ -790,7 +790,7 @@ In all cases, they refer to bonds whose capital repayment is guaranteed by gover
 
 Short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage.
 
-Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".
+Short-term interest rates are based on three-month money market rates where available. Typical standardized names are "money market rate" and "treasury bill rate".
 
 **See definition:** [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
 

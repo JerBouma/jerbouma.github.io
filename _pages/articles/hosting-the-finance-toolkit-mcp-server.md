@@ -1,11 +1,10 @@
 ---
 title: How I Host the Finance Toolkit MCP Server on a Mini PC
-seo_title: "Self-Hosting an MCP Server with Proxmox and Cloudflare"
-seo_title_suffix: false
+seo_title: "Self-Hosting an MCP Server on a Mini PC"
 date: 2026-09-28
 last_modified_at: 2026-09-28
 permalink: /articles/hosting-the-finance-toolkit-mcp-server
-excerpt: "The hosted Finance Toolkit MCP server does not run in a cloud data centre. It runs in a small Linux container on a Mini PC at home, managed by Proxmox, with Cloudflare as the only door to the outside world. This article walks through how that setup fits together and why it works well for an MCP server."
+excerpt: "The hosted Finance Toolkit MCP server does not run in a cloud data center. It runs in a small Linux container on a Mini PC at home, managed by Proxmox, with Cloudflare as the only door to the outside world. This article walks through how that setup fits together and why it works well for an MCP server."
 description: "How the free Finance Toolkit MCP server is self-hosted on a Mini PC with Proxmox, an LXC container, Docker and Cloudflare, and what it takes to do the same."
 layout: single
 classes: wide-sidebar article-document
@@ -131,7 +130,7 @@ One detail that is easy to miss: the MCP protocol with `streamable-http` keeps s
 Putting it all together, this is what happens when someone asks Claude for Apple's operating margin:
 
 1. Claude decides to call the `profitability` tool and sends an MCP request to `https://financetoolkit.jeroenbouma.com/mcp`, with the user's access token in the `Authorization` header.
-2. Cloudflare receives the request at its nearest data centre, checks it against the firewall rules and forwards it to the Mini PC.
+2. Cloudflare receives the request at its nearest data center, checks it against the firewall rules and forwards it to the Mini PC.
 3. Inside the container, the server verifies the token's signature with `FT_MCP_SECRET_KEY` and extracts the user's FMP API key from it.
 4. The server calls Financial Modeling Prep with that key, runs the Finance Toolkit calculation and formats the result as a Markdown table.
 5. The answer travels back the same way, and the key is forgotten as soon as the request is done.
@@ -151,7 +150,7 @@ A public service on home hardware needs a little discipline:
 - **Health checks at every layer.** A restart policy brings the server back when `/health` stops answering, Proxmox can start the container automatically when the Mini PC boots, and an external uptime check on the public `/health` URL catches anything broken between Cloudflare and the container.
 - **Updates in a copy first.** Proxmox makes it cheap to clone the container, try a new Finance Toolkit release there and only then swap it in. A snapshot keeps the switch reversible.
 - **Secrets outside the image.** The signing secret stays in an environment file, so the image itself can be rebuilt from the public repository at any time.
-- **Accept that it is not a data centre.** A power cut or an internet outage at home takes the server down. For a free tool that is an acceptable risk, and anyone who needs guaranteed availability can run the [local server](/projects/financetoolkit/mcp#local-clients) or the Docker image on their own infrastructure.
+- **Accept that it is not a data center.** A power cut or an internet outage at home takes the server down. For a free tool that is an acceptable risk, and anyone who needs guaranteed availability can run the [local server](/projects/financetoolkit/mcp#local-clients) or the Docker image on their own infrastructure.
 
 ## Doing This Yourself
 

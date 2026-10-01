@@ -1,7 +1,7 @@
 ---
 title: Technicals
 seo_title: Technicals Module Documentation – Finance Toolkit
-excerpt: The Technicals Module contains 30+ Technical Indicators that can be used to analyse companies. These ratios are divided into 4 categories which are breadth, momentum, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
+excerpt: The Technicals Module contains 30+ Technical Indicators that can be used to analyze companies. These ratios are divided into 4 categories which are breadth, momentum, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
 description: "Reference for every function and parameter in the Finance Toolkit's Technicals module: 30+ breadth, momentum, overlap and volatility indicators in Python."
 author_profile: false
 permalink: /projects/financetoolkit/docs/technicals
@@ -612,7 +612,7 @@ toolkit.technicals.get_ease_of_movement()
 ## get_negative_volume_index
 Calculate the Negative Volume Index (NVI) for a given price series.
 
-The Negative Volume Index is a cumulative index that only updates on days where volume decreases from the prior period, compounding that day's percentage price change onto the running index; on days where volume increases (or stays flat), the index is carried forward unchanged. The premise, per Fosback, is that "smart money" tends to be active on low-volume (quiet) days, so tracking price behaviour specifically on those days isolates informed trading from the noise of high-volume, crowd-driven days.
+The Negative Volume Index is a cumulative index that only updates on days where volume decreases from the prior period, compounding that day's percentage price change onto the running index; on days where volume increases (or stays flat), the index is carried forward unchanged. The premise, per Fosback, is that "smart money" tends to be active on low-volume (quiet) days, so tracking price behavior specifically on those days isolates informed trading from the noise of high-volume, crowd-driven days.
 
 The formula is as follows:
 
@@ -672,7 +672,7 @@ toolkit.technicals.get_negative_volume_index()
 ## get_positive_volume_index
 Calculate the Positive Volume Index (PVI) for a given price series.
 
-The Positive Volume Index mirrors the Negative Volume Index: it is a cumulative index that only updates on days where volume increases from the prior period, compounding that day's percentage price change onto the running index; on days where volume decreases (or stays flat), the index is carried forward unchanged. Per Fosback, the Positive Volume Index isolates price behaviour on high-volume (crowd-driven) days, which is traditionally read as tracking less-informed, sentiment-driven trading.
+The Positive Volume Index mirrors the Negative Volume Index: it is a cumulative index that only updates on days where volume increases from the prior period, compounding that day's percentage price change onto the running index; on days where volume decreases (or stays flat), the index is carried forward unchanged. Per Fosback, the Positive Volume Index isolates price behavior on high-volume (crowd-driven) days, which is traditionally read as tracking less-informed, sentiment-driven trading.
 
 The formula is as follows:
 
@@ -2250,7 +2250,7 @@ toolkit.technicals.get_rate_of_change()
 ## get_choppiness_index
 Calculate the Choppiness Index (CHOP) for a given price series.
 
-The Choppiness Index quantifies whether the market is trending or moving sideways ("choppy") by comparing the sum of True Range over the window (a measure of the total price path travelled) to the net range the price actually covered over that same window (the distance between the highest high and the lowest low). When price travels a long, winding path but ends up covering little net ground, the index is high (near 100), signalling a choppy, range-bound market. When price travels efficiently in one direction, the index is low (near 0), signalling a trending market.
+The Choppiness Index quantifies whether the market is trending or moving sideways ("choppy") by comparing the sum of True Range over the window (a measure of the total price path traveled) to the net range the price actually covered over that same window (the distance between the highest high and the lowest low). When price travels a long, winding path but ends up covering little net ground, the index is high (near 100), signalling a choppy, range-bound market. When price travels efficiently in one direction, the index is low (near 0), signalling a trending market.
 
 The formula is as follows:
 
@@ -3409,7 +3409,7 @@ support and resistance levels for each asset in the Toolkit instance.
 - A level is only identified on the handful of dates where a new local maximum or minimum
 is confirmed. The result is forward-filled so every date shows the most recently
 confirmed level (NaN before the first level is confirmed for that asset).
-- Levels are identified with a centred pivot window, which cannot confirm an extreme
+- Levels are identified with a centered pivot window, which cannot confirm an extreme
 until `window` further periods have printed without exceeding it. Every level is
 therefore published with a confirmation lag of exactly `window` periods, and the
 series is append-only: a value read at any date is exactly the value that was
