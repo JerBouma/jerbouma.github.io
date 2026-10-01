@@ -5425,7 +5425,7 @@ $docs-grey-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000
       text-transform: uppercase;
     }
 
-    .nav__module-name { flex: 1; font-size: 0.9rem; }
+    .nav__module-name { flex: 1; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     > ul {
       margin: 0 !important;
