@@ -17,7 +17,7 @@ Regardless of the model's purpose, applying consistent styling and coding guidel
 
 Linters, as discussed in [Setting up your Project](/modelling/setting-up-your-project#setting-up-linters), automate much of the initial code styling. However, linters cannot enforce choices regarding coding methods, variable naming conventions, or docstring structures. For those choices you need a style guide such as [**PEP 8**](https://peps.python.org/pep-0008/){: target="_blank"}.
 
-These conventions also matter when an AI assistant writes part of the code. Assistants follow the patterns they see in a codebase, so a consistent style leads to consistent generated code. And clear names, type hints and docstrings are the context an assistant relies on to understand what a function is supposed to do.
+With an assistant writing the code, you will rarely apply these conventions by hand. Instead, they serve two purposes. First, they are instructions: put them in your [instruction file](/modelling/working-with-ai#instruction-files) and let the linters enforce what can be automated, so every generated function follows the same style. Second, they are what makes code reviewable: consistent names, type hints and docstrings let you read a generated function in seconds and see what it is supposed to do. The sections below explain each convention so you know what to ask for and what to look for.
 
 {: .notice--info}
 **Why a Universal Style is Important**<br>
@@ -124,7 +124,7 @@ def get_cost_of_goods_sold(
 </div>
 </div>
 
-Omitting type hints reduces code clarity, forcing users to rely solely on docstrings or reading the implementation to understand function inputs and outputs.
+Omitting type hints reduces code clarity, forcing users to rely solely on docstrings or reading the implementation to understand function inputs and outputs. When reviewing generated code, the signature is the first thing to read: if a model function takes a full DataFrame instead of a Series, it probably depends on specific column names and doesn't belong in the Model layer.
 
 ## Writing Docstrings
 
@@ -149,7 +149,7 @@ def function_name(param1: type, param2: type) -> return_type:
 
 While this example uses the Google format, other formats like [reStructuredText (reST)](https://docutils.sourceforge.io/rst.html){: target="_blank"} or NumPy style are also common. The chosen format is less important than ensuring the docstring clearly explains the function's purpose, arguments (including types), return value(s), and any exceptions raised. The goal is to allow users to understand the function without needing to inspect its source code.
 
-Aim for complete docstrings; it's generally better to provide too much detail than too little. Docstrings are a good place to explain underlying financial theory or complex logic within the function. AI assistants are good at drafting them, but check that the formula and assumptions described actually match what the code does: a docstring that is confidently wrong is worse than none. Below is an extensive example (from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/performance/performance_model.py#L129-L174){: target="_blank"}) demonstrating the level of detail possible:
+Aim for complete docstrings; it's generally better to provide too much detail than too little. Docstrings are a good place to explain underlying financial theory or complex logic within the function. Assistants write them well; it's still worth a quick check that the formula and assumptions described match the definition you want to use. Below is an extensive example (from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/performance/performance_model.py#L129-L174){: target="_blank"}) demonstrating the level of detail possible:
 
 ```python
 def get_capital_asset_pricing_model(
@@ -217,7 +217,7 @@ def get_capital_asset_pricing_model(
 
 ## Creating Documentation
 
-Besides styling and docstrings, documentation is actually pretty important if you want to share your code with others. This is where [Sphinx](https://www.sphinx-doc.org/en/master/){: target="_blank"} comes in. Sphinx makes it easy to create well-structured, good-looking documentation for Python projects (or other documents consisting of multiple reStructuredText or Markdown files).
+Besides styling and docstrings, documentation is important if you want to share your code with others. Assistants are good at drafting and updating it from your docstrings and examples, which removes the main reason documentation used to fall behind. Your job is to check that it describes what the model actually does. This is where [Sphinx](https://www.sphinx-doc.org/en/master/){: target="_blank"} comes in. Sphinx makes it easy to create well-structured, good-looking documentation for Python projects (or other documents consisting of multiple reStructuredText or Markdown files).
 
 Other popular documentation generators include [MkDocs](https://www.mkdocs.org/){: target="_blank"}. Additionally, platforms like [Read the Docs](https://readthedocs.org/){: target="_blank"} can host documentation generated by these tools. The [Finance Toolkit documentation](/projects/financetoolkit/docs){: target="_blank"} is an example of what you can achieve with such tools (though it uses custom elements alongside standard tooling).
 
@@ -233,7 +233,7 @@ Well-written docstrings allow the main documentation to focus on the model's ove
 
 ## Reviewing AI-Written Code
 
-Whether a function was written by you, a colleague or an AI assistant, the same question applies: is it correct, and does it belong in this model? Generated code often looks clean and runs without errors, which makes its mistakes easy to miss. In financial models, those mistakes are rarely syntax errors. They are usually in the finance or the data. Before accepting a change, I check the following:
+Today's assistants write code that is usually correct and well structured. What deserves your attention are the choices behind it: in financial models, the decisions that change a result are rarely in the syntax and almost always in the finance or the data. Whether a function was written by you, a colleague or an assistant, these are the things I look at before accepting a change:
 
 - **The formula.** Does it match the definition you intend to use? Many metrics have several accepted definitions (think of the many ways to calculate a P/E ratio), and an assistant will pick one without telling you.
 - **Units and conventions.** Are percentages stored as fractions or as whole numbers? Are returns simple or logarithmic? Is a cost negative or positive in the data?
@@ -242,7 +242,7 @@ Whether a function was written by you, a colleague or an AI assistant, the same 
 - **Hidden assumptions.** Look for hardcoded numbers, such as a risk-free rate or a tax rate, that should be inputs or named constants.
 - **Fit with the model.** Is the code in the right layer, does it reuse existing helpers, and does it follow the conventions on this page?
 
-Reading generated code with these questions in mind is quicker than writing it yourself, but only if you understand each of these topics. That is why the earlier pages focus on understanding rather than on rules.
+Reviewing a change with these questions in mind takes a few minutes, and most of the time you will simply agree with the choices made. But you can only do that if you understand each of these topics, which is why the earlier pages focus on understanding rather than on rules.
 
 After establishing these coding and documentation practices, the next step is testing. Proceed to [Test your Model](/modelling/test-your-model) to learn more.
 

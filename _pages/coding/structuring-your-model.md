@@ -13,7 +13,7 @@ sidebar:
 
 {% include mermaid.html %}
 
-The following guidelines explain how to structure a model. Treat them as a reference rather than as strict rules. What matters most is a structure that is understandable and maintainable.
+The structure of a model is the part you should design yourself, even when an assistant writes all the code. It decides where every calculation lives, how data flows and how easy it is to check a change. Once you have chosen a structure, write it down in your [instruction file](/modelling/working-with-ai#instruction-files) so the assistant follows it in every task. Treat the guidelines below as a reference rather than as strict rules: what matters most is a structure that is understandable and maintainable.
 
 My preferred approach for structuring a model is the **Model, View, Controller (MVC)** pattern. This software design pattern is commonly used to separate user interfaces, data, and controlling logic. It emphasizes separating the software's business logic from its presentation. This "separation of concerns" makes it easier to divide the work and to maintain the code. Models and Views should ideally function independently, while Controllers depend on Models or a combination of Models and Views. Note that while many variations of this pattern exist (see [here](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller#See_also){: target="_blank"}), they all adhere to the same core principles.
 
@@ -89,7 +89,7 @@ def get_gross_margin(revenue: pd.Series, cost_of_goods_sold: pd.Series) -> pd.Se
 
 Each function is categorized in a specific module. For example, the Gross Margin calculation belongs in the `profitability_model.py` module, alongside other profitability ratio functions. Similarly, other ratio categories like liquidity, solvency, efficiency, and valuation reside in their respective model files (`liquidity_model.py`, `solvency_model.py`, `efficiency_model.py`, and `valuation_model.py`, respectively).
 
-Because these functions are so small, they are also the easiest to verify. You can put the formula from a textbook next to the code and check it line by line, which is exactly what you want to do when an AI assistant wrote it.
+Because these functions are so small, they are also the easiest to verify. You can put the formula from a textbook next to the code and check it line by line. This is the layer to review most carefully when an assistant adds something: the controller and view only move data around, but a wrong formula here ends up in every result.
 
 ### The Visualization Layer
 
@@ -143,7 +143,7 @@ Step3["Ratios Controller"] <-- "2. Calculates Gross Margin" --> Step2["Profitabi
 Step3["Ratios Controller"] -- "3. Shows Gross Margin" --> Step0["User"]
 </div>
 
-The Controller should perform <u>no</u> core calculations. Its only job is to direct the data flow between the Model and View. Controller logic is often encapsulated within classes. For instance, the Gross Margin calculation might be accessed via a method within a `Ratios` class (see the actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/ratios_controller.py#L2310-L2374){: target="_blank"}):
+The Controller should perform <u>no</u> core calculations. Assistants regularly break this rule by computing something "just here" inside a controller method, so it is worth stating explicitly in your instructions. Its only job is to direct the data flow between the Model and View. Controller logic is often encapsulated within classes. For instance, the Gross Margin calculation might be accessed via a method within a `Ratios` class (see the actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/ratios_controller.py#L2310-L2374){: target="_blank"}):
 
 ```python
 class Ratios:
