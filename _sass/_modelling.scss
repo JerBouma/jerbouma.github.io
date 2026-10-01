@@ -11,28 +11,6 @@
     line-height: 1.55 !important;
   }
 
-  // key facts under the intro
-  .mi-facts {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    margin: 1.6em 0 0.6em;
-
-    span {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      padding: 14px 18px;
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      background: var(--card-bg);
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    strong { color: var(--text-primary); font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; }
-  }
-
   // the six chapters, numbered, each opening with the question it answers
   .mi-path {
     display: grid;
@@ -231,8 +209,7 @@
 
 @media (max-width: 760px) {
   .modelling-intro .page__content {
-    .mi-facts, .mi-path, .mi-routes { grid-template-columns: 1fr; }
-    .mi-facts span { padding: 12px 16px; }
+    .mi-path, .mi-routes { grid-template-columns: 1fr; }
     .mi-kit { padding: 20px; }
   }
 }

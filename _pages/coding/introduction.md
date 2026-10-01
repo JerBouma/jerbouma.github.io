@@ -15,12 +15,6 @@ sidebar:
 
 I have spent thousands of hours building financial models in Python, at financial institutions and in open-source projects like the [Finance Toolkit](/projects/financetoolkit). The structure, the conventions and the testing approach in this guide come from that work, including the mistakes I learned the most from. Each chapter explains one component in depth, and how you work on it together with an agent.
 
-<div class="mi-facts">
-  <span><strong>6</strong>chapters</span>
-  <span><strong>4</strong>ready-made agent skills</span>
-  <span><strong>13</strong>files in the free agent kit</span>
-</div>
-
 ## The Journey of a Model
 
 From your first lines of Python to a model that an agent can extend safely, each chapter builds on the previous one. Start at the beginning, or jump to the question you have right now.
