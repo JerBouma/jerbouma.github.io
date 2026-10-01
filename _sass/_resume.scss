@@ -223,34 +223,6 @@ $rj-img: 'img:not([data-hp-a]):not([data-hp-b])';
   gap: 16px;
 }
 
-// a small dot on the rail next to every card and milestone
-.rj-card,
-.rj-milestone {
-  position: relative;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 30px;
-    left: calc(var(--rj-dot-x) - 6px);
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 2px solid var(--rj-dot, var(--text-muted));
-    background: var(--rj-bg);
-  }
-}
-
-.rj-card--experience { --rj-dot: var(--rj-exp); }
-.rj-card--education { --rj-dot: var(--rj-edu); }
-.rj-card--opensource { --rj-dot: var(--rj-oss); }
-.rj-milestone { --rj-dot: var(--rj-cert); }
-
-.rj-card.is-active::before {
-  background: var(--rj-dot);
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--rj-dot) 22%, transparent);
-}
-
 // ── cards ─────────────────────────────────────────────────────────────────
 .rj-card {
   padding: 24px 26px;
@@ -521,7 +493,6 @@ body .page__content .hp.rj blockquote {
   border-radius: 16px;
   background: rgba(128, 128, 128, 0.03);
 
-  &::before { top: 26px; }
 
   &__icon {
     display: grid;
