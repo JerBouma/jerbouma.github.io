@@ -21,7 +21,7 @@ With an assistant writing the code, you will rarely apply these conventions by h
 
 {: .notice--info}
 **Why a Universal Style is Important**<br>
-You might be accustomed to specific styling methods from your firm or university. However, I recommend adopting a universally accepted style like PEP 8, as countless developers use it. This standardisation makes collaboration much easier, because other developers can quickly understand your code. Adhering to PEP standards also gives you clear guidelines and avoids conflicts with automated linters.
+You might be accustomed to specific styling methods from your firm or university. However, I recommend adopting a universally accepted style like PEP 8, as countless developers use it. This standardization makes collaboration much easier, because other developers can quickly understand your code. Adhering to PEP standards also gives you clear guidelines and avoids conflicts with automated linters.
 
 ## Default Styling
 

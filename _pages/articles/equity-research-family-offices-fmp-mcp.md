@@ -26,7 +26,7 @@ Below I walk through an equity research pass on Axon Enterprise (AXON), the make
 The FMP MCP server connects to Claude Desktop as a remote connector, so there is nothing to install locally. Under Settings, then Connectors, then Add custom connector, the URL follows this pattern:
 
 ```
-https://financialmodelingprep.com/mcp?apikey=YOUR_API_KEY
+https://financialmodelingprep.com/mcp?apikey=FINANCIAL_MODELING_PREP_KEY
 ```
 
 Paste that in with your key, give it a name, and Claude has direct access to FMP's statements, analyst data, insider filings, and institutional ownership records for the rest of the session.

@@ -1,7 +1,7 @@
 ---
 permalink: /projects/financedatabase
 title: Finance Database
-excerpt: The Finance Database features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
+excerpt: The Finance Database features 300,000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
 description: "The Finance Database is an open-source Python package with 300,000+ symbols: equities, ETFs, funds, indices, currencies, crypto and money markets."
 classes: wide-sidebar
 author_profile: false
@@ -15,9 +15,9 @@ sidebar:
 
 As a private investor, the amount of information you can find on the internet is rather daunting. With millions of companies and derivatives on the market, it is hard to understand what types of companies or ETFs are available. The most traded companies and ETFs are easy to find because they are known to the public (for example, Microsoft, Tesla, S&P500 ETF or an All-World ETF), but what else is out there is often unknown.
 
-**This database tries to solve that**. It features 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
+**This database tries to solve that**. It features 300,000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
 
-The database is explicitly _not_ meant to provide up-to-date fundamentals or stock data, as those are easy to obtain (with the help of this database) through the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. Instead, it shows which products exist in each country, industry and sector and gives the most essential information about each of them. With this information, you can analyse specific areas of the financial world or find a product that is otherwise hard to find. See the [Usage](#usage) section for examples of how to combine this database with the FinanceToolkit.
+The database is explicitly _not_ meant to provide up-to-date fundamentals or stock data, as those are easy to obtain (with the help of this database) through the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. Instead, it shows which products exist in each country, industry and sector and gives the most essential information about each of them. With this information, you can analyze specific areas of the financial world or find a product that is otherwise hard to find. See the [Usage](#usage) section for examples of how to combine this database with the FinanceToolkit.
 
 Some key statistics of the database:
 
@@ -349,7 +349,7 @@ Which returns, selecting only "ASRNL.AS" as an example:
 | 2025-04-03 |  52.32 |  53.22 | 52.18 |   52.42 |       52.42 |   567242 |           0 |  -0.0165 |       0.0175 |         -0.057  |              0.0206 |              4.2274 |
 | 2025-04-04 |  52    |  52.5  | 49.45 |   50.4  |       50.4  |   485024 |           0 |  -0.0385 |       0.0175 |         -0.0775 |              0.0206 |              4.0645 |
 
-Now let's make it more advanced by automatically calculating 60+ financial ratios for each company. **This is only a small part of what is available within the Finance Toolkit. For more information, see the GitHub page of the Finance Toolkit [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} or the example Notebook [here](/projects/financetoolkit/getting-started).**
+Now let's make it more advanced by automatically calculating 80+ financial ratios for each company. **This is only a small part of what is available within the Finance Toolkit. For more information, see the GitHub page of the Finance Toolkit [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} or the example Notebook [here](/projects/financetoolkit/getting-started).**
 
 ```python
 toolkit.ratios.collect_all_ratios()

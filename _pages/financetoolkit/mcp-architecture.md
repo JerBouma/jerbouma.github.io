@@ -74,7 +74,7 @@ The wrapper's `__signature__` is replaced with a proper `inspect.Signature` so t
 
 Every tool group has a `category` that controls how `ToolkitProvider` routes the call:
 
-| Category | Behaviour |
+| Category | Behavior |
 |:---|:---|
 | `ticker` | Instantiates a `Toolkit(tickers=…)` object and calls a method on one of its sub-modules (e.g. `ratios`, `models`, `options`) |
 | `toolkit` | Same Toolkit instance, but calls a method directly on the `Toolkit` class (e.g. `get_historical_data`) |

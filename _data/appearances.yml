@@ -21,7 +21,7 @@ talks:
       - /assets/images/appearances/hackathon/DSC06451.jpg
       - /assets/images/appearances/hackathon/DSC06491.jpg
     text:
-      - "Finance students built a Robo Advisor in Python on a dataset of nearly 2,500 ETFs: construct a portfolio for a given investor profile, and make sure the optimised result still makes practical sense."
+      - "Finance students built a Robo Advisor in Python on a dataset of nearly 2,500 ETFs: construct a portfolio for a given investor profile, and make sure the optimized result still makes practical sense."
       - "As a jury member I helped them combine financial theory with their Python skills to give sound investment advice. Python keeps becoming more important in the industry, which is why I keep coming back each year."
     link: { label: "Read more on LinkedIn", url: "https://www.linkedin.com/feed/update/urn:li:activity:7127300810450853888/" }
 

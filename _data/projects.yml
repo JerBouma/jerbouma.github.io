@@ -34,7 +34,7 @@ maintained:
     github: "https://github.com/JerBouma/FinanceDatabase"
     image: "https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg"
     since: "2020"
-    lead: "300,000+ symbols across Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets, organised by country, sector and industry."
+    lead: "300,000+ symbols across Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets, organized by country, sector and industry."
     stats:
       - { icon: "fa-star", value: "9,300+", label: "stars" }
       - { icon: "fa-download", value: "600,000+", label: "downloads" }

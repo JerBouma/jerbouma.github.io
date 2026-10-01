@@ -3340,11 +3340,33 @@ body.wide-no-sidebar:not(.no-title) {
     margin: 0;
   }
 
+  // abstracts show four lines; the page script adds a toggle for the rest
   &__summary {
     font-size: 0.82rem;
     color: var(--text-secondary);
     line-height: 1.5;
     margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+  }
+
+  &.is-open &__summary { display: block; }
+
+  &__more {
+    align-self: flex-start;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--accent-color);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover { text-decoration: underline; }
   }
 
   &__tags {
