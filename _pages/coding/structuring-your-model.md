@@ -316,7 +316,7 @@ Following this structure, here's how you might execute the code:
 ```python
 from financetoolkit import Toolkit
 
-companies = Toolkit(['AMZN', 'ASML', 'META'], api_key='YOUR_API_KEY')
+companies = Toolkit(['AMZN', 'ASML', 'META'], api_key="FINANCIAL_MODELING_PREP_KEY")
 
 companies.ratios.get_gross_margin()
 ```

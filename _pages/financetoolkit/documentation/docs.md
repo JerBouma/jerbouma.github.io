@@ -264,9 +264,9 @@ toolkit.econometrics.get_augmented_dickey_fuller(period='yearly')
 ## fixedincome
 This gives access to the Fixed Income module. This module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration, the Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
 
-Next to that, it is also possible to acquire Central Bank Rates and ICE BofA Indices such as the ICE BofA US High Yield Index, the ICE BofA US Corporate Index and the ICE BofA US Treasury Index.
+Besides these calculations, the module provides central bank rates and ICE BofA bond indices, such as the ICE BofA US High Yield Index, the ICE BofA US Corporate Index and the ICE BofA US Treasury Index.
 
-Note that this class can also be directly accessed by importing the FixedIncome class directly via from financetoolkit import FixedIncome. This is useful if you only want to use the FixedIncome class and not the other classes within the Toolkit module.
+The module doesn't depend on company data, so you can also import it on its own with `from financetoolkit import FixedIncome` when you don't need the rest of the Toolkit.
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/fixedincome](/projects/financetoolkit/docs/fixedincome){:target="_blank"}
 
@@ -303,7 +303,7 @@ Which returns:
 ## economics
 This gives access to the Economics module. This module contains a wide variety of economic data obtained from OECD. These include things such as the Consumer Price Index (CPI), the Producer Price Index (PPI), the Unemployment Rate, the GDP Growth Rate, the Long and Short Term Interest Rate and the Consumer Confidence Index.
 
-Note that this class can also be directly accessed by importing the Economics class directly via from financetoolkit import Economics. This is useful if you only want to use the Economics class and not the other classes within the Toolkit module.
+The module doesn't depend on company data, so you can also import it on its own with `from financetoolkit import Economics` when you don't need the rest of the Toolkit.
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/economics](/projects/financetoolkit/docs/economics){:target="_blank"}
 

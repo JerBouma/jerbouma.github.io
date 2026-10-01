@@ -35,7 +35,7 @@ from financetoolkit import Toolkit
 
 companies = Toolkit(
     tickers=["MSFT", "AAPL"],
-    api_key="YOUR_FMP_API_KEY",
+    api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2020-01-01"
 )
 ```
@@ -72,7 +72,7 @@ from financetoolkit import Toolkit
 
 chips = Toolkit(
     tickers=["NVDA", "AMD", "ASML", "TSM", "AVGO", "INTC", "QCOM", "TXN", "AMAT"],
-    api_key="YOUR_FMP_API_KEY",
+    api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2015-01-01"
 )
 
@@ -115,7 +115,7 @@ from financetoolkit import Toolkit
 
 sectors = Toolkit(
     tickers=["EXV9.DE", "EXV1.DE", "EXV4.DE", "EXI5.DE", "EXV3.DE", "EXH9.DE", "EXH1.DE"],
-    api_key="YOUR_FMP_API_KEY",
+    api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2019-11-01"
 )
 rsi = sectors.technicals.get_relative_strength_index(period="monthly")
@@ -155,7 +155,7 @@ from financetoolkit import Toolkit
 
 south_america = Toolkit(
     tickers=["PBR", "YPF", "VALE", "SCCO", "ITUB", "CIB", "MELI", "GGB"],
-    api_key="YOUR_FMP_API_KEY",
+    api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01"
 )
 fama_french = south_america.performance.get_fama_and_french_model(period="yearly")

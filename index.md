@@ -95,7 +95,8 @@ classes: custom-splash home-v2
 <div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
 toolkit = Toolkit(
-    [<span class="s">"INTC"</span>, <span class="s">"AMD"</span>], api_key=API_KEY)
+    [<span class="s">"INTC"</span>, <span class="s">"AMD"</span>],
+    api_key=<span class="s">"FINANCIAL_MODELING_PREP_KEY"</span>)
 
 <span class="c"># Return on invested capital</span>
 ratios = toolkit.ratios
@@ -111,7 +112,7 @@ ratios.<span class="f">get_return_on_invested_capital</span>()</div>
 
 toolkit = Toolkit(
     [<span class="s">"ITUB"</span>, <span class="s">"VALE"</span>, <span class="s">"MELI"</span>],
-    api_key=API_KEY,
+    api_key=<span class="s">"FINANCIAL_MODELING_PREP_KEY"</span>,
     start_date=<span class="s">"2021-01-01"</span>)
 
 <span class="c"># Five-factor exposures, shown for 2025</span>
@@ -129,7 +130,8 @@ performance.<span class="f">get_fama_and_french_model</span>(
 <div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
 toolkit = Toolkit(
-    [<span class="s">"AMZN"</span>, <span class="s">"TSLA"</span>], api_key=API_KEY)
+    [<span class="s">"AMZN"</span>, <span class="s">"TSLA"</span>],
+    api_key=<span class="s">"FINANCIAL_MODELING_PREP_KEY"</span>)
 
 <span class="c"># Volatility forecast with GARCH</span>
 toolkit.risk.<span class="f">get_garch_forecast</span>(
@@ -145,7 +147,8 @@ toolkit.risk.<span class="f">get_garch_forecast</span>(
 <div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
 toolkit = Toolkit(
-    [<span class="s">"AAPL"</span>, <span class="s">"MSFT"</span>], api_key=API_KEY)
+    [<span class="s">"AAPL"</span>, <span class="s">"MSFT"</span>],
+    api_key=<span class="s">"FINANCIAL_MODELING_PREP_KEY"</span>)
 
 <span class="c"># Johansen test for cointegration</span>
 econometrics = toolkit.econometrics

@@ -263,8 +263,14 @@ module DocsMetricPages
     paragraphs.shift
     paragraphs.reject! { |p| p.start_with?("See the following link") }
     name = CLASSES[key][:name]
-    lead = if parts[:example].include?("Toolkit(")
+    standalone = paragraphs.any? { |p| p.include?("from financetoolkit import") }
+    lead = if parts[:example].include?("Toolkit(") && standalone
+             "The example below uses it through a `Toolkit` instance instead."
+           elsif parts[:example].include?("Toolkit(")
              "The #{name} module is reached through a `Toolkit` instance, as shown below."
+           elsif standalone
+             # the paragraphs already explain the standalone import
+             "For example:"
            else
              "The #{name} module can also be used on its own, as shown below."
            end
