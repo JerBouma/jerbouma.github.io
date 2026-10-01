@@ -83,7 +83,7 @@ Three settings do most of the work:
 - **`FT_MCP_SECRET_KEY`** is the secret used to sign every OAuth token. It belongs in an environment file on the host, never in the repository. If it changes, every issued token becomes invalid and users have to log in again, so it is set once and left alone.
 - **The `/health` endpoint** gives Docker a way to check that the server is answering requests rather than merely running. `restart: unless-stopped` brings it back after a crash or a reboot of the Mini PC.
 
-Hosted mode also changes one behaviour on purpose: caching is off by default. Locally, the server caches downloaded data in a small SQLite database because there is only one user. On a shared server that would mean one user's data, fetched with their own paid FMP plan, could be served to someone else. So the hosted server fetches everything live, per request, with the caller's own key.
+Hosted mode also changes one behavior on purpose: caching is off by default. Locally, the server caches downloaded data in a small SQLite database because there is only one user. On a shared server that would mean one user's data, fetched with their own paid FMP plan, could be served to someone else. So the hosted server fetches everything live, per request, with the caller's own key.
 
 You can run this image on any machine with Docker and have your own copy of the server in a few minutes:
 

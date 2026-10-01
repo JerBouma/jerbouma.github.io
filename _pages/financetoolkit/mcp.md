@@ -3,8 +3,8 @@ permalink: /projects/financetoolkit/mcp
 title: Finance Toolkit MCP Server
 seo_title: "Finance Toolkit MCP Server: Financial Data & Stock Analysis for Claude, ChatGPT & Cursor"
 seo_title_suffix: false
-excerpt: "Connect Claude, ChatGPT, Cursor, VS Code or any other MCP client to the Finance Toolkit, hosted or on your own machine, and analyse stocks, financial statements, technical indicators and macro data in plain English."
-description: "Open-source MCP server for stock analysis: 500+ financial ratios, valuation models, technical indicators and macro data in Claude, ChatGPT or Cursor."
+excerpt: "Connect Claude, ChatGPT, Cursor, VS Code or any other MCP client to the Finance Toolkit, hosted or on your own machine, and analyze stocks, financial statements, technical indicators and macro data in plain English."
+description: "Open-source MCP server for stock analysis: 500+ financial methods, valuation models, technical indicators and macro data in Claude, ChatGPT or Cursor."
 classes: wide-sidebar
 author_profile: false
 layout: single
@@ -394,9 +394,9 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
 
 There is a growing number of MCP servers for financial data, from the official Financial Modeling Prep and Yahoo Finance servers to dozens of community wrappers. Most of them expose raw API endpoints (a quote, an income statement, a list of prices) and leave the analysis to the language model. That is where models are least reliable. An LLM asked to compute a return on invested capital or a Sharpe ratio from raw statements will make arithmetic and definitional mistakes, and two chats will rarely agree on the same number.
 
-The Finance Toolkit MCP works the other way around. It is a thin layer over the [Finance Toolkit](/projects/financetoolkit), a Python package with 500+ financial methods that has been downloaded well over a million times, and every number the assistant reports is computed by the same open-source code you can read on GitHub.
+The Finance Toolkit MCP works the other way around. It is a thin layer over the [Finance Toolkit](/projects/financetoolkit), a Python package with 500+ financial methods that has been downloaded over 600,000 times, and every number the assistant reports is computed by the same open-source code you can read on GitHub.
 
-That means the assistant does the analysis with the Finance Toolkit instead of only fetching data: 150+ financial ratios, valuation and credit models (WACC, DuPont, Altman Z-Score, intrinsic value), performance and risk metrics (Sharpe, Sortino, alpha, beta, Value at Risk, GARCH), 30+ technical indicators, options pricing and Greeks, fixed income and a full econometrics toolbox. Macro data is included as well: GDP, inflation, unemployment, interest rates and government finances for 60+ countries from the OECD and FRED, next to the company data from Financial Modeling Prep.
+That means the assistant does the analysis with the Finance Toolkit instead of only fetching data: 80+ financial ratios, valuation and credit models (WACC, DuPont, Altman Z-Score, intrinsic value), performance and risk metrics (Sharpe, Sortino, alpha, beta, Value at Risk, GARCH), 30+ technical indicators, options pricing and Greeks, fixed income and a full econometrics toolbox. Macro data is included as well: GDP, inflation, unemployment, interest rates and government finances for 60+ countries from the OECD and FRED, next to the company data from Financial Modeling Prep.
 
 Every formula is documented in the [Finance Toolkit documentation](/projects/financetoolkit/docs), so the same question returns the same number regardless of which model asks it. You can connect to the hosted server in a minute or run it locally with a single `uvx` command, and the [source code](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} is MIT-licensed. I designed the 22 categorical tools so that small and large models alike can work with them, from GPT-5 mini to Claude Opus; the [example conversations](#example-conversations) below show both ends of that range.
 
@@ -827,7 +827,7 @@ The questions that come up most often about the server, its data sources and how
 <details class="ft-details" id="faq-tools" markdown="1">
   <summary><h3>Which tools does the server expose?</h3></summary>
 
-  The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an `indicator` parameter that selects the exact metric (e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`), plus four search tools to navigate them. You never pick these by hand: the assistant chooses the tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`. Every tool returns data as standardised Markdown.
+  The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an `indicator` parameter that selects the exact metric (e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`), plus four search tools to navigate them. You never pick these by hand: the assistant chooses the tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`. Every tool returns data as standardized Markdown.
 
 | Category | Tool | Description |
 |:---|:---|:---|
@@ -935,7 +935,7 @@ The questions that come up most often about the server, its data sources and how
       "name": "Which tools does the server expose?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an indicator parameter that selects the exact metric, plus four search tools to navigate them: discovery, market_data, environment, performance, risk, options, econometrics, efficiency, liquidity, profitability, solvency, valuation, models, momentum, overlap, volatility, breadth, macroeconomics, government, jobs, rates, fixed_income, search_categories, search_by_category, search_metrics and search_instruments. The assistant chooses the tool and indicator from your plain-English question; equity tools accept tickers, macro tools accept countries, and all accept start_date, end_date and quarterly. Every tool returns data as standardised Markdown."
+        "text": "The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an indicator parameter that selects the exact metric, plus four search tools to navigate them: discovery, market_data, environment, performance, risk, options, econometrics, efficiency, liquidity, profitability, solvency, valuation, models, momentum, overlap, volatility, breadth, macroeconomics, government, jobs, rates, fixed_income, search_categories, search_by_category, search_metrics and search_instruments. The assistant chooses the tool and indicator from your plain-English question; equity tools accept tickers, macro tools accept countries, and all accept start_date, end_date and quarterly. Every tool returns data as standardized Markdown."
       }
     },
     {
@@ -974,7 +974,7 @@ The questions that come up most often about the server, its data sources and how
   },
   "description": "Open-source Model Context Protocol server that gives Claude, ChatGPT, Cursor, VS Code and other AI assistants access to 500+ financial analysis methods: ratios, valuation models, technical indicators, risk metrics and macroeconomic data.",
   "featureList": [
-    "500+ financial ratios, models and indicators",
+    "500+ financial methods, models and indicators",
     "Hosted server, no installation required",
     "OAuth 2.1 with PKCE, API key never stored",
     "Macroeconomic data for 60+ countries",

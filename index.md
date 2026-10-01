@@ -73,9 +73,12 @@ classes: custom-splash home-v2
     <h2 class="hp-h2">The Finance Toolkit</h2>
     <p>An open-source Python library with 500+ financial methods, from ratios and valuation models to risk, performance and econometrics. Every formula is written out, so you can see exactly how a number is calculated. The MCP server makes all of it available to AI assistants such as Claude and ChatGPT.</p>
     <div class="hp-stats">
-      <div><strong data-stars data-count>5,300+</strong><span>GitHub stars</span></div>
+      {%- assign ft = site.data.projects.maintained | where: "name", "Finance Toolkit" | first %}
+      {%- assign ft_stars = ft.stats | where: "icon", "fa-star" | first %}
+      {%- assign ft_dl = ft.stats | where: "icon", "fa-download" | first %}
+      <div><strong data-count>{{ ft_stars.value }}</strong><span>GitHub stars</span></div>
       <div><strong data-count>500+</strong><span>financial methods</span></div>
-      <div><strong data-count>600,000+</strong><span>downloads</span></div>
+      <div><strong data-count>{{ ft_dl.value }}</strong><span>downloads</span></div>
     </div>
     <div class="hp-actions">
       <a href="/projects/financetoolkit" class="hp-btn hp-btn--primary">Explore the Toolkit</a>
@@ -255,18 +258,4 @@ toolkit.econometrics.<span class="f">get_johansen_cointegration</span>(
   }
 })();
 
-(function () {
-  // live Finance Toolkit star count, rounded down to the hundred
-  var targets = document.querySelectorAll('[data-stars]');
-  if (!targets.length || !window.fetch) return;
-  var repos = ['JerBouma/FinanceToolkit'];
-  Promise.all(repos.map(function (r) {
-    return fetch('https://api.github.com/repos/' + r).then(function (x) { return x.json(); }).then(function (d) { return d.stargazers_count || 0; }).catch(function () { return 0; });
-  })).then(function (counts) {
-    var total = counts.reduce(function (a, b) { return a + b; }, 0);
-    if (total < 1000) return;
-    var text = (Math.floor(total / 100) * 100).toLocaleString('en-US') + '+';
-    targets.forEach(function (el) { el.textContent = text; });
-  });
-})();
 </script>

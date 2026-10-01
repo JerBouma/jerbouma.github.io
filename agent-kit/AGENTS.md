@@ -10,7 +10,7 @@ not apply, and keep this file short: it is read at the start of every session.
 
 The people working on this model care most about three things: every number can be traced back
 to a documented formula, the structure stays predictable, and no result changes without someone
-noticing. Optimise for that over cleverness or brevity.
+noticing. Optimize for that over cleverness or brevity.
 
 ## Commands
 

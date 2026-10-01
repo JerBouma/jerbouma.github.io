@@ -205,7 +205,7 @@ Return on assets shows something similar. ROA of 18% in 2025 reflects that Micro
 
 ## Looking Ahead
 
-Forty years of operating history show what Microsoft has been, while valuation multiples show what the market expects it to become. The tables below show where Microsoft's key ratios and risk-adjusted performance metrics have stood over the past six years, alongside the Alpha and Beta figures that put the stock's behaviour in market context.
+Forty years of operating history show what Microsoft has been, while valuation multiples show what the market expects it to become. The tables below show where Microsoft's key ratios and risk-adjusted performance metrics have stood over the past six years, alongside the Alpha and Beta figures that put the stock's behavior in market context.
 
 ```python
 valuation_ratios = company.ratios.collect_valuation_ratios()

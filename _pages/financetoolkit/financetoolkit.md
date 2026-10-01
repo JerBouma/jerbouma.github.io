@@ -23,7 +23,7 @@ For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is
 
 Beyond Equities, it supports Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities, Key Economic Indicators and more, allowing you to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
 
-The Finance Toolkit works well together with the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}, a database of 300.000+ symbols covering Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By using both, you can do a full competitive analysis: find the tickers in the FinanceDatabase and feed them into the FinanceToolkit.
+The Finance Toolkit works well together with the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}, a database of 300,000+ symbols covering Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By using both, you can do a full competitive analysis: find the tickers in the FinanceDatabase and feed them into the FinanceToolkit.
 
 <img src="/assets/images/projects/FinanceToolkit.jpg" alt="Finance Toolkit" width="100%"/>
 
@@ -496,7 +496,7 @@ Each of the Jupyter Notebooks below covers a different area of financial analysi
     <div class="bento-content">
       <i class="fas fa-chart-line bento-icon"></i>
       <h2>Technicals</h2>
-      <p>40+ Technical Indicators across breadth, momentum, overlap and volatility categories. Use them alongside fundamental data to get a fuller view of market behaviour.</p>
+      <p>40+ Technical Indicators across breadth, momentum, overlap and volatility categories. Use them alongside fundamental data to get a fuller view of market behavior.</p>
     </div>
   </a>
 
@@ -528,7 +528,7 @@ Each of the Jupyter Notebooks below covers a different area of financial analysi
     <div class="bento-content">
       <i class="fas fa-university bento-icon"></i>
       <h2>Fixed Income</h2>
-      <p>Analyse bonds with Effective Yield, Macaulay Duration, Modified Duration, Convexity and Yield to Maturity. Includes derivative pricing via Black and Bachelier models for instruments such as Swaptions.</p>
+      <p>Analyze bonds with Effective Yield, Macaulay Duration, Modified Duration, Convexity and Yield to Maturity. Includes derivative pricing via Black and Bachelier models for instruments such as Swaptions.</p>
     </div>
   </a>
 

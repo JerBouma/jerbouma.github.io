@@ -43,7 +43,7 @@ Today the Finance Toolkit and Finance Database are used by thousands of develope
   <i class="fas fa-arrow-right pj-flow__arrow" aria-hidden="true"></i>
   <a class="pj-flow__step" href="/projects/financetoolkit">
     <i class="fas fa-toolbox" aria-hidden="true"></i>
-    <span class="pj-flow__verb">Analyse</span>
+    <span class="pj-flow__verb">Analyze</span>
     <strong>Finance Toolkit</strong>
     <span>Ratios, models, risk and performance for each of them</span>
   </a>

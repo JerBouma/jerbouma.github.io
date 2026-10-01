@@ -1,0 +1,13 @@
+# Readable names for URL segments in the breadcrumbs. Segments not listed
+# are capitalised with dashes turned into spaces.
+financetoolkit: "Finance Toolkit"
+financedatabase: "Finance Database"
+openbbterminal: "OpenBB"
+thepassiveinvestor: "The Passive Investor"
+personalfinance: "Personal Finance"
+docs: "Documentation"
+mcp: "MCP Server"
+modelling: "Modelling"
+articles: "Articles"
+projects: "Projects"
+resume: "Resume"
