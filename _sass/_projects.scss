@@ -118,17 +118,18 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
   flex-wrap: wrap;
   gap: 6px 20px;
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 16px;
 
   i { margin-right: 7px; color: var(--pj-oss); font-size: 0.85em; }
   strong { color: var(--text-primary); font-weight: 700; }
 }
 
+// the same size as the intro text at the top of the page
 .pj-card__text,
 .pj-note {
   margin: 0 !important;
   color: var(--text-secondary) !important;
-  font-size: 0.97rem !important;
+  font-size: 17.6px !important;
   line-height: 1.65 !important;
 }
 
@@ -180,11 +181,12 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
   .hp-btn { padding: 12px 18px; white-space: nowrap; }
   .hp-link { white-space: nowrap; }
 
+  // same size and colour as the OpenBB card and the intro text
   &__lead {
     margin: 0 !important;
-    color: var(--text-primary) !important;
-    font-size: 1.05rem !important;
-    line-height: 1.6 !important;
+    color: var(--text-secondary) !important;
+    font-size: 17.6px !important;
+    line-height: 1.65 !important;
   }
 
   // a project that belongs to this one (the MCP server under the Toolkit)
