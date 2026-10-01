@@ -6,9 +6,10 @@
   .mi-lead {
     margin: 0 0 1.2em !important;
     color: var(--text-primary) !important;
-    font-size: 1.25em !important;
+    // one step above the body text (17.6px), not a headline
+    font-size: 19px !important;
     font-weight: 500;
-    line-height: 1.55 !important;
+    line-height: 1.6 !important;
   }
 
   // the six chapters, numbered, each opening with the question it answers
