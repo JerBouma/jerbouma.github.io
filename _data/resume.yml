@@ -131,7 +131,6 @@ entries:
     title: "OpenBB"
     subtitle: "Product Manager"
     description: "OpenBB set out to compete with Bloomberg through open source. As Product Manager I led a multi-disciplinary team of engineers and finance professionals using Scrum, and focused on translating financial theory into code, building features such as the economy, portfolio and fixed income menus myself. Towards the end I also led product marketing and the outreach to universities."
-    expertise: ["Econometrics & Time Series"]
     skills: ["Python", "Git", "JavaScript", "Jira", "Confluence"]
     logo: "/assets/images/resume/openbb.png"
     logo_alt: "OpenBB logo"
