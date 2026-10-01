@@ -187,12 +187,11 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
     line-height: 1.6 !important;
   }
 
-  &__more {
-    margin-top: 24px;
-    padding-top: 22px;
+  // a project that belongs to this one (the MCP server under the Toolkit)
+  .pj-companion {
+    margin-top: 26px;
+    padding-top: 26px;
     border-top: 1px solid var(--card-border);
-
-
   }
 }
 
@@ -217,32 +216,6 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
 
   i { color: var(--pj-oss); font-size: 0.85rem; margin-bottom: 4px; }
   strong { color: var(--text-primary); font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; }
-}
-
-.pj-card__more .pj-chips:first-child { margin-top: 0; }
-
-.pj-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 16px;
-
-  span, a {
-    padding: 3px 10px;
-    border: 1px solid var(--card-border);
-    border-radius: 999px;
-    background: rgba(128, 128, 128, 0.06);
-    color: var(--text-secondary) !important;
-    font-size: 0.78rem;
-  }
-
-  // a module that links to its notebook
-  a { transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease; }
-  a:hover {
-    border-color: var(--card-hover-border);
-    background: rgba(56, 189, 248, 0.1);
-    color: var(--accent-color) !important;
-  }
 }
 
 // ── contributed to ────────────────────────────────────────────────────────
