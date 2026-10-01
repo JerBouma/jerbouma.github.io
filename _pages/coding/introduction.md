@@ -10,8 +10,6 @@ author_profile: false
 sidebar:
   nav: "modelling"
 ---
-{%- assign total_words = 0 -%}
-{%- for p in site.pages -%}{%- if p.url contains "/modelling/" and p.url != page.url -%}{%- assign words = p.content | number_of_words -%}{%- assign total_words = total_words | plus: words -%}{%- endif -%}{%- endfor -%}
 
 <p class="mi-lead">AI coding agents now write most of the code in a financial model. What they can't do for you is decide what a good model looks like. This guide is about exactly that: what every part of a model does, why it is there, and how you steer an agent to build it the way you would.</p>
 
@@ -19,7 +17,7 @@ I have spent thousands of hours building financial models in Python, at financia
 
 <div class="mi-facts">
   <span><strong>6</strong>chapters</span>
-  <span><strong>~{{ total_words | divided_by: 220 }} min</strong>total reading time</span>
+  <span><strong>4</strong>ready-made agent skills</span>
   <span><strong>13</strong>files in the free agent kit</span>
 </div>
 
