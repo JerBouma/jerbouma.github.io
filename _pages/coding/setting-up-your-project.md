@@ -21,7 +21,7 @@ Your assistant will create most of this setup for you, often in a single request
 
 ## Managing your Project
 
-Starting a new project begins with an empty folder named after the project (e.g., "FinanceToolkit"), opened in your editor, with Git initialised (`git init`) and connected to a remote repository (`git remote add origin URL`). You can ask your assistant to do all of this.
+Starting a new project begins with an empty folder named after the project (e.g., "FinanceToolkit"), opened in your editor, with Git initialized (`git init`) and connected to a remote repository (`git remote add origin URL`). You can ask your assistant to do all of this.
 
 Every project of mine contains the files below. A good request is to point the assistant to an existing project you trust, such as the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} repository, and ask it to set up the same files for your new project. Then check each one against the descriptions here. This applies to both personal and professional projects.
 

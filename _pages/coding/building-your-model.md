@@ -237,7 +237,7 @@ Today's assistants write code that is usually correct and well structured. What 
 
 - **The formula.** Does it match the definition you intend to use? Many metrics have several accepted definitions (think of the many ways to calculate a P/E ratio), and an assistant will pick one without telling you.
 - **Units and conventions.** Are percentages stored as fractions or as whole numbers? Are returns simple or logarithmic? Is a cost negative or positive in the data?
-- **Periods and alignment.** Does the calculation mix annual and quarterly data, shift a series by the wrong lag, or annualise with the wrong factor (252 trading days versus 365 calendar days)?
+- **Periods and alignment.** Does the calculation mix annual and quarterly data, shift a series by the wrong lag, or annualize with the wrong factor (252 trading days versus 365 calendar days)?
 - **Missing data.** What happens with a missing quarter, a division by zero or a company without a specific line item? Silent `NaN` values or forward-filled gaps can change the outcome without any error.
 - **Hidden assumptions.** Look for hardcoded numbers, such as a risk-free rate or a tax rate, that should be inputs or named constants.
 - **Fit with the model.** Is the code in the right layer, does it reuse existing helpers, and does it follow the conventions on this page?

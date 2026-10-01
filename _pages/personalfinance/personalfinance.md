@@ -1,8 +1,8 @@
 ---
 permalink: /projects/personalfinance
 title: Personal Finance
-excerpt: With PersonalFinance I want to make it easier to manage your personal finance. Through defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you. This results in Morty's Place being correctly categorised as a Bakery.
-description: "PersonalFinance is an open-source Python tool that categorises your bank transactions with keywords you define, trained on your own data."
+excerpt: With PersonalFinance I want to make it easier to manage your personal finance. Through defining each category with appropriate keywords, you can be sure that the model will categorize transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorize transactions that are specific to you. This results in Morty's Place being correctly categorized as a Bakery.
+description: "PersonalFinance is an open-source Python tool that categorizes your bank transactions with keywords you define, trained on your own data."
 classes: wide-sidebar
 author_profile: false
 redirect_from:
@@ -15,9 +15,9 @@ sidebar:
 
 Tracking personal finances can be tedious. Either it takes a lot of time to keep everything well categorized as new transactions come in, or it is far from accurate because a tool tries to predict the categories for you. That might work fine for names such as "Wall Mart" or "Starbucks", but your local bakery called "Morty's Place" is not going to get picked up by the model. Many personal finance tools let you adjust these categories manually, but that is just as tedious as doing it from scratch.
 
-**With PersonalFinance I want to make it easier to manage your finances.** By defining each category with appropriate keywords, you can be sure that the model will categorise transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorise transactions that are specific to you. This results in Morty's Place being correctly categorised as a Bakery.
+**With PersonalFinance I want to make it easier to manage your finances.** By defining each category with appropriate keywords, you can be sure that the model will categorize transactions how you defined them. This is because it is not a generic model that is trained on a large dataset of transactions from all over the world. It is trained on your own data, which means that it will be able to categorize transactions that are specific to you. This results in Morty's Place being correctly categorized as a Bakery.
 
-So that you don't need *exact* matches, the package uses the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance){:target="_blank"} to determine how similar two strings are. This means that if you have a category called "Groceries" with the keyword "Supermarket" and a transaction comes in with the name "Rick's Super Market", it will still be categorised as "Groceries". **I purposely kept the Mumbo Jumbo to a minimum so that it stays clear why a transaction is categorised the way it is.**
+So that you don't need *exact* matches, the package uses the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance){:target="_blank"} to determine how similar two strings are. This means that if you have a category called "Groceries" with the keyword "Supermarket" and a transaction comes in with the name "Rick's Super Market", it will still be categorized as "Groceries". **I purposely kept the Mumbo Jumbo to a minimum so that it stays clear why a transaction is categorized the way it is.**
 
 By doing most of these things through Python and Excel, you have complete freedom to decide what to do with the output. For example, you can use it to create your own personalized dashboards via any programming language or application such as Excel, PowerBI, Tableau, etc. **I don't want to bore you with custom dashboards that I tailored to myself just so that you can come to the conclusion that it isn't a perfect fit for you.**
 

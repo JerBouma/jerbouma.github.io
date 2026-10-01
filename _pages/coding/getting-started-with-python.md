@@ -91,7 +91,7 @@ Looking for project ideas? An AI assistant can suggest plenty. Don't be discoura
 
 While you learn the basics, use an AI assistant as a tutor: ask it to explain an error, a Pandas function or why one approach is faster than another. Once the basics are in place, hand it more and more of the actual work. A good way to make that step:
 
-1. **Describe the analysis, not the code.** "Calculate the 30-day rolling volatility of Apple and Microsoft and plot both" is a better request than asking for specific functions. Be clear about the finance: which prices, which period, annualised or not.
+1. **Describe the analysis, not the code.** "Calculate the 30-day rolling volatility of Apple and Microsoft and plot both" is a better request than asking for specific functions. Be clear about the finance: which prices, which period, annualized or not.
 2. **Follow the choices it makes.** Read through what it built and ask why it chose a certain approach, for example a simple versus a logarithmic return, or how it handled missing days. The code itself will usually be right; the choices are where your own view matters.
 3. **Change something and predict the outcome.** Change the window, a ticker or the period, predict what will happen and check. It's the fastest way to understand code you didn't type.
 4. **Gradually give it more.** Start with single analyses, then whole notebooks, and eventually let it build complete models, as described in the rest of this guide.

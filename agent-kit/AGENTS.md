@@ -47,7 +47,7 @@ If you are unsure where something belongs, ask before writing it.
 - No magic numbers. A risk-free rate, tax rate or number of trading days is a parameter with a
   documented default or a named constant.
 - Percentages are stored as fractions (0.25, not 25).
-- <Add your own domain rules, e.g. "returns are simple returns unless stated", "annualise with
+- <Add your own domain rules, e.g. "returns are simple returns unless stated", "annualize with
   252 trading days", "statements are in reported currency".>
 
 ## Financial choices
@@ -57,7 +57,7 @@ obvious from this file or the existing code:
 
 - Which definition of a metric is used (many ratios have several accepted definitions).
 - Units, signs and conventions (fractions vs percentages, cost signs, simple vs log returns).
-- Periods and alignment (annual vs quarterly, lags, annualisation factor).
+- Periods and alignment (annual vs quarterly, lags, annualization factor).
 - How missing data is handled. Let `NaN` propagate; never fill or drop silently.
 - Which data source is used.
 

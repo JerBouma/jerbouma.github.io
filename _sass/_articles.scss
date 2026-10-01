@@ -1,0 +1,242 @@
+// Articles (/articles) and Literature (/literature): the shared card style of
+// the redesigned pages (.hp / .pj), with topic filters.
+
+.ar > .pj-section:first-child { padding-top: 24px; }
+.ar .ar-first .hp-h2 { margin-bottom: 18px !important; }
+
+.ar-meta {
+  margin: 0 0 8px !important;
+  color: var(--text-muted) !important;
+  font-size: 13px !important;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ar-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  span {
+    padding: 3px 10px;
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    background: rgba(128, 128, 128, 0.06);
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+}
+
+.ar-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-color);
+  font-size: 15px;
+  font-weight: 600;
+
+  i { font-size: 0.8em; transition: transform 0.2s ease; }
+}
+
+// the latest article, large
+.ar-feature {
+  display: block;
+  padding: clamp(24px, 3vw, 36px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  background:
+    radial-gradient(560px 240px at 100% 0%, rgba(129, 140, 248, 0.14), transparent 70%),
+    var(--card-bg);
+  color: inherit !important;
+  text-decoration: none !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  h2 {
+    margin: 0 0 12px !important;
+    padding: 0 !important;
+    border: none !important;
+    color: var(--text-primary) !important;
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem) !important;
+    line-height: 1.25 !important;
+
+    &::after { display: none !important; }
+  }
+
+  &__text {
+    max-width: 52em;
+    margin: 0 !important;
+    color: var(--text-secondary) !important;
+    font-size: 17.6px !important;
+    line-height: 1.65 !important;
+  }
+
+  &__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 24px;
+    margin-top: 22px;
+  }
+
+  &:hover {
+    border-color: var(--card-hover-border);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+
+    .ar-go i { transform: translateX(3px); }
+  }
+}
+
+// topic filters
+.ar-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 22px;
+}
+
+.ar-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+
+  .lit-count { color: var(--text-muted); font-weight: 500; }
+
+  &:hover { border-color: var(--card-hover-border); color: var(--text-primary); }
+
+  &.active {
+    border-color: var(--card-hover-border);
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--accent-color);
+
+    .lit-count { color: inherit; }
+  }
+}
+
+// article cards
+.ar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.ar-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 22px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--hp-radius);
+  background: var(--card-bg);
+  color: inherit !important;
+  text-decoration: none !important;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+  .pj & h3 {
+    margin: 0 0 8px !important;
+    font-size: 1.12rem !important;
+    line-height: 1.35 !important;
+  }
+
+  &__text {
+    margin: 0 0 16px !important;
+    color: var(--text-secondary) !important;
+    font-size: 15.5px !important;
+    line-height: 1.6 !important;
+    // the theme sets paragraphs to flow-root, which would cancel the clamp
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+  }
+
+  // the tags sit at the bottom of every card
+  .ar-tags { margin-top: auto; }
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--card-hover-border);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+  }
+}
+
+.ar .hp-cta { margin-bottom: 16px; }
+
+@media (max-width: 1100px) { .ar-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .ar-grid { grid-template-columns: 1fr; } }
+
+// ── literature ────────────────────────────────────────────────────────────
+// the hand-written .lit-card markup, styled like the article cards
+.lit {
+  .lit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .lit-card {
+    gap: 6px;
+    padding: 22px;
+    border-radius: var(--hp-radius);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &::before { display: none; }
+
+    &:hover {
+      transform: translateY(-3px);
+      background: var(--card-bg);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+    }
+  }
+
+  .lit-card__header { justify-content: flex-start; margin: 0; }
+
+  .lit-badge {
+    color: var(--text-muted);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    opacity: 1;
+
+    i { margin-right: 4px; color: var(--accent-color); }
+  }
+
+  .lit-card__title {
+    font-size: 1.12rem;
+    line-height: 1.35;
+    color: var(--text-primary) !important;
+  }
+
+  .lit-card__authors { color: var(--text-muted); font-size: 14px; }
+
+  .lit-card__summary {
+    margin-top: 6px;
+    font-size: 15.5px;
+    line-height: 1.6;
+  }
+
+  .lit-card__more { font-size: 14px; }
+
+  .lit-card__tags { padding-top: 12px; }
+
+  .lit-tag {
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(128, 128, 128, 0.06);
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 800px) { .lit .lit-grid { grid-template-columns: 1fr; } }

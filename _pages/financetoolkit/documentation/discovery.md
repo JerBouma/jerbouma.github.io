@@ -61,7 +61,7 @@ Which returns:
 ---
 
 ## get_stock_screener
-Screen stocks based on a set of criteria. This can be useful to find companies that match a specific criteria or your analysis. Further filtering can be done by utilising the Finance Toolkit and calculating the relevant ratios to filter by. This can be:
+Screen stocks based on a set of criteria. This can be useful to find companies that match a specific criteria or your analysis. Further filtering can be done by utilizing the Finance Toolkit and calculating the relevant ratios to filter by. This can be:
 
 - Market capitalization (market_cap_higher, market_cap_lower)
 - Price (price_higher, price_lower)

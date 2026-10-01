@@ -29,7 +29,7 @@ Calculates and collects all performance metrics.
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the
-Toolkit is initialised with quarterly=True, otherwise "yearly".
+Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -97,7 +97,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -164,7 +164,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -224,7 +224,7 @@ However, since the results are closely related and tend to point into the same d
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -275,7 +275,7 @@ Optionally, it is also possible to see the correlation between the risk-free rat
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
 - <u>exclude_risk_free (bool, optional):</u> Whether to exclude the risk-free rate from the results. Defaults to True.
@@ -345,7 +345,7 @@ What is relevant to look at is the influence these factors have on each stock an
 **Args:**
 
 - <u>period (str, optional):</u> The period for the calculation (e.g., "weekly", "monthly", "quarterly", "yearly").
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>method (str, optional):</u> The regression method to use for the calculation. Defaults to 'multi'.
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
@@ -412,7 +412,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The period for the calculation (e.g., "weekly", "monthly", "quarterly", "yearly").
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratio values. Defaults to False.
 - <u>lag (int or list of int, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -468,7 +468,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Alpha is calculated as the rolling mean excess return over this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -529,7 +529,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -591,7 +591,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -687,7 +687,7 @@ This codebase does not track "N literal strategy trials" - there is no record of
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
 - <u>method (str, optional):</u> Which Sharpe ratio to calculate, one of "standard", "adjusted",
@@ -803,7 +803,7 @@ As with the Sharpe Ratio, the result is **not annualized**: it is a per-observat
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the Sortino ratio is calculated over a rolling window of this many periods across the
 full return history instead of per `period`. Defaults to None.
@@ -859,7 +859,7 @@ It can be used to compare volatilities in different stocks or show stocks go int
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int):</u> The rolling period to use to calculate the Ulcer Index. Defaults to 14.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -919,7 +919,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Maximum Drawdown within the
 specified period or for the entire period. Thus whether to look at the Maximum Drawdown
 within a specific year (if period = 'yearly') or look at the entirety of all years.
@@ -981,7 +981,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Average Drawdown within the
 specified period or for the entire period. Thus whether to look at the Average Drawdown
 within a specific year (if period = 'yearly') or look at the entirety of all years.
@@ -1043,7 +1043,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the drawdowns within the specified
 period or for the entire period. Thus whether to look at the drawdowns within a specific
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
@@ -1108,7 +1108,7 @@ This rescales the (dimensionless) Sharpe ratio back into return-space by asking 
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the M2 ratio is calculated over a rolling window of this many periods across the full
 return history instead of per `period`. Defaults to None.
@@ -1170,7 +1170,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Tracking Error is calculated over a rolling window of this many periods across the
 full return history instead of per `period`. Defaults to None.
@@ -1236,7 +1236,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the Information Ratio is calculated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -1296,7 +1296,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -1352,7 +1352,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -1404,7 +1404,7 @@ The Win Rate is the percentage of periods in which the asset's return exceeds th
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -1456,7 +1456,7 @@ Note that this already subtracts the Risk Free Rate.
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>order (int, optional):</u> The order of the lower partial moment used in the denominator.
 Defaults to 3.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1520,7 +1520,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Omega Ratio within the specified
 period or for the entire period. Thus whether to look at the Omega Ratio within a specific
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
@@ -1584,7 +1584,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Gain-to-Pain Ratio within the
 specified period or for the entire period. Thus whether to look at the Gain-to-Pain Ratio
 within a specific year (if period = 'yearly') or look at the entirety of all years.
@@ -1697,7 +1697,7 @@ If cumulative is set to True, the period returns are compounded further into a c
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>cumulative (bool, optional):</u> Whether to return the cumulative return over time
 instead of the discrete return per period. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1752,7 +1752,7 @@ If cumulative is set to True, the excess returns are compounded further into a c
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>cumulative (bool, optional):</u> Whether to return the cumulative excess return over time
 instead of the discrete excess return per period. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -1806,7 +1806,7 @@ Unlike `get_beta`, which relates a single asset to the benchmark, this computes 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
 **Returns:**
@@ -1842,7 +1842,7 @@ Unlike `get_covariance`, which relates a single asset to the benchmark, this com
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
 **Returns:**
@@ -1890,7 +1890,7 @@ Where the residual standard deviation is the standard deviation of the pointwise
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -1958,7 +1958,7 @@ Selectivity is the return earned above what would be required for a fully divers
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -2024,7 +2024,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the CVaR within the specified
 period or for the entire period. Thus whether to look at the CVaR within a specific
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
@@ -2091,7 +2091,7 @@ $$
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Rachev Ratio within the
 specified period or for the entire period. Thus whether to look at the return
 distribution within a specific year (if period = 'yearly') or look at the entirety of
@@ -2156,7 +2156,7 @@ Gamma > 0 indicates positive market-timing ability; Gamma <= 0 indicates no timi
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2215,7 +2215,7 @@ Beta is the "down-market" Beta (the portfolio's market exposure when the benchma
 **Args:**
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.

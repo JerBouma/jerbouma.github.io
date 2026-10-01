@@ -29,7 +29,7 @@ Calculates and collects all risk metrics.
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -82,7 +82,7 @@ The VaR is calculated as the quantile of the return distribution, representing t
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>alpha (float, optional):</u> The confidence level for VaR calculation (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate VaR within the specified period or for the entire
@@ -158,7 +158,7 @@ The CVaR is calculated as the expected loss given that the loss threshold (VaR) 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>alpha (float, optional):</u> The confidence level for CVaR calculation (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate CVaR within the specified period or for the entire
@@ -231,7 +231,7 @@ The EVaR is calculated as the upper bound of VaR and CVaR with a given confidenc
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>alpha (float, optional):</u> The confidence level for EVaR calculation (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate EVaR within the specified period or for the entire
@@ -293,7 +293,7 @@ Conditional Drawdown at Risk (CDaR) extends the concept of Value at Risk and Con
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>alpha (float, optional):</u> The confidence level for CDaR calculation (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate CDaR within the specified period or for the entire
@@ -352,7 +352,7 @@ The Tail Ratio compares the size of the right (gain) tail to the left (loss) tai
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>alpha (float, optional):</u> The percentile used to define each tail (e.g., 0.05 uses the 5th and
 95th percentile). Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate the Tail Ratio within the specified period or
@@ -412,7 +412,7 @@ Maximum Drawdown (MDD) is a risk management metric that quantifies the largest h
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Maximum Drawdown within the specified period
 or for the entire period. Thus whether to look at the Maximum Drawdown within a specific year
 (if period = 'yearly') or look at the entirety of all years. Defaults to True.
@@ -473,7 +473,7 @@ The Maximum Drawdown Duration is the number of periods between the peak and the 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the duration within the specified period or
 for the entire period. Thus whether to look at the duration within a specific year (if period =
 'yearly') or look at the entirety of all years. Defaults to True.
@@ -527,7 +527,7 @@ The Maximum Drawdown Recovery Time is the number of periods it takes for the cum
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the recovery time within the specified period
 or for the entire period. Thus whether to look at the recovery time within a specific year (if
 period = 'yearly') or look at the entirety of all years. Defaults to True.
@@ -587,7 +587,7 @@ Ulcer Index = SQRT(SUM[((Pn - Highest High) / Highest High)^2] / n)
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int &#124; None, optional):</u> The trailing lookback window used as the high-water
 mark reference for each day's drawdown. Pass None for an expanding
 (since-inception) high-water mark instead -- this is what the "Highest High"
@@ -654,7 +654,7 @@ GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>time_steps (int, optional):</u> Time steps to calculate GARCH for.
 - <u>optimization_t (int, optional):</u> Time steps to optimize GARCH for. It is only used if no weights are given.
 - <u>within_period (bool, optional):</u> Whether to calculate GARCH within the specified period or for the entire
@@ -724,7 +724,7 @@ For more information about the method, see the following book:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>time_steps (int, optional):</u> Time steps to calculate GARCH and to forecast sigma_2 values for.
 - <u>within_period (bool, optional):</u> Whether to calculate GARCH within each specified period or all
 at once. Thus whether to look at the GARCH within each specific year (if period = 'yearly') or
@@ -797,7 +797,7 @@ For more information about the method, see the following book:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>optimization_t (int, optional):</u> Time steps of the returns series to use for the optimization.
 Defaults to the full length of the returns series.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -845,7 +845,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>time_steps (int, optional):</u> Time steps to calculate GJR-GARCH for.
 - <u>optimization_t (int, optional):</u> Time steps to optimize GJR-GARCH for. It is only used if no
 weights are given.
@@ -909,7 +909,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>time_steps (int, optional):</u> Time steps to calculate GJR-GARCH and to forecast sigma_2 values for.
 - <u>within_period (bool, optional):</u> Whether to calculate GJR-GARCH within each specified period or
 all at once. Defaults to False.
@@ -974,7 +974,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>optimization_t (int, optional):</u> Time steps of the returns series to use for the optimization.
 Defaults to the full length of the returns series.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
@@ -1024,7 +1024,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>time_steps (int, optional):</u> Time steps to calculate EGARCH for.
 - <u>optimization_t (int, optional):</u> Time steps to optimize EGARCH for. It is only used if no
 weights are given.
@@ -1088,7 +1088,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>time_steps (int, optional):</u> Time steps to calculate EGARCH and to forecast sigma_2 values for.
 - <u>within_period (bool, optional):</u> Whether to calculate EGARCH within each specified period or
 all at once. Defaults to False.
@@ -1153,7 +1153,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>optimization_t (int, optional):</u> Time steps of the returns series to use for the optimization.
 Defaults to the full length of the returns series.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
@@ -1557,7 +1557,7 @@ keyed by ticker. Normalized internally to sum to 1. Defaults to None, which
 uses equal weights across every ticker in the Toolkit instance (excluding
 the "Portfolio" and "Benchmark" pseudo-tickers, if present).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>alpha (float, optional):</u> The confidence level (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
@@ -1627,7 +1627,7 @@ keyed by ticker. Normalized internally to sum to 1. Defaults to None, which
 uses equal weights across every ticker in the Toolkit instance (excluding
 the "Portfolio" and "Benchmark" pseudo-tickers, if present).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>alpha (float, optional):</u> The confidence level (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
@@ -1797,7 +1797,7 @@ Skewness is a statistical measure used in finance to assess the asymmetry in the
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Skewness within the specified period or for the
 entire period. Thus whether to look at the Skewness within a specific year (if period = 'yearly') or look
 at the entirety of all years. Defaults to True.
@@ -1854,7 +1854,7 @@ Kurtosis is a statistical measure used in finance to evaluate the shape of the p
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Kurtosis within the specified period or for the
 entire period. Thus whether to look at the Kurtosis within a specific year (if period = 'yearly') or look
 at the entirety of all years. Defaults to True.
@@ -1917,7 +1917,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the estimator within the specified period
 or for the entire period. Defaults to True.
 - <u>k (int &#124; float, optional):</u> The number of upper order statistics to use. If a float in (0, 1)
@@ -1971,7 +1971,7 @@ The daily Variance is scaled to the given period by multiplying it with the numb
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Variance is calculated over a rolling window of this many periods (e.g. period='monthly'
 and rolling=6 gives the rolling 6-month Variance) instead of one value per `period`.
@@ -2042,7 +2042,7 @@ For more information about the range-based estimators, see the following papers:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Volatility is calculated over a rolling window of this many periods (e.g. period='monthly'
 and rolling=6 gives the rolling 6-month Volatility) instead of one value per `period`.
@@ -2188,7 +2188,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the ratio within the specified period or
 for the entire period. Defaults to True.
 - <u>scale (float, optional):</u> A multiplier applied to the resulting ratio purely for readability.
@@ -2252,7 +2252,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+"quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the spread within the specified period or
 for the entire period. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
@@ -2301,7 +2301,7 @@ Excess Volatility is the Volatility of the Excess Return, i.e. the daily return 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Excess Volatility is calculated over a rolling window of this many periods (e.g.
 period='monthly' and rolling=6 gives the rolling 6-month Excess Volatility) instead of
@@ -2359,7 +2359,7 @@ The Downside Deviation, also known as semi-deviation, is the standard deviation 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>minimum_acceptable_return (float, optional):</u> The minimum acceptable return (MAR) used as the
 threshold below which returns are considered downside. Defaults to 0.0.
 - <u>within_period (bool, optional):</u> Whether to calculate the Downside Deviation within the specified
@@ -2418,7 +2418,7 @@ MAD measures the average absolute distance of each return from the mean return. 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the MAD values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2469,7 +2469,7 @@ The Coefficient of Variation is the ratio of the standard deviation to the mean 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CV values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.

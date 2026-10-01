@@ -13,7 +13,7 @@ sidebar:
     nav: "financetoolkit-docs-portfolio"
 ---
 
-The Portfolio module calculates important portfolio metrics, allowing you to compare your portfolio against a benchmark, analyse individual asset performance and load your portfolio directly into the Finance Toolkit.
+The Portfolio module calculates important portfolio metrics, allowing you to compare your portfolio against a benchmark, analyze individual asset performance and load your portfolio directly into the Finance Toolkit.
 
 To install the FinanceToolkit it simply requires the following:
 

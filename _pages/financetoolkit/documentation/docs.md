@@ -28,7 +28,7 @@ pip install financetoolkit -U
 
 
 ## ratios
-The Ratios Module contains 80+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
+The Ratios Module contains 80+ ratios that can be used to analyze companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
 
 Some examples of ratios are the Current Ratio, Debt to Equity Ratio, Return on Assets (ROA), Return on Equity (ROE), Return on Invested Capital (ROIC), Return on Capital Employed (ROCE), Price to Earnings Ratio (P/E), Price to Book Ratio (P/B), Price to Sales Ratio (P/S), Price to Cash Flow Ratio (P/CF), Price to Free Cash Flow Ratio (P/FCF), Dividend Yield and Dividend Payout Ratio.
 
@@ -149,7 +149,7 @@ Which returns:
 ---
 
 ## technicals
-This gives access to the Technicals module. The Technicals Module contains nearly 50 Technical Indicators that can be used to analyse companies. These indicators are divided into 3 categories: breadth, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
+This gives access to the Technicals module. The Technicals Module contains nearly 50 Technical Indicators that can be used to analyze companies. These indicators are divided into 3 categories: breadth, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
 
 Some examples of technical indicators are the Average Directional Index (ADX), the Accumulation/Distribution Line (ADL), the Average True Range (ATR), the Bollinger Bands (BBANDS), the Commodity Channel Index (CCI), the Chaikin Oscillator (CHO), the Chaikin Money Flow (CMF), the Double Exponential Moving Average (DEMA), the Exponential Moving Average (EMA) and the Moving Average Convergence Divergence (MACD).
 
@@ -782,7 +782,7 @@ Volatility, Excess Return and Excess Volatility are not included here. These are
 
 If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
 
-Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
+Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilizes your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
 
 **Also known as:** OHLCV, price history, open high low close volume.
 
@@ -1202,7 +1202,7 @@ This function therefore shows the exchange rates that are used to convert the fi
 
 Note that you can get currency data from any currency as well by supplying the currency as a ticker. For example, if you want to get the exchange rates between USD and EUR you can use USDEUR=X as a ticker.
 
-Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
+Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilizes your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
 
 **Also known as:** currency exchange, FX rates, foreign exchange rates.
 

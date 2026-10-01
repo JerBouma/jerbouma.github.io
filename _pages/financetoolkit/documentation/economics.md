@@ -232,7 +232,7 @@ Which returns:
 ---
 
 ## get_output_gap
-Get the Output Gap for a variety of countries over time from the OECD Economic Outlook. The output gap is the difference between actual Gross Domestic Product (GDP) and estimated potential GDP, expressed as a percentage of potential GDP. Potential GDP is the level of output an economy can sustain over the long term without generating excess inflationary or disinflationary pressure, based on the full, non-inflationary use of its productive resources (labour, capital and technology).
+Get the Output Gap for a variety of countries over time from the OECD Economic Outlook. The output gap is the difference between actual Gross Domestic Product (GDP) and estimated potential GDP, expressed as a percentage of potential GDP. Potential GDP is the level of output an economy can sustain over the long term without generating excess inflationary or disinflationary pressure, based on the full, non-inflationary use of its productive resources (labor, capital and technology).
 
 A positive output gap indicates the economy is running above its long-run potential (an economic "boom", typically associated with rising inflationary pressure), while a negative output gap indicates the economy is running below potential (an economic "slack", typically associated with rising unemployment and disinflationary pressure). The output gap therefore complements indicators such as the Inflation Rate and Unemployment Rate as a measure of where an economy sits within the business cycle.
 
@@ -2047,7 +2047,7 @@ Which returns:
 ## get_household_savings_rate
 Get the Gross Household Savings Rate for a variety of countries over time from the OECD's Household Dashboard. The household savings rate is the share of household gross disposable income (adjusted for the net change in pension entitlements) that is saved rather than spent on final consumption.
 
-It is a key input to consumption-smoothing and life-cycle/permanent-income theories of household behaviour, and a closely watched signal of both near-term consumption momentum (a falling savings rate can temporarily prop up spending even as income growth slows) and a household sector's buffer against future income shocks. It complements Total Consumption (see `get_total_consumption`) - the two together show how much of household income is spent versus set aside.
+It is a key input to consumption-smoothing and life-cycle/permanent-income theories of household behavior, and a closely watched signal of both near-term consumption momentum (a falling savings rate can temporarily prop up spending even as income growth slows) and a household sector's buffer against future income shocks. It complements Total Consumption (see `get_total_consumption`) - the two together show how much of household income is spent versus set aside.
 
 The rate is seasonally adjusted and returned as a decimal fraction of adjusted gross disposable income (0.1177 for 11.77%). Because the denominator is adjusted for the net change in pension entitlements and the numerator is gross rather than net saving, this sits above the personal saving rate the BEA publishes for the United States.
 
@@ -2428,7 +2428,7 @@ Which returns:
 ## get_short_term_interest_rate
 Short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage.
 
-Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate". The OECD source specifically returns the 3-month interbank offered rate.
+Short-term interest rates are based on three-month money market rates where available. Typical standardized names are "money market rate" and "treasury bill rate". The OECD source specifically returns the 3-month interbank offered rate.
 
 **See definition:** [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
 
@@ -2783,7 +2783,7 @@ Which returns:
 ## get_unemployment_rate
 The unemployed are people of working age who are without work, are available for work, and have taken specific steps to find work. The uniform application of this definition results in estimates of unemployment rates that are more internationally comparable than estimates based on national definitions of unemployment.
 
-This indicator is measured in numbers of unemployed people as a percentage of the labour force and it is seasonally adjusted. The labour force is defined as the total number of unemployed people plus those in employment. Data are based on labour force surveys (LFS).
+This indicator is measured in numbers of unemployed people as a percentage of the labor force and it is seasonally adjusted. The labor force is defined as the total number of unemployed people plus those in employment. Data are based on labor force surveys (LFS).
 
 For European Union countries where monthly LFS information is not available, the monthly unemployed figures are estimated by Eurostat.
 
@@ -2791,7 +2791,7 @@ For European Union countries where monthly LFS information is not available, the
 
 It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
 
-Both sources return the rate as a decimal fraction of the labour force (0.036 for 3.6%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
+Both sources return the rate as a decimal fraction of the labor force (0.036 for 3.6%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
 
 Changed in v2.2.0: the GMDB source previously returned percentage points (3.6 for 3.6%) while the OECD source returned a decimal fraction. The GMDB series is now divided by 100 so both sources agree; divide any hard-coded comparison by 100.
 
@@ -2903,9 +2903,9 @@ Which returns:
 ---
 
 ## get_labour_productivity
-GDP per hour worked is a measure of labour productivity. It measures how efficiently labour input is combined with other factors of production and used in the production process. Labour input is defined as total hours worked of all persons engaged in production. Labour productivity only partially reflects the productivity of labour in terms of the personal capacities of workers or the intensity of their effort.
+GDP per hour worked is a measure of labor productivity. It measures how efficiently labor input is combined with other factors of production and used in the production process. Labor input is defined as total hours worked of all persons engaged in production. Labor productivity only partially reflects the productivity of labor in terms of the personal capacities of workers or the intensity of their effort.
 
-The ratio between the output measure and the labour input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organisational and efficiency change, economies of scale).
+The ratio between the output measure and the labor input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organizational and efficiency change, economies of scale).
 
 The level is reported in US dollars per hour worked at constant prices (currently referenced to 2020), converted with Purchasing Power Parities (PPPs) so that it is comparable across countries, for the total economy and on an annual basis. It is a level rather than an index, so a value of 61.36 means 61.36 PPP-converted US dollars of GDP produced per hour worked.
 
@@ -2927,7 +2927,7 @@ values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame: A DataFrame containing the Labour Productivity.
+pd.DataFrame: A DataFrame containing the Labor Productivity.
 
 **As an example:**
 

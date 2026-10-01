@@ -50,7 +50,7 @@
 
 {% comment %}
   Share image: page.header.og_image / overlay_image / image (theme keys) or the
-  simpler top-level `image:` key. Paths without a leading slash are normalised so
+  simpler top-level `image:` key. Paths without a leading slash are normalized so
   `image: assets/...` and `image: /assets/...` both resolve.
 {% endcomment %}
 {%- assign page_large_image = page.header.og_image | default: page.header.overlay_image | default: page.header.image | default: page.image -%}

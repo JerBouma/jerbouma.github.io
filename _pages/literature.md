@@ -3,23 +3,28 @@ title: Literature
 description: Financial literature, articles, and papers that inform my work in quantitative finance.
 permalink: /literature
 layout: single
-classes: custom-document
+classes: custom-document projects-v2 literature-v2
 author_profile: false
 ---
 
 Most of the modelling I do is based on established financial literature. This page collects the articles, books and papers I have found interesting, mostly on investing, economics and behavioral finance. Click any title to go to the source.
 
-<div class="lit-filters" id="lit-filters">
-  <button class="lit-filter active" data-filter="all">All <span class="lit-count" data-count="all"></span></button>
-  <button class="lit-filter" data-filter="finance">Finance <span class="lit-count" data-count="finance"></span></button>
-  <button class="lit-filter" data-filter="portfolio-optimization">Portfolio Optimization <span class="lit-count" data-count="portfolio-optimization"></span></button>
-  <button class="lit-filter" data-filter="factor-investing">Factor Investing <span class="lit-count" data-count="factor-investing"></span></button>
-  <button class="lit-filter" data-filter="behavioral-finance">Behavioral Finance <span class="lit-count" data-count="behavioral-finance"></span></button>
-  <button class="lit-filter" data-filter="private-equity">Private Equity <span class="lit-count" data-count="private-equity"></span></button>
-  <button class="lit-filter" data-filter="esg">ESG <span class="lit-count" data-count="esg"></span></button>
-  <button class="lit-filter" data-filter="quant-finance">Quant Finance <span class="lit-count" data-count="quant-finance"></span></button>
-  <button class="lit-filter" data-filter="econometrics">Econometrics <span class="lit-count" data-count="econometrics"></span></button>
-  <button class="lit-filter" data-filter="artificial-intelligence">Artificial Intelligence <span class="lit-count" data-count="artificial-intelligence"></span></button>
+<div class="hp pj ar lit">
+
+<section class="pj-section ar-first">
+  <p class="hp-kicker">Reading list</p>
+  <h2 class="hp-h2">Papers, articles and books</h2>
+<div class="lit-filters ar-filters" id="lit-filters">
+  <button class="lit-filter ar-filter active" data-filter="all">All <span class="lit-count" data-count="all"></span></button>
+  <button class="lit-filter ar-filter" data-filter="finance">Finance <span class="lit-count" data-count="finance"></span></button>
+  <button class="lit-filter ar-filter" data-filter="portfolio-optimization">Portfolio Optimization <span class="lit-count" data-count="portfolio-optimization"></span></button>
+  <button class="lit-filter ar-filter" data-filter="factor-investing">Factor Investing <span class="lit-count" data-count="factor-investing"></span></button>
+  <button class="lit-filter ar-filter" data-filter="behavioral-finance">Behavioral Finance <span class="lit-count" data-count="behavioral-finance"></span></button>
+  <button class="lit-filter ar-filter" data-filter="private-equity">Private Equity <span class="lit-count" data-count="private-equity"></span></button>
+  <button class="lit-filter ar-filter" data-filter="esg">ESG <span class="lit-count" data-count="esg"></span></button>
+  <button class="lit-filter ar-filter" data-filter="quant-finance">Quant Finance <span class="lit-count" data-count="quant-finance"></span></button>
+  <button class="lit-filter ar-filter" data-filter="econometrics">Econometrics <span class="lit-count" data-count="econometrics"></span></button>
+  <button class="lit-filter ar-filter" data-filter="artificial-intelligence">Artificial Intelligence <span class="lit-count" data-count="artificial-intelligence"></span></button>
 </div>
 
 <div class="lit-grid" id="lit-grid">
@@ -806,6 +811,10 @@ Most of the modelling I do is based on established financial literature. This pa
 
 </div>
 <p class="lit-empty" id="lit-empty" style="display:none;">No entries match the selected filter.</p>
+
+</section>
+
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {

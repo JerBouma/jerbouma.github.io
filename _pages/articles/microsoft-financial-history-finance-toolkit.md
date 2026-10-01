@@ -139,7 +139,7 @@ The first debt appeared in 2009 (Finance Toolkit balance sheet). Microsoft did n
 
 The largest shift is in goodwill. It was zero for most of Microsoft's history because the company built rather than bought. That changed under Ballmer with acquisitions like aQuantive and Skype, and accelerated under Nadella. LinkedIn ($26 billion, 2016), GitHub ($7.5 billion, 2018), Nuance ($19 billion, 2022), and Activision Blizzard ($69 billion, 2023) turned Microsoft into one of the most acquisitive companies in tech ([Wikipedia](https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Microsoft){:target="_blank"}). Goodwill reached $119.5 billion in 2025.
 
-The cash balance fell from $136 billion in 2020 to $94.6 billion in 2025, largely because of Activision. Long-term debt has declined from its peak of $66.7 billion in 2019 (Finance Toolkit balance sheet) to $40.2 billion in 2025 as Microsoft pays down the acquisition-related borrowing, a sign that the balance sheet is normalising after the deal.
+The cash balance fell from $136 billion in 2020 to $94.6 billion in 2025, largely because of Activision. Long-term debt has declined from its peak of $66.7 billion in 2019 (Finance Toolkit balance sheet) to $40.2 billion in 2025 as Microsoft pays down the acquisition-related borrowing, a sign that the balance sheet is normalizing after the deal.
 
 ## Free Cash Flow: The Number That Matters Most
 

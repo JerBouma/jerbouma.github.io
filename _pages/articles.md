@@ -3,66 +3,84 @@ title: Articles
 description: A selection of articles connecting open-source projects with financial theory.
 permalink: /articles
 layout: single
-classes: custom-document
+classes: custom-document projects-v2 articles-v2
 author_profile: false
 ---
 
-A selection of articles I have written that connect my open-source projects with my background in finance. In each one I explain a piece of financial theory and show how it is applied in these projects.
+I write about financial theory and how it is applied in practice: fundamental analysis, macroeconomics, risk and derivatives, and how AI assistants can work with financial data. Most articles come with code you can run yourself with the [Finance Toolkit](/projects/financetoolkit).
 
-{% assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
+{%- assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
+{%- assign all_tags = "" | split: "" %}
+{%- for art in articles %}{% for tag in art.tags %}{% unless all_tags contains tag %}{% assign all_tags = all_tags | push: tag %}{% endunless %}{% endfor %}{% endfor %}
+{%- assign all_tags = all_tags | sort_natural %}
+{%- assign latest = articles | first %}
+{%- assign latest_words = latest.content | number_of_words %}
 
-{% comment %}Build sorted unique tag list{% endcomment %}
-{% assign all_tags = "" | split: "" %}
-{% for art in articles %}
-  {% for tag in art.tags %}
-    {% unless all_tags contains tag %}
-      {% assign all_tags = all_tags | push: tag %}
-    {% endunless %}
-  {% endfor %}
-{% endfor %}
-{% assign all_tags = all_tags | sort_natural %}
+<div class="hp pj ar">
 
-{% if articles.size == 0 %}
-<p class="lit-empty">No articles yet. Check back soon.</p>
-{% else %}
-<div class="lit-filters" id="article-filters">
-  <button class="lit-filter active" data-filter="all">All <span class="lit-count" data-count="all"></span></button>
-  {% for tag in all_tags %}
-  <button class="lit-filter" data-filter="{{ tag | slugify }}">{{ tag }} <span class="lit-count" data-count="{{ tag | slugify }}"></span></button>
-  {% endfor %}
-</div>
-
-<div class="article-list" id="article-list">
-{% for article in articles %}
-  {% assign art_tag_slugs = "" %}
-  {% for tag in article.tags %}
-    {% assign slug = tag | slugify %}
-    {% if art_tag_slugs == "" %}
-      {% assign art_tag_slugs = slug %}
-    {% else %}
-      {% assign art_tag_slugs = art_tag_slugs | append: " " | append: slug %}
-    {% endif %}
-  {% endfor %}
-  <a href="{{ article.url | relative_url }}" class="article-card" data-tags="{{ art_tag_slugs }}">
-    <h3 class="article-card__title">{{ article.title }}</h3>
-    {% if article.excerpt %}<p class="article-card__excerpt">{{ article.excerpt | strip_html }}</p>{% endif %}
-    {% if article.tags.size > 0 %}
-    <div class="article-card__meta">
-      <div class="article-card__tags">
-        {% for tag in article.tags %}<span class="lit-tag">{{ tag }}</span>{% endfor %}
-      </div>
+<section class="pj-section ar-first">
+  <p class="hp-kicker">Latest article</p>
+  <a class="ar-feature" href="{{ latest.url | relative_url }}" data-reveal>
+    <p class="ar-meta">{{ latest.date | date: "%B %-d, %Y" }} · {{ latest_words | divided_by: 220 | at_least: 1 }} min read</p>
+    <h2>{{ latest.title }}</h2>
+    <p class="ar-feature__text">{{ latest.excerpt | strip_html }}</p>
+    <div class="ar-feature__foot">
+      <div class="ar-tags">{% for tag in latest.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+      <span class="ar-go">Read the article <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
     </div>
-    {% endif %}
   </a>
-{% endfor %}
-</div>
+</section>
 
-<p class="lit-empty" id="articles-empty" style="display:none">No articles found for this tag.</p>
+<section class="hp-section pj-section">
+  <p class="hp-kicker">All articles</p>
+  <h2 class="hp-h2">Browse by topic</h2>
+  <div class="ar-filters" id="article-filters">
+    <button class="ar-filter active" data-filter="all">All <span class="lit-count" data-count="all"></span></button>
+    {%- for tag in all_tags %}
+    <button class="ar-filter" data-filter="{{ tag | slugify }}">{{ tag }} <span class="lit-count" data-count="{{ tag | slugify }}"></span></button>
+    {%- endfor %}
+  </div>
+  <div class="ar-grid" id="article-list">
+  {%- for article in articles %}
+    {%- assign slugs = "" | split: "" %}{% for tag in article.tags %}{% assign s = tag | slugify %}{% assign slugs = slugs | push: s %}{% endfor %}
+    {%- assign words = article.content | number_of_words %}
+    <a href="{{ article.url | relative_url }}" class="ar-card" data-tags="{{ slugs | join: ' ' }}">
+      <p class="ar-meta">{{ article.date | date: "%b %-d, %Y" }} · {{ words | divided_by: 220 | at_least: 1 }} min read</p>
+      <h3>{{ article.title }}</h3>
+      {%- if article.excerpt %}<p class="ar-card__text">{{ article.excerpt | strip_html }}</p>{% endif %}
+      <div class="ar-tags">{% for tag in article.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+    </a>
+  {%- endfor %}
+  </div>
+  <p class="lit-empty" id="articles-empty" style="display:none">No articles found for this topic.</p>
+</section>
+
+<section class="hp-cta" data-reveal>
+  <h2 class="hp-h2">Run the analysis yourself</h2>
+  <p>Every calculation in these articles is done with the Finance Toolkit, an open-source Python library with 500+ financial methods. You can also ask an AI assistant to run it for you through its MCP server.</p>
+  <div class="hp-actions hp-actions--center">
+    <a href="/projects/financetoolkit" class="hp-btn hp-btn--primary">Explore the Toolkit <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+    <a href="/projects/financetoolkit/mcp" class="hp-btn hp-btn--ghost">Use it with AI</a>
+  </div>
+</section>
+
+</div>
 
 <script>
+(function () {
+  // fade the featured card and call to action in, like on the other pages
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) return;
+  document.documentElement.classList.add('hp-js');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('[data-reveal]').forEach(function (s) { io.observe(s); });
+})();
+
 (function() {
-  var filters = document.querySelectorAll('#article-filters .lit-filter');
-  var cards   = document.querySelectorAll('#article-list .article-card');
+  var filters = document.querySelectorAll('#article-filters .ar-filter');
+  var cards   = document.querySelectorAll('#article-list .ar-card');
   var empty   = document.getElementById('articles-empty');
 
   function updateCounts() {
@@ -105,4 +123,3 @@ A selection of articles I have written that connect my open-source projects with
   });
 })();
 </script>
-{% endif %}

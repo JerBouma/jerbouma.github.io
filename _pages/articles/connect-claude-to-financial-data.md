@@ -1,7 +1,6 @@
 ---
 title: How to Connect Claude to Live Financial Data for Stock Analysis
-seo_title: "Connect Claude to Financial Data for Stock Analysis (Free MCP Server)"
-seo_title_suffix: false
+seo_title: "Connect Claude to Live Financial Data"
 date: 2026-09-11
 last_modified_at: 2026-09-11
 permalink: /articles/connect-claude-to-financial-data
