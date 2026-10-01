@@ -42,7 +42,9 @@ Point your client at the URL below. On first use it opens an OAuth page asking f
 https://financetoolkit.jeroenbouma.com/mcp
 ```
 
-Open the card for your client below for the exact steps; most clients accept the URL through their settings or with a single command.
+Pick your client below for the exact steps; most clients accept the URL through their settings or with a single command.
+
+<div class="ft-tabs" markdown="1">
 
 <details class="ft-details" id="remote-claude-desktop" markdown="1">
   <summary><i class="fas fa-robot"></i> <h3>Claude Desktop</h3></summary>
@@ -167,6 +169,8 @@ Open the card for your client below for the exact steps; most clients accept the
 
 </details>
 
+</div>
+
 ### Local Clients
 
 The local server runs on your own machine through `uvx` and works with every client that supports the `stdio` transport. The setup wizard finds your client's config file and writes the entry, including your API key, for you:
@@ -175,7 +179,9 @@ The local server runs on your own machine through `uvx` and works with every cli
 uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
 ```
 
-If you prefer to do it by hand, open the card for your client below and add the snippet to its config file, replacing `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}. The [API keys and environment variables](#local-api-keys) card at the end covers the `.env` file option and the optional FRED key.
+If you prefer to do it by hand, pick your client below and add the snippet to its config file, replacing `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}. The [API keys and environment variables](#local-api-keys) card at the end covers the `.env` file option and the optional FRED key.
+
+<div class="ft-tabs" markdown="1">
 
 <details class="ft-details" id="local-claude-desktop" markdown="1">
   <summary><i class="fas fa-robot"></i> <h3>Claude Desktop</h3></summary>
@@ -370,6 +376,8 @@ If you prefer to do it by hand, open the card for your client below and add the 
   ```
 
 </details>
+
+</div>
 
 <details class="ft-details ft-details--warning" id="local-api-keys" markdown="1">
   <summary><i class="fas fa-key"></i> <h3>API keys and environment variables</h3></summary>
@@ -1024,6 +1032,63 @@ document.addEventListener("DOMContentLoaded", function () {
       details.open = true;
     }
   }, true);
+
+  // The client cards in each installation section become horizontal tabs.
+  // Without JavaScript they stay as the original collapsible cards.
+  function activateTab(details) {
+    var group = details.closest(".ft-tabs");
+    if (!group) return;
+    group.querySelectorAll(":scope > details").forEach(function (d) {
+      var on = d === details;
+      d.open = on;
+      d.classList.toggle("is-active", on);
+    });
+    group.querySelectorAll(".ft-tabs__tab").forEach(function (b) {
+      var on = b.dataset.target === details.id;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-selected", on ? "true" : "false");
+    });
+  }
+
+  document.querySelectorAll(".ft-tabs").forEach(function (group) {
+    var cards = group.querySelectorAll(":scope > details");
+    if (!cards.length) return;
+    var bar = document.createElement("div");
+    bar.className = "ft-tabs__bar";
+    bar.setAttribute("role", "tablist");
+    cards.forEach(function (d) {
+      var icon = d.querySelector("summary i");
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "ft-tabs__tab";
+      b.setAttribute("role", "tab");
+      b.dataset.target = d.id;
+      b.innerHTML = (icon ? icon.outerHTML + " " : "") + d.querySelector("summary h3").textContent;
+      b.addEventListener("click", function () { activateTab(d); });
+      bar.appendChild(b);
+    });
+    group.insertBefore(bar, cards[0]);
+    group.classList.add("is-tabbed");
+    activateTab(cards[0]); // Claude Desktop is the default
+  });
+
+  // links to a client (e.g. #remote-chatgpt) select its tab
+  var openDetails = revealHashTarget;
+  revealHashTarget = function () {
+    if (location.hash) {
+      var el; try { el = document.querySelector(location.hash); } catch (e) { el = null; }
+      var d = el && el.closest(".ft-tabs > details");
+      if (d) activateTab(d);
+    }
+    openDetails();
+  };
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a[href*='#']");
+    if (!a) return;
+    var el; try { el = document.querySelector(new URL(a.href).hash); } catch (err) { return; }
+    var d = el && el.closest(".ft-tabs > details");
+    if (d) activateTab(d);
+  });
 
   window.addEventListener("hashchange", revealHashTarget);
   revealHashTarget();
