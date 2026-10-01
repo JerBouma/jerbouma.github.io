@@ -1,5 +1,6 @@
 ---
 title: Tracking Macroeconomic Indicators with the Finance Toolkit
+seo_title: "Tracking Macroeconomic Indicators in Python"
 date: 2026-07-14
 last_modified_at: 2026-07-26
 permalink: /articles/macroeconomic-indicators-finance-toolkit

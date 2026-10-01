@@ -1,7 +1,7 @@
 ---
 title: Financial Modelling with Python
 excerpt: "How financial models are built today: what every component of a Python model does, how to work on it with AI coding agents, and a free agent kit that teaches any agent the same practices."
-description: "How financial models are built today: what every component of a Python model does, how to work on it with AI coding agents, and a free agent kit for Claude Code, Copilot, Cursor and more."
+description: "A guide to building financial models in Python with AI coding agents: every component explained, plus a free agent kit for Claude Code, Copilot and Cursor."
 permalink: /modelling/introduction
 classes: wide-sidebar modelling-intro
 redirect_from:

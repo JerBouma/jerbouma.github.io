@@ -1,5 +1,6 @@
 ---
 title: Screening for Undervalued Stocks with the Finance Toolkit
+seo_title: "Screening for Undervalued Stocks in Python"
 date: 2026-06-14
 last_modified_at: 2026-06-26
 permalink: /articles/screening-undervalued-stocks-finance-toolkit

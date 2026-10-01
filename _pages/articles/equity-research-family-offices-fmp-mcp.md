@@ -1,5 +1,6 @@
 ---
 title: "The Research Team You Can't Afford to Hire: Equity Research for Family Offices with the FMP MCP Server"
+seo_title: "Equity Research for Family Offices with AI"
 date: 2026-07-23
 last_modified_at: 2026-07-26
 permalink: /articles/equity-research-family-offices-fmp-mcp

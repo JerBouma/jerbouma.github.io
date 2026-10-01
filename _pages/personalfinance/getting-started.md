@@ -1,8 +1,8 @@
 ---
 title: Getting Started with Personal Finance
 permalink: /projects/personalfinance/getting-started
-excerpt: This notebook demonstrates an example how to use Personal Finance.
-description: This notebook demonstrates an example how to use Personal Finance.
+excerpt: "Getting started with Personal Finance: categorize your bank transactions with your own keywords in Python and see where your money goes each month."
+description: "Getting started with Personal Finance: categorize your bank transactions with your own keywords in Python and see where your money goes each month."
 classes: wide-no-sidebar no-title
 author_profile: false
 ---

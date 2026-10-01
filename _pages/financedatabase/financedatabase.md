@@ -1,5 +1,9 @@
 ---
 permalink: /projects/financedatabase
+software:
+  name: "Finance Database"
+  repository: "https://github.com/JerBouma/FinanceDatabase"
+  download: "https://pypi.org/project/financedatabase/"
 title: Finance Database
 excerpt: The Finance Database features 300,000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
 description: "The Finance Database is an open-source Python package with 300,000+ symbols: equities, ETFs, funds, indices, currencies, crypto and money markets."
