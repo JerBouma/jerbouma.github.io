@@ -15,7 +15,7 @@ maintained:
     since: "2019"
     lead: "500+ financial methods, from ratios and valuation models to risk, performance and econometrics, each written out so you can see exactly how a number is calculated."
     text: "You calculate every metric directly from the financial statements, with the same method every time, instead of relying on numbers from external providers that you cannot check."
-    covers: ["Ratios", "Models", "Risk", "Performance", "Technicals", "Economics", "Fixed Income", "Options", "Portfolio"]
+    covers: ["Discovery", "Ratios", "Models", "Options", "Performance", "Risk", "Technicals", "Econometrics", "Fixed Income", "Economics", "Portfolio"]
     stats:
       - { icon: "fa-star", value: "5,300+", label: "stars" }
       - { icon: "fa-download", value: "640,000+", label: "downloads" }
