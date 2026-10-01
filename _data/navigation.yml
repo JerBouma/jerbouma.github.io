@@ -201,77 +201,65 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Finance Toolkit
-    url: /projects/financetoolkit/docs#site-nav
+  - title: Company Information
     children:
-    - title: "Ratios Module"
-      url: /projects/financetoolkit/docs#ratios
-    - title: "Models Module"
-      url: /projects/financetoolkit/docs#models
-    - title: "Options Module"
-      url: /projects/financetoolkit/docs#options
-    - title: "Technicals Module"
-      url: /projects/financetoolkit/docs#technicals
-    - title: "Risk Module"
-      url: /projects/financetoolkit/docs#risk
-    - title: "Performance Module"
-      url: /projects/financetoolkit/docs#performance
-    - title: "Fixed Income Module"
-      url: /projects/financetoolkit/docs#fixedincome
-    - title: "Economics Module"
-      url: /projects/financetoolkit/docs#economics
-    - title: "Econometrics Module"
-      url: /projects/financetoolkit/docs#econometrics
-    - title: "Company Profiles"
-      url: /projects/financetoolkit/docs#get_profile
-    - title: "Current Quotes"
-      url: /projects/financetoolkit/docs#get_quote
-    - title: "Ratings and Recommendations"
-      url: /projects/financetoolkit/docs#get_rating
-    - title: "Analyst Estimates"
-      url: /projects/financetoolkit/docs#get_analyst_estimates
-    - title: "Earnings Calendar"
-      url: /projects/financetoolkit/docs#get_earnings_calendar
-    - title: "Stock News"
-      url: /projects/financetoolkit/docs#get_stock_news
-    - title: "Press Releases"
-      url: /projects/financetoolkit/docs#get_press_releases
-    - title: "Revenue Geographic Segmentation"
-      url: /projects/financetoolkit/docs#get_revenue_geographic_segmentation
-    - title: "Revenue Product Segmentation"
-      url: /projects/financetoolkit/docs#get_revenue_product_segmentation
-    - title: "Historical Data"
-      url: /projects/financetoolkit/docs#get_historical_data
-    - title: "Intraday Data"
-      url: /projects/financetoolkit/docs#get_intraday_data
-    - title: "Dividend Calendar"
-      url: /projects/financetoolkit/docs#get_dividend_calendar
-    - title: "ESG Scores"
-      url: /projects/financetoolkit/docs#get_esg_scores
-    - title: "Historical Statistics"
-      url: /projects/financetoolkit/docs#get_historical_statistics
-    - title: "Treasury Rates"
-      url: /projects/financetoolkit/docs#get_treasury_data
-    - title: "Exchange Rates"
-      url: /projects/financetoolkit/docs#get_exchange_rates
-    - title: "Market Risk Premium"
-      url: /projects/financetoolkit/docs#get_market_risk_premium
-    - title: "Commitment of Traders"
-      url: /projects/financetoolkit/docs#get_commitment_of_traders
-    - title: "Balance Sheet Statements"
-      url: /projects/financetoolkit/docs#get_balance_sheet_statement
-    - title: "Income Statements"
-      url: /projects/financetoolkit/docs#get_income_statement
-    - title: "Cash Flow Statements"
-      url: /projects/financetoolkit/docs#get_cash_flow_statement
-    - title: "Statistics Statements"
-      url: /projects/financetoolkit/docs#get_statistics_statement
-    - title: "Normalization Files"
-      url: /projects/financetoolkit/docs#get_normalization_files
-    - title: "Cache Contents"
-      url: /projects/financetoolkit/docs#get_cache_contents
-    - title: "Clear Cache"
-      url: /projects/financetoolkit/docs#clear_cache
+      - title: "Company Profiles"
+        url: /projects/financetoolkit/docs#get_profile
+      - title: "Current Quotes"
+        url: /projects/financetoolkit/docs#get_quote
+      - title: "Ratings and Recommendations"
+        url: /projects/financetoolkit/docs#get_rating
+      - title: "Analyst Estimates"
+        url: /projects/financetoolkit/docs#get_analyst_estimates
+      - title: "Earnings Calendar"
+        url: /projects/financetoolkit/docs#get_earnings_calendar
+      - title: "Dividend Calendar"
+        url: /projects/financetoolkit/docs#get_dividend_calendar
+      - title: "Stock News"
+        url: /projects/financetoolkit/docs#get_stock_news
+      - title: "Press Releases"
+        url: /projects/financetoolkit/docs#get_press_releases
+      - title: "Revenue Geographic Segmentation"
+        url: /projects/financetoolkit/docs#get_revenue_geographic_segmentation
+      - title: "Revenue Product Segmentation"
+        url: /projects/financetoolkit/docs#get_revenue_product_segmentation
+      - title: "ESG Scores"
+        url: /projects/financetoolkit/docs#get_esg_scores
+  - title: Statements
+    children:
+      - title: "Balance Sheet Statements"
+        url: /projects/financetoolkit/docs#get_balance_sheet_statement
+      - title: "Income Statements"
+        url: /projects/financetoolkit/docs#get_income_statement
+      - title: "Cash Flow Statements"
+        url: /projects/financetoolkit/docs#get_cash_flow_statement
+      - title: "Statistics Statements"
+        url: /projects/financetoolkit/docs#get_statistics_statement
+      - title: "Normalization Files"
+        url: /projects/financetoolkit/docs#get_normalization_files
+  - title: Market Data
+    children:
+      - title: "Historical Data"
+        url: /projects/financetoolkit/docs#get_historical_data
+      - title: "Intraday Data"
+        url: /projects/financetoolkit/docs#get_intraday_data
+      - title: "Historical Statistics"
+        url: /projects/financetoolkit/docs#get_historical_statistics
+      - title: "Treasury Rates"
+        url: /projects/financetoolkit/docs#get_treasury_data
+      - title: "Exchange Rates"
+        url: /projects/financetoolkit/docs#get_exchange_rates
+      - title: "Market Risk Premium"
+        url: /projects/financetoolkit/docs#get_market_risk_premium
+      - title: "Commitment of Traders"
+        url: /projects/financetoolkit/docs#get_commitment_of_traders
+  - title: Cache
+    children:
+      - title: "Cache Contents"
+        url: /projects/financetoolkit/docs#get_cache_contents
+      - title: "Clear Cache"
+        url: /projects/financetoolkit/docs#clear_cache
+
 financetoolkit-docs-discovery:
   - title: Modules
     children:
@@ -983,102 +971,113 @@ financetoolkit-docs-risk:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Risk
+  - title: All Risk Metrics
+    url: /projects/financetoolkit/docs/risk#collect_all_metrics
+  - title: Value at Risk and Tail Risk
     children:
-    - title: All Risk Metrics
-      url:  /projects/financetoolkit/docs/risk#collect_all_metrics
-    - title: Value at Risk (VaR)
-      url:  /projects/financetoolkit/docs/risk#get_value_at_risk
-    - title: Conditional Value at Risk (cVaR)
-      url:  /projects/financetoolkit/docs/risk#get_conditional_value_at_risk
-    - title: Entropic Value at Risk (eVaR)
-      url:  /projects/financetoolkit/docs/risk#get_entropic_value_at_risk
-    - title: Conditional Drawdown at Risk (CDaR)
-      url:  /projects/financetoolkit/docs/risk#get_conditional_drawdown_at_risk
-    - title: Tail Ratio
-      url:  /projects/financetoolkit/docs/risk#get_tail_ratio
-    - title: Maximum Drawdown (MDD)
-      url:  /projects/financetoolkit/docs/risk#get_maximum_drawdown
-    - title: Maximum Drawdown Duration
-      url:  /projects/financetoolkit/docs/risk#get_maximum_drawdown_duration
-    - title: Maximum Drawdown Recovery Time
-      url:  /projects/financetoolkit/docs/risk#get_maximum_drawdown_recovery_time
-    - title: Ulcer Index (UI)
-      url:  /projects/financetoolkit/docs/risk#get_ulcer_index
-    - title: GARCH Volatility Model
-      url:  /projects/financetoolkit/docs/risk#get_garch
-    - title: GARCH Volatility Forecast
-      url:  /projects/financetoolkit/docs/risk#get_garch_forecast
-    - title: Variance
-      url:  /projects/financetoolkit/docs/risk#get_variance
-    - title: Volatility
-      url:  /projects/financetoolkit/docs/risk#get_volatility
-    - title: Excess Volatility
-      url:  /projects/financetoolkit/docs/risk#get_excess_volatility
-    - title: Downside Deviation
-      url:  /projects/financetoolkit/docs/risk#get_downside_deviation
-    - title: Skewness
-      url:  /projects/financetoolkit/docs/risk#get_skewness
-    - title: Kurtosis
-      url:  /projects/financetoolkit/docs/risk#get_kurtosis
-    - title: Mean Absolute Deviation (MAD)
-      url:  /projects/financetoolkit/docs/risk#get_mean_absolute_deviation
-    - title: Coefficient of Variation (CV)
-      url:  /projects/financetoolkit/docs/risk#get_coefficient_of_variation
-    - title: EWMA Volatility
-      url:  /projects/financetoolkit/docs/risk#get_ewma_volatility
-    - title: Autocorrelation (ACF)
-      url:  /projects/financetoolkit/docs/risk#get_autocorrelation
-    - title: Hurst Exponent
-      url:  /projects/financetoolkit/docs/risk#get_hurst_exponent
-    - title: Marginal Value at Risk (mVaR)
-      url:  /projects/financetoolkit/docs/risk#get_marginal_value_at_risk
-    - title: Component Value at Risk (cVaR)
-      url:  /projects/financetoolkit/docs/risk#get_component_value_at_risk
-    - title: CoVaR
-      url:  /projects/financetoolkit/docs/risk#get_covar
-    - title: Value at Risk Backtest
-      url:  /projects/financetoolkit/docs/risk#get_var_backtest
-    - title: Acerbi-Szekely Test
-      url:  /projects/financetoolkit/docs/risk#get_acerbi_szekely_test
-    - title: GARCH Parameters
-      url:  /projects/financetoolkit/docs/risk#get_garch_parameters
-    - title: GJR-GARCH Volatility Model
-      url:  /projects/financetoolkit/docs/risk#get_gjr_garch
-    - title: GJR-GARCH Volatility Forecast
-      url:  /projects/financetoolkit/docs/risk#get_gjr_garch_forecast
-    - title: GJR-GARCH Parameters
-      url:  /projects/financetoolkit/docs/risk#get_gjr_garch_parameters
-    - title: EGARCH Volatility Model
-      url:  /projects/financetoolkit/docs/risk#get_egarch
-    - title: EGARCH Volatility Forecast
-      url:  /projects/financetoolkit/docs/risk#get_egarch_forecast
-    - title: EGARCH Parameters
-      url:  /projects/financetoolkit/docs/risk#get_egarch_parameters
-    - title: HAR-RV Forecast
-      url:  /projects/financetoolkit/docs/risk#get_har_rv_forecast
-    - title: Parkinson Volatility
-      url:  /projects/financetoolkit/docs/risk#get_volatility
-    - title: Garman-Klass Volatility
-      url:  /projects/financetoolkit/docs/risk#get_volatility
-    - title: Rogers-Satchell Volatility
-      url:  /projects/financetoolkit/docs/risk#get_volatility
-    - title: Yang-Zhang Volatility
-      url:  /projects/financetoolkit/docs/risk#get_volatility
-    - title: Hill Estimator
-      url:  /projects/financetoolkit/docs/risk#get_hill_estimator
-    - title: Best Fitting Copula
-      url:  /projects/financetoolkit/docs/risk#get_best_fitting_copula
-    - title: Copula Parameters
-      url:  /projects/financetoolkit/docs/risk#get_copula_parameters
-    - title: Copula Simulation
-      url:  /projects/financetoolkit/docs/risk#get_copula_simulation
-    - title: Tail Dependence Coefficient
-      url:  /projects/financetoolkit/docs/risk#get_tail_dependence_coefficient
-    - title: Amihud Illiquidity
-      url:  /projects/financetoolkit/docs/risk#get_amihud_illiquidity
-    - title: Roll Spread
-      url:  /projects/financetoolkit/docs/risk#get_roll_spread
+      - title: "Value at Risk (VaR)"
+        url: /projects/financetoolkit/docs/risk#get_value_at_risk
+      - title: "Conditional Value at Risk (cVaR)"
+        url: /projects/financetoolkit/docs/risk#get_conditional_value_at_risk
+      - title: "Entropic Value at Risk (eVaR)"
+        url: /projects/financetoolkit/docs/risk#get_entropic_value_at_risk
+      - title: "Conditional Drawdown at Risk (CDaR)"
+        url: /projects/financetoolkit/docs/risk#get_conditional_drawdown_at_risk
+      - title: "Marginal Value at Risk (mVaR)"
+        url: /projects/financetoolkit/docs/risk#get_marginal_value_at_risk
+      - title: "Component Value at Risk (cVaR)"
+        url: /projects/financetoolkit/docs/risk#get_component_value_at_risk
+      - title: "CoVaR"
+        url: /projects/financetoolkit/docs/risk#get_covar
+      - title: "Value at Risk Backtest"
+        url: /projects/financetoolkit/docs/risk#get_var_backtest
+      - title: "Acerbi-Szekely Test"
+        url: /projects/financetoolkit/docs/risk#get_acerbi_szekely_test
+      - title: "Tail Ratio"
+        url: /projects/financetoolkit/docs/risk#get_tail_ratio
+      - title: "Hill Estimator"
+        url: /projects/financetoolkit/docs/risk#get_hill_estimator
+  - title: Drawdowns
+    children:
+      - title: "Maximum Drawdown (MDD)"
+        url: /projects/financetoolkit/docs/risk#get_maximum_drawdown
+      - title: "Maximum Drawdown Duration"
+        url: /projects/financetoolkit/docs/risk#get_maximum_drawdown_duration
+      - title: "Maximum Drawdown Recovery Time"
+        url: /projects/financetoolkit/docs/risk#get_maximum_drawdown_recovery_time
+      - title: "Ulcer Index (UI)"
+        url: /projects/financetoolkit/docs/risk#get_ulcer_index
+  - title: Volatility
+    children:
+      - title: "Variance"
+        url: /projects/financetoolkit/docs/risk#get_variance
+      - title: "Volatility"
+        url: /projects/financetoolkit/docs/risk#get_volatility
+      - title: "Excess Volatility"
+        url: /projects/financetoolkit/docs/risk#get_excess_volatility
+      - title: "Downside Deviation"
+        url: /projects/financetoolkit/docs/risk#get_downside_deviation
+      - title: "EWMA Volatility"
+        url: /projects/financetoolkit/docs/risk#get_ewma_volatility
+      - title: "Parkinson Volatility"
+        url: /projects/financetoolkit/docs/risk#get_volatility
+      - title: "Garman-Klass Volatility"
+        url: /projects/financetoolkit/docs/risk#get_volatility
+      - title: "Rogers-Satchell Volatility"
+        url: /projects/financetoolkit/docs/risk#get_volatility
+      - title: "Yang-Zhang Volatility"
+        url: /projects/financetoolkit/docs/risk#get_volatility
+  - title: Volatility Models
+    children:
+      - title: "GARCH Volatility Model"
+        url: /projects/financetoolkit/docs/risk#get_garch
+      - title: "GARCH Volatility Forecast"
+        url: /projects/financetoolkit/docs/risk#get_garch_forecast
+      - title: "GARCH Parameters"
+        url: /projects/financetoolkit/docs/risk#get_garch_parameters
+      - title: "GJR-GARCH Volatility Model"
+        url: /projects/financetoolkit/docs/risk#get_gjr_garch
+      - title: "GJR-GARCH Volatility Forecast"
+        url: /projects/financetoolkit/docs/risk#get_gjr_garch_forecast
+      - title: "GJR-GARCH Parameters"
+        url: /projects/financetoolkit/docs/risk#get_gjr_garch_parameters
+      - title: "EGARCH Volatility Model"
+        url: /projects/financetoolkit/docs/risk#get_egarch
+      - title: "EGARCH Volatility Forecast"
+        url: /projects/financetoolkit/docs/risk#get_egarch_forecast
+      - title: "EGARCH Parameters"
+        url: /projects/financetoolkit/docs/risk#get_egarch_parameters
+      - title: "HAR-RV Forecast"
+        url: /projects/financetoolkit/docs/risk#get_har_rv_forecast
+  - title: Distribution and Dependence
+    children:
+      - title: "Skewness"
+        url: /projects/financetoolkit/docs/risk#get_skewness
+      - title: "Kurtosis"
+        url: /projects/financetoolkit/docs/risk#get_kurtosis
+      - title: "Mean Absolute Deviation (MAD)"
+        url: /projects/financetoolkit/docs/risk#get_mean_absolute_deviation
+      - title: "Coefficient of Variation (CV)"
+        url: /projects/financetoolkit/docs/risk#get_coefficient_of_variation
+      - title: "Autocorrelation (ACF)"
+        url: /projects/financetoolkit/docs/risk#get_autocorrelation
+      - title: "Hurst Exponent"
+        url: /projects/financetoolkit/docs/risk#get_hurst_exponent
+      - title: "Best Fitting Copula"
+        url: /projects/financetoolkit/docs/risk#get_best_fitting_copula
+      - title: "Copula Parameters"
+        url: /projects/financetoolkit/docs/risk#get_copula_parameters
+      - title: "Copula Simulation"
+        url: /projects/financetoolkit/docs/risk#get_copula_simulation
+      - title: "Tail Dependence Coefficient"
+        url: /projects/financetoolkit/docs/risk#get_tail_dependence_coefficient
+  - title: Liquidity
+    children:
+      - title: "Amihud Illiquidity"
+        url: /projects/financetoolkit/docs/risk#get_amihud_illiquidity
+      - title: "Roll Spread"
+        url: /projects/financetoolkit/docs/risk#get_roll_spread
+
 financetoolkit-docs-performance:
   - title: Modules
     children:

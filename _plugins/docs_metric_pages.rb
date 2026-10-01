@@ -281,6 +281,78 @@ module DocsMetricPages
     out
   end
 
+  # Getting Started on the main docs page: a short tour taken from the Finance
+  # Toolkit README, since initialising alone says little about what it does.
+  TOOLKIT_GETTING_STARTED = <<~MD.freeze
+    ## Getting Started
+
+    Create a `Toolkit` instance with the tickers you want to analyse and your Financial Modeling Prep API key. Everything else hangs off this one instance: the data functions on this page, and every module as an attribute, such as `companies.ratios`.
+
+    ```python
+    from financetoolkit import Toolkit
+
+    companies = Toolkit(
+        ["AAPL", "MSFT"],
+        api_key="FINANCIAL_MODELING_PREP_KEY",
+        start_date="2017-12-31",
+    )
+    ```
+
+    The data functions return the underlying data for all tickers at once. For example, the historical market data, selected here for Apple:
+
+    ```python
+    historical_data = companies.get_historical_data()
+
+    historical_data.xs("AAPL", axis=1, level=1)
+    ```
+
+    | date       |    Open |    High |     Low |   Close |   Adj Close |      Volume |   Dividends |   Return |   Cumulative Return |
+    |:-----------|--------:|--------:|--------:|--------:|------------:|------------:|------------:|---------:|--------------------:|
+    | 2018-01-02 | 42.54   | 43.075  | 42.315  | 43.065  |       40.78 | 1.02224e+08 |           0 |   0      |              1      |
+    | 2018-01-03 | 43.1325 | 43.6375 | 42.99   | 43.0575 |       40.77 | 1.17982e+08 |           0 |  -0.0002 |              0.9998 |
+    | 2018-01-04 | 43.135  | 43.3675 | 43.02   | 43.2575 |       40.96 | 8.97384e+07 |           0 |   0.0047 |              1.0044 |
+    | 2018-01-05 | 43.36   | 43.8425 | 43.2625 | 43.75   |       41.43 | 9.46401e+07 |           0 |   0.0115 |              1.0159 |
+    | 2018-01-08 | 43.5875 | 43.9025 | 43.4825 | 43.5875 |       41.27 | 8.22711e+07 |           0 |  -0.0039 |              1.012  |
+
+    The modules calculate on top of that data. Every metric has its own `get_` function, and each category can be collected at once with a `collect_` function. For example, all profitability ratios, selected here for Microsoft:
+
+    ```python
+    profitability_ratios = companies.ratios.collect_profitability_ratios()
+
+    profitability_ratios.loc["MSFT"]
+    ```
+
+    |                                 |    2017 |    2018 |    2019 |    2020 |    2021 |    2022 |    2023 |
+    |:--------------------------------|--------:|--------:|--------:|--------:|--------:|--------:|--------:|
+    | Gross Margin                    |  0.6191 |  0.6525 |  0.659  |  0.6778 |  0.6893 |  0.684  |  0.6892 |
+    | Operating Margin                |  0.2482 |  0.3177 |  0.3414 |  0.3703 |  0.4159 |  0.4206 |  0.4177 |
+    | Net Profit Margin               |  0.2357 |  0.1502 |  0.3118 |  0.3096 |  0.3645 |  0.3669 |  0.3415 |
+    | Interest Coverage Ratio         | 13.9982 | 16.5821 | 20.3429 | 25.3782 | 34.7835 | 47.4275 | 52.0244 |
+    | Income Before Tax Profit Margin |  0.2574 |  0.3305 |  0.3472 |  0.3708 |  0.423  |  0.4222 |  0.4214 |
+
+    The same instance gives access to every other module:
+
+    ```python
+    # Extended DuPont Analysis
+    companies.models.get_extended_dupont_analysis()
+
+    # Weekly Value at Risk
+    companies.risk.get_value_at_risk(period="weekly")
+
+    # Ichimoku Cloud
+    companies.technicals.get_ichimoku_cloud()
+
+    # Correlations with the Fama-French factors, per quarter
+    companies.performance.get_factor_asset_correlations(period="quarterly")
+    ```
+
+    A few options work across nearly every function:
+
+    - **`growth` and `lag`:** `growth=True` returns the period-over-period growth instead of the value, and `lag` sets how many periods back it is measured against (e.g. `lag=4` for year-over-year growth on quarterly data).
+    - **`rolling` and `trailing`:** compute a metric over a sliding window, or as a trailing sum or average (e.g. `trailing=4` for trailing twelve months on quarterly data).
+    - **`standardize`:** `standardize=True` turns values into Z-scores against their own history, which makes metrics on different scales comparable.
+  MD
+
   # Getting Started for classes created directly: the import and constructor
   # lines of the first example on the page.
   def getting_started_from_constructor(key, sections)
@@ -380,6 +452,7 @@ module DocsMetricPages
         urls[name] || (key == "toolkit" && CLASSES.key?(name)) ? "" : Regexp.last_match(0)
       end
       started = if toolkit_sections.key?(key) then getting_started_from_toolkit(key, toolkit_sections[key])
+                elsif key == "toolkit" then TOOLKIT_GETTING_STARTED.dup
                 elsif CONSTRUCTORS.key?(key) then getting_started_from_constructor(key, sections)
                 else ""
                 end
