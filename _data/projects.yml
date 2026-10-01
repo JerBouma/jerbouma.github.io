@@ -76,7 +76,7 @@ contributed:
   - name: "OpenBB"
     url: /projects/openbbterminal
     github: "https://github.com/OpenBB-finance/OpenBB"
-    image: "https://github.com/OpenBB-finance/OpenBB/raw/develop/images/openbb_gradient.png"
+    image: "https://camo.githubusercontent.com/a3fd1d9d5a13e0dcb0d83b89dcbfbfab38371622bd86c0e9629e6145ada8cb13/68747470733a2f2f6f70656e62622d636d732e64697265637475732e6170702f6173736574732f37306239373165662d376137652d343836652d623561652d3163633630326632313632632e706e67"
     years: "2022 – 2023"
     text: "An open-source investment research platform that set out to compete with Bloomberg, Reuters and FactSet. As Product Manager I also wrote a lot of its code, mostly the Economy, Econometrics and Fundamental Analysis parts of what is now the OpenBB Platform."
     stats:
