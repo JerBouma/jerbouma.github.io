@@ -5653,3 +5653,21 @@ body.ft-overview .page__content {
   font-size: 0.78rem !important;
   text-align: center;
 }
+
+// footer Connect links: every icon in the same fixed-width slot, so the
+// labels line up whatever the icon's own width
+.footer__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  // 26px fits the widest icon (the coffee cup); each icon is centred in it
+  > i {
+    flex: 0 0 26px !important;
+    width: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    text-align: center !important;
+    margin: 0 !important;
+  }
+}
