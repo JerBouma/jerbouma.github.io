@@ -444,9 +444,9 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
     overflow-x: auto;
     color: #e6edf3;
     font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
-    // the examples are at most 42 characters wide; a monospace character is
+    // the examples are at most 48 characters wide; a monospace character is
     // about 0.6em, so this always fits a full line inside the padding
-    font-size: min(0.8rem, calc((100cqi - 40px) / 26.5));
+    font-size: min(0.8rem, calc((100cqi - 40px) / 29.5));
     line-height: 1.55;
     white-space: pre;
 

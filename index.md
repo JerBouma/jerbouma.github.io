@@ -99,8 +99,7 @@ toolkit = Toolkit(
     api_key=<span class="s">"FINANCIAL_MODELING_PREP_KEY"</span>)
 
 <span class="c"># Return on invested capital</span>
-ratios = toolkit.ratios
-ratios.<span class="f">get_return_on_invested_capital</span>()</div>
+toolkit.ratios.<span class="f">get_return_on_invested_capital</span>()</div>
       <div class="hp-code__out" style="--cols:5">
         <div class="hp-code__row hp-code__row--head"><span></span><span>2020</span><span>2022</span><span>2024</span><span>2025</span></div>
         <div class="hp-code__row"><span>INTC</span><span>23.6%</span><span>10.1%</span><span>-10.9%</span><span>-0.2%</span></div>
@@ -116,8 +115,7 @@ toolkit = Toolkit(
     start_date=<span class="s">"2021-01-01"</span>)
 
 <span class="c"># Five-factor exposures, shown for 2025</span>
-performance = toolkit.performance
-performance.<span class="f">get_fama_and_french_model</span>(
+toolkit.performance.<span class="f">get_fama_and_french_model</span>(
     period=<span class="s">"yearly"</span>)</div>
       <div class="hp-code__out" style="--cols:7">
         <div class="hp-code__row hp-code__row--head"><span></span><span>Mkt-RF</span><span>SMB</span><span>HML</span><span>RMW</span><span>CMA</span><span>R²</span></div>
@@ -151,8 +149,7 @@ toolkit = Toolkit(
     api_key=<span class="s">"FINANCIAL_MODELING_PREP_KEY"</span>)
 
 <span class="c"># Johansen test for cointegration</span>
-econometrics = toolkit.econometrics
-econometrics.<span class="f">get_johansen_cointegration</span>(
+toolkit.econometrics.<span class="f">get_johansen_cointegration</span>(
     period=<span class="s">"quarterly"</span>)</div>
       <div class="hp-code__out" style="--cols:4">
         <div class="hp-code__row hp-code__row--head"><span>Hypothesis</span><span>Trace stat.</span><span>Critical</span><span>Reject</span></div>
