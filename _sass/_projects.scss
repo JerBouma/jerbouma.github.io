@@ -232,13 +232,21 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
   gap: 6px;
   margin-top: 16px;
 
-  span {
+  span, a {
     padding: 3px 10px;
     border: 1px solid var(--card-border);
     border-radius: 999px;
     background: rgba(128, 128, 128, 0.06);
-    color: var(--text-secondary);
+    color: var(--text-secondary) !important;
     font-size: 0.78rem;
+  }
+
+  // a module that links to its notebook
+  a { transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease; }
+  a:hover {
+    border-color: var(--card-hover-border);
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--accent-color) !important;
   }
 }
 

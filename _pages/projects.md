@@ -82,7 +82,7 @@ At financial institutions I kept seeing the same models and calculations being b
     <div class="pj-card__more{% if p.extra %} has-extra{% endif %}">
       <div>
         <p class="pj-card__text">{{ p.text }}</p>
-        <div class="pj-chips">{% for c in p.covers %}<span>{{ c }}</span>{% endfor %}</div>
+        <div class="pj-chips">{% for c in p.covers %}{% if c.url %}<a href="{{ c.url }}">{{ c.name }}</a>{% else %}<span>{{ c }}</span>{% endif %}{% endfor %}</div>
       </div>
       {%- if p.extra %}
       <a class="pj-extra" href="{{ p.extra.url }}">
