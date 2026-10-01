@@ -4738,13 +4738,26 @@ table.highlight {
 }
 
 // ── Content image cap — prevent images stretching huge on large screens ─────
-// Inline content images (screenshots, diagrams) are capped at a readable size.
-// Badge/shield images and testimonial avatars are excluded.
+// Screenshots, charts and GIFs in the text are centred and capped, so on wide
+// screens they stay readable instead of filling the whole column (or the whole
+// screen height). !important because the generic rule above sets
+// max-width: 100% !important. Badges and testimonial avatars are excluded.
+$content-img: 'img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="github-readme-stats"]):not(.testimoninals)';
+
 .page__content {
-  > p > img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="github-readme-stats"]):not(.testimoninals),
-  > img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="github-readme-stats"]):not(.testimoninals) {
-    max-width: min(100%, 960px);
+  > p > #{$content-img},
+  > #{$content-img},
+  > p > a > #{$content-img} {
+    display: block;
+    max-width: min(100%, 880px) !important;
+    max-height: min(80vh, 720px);
+    margin-left: auto !important;
+    margin-right: auto !important;
+    object-fit: contain;
   }
+
+  // the demo video on the MCP page
+  .mcp-video-wrapper { max-width: 960px; margin-left: auto; margin-right: auto; }
 }
 
 // ── Large-screen responsive scaling ─────────────────────────────────────────
@@ -5485,48 +5498,28 @@ body.wide-sidebar .sidebar .nav__list.nav__list--docs input:checked + label {
 }
 
 // ── Finance Toolkit overview (/projects/financetoolkit) ─────────────────────
-// The example charts were shown at the full content width, so the taller ones
-// filled the whole screen. They now sit centred at a readable size in a light
-// frame, the banner is a compact strip and the "star it" screenshot is smaller.
+// the example charts sit in a light frame so they read as figures
 body.ft-overview .page__content {
-  > p > img[src*="github.com/JerBouma/FinanceToolkit/assets"],
-  > p > img[src*="user-attachments"] {
-    display: block;
-    width: auto !important;
+  > p > #{$content-img}[src*="github.com/JerBouma/FinanceToolkit/assets"],
+  > p > #{$content-img}[src*="user-attachments"] {
     max-width: min(100%, 760px) !important;
     max-height: 460px;
-    margin: 1.6em auto !important;
+    margin-top: 1.6em !important;
+    margin-bottom: 1.6em !important;
     padding: 14px;
     box-sizing: border-box;
     background: #fff;
     border-radius: 14px;
-    object-fit: contain;
   }
 
-  // the banner at the top
-  > p > img[src$="FinanceToolkit.jpg"] {
-    display: block;
-    width: 100% !important;
-    max-width: 720px !important;
-    margin: 1.8em auto !important;
-    border-radius: 16px;
-  }
-
-  // the "please star the project" screenshot
-  > p > a > img[src*="014109fe"] {
-    display: block;
-    width: 100% !important;
-    max-width: 620px !important;
-    margin: 1em auto !important;
-    border-radius: 12px;
-    border: 1px solid var(--card-border);
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
-  }
+  // the banner and the "please star the project" screenshot
+  > p > #{$content-img}[src$="FinanceToolkit.jpg"] { max-width: min(100%, 720px) !important; border-radius: 16px; }
+  > p > a > #{$content-img}[src*="014109fe"] { max-width: min(100%, 620px) !important; }
 }
 
 @media (max-width: 760px) {
-  body.ft-overview .page__content > p > img[src*="github.com/JerBouma/FinanceToolkit/assets"],
-  body.ft-overview .page__content > p > img[src*="user-attachments"] {
+  body.ft-overview .page__content > p > #{$content-img}[src*="github.com/JerBouma/FinanceToolkit/assets"],
+  body.ft-overview .page__content > p > #{$content-img}[src*="user-attachments"] {
     padding: 8px;
     max-height: none;
   }
