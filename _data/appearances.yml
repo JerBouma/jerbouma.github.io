@@ -1,0 +1,75 @@
+# The /appearances page, newest first within each group. Dates come from the
+# LinkedIn posts and the YouTube upload dates. media is a photo, a set of
+# photos or a YouTube video id.
+
+talks:
+  - title: "Speaker at the Student Capital Society Rotterdam"
+    date: "Nov 2024"
+    place: "Rotterdam"
+    photo: /assets/images/appearances/RotterdamSociety.jpg
+    text:
+      - "The Student Capital Society Rotterdam is a young society, and I was glad to speak at its first event, with over 100 students attending. I talked about my role in the financial sector, how institutional investors put financial theory into practice and the role Python plays in that."
+      - "The other speaker, Vladimir Mikirtumov, discussed the potential role of cryptocurrencies for institutional investors, which left plenty of room for discussion."
+    link: { label: "Read more on LinkedIn", url: "https://www.linkedin.com/feed/update/urn:li:activity:7263214411874463746/" }
+
+  - title: "Jury Member at the Utrecht University Hackathon"
+    date: "Nov 2023"
+    place: "Utrecht University"
+    photos:
+      - /assets/images/appearances/hackathon/DSC06281.jpg
+      - /assets/images/appearances/hackathon/DSC06385.jpg
+      - /assets/images/appearances/hackathon/DSC06451.jpg
+      - /assets/images/appearances/hackathon/DSC06491.jpg
+    text:
+      - "Finance students built a Robo Advisor in Python on a dataset of nearly 2,500 ETFs: construct a portfolio for a given investor profile, and make sure the optimised result still makes practical sense."
+      - "As a jury member I helped them combine financial theory with their Python skills to give sound investment advice. Python keeps becoming more important in the industry, which is why I keep coming back each year."
+    link: { label: "Read more on LinkedIn", url: "https://www.linkedin.com/feed/update/urn:li:activity:7127300810450853888/" }
+
+  - title: "Introduction to the OpenBB Terminal"
+    date: "Jan 2023"
+    place: "Athens University"
+    video: HLead2WTnIs
+    text:
+      - "Part of my initiative to bring OpenBB to students and professors: an introduction to the OpenBB Terminal for students at Athens University, covering its structure, the basics and two use cases for their market and investment reports."
+    link: { label: "Watch on YouTube", url: "https://www.youtube.com/watch?v=HLead2WTnIs" }
+
+  - title: "Revolutionizing the Way Investment Research Is Done"
+    date: "Nov 2022"
+    place: "University of Warwick and Loughborough University"
+    video: bSAlfrW1ikw
+    text:
+      - "Presentations at the University of Loughborough and the University of Warwick, each with well over 100 students, introducing the OpenBB Terminal and OpenBB's plans for the future. This recording was made at Warwick together with the Warwick Finance Society."
+    link: { label: "Read more on LinkedIn", url: "https://www.linkedin.com/feed/update/urn:li:activity:7001557427250720768/" }
+
+  - title: "The Role of Python in the Financial Industry"
+    date: "Oct 2022"
+    place: "Utrecht University"
+    video: itU3QwcWFOE
+    text:
+      - "A guest lecture for Finance students taking a Python workshop at my old university: four presentations to nearly a hundred Master's students on why Python is worth taking seriously for a career in finance, and how it is used in practice."
+    link: { label: "Read more on LinkedIn", url: "https://www.linkedin.com/posts/boumajeroen_openbb-investment-research-for-everyone-activity-6987449395252191232-ET6W/" }
+
+webinars:
+  - title: "How to Perform Financial Due Diligence with the OpenBB Terminal"
+    date: "May 2023"
+    place: "OpenBB webinar"
+    video: Bq7aLH4HY8Y
+    text:
+      - "How to examine a company before a transaction with the OpenBB Terminal: revenue streams, historical prices, dividends and splits, management and ownership, market capitalisation, margins and expectations."
+    link: { label: "Watch on YouTube", url: "https://www.youtube.com/watch?v=Bq7aLH4HY8Y" }
+
+  - title: "The OpenBB Terminal 3.0 Launch Event"
+    date: "Apr 2023"
+    place: "OpenBB launch event"
+    video: _4dQs_q_Jtk
+    text:
+      - "The launch of the OpenBB Terminal 3.0, with interactive tables and graphs, a new fixed income menu that I developed, and many back-end improvements on the way to becoming the next-generation platform for financial data and analytics."
+    link: { label: "Watch on YouTube", url: "https://www.youtube.com/watch?v=_4dQs_q_Jtk" }
+
+  - title: "The OpenBB Terminal 2.0 Launch Event"
+    date: "2022"
+    place: "OpenBB launch event"
+    video: W9r2joPZOOw
+    text:
+      - "A virtual event on the future of investment research for over 1,300 users and partners, hosted by Sri Chilukuri, with Didier Lopes (Founder & CEO), Minh Hoang, Martin Bufi and me as speakers."
+    link: { label: "Watch on YouTube", url: "https://www.youtube.com/watch?v=W9r2joPZOOw" }
