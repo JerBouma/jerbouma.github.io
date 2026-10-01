@@ -5632,3 +5632,12 @@ body.ft-overview .page__content {
     background: rgba(56, 189, 248, 0.1);
   }
 }
+
+// small credit line under an image taken from another source
+.page__content p.image-credit {
+  margin: -0.6em auto 1.6em !important;
+  max-width: 880px;
+  color: var(--text-muted) !important;
+  font-size: 0.78rem !important;
+  text-align: center;
+}
