@@ -5264,18 +5264,23 @@ $content-img: 'img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="g
 // On wide screens a line at the top of the sidebar and plain lines in the
 // class page point at it; below $large the theme folds the sidebar behind the
 // "Documentation menu" button, so the lines link to that menu instead.
+// a boxed callout at the top of the docs sidebar: this is where every
+// function has its own page
 .nav__list .nav__hint {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin: 0 0 14px;
-  padding: 0 0 12px;
-  border-bottom: 1px solid var(--card-border);
-  color: var(--text-secondary);
-  font-size: 0.8rem;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 12px;
+  background: rgba(56, 189, 248, 0.08);
+  color: var(--text-primary);
+  font-size: 13.5px;
+  font-weight: 500;
   line-height: 1.45;
 
-  i { color: var(--text-muted); font-size: 0.75rem; }
+  i { margin-top: 2px; color: var(--accent-color); font-size: 13px; }
 
   @media (max-width: 1023px) { display: none; }
 }
@@ -5293,6 +5298,10 @@ $content-img: 'img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="g
     text-underline-offset: 3px;
     cursor: pointer;
   }
+
+  // on wide screens the sidebar callout says it, so the line only shows on
+  // phones, where it opens the folded-away menu
+  @media (min-width: 1024px) { display: none; }
 
   @media (max-width: 1023px) {
     .docs-browse-hint__wide { display: none; }

@@ -354,7 +354,7 @@ module DocsMetricPages
           "permalink"            => url,
           "classes"              => "wide-sidebar",
           "author_profile"       => false,
-          "sidebar"              => sidebar_data(cls[:nav], "Pick another function to open its page"),
+          "sidebar"              => sidebar_data(cls[:nav], "Every function has its own page with an example and its parameters. Pick one below."),
           "redirect_from"        => ["#{url}/"],
           "docs_module"          => cls[:name],
           "docs_module_url"      => cls[:url],
@@ -397,7 +397,7 @@ module DocsMetricPages
                 paragraphs = intro.strip.split(/\n\s*\n/, 2)
                 ([paragraphs.first, hint.strip] + paragraphs.drop(1)).join("\n\n")
               end
-      class_page.data["sidebar"] = sidebar_data(cls[:nav], "Pick a function to open its page")
+      class_page.data["sidebar"] = sidebar_data(cls[:nav], "Every function has its own page with an example and its parameters. Pick one below.")
       class_page.content = intro.rstrip + "\n\n" + started + "\n" + remaining + <<~HTML
 
         <script>
