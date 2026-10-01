@@ -32,21 +32,6 @@ From your first lines of Python to a model that an agent can extend safely, each
   {%- endfor %}
 </div>
 
-## Two Ways to Read this Guide
-
-<div class="mi-routes">
-  <div class="mi-route">
-    <p class="mi-route__label"><i class="fas fa-magnifying-glass-chart" aria-hidden="true"></i> Understand the code</p>
-    <p>You want to know how a well-built financial model works under the hood, so you can read, judge and maintain any model, including the ones an agent writes.</p>
-    <p class="mi-route__path">Read chapters <a href="/modelling/getting-started">1</a> to <a href="/modelling/test-your-model">5</a> in order.</p>
-  </div>
-  <div class="mi-route">
-    <p class="mi-route__label"><i class="fas fa-robot" aria-hidden="true"></i> Work with AI agents</p>
-    <p>You already use Claude Code, Copilot, Cursor or Codex and want them to build models you can trust, with less back-and-forth.</p>
-    <p class="mi-route__path">Start with <a href="/modelling/working-with-ai">Working with AI</a>, grab the agent kit below, then dive into <a href="/modelling/structure-your-model">Structure</a> and <a href="/modelling/build-your-model#reviewing-ai-written-code">Reviewing AI-Written Code</a>.</p>
-  </div>
-</div>
-
 ## The Agent Kit
 
 <div class="mi-kit">
@@ -68,7 +53,3 @@ From your first lines of Python to a model that an agent can extend safely, each
     <li><span class="mi-kit__name"><code>.claude/settings.json</code></span><span>A hook that formats and lints every edit</span></li>
   </ul>
 </div>
-
-<p class="mi-start"><a class="btn btn--info btn--large" href="/modelling/getting-started">Start with chapter 1: Getting Started <i class="fas fa-arrow-right" aria-hidden="true"></i></a></p>
-
-Have suggestions? This entire website is open-source, so feel free to contribute [here](https://github.com/JerBouma/jerbouma.github.io){: target="_blank"}!

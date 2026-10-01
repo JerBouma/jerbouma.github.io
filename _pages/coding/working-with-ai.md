@@ -10,17 +10,12 @@ sidebar:
     nav: "modelling"
 ---
 
-{% include mermaid.html %}
-
 The previous pages explain each part of a financial model and how to work on it with an assistant. This page brings that together: how to set up your project so that an AI coding assistant such as Claude Code, GitHub Copilot, Cursor or Codex builds the model the way you designed it, and in a way you can trust.
 
 An assistant that works inside your project reads files, runs commands and makes changes on its own. How well it does that depends far less on how cleverly you phrase a request and far more on the context it has: what the project is, how it is structured, which conventions apply and how to check its own work. All of that can be written down in a few files that live in your repository, next to the code. These files are plain text, they are versioned with Git and they work for every colleague who uses the same tools.
 
 {: .notice--info}
 **Tools change quickly, the ideas don't.** File names and features differ per tool and evolve fast, so check the documentation of the assistant you use. The concepts on this page (instructions, rules, skills, automatic checks and data connections) apply to all of them.
-
-{: .notice--info}
-**Prefer to start from working files?** The [agent kit](/modelling/introduction#the-agent-kit) contains everything on this page, ready to copy into your repository: an `AGENTS.md` with the rules from this guide, the matching files for Claude Code, GitHub Copilot, Cursor and Gemini CLI, four skills and a hook. [Download it here](/assets/files/financial-modelling-agent-kit.zip).
 
 ## The Building Blocks
 
@@ -167,18 +162,7 @@ Treat MCP servers like any other dependency: only connect servers you trust, and
 
 ## A Workflow that Keeps You in Control
 
-With these files in place, a typical change looks like this:
-
-<div class="mermaid">
-flowchart LR;
-A["Describe a small task"] --> B["Assistant plans"]
-B --> C["You check the plan"]
-C --> D["Assistant changes code"]
-D --> E["Hooks lint and format"]
-E --> F["Tests run"]
-F --> G["You review the diff"]
-G --> H["Commit"]
-</div>
+With these files in place, a typical change follows the same loop. You describe a small, well-defined task, and the assistant first proposes a plan, which you check before any code is written. It then makes the changes, while the hooks format and lint every file it touches. Next it runs the tests, and you review the diff and the test results yourself before anything is committed. If something is off, you correct it and the loop starts again.
 
 A few habits make the biggest difference:
 
