@@ -78,7 +78,7 @@ classes: custom-splash home-v2
       <div><strong data-count>600,000+</strong><span>downloads</span></div>
     </div>
     <div class="hp-actions">
-      <a href="/projects/financetoolkit" class="hp-btn hp-btn--primary">Explore the Finance Toolkit</a>
+      <a href="/projects/financetoolkit" class="hp-btn hp-btn--primary">Explore the Toolkit</a>
       <a href="/projects/financetoolkit/mcp" class="hp-btn hp-btn--ghost">Use it with AI</a>
     </div>
   </div>
