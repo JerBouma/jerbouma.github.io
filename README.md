@@ -7,5 +7,7 @@ This is the source code of my personal website. On this website, you are able to
 </div></p>
 
 <a href="https://www.jeroenbouma.com/">
-    <img width="1506" height="825" alt="image" src="https://github.com/user-attachments/assets/2ba9c8d5-396b-4791-9c5a-7f818912479c" />
+    <img width="1464" height="830" alt="image" src="https://github.com/user-attachments/assets/5183fa18-43be-4b94-b654-40cd22fd2652" />
 </a>
+
+
