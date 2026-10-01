@@ -61,23 +61,29 @@ At financial institutions I kept seeing the same models and calculations being b
   <h2 class="hp-h2">Open-source tools I build</h2>
   {%- for p in d.maintained %}
   <article class="pj-card" data-reveal>
-    <div class="pj-card__side">
-      <a class="pj-card__media" href="{{ p.url }}"><img src="{{ p.image }}" alt="{{ p.name }} banner" loading="lazy"></a>
-      <div class="pj-figures">{% for s in p.stats %}<span><i class="fas {{ s.icon }}" aria-hidden="true"></i><strong>{{ s.value }}</strong>{{ s.label }}</span>{% endfor %}</div>
-      <div class="pj-card__actions">
-        <a class="hp-btn hp-btn--primary" href="{{ p.url }}">Explore <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-        {%- for l in p.links %}
-        <a class="hp-link" href="{{ l.url }}">{{ l.label }} <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-        {%- endfor %}
-        <a class="hp-link" href="{{ p.github }}" target="_blank" rel="noopener" aria-label="{{ p.name }} on GitHub"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a>
+    <div class="pj-card__top">
+      <div class="pj-card__side">
+        <a class="pj-card__media" href="{{ p.url }}"><img src="{{ p.image }}" alt="{{ p.name }} banner" loading="lazy"></a>
+        <div class="pj-figures">{% for s in p.stats %}<span><i class="fas {{ s.icon }}" aria-hidden="true"></i><strong>{{ s.value }}</strong>{{ s.label }}</span>{% endfor %}</div>
+      </div>
+      <div class="pj-card__body">
+        <p class="pj-card__since">Since {{ p.since }}</p>
+        <h3><a href="{{ p.url }}">{{ p.name }}</a></h3>
+        <p class="pj-card__lead">{{ p.lead }}</p>
+        <div class="pj-card__actions">
+          <a class="hp-btn hp-btn--primary" href="{{ p.url }}">Explore <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+          {%- for l in p.links %}
+          <a class="hp-link" href="{{ l.url }}">{{ l.label }} <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+          {%- endfor %}
+          <a class="hp-link" href="{{ p.github }}" target="_blank" rel="noopener" aria-label="{{ p.name }} on GitHub"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a>
+        </div>
       </div>
     </div>
-    <div class="pj-card__body">
-      <p class="pj-card__since">Since {{ p.since }}</p>
-      <h3><a href="{{ p.url }}">{{ p.name }}</a></h3>
-      <p class="pj-card__lead">{{ p.lead }}</p>
-      <p class="pj-card__text">{{ p.text }}</p>
-      <div class="pj-chips">{% for c in p.covers %}<span>{{ c }}</span>{% endfor %}</div>
+    <div class="pj-card__more{% if p.extra %} has-extra{% endif %}">
+      <div>
+        <p class="pj-card__text">{{ p.text }}</p>
+        <div class="pj-chips">{% for c in p.covers %}<span>{{ c }}</span>{% endfor %}</div>
+      </div>
       {%- if p.extra %}
       <a class="pj-extra" href="{{ p.extra.url }}">
         <i class="fas fa-robot" aria-hidden="true"></i>

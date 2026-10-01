@@ -141,10 +141,9 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
 }
 
 // ── maintained projects ───────────────────────────────────────────────────
+// top: banner and numbers next to the name, summary and links (two columns
+// of about equal height); below: the details over the full width
 .pj-card {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: 32px;
   padding: 26px;
   border: 1px solid var(--card-border);
   border-radius: var(--hp-radius);
@@ -152,8 +151,14 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
 
   & + & { margin-top: 20px; }
 
+  &__top {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: 32px;
+  }
+
   &__media {
-    align-self: start;
     display: block;
     overflow: hidden;
     border-radius: 14px;
@@ -170,17 +175,31 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
     &:hover #{$pj-img} { transform: scale(1.02); }
   }
 
-  &__side .pj-card__actions { margin-top: 20px; gap: 12px 18px; }
-  &__side .hp-btn { padding: 12px 18px; white-space: nowrap; }
-  &__side .pj-card__actions { flex-wrap: nowrap; }
-  &__side .hp-link { white-space: nowrap; }
-  &__body h3 { margin-bottom: 14px !important; }
+  &__body h3 { margin-bottom: 12px !important; }
+  &__body .pj-card__actions { margin-top: 20px; }
+  .hp-btn { padding: 12px 18px; white-space: nowrap; }
+  .hp-link { white-space: nowrap; }
 
   &__lead {
-    margin: 0 0 10px !important;
+    margin: 0 !important;
     color: var(--text-primary) !important;
     font-size: 1.05rem !important;
     line-height: 1.6 !important;
+  }
+
+  &__more {
+    margin-top: 24px;
+    padding-top: 22px;
+    border-top: 1px solid var(--card-border);
+
+    &.has-extra {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      align-items: start;
+      gap: 28px;
+    }
+
+    .pj-extra { margin-top: 0; }
   }
 }
 
@@ -316,13 +335,7 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
 
 // ── small screens ─────────────────────────────────────────────────────────
 @media (max-width: 1024px) {
-  // banner and text first, then the numbers and the links
-  .pj-card { display: flex; flex-direction: column; gap: 22px; }
-  .pj-card__side { display: contents; }
-  .pj-card__media { order: 1; }
-  .pj-card__body { order: 2; }
-  .pj-figures { order: 3; margin-top: 0; }
-  .pj-card__side .pj-card__actions { order: 4; margin-top: 0; }
+  .pj-card__top, .pj-card__more.has-extra { grid-template-columns: 1fr; gap: 22px; }
 }
 
 @media (max-width: 760px) {
@@ -334,7 +347,7 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
   .pj-figures { gap: 8px; }
   .pj-figures span { padding: 10px; }
   .pj-figures strong { font-size: 0.95rem; }
-  .pj-card__side .pj-card__actions { flex-wrap: wrap; }
+  .pj-card .pj-card__actions { flex-wrap: wrap; }
   .pj h3 { font-size: 1.25rem !important; }
   .pj-gh { margin-top: 24px; }
 }
