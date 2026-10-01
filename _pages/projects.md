@@ -13,7 +13,7 @@ author_profile: false
 <div markdown="1" class="sixty-column mobile-max-column-width" markdown="1">
 Next to my work in asset management, I build open-source Python tools for financial analysis in my own time. They started from a simple observation: across the financial sector, the same calculations are rebuilt again and again, often in ways no one outside can check. Writing them out in the open means anyone can see how a number is calculated, verify it and build on it.
 
-Today the Finance Toolkit and Finance Database are used worldwide by developers, researchers and investors. Below you'll find the tools I maintain, my contributions to OpenBB and a few earlier projects.
+Today the Finance Toolkit and Finance Database are used by thousands of developers, researchers and investors. Below you'll find the tools I maintain, my contributions to OpenBB and a few earlier projects.
 </div>
 <div class="fourty-column mobile-max-column-width">
 <div class="pj-gh">
