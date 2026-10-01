@@ -5533,9 +5533,8 @@ body.ft-overview .page__content {
     border-radius: 14px;
   }
 
-  // the banner and the "please star the project" screenshot
+  // the banner
   > p > #{$content-img}[src$="FinanceToolkit.jpg"] { max-width: min(100%, 720px) !important; border-radius: 16px; }
-  > p > a > #{$content-img}[src*="014109fe"] { max-width: min(100%, 620px) !important; }
 }
 
 @media (max-width: 760px) {
