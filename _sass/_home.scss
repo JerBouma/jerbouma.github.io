@@ -407,16 +407,26 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
     &.is-active { color: #e6edf3; background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.08); }
   }
 
-  // every example gets the same height so switching tabs does not jump
-  &__panel { min-height: 330px; }
-  &__panel[hidden] { display: none; }
+  // all examples share one grid cell, so the block always takes the height
+  // of the tallest one and switching tabs never changes its size; the
+  // inactive ones stay in the layout but are invisible
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  // the code and tables size their font to this box (cqi units below)
+  container-type: inline-size;
+
+  &__bar { grid-row: 1; }
+  &__panel { grid-row: 2; grid-column: 1; }
+  &__panel[hidden] { display: block; visibility: hidden; }
 
   &__src {
     padding: 18px 20px;
     overflow-x: auto;
     color: #e6edf3;
     font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
-    font-size: 0.8rem;
+    // the examples are at most 40 characters wide; a monospace character is
+    // about 0.6em, so this always fits a full line inside the padding
+    font-size: min(0.8rem, calc((100cqi - 40px) / 25));
     line-height: 1.55;
     white-space: pre;
 
@@ -431,7 +441,7 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
     padding: 6px 4px;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.03);
-    font-size: 0.8rem;
+    font-size: min(0.8rem, 2.6cqi);
     font-variant-numeric: tabular-nums;
     overflow-x: auto;
     font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
@@ -441,8 +451,8 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
     display: grid;
     grid-template-columns: minmax(3.2em, 1.4fr) repeat(calc(var(--cols, 4) - 1), minmax(0, 1fr));
     // wide tables keep readable columns and scroll sideways on phones
-    min-width: calc(var(--cols, 4) * 4.4em);
-    gap: 8px;
+    min-width: calc(var(--cols, 4) * 3.4em);
+    gap: 6px;
     padding: 7px 12px;
     color: #c9d1d9;
     text-align: right;
@@ -585,6 +595,7 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
   .hp-logos__row { gap: 10px; }
   .hp-logos__tile { height: 52px; padding: 10px 16px; }
   .hp .hp-logos__tile #{$hp-img} { height: 28px !important; max-width: 110px !important; }
+  .hp-code__src { padding: 14px 20px; }
   .hp-stats { gap: 20px; }
   .hp-stats strong { font-size: 1.2rem; }
 }

@@ -12,7 +12,7 @@ classes: custom-splash home-v2
   <div class="hp-hero__glow" aria-hidden="true"></div>
   <div class="hp-hero__text">
     <h1 class="hp-title">Where quantitative finance <span class="hp-accent">meets AI.</span></h1>
-    <p class="hp-lead">I'm <strong>Jeroen Bouma</strong>. I build quantitative and AI models within asset management, covering asset liability management, lifecycle investing, portfolio optimization and Solvency II internal model calculations. In my own time I create open-source tools like the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a>, used worldwide by developers, researchers and investors.</p>
+    <p class="hp-lead">I'm <strong>Jeroen Bouma</strong>. I build quantitative and AI models within asset management, covering asset liability management, lifecycle investing, portfolio optimization and Solvency II internal model calculations. In my own time I create open-source tools like the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a>, used by thousands of developers, researchers and investors.</p>
     <div class="hp-actions">
       <a href="/resume" class="hp-btn hp-btn--primary">View my resume <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
       <a href="/projects" class="hp-btn hp-btn--ghost">Explore my projects</a>
@@ -94,10 +94,12 @@ classes: custom-splash home-v2
     <div class="hp-code__panel" role="tabpanel" data-panel="roic">
 <div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
-toolkit = Toolkit([<span class="s">"INTC"</span>, <span class="s">"AMD"</span>], api_key=API_KEY)
+toolkit = Toolkit(
+    [<span class="s">"INTC"</span>, <span class="s">"AMD"</span>], api_key=API_KEY)
 
-<span class="c"># Return on invested capital, from the financial statements</span>
-toolkit.ratios.<span class="f">get_return_on_invested_capital</span>()</div>
+<span class="c"># Return on invested capital</span>
+ratios = toolkit.ratios
+ratios.<span class="f">get_return_on_invested_capital</span>()</div>
       <div class="hp-code__out" style="--cols:5">
         <div class="hp-code__row hp-code__row--head"><span></span><span>2020</span><span>2022</span><span>2024</span><span>2025</span></div>
         <div class="hp-code__row"><span>INTC</span><span>23.6%</span><span>10.1%</span><span>-10.9%</span><span>-0.2%</span></div>
@@ -109,10 +111,12 @@ toolkit.ratios.<span class="f">get_return_on_invested_capital</span>()</div>
 
 toolkit = Toolkit(
     [<span class="s">"ITUB"</span>, <span class="s">"VALE"</span>, <span class="s">"MELI"</span>],
-    api_key=API_KEY, start_date=<span class="s">"2021-01-01"</span>)
+    api_key=API_KEY,
+    start_date=<span class="s">"2021-01-01"</span>)
 
-<span class="c"># Five-factor exposures per year, shown for 2025</span>
-toolkit.performance.<span class="f">get_fama_and_french_model</span>(
+<span class="c"># Five-factor exposures, shown for 2025</span>
+performance = toolkit.performance
+performance.<span class="f">get_fama_and_french_model</span>(
     period=<span class="s">"yearly"</span>)</div>
       <div class="hp-code__out" style="--cols:7">
         <div class="hp-code__row hp-code__row--head"><span></span><span>Mkt-RF</span><span>SMB</span><span>HML</span><span>RMW</span><span>CMA</span><span>R²</span></div>
@@ -124,10 +128,12 @@ toolkit.performance.<span class="f">get_fama_and_french_model</span>(
     <div class="hp-code__panel" role="tabpanel" data-panel="garch" hidden>
 <div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
-toolkit = Toolkit([<span class="s">"AMZN"</span>, <span class="s">"TSLA"</span>], api_key=API_KEY)
+toolkit = Toolkit(
+    [<span class="s">"AMZN"</span>, <span class="s">"TSLA"</span>], api_key=API_KEY)
 
-<span class="c"># Forecast volatility with a fitted GARCH model</span>
-toolkit.risk.<span class="f">get_garch_forecast</span>(period=<span class="s">"quarterly"</span>)</div>
+<span class="c"># Volatility forecast with GARCH</span>
+toolkit.risk.<span class="f">get_garch_forecast</span>(
+    period=<span class="s">"quarterly"</span>)</div>
       <div class="hp-code__out" style="--cols:4">
         <div class="hp-code__row hp-code__row--head"><span></span><span>AMZN</span><span>TSLA</span><span>Benchmark</span></div>
         <div class="hp-code__row"><span>2026Q4</span><span>0.0267</span><span>0.1703</span><span>0.0053</span></div>
@@ -138,10 +144,12 @@ toolkit.risk.<span class="f">get_garch_forecast</span>(period=<span class="s">"q
     <div class="hp-code__panel" role="tabpanel" data-panel="cointegration" hidden>
 <div class="hp-code__src"><span class="k">from</span> financetoolkit <span class="k">import</span> Toolkit
 
-toolkit = Toolkit([<span class="s">"AAPL"</span>, <span class="s">"MSFT"</span>], api_key=API_KEY)
+toolkit = Toolkit(
+    [<span class="s">"AAPL"</span>, <span class="s">"MSFT"</span>], api_key=API_KEY)
 
-<span class="c"># Johansen test for a long-run equilibrium</span>
-toolkit.econometrics.<span class="f">get_johansen_cointegration</span>(
+<span class="c"># Johansen test for cointegration</span>
+econometrics = toolkit.econometrics
+econometrics.<span class="f">get_johansen_cointegration</span>(
     period=<span class="s">"quarterly"</span>)</div>
       <div class="hp-code__out" style="--cols:4">
         <div class="hp-code__row hp-code__row--head"><span>Hypothesis</span><span>Trace stat.</span><span>Critical</span><span>Reject</span></div>
