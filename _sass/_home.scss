@@ -402,6 +402,7 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
     font: 500 0.76rem/1.2 inherit;
     cursor: pointer;
     white-space: nowrap;
+    transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
 
     &:hover { color: #e6edf3; }
     &.is-active { color: #e6edf3; background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.08); }
@@ -416,8 +417,27 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
   container-type: inline-size;
 
   &__bar { grid-row: 1; }
-  &__panel { grid-row: 2; grid-column: 1; }
-  &__panel[hidden] { display: block; visibility: hidden; }
+  // each example is a column with the code on top and the result pinned to
+  // the bottom, so the table sits at the same spot on every tab
+  &__panel {
+    grid-row: 2;
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s;
+  }
+
+  // switching tabs cross-fades: the old example fades out while the new one
+  // fades in and settles from slightly below
+  &__panel[hidden] {
+    display: flex;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
+  }
 
   &__src {
     padding: 18px 20px;
@@ -437,7 +457,11 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
   }
 
   &__out {
-    margin: 0 16px 18px;
+    margin: auto 16px 18px;
+    // room for a header and three rows, so every table has the same height
+    // (rows are 1.5em plus 14px padding, plus a 1px line between rows)
+    min-height: calc(4 * (1.5em + 14px) + 3px + 12px);
+    box-sizing: border-box;
     padding: 6px 4px;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.03);
@@ -454,6 +478,7 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
     min-width: calc(var(--cols, 4) * 3.4em);
     gap: 6px;
     padding: 7px 12px;
+    line-height: 1.5;
     color: #c9d1d9;
     text-align: right;
 
@@ -612,6 +637,7 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
 @media (prefers-reduced-motion: reduce) {
   .hp-js [data-reveal] { opacity: 1; transform: none; transition: none; }
   .hp-portrait { animation: none; }
+  .hp-code__panel, .hp-code__panel[hidden], .hp-code__tab { transition: none; }
 }
 
 // the hero texture and glow reach past the content column; clip them at the
