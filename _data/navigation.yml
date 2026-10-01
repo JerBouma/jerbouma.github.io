@@ -1694,6 +1694,8 @@ modelling:
         url: /modelling/getting-started#learning-the-basics
       - title: "Installing and Working with Python"
         url: /modelling/getting-started#installing-and-working-with-python
+      - title: "Learning with an AI Assistant"
+        url: /modelling/getting-started#learning-with-an-ai-assistant
       - title: "The Next Steps"
         url: /modelling/getting-started#the-next-steps
   - title: 'Setting up your Project'
@@ -1711,6 +1713,8 @@ modelling:
         url: /modelling/setting-up-your-project#creating-a-git-workflow
       - title: Adding Git Exceptions
         url: /modelling/setting-up-your-project#adding-git-exceptions
+      - title: Instructions for AI Assistants
+        url: /modelling/setting-up-your-project#instructions-for-ai-assistants
   - title: "Structure your Model"
     url: /modelling/structure-your-model
     children:
@@ -1722,6 +1726,8 @@ modelling:
         url: /modelling/structure-your-model#the-controlling-layer
       - title: "The Supportive Layer"
         url: /modelling/structure-your-model#the-supportive-layer
+      - title: "Structure and AI Assistants"
+        url: /modelling/structure-your-model#structure-and-ai-assistants
       - title: "Combining Everything"
         url: /modelling/structure-your-model#combining-everything
   - title: "Build your Model"
@@ -1737,8 +1743,13 @@ modelling:
         url: /modelling/build-your-model#writing-docstrings
       - title: "Creating Documentation"
         url: /modelling/build-your-model#creating-documentation
+      - title: "Reviewing AI-Written Code"
+        url: /modelling/build-your-model#reviewing-ai-written-code
   - title: "Test your Model"
     url: /modelling/test-your-model
+    children:
+      - title: "Tests and AI Assistants"
+        url: /modelling/test-your-model#tests-and-ai-assistants
 articles:
   - title: "Options"
     children:

@@ -89,6 +89,8 @@ def get_gross_margin(revenue: pd.Series, cost_of_goods_sold: pd.Series) -> pd.Se
 
 Each function is categorized in a specific module. For example, the Gross Margin calculation belongs in the `profitability_model.py` module, alongside other profitability ratio functions. Similarly, other ratio categories like liquidity, solvency, efficiency, and valuation reside in their respective model files (`liquidity_model.py`, `solvency_model.py`, `efficiency_model.py`, and `valuation_model.py`, respectively).
 
+Because these functions are so small, they are also the easiest to verify. You can put the formula from a textbook next to the code and check it line by line, which is exactly what you want to do when an AI assistant wrote it.
+
 ### The Visualization Layer
 
 The View layer is responsible for presenting data. This can be a table, a graph, a dashboard, etc. In some cases, the data structure (like a DataFrame) produced by the Model might suffice as a "View," making a dedicated View component optional.
@@ -280,6 +282,16 @@ def calculate_growth(
 ```
 
 Other examples of helper functions include reading data from files (e.g., XLSX, CSV) or handling common errors. Usually, a single `helpers` module suffices.
+
+### Structure and AI Assistants
+
+A clear structure is what makes AI-assisted development manageable. Assistants produce the best results when a task is small and well-defined, such as "add the operating margin to `profitability_model.py` with a matching controller method and test". They tend to produce tangled code when the task is vague and the codebase has no clear place for things.
+
+The separation of concerns also determines how easy it is to review what an assistant changed. A change that only touches one model function and its test can be checked in a minute. A change that mixes data handling, calculations and plotting in one function cannot. When you review generated code, ask yourself:
+
+- **Is each piece in the right layer?** Calculations belong in the Model, data selection in the Controller, presentation in the View. A calculation inside a Controller method is a sign to move it.
+- **Does the Model function stay generic?** It should take series or numbers, not a specific DataFrame with specific column names.
+- **Did it reuse what exists?** Assistants sometimes write a new growth calculation instead of calling the one in `helpers`. Duplicated logic drifts apart over time.
 
 ### Combining Everything
 
