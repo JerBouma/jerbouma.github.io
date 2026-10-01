@@ -1,0 +1,12 @@
+---
+applyTo: "**/*_model.py"
+---
+
+# Model layer (calculations)
+
+- Functions are pure: no data loading, no plotting, no printing, no column names.
+- Accept `pd.Series`, `pd.DataFrame` or floats, with type hints, and return the same shape.
+- The docstring states the formula, with a source for non-standard definitions.
+- Let `NaN` propagate; never fill or drop missing values silently.
+- No magic numbers: rates, day counts and thresholds are parameters with documented defaults.
+- Every function has a matching test in `tests/`.

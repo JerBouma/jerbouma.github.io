@@ -19,6 +19,9 @@ An assistant that works inside your project reads files, runs commands and makes
 {: .notice--info}
 **Tools change quickly, the ideas don't.** File names and features differ per tool and evolve fast, so check the documentation of the assistant you use. The concepts on this page (instructions, rules, skills, automatic checks and data connections) apply to all of them.
 
+{: .notice--info}
+**Prefer to start from working files?** The [agent kit](/modelling/introduction#the-agent-kit) contains everything on this page, ready to copy into your repository: an `AGENTS.md` with the rules from this guide, the matching files for Claude Code, GitHub Copilot, Cursor and Gemini CLI, four skills and a hook. [Download it here](/assets/files/financial-modelling-agent-kit.zip).
+
 ## The Building Blocks
 
 Most AI coding assistants now support the same set of building blocks. Each has its own job:

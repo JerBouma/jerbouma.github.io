@@ -1,0 +1,8 @@
+---
+description: Project instructions for the financial model
+alwaysApply: true
+---
+
+All project instructions live in `AGENTS.md` at the root of the repository. Read it and follow it
+for every task. Step-by-step instructions for recurring tasks are in
+`.claude/skills/<name>/SKILL.md`; read the matching one before starting such a task.

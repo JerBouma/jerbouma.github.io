@@ -1,75 +1,82 @@
 ---
 title: Financial Modelling with Python
-excerpt: "What I learned building financial models in Python at financial institutions: how to set them up, avoid the usual pitfalls and keep them maintainable."
-description: "What I learned building financial models in Python at financial institutions: how to set them up, avoid the usual pitfalls and keep them maintainable."
-author_profile: true
+excerpt: "How financial models are built today: what every component of a Python model does, how to work on it with AI coding agents, and a free agent kit that teaches any agent the same practices."
+description: "How financial models are built today: what every component of a Python model does, how to work on it with AI coding agents, and a free agent kit for Claude Code, Copilot, Cursor and more."
 permalink: /modelling/introduction
-classes: wide-sidebar
+classes: wide-sidebar modelling-intro
 redirect_from:
   - /modelling
 author_profile: false
 sidebar:
   nav: "modelling"
 ---
+{%- assign total_words = 0 -%}
+{%- for p in site.pages -%}{%- if p.url contains "/modelling/" and p.url != page.url -%}{%- assign words = p.content | number_of_words -%}{%- assign total_words = total_words | plus: words -%}{%- endif -%}{%- endfor -%}
 
-Python has become the language of choice for many financial analysts and quantitative researchers. It is readable, has an extensive set of libraries and is used across the industry. I have spent thousands of hours with it, both for my own projects and for models at financial institutions.
+<p class="mi-lead">AI coding agents now write most of the code in a financial model. What they can't do for you is decide what a good model looks like. This guide is about exactly that: what every part of a model does, why it is there, and how you steer an agent to build it the way you would.</p>
 
-How models are built has changed. AI coding assistants such as Claude Code, GitHub Copilot, Cursor and Codex now write most of the code, and I don't think anyone should build a financial model by hand anymore. What has not changed is what makes a model good: a structure that holds up, calculations you can verify and tests that tell you when something breaks. Your role moves from typing code to designing the model, directing the assistant and judging the result. That requires a deeper understanding of each component, not a shallower one.
+I have spent thousands of hours building financial models in Python, at financial institutions and in open-source projects like the [Finance Toolkit](/projects/financetoolkit). The structure, the conventions and the testing approach in this guide come from that work, including the mistakes I learned the most from. Each chapter explains one component in depth, and how you work on it together with an agent.
 
-That is what this guide is about. Every page explains what a part of a financial model does and why it is there, and how you work on it together with an assistant: what to ask for, what to write down so the assistant gets it right, and what to check before you accept the result. It is not a recipe to follow by hand, but the knowledge you need to steer an assistant towards a model you can trust. The practices I describe are the ones that worked for me, including the mistakes I learned the most from.
-
-Whether you want to understand the code of a financial model in depth or mainly want to work well with AI assistants, the two go hand in hand: the better you understand the components, the better you can instruct and check the assistant. The last page, Working with AI, covers the files and tools that connect both. **You can browse the content using the sidebar or the cards below.**
-
-<div class="bento-grid bento-grid--compact">
-
-  <a href="/modelling/getting-started" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-graduation-cap bento-icon"></i>
-      <h2>Getting Started with Python</h2>
-      <p>Where to begin if you are new to Python: the basics, Jupyter Notebooks and your first project, and how to use AI assistants as a tutor rather than a shortcut.</p>
-    </div>
-  </a>
-
-  <a href="/modelling/setting-up-your-project" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-folder-open bento-icon"></i>
-      <h2>Setting up your Project</h2>
-      <p>What each part of a project is for: directory structure, dependency management with uv, linters, a Git workflow, and the instructions that help an AI assistant follow your conventions.</p>
-    </div>
-  </a>
-
-  <a href="/modelling/structure-your-model" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-sitemap bento-icon"></i>
-      <h2>Structure your Model</h2>
-      <p>How to apply the Model-View-Controller (MVC) pattern to financial models, what the data, visualization and control layers do, and why that separation makes code easier to review, also when an assistant wrote it.</p>
-    </div>
-  </a>
-
-  <a href="/modelling/build-your-model" class="bento-card" style="grid-column: span 6;">
-    <div class="bento-content">
-      <i class="fas fa-code bento-icon"></i>
-      <h2>Build your Model</h2>
-      <p>Writing clean and consistent Python: PEP 8 styling, naming conventions, type hints and docstrings, and what to check before you accept code that an AI assistant wrote.</p>
-    </div>
-  </a>
-
-  <a href="/modelling/test-your-model" class="bento-card" style="grid-column: span 6;">
-    <div class="bento-content">
-      <i class="fas fa-vial bento-icon"></i>
-      <h2>Test your Model</h2>
-      <p>Using Pytest to build a test suite that mirrors your model, with recorded expected outputs that catch every change in a calculation, whether you or an assistant made it.</p>
-    </div>
-  </a>
-
-  <a href="/modelling/working-with-ai" class="bento-card" style="grid-column: span 12;">
-    <div class="bento-content">
-      <i class="fas fa-robot bento-icon"></i>
-      <h2>Working with AI</h2>
-      <p>Setting up your project for AI coding assistants: instruction files like CLAUDE.md and AGENTS.md, rules, Skills, hooks and MCP servers, and a workflow that keeps every result verifiable.</p>
-    </div>
-  </a>
-
+<div class="mi-facts">
+  <span><strong>6</strong>chapters</span>
+  <span><strong>~{{ total_words | divided_by: 220 }} min</strong>total reading time</span>
+  <span><strong>13</strong>files in the free agent kit</span>
 </div>
+
+## The Journey of a Model
+
+From your first lines of Python to a model that an agent can extend safely, each chapter builds on the previous one. Start at the beginning, or jump to the question you have right now.
+
+<div class="mi-path">
+  {%- assign steps = "getting-started|Getting Started|Where do I begin?|Nail down the basics of Python, Pandas and NumPy, and learn when to let an assistant take over.|fa-graduation-cap;setting-up-your-project|Setting up your Project|What does a solid project need?|Dependencies with uv, linters, a Git workflow and the files that keep a model working for years.|fa-folder-open;structure-your-model|Structure your Model|Where does each piece of code go?|The Model-View-Controller pattern for financial models, and why it makes every change easy to review.|fa-sitemap;build-your-model|Build your Model|What does good model code look like?|Naming, type hints and docstrings, and the financial choices to check in every change.|fa-code;test-your-model|Test your Model|How do I know nothing broke?|Recorded tests that flag every changed number, whoever changed it.|fa-vial;working-with-ai|Working with AI|How do I make an agent follow all this?|Instruction files, rules, Skills, hooks and MCP servers, with a ready-made kit.|fa-robot" | split: ";" %}
+  {%- for s in steps %}{% assign f = s | split: "|" %}
+  <a class="mi-step" href="/modelling/{{ f[0] }}">
+    <span class="mi-step__top"><i class="fas {{ f[4] }}" aria-hidden="true"></i><span class="mi-step__num">{{ forloop.index }}</span></span>
+    <span class="mi-step__q">{{ f[2] }}</span>
+    <strong class="mi-step__title">{{ f[1] }}</strong>
+    <span class="mi-step__text">{{ f[3] }}</span>
+    <span class="mi-step__more">Read chapter <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+  </a>
+  {%- endfor %}
+</div>
+
+## Two Ways to Read this Guide
+
+<div class="mi-routes">
+  <div class="mi-route">
+    <p class="mi-route__label"><i class="fas fa-magnifying-glass-chart" aria-hidden="true"></i> Understand the code</p>
+    <p>You want to know how a well-built financial model works under the hood, so you can read, judge and maintain any model, including the ones an agent writes.</p>
+    <p class="mi-route__path">Read chapters <a href="/modelling/getting-started">1</a> to <a href="/modelling/test-your-model">5</a> in order.</p>
+  </div>
+  <div class="mi-route">
+    <p class="mi-route__label"><i class="fas fa-robot" aria-hidden="true"></i> Work with AI agents</p>
+    <p>You already use Claude Code, Copilot, Cursor or Codex and want them to build models you can trust, with less back-and-forth.</p>
+    <p class="mi-route__path">Start with <a href="/modelling/working-with-ai">Working with AI</a>, grab the agent kit below, then dive into <a href="/modelling/structure-your-model">Structure</a> and <a href="/modelling/build-your-model#reviewing-ai-written-code">Reviewing AI-Written Code</a>.</p>
+  </div>
+</div>
+
+## The Agent Kit
+
+<div class="mi-kit">
+  <div class="mi-kit__text">
+    <p class="mi-kit__kicker">Free download</p>
+    <h3>Teach any coding agent what this guide teaches you</h3>
+    <p>Ready-made instruction files and skills that you copy into your repository. One <code>AGENTS.md</code> holds the rules from this guide (the structure, the conventions, the testing approach and the financial choices an agent should never make silently), and every tool's own file points to it. That way Claude Code, GitHub Copilot, Cursor, Codex, Gemini CLI and other agents all follow the same instructions.</p>
+    <div class="mi-kit__actions">
+      <a class="btn btn--info" href="/assets/files/financial-modelling-agent-kit.zip" download><i class="fas fa-download" aria-hidden="true"></i> Download the kit (.zip)</a>
+      <a class="mi-kit__browse" href="https://github.com/JerBouma/jerbouma.github.io/tree/main/agent-kit" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> Browse the files</a>
+    </div>
+  </div>
+  <ul class="mi-kit__files">
+    <li><span class="mi-kit__name"><code>AGENTS.md</code></span><span>All instructions; read by Codex, Cursor, Copilot and most agents</span></li>
+    <li><span class="mi-kit__name"><code>CLAUDE.md</code><code>GEMINI.md</code></span><span>Point Claude Code and Gemini CLI to the same instructions</span></li>
+    <li><span class="mi-kit__name"><code>.github/</code></span><span>Copilot instructions, plus a rule for model files</span></li>
+    <li><span class="mi-kit__name"><code>.cursor/rules/</code></span><span>Cursor rules, always on and for model files</span></li>
+    <li><span class="mi-kit__name"><code>.claude/skills/</code></span><span>Four skills: add a metric, write tests, review a change, set up a project</span></li>
+    <li><span class="mi-kit__name"><code>.claude/settings.json</code></span><span>A hook that formats and lints every edit</span></li>
+  </ul>
+</div>
+
+<p class="mi-start"><a class="btn btn--info btn--large" href="/modelling/getting-started">Start with chapter 1: Getting Started <i class="fas fa-arrow-right" aria-hidden="true"></i></a></p>
 
 Have suggestions? This entire website is open-source, so feel free to contribute [here](https://github.com/JerBouma/jerbouma.github.io){: target="_blank"}!
