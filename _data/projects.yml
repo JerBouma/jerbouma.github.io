@@ -15,7 +15,19 @@ maintained:
     since: "2019"
     lead: "500+ financial methods, from ratios and valuation models to risk, performance and econometrics, each written out so you can see exactly how a number is calculated."
     text: "You calculate every metric directly from the financial statements, with the same method every time, instead of relying on numbers from external providers that you cannot check."
-    covers: ["Discovery", "Ratios", "Models", "Options", "Performance", "Risk", "Technicals", "Econometrics", "Fixed Income", "Economics", "Portfolio"]
+    # each module links to its notebook
+    covers:
+      - { name: "Discovery", url: /projects/financetoolkit/discovery-notebook }
+      - { name: "Ratios", url: /projects/financetoolkit/ratios-notebook }
+      - { name: "Models", url: /projects/financetoolkit/models-notebook }
+      - { name: "Options", url: /projects/financetoolkit/options-notebook }
+      - { name: "Performance", url: /projects/financetoolkit/performance-notebook }
+      - { name: "Risk", url: /projects/financetoolkit/risk-notebook }
+      - { name: "Technicals", url: /projects/financetoolkit/technicals-notebook }
+      - { name: "Econometrics", url: /projects/financetoolkit/econometrics-notebook }
+      - { name: "Fixed Income", url: /projects/financetoolkit/fixed-income-notebook }
+      - { name: "Economics", url: /projects/financetoolkit/economics-notebook }
+      - { name: "Portfolio", url: /projects/financetoolkit/portfolio-notebook }
     stats:
       - { icon: "fa-star", value: "5,300+", label: "stars" }
       - { icon: "fa-download", value: "640,000+", label: "downloads" }
