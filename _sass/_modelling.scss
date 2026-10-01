@@ -94,33 +94,6 @@
     }
   }
 
-  // the two reading routes
-  .mi-routes {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    margin: 1em 0 0.4em;
-  }
-
-  .mi-route {
-    padding: 20px 22px;
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
-    background: var(--card-bg);
-
-    p { margin: 0 0 10px !important; font-size: 0.95rem; line-height: 1.6; }
-
-    &__label {
-      color: var(--text-primary) !important;
-      font-size: 1.05rem !important;
-      font-weight: 700;
-
-      i { margin-right: 6px; color: var(--accent-color); }
-    }
-
-    &__path { margin-bottom: 0 !important; color: var(--text-muted) !important; }
-  }
-
   // the agent kit
   .mi-kit {
     display: grid;
@@ -200,7 +173,6 @@
     }
   }
 
-  .mi-start { margin: 1.6em 0 !important; text-align: center; }
 }
 
 @media (max-width: 1100px) {
@@ -210,7 +182,7 @@
 
 @media (max-width: 760px) {
   .modelling-intro .page__content {
-    .mi-path, .mi-routes { grid-template-columns: 1fr; }
+    .mi-path { grid-template-columns: 1fr; }
     .mi-kit { padding: 20px; }
   }
 }

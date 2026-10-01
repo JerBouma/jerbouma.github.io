@@ -4548,6 +4548,10 @@ div.highlighter-rouge {
   background: transparent !important;
   color: $vs-text !important;
 
+  // Markdown headings (# and ##): the theme's heading colour is near-black,
+  // invisible on the dark code background
+  .gh, .gu { color: $vs-keyword !important; font-weight: 600 !important; }
+
   // Comments
   .c, .cm, .c1, .cs, .cp { color: $vs-comment !important; font-style: italic !important; }
 
