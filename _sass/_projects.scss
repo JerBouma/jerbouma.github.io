@@ -195,28 +195,8 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
   }
 }
 
-// the numbers under a banner, as three equal tiles
-.pj-figures {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 16px;
-
-  span {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 12px 14px;
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    background: rgba(128, 128, 128, 0.05);
-    color: var(--text-muted);
-    font-size: 0.78rem;
-  }
-
-  i { color: var(--pj-oss); font-size: 0.85rem; margin-bottom: 4px; }
-  strong { color: var(--text-primary); font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; }
-}
+// stars, downloads and forks, on one line between the name and the summary
+.pj-card__stats { margin: 0 0 14px; }
 
 // ── contributed to ────────────────────────────────────────────────────────
 .pj-wide {
@@ -299,9 +279,6 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
   .pj-card, .pj-wide { padding: 18px; }
   .pj-wide { grid-template-columns: 1fr; gap: 16px; }
   .pj-archive { grid-template-columns: 1fr; }
-  .pj-figures { gap: 8px; }
-  .pj-figures span { padding: 10px; }
-  .pj-figures strong { font-size: 0.95rem; }
   .pj-card .pj-card__actions { flex-wrap: wrap; }
   .pj h3 { font-size: 1.25rem !important; }
   .pj-gh { margin-top: 24px; }
