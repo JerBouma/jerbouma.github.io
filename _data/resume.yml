@@ -164,7 +164,7 @@ entries:
     title: "CFA Society Netherlands"
     subtitle: "Register Beleggingsanalist (RBA)"
     description: "The RBA Program (formerly VBA), organized by the CFA Institute, is a modular program for experienced investment professionals. It covers the entire investment cycle, new developments in the market and the role investment leadership plays in where the industry is heading. I completed it alongside my jobs at PGGM and OpenBB."
-    expertise: ["Strategic Asset Allocation", "Portfolio Optimization"]
+    expertise: ["Strategic Asset Allocation", "Lifecycle Investing", "Portfolio Optimization", "Solvency II Internal Models", "Economic Scenario Generation", "Econometrics & Time Series", "Factor Models"]
     skills: ["Python", "Git"]
     logo: "/assets/images/resume/cfasocietynetherlands.png"
     logo_alt: "CFA Society Netherlands logo"
@@ -205,7 +205,7 @@ entries:
     title: "PGGM"
     subtitle: "ALM Advisor"
     description: "I gave actuarial and strategic advice to several Dutch pension funds. I was responsible for developing and maintaining the econometric model in MATLAB and led most of the technical development of the new econometric model in Python. These models performed the ALM, URM and VEV calculations. I also worked on interactive dashboards and GUIs and on applying Machine Learning techniques."
-    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Economic Scenario Generation", "Econometrics & Time Series", "Machine Learning"]
+    expertise: ["Strategic Asset Allocation", "Asset Liability Management", "Liability Hedging", "Economic Scenario Generation", "Econometrics & Time Series", "Machine Learning"]
     skills: ["Python", "Machine Learning", "MATLAB", "Azure", "VBA", "PowerBI", "Git"]
     logo: "/assets/images/resume/pggm.png"
     logo_alt: "PGGM logo"
@@ -254,7 +254,7 @@ entries:
     title: "Utrecht University"
     subtitle: "MSc Banking &amp; Finance"
     description: "I completed the quantitative track, with courses in Investment Management, Advanced Econometrics, Asset Pricing and Risk Management, and Python courses in Algorithmic Trading, Risk Management and Data Science. My Master's thesis on the impact of interest rate deductibility limits on capital structure decisions was graded a 7.5. Before this, I completed a Pre-Master of Finance."
-    expertise: ["Portfolio Optimization", "Econometrics & Time Series"]
+    expertise: ["Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Econometrics & Time Series", "Factor Models"]
     skills: ["Python", "MATLAB", "R", "Git"]
     logo: "/assets/images/resume/utrechtuniversity.png"
     logo_alt: "Utrecht University logo"
