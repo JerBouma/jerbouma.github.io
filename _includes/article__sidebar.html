@@ -1,10 +1,15 @@
+{%- comment -%} The five most recent other articles, plus a link to all of them {%- endcomment -%}
 {% assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
 <p class="article-sidebar__title">More Articles</p>
 <nav class="article-sidebar__list">
-  {% for article in articles %}
-    <a href="{{ article.url | relative_url }}" class="article-sidebar__item{% if article.url == page.url %} is-active{% endif %}">
+  {%- assign shown = 0 %}
+  {%- for article in articles %}
+    {%- if article.url == page.url or shown >= 5 %}{% continue %}{% endif %}
+    {%- assign shown = shown | plus: 1 %}
+    <a href="{{ article.url | relative_url }}" class="article-sidebar__item">
       <span class="article-sidebar__item-title">{{ article.title }}</span>
       <span class="article-sidebar__item-date">{{ article.date | date: "%b %-d, %Y" }}</span>
     </a>
-  {% endfor %}
+  {%- endfor %}
 </nav>
+<a class="article-sidebar__all" href="{{ '/articles' | relative_url }}">All articles <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
