@@ -79,18 +79,11 @@ At financial institutions I kept seeing the same models and calculations being b
         </div>
       </div>
     </div>
-    <div class="pj-card__more{% if p.extra %} has-extra{% endif %}">
+    <div class="pj-card__more">
       <div>
-        <p class="pj-card__text">{{ p.text }}</p>
+        {%- if p.text %}<p class="pj-card__text">{{ p.text }}</p>{% endif %}
         <div class="pj-chips">{% for c in p.covers %}{% if c.url %}<a href="{{ c.url }}">{{ c.name }}</a>{% else %}<span>{{ c }}</span>{% endif %}{% endfor %}</div>
       </div>
-      {%- if p.extra %}
-      <a class="pj-extra" href="{{ p.extra.url }}">
-        <i class="fas fa-robot" aria-hidden="true"></i>
-        <span><strong>{{ p.extra.title }}</strong>{{ p.extra.text }}</span>
-        <i class="fas fa-arrow-right pj-extra__go" aria-hidden="true"></i>
-      </a>
-      {%- endif %}
     </div>
   </article>
   {%- endfor %}
