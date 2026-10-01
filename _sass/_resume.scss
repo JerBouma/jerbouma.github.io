@@ -315,6 +315,19 @@ $rj-img: 'img:not([data-hp-a]):not([data-hp-b])';
   }
 }
 
+// stars, downloads and forks on the open-source cards
+.rj-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 16px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+
+  i { margin-right: 7px; color: var(--rj-oss); font-size: 0.85em; }
+  strong { color: var(--text-primary); font-weight: 700; }
+}
+
 .rj-meta {
   display: flex;
   flex-wrap: wrap;

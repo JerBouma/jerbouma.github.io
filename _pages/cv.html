@@ -79,6 +79,9 @@ title: "Jeroen Bouma - CV"
   .org { margin: 0.4mm 0 1.4mm; font-size: 8.8pt; font-weight: 500; color: var(--accent); }
   .gh { display: block; margin: -0.6mm 0 1.4mm; font-size: 8pt; color: var(--muted); }
   .gh i { color: var(--accent); margin-right: 0.6mm; }
+  .stats { display: flex; flex-wrap: wrap; gap: 0.6mm 4.5mm; margin: -0.4mm 0 1.6mm; font-size: 8pt; color: var(--muted); }
+  .stats i { color: var(--accent); margin-right: 1mm; font-size: 7pt; }
+  .stats strong { color: var(--ink); font-weight: 600; }
   .item p { margin: 0; color: #3a4252; font-size: 8.4pt; line-height: 1.42; }
   .tags { display: flex; flex-wrap: wrap; gap: 1.2mm; margin-top: 1.8mm; }
   .tag { padding: 0.5mm 2mm; border-radius: 3mm; background: var(--panel); color: var(--muted); font-size: 7.4pt; font-weight: 500; }
@@ -173,6 +176,7 @@ title: "Jeroen Bouma - CV"
           <div class="item-head"><h3>{% if e.github %}<a href="{{ e.github }}">{{ e.title }}</a>{% else %}{{ e.title }}{% endif %}</h3><span class="date">{{ e.date }}</span></div>
           <div class="org">{{ e.subtitle }}</div>
           {%- if e.github %}<a class="gh" href="{{ e.github }}"><i class="fab fa-github"></i> {{ e.github | remove: "https://" }}</a>{% endif %}
+          {%- if e.stats %}<div class="stats">{% for s in e.stats %}<span><i class="fas {{ s.icon }}"></i><strong>{{ s.value }}</strong> {{ s.label }}</span>{% endfor %}</div>{% endif %}
           <p>{{ e.description | strip_html }}</p>
         </div>
         {%- endfor %}
