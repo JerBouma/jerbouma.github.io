@@ -1,0 +1,113 @@
+# Drafts for Introducing the Finance Toolkit MCP Server. Starting points, edited before posting.
+article: /articles/introducing-the-finance-toolkit-mcp-server
+written: 2026-10-02
+linkedin:
+  text: |
+    On 6 May 2023, Microsoft's P/E ratio was 28.93 on Stockopedia and 34.4 on Companies Market Cap. Three other sites reported something in between. All five were "correct."
+
+    They used different earnings definitions, share counts and rounding, and none of them published the formula.
+
+    Now put an AI assistant on top of that. Ask it for a P/E and it searches the web, picks one of those numbers, or makes one up when it can't find any. The inconsistency doesn't go away. It just becomes invisible.
+
+    That's why I built an MCP server for the Finance Toolkit, the open-source Python library I maintain. It gives assistants like Claude, Copilot, Cursor and Gemini direct access to the same 500+ methods: ratios, WACC, DuPont, Altman Z-Score, Piotroski F-Score, technical indicators, Fama-French and macro data. The assistant picks the calculation; the number comes from code you can read on GitHub.
+
+    One example from the article: a five-factor Fama-French regression explained 61.9% of MercadoLibre's return variance in 2021 and 12.2% in 2025. A beta on its own would never show you that drift.
+
+    **Don't let a language model compute a financial number. Let it call one, from a formula you can audit.**
+
+    Full walkthrough, with the one-command setup:
+    https://www.jeroenbouma.com/articles/introducing-the-finance-toolkit-mcp-server
+
+    Not investment advice.
+
+    #QuantFinance #AIinFinance #OpenSource
+reddit:
+  - subreddit: r/mcp
+    title: I built an MCP server that gives AI assistants 500+ auditable financial calculations instead of web-scraped numbers
+    body: |
+      On 6 May 2023, Microsoft's P/E ratio was 28.93 on Stockopedia, 32.05 on Morningstar, 32.66 on Macrotrends, 33.67 on the Wall Street Journal and 34.4 on Companies Market Cap. Different earnings definitions, share counts and rounding, and no published formulas. An assistant that answers finance questions through web search inherits all of that, and when it can't find a number it tends to invent one.
+
+      I'm the author of the Finance Toolkit, an open-source Python library where every ratio, indicator and model is plain code you can audit. The MCP server exposes the same engine to any MCP client.
+
+      **What it does**
+
+      - 500+ methods grouped into 22 categorical tools: profitability, valuation, solvency, liquidity, efficiency, models (WACC, DuPont, Altman Z-Score, Piotroski F-Score), technicals (RSI, MACD, Bollinger Bands), risk and performance (including Fama-French five-factor), options, fixed income and macro data for 60+ countries.
+      - You never name a function or set a parameter. The assistant picks the tool from your question and gets structured output back.
+      - Company data comes from Financial Modeling Prep; macro data from the OECD and the Global Macro Database.
+
+      **Setup**
+
+          uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
+
+      That configures Claude Desktop, Claude Code, GitHub Copilot in VS Code, Cursor, Windsurf or Gemini. For Claude Desktop there's also a one-click MCPB bundle on the latest GitHub release.
+
+      **Design choices and trade-offs**
+
+      - Grouping 500+ methods into 22 tools means the assistant chooses between a short list of categories rather than hundreds of functions.
+      - Output depth scales with the model. Claude Sonnet adds qualitative reasoning on top of the numbers; smaller models like GPT-5 mini return clean structured data without the narrative. Both work.
+
+      **Limitations**
+
+      - Company data needs an FMP API key. The free plan covers five years of history and 250 requests a day; the full 30+ years and quarterly data need a paid plan.
+      - The numbers are only as good as the underlying filings and the provider. The difference is that the formula on top is visible.
+
+      Screenshot of it running in Claude Desktop: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q0o5322rfem76oub01l5.png
+
+      The full write-up with examples (semiconductor multiples, European sector RSI through 2020, Fama-French on South American stocks, Asian GDP growth): https://www.jeroenbouma.com/articles/introducing-the-finance-toolkit-mcp-server
+
+      Code: https://github.com/JerBouma/FinanceToolkit
+
+      Happy to answer questions, and criticism of the tool design is welcome.
+  - subreddit: r/financialmodelling
+    title: "Fama-French five-factor on South American stocks: the R-squared column says more than the betas"
+    body: |
+      I ran a five-factor Fama-French regression (Mkt-RF, SMB, HML, RMW, CMA) on eight US-listed South American names for 2021-2025. The factor loadings turned out to be less interesting than the R-squared, so that's what this post is about.
+
+      **2025 results**
+
+      | Ticker | Mkt-RF | SMB | HML | RMW | CMA | R² |
+      |:--|--:|--:|--:|--:|--:|--:|
+      | ITUB (Itau, bank) | 0.0167 | -0.0023 | -0.0071 | -0.0116 | -0.0051 | 0.683 |
+      | SCCO (Southern Copper, mining) | 0.0146 | 0.0000 | -0.0047 | -0.0117 | -0.0033 | 0.529 |
+      | VALE (Vale, mining) | 0.0118 | 0.0042 | -0.0086 | 0.0032 | -0.0103 | 0.511 |
+      | CIB (Bancolombia, bank) | 0.0109 | -0.0029 | 0.0024 | -0.0107 | -0.0101 | 0.340 |
+      | GGB (Gerdau, steel) | 0.0063 | -0.0029 | -0.0014 | -0.0110 | -0.0009 | 0.276 |
+      | YPF (YPF, energy) | 0.0067 | 0.0023 | -0.0027 | -0.0041 | -0.0008 | 0.192 |
+      | PBR (Petrobras, energy) | 0.0057 | -0.0017 | 0.0002 | -0.0037 | 0.0009 | 0.169 |
+      | MELI (MercadoLibre, e-commerce) | 0.0087 | -0.0001 | -0.0005 | -0.0023 | -0.0049 | 0.122 |
+
+      **What stands out**
+
+      - ITUB: the five factors explain 68.3% of its 2025 return variance, the highest in the group. That's typical for a large, liquid bank that tracks broad risk factors.
+      - MELI: only 12.2%. Its price action is driven far more by its own growth story and earnings surprises than by size, value or investment-style exposure.
+      - Over time the gap widens. MELI's R² fell almost every year, from 0.619 in 2021 to 0.122 in 2025. VALE and SCCO went the other way, with explanatory power roughly tripling over the same five years as both became more tightly linked to broad market and value-style risk during the commodity cycle.
+
+      The practical point: R² tells you how much to trust the rest of the row. A beta or alpha for MELI on its own hides that the model has stopped explaining most of its return. That's the case for running the full factor model, and for looking at it across years, instead of stopping at single-factor CAPM.
+
+      **Caveats**
+
+      - These are the standard (US) Fama-French factors from Kenneth French's data library, applied to US-listed tickers of South American companies. Regional factors could give a different picture.
+      - Each year is a separate regression on daily observations, so the coefficients are on a daily scale.
+      - Eight stocks and five years is an illustration, not a study. MELI's falling R² is a single-name pattern.
+
+      **Reproduce it**
+
+      Calculated with the Finance Toolkit, an open-source Python library I maintain:
+
+          from financetoolkit import Toolkit
+
+          south_america = Toolkit(
+              tickers=["PBR", "YPF", "VALE", "SCCO", "ITUB", "CIB", "MELI", "GGB"],
+              api_key="FINANCIAL_MODELING_PREP_KEY",
+              start_date="2021-01-01",
+          )
+          fama_french = south_america.performance.get_fama_and_french_model(period="yearly")
+
+      The article this comes from also shows the same analysis asked in plain English to an AI assistant through the Toolkit's MCP server, plus a few other examples: https://www.jeroenbouma.com/articles/introducing-the-finance-toolkit-mcp-server
+
+      Curious whether people here use regional factors for LatAm names, and which ones.
+
+      Not investment advice.
+medium:
+  subtitle: "Every ratio, indicator and model of the Finance Toolkit, available to AI assistants with formulas you can audit."
+  tags: [Finance, AI, MCP, Investing, Open Source]

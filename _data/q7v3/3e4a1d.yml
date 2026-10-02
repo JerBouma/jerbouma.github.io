@@ -1,0 +1,128 @@
+# Drafts for Screening for Undervalued Stocks with the Finance Toolkit. Starting points, edited before posting.
+article: /articles/screening-undervalued-stocks-finance-toolkit
+written: 2026-10-02
+linkedin:
+  text: |
+    Five of 15 large caps passed a simple value screen: P/E below 20x and EV/EBITDA below 18x. Only two of them also earned more than 25% on invested capital.
+
+    On 2025 annual figures across five sectors, Bank of America, Johnson & Johnson, Merck, Pfizer and ExxonMobil pass both. Requiring two metrics matters: sorted on P/E alone, Intel came out on top, only because a net loss makes its P/E negative.
+
+    Cheap is not the same as undervalued. Low multiples often price in falling earnings, the classic value trap. So the second pass checks quality: ROE, ROIC and gross margin.
+
+    That is where the five separate. J&J (33.0% ROIC) and Merck (28.1%) both have gross margins above 71%; their discount comes from litigation and patent-cliff concerns rather than a weakening business. ExxonMobil earns 14.8% with cyclical risk. Pfizer, at 11.3%, is borderline after its COVID vaccine revenue ran off. Bank of America drops out at 4.8% ROIC, which says more about the metric than the bank: for a deposit-funded balance sheet, ROE (9.7%) is the better lens.
+
+    The output of a screen is a watchlist, not a buy list. Its value is ruling out the 11 names that don't justify a closer look. It can't see what trailing numbers miss, like Merck's Keytruda patent cliff.
+
+    Full walkthrough with the Python code, using the Finance Toolkit (the open-source library I built):
+    https://www.jeroenbouma.com/articles/screening-undervalued-stocks-finance-toolkit
+
+    Not investment advice.
+
+    #ValueInvesting #EquityResearch #Python
+reddit:
+  - subreddit: r/ValueInvesting
+    title: "A two-pass screen on 15 large caps: valuation multiples first, then ROIC to weed out value traps"
+    body: |
+      **TL;DR:** On 2025 annual figures, 5 of 15 large caps pass P/E < 20x and EV/EBITDA < 18x (BAC, JNJ, MRK, PFE, XOM). Adding ROIC > 10% as a quality filter leaves four, and only JNJ and MRK combine a low multiple with high returns on capital (33.0% and 28.1% ROIC).
+
+      **Universe:** AAPL, MSFT, INTC, IBM, JNJ, PFE, MRK, KO, WMT, JPM, BAC, XOM, CVX, META, GOOGL. Deliberately small to show the logic; a real screen would cast a wider net.
+
+      **Pass 1: two multiples at once**
+
+      A single-metric sort is easy to fool. Sorted on P/E, INTC came out on top only because its net loss gives it a negative P/E. Requiring P/E < 20x (positive earnings only) *and* EV/EBITDA < 18x gives:
+
+      | Ticker | P/E | EV/EBITDA | P/FCF | P/B |
+      |---|---:|---:|---:|---:|
+      | BAC | 14.3 | 14.4 | 32.9 | 1.5 |
+      | MRK | 14.5 | 10.2 | 21.4 | 5.0 |
+      | XOM | 18.0 | 9.3 | 21.9 | 2.0 |
+      | PFE | 18.3 | 9.4 | 15.6 | 1.6 |
+      | JNJ | 18.8 | 16.0 | 25.5 | 6.2 |
+
+      Near misses: JPM (16.2x P/E, but 18.7x EV/EBITDA) and CVX (8.9x EV/EBITDA, but 23.0x P/E). Other readings worth a look: KO at 57x free cash flow on a 23x P/E, and AAPL's 55.3x P/B, which mostly reflects how much equity Apple has bought back.
+
+      **Pass 2: quality overlay**
+
+      | Ticker | ROE | ROIC | Gross margin |
+      |---|---:|---:|---:|
+      | JNJ | 35.0% | 33.0% | 72.8% |
+      | MRK | 36.9% | 28.1% | 71.8% |
+      | XOM | 10.7% | 14.8% | 21.7% |
+      | PFE | 8.8% | 11.3% | 70.3% |
+      | BAC | 9.7% | 4.8% | 56.1% |
+
+      - **JNJ and MRK:** high returns on capital and gross margins above 71%. The discount looks driven by sector-wide pharma pressure, the Keytruda patent cliff (MRK) and litigation (JNJ), not by a deteriorating business. At these multiples the market implies little earnings growth.
+      - **XOM:** 14.8% ROIC is solid for an asset-heavy energy company; the thin gross margin is commodity economics. The risk is the oil price cycle.
+      - **PFE:** strong gross margin, but returns depressed by the revenue reset after COVID vaccines ran off. Recovery or prolonged restructuring depends on the pipeline.
+      - **BAC:** drops out at a 10% ROIC threshold, but ROIC is the wrong lens for a deposit-funded bank. ROE of 9.7% suggests a modest discount rather than an obvious bargain.
+
+      **Caveats**
+
+      - Trailing annual data (2025) from Financial Modeling Prep; multiples move daily.
+      - Thresholds (20x, 18x, 10%) are arbitrary and chosen to illustrate the process.
+      - EV/EBITDA and ROIC are poor fits for banks; JPM and BAC deserve price-to-tangible-book and ROE instead.
+      - None of this captures debt maturities, catalysts, capital allocation or forward risks like a patent cliff. The output is a watchlist, not a buy list.
+
+      **Method:** done in Python with the Finance Toolkit, an open-source library I built and maintain. The write-up with the code for each step: https://www.jeroenbouma.com/articles/screening-undervalued-stocks-finance-toolkit
+
+      Not investment advice. How do you handle banks in a screen like this: separate universe, or a different quality metric in the same screen?
+  - subreddit: r/Python
+    title: "A multi-metric stock screen in a few lines of pandas: valuation filters plus a ROIC quality check"
+    body: |
+      I wrote up how I build a simple fundamental stock screen in Python and thought the pattern might be useful beyond finance: pull several ratios per ticker into one DataFrame, filter on all of them at once, then join a second table to sanity-check the survivors.
+
+      **1. Ratios for a list of tickers**
+
+      ```python
+      import pandas as pd
+      from financetoolkit import Toolkit
+
+      screener = Toolkit(
+          tickers=["AAPL", "MSFT", "INTC", "IBM", "JNJ", "PFE", "MRK",
+                   "KO", "WMT", "JPM", "BAC", "XOM", "CVX", "META", "GOOGL"],
+          api_key="FINANCIAL_MODELING_PREP_KEY",
+          start_date="2022-01-01",
+      )
+
+      valuation = pd.DataFrame({
+          "P/E": screener.ratios.get_price_to_earnings_ratio()["2025"],
+          "EV/EBITDA": screener.ratios.get_ev_to_ebitda_ratio()["2025"],
+      })
+      ```
+
+      **2. Filter on two metrics, not one**
+
+      ```python
+      value_candidates = valuation[
+          (valuation["P/E"] > 0)
+          & (valuation["P/E"] < 20)
+          & (valuation["EV/EBITDA"] < 18)
+      ]
+      # ['BAC', 'JNJ', 'MRK', 'PFE', 'XOM']
+      ```
+
+      The `P/E > 0` line is there for a reason: sorted on P/E alone, INTC came out on top because a net loss makes its P/E negative. Single-column sorts on ratios are full of traps like that.
+
+      **3. Quality check on the survivors**
+
+      ```python
+      quality = pd.DataFrame({
+          "ROE": screener.ratios.get_return_on_equity()["2025"],
+          "ROIC": screener.ratios.get_return_on_invested_capital()["2025"],
+          "Gross Margin": screener.ratios.get_gross_margin()["2025"],
+      })
+
+      final_screen = quality.loc[value_candidates.index]
+      final_screen = final_screen[final_screen["ROIC"] > 0.10].sort_values("ROIC", ascending=False)
+      ```
+
+      That leaves JNJ (33.0% ROIC), MRK (28.1%), XOM (14.8%) and PFE (11.3%). BAC drops out at 4.8%, which is a good example of a metric not fitting the business: for a bank, ROE is the more meaningful number.
+
+      Limitations: 15 tickers is a toy universe, the thresholds are arbitrary, and you need a Financial Modeling Prep key (the free plan covers five years). It's a filter for what to look at, not a decision.
+
+      Disclosure: I'm the author of Finance Toolkit, the open-source (MIT) library used here. Full article with the output tables and the reasoning behind each step: https://www.jeroenbouma.com/articles/screening-undervalued-stocks-finance-toolkit
+
+      Not investment advice.
+medium:
+  subtitle: "A systematic screen from valuation multiples to a quality check, producing a watchlist rather than a buy list."
+  tags: [Value Investing, Stock Screening, Fundamental Analysis, Investing, Finance]

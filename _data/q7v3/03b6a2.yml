@@ -1,0 +1,81 @@
+# Drafts for "How I Host the Finance Toolkit MCP Server on a Mini PC". Starting points, edited before posting.
+article: /articles/hosting-the-finance-toolkit-mcp-server
+written: 2026-10-02
+linkedin:
+  text: |
+    The public Finance Toolkit MCP server that people connect Claude, ChatGPT and Cursor to doesn't run in a cloud data center. It runs in a small Linux container on a Mini PC at my home.
+
+    That sounds like a hobby setup for a public service, but an MCP server fits it unusually well. The assistant on the user's side does the reasoning; the server only fetches data and runs pandas calculations, a few hundred milliseconds of CPU per call. On a pay-per-use platform, a free tool that gets popular can turn into a bill you didn't plan for. Here the cost is known in advance.
+
+    Safety came from deciding what not to hold. Every user brings their own Financial Modeling Prep key, and it travels inside a signed token held by their client, not in a database on my side. Caching is switched off in hosted mode, so data fetched with one user's paid plan can never be served to someone else.
+
+    Cloudflare is the only way in: TLS, firewall and rate limiting, and a tunnel so no ports are open on the home router and the home IP address is never published.
+
+    The honest trade-off: a power cut at home takes the server down. For a free tool that's acceptable, and anyone who needs guaranteed uptime can run the same Docker image themselves.
+
+    I built and maintain the Finance Toolkit; the article walks through the full setup and how to copy it for your own MCP server.
+
+    https://www.jeroenbouma.com/articles/hosting-the-finance-toolkit-mcp-server
+
+    #MCP #SelfHosting #OpenSource
+reddit:
+  - subreddit: r/selfhosted
+    title: "How I run a public MCP server from a Mini PC: Proxmox LXC, Docker and a Cloudflare Tunnel"
+    body: |
+      I maintain an open-source finance library (Finance Toolkit) that has an MCP server, so assistants like Claude, ChatGPT and Cursor can call its calculations. The public instance doesn't run in the cloud; it runs on a Mini PC at home. I wrote up the setup, and here's the short version.
+
+      **Why self-host this at all**
+
+      - The workload is tiny. The assistant on the user's side does the reasoning; the server fetches data from an API and runs pandas calculations, a few hundred ms of CPU per tool call.
+      - Predictable cost. The Mini PC already runs other services; a free tool that gets popular on a pay-per-use platform can surprise you.
+      - No user data stored. Each user brings their own API key, which travels inside a signed OAuth token held by their client. Nothing to lose if the box dies.
+
+      **The layers, outside in**
+
+      | Layer | Job |
+      |:--|:--|
+      | Cloudflare | DNS, TLS, firewall, rate limiting. The only thing the internet talks to. |
+      | Proxmox VE | Hypervisor on the Mini PC |
+      | LXC container | Dedicated to the MCP server, runs nothing else |
+      | Docker | The server itself, HTTP transport on port 8000 |
+
+      **Things that turned out to matter**
+
+      - **Cloudflare Tunnel** (`cloudflared` next to the service, outbound connection only): no port forwarding on the router, home IP never published.
+      - **Own LXC per public service**: isolated from the rest of the box, fixed CPU/RAM share so a burst of requests slows this container down without starving the host, and snapshots before every upgrade so a bad release is a one-click rollback.
+      - **Streaming responses**: MCP's `streamable-http` transport keeps some responses open while results stream back. Cloudflare's defaults handle it fine, but an aggressive timeout or a buffering proxy rule in between would break long tool calls.
+      - **No caching of answers**: every call runs with the caller's own key, so `/mcp` must never be cached. You can check with `curl -sI https://financetoolkit.jeroenbouma.com/health`, which shows `cf-cache-status: DYNAMIC`. The server's own local cache is switched off in hosted mode too, so one user's data (fetched on their paid plan) can't reach another user.
+      - **Health checks at every layer**: Docker `healthcheck` against `/health` plus `restart: unless-stopped`, Proxmox auto-starts the container on boot, and an external uptime check hits the public `/health` URL to catch anything broken between Cloudflare and the container.
+      - **Secrets outside the image**: the token-signing secret lives in an env file on the host, so the image can be rebuilt from the public repo at any time. Rotating it logs everyone out, so it's set once.
+      - **Updates in a clone first**: clone the container, test the new release, swap it in, keep a snapshot.
+
+      **The honest limit:** a power cut or ISP outage at home takes it down. For a free tool I accept that; anyone who needs uptime can run the same Docker image (`docker compose up -d` from the repo) on their own infrastructure.
+
+      Nothing here is specific to my project. Any MCP server with an HTTP transport can be hosted the same way.
+
+      Disclosure: I'm the author of the Finance Toolkit and of the article. Full write-up with the compose file and the request flow: https://www.jeroenbouma.com/articles/hosting-the-finance-toolkit-mcp-server
+  - subreddit: r/mcp
+    title: "Notes from hosting a remote streamable-http MCP server with OAuth behind Cloudflare"
+    body: |
+      I run the hosted instance of the Finance Toolkit MCP server (22 tools, financial ratios and models on Financial Modeling Prep data) from a Proxmox container at home, with Cloudflare in front. A few things specific to remote MCP servers that might save someone time:
+
+      **1. Bring-your-own-key, stateless.** Users authenticate through an OAuth 2.1 flow where they enter their own FMP API key once. The key ends up inside a token signed with a server secret and held by their MCP client. On each request the server verifies the signature, pulls the key out, calls the data API, and forgets it when the request is done. No user database, nothing to leak.
+
+      **2. Discovery through a 401.** A client's first request to `/mcp` without a token gets a `401` pointing to the OAuth metadata (`/.well-known/oauth-authorization-server`). Make sure your proxy passes that endpoint through untouched. You can see ours with `curl -s https://financetoolkit.jeroenbouma.com/.well-known/oauth-authorization-server`.
+
+      **3. The signing secret is effectively permanent.** Rotating it invalidates every issued token and logs everyone out, so it lives in an env file on the host and is set once.
+
+      **4. Turn off shared caching.** Locally, the server caches downloaded data in SQLite because there's one user. In hosted mode that would mean data fetched on one user's paid plan could be served to another, so hosted mode fetches everything live with the caller's key. Same at the edge: `/mcp` responses are never cached (`cf-cache-status: DYNAMIC`).
+
+      **5. Don't buffer the stream.** `streamable-http` keeps some responses open while results stream back. Cloudflare's defaults are fine; an aggressive timeout or buffering rule in between breaks long tool calls.
+
+      **6. HTTPS is not optional.** Clients require it for remote servers and for OAuth, so let the proxy terminate TLS. A Cloudflare Tunnel also means no open ports at home.
+
+      **7. A real `/health` endpoint.** Docker restarts on failure, and an external uptime check on the public `/health` catches problems between the edge and the container.
+
+      The compute side is small: the model on the client does the reasoning, the server does a few hundred ms of pandas per call, which is why a Mini PC is enough.
+
+      Disclosure: I'm the author of the Finance Toolkit and its MCP server; the code, Dockerfile and compose file are MIT-licensed on GitHub (github.com/JerBouma/FinanceToolkit). Full write-up: https://www.jeroenbouma.com/articles/hosting-the-finance-toolkit-mcp-server
+medium:
+  subtitle: "Why a public MCP server runs fine on a home Mini PC, with Proxmox and Cloudflare doing the heavy lifting."
+  tags: [MCP, Self Hosting, Cloudflare, Proxmox, AI]

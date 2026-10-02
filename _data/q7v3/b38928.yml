@@ -1,0 +1,95 @@
+# Drafts for Understanding Risk Exposure Across Major Indices. Starting points, edited before posting.
+# LinkedIn: the brief asks for the link at the end of the post. If reach matters more, move the
+# URL to a first comment and end the post with "Link to the full analysis in the comments."
+# Alternative LinkedIn hooks:
+#   "In 2020 the S&P 500 ETF's weekly 95% VaR was -3.2%. The average loss beyond that threshold was -5.5%, nearly twice as bad."
+#   "2020 and 2022 had drawdowns of similar depth. Their skewness had opposite signs: one was a crash, the other a grind."
+article: /articles/risk-exposure-major-indices-finance-toolkit
+written: 2026-10-02
+linkedin:
+  text: |
+    In the week of 31 March to 6 April 2025, the S&P 500 ETF fell 5.85%. That single week pushed SPY's kurtosis for 2025 to 26.1, roughly nine times its 2023 reading of 2.81.
+
+    Volatility doesn't show this, because the rest of 2025 behaved close to normal. Kurtosis does.
+
+    I compared VaR, CVaR, maximum drawdown, skewness and kurtosis for six index ETFs (SPY, QQQ, DIA, IWM, EFA, EEM) from 2019 to 2025. Each caught something the others missed:
+
+    - CVaR versus VaR: SPY's 95% weekly VaR in 2020 was -3.2%; the average loss beyond it was -5.5%, nearly twice as bad.
+    - Drawdown versus skewness: 2020 and 2022 had losses of similar depth, but negative skew in 2020 (a crash) and mostly mildly positive skew in 2022 (a grind). Same depth, different risk.
+    - Quiet years: IWM had a CVaR of -2.9% in 2024, when most other indices were calm. Small-cap stress built up without large-cap headlines.
+
+    2025 combined positive skew with extreme kurtosis. That looks contradictory, but one measures direction, the other how much a few weeks dominate the tails.
+
+    The takeaway for risk reporting: one standard deviation flattens all of this into a single figure. A small set of tail measures side by side shows what each holding actually protects against.
+
+    I built the Finance Toolkit, the open-source Python library behind these numbers. Full analysis, charts and code:
+    https://www.jeroenbouma.com/articles/risk-exposure-major-indices-finance-toolkit
+
+    Not investment advice.
+
+    #RiskManagement #QuantFinance #Python
+reddit:
+  - subreddit: r/ETFs
+    title: "Tail risk in SPY, QQQ, DIA, IWM, EFA and EEM, 2019-2025: VaR, CVaR, drawdown, skew and kurtosis compared"
+    body: |
+      **TL;DR:** I calculated five tail-risk measures per year for six index ETFs from 2019 to 2025. DIA was the most resilient by drawdown, IWM carried the worst tail risk on almost every measure, and EEM drew down on its own schedule. One week in April 2025 (SPY -5.85%) pushed SPY's kurtosis for the year to 26.1, something plain volatility doesn't show.
+
+      **VaR and CVaR (weekly, 95%)**
+
+      - VaR is the loss threshold for the worst 5% of weeks; CVaR is the average loss once you're in those weeks.
+      - SPY in 2020: VaR -3.2%, CVaR -5.5%. The average bad week was nearly twice as bad as the threshold.
+      - The VaR-CVaR gap widens in every ETF in 2020 and 2022 and narrows in calm years like 2023.
+      - IWM has the worst or second-worst CVaR almost every year, including -2.9% in 2024 when most others were calm.
+
+      **Maximum drawdown**
+
+      - Worst in the dataset: IWM, -41.1% in the 2020 COVID crash.
+      - 2022: QQQ was worst at -35.2% (rate-hike sensitivity of growth stocks); DIA was the most resilient at -22.0%.
+      - DIA never had the worst drawdown of any year.
+      - EEM had the worst drawdown in 2019 and 2021, years without a broad global crisis.
+
+      **Skewness**
+
+      - Every ETF was negatively skewed in 2019 and 2020. EFA (-1.19) and EEM (-1.23) were the most extreme in 2020.
+      - 2022 was mildly positive almost everywhere: a grind lower, not a crash, despite a similar-sized drawdown to 2020.
+      - 2025 was positive across the board, led by SPY at 1.52.
+
+      **Kurtosis**
+
+      - SPY 2025: 26.1, more than double the next-highest reading anywhere in the dataset and about nine times SPY's 2023 value (2.81).
+      - QQQ and EFA were also above 19 in 2025; IWM was the lowest at 8.73, as small caps had been volatile most of the year already.
+      - 2020 is the only other year close, with double-digit kurtosis in every ETF.
+
+      **Caveats:** yearly windows of weekly returns, so each year's skew and kurtosis rest on about 52 observations and a single week can dominate them (that's partly the point of the 2025 example). 2019-2025 covers one crash and one bear market; a different window could rank the ETFs differently.
+
+      **Disclosure:** I built the Finance Toolkit, the open-source Python library I used for these calculations. The full write-up with interactive charts and the code to reproduce it: https://www.jeroenbouma.com/articles/risk-exposure-major-indices-finance-toolkit
+
+      Not investment advice.
+  - subreddit: r/quant
+    title: "One week moved SPY's 2025 kurtosis of weekly returns to 26.1. How do you report yearly tail measures on ~52 observations?"
+    body: |
+      I've been comparing yearly tail measures (95% VaR/CVaR, max drawdown, skewness, kurtosis of weekly returns) across SPY, QQQ, DIA, IWM, EFA and EEM for 2019-2025, and 2025 is a good example of how fragile the higher moments are at that sample size.
+
+      The week of 31 March to 6 April 2025, SPY fell 5.85%. The rest of the year was close to normal. Result:
+
+      - SPY 2025 kurtosis: 26.1, against 2.81 in 2023. QQQ and EFA were also above 19 in 2025.
+      - SPY 2025 skewness: +1.52, positive across all six ETFs.
+
+      So the same year shows positive skew and extreme kurtosis. That's consistent (direction versus tail weight), but with ~52 weekly returns per window, one observation effectively sets both numbers. Volatility for the year barely registers it.
+
+      Other things that came out of the comparison:
+
+      - VaR understates the tail most in stress years: SPY 2020 VaR -3.2% versus CVaR -5.5%.
+      - 2020 and 2022 had drawdowns of similar depth with opposite skew (crash versus grind), so drawdown alone hides the shape.
+      - IWM's CVaR was -2.9% in 2024, a calm year for most of the others.
+
+      My questions for people who report this kind of thing:
+
+      1. Do you report yearly higher moments at all, or only on longer or rolling windows?
+      2. If yearly, do you pair them with something robust (e.g. quantile-based skew/kurtosis) so a single week doesn't drive the headline figure?
+      3. For a one-off event like this, do you flag it explicitly or let the kurtosis number speak?
+
+      Disclosure: I maintain the Finance Toolkit, an open-source Python library, and used it for these numbers. Write-up with the charts and code: https://www.jeroenbouma.com/articles/risk-exposure-major-indices-finance-toolkit
+medium:
+  subtitle: "VaR, CVaR, drawdown, skewness and kurtosis across six index ETFs, and what volatility alone misses."
+  tags: [Risk Management, Investing, ETF, Quantitative Finance, Finance]

@@ -1,0 +1,110 @@
+# Drafts for Binomial Trees in the Finance Toolkit. Starting points, edited before posting.
+article: /articles/binomial-trees
+written: 2026-10-02
+linkedin:
+  text: |
+    A 16-day Apple call with a $190 strike, priced on 7 February 2024: binomial tree $4.32, Black-Scholes $4.33, market $2.67.
+
+    Two models agreeing to the cent looks like strong evidence that the market is off. It is weaker evidence than it looks.
+
+    Both models were fed the same inputs, and the one that matters most for a short-dated, at-the-money option is volatility. They used 28.26%, estimated from 11 years of Apple's price history. The market quoted that same contract at 23.83% implied volatility.
+
+    A binomial tree converges to Black-Scholes for a European option as you add steps. So the agreement mainly tells you the tree is built correctly. It says very little about whether 28% is the right volatility for the next two weeks, which is exactly the question the market price is answering.
+
+    What I take from it: when a model disagrees with the market, compare the inputs before you compare the prices. Usually the gap is an assumption you can name, and then the discussion becomes about that assumption rather than about who is "wrong".
+
+    I wrote up how binomial trees work, from the up and down factors to risk-neutral probabilities and early exercise for American options, with the Python in the Finance Toolkit, which I built and maintain:
+    https://www.jeroenbouma.com/articles/binomial-trees
+
+    Not investment advice.
+
+    #OptionsPricing #QuantFinance #Derivatives
+reddit:
+  - subreddit: r/options
+    title: "Binomial tree and Black-Scholes both said $4.32 for an AAPL call trading at $2.67. The volatility input is the first place to look"
+    body: |
+      **TL;DR:** I priced a 16-day AAPL $190 call (7 Feb 2024) with a 10-step binomial tree and with Black-Scholes. Both gave about $4.32, the market was at $2.67. The models agree with each other because they share the same inputs, above all a 28.26% historical volatility, while the market had that contract at 23.83% implied volatility.
+
+      **The setup**
+
+      Inputs, all as of 7 February 2024, expiry 23 February 2024 (16 calendar days):
+
+      | Input | Value |
+      |:--|--:|
+      | Stock price | 189.41 |
+      | Strike | 190 |
+      | Volatility (historical, Feb 2013 to Feb 2024) | 28.26% |
+      | Dividend yield | 0.49% |
+      | Risk-free rate | 4.11% |
+      | Tree steps | 10 |
+
+      The tree uses the usual up/down factors u = e^(σ√Δt) and d = 1/u, risk-neutral probability p = (e^((r−y)Δt) − d) / (u − d), and works backwards from the payoffs at expiry.
+
+      **The result**
+
+      | | Price |
+      |:--|--:|
+      | Binomial tree (European, 10 steps) | 4.32 |
+      | Black-Scholes | 4.33 |
+      | Market last (bid 2.66 / ask 2.69) | 2.67 |
+      | Market implied volatility | 23.83% |
+
+      **How I read it**
+
+      - The tree converging to Black-Scholes is expected for a European option. It is a check on the implementation, not independent confirmation of the price.
+      - Volatility drives an at-the-money, two-week option more than any other input, and here the model's 28% comes from 11 years of history while the market's 23.83% is a forward-looking view for the next 16 days. Those are different questions.
+      - So "the model says $4.32, the market says $2.67" is mostly a disagreement about volatility. Before calling it mispriced, you'd want a reason why realised vol over the next two weeks should be closer to the long-run 28% than to what the market implies.
+
+      **Caveats**
+
+      - One contract, one date (February 2024). Calendar days, not trading days, in the time to expiry.
+      - Historical vol over 11 years includes 2020 and other high-vol periods; a shorter window would give a different number.
+      - Market data is the last trade and quoted IV from the data provider at that time.
+
+      I'm the author of the write-up and maintain the Finance Toolkit, the open-source Python library I used for both models (`get_binomial_model` and `get_black_scholes_model`). The full article walks through the tree step by step, including American options and early exercise:
+      https://www.jeroenbouma.com/articles/binomial-trees
+
+      Not investment advice. Curious how others here pick the vol input when sanity-checking a model price: historical over which window, or just back out implied and compare?
+  - subreddit: r/financialmodelling
+    title: "Building a binomial option tree by hand: a 3-step example, and why the American call came out identical to the European one"
+    body: |
+      **TL;DR:** A 3-step binomial tree for a $100 stock and a $90 strike (25% vol, 2% risk-free rate, 0.5% dividend yield, 1 year) gives a call worth 20.59 whether it's European or American, and a put worth 3.996 European versus 4.003 American. Early exercise only adds value where holding is worth less than exercising, and with a small dividend that almost never happens for a call.
+
+      **The mechanics**
+
+      1. Up and down factors from volatility: u = e^(σ√Δt), d = e^(−σ√Δt).
+      2. Build the price tree forward from today. The tree recombines (up-down lands where down-up does), so 3 steps give only 4 end prices.
+      3. Payoffs at expiry: max(S − K, 0) for a call, max(K − S, 0) for a put.
+      4. Work backwards with the risk-neutral probability p = (e^((r−y)Δt) − d) / (u − d), discounting each step.
+      5. For an American option, each node takes the maximum of exercising now (intrinsic value) and holding (the discounted expected value).
+
+      **Result (strike 90, 3 steps)**
+
+      | Option | European | American |
+      |:--|--:|--:|
+      | Call | 20.59 | 20.59 |
+      | Put | 3.996 | 4.003 |
+
+      The call trees are identical node for node: holding is always worth at least as much as exercising, because the 0.5% dividend yield is too small to make giving up the remaining time value worthwhile. The put picks up a small premium (under a cent here) from the right to exercise early after the stock has fallen, when the strike paid now is worth more than waiting.
+
+      **Caveats**
+
+      Three steps is a teaching example, not a pricing setup; real use needs many more steps for the price to settle. The numbers are from my worked example, not a market quote.
+
+      **Reproduce it**
+
+      ```python
+      from financetoolkit.options import binomial_trees_model
+
+      tree = binomial_trees_model.get_option_payoffs(
+          stock_price=100, strike_price=90, years=1, timesteps=3,
+          volatility=0.25, dividend_yield=0.005, risk_free_rate=0.02,
+          put_option=True, american_option=True,
+      )
+      ```
+
+      I maintain the Finance Toolkit (open source, MIT), which this uses. The full write-up with the trees drawn out, plus an example on real Apple and Microsoft data compared with Black-Scholes and market prices:
+      https://www.jeroenbouma.com/articles/binomial-trees
+medium:
+  subtitle: "How binomial trees price European and American options, step by step, and how they compare with Black-Scholes."
+  tags: [Options, Derivatives, Quantitative Finance, Python, Finance]
