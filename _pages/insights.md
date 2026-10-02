@@ -1,7 +1,10 @@
 ---
-title: Articles
-description: A selection of articles connecting open-source projects with financial theory.
-permalink: /articles
+title: Insights
+description: "Insights on financial theory in practice: fundamental analysis, macroeconomics, risk and derivatives, and AI applied to financial data."
+permalink: /insights
+redirect_from:
+  - /articles
+  - /articles/
 layout: single
 classes: custom-document projects-v2 articles-v2
 author_profile: false
@@ -19,7 +22,7 @@ I write about financial theory and how it is applied in practice: fundamental an
 <div class="hp pj ar">
 
 <section class="pj-section ar-first">
-  <p class="hp-kicker">Latest article</p>
+  <p class="hp-kicker">Latest</p>
   <a class="ar-feature" href="{{ latest.url | relative_url }}" data-reveal>
     <p class="ar-meta">{{ latest.date | date: "%B %-d, %Y" }} · {{ latest_words | divided_by: 220 | at_least: 1 }} min read</p>
     <h2>{{ latest.title }}</h2>
@@ -32,7 +35,7 @@ I write about financial theory and how it is applied in practice: fundamental an
 </section>
 
 <section class="hp-section pj-section">
-  <p class="hp-kicker">All articles</p>
+  <p class="hp-kicker">All insights</p>
   <h2 class="hp-h2">Browse by topic</h2>
   <div class="ar-filters" id="article-filters">
     <button class="ar-filter active" data-filter="all">All <span class="lit-count" data-count="all"></span></button>
@@ -52,12 +55,12 @@ I write about financial theory and how it is applied in practice: fundamental an
     </a>
   {%- endfor %}
   </div>
-  <p class="lit-empty" id="articles-empty" style="display:none">No articles found for this topic.</p>
+  <p class="lit-empty" id="articles-empty" style="display:none">No insights found for this topic.</p>
 </section>
 
 <section class="hp-cta" data-reveal>
   <h2 class="hp-h2">Run the analysis yourself</h2>
-  <p>Every calculation in these articles is done with the Finance Toolkit, an open-source Python library with 500+ financial methods. You can also ask an AI assistant to run it for you through its MCP server.</p>
+  <p>Every calculation in these insights is done with the Finance Toolkit, an open-source Python library with 500+ financial methods. You can also ask an AI assistant to run it for you through its MCP server.</p>
   <div class="hp-actions hp-actions--center">
     <a href="/projects/financetoolkit" class="hp-btn hp-btn--primary">Explore the Toolkit <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
     <a href="/projects/financetoolkit/mcp" class="hp-btn hp-btn--ghost">Use it with AI</a>

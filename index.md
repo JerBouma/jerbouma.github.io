@@ -61,7 +61,7 @@ classes: custom-splash home-v2
     <a class="hp-pillar" href="/appearances">
       <i class="fas fa-microphone" aria-hidden="true"></i>
       <h3>Talks &amp; Writing</h3>
-      <p>Talks at universities and conferences, articles and a curated reading list.</p>
+      <p>Talks at universities and conferences, insights and a curated reading list.</p>
       <span class="hp-more">Media <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
     </a>
   </div>
@@ -167,9 +167,9 @@ toolkit.econometrics.<span class="f">get_johansen_cointegration</span>(
   <div class="hp-writing__head">
     <div>
       <p class="hp-kicker">Writing</p>
-      <h2 class="hp-h2">Latest articles</h2>
+      <h2 class="hp-h2">Latest insights</h2>
     </div>
-    <a href="/articles" class="hp-link">All articles <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+    <a href="/insights" class="hp-link">All insights <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
   </div>
   <div class="hp-list">
     {%- for article in latest_articles limit: 3 %}

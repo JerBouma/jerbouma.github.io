@@ -37,7 +37,7 @@
       {% else %}
         {% assign i = i | plus: 1 %}
         <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-          <a href="{{ crumb_url | relative_url }}" itemprop="item">{% assign crumb_name = site.data.breadcrumbs[crumb] %}{% unless crumb_name %}{% assign crumb_name = crumb | replace: '-', ' ' | replace: '%20', ' ' | capitalize %}{% endunless %}<span itemprop="name">{{ crumb_name }}</span></a>
+          {% assign crumb_href = crumb_url %}{% if crumb_url == "/articles" %}{% assign crumb_href = "/insights" %}{% endif %}<a href="{{ crumb_href | relative_url }}" itemprop="item">{% assign crumb_name = site.data.breadcrumbs[crumb] %}{% unless crumb_name %}{% assign crumb_name = crumb | replace: '-', ' ' | replace: '%20', ' ' | capitalize %}{% endunless %}<span itemprop="name">{{ crumb_name }}</span></a>
           <meta itemprop="position" content="{{ i }}" />
         </li>
         <span class="sep">{{ site.data.ui-text[site.locale].breadcrumb_separator | default: "/" }}</span>
