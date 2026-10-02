@@ -11,8 +11,8 @@ classes: custom-splash home-v2
 <section class="hp-hero">
   <div class="hp-hero__glow" aria-hidden="true"></div>
   <div class="hp-hero__text">
-    <h1 class="hp-title">Investment analysis, <span class="hp-accent">sharpened by Python and AI.</span></h1>
-    <p class="hp-lead">I'm <strong>Jeroen Bouma</strong>, Quantitative Investment Strategist in asset management. I analyze financial information and turn it into conclusions on asset allocation, asset liability management, lifecycle investing and Solvency II risk. What sets me apart is the combination with deep expertise in Python and AI: I build my own models and apply AI where it sharpens the analysis. In my own time I create open-source tools like the <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a>, used by thousands of analysts, researchers and investors.</p>
+    <h1 class="hp-title">Investment analysis, <span class="hp-accent">sharpened by AI.</span></h1>
+    <p class="hp-lead">I'm <strong>Jeroen Bouma</strong>, Quantitative Investment Strategist in asset management. I turn financial information into investment conclusions on asset allocation, ALM and Solvency II risk, combined with deep expertise in AI. I also created the open-source <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a>, used by thousands of analysts.</p>
     <div class="hp-actions">
       <a href="/resume" class="hp-btn hp-btn--primary">View my resume <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
       <a href="/projects" class="hp-btn hp-btn--ghost">Explore my projects</a>
