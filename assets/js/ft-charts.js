@@ -85,14 +85,14 @@
     return {
       animationDuration: 600,
       color: PALETTE,
-      textStyle: { fontFamily: 'inherit', color: text },
+      textStyle: { fontFamily: 'inherit', color: text, fontSize: 13 },
       grid: { left: 8, right: 28, top: 44, bottom: (many ? 56 : 12) + (spec.xname ? 26 : 0), containLabel: true },
-      legend: { data: legendNames, top: 0, left: 0, textStyle: { color: text, fontSize: 12 }, icon: 'roundRect', itemWidth: 12, itemHeight: 8, type: 'scroll', pageTextStyle: { color: muted } },
+      legend: { data: legendNames, top: 0, left: 0, textStyle: { color: text, fontSize: 13 }, icon: 'roundRect', itemWidth: 12, itemHeight: 8, type: 'scroll', pageTextStyle: { color: muted } },
       tooltip: {
         trigger: 'axis',
         backgroundColor: css('--masthead-bg', '#0f1115'),
         borderColor: grid,
-        textStyle: { color: css('--text-primary', '#f8fafc'), fontSize: 12 },
+        textStyle: { color: css('--text-primary', '#f8fafc'), fontSize: 13 },
         valueFormatter: fmt,
         axisPointer: { type: isBar ? 'shadow' : 'line', lineStyle: { color: muted } }
       },
@@ -107,13 +107,13 @@
         axisLine: { lineStyle: { color: grid } },
         axisTick: { show: false },
         // many bars (the portfolio tickers): show every label, slanted
-        axisLabel: isBar && spec.x.length > 10 ? { color: muted, interval: 0, rotate: 45, fontSize: 11 } : { color: muted, hideOverlap: true }
+        axisLabel: isBar && spec.x.length > 10 ? { color: muted, interval: 0, rotate: 45, fontSize: 11 } : { color: muted, hideOverlap: true, fontSize: 12.5 }
       },
       yAxis: {
         type: 'value',
         scale: !isBar,
         splitLine: { lineStyle: { color: grid } },
-        axisLabel: { color: muted, formatter: fmt }
+        axisLabel: { color: muted, formatter: fmt, fontSize: 12.5 }
       },
       dataZoom: many ? [{ type: 'inside' }, { type: 'slider', height: 18, bottom: 8, borderColor: grid, fillerColor: 'rgba(56, 189, 248, 0.15)', textStyle: { color: muted }, handleStyle: { color: muted } }] : [],
       series: series
