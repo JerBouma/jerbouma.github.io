@@ -192,7 +192,7 @@ For example, see some of the profitability ratios of Microsoft below.
 | Interest Coverage Ratio         | 13.9982 | 16.5821 | 20.3429 | 25.3782 | 34.7835 | 47.4275 | 52.0244 |
 | Income Before Tax Profit Margin |  0.2574 |  0.3305 |  0.3472 |  0.3708 |  0.423  |  0.4222 |  0.4214 |
 
-And below a few of the profitability ratios are plotted for Microsoft.
+And below a few of the profitability ratios of Microsoft are compared year by year.
 
 {% include ft-chart.html id="ratios" label="Profitability ratios of Microsoft" %}
 
@@ -221,7 +221,7 @@ For example, this shows the Extended DuPont Analysis for Apple:
 | Equity Multiplier       | nan      | 3.0724 | 3.5633 | 4.2509 | 5.255  | 6.1862 | 6.252  |
 | Return on Equity        | nan      | 0.4936 | 0.5592 | 0.7369 | 1.4744 | 1.7546 | 1.7195 |
 
-And below each component of the Extended Dupont Analysis is plotted including the resulting Return on Equity (ROE).
+The five components of the Extended DuPont Analysis multiply into the Return on Equity (ROE): interest burden × tax burden × operating margin × asset turnover × equity multiplier. Below they are shown for each year, ending in the resulting ROE.
 
 {% include ft-chart.html id="models" label="Extended DuPont Analysis" %}
 
