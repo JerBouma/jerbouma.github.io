@@ -194,14 +194,16 @@
         m.inst.setOption({
           animationDuration: 500,
           textStyle: { fontFamily: 'inherit' },
-          grid: { left: 4, right: 4, top: 22, bottom: 22 },
+          grid: { left: 6, right: 6, top: spec.years.length <= 4 ? 22 : 8, bottom: 22 },
           tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, valueFormatter: fmt, backgroundColor: css('--masthead-bg', '#0f1115'), borderColor: css('--card-border', 'rgba(255,255,255,0.1)'), textStyle: { color: css('--text-primary', '#f8fafc'), fontSize: 13 } },
-          xAxis: { type: 'category', data: spec.years, axisLine: { lineStyle: { color: css('--card-border', 'rgba(255,255,255,0.1)') } }, axisTick: { show: false }, axisLabel: { color: muted, fontSize: 12 } },
+          xAxis: { type: 'category', data: spec.years, axisLine: { lineStyle: { color: css('--card-border', 'rgba(255,255,255,0.1)') } }, axisTick: { show: false }, axisLabel: { color: muted, fontSize: 12, interval: function (i) { return i === 0 || i === spec.years.length - 1; } } },
           yAxis: { type: 'value', show: false, min: 0 },
           series: [{
             name: part.name, type: 'bar', data: part.data, barMaxWidth: 26,
             itemStyle: { color: color, borderRadius: [4, 4, 0, 0] },
-            label: { show: true, position: 'top', formatter: function (p) { return fmt(p.value); }, color: text, fontSize: 11 }
+            // with many years the bars are not labelled (the latest value is shown
+            // above the panel; hover shows each year)
+            label: { show: spec.years.length <= 4, position: 'top', formatter: function (p) { return fmt(p.value); }, color: text, fontSize: 11 }
           }]
         }, true);
       });
