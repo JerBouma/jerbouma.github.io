@@ -22,7 +22,7 @@ intro:
 # /resume each timeline entry shows the ones it covers (its expertise list),
 # marked with the color of the group (key).
 expertise:
-  - group: "Macro & Quantitative Finance"
+  - group: "Economics & Quantitative Finance"
     key: quant
     items: ["Strategic Asset Allocation", "Asset Liability Management", "Lifecycle Investing", "Portfolio Optimization", "Liability Hedging", "Solvency II Internal Models", "Economic Scenario Generation", "Econometrics & Time Series", "Factor Models"]
   - group: "Artificial Intelligence"
