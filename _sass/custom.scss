@@ -4105,10 +4105,35 @@ body.article-document {
   }
 }
 
-.article-toc__menu + .article-sidebar__title {
+// the two sidebar sections are <details>: always open on desktop, collapsed
+// by default on phones and tablets where the sidebar sits above the article
+.article-side + .article-side {
   margin-top: 24px;
   padding-top: 16px;
   border-top: 1px solid var(--card-border);
+}
+
+.article-side > summary {
+  list-style: none;
+  cursor: default;
+  &::-webkit-details-marker { display: none; }
+  i { display: none; }
+}
+
+@media (max-width: 1024px) {
+  .article-side + .article-side { margin-top: 0; padding-top: 0; }
+  .sidebar .article-side > summary.article-sidebar__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 14px 4px;
+    cursor: pointer;
+    i { display: inline-block; font-size: 12px; transition: transform 0.2s ease; }
+  }
+  .article-side[open] > summary i { transform: rotate(180deg); }
+  .article-side[open] > summary.article-sidebar__title { margin-bottom: 6px; }
+  .article-side[open] { padding-bottom: 12px; }
 }
 
 @media (max-width: 1024px) {
