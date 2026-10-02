@@ -140,7 +140,7 @@ For example, a portion of the historical data for Apple is shown below.
 
 And below the cumulative returns are plotted which include the S&P 500 as benchmark:
 
-![HistoricalData](https://github.com/JerBouma/FinanceToolkit/assets/46355364/cd7b5029-0e66-4592-9822-42b652e7deed)
+{% include ft-chart.html id="historical" label="Cumulative returns of Apple, Microsoft and the S&P 500" %}
 
 Metrics such as `Volatility`, `Excess Return` and `Excess Volatility` are calculated as dedicated [Risk](/projects/financetoolkit/docs/risk#get_volatility) and [Performance](/projects/financetoolkit/docs/performance#get_excess_return) methods rather than columns on this table to create more efficient and flexible functionalities.
 
@@ -168,7 +168,7 @@ For example, the first 5 rows of the Income Statement for Apple are shown below.
 
 And below the Earnings Before Interest, Taxes, Depreciation and Amortization (EBITDA) are plotted for both Apple and Microsoft.
 
-![FinancialStatements](https://github.com/JerBouma/FinanceToolkit/assets/46355364/a4ba0629-0832-4dc0-a5c1-9cf2c9bd13ce)
+{% include ft-chart.html id="statements" label="EBITDA of Apple and Microsoft" %}
 
 ### Obtaining Financial Ratios
 
@@ -194,7 +194,7 @@ For example, see some of the profitability ratios of Microsoft below.
 
 And below a few of the profitability ratios are plotted for Microsoft.
 
-![FinancialRatios](https://github.com/JerBouma/FinanceToolkit/assets/46355364/93221f7a-face-4035-87c7-e43815e89eb4)
+{% include ft-chart.html id="ratios" label="Profitability ratios of Microsoft" %}
 
 The 80+ ratios are divided into five categories: [**Efficiency**](/projects/financetoolkit/docs/ratios#collect_efficiency_ratios) (asset/inventory/receivables turnover, cash conversion cycle, R&D/SG&A/SBC-to-revenue), [**Liquidity**](/projects/financetoolkit/docs/ratios#collect_liquidity_ratios) (current, quick and cash ratios, working capital), [**Profitability**](/projects/financetoolkit/docs/ratios#collect_profitability_ratios) (margins, ROE/ROA/ROIC, cash vs. effective tax rate), [**Solvency**](/projects/financetoolkit/docs/ratios#collect_solvency_ratios) (debt-to-equity, debt-to-capital, interest and dividend coverage) and [**Valuation**](/projects/financetoolkit/docs/ratios#collect_valuation_ratios) (P/E, PEG, Forward P/E, EV multiples, buyback and shareholder yield). It's also possible to define fully [custom ratios](/projects/financetoolkit/docs/ratios#collect_custom_ratios) calculated automatically from the balance sheet, income and cash flow statements.
 
@@ -223,7 +223,7 @@ For example, this shows the Extended DuPont Analysis for Apple:
 
 And below each component of the Extended Dupont Analysis is plotted including the resulting Return on Equity (ROE).
 
-![Models](https://github.com/JerBouma/FinanceToolkit/assets/46355364/f5e1cab3-d1bd-455d-a4ba-92e1348163be)
+{% include ft-chart.html id="models" label="Extended DuPont Analysis" %}
 
 The `models` module covers 10+ models in total, for example [DuPont Analysis](/projects/financetoolkit/docs/models#get_dupont_analysis), [WACC](/projects/financetoolkit/docs/models#get_weighted_average_cost_of_capital), [Economic Value Added (EVA)](/projects/financetoolkit/docs/models#get_economic_value_added), [Altman Z-Score](/projects/financetoolkit/docs/models#get_altman_z_score), [Beneish M-Score](/projects/financetoolkit/docs/models#get_beneish_m_score) and the [Graham Number](/projects/financetoolkit/docs/models#get_graham_number).
 
@@ -251,7 +251,7 @@ For example, see the delta of the Call options for Apple for multiple expiration
 
 Which can also be plotted together with Gamma, Theta and Vega as follows:
 
-![Greeks](https://github.com/JerBouma/FinanceToolkit/assets/46355364/3aebe116-c4ac-4845-9801-54d2b4bde0f5)
+{% include ft-chart.html id="greeks" label="Option Greeks for Apple" %}
 
 The `options` module is divided into four categories: [**Option Pricing**](/projects/financetoolkit/docs/options#get_black_scholes_model) (Black-Scholes, Binomial Model, Implied Volatility), [**First-Order Greeks**](/projects/financetoolkit/docs/options#collect_first_order_greeks) (Delta, Vega, Theta, Rho), [**Second-Order Greeks**](/projects/financetoolkit/docs/options#collect_second_order_greeks) (Gamma, Vanna, Charm, Vomma) and [**Third-Order Greeks**](/projects/financetoolkit/docs/options#collect_third_order_greeks) (Speed, Zomma, Color, Ultima).
 
@@ -279,7 +279,7 @@ For example, this shows the quarterly correlations for Apple:
 
 And below the correlations with each factor are plotted over time for both Apple and Microsoft.
 
-![Performance](https://github.com/JerBouma/FinanceToolkit/assets/46355364/9c1eff76-b5c8-4bd2-9f47-8ce70bf002db)
+{% include ft-chart.html id="performance" label="Correlations with the Fama-French factors" %}
 
 Beyond Beta, CAPM and the Fama-French factors, the `performance` module covers around 20+ metrics in total, for example [Sharpe Ratio](/projects/financetoolkit/docs/performance#get_sharpe_ratio), [Sortino Ratio](/projects/financetoolkit/docs/performance#get_sortino_ratio), [Calmar Ratio](/projects/financetoolkit/docs/performance#get_calmar_ratio), [Omega Ratio](/projects/financetoolkit/docs/performance#get_omega_ratio) and the [Correlation Matrix](/projects/financetoolkit/docs/performance#get_correlation_matrix). Most of these also support `rolling=<n>` for a value that evolves through time instead of one number per period.
 
@@ -302,7 +302,7 @@ companies.risk.get_value_at_risk(period="weekly")
 
 And below the Value at Risk (VaR) for Apple, Microsoft and the benchmark (S&P 500) are plotted also demonstrating the impact of COVID-19.
 
-![Risk](https://github.com/JerBouma/FinanceToolkit/assets/46355364/a95e5b51-f7fc-4a70-bbb4-bf88b346523e)
+{% include ft-chart.html id="risk" label="Weekly Value at Risk" %}
 
 Beyond VaR/CVaR/Entropic VaR, the `risk` module covers around 20+ metrics in total, for example [Conditional Drawdown at Risk](/projects/financetoolkit/docs/risk#get_conditional_drawdown_at_risk), [Maximum Drawdown Duration](/projects/financetoolkit/docs/risk#get_maximum_drawdown_duration), [EWMA Volatility](/projects/financetoolkit/docs/risk#get_ewma_volatility) and the [Hurst Exponent](/projects/financetoolkit/docs/risk#get_hurst_exponent). Most of these support `rolling=<n>` for a value that evolves through time instead of one number per period.
 
@@ -328,9 +328,9 @@ For example, see some of the parameters for Apple below:
 | 2023-11-02 |     174.005 |           171.725 |          176.235 |            178.8 |
 | 2023-11-03 |     174.005 |           171.725 |          175.558 |            178.8 |
 
-And below the Ichimoku Cloud parameters are plotted for Apple and Microsoft side-by-side.
+And below the Ichimoku Cloud of the last twelve months is plotted for Apple and Microsoft, together with the closing price.
 
-![Technicals](https://github.com/JerBouma/FinanceToolkit/assets/46355364/1ced5b34-2410-4206-8ddf-bb053bcb21b2)
+{% include ft-chart.html id="technicals" label="Ichimoku Cloud" %}
 
 The 40+ indicators are divided into four categories: [**Breadth**](/projects/financetoolkit/docs/technicals#collect_breadth_indicators) (McClellan Oscillator, Advancers/Decliners, OBV, ADL, Chaikin Oscillator, TRIN, New Highs - New Lows), [**Momentum**](/projects/financetoolkit/docs/technicals#collect_momentum_indicators) (RSI, MACD, Stochastic, Williams %R, Aroon, CCI, ADX and more), [**Overlap**](/projects/financetoolkit/docs/technicals#collect_overlap_indicators) (SMA, EMA, DEMA, TRIX, WMA, Hull MA, VWAP, Parabolic SAR, Pivot Points, Support/Resistance) and [**Volatility**](/projects/financetoolkit/docs/technicals#collect_volatility_indicators) (ATR, Keltner Channels, Bollinger Bands, Donchian Channels, Volatility Cone).
 
@@ -353,9 +353,9 @@ For example, see the Effective Yield for the ICE BofA Corporate Bond Index below
 | 2024-04-24 | 0.0518 | 0.0531 | 0.0559 | 0.0592 | 0.0664 | 0.0778 | 0.1361 |
 | 2024-04-25 | 0.0524 | 0.0537 | 0.0564 | 0.0598 | 0.0673 | 0.079  | 0.1368 |
 
-And below a variety of Fixed Income metrics are shown all acquired from the Fixed Income module.
+And below the effective yield for each credit rating is plotted over time.
 
-![Fixed Income](https://github.com/JerBouma/FinanceToolkit/assets/46355364/dfe2a819-87d8-46be-892c-f90663bc177d)
+{% include ft-chart.html id="fixedincome" label="ICE BofA effective yields by credit rating" %}
 
 Beyond ICE BofA benchmarks, the `fixedincome` module covers [**Bond Valuations**](/projects/financetoolkit/docs/fixedincome#collect_bond_statistics) (Present Value, Macaulay/Modified Duration, Convexity, Yield to Maturity), [**Derivative Valuations**](/projects/financetoolkit/docs/fixedincome#get_derivative_price) (Black and Bachelier models for Swaptions), [**Government Bonds**](/projects/financetoolkit/docs/fixedincome#get_government_bond_yield) (3-month and 10-year yields) and **Central Bank rates** ([Euribor](/projects/financetoolkit/docs/fixedincome#get_euribor_rates), [ECB](/projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates) and [Federal Reserve rates](/projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates) incl. SOFR). It can be called via `companies.fixedincome` or standalone through `from financetoolkit import FixedIncome`.
 
@@ -381,7 +381,7 @@ For example see a selection of the countries below:
 
 And below these Unemployment Rates are plotted over time:
 
-![Economics](https://github.com/JerBouma/FinanceToolkit/assets/46355364/0bba2ce2-9846-42de-a89d-737cdcd07b31)
+{% include ft-chart.html id="economics" label="Unemployment rates" %}
 
 The 40+ indicators are divided into five categories: [**Government**](/projects/financetoolkit/docs/economics#get_government_debt) (GDP, government debt/revenue/expenditure/deficit, trust in government), [**Economy**](/projects/financetoolkit/docs/economics#get_consumer_price_index) (CPI, inflation, consumer/business confidence, house/rent/share prices), [**Finance**](/projects/financetoolkit/docs/economics#get_money_supply) (money supply, central bank policy rate, short/long-term interest rates), [**Environment**](/projects/financetoolkit/docs/economics#get_renewable_energy) (renewable energy, carbon footprint) and [**Jobs & Society**](/projects/financetoolkit/docs/economics#get_unemployment_rate) (unemployment, labor productivity, income inequality, population, poverty rate).
 
@@ -416,7 +416,7 @@ The table below shows one of the functionalities of the Portfolio module but is 
 
 In which the weights and returns can be depicted as follows:
 
-![Portfolio](https://github.com/user-attachments/assets/a5e05df5-a76a-42fa-bb30-f640cd48da62)
+{% include ft-chart.html id="portfolio" label="Example portfolio weights and returns" %}
 
 ### Applying Econometric Techniques
 
@@ -629,3 +629,5 @@ Generally, it should take less than 15 seconds to retrieve the historical data o
 > **Are you part of FinancialModelingPrep?**
 
 *No, I am not*. I've merely picked them as the primary data provider given that they have a generous free tier and fair pricing compared to other providers. Therefore, any questions related to the data should go through [their contact form](https://site.financialmodelingprep.com/contact){:target="_blank"}. When it comes to any type of ratios, performance metrics, risk metrics, technical indicators or economic indicators, feel free to reach out to me as this is my own work.
+
+<script src="/assets/js/ft-charts.js" defer></script>
