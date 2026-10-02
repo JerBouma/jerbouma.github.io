@@ -10,7 +10,7 @@ classes: custom-document projects-v2 articles-v2
 author_profile: false
 ---
 
-I write about financial theory and how it is applied in practice: fundamental analysis, macroeconomics, risk and derivatives, and how AI assistants can work with financial data. Most articles come with code you can run yourself with the [Finance Toolkit](/projects/financetoolkit).
+I write about the economy, financial markets and how financial theory is applied in practice: macroeconomics, fundamental analysis, risk and derivatives, and how AI assistants can work with financial data. Most articles come with code you can run yourself with the [Finance Toolkit](/projects/financetoolkit).
 
 {%- assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
 {%- assign all_tags = "" | split: "" %}
