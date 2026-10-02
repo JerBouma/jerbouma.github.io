@@ -90,14 +90,7 @@ Every one of these maps to a documented Finance Toolkit method, so if you want t
 
 Take the first prompt above. Asked *"Compare Apple with Microsoft, which company is the most profitable?"*, Claude calls the `profitability` tool for both tickers, receives the margins for fiscal years 2021 through 2025 and lays them out:
 
-| Metric | Company | 2021 | 2022 | 2023 | 2024 | 2025 |
-|:--|:--|--:|--:|--:|--:|--:|
-| Gross Margin | AAPL | 41.78% | 43.31% | 44.13% | 46.21% | 46.91% |
-| Gross Margin | MSFT | 68.93% | 68.40% | 68.92% | 69.76% | 68.82% |
-| Operating Margin | AAPL | 29.78% | 30.29% | 29.82% | 31.51% | 31.97% |
-| Operating Margin | MSFT | 41.59% | 42.06% | 41.77% | 44.64% | 45.62% |
-| Net Profit Margin | AAPL | 25.88% | 25.31% | 25.31% | 23.97% | 26.92% |
-| Net Profit Margin | MSFT | 36.45% | 36.69% | 34.15% | 35.96% | 36.15% |
+{% include ft-chart.html id="claude-margins" src="/assets/data/article-charts.json" label="Margins of Apple and Microsoft" %}
 
 On margins alone the answer is Microsoft, by a wide and consistent gap: roughly 22 percentage points more net income per dollar of revenue in fiscal 2025. The next step is where the MCP server does more than a raw data feed would. Without being asked, Claude follows up with a second tool call for capital-efficiency metrics and finds that Apple's return on invested capital (70.38% in 2025 versus 30.64% for Microsoft) and return on assets (30.93% versus 18.00%) point the other way. Its conclusion, that Microsoft is the more profitable business per dollar of revenue while Apple extracts more value per dollar of capital, is the kind of nuance that a single headline number hides.
 
@@ -118,3 +111,5 @@ A few habits that make a noticeable difference when using Claude with financial 
 The same server works with any MCP-compatible client. The [Finance Toolkit MCP server](/projects/financetoolkit/mcp#installation) page has step-by-step instructions for ChatGPT (Developer mode), Cursor, VS Code with GitHub Copilot, Windsurf, Codex CLI and Gemini CLI, plus the local installation for clients that only support stdio transport. If you would rather skip the assistant altogether, the [Finance Toolkit](/projects/financetoolkit) Python library exposes the same 500+ methods directly.
 
 If you run into a problem or have an idea for a new tool, open an issue on [GitHub](https://github.com/JerBouma/FinanceToolkit/issues){:target="_blank"}; the server is open source and contributions are welcome.
+
+<script src="/assets/js/ft-charts.js" defer></script>

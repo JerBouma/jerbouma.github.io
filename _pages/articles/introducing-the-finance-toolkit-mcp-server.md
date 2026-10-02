@@ -125,15 +125,7 @@ These are iShares STOXX Europe 600 sector UCITS ETFs: EXV9.DE (Travel & Leisure)
 
 Which returns:
 
-| Date | Travel & Leisure | Banks | Health Care | Real Estate | Technology | Utilities | Oil & Gas |
-|------|------------------:|------:|-------------:|-------------:|------------:|-----------:|-----------:|
-| 2019-12 | 63.3 | 51.4 | 77.0 | 70.4 | 72.7 | 89.7 | 51.1 |
-| 2020-03 | 26.9 | 31.9 | 65.9 | 36.2 | 53.2 | 51.9 | 26.8 |
-| 2020-06 | 30.2 | 26.2 | 70.2 | 39.5 | 59.1 | 59.9 | 21.4 |
-| 2020-09 | 34.9 | 28.9 | 61.5 | 44.0 | 61.6 | 57.6 | 19.3 |
-| 2021-01 | 40.7 | 35.4 | 48.4 | 40.7 | 61.0 | 57.9 | 34.5 |
-| 2021-05 | 77.0 | 79.0 | 63.3 | 75.3 | 80.9 | 71.2 | 61.1 |
-| 2021-12 | 61.7 | 79.5 | 79.1 | 74.5 | 83.3 | 65.9 | 76.3 |
+{% include ft-chart.html id="mcp-rsi" src="/assets/data/article-charts.json" label="RSI of European sector ETFs" %}
 
 Oil & Gas was the most oversold sector of the whole crisis, bottoming at an RSI of 19.3 in September 2020, well past the typical oversold line of 30, and it stayed depressed there for most of the year as travel demand collapse fed straight through to fuel demand. Banks were close behind, troughing at 26.2 in June 2020 and not climbing back above the 40 mark until November, longer than any other sector here took to recover. Health Care and Technology never came close to oversold even at the worst of the March 2020 crash, with RSI bottoming at 65.9 and 53.2 respectively, the closest thing to a flight-to-quality signal in this dataset.
 
@@ -178,11 +170,7 @@ The R-squared column is the most useful read here, since it tells you how reliab
 
 That gap widens when you look at the trend across years rather than a single snapshot:
 
-| Ticker | 2021 | 2022 | 2023 | 2024 | 2025 |
-|--------|-----:|-----:|-----:|-----:|-----:|
-| MELI R² | 0.619 | 0.347 | 0.213 | 0.334 | 0.122 |
-| VALE R² | 0.131 | 0.196 | 0.408 | 0.489 | 0.511 |
-| SCCO R² | 0.149 | 0.288 | 0.299 | 0.471 | 0.529 |
+{% include ft-chart.html id="mcp-r2" src="/assets/data/article-charts.json" label="Fama-French R-squared by year" %}
 
 MELI's R-squared has fallen almost every year since 2021, from 0.619 to 0.122, meaning the five-factor model explains less and less of its return over time as the stock has decoupled further from traditional risk factors. VALE and SCCO show the opposite pattern, with explanatory power roughly tripling over the same five years as both mining names became more tightly linked to broad market and value-style risk during the commodity cycle. None of that shows up in a beta or alpha calculation alone, which is the case for running the full factor model instead of stopping at single-factor CAPM.
 
@@ -210,13 +198,7 @@ gdp_growth = economics.get_gross_domestic_product(
 
 Which returns:
 
-| Country | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 |
-|---------|-----:|-----:|-----:|-----:|-----:|-----:|
-| India | -1.2% | 18.9% | 14.2% | 9.6% | 10.1% | 10.4% |
-| Vietnam | 4.4% | 5.5% | 12.5% | 7.1% | 10.4% | 9.6% |
-| Indonesia | -2.5% | 9.9% | 15.4% | 6.7% | 7.6% | 7.7% |
-| China | 3.5% | 11.7% | 5.0% | 4.6% | 4.5% | 6.4% |
-| South Korea | 0.9% | 7.9% | 4.6% | 3.3% | 5.5% | 4.0% |
+{% include ft-chart.html id="mcp-asia" src="/assets/data/article-charts.json" label="Nominal GDP growth in Asia" %}
 
 India has held growth above 9.5% every year since the 2020 contraction, while China has settled into a slower mid-single-digit pace after its 2021 reopening spike. South Korea, the most mature economy in this group, tracks closest to developed-market growth rates throughout. None of this required scraping a single government website or reconciling conflicting definitions across sources, which is the same problem this whole project started from.
 
@@ -226,3 +208,5 @@ Asking the Finance Toolkit MCP gives an answer like the one below.
   <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6o1jp35n33itf807nhx5.png" alt="Finance Toolkit MCP response on GDP growth across Asian economies" width="600">
   <br><em>Investment as a share of GDP is one of the cleanest leading indicators of structural economic development. Vietnam and India led the region in the 2000s, fuelling their infrastructure and manufacturing buildouts. Bangladesh has been rising steadily since 2010, which is typical of an economy still in the upgrading phase rather than one that has plateaued like Malaysia or Thailand.</em>
 </p>
+
+<script src="/assets/js/ft-charts.js" defer></script>
