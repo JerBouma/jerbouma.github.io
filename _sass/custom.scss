@@ -5742,3 +5742,33 @@ body.ft-overview .page__content {
 
   strong { color: var(--text-primary); }
 }
+
+// Profitability ratios: one card per ratio with a trend line
+.ft-kpis {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 6px;
+
+  &__card {
+    padding: 14px 12px 6px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: rgba(128, 128, 128, 0.04);
+  }
+
+  .page__content &__name { margin: 0 !important; color: var(--text-secondary) !important; font-size: 13px !important; font-weight: 600; }
+  .page__content &__value { margin: 4px 0 2px !important; color: var(--text-primary) !important; font-size: 24px !important; font-weight: 800; letter-spacing: -0.02em; }
+  .page__content &__delta { margin: 0 !important; font-size: 12.5px !important; font-weight: 600; }
+  .page__content &__delta.is-up { color: #34d399 !important; }
+  .page__content &__delta.is-down { color: #f472b6 !important; }
+
+  &__canvas { width: 100%; height: 130px; }
+  .page__content &__delta i { margin-right: 3px; }
+
+  @media (max-width: 1100px) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @media (max-width: 600px) { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+}
+
+:root[data-theme="light"] .page__content .ft-kpis__delta.is-up { color: #059669 !important; }
+:root[data-theme="light"] .page__content .ft-kpis__delta.is-down { color: #db2777 !important; }
