@@ -24,7 +24,7 @@ reddit:
     body: |
       I wrote up a full equity research pass on one company (Axon Enterprise, AXON) done entirely as a conversation in Claude Desktop with Financial Modeling Prep's MCP server added as a custom connector. The use case I had in mind is a family office or small fund with a concentrated portfolio and no research desk. Every prompt below was actually run before writing; the numbers are what came back.
 
-      **Setup:** Settings → Connectors → Add custom connector, URL `https://financialmodelingprep.com/mcp?apikey=YOUR_KEY`. Nothing to install locally. FMP's free tier (250 requests a day) was enough for everything below.
+      **Setup:** Settings → Connectors → Add custom connector, URL `https://financialmodelingprep.com/mcp?apikey=FINANCIAL_MODELING_PREP_KEY`. Nothing to install locally. FMP's free tier (250 requests a day) was enough for everything below.
 
       **The prompts and what they surfaced:**
 
