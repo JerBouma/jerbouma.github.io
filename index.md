@@ -58,11 +58,11 @@ classes: custom-splash home-v2
       <p>A practical guide to building financial models in Python that stay maintainable.</p>
       <span class="hp-more">Guide <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
     </a>
-    <a class="hp-pillar" href="/appearances">
-      <i class="fas fa-microphone" aria-hidden="true"></i>
-      <h3>Talks &amp; Writing</h3>
-      <p>Talks at universities and conferences, insights and a curated reading list.</p>
-      <span class="hp-more">Media <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+    <a class="hp-pillar" href="/insights">
+      <i class="fas fa-lightbulb" aria-hidden="true"></i>
+      <h3>Insights</h3>
+      <p>Analysis of markets, companies and economies, talks at universities and conferences, and a curated reading list.</p>
+      <span class="hp-more">Insights <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
     </a>
   </div>
 </section>

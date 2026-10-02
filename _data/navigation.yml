@@ -34,13 +34,13 @@ main:
         url: /modelling/test-your-model
       - title: Working with AI
         url: /modelling/working-with-ai
-  - title: "Media"
-    url: /appearances
+  - title: "Insights"
+    url: /insights
     sublinks:
-      - title: Appearances
-        url: /appearances
       - title: Insights
         url: /insights
+      - title: Appearances
+        url: /appearances
       - title: Literature
         url: /literature
   - title: "Contact"
