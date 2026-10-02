@@ -1,7 +1,7 @@
 ---
 title: Resume
-excerpt: "Quantitative Investment Strategist who analyzes financial information and turns it into investment conclusions, backed by deep expertise in Python and AI."
-description: "Quantitative Investment Strategist who analyzes financial information and turns it into investment conclusions, backed by deep expertise in Python and AI."
+excerpt: "Quantitative Investment Strategist who analyzes financial information and turns it into investment conclusions, sharpened by deep expertise in Python and AI."
+description: "Quantitative Investment Strategist who analyzes financial information and turns it into investment conclusions, sharpened by deep expertise in Python and AI."
 permalink: /resume
 redirect_from:
   - /cv
