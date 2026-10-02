@@ -1,21 +1,23 @@
 {
  "charts": {
   "claude-margins": {
-   "type": "tabs",
-   "title": "Apple and Microsoft margins, fiscal years",
-   "tabs": [
+   "type": "compare",
+   "title": "Apple versus Microsoft margins",
+   "x": [
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "format": "percent",
+   "names": {
+    "AAPL": "Apple",
+    "MSFT": "Microsoft"
+   },
+   "metrics": [
     {
-     "label": "Gross Margin",
-     "type": "line",
-     "title": "",
-     "x": [
-      "2021",
-      "2022",
-      "2023",
-      "2024",
-      "2025"
-     ],
-     "format": "percent",
+     "name": "Gross Margin",
      "series": [
       {
        "name": "AAPL",
@@ -40,17 +42,7 @@
      ]
     },
     {
-     "label": "Operating Margin",
-     "type": "line",
-     "title": "",
-     "x": [
-      "2021",
-      "2022",
-      "2023",
-      "2024",
-      "2025"
-     ],
-     "format": "percent",
+     "name": "Operating Margin",
      "series": [
       {
        "name": "AAPL",
@@ -75,17 +67,7 @@
      ]
     },
     {
-     "label": "Net Profit Margin",
-     "type": "line",
-     "title": "",
-     "x": [
-      "2021",
-      "2022",
-      "2023",
-      "2024",
-      "2025"
-     ],
-     "format": "percent",
+     "name": "Net Profit Margin",
      "series": [
       {
        "name": "AAPL",

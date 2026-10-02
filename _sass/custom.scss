@@ -5786,5 +5786,50 @@ body.ft-overview .page__content {
   @media (max-width: 600px) { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 }
 
+// two companies compared per metric (renderCompare in ft-charts.js)
+.ft-compare {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 6px;
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 14px 6px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: rgba(128, 128, 128, 0.04);
+  }
+
+  &__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
+  &__gap {
+    padding: 3px 9px;
+    border: 1px solid var(--c);
+    border-radius: 999px;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  &__sides { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+
+  .page__content &__who {
+    display: flex; align-items: center; gap: 6px;
+    margin: 0 !important; color: var(--text-secondary) !important; font-size: 12.5px !important; font-weight: 600;
+    span { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+  }
+
+  .page__content &__value { margin: 2px 0 1px !important; color: var(--text-primary) !important; font-size: 24px !important; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+  .page__content &__side .ft-kpis__delta { font-size: 11.5px !important; }
+
+  &__canvas { width: 100%; height: 140px; margin-top: 4px; }
+
+  @media (max-width: 900px) { grid-template-columns: 1fr; }
+}
+
 :root[data-theme="light"] .page__content .ft-kpis__delta.is-up { color: #059669 !important; }
 :root[data-theme="light"] .page__content .ft-kpis__delta.is-down { color: #db2777 !important; }

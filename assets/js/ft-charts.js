@@ -284,9 +284,84 @@
     instances.push({ draw: draw });
   }
 
+  // Two companies side by side: one card per metric with both latest values,
+  // the gap between them and a trend chart with the gap shaded
+  function renderCompare(box, chart) {
+    box.innerHTML = '';
+    var head = document.createElement('div');
+    head.className = 'ft-chart__head';
+    var title = document.createElement('p');
+    title.className = 'ft-chart__title';
+    title.textContent = chart.title + ', fiscal ' + chart.x[0] + '–' + chart.x[chart.x.length - 1];
+    head.appendChild(title);
+    var grid = document.createElement('div');
+    grid.className = 'ft-compare';
+    box.appendChild(head);
+    box.appendChild(grid);
+    var fmt = formatter(chart.format);
+    var colors = [PALETTE[0], PALETTE[1]];
+    var names = chart.names || {};
+    var last = chart.x.length - 1;
+    var cards = chart.metrics.map(function (m) {
+      var a = m.series[0], b = m.series[1];
+      var gap = (b.data[last] - a.data[last]) * 100;
+      var leader = gap >= 0 ? b : a;
+      var sides = m.series.map(function (s, i) {
+        var diff = (s.data[last] - s.data[0]) * 100;
+        return '<div class="ft-compare__side">' +
+          '<p class="ft-compare__who"><span style="background:' + colors[i] + '"></span>' + (names[s.name] || s.name) + '</p>' +
+          '<p class="ft-compare__value">' + fmt(s.data[last]) + '</p>' +
+          '<p class="ft-kpis__delta ' + (diff >= 0 ? 'is-up' : 'is-down') + '">' + (diff >= 0 ? '+' : '') + diff.toFixed(1) + ' pp since ' + chart.x[0] + '</p></div>';
+      }).join('');
+      var card = document.createElement('div');
+      card.className = 'ft-compare__card';
+      card.innerHTML = '<div class="ft-compare__top"><p class="ft-kpis__name">' + m.name + '</p>' +
+        '<span class="ft-compare__gap" style="--c:' + colors[m.series.indexOf(leader)] + '" title="' + (names[leader.name] || leader.name) + ' leads by ' + Math.abs(gap).toFixed(1) + ' percentage points">' + leader.name + ' +' + Math.abs(gap).toFixed(1) + ' pp</span></div>' +
+        '<div class="ft-compare__sides">' + sides + '</div>';
+      var canvas = document.createElement('div');
+      canvas.className = 'ft-compare__canvas';
+      card.appendChild(canvas);
+      grid.appendChild(card);
+      var inst = window.echarts.init(canvas, null, { renderer: 'canvas' });
+      if ('ResizeObserver' in window) new ResizeObserver(function () { inst.resize(); }).observe(canvas);
+      return { inst: inst, m: m };
+    });
+    function draw() {
+      var muted = css('--text-muted', '#94a3b8');
+      var text = css('--text-secondary', '#cbd5e1');
+      cards.forEach(function (c) {
+        var a = c.m.series[0].data, b = c.m.series[1].data;
+        var low = a.map(function (v, i) { return Math.min(v, b[i]); });
+        var band = a.map(function (v, i) { return Math.abs(v - b[i]); });
+        var lines = c.m.series.map(function (s, i) {
+          return {
+            name: names[s.name] || s.name, type: 'line', data: s.data, symbolSize: 6, z: 3,
+            lineStyle: { width: 2.5, color: colors[i] }, itemStyle: { color: colors[i] },
+            label: { show: true, position: 'top', color: text, fontSize: 11, formatter: function (p) { return p.dataIndex === 0 || p.dataIndex === last ? fmt(p.value) : ''; } }
+          };
+        });
+        c.inst.setOption({
+          animationDuration: 500,
+          textStyle: { fontFamily: 'inherit' },
+          grid: { left: 22, right: 22, top: 24, bottom: 26 },
+          tooltip: { trigger: 'axis', valueFormatter: fmt, backgroundColor: css('--masthead-bg', '#0f1115'), borderColor: css('--card-border', 'rgba(255,255,255,0.1)'), textStyle: { color: css('--text-primary', '#f8fafc'), fontSize: 13 } },
+          xAxis: { type: 'category', data: chart.x, boundaryGap: false, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: muted, fontSize: 12, interval: function (i) { return i === 0 || i === last; } } },
+          yAxis: { type: 'value', show: false, scale: true },
+          series: [
+            { name: '_low', type: 'line', data: low, stack: 'gap', symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
+            { name: '_gap', type: 'line', data: band, stack: 'gap', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: 'rgba(129, 140, 248, 0.14)' }, tooltip: { show: false }, silent: true }
+          ].concat(lines)
+        }, true);
+      });
+    }
+    draw();
+    instances.push({ draw: draw });
+  }
+
   function render(box, chart) {
     if (chart.type === 'dupont') return renderDupont(box, chart);
     if (chart.type === 'kpis') return renderKpis(box, chart);
+    if (chart.type === 'compare') return renderCompare(box, chart);
     var specs = chart.type === 'tabs' ? chart.tabs : [chart];
     box.innerHTML = '';
     var head = document.createElement('div');
