@@ -23,6 +23,12 @@ require "json"
 # pages. Links in page content are rewritten the same way, and old anchor links
 # (the FinanceToolkit README uses them) are forwarded by a small script.
 #
+# The collect_ functions (collect_profitability_ratios, collect_all_greeks,
+# ...) only gather the get_ functions of a module, so they get no page of their
+# own: their sidebar entries go, links to them point at the module page and the
+# pages they used to have redirect there. Portfolio's collect_historical_data
+# and collect_benchmark_historical_data load data and keep their pages.
+#
 # Nothing is duplicated in the repository: the pages are cut from docs.py's
 # output on every build. Names and grouping come from the docs sidebars in
 # _data/navigation.yml; a function without a sidebar entry gets no page and
@@ -55,24 +61,33 @@ module DocsMetricPages
 
   SECTION = /^## (\w+)\n(.*?)(?=^## |\z)/m
 
-  # generated page paths, and "page_url#anchor" => new url
+  # generated page paths, "page_url#anchor" => new url, and the sidebar urls of
+  # the collect_ functions that link to their module instead
   GENERATED = []
   URL_MAP = {}
+  RETIRED = []
 
   class Page < Jekyll::PageWithoutAFile; end
 
   module_function
+
+  # collect_ functions of the calculating modules, which link to their module
+  def collector?(key, anchor)
+    anchor.start_with?("collect_") && !DATA_CLASSES.include?(key)
+  end
 
   def slugify(text)
     Jekyll::Utils.slugify(text.to_s.gsub("&", " and "), :mode => "default")
   end
 
   # anchor => { title:, group: } for every function the class sidebar lists,
-  # plus group => [anchors] in sidebar order
+  # plus group => [anchors] in sidebar order and anchor => title for the
+  # collect_ functions
   def sidebar(site, key)
     cls = CLASSES[key]
     entries = Array(site.data.dig("navigation", cls[:nav]))
     functions = {}
+    collectors = {}
     groups = Hash.new { |h, k| h[k] = [] }
     walk = lambda do |items, group|
       items.each do |item|
@@ -80,7 +95,9 @@ module DocsMetricPages
         if url.start_with?("#{cls[:url]}#")
           anchor = url.split("#", 2).last.downcase
           # on the Toolkit page "#ratios" etc. are class sections, not functions
-          unless anchor == "site-nav" || (key == "toolkit" && CLASSES.key?(anchor)) || functions.key?(anchor)
+          if collector?(key, anchor)
+            collectors[anchor] ||= item["title"].to_s.strip
+          elsif !(anchor == "site-nav" || (key == "toolkit" && CLASSES.key?(anchor)) || functions.key?(anchor))
             functions[anchor] = { :title => item["title"].to_s.strip, :group => group }
             groups[group] << anchor
           end
@@ -89,7 +106,7 @@ module DocsMetricPages
       end
     end
     walk.call(entries, cls[:name])
-    [functions, groups]
+    [functions, groups, collectors]
   end
 
   # split a function section into its parts
@@ -387,7 +404,7 @@ module DocsMetricPages
       class_page = pages[cls[:url]]
       next unless class_page
 
-      functions, groups = sidebar(site, key)
+      functions, groups, collectors = sidebar(site, key)
       # sidebar anchors are lowercase (kramdown's heading ids), a few function
       # names are not (get_EBT_to_EBIT), so sections are keyed by the lowercase
       # name and keep the real one for the code sample
@@ -482,6 +499,15 @@ module DocsMetricPages
         </script>
       HTML
       forward.each { |anchor, url| URL_MAP["#{cls[:url]}##{anchor}"] = url }
+
+      # collect_ functions: links go to the module page, their old pages
+      # (/docs/ratios/all-profitability-ratios) redirect there
+      collectors.each do |anchor, title|
+        URL_MAP["#{cls[:url]}##{anchor}"] = cls[:url]
+        RETIRED << "#{cls[:url]}##{anchor}"
+        old = "#{cls[:url]}/#{slugify(title)}"
+        class_page.data["redirect_from"] = Array(class_page.data["redirect_from"]) | [old, "#{old}/"]
+      end
     end
 
     distinct_titles(built)
@@ -503,15 +529,22 @@ module DocsMetricPages
   end
 
   # every sidebar entry that pointed at a function (or, on the Toolkit page, a
-  # class section) now points at its own page
+  # class section) now points at its own page; collect_ entries are dropped,
+  # or become a plain heading when they have children (First-Order Greeks)
   def rewrite_navigation(site)
     walk = lambda do |items|
-      Array(items).each do |item|
-        next unless item.is_a?(Hash)
-        url = item["url"].to_s
-        mapped = URL_MAP[url.sub(/#(.*)\z/) { "##{Regexp.last_match(1).downcase}" }]
-        item["url"] = mapped if mapped
+      return unless items.is_a?(Array)
+      items.reject! do |item|
+        next false unless item.is_a?(Hash)
+        url = item["url"].to_s.sub(/#(.*)\z/) { "##{Regexp.last_match(1).downcase}" }
+        if RETIRED.include?(url)
+          next true unless item["children"]
+          item.delete("url")
+        elsif (mapped = URL_MAP[url])
+          item["url"] = mapped
+        end
         walk.call(item["children"]) if item["children"]
+        false
       end
     end
     Array(site.data["navigation"]&.values).each { |nav| walk.call(nav) }
@@ -539,6 +572,7 @@ module DocsMetricPages
     def generate(site)
       GENERATED.clear
       URL_MAP.clear
+      RETIRED.clear
       DocsMetricPages.generate(site)
     end
   end

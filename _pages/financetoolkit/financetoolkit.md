@@ -172,7 +172,7 @@ And below the Earnings Before Interest, Taxes, Depreciation and Amortization (EB
 
 ### Obtaining Financial Ratios
 
-Get [Profitability Ratios](/projects/financetoolkit/docs/ratios#collect_profitability_ratios) based on the inputted balance sheet, income and cash flow statements. This can be any of the 80+ ratios within the `ratios` module.
+Get [Profitability Ratios](/projects/financetoolkit/docs/ratios) based on the inputted balance sheet, income and cash flow statements. This can be any of the 80+ ratios within the `ratios` module.
 
 ```python
 # Collect all Profitability Ratios for all tickers
@@ -253,7 +253,7 @@ Which can also be plotted together with Gamma, Theta and Vega as follows:
 
 {% include ft-chart.html id="greeks" label="Option Greeks for Apple" %}
 
-The `options` module is divided into four categories: [**Option Pricing**](/projects/financetoolkit/docs/options#get_black_scholes_model) (Black-Scholes, Binomial Model, Implied Volatility), [**First-Order Greeks**](/projects/financetoolkit/docs/options#collect_first_order_greeks) (Delta, Vega, Theta, Rho), [**Second-Order Greeks**](/projects/financetoolkit/docs/options#collect_second_order_greeks) (Gamma, Vanna, Charm, Vomma) and [**Third-Order Greeks**](/projects/financetoolkit/docs/options#collect_third_order_greeks) (Speed, Zomma, Color, Ultima).
+The `options` module is divided into four categories: [**Option Pricing**](/projects/financetoolkit/docs/options#get_black_scholes_model) (Black-Scholes, Binomial Model, Implied Volatility), [**First-Order Greeks**](/projects/financetoolkit/docs/options) (Delta, Vega, Theta, Rho), [**Second-Order Greeks**](/projects/financetoolkit/docs/options) (Gamma, Vanna, Charm, Vomma) and [**Third-Order Greeks**](/projects/financetoolkit/docs/options) (Speed, Zomma, Color, Ultima).
 
 ### Obtaining Performance Metrics
 
@@ -332,7 +332,7 @@ And below the Ichimoku Cloud of the last twelve months is plotted for Apple and 
 
 {% include ft-chart.html id="technicals" label="Ichimoku Cloud" %}
 
-The 40+ indicators are divided into four categories: [**Breadth**](/projects/financetoolkit/docs/technicals#collect_breadth_indicators) (McClellan Oscillator, Advancers/Decliners, OBV, ADL, Chaikin Oscillator, TRIN, New Highs - New Lows), [**Momentum**](/projects/financetoolkit/docs/technicals#collect_momentum_indicators) (RSI, MACD, Stochastic, Williams %R, Aroon, CCI, ADX and more), [**Overlap**](/projects/financetoolkit/docs/technicals#collect_overlap_indicators) (SMA, EMA, DEMA, TRIX, WMA, Hull MA, VWAP, Parabolic SAR, Pivot Points, Support/Resistance) and [**Volatility**](/projects/financetoolkit/docs/technicals#collect_volatility_indicators) (ATR, Keltner Channels, Bollinger Bands, Donchian Channels, Volatility Cone).
+The 40+ indicators are divided into four categories: [**Breadth**](/projects/financetoolkit/docs/technicals) (McClellan Oscillator, Advancers/Decliners, OBV, ADL, Chaikin Oscillator, TRIN, New Highs - New Lows), [**Momentum**](/projects/financetoolkit/docs/technicals) (RSI, MACD, Stochastic, Williams %R, Aroon, CCI, ADX and more), [**Overlap**](/projects/financetoolkit/docs/technicals) (SMA, EMA, DEMA, TRIX, WMA, Hull MA, VWAP, Parabolic SAR, Pivot Points, Support/Resistance) and [**Volatility**](/projects/financetoolkit/docs/technicals) (ATR, Keltner Channels, Bollinger Bands, Donchian Channels, Volatility Cone).
 
 ### Obtaining Fixed Income Metrics
 
@@ -357,7 +357,7 @@ And below the effective yield for each credit rating is plotted over time.
 
 {% include ft-chart.html id="fixedincome" label="ICE BofA effective yields by credit rating" %}
 
-Beyond ICE BofA benchmarks, the `fixedincome` module covers [**Bond Valuations**](/projects/financetoolkit/docs/fixedincome#collect_bond_statistics) (Present Value, Macaulay/Modified Duration, Convexity, Yield to Maturity), [**Derivative Valuations**](/projects/financetoolkit/docs/fixedincome#get_derivative_price) (Black and Bachelier models for Swaptions), [**Government Bonds**](/projects/financetoolkit/docs/fixedincome#get_government_bond_yield) (3-month and 10-year yields) and **Central Bank rates** ([Euribor](/projects/financetoolkit/docs/fixedincome#get_euribor_rates), [ECB](/projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates) and [Federal Reserve rates](/projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates) incl. SOFR). It can be called via `companies.fixedincome` or standalone through `from financetoolkit import FixedIncome`.
+Beyond ICE BofA benchmarks, the `fixedincome` module covers [**Bond Valuations**](/projects/financetoolkit/docs/fixedincome) (Present Value, Macaulay/Modified Duration, Convexity, Yield to Maturity), [**Derivative Valuations**](/projects/financetoolkit/docs/fixedincome#get_derivative_price) (Black and Bachelier models for Swaptions), [**Government Bonds**](/projects/financetoolkit/docs/fixedincome#get_government_bond_yield) (3-month and 10-year yields) and **Central Bank rates** ([Euribor](/projects/financetoolkit/docs/fixedincome#get_euribor_rates), [ECB](/projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates) and [Federal Reserve rates](/projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates) incl. SOFR). It can be called via `companies.fixedincome` or standalone through `from financetoolkit import FixedIncome`.
 
 ### Understanding Key Economic Indicators
 
