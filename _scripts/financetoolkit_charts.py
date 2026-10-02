@@ -101,7 +101,7 @@ def main() -> None:
     ratios = companies.ratios.collect_profitability_ratios().loc["MSFT"]
     ratios = ratios.loc[[name for name in picked if name in ratios.index]].dropna(axis=1, how="any")
     charts["ratios"] = {
-        "type": "bar",
+        "type": "kpis",
         "title": "Profitability ratios for Microsoft",
         "x": list(ratios.index),
         "series": [{"name": label(year), "data": values(ratios[year])} for year in ratios.columns],

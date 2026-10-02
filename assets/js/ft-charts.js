@@ -220,8 +220,67 @@
     });
   }
 
+  // one card per ratio: the latest value, the change since the first year and
+  // a small trend line over the years
+  function renderKpis(box, chart) {
+    box.innerHTML = '';
+    var head = document.createElement('div');
+    head.className = 'ft-chart__head';
+    var title = document.createElement('p');
+    title.className = 'ft-chart__title';
+    title.textContent = chart.title + ', ' + chart.series[0].name + '–' + chart.series[chart.series.length - 1].name;
+    head.appendChild(title);
+    var grid = document.createElement('div');
+    grid.className = 'ft-kpis';
+    box.appendChild(head);
+    box.appendChild(grid);
+    var fmt = formatter(chart.format);
+    var years = chart.series.map(function (s) { return s.name; });
+    var cards = chart.x.map(function (name, r) {
+      var data = chart.series.map(function (s) { return s.data[r]; });
+      var first = data[0], last = data[data.length - 1];
+      var diff = (last - first) * 100;
+      var card = document.createElement('div');
+      card.className = 'ft-kpis__card';
+      card.innerHTML = '<p class="ft-kpis__name">' + name + '</p>' +
+        '<p class="ft-kpis__value">' + fmt(last) + '</p>' +
+        '<p class="ft-kpis__delta ' + (diff >= 0 ? 'is-up' : 'is-down') + '">' + (diff >= 0 ? '<i class="fas fa-arrow-trend-up" aria-hidden="true"></i> +' : '<i class="fas fa-arrow-trend-down" aria-hidden="true"></i> ') + diff.toFixed(1) + ' pp since ' + years[0] + '</p>';
+      var canvas = document.createElement('div');
+      canvas.className = 'ft-kpis__canvas';
+      card.appendChild(canvas);
+      grid.appendChild(card);
+      var inst = window.echarts.init(canvas, null, { renderer: 'canvas' });
+      if ('ResizeObserver' in window) new ResizeObserver(function () { inst.resize(); }).observe(canvas);
+      return { inst: inst, data: data, up: diff >= 0 };
+    });
+    function draw() {
+      var muted = css('--text-muted', '#94a3b8');
+      var text = css('--text-secondary', '#cbd5e1');
+      cards.forEach(function (c) {
+        var color = c.up ? '#34d399' : '#f472b6';
+        c.inst.setOption({
+          animationDuration: 500,
+          textStyle: { fontFamily: 'inherit' },
+          grid: { left: 20, right: 20, top: 26, bottom: 26 },
+          tooltip: { trigger: 'axis', valueFormatter: fmt, backgroundColor: css('--masthead-bg', '#0f1115'), borderColor: css('--card-border', 'rgba(255,255,255,0.1)'), textStyle: { color: css('--text-primary', '#f8fafc'), fontSize: 13 } },
+          xAxis: { type: 'category', data: years, boundaryGap: false, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: muted, fontSize: 12 } },
+          yAxis: { type: 'value', show: false, scale: true },
+          series: [{
+            type: 'line', data: c.data, smooth: false, symbolSize: 7,
+            lineStyle: { width: 2.5, color: color }, itemStyle: { color: color },
+            areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: color + '55' }, { offset: 1, color: color + '00' }] } },
+            label: { show: true, position: 'top', formatter: function (p) { return fmt(p.value); }, color: text, fontSize: 11 }
+          }]
+        }, true);
+      });
+    }
+    draw();
+    instances.push({ draw: draw });
+  }
+
   function render(box, chart) {
     if (chart.type === 'dupont') return renderDupont(box, chart);
+    if (chart.type === 'kpis') return renderKpis(box, chart);
     var specs = chart.type === 'tabs' ? chart.tabs : [chart];
     box.innerHTML = '';
     var head = document.createElement('div');

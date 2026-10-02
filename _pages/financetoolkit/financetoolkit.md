@@ -192,7 +192,7 @@ For example, see some of the profitability ratios of Microsoft below.
 | Interest Coverage Ratio         | 13.9982 | 16.5821 | 20.3429 | 25.3782 | 34.7835 | 47.4275 | 52.0244 |
 | Income Before Tax Profit Margin |  0.2574 |  0.3305 |  0.3472 |  0.3708 |  0.423  |  0.4222 |  0.4214 |
 
-And below a few of the profitability ratios of Microsoft are compared year by year.
+And below a few of the profitability ratios of Microsoft, each with its latest value, the change over the period and its trend.
 
 {% include ft-chart.html id="ratios" label="Profitability ratios of Microsoft" %}
 
