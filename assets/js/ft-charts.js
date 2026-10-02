@@ -5,15 +5,17 @@
  * /assets/data/financetoolkit-charts.json (written by
  * _scripts/financetoolkit_charts.py), or from the file in its data-src
  * attribute (the articles use /assets/data/article-charts.json), and drawn
- * with ECharts. Charts follow the
- * site's light/dark theme, resize with the page and are only drawn once they
- * scroll into view.
+ * with ECharts, which is served from this site (assets/js/lib) so no
+ * third-party CDN or content blocker can hold it up. ECharts and the data
+ * start loading as soon as the page opens; each chart is drawn once it
+ * scrolls into view. Charts follow the site's light/dark theme and resize
+ * with the page.
  */
 (function () {
   var boxes = Array.prototype.slice.call(document.querySelectorAll('.ft-chart[data-chart]'));
   if (!boxes.length) return;
 
-  var ECHARTS = 'https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js';
+  var ECHARTS = '/assets/js/lib/echarts-5.5.1.min.js';
   var DATA = '/assets/data/financetoolkit-charts.json';
   var PALETTE = ['#38bdf8', '#818cf8', '#f97316', '#34d399', '#f472b6', '#fbbf24', '#a78bfa'];
   var instances = [];
@@ -348,6 +350,12 @@
       box.innerHTML = '<p class="ft-chart__error">The chart could not be loaded.</p>';
     });
   }
+
+  // load ECharts and every data file the page uses right away, so the
+  // charts are ready by the time they scroll into view
+  boxes.map(function (b) { return b.getAttribute('data-src') || DATA; })
+    .filter(function (src, i, all) { return all.indexOf(src) === i; })
+    .forEach(function (src) { start(src).catch(function () {}); });
 
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
