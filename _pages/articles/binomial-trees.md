@@ -1,7 +1,7 @@
 ---
 title: Binomial Trees in the Finance Toolkit
 date: 2024-02-09
-last_modified_at: 2026-06-16
+last_modified_at: 2026-10-02
 permalink: /articles/binomial-trees
 excerpt: "Binomial trees are a popular method for pricing options and other derivatives. The Finance Toolkit includes a function for binomial trees, which can price European and American options. This article provides an overview of the binomial tree module and demonstrates its use in option pricing."
 description: "Learn how binomial trees work for pricing European and American options, with worked examples and Python code using the Finance Toolkit."
@@ -103,7 +103,7 @@ European options can only be exercised at expiration. Therefore, the option pric
 
 <div style="display: flex; justify-content: space-between;margin-bottom:10px" markdown="1">
 
-$$ C = e^{-(r - y) \cdot \Delta t} \cdot (p \cdot C_u + q \cdot C_d) $$
+$$ C = e^{-r \cdot \Delta t} \cdot (p \cdot C_u + q \cdot C_d) $$
 
 </div>
 
@@ -111,7 +111,7 @@ And the following formula for the Put option price at a given node:
 
 <div style="display: flex; justify-content: space-between;margin-bottom:10px" markdown="1">
 
-$$ P = e^{-(r - y) \cdot \Delta t} \cdot (p \cdot P_u + q \cdot P_d) $$
+$$ P = e^{-r \cdot \Delta t} \cdot (p \cdot P_u + q \cdot P_d) $$
 
 </div>
 
@@ -124,7 +124,7 @@ Where:
 - $$ P_u $$ is the Put option price at the next up node.
 - $$ P_d $$ is the Put option price at the next down node.
 
-This results in the following binomial trees for Call and Put options, assuming a risk-free rate of 2%, dividend yield of 0.5%, volatility of 25%, time to expiration of 1 year, 3 time steps, and a strike price of $100:
+This results in the following binomial trees for Call and Put options, assuming a risk-free rate of 2%, dividend yield of 0.5%, volatility of 25%, time to expiration of 1 year, 3 time steps, and a strike price of $90:
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -135,23 +135,17 @@ This results in the following binomial trees for Call and Put options, assuming 
 <div class="mermaid">
 flowchart TD;
 classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
-
-Step0["$18.32"]:::boxfont -- U --> Step1["$29.42"]:::boxfont
-Step0["$18.32"] -- D --> Step2["$6.73"]:::boxfont
-
-Step1["$29.42"] -- U --> Step3["$45.13"]:::boxfont
-Step1["$29.42"] -- D --> Step4["$13.11"]:::boxfont
-
-Step2["$6.73"] -- U --> Step4["$13.11"]:::boxfont
-Step2["$6.73"] -- D --> Step5["$0.00"]:::boxfont
-
-Step3["$45.13"] -- U --> Step6["$64.19"]:::boxfont
-Step3["$45.13"] -- D --> Step7["$25.53"]:::boxfont
-
-Step4["$13.11"] -- U --> Step7["$25.53"]:::boxfont
-Step4["$13.11"] -- D --> Step8["$0.00"]:::boxfont
-
-Step5["$0.00"] -- U --> Step8["$0.00"]:::boxfont
+Step0["$16.03"]:::boxfont -- U --> Step1["$27.25"]:::boxfont
+Step0["$16.03"] -- D --> Step2["$5.83"]:::boxfont
+Step1["$27.25"] -- U --> Step3["$43.84"]:::boxfont
+Step1["$27.25"] -- D --> Step4["$12.20"]:::boxfont
+Step2["$5.83"] -- U --> Step4["$12.20"]
+Step2["$5.83"] -- D --> Step5["$0.00"]:::boxfont
+Step3["$43.84"] -- U --> Step6["$64.19"]:::boxfont
+Step3["$43.84"] -- D --> Step7["$25.53"]:::boxfont
+Step4["$12.20"] -- U --> Step7["$25.53"]
+Step4["$12.20"] -- D --> Step8["$0.00"]:::boxfont
+Step5["$0.00"] -- U --> Step8["$0.00"]
 Step5["$0.00"] -- D --> Step9["$0.00"]:::boxfont
 </div>
 {% endraw %}
@@ -164,28 +158,20 @@ Step5["$0.00"] -- D --> Step9["$0.00"]:::boxfont
 
 {% raw %}
 <div class="mermaid">
-
 flowchart TD;
 classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
-
-Step0["$3.92"]:::boxfont -- U --> Step1["$0.78"]:::boxfont
-Step0["$3.92"] -- D --> Step2["$7.39"]:::boxfont
-
-Step1["$0.78"] -- U --> Step3["$0.00"]:::boxfont
-Step1["$0.78"] -- D --> Step4["$1.64"]:::boxfont
-
-Step2["$7.39"] -- U --> Step4["$1.64"]:::boxfont
-Step2["$7.39"] -- D --> Step5["$13.75"]:::boxfont
-
+Step0["$4.75"]:::boxfont -- U --> Step1["$0.91"]:::boxfont
+Step0["$4.75"] -- D --> Step2["$8.37"]:::boxfont
+Step1["$0.91"] -- U --> Step3["$0.00"]:::boxfont
+Step1["$0.91"] -- D --> Step4["$1.77"]:::boxfont
+Step2["$8.37"] -- U --> Step4["$1.77"]
+Step2["$8.37"] -- D --> Step5["$14.60"]:::boxfont
 Step3["$0.00"] -- U --> Step6["$0.00"]:::boxfont
 Step3["$0.00"] -- D --> Step7["$0.00"]:::boxfont
-
-Step4["$1.64"] -- U --> Step7["$0.00"]:::boxfont
-Step4["$1.64"] -- D --> Step8["$3.44"]:::boxfont
-
-Step5["$13.75"] -- U --> Step8["$3.44"]:::boxfont
-Step5["$13.75"] -- D --> Step9["$25.15"]:::boxfont
-
+Step4["$1.77"] -- U --> Step7["$0.00"]
+Step4["$1.77"] -- D --> Step8["$3.44"]:::boxfont
+Step5["$14.60"] -- U --> Step8["$3.44"]
+Step5["$14.60"] -- D --> Step9["$25.14"]:::boxfont
 </div>
 {% endraw %}
 
@@ -202,7 +188,7 @@ This leads to the following formulas for the option price at each node for an Am
 
 <div style="display: flex; justify-content: space-between;margin-bottom:10px" markdown="1">
 
-$$ C = max(S - K, e^{-(r - y) \cdot \Delta t} \cdot (p \cdot C_u + q \cdot C_d)) $$
+$$ C = max(S - K, e^{-r \cdot \Delta t} \cdot (p \cdot C_u + q \cdot C_d)) $$
 
 </div>
 
@@ -210,7 +196,7 @@ And the following formula for the option price at each node for an American Put 
 
 <div style="display: flex; justify-content: space-between;margin-bottom:10px" markdown="1">
 
-$$ P = max(K - S, e^{-(r - y) \cdot \Delta t} \cdot (p \cdot P_u + q \cdot P_d)) $$
+$$ P = max(K - S, e^{-r \cdot \Delta t} \cdot (p \cdot P_u + q \cdot P_d)) $$
 
 </div>
 
@@ -222,7 +208,7 @@ Where:
 - $$ K $$ is the strike price.
 - Other variables ($$r, y, \Delta t, p, q, C_u, C_d, P_u, P_d$$) are as defined previously.
 
-This results in the following binomial trees for American Call and Put options, using the same parameters as before (risk-free rate 2%, dividend yield 0.5%, volatility 25%, 1 year to expiration, 3 time steps) but with a strike price of $90:
+This results in the following binomial trees for American Call and Put options, using the same parameters as before (risk-free rate 2%, dividend yield 0.5%, volatility 25%, 1 year to expiration, 3 time steps and a strike price of $90):
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -234,24 +220,18 @@ This results in the following binomial trees for American Call and Put options, 
 flowchart TD;
 classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
 classDef highlightfont fill:#d67f05,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
-
-Step0["$20.59"]:::boxfont -- U --> Step1["$32.10"]:::highlightfont
-Step0["$20.59"] -- D --> Step2["$11.50"]:::boxfont
-
-Step1["$32.10"] -- U --> Step3["$47.64"]:::highlightfont
-Step1["$32.10"] -- D --> Step4["$17.64"]:::highlightfont
-
-Step2["$11.50"] -- U --> Step4["$17.64"]:::highlightfont
-Step2["$11.50"] -- D --> Step5["$5.00"]:::highlightfont
-
-Step3["$47.64"] -- U --> Step6["$64.19"]:::highlightfont
-Step3["$47.64"] -- D --> Step7["$25.53"]:::highlightfont
-
-Step4["$17.64"] -- U --> Step7["$25.53"]:::highlightfont
-Step4["$17.64"] -- D --> Step8["$0.00"]:::boxfont
-
-Step5["$5.00"] -- U --> Step8["$0.00"]:::boxfont
-Step5["$5.00"] -- D --> Step9["$0.00"]:::boxfont
+Step0["$16.03"]:::boxfont -- U --> Step1["$27.25"]:::boxfont
+Step0["$16.03"] -- D --> Step2["$5.83"]:::boxfont
+Step1["$27.25"] -- U --> Step3["$43.84"]:::boxfont
+Step1["$27.25"] -- D --> Step4["$12.20"]:::boxfont
+Step2["$5.83"] -- U --> Step4["$12.20"]
+Step2["$5.83"] -- D --> Step5["$0.00"]:::boxfont
+Step3["$43.84"] -- U --> Step6["$64.19"]:::boxfont
+Step3["$43.84"] -- D --> Step7["$25.53"]:::boxfont
+Step4["$12.20"] -- U --> Step7["$25.53"]
+Step4["$12.20"] -- D --> Step8["$0.00"]:::boxfont
+Step5["$0.00"] -- U --> Step8["$0.00"]
+Step5["$0.00"] -- D --> Step9["$0.00"]:::boxfont
 </div>
 {% endraw %}
 
@@ -263,29 +243,21 @@ Step5["$5.00"] -- D --> Step9["$0.00"]:::boxfont
 
 {% raw %}
 <div class="mermaid">
-
 flowchart TD;
 classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
 classDef highlightfont fill:#d67f05,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
-
-Step0["$4.00"]:::boxfont -- U --> Step1["$0.81"]:::boxfont
-Step0["$4.00"] -- D --> Step2["$7.56"]:::boxfont
-
-Step1["$0.81"] -- U --> Step3["$0.00"]:::boxfont
-Step1["$0.81"] -- D --> Step4["$1.69"]:::boxfont
-
-Step2["$7.56"] -- U --> Step4["$1.69"]:::boxfont
-Step2["$7.56"] -- D --> Step5["$13.98"]:::highlightfont
-
+Step0["$4.88"]:::highlightfont -- U --> Step1["$0.91"]:::boxfont
+Step0["$4.88"] -- D --> Step2["$8.61"]:::highlightfont
+Step1["$0.91"] -- U --> Step3["$0.00"]:::boxfont
+Step1["$0.91"] -- D --> Step4["$1.77"]:::boxfont
+Step2["$8.61"] -- U --> Step4["$1.77"]
+Step2["$8.61"] -- D --> Step5["$15.07"]:::highlightfont
 Step3["$0.00"] -- U --> Step6["$0.00"]:::boxfont
 Step3["$0.00"] -- D --> Step7["$0.00"]:::boxfont
-
-Step4["$1.69"] -- U --> Step7["$0.00"]:::boxfont
-Step4["$1.69"] -- D --> Step8["$3.44"]:::boxfont
-
-Step5["$13.98"] -- U --> Step8["$3.44"]:::boxfont
-Step5["$13.98"] -- D --> Step9["$25.15"]:::highlightfont
-
+Step4["$1.77"] -- U --> Step7["$0.00"]
+Step4["$1.77"] -- D --> Step8["$3.44"]:::boxfont
+Step5["$15.07"] -- U --> Step8["$3.44"]
+Step5["$15.07"] -- D --> Step9["$25.14"]:::boxfont
 </div>
 {% endraw %}
 
@@ -293,6 +265,8 @@ Step5["$13.98"] -- D --> Step9["$25.15"]:::highlightfont
 </div>
 
 Because the American option can be exercised early, its fair value can be higher than that of an equivalent European option, especially when the option is deep in the money. This occurs because the holder can capture the intrinsic value immediately rather than waiting. The nodes highlighted in <span style="color:#d67f05; font-weight:bold;">orange</span> in the binomial trees show where the American option's value (due to potential early exercise) exceeds the calculated European value at that node.
+
+In this example that only happens for the put. After two down moves the stock is at $74.93, and exercising the put there pays $15.07 straight away, more than the $14.60 that holding it is worth. That early-exercise value carries back through the tree, so the American put is worth $4.88 today against $4.75 for the European put. The American call is worth exactly the same as the European call, $16.03: with a dividend yield of only 0.5%, exercising a call early never beats holding it.
 
 ## Using the Finance Toolkit
 
@@ -364,41 +338,41 @@ This code generates DataFrames representing the binomial trees for European Call
 
 **European Call Option (Strike $90)**
 
-|     |        0 |         1 |        2 |       3 |
-|:----|---------:|----------:|---------:|--------:|
-| UUU |  20.5888 |  32.1034  |  47.6431 | 64.1896 |
-| UUD | nan      |  11.4975  |  17.6385 | 25.5274 |
-| UDD | nan      | nan       |   5      |  0      |
-| DDD | nan      | nan       | nan      |  0      |
+|     |        0 |        1 |        2 |        3 |
+|:----|---------:|---------:|---------:|---------:|
+| UUU | 16.0335 | 27.2484 | 43.8416 | 64.1896 |
+| DUU | nan | 5.8347 | 12.2042 | 25.5274 |
+| DDU | nan | nan | 0.0000 | 0.0000 |
+| DDD | nan | nan | nan | 0.0000 |
 
 **European Put Option (Strike $90)**
 
-|     |         0 |          1 |         2 |        3 |
-|:----|----------:|-----------:|----------:|---------:|
-| UUU |   3.99601 |   0.813419 |   0       |  0       |
-| UUD | nan       |   7.56254  |   1.69359 |  0       |
-| UDD | nan       | nan        |  13.9826  |  3.44045 |
-| DDD | nan       | nan        | nan       | 25.1448  |
+|     |        0 |        1 |        2 |        3 |
+|:----|---------:|---------:|---------:|---------:|
+| UUU | 4.7501 | 0.9135 | 0.0000 | 0.0000 |
+| DUU | nan | 8.3711 | 1.7728 | 0.0000 |
+| DDU | nan | nan | 14.6012 | 3.4404 |
+| DDD | nan | nan | nan | 25.1448 |
 
 **American Call Option (Strike $90)**
 
-|     |        0 |        1 |        2 |       3 |
-|:----|---------:|---------:|---------:|--------:|
-| UUU |  20.5888 |  32.1034 |  47.6431 | 64.1896 |
-| UUD | nan      |  11.4975 |  17.6385 | 25.5274 |
-| UDD | nan      | nan      |   5      |  0      |
-| DDD | nan      | nan      | nan      |  0      |
+|     |        0 |        1 |        2 |        3 |
+|:----|---------:|---------:|---------:|---------:|
+| UUU | 16.0335 | 27.2484 | 43.8416 | 64.1896 |
+| DUU | nan | 5.8347 | 12.2042 | 25.5274 |
+| DDU | nan | nan | 0.0000 | 0.0000 |
+| DDD | nan | nan | nan | 0.0000 |
 
 **American Put Option (Strike $90)**
 
-|     |         0 |          1 |         2 |        3 |
-|:----|----------:|-----------:|----------:|---------:|
-| UUU |   4.00311 |   0.813419 |   0       |  0       |
-| UUD | nan       |   7.56254  |   1.69359 |  0       |
-| UDD | nan       | nan        |  13.9826  |  3.44045 |
-| DDD | nan       | nan        | nan       | 25.1448  |
+|     |        0 |        1 |        2 |        3 |
+|:----|---------:|---------:|---------:|---------:|
+| UUU | 4.8758 | 0.9135 | 0.0000 | 0.0000 |
+| DUU | nan | 8.6150 | 1.7728 | 0.0000 |
+| DDU | nan | nan | 15.0744 | 3.4404 |
+| DDD | nan | nan | nan | 25.1448 |
 
-*(Note: Slight differences compared to the manually calculated trees might arise from rounding in the manual example or precise calculations in the code.)*
+These are the same values as in the trees above.
 
 Now, let's apply this using actual company data. We'll use Apple Inc. (AAPL) and Microsoft Corporation (MSFT). The toolkit automatically fetches necessary inputs like the current stock price, risk-free rate, dividend yield, and calculates historical volatility.
 

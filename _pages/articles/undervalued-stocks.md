@@ -2,7 +2,7 @@
 title: Screening for Undervalued Stocks with the Finance Toolkit
 seo_title: "Screening for Undervalued Stocks in Python"
 date: 2026-06-14
-last_modified_at: 2026-06-26
+last_modified_at: 2026-10-02
 permalink: /articles/screening-undervalued-stocks-finance-toolkit
 excerpt: "How to build a systematic stock screen with the Finance Toolkit: pull valuation multiples across a universe of stocks, filter on several metrics at once and add profitability metrics to tell real value from value traps."
 description: "Build a Python-based stock screener using P/E, EV/EBITDA, ROIC, and gross margins with the Finance Toolkit."
@@ -139,8 +139,9 @@ quality = pd.DataFrame({
     "Gross Margin": gross_margin
 })
 
-# Apply the filtering from Step 2
-quality.loc[value_candidates]
+# Keep the candidates from Step 2
+quality = quality.loc[value_candidates.index]
+quality
 ```
 
 Which returns:

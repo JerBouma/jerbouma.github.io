@@ -1,7 +1,7 @@
 ---
 title: Competitor and Sector Analysis with the Finance Toolkit
 date: 2026-07-07
-last_modified_at: 2026-07-26
+last_modified_at: 2026-10-02
 permalink: /articles/semiconductor-sector-analysis-finance-toolkit
 excerpt: "The semiconductor sector from 2010 to 2025 through the Finance Toolkit: how revenue shifted, why gross margins drifted apart, and the two real competitive battles in the industry, Intel vs AMD and NVIDIA vs AMD."
 description: "Semiconductor sector analysis with the Finance Toolkit in Python: revenue, margins and ROIC across Intel, AMD, NVIDIA, Qualcomm, Broadcom and TI."
@@ -15,7 +15,7 @@ share: true
 
 In 2010, Intel generated $43.6 billion in revenue and its nearest competitor in logic chips, AMD, generated $6.5 billion. NVIDIA was a $3.3 billion company still best known for gaming graphics cards. Qualcomm was growing rapidly on the smartphone wave. Broadcom and Texas Instruments were mid-sized analog and connectivity specialists.
 
-By 2025 the same six companies look very different. NVIDIA has grown to $130.5 billion in revenue driven almost entirely by AI infrastructure demand. Intel sits at $52.9 billion, barely changed from its 2020 peak, now reporting losses. AMD has reached $34.6 billion and crossed Intel's gross margin for the first time in the company's history.
+By 2025 the same six companies look very different. NVIDIA has grown to $130.5 billion in revenue driven almost entirely by AI infrastructure demand. Intel sits at $52.9 billion, down from its 2020 peak of $77.9 billion, and is now reporting losses. AMD has reached $34.6 billion and crossed Intel's gross margin for the first time in the company's history.
 
 In this article I track that shift through the financial data with the Finance Toolkit, both in Python and through the MCP server for those who prefer to work conversationally.
 

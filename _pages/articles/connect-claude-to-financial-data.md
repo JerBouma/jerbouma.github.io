@@ -2,7 +2,7 @@
 title: How to Connect Claude to Live Financial Data for Stock Analysis
 seo_title: "Connect Claude to Live Financial Data"
 date: 2026-09-11
-last_modified_at: 2026-09-11
+last_modified_at: 2026-10-02
 permalink: /articles/connect-claude-to-financial-data
 excerpt: "Claude cannot see today's prices or the latest financial statements on its own. With the free, hosted Finance Toolkit MCP server you connect Claude Desktop, claude.ai or Claude Code to live financial data and 500+ analysis methods in about a minute, no installation required."
 description: "Connect Claude to live financial data in a minute with the free Finance Toolkit MCP server: stock analysis, ratios, technical indicators and macro data."
@@ -92,7 +92,7 @@ Take the first prompt above. Asked *"Compare Apple with Microsoft, which company
 
 {% include ft-chart.html id="claude-margins" src="/assets/data/article-charts.json" label="Margins of Apple and Microsoft" %}
 
-On margins alone the answer is Microsoft, by a wide and consistent gap: roughly 22 percentage points more net income per dollar of revenue in fiscal 2025. The next step is where the MCP server does more than a raw data feed would. Without being asked, Claude follows up with a second tool call for capital-efficiency metrics and finds that Apple's return on invested capital (70.38% in 2025 versus 30.64% for Microsoft) and return on assets (30.93% versus 18.00%) point the other way. Its conclusion, that Microsoft is the more profitable business per dollar of revenue while Apple extracts more value per dollar of capital, is the kind of nuance that a single headline number hides.
+On margins alone the answer is Microsoft, by a wide and consistent gap: roughly 9 percentage points more net income per dollar of revenue in fiscal 2025, and about 22 points more gross margin. The next step is where the MCP server does more than a raw data feed would. Without being asked, Claude follows up with a second tool call for capital-efficiency metrics and finds that Apple's return on invested capital (70.38% in 2025 versus 30.64% for Microsoft) and return on assets (30.93% versus 18.00%) point the other way. Its conclusion, that Microsoft is the more profitable business per dollar of revenue while Apple extracts more value per dollar of capital, is the kind of nuance that a single headline number hides.
 
 The [full conversation](/projects/financetoolkit/mcp#ex-apple-microsoft), along with five other examples covering European bank solvency, semiconductor momentum, Alibaba versus Amazon, unemployment rates and ESG scores, is on the MCP server page.
 
