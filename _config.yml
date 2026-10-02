@@ -94,7 +94,7 @@ yandex_site_verification :
 baidu_site_verification  :
 
 # Social Sharing
-og_image                 : "/assets/images/default/socialmediabanner.jpg"
+og_image                 : "/assets/images/default/share-banner.jpg"
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:

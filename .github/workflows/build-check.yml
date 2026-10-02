@@ -46,5 +46,12 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install --no-save --no-package-lock --prefix _scripts playwright@1.63.0
           if [ -z "$CHROME" ]; then npx --prefix _scripts playwright install --with-deps chromium; fi
           CHROME="$CHROME" NODE_PATH=_scripts/node_modules node _scripts/build-cv-pdf.js
+      - name: Render the share images
+        # the same renderer as the deploy, but strict: a broken template fails the check
+        if: matrix.ruby == '4.0'
+        run: |
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || true)"
+          CHROME="$CHROME" NODE_PATH=_scripts/node_modules node _scripts/build-share-images.js | tee /tmp/share.log
+          grep -q " 0 default" /tmp/share.log
       - name: Report output size
         run: du -sh _site && find _site -type f -size +1M -printf '%s %p\n' | sort -rn | awk '{printf "%6.1fMB %s\n",$1/1048576,$2}'
