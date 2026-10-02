@@ -126,6 +126,9 @@ def main() -> None:
     facts = sec_annual_facts("0000789019")
     revenue = facts["RevenueFromContractWithCustomerExcludingAssessedTax"]
     equity, assets = facts["StockholdersEquity"], facts["Assets"]
+    # total debt as the Toolkit defines it: borrowings plus lease liabilities
+    debt = sum(facts[tag].reindex(revenue.index).fillna(0) for tag in
+               ["LongTermDebt", "CommercialPaper", "OperatingLeaseLiability", "FinanceLeaseLiability"])
     average = lambda s: (s + s.shift(1)) / 2  # noqa: E731
     ratios = pd.DataFrame({
         "Gross Margin": profitability_model.get_gross_margin(revenue, revenue - facts["GrossProfit"]),
@@ -133,6 +136,8 @@ def main() -> None:
         "Net Profit Margin": profitability_model.get_net_profit_margin(facts["NetIncomeLoss"], revenue),
         "Return on Equity": profitability_model.get_return_on_equity(facts["NetIncomeLoss"], average(equity)),
         "Return on Assets": profitability_model.get_return_on_assets(facts["NetIncomeLoss"], average(assets)),
+        "Return on Invested Capital": profitability_model.get_return_on_invested_capital(
+            facts["NetIncomeLoss"], facts["PaymentsOfDividendsCommonStock"], average(equity), average(debt)),
     }).loc[lambda f: f.index >= 2020].dropna().T
     charts["ratios"] = {
         "type": "kpis",
