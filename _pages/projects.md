@@ -1,8 +1,8 @@
 ---
 title: Projects
 permalink: /projects
-excerpt: I apply much of the finance theory I've learned using Python.
-description: I apply much of the finance theory I've learned using Python.
+excerpt: "Open-source Python tools for financial analysis: the Finance Toolkit with 500+ transparent financial methods, its MCP server for AI assistants, and the Finance Database."
+description: "Open-source Python tools for financial analysis: the Finance Toolkit with 500+ transparent financial methods, its MCP server for AI assistants, and the Finance Database."
 layout: single
 classes: custom-document projects-v2
 author_profile: false
