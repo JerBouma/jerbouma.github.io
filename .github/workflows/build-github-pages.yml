@@ -73,6 +73,20 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install --no-save --no-package-lock --prefix _scripts playwright@1.63.0
           if [ -z "$CHROME" ]; then npx --prefix _scripts playwright install --with-deps chromium; fi
           CHROME="$CHROME" NODE_PATH=_scripts/node_modules node _scripts/build-cv-pdf.js
+      - name: Render the share images
+        # One og:image per page with its own title (_plugins/share_images.rb
+        # writes the list, _scripts/share-banner.html is the design). Reuses
+        # the Playwright install from the CV step. If rendering fails, every
+        # page gets the default banner instead, so no link preview breaks.
+        run: |
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || true)"
+          CHROME="$CHROME" NODE_PATH=_scripts/node_modules node _scripts/build-share-images.js || python3 - <<'PY'
+          import json, shutil
+          d = "_site/assets/images/share"
+          for item in json.load(open(f"{d}/manifest.json")):
+              shutil.copyfile("_site/assets/images/default/share-banner.jpg", f"{d}/{item['key']}.jpg")
+          print("Share images: default banner used for every page")
+          PY
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v4
