@@ -60,16 +60,9 @@ revenue = income.loc["Revenue"][
 
 Which returns:
 
-| Ticker | 2010 | 2014 | 2018 | 2022 | 2025 |
-|--------|-----:|-----:|-----:|-----:|-----:|
-| INTC | 43.6 | 55.9 | 70.8 | 63.1 | 52.9 |
-| AMD | 6.5 | 5.5 | 6.5 | 23.6 | 34.6 |
-| NVDA | 3.3 | 4.1 | 9.7 | 26.9 | 130.5 |
-| QCOM | 11.0 | 26.5 | 22.7 | 44.2 | 44.3 |
-| AVGO | 2.1 | 4.3 | 20.8 | 33.2 | 63.9 |
-| TXN | 14.0 | 13.0 | 15.8 | 20.0 | 17.7 |
+{% include ft-chart.html id="semis-revenue" src="/assets/data/article-charts.json" label="Semiconductor revenue" %}
 
-Several things stand out. Intel peaked somewhere between 2020 and 2022, then contracted, a pattern without precedent in the company's history. NVIDIA's inflection is visible between 2022 and 2025: revenue grew from $26.9 billion to $130.5 billion in three years. Broadcom's growth looks smooth in this table, but the jump from $4.3 billion in 2014 to $20.8 billion in 2018 was almost entirely acquisition-driven, as the company absorbed Avago Technologies, Brocade, and CA Technologies in rapid succession. TXN and QCOM, the two companies least exposed to the AI compute buildout, show the flattest trajectories.
+Several things stand out. Intel peaked somewhere between 2020 and 2022, then contracted, a pattern without precedent in the company's history. NVIDIA's inflection is visible between 2022 and 2025: revenue grew from $26.9 billion to $130.5 billion in three years. Broadcom's growth looks smooth in this chart, but the jump from $4.3 billion in 2014 to $20.8 billion in 2018 was almost entirely acquisition-driven, as the company absorbed Avago Technologies, Brocade, and CA Technologies in rapid succession. TXN and QCOM, the two companies least exposed to the AI compute buildout, show the flattest trajectories.
 
 > **Try this with the Finance Toolkit MCP:** *"Pull annual revenue for Intel, AMD, NVIDIA, Qualcomm, Broadcom, and Texas Instruments from 2010 to 2025. Which company had the highest revenue in 2010 and which did in 2025?"*
 
@@ -85,16 +78,9 @@ margins = gross_margin[["2010", "2014", "2018", "2022", "2025"]] * 100
 
 Which returns:
 
-| Ticker | 2010 | 2014 | 2018 | 2022 | 2025 |
-|--------|-----:|-----:|-----:|-----:|-----:|
-| INTC | 66.1% | 63.7% | 61.7% | 42.6% | 34.8% |
-| AMD | 45.6% | 33.4% | 37.8% | 44.9% | 49.5% |
-| NVDA | 35.4% | 54.9% | 59.9% | 64.9% | 75.0% |
-| QCOM | 68.0% | 59.7% | 54.9% | 57.8% | 55.4% |
-| AVGO | 46.2% | 43.9% | 51.5% | 66.6% | 67.8% |
-| TXN | 53.6% | 56.9% | 65.1% | 68.8% | 57.0% |
+{% include ft-chart.html id="semis-margins" src="/assets/data/article-charts.json" label="Semiconductor gross margins" %}
 
-The largest move in the table is Intel's, from 66% gross margins in 2010 to 34.8% in 2025. The proximate cause is that Intel's manufacturing processes fell behind TSMC's, first by one node generation, then two, so Intel's chips cost more to produce while competitors using TSMC got access to better processes at lower cost. As a result, Intel's cost-per-chip disadvantage compounds with every product cycle.
+The largest move in the chart is Intel's, from 66% gross margins in 2010 to 34.8% in 2025. The proximate cause is that Intel's manufacturing processes fell behind TSMC's, first by one node generation, then two, so Intel's chips cost more to produce while competitors using TSMC got access to better processes at lower cost. As a result, Intel's cost-per-chip disadvantage compounds with every product cycle.
 
 NVIDIA went in the opposite direction: from 35.4% in 2010 to 75.0% in 2025. A fabless company with a near-monopoly on AI training hardware can charge what the market bears, and the market has been willing to pay very high prices for H100 and Blackwell GPUs. NVIDIA's gross margin today is higher than Intel's ever was.
 
@@ -119,15 +105,7 @@ cpu_roic = sector.ratios.get_return_on_invested_capital().loc[cpu_rivals, years]
 
 Which returns:
 
-| Year | INTC Rev ($B) | AMD Rev ($B) | INTC GM | AMD GM | INTC ROIC | AMD ROIC |
-|------|-------------:|------------:|--------:|-------:|----------:|---------:|
-| 2010 | 43.6 | 6.5 | 66.1% | 45.6% | n/a | n/a |
-| 2014 | 55.9 | 5.5 | 63.7% | 33.4% | 22.8% | -16.1% |
-| 2018 | 70.8 | 6.5 | 61.7% | 37.8% | 27.0% | 14.9% |
-| 2020 | 77.9 | 9.8 | 56.0% | 44.5% | 23.6% | 50.2% |
-| 2022 | 63.1 | 23.6 | 42.6% | 44.9% | 10.1% | 4.0% |
-| 2024 | 53.1 | 25.8 | 32.7% | 49.4% | -10.9% | 2.8% |
-| 2025 | 52.9 | 34.6 | 34.8% | 49.5% | -0.2% | 6.8% |
+{% include ft-chart.html id="semis-intc-amd" src="/assets/data/article-charts.json" label="Intel versus AMD" %}
 
 From 2010 to 2017, Intel was dominant by every metric. AMD spent this period losing money, cutting headcount, and struggling to produce a competitive architecture. Its gross margins compressed from 45.6% to below 30% in 2015 and 2016 as it competed on price with inferior products.
 
@@ -153,15 +131,7 @@ gpu_roic = sector.ratios.get_return_on_invested_capital().loc[gpu_rivals, years]
 
 Which returns:
 
-| Year | NVDA Rev ($B) | AMD Rev ($B) | NVDA GM | AMD GM | NVDA ROIC | AMD ROIC |
-|------|-------------:|------------:|--------:|-------:|----------:|---------:|
-| 2010 | 3.3 | 6.5 | 35.4% | 45.6% | n/a | n/a |
-| 2014 | 4.1 | 5.5 | 54.9% | 33.4% | 11.6% | -16.1% |
-| 2018 | 9.7 | 6.5 | 59.9% | 37.8% | 37.5% | 14.9% |
-| 2020 | 10.9 | 9.8 | 62.0% | 44.5% | 24.3% | 50.2% |
-| 2022 | 26.9 | 23.6 | 64.9% | 44.9% | 32.2% | 4.0% |
-| 2024 | 60.9 | 25.8 | 72.7% | 49.4% | 68.4% | 2.8% |
-| 2025 | 130.5 | 34.6 | 75.0% | 49.5% | 102.6% | 6.8% |
+{% include ft-chart.html id="semis-nvda-amd" src="/assets/data/article-charts.json" label="NVIDIA versus AMD" %}
 
 Through 2020, the two companies moved roughly in parallel. AMD and NVIDIA were neck-and-neck on revenue. The ROIC numbers for 2020 (AMD at 50.2%, NVIDIA at 24.3%) actually show AMD leading, a reflection of AMD's lean capital base at that moment before the Xilinx acquisition.
 
@@ -189,14 +159,7 @@ current_valuation = pd.DataFrame({
 
 Which returns:
 
-| Ticker | P/E | EV/EBITDA |
-|--------|----:|----------:|
-| QCOM | 34.1 | 14.2 |
-| INTC | - | 19.1 |
-| TXN | 31.9 | 21.3 |
-| NVDA | 63.5 | 55.5 |
-| AVGO | 72.6 | 50.5 |
-| AMD | 80.8 | 52.1 |
+{% include ft-chart.html id="semis-valuation" src="/assets/data/article-charts.json" label="Semiconductor valuation multiples" %}
 
 Qualcomm is the cheapest name on EV/EBITDA at 14.2x, pricing in limited AI exposure and the ARM licensing exposure risk. Texas Instruments at 21.3x is being valued as a stable analog business with cyclical revenue sensitivity.
 
@@ -207,3 +170,5 @@ NVIDIA at 63.5x P/E and 55.5x EV/EBITDA is expensive in absolute terms. Whether 
 AMD at 80.8x P/E trades at a premium to NVIDIA despite lower ROIC and competition on two fronts. The premium reflects expectations for ROIC recovery as the Xilinx acquisition amortizes and as AI GPU shipments scale, which leaves real execution risk.
 
 > **Try this with the Finance Toolkit MCP:** *"Show current P/E and EV/EBITDA for Intel, AMD, NVIDIA, Qualcomm, Broadcom, and Texas Instruments. Which is the cheapest on each metric?"*
+
+<script src="/assets/js/ft-charts.js" defer></script>

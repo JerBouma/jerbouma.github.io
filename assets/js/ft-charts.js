@@ -1,9 +1,11 @@
 /*
- * Interactive charts on /projects/financetoolkit.
+ * Interactive charts on /projects/financetoolkit and the articles.
  *
  * Every <div class="ft-chart" data-chart="…"> is filled from
  * /assets/data/financetoolkit-charts.json (written by
- * _scripts/financetoolkit_charts.py) and drawn with ECharts. Charts follow the
+ * _scripts/financetoolkit_charts.py), or from the file in its data-src
+ * attribute (the articles use /assets/data/article-charts.json), and drawn
+ * with ECharts. Charts follow the
  * site's light/dark theme, resize with the page and are only drawn once they
  * scroll into view.
  */
@@ -16,8 +18,9 @@
   var PALETTE = ['#38bdf8', '#818cf8', '#f97316', '#34d399', '#f472b6', '#fbbf24', '#a78bfa'];
   var instances = [];
 
+  var loading = null;
   function loadScript(src) {
-    return new Promise(function (resolve, reject) {
+    return loading = loading || new Promise(function (resolve, reject) {
       if (window.echarts) return resolve();
       var s = document.createElement('script');
       s.src = src; s.async = true; s.onload = resolve; s.onerror = reject;
@@ -35,7 +38,11 @@
       if (v === null || v === undefined || isNaN(v)) return '–';
       switch (fmt) {
         case 'percent': return (v * 100).toFixed(Math.abs(v) < 0.1 ? 2 : 1) + '%';
-        case 'billions': return '$' + v.toFixed(0) + 'B';
+        case 'billions': {
+          var a = Math.abs(v);
+          return (v < 0 ? '-$' : '$') + a.toFixed(a < 1 && a !== 0 ? 2 : a < 10 && a !== 0 ? 1 : 0) + 'B';
+        }
+        case 'number': return v.toFixed(1);
         case 'multiple': return v.toFixed(2) + 'x';
         case 'price': return '$' + v.toFixed(2);
         case 'ratio': return v.toFixed(2);
@@ -324,17 +331,17 @@
     else window.addEventListener('resize', function () { instance.resize(); });
   }
 
-  var ready = null;
-  function start() {
-    if (!ready) {
-      ready = Promise.all([loadScript(ECHARTS), fetch(DATA).then(function (r) { return r.json(); })])
+  var ready = {};
+  function start(src) {
+    if (!ready[src]) {
+      ready[src] = Promise.all([loadScript(ECHARTS), fetch(src).then(function (r) { return r.json(); })])
         .then(function (r) { return r[1]; });
     }
-    return ready;
+    return ready[src];
   }
 
   function show(box) {
-    start().then(function (data) {
+    start(box.getAttribute('data-src') || DATA).then(function (data) {
       var chart = data.charts[box.getAttribute('data-chart')];
       if (chart) render(box, chart);
     }).catch(function () {

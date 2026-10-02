@@ -48,15 +48,7 @@ inflation = economics.get_inflation_rate(
 
 Which returns:
 
-| Year | Germany | United Kingdom | Japan | Brazil | United States |
-|------|--------:|----------------:|------:|-------:|---------------:|
-| 2019 | 1.3% | 1.8% | 0.5% | 3.7% | 1.8% |
-| 2020 | 0.5% | 1.0% | 0.0% | 3.2% | 1.2% |
-| 2021 | 3.1% | 2.5% | -0.2% | 8.3% | 4.7% |
-| 2022 | 6.9% | 7.9% | 2.5% | 9.3% | 8.0% |
-| 2023 | 5.9% | 6.8% | 3.3% | 4.6% | 4.1% |
-| 2024 | 2.4% | 2.6% | 2.2% | 4.3% | 3.0% |
-| 2025 | 2.0% | 2.1% | 2.0% | 3.6% | 1.9% |
+{% include ft-chart.html id="macro-inflation" src="/assets/data/article-charts.json" label="Inflation by country" %}
 
 Brazil's inflation took off a full year before the others, hitting 8.3% in 2021 while the US was still at 4.7% and Japan was in mild deflation at -0.2%. By 2022 the developed economies had caught up (Germany at 6.9%, the UK at 7.9%, the US at 8.0%), but Brazil had already peaked and was on its way back down to 4.6% by 2023. Japan never had a real inflation problem by international standards; its highest reading in this entire window is 3.3%, a number that would have counted as a good year almost anywhere else.
 
@@ -74,15 +66,7 @@ policy_rate = economics.get_central_bank_policy_rate(
 
 Which returns:
 
-| Year | Germany | United Kingdom | Japan | Brazil | United States |
-|------|--------:|----------------:|------:|-------:|---------------:|
-| 2019 | -0.45% | 0.75% | -0.10% | 4.50% | 1.625% |
-| 2020 | -0.50% | 0.10% | -0.10% | 2.00% | 0.125% |
-| 2021 | -0.50% | 0.25% | -0.10% | 9.25% | 0.125% |
-| 2022 | 0.44% | 3.50% | -0.10% | 13.75% | 4.375% |
-| 2023 | 3.63% | 5.25% | -0.10% | 11.75% | 5.375% |
-| 2024 | 3.81% | 4.75% | 0.25% | 12.25% | 4.375% |
-| 2025 | 2.88% | 4.13% | 0.50% | 8.31% | 4.255% |
+{% include ft-chart.html id="macro-rates" src="/assets/data/article-charts.json" label="Central bank policy rates" %}
 
 Brazil started hiking in 2021, a full year ahead of the Federal Reserve and the Bank of England, and took its policy rate from 2.0% to 13.75% in eighteen months, the steepest tightening cycle of the five. By the time the Fed and the Bank of England started moving in 2022, Brazil was already near its peak. The European Central Bank (the rate driving Germany's number here) lagged furthest behind, staying negative until mid-2022 and not clearing 3% until 2023.
 
@@ -102,17 +86,9 @@ unemployment = economics.get_unemployment_rate(
 
 Which returns:
 
-| Year | Germany | United Kingdom | Japan | Brazil | United States |
-|------|--------:|----------------:|------:|-------:|---------------:|
-| 2019 | 3.0% | 3.9% | 2.4% | 12.0% | 3.7% |
-| 2020 | 3.6% | 4.7% | 2.8% | 13.8% | 8.1% |
-| 2021 | 3.6% | 4.6% | 2.8% | 13.2% | 5.4% |
-| 2022 | 3.1% | 3.9% | 2.6% | 9.3% | 3.6% |
-| 2023 | 3.0% | 4.0% | 2.6% | 8.0% | 3.6% |
-| 2024 | 3.4% | 4.3% | 2.5% | 7.2% | 4.1% |
-| 2025 | 3.2% | 4.1% | 2.5% | 7.2% | 4.4% |
+{% include ft-chart.html id="macro-unemployment" src="/assets/data/article-charts.json" label="Unemployment rates" %}
 
-The US is the clearest case of a pandemic-driven spike rather than a rate-driven one: unemployment jumped to 8.1% in 2020 from lockdowns, then fell back to 3.6% by 2022, the same year the Fed started its steepest hikes since the 1980s. Unemployment barely moved after that, which sums up the soft landing debate in one row of a table: rates rose nearly five points and the labor market hardly reacted.
+The US is the clearest case of a pandemic-driven spike rather than a rate-driven one: unemployment jumped to 8.1% in 2020 from lockdowns, then fell back to 3.6% by 2022, the same year the Fed started its steepest hikes since the 1980s. Unemployment barely moved after that, which sums up the soft landing debate in a single line of the chart: rates rose nearly five points and the labor market hardly reacted.
 
 Brazil shows the opposite. Despite running the highest policy rate of any country here for three straight years, Brazilian unemployment fell every year from 2020 onward, from 13.8% to 7.2% by 2025. High rates did not stop the labor market from healing; whatever was driving Brazilian employment had little to do with the cost of borrowing at the margin. Germany and Japan, the two economies with the smallest rate moves, also show the smallest unemployment swings, which is closer to what theory predicts.
 
@@ -130,15 +106,7 @@ debt_to_gdp = economics.get_government_debt_to_gdp_ratio(
 
 Which returns:
 
-| Year | Germany | United Kingdom | Japan | Brazil | United States |
-|------|--------:|----------------:|------:|-------:|---------------:|
-| 2019 | 58.6% | 85.7% | 236.4% | 87.1% | 108.0% |
-| 2020 | 67.9% | 105.8% | 258.4% | 96.0% | 131.8% |
-| 2021 | 67.9% | 105.1% | 253.7% | 88.9% | 124.5% |
-| 2022 | 64.8% | 99.6% | 256.3% | 83.9% | 118.6% |
-| 2023 | 62.7% | 100.0% | 249.7% | 84.7% | 118.7% |
-| 2024 | 62.7% | 101.8% | 251.2% | 87.6% | 121.0% |
-| 2025 | 62.1% | 103.8% | 248.7% | 92.0% | 124.1% |
+{% include ft-chart.html id="macro-debt" src="/assets/data/article-charts.json" label="Government debt to GDP" %}
 
 Japan's debt-to-GDP ratio of roughly 249% is far above every other country here, more than double the United States and nearly two and a half times the United Kingdom. It has stayed in a tight band for years, which is itself notable: a decade of near-zero rates means rolling over that debt costs almost nothing, a luxury the BOJ's reluctance to hike helps preserve.
 
@@ -155,3 +123,5 @@ Brazil moved first and is furthest along in normalizing, having hiked early, pea
 Going forward, I would watch whether Japan's exit from negative rates accelerates as inflation proves more persistent than the BOJ expects, whether US and UK debt-to-GDP keeps climbing without consequence, and whether Brazil's early-mover advantage on rate cuts gives it room to support growth while the others are still catching up.
 
 > **Try this with the Finance Toolkit MCP:** *"Based on inflation, policy rates, unemployment, and debt-to-GDP for the United States, United Kingdom, Germany, Japan, and Brazil since 2019, which country is furthest along in normalizing after the pandemic shock, and which is most exposed if rates stay higher for longer?"*
+
+<script src="/assets/js/ft-charts.js" defer></script>

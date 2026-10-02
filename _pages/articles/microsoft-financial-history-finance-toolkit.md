@@ -56,17 +56,7 @@ revenue = income_statement.loc[
 
 Which returns:
 
-| Year | Revenue ($B) | Net Income ($B) |
-|------|-------------|-----------------|
-| 1986 | 0.2 | 0.04 |
-| 1990 | 1.2 | 0.3 |
-| 1995 | 5.9 | 1.5 |
-| 2000 | 23.0 | 9.4 |
-| 2005 | 39.8 | 12.3 |
-| 2010 | 62.5 | 18.8 |
-| 2015 | 93.6 | 12.2 |
-| 2020 | 143.0 | 44.3 |
-| 2025 | 281.7 | 101.8 |
+{% include ft-chart.html id="msft-revenue" src="/assets/data/article-charts.json" label="Microsoft revenue and net income" %}
 
 Growth in the Gates era was exceptional. Revenue grew from $197 million in 1986 to $23 billion in 2000, a 115-fold increase in 14 years driven almost entirely by Windows and Office on the back of the PC revolution. In economic terms Microsoft was a licensing business, with near-zero cost of reproduction and near-monopoly pricing power.
 
@@ -91,16 +81,7 @@ margins = ratios.loc[
 
 Which returns:
 
-| Year | Gross Margin | Net Margin |
-|------|-------------|------------|
-| 1990 | 82.6% | 23.6% |
-| 1995 | 89.8% | 24.5% |
-| 2000 | 86.9% | 41.0% |
-| 2005 | 84.8% | 30.8% |
-| 2010 | 80.2% | 30.0% |
-| 2015 | 64.7% | 13.0% |
-| 2020 | 67.8% | 31.0% |
-| 2025 | 68.8% | 36.2% |
+{% include ft-chart.html id="msft-margins" src="/assets/data/article-charts.json" label="Microsoft gross and net margins" %}
 
 Gross margins peaked near 90% in the mid-1990s, which is what pure software economics look like: once the disc was pressed, distributing a copy of Windows cost almost nothing. As Microsoft expanded into hardware (Xbox, Surface), services, and cloud infrastructure, the cost structure changed. Running Azure compute costs real money, as do gaming content, data center operations, and technical support at enterprise scale. By 2015, gross margins had compressed to 64.7%.
 
@@ -125,15 +106,7 @@ snapshot = balance_sheet.loc[
 
 Which returns:
 
-| Year | Cash + Investments ($B) | Long-Term Debt ($B) | Goodwill ($B) |
-|------|------------------------|--------------------|---------| 
-| 1995 | 2.0 | 0.0 | 0.0 |
-| 2000 | 23.8 | 0.0 | 0.0 |
-| 2005 | 37.8 | 0.0 | 0.0 |
-| 2010 | 36.8 | 4.9 | 12.4 |
-| 2015 | 96.5 | 27.8 | 16.9 |
-| 2020 | 136.5 | 59.6 | 43.4 |
-| 2025 | 94.6 | 40.2 | 119.5 |
+{% include ft-chart.html id="msft-balance" src="/assets/data/article-charts.json" label="Microsoft cash, debt and goodwill" %}
 
 The first debt appeared in 2009 (Finance Toolkit balance sheet). Microsoft did not need the money, but borrowing at low rates to fund buybacks was more tax-efficient than repatriating overseas cash. By 2020, cash and investments had reached $136 billion while long-term debt stood at $60 billion. The net position was still comfortably positive, but the capital structure had become more aggressive.
 
@@ -156,15 +129,7 @@ fcf_table = cash_flow.loc[
 
 Which returns:
 
-| Year | Operating Cash Flow ($B) | CapEx ($B) | Free Cash Flow ($B) |
-|------|------------------------|-----------|---------------------|
-| 1995 | 2.0 | -0.5 | 1.5 |
-| 2000 | 11.4 | -0.9 | 10.5 |
-| 2005 | 16.6 | -0.8 | 15.8 |
-| 2010 | 24.1 | -2.0 | 22.1 |
-| 2015 | 29.7 | -5.9 | 23.7 |
-| 2020 | 60.7 | -15.4 | 45.2 |
-| 2025 | 136.2 | -64.6 | 71.6 |
+{% include ft-chart.html id="msft-fcf" src="/assets/data/article-charts.json" label="Microsoft free cash flow" %}
 
 Microsoft generated $71.6 billion in free cash flow in fiscal 2025, more than the entire annual revenue of companies like Netflix or Airbnb. That comes from two things: subscription and consumption revenue that scales without proportional cost increases, and a customer base so embedded in Microsoft's products that churn is structurally low.
 
@@ -187,15 +152,7 @@ profitability_ratios.loc[
 
 Which returns:
 
-| Year | ROE | ROA | ROIC |
-|------|-----|-----|------|
-| 1990 | 37.7% | 30.6% | 36.9% |
-| 1995 | 29.3% | 23.1% | 29.3% |
-| 2000 | 27.0% | 20.7% | 27.0% |
-| 2010 | 43.8% | 22.9% | 47.9% |
-| 2015 | 14.4% | 7.0% | 19.4% |
-| 2020 | 40.1% | 15.1% | 30.5% |
-| 2025 | 33.3% | 18.0% | 30.6% |
+{% include ft-chart.html id="msft-returns" src="/assets/data/article-charts.json" label="Microsoft ROE, ROA and ROIC" %}
 
 The early numbers show what a capital-light monopoly looks like. An ROE of 38% in 1990 with zero debt and no buybacks means the underlying business really was that profitable. Those returns compressed through the 2000s as the business mix changed and the equity base remained large.
 
@@ -254,3 +211,5 @@ The drop in beta to 0.88 in 2025 stands out. For most of the Nadella era, Micros
 Alpha has been positive in most years, notably +0.33 in 2023 when Microsoft's AI positioning drove a 57% stock return (Finance Toolkit historical data) against the S&P 500's 26%. The negative alpha in 2022 and 2024 reflects years when the market rotated toward other sectors rather than any fundamental deterioration, as the business kept compounding throughout.
 
 What I would watch over the next few years is the pace of Azure growth (which funds everything else), margin expansion as the AI CapEx cycle matures, and whether Activision contributes enough to earnings to justify the $69 billion price tag. The 40-year financial track record gives Microsoft the benefit of the doubt, but at these valuations the margin for error is narrower than it has been at any point in the company's history outside the dot-com peak.
+
+<script src="/assets/js/ft-charts.js" defer></script>
