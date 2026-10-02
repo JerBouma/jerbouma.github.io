@@ -71,15 +71,19 @@ def main() -> None:
     charts = {}
 
     # Statements first: the models module relies on them being loaded
-    income = companies.get_income_statement()
-    ebitda = income.xs("EBITDA", level=1)
+    # EBITDA: Apple against Alphabet, whose fiscal years line up with Apple's
+    # closely enough that both have the same latest reported year (Microsoft's
+    # year ends in June, so it reports a year Apple has not finished yet)
+    peers = Toolkit(["AAPL", "GOOGL"], api_key=API_KEY, start_date=START)
+    ebitda = peers.get_income_statement().xs("EBITDA", level=1)
     charts["statements"] = line(
         ebitda.columns,
-        {ticker: ebitda.loc[ticker] / 1e9 for ticker in ["AAPL", "MSFT"]},
+        {"Apple": ebitda.loc["AAPL"] / 1e9, "Alphabet": ebitda.loc["GOOGL"] / 1e9},
         fmt="billions",
         kind="bar",
         title="EBITDA (USD billions)",
     )
+    companies.get_income_statement()  # the models module relies on the statements
 
     historical = companies.get_historical_data(period="weekly")
     cumulative = historical["Cumulative Return"]
