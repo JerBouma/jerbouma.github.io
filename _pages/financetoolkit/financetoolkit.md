@@ -166,7 +166,7 @@ For example, the first 5 rows of the Income Statement for Apple are shown below.
 | Gross Profit Ratio                | 0.3847      | 0.3834      | 0.3782      | 0.3823      | 0.4178      | 0.4331      | 0.4413      |
 | Research and Development Expenses | 1.1581e+10  | 1.4236e+10  | 1.6217e+10  | 1.8752e+10  | 2.1914e+10  | 2.6251e+10  | 2.9915e+10  |
 
-And below the Earnings Before Interest, Taxes, Depreciation and Amortization (EBITDA) are plotted for Apple and Alphabet, whose fiscal years line up closely, so both show the same latest reported year.
+And below the Earnings Before Interest, Taxes, Depreciation and Amortization (EBITDA) are plotted for Apple and Alphabet since 2017. Their fiscal years line up closely, so both show the same latest reported year.
 
 {% include ft-chart.html id="statements" label="EBITDA of Apple and Alphabet" %}
 
