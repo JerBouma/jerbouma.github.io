@@ -177,7 +177,7 @@ The local server runs on your own machine through `uvx` and works with every cli
 uvx --from "financetoolkit[mcp]" financetoolkit-mcp-setup
 ```
 
-If you prefer to do it by hand, pick your client below and add the snippet to its config file, replacing `YOUR_API_KEY_HERE` with your [FMP API key](/fmp){:target="_blank"}. The [API keys and environment variables](#local-api-keys) card at the end covers the `.env` file option and the optional FRED key.
+If you prefer to do it by hand, pick your client below and add the snippet to its config file, replacing `FINANCIAL_MODELING_PREP_KEY` with your [FMP API key](/fmp){:target="_blank"}. The [API keys and environment variables](#local-api-keys) card at the end covers the `.env` file option and the optional FRED key.
 
 <div class="ft-tabs" markdown="1">
 
@@ -198,7 +198,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
       "finance-toolkit": {
         "command": "uvx",
         "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
-        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "FINANCIAL_MODELING_PREP_KEY" }
       }
     }
   }
@@ -219,7 +219,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
   Run the following command once in your terminal:
 
   ```bash
-  claude mcp add --transport stdio finance-toolkit --env FINANCIAL_MODELING_PREP_API_KEY=YOUR_API_KEY_HERE -- uvx --from "financetoolkit[mcp]" financetoolkit-mcp
+  claude mcp add --transport stdio finance-toolkit --env FINANCIAL_MODELING_PREP_API_KEY=FINANCIAL_MODELING_PREP_KEY -- uvx --from "financetoolkit[mcp]" financetoolkit-mcp
   ```
 
   Or edit `~/.claude.json` (create it if needed) and merge the entry inside `mcpServers`:
@@ -230,7 +230,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
       "finance-toolkit": {
         "command": "uvx",
         "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
-        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "FINANCIAL_MODELING_PREP_KEY" }
       }
     }
   }
@@ -251,7 +251,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
   Run the following command once in your terminal:
 
   ```bash
-  codex mcp add finance-toolkit --env FINANCIAL_MODELING_PREP_API_KEY=YOUR_API_KEY_HERE -- uvx --from "financetoolkit[mcp]" financetoolkit-mcp
+  codex mcp add finance-toolkit --env FINANCIAL_MODELING_PREP_API_KEY=FINANCIAL_MODELING_PREP_KEY -- uvx --from "financetoolkit[mcp]" financetoolkit-mcp
   ```
 
   Or add the entry to `~/.codex/config.toml`:
@@ -260,7 +260,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
   [mcp_servers.finance-toolkit]
   command = "uvx"
   args = ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"]
-  env = { FINANCIAL_MODELING_PREP_API_KEY = "YOUR_API_KEY_HERE" }
+  env = { FINANCIAL_MODELING_PREP_API_KEY = "FINANCIAL_MODELING_PREP_KEY" }
   ```
 
 </details>
@@ -276,7 +276,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
       "finance-toolkit": {
         "command": "uvx",
         "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
-        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "FINANCIAL_MODELING_PREP_KEY" }
       }
     }
   }
@@ -295,7 +295,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
         "finance-toolkit": {
           "command": "uvx",
           "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
-          "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+          "env": { "FINANCIAL_MODELING_PREP_API_KEY": "FINANCIAL_MODELING_PREP_KEY" }
         }
       }
     }
@@ -315,7 +315,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
       "finance-toolkit": {
         "command": "uvx",
         "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
-        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "FINANCIAL_MODELING_PREP_KEY" }
       }
     }
   }
@@ -329,7 +329,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
       "finance-toolkit": {
         "command": "uvx",
         "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
-        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "FINANCIAL_MODELING_PREP_KEY" }
       }
     }
   }
@@ -348,7 +348,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
       "finance-toolkit": {
         "command": "uvx",
         "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
-        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "FINANCIAL_MODELING_PREP_KEY" }
       }
     }
   }
@@ -367,7 +367,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
       "finance-toolkit": {
         "command": "uvx",
         "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
-        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "FINANCIAL_MODELING_PREP_KEY" }
       }
     }
   }
@@ -380,7 +380,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
 <details class="ft-details ft-details--warning" id="local-api-keys" markdown="1">
   <summary><i class="fas fa-key"></i> <h3>API keys and environment variables</h3></summary>
 
-  In every snippet `uvx` is the *command* and the rest are *args*. The `env` block takes either `FINANCIAL_MODELING_PREP_API_KEY` with the key inline, or `FINANCETOOLKIT_ENV_FILE` with the path to a `.env` file that contains `FINANCIAL_MODELING_PREP_API_KEY=your_key_here`; when both are present the inline key wins.
+  In every snippet `uvx` is the *command* and the rest are *args*. The `env` block takes either `FINANCIAL_MODELING_PREP_API_KEY` with the key inline, or `FINANCETOOLKIT_ENV_FILE` with the path to a `.env` file that contains `FINANCIAL_MODELING_PREP_API_KEY=FINANCIAL_MODELING_PREP_KEY`; when both are present the inline key wins.
 
   A second key, `FRED_API_KEY`, is optional and free. It is only needed for a handful of US-only indicators without an OECD or FMP equivalent (nonfarm payrolls, initial jobless claims, the 30-year mortgage rate, the TIPS real yield curve and breakeven inflation expectations). The setup wizard picks it up automatically from your environment or `.env` file; [register for one here](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}.
 
@@ -798,7 +798,7 @@ The questions that come up most often about the server, its data sources and how
       "finance-toolkit": {
         "command": "uvx",
         "args": ["--from", "financetoolkit[mcp]", "financetoolkit-mcp"],
-        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "YOUR_API_KEY_HERE" }
+        "env": { "FINANCIAL_MODELING_PREP_API_KEY": "FINANCIAL_MODELING_PREP_KEY" }
       }
     }
   }
@@ -909,7 +909,7 @@ The questions that come up most often about the server, its data sources and how
       "name": "Can I run the server locally?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Run the setup wizard and pick your client, it writes the config entry including your API key: uvx --from \"financetoolkit[mcp]\" financetoolkit-mcp-setup Or add the entry to your client's MCP config by hand: { \"mcpServers\": { \"finance-toolkit\": { \"command\": \"uvx\", \"args\": [\"--from\", \"financetoolkit[mcp]\", \"financetoolkit-mcp\"], \"env\": { \"FINANCIAL_MODELING_PREP_API_KEY\": \"YOUR_API_KEY_HERE\" } } } } Config file locations per client are in the Local Clients cards, the .env file option and the optional FRED key in the API keys and environment variables card, and Claude Desktop users can skip all of this with the MCPB bundle."
+        "text": "Yes. Run the setup wizard and pick your client, it writes the config entry including your API key: uvx --from \"financetoolkit[mcp]\" financetoolkit-mcp-setup Or add the entry to your client's MCP config by hand: { \"mcpServers\": { \"finance-toolkit\": { \"command\": \"uvx\", \"args\": [\"--from\", \"financetoolkit[mcp]\", \"financetoolkit-mcp\"], \"env\": { \"FINANCIAL_MODELING_PREP_API_KEY\": \"FINANCIAL_MODELING_PREP_KEY\" } } } } Config file locations per client are in the Local Clients cards, the .env file option and the optional FRED key in the API keys and environment variables card, and Claude Desktop users can skip all of this with the MCPB bundle."
       }
     },
     {
