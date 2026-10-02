@@ -5657,6 +5657,13 @@ body.ft-overview .page__content {
 
   &__tabs { display: flex; flex-wrap: wrap; gap: 4px; }
 
+  .page__content &__legend {
+    display: flex; flex-wrap: wrap; gap: 4px 14px; width: 100%;
+    margin: -2px 0 0 !important; color: var(--text-muted) !important; font-size: 12.5px !important;
+    i { display: inline-block; width: 10px; height: 10px; margin-right: 5px; border-radius: 3px; vertical-align: -1px; }
+    i.is-muted { background: rgba(148, 163, 184, 0.45); }
+  }
+
   &__tab {
     padding: 5px 11px;
     border: 1px solid transparent;

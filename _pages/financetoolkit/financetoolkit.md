@@ -95,24 +95,29 @@ from financetoolkit import Discovery
 # Initialize the standalone Discovery module
 discovery = Discovery(api_key="FINANCIAL_MODELING_PREP_KEY")
 
-# Screen for stocks matching a set of criteria
-discovery.get_stock_screener(
-    market_cap_higher=1000000,
-    price_higher=100,
-    price_lower=200,
-    beta_higher=1,
-    beta_lower=1.5,
-    dividend_higher=1,
+# Find US semiconductor companies worth more than $100 billion
+semiconductors = discovery.get_stock_screener(
+    industry="Semiconductors",
+    country="US",
+    exchange="NASDAQ",
+    market_cap_higher=100_000_000_000,
+    is_etf=False,
 )
 ```
 
-Which returns:
+The screener returns twelve companies, of which the five largest are shown below:
 
-| Symbol   | Name              |   Market Cap | Sector            | Industry               |   Beta |   Price |   Dividend | Exchange                | Country   |
-|:---------|:------------------|-------------:|:------------------|:-----------------------|-------:|--------:|-----------:|:-------------------------|:----------|
-| NKE      | NIKE, Inc.        | 163403295604 | Consumer Cyclical | Footwear & Accessories |  1.079 | 107.36  |       1.48 | New York Stock Exchange  | US        |
-| SAF.PA   | Safran SA         |  66234006559 | Industrials       | Aerospace & Defense    |  1.339 | 160.16  |       1.35 | Paris                    | FR        |
-| ROST     | Ross Stores, Inc. |  46724188589 | Consumer Cyclical | Apparel Retail         |  1.026 | 138.785 |       1.34 | NASDAQ Global Select     | US        |
+| Symbol   | Name                         |    Market Cap |   Beta |    Price |   Dividend |
+|:---------|:-----------------------------|--------------:|-------:|---------:|-----------:|
+| NVDA     | NVIDIA Corporation           | 5677886820000 |  2.217 |   234.42 |       0.28 |
+| AVGO     | Broadcom Inc.                | 1688566002696 |  1.457 |   354.92 |       2.60 |
+| MU       | Micron Technology, Inc.      | 1212744628950 |  2.222 |  1073.81 |       0.53 |
+| AMD      | Advanced Micro Devices, Inc. | 1028957518000 |  2.476 |   631.03 |       0.00 |
+| INTC     | Intel Corp.                  |  604977329655 |  2.231 |   119.94 |       0.00 |
+
+And below all twelve are ranked by market cap.
+
+{% include ft-chart.html id="discovery" label="US semiconductor companies worth more than $100 billion" %}
 
 This module also includes [stock screeners](/projects/financetoolkit/docs/discovery#get_stock_screener), [sector/industry performance](/projects/financetoolkit/docs/discovery#get_sectors_performance), [news feeds](/projects/financetoolkit/docs/discovery#get_stock_news) and more. Find the full instrument discovery documentation [here](/projects/financetoolkit/docs/discovery).
 
@@ -130,13 +135,13 @@ historical_data.xs('AAPL', axis=1, level=1)
 
 For example, a portion of the historical data for Apple is shown below.
 
-| date       |    Open |    High |     Low |   Close |   Adj Close |      Volume |   Dividends |   Return |   Volatility |   Excess Return |   Excess Volatility |   Cumulative Return |
-|:-----------|--------:|--------:|--------:|--------:|------------:|------------:|------------:|---------:|-------------:|----------------:|--------------------:|--------------------:|
-| 2018-01-02 | 42.54   | 43.075  | 42.315  | 43.065  |       40.78 | 1.02224e+08 |           0 |   0      |       0.0202 |         -0.0067 |              0.0233 |              1      |
-| 2018-01-03 | 43.1325 | 43.6375 | 42.99   | 43.0575 |       40.77 | 1.17982e+08 |           0 |  -0.0002 |       0.0202 |         -0.0247 |              0.0233 |              0.9998 |
-| 2018-01-04 | 43.135  | 43.3675 | 43.02   | 43.2575 |       40.96 | 8.97384e+07 |           0 |   0.0047 |       0.0202 |         -0.0198 |              0.0233 |              1.0044 |
-| 2018-01-05 | 43.36   | 43.8425 | 43.2625 | 43.75   |       41.43 | 9.46401e+07 |           0 |   0.0115 |       0.0202 |         -0.0133 |              0.0233 |              1.0159 |
-| 2018-01-08 | 43.5875 | 43.9025 | 43.4825 | 43.5875 |       41.27 | 8.22711e+07 |           0 |  -0.0039 |       0.0202 |         -0.0287 |              0.0233 |              1.012  |
+| date       |    Open |    High |     Low |   Close |   Adj Close |      Volume |   Dividends |   Return |   Cumulative Return |
+|:-----------|--------:|--------:|--------:|--------:|------------:|------------:|------------:|---------:|--------------------:|
+| 2018-01-02 | 42.54   | 43.075  | 42.315  | 43.065  |       40.78 | 1.02224e+08 |           0 |   0      |              1      |
+| 2018-01-03 | 43.1325 | 43.6375 | 42.99   | 43.0575 |       40.77 | 1.17982e+08 |           0 |  -0.0002 |              0.9998 |
+| 2018-01-04 | 43.135  | 43.3675 | 43.02   | 43.2575 |       40.96 | 8.97384e+07 |           0 |   0.0047 |              1.0044 |
+| 2018-01-05 | 43.36   | 43.8425 | 43.2625 | 43.75   |       41.43 | 9.46401e+07 |           0 |   0.0115 |              1.0159 |
+| 2018-01-08 | 43.5875 | 43.9025 | 43.4825 | 43.5875 |       41.27 | 8.22711e+07 |           0 |  -0.0039 |              1.012  |
 
 And below the cumulative returns are plotted which include the S&P 500 as benchmark:
 
@@ -289,7 +294,7 @@ Get the [Value at Risk](/projects/financetoolkit/docs/risk#get_value_at_risk) fo
 
 ```python
 # Get the weekly Value at Risk for all tickers
-companies.risk.get_value_at_risk(period="weekly")
+companies.risk.get_value_at_risk(period="weekly", within_period=True)
 ```
 
 |                       |    AAPL |    MSFT |   Benchmark |
@@ -448,7 +453,11 @@ Regressing Apple's returns on a mix of its chip suppliers, megacap peers and two
 | XOM       |       -0.0291 |       0.0373 |       -0.7799 |    0.4364 |
 | PG        |        0.2858 |       0.0707 |        4.0393 |    0.0001 |
 
-Only `QCOM`, `SWKS`, `MSFT` and `GOOGL` come out statistically significant once every regressor is controlled for at once. The module covers 48 methods in total, including [unit root tests](/projects/financetoolkit/docs/econometrics#get_augmented_dickey_fuller) (ADF, KPSS, Phillips-Perron, Zivot-Andrews), [cointegration and Granger causality](/projects/financetoolkit/docs/econometrics#get_engle_granger_cointegration), [panel data estimators](/projects/financetoolkit/docs/econometrics#get_fixed_effects) (Fixed/Random Effects, Hausman), [causal inference](/projects/financetoolkit/docs/econometrics#get_propensity_score_matching) (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching, Synthetic Control), [time-series forecasting](/projects/financetoolkit/docs/econometrics#get_arima_forecast) (ARIMA, VAR, VECM, impulse response) and [event studies](/projects/financetoolkit/docs/econometrics#get_event_study). Find the full econometrics documentation [here](/projects/financetoolkit/docs/econometrics).
+And below each coefficient is shown with its 95% confidence interval, with stars marking how significant it is.
+
+{% include ft-chart.html id="econometrics" label="OLS coefficients with 95% confidence intervals" %}
+
+Only `QCOM`, `SWKS`, `MSFT`, `GOOGL` and `PG` come out statistically significant once every regressor is controlled for at once. The module covers 48 methods in total, including [unit root tests](/projects/financetoolkit/docs/econometrics#get_augmented_dickey_fuller) (ADF, KPSS, Phillips-Perron, Zivot-Andrews), [cointegration and Granger causality](/projects/financetoolkit/docs/econometrics#get_engle_granger_cointegration), [panel data estimators](/projects/financetoolkit/docs/econometrics#get_fixed_effects) (Fixed/Random Effects, Hausman), [causal inference](/projects/financetoolkit/docs/econometrics#get_propensity_score_matching) (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching, Synthetic Control), [time-series forecasting](/projects/financetoolkit/docs/econometrics#get_arima_forecast) (ARIMA, VAR, VECM, impulse response) and [event studies](/projects/financetoolkit/docs/econometrics#get_event_study). Find the full econometrics documentation [here](/projects/financetoolkit/docs/econometrics).
 
 ## How-To Guides for the FinanceToolkit
 

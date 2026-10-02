@@ -25,7 +25,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from financetoolkit import Economics, Portfolio, Toolkit
+from financetoolkit import Discovery, Economics, Portfolio, Toolkit
 from financetoolkit.ratios import profitability_model
 
 warnings.filterwarnings("ignore")
@@ -88,6 +88,53 @@ def line(x, series: dict, fmt: str = "num", kind: str = "line", **extra) -> dict
         "series": [{"name": name, "data": [d[i] for i in keep]} for name, d in data.items()],
         "format": fmt,
         **extra,
+    }
+
+
+# The regression in the README's Econometrics example. The README doesn't say
+# which window it used, so the chart shows its published table rather than a
+# fresh run: coefficient, standard error and p-value per ticker.
+README_OLS = {
+    "TSM": (-0.0054, 0.0523, 0.9182),
+    "QCOM": (0.1432, 0.0361, 0.0001),
+    "SWKS": (0.2141, 0.0484, 0.0000),
+    "MSFT": (0.3036, 0.0864, 0.0005),
+    "GOOGL": (0.1448, 0.0689, 0.0369),
+    "AMZN": (0.0617, 0.0529, 0.2448),
+    "META": (-0.0132, 0.0389, 0.7343),
+    "NVDA": (-0.0024, 0.0415, 0.9542),
+    "XOM": (-0.0291, 0.0373, 0.4364),
+    "PG": (0.2858, 0.0707, 0.0001),
+}
+
+
+def discovery_chart(api_key: str) -> dict:
+    """The README's stock screener: US semiconductor companies above $100 billion."""
+    discovery = Discovery(api_key=api_key)
+    screen = discovery.get_stock_screener(
+        industry="Semiconductors", country="US", exchange="NASDAQ", market_cap_higher=100_000_000_000, is_etf=False
+    )
+    caps = screen["Market Cap"].sort_values(ascending=False)
+    return {
+        "type": "hbar",
+        "title": "US semiconductor companies worth more than $100 billion, by market cap",
+        "x": list(caps.index),
+        "series": [{"name": "Market cap", "data": [float(v) for v in caps]}],
+        "format": "usd",
+    }
+
+
+def econometrics_chart() -> dict:
+    """Coefficients with their 95% confidence interval, largest first."""
+    rows = sorted(README_OLS.items(), key=lambda item: item[1][0], reverse=True)
+    return {
+        "type": "coef",
+        "title": "Apple's weekly returns regressed on ten stocks: coefficients and 95% confidence intervals",
+        "x": [ticker for ticker, _ in rows],
+        "coef": [c for _, (c, _, _) in rows],
+        "low": [round(c - 1.96 * se, 4) for _, (c, se, _) in rows],
+        "high": [round(c + 1.96 * se, 4) for _, (c, se, _) in rows],
+        "p": [p for _, (_, _, p) in rows],
     }
 
 
@@ -250,6 +297,13 @@ def main() -> None:
             {"label": "Returns", **line(returns.index, {"Cumulative return": returns}, fmt="percent", kind="bar")},
         ],
     }
+
+    if API_KEY:
+        charts["discovery"] = discovery_chart(API_KEY)
+    else:
+        print("No FMP key, keeping the previous Discovery chart")
+        charts["discovery"] = json.loads(OUTPUT.read_text())["charts"]["discovery"]
+    charts["econometrics"] = econometrics_chart()
 
     payload = {"generated": date.today().isoformat(), "charts": charts}
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
