@@ -5674,7 +5674,7 @@ body.ft-overview .page__content {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 22px;
-  margin-top: 6px;
+  margin: 6px 0 8px;
 
   &__part {
     position: relative;
@@ -5734,14 +5734,6 @@ body.ft-overview .page__content {
   }
 }
 
-.page__content .ft-dupont__equation {
-  margin: 14px 2px 6px !important;
-  color: var(--text-secondary) !important;
-  font-size: 15px !important;
-  font-variant-numeric: tabular-nums;
-
-  strong { color: var(--text-primary); }
-}
 
 // Profitability ratios: one card per ratio with a trend line
 .ft-kpis {

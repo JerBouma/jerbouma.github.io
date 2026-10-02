@@ -144,11 +144,8 @@
     head.appendChild(tabs);
     var strip = document.createElement('div');
     strip.className = 'ft-dupont';
-    var equation = document.createElement('p');
-    equation.className = 'ft-dupont__equation';
     box.appendChild(head);
     box.appendChild(strip);
-    box.appendChild(equation);
 
     var minis = [];
     function panel(part, op, isResult) {
@@ -207,9 +204,6 @@
           }]
         }, true);
       });
-      var f = function (p) { return formatter(p.format)(p.data[last]); };
-      equation.innerHTML = '<strong>' + spec.years[last] + ':</strong> ' +
-        spec.components.map(f).join(' × ') + ' = <strong>' + f(spec.result) + '</strong> return on equity';
     }
     draw();
     instances.push({ draw: draw });
