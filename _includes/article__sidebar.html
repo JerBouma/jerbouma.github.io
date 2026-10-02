@@ -1,6 +1,7 @@
 {%- comment -%} The five most recent other articles, plus a link to all of them {%- endcomment -%}
 {% assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
-<p class="article-sidebar__title">More Insights</p>
+<details class="article-side" open>
+<summary class="article-sidebar__title">More Insights <i class="fas fa-chevron-down" aria-hidden="true"></i></summary>
 <nav class="article-sidebar__list">
   {%- assign shown = 0 %}
   {%- for article in articles %}
@@ -13,3 +14,18 @@
   {%- endfor %}
 </nav>
 <a class="article-sidebar__all" href="{{ '/insights' | relative_url }}">All insights <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</details>
+<script>
+// On phones and tablets the sidebar sits above the article, so both sections
+// start collapsed there; on desktop they're always open.
+(function () {
+  var mq = window.matchMedia('(max-width: 1024px)');
+  var sides = document.querySelectorAll('.article-side');
+  function set() { sides.forEach(function (d) { d.open = !mq.matches; }); }
+  set();
+  if (mq.addEventListener) mq.addEventListener('change', set);
+  sides.forEach(function (d) {
+    d.querySelector('summary').addEventListener('click', function (e) { if (!mq.matches) e.preventDefault(); });
+  });
+})();
+</script>
