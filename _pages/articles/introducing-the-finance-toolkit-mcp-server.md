@@ -1,7 +1,7 @@
 ---
 title: Introducing the Finance Toolkit MCP Server
 date: 2026-06-12
-last_modified_at: 2026-08-05
+last_modified_at: 2026-10-02
 permalink: /articles/introducing-the-finance-toolkit-mcp-server
 excerpt: "Learn how the Finance Toolkit MCP server exposes 500+ financial methods to any AI assistant that supports the Model Context Protocol. This allows you to ask questions in plain English and receive structured answers without writing Python code."
 description: "Learn how the Finance Toolkit MCP server exposes 500+ financial methods to any AI assistant that supports the Model Context Protocol."
@@ -135,7 +135,7 @@ The Finance Toolkit MCP shows the same pattern when you ask it:
 
 <p align="center">
   <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ef2dxd12heokum126nsl.png" alt="Finance Toolkit MCP response on European sector RSI during the 2020 crash" width="600">
-  <br><em>The COVID crash was swift but uneven. Airlines collapsed into extreme oversold territory with RSI hitting 22 in April 2020, a level that signals panic selling rather than a fundamental repricing. Technology barely dipped. Oil & Gas, untouched by the initial shock, swung to RSI 91 a year later as the energy cycle turned.</em>
+  <br><em>The COVID crash was swift but uneven. Oil & Gas (EXH1, mislabelled "Airlines & travel" in this chart) fell into extreme oversold territory, with an RSI of about 22 in April 2020 and below 20 by the autumn, levels that signal panic selling rather than a fundamental repricing. Technology barely dipped. Basic Resources (EXV6, labelled "Oil & gas" in the chart) swung to an RSI of 91 by May 2021 as the commodity cycle turned. Always check the tickers an AI assistant puts on a chart.</em>
 </p>
 
 ## Risk and Performance: What the Fama-French Factors Reveal About South American Stocks
@@ -205,7 +205,7 @@ India has held growth above 9.5% every year since the 2020 contraction, while Ch
 Asking the Finance Toolkit MCP gives an answer like the one below.
 
 <p align="center">
-  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6o1jp35n33itf807nhx5.png" alt="Finance Toolkit MCP response on GDP growth across Asian economies" width="600">
+  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6o1jp35n33itf807nhx5.png" alt="Finance Toolkit MCP response on investment as a share of GDP across Asian economies" width="600">
   <br><em>Investment as a share of GDP is one of the cleanest leading indicators of structural economic development. Vietnam and India led the region in the 2000s, fuelling their infrastructure and manufacturing buildouts. Bangladesh has been rising steadily since 2010, which is typical of an economy still in the upgrading phase rather than one that has plateaued like Malaysia or Thailand.</em>
 </p>
 
