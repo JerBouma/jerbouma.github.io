@@ -26,6 +26,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from financetoolkit import Economics, Portfolio, Toolkit
+from financetoolkit.ratios import profitability_model
 
 warnings.filterwarnings("ignore")
 logging.disable(logging.CRITICAL)
@@ -50,6 +51,30 @@ def label(value) -> str:
 def values(series: pd.Series, digits: int = 4) -> list:
     """A series as a JSON list, with gaps as null."""
     return [None if pd.isna(v) or np.isinf(v) else round(float(v), digits) for v in series]
+
+
+def sec_annual_facts(cik: str) -> dict:
+    """Fiscal-year values from a company's 10-K filings on SEC EDGAR, per XBRL tag."""
+    request = urllib.request.Request(
+        f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json",
+        headers={"User-Agent": "jeroenbouma.com jer.bouma@gmail.com"},
+    )
+    with urllib.request.urlopen(request, timeout=60) as response:
+        gaap = json.load(response)["facts"]["us-gaap"]
+    facts = {}
+    for tag, data in gaap.items():
+        rows = {}
+        for row in data.get("units", {}).get("USD", []):
+            if row.get("form") != "10-K":
+                continue
+            end = pd.Timestamp(row["end"])
+            # flows must cover a full year; balances are a single date
+            if "start" in row and (end - pd.Timestamp(row["start"])).days < 350:
+                continue
+            rows[end.year] = row["val"]
+        if rows:
+            facts[tag] = pd.Series(rows, dtype=float).sort_index()
+    return facts
 
 
 def line(x, series: dict, fmt: str = "num", kind: str = "line", **extra) -> dict:
@@ -94,21 +119,33 @@ def main() -> None:
         title="Cumulative return (1 = start)",
     )
 
-    # Profitability ratios for Microsoft, grouped per ratio with a bar per year.
-    # Only years in which every ratio exists are shown: ROE and ROA use average
-    # balance sheet values, so the first year of statements has no value.
-    picked = ["Gross Margin", "Operating Margin", "Net Profit Margin", "Return on Equity", "Return on Assets"]
-    ratios = companies.ratios.collect_profitability_ratios().loc["MSFT"]
-    ratios = ratios.loc[[name for name in picked if name in ratios.index]].dropna(axis=1, how="any")
+    # Profitability ratios for Microsoft, fiscal 2020 to the latest year. The
+    # statements come from Microsoft's 10-K filings on SEC EDGAR (free, no key),
+    # so the period does not depend on an FMP subscription; the ratios are
+    # calculated with the Finance Toolkit's own formulas.
+    facts = sec_annual_facts("0000789019")
+    revenue = facts["RevenueFromContractWithCustomerExcludingAssessedTax"]
+    equity, assets = facts["StockholdersEquity"], facts["Assets"]
+    average = lambda s: (s + s.shift(1)) / 2  # noqa: E731
+    ratios = pd.DataFrame({
+        "Gross Margin": profitability_model.get_gross_margin(revenue, revenue - facts["GrossProfit"]),
+        "Operating Margin": profitability_model.get_operating_margin(facts["OperatingIncomeLoss"], revenue),
+        "Net Profit Margin": profitability_model.get_net_profit_margin(facts["NetIncomeLoss"], revenue),
+        "Return on Equity": profitability_model.get_return_on_equity(facts["NetIncomeLoss"], average(equity)),
+        "Return on Assets": profitability_model.get_return_on_assets(facts["NetIncomeLoss"], average(assets)),
+    }).loc[lambda f: f.index >= 2020].dropna().T
     charts["ratios"] = {
         "type": "kpis",
-        "title": "Profitability ratios for Microsoft",
+        "title": "Profitability ratios for Microsoft, fiscal years",
         "x": list(ratios.index),
-        "series": [{"name": label(year), "data": values(ratios[year])} for year in ratios.columns],
+        "series": [{"name": str(year), "data": values(ratios[year])} for year in ratios.columns],
         "format": "percent",
     }
 
     # Extended DuPont: five components that multiply into Return on Equity
+    # the models module needs all three statements loaded first
+    companies.get_balance_sheet_statement()
+    companies.get_cash_flow_statement()
     dupont = companies.models.get_extended_dupont_analysis()
     parts = [("Interest Burden Ratio", "Interest burden", "percent"),
              ("Tax Burden Ratio", "Tax burden", "percent"),
@@ -177,18 +214,22 @@ def main() -> None:
     charts["fixedincome"] = line(yields.index, {r: yields[r] for r in yields.columns}, fmt="percent",
                                  title="ICE BofA effective yield by credit rating")
 
-    # the macro dataset is downloaded from GitHub, which now and then answers 503
-    for attempt in range(5):
+    # the macro dataset is downloaded from GitHub, which now and then answers
+    # 503 for a while; then the previous chart is kept
+    unemployment = None
+    for attempt in range(3):
         try:
             unemployment = Economics(start_date="2010-01-01").get_unemployment_rate()
             break
         except Exception:
-            if attempt == 4:
-                raise
             time.sleep(20)
-    countries = ["Colombia", "United States", "Sweden", "Japan", "Germany"]
-    charts["economics"] = line(unemployment.index, {c: unemployment[c] for c in countries if c in unemployment}, fmt="percent",
-                               title="Unemployment rate")
+    if unemployment is not None:
+        countries = ["Colombia", "United States", "Sweden", "Japan", "Germany"]
+        charts["economics"] = line(unemployment.index, {c: unemployment[c] for c in countries if c in unemployment}, fmt="percent",
+                                   title="Unemployment rate")
+    elif OUTPUT.exists():
+        print("Economics data unavailable, keeping the previous chart")
+        charts["economics"] = json.loads(OUTPUT.read_text())["charts"]["economics"]
 
     # the latest weight and return of every position in the example portfolio
     portfolio = Portfolio(example=True, api_key=API_KEY)

@@ -263,13 +263,14 @@
           textStyle: { fontFamily: 'inherit' },
           grid: { left: 20, right: 20, top: 26, bottom: 26 },
           tooltip: { trigger: 'axis', valueFormatter: fmt, backgroundColor: css('--masthead-bg', '#0f1115'), borderColor: css('--card-border', 'rgba(255,255,255,0.1)'), textStyle: { color: css('--text-primary', '#f8fafc'), fontSize: 13 } },
-          xAxis: { type: 'category', data: years, boundaryGap: false, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: muted, fontSize: 12 } },
+          xAxis: { type: 'category', data: years, boundaryGap: false, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: muted, fontSize: 12, interval: function (i) { return i === 0 || i === years.length - 1; } } },
           yAxis: { type: 'value', show: false, scale: true },
           series: [{
             type: 'line', data: c.data, smooth: false, symbolSize: 7,
             lineStyle: { width: 2.5, color: color }, itemStyle: { color: color },
             areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: color + '55' }, { offset: 1, color: color + '00' }] } },
-            label: { show: true, position: 'top', formatter: function (p) { return fmt(p.value); }, color: text, fontSize: 11 }
+            // only the first and last value; hover shows the others
+            label: { show: true, position: 'top', formatter: function (p) { return p.dataIndex === 0 || p.dataIndex === c.data.length - 1 ? fmt(p.value) : ''; }, color: text, fontSize: 11 }
           }]
         }, true);
       });
