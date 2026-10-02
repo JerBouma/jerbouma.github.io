@@ -5602,3 +5602,67 @@ body.ft-overview .page__content {
 @media (max-width: 767px) {
   .notebook-viewer-wrapper { width: calc(100% - 16px); margin: 12px auto 20px; border-radius: 14px; }
 }
+
+// ── Interactive Finance Toolkit charts (assets/js/ft-charts.js) ─────────────
+.ft-chart {
+  max-width: 960px;
+  margin: 1.6em auto;
+  padding: 18px 18px 10px;
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  background: var(--card-bg);
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    margin-bottom: 8px;
+  }
+
+  .page__content &__title {
+    margin: 0 !important;
+    color: var(--text-primary) !important;
+    font-size: 15px !important;
+    font-weight: 700;
+  }
+
+  &__tabs { display: flex; flex-wrap: wrap; gap: 4px; }
+
+  &__tab {
+    padding: 5px 11px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+    &:hover { color: var(--text-primary); background: rgba(128, 128, 128, 0.08); }
+    &.is-active { color: var(--accent-color); border-color: var(--card-hover-border); background: rgba(56, 189, 248, 0.1); }
+  }
+
+  &__canvas { width: 100%; height: 400px; }
+
+  &__loading {
+    height: 400px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(128,128,128,0.05), rgba(128,128,128,0.12), rgba(128,128,128,0.05));
+    background-size: 200% 100%;
+    animation: ftChartLoad 1.4s ease-in-out infinite;
+  }
+
+  &__error { margin: 0; padding: 40px 0; color: var(--text-muted); text-align: center; }
+
+  @media (max-width: 760px) {
+    padding: 12px 10px 6px;
+    border-radius: 12px;
+    &__canvas, &__loading { height: 320px; }
+  }
+}
+
+@keyframes ftChartLoad { to { background-position: -200% 0; } }

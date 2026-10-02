@@ -1,0 +1,7 @@
+{%- comment -%}
+  An interactive Finance Toolkit chart, filled by assets/js/ft-charts.js from
+  assets/data/financetoolkit-charts.json. Usage: {% include ft-chart.html id="historical" %}
+{%- endcomment -%}
+<div class="ft-chart" data-chart="{{ include.id }}" role="figure" aria-label="{{ include.label | default: include.id }}">
+  <div class="ft-chart__loading" aria-hidden="true"></div>
+</div>
