@@ -45,6 +45,13 @@
           return (v < 0 ? '-$' : '$') + a.toFixed(a < 1 && a !== 0 ? 2 : a < 10 && a !== 0 ? 1 : 0) + 'B';
         }
         case 'number': return v.toFixed(1);
+        case 'usd': {
+          var a = Math.abs(v);
+          if (a === 0) return '$0';
+          if (a >= 1e12) return '$' + (v / 1e12).toFixed(2) + 'T';
+          if (a >= 1e9) return '$' + (v / 1e9).toFixed(0) + 'B';
+          return '$' + (v / 1e6).toFixed(0) + 'M';
+        }
         case 'multiple': return v.toFixed(2) + 'x';
         case 'price': return '$' + v.toFixed(2);
         case 'ratio': return v.toFixed(2);
@@ -358,10 +365,130 @@
     instances.push({ draw: draw });
   }
 
+  function chrome(spec) {
+    // the shared title row, returns the canvas to draw in
+    return function (box, height) {
+      box.innerHTML = '';
+      var head = document.createElement('div');
+      head.className = 'ft-chart__head';
+      var title = document.createElement('p');
+      title.className = 'ft-chart__title';
+      title.textContent = spec.title;
+      head.appendChild(title);
+      if (spec.legend) {
+        var legend = document.createElement('p');
+        legend.className = 'ft-chart__legend';
+        legend.innerHTML = spec.legend;
+        head.appendChild(legend);
+      }
+      var canvas = document.createElement('div');
+      canvas.className = 'ft-chart__canvas';
+      if (height) canvas.style.height = height + 'px';
+      box.appendChild(head);
+      box.appendChild(canvas);
+      var inst = window.echarts.init(canvas, null, { renderer: 'canvas' });
+      if ('ResizeObserver' in window) new ResizeObserver(function () { inst.resize(); }).observe(canvas);
+      return inst;
+    };
+  }
+
+  function axisColors() {
+    return { text: css('--text-secondary', '#cbd5e1'), muted: css('--text-muted', '#94a3b8'), grid: css('--card-border', 'rgba(255,255,255,0.1)') };
+  }
+
+  function tooltipStyle() {
+    return { backgroundColor: css('--masthead-bg', '#0f1115'), borderColor: css('--card-border', 'rgba(255,255,255,0.1)'), textStyle: { color: css('--text-primary', '#f8fafc'), fontSize: 13 } };
+  }
+
+  // Horizontal bars, largest at the top, with the value at the end of each bar
+  function renderHbar(box, chart) {
+    var inst = chrome(chart)(box, Math.max(320, chart.x.length * 34 + 60));
+    var fmt = formatter(chart.format);
+    function draw() {
+      var c = axisColors();
+      inst.setOption({
+        animationDuration: 600,
+        textStyle: { fontFamily: 'inherit' },
+        grid: { left: 8, right: 64, top: 8, bottom: 8, containLabel: true },
+        tooltip: Object.assign({ trigger: 'axis', axisPointer: { type: 'shadow' }, valueFormatter: fmt }, tooltipStyle()),
+        xAxis: { type: 'value', splitNumber: 4, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fmt, hideOverlap: true } },
+        yAxis: { type: 'category', data: chart.x.slice().reverse(), axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 13 } },
+        series: [{
+          name: chart.series[0].name, type: 'bar', data: chart.series[0].data.slice().reverse(), barMaxWidth: 22,
+          itemStyle: { color: PALETTE[0], borderRadius: [0, 4, 4, 0] },
+          label: { show: true, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return fmt(p.value); } }
+        }]
+      }, true);
+    }
+    draw();
+    instances.push({ draw: draw });
+  }
+
+  // Regression coefficients with their 95% confidence interval; significant
+  // coefficients in colour, stars by p-value
+  function renderCoef(box, chart) {
+    var stars = function (p) { return p < 0.001 ? '***' : p < 0.01 ? '**' : p < 0.05 ? '*' : ''; };
+    var spec = Object.assign({ legend: '<span>* p &lt; 0.05</span><span>** p &lt; 0.01</span><span>*** p &lt; 0.001</span><span><i style="background:' + PALETTE[0] + '"></i>significant</span><span><i class="is-muted"></i>not significant</span>' }, chart);
+    var inst = chrome(spec)(box, Math.max(340, chart.x.length * 38 + 60));
+    var n = chart.x.length;
+    var rev = function (a) { return a.slice().reverse(); };
+    var x = rev(chart.x), coef = rev(chart.coef), low = rev(chart.low), high = rev(chart.high), p = rev(chart.p);
+    function draw() {
+      var c = axisColors();
+      var whisker = css('--text-primary', '#f8fafc');
+      inst.setOption({
+        animationDuration: 600,
+        textStyle: { fontFamily: 'inherit' },
+        grid: { left: 8, right: 48, top: 8, bottom: 8, containLabel: true },
+        tooltip: Object.assign({
+          trigger: 'axis', axisPointer: { type: 'shadow' },
+          formatter: function (items) {
+            var i = items[0].dataIndex;
+            return '<b>' + x[i] + '</b><br>Coefficient ' + coef[i].toFixed(4) + '<br>95% interval ' + low[i].toFixed(3) + ' to ' + high[i].toFixed(3) + '<br>p-value ' + p[i].toFixed(4) + ' ' + stars(p[i]);
+          }
+        }, tooltipStyle()),
+        // wide enough for every interval, with room for the stars on the right
+        xAxis: {
+          type: 'value', splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: function (v) { return v.toFixed(2); } },
+          min: Math.floor(Math.min.apply(null, low) * 10) / 10,
+          max: Math.ceil((Math.max.apply(null, high) + 0.04) * 10) / 10
+        },
+        yAxis: { type: 'category', data: x, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 13 } },
+        series: [
+          {
+            type: 'bar', data: coef.map(function (v, i) { return { value: v, itemStyle: { color: p[i] < 0.05 ? PALETTE[0] : 'rgba(148, 163, 184, 0.45)' } }; }),
+            barMaxWidth: 20, itemStyle: { borderRadius: 4 }, z: 2
+          },
+          {
+            type: 'custom', z: 3, silent: true, tooltip: { show: false },
+            data: x.map(function (_, i) { return [low[i], high[i], i]; }),
+            renderItem: function (params, api) {
+              var a = api.coord([api.value(0), api.value(2)]), b = api.coord([api.value(1), api.value(2)]);
+              var cap = api.size([0, 1])[1] * 0.18;
+              var style = { stroke: whisker, lineWidth: 1.4, opacity: 0.85 };
+              var label = stars(p[api.value(2)]);
+              var children = [
+                { type: 'line', shape: { x1: a[0], y1: a[1], x2: b[0], y2: b[1] }, style: style },
+                { type: 'line', shape: { x1: a[0], y1: a[1] - cap, x2: a[0], y2: a[1] + cap }, style: style },
+                { type: 'line', shape: { x1: b[0], y1: b[1] - cap, x2: b[0], y2: b[1] + cap }, style: style }
+              ];
+              if (label) children.push({ type: 'text', style: { text: label, x: b[0] + 6, y: b[1], verticalAlign: 'middle', fill: whisker, font: 'bold 13px sans-serif' } });
+              return { type: 'group', children: children };
+            }
+          }
+        ]
+      }, true);
+    }
+    draw();
+    instances.push({ draw: draw });
+  }
+
   function render(box, chart) {
     if (chart.type === 'dupont') return renderDupont(box, chart);
     if (chart.type === 'kpis') return renderKpis(box, chart);
     if (chart.type === 'compare') return renderCompare(box, chart);
+    if (chart.type === 'hbar') return renderHbar(box, chart);
+    if (chart.type === 'coef') return renderCoef(box, chart);
     var specs = chart.type === 'tabs' ? chart.tabs : [chart];
     box.innerHTML = '';
     var head = document.createElement('div');
