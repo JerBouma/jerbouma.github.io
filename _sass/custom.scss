@@ -5604,9 +5604,11 @@ body.ft-overview .page__content {
 }
 
 // ── Interactive Finance Toolkit charts (assets/js/ft-charts.js) ─────────────
+// the full width of the text column, like the tables and code blocks
 .ft-chart {
-  max-width: 960px;
-  margin: 1.6em auto;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 1.6em 0;
   padding: 18px 18px 10px;
   border: 1px solid var(--card-border);
   border-radius: 16px;
@@ -5624,7 +5626,7 @@ body.ft-overview .page__content {
   .page__content &__title {
     margin: 0 !important;
     color: var(--text-primary) !important;
-    font-size: 15px !important;
+    font-size: 17px !important;
     font-weight: 700;
   }
 
@@ -5646,10 +5648,10 @@ body.ft-overview .page__content {
     &.is-active { color: var(--accent-color); border-color: var(--card-hover-border); background: rgba(56, 189, 248, 0.1); }
   }
 
-  &__canvas { width: 100%; height: 400px; }
+  &__canvas { width: 100%; height: 440px; }
 
   &__loading {
-    height: 400px;
+    height: 440px;
     border-radius: 10px;
     background: linear-gradient(90deg, rgba(128,128,128,0.05), rgba(128,128,128,0.12), rgba(128,128,128,0.05));
     background-size: 200% 100%;
