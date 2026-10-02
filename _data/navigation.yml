@@ -39,8 +39,8 @@ main:
     sublinks:
       - title: Appearances
         url: /appearances
-      - title: Articles
-        url: /articles
+      - title: Insights
+        url: /insights
       - title: Literature
         url: /literature
   - title: "Contact"

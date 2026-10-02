@@ -1,6 +1,6 @@
 {%- comment -%} The five most recent other articles, plus a link to all of them {%- endcomment -%}
 {% assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
-<p class="article-sidebar__title">More Articles</p>
+<p class="article-sidebar__title">More Insights</p>
 <nav class="article-sidebar__list">
   {%- assign shown = 0 %}
   {%- for article in articles %}
@@ -12,4 +12,4 @@
     </a>
   {%- endfor %}
 </nav>
-<a class="article-sidebar__all" href="{{ '/articles' | relative_url }}">All articles <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+<a class="article-sidebar__all" href="{{ '/insights' | relative_url }}">All insights <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
