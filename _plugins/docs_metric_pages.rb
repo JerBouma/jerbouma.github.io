@@ -24,9 +24,9 @@ require "json"
 # (the FinanceToolkit README uses them) are forwarded by a small script.
 #
 # The collect_ functions (collect_profitability_ratios, collect_all_greeks,
-# ...) only gather the get_ functions of a module, so they get no page of their
-# own: their sidebar entries go, links to them point at the module page and the
-# pages they used to have redirect there. Portfolio's collect_historical_data
+# ...) only gather the get_ functions of a module, so the docs leave them out:
+# no page, no section on the module page and no sidebar entry. Links to them
+# point at the module page and the pages they used to have redirect there. Portfolio's collect_historical_data
 # and collect_benchmark_historical_data load data and keep their pages.
 #
 # Nothing is duplicated in the repository: the pages are cut from docs.py's
@@ -331,7 +331,7 @@ module DocsMetricPages
     | 2018-01-05 | 43.36   | 43.8425 | 43.2625 | 43.75   |       41.43 | 9.46401e+07 |           0 |   0.0115 |              1.0159 |
     | 2018-01-08 | 43.5875 | 43.9025 | 43.4825 | 43.5875 |       41.27 | 8.22711e+07 |           0 |  -0.0039 |              1.012  |
 
-    The modules calculate on top of that data. Every metric has its own `get_` function, and each category can be collected at once with a `collect_` function. For example, all profitability ratios, selected here for Microsoft:
+    The modules calculate on top of that data. Every metric has its own `get_` function, and a whole category can be calculated at once. For example, all profitability ratios, selected here for Microsoft:
 
     ```python
     profitability_ratios = companies.ratios.collect_profitability_ratios()
@@ -466,7 +466,7 @@ module DocsMetricPages
       intro, first_heading, rest = class_page.content.partition(/^## \w+\n/)
       remaining = (first_heading + rest).gsub(SECTION) do
         name = Regexp.last_match(1).downcase
-        urls[name] || (key == "toolkit" && CLASSES.key?(name)) ? "" : Regexp.last_match(0)
+        urls[name] || collector?(key, name) || (key == "toolkit" && CLASSES.key?(name)) ? "" : Regexp.last_match(0)
       end
       started = if toolkit_sections.key?(key) then getting_started_from_toolkit(key, toolkit_sections[key])
                 elsif key == "toolkit" then TOOLKIT_GETTING_STARTED.dup
