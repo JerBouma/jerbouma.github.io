@@ -1,0 +1,101 @@
+# Drafts for Competitor and Sector Analysis with the Finance Toolkit. Starting points, edited before posting.
+article: /articles/semiconductor-sector-analysis-finance-toolkit
+written: 2026-10-02
+linkedin:
+  text: |
+    In 2010 Intel had a 66% gross margin and NVIDIA had 35.4%. In 2025 Intel was at 34.8% and NVIDIA at 75.0%.
+
+    Same industry, same fifteen years, opposite directions.
+
+    Most of that split follows one line: who owns the fabs. Intel makes its own chips. Once its processes fell behind TSMC's, first by one node and then two, each product cycle made its chips costlier to produce, while fabless rivals got better nodes for less.
+
+    AMD shows it most clearly. Its gross margin was 33% in 2014, when it was fighting for survival, and 49.5% in 2025. It has been above Intel's since 2022, a crossover driven more by manufacturing than by products.
+
+    Returns tell the second half. In 2025 NVIDIA earned a 102.6% return on invested capital, AMD 6.8% and Intel slightly below zero. The $35 billion Xilinx deal weighs on AMD's figure, but the bigger gap is CUDA, fifteen years of software that ROCm cannot replicate quickly. AMD beat Intel on engineering execution; against NVIDIA it needs developer adoption, which is slower and costlier.
+
+    The lesson: before comparing a sector, decide who actually competes with whom. Here the real contests are two pairs, Intel vs AMD in x86 and NVIDIA vs AMD in AI accelerators.
+
+    I pulled the data with the Finance Toolkit, the open-source Python library I built. Full comparison, including what the multiples price in:
+    https://www.jeroenbouma.com/articles/semiconductor-sector-analysis-finance-toolkit
+
+    Not investment advice.
+
+    #Semiconductors #FundamentalAnalysis #EquityResearch
+reddit:
+  - subreddit: r/SecurityAnalysis
+    title: "Semiconductors 2010-2025: gross margins split along the fab/fabless line, and ROIC followed"
+    body: |
+      **TL;DR:** Across Intel, AMD, NVIDIA, Qualcomm, Broadcom and TI, the biggest shift of the last fifteen years is in gross margin, and it follows manufacturing rather than product: Intel went from 66% to 34.8%, NVIDIA from 35.4% to 75.0%. In 2025 NVIDIA earned a 102.6% ROIC against 6.8% for AMD, and Intel's ROIC turned negative in 2024.
+
+      I pulled annual statements for the six companies from 2010 to 2025 and looked at revenue, gross margin and ROIC, then at current multiples.
+
+      **Revenue and gross margin, 2010 vs 2025**
+
+      | | Revenue 2010 | Revenue 2025 | Gross margin 2010 | Gross margin 2025 |
+      |---|---:|---:|---:|---:|
+      | Intel | $43.6bn | $52.9bn | 66.1% | 34.8% |
+      | AMD | $6.5bn | $34.6bn | 45.6% | 49.5% |
+      | NVIDIA | $3.3bn | $130.5bn | 35.4% | 75.0% |
+
+      **Margins follow the fabs.** Intel designs and fabricates its own chips. Once its process technology fell behind TSMC's, first by one node and then by two, its cost per chip rose with every product cycle, while fabless competitors bought access to better nodes at lower cost. AMD's gross margin bottomed below 30% in 2015-2016 and crossed above Intel's in 2022 (44.9% vs 42.6%). That crossover says more about manufacturing than about Zen vs Core.
+
+      **Two real rivalries, not six competitors.** TI sells analog chips to industrial and automotive customers, Qualcomm sells ARM-based mobile processors, Broadcom sells networking and storage controllers. The head-to-head contests are Intel vs AMD in x86 and NVIDIA vs AMD in GPUs and AI accelerators, so I compared those pairs directly.
+
+      - **Intel vs AMD:** Intel led on every metric through 2017. AMD's Zen launch in 2017 shows up in the financials with a lag; revenue only broke meaningfully higher in 2021-2022. By 2024-2025 Intel's ROIC was negative.
+      - **NVIDIA vs AMD:** in 2020 AMD actually led on ROIC (50.2% vs 24.3%), thanks to a lean capital base before Xilinx. The divergence came from 2021 on, driven by AI training hardware and the CUDA ecosystem. By 2025: 102.6% vs 6.8%.
+
+      AMD's harder fight is the second one. Against Intel it competed on engineering execution. Against NVIDIA it competes on software ecosystem depth (ROCm vs CUDA), which is a developer adoption and network-effects problem.
+
+      **What the multiples price in (2025)**
+
+      - Qualcomm: cheapest at 14.2x EV/EBITDA, pricing in limited AI exposure.
+      - TI: 21.3x EV/EBITDA, valued as a stable but cyclical analog business.
+      - Intel: no meaningful P/E (losses), 19.1x EV/EBITDA, which looks high for current earnings power. Either a recovery or acquisition optionality is priced in; the margin and ROIC history suggests a recovery takes years.
+      - NVIDIA: 63.5x P/E and 55.5x EV/EBITDA. The question is how long a 100%+ ROIC lasts.
+      - AMD: 80.8x P/E, a premium to NVIDIA despite lower ROIC, which assumes ROIC recovers as Xilinx is absorbed and AI GPU shipments scale.
+
+      **Caveats**
+
+      - Annual data from Financial Modeling Prep, fiscal years as reported (NVIDIA's fiscal year does not match the calendar year).
+      - AMD's ROIC is depressed by the roughly $35bn Xilinx acquisition (2022) expanding invested capital; on operating assets alone its returns look better.
+      - Broadcom's growth (from $4.3bn in 2014 to $20.8bn in 2018) is mostly acquisitions, so its revenue line is not comparable to organic growth.
+      - Multiples are snapshots and will have moved since the article was written.
+
+      **Method:** everything was calculated with the Finance Toolkit, an open-source Python library I built and maintain. The full write-up with code and interactive charts is here: https://www.jeroenbouma.com/articles/semiconductor-sector-analysis-finance-toolkit
+
+      Not investment advice. Curious how others here would treat Intel's foundry spending when comparing ROIC across fab and fabless names.
+  - subreddit: r/stocks
+    title: "Intel vs AMD and NVIDIA vs AMD: 15 years of revenue, margins and ROIC for the two real rivalries in semis"
+    body: |
+      I compared six chipmakers (Intel, AMD, NVIDIA, Qualcomm, Broadcom, TI) on fifteen years of financials and found that "the semiconductor sector" is not one competitive arena. TI is analog for industrial and auto, Qualcomm is ARM mobile, Broadcom is networking and storage. The direct contests are two pairs, and AMD is in both.
+
+      **Intel vs AMD (x86 CPUs)**
+
+      | | 2010 | 2020 | 2025 |
+      |---|---:|---:|---:|
+      | Intel revenue | $43.6bn | $77.9bn | $52.9bn |
+      | AMD revenue | $6.5bn | $9.8bn | $34.6bn |
+      | Intel gross margin | 66.1% | 56.0% | 34.8% |
+      | AMD gross margin | 45.6% | 44.5% | 49.5% |
+
+      - Intel dominated every metric through 2017, while AMD lost money and its gross margin fell below 30% in 2015-2016.
+      - Zen (2017) shows up in the numbers with a lag: AMD's revenue only broke meaningfully higher in 2021-2022.
+      - AMD's gross margin passed Intel's in 2022. That's mostly a manufacturing story: AMD is fabless on TSMC's nodes, while Intel's own fabs fell one and then two generations behind.
+      - Intel's ROIC turned negative in 2024 and stayed slightly below zero in 2025.
+
+      **NVIDIA vs AMD (GPUs and AI accelerators)**
+
+      - In 2020 AMD actually had the higher ROIC: 50.2% vs NVIDIA's 24.3%.
+      - From 2021 the lines separate. NVIDIA's revenue went from $26.9bn in 2022 to $130.5bn in 2025.
+      - In 2025 NVIDIA's ROIC was 102.6% against AMD's 6.8%. Part of AMD's low figure is the ~$35bn Xilinx deal inflating invested capital, but most of the gap is CUDA vs ROCm: a software ecosystem built over fifteen years that is hard to catch up with.
+
+      My read: AMD beat Intel on engineering execution. Catching NVIDIA is a developer adoption problem, which is slower and more expensive to solve.
+
+      **Valuation snapshot (2025):** AMD at 80.8x P/E trades above NVIDIA's 63.5x despite the much lower ROIC, so the market is pricing in a substantial ROIC recovery. Intel has no meaningful P/E because of losses and sits at 19.1x EV/EBITDA.
+
+      Caveats: annual FMP data, fiscal years as reported, multiples have moved since. Disclosure: I built the open-source Python library I used for this (Finance Toolkit). Full write-up with code and charts: https://www.jeroenbouma.com/articles/semiconductor-sector-analysis-finance-toolkit
+
+      Not investment advice.
+medium:
+  subtitle: "Fifteen years of revenue, margins and returns on capital for six chipmakers, and what the market is pricing in."
+  tags: [Semiconductors, Nvidia, Fundamental Analysis, Investing, Stocks]

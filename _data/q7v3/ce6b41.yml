@@ -1,0 +1,111 @@
+# Drafts for Tracking Macroeconomic Indicators with the Finance Toolkit. Starting points, edited before posting.
+article: /articles/macroeconomic-indicators-finance-toolkit
+written: 2026-10-02
+linkedin:
+  text: |
+    In 2022, Brazil's central bank had its policy rate at 13.75%. The Bank of Japan's was -0.1%. Same global inflation shock, almost opposite responses.
+
+    I compared five economies (the US, UK, Germany, Japan and Brazil) on inflation, policy rates, unemployment and government debt from 2019 onwards. What stood out:
+
+    Brazil moved a year early. Inflation hit 8.3% in 2021 while the US was at 4.7%, and the central bank took its rate from 2.0% to 13.75% in eighteen months. By the time the Fed and the Bank of England started in 2022, Brazil was close to its peak.
+
+    High rates did not stop Brazil's labour market from healing. Unemployment fell every year from 2020, from 13.8% to 7.2% by 2025.
+
+    In the US, rates rose nearly five points and unemployment barely moved after reaching 3.6% in 2022.
+
+    Japan held at -0.10% through the whole shock, with inflation never above 3.3%, and carries a debt-to-GDP ratio of roughly 249%. Near-zero rates keep that affordable.
+
+    **There was one global shock, but no single global cycle.** Each economy is unwinding it on its own schedule, set by its starting debt, its central bank's tolerance for inflation and the structure of its labour market.
+
+    The data comes from the OECD and the Global Macro Database, through the Economics module of the Finance Toolkit, the open-source library I built. No API key needed.
+
+    Full article, with charts:
+    https://www.jeroenbouma.com/articles/macroeconomic-indicators-finance-toolkit
+
+    #Macroeconomics #MonetaryPolicy #CentralBanks
+reddit:
+  - subreddit: r/econmonitor
+    title: "Five economies through the 2021-2023 inflation shock: inflation, policy rates, unemployment and debt-to-GDP compared (US, UK, Germany, Japan, Brazil)"
+    body: |
+      **TL;DR:** The same global inflation shock produced very different paths. Brazil hiked a year before everyone else and still saw unemployment fall every year; the US hiked nearly five points with almost no labour-market damage; Japan barely moved at all.
+
+      Data: annual series from the OECD and the Global Macro Database, 2019-2025. Germany's policy rate is the ECB rate.
+
+      **Inflation arrived in waves**
+
+      - Brazil peaked first: 8.3% in 2021, when the US was at 4.7% and Japan at -0.2%.
+      - The developed economies caught up in 2022: Germany 6.9%, UK 7.9%, US 8.0%. By then Brazil was already on its way down, to 4.6% in 2023.
+      - Japan's highest reading in the whole window was 3.3%.
+
+      **Central banks moved on their own clocks**
+
+      - Brazil started hiking in 2021 and went from 2.0% to 13.75% in eighteen months, the steepest cycle of the five.
+      - The Fed and the Bank of England started in 2022. The ECB stayed negative until mid-2022 and didn't clear 3% until 2023.
+      - The Bank of Japan held at -0.10% through the entire shock, moving to 0.25% in 2024 and 0.50% in 2025.
+
+      **Did higher rates cost jobs? Only partly**
+
+      - US: unemployment spiked to 8.1% in 2020 (lockdowns, not rates) and was back at 3.6% by 2022. It barely moved after that, despite rates rising nearly five points.
+      - Brazil: highest policy rate of the group for three straight years, yet unemployment fell every year from 2020, from 13.8% to 7.2% by 2025.
+      - Germany and Japan had the smallest rate moves and also the smallest unemployment swings, which is closer to what theory predicts.
+
+      **Who paid down the COVID debt?**
+
+      - Japan: roughly 249% of GDP, more than double the US, and stable for years.
+      - US: 108% to 132% in 2020. UK: 86% to 106%. Both are higher in 2025 than in 2022.
+      - Germany: from 67.9% down to 62.1%.
+      - Brazil: from 96.0% to a low of 83.9% in 2022, then back up to 92.0%. Part of that dip is mechanical: the same high inflation that pushed rates to 13.75% also inflated away some of the real value of the debt.
+
+      **Caveats**
+
+      - Annual data, so intra-year timing (e.g. exactly when a hiking cycle started) is coarse.
+      - Five economies picked for contrast, not as a representative sample.
+      - Correlation between rates and unemployment here says nothing causal; Brazil's labour market was clearly driven by other things.
+
+      Full disclosure: the numbers were pulled with the Economics module of the Finance Toolkit, an open-source Python library I maintain (macro data needs no API key). The write-up with interactive charts and the code is here: https://www.jeroenbouma.com/articles/macroeconomic-indicators-finance-toolkit
+
+      Curious what people here make of Brazil: is the falling unemployment under 13.75% rates mostly a post-COVID recovery effect, or something structural?
+  - subreddit: r/Python
+    title: "Pulling inflation, policy rates, unemployment and debt-to-GDP for 60+ countries in Python, no API key"
+    body: |
+      **What My Project Does**
+
+      The Finance Toolkit (which I maintain, open source) has an Economics module that pulls macro data from the OECD and the Global Macro Database: unemployment, GDP growth, inflation, government debt, central bank rates and bond yields for 60+ countries, some series going back over a century. Unlike the rest of the library it needs no API key.
+
+          from financetoolkit import Economics
+
+          economics = Economics(start_date="2019-01-01")
+          countries = ["United States", "United Kingdom", "Germany", "Japan", "Brazil"]
+
+          inflation = economics.get_inflation_rate(countries=countries)
+          policy_rate = economics.get_central_bank_policy_rate(countries=countries)
+          unemployment = economics.get_unemployment_rate(countries=countries)
+          debt_to_gdp = economics.get_government_debt_to_gdp_ratio(countries=countries)
+
+      Each call returns a pandas DataFrame.
+
+      **What it shows (example)**
+
+      I used it to compare those five economies through the 2021-2023 inflation shock:
+
+      - Brazil's inflation hit 8.3% in 2021 while the US was at 4.7%. Its central bank went from 2.0% to 13.75% in eighteen months, a year before the Fed and the Bank of England started.
+      - Japan held its policy rate at -0.10% throughout; its highest inflation reading in the window was 3.3%.
+      - US unemployment was back at 3.6% by 2022 and barely moved while rates rose nearly five points.
+      - Brazil's unemployment fell every year from 2020 (13.8% to 7.2% by 2025), despite the highest rates of the group.
+
+      **Target Audience**
+
+      Analysts, students and developers who need cross-country macro series in a consistent format without stitching together central bank and statistics office downloads. It is a library, not a data vendor: coverage and update timing follow the OECD and the Global Macro Database.
+
+      **Comparison**
+
+      - FRED / `pandas-datareader`: excellent for US series, but a cross-country comparison means finding the right series per country and indicator.
+      - Querying the OECD directly: authoritative, but you deal with its query format and country codes yourself. The Economics module puts OECD and Global Macro Database series behind one `countries=[...]` argument.
+      - The same module is also available inside the full Toolkit (company ratios, technicals, risk) and through an MCP server, so you can ask the same questions in plain English from an AI assistant.
+
+      Full article with interactive charts: https://www.jeroenbouma.com/articles/macroeconomic-indicators-finance-toolkit
+
+      Code: https://github.com/JerBouma/FinanceToolkit
+medium:
+  subtitle: "Inflation, policy rates, unemployment and debt across five economies since 2019: one shock, different responses."
+  tags: [Macroeconomics, Inflation, Central Banks, Economics, Investing]

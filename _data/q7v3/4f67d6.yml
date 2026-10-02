@@ -1,0 +1,69 @@
+# Drafts for "The Research Team You Can't Afford to Hire: Equity Research for Family Offices with the FMP MCP Server". Starting points, edited before posting.
+article: /articles/equity-research-family-offices-fmp-mcp
+written: 2026-10-02
+linkedin:
+  text: |
+    A standard levered DCF put Axon Enterprise at $94.30 a share. The stock was trading at $510.28 that day.
+
+    I wouldn't read that as the market being wrong. A WACC-and-terminal-growth template can't capture a company compounding revenue at 30%+, so the bull case rests on assumptions the template doesn't make for you. What the exercise does show is how much of the investment case is judgment rather than arithmetic.
+
+    The analyst estimates point the same way. For 2028, the analysts covering AXON put net income anywhere between $573 million and $1.81 billion, a range wider than the company's entire 2025 net income. They agree on revenue and disagree on margins, and that spread says more than the $658.56 consensus target.
+
+    I ran this diligence pass (key metrics, estimates, DCF, the latest earnings call, insider trades, 13F flows) as a conversation in Claude Desktop with the FMP MCP server. The article is written for family offices and small funds that hold a handful of names without a research desk. In a concentrated book there is no long tail to absorb a mistake, so the mechanical work should be cheap and the judgment should stay with you.
+
+    It also covers where the Finance Toolkit MCP server I built adds computed analysis on top of FMP's data.
+
+    Not investment advice; AXON is only the worked example.
+
+    https://www.jeroenbouma.com/articles/equity-research-family-offices-fmp-mcp
+
+    #EquityResearch #FamilyOffice
+reddit:
+  - subreddit: r/ClaudeAI
+    title: "Using Claude Desktop with the FMP MCP connector for an equity research pass: what worked and where judgment still had to come in"
+    body: |
+      I wrote up a full equity research pass on one company (Axon Enterprise, AXON) done entirely as a conversation in Claude Desktop with Financial Modeling Prep's MCP server added as a custom connector. The use case I had in mind is a family office or small fund with a concentrated portfolio and no research desk. Every prompt below was actually run before writing; the numbers are what came back.
+
+      **Setup:** Settings → Connectors → Add custom connector, URL `https://financialmodelingprep.com/mcp?apikey=YOUR_KEY`. Nothing to install locally. FMP's free tier (250 requests a day) was enough for everything below.
+
+      **The prompts and what they surfaced:**
+
+      1. *"Pull AXON's key financial metrics for the last five fiscal years and show me how ROE, ROIC, and EV/EBITDA have moved."* ROIC peaked at 6% in 2023 and has since gone negative, while EV/EBITDA more than doubled to over 236x by 2025. One call instead of three statements and a spreadsheet.
+      2. *Analyst price targets plus 2026-2028 revenue and EPS estimates.* Consensus target $658.56 vs a $510.28 share price that day. More useful: 2028 net income estimates range from $573M to $1.81B, wider than the company's whole 2025 net income.
+      3. *"Run a levered DCF on AXON and compare it to the current share price."* $94.30 vs $510.28. This is where you can't take the output at face value: a standard WACC/terminal-growth template can't represent 30%+ revenue growth, so it mostly tells you how much of the case rests on assumptions.
+      4. *Latest earnings call transcript, what the CEO said about growth.* It pulled the Q1 2026 call (May 6, 2026) and found the "I think we passed the inflection point" line. Tracking that language across quarters is the part that's tedious by hand.
+      5. *Recent insider transactions.* Small, regular sales by the CEO plus small awards to new directors; it reads like a 10b5-1 plan. Ruling things out quickly is half the value here.
+      6. *Institutional ownership from 13F filings.* Holders fell from 1,250 (Q2 2025) to 1,101 (Q1 2026), net new-vs-closed positions went from +142 to -95, but ownership of float held at 83.3% vs 82.7% a year earlier. Cooling interest rather than an exit.
+
+      **What I took away:** the connector compresses the data gathering well, and Claude is good at pointing out tensions in the numbers (returns falling while the multiple expands). It does not make the valuation call for you, and the DCF step in particular needs someone who knows why the template fails for a high-growth name.
+
+      The screenshots of each response are in the article, e.g. the DCF one: https://www.jeroenbouma.com/assets/images/articles/equity-research-family-offices-fmp-mcp/dcf-valuation.png
+
+      Disclosure: I wrote the article, and I build the open-source Finance Toolkit, which has its own MCP server on top of FMP's data (the last section of the article covers it). My website also has an FMP affiliate link; I'm not linking it here. Not investment advice, AXON is just the example.
+
+      Full write-up with every prompt and screenshot: https://www.jeroenbouma.com/articles/equity-research-family-offices-fmp-mcp
+  - subreddit: r/SecurityAnalysis
+    title: "AXON diligence notes: ROIC falling while EV/EBITDA passed 236x, and a 2028 net income range wider than 2025 earnings"
+    body: |
+      I ran a structured diligence pass on Axon Enterprise (AXON) for an article about doing equity research with a small team, and a few of the tensions in the numbers seemed worth discussing on their own. Data is from Financial Modeling Prep, as of mid-2026 when I ran it.
+
+      **Returns vs multiple.** ROIC peaked at about 6% in 2023 and has gone negative since, while EV/EBITDA more than doubled over the same stretch, past 236x by 2025. The multiple is expanding faster than the returns that are supposed to justify it.
+
+      **Dispersion beats consensus.** The consensus price target was $658.56 against a $510.28 share price, roughly 29% upside. The more telling number: for 2028, analysts' net income estimates range from $573M to $1.81B, a spread wider than AXON's entire 2025 net income. They broadly agree on revenue and disagree on what margin structure survives three years out.
+
+      **The DCF fails in an informative way.** A standard levered DCF gives $94.30 per share. I don't read that as "overvalued by 80%"; a WACC/terminal-growth template can't represent a company compounding revenue at 30%+. What it does show is that essentially the whole case rests on growth and margin assumptions the template doesn't make for you.
+
+      **Management tone.** On the Q1 2026 call (May 6, 2026) the CEO said "Today, I think we passed the inflection point." Worth tracking against what is said the next few quarters.
+
+      **Insiders.** Small, regular sales by the CEO and small stock awards to newly appointed directors. Looks like a 10b5-1 plan doing what it's built to do, nothing conviction-driven.
+
+      **Institutional flow.** Holders went from 1,250 (Q2 2025) to 1,101 (Q1 2026) and net new-minus-closed positions flipped from +142 to -95, yet ownership of float held at 83.3% vs 82.7% a year earlier. Existing holders are staying; fewer new ones are coming in.
+
+      Taken together, the price leans on the margin question that the analysts themselves can't agree on. Curious how others here would model the margin path for a company growing like this.
+
+      Disclosure: I wrote the article this comes from. It's mainly about the process (I did the data pulls through an AI assistant connected to FMP), and I maintain the open-source Finance Toolkit. Not investment advice; I have no view to sell on AXON.
+
+      Full write-up with screenshots of each step: https://www.jeroenbouma.com/articles/equity-research-family-offices-fmp-mcp
+medium:
+  subtitle: "How a small investment team can compress the mechanical part of equity diligence into one AI conversation."
+  tags: [Equity Research, AI, Family Office, Due Diligence, Investing]

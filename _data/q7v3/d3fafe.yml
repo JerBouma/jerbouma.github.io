@@ -1,0 +1,99 @@
+# Drafts for How to Connect Claude to Live Financial Data for Stock Analysis. Starting points, edited before posting.
+article: /articles/connect-claude-to-financial-data
+written: 2026-10-02
+linkedin:
+  text: |
+    Which is more profitable, Apple or Microsoft? Asked that, Claude came back with two answers, and both were right.
+
+    On margins it is Microsoft: an operating margin of 45.6% in fiscal 2025 against 32.0% for Apple. On capital it is Apple: a return on invested capital of 70.38% against 30.64%, and a return on assets of 30.93% against 18.00%.
+
+    The model did not produce any of those numbers itself. Language models reason well about numbers but they are not a data source. Ask one for a ROIC from memory and you tend to get something plausible, out of date, or both.
+
+    Here it called tools instead. First one for margins, then, without being asked, a second for capital efficiency, because the margin answer alone was incomplete. Every figure comes from a documented formula you can look up or rerun yourself in Python.
+
+    That is the split I would want before letting an assistant near any analysis: the model asks the follow-up questions and writes the narrative, a transparent library does the arithmetic. It also gives you an answer to the question every analyst should ask about a ratio: which definition was used?
+
+    I built the Finance Toolkit MCP server for this. It is free and hosted, and connecting Claude Desktop, claude.ai or Claude Code takes about a minute with a free Financial Modeling Prep key. Setup and the full example:
+    https://www.jeroenbouma.com/articles/connect-claude-to-financial-data
+
+    Not investment advice.
+
+    #FinancialAnalysis #AIinFinance #EquityResearch
+reddit:
+  - subreddit: r/ClaudeAI
+    title: "Connecting Claude to live financial data with an MCP server: Apple vs Microsoft profitability as a worked example (I built the server)"
+    body: |
+      **TL;DR:** Claude can't see current financial statements, and asking it to compute ratios from memory gives plausible-looking mistakes. I built a free, hosted MCP server that lets it fetch the data and run documented calculations instead. Setup is one connector URL. Below is what a real question looks like with it.
+
+      **Setup (Claude Desktop or claude.ai)**
+
+      1. Customize → Connectors → **+** → Add custom connector.
+      2. Name it, paste `https://financetoolkit.jeroenbouma.com/mcp`, click Add.
+      3. On the first tool call a browser window asks for a Financial Modeling Prep API key (the free plan works). It's passed along per request and not stored.
+
+      Claude Code: `claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp`
+
+      **Example: "Compare Apple with Microsoft, which company is the most profitable?"**
+
+      Claude called the `profitability` tool for both tickers (fiscal 2021 to 2025). Fiscal 2025:
+
+      | | Apple | Microsoft |
+      |:--|--:|--:|
+      | Gross margin | 46.9% | 68.8% |
+      | Operating margin | 32.0% | 45.6% |
+      | Net margin | 26.9% | 36.2% |
+
+      Then, without being asked, it made a second call for capital-efficiency metrics:
+
+      | | Apple | Microsoft |
+      |:--|--:|--:|
+      | Return on invested capital | 70.38% | 30.64% |
+      | Return on assets | 30.93% | 18.00% |
+
+      Its conclusion: Microsoft is more profitable per dollar of revenue, Apple gets more out of each dollar of capital. That second step is the part I find most useful; a raw data feed wouldn't have gone looking for the counter-argument.
+
+      **How it's organised**
+
+      The server exposes the open-source Finance Toolkit through 22 categorical tools (profitability, valuation, momentum, performance, risk, macroeconomics and so on). You never name a tool; Claude picks one from a plain-English question. Every number maps to a documented method, so "which formula did you use for ROIC?" has a real answer.
+
+      **Limits worth knowing**
+
+      - FMP free plan: 250 requests a day, 5 years of history, US-listed companies. A broad screen burns through that quickly.
+      - Fiscal years differ (Apple ends in September, Microsoft in June), so "2025" isn't the same calendar period for both.
+      - The data is the same for every model, but the interpretation isn't: Sonnet and Opus write useful narratives, smaller models mostly return clean tables.
+
+      Disclosure: I'm the author of the Finance Toolkit and the MCP server. It's free and open source (MIT). Full walkthrough with more example prompts:
+      https://www.jeroenbouma.com/articles/connect-claude-to-financial-data
+
+      Not investment advice.
+  - subreddit: r/mcp
+    title: "Exposing a 500+ method finance library through MCP as 22 categorical tools instead of 500 separate ones"
+    body: |
+      **TL;DR:** I wrapped the Finance Toolkit (an open-source Python library with 500+ financial analysis methods) in an MCP server. Rather than one tool per method, it exposes 22 categorical tools (profitability, valuation, momentum, performance, risk, macroeconomics, ...) and the model picks the category and metric from a plain-English question. It runs hosted over HTTP with OAuth, or locally via `uvx`.
+
+      **Why categories**
+
+      A tool list with hundreds of entries is hard on a model's context and on tool selection. Grouping by the way an analyst thinks (profitability, solvency, valuation, risk) keeps the list short and makes the right choice fairly obvious from the question. In practice I never need to name a tool: "compare the margins of Apple and Microsoft" lands on `profitability`.
+
+      **What chaining looks like**
+
+      Asked which of Apple and Microsoft is more profitable, Claude called `profitability` for both (fiscal 2025 operating margin: 45.6% for Microsoft, 32.0% for Apple), then made a second call on its own for capital efficiency and found the opposite picture: return on invested capital of 70.38% for Apple vs 30.64% for Microsoft, return on assets of 30.93% vs 18.00%. Every number comes from a documented formula, so the model can say which definition it used instead of guessing.
+
+      **Auth and hosting**
+
+      - Hosted: `https://financetoolkit.jeroenbouma.com/mcp`. The first tool call opens a standard OAuth page for the user's Financial Modeling Prep API key; the server passes it along with each request and doesn't store it.
+      - Local: the same server runs with a single `uvx` command for clients that only support stdio.
+      - Macro data comes from the OECD and needs no key.
+      - Setup guides cover Claude Desktop, claude.ai, Claude Code, ChatGPT (Developer mode), Cursor, VS Code with Copilot, Windsurf, Codex CLI and Gemini CLI.
+
+      **Trade-offs**
+
+      The FMP free plan (250 requests a day, 5 years, US-listed companies) runs out fast on broad screens, and smaller models return the data with much less interpretation than Sonnet or Opus.
+
+      I'm the author; it's MIT-licensed and the source is on GitHub (github.com/JerBouma/FinanceToolkit). Setup guide with example prompts:
+      https://www.jeroenbouma.com/articles/connect-claude-to-financial-data
+
+      Happy to hear how others handle large tool surfaces: categories with an indicator parameter like this, or search-then-call?
+medium:
+  subtitle: "Give Claude real financial statements and ratios to work with, instead of numbers recalled from memory."
+  tags: [Claude, AI, Financial Analysis, MCP, Investing]

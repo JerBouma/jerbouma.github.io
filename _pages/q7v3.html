@@ -1,0 +1,174 @@
+---
+title: Drafts
+permalink: /q7v3
+layout: single
+classes: custom-document
+author_profile: false
+sitemap: false
+noindex: true
+search: false
+share: false
+---
+{%- comment -%}
+  Unlisted page: starting points for sharing each article on LinkedIn, Reddit
+  and Medium. Filled by _plugins/q7v3.rb (article list and the Medium
+  conversion) and _data/q7v3/<id>.yml (LinkedIn and Reddit drafts).
+{%- endcomment -%}
+<div class="q7">
+
+<p class="q7-notice"><i class="fas fa-pen-ruler" aria-hidden="true"></i> Work in progress. Everything below is a starting point for sharing the articles on this site, written before posting and edited afterwards. It is not published content.</p>
+
+<div class="q7-controls">
+  <label class="q7-select"><span>Article</span>
+    <select id="q7-article">
+      {%- for a in site.data.q7v3_articles %}
+      <option value="{{ a.id }}">{{ a.title }}</option>
+      {%- endfor %}
+    </select>
+  </label>
+  <div class="q7-tabs" role="tablist">
+    <button type="button" role="tab" class="q7-tab is-active" data-tab="linkedin"><i class="fab fa-linkedin" aria-hidden="true"></i> LinkedIn</button>
+    <button type="button" role="tab" class="q7-tab" data-tab="reddit"><i class="fab fa-reddit" aria-hidden="true"></i> Reddit</button>
+    <button type="button" role="tab" class="q7-tab" data-tab="medium"><i class="fab fa-medium" aria-hidden="true"></i> Medium</button>
+  </div>
+</div>
+
+{%- for a in site.data.q7v3_articles %}
+<section class="q7-article" data-id="{{ a.id }}"{% unless forloop.first %} hidden{% endunless %}>
+  <p class="q7-meta"><a href="{{ a.url }}">{{ a.url }}</a> · {{ a.date | date: "%B %-d, %Y" }}{% if a.drafts.written %} · drafts written {{ a.drafts.written | date: "%B %-d, %Y" }}{% endif %}</p>
+
+  <div class="q7-panel" data-panel="linkedin">
+    {%- if a.drafts.linkedin %}
+    <div class="q7-block">
+      <div class="q7-block__head"><span>Post</span><span class="q7-count" data-max="3000"></span><button type="button" class="q7-copy">Copy</button></div>
+      <pre class="q7-text">{{ a.drafts.linkedin.text | strip | escape }}</pre>
+    </div>
+    {%- else %}
+    <p class="q7-empty">No LinkedIn draft yet.</p>
+    {%- endif %}
+  </div>
+
+  <div class="q7-panel" data-panel="reddit" hidden>
+    {%- for r in a.drafts.reddit %}
+    <div class="q7-option">
+      <h3>{{ r.subreddit }}</h3>
+      {%- if r.note %}<p class="q7-note">{{ r.note }}</p>{% endif %}
+      <div class="q7-block">
+        <div class="q7-block__head"><span>Title</span><span class="q7-count" data-max="300"></span><button type="button" class="q7-copy">Copy</button></div>
+        <pre class="q7-text">{{ r.title | strip | escape }}</pre>
+      </div>
+      <div class="q7-block">
+        <div class="q7-block__head"><span>Body (Markdown)</span><span class="q7-count" data-max="40000"></span><button type="button" class="q7-copy">Copy</button></div>
+        <pre class="q7-text">{{ r.body | strip | escape }}</pre>
+      </div>
+    </div>
+    {%- else %}
+    <p class="q7-empty">No Reddit draft yet.</p>
+    {%- endfor %}
+  </div>
+
+  <div class="q7-panel" data-panel="medium" hidden>
+    <p class="q7-note">The full article, converted for Medium. Copy it as rich text and paste it into a new story, then set the canonical link under <em>Story settings → Advanced settings</em> so search engines credit the original.</p>
+    {%- for n in a.medium_notes %}<p class="q7-warn"><i class="fas fa-triangle-exclamation" aria-hidden="true"></i> {{ n }}</p>{% endfor %}
+    <div class="q7-fields">
+      <div class="q7-block"><div class="q7-block__head"><span>Title</span><span class="q7-count" data-max="100"></span><button type="button" class="q7-copy">Copy</button></div><pre class="q7-text">{{ a.title | escape }}</pre></div>
+      <div class="q7-block"><div class="q7-block__head"><span>Subtitle</span><span class="q7-count" data-max="140"></span><button type="button" class="q7-copy">Copy</button></div><pre class="q7-text">{{ a.drafts.medium.subtitle | default: a.excerpt | strip | escape }}</pre></div>
+      <div class="q7-block"><div class="q7-block__head"><span>Canonical link</span><button type="button" class="q7-copy">Copy</button></div><pre class="q7-text">{{ a.url }}</pre></div>
+      <div class="q7-block"><div class="q7-block__head"><span>Tags (max 5)</span><button type="button" class="q7-copy">Copy</button></div><pre class="q7-text">{% if a.drafts.medium.tags %}{{ a.drafts.medium.tags | join: ", " }}{% else %}{{ a.tags | join: ", " }}, Finance, Investing{% endif %}</pre></div>
+    </div>
+    <div class="q7-block">
+      <div class="q7-block__head"><span>Story</span><button type="button" class="q7-copy" data-rich>Copy as rich text</button></div>
+      <div class="q7-medium">{{ a.medium | markdownify }}</div>
+      {%- comment -%} the copy source: the preview above gets the site's code-block decorations {%- endcomment %}
+      <template class="q7-medium-src">{{ a.medium | markdownify }}</template>
+    </div>
+  </div>
+</section>
+{%- endfor %}
+
+</div>
+
+<style>
+.q7 [hidden] { display: none !important; }
+.q7-notice { padding: 14px 16px; border: 1px dashed var(--card-hover-border, #38bdf8); border-radius: 12px; background: rgba(56, 189, 248, 0.08); color: var(--text-secondary); font-size: 0.95rem; }
+.q7-notice i { color: var(--accent-color); margin-right: 6px; }
+.q7-controls { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 20px; margin: 24px 0 8px; }
+.q7-select { min-width: 0; max-width: 100%; display: flex; flex-direction: column; gap: 6px; flex: 1 1 320px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+.q7-select select { width: 100%; max-width: 100%; min-width: 0; text-overflow: ellipsis; padding: 9px 12px; border: 1px solid var(--card-border); border-radius: 10px; background: var(--card-bg); color: var(--text-primary); font: inherit; font-size: 0.95rem; text-transform: none; letter-spacing: 0; }
+.q7-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+.q7-tab { padding: 7px 14px; border: 1px solid var(--card-border); border-radius: 10px; background: transparent; color: var(--text-secondary); font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+.q7-tab.is-active { color: var(--accent-color); border-color: var(--card-hover-border, #38bdf8); background: rgba(56, 189, 248, 0.1); }
+.q7-meta { font-size: 0.85rem; color: var(--text-muted); }
+.q7-option h3 { margin: 1.4em 0 0.4em; font-size: 1.05rem; }
+.q7-note { font-size: 0.9rem; color: var(--text-muted); }
+.q7-warn { font-size: 0.9rem; color: #f59e0b; }
+.q7-empty { color: var(--text-muted); font-style: italic; }
+.q7-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
+.q7-block { margin: 12px 0; border: 1px solid var(--card-border); border-radius: 12px; background: var(--card-bg); overflow: hidden; }
+.q7-block__head { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-bottom: 1px solid var(--card-border); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+.q7-count { margin-left: auto; text-transform: none; letter-spacing: 0; }
+.q7-count.is-over { color: #f43f5e; }
+.q7-copy { padding: 3px 10px; border: 1px solid var(--card-border); border-radius: 7px; background: transparent; color: var(--text-secondary); font: inherit; font-size: 0.78rem; cursor: pointer; text-transform: none; letter-spacing: 0; }
+.q7-block__head span:first-child + .q7-copy { margin-left: auto; }
+.q7-copy:hover { color: var(--accent-color); }
+.page__content .q7-text { margin: 0 !important; padding: 12px 14px !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; color: var(--text-primary) !important; white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: 0.92rem; line-height: 1.6; }
+.q7-medium { padding: 4px 18px 12px; max-height: 640px; overflow: auto; font-size: 0.95rem; }
+.q7-medium img { max-width: 100%; height: auto; }
+@media (max-width: 760px) { .q7-fields { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+(function () {
+  var select = document.getElementById('q7-article');
+  var articles = document.querySelectorAll('.q7-article');
+  var tabs = document.querySelectorAll('.q7-tab');
+  var tab = 'linkedin';
+  function show() {
+    articles.forEach(function (a) {
+      a.hidden = a.getAttribute('data-id') !== select.value;
+      a.querySelectorAll('.q7-panel').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== tab; });
+    });
+    tabs.forEach(function (t) { t.classList.toggle('is-active', t.getAttribute('data-tab') === tab); });
+    try { history.replaceState(null, '', '#' + select.value + '/' + tab); } catch (e) {}
+  }
+  var hash = location.hash.slice(1).split('/');
+  if (hash[0] && document.querySelector('.q7-article[data-id="' + hash[0] + '"]')) select.value = hash[0];
+  if (hash[1] && document.querySelector('.q7-tab[data-tab="' + hash[1] + '"]')) tab = hash[1];
+  select.addEventListener('change', show);
+  tabs.forEach(function (t) { t.addEventListener('click', function () { tab = t.getAttribute('data-tab'); show(); }); });
+  show();
+
+  document.querySelectorAll('.q7-count').forEach(function (c) {
+    var text = c.closest('.q7-block').querySelector('.q7-text');
+    var n = text ? text.textContent.length : 0, max = +c.getAttribute('data-max');
+    c.textContent = n.toLocaleString('en-US') + ' / ' + max.toLocaleString('en-US');
+    c.classList.toggle('is-over', n > max);
+  });
+
+  document.querySelectorAll('.q7-copy').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var block = b.closest('.q7-block');
+      var rich = b.hasAttribute('data-rich');
+      var el = rich ? block.querySelector('.q7-medium-src').content : block.querySelector('.q7-text');
+      var html = '';
+      if (rich) { var box = document.createElement('div'); box.appendChild(el.cloneNode(true)); html = box.innerHTML; el = box; }
+      var done = function () { var t = b.textContent; b.textContent = 'Copied'; setTimeout(function () { b.textContent = t; }, 1400); };
+      if (rich && window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+        navigator.clipboard.write([new ClipboardItem({
+          'text/html': new Blob([html], { type: 'text/html' }),
+          'text/plain': new Blob([el.textContent], { type: 'text/plain' })
+        })]).then(done);
+      } else if (!rich && navigator.clipboard) {
+        navigator.clipboard.writeText(el.textContent).then(done);
+      } else {
+        if (rich) { el.style.position = 'fixed'; el.style.left = '-9999px'; document.body.appendChild(el); }
+        var range = document.createRange(); range.selectNodeContents(el);
+        var sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+        document.execCommand('copy'); sel.removeAllRanges();
+        if (rich) el.remove();
+        done();
+      }
+    });
+  });
+})();
+</script>

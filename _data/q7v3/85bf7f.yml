@@ -1,0 +1,96 @@
+# Drafts for How Microsoft Has Changed Since Its IPO. Starting points, edited before posting.
+# LinkedIn: the brief asks for the link at the end of the post. If reach matters more, move the
+# URL to a first comment and end the post with "Link to the full analysis in the comments."
+# Alternative LinkedIn hooks:
+#   "Microsoft's ROE was 38% in 1990 and 40% in 2020. Its return on invested capital barely moved. Buybacks explain most of the difference."
+#   "Microsoft's revenue grew from $23 billion to $87 billion under Ballmer, yet the stock went roughly nowhere for 14 years."
+article: /articles/microsoft-financial-history-finance-toolkit
+written: 2026-10-02
+linkedin:
+  text: |
+    Microsoft spent $64.6 billion on capital expenditure in fiscal 2025. In 2015 that was $5.9 billion.
+
+    Free cash flow was still $71.6 billion, but that jump changes how its valuation multiples read.
+
+    I went through 40 years of Microsoft's financials with the Finance Toolkit, the open-source Python library I built. The capex line is the clearest break with its past.
+
+    For most of its history Microsoft was a licensing business. Gross margins peaked near 90% in the mid-1990s, because distributing another copy of Windows cost almost nothing. Cloud, hardware and data centres changed that cost structure: gross margin was 64.7% by 2015. Net margin has since recovered to 36.2%, approaching the levels of 2000.
+
+    The new capex is mostly AI infrastructure, and it shows in the multiples. For 2025 the stock traded at 35.5x earnings but 50.4x free cash flow. Earnings spread the cost of a data-centre build-out over years of depreciation; free cash flow takes it up front.
+
+    If that spending turns into Azure revenue over the next three to five years, normalised free cash flow looks better than the headline ratio suggests. If it doesn't, the multiple is optimistic.
+
+    The lesson I'd apply to any company in a heavy investment cycle: read P/FCF next to the capex trend, never on its own.
+
+    The full analysis, with the Python code and prompts to reproduce it:
+    https://www.jeroenbouma.com/articles/microsoft-financial-history-finance-toolkit
+
+    Not investment advice.
+
+    #FundamentalAnalysis #Valuation #Python
+reddit:
+  - subreddit: r/ValueInvesting
+    title: "Microsoft's capex went from $5.9B (2015) to $64.6B (2025). How do you normalise FCF mid-cycle?"
+    body: |
+      **TL;DR:** Microsoft still produced $71.6B of free cash flow in fiscal 2025, but capex is now $64.6B a year, mostly AI infrastructure. That is a big part of why the stock sits at ~50x FCF against ~35x earnings. I went through 40 years of its financials; the numbers and my reading are below, and I'm curious how others here normalise FCF for a company in the middle of a capex cycle like this.
+
+      **How the business changed**
+
+      - **Margins:** gross margin peaked near 90% in the mid-1990s (pure licensing economics). Cloud, hardware and data centres pushed it down to 64.7% by 2015. Net margin has recovered to 36.2% in 2025, approaching 2000 levels. Revenue nearly tripled from 2015 to 2025 while operating expenses did not.
+      - **Capex:** $5.9B in 2015, $64.6B in 2025. Operating cash flow has grown fast enough to absorb it so far, but FCF as a share of operating cash flow has compressed.
+      - **Balance sheet:** no debt until 2009. Long-term debt peaked at $66.7B in 2019 and is down to $40.2B in 2025. Cash went from $136B (2020) to $94.6B (2025), largely because of Activision. Goodwill is now $119.5B.
+      - **Returns:** ROE was 38% in 1990 with no debt and no buybacks, and 40% in 2020, partly because buybacks shrank the equity base. ROIC is roughly 30-31% today, not far from the 1990s. ROA fell from 30.6% (1990) to 18% (2025) as the asset base got heavier.
+
+      **Valuation and market behaviour, 2020-2025**
+
+      | | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 |
+      |---|---|---|---|---|---|---|
+      | P/E | 38.6 | 41.8 | 24.9 | 38.8 | 35.7 | 35.5 |
+      | P/FCF | 37.8 | 45.6 | 27.8 | 47.2 | 42.5 | 50.4 |
+      | EV/EBITDA | 27.0 | 32.2 | 19.1 | 27.9 | 24.5 | 22.7 |
+      | Beta | 1.14 | 1.15 | 1.28 | 1.16 | 1.19 | 0.88 |
+
+      **How I read it:** the 50.4x P/FCF looks stretched, but it is measured on FCF after an unusually large capex year. If that spending turns into Azure revenue growth over the next three to five years, normalised FCF is better than the headline ratio suggests. If it doesn't, the multiple is optimistic. Between those two outcomes, the question is how much of the $64.6B you treat as maintenance and how much as growth. Do you estimate maintenance capex (e.g. from depreciation), use an earlier-cycle FCF margin, or something else?
+
+      **Caveats:** annual data, so the 2015 figures are distorted by the $7.5B Nokia write-down (net income $12.2B on $93.6B revenue). The ratios use the Finance Toolkit's formulas, which can differ from what other data providers report.
+
+      **Disclosure:** I built the Finance Toolkit (open-source Python library) and used it for all the numbers here. The full write-up with charts, code and the other sections (revenue by CEO era, the balance sheet by decade) is on my site: https://www.jeroenbouma.com/articles/microsoft-financial-history-finance-toolkit
+
+      Not investment advice.
+  - subreddit: r/SecurityAnalysis
+    title: "Microsoft's financials over 40 years: three businesses under one name"
+    body: |
+      I pulled Microsoft's statements from 1986 to 2025 to see how the company underneath the stock changed. Split-adjusted, the 1986 IPO price works out to roughly $0.08; the stock closed 2025 at $484. The statements show three fairly different businesses, roughly matching the three CEOs.
+
+      **Gates (1986-2000): a licensing business**
+
+      - Revenue grew from $197M to $23B, about 115x in 14 years, almost all Windows and Office.
+      - Gross margins peaked near 90% in the mid-1990s; no debt at all.
+      - ROE of 38% and ROA of 30.6% in 1990, without leverage or buybacks.
+
+      **Ballmer (2000-2014): growth the stock did not reflect**
+
+      - Revenue grew from $23B to $87B, which is real growth. The stock went roughly nowhere because he inherited it at the dot-com valuation.
+      - First debt appeared in 2009: borrowing at low rates to fund buybacks was more tax-efficient than repatriating overseas cash.
+      - Goodwill started to appear (aQuantive, Skype) after decades of building rather than buying.
+
+      **Nadella (2014-now): cloud, acquisitions and capex**
+
+      - $282B revenue and $102B net income in 2025. Net margin 36.2%, approaching 2000 levels, after gross margin had compressed to 64.7% in 2015.
+      - Acquisitions: LinkedIn ($26B), GitHub ($7.5B), Nuance ($19B), Activision Blizzard ($69B). Goodwill is $119.5B.
+      - Capex rose from $5.9B (2015) to $64.6B (2025), mostly AI infrastructure. FCF was still $71.6B.
+
+      **What I took from it**
+
+      1. ROE overstates the change. ROE was 40% in 2020, but that partly reflects an equity base shrunk by buybacks. ROIC, which strips out capital structure, is roughly 30-31% today, not far from the 1990s. The quality of the business held up; what changed is how returns are distributed.
+      2. The balance sheet is normalising after Activision: cash fell from $136B (2020) to $94.6B (2025), long-term debt is down from a $66.7B peak in 2019 to $40.2B.
+      3. The open question is the capex. At 35.5x earnings and 50.4x FCF in 2025, the valuation assumes that spending turns into Azure revenue.
+
+      **Caveats:** annual data; 2015 is distorted by the $7.5B Nokia write-down; ratios follow the Finance Toolkit's formulas, which can differ from other providers.
+
+      Disclosure: I'm the author of the Finance Toolkit, the open-source Python library I used for these numbers. Full write-up with charts and code: https://www.jeroenbouma.com/articles/microsoft-financial-history-finance-toolkit
+
+      Not investment advice.
+medium:
+  subtitle: "Forty years of Microsoft's financials show three different businesses under one name."
+  tags: [Microsoft, Fundamental Analysis, Investing, Stocks, Finance]

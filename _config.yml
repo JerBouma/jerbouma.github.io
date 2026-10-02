@@ -72,6 +72,7 @@ algolia:
   powered_by             : false # true (default), false
   files_to_exclude       : 
     - index.md
+    - _pages/q7v3.html
     - _pages/*.md
     - _pages/articles/*.md
     - _pages/coding/*.md
