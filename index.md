@@ -2,7 +2,7 @@
 layout: splash
 title: "Jeroen Bouma"
 description: "Jeroen Bouma, Quantitative Investment Strategist, creator of the open-source Finance Toolkit and Finance Database Python libraries (10,000+ GitHub stars)."
-excerpt: "Quantitative Investment Strategist who turns financial analysis into investment conclusions, sharpened by deep expertise in Python and AI. Creator of Finance Toolkit and Finance Database."
+excerpt: "Quantitative Investment Strategist who analyzes financial information and turns it into investment conclusions, sharpened by deep expertise in Python and AI. Creator of Finance Toolkit and Finance Database."
 classes: custom-splash home-v2
 ---
 {%- assign latest_articles = site.pages | where: "collection", "article" | sort: "date" | reverse -%}
@@ -12,7 +12,7 @@ classes: custom-splash home-v2
   <div class="hp-hero__glow" aria-hidden="true"></div>
   <div class="hp-hero__text">
     <h1 class="hp-title">Investment analysis, <span class="hp-accent">sharpened by AI.</span></h1>
-    <p class="hp-lead">I'm <strong>Jeroen Bouma</strong>, Quantitative Investment Strategist in asset management. I turn financial information into investment conclusions on asset allocation, ALM and Solvency II risk, combined with deep expertise in AI. I also created the open-source <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a>, used by thousands of analysts.</p>
+    <p class="hp-lead">I'm <strong>Jeroen Bouma</strong>, Quantitative Investment Strategist in asset management. I turn financial information into investment conclusions on strategic asset allocation, ALM, lifecycle investing and Solvency II internal model calculations, combined with deep expertise in AI. I also created the open-source <a href="/projects/financetoolkit">Finance Toolkit</a> and <a href="/projects/financedatabase">Finance Database</a>, used by thousands of analysts.</p>
     <div class="hp-actions">
       <a href="/resume" class="hp-btn hp-btn--primary">View my resume <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
       <a href="/projects" class="hp-btn hp-btn--ghost">Explore my projects</a>
