@@ -1579,9 +1579,11 @@ body.wide-no-sidebar:not(.no-title) {
   }
 }
 
+// the same box as the breadcrumbs above it, so their edges line up at every
+// screen width
 .notebook-viewer-wrapper {
-  width: calc(100% - 40px);
-  max-width: 1400px;
+  width: calc(100% - var(--site-h-padding) * 2);
+  max-width: var(--site-max-width);
   margin: 16px auto 24px;
   border: 1px solid var(--card-border);
   border-radius: 20px;
@@ -1747,10 +1749,13 @@ body.wide-no-sidebar:not(.no-title) {
   i { margin-right: 6px; }
 }
 
+// the cells use the full width of the notebook frame
 .nb-notebook {
-  max-width: min(1200px, var(--site-max-width));
-  margin: 0 auto;
-  padding: 24px 32px 40px;
+  max-width: none;
+  margin: 0;
+  padding: 28px 40px 44px;
+
+  @media (max-width: 767px) { padding: 20px 16px 32px; }
 }
 
 // ── Markdown cells ─────────────────────────────────────────
@@ -1825,11 +1830,15 @@ body.wide-no-sidebar:not(.no-title) {
     border-radius: 0 6px 6px 0;
   }
 
+  // the same cap as images elsewhere on the site; badges stay inline
   img {
-    max-width: 100%;
+    max-width: min(100%, 880px) !important;
     height: auto;
     border-radius: 6px;
   }
+
+  p > img:only-child,
+  p > a:only-child > img { display: block; margin: 0 auto !important; }
 
   table {
     width: auto;
@@ -5580,4 +5589,16 @@ body.ft-overview .page__content {
     text-align: center !important;
     margin: 0 !important;
   }
+}
+
+// notebook images: the site-wide content-image rule sets max-width: 100%
+// !important with two :not()s, so this repeats that specificity to cap
+// images at the same 880px as elsewhere (badges are unaffected)
+.page__content .nb-notebook .nb-markdown-cell img:not([data-nb-a]):not([data-nb-b]) {
+  max-width: min(100%, 880px) !important;
+}
+
+// on phones the notebook uses almost the full width, like the breadcrumbs
+@media (max-width: 767px) {
+  .notebook-viewer-wrapper { width: calc(100% - 16px); margin: 12px auto 20px; border-radius: 14px; }
 }
