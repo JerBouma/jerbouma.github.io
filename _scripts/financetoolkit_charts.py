@@ -94,24 +94,37 @@ def main() -> None:
         title="Cumulative return (1 = start)",
     )
 
-    ratios = companies.ratios.collect_profitability_ratios().loc["MSFT"]
+    # Profitability ratios for Microsoft, grouped per ratio with a bar per year.
+    # Only years in which every ratio exists are shown: ROE and ROA use average
+    # balance sheet values, so the first year of statements has no value.
     picked = ["Gross Margin", "Operating Margin", "Net Profit Margin", "Return on Equity", "Return on Assets"]
-    charts["ratios"] = line(
-        ratios.columns,
-        {name: ratios.loc[name] for name in picked if name in ratios.index},
-        fmt="percent",
-        title="Profitability ratios for Microsoft",
-    )
-
-    dupont = companies.models.get_extended_dupont_analysis()
-    charts["models"] = {
-        "type": "tabs",
-        "title": "Extended DuPont Analysis",
-        "tabs": [
-            {"label": ticker, **line(dupont.loc[ticker].columns, {row: dupont.loc[ticker].loc[row] for row in dupont.loc[ticker].index}, fmt="ratio")}
-            for ticker in ["AAPL", "MSFT"]
-        ],
+    ratios = companies.ratios.collect_profitability_ratios().loc["MSFT"]
+    ratios = ratios.loc[[name for name in picked if name in ratios.index]].dropna(axis=1, how="any")
+    charts["ratios"] = {
+        "type": "bar",
+        "title": "Profitability ratios for Microsoft",
+        "x": list(ratios.index),
+        "series": [{"name": label(year), "data": values(ratios[year])} for year in ratios.columns],
+        "format": "percent",
     }
+
+    # Extended DuPont: five components that multiply into Return on Equity
+    dupont = companies.models.get_extended_dupont_analysis()
+    parts = [("Interest Burden Ratio", "Interest burden", "percent"),
+             ("Tax Burden Ratio", "Tax burden", "percent"),
+             ("Operating Profit Margin", "Operating margin", "percent"),
+             ("Asset Turnover", "Asset turnover", "multiple"),
+             ("Equity Multiplier", "Equity multiplier", "multiple")]
+    tabs = []
+    for ticker, name in [("AAPL", "Apple"), ("MSFT", "Microsoft")]:
+        frame = dupont.loc[ticker].dropna(axis=1, how="any")
+        tabs.append({
+            "label": name,
+            "years": [label(c) for c in frame.columns],
+            "components": [{"name": short, "format": fmt, "data": values(frame.loc[row])} for row, short, fmt in parts],
+            "result": {"name": "Return on equity", "format": "percent", "data": values(frame.loc["Return on Equity"])},
+        })
+    charts["models"] = {"type": "dupont", "title": "Extended DuPont Analysis", "tabs": tabs}
 
     # Greeks for Apple: one line per expiration, against the strike price
     greek_tabs = []

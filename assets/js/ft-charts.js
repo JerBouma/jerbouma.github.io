@@ -120,7 +120,108 @@
     };
   }
 
+  // Extended DuPont: five component panels that multiply into Return on Equity
+  function renderDupont(box, chart) {
+    box.innerHTML = '';
+    box.classList.add('ft-chart--dupont');
+    var head = document.createElement('div');
+    head.className = 'ft-chart__head';
+    var title = document.createElement('p');
+    title.className = 'ft-chart__title';
+    title.textContent = chart.title;
+    head.appendChild(title);
+    var tabs = document.createElement('div');
+    tabs.className = 'ft-chart__tabs';
+    tabs.setAttribute('role', 'tablist');
+    chart.tabs.forEach(function (s, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'ft-chart__tab' + (i === 0 ? ' is-active' : '');
+      b.textContent = s.label;
+      b.setAttribute('role', 'tab');
+      tabs.appendChild(b);
+    });
+    head.appendChild(tabs);
+    var strip = document.createElement('div');
+    strip.className = 'ft-dupont';
+    var equation = document.createElement('p');
+    equation.className = 'ft-dupont__equation';
+    box.appendChild(head);
+    box.appendChild(strip);
+    box.appendChild(equation);
+
+    var minis = [];
+    function panel(part, op, isResult) {
+      var card = document.createElement('div');
+      card.className = 'ft-dupont__part' + (isResult ? ' is-result' : '');
+      if (op) {
+        var o = document.createElement('span');
+        o.className = 'ft-dupont__op';
+        o.textContent = op;
+        o.setAttribute('aria-hidden', 'true');
+        card.appendChild(o);
+      }
+      var name = document.createElement('p');
+      name.className = 'ft-dupont__name';
+      card.appendChild(name);
+      var value = document.createElement('p');
+      value.className = 'ft-dupont__value';
+      card.appendChild(value);
+      var canvas = document.createElement('div');
+      canvas.className = 'ft-dupont__canvas';
+      card.appendChild(canvas);
+      strip.appendChild(card);
+      var inst = window.echarts.init(canvas, null, { renderer: 'canvas' });
+      if ('ResizeObserver' in window) new ResizeObserver(function () { inst.resize(); }).observe(canvas);
+      minis.push({ inst: inst, name: name, value: value, isResult: isResult });
+    }
+    for (var i = 0; i < 5; i++) panel(null, i === 0 ? null : '×', false);
+    panel(null, '=', true);
+
+    var current = 0;
+    function draw() {
+      var spec = chart.tabs[current];
+      var parts = spec.components.concat([spec.result]);
+      var last = spec.years.length - 1;
+      var muted = css('--text-muted', '#94a3b8');
+      var text = css('--text-secondary', '#cbd5e1');
+      parts.forEach(function (part, i) {
+        var m = minis[i];
+        var fmt = formatter(part.format);
+        var color = m.isResult ? '#c084fc' : PALETTE[i % PALETTE.length];
+        m.name.textContent = part.name;
+        m.value.textContent = fmt(part.data[last]);
+        m.inst.setOption({
+          animationDuration: 500,
+          textStyle: { fontFamily: 'inherit' },
+          grid: { left: 4, right: 4, top: 22, bottom: 22 },
+          tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, valueFormatter: fmt, backgroundColor: css('--masthead-bg', '#0f1115'), borderColor: css('--card-border', 'rgba(255,255,255,0.1)'), textStyle: { color: css('--text-primary', '#f8fafc'), fontSize: 13 } },
+          xAxis: { type: 'category', data: spec.years, axisLine: { lineStyle: { color: css('--card-border', 'rgba(255,255,255,0.1)') } }, axisTick: { show: false }, axisLabel: { color: muted, fontSize: 12 } },
+          yAxis: { type: 'value', show: false, min: 0 },
+          series: [{
+            name: part.name, type: 'bar', data: part.data, barMaxWidth: 26,
+            itemStyle: { color: color, borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', formatter: function (p) { return fmt(p.value); }, color: text, fontSize: 11 }
+          }]
+        }, true);
+      });
+      var f = function (p) { return formatter(p.format)(p.data[last]); };
+      equation.innerHTML = '<strong>' + spec.years[last] + ':</strong> ' +
+        spec.components.map(f).join(' × ') + ' = <strong>' + f(spec.result) + '</strong> return on equity';
+    }
+    draw();
+    instances.push({ draw: draw });
+    Array.prototype.forEach.call(tabs.children, function (b, i) {
+      b.addEventListener('click', function () {
+        current = i;
+        Array.prototype.forEach.call(tabs.children, function (x, j) { x.classList.toggle('is-active', j === i); });
+        draw();
+      });
+    });
+  }
+
   function render(box, chart) {
+    if (chart.type === 'dupont') return renderDupont(box, chart);
     var specs = chart.type === 'tabs' ? chart.tabs : [chart];
     box.innerHTML = '';
     var head = document.createElement('div');
