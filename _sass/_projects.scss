@@ -276,8 +276,9 @@ $pj-img: 'img:not([data-hp-a]):not([data-hp-b])';
 }
 
 @media (max-width: 760px) {
-  .pj-flow { grid-template-columns: 1fr; }
-  .pj-flow__arrow { justify-self: center; transform: rotate(90deg); }
+  // the Find → Analyze → Ask strip takes a full screen when stacked, and the
+  // project cards below already say the same, so it is left out on phones
+  .pj-flow { display: none; }
   .pj-card, .pj-wide { padding: 18px; }
   .pj-wide { grid-template-columns: 1fr; gap: 16px; }
   .pj-archive { grid-template-columns: 1fr; }

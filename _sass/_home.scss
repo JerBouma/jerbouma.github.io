@@ -623,6 +623,11 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
   .hp-code__src { padding: 14px 20px; }
   .hp-stats { gap: 20px; }
   .hp-stats strong { font-size: 1.2rem; }
+  // button pairs stay side by side, sharing the width
+  .hp-actions { flex-wrap: nowrap; gap: 10px; }
+  .hp-actions .hp-btn { flex: 1 1 auto; min-width: 0; justify-content: center; padding: 12px 10px; font-size: 0.86rem; white-space: nowrap; gap: 7px; }
+  // only brand logos (LinkedIn, GitHub) stay; arrows and decorative icons make room
+  .hp-actions .hp-btn i.fas { display: none; }
 }
 
 // ── scroll reveal (only when JS runs and motion is allowed) ───────────────
