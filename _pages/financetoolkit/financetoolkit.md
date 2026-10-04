@@ -639,4 +639,4 @@ Generally, it should take less than 15 seconds to retrieve the historical data o
 
 *No, I am not*. I've merely picked them as the primary data provider given that they have a generous free tier and fair pricing compared to other providers. Therefore, any questions related to the data should go through [their contact form](https://site.financialmodelingprep.com/contact){:target="_blank"}. When it comes to any type of ratios, performance metrics, risk metrics, technical indicators or economic indicators, feel free to reach out to me as this is my own work.
 
-<script src="/assets/js/ft-charts.js" defer></script>
+{% include ft-charts-script.html %}

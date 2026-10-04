@@ -171,4 +171,4 @@ AMD at 80.8x P/E trades at a premium to NVIDIA despite lower ROIC and competitio
 
 > **Try this with the Finance Toolkit MCP:** *"Show current P/E and EV/EBITDA for Intel, AMD, NVIDIA, Qualcomm, Broadcom, and Texas Instruments. Which is the cheapest on each metric?"*
 
-<script src="/assets/js/ft-charts.js" defer></script>
+{% include ft-charts-script.html %}

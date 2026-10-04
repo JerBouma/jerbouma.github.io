@@ -212,4 +212,4 @@ Alpha has been positive in most years, notably +0.33 in 2023 when Microsoft's AI
 
 What I would watch over the next few years is the pace of Azure growth (which funds everything else), margin expansion as the AI CapEx cycle matures, and whether Activision contributes enough to earnings to justify the $69 billion price tag. The 40-year financial track record gives Microsoft the benefit of the doubt, but at these valuations the margin for error is narrower than it has been at any point in the company's history outside the dot-com peak.
 
-<script src="/assets/js/ft-charts.js" defer></script>
+{% include ft-charts-script.html %}

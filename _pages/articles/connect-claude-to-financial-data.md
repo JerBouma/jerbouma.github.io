@@ -231,4 +231,4 @@ The same server works with any MCP-compatible client, each with step-by-step ins
 
 Clients that only support the stdio transport can use the local installation. If you would rather skip the assistant altogether, the [Finance Toolkit](/projects/financetoolkit) Python library exposes the same 500+ methods directly. Problems or ideas for a new tool are welcome as an issue on [GitHub](https://github.com/JerBouma/FinanceToolkit/issues){:target="_blank"}.
 
-<script src="/assets/js/ft-charts.js" defer></script>
+{% include ft-charts-script.html %}
