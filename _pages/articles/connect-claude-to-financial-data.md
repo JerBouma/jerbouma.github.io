@@ -20,7 +20,11 @@ The fix is to give Claude a tool that fetches and computes the numbers for it. T
 
 This article walks through the setup for Claude Desktop, claude.ai and Claude Code, which takes about a minute, and then answers ten real questions through the server, from DuPont analyses and discounted cash flows to drawdowns and central bank policy, each with the chart Claude's data produces.
 
-**The full installation guide, including ChatGPT, Cursor, VS Code, Codex CLI and Gemini CLI, lives on the [Finance Toolkit MCP server](/projects/financetoolkit/mcp) page. The source code is on [GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}.**
+<div class="article-cta">
+  <p class="article-cta__title">Free, hosted and open source</p>
+  <p>One URL gives Claude, ChatGPT, Cursor and other AI assistants access to 500+ financial methods, financial statements and macro data for 60+ countries.</p>
+  <p class="article-cta__actions"><a href="/projects/financetoolkit/mcp" class="hp-btn hp-btn--primary">Explore the server <i class="fas fa-arrow-right" aria-hidden="true"></i></a><a href="/projects/financetoolkit/mcp#installation" class="hp-btn hp-btn--ghost">Install guide</a></p>
+</div>
 
 ## What You Need
 
@@ -62,7 +66,7 @@ Restart Claude Code and the Finance Toolkit tools are available. The first tool 
 
 Once connected, you never need to name a tool or an indicator. The server exposes the Finance Toolkit through 22 categorical tools (profitability, valuation, momentum, performance, risk, macroeconomics and so on) and Claude picks the right one from a plain-English question. Below are ten questions across company analysis, technical analysis, risk and macroeconomics. Every answer and every chart comes straight from the Finance Toolkit MCP server, with data up to October 2, 2026, so you can see what the output looks like before you connect anything.
 
-**For each example, the question is what you type; the text and chart below it are what comes back.**
+**For each example, the question is what you type; the text and chart below it are what comes back. Once the [Finance Toolkit MCP server](/projects/financetoolkit/mcp) is connected, you can paste any of these questions into Claude as they are, or swap in your own tickers.**
 
 ## Company Analysis
 
@@ -168,11 +172,15 @@ The United States went from 9.6% in 2010 to 3.7% in 2019, jumped to 8.1% in 2020
 
 {% include ft-chart.html id="claude-rates" src="/assets/data/article-charts.json" label="Inflation, policy rates and real policy rates in the US and the Eurozone" %}
 
-Inflation peaked in 2022 on both sides of the Atlantic, at 8.0% in the US and 6.9% in Germany, with the Netherlands reaching 10.0%. The Federal Reserve raised rates earlier and further, to an average of 5.38% in 2023. The real policy rate (the policy rate minus inflation, in the third tab) shows the difference best: US monetary policy was restrictive in real terms from 2023, the Eurozone's only from 2024, after a real rate of −2.3% in 2023. Policy rates are annual averages, with the ECB deposit rate shown through the German series.
+Inflation peaked in 2022 on both sides of the Atlantic, at 8.0% in the US and 6.9% in Germany, with the Netherlands reaching 10.0%. The Federal Reserve raised rates earlier and further, to an average of 5.38% in 2023. The real policy rate (the policy rate minus inflation, in the third tab) shows the difference best: US monetary policy was restrictive in real terms from 2023, the Eurozone's only from 2024, after a real rate of −2.3% in 2023. Policy rates are annual averages.
 
 Every one of these answers maps to a documented Finance Toolkit method, so if you want to know exactly how a number was calculated you can look it up in the [Finance Toolkit documentation](/projects/financetoolkit/docs) or read the source on GitHub. The [MCP server page](/projects/financetoolkit/mcp#ex-apple-microsoft) has the full conversation for the first example and five more, covering European bank solvency, semiconductor momentum, Alibaba versus Amazon, unemployment rates and ESG scores.
 
-> *These examples illustrate the tool and are not investment advice.*
+<div class="article-cta">
+  <p class="article-cta__title">Ask your own questions</p>
+  <p>These ten examples use a fraction of what the server can do. Connect it in a minute and ask about any company, index, sector or economy: the answers are calculated, not recalled from memory.</p>
+  <p class="article-cta__actions"><a href="/projects/financetoolkit/mcp" class="hp-btn hp-btn--primary">Connect the server <i class="fas fa-arrow-right" aria-hidden="true"></i></a><a href="/projects/financetoolkit/mcp#example-conversations" class="hp-btn hp-btn--ghost">More examples</a></p>
+</div>
 
 ## Tips for Better Answers
 
