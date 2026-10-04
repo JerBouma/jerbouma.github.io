@@ -490,12 +490,61 @@
     instances.push({ draw: draw });
   }
 
+  // Labelled points, e.g. quality (ROIC) against price (EV/EBITDA)
+  function renderScatter(box, chart) {
+    var inst = chrome(chart)(box, 380);
+    var fx = formatter(chart.xformat), fy = formatter(chart.yformat);
+    function draw() {
+      var c = axisColors();
+      inst.setOption({
+        animationDuration: 600,
+        textStyle: { fontFamily: 'inherit' },
+        grid: { left: 8, right: 96, top: 34, bottom: 30, containLabel: true },
+        tooltip: Object.assign({ trigger: 'item', formatter: function (p) { return '<b>' + p.data.name + '</b><br>' + chart.xname + ': ' + fx(p.data.value[0]) + '<br>' + chart.yname + ': ' + fy(p.data.value[1]); } }, tooltipStyle()),
+        xAxis: { type: 'value', scale: true, splitNumber: 4, name: chart.xname, nameLocation: 'middle', nameGap: 28, nameTextStyle: { color: c.muted }, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fx, hideOverlap: true } },
+        yAxis: { type: 'value', scale: true, name: chart.yname, nameTextStyle: { color: c.muted, align: 'left' }, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fy } },
+        series: [{
+          type: 'scatter', symbolSize: 18,
+          data: chart.points.map(function (pt, i) { return { name: pt.name, value: [pt.x, pt.y], itemStyle: { color: i === chart.highlight ? PALETTE[2] : PALETTE[0], opacity: 0.9 } }; }),
+          label: { show: true, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return p.data.name; } }
+        }]
+      }, true);
+    }
+    draw();
+    instances.push({ draw: draw });
+  }
+
+  // A correlation matrix as a heatmap, blue for positive, pink for negative
+  function renderHeatmap(box, chart) {
+    var n = chart.x.length;
+    var inst = chrome(chart)(box, Math.max(300, n * 46 + 70));
+    var data = [];
+    chart.values.forEach(function (row, i) { row.forEach(function (v, j) { data.push([j, i, v]); }); });
+    function draw() {
+      var c = axisColors();
+      inst.setOption({
+        animationDuration: 500,
+        textStyle: { fontFamily: 'inherit' },
+        grid: { left: 8, right: 8, top: 8, bottom: 40, containLabel: true },
+        tooltip: Object.assign({ formatter: function (p) { return chart.x[p.data[0]] + ' · ' + chart.y[p.data[1]] + ': <b>' + p.data[2].toFixed(2) + '</b>'; } }, tooltipStyle()),
+        xAxis: { type: 'category', data: chart.x, splitArea: { show: false }, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 12, interval: 0 } },
+        yAxis: { type: 'category', data: chart.y, inverse: true, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 12, interval: 0 } },
+        visualMap: { min: -1, max: 1, calculable: false, orient: 'horizontal', left: 'center', bottom: 0, itemWidth: 10, itemHeight: 120, textStyle: { color: c.muted }, inRange: { color: ['#f472b6', 'rgba(148,163,184,0.15)', '#38bdf8'] } },
+        series: [{ type: 'heatmap', data: data, label: { show: true, color: css('--text-primary', '#f8fafc'), fontSize: 12, formatter: function (p) { return p.data[2].toFixed(2); } }, itemStyle: { borderColor: css('--card-bg', '#1e293b'), borderWidth: 2, borderRadius: 4 } }]
+      }, true);
+    }
+    draw();
+    instances.push({ draw: draw });
+  }
+
   function render(box, chart) {
     if (chart.type === 'dupont') return renderDupont(box, chart);
     if (chart.type === 'kpis') return renderKpis(box, chart);
     if (chart.type === 'compare') return renderCompare(box, chart);
     if (chart.type === 'hbar') return renderHbar(box, chart);
     if (chart.type === 'coef') return renderCoef(box, chart);
+    if (chart.type === 'scatter') return renderScatter(box, chart);
+    if (chart.type === 'heatmap') return renderHeatmap(box, chart);
     var specs = chart.type === 'tabs' ? chart.tabs : [chart];
     box.innerHTML = '';
     var head = document.createElement('div');
