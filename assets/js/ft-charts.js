@@ -79,9 +79,14 @@
     var grid = css('--card-border', 'rgba(255,255,255,0.1)');
     var fmt = formatter(spec.format);
     var isBar = spec.type === 'bar';
-    var many = spec.x.length > 40;
+    var many = spec.x.length > 60;
     var series = spec.series.map(function (s, i) {
       var isClose = spec.cloud && s.name === 'Close';
+      // a reference line (a threshold such as RSI 70): dashed, muted, no markers
+      if (s.reference) {
+        return { name: s.name, type: 'line', data: s.data, showSymbol: false, silent: true, z: 1,
+          lineStyle: { type: 'dashed', width: 1.5, color: muted }, itemStyle: { color: muted }, tooltip: { show: false } };
+      }
       return {
         name: s.name,
         type: isBar ? 'bar' : 'line',
@@ -414,7 +419,9 @@
         xAxis: { type: 'value', splitNumber: 4, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fmt, hideOverlap: true } },
         yAxis: { type: 'category', data: chart.x.slice().reverse(), axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 13 } },
         series: [{
-          name: chart.series[0].name, type: 'bar', data: chart.series[0].data.slice().reverse(), barMaxWidth: 22,
+          name: chart.series[0].name, type: 'bar', barMaxWidth: 22,
+          // highlight: index of a bar to set apart, e.g. the share price next to model values
+          data: chart.series[0].data.map(function (v, i) { return i === chart.highlight ? { value: v, itemStyle: { color: PALETTE[2] } } : v; }).reverse(),
           itemStyle: { color: PALETTE[0], borderRadius: [0, 4, 4, 0] },
           label: { show: true, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return fmt(p.value); } }
         }]
