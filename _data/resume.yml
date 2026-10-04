@@ -122,6 +122,9 @@ entries:
     title: "Certified ScrumMaster (CSM)"
     subtitle: "Product Owner"
     description: "Covers the Scrum methodology and how to lead a team as Product Owner. I obtained it during my time at OpenBB, where I led a multi-disciplinary team as Product Manager."
+    link:
+      url: "https://app.badgecert.com/public/badges/kdcgcomw"
+      label: "View the credential"
 
   - type: experience
     date: "February 2022 – June 2023"
@@ -176,6 +179,9 @@ entries:
     title: "Chartered Financial Analyst (CFA)"
     subtitle: "Level 1"
     description: "Focused on knowledge and comprehension of investment tools and asset classes. I obtained it during my first year at PGGM."
+    link:
+      url: "https://drive.google.com/file/d/11OZSq6FDsaBizG9F3kgV8Ey4-lw0oZ9x/view"
+      label: "View the credential"
 
   - type: opensource
     active: true
