@@ -2,7 +2,11 @@
   An interactive Finance Toolkit chart, filled by assets/js/ft-charts.js from
   assets/data/financetoolkit-charts.json. Usage: {% include ft-chart.html id="historical" %}, or with
   src="/assets/data/article-charts.json" for the charts in the articles.
+  The data URL carries the build time (?v=), so after a deploy browsers and
+  Cloudflare fetch the new data instead of a cached copy without the new charts.
+  The page loads the script once with {% include ft-charts-script.html %}.
 {%- endcomment -%}
-<div class="ft-chart" data-chart="{{ include.id }}"{% if include.src %} data-src="{{ include.src }}"{% endif %} role="figure" aria-label="{{ include.label | default: include.id }}">
+{%- assign ft_src = include.src | default: "/assets/data/financetoolkit-charts.json" -%}
+<div class="ft-chart" data-chart="{{ include.id }}" data-src="{{ ft_src }}?v={{ site.time | date: '%s' }}" role="figure" aria-label="{{ include.label | default: include.id }}">
   <div class="ft-chart__loading" aria-hidden="true"></div>
 </div>

@@ -543,6 +543,7 @@
   }
 
   var ready = {};
+  var fresh = {};
   function start(src) {
     if (!ready[src]) {
       ready[src] = Promise.all([loadScript(ECHARTS), fetch(src).then(function (r) { return r.json(); })])
@@ -554,9 +555,19 @@
   function show(box) {
     if (box.ftShown) return;
     box.ftShown = true;
-    start(box.getAttribute('data-src') || DATA).then(function (data) {
-      var chart = data.charts[box.getAttribute('data-chart')];
-      if (chart) render(box, chart);
+    var src = box.getAttribute('data-src') || DATA;
+    start(src).then(function (data) {
+      var id = box.getAttribute('data-chart');
+      if (data.charts[id]) return render(box, data.charts[id]);
+      // not in this copy of the data (a cached file from before a deploy):
+      // fetch it once more past every cache, and show an error if it is still missing
+      if (!fresh[src]) {
+        fresh[src] = fetch(src, { cache: 'reload' }).then(function (r) { return r.json(); });
+      }
+      return fresh[src].then(function (d) {
+        if (!d.charts[id]) throw new Error('missing chart ' + id);
+        render(box, d.charts[id]);
+      });
     }).catch(function () {
       box.innerHTML = '<p class="ft-chart__error">The chart could not be loaded.</p>';
     });

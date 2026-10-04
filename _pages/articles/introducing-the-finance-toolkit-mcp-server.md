@@ -209,4 +209,4 @@ Asking the Finance Toolkit MCP gives an answer like the one below.
   <br><em>Investment as a share of GDP is one of the cleanest leading indicators of structural economic development. Vietnam and India led the region in the 2000s, fuelling their infrastructure and manufacturing buildouts. Bangladesh has been rising steadily since 2010, which is typical of an economy still in the upgrading phase rather than one that has plateaued like Malaysia or Thailand.</em>
 </p>
 
-<script src="/assets/js/ft-charts.js" defer></script>
+{% include ft-charts-script.html %}

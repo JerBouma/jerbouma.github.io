@@ -124,4 +124,4 @@ Going forward, I would watch whether Japan's exit from negative rates accelerate
 
 > **Try this with the Finance Toolkit MCP:** *"Based on inflation, policy rates, unemployment, and debt-to-GDP for the United States, United Kingdom, Germany, Japan, and Brazil since 2019, which country is furthest along in normalizing after the pandemic shock, and which is most exposed if rates stay higher for longer?"*
 
-<script src="/assets/js/ft-charts.js" defer></script>
+{% include ft-charts-script.html %}

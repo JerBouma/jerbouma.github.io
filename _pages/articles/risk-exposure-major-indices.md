@@ -108,4 +108,4 @@ Side by side, they give a more complete picture: Dow Jones (DIA) has been the mo
 
 > **Try this with the Finance Toolkit MCP:** *"Based on Value at Risk, CVaR, maximum drawdown, skewness, and kurtosis for SPY, QQQ, DIA, IWM, EFA, and EEM since 2019, which index has the most favorable risk profile overall, and which carries risk that a simple volatility number would understate?"*
 
-<script src="/assets/js/ft-charts.js" defer></script>
+{% include ft-charts-script.html %}
