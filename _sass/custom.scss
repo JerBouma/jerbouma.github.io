@@ -5862,3 +5862,69 @@ body.ft-overview .page__content {
     .article-cta__actions .hp-btn i { display: none; }
   }
 }
+
+// Finance Toolkit MCP page: key facts under the intro and the "What You Can Ask" cards
+.page__content .mcp-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 1.6em 0;
+
+  .mcp-fact {
+    padding: 16px 16px 14px;
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    background: var(--card-bg);
+  }
+  strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  span { display: block; color: var(--text-secondary); font-size: 0.88rem; line-height: 1.45; }
+
+  @media (max-width: 900px) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.page__content .mcp-uses {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 1.4em 0;
+
+  .mcp-use {
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    background: var(--card-bg);
+  }
+  i { color: var(--accent-color); font-size: 1.1rem; }
+  h3 { margin: 10px 0 8px !important; padding: 0 !important; border: 0 !important; font-size: 1rem !important; color: var(--text-primary) !important; }
+  p { flex: 1; margin: 0 0 12px !important; color: var(--text-secondary) !important; font-size: 0.92rem !important; font-style: italic; line-height: 1.5; }
+  span { color: var(--text-muted); font-size: 0.78rem; font-family: "JetBrains Mono", "SF Mono", Menlo, monospace; }
+
+  @media (max-width: 1100px) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 600px) { grid-template-columns: 1fr; }
+}
+
+// the raw-data-versus-Toolkit table on the MCP page: on phones every row
+// becomes a small card with both answers labelled
+.page__content .mcp-compare tbody th { font-weight: 600; color: var(--text-primary); text-align: left; }
+@media (max-width: 600px) {
+  .page__content .mcp-compare table, .page__content .mcp-compare tbody, .page__content .mcp-compare tr,
+  .page__content .mcp-compare th, .page__content .mcp-compare td { display: block; width: 100%; }
+  .page__content .mcp-compare thead { display: none; }
+  .page__content .mcp-compare tr { padding: 12px 14px; border-bottom: 1px solid var(--card-border); }
+  .page__content .mcp-compare th, .page__content .mcp-compare td { padding: 2px 0 !important; border: 0 !important; background: transparent !important; }
+  .page__content .mcp-compare tbody th { margin-bottom: 6px; }
+  .page__content .mcp-compare td::before { content: attr(data-label) ": "; color: var(--text-muted); font-size: 0.85em; }
+  .page__content .mcp-compare td:last-child { color: var(--text-primary); }
+}
