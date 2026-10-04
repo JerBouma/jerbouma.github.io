@@ -111,8 +111,12 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
 
   .ca-clients {
     display: flex; flex-wrap: wrap; gap: 8px; margin: 1em 0 1.4em;
-    span { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border: 1px solid var(--card-border); border-radius: 999px; background: var(--card-bg); color: var(--text-secondary); font-size: 0.86rem; }
+    span, a { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border: 1px solid var(--card-border); border-radius: 999px; background: var(--card-bg); color: var(--text-secondary) !important; font-size: 0.86rem; text-decoration: none !important; }
+    a { transition: border-color 0.2s ease, color 0.2s ease; }
+    a:hover { border-color: var(--card-hover-border); color: var(--text-primary) !important; }
     i { color: var(--accent-color); }
+    .ca-clients__go { font-size: 0.7em; opacity: 0.6; transition: transform 0.2s ease, opacity 0.2s ease; }
+    a:hover .ca-clients__go { opacity: 1; transform: translateX(2px); }
   }
 }
 

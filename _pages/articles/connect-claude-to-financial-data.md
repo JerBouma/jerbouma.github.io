@@ -221,12 +221,12 @@ Every answer maps to a documented Finance Toolkit method, so you can look up exa
 The same server works with any MCP-compatible client, each with step-by-step instructions on the [Finance Toolkit MCP server](/projects/financetoolkit/mcp#installation) page:
 
 <div class="ca-clients">
-  <span><i class="fas fa-comment-dots" aria-hidden="true"></i>ChatGPT</span>
-  <span><i class="fab fa-microsoft" aria-hidden="true"></i>VS Code and GitHub Copilot</span>
-  <span><i class="fas fa-i-cursor" aria-hidden="true"></i>Cursor</span>
-  <span><i class="fas fa-wind" aria-hidden="true"></i>Windsurf</span>
-  <span><i class="fas fa-code" aria-hidden="true"></i>Codex CLI</span>
-  <span><i class="fab fa-google" aria-hidden="true"></i>Gemini CLI</span>
+  <a href="/projects/financetoolkit/mcp#remote-chatgpt"><i class="fas fa-comment-dots" aria-hidden="true"></i>ChatGPT<i class="fas fa-arrow-right ca-clients__go" aria-hidden="true"></i></a>
+  <a href="/projects/financetoolkit/mcp#remote-vs-code"><i class="fab fa-microsoft" aria-hidden="true"></i>VS Code and GitHub Copilot<i class="fas fa-arrow-right ca-clients__go" aria-hidden="true"></i></a>
+  <a href="/projects/financetoolkit/mcp#remote-cursor"><i class="fas fa-i-cursor" aria-hidden="true"></i>Cursor<i class="fas fa-arrow-right ca-clients__go" aria-hidden="true"></i></a>
+  <a href="/projects/financetoolkit/mcp#remote-windsurf"><i class="fas fa-wind" aria-hidden="true"></i>Windsurf<i class="fas fa-arrow-right ca-clients__go" aria-hidden="true"></i></a>
+  <a href="/projects/financetoolkit/mcp#remote-codex"><i class="fas fa-code" aria-hidden="true"></i>Codex CLI<i class="fas fa-arrow-right ca-clients__go" aria-hidden="true"></i></a>
+  <a href="/projects/financetoolkit/mcp#remote-gemini"><i class="fab fa-google" aria-hidden="true"></i>Gemini CLI<i class="fas fa-arrow-right ca-clients__go" aria-hidden="true"></i></a>
 </div>
 
 Clients that only support the stdio transport can use the local installation. If you would rather skip the assistant altogether, the [Finance Toolkit](/projects/financetoolkit) Python library exposes the same 500+ methods directly. Problems or ideas for a new tool are welcome as an issue on [GitHub](https://github.com/JerBouma/FinanceToolkit/issues){:target="_blank"}.
