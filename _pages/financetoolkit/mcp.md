@@ -6,7 +6,7 @@ description: "Open-source MCP server for stock analysis: 500+ financial methods,
 classes: wide-sidebar
 author_profile: false
 layout: single
-last_modified_at: 2026-09-12
+last_modified_at: 2026-10-04
 redirect_from:
   - /mcp
   - /projects/financetoolkit/mcp-server
@@ -17,9 +17,16 @@ image: /assets/images/projects/FinanceToolkitMCP.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit#mcp-server" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The Finance Toolkit MCP Server is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that gives AI assistants such as Claude, ChatGPT, Cursor, GitHub Copilot and Gemini access to financial data and the 500+ analysis methods of the [Finance Toolkit](/projects/financetoolkit). Ask a question in plain English and the assistant fetches the data and runs the calculation for you: compare financial statements, screen on ratios, compute technical indicators or pull macroeconomic data, all with the same transparent, open-source formulas as the Python package.
+Ask an AI assistant for Apple's return on invested capital and you will usually get a number. Whether it is right depends on what the model remembers from its training data, which of the several definitions it picked and whether the arithmetic held up along the way. Ask twice and you may get two different answers.
 
-The server comes in two flavours that expose exactly the same tools. The **remote server** is hosted and needs nothing installed; the **local server** runs on your own machine through `uvx`.
+The Finance Toolkit MCP server takes the calculation out of the model's hands. It is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that connects Claude, ChatGPT, GitHub Copilot, Cursor, Gemini and other assistants to the [Finance Toolkit](/projects/financetoolkit): current financial statements and market data, and 500+ documented methods that turn them into ratios, valuations, risk metrics, technical indicators and macroeconomic series. The assistant decides what to calculate and explains the result; the numbers themselves come from code you can read.
+
+<div class="mcp-facts">
+  <div class="mcp-fact"><strong>500+</strong><span>ratios, models, risk metrics, indicators and macro series in 22 tools</span></div>
+  <div class="mcp-fact"><strong>Calculated</strong><span>not recalled: the same question returns the same number in any model</span></div>
+  <div class="mcp-fact"><strong>Free</strong><span>hosted at one URL, or run locally; MIT-licensed source code</span></div>
+  <div class="mcp-fact"><strong>Any client</strong><span>Claude, ChatGPT, Copilot, Cursor, Windsurf, Gemini, Codex</span></div>
+</div>
 
 <div class="mcp-video-wrapper">
   <video class="mcp-demo-video" autoplay muted playsinline loop preload="metadata"
@@ -27,6 +34,44 @@ The server comes in two flavours that expose exactly the same tools. The **remot
     <source src="/assets/video/mcp-demo.mp4" type="video/mp4">
   </video>
 </div>
+
+## Why the Finance Toolkit MCP
+
+There is a growing number of MCP servers for financial data, from the official Financial Modeling Prep and Yahoo Finance servers to dozens of community wrappers. Most of them expose raw API endpoints, such as a quote, an income statement or a list of prices, and leave the analysis to the language model. That is exactly where language models are least reliable.
+
+<div class="mcp-compare">
+<table>
+<thead><tr><th></th><th>Raw data servers</th><th>Finance Toolkit MCP</th></tr></thead>
+<tbody>
+<tr><th scope="row">What the assistant receives</th><td data-label="Raw data servers">Prices and financial statements</td><td data-label="Finance Toolkit MCP">Calculated ratios, models, risk metrics and indicators, plus the underlying data</td></tr>
+<tr><th scope="row">Who does the arithmetic</th><td data-label="Raw data servers">The language model</td><td data-label="Finance Toolkit MCP">The open-source Finance Toolkit</td></tr>
+<tr><th scope="row">Same question, two chats</th><td data-label="Raw data servers">Often two different numbers</td><td data-label="Finance Toolkit MCP">The same number</td></tr>
+<tr><th scope="row">Definitions</th><td data-label="Raw data servers">Implicit, chosen by the model</td><td data-label="Finance Toolkit MCP"><a href="/projects/financetoolkit/docs">Documented</a> for every metric</td></tr>
+<tr><th scope="row">Macroeconomic data</th><td data-label="Raw data servers">Rarely included</td><td data-label="Finance Toolkit MCP">60+ countries from the OECD, the Global Macro Database and FRED</td></tr>
+</tbody>
+</table>
+</div>
+
+The Finance Toolkit behind the server has been downloaded over 600,000 times and every formula is in the [documentation](/projects/financetoolkit/docs), so a number from a chat can be traced back to its calculation. I designed the 22 categorical tools so that small and large models alike can work with them, from GPT-5 mini to Claude Opus; the [example conversations](#example-conversations) below show both ends of that range.
+
+If you only need a quote or a headline number, a raw data server is fine. If you want to ask *"which of these banks is the most solvent, and why"* and get an answer you can defend, that is what I built this server for.
+
+## What You Can Ask
+
+You never have to name a tool or an indicator: ask in plain English and the assistant picks the right one. A few examples of what that covers:
+
+<div class="mcp-uses">
+  <div class="mcp-use"><i class="fas fa-building" aria-hidden="true"></i><h3>Company fundamentals</h3><p>"Which is more profitable, Apple or Microsoft, and does that change when you look at return on capital?"</p><span>profitability, efficiency, liquidity, solvency</span></div>
+  <div class="mcp-use"><i class="fas fa-scale-balanced" aria-hidden="true"></i><h3>Valuation and credit</h3><p>"What growth is priced into Nvidia's share price based on a discounted cash flow?"</p><span>valuation, models (DCF, WACC, DuPont, Altman Z)</span></div>
+  <div class="mcp-use"><i class="fas fa-shield-halved" aria-hidden="true"></i><h3>Performance and risk</h3><p>"Compare the Value at Risk and maximum drawdown of Berkshire Hathaway, Visa and Costco since 2020."</p><span>performance, risk, options</span></div>
+  <div class="mcp-use"><i class="fas fa-chart-line" aria-hidden="true"></i><h3>Technical analysis</h3><p>"Is the semiconductor sector overbought? Check the RSI and moving averages of NVDA, AMD and ASML."</p><span>momentum, overlap, volatility, breadth</span></div>
+  <div class="mcp-use"><i class="fas fa-earth-europe" aria-hidden="true"></i><h3>Macro and rates</h3><p>"How do real interest rates in the US and the Eurozone compare since the inflation peak?"</p><span>macroeconomics, rates, jobs, government, fixed income</span></div>
+  <div class="mcp-use"><i class="fas fa-square-root-variable" aria-hidden="true"></i><h3>Econometrics</h3><p>"Regress Apple's weekly returns on its suppliers and peers. Which coefficients are significant?"</p><span>econometrics</span></div>
+</div>
+
+[How to Connect Claude to Live Financial Data](/articles/connect-claude-to-financial-data) answers ten questions like these through the server, each with its charts, and [Which tools does the server expose?](#faq-tools) lists all 22 tools.
+
+
 
 ## Installation
 
@@ -387,18 +432,6 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
   `financetoolkit[mcp]` also installs the `econometrics` extra, so `statsmodels` and `linearmodels` come along and the `econometrics` tool works out of the box.
 
 </details>
-
-## Why the Finance Toolkit MCP
-
-There is a growing number of MCP servers for financial data, from the official Financial Modeling Prep and Yahoo Finance servers to dozens of community wrappers. Most of them expose raw API endpoints (a quote, an income statement, a list of prices) and leave the analysis to the language model. That is where models are least reliable. An LLM asked to compute a return on invested capital or a Sharpe ratio from raw statements will make arithmetic and definitional mistakes, and two chats will rarely agree on the same number.
-
-The Finance Toolkit MCP works the other way around. It is a thin layer over the [Finance Toolkit](/projects/financetoolkit), a Python package with 500+ financial methods that has been downloaded over 600,000 times, and every number the assistant reports is computed by the same open-source code you can read on GitHub.
-
-That means the assistant does the analysis with the Finance Toolkit instead of only fetching data: 80+ financial ratios, valuation and credit models (WACC, DuPont, Altman Z-Score, intrinsic value), performance and risk metrics (Sharpe, Sortino, alpha, beta, Value at Risk, GARCH), 30+ technical indicators, options pricing and Greeks, fixed income and a full econometrics toolbox. Macro data is included as well: GDP, inflation, unemployment, interest rates and government finances for 60+ countries from the OECD and FRED, next to the company data from Financial Modeling Prep.
-
-Every formula is documented in the [Finance Toolkit documentation](/projects/financetoolkit/docs), so the same question returns the same number regardless of which model asks it. You can connect to the hosted server in a minute or run it locally with a single `uvx` command, and the [source code](https://github.com/JerBouma/FinanceToolkit){:target="_blank"} is MIT-licensed. I designed the 22 categorical tools so that small and large models alike can work with them, from GPT-5 mini to Claude Opus; the [example conversations](#example-conversations) below show both ends of that range.
-
-If you only need a quote or a headline number, a raw data server is fine. If you want to ask *"which of these banks is the most solvent and why"* and get a defensible answer, that is what I built this server for.
 
 ## Example Conversations
 

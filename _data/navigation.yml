@@ -131,6 +131,10 @@ financetoolkit:
 financetoolkit-mcp:
   - title: Introduction
     url: /projects/financetoolkit/mcp#site-nav
+  - title: "Why this MCP"
+    url: /projects/financetoolkit/mcp#why-the-finance-toolkit-mcp
+  - title: "What You Can Ask"
+    url: /projects/financetoolkit/mcp#what-you-can-ask
   - title: "Installation"
     url: /projects/financetoolkit/mcp#installation
     children:
@@ -138,8 +142,6 @@ financetoolkit-mcp:
         url: /projects/financetoolkit/mcp#remote-server
       - title: Local Clients
         url: /projects/financetoolkit/mcp#local-clients
-  - title: "Why this MCP"
-    url: /projects/financetoolkit/mcp#why-the-finance-toolkit-mcp
   - title: "Example Conversations"
     url: /projects/financetoolkit/mcp#example-conversations
     children:
