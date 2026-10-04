@@ -145,18 +145,14 @@ financetoolkit-mcp:
   - title: "Example Conversations"
     url: /projects/financetoolkit/mcp#example-conversations
     children:
-      - title: Apple vs Microsoft
-        url: /projects/financetoolkit/mcp#ex-apple-microsoft
-      - title: Bank Solvency
+      - title: ASML Investment Case
+        url: /projects/financetoolkit/mcp#ex-asml
+      - title: European Banks
         url: /projects/financetoolkit/mcp#ex-bank-solvency
-      - title: Chip Momentum
-        url: /projects/financetoolkit/mcp#ex-semiconductor-overbought
-      - title: Alibaba vs Amazon
-        url: /projects/financetoolkit/mcp#ex-alibaba-amazon
-      - title: US Yield Curve
-        url: /projects/financetoolkit/mcp#ex-yield-curve
-      - title: Chip Sustainability
-        url: /projects/financetoolkit/mcp#ex-semiconductor-esg
+      - title: US Economic Cycle
+        url: /projects/financetoolkit/mcp#ex-us-cycle
+      - title: Diversification
+        url: /projects/financetoolkit/mcp#ex-diversification
   - title: "FAQ"
     url: /projects/financetoolkit/mcp#faq
   - title: "Under the Hood"

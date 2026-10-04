@@ -69,7 +69,7 @@ You never have to name a tool or an indicator: ask in plain English and the assi
   <div class="mcp-use"><i class="fas fa-square-root-variable" aria-hidden="true"></i><h3>Econometrics</h3><p>"Regress Apple's weekly returns on its suppliers and peers. Which coefficients are significant?"</p><span>econometrics</span></div>
 </div>
 
-The [example conversations](#example-conversations) below show six of these questions answered in full, with the numbers and charts the server returns.
+The [example conversations](#example-conversations) below show what that looks like for four larger questions, from an investment case to the economic cycle.
 
 
 
@@ -435,89 +435,70 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
 
 ## Example Conversations
 
-Six questions as you would type them, each answered by Claude through the server. Every number and chart below comes from a Finance Toolkit calculation, not from the model's memory.
+Four questions of the kind an analyst or portfolio manager would ask, each answered by Claude through the server. None of them is a single lookup: Claude decides which calculations it needs, chains them across tools and builds its conclusion on the results. Every number and chart below comes from a Finance Toolkit calculation, with data up to October 2, 2026.
 
-The server returns the same calculated data to every model, and I designed its 22 tools to be simple enough for smaller models as well: GPT-5 mini, Claude Haiku and similar models pick the right tool and report the same numbers. A larger model mostly adds depth to the interpretation, such as the follow-up questions and caveats you see here.
+The server returns the same calculated data to every model, and I designed its 22 tools to be simple enough for smaller models as well: GPT-5 mini, Claude Haiku and similar models pick the right tools and report the same numbers. A larger model mostly adds depth, such as the follow-up calculations and caveats you see here.
 
-<div class="ca-nav">
-  <a href="#ex-apple-microsoft"><i class="fas fa-building" aria-hidden="true"></i>Apple or Microsoft</a>
-  <a href="#ex-bank-solvency"><i class="fas fa-landmark" aria-hidden="true"></i>Europe's most solvent bank</a>
-  <a href="#ex-semiconductor-overbought"><i class="fas fa-gauge-high" aria-hidden="true"></i>Are chipmakers overbought?</a>
-  <a href="#ex-alibaba-amazon"><i class="fas fa-cart-shopping" aria-hidden="true"></i>Amazon vs Alibaba</a>
-  <a href="#ex-yield-curve"><i class="fas fa-chart-line" aria-hidden="true"></i>The US yield curve</a>
-  <a href="#ex-semiconductor-esg"><i class="fas fa-leaf" aria-hidden="true"></i>Most sustainable chipmaker</a>
+<div class="ca-nav ca-nav--4">
+  <a href="#ex-asml"><i class="fas fa-microchip" aria-hidden="true"></i>An investment case for ASML</a>
+  <a href="#ex-bank-solvency"><i class="fas fa-landmark" aria-hidden="true"></i>Europe's most solid bank</a>
+  <a href="#ex-us-cycle"><i class="fas fa-earth-americas" aria-hidden="true"></i>Where is the US cycle?</a>
+  <a href="#ex-diversification"><i class="fas fa-shuffle" aria-hidden="true"></i>What really diversifies?</a>
 </div>
 
-<div class="mcp-ex" id="ex-apple-microsoft">
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Compare Apple with Microsoft, which company is the most profitable?</p></div>
-<div class="mcp-ex__answer">
-<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
-<div class="ca-tools"><span>profitability · margins</span><span>profitability · ROIC, ROE, ROA</span></div>
-<p>It depends on what "most profitable" means. Microsoft leads on every margin, from gross to net. Asked to look further, Claude checks returns on capital and the ranking flips: Apple's heavy buybacks and lean balance sheet give it far higher returns on the capital it uses.</p>
-<div class="ca-nums"><span><b>36.1% vs 26.9%</b>net margin 2025, MSFT vs AAPL</span><span><b>70.4% vs 30.6%</b>ROIC 2025, AAPL vs MSFT</span><span><b>30.9% vs 18.0%</b>ROA 2025, AAPL vs MSFT</span></div>
-{% include ft-chart.html id="mcp-apple-msft" src="/assets/data/article-charts.json" label="Apple and Microsoft margins and returns on capital" %}
-<div class="ca-take"><p>Microsoft earns more per dollar of revenue, Apple more per dollar of capital. Both answers are right; the question decides which one matters.</p></div>
+<div class="mcp-show" id="ex-asml">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Build an investment case for ASML against Applied Materials, Lam Research and KLA: profitability, valuation, returns and risk. Is its premium justified?</p></div>
+<div class="mcp-show__meta"><span><b>6</b> tool calls</span><span><b>4</b> companies</span><span><b>130+</b> calculated values</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What Claude calculated</summary><ol><li><code>profitability</code><span>Return on invested capital, 2020 to 2025</span></li><li><code>profitability</code><span>Gross margin, 2020 to 2025</span></li><li><code>valuation</code><span>EV/EBITDA, 2020 to 2026</span></li><li><code>valuation</code><span>Price-to-earnings, 2020 to 2026</span></li><li><code>performance</code><span>Annual returns since 2021, against the S&P 500</span></li><li><code>risk</code><span>Maximum drawdown since 2021</span></li></ol></details>
+
+<div class="mcp-show__grid">
+<div class="mcp-show__cell">{% include ft-chart.html id="mcp-asml-quality" src="/assets/data/article-charts.json" label="ROIC and gross margin of ASML and peers" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="mcp-asml-price" src="/assets/data/article-charts.json" label="ROIC against EV/EBITDA" %}</div>
+<div class="mcp-show__cell mcp-show__cell--wide">{% include ft-chart.html id="mcp-asml-risk" src="/assets/data/article-charts.json" label="Growth of a dollar and maximum drawdown" %}</div>
 </div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-robot" aria-hidden="true"></i> Claude's conclusion</p><p>ASML's premium has turned into a discount. It earned the highest return on invested capital of the four in 2025 (33.0%), yet trades at 27.6 times EBITDA, below KLA (30.7x) and Lam Research (34.8x). The market has rewarded the peers' cyclical recovery instead: a dollar in ASML at the start of 2021 grew to $3.93, against $8.42 for KLA and $7.70 for Lam. KLA stands out on quality and resilience, with the highest gross margin (60.9%) and the shallowest drawdown (−35%), but it has also re-rated the most since.</p></div>
+<div class="ca-nums"><span><b>33.0%</b>ASML ROIC 2025, the highest</span><span><b>27.6x vs 34.8x</b>EV/EBITDA, ASML vs Lam</span><span><b>$3.93 vs $8.42</b>$1 since 2021, ASML vs KLA</span></div>
 </div>
 
-<div class="mcp-ex" id="ex-bank-solvency">
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>When looking at the biggest banks in Europe, which one seems to be the most solvent?</p></div>
-<div class="mcp-ex__answer">
-<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
-<div class="ca-tools"><span>solvency · debt-to-equity</span><span>models · equity multiplier</span><span>solvency · debt service coverage</span></div>
-<p>Banks are leveraged by design, so Claude compares nine of Europe's largest on several measures at once: debt to equity, the equity multiplier (total assets per unit of equity) and debt service coverage. UniCredit comes out first on all three, and its leverage has been falling for six years.</p>
-<div class="ca-nums"><span><b>12.6x</b>UniCredit equity multiplier</span><span><b>0.228</b>UniCredit debt service coverage, highest</span><span><b>20.7x</b>BNP Paribas, among the most leveraged</span></div>
-{% include ft-chart.html id="mcp-banks" src="/assets/data/article-charts.json" label="Equity multiplier of Europe's largest banks" %}
-<div class="ca-take"><p>UniCredit holds the thickest equity buffer of the group, and the cash flow to back it. BNP Paribas and Société Générale run the most leverage.</p></div>
+<div class="mcp-show" id="ex-bank-solvency">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which of Europe's largest banks is the most solid, and does the market pay for it?</p></div>
+<div class="mcp-show__meta"><span><b>5</b> tool calls</span><span><b>9</b> banks</span><span><b>80+</b> calculated values</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What Claude calculated</summary><ol><li><code>models</code><span>Equity multiplier (total assets per unit of equity)</span></li><li><code>solvency</code><span>Debt to equity and debt service coverage</span></li><li><code>profitability</code><span>Return on equity, 2023 to 2025</span></li><li><code>valuation</code><span>Price to book, 2025</span></li><li><code>market_data</code><span>Balance sheets, converted to US dollars</span></li></ol></details>
+<p class="mcp-show__note"><i class="fas fa-circle-info" aria-hidden="true"></i> Intesa Sanpaolo's ADR gives an implausible price to book of 0.29, so Claude leaves it out of the valuation comparison rather than treating it as the cheapest bank.</p>
+<div class="mcp-show__grid">
+<div class="mcp-show__cell">{% include ft-chart.html id="mcp-banks-lev" src="/assets/data/article-charts.json" label="Equity multiplier of nine European banks" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="mcp-banks-value" src="/assets/data/article-charts.json" label="Return on equity against price to book" %}</div>
+<div class="mcp-show__cell mcp-show__cell--wide">{% include ft-chart.html id="mcp-banks-roe" src="/assets/data/article-charts.json" label="Return on equity since 2023" %}</div>
 </div>
-</div>
-
-<div class="mcp-ex" id="ex-semiconductor-overbought">
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Tell me something about the semiconductor industry, is it overbought?</p></div>
-<div class="mcp-ex__answer">
-<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
-<div class="ca-tools"><span>momentum · RSI</span><span>valuation · P/E</span><span>performance · Sharpe ratio</span></div>
-<p>Claude reads overbought on two levels: momentum and valuation. In early June 2026, AMD and Micron were well above an RSI of 70 while Nvidia sat in the low 50s. On valuation, the multiples of the AI names have come down from their 2023 extremes but remain far above Taiwan Semiconductor's and ASML's.</p>
-<div class="ca-nums"><span><b>82.4</b>Micron RSI, June 3</span><span><b>77.8</b>AMD RSI, June 3</span><span><b>63.5x</b>Nvidia P/E 2025, from 284x in 2023</span></div>
-{% include ft-chart.html id="mcp-semis-pe" src="/assets/data/article-charts.json" label="Price-to-earnings ratio of the largest chipmakers" %}
-<div class="ca-take"><p>Pockets of overbought momentum in individual names, not a sector-wide extreme; the valuation premium sits with the AI-exposed companies.</p></div>
-</div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-robot" aria-hidden="true"></i> Claude's conclusion</p><p>UniCredit is the most solid bank of the group and the most profitable: the thickest equity buffer (an equity multiplier of 12.6x), the highest debt service coverage and a return on equity of 17.3%. The market does pay for it, at 1.64 times book, the highest multiple of the group. The cheapest banks are cheap for a reason: BNP Paribas trades at 0.68 times book with a 9.2% return on equity and among the most leverage, Société Générale earns 7.2%.</p></div>
+<div class="ca-nums"><span><b>12.6x</b>UniCredit equity multiplier, lowest</span><span><b>17.3%</b>UniCredit return on equity</span><span><b>1.64x vs 0.68x</b>price to book, UniCredit vs BNP</span></div>
 </div>
 
-<div class="mcp-ex" id="ex-alibaba-amazon">
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Compare the financial performance of Alibaba and Amazon over the last five years.</p></div>
-<div class="mcp-ex__answer">
-<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
-<div class="ca-tools"><span>market_data · income statement</span><span>profitability · operating margin, ROIC</span></div>
-<p>Amazon is five times Alibaba's size by revenue and has pulled further ahead since 2022, when it briefly made a loss. More telling is the direction: Amazon's operating margin doubled to 11.2% as AWS and advertising grew, while Alibaba's fell to 5.8% in its latest fiscal year amid heavy investment and competition.</p>
-<div class="ca-nums"><span><b>$716.9B vs $142.4B</b>revenue 2025</span><span><b>11.2% vs 5.8%</b>operating margin 2025</span><span><b>15.8% vs 5.4%</b>ROIC 2025</span></div>
-{% include ft-chart.html id="mcp-amzn-baba" src="/assets/data/article-charts.json" label="Revenue, operating margin and ROIC of Amazon and Alibaba" %}
-<div class="ca-take"><p>Five years ago Alibaba had the higher margin. Today Amazon earns more on every dollar of revenue and every dollar of capital.</p></div>
+<div class="mcp-show" id="ex-us-cycle">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Where is the US economy in the cycle? Look at the yield curve, inflation, the policy rate, unemployment and growth.</p></div>
+<div class="mcp-show__meta"><span><b>5</b> tool calls</span><span><b>4</b> years of daily yields</span><span><b>1,100+</b> data points</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What Claude calculated</summary><ol><li><code>rates</code><span>US Treasury yield curve, daily since 2022</span></li><li><code>macroeconomics</code><span>Inflation rate</span></li><li><code>rates</code><span>Central bank policy rate</span></li><li><code>jobs</code><span>Unemployment rate</span></li><li><code>macroeconomics</code><span>Real GDP growth</span></li></ol></details>
+
+<div class="mcp-show__grid">
+<div class="mcp-show__cell mcp-show__cell--wide">{% include ft-chart.html id="mcp-macro-curve" src="/assets/data/article-charts.json" label="US 10-year minus 2-year Treasury spread" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="mcp-macro-rates" src="/assets/data/article-charts.json" label="US inflation against the policy rate" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="mcp-macro-real" src="/assets/data/article-charts.json" label="US unemployment and real GDP growth" %}</div>
 </div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-robot" aria-hidden="true"></i> Claude's conclusion</p><p>Late in the cycle, but not in recession. The yield curve inverted from July 2022 to September 2024, at its deepest −1.08 percentage points in July 2023, the classic recession signal. The recession never came: real GDP grew 2.5% to 2.9% a year in 2022 to 2024, and unemployment rose only gradually, from 3.6% to 4.4%. With inflation back at 1.9% in 2025 and the policy rate at 4.3%, the real policy rate is still clearly positive, which leaves the Fed room to ease. The curve is upward sloping again, at +0.45 percentage points.</p></div>
+<div class="ca-nums"><span><b>+0.45 pp</b>10y − 2y spread today</span><span><b>1.9%</b>inflation 2025</span><span><b>4.3%</b>policy rate 2025</span><span><b>4.4%</b>unemployment 2025</span></div>
 </div>
 
-<div class="mcp-ex" id="ex-yield-curve">
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Is the US yield curve still inverted, and how did it get here?</p></div>
-<div class="mcp-ex__answer">
-<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
-<div class="ca-tools"><span>rates · US Treasury yield curve</span></div>
-<p>Claude pulls the full Treasury curve and tracks the spread between 10-year and 2-year yields. The curve inverted in July 2022 and stayed inverted for over two years, reaching −1.08 percentage points on July 3, 2023. It turned positive in September 2024 and has steepened since, while the whole curve moved up by more than a percentage point over the past year.</p>
-<div class="ca-nums"><span><b>+0.45 pp</b>10y − 2y spread today</span><span><b>−1.08 pp</b>deepest inversion, July 2023</span><span><b>5.28%</b>10-year yield, from 4.10% a year ago</span></div>
-{% include ft-chart.html id="mcp-curve" src="/assets/data/article-charts.json" label="US Treasury yield curve spread and shape" %}
-<div class="ca-take"><p>No longer inverted: the curve has been upward sloping since September 2024, but at a much higher level than a year ago.</p></div>
-</div>
-</div>
+<div class="mcp-show" id="ex-diversification">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>My portfolio is heavy in Nvidia and Microsoft. Which of JPMorgan, ExxonMobil and Johnson & Johnson actually diversifies it?</p></div>
+<div class="mcp-show__meta"><span><b>3</b> tool calls</span><span><b>5</b> stocks plus the S&P 500</span><span><b>3</b> years of weekly returns</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What Claude calculated</summary><ol><li><code>performance</code><span>Correlation matrix of weekly returns, October 2023 to October 2026</span></li><li><code>performance</code><span>Quarterly returns</span></li><li><code>risk</code><span>Maximum drawdown</span></li></ol></details>
 
-<div class="mcp-ex" id="ex-semiconductor-esg">
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>When looking at the semiconductor industry, which company seems to be the most sustainable?</p></div>
-<div class="mcp-ex__answer">
-<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
-<div class="ca-tools"><span>environment · ESG scores</span></div>
-<p>Taiwan Semiconductor has the highest overall ESG score of the eight, but that hides an uneven profile: near-perfect social and governance scores against an environmental score of 50, the lowest in the group, as fabs use large amounts of energy and water. Intel and ASML are the most balanced across all three pillars.</p>
-<div class="ca-nums"><span><b>83.2</b>TSMC overall, the highest</span><span><b>50.0</b>TSMC environmental, the lowest</span><span><b>78.9</b>ASML, the most balanced</span></div>
-{% include ft-chart.html id="mcp-esg" src="/assets/data/article-charts.json" label="ESG scores of eight chipmakers" %}
-<div class="ca-take"><p>"Most sustainable" depends on the pillar: TSMC leads overall, Intel and ASML are the most balanced, and an ESG composite hides the environmental trade-off.</p></div>
+<div class="mcp-show__grid">
+<div class="mcp-show__cell">{% include ft-chart.html id="mcp-div-corr" src="/assets/data/article-charts.json" label="Correlation matrix of weekly returns" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="mcp-div-quarters" src="/assets/data/article-charts.json" label="Quarterly returns of NVDA, MSFT, XOM and JNJ" %}</div>
 </div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-robot" aria-hidden="true"></i> Claude's conclusion</p><p>ExxonMobil and Johnson & Johnson are the real diversifiers; JPMorgan mostly adds more market exposure. JPMorgan moves with Nvidia (a correlation of 0.34) and with the market (0.63). ExxonMobil and J&amp;J are negatively correlated with both Nvidia and Microsoft and barely related to the S&amp;P 500. The quarters that matter confirm it: in the first quarter of 2025, Nvidia fell 19.3% and Microsoft 10.7% while ExxonMobil rose 11.6% and J&amp;J 15.6%, and in the first quarter of 2026 Microsoft lost 23.3% while ExxonMobil gained 41.9%.</p></div>
+<div class="ca-nums"><span><b>−0.23</b>MSFT and XOM correlation</span><span><b>0.63</b>JPM and S&amp;P 500 correlation</span><span><b>+41.9% vs −23.3%</b>Q1 2026, XOM vs MSFT</span></div>
 </div>
 
 ## FAQ

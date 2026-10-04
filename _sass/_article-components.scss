@@ -150,3 +150,79 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
     }
   }
 }
+
+// Showcase conversations on the MCP page: question, what was calculated, a
+// small dashboard of charts and Claude's conclusion
+.page__content {
+  .ca-nav--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); @media (max-width: 900px) { grid-template-columns: 1fr 1fr; } }
+
+  .mcp-show {
+    margin: 0 0 3em;
+    padding: 22px 22px 14px;
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    background:
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(129, 140, 248, 0.10), transparent 70%),
+      var(--card-bg);
+    scroll-margin-top: 90px;
+    .ca-q { margin-top: 0; }
+    .ca-nums { margin: 12px 0 4px; }
+    @media (max-width: 600px) { padding: 14px 12px 8px; border-radius: 14px; }
+  }
+
+  .mcp-show__meta {
+    display: flex; flex-wrap: wrap; gap: 6px 18px;
+    margin: 0 0 10px;
+    span { color: var(--text-muted); font-size: 0.85rem; }
+    b {
+      font-size: 1.15rem; font-weight: 800;
+      background: $ca-gradient; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+  }
+
+  .mcp-show__trace {
+    margin: 0 0 14px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: rgba(128, 128, 128, 0.04);
+    summary {
+      cursor: pointer; padding: 9px 12px; color: var(--text-secondary); font-size: 0.86rem; font-weight: 600; list-style: none;
+      &::-webkit-details-marker { display: none; }
+      i { color: var(--accent-color); margin-right: 6px; }
+      &::after { content: "\f078"; font-family: "Font Awesome 6 Free", "Font Awesome 5 Free"; font-weight: 900; float: right; font-size: 0.75rem; color: var(--text-muted); transition: transform 0.2s ease; }
+    }
+    &[open] summary::after { transform: rotate(180deg); }
+    ol { margin: 0 !important; padding: 2px 12px 10px 34px !important; }
+    li { margin: 4px 0 !important; color: var(--text-secondary); font-size: 0.86rem; }
+    li code { margin-right: 8px; font-size: 0.78rem; }
+  }
+
+  .mcp-show__note {
+    margin: 0 0 12px !important; padding: 8px 12px; border-radius: 10px;
+    background: rgba(251, 191, 36, 0.08); color: var(--text-secondary) !important; font-size: 0.86rem !important;
+    i { color: #fbbf24; margin-right: 4px; }
+  }
+
+  .mcp-show__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    .mcp-show__cell { min-width: 0; }
+    .mcp-show__cell--wide { grid-column: 1 / -1; }
+    .ft-chart { margin: 0; }
+    .ft-chart__canvas, .ft-chart__loading { height: 320px; }
+    @media (max-width: 900px) { grid-template-columns: 1fr; }
+  }
+
+  .mcp-show__verdict {
+    margin: 14px 0 0;
+    padding: 16px 18px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    background:
+      linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+      $ca-gradient border-box;
+    p { margin: 0 !important; color: var(--text-primary) !important; line-height: 1.6; }
+    .mcp-show__label { margin-bottom: 6px !important; color: var(--accent-color) !important; font-size: 0.8rem !important; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  }
+}
