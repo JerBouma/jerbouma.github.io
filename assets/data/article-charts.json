@@ -1907,13 +1907,13 @@
   },
   "claude-dcf": {
    "type": "hbar",
-   "title": "Nvidia: DCF intrinsic value per share at different growth assumptions, versus the share price",
+   "title": "Nvidia: DCF value per share at four growth rates, against the share price on October 2, 2026",
    "x": [
-    "Share price (Oct 2, 2026)",
-    "45% growth",
-    "35% growth",
-    "25% growth",
-    "15% growth"
+    "Share price",
+    "At 45% growth",
+    "At 35% growth",
+    "At 25% growth",
+    "At 15% growth"
    ],
    "series": [
     {

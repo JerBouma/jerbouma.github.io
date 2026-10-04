@@ -552,6 +552,8 @@
   }
 
   function show(box) {
+    if (box.ftShown) return;
+    box.ftShown = true;
     start(box.getAttribute('data-src') || DATA).then(function (data) {
       var chart = data.charts[box.getAttribute('data-chart')];
       if (chart) render(box, chart);
@@ -571,6 +573,18 @@
       entries.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); show(e.target); } });
     }, { rootMargin: '300px 0px' });
     boxes.forEach(function (b) { io.observe(b); });
+    // charts that are not reached by scrolling (a fast fling, a jump from the
+    // table of contents) are drawn in the background once everything has
+    // loaded, one at a time, so none stays a grey placeholder
+    window.addEventListener('load', function () {
+      var rest = boxes.slice();
+      (function next() {
+        var box = rest.shift();
+        if (!box) return;
+        if (!box.ftShown) { io.unobserve(box); show(box); }
+        setTimeout(next, 120);
+      })();
+    });
   } else {
     boxes.forEach(show);
   }
