@@ -153,8 +153,8 @@ financetoolkit-mcp:
         url: /projects/financetoolkit/mcp#ex-semiconductor-overbought
       - title: Alibaba vs Amazon
         url: /projects/financetoolkit/mcp#ex-alibaba-amazon
-      - title: Unemployment Rates
-        url: /projects/financetoolkit/mcp#ex-unemployment
+      - title: US Yield Curve
+        url: /projects/financetoolkit/mcp#ex-yield-curve
       - title: Chip Sustainability
         url: /projects/financetoolkit/mcp#ex-semiconductor-esg
   - title: "FAQ"

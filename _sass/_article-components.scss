@@ -115,3 +115,34 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
     i { color: var(--accent-color); }
   }
 }
+
+// Example conversations on the MCP page: one card per question
+.page__content {
+  .mcp-ex {
+    margin: 0 0 2.4em;
+    padding: 18px 18px 6px;
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    background: var(--card-bg);
+    scroll-margin-top: 90px;
+    .ca-q { margin-top: 0; }
+    .ft-chart { margin: 1em 0; }
+    .ca-take { margin-bottom: 1.2em; }
+    > .mcp-ex__answer > p { color: var(--text-secondary); line-height: 1.6; }
+    @media (max-width: 600px) { padding: 14px 12px 4px; }
+  }
+  .mcp-ex__who {
+    margin: 0 0 8px !important;
+    color: var(--text-muted) !important;
+    font-size: 0.82rem !important;
+    i { color: var(--accent-color); margin-right: 4px; }
+  }
+  .ca-tools {
+    display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px;
+    span {
+      padding: 3px 9px; border: 1px solid var(--card-border); border-radius: 999px;
+      color: var(--text-muted); font-size: 0.74rem;
+      font-family: "JetBrains Mono", "SF Mono", Menlo, monospace;
+    }
+  }
+}

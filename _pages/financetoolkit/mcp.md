@@ -6,7 +6,7 @@ description: "Open-source MCP server for stock analysis: 500+ financial methods,
 classes: wide-sidebar
 author_profile: false
 layout: single
-last_modified_at: 2026-10-04
+last_modified_at: 2026-10-05
 redirect_from:
   - /mcp
   - /projects/financetoolkit/mcp-server
@@ -52,7 +52,7 @@ There is a growing number of MCP servers for financial data, from the official F
 </table>
 </div>
 
-The Finance Toolkit behind the server has been downloaded over 600,000 times and every formula is in the [documentation](/projects/financetoolkit/docs), so a number from a chat can be traced back to its calculation. I designed the 22 categorical tools so that small and large models alike can work with them, from GPT-5 mini to Claude Opus; the [example conversations](#example-conversations) below show both ends of that range.
+The Finance Toolkit behind the server has been downloaded over 600,000 times and every formula is in the [documentation](/projects/financetoolkit/docs), so a number from a chat can be traced back to its calculation. I designed the 22 categorical tools so that small and large models alike use them reliably.
 
 If you only need a quote or a headline number, a raw data server is fine. If you want to ask *"which of these banks is the most solvent, and why"* and get an answer you can defend, that is what I built this server for.
 
@@ -69,7 +69,7 @@ You never have to name a tool or an indicator: ask in plain English and the assi
   <div class="mcp-use"><i class="fas fa-square-root-variable" aria-hidden="true"></i><h3>Econometrics</h3><p>"Regress Apple's weekly returns on its suppliers and peers. Which coefficients are significant?"</p><span>econometrics</span></div>
 </div>
 
-[How to Connect Claude to Live Financial Data](/articles/connect-claude-to-financial-data) answers ten questions like these through the server, each with its charts, and [Which tools does the server expose?](#faq-tools) lists all 22 tools.
+The [example conversations](#example-conversations) below show six of these questions answered in full, with the numbers and charts the server returns.
 
 
 
@@ -435,334 +435,90 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
 
 ## Example Conversations
 
-When building this MCP I wanted it to be useful across the whole range of models: the server should return the right data regardless of which AI you use, and the depth of interpretation should scale with the model's capability. The conversations below show what that looks like in practice.
+Six questions as you would type them, each answered by Claude through the server. Every number and chart below comes from a Finance Toolkit calculation, not from the model's memory.
 
-<details class="mcp-chat" id="ex-apple-microsoft" markdown="1">
-<summary class="mcp-chat__bar">
-<span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<h3 class="mcp-chat__q">Compare Apple with Microsoft, what company is the most profitable?</h3>
-<span class="mcp-chat__model"><i class="fas fa-brain"></i>Claude Sonnet 4.6</span>
-<span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
-</summary>
+The server returns the same calculated data to every model, and I designed its 22 tools to be simple enough for smaller models as well: GPT-5 mini, Claude Haiku and similar models pick the right tool and report the same numbers. A larger model mostly adds depth to the interpretation, such as the follow-up questions and caveats you see here.
 
-<div class="mcp-chat__reply" markdown="1">
-<div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
-
-Across the five-year window from 2021 to 2025, Microsoft and Apple present genuinely different profitability profiles depending on the analytical lens applied, a nuance that institutional research rarely collapses into a single verdict. The data below, derived directly from the Finance Toolkit MCP server, covers gross margin, operating margin, and net profit margin across both companies from fiscal year 2021 through fiscal year 2025.
-
-Microsoft commands a structurally superior margin stack at every level of the income statement. Its software and cloud-heavy revenue mix consistently produces gross margins in the 68–70% range, reflecting the near-zero marginal cost of licensing and Azure compute, while Apple's hardware-weighted mix constrains gross margins to the 42–47% band despite meaningful Services segment expansion.
-
-| Metric | Company | 2021 | 2022 | 2023 | 2024 | 2025 |
-|:--|:--|--:|--:|--:|--:|--:|
-| Gross Margin | AAPL | 41.78% | 43.31% | 44.13% | 46.21% | 46.91% |
-| Gross Margin | MSFT | 68.93% | 68.40% | 68.92% | 69.76% | 68.82% |
-| Operating Margin | AAPL | 29.78% | 30.29% | 29.82% | 31.51% | 31.97% |
-| Operating Margin | MSFT | 41.59% | 42.06% | 41.77% | 44.64% | 45.62% |
-| Net Profit Margin | AAPL | 25.88% | 25.31% | 25.31% | 23.97% | 26.92% |
-| Net Profit Margin | MSFT | 36.45% | 36.69% | 34.15% | 35.96% | 36.15% |
-
-The margin story, however, is not the complete picture. When shifting from income-statement efficiency to capital deployment efficiency, Apple's financial engineering inverts the comparison dramatically. Apple carries a deliberately compressed equity base, the result of decades of aggressive share repurchases, which mechanically inflates its Return on Equity to levels that appear extraordinary, consistently exceeding 170% in recent years. The following table captures ROE, Return on Invested Capital, and Return on Assets for the same period.
-
-| Metric | Company | 2022 | 2023 | 2024 | 2025 |
-|:--|:--|--:|--:|--:|--:|
-| Return on Equity | AAPL | 175.46% | 171.95% | 157.41% | 171.42% |
-| Return on Equity | MSFT | 47.15% | 38.82% | 37.13% | 33.28% |
-| Return on Invested Capital | AAPL | 59.90% | 60.68% | 60.19% | 70.38% |
-| Return on Invested Capital | MSFT | 38.73% | 34.74% | 33.71% | 30.64% |
-| Return on Assets | AAPL | 28.36% | 27.50% | 26.13% | 30.93% |
-| Return on Assets | MSFT | 20.82% | 18.63% | 19.07% | 18.00% |
-
-The verdict depends precisely on what one means by "most profitable." On a pure income statement basis (gross, operating, and net margins), **Microsoft is unambiguously the more profitable business**, generating roughly 22 percentage points more net income per dollar of revenue than Apple in fiscal year 2025 (36.15% vs. 26.92%). This structural advantage reflects Microsoft's software and cloud economics, where incremental revenue has near-zero marginal cost.
-
-Apple, by contrast, leads on every capital efficiency metric: its ROIC of 70.38% in 2025 versus Microsoft's 30.64% indicates that Apple extracts significantly more economic value from each dollar of invested capital. Its ROA advantage (30.93% vs. 18.00%) is similarly consistent across the full sample. The ROE comparison is analytically distorted by Apple's balance sheet structure and is better set aside in favor of ROIC as the cleanest apples-to-apples measure.
-
-For a more complete picture, the analysis could be extended into DuPont decomposition to isolate whether Apple's ROIC lead is driven by asset turnover, operational leverage, or financial leverage, all of which the Finance Toolkit supports natively.
-
+<div class="ca-nav">
+  <a href="#ex-apple-microsoft"><i class="fas fa-building" aria-hidden="true"></i>Apple or Microsoft</a>
+  <a href="#ex-bank-solvency"><i class="fas fa-landmark" aria-hidden="true"></i>Europe's most solvent bank</a>
+  <a href="#ex-semiconductor-overbought"><i class="fas fa-gauge-high" aria-hidden="true"></i>Are chipmakers overbought?</a>
+  <a href="#ex-alibaba-amazon"><i class="fas fa-cart-shopping" aria-hidden="true"></i>Amazon vs Alibaba</a>
+  <a href="#ex-yield-curve"><i class="fas fa-chart-line" aria-hidden="true"></i>The US yield curve</a>
+  <a href="#ex-semiconductor-esg"><i class="fas fa-leaf" aria-hidden="true"></i>Most sustainable chipmaker</a>
 </div>
-</details>
 
-<details class="mcp-chat" id="ex-bank-solvency" markdown="1">
-<summary class="mcp-chat__bar">
-<span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<h3 class="mcp-chat__q">When looking at biggest banks in Europe, which one seems to be the most solvent?</h3>
-<span class="mcp-chat__model"><i class="fas fa-brain"></i>Claude Sonnet 4.6</span>
-<span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
-</summary>
-
-<div class="mcp-chat__reply" markdown="1">
-<div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
-
-Assessing solvency across Europe's nine largest listed banking groups (HSBC, BNP Paribas (BNPQY), Deutsche Bank (DB), Banco Santander (SAN), Barclays (BCS), UniCredit (UNCRY), Société Générale (SCGLY), ING, and Intesa Sanpaolo (ISNPY)) requires examining leverage in multiple dimensions simultaneously. Because banks operate with inherently high financial leverage by design, the equity multiplier and debt-to-assets ratio are the most discriminating solvency signals, with the debt service coverage ratio providing a cash-flow-based cross-check. Taken together, the data point to **UniCredit** and **Intesa Sanpaolo** as the standout names for solvency quality within this cohort.
-
-The debt-to-equity ratio captures the proportion of debt relative to shareholders' equity. A lower reading indicates a more conservative capital structure relative to the equity cushion available to absorb losses. The six-year progression below reveals a clear dispersion across the group, with BNP Paribas and Santander consistently carrying the heaviest debt loads relative to equity, while HSBC and Intesa Sanpaolo trend toward the lower end.
-
-| Ticker | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 |
-|:-------|-----:|-----:|-----:|-----:|-----:|-----:|
-| ISNPY  | 1.62 | 1.58 | 1.61 | 2.22 | 2.24 | 2.13 |
-| HSBC   | 1.85 | 1.91 | 1.10 | 2.22 | 1.26 | 2.68 |
-| UNCRY  | 2.24 | 2.01 | 1.82 | 1.91 | 1.95 | 2.57 |
-| BCS    | 2.15 | 2.38 | 2.65 | 2.46 | 2.56 | 2.81 |
-| DB     | 3.28 | 2.30 | 2.70 | 1.93 | 1.91 | 3.18 |
-| SCGLY  | 2.31 | 2.13 | 2.11 | 2.38 | 2.30 | 4.12 |
-| ING    | 1.42 | 2.12 | 2.37 | 2.87 | 3.34 | 3.32 |
-| SAN    | 3.53 | 3.45 | 4.36 | 2.98 | 4.50 | 4.40 |
-| BNPQY  | 6.40 | 6.34 | 2.56 | 5.23 | 5.43 | 6.22 |
-
-The equity multiplier, total assets divided by equity, provides a balance-sheet-wide view of financial leverage and is a core input into DuPont decomposition. A lower multiplier implies a thicker equity buffer relative to the entire asset base. The 2025 cross-section is particularly telling: UniCredit stands at just 12.6x, the lowest among all nine peers, followed closely by Intesa Sanpaolo at 14.5x and Santander at 16.8x. By contrast, BNP Paribas (20.7x), Société Générale (21.0x), Barclays (20.3x), and ING (20.3x) are meaningfully more leveraged. Importantly, UniCredit's multiplier has compressed steadily from 15.1x in 2021 to 12.6x in 2025, signalling a deliberate and sustained de-leveraging trajectory.
-
-| Ticker | 2021 | 2022 | 2023 | 2024 | 2025 |
-|:-------|-----:|-----:|-----:|-----:|-----:|
-| UNCRY  | 15.10 | 14.09 | 12.85 | 12.34 | 12.64 |
-| ISNPY  | 15.86 | 16.33 | 15.46 | 14.66 | 14.50 |
-| SAN    | 16.48 | 17.09 | 17.49 | 17.18 | 16.82 |
-| HSBC   | 14.43 | 15.11 | 15.89 | 15.73 | 16.57 |
-| DB     | 20.38 | 18.97 | 17.99 | 17.50 | 17.69 |
-| ING    | 17.11 | 18.24 | 18.94 | 19.27 | 20.31 |
-| BCS    | 19.97 | 20.74 | 21.18 | 20.75 | 20.30 |
-| BNPQY  | 23.21 | 23.24 | 21.55 | 20.14 | 20.67 |
-| SCGLY  | 21.10 | 20.46 | 20.33 | 20.08 | 20.96 |
-
-The debt-to-assets ratio corroborates this ranking. HSBC (0.153), Deutsche Bank (0.178), and Intesa Sanpaolo (0.145) hold the smallest debt loads as a share of the total balance sheet in 2025, while BNP Paribas (0.294) and Santander (0.266) are again the outliers on the high end. The debt service coverage ratio provides the critical cash-flow validation: UniCredit (0.228) and Intesa Sanpaolo (0.181) post the highest readings in 2025, meaning their operating earnings are most comfortably covering their debt obligations, a distinction that separates balance-sheet strength from earnings-backed solvency capacity.
-
-| Ticker | D/A 2025 | Equity Mult 2025 | DSCR 2025 |
-|:-------|----------:|-----------------:|----------:|
-| UNCRY  | 0.201 | 12.64 | 0.228 |
-| ISNPY  | 0.145 | 14.50 | 0.181 |
-| HSBC   | 0.153 | 16.57 | 0.120 |
-| DB     | 0.178 | 17.69 | 0.010 |
-| BCS    | 0.142 | 20.30 | 0.013 |
-| SCGLY  | 0.186 | 20.96 | 0.012 |
-| ING    | 0.161 | 20.31 | 0.011 |
-| SAN    | 0.266 | 16.82 | 0.014 |
-| BNPQY  | 0.294 | 20.67 | 0.013 |
-
-Synthesizing across all three dimensions, **UniCredit (UNCRY)** emerges as the most solvent major European bank. Its equity multiplier of 12.6x is the lowest in the peer group by a meaningful margin, its trend has been consistently improving over six years, and its debt service coverage ratio of 0.228 is the highest in the cohort, confirming that the balance-sheet strength is underpinned by genuine earnings power rather than accounting structure alone. **Intesa Sanpaolo (ISNPY)** is the clear runner-up, posting the second-best equity multiplier and second-best DSCR. At the other end of the spectrum, BNP Paribas is the most leveraged name across nearly every metric, and Société Générale's equity multiplier spiked to 21.0x in 2025, flagging elevated structural leverage risk in that institution.
-
-Logical extensions of this analysis within the Finance Toolkit ecosystem would include examining capital allocation quality via return on equity and return on invested capital for these same banks, running a rolling volatility and maximum drawdown comparison to understand how solvency strength translates into price resilience, or stress-testing via the Altman Z-Score model where data coverage permits.
-
+<div class="mcp-ex" id="ex-apple-microsoft">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Compare Apple with Microsoft, which company is the most profitable?</p></div>
+<div class="mcp-ex__answer">
+<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
+<div class="ca-tools"><span>profitability · margins</span><span>profitability · ROIC, ROE, ROA</span></div>
+<p>It depends on what "most profitable" means. Microsoft leads on every margin, from gross to net. Asked to look further, Claude checks returns on capital and the ranking flips: Apple's heavy buybacks and lean balance sheet give it far higher returns on the capital it uses.</p>
+<div class="ca-nums"><span><b>36.1% vs 26.9%</b>net margin 2025, MSFT vs AAPL</span><span><b>70.4% vs 30.6%</b>ROIC 2025, AAPL vs MSFT</span><span><b>30.9% vs 18.0%</b>ROA 2025, AAPL vs MSFT</span></div>
+{% include ft-chart.html id="mcp-apple-msft" src="/assets/data/article-charts.json" label="Apple and Microsoft margins and returns on capital" %}
+<div class="ca-take"><p>Microsoft earns more per dollar of revenue, Apple more per dollar of capital. Both answers are right; the question decides which one matters.</p></div>
 </div>
-</details>
-
-<details class="mcp-chat" id="ex-semiconductor-overbought" markdown="1">
-<summary class="mcp-chat__bar">
-<span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<h3 class="mcp-chat__q">Tell me something about the Semiconductor industry, is it overbought?</h3>
-<span class="mcp-chat__model"><i class="fas fa-brain"></i>Claude Sonnet 4.6</span>
-<span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
-</summary>
-
-<div class="mcp-chat__reply" markdown="1">
-<div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
-
-The following analysis covers eight representative semiconductor names spanning the full value chain: fabless designers (NVDA, AMD, QCOM), integrated device manufacturers (INTC, MU), a pure-play foundry (TSM), a diversified chip infrastructure leader (AVGO), and the European lithography monopoly (ASML), using RSI momentum, trailing P/E multiples, and risk-adjusted Sharpe ratios sourced entirely from the Finance Toolkit MCP server.
-
-**Momentum: The Sector Was Overbought in Late April and Early May and Has Since Cooled**
-
-The most telling technical story of 2026 is a sharp overbought surge that peaked between late April and mid-May and has since largely normalized as of the June 4 close. The table below presents trailing 14-day RSI readings (Wilder smoothing) across the cohort for the last ten trading sessions. Readings above 70 flag overbought conditions; readings below 30 indicate oversold pressure.
-
-| Date       | NVDA  | AMD   | INTC  | QCOM  | AVGO  | TSM   | MU    | ASML  | SPY (Benchmark) |
-|:-----------|------:|------:|------:|------:|------:|------:|------:|------:|----------------:|
-| 2026-05-21 | 57.76 | 69.90 | 67.42 | 64.93 | 53.30 | 56.91 | 66.92 | 59.44 | 67.29 |
-| 2026-05-22 | 53.71 | **72.59** | 68.18 | **71.75** | 53.09 | 55.47 | 65.07 | 62.23 | 68.86 |
-| 2026-05-26 | 53.26 | **77.07** | **70.23** | **74.09** | 56.46 | 58.79 | **74.86** | 62.13 | **71.36** |
-| 2026-05-27 | 51.04 | **74.08** | 67.99 | 65.63 | 56.38 | 62.79 | **76.45** | 58.26 | **71.20** |
-| 2026-05-28 | 52.60 | **76.71** | 66.83 | 68.14 | 58.45 | 63.56 | **75.68** | 58.89 | **73.28** |
-| 2026-05-29 | 49.41 | **75.98** | 59.19 | 69.99 | 65.92 | 59.53 | **78.01** | 59.48 | **74.19** |
-| 2026-06-01 | 60.39 | **73.70** | 53.51 | 59.41 | 69.75 | 65.80 | **80.73** | 60.85 | **75.18** |
-| 2026-06-02 | 58.79 | **75.23** | 52.10 | 62.68 | **74.75** | 69.11 | **81.80** | 66.73 | **75.69** |
-| 2026-06-03 | 51.14 | **77.78** | 56.33 | 65.03 | **73.34** | 63.15 | **82.37** | 68.14 | 67.97 |
-| 2026-06-04 | 54.44 | **70.57** | 55.31 | 62.03 | 48.08 | 65.77 | 69.66 | **70.16** | 69.74 |
-
-The data paints a diverging picture within the sector. AMD and MU have been the momentum leaders: AMD has printed an RSI above 70 in every one of the last nine sessions and MU pushed as high as 82 on June 3 before cooling to 69.66 on the last close. AVGO is the clearest reversal: it climbed from the low 50s to 74.75 on June 2 and then collapsed to 48.08 in just two sessions, possibly reflecting rotation out of AI-infrastructure adjacent names. NVDA, by contrast, has spent the entire window in neutral territory between 49 and 60, and INTC has faded from a 70 reading on May 26 to 55. The broader SPY benchmark sits at 69.74, itself just below the overbought line after six consecutive sessions above 70 through June 2, meaning much of the sector's momentum is a broad-market phenomenon rather than a semiconductor-specific one. Notably, the cohort touched genuinely overbought readings of 85–89 on AMD (April 24), INTC (May 1), QCOM and MU (May 11) earlier in the spring, coinciding with the US-China trade truce news and renewed AI capex guidance from hyperscalers. That wave has largely receded.
-
-**Valuation: Multiples Remain Structurally Elevated for AI-Exposed Names**
-
-The overbought question cannot be answered through momentum alone: RSI describes the speed of price change, not whether the underlying business justifies the price. The following table presents trailing annual P/E ratios for the cohort from 2021 through 2026 (2026 where available).
-
-| Ticker | 2021  | 2022  | 2023   | 2024   | 2025    | 2026  |
-|:-------|------:|------:|-------:|-------:|--------:|------:|
-| NVDA   | 170.5 | 38.0  | 284.3  | 112.5  | 63.5    | 44.6  |
-| AMD    | 55.9  | 77.1  | 280.5  | 120.5  | 80.8    |       |
-| AVGO   | 44.3  | 21.1  | 33.8   | 187.9  | 72.6    |       |
-| ASML   | 49.0  | 36.3  | 34.4   | 34.6   | 36.9    |       |
-| MU     | 18.1  | 6.5   | —      | 120.9  | 37.6    |       |
-| QCOM   | 23.2  | 9.7   | 22.5   | 17.1   | 34.1    |       |
-| TSM    | 29.1  | 11.9  | 19.4   | 29.0   | 28.4    |       |
-| INTC   | 10.6  | 13.6  | 125.3  | —      | —       |       |
-
-NVDA's P/E compression from its stratospheric 284x in 2023 to 44.6x on a current-year basis is meaningful progress, but at 44x it still prices in enormous earnings growth expectations that leave little room for execution disappointment. AMD at 80.8x and AVGO at 72.6x for 2025 are similarly demanding. In contrast, TSM trades at a comparatively modest 28x, QCOM at 34x, and ASML at 37x, multiples that, while not cheap, are more defensible given their structural moat positions in leading-edge foundry, mobile/auto connectivity, and EUV lithography respectively. INTC remains the sector's distressed outlier, posting deeply negative earnings in 2024 and 2025 as its restructuring and process-technology catch-up remains unresolved.
-
-**Risk-Adjusted Returns: 2022 Was the Only Losing Year, and 2026 Is Off to a Strong Start**
-
-Sharpe ratios on an annual basis show how much excess return (versus the 10-year Treasury yield) each name delivered per unit of volatility. The Finance Toolkit reports these on a per-observation basis, i.e. the mean of the daily excess returns within each year divided by their standard deviation, so the figures are not annualized (multiply by roughly 15.9, the square root of 252, to compare against published annual Sharpe ratios). The table below covers each name since 2021, with 2026 running through June 4.
-
-| Year | NVDA   | AMD    | INTC   | QCOM   | AVGO   | TSM    | MU     | ASML   | SPY    |
-|:-----|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
-| 2021 | 0.126  | 0.078  | 0.019  | 0.045  | 0.105  | 0.029  | 0.045  | 0.092  | 0.120  |
-| 2022 | -0.053 | -0.066 | -0.096 | -0.055 | -0.017 | -0.064 | -0.071 | -0.032 | -0.052 |
-| 2023 | 0.170  | 0.121  | 0.116  | 0.063  | 0.144  | 0.074  | 0.100  | 0.071  | 0.098  |
-| 2024 | 0.131  | -0.017 | -0.099 | 0.018  | 0.099  | 0.108  | 0.010  | -0.003 | 0.095  |
-| 2025 | 0.052  | 0.074  | 0.076  | 0.027  | 0.061  | 0.075  | 0.140  | 0.076  | 0.046  |
-| 2026 | 0.069  | 0.205  | 0.217  | 0.104  | 0.072  | 0.149  | 0.255  | 0.166  | 0.106  |
-
-Two patterns stand out. First, 2022 is the only year in which every name in the cohort posted a negative Sharpe ratio, the rate-shock year in which the sector sold off alongside the broader market. Second, the leadership has rotated: NVDA and AVGO were the standout risk-adjusted performers in 2023 and 2024, but in 2026 year-to-date MU (0.255), INTC (0.217) and AMD (0.205) lead by a wide margin while NVDA (0.069) has dropped to the bottom of the group, below the SPY benchmark (0.106). This is consistent with the RSI picture above: the momentum has migrated from the AI-accelerator leader toward memory, foundry and the turnaround names. AVGO's 2026 reading of 0.072 also confirms that its early-June reversal has eroded most of its risk-adjusted lead for the year.
-
-**Synthesis: Pockets of Overbought Momentum, Not a Sector-Wide Extreme**
-
-The semiconductor sector is not uniformly overbought as of June 4, 2026. The data reveals a sector that has already corrected from a genuine late-April to mid-May overbought peak and now shows selective, rather than broad, momentum excess. AMD and ASML still sit just above the 70 line and MU only dipped below it on the last session, so those three warrant caution on a pure momentum basis. AVGO has unwound its surge most aggressively, NVDA has spent the entire window in neutral territory, and INTC, QCOM and TSM are elevated but well below the overbought threshold. Valuations remain the persistent structural concern: NVDA, AMD, and AVGO carry multiples that require continued AI-driven earnings acceleration to justify, while ASML, QCOM, and TSM offer more moderate entry points from a fundamental standpoint. For investors monitoring the sector, the logical next steps within the Finance Toolkit ecosystem would include drilling into individual-name volatility profiles using GARCH forecasts, running rolling Sharpe analyses to capture momentum-regime shifts, or examining sector-level factor exposures through Fama-French decomposition to isolate whether excess returns are attributable to market beta, size, or value factors.
-
 </div>
-</details>
 
-The examples above use **Claude Sonnet 4.6**, which adds a lot of qualitative reasoning on top of the raw numbers. The examples below use **GPT-5 mini**, a lighter and faster model that returns clean, structured data without the narrative. Both work well with the Finance Toolkit MCP; how much interpretation you get depends on the model you choose.
-
-<details class="mcp-chat" id="ex-alibaba-amazon" markdown="1">
-<summary class="mcp-chat__bar">
-<span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<h3 class="mcp-chat__q">Compare the financial performance of Alibaba and Amazon over the last 5 years</h3>
-<span class="mcp-chat__model"><i class="fas fa-microchip"></i>GPT-5 mini</span>
-<span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
-</summary>
-
-<div class="mcp-chat__reply" markdown="1">
-<div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
-
-Over the last five years Amazon has outgrown Alibaba in absolute scale and delivered larger revenue and market‑cap expansion, while Alibaba showed steadier margin improvement and a sharp profitability rebound by 2025.  
-
-Below are the core yearly figures (2021–2025) used to compare scale and bottom‑line performance; revenue, net income and market capitalization are in USD (Alibaba's CNY statements converted at the prevailing exchange rate) and rounded to one decimal where helpful. Alibaba's fiscal year ends in March, so its "2025" column covers April 2024 to March 2025.
-
-Looking at revenue and net income, Amazon is much larger in absolute revenue and produced a large net‑income rebound after 2022.
-
-| Year | AMZN Revenue (bn) | BABA Revenue (bn) | AMZN Net Income (bn) | BABA Net Income (bn) |
-|:-----|------------------:|------------------:|---------------------:|---------------------:|
-| 2021 | 469.8             | 112.5             | 33.4                 | 23.6                 |
-| 2022 | 514.0             | 122.5             | -2.7                 | 8.9                  |
-| 2023 | 574.8             | 122.2             | 30.4                 | 10.2                 |
-| 2024 | 638.0             | 128.9             | 59.2                 | 10.9                 |
-| 2025 | 716.9             | 142.4             | 77.8                 | 18.5                 |
-
-When we compare per‑share and profitability metrics, both companies recovered after mid‑period weakness but Amazon delivered higher EPS and stronger returns on capital in recent years.
-
-Looking at EPS (annual). Note that Alibaba reports earnings per share in CNY and per American Depositary Share (one ADS equals eight ordinary shares), so the two columns are not directly comparable in level, only in trend:
-
-| Year | AMZN EPS (USD) | BABA EPS (CNY per ADS) |
-|:-----|---------------:|-----------------------:|
-| 2021 | 3.24     | 55.60    |
-| 2022 | -0.27    | 22.96    |
-| 2023 | 2.90     | 27.68    |
-| 2024 | 5.53     | 31.60    |
-| 2025 | 7.17     | 55.12    |
-
-Return on equity (ROE) shows Amazon moving to materially higher ROE from 2023 onward; Alibaba improved but stayed below Amazon’s peak ROE. ROE and ROIC are computed on average balances, so the first year of the window is omitted.
-
-| Year | AMZN ROE | BABA ROE |
-|:-----|---------:|---------:|
-| 2022 | -0.0191 | 0.0546  |
-| 2023 | 0.1749  | 0.0650  |
-| 2024 | 0.2429  | 0.0702  |
-| 2025 | 0.2229  | 0.1199  |
-
-Return on invested capital (ROIC) follows the same pattern: Amazon shows larger ROIC from 2023 while Alibaba’s ROIC notably improved by 2025.
-
-| Year | AMZN ROIC | BABA ROIC |
-|:-----|----------:|----------:|
-| 2022 | -0.0101  | 0.0468   |
-| 2023 | 0.0976   | 0.0556   |
-| 2024 | 0.1571   | 0.0730   |
-| 2025 | 0.1584   | 0.1219   |
-
-Market capitalization (year‑end) shows Amazon’s much larger market value throughout the period.
-
-| Year | AMZN Market Cap (bn) | BABA Market Cap (bn) |
-|:-----|---------------------:|---------------------:|
-| 2021 | 1717.2               | 326.4                |
-| 2022 | 855.9                | 239.9                |
-| 2023 | 1594.2               | 204.6                |
-| 2024 | 2352.1               | 215.8                |
-| 2025 | 2499.1               | 354.0                |
-
-Amazon is the dominant scale and value creator by revenue and market cap and converted that scale into rising ROE/ROIC and large net income gains after 2022, while Alibaba delivered steadier margin improvement and a notable profitability recovery by 2025 but remained materially smaller in absolute terms.
-
+<div class="mcp-ex" id="ex-bank-solvency">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>When looking at the biggest banks in Europe, which one seems to be the most solvent?</p></div>
+<div class="mcp-ex__answer">
+<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
+<div class="ca-tools"><span>solvency · debt-to-equity</span><span>models · equity multiplier</span><span>solvency · debt service coverage</span></div>
+<p>Banks are leveraged by design, so Claude compares nine of Europe's largest on several measures at once: debt to equity, the equity multiplier (total assets per unit of equity) and debt service coverage. UniCredit comes out first on all three, and its leverage has been falling for six years.</p>
+<div class="ca-nums"><span><b>12.6x</b>UniCredit equity multiplier</span><span><b>0.228</b>UniCredit debt service coverage, highest</span><span><b>20.7x</b>BNP Paribas, among the most leveraged</span></div>
+{% include ft-chart.html id="mcp-banks" src="/assets/data/article-charts.json" label="Equity multiplier of Europe's largest banks" %}
+<div class="ca-take"><p>UniCredit holds the thickest equity buffer of the group, and the cash flow to back it. BNP Paribas and Société Générale run the most leverage.</p></div>
 </div>
-</details>
-
-<details class="mcp-chat" id="ex-unemployment" markdown="1">
-<summary class="mcp-chat__bar">
-<span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<h3 class="mcp-chat__q">Show me the unemployment rate for the United States and Germany since 2010.</h3>
-<span class="mcp-chat__model"><i class="fas fa-microchip"></i>GPT-5 mini</span>
-<span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
-</summary>
-
-<div class="mcp-chat__reply" markdown="1">
-<div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
-
-Since 2010 Germany's unemployment rate fell from about 6.6% to roughly 3.0% and has stayed near that level, while the United States fell from about 9.6% in 2010, spiked in 2020, and is averaging roughly 4.3% so far in 2026. The table below shows the annual average unemployment rates (percent, OECD harmonised definition) for the United States and Germany from 2010 through 2026, where the 2026 figure is the year-to-date average.
-
-|      |   Germany |   United States |
-|:-----|----------:|----------------:|
-| 2010 |     6.575 |           9.608 |
-| 2011 |     5.517 |           8.933 |
-| 2012 |     5.083 |           8.075 |
-| 2013 |     4.95  |           7.358 |
-| 2014 |     4.708 |           6.158 |
-| 2015 |     4.367 |           5.275 |
-| 2016 |     3.908 |           4.875 |
-| 2017 |     3.567 |           4.358 |
-| 2018 |     3.208 |           3.892 |
-| 2019 |     2.975 |           3.675 |
-| 2020 |     3.625 |           8.092 |
-| 2021 |     3.575 |           5.35  |
-| 2022 |     3.067 |           3.633 |
-| 2023 |     3.025 |           3.625 |
-| 2024 |     3.352 |           4.081 |
-| 2025 |     3.152 |           4.369 |
-| 2026 (YTD) |     3.061 |           4.307 |
-
 </div>
-</details>
 
-
-<details class="mcp-chat" id="ex-semiconductor-esg" markdown="1">
-<summary class="mcp-chat__bar">
-<span class="mcp-chat__avatar mcp-chat__avatar--user"><i class="fas fa-user"></i></span>
-<h3 class="mcp-chat__q">When looking at the Semiconductor industry, what company seems to be the most sustainable?</h3>
-<span class="mcp-chat__model"><i class="fas fa-microchip"></i>GPT-5 mini</span>
-<span class="mcp-chat__toggle"><i class="fas fa-chevron-down"></i></span>
-</summary>
-
-<div class="mcp-chat__reply" markdown="1">
-<div class="mcp-chat__reply-tag"><span class="mcp-chat__avatar mcp-chat__avatar--ai"><i class="fas fa-robot"></i></span>Finance Toolkit Analyst</div>
-
-I'll fetch ESG scores for a set of leading semiconductor companies (NVDA, AMD, INTC, ASML, TSM, TXN, QCOM, AVGO, MRVL, ON) to identify the most sustainable firm.
-
-ASML clearly stands out as the most sustainable company in this semiconductor sample, scoring far higher on the Finance Toolkit ESG metric than its peers in 2026.
-
-The latest (2026) ESG scores for the sampled semiconductor companies are shown below.
-
-| Ticker |   ESG Score (2026) |
-|:-------|-------------------:|
-| ASML   |             95.65  |
-| TSM    |             83.13  |
-| INTC   |             80.08  |
-| TXN    |             78.38  |
-| AMD    |             78.02  |
-| ON     |             68.06  |
-| NVDA   |             67.99  |
-| MRVL   |             67.59  |
-| QCOM   |             67.36  |
-| AVGO   |             62.56  |
-
-ASML’s lead is supported by very strong component scores in 2026, which indicate balanced performance across environmental, social, and governance factors.
-
-| Score Type       | 2026 |
-|:-----------------|-----:|
-| Environmental    | 95.84 |
-| Social           | 98.92 |
-| Governance       | 92.20 |
-
+<div class="mcp-ex" id="ex-semiconductor-overbought">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Tell me something about the semiconductor industry, is it overbought?</p></div>
+<div class="mcp-ex__answer">
+<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
+<div class="ca-tools"><span>momentum · RSI</span><span>valuation · P/E</span><span>performance · Sharpe ratio</span></div>
+<p>Claude reads overbought on two levels: momentum and valuation. In early June 2026, AMD and Micron were well above an RSI of 70 while Nvidia sat in the low 50s. On valuation, the multiples of the AI names have come down from their 2023 extremes but remain far above Taiwan Semiconductor's and ASML's.</p>
+<div class="ca-nums"><span><b>82.4</b>Micron RSI, June 3</span><span><b>77.8</b>AMD RSI, June 3</span><span><b>63.5x</b>Nvidia P/E 2025, from 284x in 2023</span></div>
+{% include ft-chart.html id="mcp-semis-pe" src="/assets/data/article-charts.json" label="Price-to-earnings ratio of the largest chipmakers" %}
+<div class="ca-take"><p>Pockets of overbought momentum in individual names, not a sector-wide extreme; the valuation premium sits with the AI-exposed companies.</p></div>
 </div>
-</details>
+</div>
+
+<div class="mcp-ex" id="ex-alibaba-amazon">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Compare the financial performance of Alibaba and Amazon over the last five years.</p></div>
+<div class="mcp-ex__answer">
+<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
+<div class="ca-tools"><span>market_data · income statement</span><span>profitability · operating margin, ROIC</span></div>
+<p>Amazon is five times Alibaba's size by revenue and has pulled further ahead since 2022, when it briefly made a loss. More telling is the direction: Amazon's operating margin doubled to 11.2% as AWS and advertising grew, while Alibaba's fell to 5.8% in its latest fiscal year amid heavy investment and competition.</p>
+<div class="ca-nums"><span><b>$716.9B vs $142.4B</b>revenue 2025</span><span><b>11.2% vs 5.8%</b>operating margin 2025</span><span><b>15.8% vs 5.4%</b>ROIC 2025</span></div>
+{% include ft-chart.html id="mcp-amzn-baba" src="/assets/data/article-charts.json" label="Revenue, operating margin and ROIC of Amazon and Alibaba" %}
+<div class="ca-take"><p>Five years ago Alibaba had the higher margin. Today Amazon earns more on every dollar of revenue and every dollar of capital.</p></div>
+</div>
+</div>
+
+<div class="mcp-ex" id="ex-yield-curve">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Is the US yield curve still inverted, and how did it get here?</p></div>
+<div class="mcp-ex__answer">
+<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
+<div class="ca-tools"><span>rates · US Treasury yield curve</span></div>
+<p>Claude pulls the full Treasury curve and tracks the spread between 10-year and 2-year yields. The curve inverted in July 2022 and stayed inverted for over two years, reaching −1.08 percentage points on July 3, 2023. It turned positive in September 2024 and has steepened since, while the whole curve moved up by more than a percentage point over the past year.</p>
+<div class="ca-nums"><span><b>+0.45 pp</b>10y − 2y spread today</span><span><b>−1.08 pp</b>deepest inversion, July 2023</span><span><b>5.28%</b>10-year yield, from 4.10% a year ago</span></div>
+{% include ft-chart.html id="mcp-curve" src="/assets/data/article-charts.json" label="US Treasury yield curve spread and shape" %}
+<div class="ca-take"><p>No longer inverted: the curve has been upward sloping since September 2024, but at a much higher level than a year ago.</p></div>
+</div>
+</div>
+
+<div class="mcp-ex" id="ex-semiconductor-esg">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>When looking at the semiconductor industry, which company seems to be the most sustainable?</p></div>
+<div class="mcp-ex__answer">
+<p class="mcp-ex__who"><i class="fas fa-robot" aria-hidden="true"></i> Claude, using the Finance Toolkit MCP</p>
+<div class="ca-tools"><span>environment · ESG scores</span></div>
+<p>Taiwan Semiconductor has the highest overall ESG score of the eight, but that hides an uneven profile: near-perfect social and governance scores against an environmental score of 50, the lowest in the group, as fabs use large amounts of energy and water. Intel and ASML are the most balanced across all three pillars.</p>
+<div class="ca-nums"><span><b>83.2</b>TSMC overall, the highest</span><span><b>50.0</b>TSMC environmental, the lowest</span><span><b>78.9</b>ASML, the most balanced</span></div>
+{% include ft-chart.html id="mcp-esg" src="/assets/data/article-charts.json" label="ESG scores of eight chipmakers" %}
+<div class="ca-take"><p>"Most sustainable" depends on the pillar: TSMC leads overall, Intel and ASML are the most balanced, and an ESG composite hides the environmental trade-off.</p></div>
+</div>
+</div>
 
 ## FAQ
 
@@ -1139,3 +895,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
+
+<script src="/assets/js/ft-charts.js" defer></script>

@@ -5916,15 +5916,22 @@ body.ft-overview .page__content {
 }
 
 // the raw-data-versus-Toolkit table on the MCP page: on phones every row
-// becomes a small card with both answers labelled
+// becomes a compact card with the two answers side by side
 .page__content .mcp-compare tbody th { font-weight: 600; color: var(--text-primary); text-align: left; }
+.page__content .mcp-compare td:last-child { color: var(--text-primary); }
 @media (max-width: 600px) {
-  .page__content .mcp-compare table, .page__content .mcp-compare tbody, .page__content .mcp-compare tr,
-  .page__content .mcp-compare th, .page__content .mcp-compare td { display: block; width: 100%; }
+  .page__content .mcp-compare table { display: block; border: 0 !important; background: transparent !important; box-shadow: none !important; }
   .page__content .mcp-compare thead { display: none; }
-  .page__content .mcp-compare tr { padding: 12px 14px; border-bottom: 1px solid var(--card-border); }
-  .page__content .mcp-compare th, .page__content .mcp-compare td { padding: 2px 0 !important; border: 0 !important; background: transparent !important; }
-  .page__content .mcp-compare tbody th { margin-bottom: 6px; }
-  .page__content .mcp-compare td::before { content: attr(data-label) ": "; color: var(--text-muted); font-size: 0.85em; }
-  .page__content .mcp-compare td:last-child { color: var(--text-primary); }
+  .page__content .mcp-compare tbody { display: grid; gap: 8px; }
+  .page__content .mcp-compare tr {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    padding: 10px; border: 1px solid var(--card-border); border-radius: 12px; background: var(--card-bg);
+  }
+  .page__content .mcp-compare th, .page__content .mcp-compare td { display: block; padding: 0 !important; border: 0 !important; background: transparent !important; font-size: 0.8rem !important; line-height: 1.4; }
+  .page__content .mcp-compare tbody th { grid-column: 1 / -1; margin-bottom: 2px; color: var(--text-muted); font-size: 0.7rem !important; letter-spacing: 0.06em; text-transform: uppercase; }
+  .page__content .mcp-compare td { padding: 8px !important; border-radius: 8px; }
+  .page__content .mcp-compare td:nth-of-type(1) { background: rgba(128, 128, 128, 0.08) !important; color: var(--text-secondary); }
+  .page__content .mcp-compare td:nth-of-type(2) { background: rgba(56, 189, 248, 0.10) !important; border: 1px solid rgba(56, 189, 248, 0.35) !important; }
+  .page__content .mcp-compare td::before { content: attr(data-label); display: block; margin-bottom: 3px; color: var(--text-muted); font-size: 0.66rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .page__content .mcp-compare td:nth-of-type(2)::before { color: var(--accent-color); }
 }
