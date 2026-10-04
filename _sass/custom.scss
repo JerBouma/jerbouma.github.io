@@ -5840,3 +5840,25 @@ body.ft-overview .page__content {
 
 :root[data-theme="light"] .page__content .ft-kpis__delta.is-up { color: #059669 !important; }
 :root[data-theme="light"] .page__content .ft-kpis__delta.is-down { color: #db2777 !important; }
+
+// call to action inside an article (e.g. towards the MCP server page)
+.page__content .article-cta {
+  margin: 2em 0;
+  padding: 22px 24px;
+  border: 1px solid var(--card-hover-border, rgba(56, 189, 248, 0.4));
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.10), rgba(129, 140, 248, 0.08) 60%, rgba(192, 132, 252, 0.06));
+
+  p { margin: 0 0 14px !important; color: var(--text-secondary) !important; }
+  .article-cta__title { margin-bottom: 6px !important; color: var(--text-primary) !important; font-size: 1.15rem !important; font-weight: 700; }
+  .article-cta__actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 0 !important; }
+  .article-cta__actions a { text-decoration: none !important; }
+  .article-cta__actions .hp-btn--primary { color: #fff !important; }
+
+  @media (max-width: 600px) {
+    padding: 18px;
+    .article-cta__actions { flex-wrap: nowrap; }
+    .article-cta__actions .hp-btn { flex: 1 1 auto; min-width: 0; justify-content: center; padding: 12px 10px; font-size: 0.86rem; white-space: nowrap; }
+    .article-cta__actions .hp-btn i { display: none; }
+  }
+}
