@@ -54,14 +54,14 @@ contributed:
 
 archived:
   - name: "The Passive Investor"
-    url: /projects/thepassiveinvestor
+    url: "https://github.com/JerBouma/ThePassiveInvestor"
     github: "https://github.com/JerBouma/ThePassiveInvestor"
     text: "Compares ETFs side by side, to make choosing between the many similar funds easier."
     stats:
       - { icon: "fa-star", value: "600+", label: "stars" }
       - { icon: "fa-download", value: "160,000+", label: "downloads" }
   - name: "Personal Finance"
-    url: /projects/personalfinance
+    url: "https://github.com/JerBouma/PersonalFinance"
     github: "https://github.com/JerBouma/PersonalFinance"
     text: "Sorts your bank transactions into your own categories, learning from your own data instead of a generic dataset."
     stats:

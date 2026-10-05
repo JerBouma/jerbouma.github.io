@@ -81,8 +81,6 @@ algolia:
     - _pages/financetoolkit/mcp.md
     - _pages/cv.html
     - _pages/openbbterminal/*.md
-    - _pages/personalfinance/*.md
-    - _pages/thepassiveinvestor/*.md
 google:
   search_engine_id       : # YOUR_SEARCH_ENGINE_ID
   instant_search         : # false (default), true
