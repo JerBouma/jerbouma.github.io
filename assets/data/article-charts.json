@@ -3344,60 +3344,43 @@
    ]
   },
   "mcp-banks-roe": {
-   "type": "line",
-   "title": "Return on equity",
+   "type": "bar",
+   "title": "Return on equity: 2023 against 2025, sorted by 2025",
    "x": [
-    "2023",
-    "2024",
-    "2025"
+    "UniCredit",
+    "Santander",
+    "ING",
+    "HSBC",
+    "BNP Paribas",
+    "Barclays",
+    "Deutsche Bank",
+    "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale"
    ],
    "format": "percent",
    "series": [
     {
-     "name": "UniCredit",
+     "name": "2023",
      "data": [
       0.1488,
-      0.1444,
-      0.1731
-     ]
-    },
-    {
-     "name": "Santander",
-     "data": [
       0.1068,
-      0.1096,
-      0.1357
-     ]
-    },
-    {
-     "name": "ING",
-     "data": [
       0.1447,
-      0.1197,
-      0.1313
-     ]
-    },
-    {
-     "name": "HSBC",
-     "data": [
       0.1187,
-      0.1191,
-      0.1061
-     ]
-    },
-    {
-     "name": "BNP Paribas",
-     "data": [
       0.086,
-      0.08,
-      0.0918
+      0.0612,
+      0.0592,
+      0.0236
      ]
     },
     {
-     "name": "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale",
+     "name": "2025",
      "data": [
-      0.0236,
-      0.0433,
+      0.1731,
+      0.1357,
+      0.1313,
+      0.1061,
+      0.0918,
+      0.0847,
+      0.082,
       0.0724
      ]
     }

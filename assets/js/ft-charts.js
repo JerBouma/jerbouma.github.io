@@ -128,7 +128,7 @@
         axisLine: { lineStyle: { color: grid } },
         axisTick: { show: false },
         // many bars (the portfolio tickers): show every label, slanted
-        axisLabel: isBar && spec.x.length > 10 ? { color: muted, interval: 0, rotate: 45, fontSize: 11 } : { color: muted, hideOverlap: true, fontSize: 12.5 }
+        axisLabel: isBar && (spec.x.length > 10 || Math.max.apply(null, spec.x.map(function (v) { return String(v).length; })) > 8) ? { color: muted, interval: 0, rotate: 45, fontSize: 11 } : { color: muted, hideOverlap: true, fontSize: 12.5 }
       },
       yAxis: {
         type: 'value',
