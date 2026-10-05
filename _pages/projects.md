@@ -124,7 +124,7 @@ Today the Finance Toolkit and Finance Database are used by thousands of develope
   <p class="pj-note">These still work and are still installed, but I no longer maintain them.</p>
   <div class="pj-archive">
     {%- for p in d.archived %}
-    <a class="pj-small" href="{{ p.url }}" data-reveal>
+    <a class="pj-small" href="{{ p.url }}"{% if p.url contains "://" %} target="_blank" rel="noopener"{% endif %} data-reveal>
       <span class="pj-small__tag">Archived</span>
       <h3>{{ p.name }}</h3>
       <p>{{ p.text }}</p>

@@ -50,7 +50,7 @@ With the **Finance Database**, I aimed to create a database to find products com
 
 <div markdown="1" class="thirty-three-column mobile-max-column-width" style="padding-right:0px">
 
-<a href="/projects/personalfinance"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" alt="Personal Finance project banner" width="400"></a>
+<a href="https://github.com/JerBouma/PersonalFinance" target="_blank" rel="noopener"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" alt="Personal Finance project banner" width="400"></a>
 
 With **Personal Finance**, I wanted to understand my spending habits and determine how much money would be left at the end of the month for investing. This also allowed me to experiment with Excel and Power BI integrations.
 

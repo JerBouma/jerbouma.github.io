@@ -15,10 +15,6 @@ main:
         url: /projects/financedatabase
       - title: OpenBB Terminal
         url: /projects/openbbterminal
-      - title: "The Passive Investor"
-        url: /projects/thepassiveinvestor
-      - title: "Personal Finance"
-        url: /projects/personalfinance
   - title: "Modelling"
     url: /modelling/introduction
     sublinks:
@@ -1662,36 +1658,6 @@ financetoolkit-docs-portfolio:
   - title: Transactions Performance
     url: /projects/financetoolkit/docs/portfolio#get_transactions_performance
       
-thepassiveinvestor:
-  - title: "Introduction"
-    url: /projects/thepassiveinvestor
-  - title: "Installation"
-    url: /projects/thepassiveinvestor#installation
-  - title: "Functionality"
-    url: /projects/thepassiveinvestor#functionality
-  - title: "Using the Passive Investor"
-    url: /projects/thepassiveinvestor#using-the-passive-investor
-    children:
-      - title: "Obtaining ETF Data"
-        url: /projects/thepassiveinvestor#using-the-passive-investor
-      - title: "Compare ETFs"
-        url: /projects/thepassiveinvestor#compare-etfs
-      - title: "Generate an ETF Report"
-        url: /projects/thepassiveinvestor#generate-an-etf-report
-personalfinance:
-  - title: "Introduction"
-    url: /projects/personalfinance
-  - title: "Installation"
-    url: /projects/personalfinance#installation
-  - title: "How to Guides"
-    url: /projects/personalfinance#how-to-guides-for-personalfinance
-    children:
-      - title: Getting Started with Personal Finance
-        url: /projects/personalfinance/getting-started
-      - title: Managing your Personal Finances
-        url: /projects/personalfinance/using-your-files
-  - title: "Functionality"
-    url: /projects/personalfinance#getting-started
 modelling:
   - title: "Introduction"
     url: /modelling/introduction
