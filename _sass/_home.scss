@@ -655,3 +655,12 @@ body.home-v2 { overflow-x: clip; }
 // and swallowed its taps
 .hp h2::before,
 .hp h3::before { display: none !important; }
+
+// Filled buttons keep white text on hover (a site-wide link hover rule used
+// to turn it accent blue on the blue gradient). The hover is shown the same
+// way as on the outline buttons: a slight lift, plus a brighter fill and glow.
+a.hp-btn--primary:hover, a.hp-btn--primary:focus-visible,
+.page__content a.hp-btn--primary:hover, .page__content a.hp-btn--primary:focus-visible {
+  color: #fff !important;
+  filter: brightness(1.1);
+}
