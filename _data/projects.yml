@@ -41,6 +41,14 @@ maintained:
       - { icon: "fa-code-fork", value: "950+", label: "forks" }
     links:
       - { label: "Getting started", url: /projects/financedatabase/getting-started }
+    companion:
+      name: "Finance Database MCP"
+      url: /projects/financedatabase/mcp
+      image: "/assets/images/projects/FinanceDatabaseMCP.jpg"
+      since: "2026"
+      lead: "The Finance Database for AI assistants. Ask for every company, ETF or fund that fits a description and the assistant searches all 300,000+ instruments, with no API key needed."
+      links:
+        - { label: "Example conversations", url: "/projects/financedatabase/mcp#example-conversations" }
 
 contributed:
   - name: "OpenBB"
