@@ -5109,6 +5109,9 @@ $content-img: 'img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="g
 
   // tables inside read a touch smaller, like the chat cards
   table { font-size: 0.84rem; }
+
+  // a count or short note next to the summary title
+  .ft-details__meta { padding: 1px 8px; border-radius: 999px; background: color-mix(in srgb, var(--accent-color) 12%, transparent); color: var(--accent-color); font-size: 0.75rem; font-weight: 600; }
 }
 
 // Offset anchored MCP cards/sections so they clear the sticky masthead
