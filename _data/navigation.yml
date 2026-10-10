@@ -13,6 +13,8 @@ main:
         url: /projects/financetoolkit/mcp
       - title: "Finance Database"
         url: /projects/financedatabase
+      - title: "Finance Database MCP"
+        url: /projects/financedatabase/mcp
       - title: OpenBB Terminal
         url: /projects/openbbterminal
   - title: "Modelling"
@@ -61,25 +63,25 @@ financedatabase:
     url: /projects/financedatabase#installation
   - title: <font color="#d67f05">Getting Started Notebook</font>
     url: /projects/financedatabase/getting-started
-  - title: "Usage"
-    url: /projects/financedatabase#usage
+  - title: "Functionality"
+    url: /projects/financedatabase#functionality
     children:
-      - title: Initializing and Querying
-        url: /projects/financedatabase#initializing-and-querying-an-asset-class
-      - title: Exploring Available Options
-        url: /projects/financedatabase#exploring-available-options
-      - title: Filtering the Database
-        url: /projects/financedatabase#filtering-the-database
+      - title: Exploring the Options
+        url: /projects/financedatabase#exploring-the-options
+      - title: Selecting Equities
+        url: /projects/financedatabase#selecting-equities
       - title: Searching the Database
         url: /projects/financedatabase#searching-the-database
+      - title: Exploring Other Asset Classes
+        url: /projects/financedatabase#exploring-other-asset-classes
       - title: Combining with the Finance Toolkit
         url: /projects/financedatabase#combining-with-the-finance-toolkit
-      - title: Other Asset Classes
-        url: /projects/financedatabase#other-asset-classes
+  - title: "MCP Server"
+    url: /projects/financedatabase#mcp-server
   - title: "Questions & Answers"
     url: /projects/financedatabase#questions--answers
-  - title: "Contributions"
-    url: /projects/financedatabase#contributions
+  - title: "Contributing"
+    url: /projects/financedatabase#contributing
   - title: "Contact"
     url: /projects/financedatabase#contact
 financetoolkit:
@@ -1858,3 +1860,50 @@ articles:
     children:
       - title: Binomial Trees
         url: /articles/binomial-trees
+
+financedatabase-mcp:
+  - title: Introduction
+    url: /projects/financedatabase/mcp#site-nav
+  - title: "Why this MCP"
+    url: /projects/financedatabase/mcp#why-the-finance-database-mcp
+  - title: "What You Can Ask"
+    url: /projects/financedatabase/mcp#what-you-can-ask
+  - title: "Installation"
+    url: /projects/financedatabase/mcp#installation
+    children:
+      - title: Remote Server
+        url: /projects/financedatabase/mcp#remote-server
+      - title: Local Clients
+        url: /projects/financedatabase/mcp#local-clients
+      - title: Self-Hosting
+        url: /projects/financedatabase/mcp#self-hosting
+  - title: "Example Conversations"
+    url: /projects/financedatabase/mcp#example-conversations
+    children:
+      - title: European Chipmakers
+        url: /projects/financedatabase/mcp#ex-semiconductors
+      - title: One ISIN, Many Listings
+        url: /projects/financedatabase/mcp#ex-isin
+      - title: Vanguard Bond ETFs
+        url: /projects/financedatabase/mcp#ex-vanguard
+      - title: Dutch Financials
+        url: /projects/financedatabase/mcp#ex-dutch-financials
+  - title: "Tools"
+    url: /projects/financedatabase/mcp#tools
+  - title: "FAQ"
+    url: /projects/financedatabase/mcp#faq
+  - title: "Under the Hood"
+    url: /projects/financedatabase/mcp/architecture
+    children:
+      - title: Modules
+        url: /projects/financedatabase/mcp/architecture#module-overview
+      - title: Startup
+        url: /projects/financedatabase/mcp/architecture#startup-sequence
+      - title: One Tool per Asset Class
+        url: /projects/financedatabase/mcp/architecture#one-tool-per-asset-class
+      - title: Responses and Limits
+        url: /projects/financedatabase/mcp/architecture#responses-and-limits
+      - title: Data and Caching
+        url: /projects/financedatabase/mcp/architecture#data-and-caching
+      - title: Self-Hosting
+        url: /projects/financedatabase/mcp/architecture#transports-and-self-hosting
