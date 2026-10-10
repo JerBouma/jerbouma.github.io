@@ -36,7 +36,7 @@ The documentation is split the same way as the [Finance Toolkit](https://github.
 | Yield curve | `TermStructure` (`factors/term_structure`) | On in `default.yaml` and `broad.yaml` | Nelson-Siegel level, slope and curvature |
 | Forward curve (HJM) | `Hjm` (`factors/hjm`) | Opt-in | Two-factor Gaussian forward curve |
 | Real estate | `RealEstate` (`factors/real_estate`) | Opt-in | House-price growth |
-| Credit spreads | `Credit` (`factors/credit`) | Opt-in | One per US maturity or rating bucket (ICE BofA), or Moody's Aaa/Baa from 1953 |
+| Credit spreads | `Credit` (`factors/credit`) | Opt-in | One per US maturity or rating bucket (ICE BofA), Moody's Aaa/Baa from 1953, German or Australian corporate spreads, or the ECB's euro-area cost of borrowing |
 | Rating migration | `CreditMigration` (`factors/credit_migration`) | Opt-in | A credit cycle driving rating moves and defaults; `rating_migration` for a portfolio |
 | Credit curve | `CreditTermStructure` (`factors/credit_term_structure`) | Opt-in | Nelson-Siegel curve from the Treasury HQM spread curve (or a bond panel) |
 | Leading indicator | `LeadingIndicator` (`factors/leading_indicator`) | Opt-in | OECD composite leading indicator |

@@ -40,7 +40,7 @@ module ShareImages
 
   def shareable?(page)
     page.output_ext == ".html" && !page.data["redirect"] && page.data["layout"] != "redirect" &&
-      !SKIP.include?(page.url.sub(/\.html\z/, "")) && page.data["title"]
+      !SKIP.include?(page.url.sub(/\.html\z/, "")) && !page.data["noindex"] && page.data["title"]
   end
 
   class Generator < Jekyll::Generator
