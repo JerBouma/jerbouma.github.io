@@ -1,0 +1,121 @@
+{% comment %}
+  The Finance Scenarios coverage browser: a button per topic, a status filter
+  and a search box over _data/financescenarios_coverage.yml. Without
+  JavaScript every topic is shown, one after the other.
+{% endcomment %}
+{% assign cov = site.data.financescenarios_coverage %}
+{% assign total = 0 %}{% for t in cov %}{% assign total = total | plus: t.items.size %}{% endfor %}
+<div class="fsc" data-fsc>
+  <div class="fsc__bar">
+    <label class="fsc__search">
+      <i class="fas fa-search" aria-hidden="true"></i>
+      <input type="search" placeholder="Search, e.g. GARCH or Solvency II" aria-label="Search the coverage">
+    </label>
+    <div class="fsc__status" role="group" aria-label="Show by status">
+      <button type="button" data-status="all" class="is-active">All <span></span></button>
+      <button type="button" data-status="available"><i class="fsc__dot fsc__dot--yes"></i>Available <span></span></button>
+      <button type="button" data-status="partial"><i class="fsc__dot fsc__dot--part"></i>Partial <span></span></button>
+      <button type="button" data-status="not_available"><i class="fsc__dot fsc__dot--no"></i>Not available <span></span></button>
+    </div>
+  </div>
+  <div class="fsc__topics" role="group" aria-label="Topic">
+    <button type="button" data-topic="all">All topics <span>{{ total }}</span></button>
+    {%- for t in cov %}
+    <button type="button" data-topic="{{ t.topic | slugify }}">{{ t.topic }} <span>{{ t.items.size }}</span></button>
+    {%- endfor %}
+  </div>
+  {%- for t in cov %}
+  <section class="fsc__topic" id="{{ t.topic | slugify }}" data-topic="{{ t.topic | slugify }}">
+    <h3 class="fsc__title">{{ t.topic }}</h3>
+    {% if t.intro %}<p class="fsc__intro">{{ t.intro }}</p>{% endif %}
+    <div class="fsc__items">
+      {%- for i in t.items %}
+      {%- case i.status %}{% when "available" %}{% assign c = "yes" %}{% assign label = "Available" %}{% when "partial" %}{% assign c = "part" %}{% assign label = "Partial" %}{% else %}{% assign c = "no" %}{% assign label = "Not available" %}{% endcase %}
+      <article class="fsc__item fsc__item--{{ c }}" data-status="{{ i.status }}">
+        <div class="fsc__head">
+          <h4>{{ i.name | markdownify | remove: "<p>" | remove: "</p>" | strip }}</h4>
+          <span class="cov cov--{{ c }}">{{ label }}</span>
+        </div>
+        <p class="fsc__summary">{{ i.summary }}</p>
+        <details class="fsc__more">
+          <summary>Technical details</summary>
+          <p class="fsc__where"><strong>Where:</strong> {{ i.location | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>
+          {{ i.details | markdownify }}
+        </details>
+      </article>
+      {%- endfor %}
+    </div>
+  </section>
+  {%- endfor %}
+  <p class="fsc__empty" hidden>Nothing matches. Try another word or status, or all topics.</p>
+</div>
+<script>
+(function () {
+  var root = document.querySelector("[data-fsc]");
+  if (!root) return;
+  root.classList.add("fsc--js");
+  var input = root.querySelector(".fsc__search input");
+  var topicButtons = [].slice.call(root.querySelectorAll(".fsc__topics button"));
+  var statusButtons = [].slice.call(root.querySelectorAll(".fsc__status button"));
+  var sections = [].slice.call(root.querySelectorAll(".fsc__topic"));
+  var empty = root.querySelector(".fsc__empty");
+  var state = { topic: sections[0].dataset.topic, status: "all", query: "" };
+  sections.forEach(function (s) {
+    [].forEach.call(s.querySelectorAll(".fsc__item"), function (item) {
+      item._text = (s.querySelector(".fsc__title").textContent + " " + item.textContent).toLowerCase();
+    });
+  });
+
+  function update() {
+    var words = state.query.toLowerCase().split(/\s+/).filter(Boolean);
+    // a search looks through every topic
+    var topic = words.length ? "all" : state.topic;
+    var counts = { all: 0, available: 0, partial: 0, not_available: 0 };
+    var shown = 0;
+    sections.forEach(function (s) {
+      var inTopic = topic === "all" || s.dataset.topic === topic;
+      var visible = 0;
+      [].forEach.call(s.querySelectorAll(".fsc__item"), function (item) {
+        var match = inTopic && words.every(function (w) { return item._text.indexOf(w) !== -1; });
+        if (match) { counts.all++; counts[item.dataset.status]++; }
+        var show = match && (state.status === "all" || item.dataset.status === state.status);
+        item.hidden = !show;
+        if (show) visible++;
+      });
+      s.hidden = !visible;
+      shown += visible;
+    });
+    topicButtons.forEach(function (b) {
+      var on = b.dataset.topic === topic;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-pressed", on);
+    });
+    statusButtons.forEach(function (b) {
+      var on = b.dataset.status === state.status;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-pressed", on);
+      b.querySelector("span").textContent = counts[b.dataset.status];
+      b.classList.toggle("is-empty", !counts[b.dataset.status] && !on);
+    });
+    root.classList.toggle("fsc--all", topic === "all");
+    empty.hidden = shown > 0;
+  }
+
+  topicButtons.forEach(function (b) {
+    b.addEventListener("click", function () {
+      state.topic = b.dataset.topic;
+      if (input.value) { input.value = ""; state.query = ""; }
+      if (history.replaceState) history.replaceState(null, "", "#" + (state.topic === "all" ? "all" : state.topic));
+      update();
+    });
+  });
+  statusButtons.forEach(function (b) {
+    b.addEventListener("click", function () { state.status = b.dataset.status; update(); });
+  });
+  input.addEventListener("input", function () { state.query = input.value; update(); });
+
+  var hash = location.hash.slice(1);
+  if (hash && (hash === "all" || sections.some(function (s) { return s.dataset.topic === hash; }))) state.topic = hash;
+  update();
+})();
+</script>
