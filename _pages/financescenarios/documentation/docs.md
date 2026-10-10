@@ -24,34 +24,34 @@ Installing the package and a first run are covered on the [Finance Scenarios pag
 
 The documentation is split the same way as the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit)'s:
 
-- **Each component documents itself.** What a factor or module models, which papers it follows, its options, its data source and limits, its configuration keys, and a worked example with real output are all in the class and method docstrings, readable with `help(...)` in Python and rendered as the reference pages on the website.
+- **Each component documents itself.** What a factor or module models, which papers it follows, its options, its data source and limits, its configuration keys, and a worked example with real output are all in the class and method docstrings, readable with `help(...)` in Python and rendered as the [reference pages](/projects/financescenarios/docs/reference) on the website.
 - **These pages cover the infrastructure:** how a run is put together, how to configure it, the units everything is reported in, and how the output is checked.
 
 | Component | Class (`help(...)`) | Default | Shape |
 |:----------|:--------------------|:--------|:------|
-| Interest rates | `InterestRates` (`factors/interest_rates`) | On | One per country or region |
-| Inflation | `Inflation` (`factors/inflation`) | On | One per country or region |
-| Equities | `Equities` (`factors/equities`) | On | One per index, sector, region or style |
-| Unemployment | `Unemployment` (`factors/unemployment`) | On | One per country or region, paired with an inflation entry |
-| Yield curve | `TermStructure` (`factors/term_structure`) | On in `default.yaml` and `broad.yaml` | Nelson-Siegel level, slope and curvature |
-| Forward curve (HJM) | `Hjm` (`factors/hjm`) | Opt-in | Two-factor Gaussian forward curve |
-| Real estate | `RealEstate` (`factors/real_estate`) | Opt-in | House-price growth |
-| Credit spreads | `Credit` (`factors/credit`) | Opt-in | One per US maturity or rating bucket (ICE BofA), Moody's Aaa/Baa from 1953, German or Australian corporate spreads, or the ECB's euro-area cost of borrowing |
-| Rating migration | `CreditMigration` (`factors/credit_migration`) | Opt-in | A credit cycle driving rating moves and defaults; `rating_migration` for a portfolio |
-| Credit curve | `CreditTermStructure` (`factors/credit_term_structure`) | Opt-in | Nelson-Siegel curve from the Treasury HQM spread curve (or a bond panel) |
-| Leading indicator | `LeadingIndicator` (`factors/leading_indicator`) | Opt-in | OECD composite leading indicator |
-| FX | `FX` (`factors/fx`) | Opt-in | One per currency against the US dollar |
-| Commodities | `Commodities` (`factors/commodities`) | Opt-in | One per commodity future |
-| Dividend yield and growth | `DividendYield`, `DividendGrowth` (`factors/dividend_*`) | Opt-in | One per ticker |
-| Mortality | `Mortality` (`factors/mortality`) | Opt-in | Cairns-Blake-Dowd two-factor model; Eurostat life tables or a supplied table |
-| KNW model family | `Knw`, `KnwSv`, `KnwSvQ` (`models/`) | Per entry (`method:`) | Interest rate and inflation fitted jointly |
-| Correlations | `Dependence` (`dependence/`) | Always | The correlation matrix that links every factor |
-| Portfolios | `Portfolio` (`portfolio/`) | On demand | Allocations, cashflows, risk metrics, backtests |
-| Currency reporting | `Reporting` (`reporting/`) | On demand | Converts prices into one reporting currency |
-| Solvency II | `Solvency` (`solvency/`) | On demand | `Solvency(real_world, risk_neutral).report(cashflows, assets)` in one table; also the martingale test, EIOPA risk-free curves, best estimate, standard-formula interest rate and equity risk, one-year SCR and scenario files on their own |
+| Interest rates | [`InterestRates`](/projects/financescenarios/docs/reference/interest-rates) (`factors/interest_rates`) | On | One per country or region |
+| Inflation | [`Inflation`](/projects/financescenarios/docs/reference/inflation) (`factors/inflation`) | On | One per country or region |
+| Equities | [`Equities`](/projects/financescenarios/docs/reference/equities) (`factors/equities`) | On | One per index, sector, region or style |
+| Unemployment | [`Unemployment`](/projects/financescenarios/docs/reference/unemployment) (`factors/unemployment`) | On | One per country or region, paired with an inflation entry |
+| Yield curve | [`TermStructure`](/projects/financescenarios/docs/reference/term-structure) (`factors/term_structure`) | On in `default.yaml` and `broad.yaml` | Nelson-Siegel level, slope and curvature |
+| Forward curve (HJM) | [`Hjm`](/projects/financescenarios/docs/reference/hjm) (`factors/hjm`) | Opt-in | Two-factor Gaussian forward curve |
+| Real estate | [`RealEstate`](/projects/financescenarios/docs/reference/real-estate) (`factors/real_estate`) | Opt-in | House-price growth |
+| Credit spreads | [`Credit`](/projects/financescenarios/docs/reference/credit) (`factors/credit`) | Opt-in | One per US maturity or rating bucket (ICE BofA), Moody's Aaa/Baa from 1953, German or Australian corporate spreads, or the ECB's euro-area cost of borrowing |
+| Rating migration | [`CreditMigration`](/projects/financescenarios/docs/reference/credit-migration) (`factors/credit_migration`) | Opt-in | A credit cycle driving rating moves and defaults; `rating_migration` for a portfolio |
+| Credit curve | [`CreditTermStructure`](/projects/financescenarios/docs/reference/credit-term-structure) (`factors/credit_term_structure`) | Opt-in | Nelson-Siegel curve from the Treasury HQM spread curve (or a bond panel) |
+| Leading indicator | [`LeadingIndicator`](/projects/financescenarios/docs/reference/leading-indicator) (`factors/leading_indicator`) | Opt-in | OECD composite leading indicator |
+| FX | [`FX`](/projects/financescenarios/docs/reference/fx) (`factors/fx`) | Opt-in | One per currency against the US dollar |
+| Commodities | [`Commodities`](/projects/financescenarios/docs/reference/commodities) (`factors/commodities`) | Opt-in | One per commodity future |
+| Dividend yield and growth | [`DividendYield`](/projects/financescenarios/docs/reference/dividend-yield), [`DividendGrowth`](/projects/financescenarios/docs/reference/dividend-growth) (`factors/dividend_*`) | Opt-in | One per ticker |
+| Mortality | [`Mortality`](/projects/financescenarios/docs/reference/mortality) (`factors/mortality`) | Opt-in | Cairns-Blake-Dowd two-factor model; Eurostat life tables or a supplied table |
+| KNW model family | [`Knw`](/projects/financescenarios/docs/reference/knw), [`KnwSv`](/projects/financescenarios/docs/reference/knw-sv), [`KnwSvQ`](/projects/financescenarios/docs/reference/knw-sv-q) (`models/`) | Per entry (`method:`) | Interest rate and inflation fitted jointly |
+| Correlations | [`Dependence`](/projects/financescenarios/docs/reference/dependence) (`dependence/`) | Always | The correlation matrix that links every factor |
+| Portfolios | [`Portfolio`](/projects/financescenarios/docs/reference/portfolio) (`portfolio/`) | On demand | Allocations, cashflows, risk metrics, backtests |
+| Currency reporting | [`Reporting`](/projects/financescenarios/docs/reference/reporting) (`reporting/`) | On demand | Converts prices into one reporting currency |
+| Solvency II | [`Solvency`](/projects/financescenarios/docs/reference/solvency) (`solvency/`) | On demand | `Solvency(real_world, risk_neutral).report(cashflows, assets)` in one table; also the martingale test, EIOPA risk-free curves, best estimate, standard-formula interest rate and equity risk, one-year SCR and scenario files on their own |
 | Climate scenarios | `climate` section, `climate_controller` | Opt-in | NGFS pathways laid over a run, plus the carbon price |
-| Official stress tests | `stress_test_regime` (`stress_tests/`) | On demand | Federal Reserve and ESRB scenarios as regimes |
-| Calibration releases | `publish_calibration`, `load_release` (`release/`) | On demand | Versioned calibrations with a validation report; published yearly as GitHub releases |
+| Official stress tests | [`stress_test_regime`](/projects/financescenarios/docs/reference/regimes) (`stress_tests/`) | On demand | Federal Reserve and ESRB scenarios as regimes |
+| Calibration releases | [`publish_calibration`](/projects/financescenarios/docs/reference/runs-and-releases), [`load_release`](/projects/financescenarios/docs/reference/runs-and-releases) (`release/`) | On demand | Versioned calibrations with a validation report; published yearly as GitHub releases |
 | Long history | `history_source` on equities, rates and inflation (`long_history/`) | Per entry | Dynamics fitted on Shiller (1871), the Bank of England's millennium data (1209/1694) or JST (1870) |
 
 The four default factors are not simulated in isolation. Following [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf), inflation feeds interest rates and unemployment, and both feed equity returns; every other factor is linked through the estimated correlation matrix (`Dependence`).
@@ -68,6 +68,7 @@ The four default factors are not simulated in isolation. Following [Wilkie (1986
 | [plotting](/projects/financescenarios/docs/plotting) | The `.plot()` on every result and the chart functions behind it. |
 | [validation-and-testing](/projects/financescenarios/docs/validation) | How the output is checked: analytical tests, external benchmarks (NAIC GOES, a bond panel, option-implied densities) and the test suite. |
 | [coverage](/projects/financescenarios/docs/coverage) | What this project can and can't do, and why: every factor, every calibration method, every measure and every known gap, in one place. |
+| [reference](/projects/financescenarios/docs/reference) | Every public class, method and function, generated from the docstrings: `Scenarios`, `ScenarioSet`, `Portfolio`, `Solvency`, each factor and the functions around them. |
 
 ## Data, measures and currency
 

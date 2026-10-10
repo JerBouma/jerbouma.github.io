@@ -1701,6 +1701,72 @@ financescenarios-docs:
       url: /projects/financescenarios/docs/validation
     - title: "Coverage"
       url: /projects/financescenarios/docs/coverage
+  - title: Reference
+    children:
+    - title: "Overview"
+      url: /projects/financescenarios/docs/reference
+    - title: "Scenarios"
+      url: /projects/financescenarios/docs/reference/scenarios
+    - title: "ScenarioSet"
+      url: /projects/financescenarios/docs/reference/scenario-set
+    - title: "Portfolio"
+      url: /projects/financescenarios/docs/reference/portfolio
+    - title: "Solvency"
+      url: /projects/financescenarios/docs/reference/solvency
+    - title: "Configuration and Presets"
+      url: /projects/financescenarios/docs/reference/configuration
+    - title: "Regimes and Stress Tests"
+      url: /projects/financescenarios/docs/reference/regimes
+    - title: "Run Files and Releases"
+      url: /projects/financescenarios/docs/reference/runs-and-releases
+    - title: "History and Metrics"
+      url: /projects/financescenarios/docs/reference/history-and-metrics
+    - title: "Charts"
+      url: /projects/financescenarios/docs/reference/charts
+    - title: "Dependence"
+      url: /projects/financescenarios/docs/reference/dependence
+    - title: "Reporting"
+      url: /projects/financescenarios/docs/reference/reporting
+  - title: Factors and Models
+    children:
+    - title: "InterestRates"
+      url: /projects/financescenarios/docs/reference/interest-rates
+    - title: "Inflation"
+      url: /projects/financescenarios/docs/reference/inflation
+    - title: "Equities"
+      url: /projects/financescenarios/docs/reference/equities
+    - title: "Unemployment"
+      url: /projects/financescenarios/docs/reference/unemployment
+    - title: "TermStructure"
+      url: /projects/financescenarios/docs/reference/term-structure
+    - title: "Hjm"
+      url: /projects/financescenarios/docs/reference/hjm
+    - title: "RealEstate"
+      url: /projects/financescenarios/docs/reference/real-estate
+    - title: "Credit"
+      url: /projects/financescenarios/docs/reference/credit
+    - title: "CreditMigration"
+      url: /projects/financescenarios/docs/reference/credit-migration
+    - title: "CreditTermStructure"
+      url: /projects/financescenarios/docs/reference/credit-term-structure
+    - title: "LeadingIndicator"
+      url: /projects/financescenarios/docs/reference/leading-indicator
+    - title: "FX"
+      url: /projects/financescenarios/docs/reference/fx
+    - title: "Commodities"
+      url: /projects/financescenarios/docs/reference/commodities
+    - title: "DividendYield"
+      url: /projects/financescenarios/docs/reference/dividend-yield
+    - title: "DividendGrowth"
+      url: /projects/financescenarios/docs/reference/dividend-growth
+    - title: "Mortality"
+      url: /projects/financescenarios/docs/reference/mortality
+    - title: "Knw"
+      url: /projects/financescenarios/docs/reference/knw
+    - title: "KnwSv"
+      url: /projects/financescenarios/docs/reference/knw-sv
+    - title: "KnwSvQ"
+      url: /projects/financescenarios/docs/reference/knw-sv-q
 
 modelling:
   - title: "Introduction"
