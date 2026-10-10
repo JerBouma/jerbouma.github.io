@@ -189,7 +189,7 @@ commodities:
 
 `measure: risk_neutral` requires `schwartz_smith`. It keeps the same volatilities and fits only the two drift terms to today's futures prices, so it needs a curve and raises without one. On 2026-10-04 the steeply backwardated crude curve implied the long-term level falling about 17.7% a year, against 2.5% in the real-world fit.
 
-A trending price can fail the fit with a "no mean reversion" error (gold sampled monthly from 2016 did), and a daily `CL=F` history that includes WTI's negative settlement of 2020-04-20 fails the positivity check. Schwartz's convenience-yield and stochastic-rate variants are not implemented, and beliefs apply only to the constant-volatility single-factor model.
+A trending price over a short window can fail the fit with a "no mean reversion" error: gold sampled monthly from 2016 does. The shipped `core` and `default` sets fit gold on daily prices since 2000, where it does revert, but so slowly that `diagnose()` flags it as slow to settle. Separately, a daily `CL=F` history that includes WTI's negative settlement of 2020-04-20 fails the positivity check. Schwartz's convenience-yield and stochastic-rate variants are not implemented, and beliefs apply only to the constant-volatility single-factor model.
 
 Prices come from Yahoo Finance by default, no key needed. Reference: [Commodities API](/projects/financescenarios/docs/reference/commodities).
 
