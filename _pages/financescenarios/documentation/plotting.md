@@ -1,8 +1,8 @@
 ---
 title: Plotting
-seo_title: Plotting Documentation – FinanceScenarios
+seo_title: Plotting Documentation – Finance Scenarios
 excerpt: "Every result has a .plot() that draws it in one line: a fan chart of where each variable is likely to go, its individual scenarios, or where it ends up."
-description: "Charts in FinanceScenarios: the one-line .plot() on every result, fan charts, paths, terminal distributions, portfolio views and the shared style."
+description: "Charts in Finance Scenarios: the one-line .plot() on every result, fan charts, paths, terminal distributions, portfolio views and the shared style."
 author_profile: false
 permalink: /projects/financescenarios/docs/plotting
 classes: wide-sidebar

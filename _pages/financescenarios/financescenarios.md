@@ -1,12 +1,12 @@
 ---
 permalink: /projects/financescenarios
 software:
-  name: "FinanceScenarios"
+  name: "Finance Scenarios"
   repository: "https://github.com/JerBouma/FinanceScenarios"
   download: "https://pypi.org/project/financescenarios/"
-title: FinanceScenarios
+title: Finance Scenarios
 excerpt: An open-source economic scenario generator in Python. It simulates thousands of possible scenarios for interest rates, inflation, equities, currencies and more, calibrated on live data from the Finance Toolkit, with portfolio analysis and Solvency II on top.
-description: "FinanceScenarios is an open-source Python economic scenario generator: simulate correlated rates, inflation, equities and more, then put portfolios and liabilities through them."
+description: "Finance Scenarios is an open-source Python economic scenario generator: simulate correlated rates, inflation, equities and more, then put portfolios and liabilities through them."
 classes: wide-sidebar ft-overview
 author_profile: false
 sidebar:
@@ -21,13 +21,13 @@ search: false
 
 Whether you are saving for retirement or running the balance sheet of an insurer, the question about the future is rarely "what will happen?". It is "what could happen, and how bad does it get?". A single forecast cannot answer that, because the answer lives in the spread of outcomes. The tools that do, economic scenario generators, have mostly been vendor products from Moody's, Conning, Ortec Finance and Barrie & Hibbert, with the method kept by the vendor.
 
-**FinanceScenarios does this in the open.** It simulates thousands of possible scenarios for interest rates, inflation, equities, currencies, unemployment and more, linked to each other the way they have moved historically and calibrated on live data from the [Finance Toolkit 🛠️](https://github.com/JerBouma/FinanceToolkit). Every model is written out in plain Python and linked to the paper it came from, such as [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf), [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf) and [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058), and every assumption lives in a file you can edit. Put a portfolio or your liabilities through the scenarios and you see the typical outcome, the bad year in twenty and the 1-in-200 event a regulator asks about.
+**Finance Scenarios does this in the open.** It simulates thousands of possible scenarios for interest rates, inflation, equities, currencies, unemployment and more, linked to each other the way they have moved historically and calibrated on live data from the [Finance Toolkit 🛠️](https://github.com/JerBouma/FinanceToolkit). Every model is written out in plain Python and linked to the paper it came from, such as [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf), [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf) and [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058), and every assumption lives in a file you can edit. Put a portfolio or your liabilities through the scenarios and you see the typical outcome, the bad year in twenty and the 1-in-200 event a regulator asks about.
 
-<img src="/assets/images/projects/financescenarios/banner.png" alt="FinanceScenarios" width="100%"/>
+<img src="/assets/images/projects/financescenarios/banner.png" alt="Finance Scenarios" width="100%"/>
 
 ## Installation
 
-The project requires Python 3.11 or higher. To install FinanceScenarios it simply requires the following:
+The project requires Python 3.11 or higher. To install Finance Scenarios it simply requires the following:
 
 ```bash
 pip install financescenarios -U
@@ -44,7 +44,7 @@ Optionally, add a free [FRED key](https://fred.stlouisfed.org/docs/api/api_key.h
 
 ## Functionality
 
-This section is an introduction to FinanceScenarios, run on the default settings and the default factor set (the US, the euro area and the UK) with 2,000 scenarios. Every table is the actual output of the snippet above it, cut down to a few rows, and every chart is the actual `.plot()` of that same run, calibrated on 2026-10-08; live data moves, so another day gives slightly different numbers. Every class also documents itself (try `help(Portfolio)`).
+This section is an introduction to Finance Scenarios, run on the default settings and the default factor set (the US, the euro area and the UK) with 2,000 scenarios. Every table is the actual output of the snippet above it, cut down to a few rows, and every chart is the actual `.plot()` of that same run, calibrated on 2026-10-08; live data moves, so another day gives slightly different numbers. Every class also documents itself (try `help(Portfolio)`).
 
 There is also full [documentation](/projects/financescenarios/docs) and, further down the page, the Notebooks section with many examples.
 
@@ -324,7 +324,7 @@ Run Python from inside `my-project` and every run reads its YAML files instead o
 
 ## Notebooks
 
-Each of the Jupyter Notebooks below covers a different part of FinanceScenarios. Click any card to open the notebook.
+Each of the Jupyter Notebooks below covers a different part of Finance Scenarios. Click any card to open the notebook.
 
 <div class="bento-grid">
 
@@ -332,7 +332,7 @@ Each of the Jupyter Notebooks below covers a different part of FinanceScenarios.
     <div class="bento-content">
       <i class="fas fa-rocket bento-icon"></i>
       <h2>Getting Started</h2>
-      <p>If you are new to FinanceScenarios, start here: pick the profiles, simulate, read the overview and the spread of every variable, and chart it.</p>
+      <p>If you are new to Finance Scenarios, start here: pick the profiles, simulate, read the overview and the spread of every variable, and chart it.</p>
     </div>
   </a>
 
@@ -372,7 +372,7 @@ When the answer you need is a range rather than one number. A forecast gives the
 
 > **How does this relate to the Finance Toolkit?**
 
-The [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) looks backwards: it retrieves and calculates from historical data. FinanceScenarios looks forwards: it fits models to that history to simulate where things could go next, with the Finance Toolkit as its data layer.
+The [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) looks backwards: it retrieves and calculates from historical data. Finance Scenarios looks forwards: it fits models to that history to simulate where things could go next, with the Finance Toolkit as its data layer.
 
 > **How do I know whether the method I need is supported?**
 
@@ -392,4 +392,4 @@ A regime or a portfolio is a YAML file, so copy a shipped one and edit it. A new
 
 ## Contact
 
-If you have any questions about FinanceScenarios or would like to share with me what you have been working on, feel free to reach out to me via the [contact page](/contact).
+If you have any questions about Finance Scenarios or would like to share with me what you have been working on, feel free to reach out to me via the [contact page](/contact).

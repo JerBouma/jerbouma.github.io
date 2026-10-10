@@ -48,7 +48,7 @@
     {% endfor %}
   </nav>
   {% elsif include.src contains "financescenarios" %}
-  <nav class="notebook-nav" aria-label="FinanceScenarios notebooks">
+  <nav class="notebook-nav" aria-label="Finance Scenarios notebooks">
     {% for item in fs_notebooks %}
       {% assign parts = item | split: "," %}
       {% assign nb_label = parts[0] %}

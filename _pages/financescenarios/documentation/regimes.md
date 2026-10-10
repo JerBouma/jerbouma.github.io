@@ -1,8 +1,8 @@
 ---
 title: Regimes
-seo_title: Stress Regimes Documentation – FinanceScenarios
+seo_title: Stress Regimes Documentation – Finance Scenarios
 excerpt: "A regime is a named story about the future, such as an oil crisis, saved once and reused. It changes an assumption before simulating, keeps only the scenarios that fit the story afterwards, or both."
-description: "Named stress regimes in FinanceScenarios: belief overrides, post-simulation filters, official Federal Reserve and ESRB stress tests and climate pathways."
+description: "Named stress regimes in Finance Scenarios: belief overrides, post-simulation filters, official Federal Reserve and ESRB stress tests and climate pathways."
 author_profile: false
 permalink: /projects/financescenarios/docs/regimes
 classes: wide-sidebar

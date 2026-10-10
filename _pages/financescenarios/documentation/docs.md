@@ -1,8 +1,8 @@
 ---
 title: Documentation
-seo_title: FinanceScenarios Documentation
-excerpt: "The documentation of FinanceScenarios, an open-source economic scenario generator that simulates thousands of possible scenarios for interest rates, inflation, stock markets, currencies and other economic variables, linked to each other the way they have been historically."
-description: "Documentation for FinanceScenarios, an open-source Python economic scenario generator: configuration, simulation engine, units, regimes, plotting and validation."
+seo_title: Finance Scenarios Documentation
+excerpt: "The documentation of Finance Scenarios, an open-source economic scenario generator that simulates thousands of possible scenarios for interest rates, inflation, stock markets, currencies and other economic variables, linked to each other the way they have been historically."
+description: "Documentation for Finance Scenarios, an open-source Python economic scenario generator: configuration, simulation engine, units, regimes, plotting and validation."
 author_profile: false
 permalink: /projects/financescenarios/docs
 classes: wide-sidebar
@@ -14,11 +14,11 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-FinanceScenarios is an economic scenario generator (ESG): it simulates thousands of possible scenarios for interest rates, inflation, stock markets, currencies and other economic variables, linked to each other the way they have been historically.
+Finance Scenarios is an economic scenario generator (ESG): it simulates thousands of possible scenarios for interest rates, inflation, stock markets, currencies and other economic variables, linked to each other the way they have been historically.
 
 Instead of one forecast you get a range of plausible scenarios, so you can see the typical outcome, the bad years and the extreme cases. That is what risk analysis, actuarial reserving, pension and retirement planning, and stress testing need.
 
-Installing the package and a first run are covered on the [FinanceScenarios page](/projects/financescenarios#installation), and the [example notebooks](/projects/financescenarios#notebooks) show each part with real output.
+Installing the package and a first run are covered on the [Finance Scenarios page](/projects/financescenarios#installation), and the [example notebooks](/projects/financescenarios#notebooks) show each part with real output.
 
 ## Where the documentation lives
 
@@ -71,7 +71,7 @@ The four default factors are not simulated in isolation. Following [Wilkie (1986
 
 ## Data, measures and currency
 
-FinanceScenarios fetches no data itself: all history comes from a [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) `Toolkit`, which `build_toolkit()` constructs from the configuration, reading the optional FinancialModelingPrep and FRED keys from the environment or a local `.env` (see the Secrets section of [configuration](/projects/financescenarios/docs/configuration)). Most factors calibrate on free OECD and Yahoo Finance data without any key.
+Finance Scenarios fetches no data itself: all history comes from a [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) `Toolkit`, which `build_toolkit()` constructs from the configuration, reading the optional FinancialModelingPrep and FRED keys from the environment or a local `.env` (see the Secrets section of [configuration](/projects/financescenarios/docs/configuration)). Most factors calibrate on free OECD and Yahoo Finance data without any key.
 
 Every factor calibrates under the **real-world** measure by default, a fit to how it has actually behaved. Equities, interest rates, FX, inflation, the KNW pair and two-factor commodities can each opt into a **risk-neutral** calibration that reproduces today's market prices instead; [configuration](/projects/financescenarios/docs/configuration)'s Real-world and risk-neutral measures section lists which, and why the others cannot. [Merton (1973)](https://doi.org/10.2307/3003143) gives the classic no-arbitrage argument and [the SOA (2022)](https://www.soa.org/resources/research-reports/2022/understanding-the-connection/) a practical treatment of when each measure is the right tool.
 
