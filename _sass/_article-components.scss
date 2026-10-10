@@ -226,3 +226,34 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
     .mcp-show__label { margin-bottom: 6px !important; color: var(--accent-color) !important; font-size: 0.8rem !important; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
   }
 }
+
+// Finance Scenarios coverage table: status badges, a table that fits the
+// text column, and one card per row on phones
+.page__content {
+  .cov {
+    display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.74rem; font-weight: 700; white-space: nowrap;
+    &--yes { background: rgba(52, 211, 153, 0.14); color: #34d399; }
+    &--part { background: rgba(251, 191, 36, 0.14); color: #fbbf24; }
+    &--no { background: rgba(244, 114, 182, 0.14); color: #f472b6; }
+  }
+  .cov-table {
+    table { display: table; width: 100%; table-layout: fixed; font-size: 0.86rem; }
+    th:nth-child(1), td:nth-child(1) { width: 11%; }
+    th:nth-child(2), td:nth-child(2) { width: 18%; }
+    th:nth-child(3), td:nth-child(3) { width: 11%; }
+    th:nth-child(4), td:nth-child(4) { width: 27%; }
+    td { vertical-align: top; overflow-wrap: anywhere; }
+    td code { white-space: normal; overflow-wrap: anywhere; }
+    @media (max-width: 760px) {
+      table, tbody, tr, td { display: block; width: 100% !important; }
+      thead { display: none; }
+      tr { padding: 10px 12px; border-bottom: 1px solid var(--card-border); }
+      td { padding: 2px 0 !important; border: 0 !important; background: transparent !important; }
+      td:nth-child(1) { color: var(--text-muted); font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; }
+      td:nth-child(2) { color: var(--text-primary); font-weight: 600; }
+    }
+  }
+}
+:root[data-theme="light"] .page__content .cov--yes { color: #059669; }
+:root[data-theme="light"] .page__content .cov--part { color: #b45309; }
+:root[data-theme="light"] .page__content .cov--no { color: #db2777; }
