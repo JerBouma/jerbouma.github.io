@@ -507,5 +507,4 @@ Both keys are optional to start: most factors calibrate against free OECD or Yah
 | `equities`, `dividend_yield`, `dividend_growth`, `yield_curve`, `hjm`, `commodities`, `knw_sv_q`, `interest_rates` with a ticker source | FMP, optional | Ticker price history: FMP gives the full universe (non-US exchanges, cleaner dividend data); without a key FinanceToolkit falls back to Yahoo Finance automatically (US exchanges only). |
 | `credit` | FRED, required | ICE BofA option-adjusted spreads are FRED-published; there's no keyless alternative. |
 | `real_estate` with `source: commercial` | FRED, required | US commercial real-estate prices come from FRED (IMF-sourced), unlike the default OECD-sourced `source: growth`. |
-| `inflation` with `method: hibbert_two_factor` and `target_source: breakeven` | FRED, required | Pulls FRED's daily TIPS-breakeven series for that target-fit path only; the default target sources don't need it. |
 | `mortality` | neither | Eurostat life tables through the Finance Toolkit (`source: eurostat`, no key), or rates supplied via `calibrate(mortality_rates=...)`; see `Mortality`. |

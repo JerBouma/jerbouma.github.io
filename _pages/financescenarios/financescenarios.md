@@ -41,7 +41,7 @@ To be able to get the most out of it, you need an API key from FinancialModeling
 
 Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time.
 
-Optionally, add a free [FRED key](https://fred.stlouisfed.org/docs/api/api_key.html) from the Federal Reserve Bank of St. Louis. It is used for US corporate bond spreads (the ICE BofA option-adjusted spreads behind `credit`), US commercial property prices (`real_estate` with `source: commercial`) and the market's expected inflation from breakevens (`inflation` with `target_source: breakeven`). The [configuration documentation](/projects/financescenarios/docs/configuration#secrets) lists exactly which key each factor uses. The `default` factor set reads EIOPA's risk-free curves, which need Finance Toolkit 2.2.2 or newer (`pip install -U financetoolkit`).
+Optionally, add a free [FRED key](https://fred.stlouisfed.org/docs/api/api_key.html) from the Federal Reserve Bank of St. Louis. It is used for US corporate bond spreads (the ICE BofA option-adjusted spreads behind `credit`) and US commercial property prices (`real_estate` with `source: commercial`). The [configuration documentation](/projects/financescenarios/docs/configuration#secrets) lists exactly which key each factor uses. The `default` factor set reads EIOPA's risk-free curves, which need Finance Toolkit 2.2.2 or newer (`pip install -U financetoolkit`).
 
 
 ## Functionality

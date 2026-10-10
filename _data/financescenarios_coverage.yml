@@ -75,7 +75,7 @@
     details: Real closed-form Q-measure fit against the observed yield curve instead of options. Wired into `factors.yaml`/`calibration_controller.py`/the engine for the interest_rate/inflation pair (both legs must set `measure="risk_neutral"` together); the equity leg stays P-measure-only, no Q-measure equity formula built.
   - name: Stochastic deflator (Cheng & Planchet 2018)
     status: partial
-    summary: Builds a discount factor per path from a real-world run, to value cash flows consistently with market prices. It is accurate only when the volatility risk premium is near zero. Otherwise errors grow with maturity, reaching double digits by 10 years. Code-only for now.
+    summary: 'Builds a discount factor per path from a real-world run, so cash flows can be valued consistently with market prices. Accurate (within about 0.1-2% of the exact price) when the risk premium on the shared volatility factor is near zero. With a realistic premium it underprices by about 1% at 2 years, 8% at 5 years and 20% at 10 years, and the run warns when the premium exceeds 5% of that factor''s mean-reversion speed. For use from Python only: the volatility factor isn''t stored in the results.'
     location: "`KnwSvQ.deflator()`, `KnwSvQ`"
     details: Real Radon-Nikodym-derivative-based pricing kernel built from an already P-measure-simulated `knw_sv` run's own paths. Reweights `r`/`pi`'s own Gaussian shocks under the fitted market price of risk; `v`'s own CIR shock stays at its P-measure value (a documented simplification; the noncentral-chi-square transition-density ratio isn't built). `E^P[D(T)]` matches the Q-measure zero-coupon bond price to within ~0.1-2% only when `risk_premium_v` is near zero; live-tested at realistic calibration scale with a genuinely nonzero `risk_premium_v`, the un-reweighted `v` leg's bias grows with maturity and reaches double digits by a 10-year tenor. See `KnwSvQ`'s Stochastic deflator / Scope sections. Programmatic use only, not wired into `factors.yaml`/`ScenarioSet` yet.
   - name: Per-currency term structures
@@ -146,12 +146,12 @@
     details: Paired with an `interest_rates[]` entry of the same method; see the Interest rates rows above.
   - name: Standalone risk-neutral / market-implied inflation
     status: available
-    summary: Inflation paths that follow what bond markets price in, from inflation-linked bonds in the US (5-30 years), UK (3-40 years) or Germany for the euro area (5-15 years). Years before the shortest maturity are extrapolated, and you get a warning when that looks off.
+    summary: 'The model: inflation is priced like the market today by fitting a curve to that breakeven data, for the US (5-30 years), UK (3-40 years) or the euro area through Germany (5-15 years). Years before the shortest maturity are extrapolated, with a warning when that looks off. The stochastic-volatility model is the other market-consistent route.'
     location: '`measure: "risk_neutral"` (`method="ou"`), [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)''s Real-world and risk-neutral measures section'
     details: 'A Nelson-Siegel instantaneous forward-rate curve fit against the breakeven term structure of the United States (TIPS, 5-30 years), the United Kingdom (Bank of England, RPI, 3-40 years) or the euro area through Germany (Bundesbank, HICP-indexed federal bonds, 5-15 years); the same v1 "match an observable market input, don''t invent dynamics" scope as the interest_rates/equities/fx risk-neutral legs, term-structure-shaped instead of one flat level. The years before the shortest quoted maturity are a Nelson-Siegel extrapolation, flagged with a warning when today''s value is more than a point off the shortest breakeven (live 2026-10-07: Germany starts at 5.6% against a 2.2% 5-year, reaching 2.5% at year 1).'
   - name: TIPS/breakeven-based market-implied inflation
     status: available
-    summary: Uses market inflation expectations from US, UK and German inflation-linked bonds to set risk-neutral inflation. It does not yet feed the inflation risk premium of the stochastic-volatility pricing model.
+    summary: 'The data: market-implied inflation (nominal minus inflation-linked bond yields) for the US, UK and euro area (through Germany), from the US Treasury, the Bank of England and the Bundesbank. No key needed. It does not yet feed the inflation risk premium of the stochastic-volatility pricing model.'
     location: "`economics.get_breakeven_inflation_expectations(countries=...)` (US Treasury or FRED, Bank of England, Bundesbank), [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)'s Real-world and risk-neutral measures section, Inflation section"
     details: Wired into `inflation_controller.Inflation.calibrate_risk_neutral()`; reuses `term_structure_model.fit_nelson_siegel_factors`. Not yet used to identify `knw_sv_q`'s own weakly-identified inflation risk premium (a separate, still-open idea).
 - topic: Equities
@@ -174,7 +174,7 @@
     details: Barrie & Hibbert's (2001) own regime-switching equity specification.
   - name: v-scaled equity (knw_sv)
     status: partial
-    summary: Stock returns equal the short rate plus a fixed risk premium, with volatility tied to a shared economic factor. It is fit to history, not to option prices as in the Dutch central bank's model, and lands within 0.5 to 1.6 points a year of its outcomes.
+    summary: Stock returns equal the short rate plus a fixed risk premium, with volatility tied to a shared economic factor. It is fit to history, not to option prices as in the Dutch central bank's model, and lands within 0.5 to 1.6 points a year of its outcomes. All knw_sv entries must use one period equal to the engine's step frequency; the configuration rejects a mismatch, which would otherwise overstate the equity median by 15-20 percentage points a year at monthly steps.
     location: '`method: "knw_sv"`, `KnwSv`'
     details: 'P-measure, historical-fit-only: drift = paired short rate + constant risk premium, variance scaled by the shared latent factor `v`. Not De Nederlandsche Bank''s own options-calibrated risk premium/variance (eq. 25); this project has no such market data, the same blocker as the Q-measure gap. Live-verified against real DNB CP2022 p50 data: within +0.5 to +1.6pp/year once `engine.frequency` matches this entry''s own `period` (quarterly). A mismatched engine frequency was overshooting by +15-20pp/year (see the Interest rates `"knw_sv"` row above), now hard-rejected by `ScenariosConfig`.'
   - name: Private-market sleeves (listed proxies)
@@ -282,10 +282,10 @@
     location: '`drift_mode: "irp"`, `FX`'
     details: Phase 3; see FX rows above.
   - name: Genuinely worldwide per-currency term structures
-    status: not_available
-    summary: You cannot yet simulate yield curves and credit curves for several currencies side by side, since these are limited to one curve. This is the main remaining gap for multi-currency use.
+    status: partial
+    summary: 'You can simulate the full government yield curve of one country per run: the US, euro area, Germany, UK, Japan, Canada, Sweden or Norway. Several countries'' curves side by side in the same run are not possible yet.'
     location: "`term_structure_model.YIELD_CURVE_TENORS`"
-    details: Same yield-curve/credit USD-only limitation; the actual remaining architectural gap.
+    details: '`yield_curve.source: "government"` fits the official government curve of one country per run: the US, euro area, Germany, UK, Japan, Canada, Sweden or Norway (Finance Toolkit 2.2.2''s `get_government_bond_yield_curve`, keyless). Several currencies'' curves side by side in one run are not available yet.'
 - topic: Commodities
   intro: How commodity prices can move in the simulated futures, with prices pulled back toward an equilibrium level and, optionally, a separate short-term and long-term component.
   items:
@@ -413,10 +413,10 @@
   intro: How the models learn their parameters from historical data, and how each yearly calibration is checked and published so you can trace and reproduce it.
   items:
   - name: Published, versioned calibration with a validation report
-    status: available
-    summary: Each year's calibration is saved with its data window, software versions and a report of seven checks, such as realistic volatility and reproducible results. On October 7, 2026 the curated 27-factor set passed every check and the broader 74-factor set raised warnings.
+    status: partial
+    summary: You can publish a dated calibration yourself, with its data window, software versions and a report of seven checks, and replay it later to get the same scenarios. The automatic yearly release isn't running yet.
     location: "`release_controller.publish_calibration`, `load_release`, `download_release`, `python -m financescenarios.release`, [validation-and-testing](/projects/financescenarios/docs/validation#published-calibrations)'s Published calibrations section"
-    details: Calibrates from named profiles, saves `calibration.json` with a manifest (version, date, data window, package versions, configuration hash) and runs seven checks (failures, parameter ranges, correlation validity and reproduction, volatility against history, seeded reproducibility, finite paths) into `checks.json` and `report.md`. Meant to be published every 1 January as a GitHub release (`calibration-YYYY.MM.DD`, `default` and `broad` factor sets), not stored in the repository; the scheduled workflow that runs it still has to be added to `.github/workflows/` by the maintainer. On 2026-10-07 `default` (27 factors, the curated set) passed every check; `broad` (74) warned.
+    details: The release pipeline and its replay are available (`python -m financescenarios.release`, `simulate_release()`); the scheduled 1 January workflow that publishes one every year has not been added yet. Calibrates from named profiles, saves `calibration.json` with a manifest (version, date, data window, package versions, configuration hash) and runs seven checks (failures, parameter ranges, correlation validity and reproduction, volatility against history, seeded reproducibility, finite paths) into `checks.json` and `report.md`. Meant to be published every 1 January as a GitHub release (`calibration-YYYY.MM.DD`, `default` and `broad` factor sets), not stored in the repository; the scheduled workflow that runs it still has to be added to `.github/workflows/` by the maintainer. On 2026-10-07 `default` (27 factors, the curated set) passed every check; `broad` (74) warned.
   - name: Long-history calibration (Shiller, BoE millennium, JST)
     status: available
     summary: 'You can estimate how rates, inflation and equities behave from very long histories: US data from 1871, UK data back to 1694 for Bank Rate and 1209 for inflation, or 18 countries from 1870. Starting levels still come from recent data.'
@@ -616,7 +616,7 @@
     details: Ahlgrim, D'Arcy & Gorvett (2005), the paper's own six-factor cascade (short rate, inflation, equity, unemployment, real estate, dividend yield); single-country, single-instrument, no opt-in factor categories beyond that six.
   - name: "`wilkie`"
     status: available
-    summary: The original Wilkie (1986) actuarial model, where inflation drives dividends, a long-term bond yield and share prices. It has no unemployment, real estate, credit, currency or commodity factors, and not the 1995 extension. It only runs in yearly steps, using its matching settings.
+    summary: The original Wilkie (1986) actuarial model, where inflation drives dividends, a long-term bond yield and share prices. It has no unemployment, real estate, credit, currency or commodity factors, and not the 1995 extension. It runs at the same time step it was fitted on, monthly in the shipped preset.
     location: "`factor-sets/wilkie.yaml`, `InterestRates`"
     details: 'Wilkie''s (1986) original cascade; doesn''t model unemployment/real_estate/credit/FX/leading_indicator/commodities. Only the 1986 original is implemented, not the 1995 Thomson short-rate extension. `wilkie_ar1`/`wilkie_consols` are dt-blind discrete recursions like `knw` above: `engine.frequency` must equal the entry''s own `period` (`ScenariosConfig` rejects a mismatch), so pair with `settings/wilkie.yaml`.'
   - name: "`hibbert`"
