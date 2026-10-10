@@ -46,7 +46,7 @@ Optionally, add a free [FRED key](https://fred.stlouisfed.org/docs/api/api_key.h
 
 ## Functionality
 
-This section is an introduction to Finance Scenarios, run on the default settings and the default factor set (the US, the euro area and the UK) with 2,000 scenarios. Every table is the actual output of the snippet above it, cut down to a few rows, and every chart is the actual `.plot()` of that same run, calibrated on 2026-10-08; live data moves, so another day gives slightly different numbers. Every class also documents itself (try `help(Portfolio)`).
+This section is an introduction to Finance Scenarios, run on the default settings and the default factor set (the US, the euro area and the UK) with 2,000 scenarios. Every table is the actual output of the snippet above it, cut down to a few rows, and every chart is interactive and drawn from the same kind of run, calibrated on 2026-10-08 (the stress regime, backtest and Solvency II charts on 2026-10-10); live data moves, so another day gives slightly different numbers. Every class also documents itself (try `help(Portfolio)`).
 
 There is also full [documentation](/projects/financescenarios/docs) and, further down the page, the Notebooks section with many examples.
 
@@ -131,7 +131,7 @@ Each kind's output is below; open one to see its options.
 
 </details>
 
-`settings="default"` is the place to start. For the factor set, `factor_set="default"` is the recommended full set, which every example below uses, and `factor_set="us_only"` a quicker one with only the United States. A portfolio or regime that needs a larger factor set says so.
+The examples below use the default settings and the default factor set.
 
 ### Simulating Scenarios
 
@@ -166,7 +166,7 @@ For example, 6 of the 27 variables are shown below. Rates are yearly rates and a
 
 And below the short rate, inflation and US equities are plotted with `result.plot(["united_states_short_rate", "united_states_inflation", "us_broad"])`. **Find the Notebook [here](/projects/financescenarios/getting-started) and the simulation documentation [here](/projects/financescenarios/docs/simulation-engine).**
 
-<img src="/assets/images/projects/financescenarios/readme/simulation-light.png" alt="Simulated short rate, inflation and US equity return" width="100%"/>
+{% include ft-chart.html id="simulation" src="/assets/data/financescenarios-charts.json" label="Simulated short rate, inflation and US equity return" %}
 
 ### Reading the Distribution
 
@@ -186,7 +186,7 @@ For example, the last three months of the US short rate are shown below.
 
 And below the spread of the five-year US equity return is plotted with `result.plot("us_broad", kind="distribution")`. **Find the documentation [here](/projects/financescenarios/docs/units).**
 
-<img src="/assets/images/projects/financescenarios/readme/distribution-light.png" alt="Distribution of the five-year US equity return" width="100%"/>
+{% include ft-chart.html id="distribution" src="/assets/data/financescenarios-charts.json" label="Distribution of the five-year US equity return" %}
 
 ### Building a Portfolio
 
@@ -212,7 +212,7 @@ This returns the portfolio's yearly return over the five years, and that of each
 
 The 60/40 earns 8.37% a year on average, so 100,000 grows to 152,553. `portfolio.risk_metrics()` adds the drawdowns and Value at Risk, and the same module covers saving and withdrawal plans, glidepaths and fees. And below the value is plotted in money with `values.plot(levels=True)`. **Find the Notebook [here](/projects/financescenarios/portfolio-notebook).**
 
-<img src="/assets/images/projects/financescenarios/readme/portfolio-light.png" alt="Simulated value of a 60/40 portfolio" width="100%"/>
+{% include ft-chart.html id="portfolio" src="/assets/data/financescenarios-charts.json" label="Simulated value of a 60/40 portfolio" %}
 
 ### Applying Stress Regimes
 
@@ -238,7 +238,7 @@ compare_runs({"baseline": result, "oil_crisis": shocked})
 
 And below US inflation is plotted for the baseline and the Oil Shock, Oil Crisis and Climate Collapse regimes with `plot_runs(runs, "united_states_inflation")`, 2,000 scenarios each. **Find the Notebook [here](/projects/financescenarios/regimes-notebook) and the regime documentation [here](/projects/financescenarios/docs/regimes).**
 
-<img src="/assets/images/projects/financescenarios/readme/regimes-light.png" alt="US inflation in the baseline and under the Oil Shock, Oil Crisis and Climate Collapse regimes" width="100%"/>
+{% include ft-chart.html id="regimes" src="/assets/data/financescenarios-charts.json" label="US inflation in the baseline and under three stress regimes" %}
 
 ### Backtesting Against History
 
@@ -258,9 +258,9 @@ Which gives the mix's loading on each factor and how much they explain:
 |:---------------|-------:|--------:|--------:|-------:|--------:|-------:|----------:|-------------:|:-----------|:-----------|
 | 60/40 Balanced | 0.5399 | -0.0714 | -0.0420 | 0.1201 | -0.0168 | 0.0008 |    0.8654 |          319 | 2000-01-01 | 2026-10-01 |
 
-And below is what the 60/40 actually did since 2000, plotted with `portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)`: 100,000 grew to 626,189 by October 2026. **Find the Notebook [here](/projects/financescenarios/portfolio-analysis-notebook).**
+And below is what the 60/40 actually did since 2000, plotted with `portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)`: 100,000 grew to 628,180 by October 2026. **Find the Notebook [here](/projects/financescenarios/portfolio-analysis-notebook).**
 
-<img src="/assets/images/projects/financescenarios/readme/backtest-light.png" alt="Historical value of a 60/40 portfolio since 2000" width="100%"/>
+{% include ft-chart.html id="backtest" src="/assets/data/financescenarios-charts.json" label="Historical value of a 60/40 portfolio since 2000" %}
 
 ### Valuing Liabilities and Capital Under Solvency II
 
@@ -290,7 +290,7 @@ Which gives every number in one table:
 
 And below is where own funds could be after one year, plotted with `solvency.plot(cashflows=[10_000] * 5, assets=assets)`. **Find the documentation [here](/projects/financescenarios/docs).**
 
-<img src="/assets/images/projects/financescenarios/readme/solvency-light.png" alt="Distribution of own funds after one year, with today's level and the 1-in-200 outcome marked" width="100%"/>
+{% include ft-chart.html id="solvency" src="/assets/data/financescenarios-charts.json" label="Distribution of own funds after one year" %}
 
 ### Validating the Output
 
@@ -395,3 +395,5 @@ A regime or a portfolio is a YAML file, so copy a shipped one and edit it. A new
 ## Contact
 
 If you have any questions about Finance Scenarios or would like to share with me what you have been working on, feel free to reach out to me via the [contact page](/contact).
+
+{% include ft-charts-script.html %}
