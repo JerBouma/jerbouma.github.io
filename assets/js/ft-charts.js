@@ -602,7 +602,7 @@
             symbol: 'none', silent: true,
             label: { color: text, fontSize: 12, formatter: function (p) { return p.name + ': ' + fmt(p.value); } },
             lineStyle: { type: 'dashed', width: 1.5 },
-            data: chart.markers.map(function (m, i) { return { name: m.label, xAxis: m.value, label: { distance: 4 + (i % 2) * 18 }, lineStyle: { color: [PALETTE[2], PALETTE[1], PALETTE[3]][i % 3] } }; })
+            data: chart.markers.map(function (m, i) { return { name: m.label, xAxis: m.value, label: { distance: 4 + (i % 2) * 18, formatter: m.label + ': ' + fmt(m.value) }, lineStyle: { color: [PALETTE[2], PALETTE[1], PALETTE[3]][i % 3] } }; })
           }
         }]
       }, true);

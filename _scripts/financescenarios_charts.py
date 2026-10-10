@@ -56,10 +56,14 @@ def main() -> None:
     saved = read_run(REPO / "runs" / "readme" / RUN_ID)
     series, dates = [], None
     tabs = []
-    for factor, name in [("united_states_short_rate", "US short rate"), ("united_states_inflation", "US inflation"),
-                         ("us_broad", "US equities (annualized return)")]:
+    for factor, name in [("united_states_short_rate", "US short rate"), ("united_states_inflation", "US inflation")]:
         band, dates = fan(saved, factor, name)
         tabs.append({"label": name, "type": "fan", "title": "", "x": dates, "format": "percent", "series": [band]})
+    # equities as the value of 100 invested, so the widening range of outcomes shows
+    band, dates = fan(saved, "us_broad", "US equities", levels=True)
+    start = band["q5"][0]
+    band = {k: v if k == "name" else [None if x is None else round(100 * x / start, 1) for x in v] for k, v in band.items()}
+    tabs.append({"label": "US equities (100 invested)", "type": "fan", "title": "", "x": dates, "format": "amount", "series": [band]})
     charts["simulation"] = {"type": "tabs", "title": "2,000 simulated scenarios, five years ahead", "tabs": tabs}
 
     terminal = saved.metric_paths("us_broad")[:, -1]
