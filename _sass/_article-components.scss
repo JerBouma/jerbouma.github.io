@@ -214,6 +214,20 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
     @media (max-width: 900px) { grid-template-columns: 1fr; }
   }
 
+  // a result table between the trace and the answer (Finance Database MCP examples)
+  .mcp-show__result {
+    margin: 14px 0 4px;
+    table { margin: 0; font-size: 0.84rem; }
+    // phones: one block per row, the first cell as its title and the rest after it
+    @media (max-width: 600px) {
+      table:not(.highlight), tbody { display: block !important; }
+      thead { display: none !important; }
+      table:not(.highlight) tr { display: block !important; padding: 9px 12px; border-bottom: 1px solid var(--card-border); }
+      table:not(.highlight) td { display: inline !important; min-width: 0 !important; width: auto !important; white-space: normal !important; padding: 0 !important; text-align: left !important; font-family: inherit !important; border: 0 !important; background: transparent !important; color: var(--text-secondary); font-size: 0.8rem; }
+      table:not(.highlight) td:first-child { display: block !important; margin-bottom: 2px; color: var(--text-primary); font-weight: 600; }
+      table:not(.highlight) td + td:not(:nth-child(2))::before { content: " · "; color: var(--text-muted); }
+    }
+  }
   .mcp-show__verdict {
     margin: 14px 0 0;
     padding: 16px 18px;
