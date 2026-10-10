@@ -1658,6 +1658,50 @@ financetoolkit-docs-portfolio:
   - title: Transactions Performance
     url: /projects/financetoolkit/docs/portfolio#get_transactions_performance
       
+financescenarios:
+  - title: Introduction
+    url: /projects/financescenarios#site-nav
+  - title: "Installation"
+    url: /projects/financescenarios#installation
+  - title: <font color="#d67f05">Documentation</font>
+    url: /projects/financescenarios/docs
+  - title: "Functionality"
+    url: /projects/financescenarios#functionality
+  - title: "Notebooks"
+    url: /projects/financescenarios#notebooks
+    children:
+      - title: Getting Started
+        url: /projects/financescenarios/getting-started
+      - title: Regimes Notebook
+        url: /projects/financescenarios/regimes-notebook
+      - title: Portfolio Notebook
+        url: /projects/financescenarios/portfolio-notebook
+      - title: Portfolio Analysis Notebook
+        url: /projects/financescenarios/portfolio-analysis-notebook
+  - title: Questions & Answers
+    url: /projects/financescenarios#questions--answers
+financescenarios-docs:
+  - title: Documentation
+    children:
+    - title: "Overview"
+      url: /projects/financescenarios/docs
+    - title: "Architecture"
+      url: /projects/financescenarios/docs/architecture
+    - title: "Simulation Engine"
+      url: /projects/financescenarios/docs/simulation-engine
+    - title: "Plotting"
+      url: /projects/financescenarios/docs/plotting
+    - title: "Configuration"
+      url: /projects/financescenarios/docs/configuration
+    - title: "Units"
+      url: /projects/financescenarios/docs/units
+    - title: "Regimes"
+      url: /projects/financescenarios/docs/regimes
+    - title: "Validation and Testing"
+      url: /projects/financescenarios/docs/validation
+    - title: "Coverage"
+      url: /projects/financescenarios/docs/coverage
+
 modelling:
   - title: "Introduction"
     url: /modelling/introduction
