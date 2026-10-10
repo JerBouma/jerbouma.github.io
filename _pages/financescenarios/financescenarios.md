@@ -46,11 +46,11 @@ Optionally, add a free [FRED key](https://fred.stlouisfed.org/docs/api/api_key.h
 
 ## Functionality
 
-This section is an introduction to Finance Scenarios, run on the default settings and the default factor set (the US, the euro area and the UK) with 2,000 scenarios. Every table is the actual output of the snippet above it, cut down to a few rows, and every chart is interactive and drawn from the same kind of run, calibrated on 2026-10-08 (the stress regime, backtest and Solvency II charts on 2026-10-10); live data moves, so another day gives slightly different numbers. Every class also documents itself (try `help(Portfolio)`).
+This section is an introduction to Finance Scenarios. Every table is the actual output of the snippet above it, cut down to a few rows, and every chart is interactive and drawn from the same kind of run, calibrated on 2026-10-08 (the stress regime, backtest and Solvency II charts on 2026-10-10); live data moves, so another day gives slightly different numbers. Every class also documents itself (try `help(Portfolio)`).
 
 There is also full [documentation](/projects/financescenarios/docs) and, further down the page, the Notebooks section with many examples.
 
-Every run combines two ready-made *profiles*: a **settings** profile, which says how the run goes (how many scenarios, how far ahead, how much history to learn from), and a **factor set**, which says what gets simulated (which interest rates, stock markets, currencies and so on). Optionally a **regime** adds a stress story, and a **portfolio** is an investment mix to read the scenarios through. `list_presets()` shows every one of them with what it is for and the call it goes in; `kind=` narrows it to one kind:
+Every run combines two ready-made *profiles*: a **settings** profile, which says how the run goes (how many scenarios, how far ahead, how much history to learn from), and a **factor set**, which says what gets simulated (which interest rates, stock markets, currencies and so on). Optionally a **regime** adds a stress story, and a **portfolio** is an investment mix to read the scenarios through. `list_presets()` lists them all with what each is for; `kind=` narrows it to one kind:
 
 ```python
 from financescenarios import list_presets
@@ -58,7 +58,7 @@ from financescenarios import list_presets
 list_presets(kind="settings")  # or "factor-sets", "regimes", "portfolios"; leave it out for all 39
 ```
 
-Each kind's output is below; open one to see its options.
+Open a kind below to see its options and the call it goes in.
 
 <details class="ft-details" markdown="1">
 <summary><i class="fas fa-sliders-h"></i> <b>Settings profiles</b> <span class="ft-details__meta">4</span></summary>
@@ -148,7 +148,7 @@ Fit every variable to its history and draw 2,000 scenarios at once. The API keys
 ```python
 from financescenarios import Scenarios
 
-# The default settings and the default factor set: the US, the euro area and the UK
+# The default factor set covers the US, the euro area and the UK
 scenarios = Scenarios.from_profiles(
     settings="default",
     factor_set="default",
@@ -157,11 +157,12 @@ scenarios = Scenarios.from_profiles(
 )
 result = scenarios.simulate(n_simulations=2000)
 
-# Where every variable starts and where it ends up after five years
-result.describe()
+result.describe()  # where every variable starts and where it ends up after five years
+result.plot(["united_states_short_rate", "united_states_inflation"])
+result.plot("us_broad", levels=True)  # US equities as the value of 100 invested
 ```
 
-For example, 6 of the 27 variables are shown below. Rates are yearly rates and anything with a price a yearly return, written as decimals (`0.0441` is 4.41%); `terminal_q05` and `terminal_q95` are what 1 in 20 scenarios end below and above.
+This returns where each of the 27 variables starts and ends up after five years, six of which are shown below, and fan charts that follow them month by month: the line is the median scenario, the inner band holds half of the scenarios and the outer band nine in ten. Rates are yearly rates and anything with a price a yearly return, written as decimals (`0.0441` is 4.41%); `terminal_q05` and `terminal_q95` are what 1 in 20 scenarios end below and above.
 
 | factor                     | category       | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:---------------------------|:---------------|--------:|--------------:|-------------:|-------------:|
@@ -172,33 +173,34 @@ For example, 6 of the 27 variables are shown below. Rates are yearly rates and a
 | europe                     | equities       |         |        0.0768 |      -0.0918 |       0.2204 |
 | gold                       | commodities    |         |        0.0586 |      -0.0643 |       0.1959 |
 
-And below the short rate, inflation and US equities are plotted with `result.plot(["united_states_short_rate", "united_states_inflation", "us_broad"])`. **Find the Notebook [here](/projects/financescenarios/getting-started) and the simulation documentation [here](/projects/financescenarios/docs/simulation-engine).**
+{% include ft-chart.html id="simulation" src="/assets/data/financescenarios-charts.json" label="Simulated short rate, inflation and US equities" %}
 
-{% include ft-chart.html id="simulation" src="/assets/data/financescenarios-charts.json" label="Simulated short rate, inflation and US equity return" %}
+The US short rate starts at 4.04% and ends at 4.41% on average, but 1 in 20 scenarios end below 0.49% and 1 in 20 above 8.58%; the fan shows that range opening up month by month. US equities return 9.83% a year on average. In money, 100 invested becomes 161 in the median scenario, while 1 in 20 scenarios end below 79 and 1 in 20 above 284. **Find the Notebook [here](/projects/financescenarios/getting-started) and the simulation documentation [here](/projects/financescenarios/docs/simulation-engine).**
 
 ### Reading the Distribution
 
 Follow any variable date by date as percentile bands, or read it off at chosen horizons with `result.horizon_summary([1, 3, 5])`.
 
 ```python
-result.summary_statistics("united_states_short_rate")
+result.summary_statistics("us_broad")
+result.plot("us_broad", kind="distribution")
 ```
 
-For example, the last three months of the US short rate are shown below.
+This returns the spread of the US equity return for every month, of which the last three are shown below, and a histogram of where the five-year return lands across the 2,000 scenarios.
 
-| date       |   mean |    std |  q0.05 |  q0.25 |   q0.5 |  q0.75 |  q0.95 |
-|:-----------|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
-| 2030-11-01 | 0.0441 | 0.0244 | 0.0047 | 0.0276 | 0.0445 | 0.0600 | 0.0856 |
-| 2030-12-02 | 0.0440 | 0.0245 | 0.0042 | 0.0275 | 0.0437 | 0.0606 | 0.0854 |
-| 2031-01-01 | 0.0441 | 0.0245 | 0.0049 | 0.0275 | 0.0442 | 0.0602 | 0.0858 |
-
-And below the spread of the five-year US equity return is plotted with `result.plot("us_broad", kind="distribution")`. **Find the documentation [here](/projects/financescenarios/docs/units).**
+| date       |   mean |    std |   q0.05 |  q0.25 |   q0.5 |  q0.75 |  q0.95 |
+|:-----------|-------:|-------:|--------:|-------:|-------:|-------:|-------:|
+| 2030-11-01 | 0.0983 | 0.0845 | -0.0458 | 0.0408 | 0.1015 | 0.1561 | 0.2310 |
+| 2030-12-02 | 0.0982 | 0.0839 | -0.0473 | 0.0415 | 0.1005 | 0.1579 | 0.2309 |
+| 2031-01-01 | 0.0983 | 0.0834 | -0.0465 | 0.0422 | 0.1004 | 0.1572 | 0.2321 |
 
 {% include ft-chart.html id="distribution" src="/assets/data/financescenarios-charts.json" label="Distribution of the five-year US equity return" %}
 
+The median scenario returns 10.04% a year, a little above the 9.83% mean, and the histogram shows why: the left tail reaches further than the right. The worst 1 in 20 scenarios lose more than 4.65% a year, 14.7 points below the median, while the best 1 in 20 gain more than 23.21%, 13.2 points above it. **Find the documentation [here](/projects/financescenarios/docs/units).**
+
 ### Building a Portfolio
 
-Put an investment mix through the same scenarios with `Portfolio`, here the 60/40 (60% US stocks, 40% US government bonds) from the 14 ready-made mixes, rebalanced once a year.
+Put an investment mix through those scenarios with `Portfolio`, here the 60/40 preset: 60% US stocks and 40% US government bonds.
 
 ```python
 from financescenarios import Portfolio
@@ -208,9 +210,10 @@ portfolio = Portfolio.from_preset(result, preset="balanced_60_40")
 values = portfolio.compute(initial_value=100_000, rebalance_every=12)
 
 values.describe()
+values.plot(levels=True)  # the value in money
 ```
 
-This returns the portfolio's yearly return over the five years, and what each holding earned on its own:
+This returns the portfolio's yearly return over the five years and what each holding earned on its own, and what 100,000 is worth along the way:
 
 | factor                        | category  | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:------------------------------|:----------|--------:|--------------:|-------------:|-------------:|
@@ -218,24 +221,28 @@ This returns the portfolio's yearly return over the five years, and what each ho
 | us_broad_value                | holding   |         |        0.0983 |      -0.0465 |       0.2321 |
 | united_states_long_rate_value | holding   |         |        0.0546 |       0.0334 |       0.0756 |
 
-The 60/40 earns 8.37% a year on average, between the stocks' 9.83% and the Treasury fund's 5.46%, so 100,000 grows to 152,553. `portfolio.risk_metrics()` adds the drawdowns and Value at Risk, and the same module covers saving and withdrawal plans, glidepaths and fees. And below the value is plotted in money with `values.plot(levels=True)`. **Find the Notebook [here](/projects/financescenarios/portfolio-notebook).**
-
 {% include ft-chart.html id="portfolio" src="/assets/data/financescenarios-charts.json" label="Simulated value of a 60/40 portfolio" %}
+
+The 60/40 earns 8.37% a year on average, between the stocks' 9.83% and the Treasury fund's 5.46%, so 100,000 grows to 152,553. The chart puts the range in money: the median scenario ends at 150,106 and the best 1 in 20 above 211,015, while the worst 1 in 20 end at 99,989, five years without a gain. `portfolio.risk_metrics()` adds the drawdowns and Value at Risk, and the same module covers saving and withdrawal plans, glidepaths and fees. **Find the Notebook [here](/projects/financescenarios/portfolio-notebook).**
 
 ### Applying Stress Regimes
 
-Run the same variables through one of 12 named stress stories, such as an oil crisis. A regime changes an assumption before simulating, keeps only the scenarios that fit the story, or both.
+Simulate under one of 12 named stress stories, such as an oil crisis. A regime changes an assumption before simulating, keeps only the scenarios that fit the story, or both.
 
 ```python
-from financescenarios import compare_runs
+from financescenarios import compare_runs, plot_runs
 
-oil_crisis = Scenarios.from_profiles(regime="oil_crisis", api_key="FINANCIAL_MODELING_PREP_KEY")
+oil_crisis = Scenarios.from_profiles(
+    regime="oil_crisis", api_key="FINANCIAL_MODELING_PREP_KEY", fred_api_key="FRED_KEY"
+)
 shocked = oil_crisis.simulate(keep=2000)
 
-compare_runs({"baseline": result, "oil_crisis": shocked})
+runs = {"baseline": result, "oil_crisis": shocked}
+compare_runs(runs)
+plot_runs(runs, "united_states_inflation")
 ```
 
-`Oil Crisis` pulls US inflation towards 9% and keeps the scenarios with high interest rates and weak stocks; `keep=2000` draws enough scenarios that 2,000 fit the story. For example, four of the variables are shown below.
+`Oil Crisis` pulls US inflation towards 9% and keeps the scenarios with high interest rates and weak stocks; `keep=2000` draws enough scenarios that 2,000 fit the story. This returns the average five-year outcome of each run, four variables shown below, and the path of US inflation, with the Oil Shock and Climate Collapse regimes added the same way.
 
 | factor                   | baseline | oil_crisis |
 |:-------------------------|---------:|-----------:|
@@ -244,13 +251,13 @@ compare_runs({"baseline": result, "oil_crisis": shocked})
 | us_broad                 |   0.0983 |     0.0178 |
 | europe                   |   0.0768 |     0.0201 |
 
-And below US inflation is plotted for the baseline and the Oil Shock, Oil Crisis and Climate Collapse regimes with `plot_runs(runs, "united_states_inflation")`, 2,000 scenarios each. **Find the Notebook [here](/projects/financescenarios/regimes-notebook) and the regime documentation [here](/projects/financescenarios/docs/regimes).**
-
 {% include ft-chart.html id="regimes" src="/assets/data/financescenarios-charts.json" label="US inflation in the baseline and under three stress regimes" %}
+
+In the Oil Crisis, US inflation ends at 5.16% on average instead of 2.83%, and stocks return 1.78% a year instead of 9.83%. The chart shows the regimes differ in timing as much as in level: the Oil Shock follows the baseline until its shock hits in January 2028 and then fades, while the Oil Crisis and Climate Collapse lift inflation from the first month. **Find the Notebook [here](/projects/financescenarios/regimes-notebook) and the regime documentation [here](/projects/financescenarios/docs/regimes).**
 
 ### Backtesting Against History
 
-Run the same portfolio against what prices actually did, and measure what it is exposed to with the [Fama-French factors](https://doi.org/10.1016/j.jfineco.2014.10.010) from [Ken French's data library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
+Test the 60/40 against what prices actually did, and measure what it is exposed to with the [Fama-French factors](https://doi.org/10.1016/j.jfineco.2014.10.010) from [Ken French's data library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
 
 ```python
 # What the 60/40's holdings actually did, month by month, as one "scenario"
@@ -258,17 +265,18 @@ history = scenarios.history(portfolio="balanced_60_40")
 portfolio = Portfolio.from_preset(history, preset="balanced_60_40")
 
 portfolio.factor_exposure()
+portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
 ```
 
-Which gives the mix's loading on each factor and how much they explain:
+This returns the mix's loading on each factor and how much they explain, and what 100,000 in it actually became:
 
 | portfolio      | Mkt-RF |     SMB |     HML |    RMW |     CMA |  alpha | r_squared | observations | from       | to         |
 |:---------------|-------:|--------:|--------:|-------:|--------:|-------:|----------:|-------------:|:-----------|:-----------|
 | 60/40 Balanced | 0.5399 | -0.0714 | -0.0420 | 0.1201 | -0.0168 | 0.0008 |    0.8654 |          319 | 2000-01-01 | 2026-10-01 |
 
-And below is what the 60/40 actually did since 2000, plotted with `portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)`: 100,000 grew to 628,180 by October 2026. **Find the Notebook [here](/projects/financescenarios/portfolio-analysis-notebook).**
-
 {% include ft-chart.html id="backtest" src="/assets/data/financescenarios-charts.json" label="Historical value of a 60/40 portfolio since 2000" %}
+
+A market loading of 0.54 with an R² of 0.87 says the five factors explain most of the 60/40's monthly moves, and that its stock half drives them. In money, 100,000 grew to 628,180 by October 2026, with the deepest fall, 28% from the peak, in February 2009. **Find the Notebook [here](/projects/financescenarios/portfolio-analysis-notebook).**
 
 ### Valuing Liabilities and Capital Under Solvency II
 
@@ -284,9 +292,10 @@ solvency = Solvency(real_world=result, risk_neutral=risk_neutral)
 # Pay out 10,000 a year for five years, backed by 60,000 invested in the 60/40
 assets = Portfolio.from_preset(result, preset="balanced_60_40").compute(initial_value=60_000, rebalance_every=12)
 solvency.report(cashflows=[10_000] * 5, assets=assets)
+solvency.plot(cashflows=[10_000] * 5, assets=assets)
 ```
 
-Which gives every number in one table:
+This returns every number in one table, and the spread of own funds after one year that the SCR is read from:
 
 | item                | value                     | meaning                                                    |
 |:--------------------|:--------------------------|:-----------------------------------------------------------|
@@ -296,9 +305,9 @@ Which gives every number in one table:
 | SCR (1 in 200 year) | 12,453                    | the capital that survives a 1-in-200 bad year              |
 | solvency ratio      | 1.26                      | own funds / SCR; above 1 means enough capital              |
 
-And below is where own funds could be after one year, plotted with `solvency.plot(cashflows=[10_000] * 5, assets=assets)`. **Find the documentation [here](/projects/financescenarios/docs).**
-
 {% include ft-chart.html id="solvency" src="/assets/data/financescenarios-charts.json" label="Distribution of own funds after one year" %}
+
+Own funds today are 15,635. The SCR of 12,453 is the distance from there to the 1-in-200 outcome at the left of the chart, where own funds fall to around 3,000. With a solvency ratio of 1.26, the 60,000 covers both the payments and the capital a regulator asks for. **Find the documentation [here](/projects/financescenarios/docs).**
 
 ### Validating the Output
 
@@ -320,7 +329,7 @@ For example, three of the checks are shown below.
 
 ### Starting Your Own Project
 
-Everything above runs on the ready-made profiles as they ship. To change an assumption, add a market of your own or keep your results, copy the profiles into a folder of your own:
+Everything above uses the profiles as they ship. To change an assumption, add a market of your own or keep your results, copy the profiles into a folder of your own:
 
 ```python
 from financescenarios import read_run, scaffold_project
@@ -374,11 +383,11 @@ Each of the Jupyter Notebooks below covers a different part of Finance Scenarios
 
 ## Questions & Answers
 
-This section includes frequently asked questions. If yours is not answered here, feel free to reach out to me via the contact details below.
+This section includes frequently asked questions. If yours is not answered here, see the Contact section below.
 
 > **Do I need an economic scenario generator?**
 
-When the answer you need is a range rather than one number. A forecast gives the expected outcome; an ESG shows the bad 5% of cases too. That comes up in Solvency II capital and technical provisions, pension funding projections, asset-liability matching, portfolio tail risk, stress testing and whether retirement withdrawals last.
+When the answer you need is a range rather than one number. A forecast gives the expected outcome; a scenario generator shows the bad 5% of cases too. That comes up in Solvency II capital and technical provisions, pension funding projections, asset-liability matching, portfolio tail risk, stress testing and whether retirement withdrawals last.
 
 > **How does this relate to the Finance Toolkit?**
 
