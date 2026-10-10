@@ -564,3 +564,119 @@ The questions that come up most often about the server and the data behind it. A
   The Finance Database is community-managed. Open an issue or a pull request on [GitHub](https://github.com/JerBouma/FinanceDatabase){:target="_blank"} with the symbol and the correction; once it is merged, every server picks it up within a day.
 
 </details>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is the Finance Database MCP server free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The server and the Finance Database are open source under the MIT license (see the repository), the hosted server is free to use and no API key or account is needed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which AI assistants and clients does it work with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any client that speaks the Model Context Protocol. There are step-by-step cards for Claude Desktop, claude.ai, Claude Code, ChatGPT, Codex CLI, VS Code, Cursor, Windsurf and Gemini CLI under Remote Server and Local Clients."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to install Python?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The remote server needs nothing installed. The local server runs through uv, which downloads the right Python and the package by itself, and the Claude Desktop bundle installs everything in one click."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Opening the URL in my browser shows \"Not Acceptable\". Is it down?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The URL is an endpoint for MCP clients, which talk to it with streaming requests a browser doesn't send, so a browser gets \"Not Acceptable: Client must accept text/event-stream\". Add the URL to your assistant as described under Remote Server instead. To check that the server is up, open /health."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What data does the server cover?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The full Finance Database: 300,000+ equities, ETFs, funds, indices, currencies, cryptocurrencies and money markets with their classifications, such as sector, industry, country, exchange, market cap tier, ETF category and issuer, and identifiers such as ISIN, CUSIP and FIGI. It holds no prices or financial statements; for those, pair it with the Finance Toolkit MCP server."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How current is the data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The database is maintained on GitHub and republished on every change and every week. The server downloads the published files on first use, caches them and checks for updates at most once a day, so it follows the database without a new release."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use it together with the Finance Toolkit MCP server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and that is what it is designed for. Add both servers to your client: the Finance Database finds the companies, ETFs or funds that match your question, and the Finance Toolkit MCP server analyzes them, from financial statements and ratios to valuation and risk."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the hosted server store about me?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It needs no account and stores no personal data. It counts anonymous usage totals, such as calls per day and per tool, which are published at /stats. The privacy policy has the details. If you prefer to keep everything on your own machine, use the local server."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I contribute or report a wrong classification?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Finance Database is community-managed. Open an issue or a pull request on GitHub with the symbol and the correction; once it is merged, every server picks it up within a day."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Finance Database MCP Server",
+  "alternateName": "FinanceDatabase MCP",
+  "url": "https://www.jeroenbouma.com/projects/financedatabase/mcp",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "softwareVersion": "2.5.0",
+  "license": "https://github.com/JerBouma/FinanceDatabase/blob/main/LICENSE",
+  "codeRepository": "https://github.com/JerBouma/FinanceDatabase",
+  "installUrl": "https://financedatabase.jeroenbouma.com/mcp",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Jeroen Bouma",
+    "url": "https://www.jeroenbouma.com"
+  },
+  "description": "Open-source Model Context Protocol server that gives Claude, ChatGPT, Cursor, VS Code and other AI assistants access to the Finance Database: 300,000+ equities, ETFs, funds, indices, currencies and cryptocurrencies, searchable by sector, industry, country, exchange, issuer and ISIN.",
+  "featureList": [
+    "300,000+ categorized financial instruments",
+    "Hosted server, no installation required",
+    "No API key, account or sign-in",
+    "Search by ticker, name, ISIN, CUSIP or FIGI",
+    "Works with any MCP-compatible client"
+  ]
+}
+</script>
+
+{% include mcp-page-script.html %}
