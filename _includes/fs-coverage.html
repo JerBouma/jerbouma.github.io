@@ -1,6 +1,5 @@
 {% comment %}
-  The Finance Scenarios coverage browser: a button per topic, a status filter
-  and a search box over _data/financescenarios_coverage.yml. Without
+  The Finance Scenarios coverage browser: a button per topic, and a search box over _data/financescenarios_coverage.yml. Without
   JavaScript every topic is shown, one after the other.
 {% endcomment %}
 {% assign cov = site.data.financescenarios_coverage %}
@@ -11,12 +10,6 @@
       <i class="fas fa-search" aria-hidden="true"></i>
       <input type="search" placeholder="Search, e.g. GARCH or Solvency II" aria-label="Search the coverage">
     </label>
-    <div class="fsc__status" role="group" aria-label="Show by status">
-      <button type="button" data-status="all" class="is-active">All <span></span></button>
-      <button type="button" data-status="available"><i class="fsc__dot fsc__dot--yes"></i>Available <span></span></button>
-      <button type="button" data-status="partial"><i class="fsc__dot fsc__dot--part"></i>Partial <span></span></button>
-      <button type="button" data-status="not_available"><i class="fsc__dot fsc__dot--no"></i>Not available <span></span></button>
-    </div>
   </div>
   <div class="fsc__topics" role="group" aria-label="Topic">
     <button type="button" data-topic="all">All topics <span>{{ total }}</span></button>
@@ -47,7 +40,7 @@
     </div>
   </section>
   {%- endfor %}
-  <p class="fsc__empty" hidden>Nothing matches. Try another word or status, or all topics.</p>
+  <p class="fsc__empty" hidden>Nothing matches. Try another word.</p>
 </div>
 <script>
 (function () {
@@ -56,10 +49,9 @@
   root.classList.add("fsc--js");
   var input = root.querySelector(".fsc__search input");
   var topicButtons = [].slice.call(root.querySelectorAll(".fsc__topics button"));
-  var statusButtons = [].slice.call(root.querySelectorAll(".fsc__status button"));
   var sections = [].slice.call(root.querySelectorAll(".fsc__topic"));
   var empty = root.querySelector(".fsc__empty");
-  var state = { topic: sections[0].dataset.topic, status: "all", query: "" };
+  var state = { topic: sections[0].dataset.topic, query: "" };
   sections.forEach(function (s) {
     [].forEach.call(s.querySelectorAll(".fsc__item"), function (item) {
       item._text = (s.querySelector(".fsc__title").textContent + " " + item.textContent).toLowerCase();
@@ -70,17 +62,14 @@
     var words = state.query.toLowerCase().split(/\s+/).filter(Boolean);
     // a search looks through every topic
     var topic = words.length ? "all" : state.topic;
-    var counts = { all: 0, available: 0, partial: 0, not_available: 0 };
     var shown = 0;
     sections.forEach(function (s) {
       var inTopic = topic === "all" || s.dataset.topic === topic;
       var visible = 0;
       [].forEach.call(s.querySelectorAll(".fsc__item"), function (item) {
         var match = inTopic && words.every(function (w) { return item._text.indexOf(w) !== -1; });
-        if (match) { counts.all++; counts[item.dataset.status]++; }
-        var show = match && (state.status === "all" || item.dataset.status === state.status);
-        item.hidden = !show;
-        if (show) visible++;
+        item.hidden = !match;
+        if (match) visible++;
       });
       s.hidden = !visible;
       shown += visible;
@@ -89,13 +78,6 @@
       var on = b.dataset.topic === topic;
       b.classList.toggle("is-active", on);
       b.setAttribute("aria-pressed", on);
-    });
-    statusButtons.forEach(function (b) {
-      var on = b.dataset.status === state.status;
-      b.classList.toggle("is-active", on);
-      b.setAttribute("aria-pressed", on);
-      b.querySelector("span").textContent = counts[b.dataset.status];
-      b.classList.toggle("is-empty", !counts[b.dataset.status] && !on);
     });
     root.classList.toggle("fsc--all", topic === "all");
     empty.hidden = shown > 0;
@@ -108,9 +90,6 @@
       if (history.replaceState) history.replaceState(null, "", "#" + (state.topic === "all" ? "all" : state.topic));
       update();
     });
-  });
-  statusButtons.forEach(function (b) {
-    b.addEventListener("click", function () { state.status = b.dataset.status; update(); });
   });
   input.addEventListener("input", function () { state.query = input.value; update(); });
 

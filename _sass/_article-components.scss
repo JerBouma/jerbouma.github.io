@@ -228,7 +228,7 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
 }
 
 // Finance Scenarios coverage: status badges, and a browser with a button per
-// topic, a status filter and a search box (_includes/fs-coverage.html)
+// topic and a search box (_includes/fs-coverage.html)
 .page__content {
   .cov {
     display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.74rem; font-weight: 700; white-space: nowrap;
@@ -246,7 +246,6 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
       &:hover { border-color: var(--card-hover-border); color: var(--text-primary); }
       &.is-active { border-color: var(--accent-color); background: rgba(56, 189, 248, 0.12); color: var(--text-primary); }
       &.is-active span { color: var(--accent-color); }
-      &.is-empty { opacity: 0.45; }
     }
   }
   .fsc__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 12px; }
@@ -256,12 +255,8 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
     input { width: 100%; margin: 0; padding: 8px 12px 8px 34px; border: 1px solid var(--card-border); border-radius: 999px; background: var(--card-bg); color: var(--text-primary); font-size: 0.88rem; box-shadow: none; }
     input:focus { outline: none; border-color: var(--accent-color); }
   }
-  .fsc__status, .fsc__topics { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fsc__topics { display: flex; flex-wrap: wrap; gap: 6px; }
   .fsc__topics { padding-bottom: 14px; border-bottom: 1px solid var(--card-border); }
-  .fsc__dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
-  .fsc__dot--yes { background: #34d399; }
-  .fsc__dot--part { background: #fbbf24; }
-  .fsc__dot--no { background: #f472b6; }
   .fsc__topic { margin-top: 1.4em; scroll-margin-top: 90px; }
   .fsc__title { margin: 0 0 0.25em !important; padding: 0 !important; border: 0 !important; font-size: 1.15rem !important; }
   .fsc__intro { margin: 0 0 0.9em !important; color: var(--text-secondary); font-size: 0.92rem; }
