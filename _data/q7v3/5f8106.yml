@@ -1,0 +1,71 @@
+# Drafts for How to Find Stocks, ETFs and Funds with Claude. Starting points, edited before posting.
+article: /articles/find-stocks-etfs-funds-with-claude
+written: 2026-10-10
+linkedin:
+  text: |
+    Ask an AI assistant which uranium ETFs you can buy and you will probably hear URA and URNM, the two best-known US funds.
+
+    The Finance Database lists 21 uranium ETF listings from ten issuers across eight markets. Seven of them are UCITS versions in London, Frankfurt and Milan, which for many European investors are the only ones they can buy.
+
+    That gap is typical. Language models reason well about companies, but they list them from memory, and memory favors the famous names and the US tickers. Ask for every large European chipmaker and you get ASML, rarely the seven companies and 18 European listings that are actually there. Ask which ticker belongs to Apple's ISIN and the answer is AAPL, while the share trades under 19 tickers on 15 exchanges in 6 currencies.
+
+    So I gave the assistant the database instead. The Finance Database MCP server lets Claude, ChatGPT or Cursor search 300,000+ equities, ETFs, funds, indices and currencies by sector, country, exchange, issuer or ISIN. It is free and hosted, and it needs no API key: add one URL as a connector and ask.
+
+    Finding the universe is the first step of most research. The article has eight real questions with their answers, and how the list then feeds into the analysis:
+    https://www.jeroenbouma.com/articles/find-stocks-etfs-funds-with-claude
+
+    I maintain the Finance Database and built the server. Not investment advice.
+
+    #ETFs #AIinFinance #InvestmentResearch
+reddit:
+  - subreddit: r/ClaudeAI
+    title: "Using Claude as a stock and ETF screener with a free MCP server (no API key): 8 real questions and what came back (I built it)"
+    body: |
+      **TL;DR:** Claude lists companies and ETFs from memory, which means the famous names and the US tickers. I built a free, hosted MCP server on top of the open-source Finance Database (300,000+ equities, ETFs, funds, indices, currencies and cryptos, categorized by sector, industry, country, exchange, market cap and issuer). No API key, no sign-in. Setup is one connector URL.
+
+      **Setup (Claude Desktop or claude.ai)**
+
+      1. Customize → Connectors → **+** → Add custom connector.
+      2. Name it and paste `https://financedatabase.jeroenbouma.com/mcp`, click Add. That's it, no key prompt.
+
+      Claude Code: `claude mcp add --transport http finance-database https://financedatabase.jeroenbouma.com/mcp`
+
+      **A few of the questions (real output, October 10, 2026)**
+
+      - *"Which large European semiconductor companies are there, and on which European exchanges do they trade?"* Claude first checked which exchanges they trade on (23, including US OTC), then searched the main European ones: 7 companies, 18 listings, 4 of them Dutch (ASML, ASM International, BESI, NXP).
+      - *"Which ticker belongs to ISIN US0378331005?"* Apple, AAPL, plus 18 more listings: 8 German exchanges, 4 lines in Buenos Aires, 2 in Santiago, a BDR in São Paulo, Mexico, Milan and Vienna.
+      - *"Which uranium ETFs exist, and which are UCITS funds listed in Europe?"* 21 listings from 10 issuers; 7 UCITS listings in London, Frankfurt and Milan.
+      - *"Which bond ETFs does Vanguard list in the US, by category?"* 35, of which 15 corporate (10 of those are the 2027 to 2036 target maturity ETFs). Without the exchange filter: 266, because many are also listed in Europe.
+      - Asking for the sector "Technology" returns *"Did you mean 'Information Technology'?"*, so Claude retries instead of giving up on an empty list.
+
+      **How it works**
+
+      Ten tools: one per asset class (equities, ETFs, funds, indices, currencies, cryptos, money markets) with typed filters, plus `search_instruments` (ticker, name, ISIN, CUSIP, FIGI), `show_options` (valid filter values) and `search_categories`. Results are paginated, 25 rows by default and 200 at most, so a broad question doesn't flood the context.
+
+      **Limits**
+
+      It holds classifications, not prices or financials. The data is community-maintained and updated weekly, so a classification can be wrong (corrections welcome on GitHub). For the numbers I pair it with the Finance Toolkit MCP server.
+
+      Full write-up with all eight questions: https://www.jeroenbouma.com/articles/find-stocks-etfs-funds-with-claude
+
+      Disclosure: I maintain the Finance Database and built the server. Not investment advice.
+  - subreddit: r/eupersonalfinance
+    title: "Finding the UCITS version of a US ETF: 21 uranium ETF listings, 7 of them UCITS (free tool, I built it)"
+    body: |
+      A problem I keep seeing here: you read about a US ETF (URA, URNM for uranium), and then can't buy it from the EU because it's not a UCITS fund.
+
+      I maintain the open-source Finance Database (300,000+ instruments with issuer, category, exchange and currency) and recently made it searchable from AI assistants like Claude and ChatGPT. Asking it *"which uranium ETFs exist, and which of them are UCITS funds listed in Europe?"* gave, on October 10, 2026:
+
+      - 21 uranium ETF listings from 10 issuers across 8 markets
+      - 7 US listings, including URA, URNM and the 2x leveraged URAA
+      - 7 UCITS listings: Global X's URNU and URND, VanEck's NUCG and NUCL, WisdomTree's NCLR and Sprott's U3O8, in London, Frankfurt and Milan
+
+      The same works for any theme or issuer, and for finding which ticker belongs to the ISIN on your broker statement (Apple's ISIN alone has 19 listings on 15 exchanges).
+
+      It's free and needs no API key. Setup and more examples: https://www.jeroenbouma.com/articles/find-stocks-etfs-funds-with-claude
+
+      This is a list of what exists, not a recommendation: check the fund's KID, costs and your broker's availability yourself. Not investment advice.
+    note: Check that the subreddit allows posts with a link to your own tool; if not, post the list without the link.
+medium:
+  subtitle: "Claude lists companies from memory. With the free Finance Database MCP server it searches 300,000+ stocks, ETFs and funds by sector, country, exchange or ISIN."
+  tags: [Investing, ETF, Artificial Intelligence, Claude, Finance]
