@@ -1,0 +1,131 @@
+{% comment %}
+  Behaviour shared by the MCP server pages (Finance Toolkit and Finance Database):
+  the client cards in each .ft-tabs group become horizontal tabs, links to a card
+  or client open it, and the demo video keeps playing. Without JavaScript the
+  cards stay collapsible.
+{% endcomment %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Close all example chat cards except the one being revealed
+  function closeOtherChatCards(keepOpen) {
+    document.querySelectorAll("details.mcp-chat").forEach(function (d) {
+      if (d !== keepOpen) d.open = false;
+    });
+  }
+
+  // Open targeted <details> card when navigating to its anchor
+  function revealHashTarget() {
+    if (!location.hash) return;
+    var el;
+    try { el = document.querySelector(location.hash); } catch (e) { return; }
+    if (!el) return;
+    var details = el.closest("details");
+    if (details) {
+      if (details.classList.contains("mcp-chat")) closeOtherChatCards(details);
+      details.open = true;
+      setTimeout(function () { el.scrollIntoView({ block: "start" }); }, 50);
+    }
+  }
+
+  // Capture-phase handler: opens the <details> BEFORE smooth-scroll fires,
+  // so the element is visible when the browser tries to scroll to it.
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a[href]");
+    if (!a) return;
+    var href = a.getAttribute("href");
+    if (!href) return;
+    var hash;
+    if (href.charAt(0) === "#") {
+      hash = href;
+    } else {
+      try {
+        var url = new URL(href, location.href);
+        if (url.pathname === location.pathname) hash = url.hash;
+      } catch (err) {}
+    }
+    if (!hash) return;
+    var target;
+    try { target = document.querySelector(hash); } catch (err) { return; }
+    if (!target) return;
+    var details = target.closest("details");
+    if (details) {
+      if (details.classList.contains("mcp-chat")) closeOtherChatCards(details);
+      details.open = true;
+    }
+  }, true);
+
+  // The client cards in each installation section become horizontal tabs.
+  // Without JavaScript they stay as the original collapsible cards.
+  function activateTab(details) {
+    var group = details.closest(".ft-tabs");
+    if (!group) return;
+    group.querySelectorAll(":scope > details").forEach(function (d) {
+      var on = d === details;
+      d.open = on;
+      d.classList.toggle("is-active", on);
+    });
+    group.querySelectorAll(".ft-tabs__tab").forEach(function (b) {
+      var on = b.dataset.target === details.id;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-selected", on ? "true" : "false");
+    });
+  }
+
+  document.querySelectorAll(".ft-tabs").forEach(function (group) {
+    var cards = group.querySelectorAll(":scope > details");
+    if (!cards.length) return;
+    var bar = document.createElement("div");
+    bar.className = "ft-tabs__bar";
+    bar.setAttribute("role", "tablist");
+    cards.forEach(function (d) {
+      var icon = d.querySelector("summary i");
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "ft-tabs__tab";
+      b.setAttribute("role", "tab");
+      b.dataset.target = d.id;
+      b.innerHTML = (icon ? icon.outerHTML + " " : "") + d.querySelector("summary h3").textContent;
+      b.addEventListener("click", function () { activateTab(d); });
+      bar.appendChild(b);
+    });
+    group.insertBefore(bar, cards[0]);
+    group.classList.add("is-tabbed");
+    activateTab(cards[0]); // Claude Desktop is the default
+  });
+
+  // links to a client (e.g. #remote-chatgpt) select its tab
+  var openDetails = revealHashTarget;
+  revealHashTarget = function () {
+    if (location.hash) {
+      var el; try { el = document.querySelector(location.hash); } catch (e) { el = null; }
+      var d = el && el.closest(".ft-tabs > details");
+      if (d) activateTab(d);
+    }
+    openDetails();
+  };
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a[href*='#']");
+    if (!a) return;
+    var el; try { el = document.querySelector(new URL(a.href).hash); } catch (err) { return; }
+    var d = el && el.closest(".ft-tabs > details");
+    if (d) activateTab(d);
+  });
+
+  window.addEventListener("hashchange", revealHashTarget);
+  revealHashTarget();
+
+  // Reinforce autoplay: the HTML attribute is a hint browsers can suppress.
+  // Explicit play() covers fresh navigations; canplay covers slow connections;
+  // pageshow covers bfcache (back/forward); click is the last-resort fallback.
+  (function () {
+    var v = document.querySelector(".mcp-demo-video");
+    if (!v) return;
+    function tryPlay() { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    tryPlay();
+    v.addEventListener("canplay", tryPlay);
+    window.addEventListener("pageshow", function (e) { if (e.persisted) tryPlay(); });
+    v.addEventListener("click", tryPlay);
+  })();
+
+});
+</script>
