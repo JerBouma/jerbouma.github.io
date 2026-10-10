@@ -62,6 +62,10 @@ Each factor is simulated natively, and `ScenarioSet.factor_kind(factor)` says wh
 
 `result.paths[factor]` (and `result[factor]`) holds these, and so does everything that needs a real price: portfolio construction, currency reporting, the Solvency II functions, `write_run()` and the scenario-file export. Every reporting method takes `levels=True` to show the native value.
 
+Which kind a factor is comes from the category `Scenarios.simulate()` stamps on each factor. A `ScenarioSet` you build by hand has no categories, so every factor in it reads as a rate.
+
+A portfolio holding is the one price whose value is not its return. Its path is the money held in it, which rebalancing moves in and out, so its return readings (`change`, `yoy`, `cumulative`, `annualized`) come from the asset's own growth instead, while `levels=True` and `"level"` still show the money held. See [portfolios](/projects/financescenarios/docs/portfolio).
+
 A price's parameters are annualized like everything else (an equity's `regime_means`/`regime_volatilities` are annualized log-return figures). A two-factor (`method: "schwartz_smith"`) commodity simulates `<name>_chi`/`<name>_xi` in log space, and `Scenarios.simulate()` attaches the reconstructed price under the entry's own name.
 
 A growth rate compounds into its index as `100 * exp(cumsum(rate * dt))` (`cumulative_index`). Because the rate is a year-over-year change used as the instantaneous rate, the rebuilt index follows prices with a lag of about half a year, and at 3% it compounds about 0.05 percentage points a year above simple growth: both are small next to the scenario spread.
