@@ -77,6 +77,8 @@ algolia:
     - _pages/articles/*.md
     - _pages/coding/*.md
     - _pages/financedatabase/*.md
+    - _pages/financescenarios/*.md
+    - _pages/financescenarios/*/*.md
     - _pages/financetoolkit/financetoolkit.md
     - _pages/financetoolkit/mcp.md
     - _pages/cv.html

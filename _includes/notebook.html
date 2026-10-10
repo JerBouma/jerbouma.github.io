@@ -10,6 +10,7 @@
 {% endcomment %}
 
 {% assign ft_notebooks = "Getting Started,/projects/financetoolkit/getting-started|Discovery,/projects/financetoolkit/discovery-notebook|Ratios,/projects/financetoolkit/ratios-notebook|Models,/projects/financetoolkit/models-notebook|Options,/projects/financetoolkit/options-notebook|Technicals,/projects/financetoolkit/technicals-notebook|Performance,/projects/financetoolkit/performance-notebook|Risk,/projects/financetoolkit/risk-notebook|Fixed Income,/projects/financetoolkit/fixed-income-notebook|Economics,/projects/financetoolkit/economics-notebook|Portfolio,/projects/financetoolkit/portfolio-notebook|External Datasets,/projects/financetoolkit/external-datasets" | split: "|" %}
+{% assign fs_notebooks = "Getting Started,/projects/financescenarios/getting-started|Regimes,/projects/financescenarios/regimes-notebook|Portfolio,/projects/financescenarios/portfolio-notebook|Portfolio Analysis,/projects/financescenarios/portfolio-analysis-notebook" | split: "|" %}
 
 <div class="notebook-viewer-wrapper">
   {% if include.title or include.github %}
@@ -36,6 +37,19 @@
   {% if include.src contains "financetoolkit" %}
   <nav class="notebook-nav" aria-label="Finance Toolkit notebooks">
     {% for item in ft_notebooks %}
+      {% assign parts = item | split: "," %}
+      {% assign nb_label = parts[0] %}
+      {% assign nb_url   = parts[1] %}
+      {% if page.permalink == nb_url %}
+        <a href="{{ nb_url }}" class="notebook-nav__link notebook-nav__link--active" aria-current="page">{{ nb_label }}</a>
+      {% else %}
+        <a href="{{ nb_url }}" class="notebook-nav__link">{{ nb_label }}</a>
+      {% endif %}
+    {% endfor %}
+  </nav>
+  {% elsif include.src contains "financescenarios" %}
+  <nav class="notebook-nav" aria-label="FinanceScenarios notebooks">
+    {% for item in fs_notebooks %}
       {% assign parts = item | split: "," %}
       {% assign nb_label = parts[0] %}
       {% assign nb_url   = parts[1] %}
