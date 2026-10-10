@@ -202,15 +202,15 @@ values = portfolio.compute(initial_value=100_000, rebalance_every=12)
 values.describe()
 ```
 
-This returns the portfolio's yearly return over the five years, and that of each holding:
+This returns the portfolio's yearly return over the five years, and what each holding earned on its own:
 
 | factor                        | category  | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:------------------------------|:----------|--------:|--------------:|-------------:|-------------:|
 | portfolio                     | portfolio |         |        0.0837 |      -0.0000 |       0.1611 |
-| us_broad_value                | holding   |         |        0.0837 |      -0.0000 |       0.1611 |
-| united_states_long_rate_value | holding   |         |        0.0837 |      -0.0000 |       0.1611 |
+| us_broad_value                | holding   |         |        0.0983 |      -0.0465 |       0.2321 |
+| united_states_long_rate_value | holding   |         |        0.0546 |       0.0334 |       0.0756 |
 
-The 60/40 earns 8.37% a year on average, so 100,000 grows to 152,553. `portfolio.risk_metrics()` adds the drawdowns and Value at Risk, and the same module covers saving and withdrawal plans, glidepaths and fees. And below the value is plotted in money with `values.plot(levels=True)`. **Find the Notebook [here](/projects/financescenarios/portfolio-notebook).**
+The 60/40 earns 8.37% a year on average, between the stocks' 9.83% and the Treasury fund's 5.46%, so 100,000 grows to 152,553. `portfolio.risk_metrics()` adds the drawdowns and Value at Risk, and the same module covers saving and withdrawal plans, glidepaths and fees. And below the value is plotted in money with `values.plot(levels=True)`. **Find the Notebook [here](/projects/financescenarios/portfolio-notebook).**
 
 {% include ft-chart.html id="portfolio" src="/assets/data/financescenarios-charts.json" label="Simulated value of a 60/40 portfolio" %}
 
