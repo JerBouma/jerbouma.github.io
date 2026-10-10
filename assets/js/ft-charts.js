@@ -45,6 +45,7 @@
           return (v < 0 ? '-$' : '$') + a.toFixed(a < 1 && a !== 0 ? 2 : a < 10 && a !== 0 ? 1 : 0) + 'B';
         }
         case 'number': return v.toFixed(1);
+        case 'amount': return Math.round(v).toLocaleString('en-US');
         case 'usd': {
           var a = Math.abs(v);
           if (a === 0) return '$0';
@@ -537,6 +538,79 @@
     instances.push({ draw: draw });
   }
 
+  // Percentile fan: the 5-95% and 25-75% bands with the median. Several series
+  // (e.g. stress regimes) each get their 5-95% band and median in their own colour.
+  function renderFan(box, chart) {
+    var inst = chrome(chart)(box, 380);
+    function draw() { inst.setOption(fanOption(chart), true); }
+    draw();
+    instances.push({ draw: draw });
+  }
+
+  function fanOption(chart) {
+    var fmt = formatter(chart.format);
+    var single = chart.series.length === 1;
+    function band(low, high, name, color, opacity, stack) {
+      return [
+        { name: '_' + stack, type: 'line', data: low, stack: stack, symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
+        { name: name, type: 'line', data: high.map(function (v, i) { return v === null || low[i] === null ? null : v - low[i]; }), stack: stack, symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: color, opacity: opacity }, tooltip: { show: false }, silent: true }
+      ];
+    }
+    var c = axisColors(), series = [], legend = [];
+      chart.series.forEach(function (s, i) {
+        var color = single ? PALETTE[0] : PALETTE[i % PALETTE.length];
+        series = series.concat(band(s.q05, s.q95, single ? '5–95%' : s.name + ' 5–95%', color, single ? 0.18 : 0.07, 'o' + i));
+        if (single) series = series.concat(band(s.q25, s.q75, '25–75%', color, 0.3, 'i' + i));
+        series.push({ name: single ? 'Median' : s.name, type: 'line', data: s.q5, showSymbol: false, lineStyle: { width: 2.2, color: color }, itemStyle: { color: color }, z: 5 });
+        legend.push(single ? 'Median' : s.name);
+      });
+      return {
+        animationDuration: 600,
+        textStyle: { fontFamily: 'inherit' },
+        legend: { data: legend, top: 0, left: 0, textStyle: { color: c.text, fontSize: 13 }, icon: 'roundRect', itemWidth: 12, itemHeight: 8, type: 'scroll' },
+        grid: { left: 8, right: 24, top: 40, bottom: 12, containLabel: true },
+        tooltip: Object.assign({ trigger: 'axis', formatter: function (items) {
+          var i = items[0].dataIndex, out = '<b>' + chart.x[i] + '</b>';
+          chart.series.forEach(function (s) {
+            out += '<br>' + (single ? '' : s.name + ': ') + 'median ' + fmt(s.q5[i]) + (single ? '<br>25–75%: ' + fmt(s.q25[i]) + ' to ' + fmt(s.q75[i]) : '') + '<br>' + (single ? '' : '&nbsp;&nbsp;') + '5–95%: ' + fmt(s.q05[i]) + ' to ' + fmt(s.q95[i]);
+          });
+          return out;
+        } }, tooltipStyle()),
+        xAxis: { type: 'category', data: chart.x, boundaryGap: false, axisLine: { lineStyle: { color: c.grid } }, axisTick: { show: false }, axisLabel: { color: c.muted, hideOverlap: true } },
+        yAxis: { type: 'value', scale: true, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fmt } },
+        series: series
+      };
+  }
+
+  // Histogram of outcomes with labelled vertical marker lines
+  function renderHist(box, chart) {
+    var inst = chrome(chart)(box, 360);
+    var fmt = formatter(chart.format);
+    function draw() {
+      var c = axisColors(), text = css('--text-primary', '#f8fafc');
+      inst.setOption({
+        animationDuration: 600,
+        textStyle: { fontFamily: 'inherit' },
+        grid: { left: 8, right: 24, top: 64, bottom: 30, containLabel: true },
+        tooltip: Object.assign({ trigger: 'item', formatter: function (p) { return fmt(p.data[0] - chart.width / 2) + ' to ' + fmt(p.data[0] + chart.width / 2) + '<br><b>' + p.data[1] + '</b> scenarios'; } }, tooltipStyle()),
+        xAxis: { type: 'value', scale: true, name: chart.xname, nameLocation: 'middle', nameGap: 28, nameTextStyle: { color: c.muted }, splitLine: { show: false }, axisLabel: { color: c.muted, formatter: fmt, hideOverlap: true } },
+        yAxis: { type: 'value', splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted } },
+        series: [{
+          type: 'bar', barWidth: '92%', barCategoryGap: 0, itemStyle: { color: PALETTE[0], opacity: 0.75, borderRadius: [2, 2, 0, 0] },
+          data: chart.bins.map(function (b, i) { return [b, chart.counts[i]]; }),
+          markLine: {
+            symbol: 'none', silent: true,
+            label: { color: text, fontSize: 12, formatter: function (p) { return p.name + ': ' + fmt(p.value); } },
+            lineStyle: { type: 'dashed', width: 1.5 },
+            data: chart.markers.map(function (m, i) { return { name: m.label, xAxis: m.value, label: { distance: 4 + (i % 2) * 18 }, lineStyle: { color: [PALETTE[2], PALETTE[1], PALETTE[3]][i % 3] } }; })
+          }
+        }]
+      }, true);
+    }
+    draw();
+    instances.push({ draw: draw });
+  }
+
   function render(box, chart) {
     if (chart.type === 'dupont') return renderDupont(box, chart);
     if (chart.type === 'kpis') return renderKpis(box, chart);
@@ -544,6 +618,8 @@
     if (chart.type === 'hbar') return renderHbar(box, chart);
     if (chart.type === 'coef') return renderCoef(box, chart);
     if (chart.type === 'scatter') return renderScatter(box, chart);
+    if (chart.type === 'fan') return renderFan(box, chart);
+    if (chart.type === 'hist') return renderHist(box, chart);
     if (chart.type === 'heatmap') return renderHeatmap(box, chart);
     var specs = chart.type === 'tabs' ? chart.tabs : [chart];
     box.innerHTML = '';
@@ -575,7 +651,7 @@
 
     var instance = window.echarts.init(canvas, null, { renderer: 'canvas' });
     var current = 0;
-    function draw() { instance.setOption(option(specs[current]), true); }
+    function draw() { instance.setOption(specs[current].type === 'fan' ? fanOption(specs[current]) : option(specs[current]), true); }
     draw();
     instances.push({ instance: instance, draw: draw });
     if (tabs) {
