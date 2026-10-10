@@ -104,7 +104,7 @@ The checks (`release_model`), each pass, warn or fail with its numbers and a pla
 
 `scenarios.validate(result)` runs the same checks on any run of your own, except the seeded-reproducibility one, and returns them as one pass/warn/fail table with a plain-language meaning per check.
 
-A version is never overwritten: publishing an existing one raises. `simulate_release(folder)` replays a release with its own engine settings and no network access, after checking its profiles still hash to the published configuration; `load_release` returns the calibration and manifest for `simulate(calibration=...)`.
+A version is never overwritten: publishing an existing one raises. `simulate_release(folder)` replays a release with its own engine settings and no network access, after checking its profiles still hash to the published configuration; `load_release` returns the calibration and manifest for `simulate(calibration=...)`. If the hash differs, the profiles have changed since publication and would describe different factors than the calibration holds, so the replay is refused rather than silently mixing the two.
 
 ### Yearly releases
 
@@ -126,6 +126,18 @@ result = simulate_release(folder)
 ```
 
 `download_release` keeps releases in `~/.cache/financescenarios/calibrations/<version>/<factor_set>/`, so later calls work offline. Preparing the first release caught a real bug: the `spy_yield` dividend yield failed in every default run because the shared Toolkit's pre-history rows carried a 0 dividend without a price.
+
+## Warnings Worth Reading
+
+Some problems do not stop a run but do weaken a result. They are logged as warnings, and the first two below are also recorded in a saved run's manifest, so they are still visible when someone opens it later:
+
+- **A factor failed to calibrate** and was left out, with the reason, in `calibration_failures`.
+- **A correlation was set to 0** because the two factors shared fewer than 5 observations, in `correlation_fallback_pairs`.
+- **A correlation rests on fewer than 12 shared observations**, or **two factors correlate above 0.98**, which usually means the same ticker or driver is configured twice.
+- **A mean-reverting factor did not settle** where its fitted parameters say it should. `simulate()` checks this automatically once the horizon is long enough; see `diagnose()` in [simulation-engine](/projects/financescenarios/docs/simulation-engine#scenarioset).
+- **A filter left fewer than 30 scenarios**, too few for percentiles to mean much.
+
+See [How the Correlations Are Estimated](/projects/financescenarios/docs/simulation-engine#how-the-correlations-are-estimated) for the background on the correlation warnings.
 
 ## Static checks
 
@@ -151,7 +163,7 @@ uv run codespell financescenarios tests
 
 Being clear about the current limits of the model is part of trusting it:
 
-- Cross-factor dependence is one linear correlation matrix, as described in `Dependence`. `engine.shock_distribution: "student_t"` adds joint tail risk through one shared t-copula (see [simulation-engine](/projects/financescenarios/docs/simulation-engine#fat-tails-and-tail-dependence)), but tail dependence that differs by pair or is asymmetric is not captured.
+- Cross-factor dependence is one linear correlation matrix, as described in `Dependence`, and it stays the same over the whole horizon. `engine.shock_distribution: "student_t"` adds joint tail risk through one shared t-copula (see [simulation-engine](/projects/financescenarios/docs/simulation-engine#fat-tails-and-tail-dependence)), but tail dependence that differs by pair or is asymmetric is not captured.
 - Every factor calibrates real-world (P-measure) by default; `interest_rates`/`inflation`/`equities`/`fx`/`commodities` additionally support an opt-in risk-neutral (Q-measure) calibration (see [configuration](/projects/financescenarios/docs/configuration)'s Real-world and risk-neutral measures section), but that v1 scope stops short of a full arbitrage-free volatility surface; see that page's own limits.
 - `interest_rates`/`inflation`/`equities`/`unemployment`/`fx` are all multi-instance and worldwide (several countries'/regions' clouds, correlation-linked), but each region's factors are still calibrated and simulated in their own native units; there's no FX-conversion/re-denomination *at the factor level*. An optional downstream `reporting` layer (see `Reporting`) can convert a level factor's native-currency path into one reporting currency for display/aggregation after simulation, but this never feeds back into calibration or correlation. `credit` covers the US, Germany, Australia and the euro area's borrowing cost (see `Credit`); `yield_curve`/`real_estate`/`leading_indicator`/`mortality` stay single-country in v1.
 - `n_regimes` for the equity model, and every belief override, is a user choice. Nothing in the code selects the number of regimes automatically or checks whether a belief override is economically reasonable; it only checks that the override has the right shape.

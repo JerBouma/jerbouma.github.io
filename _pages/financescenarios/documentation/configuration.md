@@ -64,6 +64,8 @@ A directory argument that doesn't exist falls back to the copy of those profiles
 | `mortality` | `factor-sets/<id>.yaml` | section | No | Opt-in mortality/longevity factor settings, see `Mortality`. Disabled by default. With `source: supplied` (the default) it needs `mortality_rates`/`mortality_ages` passed to `calibrate()`/`simulate()`; `source: eurostat` fetches a European Economic Area country's life table instead. |
 | `external_scenario_source` | `factor-sets/<id>.yaml` | section | No | Opt-in: replace chosen factors with a published scenario set instead of simulating them. `provider: goes` (NAIC's GOES SERT set, 16 monthly US Treasury scenarios) or `provider: dnb` (De Nederlandsche Bank's 20,000 yearly scenarios, real-world or market-consistent), with `interest_rate_factors`, `inflation_factors`/`inflation_region` and `equity_factors` naming which entries to replace; every other factor still simulates on that grid. See `ExternalScenarioSourceConfig`. Disabled by default. |
 
+This page describes the configuration keys. For how each area behaves once configured, and which choices matter, see the guides on [interest rates](/projects/financescenarios/docs/interest-rates), [the KNW model](/projects/financescenarios/docs/knw), [the economy](/projects/financescenarios/docs/economy), [markets](/projects/financescenarios/docs/markets), [portfolios](/projects/financescenarios/docs/portfolio) and [Solvency II](/projects/financescenarios/docs/solvency).
+
 ## Multi-instance factors (interest_rates / inflation / unemployment / equities / fx / credit)
 
 Unlike `yield_curve`/`real_estate`/`leading_indicator`/`mortality` (one settings block, one process), `interest_rates`, `inflation`, `unemployment`, `equities`, `fx` and `credit` each become **several** independently calibrated, correlation-linked factors in the simulation, one per configured entry. This is what lets the model represent, e.g., equities as many correlated "clouds" (a broad index, several sector ETFs, several regional ETFs, several style ETFs, ...) rather than a single SPY-driven process, or interest rates as several countries' short-rate clouds rather than one US-only process.
@@ -149,6 +151,15 @@ FinanceToolkit accepts any ticker Financial Modeling Prep or Yahoo Finance carri
 | `toolkit.extra_tickers` | `[]` | Additional tickers beyond `interest_rates[i].ticker`/`equities[i].ticker`, for a factor with no dedicated ticker field yet. |
 | `toolkit.benchmark_ticker` | `null` | FinanceToolkit's benchmark ticker. Left `null` by default: FinanceToolkit silently drops a ticker from the list when it matches the benchmark (e.g. the default broad `equities` entry's ticker, `SPY`). |
 | `toolkit.progress_bar` | `false` | FinanceToolkit's download progress bar. |
+
+### Downloads and Caching
+
+Building the Toolkit downloads nothing. Data is fetched only when a factor's calibration asks for it, and two settings are always on rather than configurable:
+
+- Every external call (Financial Modeling Prep, Yahoo Finance, FRED, the OECD and others) is served from the Finance Toolkit's shared local cache whenever the tickers and dates you ask for are already in it. Only the missing range is downloaded.
+- The OECD allows 60 downloads an hour, which a run across many countries can hit. When that happens, the most recent cached response is used instead of failing the run.
+
+To look at the data before simulating, `fetch_historical_data(config, build_toolkit(config))` returns the raw series each factor's calibration reads, without fitting anything. Because it uses the same cache, a later simulation of the same configuration downloads nothing new. The yield curve and credit curve come back as one series per maturity, and mortality is skipped, since its table is supplied rather than downloaded.
 
 ## Belief overrides
 
@@ -264,7 +275,7 @@ Every component documents its own models in its class docstring (for example `In
 | `ahlgrim.yaml` (and the default) | [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf) | Each variable is its own process; inflation feeds rates and unemployment, and everything is tied together through the estimated correlation matrix. |
 | `wilkie.yaml` + `settings/wilkie.yaml` | [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) | A one-way cascade: inflation is simulated first and dividend yields, long bond yields, dividend growth and share prices are each a direct function of it. |
 | `hibbert.yaml` | [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf) | Fast-moving rates and inflation mean-revert to a second, slowly moving target rather than to a fixed level; equities switch between two market regimes. |
-| any set using `method: knw` / `knw_sv` | [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058) | Interest rate and inflation drive each other in both directions (a VAR), optionally with shared stochastic volatility; the basis of De Nederlandsche Bank's scenario sets. |
+| any set using `method: knw` / `knw_sv` | [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058) | Interest rate and inflation drive each other in both directions (a VAR), optionally with shared stochastic volatility; the basis of De Nederlandsche Bank's scenario sets. See the [KNW guide](/projects/financescenarios/docs/knw). |
 
 Wilkie's cascade, in the order it is simulated:
 
@@ -341,6 +352,8 @@ Every factor calibrates real-world by default. Each entry that supports it opts 
 | Unemployment, real estate, leading indicator, mortality, credit | Not supported: no tradeable market price to match | |
 
 This is a first version, not a full market-consistent engine: volatility is a single number rather than a smile- or skew-consistent surface, except for an equity with `volatility_source: heston`. That entry fits the Heston ([1993](https://doi.org/10.1093/rfs/6.2.327)) model to the volatility smile at six expirations from one to twelve months, so its paths price options across strikes and maturities close to the market (on SPY, within half a volatility point). Interest-rate volatility still comes from history: the one published rates-volatility index, ICE's MOVE, is a single number, which cannot pin down both the speed and the size of the Hull-White model's swings. **Belief overrides cannot be combined with `measure: "risk_neutral"`**: a risk-neutral calibration exists to match a market input exactly, and replacing that input with a belief would undo it, so a non-empty `beliefs` block on such an entry raises at configuration time (`config_model._validate_no_beliefs_when_risk_neutral`). Risk-neutral runs are what the Solvency II functions in `financescenarios.solvency` value liabilities with.
+
+You do not need a second factor set for that. `scenarios.simulate(measure="risk_neutral")` simulates the market-consistent counterpart of the configuration you already have: the risk-free rate following today's forward curve and equities growing at that rate, calibrated afresh for that call. The instance, its real-world calibration and its regime stay as they were. It cannot be combined with a saved `calibration`, since that holds the real-world fit. See [Solvency II](/projects/financescenarios/docs/solvency) for how the two runs are used together.
 
 ## Example files
 

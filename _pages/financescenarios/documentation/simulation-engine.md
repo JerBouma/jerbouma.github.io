@@ -22,6 +22,8 @@ The simulation engine is asset-class-agnostic: it knows nothing about interest r
 
 A Monte Carlo simulation, the technique used here, runs the same random process many times with different random draws, in order to build up a distribution of possible outcomes rather than a single prediction. Each individual run is called a path or a simulation.
 
+This page covers the machinery every factor shares. For how each area is modelled and calibrated, see the guides on [interest rates](/projects/financescenarios/docs/interest-rates), [the KNW model](/projects/financescenarios/docs/knw), [the economy](/projects/financescenarios/docs/economy) and [markets](/projects/financescenarios/docs/markets). For what you do with a finished run, see [portfolios](/projects/financescenarios/docs/portfolio) and [Solvency II](/projects/financescenarios/docs/solvency).
+
 ## Engine settings
 
 These come from the `engine` section of a settings profile (see [configuration](/projects/financescenarios/docs/configuration)) and are validated by `EngineConfig`:
@@ -36,6 +38,7 @@ These come from the `engine` section of a settings profile (see [configuration](
 | `shock_distribution` | one of `gaussian`, `student_t` | `gaussian` | The joint distribution correlated shocks are drawn from; see "Fat tails and tail dependence" below. |
 | `degrees_of_freedom` | float, greater than 2 | `5.0` | Student-t degrees of freedom, only used when `shock_distribution: student_t`. Lower means fatter tails and stronger tail dependence. |
 | `correlation_shrinkage` | number in [0, 1], or `auto` | `0.1` | How far the estimated correlations are pulled in before use, to tame noise. A number blends them that far toward their average. `auto` pulls them toward no correlation by the data-driven amount of [Schäfer and Strimmer (2005)](https://doi.org/10.2202/1544-6115.1175): more when correlations rest on few observations. Trained on history before 2012 or 2016 and scored on the years after, `auto` cut the default factor set's correlation error by 7.5% and 1.6%. The shipped `settings/default.yaml` (and every settings profile extending it) uses `auto`; a configuration without the key keeps 0.1. The intensity used and how far the matrix had to be repaired to be valid are recorded on the calibration (`correlation_shrinkage`, `correlation_repair`). |
+| `correlation_method` | one of `pairwise`, `complete_case` | `pairwise` | How much history each correlation is estimated from; see "How the Correlations Are Estimated" below. |
 | `shared_equity_regimes` | boolean | `false` | Draw every regime-switching equity's calm/crisis switches from one shared stream of random numbers, so markets tend to enter and leave crises together. Each equity keeps its own fitted switching probabilities, so paths still differ where those differ. With separate streams (the default), one market can sit in crisis while another is calm, which dilutes the simulated correlation between equities: on the `core` factor set the mean gap to the calibrated correlations fell from 0.094 to 0.044 and the largest from 0.135 to 0.081. The shipped `settings/default.yaml` sets it to `true`. |
 
 ## Building one simulation run
@@ -67,6 +70,24 @@ The result is rescaled by `sqrt((degrees_of_freedom - 2) / degrees_of_freedom)` 
 
 This closes the fat-tailed dependence gap `Dependence` previously documented as future work, using the standard tractable construction (a single shared degrees-of-freedom parameter across every factor) rather than the more flexible but substantially more complex per-pair copula constructions surveyed there (Pfeifer & Ragulina's patchwork copula, Josaphat & Syuhada's dependent CVaR extension); those remain a natural next step if a use case needs asymmetric or pairwise-varying tail behavior a single shared t-copula can't express.
 
+## How the Correlations Are Estimated
+
+The correlation matrix is what ties the factors together, so it is worth knowing where its numbers come from.
+
+**What goes in.** Every factor in the run has a row and a column: each interest rate, inflation, equity and unemployment entry, plus every opt-in factor you enabled. Each is represented by its own historical changes: changes in a rate, log returns of a price. These are the same series the factor was calibrated on, so building the matrix downloads nothing extra.
+
+**Lining up different frequencies.** A daily rate, a monthly equity and a yearly inflation series cannot be compared observation by observation. The changes are first summed up to the coarser period and then matched on calendar date, never by position. Summing is valid because these changes add up over time, the same way twelve monthly log returns add up to the yearly one.
+
+**Pairwise or one shared window.** With `correlation_method: pairwise` (the default), each pair is estimated from the dates those two factors share. A factor with a short history only weakens the pairs it is part of. A pair with fewer than 5 shared observations, or where one side does not move at all, cannot be estimated reliably, so its correlation is set to 0 (assumed unrelated) and the pair is listed in `correlation_fallback_pairs`. With `complete_case`, every factor is cut down to one window they all share. All correlations then rest on the same dates, but one short or yearly series shrinks the window for every other pair too, and a warning is logged when that window is less than half the longest factor's history.
+
+**Shrinkage.** With many factors and limited history, sample correlations are noisy. They are pulled part of the way toward a simpler target before use, as described under `correlation_shrinkage` above: a fixed blend toward the average correlation ([Ledoit and Wolf, 2004](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}), or the data-driven `auto` amount. This trades a little bias for a large reduction in noise.
+
+**Repair.** A matrix assembled from pairs with different windows can be internally inconsistent: it can imply that some combination of factors has a negative variance, which the Cholesky step cannot handle. Such a matrix is moved to the nearest valid one ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}). A valid matrix comes back unchanged, and the size of any repair is stored on the calibration as `correlation_repair`.
+
+**Warnings to look for.** A pair estimated from fewer than 12 shared observations is flagged, and so is a pair correlated above 0.98 in absolute value, which usually means the same driver (often the same ticker) is configured twice.
+
+**Limits.** The matrix is linear and constant over the whole horizon. The Student-t shocks above make extreme moves more likely to arrive together, but every pair shares one tail parameter.
+
 ## Step functions
 
 Every step function has the same signature: `(current_values, shocks, time_step, step_index, paths) -> next_values`, where `current_values`/`shocks`/`next_values` are each `(n_simulations,)` arrays: one call per `(factor, step_index)` advances every simulation at once, not one call per `(factor, step_index, simulation_index)`.
@@ -86,12 +107,14 @@ GARCH-volatility factors (`GARCHStepper`) and CIR (`step_cir`) are the exception
 Every one of these reads a factor the way [units](/projects/financescenarios/docs/units) describes: by default a rate as its annualized rate, a price (equities, FX, commodities, a dividend index, portfolio values) as its annualized return since start, `(S_t / S_0) ** (1 / t) - 1`, null at `t0`, and the leading indicator as its index level. Every method below takes `metric=` for another reading (`"rate"`, `"level"`, `"change"`, `"yoy"`, `"cumulative"`, `"annualized"`) and `levels=True` for the native simulated values. `metric_paths(factor, metric=...)` is that transform on its own, `factor_kind(factor)` says which of the four kinds (price, growth rate, rate, index) a factor is, and `paths[factor]` always holds the native values.
 
 - `to_dataframe(factor)` returns a scenario-by-time table for a single named factor: one row per simulation, a `scenario` index column plus one column per date, the same orientation as `paths[factor]` itself. `discount_factors()`/`cumulative_index()` share the shape.
-- `summary_statistics(factor, quantiles=None)` returns `date`, `mean`, `std`, `se` and one column per requested quantile (the default quantiles are `0.05`, `0.25`, `0.5`, `0.75` and `0.95`), computed across all simulations at each time step. `se` (`std / sqrt(n_simulations)`) is the standard error of the simulated mean: how precisely that mean is pinned down by this many simulations, a convergence diagnostic for judging whether `engine.n_simulations` is actually enough for a given use case.
+- `summary_statistics(factor, quantiles=None)` returns `date`, `mean`, `std`, `se` and one column per requested quantile (the default quantiles are `0.05`, `0.25`, `0.5`, `0.75` and `0.95`), computed across all simulations at each time step. `se` (`std / sqrt(n_simulations)`) is the standard error of the simulated mean: how precisely that mean is pinned down by this many simulations, a convergence diagnostic for judging whether `engine.n_simulations` is actually enough for a given use case. With antithetic variates the mirrored pairs are not independent draws, so `se` is then computed from the averages of the pairs instead.
 - `discount_factors(factor)` and `cumulative_index(factor, initial_index=100.0)` treat a rate-like factor (e.g. `interest_rate`, `inflation`, `real_estate`) as an instantaneous rate and compound it into a usable money-market discount factor (`exp(-cumsum(rate * time_step))`, `DF(0) = 1`) or index level (`exp(cumsum(rate * time_step))`, scaled by `initial_index`), the transform every downstream reserving/reporting use needs on top of a raw rate.
 
   This is the plain bank-account numeraire's discount factor under whichever measure `factor` was simulated under, not a full stochastic deflator/pricing kernel; that would additionally need a market-price-of-risk adjustment. For a `method="knw_sv"` pair, `KnwSvQ.deflator()` (see `KnwSvQ`'s Stochastic deflator section) builds exactly that adjustment, [Cheng & Planchet (2018)](https://arxiv.org/abs/1806.02991)'s own construction, from an already P-measure-simulated run's paths; this generic `discount_factors` stays the simpler bank-account-only building block for every other factor. Factors that already simulate a price level directly (`equity`, `fx`) don't need this; they already are the index.
 - `diagnose()` with no factor returns the same check for every factor it applies to as one table (factor, simulated and theoretical mean and spread, `within_tolerance`). Commodity prices and dividend yields are fitted on their logarithm, so they are compared in log space, like a log-OU credit spread. A factor that follows a belief path (an anchored rate) is compared against its own fitted level, so it can read `false` by design.
 - `diagnose(factor, tolerance=0.2)` sanity-checks one OU-calibrated factor's simulated terminal-step distribution against the closed-form stationary mean/std implied by its calibrated parameters (`long_run_mean`, `sqrt(volatility^2 / (2*mean_reversion_speed))`), the same analytical check `test_simulate_paths_ou_long_run_statistics` uses to validate the engine, promoted into a reusable diagnostic.
+
+  The mean passes when it lies within `tolerance` times the long-run mean, or within 3 standard errors of the simulated mean, whichever is wider. Without that floor, a factor whose long-run mean sits near zero (Japan's historical inflation fits a long-run mean of about 0.00007) would fail on a gap smaller than ordinary sampling noise. For a CIR rate the long-run standard deviation is `sqrt(volatility^2 * long_run_mean / (2 * mean_reversion_speed))`.
 
   Only applies to OU-family factors (not `equity` or `fx`); a `within_tolerance=False` result can just mean the horizon is short relative to the factor's mean-reversion speed, not that anything is wrong.
 
@@ -108,6 +131,8 @@ Every one of these reads a factor the way [units](/projects/financescenarios/doc
 
 On the calibration side, `CalibrationResult.describe()` lists every fitted process with its `half_life_years` (`ln 2 / mean_reversion_speed`, how long a shock takes to decay halfway back), and `CalibrationResult.correlation_frame()` returns the calibrated correlation matrix as a labelled table to set beside `simulated_correlation()`.
 
+Two things travel with a run that affect how it is read. With antithetic variates, scenario `i` and scenario `i + n_simulations / 2` are mirrored pairs; any subset (from `filter`, `filter_narrative` or `sample`) breaks those pairs, so the subset is treated as ordinary independent draws. And each factor carries its category (equities, inflation and so on), which is how a chart or a portfolio knows whether a path is a price or a rate; a `ScenarioSet` you build by hand has no categories, so every factor reads as a rate.
+
 `ScenarioSet` also carries `calibration_metadata`: the calibrated parameters that were actually used for the run, keyed by factor name, for audit and reproducibility.
 
 ## Scenario filtering
@@ -115,6 +140,8 @@ On the calibration side, `CalibrationResult.describe()` lists every fitted proce
 `filter(factor, quantile_range, step_range=None)` selects the subset of simulations whose value for one factor over a given step range (a rate's average across the window, a price level's annualized return from the window's first date to its last) falls within a given quantile range of that statistic's distribution across all simulations. For example, `result.filter("interest_rate", quantile_range=(0.7, 1.0))` keeps the 30% of simulated paths with the highest average interest rate, isolating a "structurally high rates" scenario subset, useful for stress testing, sensitivity analysis, and narrative-driven scenario construction.
 
 Selection is by simulation index, applied identically across every factor in the returned `ScenarioSet`: a simulation selected for having high interest rates keeps its own correlated inflation/equity/unemployment path too, not an independently filtered one. This preserves the cross-factor correlation structure within the filtered subset.
+
+A warning is logged when fewer than 30 scenarios remain, since percentiles mean little on so few. To keep a fixed number of scenarios after filtering, see `keep` in [regimes](/projects/financescenarios/docs/regimes#driving-a-regime-from-the-library).
 
 `filter()` operates purely on already-simulated output; it doesn't recalibrate or re-run the Monte Carlo simulation, so it's cheap to call repeatedly with different factors/ranges on the same `ScenarioSet`.
 
@@ -144,6 +171,16 @@ wider_equity = result.rescale_scenario_cloud("equity", spread_multiplier=1.3)
 ```
 
 Every time step is rescaled around its own cross-sectional mean independently, preserving that step's cross-sectional shape (skew, quantile spacing) up to the affine transform, and every other factor's path is left untouched. Like `filter()`, this operates purely on already-simulated output: no recalibration or resimulation.
+
+## Risk Metrics for a Factor
+
+Two functions turn simulated paths into risk numbers, and they answer different questions.
+
+`compute_factor_metrics(result["united_states_short_rate"])` describes one factor across scenarios: Value-at-Risk, Conditional Value-at-Risk, percentiles, skewness and more. Most measures use each scenario's change from the first date to the last, which works for any factor, including a rate that can cross zero, where a percentage return would make no sense. The drawdown measures (maximum drawdown, the Ulcer index, drawdown at risk and the ratios built on them) use each scenario's full path instead, since a fall from a peak needs the path's own history.
+
+`compute_price_performance_metrics(values, result.time_grid)` describes one value path over time, such as a portfolio, one holding or one percentile band: yearly growth, volatility, Sharpe and Sortino ratios, drawdowns. It needs a value that starts above zero; otherwise every field is NaN. A single ratio can be NaN on a valid path too, such as the Calmar ratio on a path that never falls. Ratios are annualized from the time grid's step length, while skewness and kurtosis describe the per-step returns as they are.
+
+The two Value-at-Risk figures differ. In the first function it is the tail of end-of-run outcomes across scenarios. In the second it is the tail of one path's own returns over time. For portfolio-level metrics, see [portfolios](/projects/financescenarios/docs/portfolio).
 
 ## Calibration persistence
 
@@ -188,5 +225,9 @@ wider = scenarios.simulate(calibration=calibration, n_simulations=20_000)
 `Scenarios.calibrate(config)` runs every enabled factor's calibration and the cross-factor correlation matrix, returning a `CalibrationResult` (calibrated parameters, correlation matrix, factor names, dependencies) without running the Monte Carlo engine. `Scenarios.simulate(config, calibration=...)` skips calibration entirely when a `CalibrationResult` is supplied; FinanceToolkit is never touched. This is useful for: reproducing a past run byte-for-byte without depending on FinanceToolkit still returning the same historical window; replaying a calibration with no network/API key at all (`Scenarios(toolkit=None, ...)`); and cheaply re-simulating with a different `seed`, `n_simulations`, engine setting, shock or time-varying `long_run_mean` path without re-fetching data each time.
 
 A config passed to `simulate()` runs on its own `engine` block (steps, frequency, simulations, seed) when that differs from the instance's. Fixed belief overrides (a constant `mean_reversion_speed`, `long_run_mean` or `volatility`, an equity's regime means) are different: they are applied while calibrating, so a `CalibrationResult` records the ones it was made with, and `simulate()` refuses to replay it under a config whose fixed overrides differ, naming the factors, rather than silently keeping the old ones. Recalibrate with `calibrate(config)` for those; a calibration saved before this record existed only logs a warning.
+
+**When a factor fails to calibrate.** A factor whose fit fails, for example because a short window shows no mean reversion, is left out of the run together with any factor that depends on it. The other factors still calibrate and simulate. The reason is recorded per factor in `calibration_failures` on the calibration (and in a saved run's manifest), so check it when a factor you configured is missing from the output.
+
+**What a saved run keeps.** Paths are written as Parquet by default, which is smaller and faster to read back than CSV. Besides the configuration, `scenarios.save()` records the correlation fallback pairs and the calibration failures in the manifest (empty when there are none), so whoever opens the run later sees them too. The manifest also has a `warnings` list, which `write_run(..., warnings=...)` fills with any logged warnings you pass it. The exact time grid is stored too, so discount factors and compounding on a reloaded run use the true step length. The calibration details behind `diagnose()` are not stored with the paths, so `diagnose()` does not work on a reloaded run; replay it from `calibration.json` instead.
 
 Which factors get simulated is read from the `CalibrationResult` itself (which keys are present in `calibrated_params`), not from `config.*.enabled`: a loaded or reused calibration is the source of truth, even if the `config` passed to `simulate()` differs from the one originally passed to `calibrate()`.

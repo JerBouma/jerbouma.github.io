@@ -68,6 +68,17 @@ At least one of the two is required: a regime with neither would do nothing. Use
 
 **Units are one convention: an annualized decimal rate for every rate-type factor (`0.06` means 6% a year), a price level for equities/fx/commodities.** Sources that don't arrive that way are converted at the fetch. See [units](/projects/financescenarios/docs/units) for the full statement, including which conversion each source needs and how belief anchors follow from it. Check a factor's own calibrated level with `scenarios.calibrate().describe()` before choosing anchors.
 
+### How Belief Keys Are Matched
+
+A key under `beliefs` takes one of two forms:
+
+- **A plain factor name** for a factor that exists once per run: `real_estate`, `leading_indicator`, `yield_curve`, `credit_term_structure` and `mortality`.
+- **A dotted `<list>.<name>` key** for one entry of a factor that can appear several times: `interest_rates`, `inflation`, `unemployment`, `equities`, `fx`, `credit`, `commodities` and `dividend_yield`. The part after the dot is the entry's resolved name, such as `inflation.united_states_inflation` or `credit.ig_7_10y`.
+
+A plain key that names one of those lists is refused, even when the list has a single entry, and so is a dotted key whose entry is not in the configuration; the error lists the entries that do exist. This way a regime written for one factor set fails loudly on another instead of silently doing nothing.
+
+A belief is merged into the factor's existing beliefs, not swapped in whole. `{"yield_curve": {"level": {"long_run_mean": 0.05}}}` changes only the level factor's long-run mean and keeps anything already set on the slope, the curvature or the rest of the level.
+
 ```python
 from financescenarios import Scenarios
 
@@ -118,7 +129,9 @@ A regime with targets keeps only part of the run, about 9% for Oil Crisis. `simu
 
 Each interest rate, inflation and unemployment entry follows the scenario for its own `country`. With `follow="path"` (the default) every factor is set to the published value at each period end and its long-run level follows the scenario in between, so even a slow-moving short rate really falls to the Federal Reserve's 0.1%; with `follow="target"` only the long-run level is steered, a gentler stress. Either way the target returns to the factor's own calibrated level over `converge_over_years` (five by default) after the scenario ends. The Federal Reserve's inflation is an annualized quarter-on-quarter rate while this project's is year over year: the same scale, but it reacts sooner.
 
-Real-world equities follow the scenario's stock market too, as one-off price jumps (`shocks`): the Federal Reserve's path is the Dow Jones Total Stock Market Index, used as the adverse level against its own baseline, so the shock is the stress and not the baseline's growth; the ESRB's is the stock-price fall from the starting point, per country. Every equity uses one region, `United States` for the Federal Reserve and `European Union` for the ESRB by default, which `equity_regions={"<equity name>": "<region>"}` changes per equity. The stock path keeps the scenario's own spacing but starts at the run's start, so the fall always lands inside the run even though the ESRB's 2025 scenario was published for 2025 to 2027. Risk-neutral equities are left alone, since their drift is the simulated rate. On the `default` set, the median US broad-market price after a year is 0.50 times the start under the Federal Reserve's 2026 adverse scenario and 0.57 times under the ESRB's, against 1.14 unstressed.
+Not every entry can be steered. The scenario moves a factor through its long-run level, so only entries that have one follow it: interest rates using Hull-White or CIR, inflation using the plain mean-reverting (`ou`) method, and unemployment, all real-world. Other rate and inflation methods, and every risk-neutral entry, keep their calibration. The Federal Reserve covers only the United States, so under it only US entries move. A euro area entry matches the ESRB's "Euro Area" whether your configuration spells it "Eurozone", "Euro area" or "EA20". `year` picks a Federal Reserve vintage; the ESRB scenario is always the latest one.
+
+Real-world equities follow the scenario's stock market too, as one-off price jumps (`shocks`): the Federal Reserve's path is the Dow Jones Total Stock Market Index, used as the adverse level against its own baseline, so the shock is the stress and not the baseline's growth; the ESRB's is the stock-price fall from the starting point, per country. Every equity uses one region, `United States` for the Federal Reserve and `European Union` for the ESRB by default, which `equity_regions={"<equity name>": "<region>"}` changes per equity. Besides the European Union, the ESRB publishes stock paths for the United States, the United Kingdom, Japan, Canada, Switzerland, Norway, Australia and New Zealand (as one region) and the rest of the world. The stock path keeps the scenario's own spacing but starts at the run's start, so the fall always lands inside the run even though the ESRB's 2025 scenario was published for 2025 to 2027. Risk-neutral equities are left alone, since their drift is the simulated rate. On the `default` set, the median US broad-market price after a year is 0.50 times the start under the Federal Reserve's 2026 adverse scenario and 0.57 times under the ESRB's, against 1.14 unstressed.
 
 ```python
 from financescenarios import Scenarios, stress_test_regime
