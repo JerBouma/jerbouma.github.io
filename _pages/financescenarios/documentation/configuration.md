@@ -346,25 +346,24 @@ This is a first version, not a full market-consistent engine: volatility is a si
 
 ```yaml
 name: Default
-description: Baseline run settings.
+description: "2,000 scenarios, one step a month, five years ahead, fitted on history since 2000."
 
 start_date: 2026-01-01
 
 engine:
-  n_simulations: 1000
-  n_steps: 52
-  frequency: weekly # daily | weekly | monthly | quarterly | semi-yearly | yearly
+  n_simulations: 2000
+  n_steps: 60
+  frequency: monthly # daily | weekly | monthly | quarterly | semi-yearly | yearly
   seed: 42
-  antithetic: false
-  shock_distribution: gaussian # gaussian | student_t; see simulation-engine.md
-  degrees_of_freedom: 5.0 # only used when shock_distribution: student_t
-  correlation_shrinkage: auto # data-driven, toward no correlation; or 0-1 toward the average; see simulation-engine.md
-  shared_equity_regimes: true # equities switch calm/crisis regimes together; see simulation-engine.md
+  antithetic: false # variance reduction via paired +/- shocks; n_simulations must be even if true
+  correlation_shrinkage: auto # data-driven (Schafer-Strimmer); a number in [0, 1] for a fixed blend
+  shared_equity_regimes: true # equities switch calm/crisis regimes on one shared random stream
+  # shock_distribution: student_t  # optional, gaussian by default; degrees_of_freedom: 5.0 sets its tails
 
 toolkit:
-  start_date: 2015-01-01
-  extra_tickers: []
-  benchmark_ticker: null
+  start_date: 2000-01-01 # history window pulled for calibration
+  extra_tickers: [] # tickers beyond interest_rate.ticker/equity.ticker, e.g. for a future factor
+  benchmark_ticker: null # avoids FinanceToolkit silently dropping a ticker that matches the benchmark
   progress_bar: false
 ```
 

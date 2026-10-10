@@ -50,7 +50,7 @@ result.plot_factors()                         # one fan chart per factor, small-
 scenarios.last_calibration.plot_correlation_matrix()
 ```
 
-The same views are importable as plain functions (`from financescenarios import plot_fan_chart, ...`) for composing into your own figure grids via their `ax=` argument; the methods above are thin delegations to them, importing matplotlib only at call time so a plots-less install never pays for it.
+The same views are importable as plain functions (`from financescenarios import plot_fan_chart, ...`) for composing into your own figure grids via their `ax=` argument; the methods above are thin delegations to them, importing matplotlib only at call time so `import financescenarios` stays fast.
 
 A computed portfolio is itself a `ScenarioSet`, so the same fan chart reads it, plus two portfolio-specific views:
 
