@@ -60,8 +60,10 @@ list_presets(kind="settings")  # or "factor-sets", "regimes", "portfolios"; leav
 
 Each kind's output is below; open one to see its options.
 
-<details markdown="1">
-<summary><b>Settings profiles (4)</b>, passed as <code>Scenarios.from_profiles(settings="...")</code></summary>
+<details class="ft-details" markdown="1">
+<summary><i class="fas fa-sliders-h"></i> <b>Settings profiles</b> <span class="ft-details__meta">4</span></summary>
+
+Passed as `Scenarios.from_profiles(settings="...")`.
 
 | id           | description                                                                                                                                    |
 |:-------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -72,8 +74,10 @@ Each kind's output is below; open one to see its options.
 
 </details>
 
-<details markdown="1">
-<summary><b>Factor sets (9)</b>, passed as <code>Scenarios.from_profiles(factor_set="...")</code></summary>
+<details class="ft-details" markdown="1">
+<summary><i class="fas fa-layer-group"></i> <b>Factor sets</b> <span class="ft-details__meta">9</span></summary>
+
+Passed as `Scenarios.from_profiles(factor_set="...")`.
 
 | id              | description                                                                                                                                           |
 |:----------------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -89,8 +93,10 @@ Each kind's output is below; open one to see its options.
 
 </details>
 
-<details markdown="1">
-<summary><b>Stress regimes (12)</b>, passed as <code>Scenarios.from_profiles(regime="...")</code>, see <a href="#applying-stress-regimes">Applying Stress Regimes</a></summary>
+<details class="ft-details" markdown="1">
+<summary><i class="fas fa-bolt"></i> <b>Stress regimes</b> <span class="ft-details__meta">12</span></summary>
+
+Passed as `Scenarios.from_profiles(regime="...")`, see [Applying Stress Regimes](#applying-stress-regimes).
 
 | id                    | description                                                                                                                                           |
 |:----------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -109,8 +115,10 @@ Each kind's output is below; open one to see its options.
 
 </details>
 
-<details markdown="1">
-<summary><b>Portfolios (14)</b>, passed as <code>Portfolio.from_preset(result, preset="...")</code>, see <a href="#building-a-portfolio">Building a Portfolio</a></summary>
+<details class="ft-details" markdown="1">
+<summary><i class="fas fa-chart-pie"></i> <b>Portfolios</b> <span class="ft-details__meta">14</span></summary>
+
+Passed as `Portfolio.from_preset(result, preset="...")`, see [Building a Portfolio](#building-a-portfolio).
 
 | id                    | description                                                                                                                                   |
 |:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------|
