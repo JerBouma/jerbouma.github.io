@@ -185,8 +185,7 @@ module DocsMetricPages
     out << parts[:description] << "\n\n"
     unless parts[:example].empty?
       out << "## #{name} in Python\n\n"
-      out << "`#{fn_name}` is part of the [#{cls[:name]} module](#{cls[:url]}) of the open-source "
-      out << "[Finance Toolkit](/projects/financetoolkit). Install it with:\n{: .docs-boilerplate}\n\n"
+      out << "Install the [Finance Toolkit](/projects/financetoolkit) with:\n{: .docs-boilerplate}\n\n"
       out << "```python\npip install financetoolkit -U\n```\n\n"
       out << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n"
       out << parts[:example] << "\n\n"
@@ -194,7 +193,7 @@ module DocsMetricPages
     arguments = arguments_for(parts[:arguments])
     unless arguments.empty?
       out << "## Parameters\n\n"
-      out << "`#{fn_name}` accepts the following parameters:\n{: .docs-boilerplate}\n\n"
+      out << "The function accepts the following parameters:\n{: .docs-boilerplate}\n\n"
       out << arguments << "\n\n"
     end
     unless related.empty?
