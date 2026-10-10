@@ -1,8 +1,8 @@
 ---
 title: Validation and Testing
-seo_title: Validation and Testing Documentation – FinanceScenarios
+seo_title: Validation and Testing Documentation – Finance Scenarios
 excerpt: "What evidence exists that the simulation logic behaves correctly: analytical checks, recorded regressions, external benchmarks, published calibrations and what is not validated."
-description: "How FinanceScenarios output is checked: analytical tests, regression checks, NAIC GOES, DNB and bond-panel benchmarks and published calibrations."
+description: "How Finance Scenarios output is checked: analytical tests, regression checks, NAIC GOES, DNB and bond-panel benchmarks and published calibrations."
 author_profile: false
 permalink: /projects/financescenarios/docs/validation
 classes: wide-sidebar

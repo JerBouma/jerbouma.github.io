@@ -1,8 +1,8 @@
 ---
 title: Configuration
-seo_title: Configuration Documentation – FinanceScenarios
+seo_title: Configuration Documentation – Finance Scenarios
 excerpt: "A simulation run is driven by two named profiles, run settings and a factor set. This page covers every field, multi-instance factors, beliefs and shocks, the published frameworks, long history, real-world and risk-neutral measures, and API keys."
-description: "How to configure a FinanceScenarios run: settings and factor-set profiles, every field, beliefs and shocks, published frameworks, measures and API keys."
+description: "How to configure a Finance Scenarios run: settings and factor-set profiles, every field, beliefs and shocks, published frameworks, measures and API keys."
 author_profile: false
 permalink: /projects/financescenarios/docs/configuration
 classes: wide-sidebar

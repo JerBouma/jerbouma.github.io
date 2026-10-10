@@ -1,8 +1,8 @@
 ---
 title: Simulation Engine
-seo_title: Simulation Engine Documentation – FinanceScenarios
+seo_title: Simulation Engine Documentation – Finance Scenarios
 excerpt: "How the correlated shocks are drawn, how each factor steps forward one time step at a time, and the ScenarioSet result with its methods to summarize, slice, filter and save a run."
-description: "How the FinanceScenarios Monte Carlo engine draws correlated shocks, steps every factor forward and returns a ScenarioSet to summarize and filter."
+description: "How the Finance Scenarios Monte Carlo engine draws correlated shocks, steps every factor forward and returns a ScenarioSet to summarize and filter."
 author_profile: false
 permalink: /projects/financescenarios/docs/simulation-engine
 classes: wide-sidebar

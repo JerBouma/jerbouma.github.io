@@ -1,8 +1,8 @@
 ---
 title: Architecture
-seo_title: Architecture Documentation – FinanceScenarios
+seo_title: Architecture Documentation – Finance Scenarios
 excerpt: "The code is split into three kinds of file so each can be read and tested on its own. This page shows which folder does what and the order a run goes through, from settings to simulated scenarios."
-description: "The FinanceScenarios module layout (model, controller and view files) and the data flow from configuration to simulated scenarios."
+description: "The Finance Scenarios module layout (model, controller and view files) and the data flow from configuration to simulated scenarios."
 author_profile: false
 permalink: /projects/financescenarios/docs/architecture
 classes: wide-sidebar
@@ -18,7 +18,7 @@ sidebar:
 
 The code is split into three kinds of file so each can be read and tested on its own: one kind does the maths, one fetches data and wires the steps together, and one draws the charts. This page shows which folder does what and the order a run goes through, from settings to simulated scenarios.
 
-FinanceScenarios separates pure calculation from orchestration from presentation. Every module follows one of four file types:
+Finance Scenarios separates pure calculation from orchestration from presentation. Every module follows one of four file types:
 
 - **`_model.py`**: pure functions and data schemas. No I/O, no dependency on FinanceToolkit, with no exceptions: reading a config off disk lives in `config_controller.py`, and the metric/regression functions that delegate their maths to FinanceToolkit live in `metrics_controller.py`/`factor_exposure_controller.py`, leaving their `_model.py` files holding the result schemas. Given the same inputs, a model function always produces the same output. This is where the mathematics lives.
 - **`_controller.py`**: orchestration. Pulls data from a FinanceToolkit `Toolkit` instance, calls the matching model functions, and exposes the result. This is where FinanceToolkit is called. Controllers import `Toolkit` for type hints only (under `TYPE_CHECKING`) and import FinanceToolkit at call time where they build one, so `import financescenarios` and an offline replay of a saved calibration never load it (2.8 s and 205 MB instead of 3.7 s and 254 MB).
@@ -108,7 +108,7 @@ Every opt-in factor (the three yield curve factors, `real_estate`, each `credit`
 
 ## A library, driven directly
 
-FinanceScenarios is a library: one entry point drives the `ScenariosConfig` in, `ScenarioSet` out contract: `financescenarios/` imported directly (`Scenarios.from_profiles(...)`, `Scenarios.from_config(...)`, `Portfolio`). Scripting and CI use go through the same imports. The one command line, `python -m financescenarios.release`, is a thin wrapper over `publish_calibration()` for the yearly release pipeline, not a second way to configure a run.
+Finance Scenarios is a library: one entry point drives the `ScenariosConfig` in, `ScenarioSet` out contract: `financescenarios/` imported directly (`Scenarios.from_profiles(...)`, `Scenarios.from_config(...)`, `Portfolio`). Scripting and CI use go through the same imports. The one command line, `python -m financescenarios.release`, is a thin wrapper over `publish_calibration()` for the yearly release pipeline, not a second way to configure a run.
 
 A full result can be written to disk via `financescenarios/run_io/run_io_controller.py` (`write_run()`, or `Scenarios.save()`, which supplies the config, regime and calibration itself and returns the run's folder) rather than held in memory, so a written run can be re-read later (`read_run()` + `Portfolio.from_preset()`) without resimulating.
 

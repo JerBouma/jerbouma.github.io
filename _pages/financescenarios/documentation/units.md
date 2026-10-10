@@ -1,8 +1,8 @@
 ---
 title: Units
-seo_title: Units Documentation – FinanceScenarios
+seo_title: Units Documentation – Finance Scenarios
 excerpt: "Every series is calibrated in the form economists and actuaries normally use for it, and every result can be shown as a rate, a level, a change or an annualized return."
-description: "The units FinanceScenarios calibrates and reports in: the calibration input of each series, the native simulated values and every metric= reading."
+description: "The units Finance Scenarios calibrates and reports in: the calibration input of each series, the native simulated values and every metric= reading."
 author_profile: false
 permalink: /projects/financescenarios/docs/units
 classes: wide-sidebar
