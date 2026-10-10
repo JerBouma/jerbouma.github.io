@@ -68,6 +68,12 @@ The four default factors are not simulated in isolation. Following [Wilkie (1986
 | [plotting](/projects/financescenarios/docs/plotting) | The `.plot()` on every result and the chart functions behind it. |
 | [validation-and-testing](/projects/financescenarios/docs/validation) | How the output is checked: analytical tests, external benchmarks (NAIC GOES, a bond panel, option-implied densities) and the test suite. |
 | [coverage](/projects/financescenarios/docs/coverage) | What this project can and can't do, and why: every factor, every calibration method, every measure and every known gap, in one place. |
+| [interest-rates](/projects/financescenarios/docs/interest-rates) | The short-rate models and when to pick each, the zero lower bound, the Nelson-Siegel yield curve with its sources, the credit term structure and HJM. |
+| [knw](/projects/financescenarios/docs/knw) | The joint interest-rate and inflation models behind De Nederlandsche Bank's scenario set: plain, with stochastic volatility, and priced like the market. |
+| [economy](/projects/financescenarios/docs/economy) | Inflation, unemployment, the leading indicator and the business cycle, and mortality for longevity risk. |
+| [markets](/projects/financescenarios/docs/markets) | Equities, currencies, commodities, real estate, dividends, credit spreads and rating migration. |
+| [portfolio](/projects/financescenarios/docs/portfolio) | Turning a run into the value of an investment mix: rebalancing, cashflows, glidepaths, fees, risk metrics, backtests and factor exposure. |
+| [solvency](/projects/financescenarios/docs/solvency) | Best estimate, own funds and the SCR under Solvency II, the market-consistency check, and where it simplifies the rules. |
 | [reference](/projects/financescenarios/docs/reference) | Every public class, method and function, generated from the docstrings: `Scenarios`, `ScenarioSet`, `Portfolio`, `Solvency`, each factor and the functions around them. |
 
 ## Data, measures and currency

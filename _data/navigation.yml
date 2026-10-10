@@ -1701,6 +1701,20 @@ financescenarios-docs:
       url: /projects/financescenarios/docs/validation
     - title: "Coverage"
       url: /projects/financescenarios/docs/coverage
+  - title: Guides
+    children:
+    - title: "Interest Rates and Yield Curves"
+      url: /projects/financescenarios/docs/interest-rates
+    - title: "KNW Models"
+      url: /projects/financescenarios/docs/knw
+    - title: "Inflation, Labor and Longevity"
+      url: /projects/financescenarios/docs/economy
+    - title: "Markets and Credit"
+      url: /projects/financescenarios/docs/markets
+    - title: "Portfolio"
+      url: /projects/financescenarios/docs/portfolio
+    - title: "Solvency II"
+      url: /projects/financescenarios/docs/solvency
   - title: Reference
     children:
     - title: "Overview"
