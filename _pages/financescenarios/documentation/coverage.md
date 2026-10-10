@@ -14,7 +14,7 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-What Finance Scenarios can and can't do, and why. Pick a topic to see its features, filter on status, or search across all topics. Each card says in plain words what a feature does or what is still missing. **Technical details** shows where it lives in the configuration and code, with the precise notes for quants.
+What Finance Scenarios can and can't do, and why. Pick a topic to see its features or search across all of them. Each card says in plain words what a feature does or what is still missing. **Technical details** shows where it lives in the configuration and code, with the precise notes for quants.
 
 When a run uses something that has a known, more capable alternative that isn't available yet, `Scenarios.calibrate(config)` says so in a notice (at INFO level, so `set_log_level("INFO")` shows it).
 
