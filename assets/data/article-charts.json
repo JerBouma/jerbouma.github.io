@@ -4659,6 +4659,96 @@
      ]
     }
    ]
+  },
+  "fdb-isin-listings": {
+   "type": "hbar",
+   "title": "Listings of ISIN US0378331005 (Apple) by country",
+   "x": [
+    "Germany",
+    "Argentina",
+    "Chile",
+    "United States",
+    "Brazil",
+    "Mexico",
+    "Italy",
+    "Austria"
+   ],
+   "series": [
+    {
+     "name": "Listings",
+     "data": [
+      8,
+      4,
+      2,
+      1,
+      1,
+      1,
+      1,
+      1
+     ]
+    }
+   ],
+   "format": "amount"
+  },
+  "fdb-uranium": {
+   "type": "hbar",
+   "title": "Uranium ETF listings by market",
+   "x": [
+    "United States",
+    "United Kingdom",
+    "Germany",
+    "Italy",
+    "Canada",
+    "Japan",
+    "Australia",
+    "Mexico"
+   ],
+   "series": [
+    {
+     "name": "Listings",
+     "data": [
+      7,
+      4,
+      3,
+      2,
+      2,
+      1,
+      1,
+      1
+     ]
+    }
+   ],
+   "format": "amount"
+  },
+  "fdb-vanguard": {
+   "type": "hbar",
+   "title": "Vanguard's US-listed bond ETFs by category",
+   "x": [
+    "Corporate Bonds",
+    "Investment Grade Bonds",
+    "Treasury Bonds",
+    "Blend",
+    "Municipal Bonds",
+    "Inflation-Protected Securities",
+    "Government Bonds",
+    "Emerging Markets"
+   ],
+   "series": [
+    {
+     "name": "ETFs",
+     "data": [
+      15,
+      7,
+      5,
+      2,
+      2,
+      2,
+      1,
+      1
+     ]
+    }
+   ],
+   "format": "amount"
   }
  }
 }
