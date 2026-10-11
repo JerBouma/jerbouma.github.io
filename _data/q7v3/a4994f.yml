@@ -1,5 +1,5 @@
-# Drafts for How to Find Stocks, ETFs and Funds with Claude. Starting points, edited before posting.
-article: /articles/find-stocks-etfs-funds-with-claude
+# Drafts for How to Find Stocks and ETFs with Claude. Starting points, edited before posting.
+article: /articles/find-stocks-and-etfs-with-claude
 written: 2026-10-10
 linkedin:
   text: |
@@ -12,7 +12,7 @@ linkedin:
     So I gave the assistant the database instead. The Finance Database MCP server lets Claude, ChatGPT or Cursor search 300,000+ equities, ETFs, indices and currencies by sector, country, exchange, issuer or ISIN. It is free and hosted, and it needs no API key: add one URL as a connector and ask.
 
     Finding the universe is the first step of most research. The article has eight real questions with their answers, and how the list then feeds into the analysis:
-    https://www.jeroenbouma.com/articles/find-stocks-etfs-funds-with-claude
+    https://www.jeroenbouma.com/articles/find-stocks-and-etfs-with-claude
 
     I maintain the Finance Database and built the server. Not investment advice.
 
@@ -46,7 +46,7 @@ reddit:
 
       It holds classifications, not prices or financials. The data is community-maintained and updated weekly, so a classification can be wrong (corrections welcome on GitHub). For the numbers I pair it with the Finance Toolkit MCP server.
 
-      Full write-up with all eight questions: https://www.jeroenbouma.com/articles/find-stocks-etfs-funds-with-claude
+      Full write-up with all eight questions: https://www.jeroenbouma.com/articles/find-stocks-and-etfs-with-claude
 
       Disclosure: I maintain the Finance Database and built the server. Not investment advice.
   - subreddit: r/eupersonalfinance
@@ -62,7 +62,7 @@ reddit:
 
       The same works for any theme or issuer, and for finding which ticker belongs to the ISIN on your broker statement (Apple's ISIN alone has 19 listings on 15 exchanges).
 
-      It's free and needs no API key. Setup and more examples: https://www.jeroenbouma.com/articles/find-stocks-etfs-funds-with-claude
+      It's free and needs no API key. Setup and more examples: https://www.jeroenbouma.com/articles/find-stocks-and-etfs-with-claude
 
       This is a list of what exists, not a recommendation: check the fund's KID, costs and your broker's availability yourself. Not investment advice.
     note: Check that the subreddit allows posts with a link to your own tool; if not, post the list without the link.
