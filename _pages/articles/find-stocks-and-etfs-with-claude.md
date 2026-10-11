@@ -216,9 +216,19 @@ Every list comes from the open [Finance Database](/projects/financedatabase), so
 
 ## From a List to an Analysis
 
-A list is where most research starts, not where it ends. Once you know the seven large Dutch financials or the 35 Vanguard bond ETFs, the next questions are about numbers: which insurer is the most solvent, which bank earns the most on its equity, how the ETFs have performed. The Finance Database holds classifications, not prices or financial statements, so it hands that part over.
+A list is where most research starts, not where it ends. Once you know which companies or ETFs exist, the next questions are about numbers: who earns the most, who is the most solvent, how the ETFs have performed. The Finance Database holds classifications, not prices or financial statements, so it hands that part over to the Finance Toolkit MCP server. Add both connectors and Claude chains them in one conversation: it takes the tickers from the Finance Database and the numbers from the Finance Toolkit.
 
-That is what the Finance Toolkit MCP server does, and the two connect in the same Claude conversation. Add both connectors and you can ask *"find the large Dutch insurers, then compare their solvency ratios and return on equity"* in one go: Claude takes the tickers from the Finance Database and the numbers from the Finance Toolkit. The steps for that second server are in [How to Connect Claude to Live Financial Data for Stock Analysis](/articles/connect-claude-to-financial-data).
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find the large European semiconductor companies, then compare their operating margins over the last five years.<span class="ca-q__tool">Finance Database MCP · equities → Finance Toolkit MCP · profitability</span></p></div>
+
+<div class="ca-nums"><span><b>34.6%</b>ASML 2025</span><span><b>2.7%</b>STMicroelectronics 2025</span><span><b>27.5% → 2.7%</b>STMicro since 2022</span></div>
+
+{% include ft-chart.html id="fdb-chip-margins" src="/assets/data/article-charts.json" label="Operating margins of Europe's large chipmakers" %}
+
+The first step is the list from the chipmaker question above: seven companies with their home listings. The second step runs each through the Finance Toolkit's [operating margin](/projects/financetoolkit/docs/ratios/operating-margin), operating income as a share of revenue. Same industry, very different businesses: the equipment makers ASML, ASM International and BE Semiconductor Industries kept margins around 29% to 35% in 2025, while the chipmakers Infineon and STMicroelectronics went from roughly a quarter of revenue at their peak to 13.9% and 2.7%. Margins are per fiscal year, and NXP is measured on its primary listing in New York.
+
+<div class="ca-take"><p>The Finance Database tells you who is in the peer group; the Finance Toolkit tells you how different the members are. A sector average would hide a range from 2.7% to 34.6%.</p></div>
+
+The setup for that second server, and ten more questions it answers, are in [How to Connect Claude to Live Financial Data for Stock Analysis](/articles/connect-claude-to-financial-data).
 
 ## Tips for Better Answers
 
