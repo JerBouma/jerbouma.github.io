@@ -1,9 +1,11 @@
 ---
-title: How to Find Stocks, ETFs and Funds with Claude
-seo_title: "Find Stocks, ETFs and Funds with Claude"
+title: How to Find Stocks and ETFs with Claude
+seo_title: "Find Stocks and ETFs with Claude"
 date: 2026-10-10
 last_modified_at: 2026-10-11
-permalink: /articles/find-stocks-etfs-funds-with-claude
+permalink: /articles/find-stocks-and-etfs-with-claude
+redirect_from:
+  - /articles/find-stocks-etfs-funds-with-claude
 excerpt: "Claude can't list every company in a sector or every ETF of an issuer from memory. With the free, hosted Finance Database MCP server it searches 300,000+ stocks, ETFs and indices by sector, country, exchange and ISIN, with no API key and no installation."
 description: "Use Claude as a stock and ETF screener: the free Finance Database MCP server finds 300,000+ stocks, ETFs and indices by sector, country, exchange or ISIN."
 layout: single
@@ -14,7 +16,7 @@ tags: [MCP Server]
 share: true
 image: /assets/images/projects/FinanceDatabaseMCP.jpg
 ---
-Ask Claude *"which uranium ETFs can I buy?"* and you will probably get URA and URNM, the two best-known US funds. On October 10, 2026 the Finance Database listed 21 uranium ETF listings from ten issuers across eight markets, seven of them UCITS versions in London, Frankfurt and Milan. If you are a European investor, those are often the only ones you can buy, and they are exactly the ones a model's memory leaves out.
+Ask Claude *"which uranium ETFs can I buy?"* and you will probably get URA and URNM, the two best-known US ETFs. On October 10, 2026 the Finance Database listed 21 uranium ETF listings from ten issuers across eight markets, seven of them UCITS versions in London, Frankfurt and Milan. If you are a European investor, those are often the only ones you can buy, and they are exactly the ones a model's memory leaves out.
 
 Finding things is a different problem from analyzing them. A language model reasons well about companies, but it lists them from memory, and memory favors the famous names, the US tickers and whatever was in the training data. The [Finance Database MCP server](/projects/financedatabase/mcp) gives Claude the [Finance Database](/projects/financedatabase) instead: 300,000+ equities, ETFs, indices, currencies and cryptocurrencies, each categorized by sector, industry, country, exchange, market cap and issuer. This article connects it to Claude in about a minute and then works through eight real questions, from screening stocks to turning an ISIN into the right ticker.
 
@@ -137,7 +139,7 @@ Seven of the listings are US ETFs, from URA and URNM to Direxion's leveraged URA
 
 Corporate bonds make up the largest group, and ten of those 15 are target maturity ETFs that each hold bonds maturing in one year, from 2027 to 2036. The broad core is BND for US bonds, BNDX for international bonds and BNDW for both. Without the exchange filter the count rises to 266, because many of these ETFs are also listed in Europe.
 
-<div class="ca-take"><p>An issuer's full lineup in one question, including the newer funds you would not think to ask about.</p></div>
+<div class="ca-take"><p>An issuer's full lineup in one question, including the newer ETFs you would not think to ask about.</p></div>
 
 ### Which large Dutch financials are there? {#dutch-financials}
 
