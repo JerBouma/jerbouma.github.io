@@ -2,12 +2,12 @@
 permalink: /projects/financedatabase/mcp
 title: Finance Database MCP Server
 seo_title: Finance Database MCP Server
-excerpt: "Connect Claude, ChatGPT, Cursor, VS Code or any other MCP client to the Finance Database, hosted or on your own machine, and find equities, ETFs, funds, indices, currencies and cryptos in plain English."
-description: "Open-source MCP server for the Finance Database: find 300,000+ equities, ETFs, funds and indices by sector, country or issuer in Claude, ChatGPT or Cursor."
+excerpt: "Connect Claude, ChatGPT, Cursor, VS Code or any other MCP client to the Finance Database, hosted or on your own machine, and find equities, ETFs, indices, currencies and cryptocurrencies in plain English."
+description: "Open-source MCP server for the Finance Database: find 300,000+ stocks, ETFs and indices by sector, country or issuer in Claude, ChatGPT or Cursor."
 classes: wide-sidebar
 author_profile: false
 layout: single
-last_modified_at: 2026-10-10
+last_modified_at: 2026-10-11
 sidebar:
   nav: "financedatabase-mcp"
 image: /assets/images/projects/FinanceDatabaseMCP.jpg
@@ -17,10 +17,10 @@ image: /assets/images/projects/FinanceDatabaseMCP.jpg
 
 Ask an AI assistant for every large European semiconductor company and you will usually get a list. Whether it is complete depends on what the model remembers, and the tickers it gives may be the US over-the-counter lines rather than the shares on Euronext or Xetra. Ask for the bond ETFs of an issuer and you get the famous ones, not all of them.
 
-The Finance Database MCP server gives the assistant the database instead of its memory. It is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that connects Claude, ChatGPT, GitHub Copilot, Cursor, Gemini and other assistants to the [Finance Database](/projects/financedatabase): 300,000+ equities, ETFs, funds, indices, currencies, cryptocurrencies and money markets, each categorized by sector, industry, country, exchange, market cap, issuer or category. Ask in plain English and the assistant filters the database on your behalf.
+The Finance Database MCP server gives the assistant the database instead of its memory. It is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that connects Claude, ChatGPT, GitHub Copilot, Cursor, Gemini and other assistants to the [Finance Database](/projects/financedatabase): 300,000+ equities, ETFs, indices, currencies and cryptocurrencies, each categorized by sector, industry, country, exchange, market cap, issuer or category. Ask in plain English and the assistant filters the database on your behalf.
 
 <div class="mcp-facts">
-  <div class="mcp-fact"><strong>300,000+</strong><span>equities, ETFs, funds, indices, currencies, cryptos and money markets</span></div>
+  <div class="mcp-fact"><strong>300,000+</strong><span>equities, ETFs, indices, currencies and cryptocurrencies</span></div>
   <div class="mcp-fact"><strong>No API key</strong><span>no account, no sign-in: connect and start asking</span></div>
   <div class="mcp-fact"><strong>Free</strong><span>hosted at one URL, or run locally; MIT-licensed source code</span></div>
   <div class="mcp-fact"><strong>Any client</strong><span>Claude, ChatGPT, Copilot, Cursor, Windsurf, Gemini, Codex</span></div>
@@ -54,9 +54,9 @@ You never have to name a tool or a filter value: ask in plain English and the as
 <div class="mcp-uses">
   <div class="mcp-use"><i class="fas fa-building" aria-hidden="true"></i><h3>Screen companies</h3><p>"Which Dutch financial companies are Large or Mega Cap?"</p><span>equities by country, sector, industry, exchange and market cap</span></div>
   <div class="mcp-use"><i class="fas fa-fingerprint" aria-hidden="true"></i><h3>Find a symbol</h3><p>"Which ticker belongs to ISIN US0378331005, and where is it listed?"</p><span>search by ticker, name, ISIN, CUSIP or FIGI</span></div>
-  <div class="mcp-use"><i class="fas fa-layer-group" aria-hidden="true"></i><h3>ETFs and funds</h3><p>"What bond ETFs does Vanguard list in the US?"</p><span>by category, issuer, currency and exchange</span></div>
+  <div class="mcp-use"><i class="fas fa-layer-group" aria-hidden="true"></i><h3>ETFs</h3><p>"What bond ETFs does Vanguard list in the US?"</p><span>by category, issuer, currency and exchange</span></div>
   <div class="mcp-use"><i class="fas fa-earth-europe" aria-hidden="true"></i><h3>Listings and exchanges</h3><p>"On which European exchanges do the large chipmakers trade?"</p><span>exchanges, market identifier codes, primary listings</span></div>
-  <div class="mcp-use"><i class="fas fa-chart-area" aria-hidden="true"></i><h3>Indices, currencies and crypto</h3><p>"Which currency pairs quote against the Swiss franc?"</p><span>indices, currency pairs, cryptocurrencies, money markets</span></div>
+  <div class="mcp-use"><i class="fas fa-chart-area" aria-hidden="true"></i><h3>Indices, currencies and crypto</h3><p>"Which currency pairs quote against the Swiss franc?"</p><span>indices, currency pairs and cryptocurrencies</span></div>
   <div class="mcp-use"><i class="fas fa-list-ul" aria-hidden="true"></i><h3>Explore the categories</h3><p>"Which industries are there in the Health Care sector?"</p><span>every valid value of a filter, narrowed by other filters</span></div>
 </div>
 
@@ -413,7 +413,7 @@ Four questions of the kind an analyst or portfolio manager would ask, each answe
 <div class="mcp-show" id="ex-isin" markdown="1">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which ticker belongs to ISIN US0378331005, and where else does it trade?</p></div>
 <div class="mcp-show__meta"><span><b>1</b> tool call</span><span><b>19</b> listings</span><span><b>6</b> currencies</span></div>
-<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What the assistant looked up</summary><ol><li><code>search_instruments</code><span>The ISIN across all seven asset classes at once: 19 matches, all equities</span></li></ol></details>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What the assistant looked up</summary><ol><li><code>search_instruments</code><span>The ISIN across all asset classes at once: 19 matches, all equities</span></li></ol></details>
 
 <div class="mcp-show__result" markdown="1">
 
@@ -487,16 +487,14 @@ The server has one tool per asset class and three tools to search and explore. T
 |:---|:---|
 | `equities` | Stocks by country, sector, industry group, industry, currency, exchange, market identifier code, market or market cap tier |
 | `etfs` | ETFs by category group, category, issuer family, currency or exchange |
-| `funds` | Mutual funds by category group, category, fund family, currency or exchange |
 | `indices` | Market indices by category group, category, currency or exchange |
 | `currencies` | Currency pairs by base and quote currency |
 | `cryptos` | Cryptocurrency pairs by coin and the currency they are quoted in |
-| `moneymarkets` | Money market funds by currency or fund family |
 | `search_instruments` | Find a symbol by ticker, name, ISIN, CUSIP or FIGI across all asset classes at once |
 | `show_options` | Every valid value of a filter, such as all sectors or countries, optionally narrowed by other filters |
 | `search_categories` | The asset classes with their size, filters and description |
 
-Every filter accepts several comma-separated values, and every asset class tool also takes a free-text query on symbol and name. Results come back as compact tables of 25 rows by default and at most 200, with a note on how to get the next page, so no answer ever floods the conversation. A filter value that doesn't exist returns a suggestion: ask for the sector "Technology" and the server answers "Did you mean 'Information Technology'?". The [architecture page](/projects/financedatabase/mcp/architecture) explains how it works under the hood.
+Every filter accepts several comma-separated values and understands the names people actually use: accents are optional and common synonyms work, so "Holland", "USA", "Tech", "Healthcare" or "megacap" find the right category. Every asset class tool also takes a free-text query on symbol and name. Results come back as compact tables of 25 rows by default and at most 200, with a note on how to get the next page, so no answer ever floods the conversation. A value that still doesn't match returns a suggestion: ask for the country "Netherland" and the server answers "Did you mean 'Netherlands'?". The [architecture page](/projects/financedatabase/mcp/architecture) explains how it works under the hood.
 
 ## FAQ
 
@@ -533,28 +531,28 @@ The questions that come up most often about the server and the data behind it. A
 <details class="ft-details" markdown="1">
   <summary><h3>What data does the server cover?</h3></summary>
 
-  The full Finance Database: 300,000+ equities, ETFs, funds, indices, currencies, cryptocurrencies and money markets with their classifications, such as sector, industry, country, exchange, market cap tier, ETF category and issuer, and identifiers such as ISIN, CUSIP and FIGI. It holds no prices or financial statements; for those, pair it with the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).
+  The Finance Database: 300,000+ equities, ETFs, indices, currencies and cryptocurrencies with their classifications, such as sector, industry, country, exchange, market cap tier, ETF category and issuer, and identifiers such as ISIN, CUSIP and FIGI. It holds no prices or financial statements; for those, pair it with the [Finance Toolkit MCP server](/projects/financetoolkit/mcp). Mutual funds and money market funds were retired from the database in October 2026, because no public source keeps them current; funds that trade on an exchange are included as ETFs.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><h3>How current is the data?</h3></summary>
 
-  The database is maintained on [GitHub](https://github.com/JerBouma/FinanceDatabase){:target="_blank"} and republished on every change and every week. The server downloads the published files on first use, caches them and checks for updates at most once a day, so it follows the database without a new release.
+  The database is maintained on [GitHub](https://github.com/JerBouma/FinanceDatabase){:target="_blank"} and updated automatically every week from public sources: the exchanges' own listing directories for new equities and ETFs (from the US, Hong Kong, India and Japan to Xetra, Euronext and SIX), CoinGecko for cryptocurrencies and the ISO 4217 list for currencies. Each source runs on its own, a check before every update undoes anything that would damage the data, and delisted tickers are kept and marked rather than removed. The server checks for new data at most once a day, so it follows the database without a new release.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><h3>Can I use it together with the Finance Toolkit MCP server?</h3></summary>
 
-  Yes, and that is what it is designed for. Add both servers to your client: the Finance Database finds the companies, ETFs or funds that match your question, and the [Finance Toolkit MCP server](/projects/financetoolkit/mcp) analyzes them, from financial statements and ratios to valuation and risk.
+  Yes, and that is what it is designed for. Add both servers to your client: the Finance Database finds the companies, ETFs or indices that match your question, and the [Finance Toolkit MCP server](/projects/financetoolkit/mcp) analyzes them, from financial statements and ratios to valuation and risk.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><h3>What does the hosted server store about me?</h3></summary>
 
-  It needs no account and stores no personal data. It counts anonymous usage totals, such as calls per day and per tool, which are published at [/stats](https://financedatabase.jeroenbouma.com/stats){:target="_blank"}. The [privacy policy](https://github.com/JerBouma/FinanceDatabase/blob/main/PRIVACY.md){:target="_blank"} has the details. If you prefer to keep everything on your own machine, use the [local server](#local-clients).
+  It needs no account and stores no personal data. It keeps anonymous usage totals, such as calls per day and per tool, and counts unique users with a keyed hash of the IP address and user agent, which is never stored in readable form. The totals are published at [/stats](https://financedatabase.jeroenbouma.com/stats){:target="_blank"} and the [privacy policy](https://github.com/JerBouma/FinanceDatabase/blob/main/PRIVACY.md){:target="_blank"} has the details. If you prefer to keep everything on your own machine, use the [local server](#local-clients).
 
 </details>
 
@@ -607,7 +605,7 @@ The questions that come up most often about the server and the data behind it. A
       "name": "What data does the server cover?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The full Finance Database: 300,000+ equities, ETFs, funds, indices, currencies, cryptocurrencies and money markets with their classifications, such as sector, industry, country, exchange, market cap tier, ETF category and issuer, and identifiers such as ISIN, CUSIP and FIGI. It holds no prices or financial statements; for those, pair it with the Finance Toolkit MCP server."
+        "text": "The Finance Database: 300,000+ equities, ETFs, indices, currencies and cryptocurrencies with their classifications, such as sector, industry, country, exchange, market cap tier, ETF category and issuer, and identifiers such as ISIN, CUSIP and FIGI. It holds no prices or financial statements; for those, pair it with the Finance Toolkit MCP server. Mutual funds and money market funds were retired from the database in October 2026, because no public source keeps them current; funds that trade on an exchange are included as ETFs."
       }
     },
     {
@@ -615,7 +613,7 @@ The questions that come up most often about the server and the data behind it. A
       "name": "How current is the data?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The database is maintained on GitHub and republished on every change and every week. The server downloads the published files on first use, caches them and checks for updates at most once a day, so it follows the database without a new release."
+        "text": "The database is maintained on GitHub and updated automatically every week from public sources: the exchanges' own listing directories for new equities and ETFs (from the US, Hong Kong, India and Japan to Xetra, Euronext and SIX), CoinGecko for cryptocurrencies and the ISO 4217 list for currencies. Each source runs on its own, a check before every update undoes anything that would damage the data, and delisted tickers are kept and marked rather than removed. The server checks for new data at most once a day, so it follows the database without a new release."
       }
     },
     {
@@ -623,7 +621,7 @@ The questions that come up most often about the server and the data behind it. A
       "name": "Can I use it together with the Finance Toolkit MCP server?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, and that is what it is designed for. Add both servers to your client: the Finance Database finds the companies, ETFs or funds that match your question, and the Finance Toolkit MCP server analyzes them, from financial statements and ratios to valuation and risk."
+        "text": "Yes, and that is what it is designed for. Add both servers to your client: the Finance Database finds the companies, ETFs or indices that match your question, and the Finance Toolkit MCP server analyzes them, from financial statements and ratios to valuation and risk."
       }
     },
     {
@@ -631,7 +629,7 @@ The questions that come up most often about the server and the data behind it. A
       "name": "What does the hosted server store about me?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It needs no account and stores no personal data. It counts anonymous usage totals, such as calls per day and per tool, which are published at /stats. The privacy policy has the details. If you prefer to keep everything on your own machine, use the local server."
+        "text": "It needs no account and stores no personal data. It keeps anonymous usage totals, such as calls per day and per tool, and counts unique users with a keyed hash of the IP address and user agent, which is never stored in readable form. The totals are published at /stats and the privacy policy has the details. If you prefer to keep everything on your own machine, use the local server."
       }
     },
     {
@@ -668,12 +666,13 @@ The questions that come up most often about the server and the data behind it. A
     "name": "Jeroen Bouma",
     "url": "https://www.jeroenbouma.com"
   },
-  "description": "Open-source Model Context Protocol server that gives Claude, ChatGPT, Cursor, VS Code and other AI assistants access to the Finance Database: 300,000+ equities, ETFs, funds, indices, currencies and cryptocurrencies, searchable by sector, industry, country, exchange, issuer and ISIN.",
+  "description": "Open-source Model Context Protocol server that gives Claude, ChatGPT, Cursor, VS Code and other AI assistants access to the Finance Database: 300,000+ equities, ETFs, indices, currencies and cryptocurrencies, searchable by sector, industry, country, exchange, issuer and ISIN.",
   "featureList": [
     "300,000+ categorized financial instruments",
     "Hosted server, no installation required",
     "No API key, account or sign-in",
     "Search by ticker, name, ISIN, CUSIP or FIGI",
+    "Understands accents and common synonyms",
     "Works with any MCP-compatible client"
   ]
 }

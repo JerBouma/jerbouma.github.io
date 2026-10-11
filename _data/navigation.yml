@@ -1915,6 +1915,8 @@ financedatabase-mcp:
         url: /projects/financedatabase/mcp/architecture#startup-sequence
       - title: One Tool per Asset Class
         url: /projects/financedatabase/mcp/architecture#one-tool-per-asset-class
+      - title: Ranking
+        url: /projects/financedatabase/mcp/architecture#ranking
       - title: Responses and Limits
         url: /projects/financedatabase/mcp/architecture#responses-and-limits
       - title: Data and Caching

@@ -2,19 +2,21 @@
 permalink: /projects/financedatabase/mcp/architecture
 title: "Finance Database MCP Architecture"
 seo_title: "Finance Database MCP Server Architecture"
-excerpt: "How the Finance Database MCP server is built: one generated tool per asset class from config.yaml, typed filters with suggestions, bounded JSON responses, daily data caching and a stateless hosted server."
+excerpt: "How the Finance Database MCP server is built: one generated tool per asset class from config.yaml, forgiving filters with suggestions, relevance ranking, bounded JSON responses, daily data caching and a stateless hosted server."
 description: "How the open-source Finance Database MCP server works: one tool per asset class, typed filters, bounded JSON output, data caching and self-hosting."
 classes: wide-sidebar
 author_profile: false
 layout: single
-last_modified_at: 2026-10-10
+last_modified_at: 2026-10-11
 sidebar:
   nav: "financedatabase-mcp"
 ---
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceDatabase/tree/main/financedatabase/mcp_server" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The MCP server lives entirely inside `financedatabase/mcp_server/` and is a thin layer over the Finance Database package itself. Each of the seven asset classes (equities, ETFs, funds, indices, currencies, cryptocurrencies and money markets) becomes one MCP tool, generated from a single `config.yaml`. Three utility tools help the model find symbols and valid filter values. The server needs no API key and keeps no user state.
+The MCP server lives entirely inside `financedatabase/mcp_server/` and is a thin layer over the Finance Database package itself. Each of the five asset classes (equities, ETFs, indices, currencies and cryptocurrencies) becomes one MCP tool, generated from a single `config.yaml`. Three utility tools help the model find symbols and valid filter values. The server needs no API key and keeps no user state.
+
+Funds and money markets were retired from the server in October 2026; they remain in the Python package, which shows a warning that they are no longer maintained.
 
 **For developers.** If you just want to use the Finance Database through your assistant, the [Finance Database MCP Server](/projects/financedatabase/mcp) page covers installation, example prompts and the available tools. Everything below is implementation detail for those who want to extend, self-host or contribute to the server.
 {: .notice--info}
@@ -28,32 +30,33 @@ The MCP server lives entirely inside `financedatabase/mcp_server/` and is a thin
 | `registry_model.py` | Builds and registers one tool per asset class, with a typed signature generated from the package's filters |
 | `tools_model.py` | Registers the three utility tools: `search_categories`, `show_options` and `search_instruments` |
 | `provider_model.py` | Query engine: caches one Finance Database instance per asset class, resolves filters, runs lazy queries and adds suggestions to errors |
-| `coercion_model.py` | Turns loosely typed input from a model into clean values: booleans, clamped integers, comma-separated lists and "did you mean" matches |
+| `ranking_model.py` | Orders matches by relevance: match tiers for a `query`, preference for primary listings and larger companies, and merging the results of several asset classes |
+| `coercion_model.py` | Turns loosely typed input from a model into clean values: booleans, clamped integers, comma-separated lists, accent-insensitive matching, synonyms and "did you mean" matches |
 | `formatting_model.py` | Converts a page of results into compact JSON with paging notes, and renders small Markdown tables |
-| `analytics_model.py` | Optional anonymous usage counter behind `/stats`, off unless `FD_MCP_ANALYTICS` is set |
+| `analytics_model.py` | Optional usage counter behind `/stats` (calls, tools and unique users via a keyed hash), off unless `FD_MCP_ANALYTICS` is set |
 | `setup_model.py` | Interactive and CLI setup wizard: writes the server entry into client config files |
-| `config.yaml` | Server instructions, output limits, cache lifetime, filter descriptions and the seven asset class definitions |
+| `config.yaml` | Server instructions, output limits, cache lifetime, filter descriptions, filter value synonyms, identifier columns and the asset class definitions |
 | `mcpb/` | Source of the MCP Bundle: `manifest.json`, build script and icon |
 
-Downloading and caching the data happens in the package's own `cache_model.py` and `database_controller.py`, the same code paths as `import financedatabase as fd`.
+Downloading and caching the data happens in the package's own `cache_model.py` and `database_controller.py`, the same code paths as `import financedatabase as fd`. Which listing of an instrument counts as its primary one is also decided in the package, by `listings_model.py`.
 
 ## Startup Sequence
 {: .heading-as-h3}
 
 When the server process starts (`uvx --from financedatabase[mcp] financedatabase-mcp`), `mcp_controller._build_mcp_app()` runs these steps:
 
-1. **Read `config.yaml`**: the server name and instructions, the output limits, the instance lifetime and the list of asset classes. Each asset class entry becomes an `AssetClassSpec` dataclass.
-2. **Create the provider**: a `DatabaseProvider` is built from the specs. It loads no data yet; the first tool call for an asset class does that.
+1. **Read `config.yaml`**: the server name and instructions, the output limits, the instance lifetime, the synonyms, the identifier columns and the list of asset classes. Each asset class entry becomes an `AssetClassSpec` dataclass.
+2. **Create the provider**: a `DatabaseProvider` is built from the specs, the synonyms and the identifier columns. It loads no data yet; the first tool call for an asset class does that.
 3. **Create the FastMCP instance**: with the server instructions from the config. FastMCP takes no version, so the server sets the installed `financedatabase` version itself. Clients see the package version in `serverInfo` rather than the MCP SDK's.
 4. **Set up analytics**: only when `FD_MCP_ANALYTICS` is on. Otherwise this step returns nothing and no statistics file is written.
-5. **Register tools**: `AssetToolRegistry` registers the seven asset class tools, then `UtilityToolRegistry` registers the three utility tools.
+5. **Register tools**: `AssetToolRegistry` registers the five asset class tools, then `UtilityToolRegistry` registers the three utility tools.
 6. **Register routes**: `/stats` (when analytics are on) and `/health`, which returns `{"status": "ok"}`.
 7. **Start the transport**: `main()` picks `--transport`, then `MCP_TRANSPORT`, then `stdio`. For HTTP transports it adds CORS middleware and starts Uvicorn.
 
 ## One Tool per Asset Class
 {: .heading-as-h3}
 
-The Finance Database has a small, fixed surface: seven asset classes, each with a `select()` method and a handful of filters, so each becomes its own tool. A model sees `equities`, `etfs`, `funds`, `indices`, `currencies`, `cryptos` and `moneymarkets`, and each tool lists exactly the filters that apply to it. There is no router or `indicator` parameter to learn.
+The Finance Database has a small, fixed surface: five asset classes, each with a `select()` method and a handful of filters, so each becomes its own tool. A model sees `equities`, `etfs`, `indices`, `currencies` and `cryptos`, and each tool lists exactly the filters that apply to it. There is no router or `indicator` parameter to learn.
 
 `AssetToolRegistry._build_wrapper()` generates each tool from its `config.yaml` entry:
 
@@ -72,21 +75,35 @@ Adding an asset class or changing a description is a config change.
 
 | Argument | Behavior |
 |:---|:---|
-| Filters | One value, a comma-separated string (`"Netherlands, Belgium"`) or a list. Matching ignores case. |
+| Filters | One value, a comma-separated string (`"Netherlands, Belgium"`) or a list. Matching ignores case and accents, and accepts common synonyms (see below). |
 | `query` | Case-insensitive literal substring on symbol and name, so `S&P 500` or `BRK.B` need no escaping. An ISIN, CUSIP or FIGI matches exactly where the asset class has those columns. |
 | `include_delisted` | Equities and ETFs only. Delisted entries are excluded by default; this includes them and adds a `delisted` column. |
-| `only_primary_listing` | Equities, ETFs and funds. Keeps symbols without an exchange suffix such as `.L` or `.DE`. If none match, all matching listings are kept. |
+| `only_primary_listing` | Equities and ETFs only. Keeps one listing per instrument: the one on the main exchange of its home market (`ASML.AS` for ASML), or without one the listing on the largest main exchange abroad. Cross-listings, over-the-counter lines, depositary receipts (such as CDRs and ADR lines abroad), foreign regional lines and extra share classes are left out. If none match, all matching listings are kept. |
 | `show_columns` | Comma-separated column names, matched case-insensitively. The symbol column always comes first. An unknown column returns suggestions and the full column list. |
-| `include_summary` | Adds the business or fund description. Off by default to keep responses small. |
+| `include_summary` | Adds the business or ETF description. Off by default to keep responses small. |
 | `limit` / `offset` | Page size and starting row. |
 
 Splitting on commas is not enough on its own, because some valid values contain commas, such as the industry `Hotels, Restaurants & Leisure`. `resolve_values()` therefore re-joins the parts greedily: at each position it takes the longest run of parts that forms a known value.
 
+Values are compared without accents (`fold_accents()`), so a value typed without them matches one stored with them. The `synonyms` section of `config.yaml` maps other names to the database value per filter: `USA`, `UK`, `Holland`, `Korea` and `Côte d'Ivoire` for countries (the database uses Ivory Coast), `Tech` and `Healthcare` for sectors, and `megacap` or `Mid-cap` for market cap tiers. Adding a synonym is a config change. For the ETF `family` filter, a brand name such as `iShares` resolves to the family that issues most ETFs named after it.
+
 Booleans accept `true`, `1` and `yes` as strings. Integers are parsed from strings or floats and clamped to their range, because a model asking for `limit=1000` should get the maximum rather than an error.
 
-When a `query` is given, results are ranked: an exact symbol or identifier match first, then symbols starting with the query, then names starting with it. Ties go to primary listings, then larger market cap tiers, then shorter names. This is why `query="apple"` lists Apple Inc. before Apple Hospitality.
-
 The filtering itself is the package's own logic on a Polars `LazyFrame`. Only the requested page and columns are collected, so a call reads 25 rows rather than the full table with every summary.
+
+## Ranking
+{: .heading-as-h3}
+
+`ranking_model.py` decides the order of the rows. When a `query` is given, each match gets a relevance tier:
+
+1. The symbol or an identifier (ISIN, CUSIP, FIGI) equals the query. Separators in symbols are ignored, so `brk.b` finds `BRK-B`.
+2. The name equals the query once legal forms such as "Inc." or "N.V." are dropped, or the symbol's base equals it.
+3. The name starts with the query as whole words, then contains it as whole words.
+4. The symbol starts with the query, then the name does, then any other match.
+
+Names are compared without accents and punctuation, so `hermes` finds Hermès and `loreal` finds L'Oréal. Within a tier, primary listings come before secondary lines, leveraged and inverse products come after regular ones, and then larger market cap tiers, instruments listed on more exchanges, fewer missing fields and shorter names go first. The best match is followed by the same company's listing on the largest other main exchange, so `ASML.AS` is followed by `ASML` on NASDAQ. This is why `query="apple"` lists Apple Inc. before Apple Hospitality.
+
+Without a query, primary listings come first, ordered by market cap tier (the database holds tiers, not exact market caps) and, within a tier, by the number of exchanges an instrument is listed on.
 
 ## Responses and Limits
 {: .heading-as-h3}
@@ -96,7 +113,7 @@ Every asset class tool returns compact JSON from `formatting_model.format_page()
 ```json
 {"asset_class":"equities","total":101,"returned":2,"offset":0,"limit":2,
  "columns":["symbol","name","currency","sector","industry_group","industry","exchange","country","market_cap"],
- "rows":[{"symbol":"0O4B.IL","name":"Van Lanschot Kempen NV cert. of shs", ...}, ...],
+ "rows":[{"symbol":"INGA.AS","name":"ING Groep N.V.", ...}, {"symbol":"AGN.AS","name":"Aegon N.V.", ...}],
  "_notes":["Showing rows 1-2 of 101. Use offset=2 to get the next page, or narrow the filters."]}
 ```
 
@@ -130,15 +147,17 @@ Setting `FINANCEDATABASE_MCP_LOCAL=1` makes the server read the compression file
 
 Every tool body runs inside `run_tool()`, which returns failures as text instead of raising, so the model gets a message explaining how to fix the call rather than a bare protocol error.
 
-The most common mistake is a value that is close to, but not, a real one. Asking for `equities(sector="Technology")` returns:
+Many near misses never become errors. A value that differs only in case or accents, or that is listed as a synonym, is resolved before the query runs, so `equities(sector="Tech", market_cap="megacap", country="USA")` simply works. When a value is a single word that starts exactly one option, such as `Information` for Information Technology, that option is used as well.
+
+What remains is a value that is close to, but not, a real one. Asking for `equities(sector="Finacials")` returns:
 
 ```text
-Invalid input for `equities`: The sector 'Technology' is not available in the database. Please check the available sectors using the 'show_options' method.
-Did you mean 'Information Technology' instead of 'Technology'?
+Invalid input for `equities`: The sector 'Finacials' is not available in the database. Please check the available sectors using the 'show_options' method.
+Did you mean 'Financials' or 'Industrials' instead of 'Finacials'?
 Available sector values: Communication Services, Consumer Discretionary, Consumer Staples, Energy, Financials, Health Care, Industrials, Information Technology, Materials, Real Estate, Utilities.
 ```
 
-The first sentence is the package's own validation message. The provider then adds suggestions from `coercion_model.suggest()`, which combines `difflib` close matches (typos such as `Finacials`) with options that contain the value (partial names such as `Technology`). When a filter has 40 values or fewer they are all listed. For larger filters, such as countries or industries, the message gives the count and the exact `show_options` call to list them.
+The first sentence is the package's own validation message. The provider then adds suggestions from `coercion_model.suggest()`, which combines `difflib` close matches (typos such as `Finacials`) with options that contain the value (partial names such as `Semiconductors`). When a filter has 40 values or fewer they are all listed. For larger filters, such as countries or industries, the message gives the count and the exact `show_options` call to list them.
 
 The same approach covers other mistakes: an unknown filter name, an unknown column in `show_columns` and an unknown asset class all return "Did you mean" suggestions with the valid choices.
 
@@ -149,7 +168,7 @@ The same approach covers other mistakes: an unknown filter name, an unknown colu
 
 - `search_categories`: a Markdown table of the asset classes with their tool name, number of entries, filters and a short description.
 - `show_options`: the valid values of one filter for an asset class, optionally narrowed by other filters. For example, the industries of the Health Care sector in Germany. Without a `selection` it gives an overview of every filter.
-- `search_instruments`: finds a ticker, name or ISIN across all asset classes at once, with the same ranking as `query`. Each row says which asset class tool holds the full record.
+- `search_instruments`: finds a ticker, name or ISIN across all asset classes at once. Each asset class is ranked as described under [Ranking](#ranking), then the lists are merged by taking turns within each relevance level, so an exact company match is not pushed down by dozens of ETFs named after it. The best company's main listings stay together at the top. Each row says which asset class tool holds the full record, and the response counts the matches per asset class. With `include_delisted` on, a `delisted` column shows which rows are no longer listed.
 
 ## Transports and Self-Hosting
 {: .heading-as-h3}
@@ -166,7 +185,7 @@ The server then listens on `http://localhost:8000/mcp`.
 
 The hosted server at `https://financedatabase.jeroenbouma.com/mcp` runs exactly this setup with Docker Compose on a dedicated container, behind Cloudflare, using about 130 MB of memory. It uses streamable HTTP with no API key, OAuth or sign-in.
 
-With `FD_MCP_ANALYTICS=1`, `analytics_model.py` counts tool calls and publishes the totals at `/stats`: calls per day over the last 30 days, calls per tool with average duration, the success rate and uptime. It records no users, IP addresses or arguments. The counts are saved to a JSON file (`FD_MCP_STATS_FILE`, by default in the cache directory) every five calls and on shutdown. The hosted server has this switched on; a local installation does not. See the [privacy policy](https://github.com/JerBouma/FinanceDatabase/blob/main/PRIVACY.md){:target="_blank"} for details.
+With `FD_MCP_ANALYTICS=1`, `analytics_model.py` counts tool calls and publishes the totals at `/stats`: calls and users per day over the last 30 days, calls per tool with average duration, the success rate, uptime and the number of unique users (today, over 7 and 30 days, and new in the last week). To tell users apart, it combines the client's IP address (from Cloudflare's `CF-Connecting-IP` or `X-Forwarded-For` behind a proxy) and user agent into an HMAC-SHA256 keyed hash and keeps only the first 12 characters of it. The address and user agent themselves are never stored, and neither are tool arguments. The hash secret comes from `FD_MCP_SECRET_KEY`; without it, a random secret is generated once and kept in a `.secret` file next to the statistics file. `/stats` publishes totals only, never the hashed codes. The counts are saved to a JSON file (`FD_MCP_STATS_FILE`, by default in the cache directory) every five calls and on shutdown. `docker-compose.yml` passes both variables through from a `.env` file. The hosted server has this switched on; a local installation does not. See the [privacy policy](https://github.com/JerBouma/FinanceDatabase/blob/main/PRIVACY.md){:target="_blank"} for details.
 
 ## Setup Wizard
 {: .heading-as-h3}
