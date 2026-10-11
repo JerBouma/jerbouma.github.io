@@ -410,7 +410,7 @@ The data is an aggregation of publicly available sources: the official listing d
 
 > **What categorization method is used?**
 
-The Finance Database uses its own classification for equities: 11 sectors, divided into industry groups and then into industries. The valid combinations are listed in [scripts/categories.json](https://github.com/JerBouma/FinanceDatabase/blob/main/scripts/categories.json){:target="_blank"}, so every company is classified the same way. The classification is curated by hand and through the community, and like everything else in the database it can be freely used and improved.
+Equities are classified in this database's own three levels: 11 sectors, which are divided into industry groups and then industries. Every valid combination is listed in [`scripts/categories.json`](https://github.com/JerBouma/FinanceDatabase/blob/main/scripts/categories.json){:target="_blank"}. The categories are curated by hand and from public sources, and the weekly update classifies new companies the same way. All categorizations in the database are independently developed and can be freely modified.
 
 > **How can I find out which countries, sectors and/or industries exist within the database without needing to check the database manually?**
 
