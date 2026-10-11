@@ -197,7 +197,7 @@ entries:
       - { icon: "fa-star", value: "9,300+", label: "GitHub stars" }
       - { icon: "fa-download", value: "600,000+", label: "downloads" }
       - { icon: "fa-code-fork", value: "950+", label: "forks" }
-    description: "An open-source database with 300,000+ symbols covering Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It gives an overview of sectors, industries and investment types across 111 countries. I started it out of frustration that I did not know which financial products existed. OpenBB later came across the project, which led to a job offer."
+    description: "An open-source database with 300,000+ symbols covering Equities, ETFs, Indices, Currencies and Cryptocurrencies. It gives an overview of sectors, industries and investment types across 100+ countries. I started it out of frustration that I did not know which financial products existed. OpenBB later came across the project, which led to a job offer."
     skills: ["Python", "Git"]
     logo: "/assets/images/projects/FinanceDatabase.jpg"
     logo_alt: "Finance Database logo"

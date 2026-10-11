@@ -27,7 +27,7 @@ For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is
 
 Beyond Equities, it supports Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities, Key Economic Indicators and more, allowing you to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
 
-The Finance Toolkit works well together with the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}, a database of 300,000+ symbols covering Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. By using both, you can do a full competitive analysis: find the tickers in the FinanceDatabase and feed them into the FinanceToolkit.
+The Finance Toolkit works well together with the [Finance Database 🌎](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}, a database of 300,000+ symbols covering Equities, ETFs, Indices, Currencies and Cryptocurrencies. By using both, you can do a full competitive analysis: find the tickers in the FinanceDatabase and feed them into the FinanceToolkit.
 
 <img src="/assets/images/projects/FinanceToolkit.jpg" alt="Finance Toolkit" width="100%"/>
 
