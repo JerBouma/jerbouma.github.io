@@ -195,7 +195,7 @@ The database holds 46 pairs with the Swiss franc as quote currency, from AUD/CHF
 
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>List the megacap tech companies in Holland.<span class="ca-q__tool">Finance Database MCP · equities</span></p></div>
 
-The database uses formal names: the GICS sector "Information Technology", the country "Netherlands" and the tier "Mega Cap". The server translates everyday words into those names, so "Tech", "Holland" and "megacap" go straight to ASML, and accents are optional ("Cote d'Ivoire" finds the Ivory Coast). When a word is simply misspelled, it answers with the closest matches instead of an empty list:
+The database uses formal names: the sector "Information Technology", the country "Netherlands" and the tier "Mega Cap". The server translates everyday words into those names, so "Tech", "Holland" and "megacap" go straight to ASML, and accents are optional ("Cote d'Ivoire" finds the Ivory Coast). When a word is simply misspelled, it answers with the closest matches instead of an empty list:
 
 ```
 The country 'Netherland' is not available in the database.

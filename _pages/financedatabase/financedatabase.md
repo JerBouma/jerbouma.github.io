@@ -148,7 +148,7 @@ options = fd.show_options("equities")
 options["sector"]
 ```
 
-This returns the eleven sectors used for equities, which approximate GICS:
+This returns the eleven sectors used for equities:
 
 ```text
 ['Communication Services', 'Consumer Discretionary', 'Consumer Staples',
@@ -410,7 +410,7 @@ The data is an aggregation of publicly available sources: the official listing d
 
 > **What categorization method is used?**
 
-The categorization for Equities is based on a loose approximation of GICS (Global Industry Classification Standard). This database attempts to reflect sectors and industries as accurately as possible through manual curation, without collecting any actual data from MSCI's proprietary sources. The official GICS datasets curated by MSCI remain the most up-to-date, paid solution and were not used in developing any part of this database. All other categorizations in the database are independently developed and can be freely modified.
+The Finance Database uses its own classification for equities: 11 sectors, divided into industry groups and then into industries. The valid combinations are listed in [scripts/categories.json](https://github.com/JerBouma/FinanceDatabase/blob/main/scripts/categories.json){:target="_blank"}, so every company is classified the same way. The classification is curated by hand and through the community, and like everything else in the database it can be freely used and improved.
 
 > **How can I find out which countries, sectors and/or industries exist within the database without needing to check the database manually?**
 
