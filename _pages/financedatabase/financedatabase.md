@@ -5,8 +5,8 @@ software:
   repository: "https://github.com/JerBouma/FinanceDatabase"
   download: "https://pypi.org/project/financedatabase/"
 title: Finance Database
-excerpt: The Finance Database features 300,000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
-description: "The Finance Database is an open-source Python package with 300,000+ symbols: equities, ETFs, funds, indices, currencies, crypto and money markets."
+excerpt: The Finance Database features 300,000+ symbols containing Equities, ETFs, Indices, Currencies and Cryptocurrencies. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
+description: "The Finance Database is an open-source Python package with 300,000+ symbols: equities, ETFs, indices, currencies and cryptocurrencies."
 classes: wide-sidebar
 author_profile: false
 redirect_from:
@@ -23,53 +23,49 @@ sidebar:
 .fd-chart .fd-chart--light { display: none; }
 :root[data-theme="light"] .fd-chart .fd-chart--light { display: block; }
 :root[data-theme="light"] .fd-chart .fd-chart--dark { display: none; }
+.fd-stats-grid { grid-template-columns: repeat(5, 1fr); }
+.fd-stat-card .fd-stat-qty i { font-size: 1.3rem; }
+@media (max-width: 700px) { .fd-stats-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 420px) { .fd-stats-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 
 As a private investor, the amount of information you can find on the internet is rather daunting. With millions of companies and derivatives on the market, it is hard to understand what types of companies or ETFs are available. The most traded companies and ETFs are easy to find because they are known to the public (for example, Microsoft, Tesla, S&P 500 ETF or an All-World ETF), but what else is out there is often unknown.
 
-**This is why I created the Finance Database**, a database featuring 300,000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets. It allows you to obtain a broad overview of sectors, industries, types of investments and much more, entirely for free. Everything is stored in CSV files that anyone can read and edit, so the database grows and improves through the community.
+**This is why I created the Finance Database**, a database featuring 300,000+ symbols containing Equities, ETFs, Indices, Currencies and Cryptocurrencies, plus the Funds and Money Markets it held until October 2026. It allows you to obtain a broad overview of sectors, industries, types of investments and much more, entirely for free. Everything is stored in CSV files that anyone can read and edit, so the database grows and improves through the community.
 
 The database is explicitly _not_ meant to provide up-to-date fundamentals or stock data, as those are easy to obtain (with the help of this database) through the [Finance Toolkit](/projects/financetoolkit). Instead, it shows which products exist in each country, industry and sector and gives the most essential information about each of them. With this information, you can analyze specific areas of the financial world or find a product that is otherwise hard to find. By using both, it is possible to do a fully-fledged competitive analysis with the tickers found in the Finance Database loaded into the Finance Toolkit.
 
-Some key statistics of the database:
+An overview of the asset classes in the database:
 
 <div class="fd-stats-grid">
   <div class="fd-stat-card">
     <div class="fd-stat-name">Equities</div>
-    <div class="fd-stat-qty">123,326</div>
-    <div class="fd-stat-meta">11 Sectors &middot; 69 Industries &middot; 118 Countries &middot; 87 Exchanges</div>
+    <div class="fd-stat-qty"><i class="fas fa-building" aria-hidden="true"></i></div>
+    <div class="fd-stat-meta">Sectors &middot; Industries &middot; Countries &middot; Exchanges</div>
   </div>
   <div class="fd-stat-card">
     <div class="fd-stat-name">ETFs</div>
-    <div class="fd-stat-qty">44,429</div>
-    <div class="fd-stat-meta">605 Issuers &middot; 34 Categories &middot; 64 Exchanges</div>
-  </div>
-  <div class="fd-stat-card">
-    <div class="fd-stat-name">Funds</div>
-    <div class="fd-stat-qty">58,148</div>
-    <div class="fd-stat-meta">1,560 Fund Families &middot; 71 Categories &middot; 34 Exchanges</div>
+    <div class="fd-stat-qty"><i class="fas fa-layer-group" aria-hidden="true"></i></div>
+    <div class="fd-stat-meta">Issuers &middot; Categories &middot; Exchanges</div>
   </div>
   <div class="fd-stat-card">
     <div class="fd-stat-name">Indices</div>
-    <div class="fd-stat-qty">80,287</div>
-    <div class="fd-stat-meta">42 Categories &middot; 63 Exchanges</div>
+    <div class="fd-stat-qty"><i class="fas fa-chart-line" aria-hidden="true"></i></div>
+    <div class="fd-stat-meta">Categories &middot; Exchanges</div>
   </div>
   <div class="fd-stat-card">
     <div class="fd-stat-name">Currencies</div>
-    <div class="fd-stat-qty">2,556</div>
-    <div class="fd-stat-meta">178 Currencies</div>
+    <div class="fd-stat-qty"><i class="fas fa-money-bill-transfer" aria-hidden="true"></i></div>
+    <div class="fd-stat-meta">Currency Pairs Worldwide</div>
   </div>
   <div class="fd-stat-card">
     <div class="fd-stat-name">Cryptocurrencies</div>
-    <div class="fd-stat-qty">3,378</div>
-    <div class="fd-stat-meta">352 Coins &middot; 12 Quote Currencies</div>
-  </div>
-  <div class="fd-stat-card">
-    <div class="fd-stat-name">Money Markets</div>
-    <div class="fd-stat-qty">1,209</div>
-    <div class="fd-stat-meta">136 Fund Families &middot; 2 Exchanges</div>
+    <div class="fd-stat-qty"><i class="fab fa-bitcoin" aria-hidden="true"></i></div>
+    <div class="fd-stat-meta">Coins &middot; Quote Currencies</div>
   </div>
 </div>
+
+Funds and Money Markets were retired in October 2026, see [What happened to Funds and Money Markets?](#questions--answers) for why.
 
 <img src="/assets/images/projects/FinanceDatabase.jpg" alt="Finance Database" width="100%"/>
 
@@ -121,7 +117,7 @@ A portion of the output is shown below. The tables in this section are cut off t
 | ASML.AS  | ASML Holding N.V.          | EUR        | Information Technology | Semiconductors & Semiconductor Equipment   | AMS        | Euronext Amsterdam   | Netherlands   | Mega Cap     | NL0010273215 |
 | 7203.T   | Toyota Motor Corporation   | JPY        | Consumer Discretionary | Automobiles                                | JPX        | Tokyo Stock Exchange | Japan         | Mega Cap     | JP3633400001 |
 | NESN.SW  | Nestle S.A.                | CHF        | Consumer Staples       | Food Products                              | EBS        | SIX Swiss Exchange   | Switzerland   | Mega Cap     | CH0038863350 |
-| SIE.DE   | Siemens Aktiengesellschaft | EUR        | Industrials            | Machinery                                  | GER        | XETRA                | Germany       | Mega Cap     | DE0007236101 |
+| SAP.DE   | SAP SE                     | EUR        | Information Technology | Software                                   | GER        | XETRA                | Germany       | Mega Cap     | DE0007164600 |
 
 And below the actively listed equities are counted per sector.
 
@@ -130,7 +126,9 @@ And below the actively listed equities are counted per sector.
   <img class="fd-chart--light" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/sectors-light.png" alt="Actively listed equities per sector" loading="lazy">
 </div>
 
-Each asset class has the same three functions: `select` to filter on the database's categories, `search` to look for any text in any column and `show_options` to see which values a category can take. The asset classes are `fd.Equities()`, `fd.ETFs()`, `fd.Funds()`, `fd.Indices()`, `fd.Currencies()`, `fd.Cryptos()` and `fd.Moneymarkets()`.
+Each asset class has the same three functions: `select` to filter on the database's categories, `search` to look for any text in any column and `show_options` to see which values a category can take. The asset classes are `fd.Equities()`, `fd.ETFs()`, `fd.Indices()`, `fd.Currencies()` and `fd.Cryptos()`, which are updated weekly from official exchange and market sources.
+
+> **Funds and Money Markets are no longer maintained.** Since October 2026, `fd.Funds()` and `fd.MoneyMarkets()` are not updated anymore: no public source keeps mutual and money market funds across the world current, and the data had become outdated (many funds closed or merged, many new ones missing). Both stay available in the Python package as they are, with a warning when loaded, but are no longer part of the MCP server.
 
 Three capabilities cut across all of them:
 
@@ -208,7 +206,7 @@ This returns about 180 companies, of which a few of the larger ones are shown be
 | CINF     | Cincinnati Financial Corporation | USD        | Financials | Insurance  | NMS        | NASDAQ Global Select    | United States | Large Cap    |
 | PGR      | Progressive Corporation          | USD        | Financials | Insurance  | NYQ        | New York Stock Exchange | United States | Large Cap    |
 
-Without `only_primary_listing=True`, the same query returns about 450 listings on more than 20 exchanges, because every exchange a company trades on is shown by default. Progressive, for example, also appears as `PGV.F` (Frankfurt), `PGV.SG` (Stuttgart), `PGR.MX` (Mexico) and `P1GR34.SA` (B3). Primary listings are the symbols without an exchange suffix, which makes the option mostly useful for US companies. For companies elsewhere, filter on the `exchange` or `market` instead.
+Without `only_primary_listing=True`, the same query returns about 450 listings on more than 20 exchanges, because every exchange a company trades on is shown by default. Progressive, for example, also appears as `PGV.F` (Frankfurt), `PGV.SG` (Stuttgart), `PGR.MX` (Mexico) and `P1GR34.SA` (B3). The primary listing of a company is its listing on the main exchange of its home market, or without one its listing on the largest main exchange abroad. It is worked out from the data itself, so it works for companies anywhere: for ASML it is `ASML.AS` on Euronext Amsterdam, not `ASML` on NASDAQ or `ASMLF` over the counter. To get the listings in a particular country instead, such as the US listings of ASML, filter on the `exchange`, `market` or `currency`.
 
 For the Netherlands, it makes sense to select the market "Euronext Amsterdam" (exchange "AMS"), here together with the market cap:
 
@@ -263,7 +261,7 @@ And below the results are counted per industry.
   <img class="fd-chart--light" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/search-light.png" alt="Search results per industry" loading="lazy">
 </div>
 
-The `search` function works on every column of every asset class, including `name`, `isin`, `cusip` and `figi`. For example, `equities.search(isin="US0378331005")` returns Apple on each exchange it is listed on. **Find the Notebook [here](/projects/financedatabase/getting-started).**
+The `search` function works on every column of every asset class, including `name`, `isin`, `cusip` and `figi`. **Find the Notebook [here](/projects/financedatabase/getting-started).**
 
 ### Exploring Other Asset Classes
 
@@ -290,7 +288,7 @@ For example, see some of the Vanguard bond ETFs listed in Berlin below:
 | 025L.BE  | Vanguard Total International Bond Index Fund ETF Shares         | EUR        | Fixed Income     | Investment Grade Bonds | Vanguard Asset Management | BER        |
 | 025N.BE  | Vanguard Long-Term Corporate Bond Index Fund ETF Shares         | EUR        | Fixed Income     | Corporate Bonds        | Vanguard Asset Management | BER        |
 
-The same applies to `search`, for example to find the funds that focus on pension plans:
+The same applies to `search`, for example to find the funds (no longer maintained, see above) that focus on pension plans:
 
 ```python
 # Initialize the Funds database
@@ -300,7 +298,7 @@ funds = fd.Funds()
 funds.search(summary="Pension")
 ```
 
-Which returns over 600 funds, of which a few are shown below:
+Which returns about 630 funds, of which a few are shown below:
 
 | symbol       | name                                | currency   | category_group   | category                 | family                           | exchange   |
 |:-------------|:------------------------------------|:-----------|:-----------------|:-------------------------|:---------------------------------|:-----------|
@@ -317,7 +315,7 @@ And below all actively listed ETFs are divided over their category groups.
   <img class="fd-chart--light" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/etfs-light.png" alt="Actively listed ETFs per category group" loading="lazy">
 </div>
 
-The categories of each asset class can again be found with `show_options`, e.g. `fd.Indices().show_options(selection="category")` returns the 42 index categories, from 'Corporate Bonds' and 'Emerging Markets' to 'Small Cap' and 'Value'. Cryptocurrencies are selected on `cryptocurrency` and `currency`, currencies on `base_currency` and `quote_currency` and money markets on `currency` and `family`. **Find the Notebook [here](/projects/financedatabase/getting-started).**
+The categories of each asset class can again be found with `show_options`, e.g. `fd.Indices().show_options(selection="category")` returns the index categories, from 'Corporate Bonds' and 'Emerging Markets' to 'Small Cap' and 'Value'. Cryptocurrencies are selected on `cryptocurrency` and `currency`, currencies on `base_currency` and `quote_currency` and the retired money markets on `currency` and `family`. **Find the Notebook [here](/projects/financedatabase/getting-started).**
 
 ### Combining with the Finance Toolkit
 
@@ -396,7 +394,7 @@ This works for the other asset classes too. For example, Ethereum quoted in BTC,
 
 ## MCP Server
 {: .heading-as-h1}
-The Finance Database MCP Server gives any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP), such as Claude, Copilot, Cursor or Windsurf, direct access to the database. Ask in plain English for, say, every mid cap semiconductor company in Taiwan or the bond ETFs of a given issuer, and the assistant queries the database on your behalf. No API key is needed.
+The Finance Database MCP Server gives any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP), such as Claude, Copilot, Cursor or Windsurf, direct access to the equities, ETFs, indices, currencies and cryptocurrencies in the database. Ask in plain English for, say, every mid cap semiconductor company in Taiwan or the bond ETFs of a given issuer, and the assistant queries the database on your behalf. Filter values ignore accents and accept common synonyms, so 'Holland', 'Tech' or 'megacap' work just as well as 'Netherlands', 'Information Technology' or 'Mega Cap'. No API key is needed.
 
 Connect to the hosted server at `https://financedatabase.jeroenbouma.com/mcp` with nothing to install, or run it locally with `uvx --from "financedatabase[mcp]" financedatabase-mcp-setup`, which adds the server to your client's configuration automatically. Combine it with the [Finance Toolkit MCP Server](/projects/financetoolkit/mcp) to go from a list of symbols to their financial statements, ratios and prices.
 
@@ -408,7 +406,7 @@ This section includes frequently asked questions. If you have any questions that
 
 > **How is the data obtained?**
 
-The data is an aggregation of various publicly available sources. I strictly maintain the rule that all data in this database must be freely accessible to everyone. Data requiring API keys or paid subscriptions is never included. Information that companies charge for is typically owned and maintained by those companies, making public sharing of such data a violation of their Terms of Service (ToS). However, publicly available data can be freely shared (read more about the legality of web scraping [here](https://techcrunch.com/2022/04/18/web-scraping-legal-court/){:target="_blank"}). This database will always remain <u>completely free</u>.
+The data is an aggregation of publicly available sources: the official listing directories that exchanges publish (such as Nasdaq Trader, HKEX, NSE, the Japan Exchange Group, ASX, TSX, Deutsche Börse Xetra, Euronext and SIX Swiss Exchange), open reference data (OpenFIGI, SEC EDGAR, the ISO 4217 currency lists, CoinGecko) and contributions from the community. I strictly maintain the rule that all data in this database must be freely accessible to everyone. Data requiring paid subscriptions is never included. Information that companies charge for is typically owned and maintained by those companies, making public sharing of such data a violation of their Terms of Service (ToS). However, publicly available data can be freely shared (read more about the legality of web scraping [here](https://techcrunch.com/2022/04/18/web-scraping-legal-court/){:target="_blank"}). This database will always remain <u>completely free</u>.
 
 > **What categorization method is used?**
 
@@ -422,15 +420,25 @@ For this you can use the `show_options` function, either for an asset class as a
 
 Some tickers are merely holdings of companies and therefore do not really have any data attached to them. Therefore, it makes sense that not all tickers return data. If you are still in doubt, search the ticker on Google to see if there is really no data available. If you can't find anything about the ticker, consider updating the database by visiting the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"}.
 
-> **How does the database handle changes to companies over time, like symbol/exchange migration, mergers, bankruptcies, or symbols getting reused?**
+> **How is the database kept up to date?**
 
-For American exchanges, the database automatically updates every Sunday using data from [this repository](https://github.com/rreichel3/US-Stock-Symbols){:target="_blank"}. This process includes checks for market cap changes and updates asset classifications accordingly. Delisted tickers are intentionally retained for historical research purposes.
+Every Sunday (and after every change to the database) an automated update runs on GitHub Actions:
 
-While professional financial data services like Bloomberg charge over $25,000 annually for comprehensive market data maintenance, this database relies on community contributions. When companies outside American exchanges undergo changes (migrations, mergers, bankruptcies), we depend on community members to identify and update these entries.
+| Asset Class | What the Weekly Update Does | Source |
+|:--|:--|:--|
+| **Equities** | Adds new listings on NASDAQ, NYSE and NYSE American and refreshes their market cap tiers; adds new equities in Hong Kong, India, Japan, Australia and Canada. A ticker that is replaced by a new one is marked delisted. Bonds, notes, warrants and other papers that are not company shares are kept out. | [US-Stock-Symbols](https://github.com/rreichel3/US-Stock-Symbols){:target="_blank"}, HKEX, NSE, JPX, ASX, TSX/TSXV |
+| **ETFs** | Adds new ETFs in the United States, Hong Kong, India, Japan, Canada, Germany (Xetra), Euronext (Amsterdam, Paris, Brussels, Lisbon, Oslo) and Switzerland. A new line of an existing fund takes its name and categories; blank categories are filled from the fund's other listings or, where clearly decisive, from its name. | Nasdaq Trader, HKEX, NSE, JPX, TSX, Deutsche Börse, Euronext, SIX, Börse Frankfurt |
+| **Cryptocurrencies** | Adds the coins in the top 500 by market cap against the usual quote currencies and removes coins that are no longer listed anywhere. | CoinGecko |
+| **Currencies** | Adds new currencies (such as SLE or ZWG) with their usual pairs and removes withdrawn ones (such as HRK after Croatia adopted the euro). | ISO 4217 (SIX) |
+| **Indices** | Adds the indices Euronext publishes and keeps the categories of ETF iNAVs in line with the index they track. | Euronext |
 
-Most companies don't change so rapidly that the database becomes obsolete. Major changes like Facebook's rebrand to META are quickly incorporated. Even when companies go bankrupt, their ticker information remains valuable for historical analysis.
+Each source is applied on its own, so a source that is unavailable or changes its format is skipped for that week without affecting the others, and implausible changes (such as a large share of market cap tiers changing at once) are not applied. Before anything is committed, the update is checked against the previous version of the database and undone if it would introduce duplicate symbols, symbols in two asset classes, changed columns or a large loss of rows. Delisted tickers are kept on purpose, marked as delisted, for historical research. The scripts and their rules are described in the [scripts README](https://github.com/JerBouma/FinanceDatabase/blob/main/scripts/README.md){:target="_blank"}.
 
-If you notice outdated information, please consider contributing through the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"}.
+Not everything can be automated. Classifications of existing companies, corporate events outside the automated sources (mergers, renames, migrations) and exchanges without a public listing directory still rely on the community. If you notice outdated information, please consider contributing through the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"}.
+
+> **What happened to Funds and Money Markets?**
+
+Since October 2026, funds and money markets are no longer maintained. Unlike exchange-listed instruments, mutual and money market funds have no public source that keeps them current worldwide, and the data had become outdated (many funds closed or merged, many new ones missing). `fd.Funds()` and `fd.MoneyMarkets()` remain available in the Python package as they are, with a warning when loaded, but they are no longer part of the MCP server. Funds that trade on a stock exchange under a regular ticker, such as listed open-ended funds in China or listed funds on Euronext Amsterdam, were moved to the ETFs so they stay maintained and searchable.
 
 > **Is the data downloaded every time I use the package?**
 
