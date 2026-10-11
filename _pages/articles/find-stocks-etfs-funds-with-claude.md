@@ -2,10 +2,10 @@
 title: How to Find Stocks, ETFs and Funds with Claude
 seo_title: "Find Stocks, ETFs and Funds with Claude"
 date: 2026-10-10
-last_modified_at: 2026-10-10
+last_modified_at: 2026-10-11
 permalink: /articles/find-stocks-etfs-funds-with-claude
-excerpt: "Claude can't list every company in a sector or every ETF of an issuer from memory. With the free, hosted Finance Database MCP server it searches 300,000+ stocks, ETFs, funds and indices by sector, country, exchange and ISIN, with no API key and no installation."
-description: "Use Claude as a stock and ETF screener: the free Finance Database MCP server finds 300,000+ stocks, ETFs and funds by sector, country, exchange or ISIN."
+excerpt: "Claude can't list every company in a sector or every ETF of an issuer from memory. With the free, hosted Finance Database MCP server it searches 300,000+ stocks, ETFs and indices by sector, country, exchange and ISIN, with no API key and no installation."
+description: "Use Claude as a stock and ETF screener: the free Finance Database MCP server finds 300,000+ stocks, ETFs and indices by sector, country, exchange or ISIN."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -16,11 +16,11 @@ image: /assets/images/projects/FinanceDatabaseMCP.jpg
 ---
 Ask Claude *"which uranium ETFs can I buy?"* and you will probably get URA and URNM, the two best-known US funds. On October 10, 2026 the Finance Database listed 21 uranium ETF listings from ten issuers across eight markets, seven of them UCITS versions in London, Frankfurt and Milan. If you are a European investor, those are often the only ones you can buy, and they are exactly the ones a model's memory leaves out.
 
-Finding things is a different problem from analyzing them. A language model reasons well about companies, but it lists them from memory, and memory favors the famous names, the US tickers and whatever was in the training data. The [Finance Database MCP server](/projects/financedatabase/mcp) gives Claude the [Finance Database](/projects/financedatabase) instead: 300,000+ equities, ETFs, funds, indices, currencies and cryptocurrencies, each categorized by sector, industry, country, exchange, market cap and issuer. This article connects it to Claude in about a minute and then works through eight real questions, from screening stocks to turning an ISIN into the right ticker.
+Finding things is a different problem from analyzing them. A language model reasons well about companies, but it lists them from memory, and memory favors the famous names, the US tickers and whatever was in the training data. The [Finance Database MCP server](/projects/financedatabase/mcp) gives Claude the [Finance Database](/projects/financedatabase) instead: 300,000+ equities, ETFs, indices, currencies and cryptocurrencies, each categorized by sector, industry, country, exchange, market cap and issuer. This article connects it to Claude in about a minute and then works through eight real questions, from screening stocks to turning an ISIN into the right ticker.
 
 <div class="ca-strip">
   <div><strong>1 minute</strong><span>to connect Claude Desktop, claude.ai or Claude Code</span></div>
-  <div><strong>300,000+</strong><span>stocks, ETFs, funds, indices, currencies and cryptos</span></div>
+  <div><strong>300,000+</strong><span>stocks, ETFs, indices, currencies and cryptos</span></div>
   <div><strong>No API key</strong><span>no account, no sign-in, nothing to install</span></div>
   <div><strong>Free</strong><span>hosted server, open-source code</span></div>
 </div>
@@ -53,7 +53,7 @@ The steps are identical for the desktop app and the web app:
     ```
 
 4. Click **Add**. The Finance Database now appears in your list of connectors.
-5. Start a new chat and ask for a list of companies, ETFs or funds. There is no key prompt: the tools work right away.
+5. Start a new chat and ask for a list of companies, ETFs or indices. There is no key prompt: the tools work right away.
 {: .ca-steps}
 
 The hosted server follows the database itself, which the community updates every week, so the answers stay current without anything to update on your side.
@@ -189,20 +189,20 @@ The database holds 46 pairs with the Swiss franc as quote currency, from AUD/CHF
 
 <div class="ca-take"><p>Currencies and crypto use the same questions as stocks: name the base or quote currency and get every pair.</p></div>
 
-### What happens when a filter doesn't exist? {#did-you-mean}
+### What happens when a filter doesn't match? {#did-you-mean}
 
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>List the large technology companies in Germany.<span class="ca-q__tool">Finance Database MCP · equities</span></p></div>
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>List the megacap tech companies in Holland.<span class="ca-q__tool">Finance Database MCP · equities</span></p></div>
 
-The database uses the GICS sector names, so "Technology" is not a sector. The server answers with the closest match instead of an empty list:
+The database uses formal names: the GICS sector "Information Technology", the country "Netherlands" and the tier "Mega Cap". The server translates everyday words into those names, so "Tech", "Holland" and "megacap" go straight to ASML, and accents are optional ("Cote d'Ivoire" finds the Ivory Coast). When a word is simply misspelled, it answers with the closest matches instead of an empty list:
 
 ```
-The sector 'Technology' is not available in the database.
-Did you mean 'Information Technology' instead of 'Technology'?
+The country 'Netherland' is not available in the database.
+Did you mean 'Netherlands' or 'Thailand' or 'Switzerland' or 'New Zealand' instead of 'Netherland'?
 ```
 
-Claude can read the suggestion, retry with "Information Technology" and return the list. You can phrase things the way you normally would; the exact filter values are the server's problem.
+Claude can read the suggestion, retry with "Netherlands" and return the list. You can phrase things the way you normally would; the exact filter values are the server's problem.
 
-<div class="ca-take"><p>Plain language in, exact classifications out. The suggestion is what keeps a typo from becoming an empty answer.</p></div>
+<div class="ca-take"><p>Plain language in, exact classifications out. Synonyms cover the everyday names, and the suggestion keeps a typo from becoming an empty answer.</p></div>
 
 Every list comes from the open [Finance Database](/projects/financedatabase), so you can check where a company is classified and correct it on GitHub if it is wrong. The [MCP server page](/projects/financedatabase/mcp#example-conversations) shows the full tool calls behind four of these questions.
 
