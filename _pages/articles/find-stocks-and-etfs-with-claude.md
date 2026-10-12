@@ -45,18 +45,23 @@ If you would rather run them yourself, both servers also install locally with on
 
 ## Connecting Claude Desktop or claude.ai
 
-The steps are identical for the desktop app and the web app:
+The steps are identical for the desktop app and the web app. You add two connectors, one for each server:
 
 1. Click **Customize** in the left sidebar and open the **Connectors** tab.
 2. Click **+** and select **Add custom connector**.
-3. Enter a name, e.g. *Finance Database*, and paste the server URL:
+3. Name it *Finance Database*, paste the URL below and click **Add**. No key or sign-in is needed.
 
     ```
     https://financedatabase.jeroenbouma.com/mcp
     ```
 
-4. Click **Add**. The Finance Database now appears in your list of connectors.
-5. Repeat for the Finance Toolkit with `https://financetoolkit.jeroenbouma.com/mcp`. On its first tool call a browser window asks for your FMP key; enter it once.
+4. Click **+** and **Add custom connector** again, name it *Finance Toolkit*, paste the URL below and click **Add**.
+
+    ```
+    https://financetoolkit.jeroenbouma.com/mcp
+    ```
+
+5. The first time Claude uses the Finance Toolkit, a browser window asks for your [FMP API key](/fmp){:target="_blank"}. Enter it once and the server remembers it. Both servers now appear in your list of connectors.
 {: .ca-steps}
 
 The Finance Database server follows the database itself, which is updated every week, so the lists stay current without anything to update on your side.
@@ -193,7 +198,7 @@ Every list comes from the open [Finance Database](/projects/financedatabase) and
 
 ## Not a Claude User?
 
-The same server works with any MCP-compatible client, each with step-by-step instructions on the [Finance Database MCP server](/projects/financedatabase/mcp#installation) page:
+Both servers work with any MCP-compatible client. The links below go to the steps for the Finance Database; the [Finance Toolkit MCP server](/projects/financetoolkit/mcp) page has the same steps for the Finance Toolkit, including where to enter your FMP key:
 
 <div class="ca-clients">
   <a href="/projects/financedatabase/mcp#remote-chatgpt"><i class="fas fa-comment-dots" aria-hidden="true"></i>ChatGPT<i class="fas fa-arrow-right ca-clients__go" aria-hidden="true"></i></a>
