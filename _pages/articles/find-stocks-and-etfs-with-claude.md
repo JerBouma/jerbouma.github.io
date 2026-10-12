@@ -36,7 +36,7 @@ That is the gap this article closes. A language model reasons well about compani
 ## What You Need
 
 <div class="ca-cards ca-cards--3">
-  <div><i class="ca-icon fas fa-comments" aria-hidden="true"></i><p class="ca-card-title">A Claude account</p><p>Custom connectors work in claude.ai and Claude Desktop on every plan; the free plan allows one, paid plans allow more. Claude Code supports MCP servers on every plan.</p></div>
+  <div><i class="ca-icon fas fa-comments" aria-hidden="true"></i><p class="ca-card-title">A Claude account</p><p>Custom connectors work in claude.ai and Claude Desktop on every plan; the free plan allows one, paid plans allow more.</p></div>
   <div><i class="ca-icon fas fa-magnifying-glass" aria-hidden="true"></i><p class="ca-card-title">The Finance Database server</p><p>For the search. It is free and open source, so it needs no API key, no account and no sign-in.</p></div>
   <div><i class="ca-icon fas fa-calculator" aria-hidden="true"></i><p class="ca-card-title">The Finance Toolkit server</p><p>For the analysis. It needs a <a href="/fmp" target="_blank">Financial Modeling Prep</a> key; the free plan is enough to start.</p></div>
 </div>
@@ -60,17 +60,6 @@ The steps are identical for the desktop app and the web app:
 {: .ca-steps}
 
 The Finance Database server follows the database itself, which is updated every week, so the lists stay current without anything to update on your side.
-
-## Connecting Claude Code
-
-In the terminal, two commands register both servers for every future session:
-
-```bash
-claude mcp add --transport http finance-database https://financedatabase.jeroenbouma.com/mcp
-claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp
-```
-
-Restart Claude Code and the tools are available. Claude Code can then also write the screen, notebook or report around the results.
 
 ## What You Can Ask
 
