@@ -17,14 +17,6 @@ sidebar:
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceDatabase" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-<style>
-.fd-chart { margin: 1em 0; }
-.fd-chart img { width: 100%; }
-.fd-chart .fd-chart--light { display: none; }
-:root[data-theme="light"] .fd-chart .fd-chart--light { display: block; }
-:root[data-theme="light"] .fd-chart .fd-chart--dark { display: none; }
-</style>
-
 As a private investor, the amount of information you can find on the internet is rather daunting. With millions of companies and derivatives on the market, it is hard to understand what types of companies or ETFs are available. The most traded companies and ETFs are easy to find because they are known to the public (for example, Microsoft, Tesla, S&P 500 ETF or an All-World ETF), but what else is out there is often unknown.
 
 **This is why I created the Finance Database**, a database featuring 300,000+ symbols containing Equities, ETFs, Indices, Currencies and Cryptocurrencies, plus the Funds and Money Markets it held until October 2026. It allows you to obtain a broad overview of sectors, industries, types of investments and much more, entirely for free. Everything is stored in CSV files that anyone can read and edit, so the database grows and improves through the community.
@@ -75,20 +67,17 @@ equities.select()
 
 A portion of the output is shown below. The tables in this section are cut off to five entries and a selection of the columns due to the sheer size of the database.
 
-| symbol   | name                       | currency   | sector                 | industry                                   | exchange   | market               | country       | market_cap   | isin         |
-|:---------|:---------------------------|:-----------|:-----------------------|:-------------------------------------------|:-----------|:---------------------|:--------------|:-------------|:-------------|
-| AAPL     | Apple Inc.                 | USD        | Information Technology | Technology Hardware, Storage & Peripherals | NMS        | NASDAQ Global Select | United States | Mega Cap     | US0378331005 |
-| ASML.AS  | ASML Holding N.V.          | EUR        | Information Technology | Semiconductors & Semiconductor Equipment   | AMS        | Euronext Amsterdam   | Netherlands   | Mega Cap     | NL0010273215 |
-| 7203.T   | Toyota Motor Corporation   | JPY        | Consumer Discretionary | Automobiles                                | JPX        | Tokyo Stock Exchange | Japan         | Mega Cap     | JP3633400001 |
-| NESN.SW  | Nestle S.A.                | CHF        | Consumer Staples       | Food Products                              | EBS        | SIX Swiss Exchange   | Switzerland   | Mega Cap     | CH0038863350 |
-| SAP.DE   | SAP SE                     | EUR        | Information Technology | Software                                   | GER        | XETRA                | Germany       | Mega Cap     | DE0007164600 |
+| symbol   | name                     | currency   | sector                 | industry                                   | exchange   | market               | country       | market_cap   | isin         |
+|:---------|:-------------------------|:-----------|:-----------------------|:-------------------------------------------|:-----------|:---------------------|:--------------|:-------------|:-------------|
+| AAPL     | Apple Inc.               | USD        | Information Technology | Computers & Hardware                       | NMS        | NASDAQ Global Select | United States | Mega Cap     | US0378331005 |
+| ASML.AS  | ASML Holding N.V.        | EUR        | Information Technology | Semiconductors & Chip Equipment            | AMS        | Euronext Amsterdam   | Netherlands   | Mega Cap     | NL0010273215 |
+| 7203.T   | Toyota Motor Corporation | JPY        | Consumer Discretionary | Automobiles                                | JPX        | Tokyo Stock Exchange | Japan         | Mega Cap     | JP3633400001 |
+| NESN.SW  | Nestle S.A.              | CHF        | Consumer Staples       | Food Products                              | EBS        | SIX Swiss Exchange   | Switzerland   | Mega Cap     | CH0038863350 |
+| SAP.DE   | SAP SE                   | EUR        | Information Technology | Software                                   | GER        | XETRA                | Germany       | Mega Cap     | DE0007164600 |
 
 And below the actively listed equities are counted per sector.
 
-<div class="fd-chart">
-  <img class="fd-chart--dark" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/sectors-dark.png" alt="Actively listed equities per sector" loading="lazy">
-  <img class="fd-chart--light" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/sectors-light.png" alt="Actively listed equities per sector" loading="lazy">
-</div>
+{% include ft-chart.html id="sectors" src="/assets/data/financedatabase-charts.json" label="Actively listed equities per sector" %}
 
 Each asset class has the same three functions: `select` to filter on the database's categories, `search` to look for any text in any column and `show_options` to see which values a category can take. The asset classes are `fd.Equities()`, `fd.ETFs()`, `fd.Indices()`, `fd.Currencies()` and `fd.Cryptos()`, which are updated weekly from official exchange and market sources.
 
@@ -132,16 +121,13 @@ equities.show_options(
 Which returns:
 
 ```text
-['Banks', 'Capital Markets', 'Consumer Finance',
- 'Diversified Financial Services', 'Insurance']
+['Banks', 'Capital Markets', 'Consumer Lending', 'Insurance',
+ 'Payments & Specialty Finance']
 ```
 
 And below the number of companies in each of these industries is shown. Each company is counted once, however many exchanges it is listed on: listings that share an ISIN, share class FIGI, website or the first word of their name (such as Aegon and its perpetual bonds) are combined.
 
-<div class="fd-chart">
-  <img class="fd-chart--dark" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/options-dark.png" alt="Dutch financial companies per industry" loading="lazy">
-  <img class="fd-chart--light" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/options-light.png" alt="Dutch financial companies per industry" loading="lazy">
-</div>
+{% include ft-chart.html id="options" src="/assets/data/financedatabase-charts.json" label="Financial companies in the Netherlands per industry" %}
 
 The options of every column can be shown this way, including `currency`, `exchange`, `market`, `country` and `market_cap` (Mega, Large, Mid, Small, Micro and Nano Cap). **Find the Notebook [here](/projects/financedatabase/getting-started).**
 
@@ -158,7 +144,7 @@ equities.select(
 )
 ```
 
-This returns about 180 companies, of which a few of the larger ones are shown below.
+This returns about 130 companies, of which a few of the larger ones are shown below.
 
 | symbol   | name                             | currency   | sector     | industry   | exchange   | market                  | country       | market_cap   |
 |:---------|:---------------------------------|:-----------|:-----------|:-----------|:-----------|:------------------------|:--------------|:-------------|
@@ -168,7 +154,7 @@ This returns about 180 companies, of which a few of the larger ones are shown be
 | CINF     | Cincinnati Financial Corporation | USD        | Financials | Insurance  | NMS        | NASDAQ Global Select    | United States | Large Cap    |
 | PGR      | Progressive Corporation          | USD        | Financials | Insurance  | NYQ        | New York Stock Exchange | United States | Large Cap    |
 
-Without `only_primary_listing=True`, the same query returns about 450 listings on more than 20 exchanges, because every exchange a company trades on is shown by default. Progressive, for example, also appears as `PGV.F` (Frankfurt), `PGV.SG` (Stuttgart), `PGR.MX` (Mexico) and `P1GR34.SA` (B3). The primary listing of a company is its listing on the main exchange of its home market, or without one its listing on the largest main exchange abroad. It is worked out from the data itself, so it works for companies anywhere: for ASML it is `ASML.AS` on Euronext Amsterdam, not `ASML` on NASDAQ or `ASMLF` over the counter. To get the listings in a particular country instead, such as the US listings of ASML, filter on the `exchange`, `market` or `currency`.
+Without `only_primary_listing=True`, the same query returns more than 400 listings on more than 20 exchanges, because every exchange a company trades on is shown by default. Progressive, for example, also appears as `PGV.F` (Frankfurt), `PGV.SG` (Stuttgart), `PGR.MX` (Mexico) and `P1GR34.SA` (B3). The primary listing of a company is its listing on the main exchange of its home market, or without one its listing on the largest main exchange abroad. It is worked out from the data itself, so it works for companies anywhere: for ASML it is `ASML.AS` on Euronext Amsterdam, not `ASML` on NASDAQ or `ASMLF` over the counter. To get the listings in a particular country instead, such as the US listings of ASML, filter on the `exchange`, `market` or `currency`.
 
 For the Netherlands, it makes sense to select the market "Euronext Amsterdam" (exchange "AMS"), here together with the market cap:
 
@@ -200,28 +186,25 @@ If the categorization doesn't lead to the results you are looking for, `search` 
 # Search for robotics or education companies with equipment on the Frankfurt Stock Exchange
 equities.search(
     summary=["Robotics", "Education"],
-    industry_group="Equipment",
+    industry="Equipment",
     market="Frankfurt",
     index=".F",
 )
 ```
 
-This returns about 60 instruments listed on the Frankfurt Stock Exchange, in an industry group containing "Equipment" and with "Robotics" or "Education" in their summary. Filtering on `index=".F"` is an alternative way to find the exchange or market you are looking for.
+This returns the instruments listed on the Frankfurt Stock Exchange in an industry containing "Equipment" and with "Robotics" or "Education" in their summary. Filtering on `index=".F"` is an alternative way to find the exchange or market you are looking for.
 
-| symbol   | name                                                        | currency   | sector                 | industry                                       | exchange   | market                   | country        | market_cap   |
-|:---------|:------------------------------------------------------------|:-----------|:-----------------------|:-----------------------------------------------|:-----------|:-------------------------|:---------------|:-------------|
-| 089.F    | Cambium Networks Corporation                                | EUR        | Information Technology | Communications Equipment                       | FRA        | Frankfurt Stock Exchange | Cayman Islands | Micro Cap    |
-| 109.F    | Castlight Health, Inc.                                      | EUR        | Health Care            | Health Care Technology                         | FRA        | Frankfurt Stock Exchange | United States  | Small Cap    |
-| 1KT.F    | Keysight Technologies Inc                                   | EUR        | Information Technology | Electronic Equipment, Instruments & Components | FRA        | Frankfurt Stock Exchange | United States  | Large Cap    |
-| 1N1.F    | Nanalysis Scientific Corp.                                  | EUR        | Information Technology | Electronic Equipment, Instruments & Components | FRA        | Frankfurt Stock Exchange | Canada         | Nano Cap     |
-| 1YO.F    | Yangtze Optical Fibre And Cable Joint Stock Limited Company | EUR        | Information Technology | Communications Equipment                       | FRA        | Frankfurt Stock Exchange | China          | Large Cap    |
+| symbol | name                                                        | currency | sector                 | industry                              | exchange | market                   | country        | market_cap |
+|:-------|:------------------------------------------------------------|:---------|:-----------------------|:--------------------------------------|:---------|:-------------------------|:---------------|:-----------|
+| 1YO.F  | Yangtze Optical Fibre And Cable Joint Stock Limited Company | EUR      | Information Technology | Networking & Communications Equipment | FRA      | Frankfurt Stock Exchange | China          | Large Cap  |
+| 2IU.F  | Boxlight Corporation                                        | EUR      | Information Technology | Networking & Communications Equipment | FRA      | Frankfurt Stock Exchange | United States  | Nano Cap   |
+| 49V.F  | Vertiv Holdings Co                                          | EUR      | Industrials            | Electrical Equipment                  | FRA      | Frankfurt Stock Exchange | United States  | Large Cap  |
+| A1Z1.F | eEnergy Group Plc                                           | EUR      | Industrials            | Electrical Equipment                  | FRA      | Frankfurt Stock Exchange | United Kingdom | Nano Cap   |
+| A8B.F  | Ambarella, Inc.                                             | EUR      | Information Technology | Semiconductors & Chip Equipment       | FRA      | Frankfurt Stock Exchange | United States  | Mid Cap    |
 
 And below the results are counted per industry.
 
-<div class="fd-chart">
-  <img class="fd-chart--dark" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/search-dark.png" alt="Search results per industry" loading="lazy">
-  <img class="fd-chart--light" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/search-light.png" alt="Search results per industry" loading="lazy">
-</div>
+{% include ft-chart.html id="search" src="/assets/data/financedatabase-charts.json" label="Frankfurt search results per industry" %}
 
 The `search` function works on every column of every asset class, including `name`, `isin`, `cusip` and `figi`. **Find the Notebook [here](/projects/financedatabase/getting-started).**
 
@@ -250,34 +233,31 @@ For example, see some of the Vanguard bond ETFs listed in Berlin below:
 | 025L.BE  | Vanguard Total International Bond Index Fund ETF Shares         | EUR        | Fixed Income     | Investment Grade Bonds | Vanguard Asset Management | BER        |
 | 025N.BE  | Vanguard Long-Term Corporate Bond Index Fund ETF Shares         | EUR        | Fixed Income     | Corporate Bonds        | Vanguard Asset Management | BER        |
 
-The same applies to `search`, for example to find the funds (no longer maintained, see above) that focus on pension plans:
+The same applies to `search`, for example to find semiconductor indices across providers and countries:
 
 ```python
-# Initialize the Funds database
-funds = fd.Funds()
+# Initialize the Indices database
+indices = fd.Indices()
 
-# Search for funds with "Pension" in their summary
-funds.search(summary="Pension")
+# Search for indices with "Semiconductor" in their name
+indices.search(name="Semiconductor")
 ```
 
-Which returns about 630 funds, of which a few are shown below:
+Which returns semiconductor indices from the US, South Korea and Taiwan, including their price, net and total return variants, of which a few are shown below:
 
-| symbol       | name                                | currency   | category_group   | category                 | family                           | exchange   |
-|:-------------|:------------------------------------|:-----------|:-----------------|:-------------------------|:---------------------------------|:-----------|
-| 0P000015HA.F | Casermed Protección 6 PP            | EUR        | Equities         | Allocation               | Sa Nostra Seguros de Vida SA     | FRA        |
-| 0P000015V5.F | BK Revalorización Europa 2022 PP    | EUR        | Fixed Income     | Bonds                    | Bankinter                        | FRA        |
-| 0P000015VC.F | Bankia Protegido Renta 2023 PP      | EUR        | Fixed Income     | Bonds                    | Bankia Fondos                    | FRA        |
-| 0P000017AE.F | Santander Universidades RF Mixta PP | EUR        | Fixed Income     | Bonds                    | Santander Asset Management SGIIC | FRA        |
-| 0P000017AF.F | OpenBank Monetario PP               | EUR        | Cash             | Money Market Instruments | Santander Asset Management SGIIC | FRA        |
+| symbol   | name                                | currency | category_group         | category   | exchange |
+|:---------|:------------------------------------|:---------|:-----------------------|:-----------|:---------|
+| ^SOX     | PHLX Semiconductor                  | USD      | Information Technology | Technology | NIM      |
+| ^ICESEMI | ICE Semiconductor Index             | USD      | Information Technology | Technology | NYS      |
+| ^NQSSSE  | Nasdaq US Smart Semiconductor Index | USD      | Information Technology | Technology | NIM      |
+| ^KQ47    | Kosdaq Semiconductors Index         | KRW      | Information Technology | Technology | KOE      |
+| SEC.TW   | TSEC semiconductor subindex         | TWD      | Information Technology | Technology | TAI      |
 
 And below all actively listed ETFs are divided over their category groups.
 
-<div class="fd-chart">
-  <img class="fd-chart--dark" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/etfs-dark.png" alt="Actively listed ETFs per category group" loading="lazy">
-  <img class="fd-chart--light" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/etfs-light.png" alt="Actively listed ETFs per category group" loading="lazy">
-</div>
+{% include ft-chart.html id="etfs" src="/assets/data/financedatabase-charts.json" label="Actively listed ETFs per category group" %}
 
-The categories of each asset class can again be found with `show_options`, e.g. `fd.Indices().show_options(selection="category")` returns the index categories, from 'Corporate Bonds' and 'Emerging Markets' to 'Small Cap' and 'Value'. Cryptocurrencies are selected on `cryptocurrency` and `currency`, currencies on `base_currency` and `quote_currency` and the retired money markets on `currency` and `family`. **Find the Notebook [here](/projects/financedatabase/getting-started).**
+The categories of each asset class can again be found with `show_options`, e.g. `fd.Indices().show_options(selection="category")` returns the index categories, from 'Corporate Bonds' and 'Emerging Markets' to 'Small Cap' and 'Value'. Cryptocurrencies are selected on `cryptocurrency` and `currency` and currencies on `base_currency` and `quote_currency`. **Find the Notebook [here](/projects/financedatabase/getting-started).**
 
 ### Combining with the Finance Toolkit
 
@@ -299,7 +279,10 @@ dutch_insurance_companies = equities.select(
 )
 
 # Load them into the Finance Toolkit
-toolkit = dutch_insurance_companies.to_toolkit(api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = dutch_insurance_companies.to_toolkit(
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2017-12-31",
+)
 
 # Obtain historical market data for all tickers
 historical_data = toolkit.get_historical_data()
@@ -312,18 +295,15 @@ For example, a portion of the historical data for ASR Nederland is shown below.
 
 | date       |   Open |   High |   Low |   Close |   Adj Close |   Volume |   Dividends |   Return |   Cumulative Return |
 |:-----------|-------:|-------:|------:|--------:|------------:|---------:|------------:|---------:|--------------------:|
-| 2026-09-30 |  73.26 |  73.64 | 71.88 |   72.16 |       72.16 |   435324 |           0 |  -0.0118 |               3.608 |
-| 2026-10-01 |  71.52 |  71.72 | 70.58 |   71    |       71    |   666582 |           0 |  -0.0161 |               3.55  |
-| 2026-10-02 |  71.14 |  71.54 | 70.66 |   71.48 |       71.48 |   408475 |           0 |   0.0068 |               3.574 |
-| 2026-10-05 |  71.5  |  72.36 | 71.4  |   72.16 |       72.16 |   375435 |           0 |   0.0095 |               3.608 |
-| 2026-10-06 |  72.44 |  73.1  | 72.4  |   72.82 |       72.82 |    63282 |           0 |   0.0091 |               3.641 |
+| 2026-10-05 |  71.5  |  72.36 | 71.4  |   72.16 |       72.16 |   375435 |           0 |   0.0095 |              3.4346 |
+| 2026-10-06 |  72.44 |  73.24 | 72.4  |   72.62 |       72.62 |   430005 |           0 |   0.0064 |              3.4564 |
+| 2026-10-07 |  72.56 |  72.58 | 71.8  |   71.88 |       71.88 |   356698 |           0 |  -0.0102 |              3.4212 |
+| 2026-10-08 |  71.52 |  72.1  | 71.1  |   71.32 |       71.32 |   504492 |           0 |  -0.0078 |              3.3946 |
+| 2026-10-09 |  71.84 |  71.9  | 71.38 |   71.48 |       71.48 |   285470 |           0 |   0.0022 |              3.4022 |
 
 And below the cumulative returns of Aegon, ASR Nederland and NN Group are plotted, including the S&P 500 as benchmark.
 
-<div class="fd-chart">
-  <img class="fd-chart--dark" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/toolkit-dark.png" alt="Cumulative returns of Aegon, ASR Nederland and NN Group against the S&amp;P 500" loading="lazy">
-  <img class="fd-chart--light" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/toolkit-light.png" alt="Cumulative returns of Aegon, ASR Nederland and NN Group against the S&amp;P 500" loading="lazy">
-</div>
+{% include ft-chart.html id="toolkit" src="/assets/data/financedatabase-charts.json" label="Cumulative returns of Aegon, ASR Nederland and NN Group against the S&P 500" %}
 
 Now let's make it more advanced by calculating the profitability ratios for each company:
 
@@ -347,10 +327,7 @@ For example, see some of the profitability ratios of ASR Nederland below.
 
 And below these and other profitability ratios of ASR Nederland, each with its latest value, the change over the period and its trend.
 
-<div class="fd-chart">
-  <img class="fd-chart--dark" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/ratios-dark.png" alt="Profitability ratios of ASR Nederland" loading="lazy">
-  <img class="fd-chart--light" src="https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/assets/readme/ratios-light.png" alt="Profitability ratios of ASR Nederland" loading="lazy">
-</div>
+{% include ft-chart.html id="ratios" src="/assets/data/financedatabase-charts.json" label="Profitability ratios of ASR Nederland" %}
 
 This works for the other asset classes too. For example, Ethereum quoted in BTC, CAD, EUR, GBP and USD can be loaded with `fd.Cryptos().select(cryptocurrency="ETH").to_toolkit(api_key="FINANCIAL_MODELING_PREP_KEY")`, after which `get_historical_data(period="quarterly")` returns its quarterly returns in each currency. **This is just a small snippet of what is available within the Finance Toolkit. For more information, see the Finance Toolkit page [here](/projects/financetoolkit) or the example Notebook [here](/projects/financetoolkit/getting-started).**
 
@@ -386,7 +363,7 @@ Some tickers are merely holdings of companies and therefore do not really have a
 
 Every Sunday (and after every change to the database) an automated update runs on GitHub Actions:
 
-| Asset Class | What the Weekly Update Does | Source |
+| Asset class | What the weekly update does | Source |
 |:--|:--|:--|
 | **Equities** | Adds new listings on NASDAQ, NYSE and NYSE American and refreshes their market cap tiers; adds new equities in Hong Kong, India, Japan, Australia and Canada. A ticker that is replaced by a new one is marked delisted. Bonds, notes, warrants and other papers that are not company shares are kept out. | [US-Stock-Symbols](https://github.com/rreichel3/US-Stock-Symbols){:target="_blank"}, HKEX, NSE, JPX, ASX, TSX/TSXV |
 | **ETFs** | Adds new ETFs in the United States, Hong Kong, India, Japan, Canada, Germany (Xetra), Euronext (Amsterdam, Paris, Brussels, Lisbon, Oslo) and Switzerland. A new line of an existing fund takes its name and categories; blank categories are filled from the fund's other listings or, where clearly decisive, from its name. | Nasdaq Trader, HKEX, NSE, JPX, TSX, Deutsche Börse, Euronext, SIX, Börse Frankfurt |
@@ -394,7 +371,7 @@ Every Sunday (and after every change to the database) an automated update runs o
 | **Currencies** | Adds new currencies (such as SLE or ZWG) with their usual pairs and removes withdrawn ones (such as HRK after Croatia adopted the euro). | ISO 4217 (SIX) |
 | **Indices** | Adds the indices Euronext publishes and keeps the categories of ETF iNAVs in line with the index they track. | Euronext |
 
-Each source is applied on its own, so a source that is unavailable or changes its format is skipped for that week without affecting the others, and implausible changes (such as a large share of market cap tiers changing at once) are not applied. Before anything is committed, the update is checked against the previous version of the database and undone if it would introduce duplicate symbols, symbols in two asset classes, changed columns or a large loss of rows. Delisted tickers are kept on purpose, marked as delisted, for historical research. The scripts and their rules are described in the [scripts README](https://github.com/JerBouma/FinanceDatabase/blob/main/scripts/README.md){:target="_blank"}.
+Each source is applied on its own, so a source that is unavailable or changes its format is skipped for that week without affecting the others, and implausible changes (such as a large share of market cap tiers changing at once) are not applied. Before anything is committed, the update is checked against the previous version of the database and undone if it would introduce duplicate symbols, symbols in two asset classes, changed columns or a large loss of rows. Delisted tickers are kept on purpose, marked as delisted, for historical research. The scripts and their rules are described in [scripts/README.md](https://github.com/JerBouma/FinanceDatabase/blob/main/scripts/README.md){:target="_blank"}.
 
 Not everything can be automated. Classifications of existing companies, corporate events outside the automated sources (mergers, renames, migrations) and exchanges without a public listing directory still rely on the community. If you notice outdated information, please consider contributing through the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"}.
 
@@ -437,3 +414,5 @@ If you have any questions about the Finance Database or would like to share with
 If you'd like to support my efforts, either help me out via the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"} or [Sponsor Me](https://github.com/sponsors/JerBouma){:target="_blank"}.
 
 [![Star History Chart](https://star-history.dera.page/svg?repos=JerBouma/FinanceDatabase&type=Date)](https://star-history.dera.page/#JerBouma/FinanceDatabase&Date){:target="_blank"}
+
+{% include ft-charts-script.html %}
