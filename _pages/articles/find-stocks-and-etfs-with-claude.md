@@ -91,8 +91,6 @@ Below are six real questions, answered through both servers on October 12, 2026,
 <div class="ca-nums"><span><b>31.3%</b>Kofola return on equity</span><span><b>5.2x</b>Kofola equity multiplier, the highest</span><span><b>+177% vs −69%</b>Kofola vs Rémy Cointreau since 2021</span></div>
 </div>
 
-Share prices are in each company's own currency. Return on equity rises with debt, so the split into margin, turnover and leverage is what turns a ranking into an answer.
-
 ### Are Europe's large chipmakers priced for their profits? {#european-chipmakers}
 
 <div class="mcp-show">
@@ -109,8 +107,6 @@ Share prices are in each company's own currency. Return on equity rises with deb
 <div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>The seven are two groups under one label. The equipment makers ASML, ASM International and BE Semiconductor kept operating margins near 30% to 35% and returned 215% to 292% since January 2021; the chipmakers Infineon, NXP and STMicroelectronics returned 54% to 93%. The correlations show the same split: ASML moves most with ASM International (0.81), Infineon with STMicroelectronics (0.76). Valuations follow the cycle more than profitability: STMicroelectronics trades at 11 times EBITDA on a return on equity of 0.9%, BE Semiconductor at 52 times on 28.7%. ASML pairs the highest return on equity (50.5%) with a mid-range 28 times.</p></div>
 <div class="ca-nums"><span><b>50.5%</b>ASML return on equity, the highest</span><span><b>0.81</b>ASML and ASM International correlation</span><span><b>+292% vs +54%</b>ASM International vs STMicroelectronics since 2021</span></div>
 </div>
-
-Margins are per fiscal year and share prices in each company's own currency; NXP is measured on its primary listing in New York. Technoprobe only moved to the main Milan market in 2022, so it is left out of the price chart.
 
 ### Do Vanguard's Treasury ETFs still protect a stock portfolio? {#vanguard-treasuries}
 
@@ -129,8 +125,6 @@ Margins are per fiscal year and share prices in each company's own currency; NXP
 <div class="ca-nums"><span><b>−0.38 → +0.14</b>VGSH correlation with stocks</span><span><b>−39.2%</b>EDV in 2022</span><span><b>20.4% vs 18.8%</b>volatility, EDV vs S&amp;P 500</span></div>
 </div>
 
-The search returns five Treasury ETFs; VTG only started trading in July 2025, so four have a history. The difference between them is duration, how far a bond's price moves when interest rates change, which is also why the long funds suffered most when rates rose.
-
 ### Is every uranium ETF the same bet? {#uranium-ucits}
 
 <div class="mcp-show">
@@ -146,8 +140,6 @@ The search returns five Treasury ETFs; VTG only started trading in July 2025, so
 <div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>One label, two different bets. The broad funds URA and NLR, which also hold utilities and reactor builders, doubled since February 2023 (+100% and +96%). The pure miner funds lagged, URNM at +45% and the junior miners in URNJ at +15%, and fell further on the way: −51% and −59% at their worst. The gap opened in 2024, when NLR rose 14% and the miner funds lost 14% and 18%. The UCITS twin URNU moved with URA week by week (a correlation of 0.95) but ended ten points behind, at +90%. And Cameco, a single stock, returned 219%, more than any of the funds.</p></div>
 <div class="ca-nums"><span><b>+100% vs +45%</b>URA vs miners fund URNM</span><span><b>0.95</b>URA and UCITS twin URNU</span><span><b>+219%</b>Cameco on its own</span></div>
 </div>
-
-European retail investors generally need UCITS funds, so the US fund everyone talks about is often not the one they can buy. The comparison uses the US dollar lines only, including URNU in London, so currency moves don't blur it.
 
 ### What did Apple return in each currency? {#apple-in-euros}
 
@@ -165,8 +157,6 @@ European retail investors generally need UCITS funds, so the US fund everyone ta
 <div class="ca-nums"><span><b>39.1%</b>in dollars</span><span><b>25.6%</b>in euros on Xetra</span><span><b>91.9%</b>in Argentine pesos</span></div>
 </div>
 
-The ISIN is the code on a broker statement, and the same company can sit behind very different tickers. The Buenos Aires and São Paulo lines are local certificates that each represent a fraction of a share, so their returns follow Apple but their prices are not comparable.
-
 ### How much do dividends and weighting change the S&amp;P 500? {#sp-500-dividends}
 
 <div class="mcp-show">
@@ -181,21 +171,6 @@ The ISIN is the code on a broker statement, and the same company can sit behind 
 <div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Since January 2016, 100 in the headline index became 388; with dividends reinvested, it became 466. The bigger choice was the weighting. The equal-weight index, which gives each of the 500 companies the same weight, reached 280, or 337 with dividends through the RSP fund. Equal weight beat the index in 2016, 2021 and 2022, then trailed the total return version by 7 to 13 points a year from 2023 to 2025, as a handful of large companies carried the index.</p></div>
 <div class="ca-nums"><span><b>466 vs 388</b>with and without dividends</span><span><b>337</b>equal weight, with dividends</span><span><b>−12.6 points</b>equal weight vs index, 2023</span></div>
 </div>
-
-Benchmark a fund against the total return version, or it will look better than it is, and know which weighting you are measuring against.
-
-### What happens when a filter doesn't match? {#did-you-mean}
-
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>List the megacap tech companies in Holland.<span class="ca-q__tool">Finance Database MCP · equities</span></p></div>
-
-The database uses formal names: the sector "Information Technology", the country "Netherlands" and the tier "Mega Cap". The server translates everyday words into those names, so "Tech", "Holland" and "megacap" go straight to ASML, and accents are optional ("Cote d'Ivoire" finds the Ivory Coast). When a word is simply misspelled, it answers with the closest matches instead of an empty list:
-
-```
-The country 'Netherland' is not available in the database.
-Did you mean 'Netherlands' or 'Thailand' or 'Switzerland' or 'New Zealand' instead of 'Netherland'?
-```
-
-<div class="ca-take"><p>Plain language in, exact classifications out. You can phrase things the way you normally would; the exact filter values are the server's problem.</p></div>
 
 Every list comes from the open [Finance Database](/projects/financedatabase) and every number from a documented [Finance Toolkit](/projects/financetoolkit/docs) method, so you can check both. The Finance Toolkit server answers many more questions on its own, from valuation models to macro data, in [How to Connect Claude to Live Financial Data for Stock Analysis](/articles/connect-claude-to-financial-data).
 
