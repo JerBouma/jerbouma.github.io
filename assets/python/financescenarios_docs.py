@@ -20,6 +20,10 @@ import sys
 import textwrap
 from pathlib import Path
 
+# The formula → LaTeX conversion of the Finance Toolkit docs generator, next to this file.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from docs import _RE_FORMULA_INTRO, _formula_to_latex, _looks_like_formula  # noqa: E402
+
 import financescenarios as fs
 from financescenarios.dependence.dependence_controller import Dependence
 from financescenarios.factors.commodities.commodities_controller import Commodities
@@ -261,13 +265,27 @@ def fence_indented(text: str) -> str:
     return "\n".join(out).strip()
 
 
+def formulas(text: str) -> str:
+    """Bullets after a formula introduction ("The formula is as follows:") become $$ math blocks,
+    the same way as on the Finance Toolkit pages."""
+    paragraphs = re.split(r"\n[ \t]*\n", text)
+    for i in range(1, len(paragraphs)):
+        lines = paragraphs[i].split("\n")
+        if not all(line.startswith("- ") for line in lines):
+            continue
+        if not _RE_FORMULA_INTRO.search(paragraphs[i - 1].rstrip().split("\n")[-1].rstrip()):
+            continue
+        paragraphs[i] = "\n\n".join(_formula_to_latex(line) if _looks_like_formula(line) else line for line in lines)
+    return "\n\n".join(paragraphs)
+
+
 def render_doc(obj, where: str) -> str:
     doc = inspect.getdoc(obj)
     if not doc:
         warnings.append(f"{where}: no docstring")
         return "*No docstring.*"
     description, sections = split_sections(doc)
-    parts = [fence_indented(description)] if description else []
+    parts = [formulas(fence_indented(description))] if description else []
     for name, body in sections:
         if name in ENTRY_SECTIONS:
             rendered = render_entries(name, body, where)
@@ -276,7 +294,7 @@ def render_doc(obj, where: str) -> str:
         elif name == "References":
             rendered = render_references(body)
         else:
-            rendered = fence_indented(render_free(body))
+            rendered = formulas(fence_indented(render_free(body)))
         parts.append(f"**{name}:**\n\n{rendered}")
     return prose("\n\n".join(parts))
 

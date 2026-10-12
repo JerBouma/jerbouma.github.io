@@ -14,8 +14,8 @@
   }
 </script>
 
-<!-- MathJax — only on the Finance Toolkit documentation pages, which render formulas as \[...\] math blocks -->
-{% if page.permalink contains "financetoolkit/docs" %}
+<!-- MathJax — only on the Finance Toolkit and Finance Scenarios documentation pages, which render formulas as \[...\] math blocks -->
+{% if page.permalink contains "financetoolkit/docs" or page.permalink contains "financescenarios/docs" %}
 <script>
   window.MathJax = {
     output: { displayOverflow: "linebreak" }
