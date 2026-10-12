@@ -5,7 +5,7 @@ linkedin:
   text: |
     Ask an AI assistant which uranium ETFs you can buy and you will probably hear URA and URNM, the two best-known US funds.
 
-    The Finance Database lists 21 uranium ETF listings from ten issuers across eight markets. Seven of them are UCITS versions in London, Frankfurt and Milan, which for many European investors are the only ones they can buy.
+    The Finance Database lists 31 uranium ETF listings from ten issuers across ten markets. 18 of them are UCITS versions in London, Frankfurt, Paris, Milan and Zurich, which for many European investors are the only ones they can buy.
 
     That gap is typical. Language models reason well about companies, but they list them from memory, and memory favors the famous names and the US tickers. Ask for every large European chipmaker and you get ASML, rarely the seven companies and 18 European listings that are actually there. Ask which ticker belongs to Apple's ISIN and the answer is AAPL, while the share trades under 19 tickers on 15 exchanges in 6 currencies.
 
@@ -30,12 +30,12 @@ reddit:
 
       Claude Code: `claude mcp add --transport http finance-database https://financedatabase.jeroenbouma.com/mcp`
 
-      **A few of the questions (real output, October 10, 2026)**
+      **A few of the questions (real output, October 12, 2026)**
 
       - *"Which large European semiconductor companies are there, and on which European exchanges do they trade?"* Claude first checked which exchanges they trade on (23, including US OTC), then searched the main European ones: 7 companies, 18 listings, 4 of them Dutch (ASML, ASM International, BESI, NXP).
       - *"Which ticker belongs to ISIN US0378331005?"* Apple, AAPL, plus 18 more listings: 8 German exchanges, 4 lines in Buenos Aires, 2 in Santiago, a BDR in São Paulo, Mexico, Milan and Vienna.
-      - *"Which uranium ETFs exist, and which are UCITS funds listed in Europe?"* 21 listings from 10 issuers; 7 UCITS listings in London, Frankfurt and Milan.
-      - *"Which bond ETFs does Vanguard list in the US, by category?"* 35, of which 15 corporate (10 of those are the 2027 to 2036 target maturity ETFs). Without the exchange filter: 266, because many are also listed in Europe.
+      - *"Which uranium ETFs exist, and which are UCITS funds listed in Europe?"* 31 listings from 10 issuers; 18 UCITS listings in London, Frankfurt, Paris, Milan and Zurich.
+      - *"Which bond ETFs does Vanguard list in the US, by category?"* 35, of which 15 corporate (10 of those are the 2027 to 2036 target maturity ETFs). Without the exchange filter: 325, because many are also listed in Europe.
       - Everyday names work: "Tech", "Holland" and "megacap" map to the formal categories, and a typo like "Netherland" returns *"Did you mean 'Netherlands'?"* instead of an empty list.
 
       **How it works**
@@ -50,15 +50,15 @@ reddit:
 
       Disclosure: I maintain the Finance Database and built the server. Not investment advice.
   - subreddit: r/eupersonalfinance
-    title: "Finding the UCITS version of a US ETF: 21 uranium ETF listings, 7 of them UCITS (free tool, I built it)"
+    title: "Finding the UCITS version of a US ETF: 31 uranium ETF listings, 18 of them UCITS (free tool, I built it)"
     body: |
       A problem I keep seeing here: you read about a US ETF (URA, URNM for uranium), and then can't buy it from the EU because it's not a UCITS fund.
 
-      I maintain the open-source Finance Database (300,000+ instruments with issuer, category, exchange and currency) and recently made it searchable from AI assistants like Claude and ChatGPT. Asking it *"which uranium ETFs exist, and which of them are UCITS funds listed in Europe?"* gave, on October 10, 2026:
+      I maintain the open-source Finance Database (300,000+ instruments with issuer, category, exchange and currency) and recently made it searchable from AI assistants like Claude and ChatGPT. Asking it *"which uranium ETFs exist, and which of them are UCITS funds listed in Europe?"* gave, on October 12, 2026:
 
-      - 21 uranium ETF listings from 10 issuers across 8 markets
+      - 31 uranium ETF listings from 10 issuers across 10 markets
       - 7 US listings, including URA, URNM and the 2x leveraged URAA
-      - 7 UCITS listings: Global X's URNU and URND, VanEck's NUCG and NUCL, WisdomTree's NCLR and Sprott's U3O8, in London, Frankfurt and Milan
+      - 18 UCITS listings: Global X's URNU and URND, VanEck's NUCL and NUCG, WisdomTree's NCLR and Sprott's U3O8 and junior miners fund, across London, Frankfurt, Paris, Milan and Zurich
 
       The same works for any theme or issuer, and for finding which ticker belongs to the ISIN on your broker statement (Apple's ISIN alone has 19 listings on 15 exchanges).
 

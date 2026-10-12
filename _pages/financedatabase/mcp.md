@@ -7,7 +7,7 @@ description: "Open-source MCP server for the Finance Database: find 300,000+ sto
 classes: wide-sidebar
 author_profile: false
 layout: single
-last_modified_at: 2026-10-11
+last_modified_at: 2026-10-12
 sidebar:
   nav: "financedatabase-mcp"
 image: /assets/images/projects/FinanceDatabaseMCP.jpg
@@ -378,7 +378,7 @@ The repository also includes a `Dockerfile` and `docker-compose.yml`: `docker co
 
 ## Example Conversations
 
-Four questions of the kind an analyst or portfolio manager would ask, each answered through the server's tools. Every result below is the server's real output on 2026-10-10, cut down where noted. The database is updated every week, so the counts move over time.
+Four questions of the kind an analyst or portfolio manager would ask, each answered through the server's tools. Every result below is the server's real output on 2026-10-12, cut down where noted. The database is updated every week, so the counts move over time.
 
 <div class="ca-nav ca-nav--4">
   <a href="#ex-semiconductors"><i class="fas fa-microchip" aria-hidden="true"></i>Europe's large chipmakers</a>
@@ -390,7 +390,7 @@ Four questions of the kind an analyst or portfolio manager would ask, each answe
 <div class="mcp-show" id="ex-semiconductors" markdown="1">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which large European semiconductor companies are there, and on which European exchanges do they trade?</p></div>
 <div class="mcp-show__meta"><span><b>2</b> tool calls</span><span><b>14</b> countries</span><span><b>18</b> listings found</span></div>
-<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What the assistant looked up</summary><ol><li><code>show_options</code><span>The exchanges where large European chipmakers are listed: 23, from Amsterdam and Xetra to US over-the-counter markets</span></li><li><code>equities</code><span>Semiconductors &amp; Semiconductor Equipment, Large and Mega Cap, headquartered in 14 European countries, listed on 13 European exchanges</span></li></ol></details>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What the assistant looked up</summary><ol><li><code>show_options</code><span>The exchanges where large European chipmakers are listed: 23, from Amsterdam and Xetra to US over-the-counter markets</span></li><li><code>equities</code><span>Semiconductors &amp; Chip Equipment, Large and Mega Cap, headquartered in 14 European countries, listed on 13 European exchanges</span></li></ol></details>
 
 <div class="mcp-show__result" markdown="1">
 
@@ -452,49 +452,33 @@ Four questions of the kind an analyst or portfolio manager would ask, each answe
 
 </div>
 
-<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-robot" aria-hidden="true"></i> The answer</p><p>Vanguard lists 35 bond ETFs on US exchanges. Corporate bonds make up the largest group, 15, and ten of those are the target maturity ETFs that each hold bonds maturing in one year from 2027 to 2036. The broad core is BND for US bonds, BNDX for international bonds and BNDW for both. Without the exchange filter the count rises to 266, because many of these ETFs are also listed in Europe.</p></div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-robot" aria-hidden="true"></i> The answer</p><p>Vanguard lists 35 bond ETFs on US exchanges. Corporate bonds make up the largest group, 15, and ten of those are the target maturity ETFs that each hold bonds maturing in one year from 2027 to 2036. The broad core is BND for US bonds, BNDX for international bonds and BNDW for both. Without the exchange filter the count rises to 325, because many of these ETFs are also listed in Europe.</p></div>
 <div class="ca-nums"><span><b>35</b>US-listed bond ETFs</span><span><b>10</b>target maturity ETFs</span><span><b>8</b>categories</span></div>
 </div>
 
 <div class="mcp-show" id="ex-dutch-financials" markdown="1">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which Dutch financial companies on Euronext Amsterdam are Large or Mega Cap?</p></div>
-<div class="mcp-show__meta"><span><b>2</b> tool calls</span><span><b>4</b> industries</span><span><b>7</b> companies</span></div>
-<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What the assistant looked up</summary><ol><li><code>show_options</code><span>The industries of Dutch financial companies on Euronext Amsterdam: Banks, Capital Markets, Diversified Financial Services and Insurance</span></li><li><code>equities</code><span>Netherlands, Financials, Large and Mega Cap, Euronext Amsterdam</span></li></ol></details>
+<div class="mcp-show__meta"><span><b>2</b> tool calls</span><span><b>3</b> industry groups</span><span><b>8</b> companies</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What the assistant looked up</summary><ol><li><code>show_options</code><span>The industry groups of Dutch financial companies on Euronext Amsterdam: Banking, Insurance and Investing, Lending &amp; Payments</span></li><li><code>equities</code><span>Netherlands, Financials, Large and Mega Cap, Euronext Amsterdam</span></li></ol></details>
 
 <div class="mcp-show__result" markdown="1">
 
 | Company | Ticker | Industry group |
 |:---|:---|:---|
-| ABN AMRO Bank | ABN.AS | Banks |
-| ING Groep | INGA.AS | Banks |
+| ABN AMRO Bank | ABN.AS | Banking |
+| ING Groep | INGA.AS | Banking |
 | Aegon | AGN.AS | Insurance |
 | ASR Nederland | ASRNL.AS | Insurance |
 | NN Group | NN.AS | Insurance |
-| CVC Capital Partners | CVC.AS | Diversified Financials |
-| Exor | EXO.AS | Diversified Financials |
+| Adyen | ADYEN.AS | Investing, Lending & Payments |
+| CVC Capital Partners | CVC.AS | Investing, Lending & Payments |
+| Exor | EXO.AS | Investing, Lending & Payments |
 
 </div>
 
-<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-robot" aria-hidden="true"></i> The answer</p><p>Seven companies, all Large Cap: none reaches the Mega Cap tier of $200 billion. Three are insurers (Aegon, ASR Nederland and NN Group), two are banks (ABN AMRO and ING) and two are diversified financials (CVC Capital Partners and Exor). These tickers go straight into the Finance Toolkit MCP server to compare their solvency and profitability.</p></div>
-<div class="ca-nums"><span><b>7</b>Large Cap financials</span><span><b>3</b>insurers</span><span><b>0</b>Mega Caps</span></div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-robot" aria-hidden="true"></i> The answer</p><p>Eight companies, all Large Cap: none reaches the Mega Cap tier of $200 billion. Three are insurers (Aegon, ASR Nederland and NN Group), two are banks (ABN AMRO and ING) and three are in investing, lending and payments (Adyen, CVC Capital Partners and Exor). These tickers go straight into the Finance Toolkit MCP server to compare their solvency and profitability.</p></div>
+<div class="ca-nums"><span><b>8</b>Large Cap financials</span><span><b>3</b>insurers</span><span><b>0</b>Mega Caps</span></div>
 </div>
-
-## Tools
-
-The server has one tool per asset class and three tools to search and explore. The assistant picks the tool; you only ask the question.
-
-| Tool | What it does |
-|:---|:---|
-| `equities` | Stocks by country, sector, industry group, industry, currency, exchange, market identifier code, market or market cap tier |
-| `etfs` | ETFs by category group, category, issuer family, currency or exchange |
-| `indices` | Market indices by category group, category, currency or exchange |
-| `currencies` | Currency pairs by base and quote currency |
-| `cryptos` | Cryptocurrency pairs by coin and the currency they are quoted in |
-| `search_instruments` | Find a symbol by ticker, name, ISIN, CUSIP or FIGI across all asset classes at once |
-| `show_options` | Every valid value of a filter, such as all sectors or countries, optionally narrowed by other filters |
-| `search_categories` | The asset classes with their size, filters and description |
-
-Every filter accepts several comma-separated values and understands the names people actually use: accents are optional and common synonyms work, so "Holland", "USA", "Tech", "Healthcare" or "megacap" find the right category. Every asset class tool also takes a free-text query on symbol and name. Results come back as compact tables of 25 rows by default and at most 200, with a note on how to get the next page, so no answer ever floods the conversation. A value that still doesn't match returns a suggestion: ask for the country "Netherland" and the server answers "Did you mean 'Netherlands'?". The [architecture page](/projects/financedatabase/mcp/architecture) explains how it works under the hood.
 
 ## FAQ
 
@@ -532,6 +516,26 @@ The questions that come up most often about the server and the data behind it. A
   <summary><h3>What data does the server cover?</h3></summary>
 
   The Finance Database: 300,000+ equities, ETFs, indices, currencies and cryptocurrencies with their classifications, such as sector, industry, country, exchange, market cap tier, ETF category and issuer, and identifiers such as ISIN, CUSIP and FIGI. It holds no prices or financial statements; for those, pair it with the [Finance Toolkit MCP server](/projects/financetoolkit/mcp). Mutual funds and money market funds were retired from the database in October 2026, because no public source keeps them current; funds that trade on an exchange are included as ETFs.
+
+</details>
+
+<details class="ft-details" id="faq-tools" markdown="1">
+  <summary><h3>Which tools does the server expose?</h3></summary>
+
+  The server has one tool per asset class and three tools to search and explore. The assistant picks the tool; you only ask the question.
+
+  | Tool | What it does |
+  |:---|:---|
+  | `equities` | Stocks by country, sector, industry group, industry, currency, exchange, market identifier code, market or market cap tier |
+  | `etfs` | ETFs by category group, category, issuer family, currency or exchange |
+  | `indices` | Market indices by category group, category, currency or exchange |
+  | `currencies` | Currency pairs by base and quote currency |
+  | `cryptos` | Cryptocurrency pairs by coin and the currency they are quoted in |
+  | `search_instruments` | Find a symbol by ticker, name, ISIN, CUSIP or FIGI across all asset classes at once |
+  | `show_options` | Every valid value of a filter, such as all sectors or countries, optionally narrowed by other filters |
+  | `search_categories` | The asset classes with their size, filters and description |
+
+  Every filter accepts several comma-separated values and understands the names people actually use: accents are optional and common synonyms work, so "Holland", "USA", "Tech", "Healthcare" or "megacap" find the right category. Every asset class tool also takes a free-text query on symbol and name. Results come back as compact tables of 25 rows by default and at most 200, with a note on how to get the next page, so no answer ever floods the conversation. A value that still doesn't match returns a suggestion: ask for the country "Netherland" and the server answers "Did you mean 'Netherlands'?". The [architecture page](/projects/financedatabase/mcp/architecture) explains how it works under the hood.
 
 </details>
 
@@ -610,6 +614,14 @@ The questions that come up most often about the server and the data behind it. A
     },
     {
       "@type": "Question",
+      "name": "Which tools does the server expose?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The server has one tool per asset class and three tools to search and explore. The assistant picks the tool; you only ask the question. They are equities, etfs, indices, currencies and cryptos, plus search_instruments, show_options and search_categories. Every filter accepts several comma-separated values and understands the names people actually use: accents are optional and common synonyms work, so \"Holland\", \"USA\", \"Tech\", \"Healthcare\" or \"megacap\" find the right category. Every asset class tool also takes a free-text query on symbol and name. Results come back as compact tables of 25 rows by default and at most 200, with a note on how to get the next page, so no answer ever floods the conversation. A value that still doesn't match returns a suggestion: ask for the country \"Netherland\" and the server answers \"Did you mean 'Netherlands'?\". The architecture page explains how it works under the hood."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "How current is the data?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -652,7 +664,7 @@ The questions that come up most often about the server and the data behind it. A
   "url": "https://www.jeroenbouma.com/projects/financedatabase/mcp",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any",
-  "softwareVersion": "2.5.0",
+  "softwareVersion": "2.5.1",
   "license": "https://github.com/JerBouma/FinanceDatabase/blob/main/LICENSE",
   "codeRepository": "https://github.com/JerBouma/FinanceDatabase",
   "installUrl": "https://financedatabase.jeroenbouma.com/mcp",
