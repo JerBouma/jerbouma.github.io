@@ -1,4 +1,4 @@
-# Drafts for How to Find Stocks and ETFs with Claude. Starting points, edited before posting.
+# Drafts for How to Find and Analyze Stocks and ETFs with Claude. Starting points, edited before posting.
 article: /articles/find-stocks-and-etfs-with-claude
 written: 2026-10-10
 linkedin:
@@ -11,7 +11,7 @@ linkedin:
 
     So I gave the assistant the database instead. The Finance Database MCP server lets Claude, ChatGPT or Cursor search 300,000+ equities, ETFs, indices and currencies by sector, country, exchange, issuer or ISIN. It is free and hosted, and it needs no API key: add one URL as a connector and ask.
 
-    Finding the universe is the first step of most research. The article has eight real questions with their answers, and how the list then feeds into the analysis:
+    Finding the universe is the first step of most research. The article has six real questions where Claude finds the companies or ETFs and then analyzes them:
     https://www.jeroenbouma.com/articles/find-stocks-and-etfs-with-claude
 
     I maintain the Finance Database and built the server. Not investment advice.
@@ -46,7 +46,7 @@ reddit:
 
       It holds classifications, not prices or financials. The data is community-maintained and updated weekly, so a classification can be wrong (corrections welcome on GitHub). For the numbers I pair it with the Finance Toolkit MCP server.
 
-      Full write-up with all eight questions: https://www.jeroenbouma.com/articles/find-stocks-and-etfs-with-claude
+      Full write-up with six find-then-analyze questions: https://www.jeroenbouma.com/articles/find-stocks-and-etfs-with-claude
 
       Disclosure: I maintain the Finance Database and built the server. Not investment advice.
   - subreddit: r/eupersonalfinance
