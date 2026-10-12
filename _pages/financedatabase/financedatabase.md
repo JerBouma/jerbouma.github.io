@@ -23,10 +23,6 @@ sidebar:
 .fd-chart .fd-chart--light { display: none; }
 :root[data-theme="light"] .fd-chart .fd-chart--light { display: block; }
 :root[data-theme="light"] .fd-chart .fd-chart--dark { display: none; }
-.fd-stats-grid { grid-template-columns: repeat(5, 1fr); }
-.fd-stat-card .fd-stat-qty i { font-size: 1.3rem; }
-@media (max-width: 700px) { .fd-stats-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 420px) { .fd-stats-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 
 As a private investor, the amount of information you can find on the internet is rather daunting. With millions of companies and derivatives on the market, it is hard to understand what types of companies or ETFs are available. The most traded companies and ETFs are easy to find because they are known to the public (for example, Microsoft, Tesla, S&P 500 ETF or an All-World ETF), but what else is out there is often unknown.
@@ -34,38 +30,6 @@ As a private investor, the amount of information you can find on the internet is
 **This is why I created the Finance Database**, a database featuring 300,000+ symbols containing Equities, ETFs, Indices, Currencies and Cryptocurrencies, plus the Funds and Money Markets it held until October 2026. It allows you to obtain a broad overview of sectors, industries, types of investments and much more, entirely for free. Everything is stored in CSV files that anyone can read and edit, so the database grows and improves through the community.
 
 The database is explicitly _not_ meant to provide up-to-date fundamentals or stock data, as those are easy to obtain (with the help of this database) through the [Finance Toolkit](/projects/financetoolkit). Instead, it shows which products exist in each country, industry and sector and gives the most essential information about each of them. With this information, you can analyze specific areas of the financial world or find a product that is otherwise hard to find. By using both, it is possible to do a fully-fledged competitive analysis with the tickers found in the Finance Database loaded into the Finance Toolkit.
-
-An overview of the asset classes in the database:
-
-<div class="fd-stats-grid">
-  <div class="fd-stat-card">
-    <div class="fd-stat-name">Equities</div>
-    <div class="fd-stat-qty"><i class="fas fa-building" aria-hidden="true"></i></div>
-    <div class="fd-stat-meta">Sectors &middot; Industries &middot; Countries &middot; Exchanges</div>
-  </div>
-  <div class="fd-stat-card">
-    <div class="fd-stat-name">ETFs</div>
-    <div class="fd-stat-qty"><i class="fas fa-layer-group" aria-hidden="true"></i></div>
-    <div class="fd-stat-meta">Issuers &middot; Categories &middot; Exchanges</div>
-  </div>
-  <div class="fd-stat-card">
-    <div class="fd-stat-name">Indices</div>
-    <div class="fd-stat-qty"><i class="fas fa-chart-line" aria-hidden="true"></i></div>
-    <div class="fd-stat-meta">Categories &middot; Exchanges</div>
-  </div>
-  <div class="fd-stat-card">
-    <div class="fd-stat-name">Currencies</div>
-    <div class="fd-stat-qty"><i class="fas fa-money-bill-transfer" aria-hidden="true"></i></div>
-    <div class="fd-stat-meta">Currency Pairs Worldwide</div>
-  </div>
-  <div class="fd-stat-card">
-    <div class="fd-stat-name">Cryptocurrencies</div>
-    <div class="fd-stat-qty"><i class="fab fa-bitcoin" aria-hidden="true"></i></div>
-    <div class="fd-stat-meta">Coins &middot; Quote Currencies</div>
-  </div>
-</div>
-
-Funds and Money Markets were retired in October 2026, see [What happened to Funds and Money Markets?](#questions--answers) for why.
 
 <img src="/assets/images/projects/FinanceDatabase.jpg" alt="Finance Database" width="100%"/>
 
@@ -127,8 +91,6 @@ And below the actively listed equities are counted per sector.
 </div>
 
 Each asset class has the same three functions: `select` to filter on the database's categories, `search` to look for any text in any column and `show_options` to see which values a category can take. The asset classes are `fd.Equities()`, `fd.ETFs()`, `fd.Indices()`, `fd.Currencies()` and `fd.Cryptos()`, which are updated weekly from official exchange and market sources.
-
-> **Funds and Money Markets are no longer maintained.** Since October 2026, `fd.Funds()` and `fd.MoneyMarkets()` are not updated anymore: no public source keeps mutual and money market funds across the world current, and the data had become outdated (many funds closed or merged, many new ones missing). Both stay available in the Python package as they are, with a warning when loaded, but are no longer part of the MCP server.
 
 Three capabilities cut across all of them:
 
