@@ -2,7 +2,7 @@
 title: How to Find Stocks and ETFs with Claude
 seo_title: "Find Stocks and ETFs with Claude"
 date: 2026-10-10
-last_modified_at: 2026-10-11
+last_modified_at: 2026-10-12
 permalink: /articles/find-stocks-and-etfs-with-claude
 redirect_from:
   - /articles/find-stocks-etfs-funds-with-claude
@@ -16,7 +16,7 @@ tags: [MCP Server]
 share: true
 image: /assets/images/projects/FinanceDatabaseMCP.jpg
 ---
-Ask Claude *"which uranium ETFs can I buy?"* and you will probably get URA and URNM, the two best-known US ETFs. On October 10, 2026 the Finance Database listed 21 uranium ETF listings from ten issuers across eight markets, seven of them UCITS versions in London, Frankfurt and Milan. If you are a European investor, those are often the only ones you can buy, and they are exactly the ones a model's memory leaves out.
+Ask Claude *"which uranium ETFs can I buy?"* and you will probably get URA and URNM, the two best-known US ETFs. On October 12, 2026 the Finance Database listed 31 uranium ETF listings from ten issuers across ten markets, 18 of them UCITS versions in London, Frankfurt, Paris, Milan and Zurich. If you are a European investor, those are often the only ones you can buy, and they are exactly the ones a model's memory leaves out.
 
 Finding things is a different problem from analyzing them. A language model reasons well about companies, but it lists them from memory, and memory favors the famous names, the US tickers and whatever was in the training data. The [Finance Database MCP server](/projects/financedatabase/mcp) gives Claude the [Finance Database](/projects/financedatabase) instead: 300,000+ equities, ETFs, indices, currencies and cryptocurrencies, each categorized by sector, industry, country, exchange, market cap and issuer. This article connects it to Claude in about a minute and then works through eight real questions, from screening stocks to turning an ISIN into the right ticker.
 
@@ -72,7 +72,7 @@ Restart Claude Code and the tools are available. This works well for building on
 
 ## What You Can Ask
 
-You never have to name a tool or a filter value: ask in plain English and Claude checks which sectors, exchanges or categories exist before it searches. Below are eight real questions, each answered through the server on October 10, 2026. **The question is what you type, the table or chart is what comes back.** Paste any of them into Claude as they are, or swap in your own country, sector or issuer.
+You never have to name a tool or a filter value: ask in plain English and Claude checks which sectors, exchanges or categories exist before it searches. Below are eight real questions, each answered through the server on October 12, 2026. **The question is what you type, the table or chart is what comes back.** Paste any of them into Claude as they are, or swap in your own country, sector or issuer.
 
 <div class="ca-nav">
   <a href="#european-chipmakers"><i class="fas fa-microchip" aria-hidden="true"></i>Europe's large chipmakers</a>
@@ -80,7 +80,7 @@ You never have to name a tool or a filter value: ask in plain English and Claude
   <a href="#uranium-etfs"><i class="fas fa-atom" aria-hidden="true"></i>Uranium ETFs</a>
   <a href="#vanguard-bond-etfs"><i class="fas fa-layer-group" aria-hidden="true"></i>Vanguard's bond ETFs</a>
   <a href="#dutch-financials"><i class="fas fa-landmark" aria-hidden="true"></i>Large Dutch financials</a>
-  <a href="#sp-500-indices"><i class="fas fa-chart-area" aria-hidden="true"></i>678 S&amp;P 500 indices</a>
+  <a href="#sp-500-indices"><i class="fas fa-chart-area" aria-hidden="true"></i>895 S&amp;P 500 indices</a>
   <a href="#swiss-franc-pairs"><i class="fas fa-money-bill-transfer" aria-hidden="true"></i>Swiss franc pairs</a>
   <a href="#did-you-mean"><i class="fas fa-spell-check" aria-hidden="true"></i>When the filter is wrong</a>
 </div>
@@ -121,11 +121,11 @@ US0378331005 is Apple Inc., AAPL on Nasdaq. The ISIN (the International Securiti
 
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which uranium ETFs exist, and which of them are UCITS funds listed in Europe?<span class="ca-q__tool">Finance Database MCP · etfs</span></p></div>
 
-<div class="ca-nums"><span><b>21</b>listings</span><span><b>10</b>issuers</span><span><b>7</b>UCITS listings in Europe</span></div>
+<div class="ca-nums"><span><b>31</b>listings</span><span><b>10</b>issuers</span><span><b>18</b>UCITS listings in Europe</span></div>
 
 {% include ft-chart.html id="fdb-uranium" src="/assets/data/article-charts.json" label="Uranium ETF listings by market" %}
 
-Seven of the listings are US ETFs, from URA and URNM to Direxion's leveraged URAA. The UCITS versions, the European fund format most retail investors in the EU can buy, are Global X's URNU and URND, VanEck's NUCG and NUCL, WisdomTree's NCLR and Sprott's U3O8, listed in London, Frankfurt and Milan. Global X runs 9 of the 21 listings on its own, from Toronto and Tokyo to Mexico City.
+Seven of the listings are US ETFs, from URA and URNM to Direxion's leveraged URAA. The UCITS versions, the European fund format most retail investors in the EU can buy, are Global X's URNU and URND, VanEck's NUCL and NUCG, WisdomTree's NCLR and Sprott's U3O8 and junior miners fund, each listed on several exchanges in London, Frankfurt, Paris, Milan and Zurich. Global X runs 9 of the 31 listings on its own, from Toronto and Tokyo to Mexico City.
 
 <div class="ca-take"><p>The fund you have heard of is usually the US one. The database shows the European versions next to it, which is often the version you can actually buy.</p></div>
 
@@ -137,7 +137,7 @@ Seven of the listings are US ETFs, from URA and URNM to Direxion's leveraged URA
 
 {% include ft-chart.html id="fdb-vanguard" src="/assets/data/article-charts.json" label="Vanguard's US-listed bond ETFs by category" %}
 
-Corporate bonds make up the largest group, and ten of those 15 are target maturity ETFs that each hold bonds maturing in one year, from 2027 to 2036. The broad core is BND for US bonds, BNDX for international bonds and BNDW for both. Without the exchange filter the count rises to 266, because many of these ETFs are also listed in Europe.
+Corporate bonds make up the largest group, and ten of those 15 are target maturity ETFs that each hold bonds maturing in one year, from 2027 to 2036. The broad core is BND for US bonds, BNDX for international bonds and BNDW for both. Without the exchange filter the count rises to 325, because many of these ETFs are also listed in Europe.
 
 <div class="ca-take"><p>An issuer's full lineup in one question, including the newer ETFs you would not think to ask about.</p></div>
 
@@ -145,27 +145,28 @@ Corporate bonds make up the largest group, and ten of those 15 are target maturi
 
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which Dutch financial companies on Euronext Amsterdam are Large or Mega Cap?<span class="ca-q__tool">Finance Database MCP · show_options, equities</span></p></div>
 
-<div class="ca-nums"><span><b>19</b>financials on Euronext Amsterdam</span><span><b>7</b>Large Cap</span><span><b>0</b>Mega Cap</span></div>
+<div class="ca-nums"><span><b>16</b>financials on Euronext Amsterdam</span><span><b>8</b>Large Cap</span><span><b>0</b>Mega Cap</span></div>
 
 | Company | Ticker | Industry group |
 |:---|:---|:---|
-| ABN AMRO Bank | ABN.AS | Banks |
-| ING Groep | INGA.AS | Banks |
+| ABN AMRO Bank | ABN.AS | Banking |
+| ING Groep | INGA.AS | Banking |
 | Aegon | AGN.AS | Insurance |
 | ASR Nederland | ASRNL.AS | Insurance |
 | NN Group | NN.AS | Insurance |
-| CVC Capital Partners | CVC.AS | Diversified Financials |
-| Exor | EXO.AS | Diversified Financials |
+| Adyen | ADYEN.AS | Investing, Lending & Payments |
+| CVC Capital Partners | CVC.AS | Investing, Lending & Payments |
+| Exor | EXO.AS | Investing, Lending & Payments |
 
-Of the 19 Dutch financials listed in Amsterdam, seven are Large Cap and none reaches the $200 billion Mega Cap tier. The other 12 are smaller companies, investment funds and preference shares, which is why the size filter does most of the work here.
+Of the 16 Dutch financials listed in Amsterdam, eight are Large Cap and none reaches the $200 billion Mega Cap tier. The other eight are smaller companies and a preference share, which is why the size filter does most of the work here. The payments company Adyen counts as a financial too, under Investing, Lending & Payments.
 
-<div class="ca-take"><p>The size filter turns 19 names into the 7 that matter for a large-cap portfolio: three insurers, two banks and two diversified financials.</p></div>
+<div class="ca-take"><p>The size filter turns 16 names into the 8 that matter for a large-cap portfolio: three insurers, two banks and three in investing, lending and payments.</p></div>
 
 ### How many S&amp;P 500 indices are there? {#sp-500-indices}
 
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find the S&amp;P 500 index and its total return, growth and value versions.<span class="ca-q__tool">Finance Database MCP · indices</span></p></div>
 
-<div class="ca-nums"><span><b>678</b>indices with "S&amp;P 500" in the name</span><span><b>^GSPC</b>the S&amp;P 500</span><span><b>^SP500TR</b>total return</span></div>
+<div class="ca-nums"><span><b>895</b>indices with "S&amp;P 500" in the name</span><span><b>^GSPC</b>the S&amp;P 500</span><span><b>^SP500TR</b>total return</span></div>
 
 | Symbol | Name | Category |
 |:---|:---|:---|
@@ -177,7 +178,7 @@ Of the 19 Dutch financials listed in Amsterdam, seven are Large Cap and none rea
 | ^SP5T5 | S&P 500 Top 50 | Large Cap |
 | ^SPXHAUD | S&P 500 AUD Hdg | Currencies |
 
-The headline ^GSPC is a price index: it leaves out dividends. For a performance comparison over many years the total return version, ^SP500TR, is the fair benchmark, and the net version deducts withholding tax on those dividends. The other 670 or so are variants by sector, factor, currency hedge and size.
+The headline ^GSPC is a price index: it leaves out dividends. For a performance comparison over many years the total return version, ^SP500TR, is the fair benchmark, and the net version deducts withholding tax on those dividends. The other 890 or so are variants by sector, factor, currency hedge and size.
 
 <div class="ca-take"><p>Benchmark against the total return index, not the price index: over a decade the gap is the dividends.</p></div>
 
@@ -185,9 +186,9 @@ The headline ^GSPC is a price index: it leaves out dividends. For a performance 
 
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which currency pairs quote against the Swiss franc?<span class="ca-q__tool">Finance Database MCP · currencies</span></p></div>
 
-<div class="ca-nums"><span><b>46</b>pairs against CHF</span><span><b>329</b>cryptocurrencies quoted in EUR</span></div>
+<div class="ca-nums"><span><b>44</b>pairs against CHF</span><span><b>636</b>cryptocurrencies quoted in EUR</span></div>
 
-The database holds 46 pairs with the Swiss franc as quote currency, from AUD/CHF and CNY/CHF to USD/CHF (ticker CHF=X), and the same tools cover cryptocurrencies: 329 coins are quoted in euros alone. Like everything else here, these are symbols and classifications, ready to pass on for prices.
+The database holds 44 pairs with the Swiss franc as quote currency, from AUD/CHF and CNY/CHF to USD/CHF (ticker CHF=X), and the same tools cover cryptocurrencies: 636 coins are quoted in euros alone. Like everything else here, these are symbols and classifications, ready to pass on for prices.
 
 <div class="ca-take"><p>Currencies and crypto use the same questions as stocks: name the base or quote currency and get every pair.</p></div>
 

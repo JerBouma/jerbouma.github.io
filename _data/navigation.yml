@@ -1902,8 +1902,6 @@ financedatabase-mcp:
         url: /projects/financedatabase/mcp#ex-vanguard
       - title: Dutch Financials
         url: /projects/financedatabase/mcp#ex-dutch-financials
-  - title: "Tools"
-    url: /projects/financedatabase/mcp#tools
   - title: "FAQ"
     url: /projects/financedatabase/mcp#faq
   - title: "Under the Hood"
