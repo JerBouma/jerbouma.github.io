@@ -158,6 +158,16 @@ module Q7v3
     notes << "Formulas (MathJax) don't render on Medium; turn them into images or plain text." if text.include?("$$") || text.include?("\\(")
     notes << "The Mermaid diagram doesn't render on Medium; replace it with a screenshot." if text.include?("mermaid")
     missing = []
+    # a dashboard of charts is one image on Medium, named after its first chart
+    text.gsub!(%r{<div class="mcp-show__grid">\n(.*?)\n</div>\n}m) do
+      grid = Regexp.last_match(0)
+      charts = Regexp.last_match(1).scan(/include ft-chart\.html\s+id="([^"]+)"[^%]*?label="([^"]*)"/)
+      if charts.any? && File.exist?(File.join(site.source, "assets/images/q7v3/#{charts[0][0]}-grid.png"))
+        "![#{charts.map(&:last).join('; ')}](#{url}/assets/images/q7v3/#{charts[0][0]}-grid.png)\n"
+      else
+        grid
+      end
+    end
     text.gsub!(/\{%\s*include ft-chart\.html\s+id="([^"]+)"[^%]*?label="([^"]*)"[^%]*%\}/) do
       id, label = Regexp.last_match(1), Regexp.last_match(2)
       if File.exist?(File.join(site.source, "assets/images/q7v3/#{id}.png"))

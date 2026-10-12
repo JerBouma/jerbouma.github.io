@@ -10198,7 +10198,8 @@
     {
      "name": "R\u00e9my Cointreau",
      "x": 1.7829,
-     "y": 0.0407
+     "y": 0.0407,
+     "pos": "bottom"
     },
     {
      "name": "Royal Unibrew",
