@@ -86,8 +86,23 @@ module Q7v3
       Regexp.last_match(1).scan(%r{<a\b[^>]*href="([^"]+)"[^>]*>(.*?)</a>}m)
                           .map { |u, t| "- [#{inline_md(t)}](#{u})" }.join("\n") + "\n"
     end
-    text = text.gsub(%r{<div class="ca-q">.*?<p>(.*?)<span class="ca-q__tool">(.*?)</span></p></div>}m) do
+    text = text.gsub(%r{<div class="ca-q">[^\n]*?<p>([^\n]*?)<span class="ca-q__tool">([^\n]*?)</span></p></div>}) do
       "> **Question:** #{inline_md(Regexp.last_match(1))}\n>\n> *#{inline_md(Regexp.last_match(2))}*\n"
+    end
+    text = text.gsub(%r{<div class="ca-q">[^\n]*?<p>([^\n]*?)</p></div>}) { "> **Question:** #{inline_md(Regexp.last_match(1))}\n" }
+    # the showcase blocks: counts, the steps behind the answer, the charts and the conclusion
+    text = text.gsub(%r{<div class="mcp-show__meta">(.*?)</div>}m) do
+      "*" + Regexp.last_match(1).scan(%r{<span><b>(.*?)</b>(.*?)</span>}m).map { |a, b| "#{inline_md(a)} #{inline_md(b)}" }.join(" · ") + "*\n"
+    end
+    text = text.gsub(%r{<details class="mcp-show__trace"><summary>(.*?)</summary><ol>(.*?)</ol></details>}m) do
+      title = inline_md(Regexp.last_match(1))
+      steps = Regexp.last_match(2).scan(%r{<li><code>(.*?)</code><span>(.*?)</span></li>}m)
+                                  .each_with_index.map { |(c, d), i| "#{i + 1}. `#{c}`: #{inline_md(d)}" }
+      "**#{title}:**\n\n#{steps.join("\n")}\n"
+    end
+    text = text.gsub(%r{<div class="mcp-show__cell[^"]*">(.*?)</div>}m) { "\n#{Regexp.last_match(1).strip}\n" }
+    text = text.gsub(%r{<div class="mcp-show__verdict"><p class="mcp-show__label">(.*?)</p><p>(.*?)</p></div>}m) do
+      "**#{inline_md(Regexp.last_match(1))}:** #{inline_md(Regexp.last_match(2))}\n"
     end
     text = text.gsub(%r{<div class="ca-nums">(.*?)</div>}m) do
       Regexp.last_match(1).scan(%r{<span><b>(.*?)</b>(.*?)</span>}m)

@@ -67,5 +67,5 @@ reddit:
       This is a list of what exists, not a recommendation: check the fund's KID, costs and your broker's availability yourself. Not investment advice.
     note: Check that the subreddit allows posts with a link to your own tool; if not, post the list without the link.
 medium:
-  subtitle: "Claude lists companies from memory. With the free Finance Database MCP server it searches 300,000+ stocks, ETFs and indices by sector, country, exchange or ISIN."
+  subtitle: "Claude lists companies from memory. With the free Finance Database and Finance Toolkit MCP servers it finds the right stocks or ETFs and then analyzes them: what drives their returns, how they are valued and how they move together."
   tags: [Investing, ETF, Artificial Intelligence, Claude, Finance]

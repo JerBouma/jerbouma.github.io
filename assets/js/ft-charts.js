@@ -506,8 +506,11 @@
         yAxis: { type: 'value', scale: true, name: chart.yname, nameTextStyle: { color: c.muted, align: 'left' }, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fy } },
         series: [{
           type: 'scatter', symbolSize: 18,
-          data: chart.points.map(function (pt, i) { return { name: pt.name, value: [pt.x, pt.y], itemStyle: { color: i === chart.highlight ? PALETTE[2] : PALETTE[0], opacity: 0.9 } }; }),
-          label: { show: true, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return p.data.name; } }
+          // pos: where a point's name goes when it would cover a neighbour ('left', 'top', 'bottom')
+          data: chart.points.map(function (pt, i) { var d = { name: pt.name, value: [pt.x, pt.y], itemStyle: { color: i === chart.highlight ? PALETTE[2] : PALETTE[0], opacity: 0.9 } }; if (pt.pos) d.label = { position: pt.pos }; return d; }),
+          label: { show: true, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return p.data.name; } },
+          // points close together: push their names apart instead of printing them over each other
+          labelLayout: { moveOverlap: 'shiftY' }
         }]
       }, true);
     }
@@ -528,7 +531,7 @@
         textStyle: { fontFamily: 'inherit' },
         grid: { left: 8, right: 8, top: 8, bottom: 40, containLabel: true },
         tooltip: Object.assign({ formatter: function (p) { return chart.x[p.data[0]] + ' · ' + chart.y[p.data[1]] + ': <b>' + p.data[2].toFixed(2) + '</b>'; } }, tooltipStyle()),
-        xAxis: { type: 'category', data: chart.x, splitArea: { show: false }, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 12, interval: 0 } },
+        xAxis: { type: 'category', data: chart.x, splitArea: { show: false }, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 12, interval: 0, rotate: n > 6 ? 40 : 0 } },
         yAxis: { type: 'category', data: chart.y, inverse: true, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 12, interval: 0 } },
         visualMap: { min: -1, max: 1, calculable: false, orient: 'horizontal', left: 'center', bottom: 0, itemWidth: 10, itemHeight: 120, textStyle: { color: c.muted }, inRange: { color: ['#f472b6', 'rgba(148,163,184,0.15)', '#38bdf8'] } },
         series: [{ type: 'heatmap', data: data, label: { show: true, color: css('--text-primary', '#f8fafc'), fontSize: 12, formatter: function (p) { return p.data[2].toFixed(2); } }, itemStyle: { borderColor: css('--card-bg', '#1e293b'), borderWidth: 2, borderRadius: 4 } }]

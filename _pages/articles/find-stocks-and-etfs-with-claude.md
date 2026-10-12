@@ -16,9 +16,9 @@ tags: [MCP Server]
 share: true
 image: /assets/images/projects/FinanceDatabaseMCP.jpg
 ---
-Since January 2020, Vanguard's short-term Treasury ETF turned 100 into 112.8. Its extended-duration Treasury ETF turned the same 100 into 53.7, and only reached its lowest point in September 2026. Both sit in the same category, from the same issuer, holding the same government's bonds. A list of "Vanguard Treasury ETFs" tells you none of that; the analysis of each one does.
+Since January 2020, Vanguard's short-term Treasury ETF turned 100 into 112.8. Its extended-duration Treasury ETF turned the same 100 into 53.7, and only reached its lowest point in September 2026. Since 2022 it has also moved with the stock market instead of against it, so it stopped doing the job many investors hold it for. Both sit in the same category, from the same issuer, holding the same government's bonds. A list of "Vanguard Treasury ETFs" tells you none of that; the analysis of each one does.
 
-That is the gap this article closes. A language model reasons well about companies and funds, but it lists them from memory, and memory goes stale: delisted names, wrong sizes, missing listings. The [Finance Database MCP server](/projects/financedatabase/mcp) gives Claude the [Finance Database](/projects/financedatabase) instead, 300,000+ stocks, ETFs and indices, each categorized by sector, industry, country, exchange, market cap and issuer. The [Finance Toolkit MCP server](/projects/financetoolkit/mcp) then analyzes whatever it finds: financial ratios, returns, drawdowns. This article connects both in a few minutes and works through six questions that do exactly that, search first and analysis second.
+That is the gap this article closes. A language model reasons well about companies and funds, but it lists them from memory, and memory goes stale: delisted names, wrong sizes, missing listings. The [Finance Database MCP server](/projects/financedatabase/mcp) gives Claude the [Finance Database](/projects/financedatabase) instead, 300,000+ stocks, ETFs and indices, each categorized by sector, industry, country, exchange, market cap and issuer. The [Finance Toolkit MCP server](/projects/financetoolkit/mcp) then analyzes whatever it finds: ratios and what drives them, valuations, correlations, drawdowns and currency effects. This article connects both in a few minutes and works through six questions that do exactly that, search first and analysis second.
 
 <div class="ca-strip">
   <div><strong>2 connectors</strong><span>one to find, one to analyze, in the same conversation</span></div>
@@ -63,90 +63,126 @@ The Finance Database server follows the database itself, which is updated every 
 
 ## What You Can Ask
 
-Below are six real questions, each answered through both servers on October 12, 2026. Each starts with a search in the Finance Database and continues with an analysis in the Finance Toolkit. **The question is what you type, the chart is what comes back.** Paste any of them into Claude as they are, or swap in your own country, sector or issuer.
+Below are six real questions, answered through both servers on October 12, 2026, with prices up to October 9. None of them is a lookup. Each starts with a search in the Finance Database that builds the group, and continues with several Finance Toolkit calculations on it. The insight comes from the combination: a model working from memory can name a few drinks makers, but it cannot tell you which one earns its return on equity with debt, or that long-dated Treasuries started moving with stocks in 2022. Paste any question into Claude as it is, or swap in your own country, sector or issuer.
 
 <div class="ca-nav">
-  <a href="#european-chipmakers"><i class="fas fa-microchip" aria-hidden="true"></i>Europe's chipmakers</a>
   <a href="#drinks-makers"><i class="fas fa-wine-glass" aria-hidden="true"></i>Drinks makers</a>
+  <a href="#european-chipmakers"><i class="fas fa-microchip" aria-hidden="true"></i>Europe's chipmakers</a>
   <a href="#vanguard-treasuries"><i class="fas fa-landmark" aria-hidden="true"></i>Treasury ETFs</a>
-  <a href="#uranium-ucits"><i class="fas fa-atom" aria-hidden="true"></i>US vs UCITS</a>
-  <a href="#apple-in-euros"><i class="fas fa-euro-sign" aria-hidden="true"></i>Apple in euros</a>
-  <a href="#sp-500-dividends"><i class="fas fa-chart-area" aria-hidden="true"></i>Dividends</a>
+  <a href="#uranium-ucits"><i class="fas fa-atom" aria-hidden="true"></i>Uranium ETFs</a>
+  <a href="#apple-in-euros"><i class="fas fa-coins" aria-hidden="true"></i>Apple in six currencies</a>
+  <a href="#sp-500-dividends"><i class="fas fa-chart-area" aria-hidden="true"></i>The S&amp;P 500, three ways</a>
 </div>
 
-### How profitable are Europe's large chipmakers? {#european-chipmakers}
+### Which of Europe's smaller drinks makers is the best business? {#drinks-makers}
 
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find the large European semiconductor companies, then compare their operating margins over the last five years.<span class="ca-q__tool">Finance Database MCP · equities → Finance Toolkit MCP · profitability</span></p></div>
+<div class="mcp-show">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find Europe's mid and small-cap drinks makers. Which one is the best business? Compare their return on equity and what drives it, their debt, their valuation and how the shares did since 2021.</p></div>
+<div class="mcp-show__meta"><span><b>12</b> companies found</span><span><b>8</b> tool calls</span><span><b>2</b> servers</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> The steps behind the answer</summary><ol><li><code>equities</code><span>Finance Database: industry Beverages, Mid and Small Cap, European countries, primary listings</span></li><li><code>profitability</code><span>Return on equity, operating margin and net margin, fiscal 2025</span></li><li><code>efficiency</code><span>Asset turnover, fiscal 2025</span></li><li><code>models</code><span>DuPont analysis: the equity multiplier (assets per unit of equity)</span></li><li><code>solvency</code><span>Net debt to EBITDA, fiscal 2025</span></li><li><code>valuation</code><span>EV/EBITDA, fiscal 2025</span></li><li><code>performance</code><span>Total return since January 2021, dividends included</span></li><li><code>risk</code><span>Maximum drawdown since January 2021</span></li></ol></details>
 
-<div class="ca-nums"><span><b>7</b>companies found</span><span><b>34.6%</b>ASML 2025</span><span><b>27.5% → 2.7%</b>STMicroelectronics since 2022</span></div>
+<div class="mcp-show__grid">
+<div class="mcp-show__cell mcp-show__cell--wide">{% include ft-chart.html id="fdb-drinks-roe" src="/assets/data/article-charts.json" label="Return on equity of Europe's mid and small-cap drinks makers and its three drivers" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-drinks-lev" src="/assets/data/article-charts.json" label="Return on equity against the equity multiplier" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-drinks-value" src="/assets/data/article-charts.json" label="Operating margin against EV/EBITDA" %}</div>
+<div class="mcp-show__cell mcp-show__cell--wide">{% include ft-chart.html id="fdb-drinks-market" src="/assets/data/article-charts.json" label="Net debt to EBITDA, total return and maximum drawdown since 2021" %}</div>
+</div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Kofola, a Czech soft drinks maker, has the highest return on equity in the group at 31.3%, but it comes from its balance sheet, not its margins: it carries 5.2 of assets for every unit of equity, more than any other company here, on a net margin of only 6.3%. Without the leverage, the strongest businesses are Malteries Franco-Belges (a 27.9% net margin and net cash) and Laurent-Perrier (the best operating margin at 25.3%, at 8.2 times EBITDA, among the lowest valuations in the group). The famous names did worst for shareholders: since January 2021, Rémy Cointreau lost 69% and Fever-Tree 62%, dividends included, while Kofola returned 177%.</p></div>
+<div class="ca-nums"><span><b>31.3%</b>Kofola return on equity</span><span><b>5.2x</b>Kofola equity multiplier, the highest</span><span><b>+177% vs −69%</b>Kofola vs Rémy Cointreau since 2021</span></div>
+</div>
 
-{% include ft-chart.html id="fdb-chip-margins" src="/assets/data/article-charts.json" label="Operating margins of Europe's large chipmakers" %}
+Share prices are in each company's own currency. Return on equity rises with debt, so the split into margin, turnover and leverage is what turns a ranking into an answer.
 
-The search returns seven companies with 18 listings on European exchanges, from ASML and Infineon to Technoprobe. The second step runs each through the Finance Toolkit's [operating margin](/projects/financetoolkit/docs/ratios/operating-margin), operating income as a share of revenue. Same industry, very different businesses: the equipment makers ASML, ASM International and BE Semiconductor Industries kept margins around 29% to 35% in 2025, while the chipmakers Infineon and STMicroelectronics went from roughly a quarter of revenue at their peak to 13.9% and 2.7%. Margins are per fiscal year, and NXP is measured on its primary listing in New York.
+### Are Europe's large chipmakers priced for their profits? {#european-chipmakers}
 
-<div class="ca-take"><p>The search gives the peer group; the analysis shows how different its members are. A sector average would hide a range from 2.7% to 34.6%.</p></div>
+<div class="mcp-show">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find the large European semiconductor companies. Compare their operating margins over five years, their return on equity against their valuation, how closely the shares move together and how they did since 2021.</p></div>
+<div class="mcp-show__meta"><span><b>7</b> companies found</span><span><b>18</b> European listings</span><span><b>6</b> tool calls</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> The steps behind the answer</summary><ol><li><code>equities</code><span>Finance Database: industry Semiconductors, Large and Mega Cap, European exchanges</span></li><li><code>profitability</code><span>Operating margin, 2020 to 2025, and return on equity, fiscal 2025</span></li><li><code>valuation</code><span>EV/EBITDA, fiscal 2025</span></li><li><code>performance</code><span>Correlation of weekly returns since March 2022</span></li><li><code>market_data</code><span>Growth of 100 since January 2021, dividends included</span></li><li><code>risk</code><span>Maximum drawdown since January 2021</span></li></ol></details>
 
-### Which of Europe's smaller drinks makers earns the most? {#drinks-makers}
+<div class="mcp-show__grid">
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-chip-margins" src="/assets/data/article-charts.json" label="Operating margins of Europe's large chipmakers" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-chip-value" src="/assets/data/article-charts.json" label="Return on equity against EV/EBITDA" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-chip-corr" src="/assets/data/article-charts.json" label="Correlation of weekly returns of Europe's large chipmakers" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-chip-market" src="/assets/data/article-charts.json" label="Growth of 100 and maximum drawdown since 2021" %}</div>
+</div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>The seven are two groups under one label. The equipment makers ASML, ASM International and BE Semiconductor kept operating margins near 30% to 35% and returned 215% to 292% since January 2021; the chipmakers Infineon, NXP and STMicroelectronics returned 54% to 93%. The correlations show the same split: ASML moves most with ASM International (0.81), Infineon with STMicroelectronics (0.76). Valuations follow the cycle more than profitability: STMicroelectronics trades at 11 times EBITDA on a return on equity of 0.9%, BE Semiconductor at 52 times on 28.7%. ASML pairs the highest return on equity (50.5%) with a mid-range 28 times.</p></div>
+<div class="ca-nums"><span><b>50.5%</b>ASML return on equity, the highest</span><span><b>0.81</b>ASML and ASM International correlation</span><span><b>+292% vs +54%</b>ASM International vs STMicroelectronics since 2021</span></div>
+</div>
 
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find Europe's mid and small-cap drinks makers, then compare their operating margin and return on equity for 2025.<span class="ca-q__tool">Finance Database MCP · equities → Finance Toolkit MCP · profitability</span></p></div>
+Margins are per fiscal year and share prices in each company's own currency; NXP is measured on its primary listing in New York. Technoprobe only moved to the main Milan market in 2022, so it is left out of the price chart.
 
-<div class="ca-nums"><span><b>25.3%</b>Laurent-Perrier operating margin</span><span><b>31.3%</b>Kofola return on equity</span><span><b>4.1%</b>Rémy Cointreau return on equity</span></div>
+### Do Vanguard's Treasury ETFs still protect a stock portfolio? {#vanguard-treasuries}
 
-{% include ft-chart.html id="fdb-drinks" src="/assets/data/article-charts.json" label="Operating margin and return on equity of Europe's mid and small-cap drinks makers" %}
+<div class="mcp-show">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which Treasury ETFs does Vanguard list in the US? Compare how each did since 2020, year by year and against the S&amp;P 500, and check whether they still move against stocks.</p></div>
+<div class="mcp-show__meta"><span><b>5</b> ETFs found</span><span><b>12</b> years of weekly returns</span><span><b>5</b> tool calls</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> The steps behind the answer</summary><ol><li><code>etfs</code><span>Finance Database: family Vanguard, category Treasury Bonds, US exchanges</span></li><li><code>market_data</code><span>Weekly prices with distributions since 2014, plus VOO for the S&amp;P 500</span></li><li><code>performance</code><span>Calendar-year returns, 2020 to 2026</span></li><li><code>performance</code><span>Correlation with the S&amp;P 500, 2014 to 2021 and 2022 to 2026</span></li><li><code>risk</code><span>Volatility and maximum drawdown since 2020</span></li></ol></details>
 
-The search finds the beverage makers between $300 million and $10 billion, from Campari and Rémy Cointreau to Fever-Tree, Irn-Bru maker A.G. Barr and Spa water from Spadel. The analysis then splits them two ways. Champagne house Laurent-Perrier keeps the most of each euro of sales, an operating margin of 25.3%. The best return on shareholders' money comes from Kofola, a Czech soft drinks maker that few investors outside Central Europe follow: 31.3%, ahead of Royal Unibrew at 23.8%. The famous spirits names trail: Campari at 9.0% and Rémy Cointreau at 4.1%, after its cognac sales fell back.
+<div class="mcp-show__grid">
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-treasuries" src="/assets/data/article-charts.json" label="Value of 100 invested in Vanguard's US Treasury ETFs since 2020" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-treas-corr" src="/assets/data/article-charts.json" label="Correlation of Vanguard's Treasury ETFs with the S&P 500 before and after 2022" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-treas-years" src="/assets/data/article-charts.json" label="Calendar-year returns of Vanguard's Treasury ETFs and VOO" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-treas-risk" src="/assets/data/article-charts.json" label="Annual return against volatility since 2020" %}</div>
+</div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Long Treasuries stopped working as a hedge. From 2014 to 2021, all four funds moved against the S&amp;P 500 in a typical week, with correlations between −0.20 and −0.38. Since 2022 they move with it, at +0.14 to +0.16. In 2022 the extended-duration EDV lost 39.2% in the same year the S&amp;P 500 lost 18.2%, and it has not come back: since 2020 it lost 8.5% a year, with more volatility (20.4%) than the S&amp;P 500 itself (18.8%). Only the short-term VGSH earned a real return since 2020, 1.8% a year; the intermediate VGIT made 0.5%.</p></div>
+<div class="ca-nums"><span><b>−0.38 → +0.14</b>VGSH correlation with stocks</span><span><b>−39.2%</b>EDV in 2022</span><span><b>20.4% vs 18.8%</b>volatility, EDV vs S&amp;P 500</span></div>
+</div>
 
-Return on equity also rises with debt, so a high number is a reason to look closer, not a verdict. That is the point of having the analysis next to the list.
+The search returns five Treasury ETFs; VTG only started trading in July 2025, so four have a history. The difference between them is duration, how far a bond's price moves when interest rates change, which is also why the long funds suffered most when rates rose.
 
-<div class="ca-take"><p>The names everyone knows are not the ones earning the most. A screen that stops at the famous brands would have missed the best returns in the group.</p></div>
+### Is every uranium ETF the same bet? {#uranium-ucits}
 
-### How much did Vanguard's Treasury ETFs fall? {#vanguard-treasuries}
+<div class="mcp-show">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find the uranium ETFs, including the UCITS versions listed in Europe. How did the main ones do since February 2023, year by year and against their worst fall, and did the UCITS version keep up with the US fund?</p></div>
+<div class="mcp-show__meta"><span><b>31</b> listings found</span><span><b>18</b> of them UCITS</span><span><b>6</b> compared in US dollars</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> The steps behind the answer</summary><ol><li><code>etfs</code><span>Finance Database: "uranium" in the name, every exchange and currency</span></li><li><code>search_instruments</code><span>Finance Database: Cameco, one of the largest uranium miners, as a reference</span></li><li><code>market_data</code><span>Prices with distributions since February 2023, US dollar listings</span></li><li><code>performance</code><span>Calendar-year returns and the correlation of weekly returns</span></li><li><code>risk</code><span>Maximum drawdown since February 2023</span></li></ol></details>
 
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which Treasury ETFs does Vanguard list in the US, and how did each one perform since 2020?<span class="ca-q__tool">Finance Database MCP · etfs → Finance Toolkit MCP · market data</span></p></div>
+<div class="mcp-show__grid">
+<div class="mcp-show__cell mcp-show__cell--wide">{% include ft-chart.html id="fdb-uranium-growth" src="/assets/data/article-charts.json" label="Value of 100 invested in uranium ETFs and Cameco since February 2023" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-uranium-years" src="/assets/data/article-charts.json" label="Calendar-year returns of uranium ETFs" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-uranium-risk" src="/assets/data/article-charts.json" label="Total return against maximum drawdown of uranium ETFs" %}</div>
+</div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>One label, two different bets. The broad funds URA and NLR, which also hold utilities and reactor builders, doubled since February 2023 (+100% and +96%). The pure miner funds lagged, URNM at +45% and the junior miners in URNJ at +15%, and fell further on the way: −51% and −59% at their worst. The gap opened in 2024, when NLR rose 14% and the miner funds lost 14% and 18%. The UCITS twin URNU moved with URA week by week (a correlation of 0.95) but ended ten points behind, at +90%. And Cameco, a single stock, returned 219%, more than any of the funds.</p></div>
+<div class="ca-nums"><span><b>+100% vs +45%</b>URA vs miners fund URNM</span><span><b>0.95</b>URA and UCITS twin URNU</span><span><b>+219%</b>Cameco on its own</span></div>
+</div>
 
-<div class="ca-nums"><span><b>112.8</b>short-term, from 100</span><span><b>53.7</b>extended duration, from 100</span><span><b>-59.8%</b>worst fall, September 2026</span></div>
+European retail investors generally need UCITS funds, so the US fund everyone talks about is often not the one they can buy. The comparison uses the US dollar lines only, including URNU in London, so currency moves don't blur it.
 
-{% include ft-chart.html id="fdb-treasuries" src="/assets/data/article-charts.json" label="Value of 100 invested in Vanguard's US Treasury ETFs since 2020" %}
+### What did Apple return in each currency? {#apple-in-euros}
 
-The search returns five Treasury ETFs; four of them have traded since 2020 (the fifth, VTG, only started in July 2025). With distributions reinvested, 100 in the short-term VGSH grew to 112.8, while the intermediate VGIT ended at 102.8, the long-term VGLT at 72.9 and the extended-duration EDV at 53.7. The difference is duration: how far a bond's price moves when interest rates change. When rates rose in 2022, the short fund barely moved and the long ones fell hard. EDV's worst point, 59.8% below its peak, came only in September 2026.
+<div class="mcp-show">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which ticker belongs to ISIN US0378331005, where else does it trade, and what did it return on each listing since January 2025?</p></div>
+<div class="mcp-show__meta"><span><b>19</b> listings of one ISIN</span><span><b>15</b> exchanges</span><span><b>6</b> currencies</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> The steps behind the answer</summary><ol><li><code>search_instruments</code><span>Finance Database: the ISIN, every listing with its exchange and currency</span></li><li><code>market_data</code><span>Prices of seven listings, one per market, since January 2025</span></li><li><code>market_data</code><span>Exchange rates of the dollar against the euro, peso, real and others</span></li></ol></details>
 
-<div class="ca-take"><p>"Treasury ETF" says what a fund holds, not how it behaves. The category is the same; the risk is not.</p></div>
+<div class="mcp-show__grid">
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-apple-listings" src="/assets/data/article-charts.json" label="Apple's return on each of seven listings since January 2025" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-apple-dollar" src="/assets/data/article-charts.json" label="The dollar against five currencies since January 2025" %}</div>
+<div class="mcp-show__cell mcp-show__cell--wide">{% include ft-chart.html id="fdb-apple-fx" src="/assets/data/article-charts.json" label="Apple on Nasdaq, Xetra, Buenos Aires and São Paulo since January 2025" %}</div>
+</div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>One share, returns from 12% to 92%. In dollars, Apple rose 39.1% since January 2025. On Xetra in euros it rose 25.6%, because the dollar lost 8.0% against the euro; in São Paulo it rose 12.1%, as the dollar lost 19.5% against the real. In Buenos Aires it rose 91.9%, most of it the peso's fall: the dollar rose 47% against it. The two charts side by side explain each other: each listing is roughly Apple's dollar return plus the currency move.</p></div>
+<div class="ca-nums"><span><b>39.1%</b>in dollars</span><span><b>25.6%</b>in euros on Xetra</span><span><b>91.9%</b>in Argentine pesos</span></div>
+</div>
 
-### Did the UCITS version keep up with the US fund? {#uranium-ucits}
+The ISIN is the code on a broker statement, and the same company can sit behind very different tickers. The Buenos Aires and São Paulo lines are local certificates that each represent a fraction of a share, so their returns follow Apple but their prices are not comparable.
 
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which uranium ETFs are UCITS funds listed in Europe, and did the UCITS version of URA keep up with the US fund?<span class="ca-q__tool">Finance Database MCP · etfs → Finance Toolkit MCP · market data</span></p></div>
+### How much do dividends and weighting change the S&amp;P 500? {#sp-500-dividends}
 
-<div class="ca-nums"><span><b>31</b>uranium ETF listings</span><span><b>18</b>of them UCITS</span><span><b>209.9 vs 207.0</b>US vs UCITS, from 100</span></div>
+<div class="mcp-show">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find the S&amp;P 500, its total return version and its equal-weight version, and compare them since 2016, year by year.</p></div>
+<div class="mcp-show__meta"><span><b>895</b> indices with "S&amp;P 500" in the name</span><span><b>4</b> versions compared</span><span><b>11</b> years</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> The steps behind the answer</summary><ol><li><code>indices</code><span>Finance Database: "S&amp;P 500" in the name, from sector and factor variants to currency-hedged ones</span></li><li><code>etfs</code><span>Finance Database: the equal-weight S&amp;P 500 ETF, RSP</span></li><li><code>market_data</code><span>^GSPC, ^SP500TR, ^SPXEW and RSP since January 2016</span></li><li><code>performance</code><span>Calendar-year returns, 2016 to 2026</span></li></ol></details>
 
-{% include ft-chart.html id="fdb-uranium-perf" src="/assets/data/article-charts.json" label="Value of 100 invested in URA and its UCITS version URNU" %}
+<div class="mcp-show__grid">
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-sp500-tr" src="/assets/data/article-charts.json" label="The S&P 500 price, total return and equal-weight versions since 2016" %}</div>
+<div class="mcp-show__cell">{% include ft-chart.html id="fdb-sp500-years" src="/assets/data/article-charts.json" label="Calendar-year returns of the S&P 500 versions" %}</div>
+</div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Since January 2016, 100 in the headline index became 388; with dividends reinvested, it became 466. The bigger choice was the weighting. The equal-weight index, which gives each of the 500 companies the same weight, reached 280, or 337 with dividends through the RSP fund. Equal weight beat the index in 2016, 2021 and 2022, then trailed the total return version by 7 to 13 points a year from 2023 to 2025, as a handful of large companies carried the index.</p></div>
+<div class="ca-nums"><span><b>466 vs 388</b>with and without dividends</span><span><b>337</b>equal weight, with dividends</span><span><b>−12.6 points</b>equal weight vs index, 2023</span></div>
+</div>
 
-European retail investors generally need UCITS funds, so the US fund everyone talks about is often not the one they can buy. The search finds 31 uranium ETF listings, 18 of them UCITS versions in London, Frankfurt, Paris, Milan and Zurich, including URNU, Global X's European twin of URA. The analysis compares the two in the same currency: since January 2023, 100 in URA became 209.9 and 100 in URNU 207.0. Both fell about 36% from peak to trough in early 2025.
-
-<div class="ca-take"><p>The UCITS twin tracked the US fund within a few points over almost four years. Investors who can only buy the European version gave up very little.</p></div>
-
-### What did Apple return in euros? {#apple-in-euros}
-
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which ticker belongs to ISIN US0378331005, where else does it trade, and how did it do in euros compared with dollars since January 2025?<span class="ca-q__tool">Finance Database MCP · search_instruments → Finance Toolkit MCP · market data</span></p></div>
-
-<div class="ca-nums"><span><b>19</b>listings of one ISIN</span><span><b>139.3</b>in dollars, from 100</span><span><b>127.0</b>in euros, from 100</span></div>
-
-{% include ft-chart.html id="fdb-apple-fx" src="/assets/data/article-charts.json" label="Apple in dollars on Nasdaq and in euros on Xetra since January 2025" %}
-
-The ISIN, the code on a broker statement, belongs to Apple, and the search finds it on 19 listings across 15 exchanges in six currencies. The analysis compares two of them: AAPL on Nasdaq in dollars and APC.DE on Xetra in euros. Since January 2025, 100 became 139.3 in dollars and 127.0 in euros. Same company, same shares; the gap is the dollar's fall against the euro.
-
-<div class="ca-take"><p>For a euro investor, the currency was a third of the story. The listing you buy decides which return you see.</p></div>
-
-### How much do dividends add to the S&amp;P 500? {#sp-500-dividends}
-
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find the S&amp;P 500 and its total return version, then compare them since 2016.<span class="ca-q__tool">Finance Database MCP · indices → Finance Toolkit MCP · market data</span></p></div>
-
-<div class="ca-nums"><span><b>895</b>indices with "S&amp;P 500" in the name</span><span><b>406.4</b>price index, from 100</span><span><b>487.4</b>total return, from 100</span></div>
-
-{% include ft-chart.html id="fdb-sp500-tr" src="/assets/data/article-charts.json" label="The S&P 500 price index and total return index since 2016" %}
-
-The search finds 895 indices with "S&P 500" in the name, from sector and factor variants to currency-hedged ones, and picks out ^GSPC, the headline price index, and ^SP500TR, the total return version. Since January 2016, the price index turned 100 into 406.4; with dividends reinvested it became 487.4, about a fifth more.
-
-<div class="ca-take"><p>The headline index leaves out the dividends. Benchmark a fund against the total return version, or it will look better than it is.</p></div>
+Benchmark a fund against the total return version, or it will look better than it is, and know which weighting you are measuring against.
 
 ### What happens when a filter doesn't match? {#did-you-mean}
 
