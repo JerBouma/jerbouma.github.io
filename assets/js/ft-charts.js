@@ -12,7 +12,10 @@
  * with the page.
  */
 (function () {
-  var boxes = Array.prototype.slice.call(document.querySelectorAll('.ft-chart[data-chart]'));
+  // charts only meant for the Medium images stay hidden and undrawn on the site
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.ft-chart[data-chart]')).filter(function (b) {
+    return !b.closest('.mcp-show__cell--medium') || window.mediumExport;
+  });
   if (!boxes.length) return;
 
   var ECHARTS = '/assets/js/lib/echarts-5.5.1.min.js';
