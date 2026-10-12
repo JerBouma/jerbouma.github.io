@@ -1,13 +1,13 @@
 ---
-title: How to Find Stocks and ETFs with Claude
-seo_title: "Find Stocks and ETFs with Claude"
+title: How to Find and Analyze Stocks and ETFs with Claude
+seo_title: "Find and Analyze Stocks and ETFs with Claude"
 date: 2026-10-10
-last_modified_at: 2026-10-12
+last_modified_at: 2026-10-13
 permalink: /articles/find-stocks-and-etfs-with-claude
 redirect_from:
   - /articles/find-stocks-etfs-funds-with-claude
-excerpt: "Claude can't list every company in a sector or every ETF of an issuer from memory. With the free, hosted Finance Database MCP server it searches 300,000+ stocks, ETFs and indices by sector, country, exchange and ISIN, with no API key and no installation."
-description: "Use Claude as a stock and ETF screener: the free Finance Database MCP server finds 300,000+ stocks, ETFs and indices by sector, country, exchange or ISIN."
+excerpt: "Claude lists companies and ETFs from memory, and memory goes stale. Connect the free Finance Database MCP server to find every stock, ETF or index that fits a question, then the Finance Toolkit MCP server to analyze them: margins, returns, drawdowns and currency effects, in one conversation."
+description: "Use Claude as a stock and ETF screener and analyst: find 300,000+ stocks, ETFs and indices with the Finance Database MCP, then analyze them with the Finance Toolkit."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -16,31 +16,32 @@ tags: [MCP Server]
 share: true
 image: /assets/images/projects/FinanceDatabaseMCP.jpg
 ---
-Ask Claude *"which uranium ETFs can I buy?"* and you will probably get URA and URNM, the two best-known US ETFs. On October 12, 2026 the Finance Database listed 31 uranium ETF listings from ten issuers across ten markets, 18 of them UCITS versions in London, Frankfurt, Paris, Milan and Zurich. If you are a European investor, those are often the only ones you can buy, and they are exactly the ones a model's memory leaves out.
+Since January 2020, Vanguard's short-term Treasury ETF turned 100 into 112.8. Its extended-duration Treasury ETF turned the same 100 into 53.7, and only reached its lowest point in September 2026. Both sit in the same category, from the same issuer, holding the same government's bonds. A list of "Vanguard Treasury ETFs" tells you none of that; the analysis of each one does.
 
-Finding things is a different problem from analyzing them. A language model reasons well about companies, but it lists them from memory, and memory favors the famous names, the US tickers and whatever was in the training data. The [Finance Database MCP server](/projects/financedatabase/mcp) gives Claude the [Finance Database](/projects/financedatabase) instead: 300,000+ equities, ETFs, indices, currencies and cryptocurrencies, each categorized by sector, industry, country, exchange, market cap and issuer. This article connects it to Claude in about a minute and then works through eight real questions, from screening stocks to turning an ISIN into the right ticker.
+That is the gap this article closes. A language model reasons well about companies and funds, but it lists them from memory, and memory goes stale: delisted names, wrong sizes, missing listings. The [Finance Database MCP server](/projects/financedatabase/mcp) gives Claude the [Finance Database](/projects/financedatabase) instead, 300,000+ stocks, ETFs and indices, each categorized by sector, industry, country, exchange, market cap and issuer. The [Finance Toolkit MCP server](/projects/financetoolkit/mcp) then analyzes whatever it finds: financial ratios, returns, drawdowns. This article connects both in a few minutes and works through six questions that do exactly that, search first and analysis second.
 
 <div class="ca-strip">
-  <div><strong>1 minute</strong><span>to connect Claude Desktop, claude.ai or Claude Code</span></div>
-  <div><strong>300,000+</strong><span>stocks, ETFs, indices, currencies and cryptos</span></div>
-  <div><strong>No API key</strong><span>no account, no sign-in, nothing to install</span></div>
-  <div><strong>Free</strong><span>hosted server, open-source code</span></div>
+  <div><strong>2 connectors</strong><span>one to find, one to analyze, in the same conversation</span></div>
+  <div><strong>300,000+</strong><span>stocks, ETFs, indices, currencies and cryptos to search</span></div>
+  <div><strong>500+</strong><span>financial methods to run on what you find</span></div>
+  <div><strong>Free</strong><span>hosted servers, open-source code</span></div>
 </div>
 
 <div class="article-cta">
   <p class="article-cta__title">Free, hosted and open source</p>
-  <p>One URL gives Claude, ChatGPT, Cursor and other AI assistants a searchable, categorized database of 300,000+ financial instruments, with no API key needed.</p>
+  <p>One URL gives Claude, ChatGPT, Cursor and other AI assistants a searchable, categorized database of 300,000+ financial instruments, with no API key needed. Add the Finance Toolkit server next to it to analyze the results.</p>
   <p class="article-cta__actions"><a href="/projects/financedatabase/mcp" class="hp-btn hp-btn--primary">Explore the server <i class="fas fa-arrow-right" aria-hidden="true"></i></a><a href="/projects/financedatabase/mcp#installation" class="hp-btn hp-btn--ghost">Install guide</a></p>
 </div>
 
 ## What You Need
 
-<div class="ca-cards">
-  <div><i class="ca-icon fas fa-comments" aria-hidden="true"></i><p class="ca-card-title">A Claude account</p><p>Custom connectors work in claude.ai and Claude Desktop on every plan; the free plan allows one, so this can be it. Claude Code supports MCP servers on every plan.</p></div>
-  <div><i class="ca-icon fas fa-unlock" aria-hidden="true"></i><p class="ca-card-title">Nothing else</p><p>The Finance Database is free and open source, so the server needs no API key, no account and no sign-in. Add the URL and start asking.</p></div>
+<div class="ca-cards ca-cards--3">
+  <div><i class="ca-icon fas fa-comments" aria-hidden="true"></i><p class="ca-card-title">A Claude account</p><p>Custom connectors work in claude.ai and Claude Desktop on every plan; the free plan allows one, paid plans allow more. Claude Code supports MCP servers on every plan.</p></div>
+  <div><i class="ca-icon fas fa-magnifying-glass" aria-hidden="true"></i><p class="ca-card-title">The Finance Database server</p><p>For the search. It is free and open source, so it needs no API key, no account and no sign-in.</p></div>
+  <div><i class="ca-icon fas fa-calculator" aria-hidden="true"></i><p class="ca-card-title">The Finance Toolkit server</p><p>For the analysis. It needs a <a href="/fmp" target="_blank">Financial Modeling Prep</a> key; the free plan is enough to start.</p></div>
 </div>
 
-If you would rather not use the hosted server, the [local installation](/projects/financedatabase/mcp#local-clients) runs the same server on your own machine with one `uvx` command, and the database is cached there after the first download.
+If you would rather run them yourself, both servers also install locally with one `uvx` command; see the [Finance Database](/projects/financedatabase/mcp#local-clients) and [Finance Toolkit](/projects/financetoolkit/mcp#local-clients) server pages.
 
 ## Connecting Claude Desktop or claude.ai
 
@@ -55,142 +56,108 @@ The steps are identical for the desktop app and the web app:
     ```
 
 4. Click **Add**. The Finance Database now appears in your list of connectors.
-5. Start a new chat and ask for a list of companies, ETFs or indices. There is no key prompt: the tools work right away.
+5. Repeat for the Finance Toolkit with `https://financetoolkit.jeroenbouma.com/mcp`. On its first tool call a browser window asks for your FMP key; enter it once.
 {: .ca-steps}
 
-The hosted server follows the database itself, which the community updates every week, so the answers stay current without anything to update on your side.
+The Finance Database server follows the database itself, which is updated every week, so the lists stay current without anything to update on your side.
 
 ## Connecting Claude Code
 
-In the terminal, one command registers the server for every future session:
+In the terminal, two commands register both servers for every future session:
 
 ```bash
 claude mcp add --transport http finance-database https://financedatabase.jeroenbouma.com/mcp
+claude mcp add --transport http finance-toolkit https://financetoolkit.jeroenbouma.com/mcp
 ```
 
-Restart Claude Code and the tools are available. This works well for building on the results: Claude Code finds the universe through the server and writes the screen, notebook or watchlist file around it.
+Restart Claude Code and the tools are available. Claude Code can then also write the screen, notebook or report around the results.
 
 ## What You Can Ask
 
-You never have to name a tool or a filter value: ask in plain English and Claude checks which sectors, exchanges or categories exist before it searches. Below are eight real questions, each answered through the server on October 12, 2026. **The question is what you type, the table or chart is what comes back.** Paste any of them into Claude as they are, or swap in your own country, sector or issuer.
+Below are six real questions, each answered through both servers on October 12, 2026. Each starts with a search in the Finance Database and continues with an analysis in the Finance Toolkit. **The question is what you type, the chart is what comes back.** Paste any of them into Claude as they are, or swap in your own country, sector or issuer.
 
 <div class="ca-nav">
-  <a href="#european-chipmakers"><i class="fas fa-microchip" aria-hidden="true"></i>Europe's large chipmakers</a>
-  <a href="#isin-to-ticker"><i class="fas fa-fingerprint" aria-hidden="true"></i>From ISIN to ticker</a>
-  <a href="#uranium-etfs"><i class="fas fa-atom" aria-hidden="true"></i>Uranium ETFs</a>
-  <a href="#vanguard-bond-etfs"><i class="fas fa-layer-group" aria-hidden="true"></i>Vanguard's bond ETFs</a>
-  <a href="#dutch-financials"><i class="fas fa-landmark" aria-hidden="true"></i>Large Dutch financials</a>
-  <a href="#sp-500-indices"><i class="fas fa-chart-area" aria-hidden="true"></i>895 S&amp;P 500 indices</a>
-  <a href="#swiss-franc-pairs"><i class="fas fa-money-bill-transfer" aria-hidden="true"></i>Swiss franc pairs</a>
-  <a href="#did-you-mean"><i class="fas fa-spell-check" aria-hidden="true"></i>When the filter is wrong</a>
+  <a href="#european-chipmakers"><i class="fas fa-microchip" aria-hidden="true"></i>Europe's chipmakers</a>
+  <a href="#drinks-makers"><i class="fas fa-wine-glass" aria-hidden="true"></i>Drinks makers</a>
+  <a href="#vanguard-treasuries"><i class="fas fa-landmark" aria-hidden="true"></i>Treasury ETFs</a>
+  <a href="#uranium-ucits"><i class="fas fa-atom" aria-hidden="true"></i>US vs UCITS</a>
+  <a href="#apple-in-euros"><i class="fas fa-euro-sign" aria-hidden="true"></i>Apple in euros</a>
+  <a href="#sp-500-dividends"><i class="fas fa-chart-area" aria-hidden="true"></i>Dividends</a>
 </div>
 
-### Which large European chipmakers are there, and where do they trade? {#european-chipmakers}
+### How profitable are Europe's large chipmakers? {#european-chipmakers}
 
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which large European semiconductor companies are there, and on which European exchanges do they trade?<span class="ca-q__tool">Finance Database MCP · show_options, equities</span></p></div>
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find the large European semiconductor companies, then compare their operating margins over the last five years.<span class="ca-q__tool">Finance Database MCP · equities → Finance Toolkit MCP · profitability</span></p></div>
 
-<div class="ca-nums"><span><b>7</b>companies</span><span><b>18</b>European listings</span><span><b>4</b>of them Dutch</span></div>
+<div class="ca-nums"><span><b>7</b>companies found</span><span><b>34.6%</b>ASML 2025</span><span><b>27.5% → 2.7%</b>STMicroelectronics since 2022</span></div>
 
-| Company | Headquarters | Market cap | European listings |
-|:---|:---|:---|:---|
-| ASML Holding | Netherlands | Mega Cap | ASML.AS, ASME.DE, ASMF.DE, ASML.MI, ASML.VI |
-| ASM International | Netherlands | Large Cap | ASM.AS |
-| BE Semiconductor Industries | Netherlands | Large Cap | BESI.AS |
-| Infineon Technologies | Germany | Large Cap | IFX.DE, IFX.SW, IFX.VI |
-| NXP Semiconductors | Netherlands | Large Cap | VNX.DE, NXPI.VI, 0EDE.L |
-| STMicroelectronics | Switzerland | Large Cap | STMPA.PA, STMMI.MI, SGM.DE, STMI.VI |
-| Technoprobe | Italy | Large Cap | TPRO.MI |
+{% include ft-chart.html id="fdb-chip-margins" src="/assets/data/article-charts.json" label="Operating margins of Europe's large chipmakers" %}
 
-Claude first asked which exchanges these companies trade on, found 23 (including US over-the-counter markets), and then searched only the main European exchanges. That step matters: without it the same search returns ASML on Nasdaq and Infineon's US over-the-counter line IFNNY, which are the same companies in dollars. Large Cap means a market value of $10 billion or more; Mega Cap starts at $200 billion.
+The search returns seven companies with 18 listings on European exchanges, from ASML and Infineon to Technoprobe. The second step runs each through the Finance Toolkit's [operating margin](/projects/financetoolkit/docs/ratios/operating-margin), operating income as a share of revenue. Same industry, very different businesses: the equipment makers ASML, ASM International and BE Semiconductor Industries kept margins around 29% to 35% in 2025, while the chipmakers Infineon and STMicroelectronics went from roughly a quarter of revenue at their peak to 13.9% and 2.7%. Margins are per fiscal year, and NXP is measured on its primary listing in New York.
 
-<div class="ca-take"><p>Four of Europe's seven large chipmakers are Dutch, and only ASML is a Mega Cap. Ask for the home exchange when you want the ticker that trades in euros.</p></div>
+<div class="ca-take"><p>The search gives the peer group; the analysis shows how different its members are. A sector average would hide a range from 2.7% to 34.6%.</p></div>
 
-### Which ticker belongs to this ISIN? {#isin-to-ticker}
+### Which of Europe's smaller drinks makers earns the most? {#drinks-makers}
 
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which ticker belongs to ISIN US0378331005, and where else does it trade?<span class="ca-q__tool">Finance Database MCP · search_instruments</span></p></div>
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find Europe's mid and small-cap drinks makers, then compare their operating margin and return on equity for 2025.<span class="ca-q__tool">Finance Database MCP · equities → Finance Toolkit MCP · profitability</span></p></div>
 
-<div class="ca-nums"><span><b>19</b>listings</span><span><b>15</b>exchanges</span><span><b>6</b>currencies</span></div>
+<div class="ca-nums"><span><b>25.3%</b>Laurent-Perrier operating margin</span><span><b>31.3%</b>Kofola return on equity</span><span><b>4.1%</b>Rémy Cointreau return on equity</span></div>
 
-{% include ft-chart.html id="fdb-isin-listings" src="/assets/data/article-charts.json" label="Listings of Apple's ISIN by country" %}
+{% include ft-chart.html id="fdb-drinks" src="/assets/data/article-charts.json" label="Operating margin and return on equity of Europe's mid and small-cap drinks makers" %}
 
-US0378331005 is Apple Inc., AAPL on Nasdaq. The ISIN (the International Securities Identification Number, the code on a broker statement or fund report) identifies the share; the ticker depends on where you trade it. Apple trades on eight German exchanges in euros, four lines in Buenos Aires, two in Santiago, as a depositary receipt in São Paulo, and in Mexico, Milan and Vienna. The search also accepts CUSIP and FIGI codes, and searches all asset classes at once.
+The search finds the beverage makers between $300 million and $10 billion, from Campari and Rémy Cointreau to Fever-Tree, Irn-Bru maker A.G. Barr and Spa water from Spadel. The analysis then splits them two ways. Champagne house Laurent-Perrier keeps the most of each euro of sales, an operating margin of 25.3%. The best return on shareholders' money comes from Kofola, a Czech soft drinks maker that few investors outside Central Europe follow: 31.3%, ahead of Royal Unibrew at 23.8%. The famous spirits names trail: Campari at 9.0% and Rémy Cointreau at 4.1%, after its cognac sales fell back.
 
-<div class="ca-take"><p>One security, 19 tickers. The ISIN tells you what you own; the listing tells you where, and in which currency, you trade it.</p></div>
+Return on equity also rises with debt, so a high number is a reason to look closer, not a verdict. That is the point of having the analysis next to the list.
 
-### Which uranium ETFs can I buy? {#uranium-etfs}
+<div class="ca-take"><p>The names everyone knows are not the ones earning the most. A screen that stops at the famous brands would have missed the best returns in the group.</p></div>
 
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which uranium ETFs exist, and which of them are UCITS funds listed in Europe?<span class="ca-q__tool">Finance Database MCP · etfs</span></p></div>
+### How much did Vanguard's Treasury ETFs fall? {#vanguard-treasuries}
 
-<div class="ca-nums"><span><b>31</b>listings</span><span><b>10</b>issuers</span><span><b>18</b>UCITS listings in Europe</span></div>
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which Treasury ETFs does Vanguard list in the US, and how did each one perform since 2020?<span class="ca-q__tool">Finance Database MCP · etfs → Finance Toolkit MCP · market data</span></p></div>
 
-{% include ft-chart.html id="fdb-uranium" src="/assets/data/article-charts.json" label="Uranium ETF listings by market" %}
+<div class="ca-nums"><span><b>112.8</b>short-term, from 100</span><span><b>53.7</b>extended duration, from 100</span><span><b>-59.8%</b>worst fall, September 2026</span></div>
 
-Seven of the listings are US ETFs, from URA and URNM to Direxion's leveraged URAA. The UCITS versions, the European fund format most retail investors in the EU can buy, are Global X's URNU and URND, VanEck's NUCL and NUCG, WisdomTree's NCLR and Sprott's U3O8 and junior miners fund, each listed on several exchanges in London, Frankfurt, Paris, Milan and Zurich. Global X runs 9 of the 31 listings on its own, from Toronto and Tokyo to Mexico City.
+{% include ft-chart.html id="fdb-treasuries" src="/assets/data/article-charts.json" label="Value of 100 invested in Vanguard's US Treasury ETFs since 2020" %}
 
-<div class="ca-take"><p>The fund you have heard of is usually the US one. The database shows the European versions next to it, which is often the version you can actually buy.</p></div>
+The search returns five Treasury ETFs; four of them have traded since 2020 (the fifth, VTG, only started in July 2025). With distributions reinvested, 100 in the short-term VGSH grew to 112.8, while the intermediate VGIT ended at 102.8, the long-term VGLT at 72.9 and the extended-duration EDV at 53.7. The difference is duration: how far a bond's price moves when interest rates change. When rates rose in 2022, the short fund barely moved and the long ones fell hard. EDV's worst point, 59.8% below its peak, came only in September 2026.
 
-### Which bond ETFs does Vanguard list in the US? {#vanguard-bond-etfs}
+<div class="ca-take"><p>"Treasury ETF" says what a fund holds, not how it behaves. The category is the same; the risk is not.</p></div>
 
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which bond ETFs does Vanguard list in the US, by category?<span class="ca-q__tool">Finance Database MCP · show_options, etfs</span></p></div>
+### Did the UCITS version keep up with the US fund? {#uranium-ucits}
 
-<div class="ca-nums"><span><b>35</b>US-listed bond ETFs</span><span><b>15</b>corporate bond ETFs</span><span><b>10</b>target maturity ETFs</span></div>
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which uranium ETFs are UCITS funds listed in Europe, and did the UCITS version of URA keep up with the US fund?<span class="ca-q__tool">Finance Database MCP · etfs → Finance Toolkit MCP · market data</span></p></div>
 
-{% include ft-chart.html id="fdb-vanguard" src="/assets/data/article-charts.json" label="Vanguard's US-listed bond ETFs by category" %}
+<div class="ca-nums"><span><b>31</b>uranium ETF listings</span><span><b>18</b>of them UCITS</span><span><b>209.9 vs 207.0</b>US vs UCITS, from 100</span></div>
 
-Corporate bonds make up the largest group, and ten of those 15 are target maturity ETFs that each hold bonds maturing in one year, from 2027 to 2036. The broad core is BND for US bonds, BNDX for international bonds and BNDW for both. Without the exchange filter the count rises to 325, because many of these ETFs are also listed in Europe.
+{% include ft-chart.html id="fdb-uranium-perf" src="/assets/data/article-charts.json" label="Value of 100 invested in URA and its UCITS version URNU" %}
 
-<div class="ca-take"><p>An issuer's full lineup in one question, including the newer ETFs you would not think to ask about.</p></div>
+European retail investors generally need UCITS funds, so the US fund everyone talks about is often not the one they can buy. The search finds 31 uranium ETF listings, 18 of them UCITS versions in London, Frankfurt, Paris, Milan and Zurich, including URNU, Global X's European twin of URA. The analysis compares the two in the same currency: since January 2023, 100 in URA became 209.9 and 100 in URNU 207.0. Both fell about 36% from peak to trough in early 2025.
 
-### Which large Dutch financials are there? {#dutch-financials}
+<div class="ca-take"><p>The UCITS twin tracked the US fund within a few points over almost four years. Investors who can only buy the European version gave up very little.</p></div>
 
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which Dutch financial companies on Euronext Amsterdam are Large or Mega Cap?<span class="ca-q__tool">Finance Database MCP · show_options, equities</span></p></div>
+### What did Apple return in euros? {#apple-in-euros}
 
-<div class="ca-nums"><span><b>16</b>financials on Euronext Amsterdam</span><span><b>8</b>Large Cap</span><span><b>0</b>Mega Cap</span></div>
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which ticker belongs to ISIN US0378331005, where else does it trade, and how did it do in euros compared with dollars since January 2025?<span class="ca-q__tool">Finance Database MCP · search_instruments → Finance Toolkit MCP · market data</span></p></div>
 
-| Company | Ticker | Industry group |
-|:---|:---|:---|
-| ABN AMRO Bank | ABN.AS | Banking |
-| ING Groep | INGA.AS | Banking |
-| Aegon | AGN.AS | Insurance |
-| ASR Nederland | ASRNL.AS | Insurance |
-| NN Group | NN.AS | Insurance |
-| Adyen | ADYEN.AS | Investing, Lending & Payments |
-| CVC Capital Partners | CVC.AS | Investing, Lending & Payments |
-| Exor | EXO.AS | Investing, Lending & Payments |
+<div class="ca-nums"><span><b>19</b>listings of one ISIN</span><span><b>139.3</b>in dollars, from 100</span><span><b>127.0</b>in euros, from 100</span></div>
 
-Of the 16 Dutch financials listed in Amsterdam, eight are Large Cap and none reaches the $200 billion Mega Cap tier. The other eight are smaller companies and a preference share, which is why the size filter does most of the work here. The payments company Adyen counts as a financial too, under Investing, Lending & Payments.
+{% include ft-chart.html id="fdb-apple-fx" src="/assets/data/article-charts.json" label="Apple in dollars on Nasdaq and in euros on Xetra since January 2025" %}
 
-<div class="ca-take"><p>The size filter turns 16 names into the 8 that matter for a large-cap portfolio: three insurers, two banks and three in investing, lending and payments.</p></div>
+The ISIN, the code on a broker statement, belongs to Apple, and the search finds it on 19 listings across 15 exchanges in six currencies. The analysis compares two of them: AAPL on Nasdaq in dollars and APC.DE on Xetra in euros. Since January 2025, 100 became 139.3 in dollars and 127.0 in euros. Same company, same shares; the gap is the dollar's fall against the euro.
 
-### How many S&amp;P 500 indices are there? {#sp-500-indices}
+<div class="ca-take"><p>For a euro investor, the currency was a third of the story. The listing you buy decides which return you see.</p></div>
 
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find the S&amp;P 500 index and its total return, growth and value versions.<span class="ca-q__tool">Finance Database MCP · indices</span></p></div>
+### How much do dividends add to the S&amp;P 500? {#sp-500-dividends}
 
-<div class="ca-nums"><span><b>895</b>indices with "S&amp;P 500" in the name</span><span><b>^GSPC</b>the S&amp;P 500</span><span><b>^SP500TR</b>total return</span></div>
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find the S&amp;P 500 and its total return version, then compare them since 2016.<span class="ca-q__tool">Finance Database MCP · indices → Finance Toolkit MCP · market data</span></p></div>
 
-| Symbol | Name | Category |
-|:---|:---|:---|
-| ^GSPC | S&P 500 | Large Cap |
-| ^SP500TR | S&P 500 (TR) | Equities |
-| ^SP500NTR | S&P 500 (Net TR) | Equities |
-| ^SP500G | S&P 500 Growth | Growth |
-| ^SP500V | S&P 500 Value | Value |
-| ^SP5T5 | S&P 500 Top 50 | Large Cap |
-| ^SPXHAUD | S&P 500 AUD Hdg | Currencies |
+<div class="ca-nums"><span><b>895</b>indices with "S&amp;P 500" in the name</span><span><b>406.4</b>price index, from 100</span><span><b>487.4</b>total return, from 100</span></div>
 
-The headline ^GSPC is a price index: it leaves out dividends. For a performance comparison over many years the total return version, ^SP500TR, is the fair benchmark, and the net version deducts withholding tax on those dividends. The other 890 or so are variants by sector, factor, currency hedge and size.
+{% include ft-chart.html id="fdb-sp500-tr" src="/assets/data/article-charts.json" label="The S&P 500 price index and total return index since 2016" %}
 
-<div class="ca-take"><p>Benchmark against the total return index, not the price index: over a decade the gap is the dividends.</p></div>
+The search finds 895 indices with "S&P 500" in the name, from sector and factor variants to currency-hedged ones, and picks out ^GSPC, the headline price index, and ^SP500TR, the total return version. Since January 2016, the price index turned 100 into 406.4; with dividends reinvested it became 487.4, about a fifth more.
 
-### Which currencies quote against the Swiss franc? {#swiss-franc-pairs}
-
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which currency pairs quote against the Swiss franc?<span class="ca-q__tool">Finance Database MCP · currencies</span></p></div>
-
-<div class="ca-nums"><span><b>44</b>pairs against CHF</span><span><b>636</b>cryptocurrencies quoted in EUR</span></div>
-
-The database holds 44 pairs with the Swiss franc as quote currency, from AUD/CHF and CNY/CHF to USD/CHF (ticker CHF=X), and the same tools cover cryptocurrencies: 636 coins are quoted in euros alone. Like everything else here, these are symbols and classifications, ready to pass on for prices.
-
-<div class="ca-take"><p>Currencies and crypto use the same questions as stocks: name the base or quote currency and get every pair.</p></div>
+<div class="ca-take"><p>The headline index leaves out the dividends. Benchmark a fund against the total return version, or it will look better than it is.</p></div>
 
 ### What happens when a filter doesn't match? {#did-you-mean}
 
@@ -203,33 +170,15 @@ The country 'Netherland' is not available in the database.
 Did you mean 'Netherlands' or 'Thailand' or 'Switzerland' or 'New Zealand' instead of 'Netherland'?
 ```
 
-Claude can read the suggestion, retry with "Netherlands" and return the list. You can phrase things the way you normally would; the exact filter values are the server's problem.
+<div class="ca-take"><p>Plain language in, exact classifications out. You can phrase things the way you normally would; the exact filter values are the server's problem.</p></div>
 
-<div class="ca-take"><p>Plain language in, exact classifications out. Synonyms cover the everyday names, and the suggestion keeps a typo from becoming an empty answer.</p></div>
-
-Every list comes from the open [Finance Database](/projects/financedatabase), so you can check where a company is classified and correct it on GitHub if it is wrong. The [MCP server page](/projects/financedatabase/mcp#example-conversations) shows the full tool calls behind four of these questions.
+Every list comes from the open [Finance Database](/projects/financedatabase) and every number from a documented [Finance Toolkit](/projects/financetoolkit/docs) method, so you can check both. The Finance Toolkit server answers many more questions on its own, from valuation models to macro data, in [How to Connect Claude to Live Financial Data for Stock Analysis](/articles/connect-claude-to-financial-data).
 
 <div class="article-cta">
   <p class="article-cta__title">Ask your own questions</p>
-  <p>These eight examples use a fraction of what the database holds. Connect it in a minute and ask for any market, sector, issuer or identifier: the lists come from the database, not from memory.</p>
-  <p class="article-cta__actions"><a href="/projects/financedatabase/mcp" class="hp-btn hp-btn--primary">Connect the server <i class="fas fa-arrow-right" aria-hidden="true"></i></a><a href="/projects/financedatabase/mcp#example-conversations" class="hp-btn hp-btn--ghost">More examples</a></p>
+  <p>These six examples use a fraction of what the two servers can do together. Connect them in a few minutes and ask for any market, sector, issuer or fund, and then for the numbers behind it.</p>
+  <p class="article-cta__actions"><a href="/projects/financedatabase/mcp" class="hp-btn hp-btn--primary">Connect the server <i class="fas fa-arrow-right" aria-hidden="true"></i></a><a href="/projects/financetoolkit/mcp" class="hp-btn hp-btn--ghost">Finance Toolkit server</a></p>
 </div>
-
-## From a List to an Analysis
-
-A list is where most research starts, not where it ends. Once you know which companies or ETFs exist, the next questions are about numbers: who earns the most, who is the most solvent, how the ETFs have performed. The Finance Database holds classifications, not prices or financial statements, so it hands that part over to the Finance Toolkit MCP server. Add both connectors and Claude chains them in one conversation: it takes the tickers from the Finance Database and the numbers from the Finance Toolkit.
-
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Find the large European semiconductor companies, then compare their operating margins over the last five years.<span class="ca-q__tool">Finance Database MCP · equities → Finance Toolkit MCP · profitability</span></p></div>
-
-<div class="ca-nums"><span><b>34.6%</b>ASML 2025</span><span><b>2.7%</b>STMicroelectronics 2025</span><span><b>27.5% → 2.7%</b>STMicro since 2022</span></div>
-
-{% include ft-chart.html id="fdb-chip-margins" src="/assets/data/article-charts.json" label="Operating margins of Europe's large chipmakers" %}
-
-The first step is the list from the chipmaker question above: seven companies with their home listings. The second step runs each through the Finance Toolkit's [operating margin](/projects/financetoolkit/docs/ratios/operating-margin), operating income as a share of revenue. Same industry, very different businesses: the equipment makers ASML, ASM International and BE Semiconductor Industries kept margins around 29% to 35% in 2025, while the chipmakers Infineon and STMicroelectronics went from roughly a quarter of revenue at their peak to 13.9% and 2.7%. Margins are per fiscal year, and NXP is measured on its primary listing in New York.
-
-<div class="ca-take"><p>The Finance Database tells you who is in the peer group; the Finance Toolkit tells you how different the members are. A sector average would hide a range from 2.7% to 34.6%.</p></div>
-
-The setup for that second server, and ten more questions it answers, are in [How to Connect Claude to Live Financial Data for Stock Analysis](/articles/connect-claude-to-financial-data).
 
 ## Tips for Better Answers
 
@@ -257,6 +206,6 @@ The same server works with any MCP-compatible client, each with step-by-step ins
 
 If you would rather skip the assistant, the [Finance Database](/projects/financedatabase) Python package gives you the same data in pandas with `pip install financedatabase`. Wrong classifications and missing symbols are welcome as an issue or pull request on [GitHub](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}.
 
-> **Try this with the Finance Database MCP:** *"Find the Large and Mega Cap insurers headquartered in Europe, with the ticker of each company's home listing."*
+> **Try this with the Finance Database and Finance Toolkit MCP servers:** *"Find the listed water utilities in Europe, then compare their dividend yield and debt to equity over the last five years."*
 
 {% include ft-charts-script.html %}
