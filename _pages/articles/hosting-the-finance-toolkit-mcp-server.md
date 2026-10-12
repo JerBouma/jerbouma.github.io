@@ -132,7 +132,7 @@ Putting it all together, this is what happens when someone asks Claude for Apple
 1. Claude decides to call the `profitability` tool and sends an MCP request to `https://financetoolkit.jeroenbouma.com/mcp`, with the user's access token in the `Authorization` header.
 2. Cloudflare receives the request at its nearest data center, checks it against the firewall rules and forwards it to the Mini PC.
 3. Inside the container, the server verifies the token's signature with `FT_MCP_SECRET_KEY` and extracts the user's FMP API key from it.
-4. The server calls Financial Modeling Prep with that key, runs the Finance Toolkit calculation and formats the result as a Markdown table.
+4. The server calls Financial Modeling Prep with that key, runs the Finance Toolkit calculation and returns the result as compact JSON.
 5. The answer travels back the same way, and the key is forgotten as soon as the request is done.
 
 The first time a user connects, the server has no token for them yet. It answers `/mcp` with a `401` and points the client to its OAuth metadata, which Cloudflare passes through like any other request:

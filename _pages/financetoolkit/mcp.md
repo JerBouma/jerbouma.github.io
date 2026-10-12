@@ -601,7 +601,7 @@ The questions that come up most often about the server, its data sources and how
 <details class="ft-details" id="faq-tools" markdown="1">
   <summary><h3>Which tools does the server expose?</h3></summary>
 
-  The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an `indicator` parameter that selects the exact metric (e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`), plus four search tools to navigate them. You never pick these by hand: the assistant chooses the tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`. Every tool returns data as standardized Markdown.
+  The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an `indicator` parameter that selects the exact metric (e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`), plus three search tools to navigate them. You never pick these by hand: the assistant chooses the tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`. Every tool returns compact JSON, with rates and ratios as decimals (`0.05` is 5%).
 
 | Category | Tool | Description |
 |:---|:---|:---|
@@ -609,7 +609,7 @@ The questions that come up most often about the server, its data sources and how
 | Fundamentals | `market_data` | Historical prices, financial statements, company profile, real-time quote |
 | Fundamentals | `environment` | ESG scores, carbon footprint, renewable energy usage |
 | Fundamentals | `performance` | Sharpe ratio, Sortino ratio, Alpha, Beta, CAPM, Fama-French, Carhart, market timing |
-| Fundamentals | `risk` | Value at Risk, CVaR, GARCH/EGARCH/GJR-GARCH, max drawdown, copulas, realized volatility |
+| Fundamentals | `risk` | Value at Risk, CVaR, GARCH/GJR-GARCH, max drawdown, copulas, realized volatility |
 | Fundamentals | `options` | Black-Scholes pricing, binomial tree, Greeks, implied volatility, exotic options |
 | Econometrics | `econometrics` | Regression (OLS/WLS/GLS, logit, probit, quantile, Fama-MacBeth), panel data, causal inference (IV-2SLS, difference-in-differences, regression discontinuity, propensity score matching, synthetic control), unit root and cointegration tests, Granger causality, ARIMA/VAR/VECM forecasting and event studies |
 | Ratios and Models | `efficiency` | Asset/inventory turnover, days of sales outstanding, cash conversion cycle |
@@ -627,12 +627,28 @@ The questions that come up most often about the server, its data sources and how
 | Macro and Fixed Income | `jobs` | Unemployment, population, poverty, income inequality |
 | Macro and Fixed Income | `rates` | Central bank rates, government bond yields, EURIBOR, US Treasury par yield curve, TIPS real yields |
 | Macro and Fixed Income | `fixed_income` | Bond duration, present value, YTM, derivative pricing, par/forward rates, Z-spread, key rate duration |
-| Search | `search_categories` | Lists all categories and the number of tools each contains |
+| Search | `search_metric_categories` | Lists all categories and the number of tools each contains |
 | Search | `search_by_category` | Lists every metric available within a given category |
-| Search | `search_metrics` | Fuzzy keyword search across all metrics with typo tolerance |
-| Search | `search_instruments` | Look up ticker symbols by company name, ISIN, CIK, CUSIP or symbol |
+| Search | `search_metrics` | Finds the right tool and indicator for a question, in analyst wording ("how expensive is the stock", "bankruptcy risk", "option greeks"), abbreviations such as P/E or VaR, and with typos |
+
+  Looking up a ticker by company name or ISIN is left to the [Finance Database MCP server](/projects/financedatabase/mcp), which searches 300,000+ instruments and pairs naturally with this one.
 
   Each tool wraps dozens of underlying Finance Toolkit functions; the [Finance Toolkit documentation](/projects/financetoolkit/docs) describes every metric, model and parameter that can be reached through them. To explore interactively, run `uvx --from "financetoolkit[mcp]" financetoolkit-mcp-inspector`.
+
+</details>
+
+<details class="ft-details" id="faq-answers" markdown="1">
+  <summary><h3>What does an answer from the server look like?</h3></summary>
+
+  Each answer is compact JSON, with rates and ratios as decimals (`0.05` is 5%), kept small enough for an assistant to read:
+
+  - `limit` works like head and tail: `5` returns the first five periods, `-5` the last five.
+  - `show_columns` keeps only the fields you name, in any casing.
+  - An answer over 60,000 characters is cut to its most recent rows, with a note on how to narrow the request.
+  - Earnings call transcripts come back in full, one company and one fiscal period per call.
+  - Notes in `_notes` say what was left out, ignored, assumed or converted: tickers without data, unknown columns, data that only exists yearly, a sample yield curve, assumed bond inputs, fiscal years mapped to calendar years and currency conversion.
+
+  The server also sends instructions to the assistant when it connects, so it knows how to find the right tool with `search_metrics` before it starts.
 
 </details>
 
@@ -709,7 +725,15 @@ The questions that come up most often about the server, its data sources and how
       "name": "Which tools does the server expose?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an indicator parameter that selects the exact metric, plus four search tools to navigate them: discovery, market_data, environment, performance, risk, options, econometrics, efficiency, liquidity, profitability, solvency, valuation, models, momentum, overlap, volatility, breadth, macroeconomics, government, jobs, rates, fixed_income, search_categories, search_by_category, search_metrics and search_instruments. The assistant chooses the tool and indicator from your plain-English question; equity tools accept tickers, macro tools accept countries, and all accept start_date, end_date and quarterly. Every tool returns data as standardized Markdown."
+        "text": "The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an indicator parameter that selects the exact metric, plus three search tools to navigate them: discovery, market_data, environment, performance, risk, options, econometrics, efficiency, liquidity, profitability, solvency, valuation, models, momentum, overlap, volatility, breadth, macroeconomics, government, jobs, rates, fixed_income, search_metric_categories, search_by_category and search_metrics. The assistant chooses the tool and indicator from your plain-English question; equity tools accept tickers, macro tools accept countries, and all accept start_date, end_date and quarterly. Every tool returns compact JSON, with rates and ratios as decimals (0.05 is 5%). Looking up a ticker by name or ISIN is left to the Finance Database MCP server."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does an answer from the server look like?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each answer is compact JSON, with rates and ratios as decimals (0.05 is 5%), kept small enough for an assistant to read. limit works like head and tail (5 returns the first five periods, -5 the last five), show_columns keeps only the fields you name, an answer over 60,000 characters is cut to its most recent rows with a note on how to narrow the request, and earnings call transcripts come back in full, one company and one fiscal period per call. Notes say what was left out, ignored, assumed or converted. The server also sends instructions to the assistant when it connects."
       }
     },
     {

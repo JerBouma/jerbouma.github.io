@@ -33,8 +33,8 @@ The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structu
 | `inspection_controller.py` | Static introspection of controller classes: method discovery and signature building |
 | `provider_model.py` | Routes tool calls to the correct Finance Toolkit module; manages Toolkit instance caching |
 | `cache_model.py` | Thread-safe SQLite cache for DataFrame results with TTL-based eviction |
-| `tools_model.py` | Registers the four built-in utility tools (list, search, instrument lookup) |
-| `formatting_model.py` | Converts any Finance Toolkit result (DataFrame, Series, dict, scalar) to Markdown |
+| `tools_model.py` | Registers the three built-in search tools (categories, metrics per category, metric search) |
+| `formatting_model.py` | Converts any Finance Toolkit result (DataFrame, Series, dict, scalar) to compact JSON, applies `limit` and `show_columns`, and cuts oversized answers to their most recent rows |
 | `coercion_model.py` | Best-effort type coercion for string values arriving from LLMs |
 | `setup_model.py` | Interactive and CLI setup wizard: writes client configs |
 
@@ -65,9 +65,9 @@ This produces an ordered list of indicator names. `_build_router_wrapper()` then
 2. Coerces all typed parameters from strings via `coercion_model.coerce_value()`.
 3. Validates required inputs (`tickers` for equity tools, date formats).
 4. Delegates to `ToolkitProvider.call_method()`.
-5. Passes the result through `formatting_model.format_result()` and returns a Markdown string.
+5. Passes the result through `formatting_model.format_result()` and returns compact JSON, with `_notes` on anything left out, ignored, assumed or converted.
 
-The wrapper's `__signature__` is replaced with a proper `inspect.Signature` so that FastMCP can introspect it and generate accurate JSON Schema for the LLM.
+The wrapper's `__signature__` is replaced with a proper `inspect.Signature` so that FastMCP can introspect it and generate accurate JSON Schema for the LLM. Each parameter's description comes from the docstrings of the methods behind the tool, so the assistant reads the same explanation as the documentation.
 
 ## Dispatch Categories
 {: .heading-as-h3}
@@ -82,7 +82,7 @@ Every tool group has a `category` that controls how `ToolkitProvider` routes the
 | `discovery` | Instantiates `Discovery(api_key=…)`, no tickers or dates required |
 | `mixed` | Per-method routing table: each indicator maps to its own `(module, category)` pair |
 
-`ToolkitProvider` caches `Toolkit` instances by a key derived from tickers, date range, quarterly flag, and a hash of the API key, so repeated calls for the same parameters reuse an existing instance. Standalone module instances are cached the same way. Full DataFrame results are written to and read from `SQLiteCache` with configurable TTL.
+`ToolkitProvider` caches `Toolkit` instances by a key derived from tickers, date range, quarterly flag, and a hash of the API key, so repeated calls for the same parameters reuse an existing instance. Standalone module instances are cached the same way. The provider keeps at most 64 `Toolkit` instances and 4 `Economics`, `FixedIncome` and `Discovery` instances, and drops the least recently used one first; an `Economics` instance holds the Global Macro Database, so one copy of that dataset is shared per process. Full DataFrame results are written to and read from `SQLiteCache` with configurable TTL.
 
 ## OAuth 2.1 and API Key Resolution
 {: .heading-as-h3}
@@ -149,12 +149,13 @@ The optional FRED key follows the same pattern through `resolve_fred_api_key()`:
 ## Utility Tools
 {: .heading-as-h3}
 
-`UtilityToolRegistry` registers four tools that operate on the tool index rather than routing to a controller:
+`UtilityToolRegistry` registers three tools that operate on the tool index rather than routing to a controller:
 
-- `search_categories`: returns a Markdown table of all registered categories and tool counts.
+- `search_metric_categories`: lists all registered categories and the number of tools in each.
 - `search_by_category`: lists every indicator within a given category.
-- `search_metrics`: token-based fuzzy search across all tool names and descriptions, with typo tolerance via `difflib.get_close_matches`.
-- `search_instruments`: proxies a live `Discovery.search_instruments()` call for ticker/ISIN/name lookups.
+- `search_metrics`: ranks individual indicators, not tools, and returns the tool together with the indicator name. It understands analyst wording ("how expensive is the stock", "bankruptcy risk", "option greeks"), abbreviations such as P/E and VaR, and typos.
+
+Looking up a ticker by name or ISIN is not part of this server: the [Finance Database MCP server](/projects/financedatabase/mcp) does that. When a client connects, the server sends instructions that point the assistant to `search_metrics` first.
 
 ## Setup Wizard
 {: .heading-as-h3}
