@@ -78,9 +78,9 @@ share: false
     </div>
     <div class="q7-block">
       <div class="q7-block__head"><span>Story</span><button type="button" class="q7-copy" data-rich>Copy as rich text</button></div>
-      <div class="q7-medium">{{ a.medium | markdownify }}</div>
+      <div class="q7-medium">{{ a.medium_html }}</div>
       {%- comment -%} the copy source: the preview above gets the site's code-block decorations {%- endcomment %}
-      <template class="q7-medium-src">{{ a.medium | markdownify }}</template>
+      <template class="q7-medium-src">{{ a.medium_html }}</template>
     </div>
   </div>
 </section>
