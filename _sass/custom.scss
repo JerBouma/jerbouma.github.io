@@ -124,12 +124,28 @@
 }
 
 html {
+  // Type scale. The theme grows the root size with the screen (16, 18, 20 and
+  // 22px from 1280px wide), which made everything feel oversized on large and
+  // high-resolution screens. Keep the browser default (16px, and any larger
+  // size a reader set themselves, hence %) on phones and tablets, and grow only
+  // gently for reading on wider screens. Most sizes on the site are in rem.
+  font-size: 100%;
+  @media (min-width: 1024px) { font-size: 106.25%; } // 17px
+  @media (min-width: 1600px) { font-size: 112.5%; }  // 18px
+
   overflow-x: clip; // clip hides horizontal overflow visually but does NOT create a scroll container (unlike hidden)
   background-color: #0f172a; // prevents white flash on overscroll (dark)
 
   &[data-theme="light"] {
     background-color: #f8fafc; // prevents white flash on overscroll (light)
   }
+}
+
+// Body text follows the root size: 16px on phones, 17px and 18px on wider
+// screens. The theme set it to 0.8em, sized for its own larger root, which
+// left phones at 12.8px. Components that set their own size keep it.
+.page__content {
+  p, li, dl { font-size: 1em; }
 }
 
 body {
@@ -1542,7 +1558,7 @@ body.wide-no-sidebar:not(.no-title) {
   }
 
   .page__title {
-    font-size: 2.8rem !important;
+    font-size: 2.4rem !important;
     letter-spacing: -1px;
     margin-top: 0 !important;
     margin-bottom: 30px !important;
@@ -3835,7 +3851,7 @@ body.custom-document {
   }
 
   .page__title {
-    font-size: 2.8rem !important;
+    font-size: 2.4rem !important;
     letter-spacing: -1px;
     margin-top: 0 !important;
     margin-bottom: 30px !important;
@@ -3918,7 +3934,7 @@ body.wide-sidebar {
     }
 
     .page__title {
-      font-size: 2.8rem !important;
+      font-size: 2.4rem !important;
       letter-spacing: -1px;
       margin-top: 0 !important;
       margin-bottom: 30px !important;
