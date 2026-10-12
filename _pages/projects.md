@@ -1,8 +1,8 @@
 ---
 title: Projects
 permalink: /projects
-excerpt: "Open-source Python tools for financial analysis: the Finance Toolkit with 500+ transparent financial methods, its MCP server for AI assistants, and the Finance Database."
-description: "Open-source Python tools for financial analysis: the Finance Toolkit with 500+ transparent financial methods, its MCP server for AI assistants, and the Finance Database."
+excerpt: "Open-source Python tools for financial analysis: the Finance Toolkit with 500+ transparent financial methods, the Finance Database with 300,000+ stocks, ETFs and indices, and MCP servers that bring both to AI assistants."
+description: "Open-source Python tools for financial analysis: the Finance Toolkit with 500+ transparent financial methods, the Finance Database with 300,000+ stocks, ETFs and indices, and MCP servers that bring both to AI assistants."
 layout: single
 classes: custom-document projects-v2
 author_profile: false
@@ -38,7 +38,7 @@ Today the Finance Toolkit and Finance Database are used by thousands of develope
     <i class="fas fa-database" aria-hidden="true"></i>
     <span class="pj-flow__verb">Find</span>
     <strong>Finance Database</strong>
-    <span>Which companies, ETFs and funds exist in a market</span>
+    <span>Which stocks, ETFs and indices exist in a market</span>
   </a>
   <i class="fas fa-arrow-right pj-flow__arrow" aria-hidden="true"></i>
   <a class="pj-flow__step" href="/projects/financetoolkit">
@@ -48,11 +48,11 @@ Today the Finance Toolkit and Finance Database are used by thousands of develope
     <span>Ratios, models, risk and performance for each of them</span>
   </a>
   <i class="fas fa-arrow-right pj-flow__arrow" aria-hidden="true"></i>
-  <a class="pj-flow__step" href="/projects/financetoolkit/mcp">
+  <a class="pj-flow__step" href="/articles/find-stocks-and-etfs-with-claude">
     <i class="fas fa-robot" aria-hidden="true"></i>
     <span class="pj-flow__verb">Ask</span>
-    <strong>Finance Toolkit MCP</strong>
-    <span>The same analysis from Claude, ChatGPT or Copilot</span>
+    <strong>Both as MCP servers</strong>
+    <span>Find and analyze in one conversation with Claude, ChatGPT or Copilot</span>
   </a>
 </section>
 
