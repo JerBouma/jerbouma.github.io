@@ -14,7 +14,7 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-This page covers equities, exchange rates, commodities, real estate, dividends, credit spreads and rating migration. Each is fitted to its own history and moves with everything else through the correlation matrix (see the [simulation engine](/projects/financescenarios/docs/simulation-engine)). [Interest rates](/projects/financescenarios/docs/interest-rates) and [the economy](/projects/financescenarios/docs/economy) have their own pages, and every option is in the [API reference](/projects/financescenarios/docs/reference).
+How far can equities fall and for how long, what does a currency or a credit spread add to that, and how many bonds default in a bad year? This page sets out how equities, exchange rates, commodities, real estate, dividends, credit spreads and rating migration are modeled. Each is fitted to its own history and moves with everything else through the correlation matrix (see the [simulation engine](/projects/financescenarios/docs/simulation-engine)). [Interest rates](/projects/financescenarios/docs/interest-rates) and [the economy](/projects/financescenarios/docs/economy) have their own pages, and every option is in the [API reference](/projects/financescenarios/docs/reference).
 
 ## Equities
 
@@ -130,17 +130,17 @@ A commodity price is pulled toward a level set by production cost: high prices b
 The log price reverts to one long-run level, which keeps the price positive and its distribution lognormal:
 
 $$
-dX_t = \kappa(\mu - X_t)\,dt + \sigma\,dW_t, \qquad X_t = \ln S_t
+dX_t = a(\theta - X_t)\,dt + \sigma\,dW_t, \qquad X_t = \ln S_t
 $$
 
-$$e^{\mu}$$ is the long-run median price, so a belief of a 70 USD median is written as $$\ln 70$$. On 2026-10-04 crude oil started at 91.11 USD and was pulled toward 67.06 USD, with a shock halving in about six months.
+Here $$a$$ is the speed of reversion and $$\theta$$ the long-run log price, so $$e^{\theta}$$ is the long-run median price; a belief of a 70 USD median is written as $$\ln 70$$. On 2026-10-04 crude oil started at 91.11 USD and was pulled toward 67.06 USD, with a shock halving in about six months.
 
 ### Schwartz-Smith Two Factor
 
 One reversion speed cannot describe both a supply outage that clears in months and a lasting shift in cost. [Schwartz and Smith (2000)](https://doi.org/10.1287/mnsc.46.7.893.12034){:target="_blank"} split the log price into a short-term deviation $$\chi_t$$ that fades and a long-term level $$\xi_t$$ that drifts as a random walk:
 
 $$
-\ln S_t = \chi_t + \xi_t, \qquad d\chi_t = -\kappa\,\chi_t\,dt + \sigma_\chi\,dW^\chi_t, \qquad d\xi_t = \mu_\xi\,dt + \sigma_\xi\,dW^\xi_t
+\ln S_t = \chi_t + \xi_t, \qquad d\chi_t = -a\,\chi_t\,dt + \sigma_\chi\,dW^\chi_t, \qquad d\xi_t = \mu_\xi\,dt + \sigma_\xi\,dW^\xi_t
 $$
 
 The two shocks are correlated. Long-dated futures reflect almost only $$\xi_t$$, so the futures curve separates the two. The volatilities are fitted to the listed futures (crude oil, natural gas, gold, silver, copper, corn, wheat and soybeans); spot prices alone understate the long-term volatility roughly tenfold.
@@ -173,7 +173,7 @@ Neither source matches the paper's appraisal-based NCREIF index; appraisals smoo
 When dividend income matters on its own, the yield is simulated separately from the equity's total return. Following eq. 3.17 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}, the log of the yield mean-reverts, so the yield stays positive:
 
 $$
-d\ln y_t = \kappa(\mu - \ln y_t)\,dt + \sigma\,dW_t
+d\ln y_t = a(\theta - \ln y_t)\,dt + \sigma\,dW_t
 $$
 
 On 2026-10-04 SPY yielded 0.99% and was pulled toward 1.39% with a half-life of about 4.7 years. The paper found the speed "not significantly different from zero" on 1871-2003 data, so a short window may show no reversion at all. A belief about the normal level is a log too ($$\ln 0.02$$ for 2%). An optional term on the same step's change in inflation, as in Wilkie, links the yield to inflation.
@@ -194,7 +194,7 @@ $$
 | $$y\,\varepsilon^Y_{t-1}$$ | DY | Last period's dividend yield surprise: prices anticipate dividend changes, so the yield moves first |
 | $$\sigma_D\,z_t$$ | DSD | The dividend index's own shock |
 
-The smoothing weight is fixed at Wilkie's 0.2 and the rest is fitted by one regression. Wilkie fitted 1919-1982 UK data; the shipped `wilkie` preset applies the same equations to US data.
+The smoothing weight is fixed at Wilkie's 0.2 and the rest is fitted by one regression. Wilkie fitted 1919-1982 UK data; the shipped Wilkie factor set applies the same equations to US data.
 
 References: [Dividend yield API](/projects/financescenarios/docs/reference/dividend-yield), [Dividend growth API](/projects/financescenarios/docs/reference/dividend-growth).
 
@@ -203,7 +203,7 @@ References: [Dividend yield API](/projects/financescenarios/docs/reference/divid
 A credit spread is the extra yield a company pays over government debt: expected default losses plus a risk and liquidity premium that widens sharply in a downturn. As in [Arvanitis, Gregory and Laurent (1999)](https://doi.org/10.3905/jod.1999.319117){:target="_blank"}, the spread mean-reverts in logs. That keeps it positive and makes its swings proportional to its level, so wide spreads are the most volatile and the distribution is skewed toward sharp widenings:
 
 $$
-d\ln s_t = \kappa(\mu - \ln s_t)\,dt + \sigma\,dW_t
+d\ln s_t = a(\theta - \ln s_t)\,dt + \sigma\,dW_t
 $$
 
 Spreads revert quickly: on 2026-10-04 the 7-10 year investment-grade spread started at 1.05% and was pulled toward a median of 1.01% with a half-life of about three months. Business-cycle conditioning lets spreads widen as a simulated path turns down, but that variant, like GARCH volatility, is fitted on the spread level rather than its log, so it can turn negative.

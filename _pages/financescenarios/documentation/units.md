@@ -29,7 +29,7 @@ Each series is fitted in the form economists and actuaries normally use for it:
 | Leading indicator | Index points around 100 | It is built as a stationary cycle around 100 |
 | Mortality | Logit of death rates | [Cairns, Blake and Dowd's (2006)](https://doi.org/10.1111/j.1539-6975.2006.00195.x) specification |
 
-Year-over-year inflation is smooth: consecutive monthly readings share eleven of their twelve months, so a monthly fit shows slower mean reversion and smaller shocks than one on month-on-month changes. It is the usual calibration basis for inflation in scenario generators, and a belief about inflation is stated the same way.
+A belief about inflation is stated the same way, as a year-over-year rate; [the inflation guide](/projects/financescenarios/docs/economy#inflation) explains what that basis implies for the fit.
 
 ## How Results Read
 

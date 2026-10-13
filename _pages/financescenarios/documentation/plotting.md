@@ -14,7 +14,7 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-The charts are for a quick read of a run, not a reporting tool: each answers one question about the scenarios. Options such as bands and bin counts are in the [reference](/projects/financescenarios/docs/reference/charts).
+Which chart answers which question about a run: where the distribution sits over time, what a single future looks like, where it lands and what moves with what. The charts are for a quick read, not a reporting tool. Options such as bands and bin counts are in the [reference](/projects/financescenarios/docs/reference/charts).
 
 ```python
 from financescenarios import Scenarios

@@ -52,9 +52,7 @@ Over long horizons the long-run parameters (where rates and inflation revert to,
 
 ## Number of Scenarios
 
-Monte Carlo error falls with the square root of the number of scenarios: four times as many halves the noise. The mean converges fast; a tail percentile converges slowly, because few scenarios sit out there. With 2,000 scenarios a 1-in-200 outcome rests on about ten of them.
-
-A practical test: rerun with another seed and see how much the figure you care about moves. If the 5th percentile of the funding ratio shifts more than you could act on, add scenarios or use antithetic variates (each shock paired with its mirror image). The [simulation engine](/projects/financescenarios/docs/simulation-engine) covers both, plus fat-tailed shocks.
+Monte Carlo error falls with the square root of the number of scenarios, and a tail percentile converges far more slowly than the mean: with 2,000 scenarios a 1-in-200 outcome rests on about ten of them. If the figure you report moves more than you could act on when you rerun with another seed, add scenarios or use antithetic variates; the [simulation engine](/projects/financescenarios/docs/simulation-engine#monte-carlo-error) covers both.
 
 A profile of your own can start from a shipped one and state only what differs. It extends a file in its own folder, so copy the shipped profiles there first with `scaffold_project`.
 
@@ -104,7 +102,7 @@ interest_rates:
 
 ## Real-World and Risk-Neutral {#real-world-and-risk-neutral-measures}
 
-A **real-world** run follows how markets have behaved, risk premia included, and answers "what could happen?": ALM, solvency projections, strategic asset allocation. A **risk-neutral** run grows every asset at the risk-free rate on average, so it reproduces today's market prices and answers "what is this worth today?": guarantees, options and other embedded features. Mixing them up is a classic error: a risk-neutral run has no equity risk premium, so it says nothing about expected returns, and a real-world run does not price an option correctly.
+A **real-world** run follows how markets have behaved, risk premia included, and answers "what could happen?": ALM, solvency projections, strategic asset allocation. A **risk-neutral** run grows every asset at the risk-free rate on average, so it reproduces today's market prices and answers "what is this worth today?": guarantees, options and other embedded features. Mixing them up is a classic error: a risk-neutral run has no equity risk premium, so it says nothing about expected returns, and a real-world run does not price an option correctly. [Merton (1973)](https://doi.org/10.2307/3003143) gives the classic no-arbitrage argument and [the SOA (2022)](https://www.soa.org/resources/research-reports/2022/understanding-the-connection/) a practical treatment of when each measure fits.
 
 Every factor is real-world by default; a single factor or a whole run can switch to risk-neutral.
 
@@ -124,7 +122,7 @@ result = scenarios.simulate(measure="risk_neutral")   # or measure: risk_neutral
 
 The [Solvency II](/projects/financescenarios/docs/solvency) guide shows how the two measures work together in a nested valuation.
 
-## Beliefs: Expert Judgement over the Fit
+## Beliefs: Expert Judgement over the Fit {#beliefs}
 
 A fitted parameter is an estimate from one stretch of history; a long-run view is a judgement. A belief replaces one fitted parameter with your own value and keeps the rest of the fit. The typical case is the long-run level of rates or inflation: you set where it heads, the data still sets how fast and how volatile. Values are annualized decimals (0.035 is 3.5%, see [units](/projects/financescenarios/docs/units)).
 
@@ -145,7 +143,7 @@ inflation:
 
 Beliefs don't apply to risk-neutral factors, which exist to match the market. A level path applies only to constant-volatility factors that do not follow the business cycle.
 
-### Anchoring Long-run Rate Levels {#anchoring-long-run-rate-levels}
+### Anchoring Long-Run Rate Levels {#anchoring-long-run-rate-levels}
 
 Instead of your own view, a rate's long-run level can follow an official path. Anchored to EIOPA, it follows the forward rates of EIOPA's risk-free curve for its currency (USD, EUR or GBP), ending at the [ultimate forward rate](https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en) Solvency II insurers discount with. Anchored to DNB (euro only), it follows the median of [De Nederlandsche Bank's](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/) pension scenario set. Speed and volatility stay fitted, and an explicit belief still wins. The default factor set uses EIOPA: over 30 years its US 10-year median ends at 4.8%, against 4.5% in the NAIC's generator.
 
@@ -157,11 +155,11 @@ interest_rates:
 
 ### Keeping Rates at or Above Zero {#keeping-rates-at-or-above-zero}
 
-Gaussian rate models let rates go well below zero. Negative rates did happen (euro, yen, Swiss franc), so no floor is the default, but for many uses a floor is the more plausible assumption. With a zero lower bound the model moves on below zero unseen, as a shadow rate, and the observed rate is the larger of the shadow rate and 0% ([Black, 1995](https://doi.org/10.1111/j.1540-6261.1995.tb05182.x)). Rates then linger at zero for a while, as policy rates did, instead of bouncing straight back. Real-world rates only.
+Gaussian rate models let rates go well below zero. No floor is the default, since negative rates did happen; a zero lower bound turns the model into a shadow rate floored at 0%, so rates linger at zero as policy rates did. [Interest rates](/projects/financescenarios/docs/interest-rates#keeping-rates-at-or-above-zero) explains the model. Real-world rates only.
 
 ### Volatility That Clusters and the Business Cycle {#business-cycle-conditioning}
 
-By default volatility is constant. With GARCH it clusters, so calm periods stay calm and turbulent ones stay turbulent ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)). Alternatively a factor's drift can follow the leading indicator, so inflation or rates move with the business cycle. The two don't combine on one factor.
+By default volatility is constant. With GARCH it clusters, so calm periods stay calm and turbulent ones stay turbulent ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)). Alternatively a factor's drift can follow the leading indicator, so inflation or rates move with the business cycle ([conditioning on the cycle](/projects/financescenarios/docs/economy#conditioning-on-the-cycle)). The two don't combine on one factor.
 
 ```yaml
 leading_indicator:

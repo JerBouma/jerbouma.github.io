@@ -125,7 +125,7 @@ interest_rates:
 
 Beliefs apply to Hull-White and CIR with constant volatility. They are rejected for risk-neutral rates, where they would break the match to market prices.
 
-## Keeping Rates At or Above Zero
+## Keeping Rates at or Above Zero
 
 The zero lower bound follows the shadow-rate idea of [Black (1995)](https://doi.org/10.1111/j.1540-6261.1995.tb05182.x){:target="_blank"}: the model evolves an unconstrained shadow rate $$s_t$$, and the observed rate is $$r_t = \max(s_t, 0)$$. A rate at zero only climbs back once the shadow rate does, so it can stay at zero for a long spell, as policy rates did after 2008.
 
@@ -152,7 +152,7 @@ A large move raises next period's variance, which then fades back toward its lon
 
 ## Business-Cycle Conditioning
 
-Rates can also respond to the economy on top of their own mean reversion, through a drift term on the change in the leading indicator whose sign and size are fitted on history. See [Business-cycle conditioning](/projects/financescenarios/docs/configuration#business-cycle-conditioning).
+Rates can also respond to the economy on top of their own mean reversion, through a drift term on the change in the leading indicator whose sign and size are fitted on history. See [conditioning on the cycle](/projects/financescenarios/docs/economy#conditioning-on-the-cycle).
 
 ## Real-World and Risk-Neutral Rates
 

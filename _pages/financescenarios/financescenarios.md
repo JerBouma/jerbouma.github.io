@@ -23,7 +23,7 @@ How much capital does a 1-in-200-year shock eat? Will a pension fund's assets ke
 
 **Finance Scenarios makes those methods open.** It gives you:
 
-- **Correlated scenarios fitted to live data.** Thousands of paths for interest rates, inflation, equities, unemployment, currencies, commodities and more, linked to each other the way they have moved historically, calibrated on data pulled through the [Finance Toolkit 🛠️](https://github.com/JerBouma/FinanceToolkit).
+- **Correlated scenarios fitted to live data.** Thousands of scenarios for interest rates, inflation, equities, unemployment, currencies, commodities and more, linked to each other the way they have moved historically, calibrated on data pulled through the [Finance Toolkit 🛠️](https://github.com/JerBouma/FinanceToolkit).
 - **Published models, written out.** Each calibration method follows its paper, from [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf) to [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf), [Cairns, Blake and Dowd (2006)](https://www.macs.hw.ac.uk/~andrewc/papers/jri2006e.pdf) and [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058), with a documentation page per factor and model.
 - **Portfolio and balance-sheet outcomes.** Put an asset mix or a stream of liabilities through the scenarios and read the median, the bad year in twenty and the 1-in-200 event, including a Solvency II best estimate and SCR.
 
@@ -39,7 +39,7 @@ Finance Scenarios requires Python 3.11 or higher.
 pip install financescenarios -U
 ```
 
-Market prices (equity indices, Treasury yields, gold, oil, fund dividends) come from FinancialModelingPrep, so you need an API key. The free plan allows 250 requests a day, 5 years of data and US-listed securities only.
+Most factors run on free OECD and Yahoo Finance data without any key. A FinancialModelingPrep key widens the ticker coverage for equities, dividends, the yield curve and commodities; without one these fall back to Yahoo Finance and US exchanges. The free plan allows 250 requests a day, 5 years of data and US-listed securities only.
 
 [Obtain an API Key from FinancialModelingPrep](/fmp){: .btn .btn--warning .btn--large .align-center target="_blank"}
 

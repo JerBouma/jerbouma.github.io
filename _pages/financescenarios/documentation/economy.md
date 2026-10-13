@@ -22,7 +22,7 @@ Each factor is fitted to its own history and simulated with correlated shocks al
 
 Inflation sets the real value of every nominal cash flow, so it sits at the top of the model. As in [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}, inflation drives other variables (unemployment and, in Wilkie's setup, dividends), not the other way around.
 
-The series is headline CPI inflation, year over year. Consecutive monthly readings share eleven of their twelve months, so the series is smooth, the convention most scenario generators calibrate on.
+The series is headline CPI inflation, year over year, the convention most scenario generators calibrate on. Consecutive monthly readings share eleven of their twelve months, so the series is smooth: a monthly fit shows slower mean reversion and smaller shocks than one on month-on-month changes.
 
 ### Mean Reversion to a Target (the Default)
 
@@ -48,13 +48,13 @@ Two extensions address the weaknesses of a constant-volatility fit on a recent w
 
 ### Wilkie's AR(1)
 
-Wilkie's original model is the discrete-time version of the same idea: each period keeps a fixed share $$a$$ of the previous period's gap to the mean $$\mu$$, plus a shock.
+Wilkie's original model is the discrete-time version of the same idea: each period keeps a fixed share $$\phi$$ of the previous period's gap to the long-run level $$\theta$$, plus a shock.
 
 $$
-I_t = \mu + a\,(I_{t-1} - \mu) + \sigma\,z_t
+I_t = \theta + \phi\,(I_{t-1} - \theta) + \sigma\,z_t
 $$
 
-On US monthly data, 97% of each month's gap carried into the next. Because $$a$$ is a share per period, not a speed, the model runs only at the frequency it was fitted on. The reason to choose it is the rest of Wilkie's cascade: dividend yield, dividend growth and the long-term (consols) yield all follow from the inflation path. The consols yield is a slow moving average of past inflation plus a real yield (Wilkie's equations 3.12 and 3.13), so the fit needs long yields above that average throughout; US data meet this only until 2007, hence the shipped `wilkie` settings fit on 1995-2007.
+On US monthly data, 97% of each month's gap carried into the next. Because $$\phi$$ is a share per period, not a speed, the model runs only at the frequency it was fitted on. The reason to choose it is the rest of Wilkie's cascade: dividend yield, dividend growth and the long-term (consols) yield all follow from the inflation path. Its long-yield equation needs long yields above average inflation throughout the fit, which US data meet only until 2007, hence the Wilkie settings fit on 1995-2007 ([Wilkie consols](/projects/financescenarios/docs/interest-rates#wilkie-consols)).
 
 ### Hibbert's Two-Factor Model
 
@@ -106,10 +106,10 @@ Only headline CPI is modeled, with no core or sector indices. Five years of data
 Unemployment drives wage-linked benefits, disability claims and credit losses. The model is eq. 3.19 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}: unemployment reverts to a long-run rate, plus a term on the same step's change in inflation.
 
 $$
-du_t = \kappa(\mu - u_t)\,dt + \alpha\,d\pi_t + \gamma\,dL_t + \sigma\,dW_t
+du_t = a(\theta - u_t)\,dt + \alpha\,d\pi_t + \gamma\,dL_t + \sigma\,dW_t
 $$
 
-Here $$u_t$$ is the unemployment rate, $$\mu$$ its long-run level and $$\kappa$$ the speed of reversion. The $$\alpha$$ term is a Phillips curve ([Phillips, 1958](https://doi.org/10.1111/j.1468-0335.1958.tb00003.x){:target="_blank"}): when inflation rises, unemployment tends to fall, so $$\alpha$$ is expected to be negative. The optional $$\gamma$$ term links unemployment to the leading indicator $$L_t$$, in the spirit of Okun's law: when activity picks up, unemployment falls. Both terms read the moves already simulated on the same path, so the variables stay consistent scenario by scenario.
+Here $$u_t$$ is the unemployment rate, $$\theta$$ its long-run level and $$a$$ the speed of reversion. The $$\alpha$$ term is a Phillips curve ([Phillips, 1958](https://doi.org/10.1111/j.1468-0335.1958.tb00003.x){:target="_blank"}): when inflation rises, unemployment tends to fall, so $$\alpha$$ is expected to be negative. The optional $$\gamma$$ term links unemployment to the leading indicator $$L_t$$, in the spirit of Okun's law: when activity picks up, unemployment falls. Both terms read the moves already simulated on the same path, so the variables stay consistent scenario by scenario.
 
 Calibrated on US data from 2000 onward, unemployment started at 4.27% and was pulled toward 5.67% with a half-life of about 1.3 years. The fitted inflation sensitivity was -0.34: a one-point rise in inflation went with roughly a third of a point fall in unemployment.
 
@@ -144,7 +144,7 @@ leading_indicator:
 On its own the indicator is one more correlated factor; it earns its place when other factors condition on it. For interest rates, inflation, real estate growth, credit spreads, commodity prices and dividend yields, the step-to-step change in the indicator enters the drift:
 
 $$
-dX_t = \kappa(\mu - X_t)\,dt + \beta\,dL_t + \sigma\,dW_t
+dX_t = a(\theta - X_t)\,dt + \beta\,dL_t + \sigma\,dW_t
 $$
 
 The sensitivity $$\beta$$ is fitted from history. When a simulated path turns down, spreads widen and rates fall on that path, so recessions hit all asset classes at once. $$X_t$$ is the level itself, even for spreads, commodity prices and dividend yields that are otherwise modeled in logs, so a conditioned spread or yield is no longer guaranteed to stay positive. A conditioned factor is fitted at the indicator's frequency, has constant volatility and is used as fitted, without beliefs.

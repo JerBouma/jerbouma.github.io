@@ -50,7 +50,7 @@ This is the difference between a stress test (an imposed shock) and scenario ana
 
 ## Beliefs as a Path
 
-A long-run level can follow a term structure instead of a single number: anchors at chosen horizons, interpolated in between, and an optional period over which it fades back to the calibrated level after the last anchor. Because the factor still mean-reverts, it is pulled towards the moving target rather than set to it: a fast-reverting factor tracks the path closely, a slow one lags it. A path applies to constant-volatility factors only, not to GARCH volatility or business-cycle conditioning.
+A long-run level can follow a term structure instead of a single number: anchors at chosen horizons, interpolated in between, and an optional period over which it fades back to the calibrated level after the last anchor. Because the factor still mean-reverts, it is pulled towards the moving target rather than set to it: a fast-reverting factor tracks the path closely, a slow one lags it. Which factors accept beliefs is set out under [beliefs](/projects/financescenarios/docs/configuration#beliefs).
 
 Oil Crisis uses both mechanisms:
 

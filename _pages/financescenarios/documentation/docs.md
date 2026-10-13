@@ -44,18 +44,11 @@ Interest rates, inflation, equities and unemployment are always simulated; the r
 
 ## How the Factors Are Linked
 
-Scenarios are only useful if the factors move together plausibly: an equity sell-off should come with the spread, rate and currency moves history saw alongside one. Two mechanisms do that, following [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf):
-
-- **The economic cascade.** Where theory says one variable drives another, the simulated path of one feeds the next: inflation drives unemployment through the Phillips curve, and drives rates in the Wilkie and KNW models; the interest-rate gap between two currencies drives the exchange rate under interest-rate parity.
-- **Correlations.** Every factor's shocks are correlated through one matrix estimated from the factors' historical changes, so the joint behavior of rates, equities, spreads and currencies carries over into every scenario.
-
-[How a run is built](/projects/financescenarios/docs/architecture) shows how the two fit together.
+A sell-off should come with the spread, rate and currency moves history saw alongside one. Where theory says one variable drives another (inflation driving unemployment, a rate gap driving an exchange rate), the driver's simulated path feeds the next factor; everything else is tied together by one correlation matrix of the historical shocks. [How a run is built](/projects/financescenarios/docs/architecture#dependence) explains both.
 
 ## Real-World and Risk-Neutral Runs
 
-A **real-world** run fits each factor to how it has actually behaved, with its own drift and risk premia. It answers "what could happen?" and is the run for ALM, asset allocation, capital planning and risk appetite.
-
-A **risk-neutral** run reproduces today's market prices instead: it is calibrated to today's curve and option prices, and every asset earns the risk-free rate on average. It answers "what is this worth?" and is the run for valuing options and guarantees and for the Solvency II best estimate. [Merton (1973)](https://doi.org/10.2307/3003143) gives the classic no-arbitrage argument and [the SOA (2022)](https://www.soa.org/resources/research-reports/2022/understanding-the-connection/) a practical treatment of when each measure fits. Not every factor has a risk-neutral form; [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures) lists which do and why.
+A **real-world** run keeps each factor's historical drift and risk premia and answers "what could happen?" (ALM, allocation, capital). A **risk-neutral** run grows every asset at the risk-free rate so it reproduces today's prices, and answers "what is this worth?" (guarantees, the Solvency II best estimate). [Configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures) explains the difference and which factors have a risk-neutral form.
 
 ```python
 from financescenarios import Scenarios

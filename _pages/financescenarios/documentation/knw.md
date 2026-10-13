@@ -40,7 +40,7 @@ Persistent inflation tends to lift nominal rates, and a high real rate tends to 
 | KNW with stochastic volatility (`knw_sv`) | A shared hidden turbulence factor $$v$$ that scales volatility and shifts the drift; optional equity leg | Calm and stressed regimes that hit rates, inflation and equity at once |
 | Risk-neutral KNW (`knw_sv` with `measure: risk_neutral`) | A market price of risk fitted to the Treasury curve, closed-form bond prices, a stochastic deflator | Valuation, and a model yield curve at any maturity |
 
-Each builds on the previous one: with the turbulence terms at zero, `knw_sv` is `knw` exactly. Parameter details are in the reference pages for [Knw](/projects/financescenarios/docs/reference/knw), [KnwSv](/projects/financescenarios/docs/reference/knw-sv) and [KnwSvQ](/projects/financescenarios/docs/reference/knw-sv-q).
+Each builds on the previous one: with the turbulence terms at zero, KNW with stochastic volatility is plain KNW exactly. Parameter details are in the reference pages for [Knw](/projects/financescenarios/docs/reference/knw), [KnwSv](/projects/financescenarios/docs/reference/knw-sv) and [KnwSvQ](/projects/financescenarios/docs/reference/knw-sv-q).
 
 {% raw %}
 <div class="mermaid">
@@ -57,7 +57,7 @@ flowchart TD
 </div>
 {% endraw %}
 
-Turbulence drives every leg and is never driven back. Plain `knw` keeps only the two-way arrow between rate and inflation.
+Turbulence drives every leg and is never driven back. Plain KNW keeps only the two-way arrow between rate and inflation.
 
 ## KNW: Two-Way Coupling
 
@@ -83,10 +83,10 @@ One percentage point more inflation adds 0.092 points to next quarter's rate, in
 
 ## Stochastic Volatility
 
-Markets alternate between calm and stressed spells; plain KNW gives every period the same randomness. `knw_sv` adds DNB's hidden variance factor $$v_t$$, a CIR process ([Cox, Ingersoll and Ross, 1985](https://doi.org/10.2307/1911242){:target="_blank"}) of the kind [Heston (1993)](https://doi.org/10.1093/rfs/6.2.327){:target="_blank"} uses for variance: mean-reverting and never negative.
+Markets alternate between calm and stressed spells; plain KNW gives every period the same randomness. The stochastic-volatility variant adds DNB's hidden variance factor $$v_t$$, a CIR process ([Cox, Ingersoll and Ross, 1985](https://doi.org/10.2307/1911242){:target="_blank"}) of the kind [Heston (1993)](https://doi.org/10.1093/rfs/6.2.327){:target="_blank"} uses for variance: mean-reverting and never negative.
 
 $$
-dv_t = \kappa_v(\bar v - v_t)\,dt + \sigma_v\sqrt{v_t}\,dW^v_t
+dv_t = a_v(\theta_v - v_t)\,dt + \sigma_v\sqrt{v_t}\,dW^v_t
 $$
 
 Each leg reads last period's $$v$$ twice, in its drift and in its variance:
@@ -99,7 +99,7 @@ with the same shape for inflation. $$\lambda$$ lets turbulence move the expected
 
 **Estimating turbulence.** DNB recovers $$v$$ from market yields on each date. Finance Scenarios estimates it from the pair's own history: a trailing four-period average of plain KNW's squared surprises, lagged one period, is the proxy for $$v$$. A CIR process is fitted to that proxy and both legs are refitted with it as an extra input; if neither leg's variance rises with $$v$$, the fit suggests plain KNW. Simulation uses [Andersen's (2008)](https://doi.org/10.21314/jcf.2008.189){:target="_blank"} Quadratic-Exponential scheme, which keeps $$v$$ non-negative with little bias.
 
-On the same US quarterly data (calibrated on 2026-10-05), turbulence halves in about 1.7 years. Its current value (0.0000094) is well below its long-run level (0.0000627), so the pair starts calmer than usual. Inflation responds most: its standard deviation is 0.31% a quarter at $$v = 0$$ and 0.68% at the long-run level. The Feller condition $$2\kappa_v\bar v \ge \sigma_v^2$$ fails on this fit, so simulated turbulence touches zero more often than its long-run distribution suggests.
+On the same US quarterly data (calibrated on 2026-10-05), turbulence halves in about 1.7 years. Its current value (0.0000094) is well below its long-run level (0.0000627), so the pair starts calmer than usual. Inflation responds most: its standard deviation is 0.31% a quarter at $$v = 0$$ and 0.68% at the long-run level. The Feller condition $$2a_v\theta_v \ge \sigma_v^2$$ fails on this fit, so simulated turbulence touches zero more often than its long-run distribution suggests.
 
 ## The Equity Leg
 
@@ -200,14 +200,14 @@ result = Scenarios.from_config(load_config("knw.yaml")).simulate(years=30)
 
 Beliefs, GARCH and business-cycle conditioning are not available: the long-run level is a joint property of both legs, so there is no single long-run mean to override. The equity leg needs a real-world rate.
 
-## How It Compares With DNB's CP2022
+## How It Compares with DNB's CP2022
 
 The [CP2022 Technical Appendix](https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix){:target="_blank"} specifies DNB's full model.
 
 | Aspect | DNB CP2022 | Finance Scenarios |
 |:--|:--|:--|
 | Rate and inflation coupling | Full 2x2 matrix | Same |
-| Stochastic volatility | Heston-type factor scaling rate, inflation, equity and CPI index | Same structure in `knw_sv` |
+| Stochastic volatility | Heston-type factor scaling rate, inflation, equity and CPI index | Same structure |
 | How turbulence is recovered | Inverted from market yields on each date | Rolling average of the pair's squared surprises |
 | Leverage effect | Turbulence shocks correlated with rate and inflation shocks | Not fitted: independent |
 | Equity | Premium and variance constrained by option-implied volatility | Fitted on price history only |
@@ -216,7 +216,7 @@ The [CP2022 Technical Appendix](https://www.rijksoverheid.nl/documenten/rapporte
 
 Without rate or inflation derivatives data, the risk-neutral version is fitted to the yield curve, standard affine term-structure practice. It is a genuine change of measure, but on different data, so it is a different model from DNB's own, not a simplified copy.
 
-## Further Reading
+## References
 
 - Koijen, R.S.J., Nijman, T.E., Werker, B.J.M. (2010). [When Can Life Cycle Investors Benefit from Time-Varying Bond Risk Premia?](https://doi.org/10.1093/rfs/hhp058){:target="_blank"} The Review of Financial Studies, 23(2), 741-780.
 - Commissie Parameters (2022). [Technical Appendix: Specification of the CP2022 Model](https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix){:target="_blank"}.

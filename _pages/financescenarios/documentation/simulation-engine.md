@@ -14,7 +14,7 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-The engine turns calibrated factors into scenarios. It draws random shocks that move together the way history says they should, then steps every factor forward one period at a time. Each repetition gives one path per factor; thousands of them form a distribution of outcomes rather than a single forecast.
+How are the scenarios drawn, and how far can you trust a percentile read from them? The engine draws random shocks that move together the way history says they should and steps every factor forward one period at a time; each repetition is one scenario, and thousands of them form a distribution of outcomes.
 
 The guides on [interest rates](/projects/financescenarios/docs/interest-rates), [the economy](/projects/financescenarios/docs/economy) and [markets](/projects/financescenarios/docs/markets) cover each model; this page covers what they share.
 

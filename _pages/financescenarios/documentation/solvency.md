@@ -171,7 +171,7 @@ With the September 2026 adjustment of 7.71 points, 1,000,000 of type 1 and 250,0
 
 ## Scenario Files and Currencies
 
-Runs export in the shape liability and ALM systems load: one file per variable, one row per trial, one column per period, plus each variable's [unit](/projects/financescenarios/docs/units). Export the risk-neutral run for valuation and the real-world run for projections. Nothing converts currencies, so assets, liabilities and the discount rate must share one. The [Solvency reference](/projects/financescenarios/docs/reference/solvency) shows how to summarize such a pair of runs in one table.
+Runs export in the shape liability and ALM systems load: one file per variable, one row per scenario, one column per period, plus each variable's [unit](/projects/financescenarios/docs/units). Export the risk-neutral run for valuation and the real-world run for projections. The valuation does not convert currencies, so assets, liabilities and the discount rate must share one; convert prices to the reporting currency first. The [Solvency reference](/projects/financescenarios/docs/reference/solvency) shows how to summarize such a pair of runs in one table.
 
 ## What Is Simplified
 

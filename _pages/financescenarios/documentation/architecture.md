@@ -16,7 +16,7 @@ sidebar:
 
 {% include mermaid.html %}
 
-A scenario set is built in five steps: collect history, calibrate each factor on its own, estimate how the factors depend on each other, simulate them jointly, and read the result. Each step can be inspected or overridden, so every number can be traced back to its source.
+Where does each number in a run come from? A scenario set is built in five steps: collect history, calibrate each factor on its own, estimate how the factors depend on each other, simulate them jointly, and read the result. Each step can be inspected or overridden, so every number can be traced back to its source.
 
 {% raw %}
 <div class="mermaid">
@@ -24,7 +24,7 @@ flowchart LR
     data["Historical data<br/>per factor"] --> calibration["Calibration<br/>one model per factor"]
     beliefs["Your beliefs<br/>long-run levels, anchors"] -.-> calibration
     calibration --> dependence["Dependence<br/>cascade + correlations"]
-    dependence --> simulation["Correlated simulation<br/>thousands of paths"]
+    dependence --> simulation["Correlated simulation<br/>thousands of scenarios"]
     simulation --> outputs["Outputs<br/>fan charts, portfolios, SCR"]
 </div>
 {% endraw %}
@@ -33,7 +33,7 @@ flowchart LR
 
 Every factor is fitted on its own history, fetched through the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit): OECD and Global Macro Database series and market yields for rates, inflation and unemployment, market prices for equities, currencies and commodities, ICE BofA and Moody's indices for credit. Each series keeps its natural frequency (monthly, quarterly or yearly).
 
-How much history to use is a modeling choice. Recent decades say a lot about today's markets but little about how far and how fast rates can move, so the default factor set fits rate dynamics on OECD data since 1950. Equities, rates and inflation can also be fitted on centuries of data (Shiller from 1871, the Bank of England's millennium dataset, Jordà-Schularick-Taylor from 1870); see [configuration](/projects/financescenarios/docs/configuration).
+How much history to use is a modeling choice: the default factor set fits rate dynamics on OECD data since 1950, and some factors can go back to the 1870s or further ([long history](/projects/financescenarios/docs/configuration#long-history)).
 
 ## 2. Calibration
 
@@ -45,7 +45,7 @@ Each factor gets a model suited to how it behaves, and that model's parameters a
 
 A fit is only as good as its data, so the fitted values are a starting point, not a verdict. Your own views override them where you set them: a central bank's inflation target as the long-run level, or EIOPA's risk-free curve as the anchor for long-run rates (as in the default factor set). A factor whose fit fails, for example because a short window shows no mean reversion, is left out together with every factor that depends on it, and the run reports why.
 
-## 3. Dependence
+## 3. Dependence {#dependence}
 
 Fitted one by one, the factors would move independently, and a scenario could combine an equity crash with tightening credit spreads. Two mechanisms link them, following [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf).
 
@@ -61,7 +61,7 @@ Fitted one by one, the factors would move independently, and a scenario could co
 
 Factors with no theoretical driver, such as the yield-curve factors, real estate, commodities and mortality, are linked only through correlations. That follows their source papers: Diebold and Li specify the curve factors as their own system, Ahlgrim, D'Arcy and Gorvett found real estate's dependence on inflation not significant, and Cairns, Blake and Dowd model mortality improvement independently of markets.
 
-The matrix is constant over the horizon and captures linear co-movement. Two additions address the tails: equity markets can share their crisis regime, so they enter and leave crises together, and Student-t shocks make extreme moves coincide more often than a normal distribution allows.
+The matrix is constant over the horizon and captures linear co-movement. Two additions address the tails: equity markets can share their crisis regime, so they enter and leave crises together, and Student-t shocks make extreme moves coincide more often than a normal distribution allows ([fat tails](/projects/financescenarios/docs/simulation-engine#fat-tails-and-tail-dependence)).
 
 ## 4. Correlated Simulation
 
