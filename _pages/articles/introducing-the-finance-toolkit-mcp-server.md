@@ -40,7 +40,7 @@ companies = Toolkit(
 )
 ```
 
-Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history and 250 requests a day; a paid plan adds the full 30+ years and quarterly data, at a 15% discount through that (affiliate) link. You can also use your own data instead, as explained [here](/projects/financetoolkit/external-datasets).
+Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history and 250 requests a day; a paid plan adds the full 30+ years and quarterly data, at a 15% discount through that (affiliate) link. You can also [use your own data instead](/projects/financetoolkit/external-datasets).
 
 ## From Code to Conversation: the MCP Server
 

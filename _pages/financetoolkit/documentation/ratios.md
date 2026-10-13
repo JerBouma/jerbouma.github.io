@@ -1,6 +1,6 @@
 ---
 title: Ratios
-seo_title: Ratios Module Documentation – Finance Toolkit
+seo_title: Ratios Module – Finance Toolkit Docs
 excerpt: The Ratios Module contains 80+ ratios that can be used to analyze companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
 description: "Reference for every function and parameter in the Finance Toolkit's Ratios module: 50+ efficiency, liquidity, profitability, solvency and valuation ratios."
 author_profile: false

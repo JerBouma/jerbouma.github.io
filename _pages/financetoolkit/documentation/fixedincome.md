@@ -1,6 +1,6 @@
 ---
 title: Fixed Income
-seo_title: Fixed Income Documentation – Finance Toolkit
+seo_title: Fixed Income Module – Finance Toolkit Docs
 excerpt: The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
 description: "Reference for every function and parameter in the Finance Toolkit's Fixed Income module: yield, duration, convexity, Black and Bachelier models."
 author_profile: false

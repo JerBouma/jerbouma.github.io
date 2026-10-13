@@ -18,7 +18,7 @@ With thousands of publicly listed companies, finding undervalued stocks by hand 
 
 In this article I walk through a complete screening process, from defining the universe to a final shortlist. It uses 15 stocks across five sectors to illustrate the logic. A real screen would cast a wider net, which the Discovery module also supports.
 
-**For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
+**For more information, see the [Finance Toolkit on GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
 > **Try this with the Finance Toolkit MCP:** *"Screen 15 stocks across technology, healthcare, consumer staples, financials, and energy for P/E below 20, EV/EBITDA below 18, and ROIC above 10%. Show the valuation and quality metrics side by side."*
 

@@ -17,7 +17,7 @@ Microsoft went public on March 13, 1986 at $21 per share ([Wikipedia](https://en
 
 The stock price alone hides how much the company underneath has changed. The Microsoft that went public in 1986 and the Microsoft that generates $282 billion in annual revenue today are very different companies. The financials show three distinct businesses operating under the same name, each shaped by a different CEO, product strategy and approach to capital. Pulling 40 years of data through the Finance Toolkit makes those changes easy to see.
 
-In this article I use the Finance Toolkit to analyze Microsoft's financial history. It also includes MCP prompts at the end of each section so you can run the same analysis yourself. **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
+In this article I use the Finance Toolkit to analyze Microsoft's financial history. It also includes MCP prompts at the end of each section so you can run the same analysis yourself. **For more information, see the [Finance Toolkit on GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
 ## Setting Things Up
 

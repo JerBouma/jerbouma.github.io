@@ -46,10 +46,10 @@ Step1["Profitability Model Tests"] -- <b>Step 7<br></b>Return Summarized Test Re
 
 The process above illustrates that data is saved to CSV when tests are run in rewrite mode. This means rerunning the test in this mode overwrites existing data, which is useful when you've identified that the expected output needs adjustment.
 
-To support this process, a `conftest.py` file is included in the `tests` folder. This file defines fixtures usable across tests. For example, fixtures can handle exporting data to formats like JSON, CSV, or TXT. These fixtures are defined using `@pytest.fixture` (read more [here](https://docs.pytest.org/en/6.2.x/fixture.html){: target="_blank"}).
+To support this process, a `conftest.py` file is included in the `tests` folder. This file defines fixtures usable across tests. For example, fixtures can handle exporting data to formats like JSON, CSV, or TXT. These fixtures are defined using `@pytest.fixture` (read more in [the pytest documentation](https://docs.pytest.org/en/6.2.x/fixture.html){: target="_blank"}).
 
 {: .notice--info}
-Working with `conftest.py` can be challenging initially. Consider using the `conftest.py` found **[here](https://github.com/JerBouma/FinanceToolkit/blob/main/tests/conftest.py){: target="_blank"}** as a starting point for executing tests and writing results to files.
+Working with `conftest.py` can be challenging initially. Consider using **[the Finance Toolkit's `conftest.py`](https://github.com/JerBouma/FinanceToolkit/blob/main/tests/conftest.py){: target="_blank"}** as a starting point for executing tests and writing results to files.
 
 To see this in action, download or clone the [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} repository and install the required dependencies:
 

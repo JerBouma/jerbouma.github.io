@@ -7,7 +7,7 @@ permalink: /articles/find-stocks-and-etfs-with-claude
 redirect_from:
   - /articles/find-stocks-etfs-funds-with-claude
 excerpt: "Claude lists companies and ETFs from memory, and memory goes stale. Connect the free Finance Database MCP server to find every stock, ETF or index that fits a question, then the Finance Toolkit MCP server to analyze them: margins, returns, drawdowns and currency effects, in one conversation."
-description: "Use Claude as a stock and ETF screener and analyst: find 300,000+ stocks, ETFs and indices with the Finance Database MCP, then analyze them with the Finance Toolkit."
+description: "Use Claude as a stock and ETF screener and analyst: find 300,000+ instruments with the Finance Database MCP, then analyze them with the Finance Toolkit."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false

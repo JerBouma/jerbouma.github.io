@@ -2,7 +2,7 @@
 title: Projects
 permalink: /projects
 excerpt: "Open-source Python tools for financial analysis: the Finance Toolkit with 500+ transparent financial methods, the Finance Database with 300,000+ stocks, ETFs and indices, and MCP servers that bring both to AI assistants."
-description: "Open-source Python tools for financial analysis: the Finance Toolkit with 500+ transparent financial methods, the Finance Database with 300,000+ stocks, ETFs and indices, and MCP servers that bring both to AI assistants."
+description: "Open-source Python tools for financial analysis: the Finance Toolkit (500+ methods), the Finance Database (300,000+ instruments) and their MCP servers."
 layout: single
 classes: custom-document projects-v2
 author_profile: false

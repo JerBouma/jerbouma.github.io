@@ -2654,7 +2654,10 @@ body.wide-no-sidebar:not(.no-title) {
 
   a {
     color: var(--text-secondary) !important;
-    text-decoration: none !important;
+    // an underline, so the links don't rely on colour alone
+    text-decoration: underline !important;
+    text-decoration-color: var(--card-border) !important;
+    text-underline-offset: 3px;
     transition: color 0.2s ease !important;
 
     &:hover {
@@ -3712,7 +3715,7 @@ body.wide-no-sidebar:not(.no-title) {
       font-weight: 600 !important;
       letter-spacing: 0.08em !important;
       text-transform: uppercase !important;
-      color: rgba(148, 163, 184, 0.7) !important;
+      color: #94a3b8 !important;
       font-family: "JetBrains Mono", Consolas, Monaco, monospace !important;
       user-select: none;
     }
@@ -4542,6 +4545,12 @@ div.highlighter-rouge {
   // Punctuation / Operators
   .p, .o { color: $vs-punctuation !important; }
 
+  // Tags, attributes, decorators and constants (YAML keys, HTML tags): the theme's
+  // light-skin colours have too little contrast on the dark code background
+  .nt, .na, .nd { color: $vs-keyword !important; }
+  .no, .ne { color: $vs-type !important; }
+  .w { color: inherit !important; }
+
   // Diff tokens
   .gd { color: #f14c4c !important; background: rgba(241, 76, 76, 0.1) !important; } // Del
   .gi { color: #73c991 !important; background: rgba(115, 201, 145, 0.1) !important; } // Ins
@@ -4651,7 +4660,7 @@ table.highlight {
         }
       }
 
-      &:last-child td {
+      &:last-child td, &:last-child th[scope="row"] {
         border-bottom: none !important;
         
         &:first-child { border-bottom-left-radius: 16px !important; }
@@ -4659,7 +4668,9 @@ table.highlight {
       }
     }
 
-    td {
+    // th[scope=row]: the first column of a DataFrame table (_plugins/table_row_headers.rb),
+    // a header for screen readers that looks like any other cell
+    td, th[scope="row"] {
       padding: 16px 24px !important;
       color: #cbd5e1 !important;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -4671,6 +4682,15 @@ table.highlight {
       }
     }
   }
+}
+
+.page__content table tbody th[scope="row"] {
+  font-weight: 500 !important;
+  font-size: inherit !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  background: none !important;
+  white-space: normal;
 }
 
 // Special handling for numeric data in financial ratio tables

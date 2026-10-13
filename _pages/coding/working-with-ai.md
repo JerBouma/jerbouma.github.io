@@ -175,4 +175,4 @@ A few habits make the biggest difference:
 {: .notice--info}
 **Understanding is still the job.** An assistant with good instructions can do most of the typing. Deciding which definition is right, noticing that a result is implausible and knowing what a test should expect still depend on you. That is why the rest of this guide explains each component of a model in depth: it is what lets you write good instructions, and what lets you judge the outcome.
 
-Have suggestions? This entire website is open-source, so feel free to contribute [here](https://github.com/JerBouma/jerbouma.github.io){: target="_blank"}!
+Have suggestions? This entire website is open-source, so feel free to contribute [on GitHub](https://github.com/JerBouma/jerbouma.github.io){: target="_blank"}!

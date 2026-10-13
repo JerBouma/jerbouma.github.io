@@ -6,7 +6,7 @@
   </div>
 
   <div class="footer__col">
-    <h4 class="footer__heading">Navigate</h4>
+    <h2 class="footer__heading">Navigate</h2>
     <ul class="footer__links">
       {% for link in site.data.navigation.main %}
         <li><a href="{{ link.url | relative_url }}">{{ link.title }}</a></li>
@@ -15,7 +15,7 @@
   </div>
 
   <div class="footer__col">
-    <h4 class="footer__heading">Connect</h4>
+    <h2 class="footer__heading">Connect</h2>
     <ul class="footer__links">
       {% if site.footer.links %}
         {% for link in site.footer.links %}

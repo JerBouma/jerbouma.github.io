@@ -1,5 +1,6 @@
 ---
 title: Competitor and Sector Analysis with the Finance Toolkit
+seo_title: "Competitor and Sector Analysis in Python"
 date: 2026-07-07
 last_modified_at: 2026-10-02
 permalink: /articles/semiconductor-sector-analysis-finance-toolkit
@@ -19,7 +20,7 @@ By 2025 the same six companies look very different. NVIDIA has grown to $130.5 b
 
 In this article I track that shift through the financial data with the Finance Toolkit, both in Python and through the MCP server for those who prefer to work conversationally.
 
-**For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
+**For more information, see the [Finance Toolkit on GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
 > **Try this with the Finance Toolkit MCP:** *"Let's do a deep dive in the Semiconductor industry. What trends do you see in the last 10 years? And what about the fundamentals?"*
 

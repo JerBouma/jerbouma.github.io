@@ -175,7 +175,7 @@ This returns where each of the 27 variables starts and ends up after five years,
 
 {% include ft-chart.html id="simulation" src="/assets/data/financescenarios-charts.json" label="Simulated short rate, inflation and US equities" %}
 
-The US short rate starts at 4.04% and ends at 4.41% on average, but 1 in 20 scenarios end below 0.49% and 1 in 20 above 8.58%; the fan shows that range opening up month by month. US equities return 9.83% a year on average. In money, 100 invested becomes 161 in the median scenario, while 1 in 20 scenarios end below 79 and 1 in 20 above 284. **Find the Notebook [here](/projects/financescenarios/getting-started) and the simulation documentation [here](/projects/financescenarios/docs/simulation-engine).**
+The US short rate starts at 4.04% and ends at 4.41% on average, but 1 in 20 scenarios end below 0.49% and 1 in 20 above 8.58%; the fan shows that range opening up month by month. US equities return 9.83% a year on average. In money, 100 invested becomes 161 in the median scenario, while 1 in 20 scenarios end below 79 and 1 in 20 above 284. **Find [the Notebook](/projects/financescenarios/getting-started) and [the simulation documentation](/projects/financescenarios/docs/simulation-engine).**
 
 ### Reading the Distribution
 
@@ -196,7 +196,7 @@ This returns the spread of the US equity return for every month, of which the la
 
 {% include ft-chart.html id="distribution" src="/assets/data/financescenarios-charts.json" label="Distribution of the five-year US equity return" %}
 
-The median scenario returns 10.04% a year, a little above the 9.83% mean, and the histogram shows why: the left tail reaches further than the right. The worst 1 in 20 scenarios lose more than 4.65% a year, 14.7 points below the median, while the best 1 in 20 gain more than 23.21%, 13.2 points above it. **Find the documentation [here](/projects/financescenarios/docs/units).**
+The median scenario returns 10.04% a year, a little above the 9.83% mean, and the histogram shows why: the left tail reaches further than the right. The worst 1 in 20 scenarios lose more than 4.65% a year, 14.7 points below the median, while the best 1 in 20 gain more than 23.21%, 13.2 points above it. **Find [the documentation](/projects/financescenarios/docs/units).**
 
 ### Building a Portfolio
 
@@ -223,7 +223,7 @@ This returns the portfolio's yearly return over the five years and what each hol
 
 {% include ft-chart.html id="portfolio" src="/assets/data/financescenarios-charts.json" label="Simulated value of a 60/40 portfolio" %}
 
-The 60/40 earns 8.37% a year on average, between the stocks' 9.83% and the Treasury fund's 5.46%, so 100,000 grows to 152,553. The chart puts the range in money: the median scenario ends at 150,106 and the best 1 in 20 above 211,015, while the worst 1 in 20 end at 99,989, five years without a gain. `portfolio.risk_metrics()` adds the drawdowns and Value at Risk, and the same module covers saving and withdrawal plans, glidepaths and fees. **Find the Notebook [here](/projects/financescenarios/portfolio-notebook).**
+The 60/40 earns 8.37% a year on average, between the stocks' 9.83% and the Treasury fund's 5.46%, so 100,000 grows to 152,553. The chart puts the range in money: the median scenario ends at 150,106 and the best 1 in 20 above 211,015, while the worst 1 in 20 end at 99,989, five years without a gain. `portfolio.risk_metrics()` adds the drawdowns and Value at Risk, and the same module covers saving and withdrawal plans, glidepaths and fees. **Find [the Notebook](/projects/financescenarios/portfolio-notebook).**
 
 ### Applying Stress Regimes
 
@@ -253,7 +253,7 @@ plot_runs(runs, "united_states_inflation")
 
 {% include ft-chart.html id="regimes" src="/assets/data/financescenarios-charts.json" label="US inflation in the baseline and under three stress regimes" %}
 
-In the Oil Crisis, US inflation ends at 5.16% on average instead of 2.83%, and stocks return 1.78% a year instead of 9.83%. The chart shows the regimes differ in timing as much as in level: the Oil Shock follows the baseline until its shock hits in January 2028 and then fades, while the Oil Crisis and Climate Collapse lift inflation from the first month. **Find the Notebook [here](/projects/financescenarios/regimes-notebook) and the regime documentation [here](/projects/financescenarios/docs/regimes).**
+In the Oil Crisis, US inflation ends at 5.16% on average instead of 2.83%, and stocks return 1.78% a year instead of 9.83%. The chart shows the regimes differ in timing as much as in level: the Oil Shock follows the baseline until its shock hits in January 2028 and then fades, while the Oil Crisis and Climate Collapse lift inflation from the first month. **Find [the Notebook](/projects/financescenarios/regimes-notebook) and [the regime documentation](/projects/financescenarios/docs/regimes).**
 
 ### Backtesting Against History
 
@@ -276,7 +276,7 @@ This returns the mix's loading on each factor and how much they explain, and wha
 
 {% include ft-chart.html id="backtest" src="/assets/data/financescenarios-charts.json" label="Historical value of a 60/40 portfolio since 2000" %}
 
-A market loading of 0.54 with an R² of 0.87 says the five factors explain most of the 60/40's monthly moves, and that its stock half drives them. In money, 100,000 grew to 628,180 by October 2026, with the deepest fall, 28% from the peak, in February 2009. **Find the Notebook [here](/projects/financescenarios/portfolio-analysis-notebook).**
+A market loading of 0.54 with an R² of 0.87 says the five factors explain most of the 60/40's monthly moves, and that its stock half drives them. In money, 100,000 grew to 628,180 by October 2026, with the deepest fall, 28% from the peak, in February 2009. **Find [the Notebook](/projects/financescenarios/portfolio-analysis-notebook).**
 
 ### Valuing Liabilities and Capital Under Solvency II
 
@@ -307,7 +307,7 @@ This returns every number in one table, and the spread of own funds after one ye
 
 {% include ft-chart.html id="solvency" src="/assets/data/financescenarios-charts.json" label="Distribution of own funds after one year" %}
 
-Own funds today are 15,635. The SCR of 12,453 is the distance from there to the 1-in-200 outcome at the left of the chart, where own funds fall to around 3,000. With a solvency ratio of 1.26, the 60,000 covers both the payments and the capital a regulator asks for. **Find the documentation [here](/projects/financescenarios/docs).**
+Own funds today are 15,635. The SCR of 12,453 is the distance from there to the 1-in-200 outcome at the left of the chart, where own funds fall to around 3,000. With a solvency ratio of 1.26, the 60,000 covers both the payments and the capital a regulator asks for. **Find [the documentation](/projects/financescenarios/docs).**
 
 ### Validating the Output
 
@@ -325,7 +325,7 @@ For example, three of the checks are shown below.
 | Simulation reproduces the correlations | pass   | largest gap 0.067 (us_broad/europe); pairs with a linked factor, not graded: largest gap 0.219 (eurozone_inflation/eurozone_unemployment) |
 | Every path is finite                   | pass   | 27 factors, all finite                                                                                                                   |
 
-**Find every model and its status [here](/projects/financescenarios/docs/coverage) and the validation documentation [here](/projects/financescenarios/docs/validation).**
+**Find [every model and its status](/projects/financescenarios/docs/coverage) and [the validation documentation](/projects/financescenarios/docs/validation).**
 
 ### Starting Your Own Project
 
@@ -339,7 +339,7 @@ path = scenarios.save(result, "results/")   # the run, its settings and its cali
 result = read_run(path)
 ```
 
-Run Python from inside `my-project` and every run reads its YAML files instead of the bundled ones, and the keys pasted into `my-project/.env`, so `api_key` can be left out. `read_run` reads a saved run back without downloading or simulating anything again. **Find the configuration documentation [here](/projects/financescenarios/docs/configuration).**
+Run Python from inside `my-project` and every run reads its YAML files instead of the bundled ones, and the keys pasted into `my-project/.env`, so `api_key` can be left out. `read_run` reads a saved run back without downloading or simulating anything again. **Find [the configuration documentation](/projects/financescenarios/docs/configuration).**
 
 ## Notebooks
 
