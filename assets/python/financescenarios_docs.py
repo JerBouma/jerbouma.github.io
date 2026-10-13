@@ -14,6 +14,7 @@ documentation (`sitemap: false`, `noindex: true`, `search: false`).
 """
 
 import ast
+import importlib
 import inspect
 import re
 import sys
@@ -73,7 +74,12 @@ CORE = [
     ("configuration", "Configuration and Presets",
      "Load settings, factor sets and presets, list every named preset and scaffold a project.",
      ["ScenariosConfig", "Profile", "list_presets", "load_profiles", "load_config", "load_profile_library",
-      "scaffold_project", "set_log_level"]),
+      "scaffold_project", "set_log_level", "set_display"]),
+    ("configuration-classes", "Configuration Classes",
+     "The typed settings behind each factor block, the engine and the data download, plus beliefs, belief paths and shocks.",
+     ["EngineConfig", "ToolkitConfig", "InterestRateConfig", "InflationConfig", "UnemploymentConfig", "EquityConfig",
+      "FXConfig", "CreditConfig", "CommodityConfig", "DividendYieldConfig", "DividendGrowthConfig", "RealEstateConfig",
+      "YieldCurveConfig", "OUBeliefs", "EquityBeliefs", "BeliefPath", "Shock"]),
     ("regimes", "Regimes and Stress Tests",
      "Named stress narratives and the official Federal Reserve and ESRB stress scenarios as regimes.",
      ["Regime", "RegimeLibrary", "load_regime", "stress_test_regime"]),
@@ -435,9 +441,28 @@ def render_class(cls, own_page: bool, qualify: bool) -> tuple[list[str], int]:
     return blocks, count
 
 
-def render_function(func, name: str) -> str:
+def render_function(func, name: str, level: str = "##") -> str:
     sig = format_signature(name, func, drop_first=False)
-    return raw(f"## {name}\n\n{code_block(sig)}\n\n{render_doc(func, name)}")
+    return raw(f"{level} {name}\n\n{code_block(sig)}\n\n{render_doc(func, name)}")
+
+
+def model_functions(cls) -> list[tuple[str, object]]:
+    """The public functions in a controller's sibling model module whose docstring states
+    a formula: how the class's numbers are calculated, in source order."""
+    module = getattr(cls, "__module__", "")
+    if not module.endswith("_controller"):
+        return []
+    try:
+        models = importlib.import_module(module[: -len("_controller")] + "_model")
+    except ImportError:
+        return []
+    found = []
+    for name, func in inspect.getmembers(models, inspect.isfunction):
+        if name.startswith("_") or func.__module__ != models.__name__:
+            continue
+        if "formula is as follows" in (inspect.getdoc(func) or "").lower():
+            found.append((inspect.getsourcelines(func)[1], name, func))
+    return [(name, func) for _, name, func in sorted(found)]
 
 
 def yaml_quote(text: str) -> str:
@@ -497,6 +522,17 @@ def build_page(slug: str, title: str, summary: str, members: list) -> tuple[str,
         else:
             blocks.append(render_function(member, name))
             count += 1
+    formulas, seen = [], set()
+    for _, member in resolved:
+        if inspect.isclass(member):
+            for name, func in model_functions(member):
+                if name not in seen:
+                    seen.add(name)
+                    formulas.append(render_function(func, name, "###"))
+    if formulas:
+        blocks.append("## How It Is Calculated\n\nThe model functions behind this page, each with the formula it implements.")
+        blocks.extend(formulas)
+        count += len(formulas)
     seo = f"{title} Reference – Finance Scenarios"
     page = front_matter(title, f"{BASE_URL}/{slug}", summary.replace("`", ""), seo) + "\n" + "\n\n".join(blocks) + "\n"
     return page, count

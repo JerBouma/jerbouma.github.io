@@ -82,7 +82,7 @@ def main() -> None:
     result = scenarios.simulate(n_simulations=2000)
     runs = {"Baseline": result}
     for regime, name in [("oil_shock", "Oil Shock"), ("oil_crisis", "Oil Crisis"), ("climate_collapse", "Climate Collapse")]:
-        runs[name] = Scenarios.from_profiles(regime=regime).simulate(keep=2000)
+        runs[name] = scenarios.simulate(regime=regime, n_simulations=2000)
     fans = []
     for name, run in runs.items():
         band, dates = fan(run, "united_states_inflation", name)
@@ -90,8 +90,7 @@ def main() -> None:
     charts["regimes"] = {"type": "fan", "title": "US inflation under three stress regimes against the baseline",
                          "x": dates, "format": "percent", "series": fans}
 
-    history = scenarios.history(portfolio="balanced_60_40")
-    hist_values = Portfolio.from_preset(history, preset="balanced_60_40").compute(initial_value=100_000, rebalance_every=12)
+    hist_values = Portfolio.backtest(scenarios, "balanced_60_40").compute(initial_value=100_000, rebalance_every=12)
     path = hist_values.metric_paths("portfolio", levels=True)[0]
     charts["backtest"] = {"type": "line", "title": "What 100,000 in the 60/40 actually did since 2000",
                           "x": [d.strftime("%Y-%m") for d in hist_values.dates], "format": "amount",
@@ -113,6 +112,8 @@ def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps({"charts": charts}, separators=(",", ":")))
     print(f"Wrote {len(charts)} charts to {OUTPUT} ({OUTPUT.stat().st_size // 1024} KB)")
+    for name, run in runs.items():
+        print(name, {f: round(float(run.metric_paths(f)[:, -1].mean()), 4) for f in ["united_states_inflation", "united_states_short_rate", "us_broad", "europe"]})
     print("backtest end value:", round(float(path[-1])), "| SCR (today - 1-in-200):", round(today - float(np.quantile(outcome, 0.005))))
 
 

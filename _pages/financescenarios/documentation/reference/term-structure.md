@@ -24,56 +24,31 @@ from financescenarios.factors.term_structure.term_structure_controller import Te
 TermStructure(toolkit: Toolkit)
 ```
 
-The Term Structure module simulates the whole government yield curve, the yield at
-every maturity from three months to thirty years, rather than a single interest rate.
-It describes each day's curve with three numbers (its level, slope and curvature) and
-lets those three numbers move through time, so the simulated curve can shift, steepen,
+The Term Structure module simulates the whole government yield curve, the yield at every maturity from three
+months to thirty years, rather than a single interest rate. It describes each day's curve with three numbers (its
+level, slope and curvature) and lets those numbers move through time, so the simulated curve can shift, steepen,
 flatten and bend the way the real one does.
 
-In plain terms: the interest rate factor (`InterestRates`) gives you one point on the
-curve, such as the 13-week Treasury bill. Switch on `yield_curve` and every simulated
-future also carries a full curve, so you can read off a simulated 2-year, 10-year or
-30-year yield, see how often the curve inverts (short rates above long rates) and
-value bonds of any maturity. It is opt-in in the configuration model
-(`yield_curve.enabled` defaults to `false`); the shipped `factor-sets/default.yaml` and `broad.yaml`
-switches it on.
+The interest rate factor (`InterestRates`) gives you one point on the curve, such as the 13-week Treasury bill.
+Switch on `yield_curve` and every simulated future also carries a full curve, so you can read off a simulated
+2-year, 10-year or 30-year yield, see how often the curve inverts (short rates above long rates) and value bonds of
+any maturity. It is off unless `yield_curve.enabled` is `true`; the shipped `default` and `broad` factor sets
+switch it on.
 
 The model is the dynamic Nelson-Siegel model of
-[Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005), built on the
-curve shape of [Nelson and Siegel (1987)](https://doi.org/10.1086/296409). At any date
-the yield at maturity `tenor` is approximated as
+[Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005), built on the curve shape of
+[Nelson and Siegel (1987)](https://doi.org/10.1086/296409):
 
 `yield(tenor) = level + slope * slope_loading(tenor) + curvature * curvature_loading(tenor)`
 
-where the three components are:
+The level moves every maturity equally, the slope weighs most on short maturities and the curvature most on medium
+ones; how much depends only on a fixed `decay` (lambda), set rather than fitted, as Diebold and Li do. Each factor
+(`rate_level`, `rate_slope`, `rate_curvature`) is simulated as its own mean-reverting (Ornstein-Uhlenbeck) process,
+pulled back toward a normal level at a fitted speed, and linked to the rest only through the correlation matrix.
+The factors are fitted to history, so nothing guarantees a curve free of arbitrage between maturities (see `Hjm`
+for that) and nothing stops a curve from inverting or going negative.
 
-- **Level**: a parallel shift that moves every maturity equally (its loading is 1).
-- **Slope**: a steepening or flattening, loading more on short maturities than on
-  long ones (`slope_loading = (1 - exp(-decay*tenor)) / (decay*tenor)`).
-- **Curvature**: a hump or trough, loading most on medium maturities
-  (`curvature_loading = slope_loading - exp(-decay*tenor)`).
-
-The loadings are fixed functions of maturity and of one decay parameter (`decay`,
-lambda, annualized), not calibrated themselves (`nelson_siegel_loadings`); Diebold and
-Li fix the decay rather than estimate it, and so does this module (default `0.7308`).
-Reading these three as level, slope and curvature also matches the principal
-components [Litterman and Scheinkman (1991)](https://doi.org/10.3905/jfi.1991.692347)
-found in bond returns, though neither result derives the other.
-
-Instead of one stochastic process (the short rate) the module simulates three,
-`rate_level`, `rate_slope` and `rate_curvature`, each its own mean-reverting
-Ornstein-Uhlenbeck process fitted with the same `fit_ou_process` machinery as the
-interest rate and inflation factors and stepped with the exact discrete-time
-transition of [Vasicek (1977)](https://doi.org/10.1016/0304-405x(77)90016-2)
-(`step_curve_factor`), just applied to a curve factor instead of a single-maturity
-rate. The three factors have no cascade dependency on inflation or any other factor in
-the simulation's dependency graph: only the correlation matrix (`Dependence`, applied
-through a Cholesky decomposition) links them to each other and to the rest, which is
-how Diebold and Li specify their own three-factor system.
-
-To get the simulated yield at any maturity after a run, apply `nelson_siegel_yield`
-directly to the simulated path arrays; it broadcasts over `(n_simulations, n_steps + 1)`
-arrays the same way it does over single numbers:
+To read a simulated yield at any maturity after a run, pass the three paths to `nelson_siegel_yield`:
 
 ```python
 from financescenarios.factors.term_structure.term_structure_model import nelson_siegel_yield
@@ -87,73 +62,21 @@ ten_year_paths = nelson_siegel_yield(
 )
 ```
 
-`curve_inversion_frequency` and `negative_spread_frequency` turn the same paths into
-the share of simulated cells where the curve is inverted or a yield is negative.
-
-Three data sources are available through `source`, all obtained through the Finance
-Toolkit:
-
-- `yahoo` (default): the four standard Yahoo Finance treasury-yield tickers
-  (`YIELD_CURVE_TENORS`: `^IRX` 13-week, `^FVX` 5-year, `^TNX` 10-year and `^TYX`
-  30-year) from one `Toolkit.get_historical_data()` call. No API key is needed, and
-  `build_toolkit()` adds the four tickers to the Toolkit it builds when the factor is
-  enabled.
-- `treasury`: the official daily 12-tenor Treasury par curve (1 Month through 30 Year,
-  `TREASURY_RATES_TENORS`) via `fixedincome.get_treasury_rates()`: the same
-  three-factor fit against three times the maturities, with real short-end coverage
-  (1M, 2M, 3M, 6M, 1Y, 2Y, 3Y) the Yahoo set barely has. It requires a Financial
-  Modeling Prep API key and `period: daily`, and falls back to the Yahoo tickers with
-  a logged warning on any fetch failure.
-- `government`: the official government bond yield curve of one `country` via
-  `fixedincome.get_government_bond_yield_curve()` (no API key): the US Treasury par
-  curve, the European Central Bank's euro area curve, the
-  Bundesbank's German curve, the Bank of England's gilt yields, Japan's Ministry of
-  Finance curve, and the Bank of Canada, Riksbank and Norges Bank curves
-  (`GOVERNMENT_CURVE_COUNTRIES`), daily, weekly or monthly. This is what makes a
-  non-US yield curve possible. It never falls back to the US curve: simulating a German
-  curve from US data would be worse than failing.
-
-Since the Yahoo source uses only four maturities (not the dozens a production
-term-structure model would use), its cross-sectional fit is a coarse approximation of
-the true curve shape: adequate for the broad level, slope and curvature dynamics, not
-a precision pricing tool. Two country caveats for `government`: the Bank of England
-publishes only the 5, 10 and 20 year maturities, so the UK fit is exactly determined
-by three points and its short end is an extrapolation; and Japanese yields have risen
-steadily from near zero since 2000, so over that window the level shows no mean
-reversion at a monthly step and the fit stops with a clear error rather than
-simulating a process that does not describe the data.
-
-What it does not do: the three factors are statistical, fitted to history under the
-real-world measure, with no guarantee that the simulated curves are free of arbitrage
-between maturities (for an arbitrage-free curve, see `Hjm`); and nothing stops the
-simulated curve from inverting or going negative, which is why the two frequency
-diagnostics above exist.
-
 Configuration (`yield_curve` in a factor set):
 
 | Key | Default | Meaning |
 |:----|:--------|:--------|
-| `enabled` | `false` | Adds `rate_level`/`rate_slope`/`rate_curvature` and the four tenor tickers when `true`. |
-| `source` | `yahoo` | `yahoo` (four Yahoo tickers), `treasury` (12-tenor par curve, FMP key) or `government`. |
-| `country` | `United States` | The country of a `government` curve; rejected with the other two sources. |
-| `period` | `daily` | The time step. `daily` with `treasury`; `daily`, `weekly` or `monthly` with `government`. |
-| `decay` | `0.7308` | The Nelson-Siegel decay (lambda), annualized; fixed, not calibrated (Diebold-Li). |
-| `beliefs.level` | all `null` | An `OUBeliefs` block for the level factor (see below). |
-| `beliefs.slope` | all `null` | An `OUBeliefs` block for the slope factor. |
-| `beliefs.curvature` | all `null` | An `OUBeliefs` block for the curvature factor. |
-
-Each belief block overrides a calibrated `mean_reversion_speed`, `long_run_mean` or
-`volatility` the same way the interest rate factor's beliefs do (and accepts the same
-`shocks` list); a `null` keeps the fitted value. `Scenarios.simulate()` calibrates and
-simulates the yield curve automatically whenever `yield_curve.enabled` is `true`;
-nothing else about the call changes.
+| `enabled` | `false` | Adds `rate_level`, `rate_slope` and `rate_curvature` when `true`. |
+| `source` | `yahoo` | `yahoo` (four Yahoo tickers), `treasury` (12-maturity par curve, FMP key) or `government`. |
+| `country` | `United States` | The country of a `government` curve. |
+| `period` | `daily` | The time step: `daily` with `treasury`; `daily`, `weekly` or `monthly` with `government`. |
+| `decay` | `0.7308` | The Nelson-Siegel decay (lambda), annualized; fixed, not fitted. |
+| `beliefs.level`, `.slope`, `.curvature` | `null` | Override a fitted speed, long-run mean or volatility. |
 
 **References:**
 
 - Diebold, F.X., Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364. <https://doi.org/10.1016/j.jeconom.2005.03.005>
 - Nelson, C.R., Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489. <https://doi.org/10.1086/296409>
-- Litterman, R., Scheinkman, J. (1991). "Common Factors Affecting Bond Returns." The Journal of Fixed Income, 1(1), 54-61. <https://doi.org/10.3905/jfi.1991.692347>
-- Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188. <https://doi.org/10.1016/0304-405x(77>)90016-2
 
 ## calibrate
 
@@ -166,65 +89,35 @@ calibrate(
 ) -> YieldCurveParams
 ```
 
-Calibrate the Nelson-Siegel yield curve from history: fetch the treasury yields at
-every available maturity, decompose each date's curve into its level, slope and
-curvature, and fit each of those three series as its own mean-reverting process
-(how fast it returns to normal, `mean_reversion_speed`; what that normal value is,
-`long_run_mean`; how much it swings, `volatility`; and where it starts today,
-`initial_value`).
+Calibrate the yield curve from history: split each date's curve into its level, slope and curvature, then fit
+each of the three as its own mean-reverting process.
 
-In plain terms: this learns from the past how the shape of the yield curve moves,
-so the simulated curves shift and twist the way real ones have. The level is
-roughly the long-term yield, the slope roughly the short yield minus the long yield
-(negative for a normal, upward-sloping curve) and the curvature the size of the
-hump in the middle. A level speed of 0.60 a year, for example, means a parallel
-shift of the curve has faded by half after about 14 months (ln 2 / 0.60 years).
+This learns how the shape of the yield curve has moved, so the simulated curves shift and twist the way real ones
+have. The level is roughly the long-term yield, the slope the short minus the long yield and the curvature
+the hump in the middle. Each gets a speed (`mean_reversion_speed`), a normal value (`long_run_mean`), a swing
+size (`volatility`) and today's value (`initial_value`), in decimals. A level speed of 0.60 means a parallel
+shift has halved after about 14 months (ln 2 / 0.60 years).
 
-At every date the yields are regressed on the fixed Nelson-Siegel loadings for the
-available maturities (an ordinary least squares fit, solved for every date at once
-since the loadings never change, see `fit_nelson_siegel_factors`), which produces a
-level, slope and curvature time series. Each series is then calibrated
-independently with `fit_ou_process`, exactly as the interest rate factor calibrates
-the short rate. All values are decimal fractions (`0.05` is 5%), and the time step
-follows `period` (1/252 of a year for daily data).
+Each date's yields are regressed on the fixed loadings of
+[Nelson and Siegel (1987)](https://doi.org/10.1086/296409), and each resulting series is fitted as in
+[Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005).
 
 Also known as: dynamic Nelson-Siegel, Diebold-Li yield curve calibration.
 
 **Args:**
 
-- <u>period (str):</u> sampling frequency of the underlying data ("daily", "weekly", "monthly", "quarterly", "yearly"), determines the time_step used to fit each factor.
-- <u>decay (float):</u> the Nelson-Siegel decay parameter (lambda), annualized; fixed rather than calibrated, per Diebold & Li (2006).
-- <u>source (str):</u> "yahoo" (default) fits the four standard Yahoo treasury tickers (term_structure_model.YIELD_CURVE_TENORS); "treasury" fits the official daily 12-tenor Treasury par curve via Finance Toolkit's `fixedincome.get_treasury_rates()` (FMP key required; daily only, so requires period="daily"), a much denser cross-section for the same three-factor fit. Falls back to "yahoo" with a logged warning when the treasury fetch fails or comes back empty. A tenor column with more than _TREASURY_TENOR_MAX_NULL_FRACTION nulls is dropped whole rather than truncating every other tenor's history. "government" fits the official government curve of `country` via Finance Toolkit's `fixedincome.get_government_bond_yield_curve()` (no key; daily, weekly or monthly), with no fallback.
-- <u>country (str):</u> the country of a "government" curve, one of term_structure_model.GOVERNMENT_CURVE_COUNTRIES. Ignored by the other sources.
+- <u>period (str):</u> data frequency and time step: "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>decay (float):</u> the Nelson-Siegel decay (lambda), annualized; fixed, not fitted. Defaults to 0.7308.
+- <u>source (str):</u> "yahoo" (four Yahoo treasury tickers), "treasury" (the 12-maturity Treasury par curve; FMP key, daily only, falls back to "yahoo") or "government" (one country's official curve). Defaults to "yahoo".
+- <u>country (str):</u> the "government" curve's country, such as "Germany", "Euro Area" or "Japan". Defaults to "United States".
 
 **Returns:**
 
-<u>YieldCurveParams:</u> the calibrated level, slope and curvature processes.
+<u>YieldCurveParams:</u> the fitted `level`, `slope` and `curvature` processes and the `decay`.
 
 **Raises:**
 
-- <u>ValueError:</u> if period or source is not recognized, source="treasury" is combined with a non-daily period, or source="government" fails: an older Finance Toolkit, a country without a curve, nothing returned, fewer than three usable maturities, or no mean reversion in the fitted factors.
-
-**Notes:**
-
-- The four Yahoo tickers are quoted in percentage points (4.1 meaning 4.10%) and
-  divided by 100; the Treasury par curve already arrives as decimals.
-- Both sources quote bond-equivalent (semiannual) yields, which are used as they are,
-  with no conversion to continuous compounding.
-- A date on which any maturity is missing is dropped from the fit, with a logged
-  warning saying how many dates were lost. That is why a Treasury maturity first
-  published partway through the window (`2 Month` began in 2018) is dropped whole
-  once more than 5% of its values are missing, rather than truncating every other
-  maturity's history.
-- With exactly three maturities the fit is exactly determined (a zero residual by
-  construction) and a warning says so; it then gives no signal of a bad print.
-- `source="treasury"` changes only this factor's cross-section; the other models
-  that fit their own Nelson-Siegel anchor curve (`Hjm`, the interest rate factor's
-  `risk_neutral_forward_curve` mode, `knw_sv_q`) still use the four Yahoo tickers.
-- `source="government"` reads maturity labels such as "1.5M" or "10Y" as years
-  (`parse_tenor_label`) and drops maturities missing on more than 5% of the dates.
-- `calibrate` also stores the dated period-over-period changes of each factor
-  (`changes`), which `Dependence` uses to estimate the correlations.
+- <u>ValueError:</u> if `period`, `source` or `country` is not recognized, `decay` is not positive, "treasury" gets a non-daily period, or a "government" curve has under three maturities or no mean reversion.
 
 **As an example:**
 
@@ -237,59 +130,15 @@ toolkit = Toolkit(["^IRX", "^FVX", "^TNX", "^TYX"], api_key="FINANCIAL_MODELING_
 term_structure = TermStructure(toolkit)
 
 term_structure.calibrate(period="daily")
-term_structure.calibrate(period="daily", source="treasury")
 ```
 
 Which returns (calibrated on 2026-10-04, daily data from 2021-10-06 to 2026-10-02):
 
-| source | factor | mean_reversion_speed | long_run_mean | volatility | initial_value |
-|:-------|:-------|---------------------:|--------------:|-----------:|--------------:|
-| yahoo | level | 0.5977 | 0.0533 | 0.0089 | 0.0572 |
-| yahoo | slope | 5.6466 | -0.0030 | 0.0423 | -0.0181 |
-| yahoo | curvature | 4.9853 | -0.0169 | 0.0593 | -0.0090 |
-| treasury | level | 0.6540 | 0.0517 | 0.0095 | 0.0566 |
-| treasury | slope | 0.4768 | 0.0012 | 0.0109 | -0.0161 |
-| treasury | curvature | 1.7026 | -0.0084 | 0.0360 | -0.0032 |
-
-Both sources agree on the level: about 5.7% today, pulled toward about 5.2-5.3% with
-a half-life of just over a year. Feeding today's Yahoo factors into
-`nelson_siegel_yield` gives a 3-month yield of 3.99%, 2-year 4.50%, 10-year 5.35%
-and 30-year 5.59%, an upward-sloping curve. The slope and curvature differ much
-more between the sources: with only four maturities their daily estimates are
-noisy and snap back within weeks (a slope half-life of ln 2 / 5.65, about 1.5
-months), while the denser Treasury curve gives a smoother slope with a half-life of
-about 1.5 years.
-
-With `source="government"`, the same model fits other
-countries' official curves, here monthly from January 2000:
-
-```python
-toolkit = Toolkit(["SPY"], start_date="2000-01-01")
-
-for country in ["United States", "Germany", "Euro Area", "United Kingdom"]:
-    TermStructure(toolkit).calibrate(period="monthly", source="government", country=country)
-```
-
-Which returns (calibrated on 2026-10-05, the level factor's long-run mean and speed and
-all three factors today):
-
-| country | level long_run_mean | level speed | level today | slope today | curvature today |
-|:--------|--------------------:|------------:|------------:|------------:|----------------:|
-| United States | 0.0392 | 0.3046 | 0.0568 | -0.0154 | -0.0047 |
-| Germany | 0.0272 | 0.1142 | 0.0404 | -0.0054 | -0.0290 |
-| Euro Area | 0.0327 | 0.1610 | 0.0460 | -0.0192 | -0.0132 |
-| United Kingdom | 0.0467 | 0.0986 | 0.0614 | 0.0528 | -0.1095 |
-
-Over 26 years every curve's level sits above its long-run average today and is pulled
-back toward it slowly (a German half-life of about six years, ln 2 / 0.1142). The
-UK's extreme slope and curvature come from fitting only its 5, 10 and 20 year yields;
-Japan, whose yields rose steadily from near zero, stops with a no-mean-reversion
-error over this window.
-
-**References:**
-
-- Diebold, F.X., Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364. <https://doi.org/10.1016/j.jeconom.2005.03.005>
-- Nelson, C.R., Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489. <https://doi.org/10.1086/296409>
+| factor | mean_reversion_speed | long_run_mean | volatility | initial_value |
+|:-------|---------------------:|--------------:|-----------:|--------------:|
+| level | 0.5977 | 0.0533 | 0.0089 | 0.0572 |
+| slope | 5.6466 | -0.0030 | 0.0423 | -0.0181 |
+| curvature | 4.9853 | -0.0169 | 0.0593 | -0.0090 |
 
 ## params
 
@@ -297,11 +146,11 @@ error over this window.
 termstructure.params  # property -> YieldCurveParams
 ```
 
-The last-calibrated yield curve parameters.
+The parameters from the last `calibrate` call.
 
 **Raises:**
 
-- <u>RuntimeError:</u> if calibrate() hasn't been called yet.
+- <u>RuntimeError:</u> if `calibrate` has not been called yet.
 
 ## step_function
 
@@ -309,8 +158,7 @@ The last-calibrated yield curve parameters.
 termstructure.step_function  # property
 ```
 
-The exact-transition OU step function (see step_curve_factor's own
-docstring, not Euler-Maruyama) shared by all three curve factors.
+The step function that moves each curve factor forward one time step, using the exact mean-reverting transition.
 
 ## changes
 
@@ -318,15 +166,238 @@ docstring, not Euler-Maruyama) shared by all three curve factors.
 termstructure.changes  # property -> dict[str, pl.DataFrame]
 ```
 
-Dated period-over-period changes in each curve factor ("rate_level",
-"rate_slope", "rate_curvature"), from the same data calibrate() already
-fetched; reused for cross-factor correlation estimation (Dependence)
-instead of triggering a second Finance Toolkit fetch.
+The dated period-over-period changes of `rate_level`, `rate_slope` and `rate_curvature` from the last
+`calibrate` call, from which the correlation matrix is estimated.
 
 **Returns:**
 
-<u>dict[str, pl.DataFrame]:</u> one entry per curve factor, each two columns, `date` (pl.Date) and `value` (f64); see helpers.dated_changes().
+<u>dict[str, pl.DataFrame]:</u> one table per factor, with a `date` and a `value` column.
 
 **Raises:**
 
-- <u>RuntimeError:</u> if calibrate() hasn't been called yet.
+- <u>RuntimeError:</u> if `calibrate` has not been called yet.
+
+## How It Is Calculated
+
+The model functions behind this page, each with the formula it implements.
+
+### nelson_siegel_loadings
+
+```python
+nelson_siegel_loadings(tenor: float, decay: float) -> tuple[float, float]
+```
+
+Compute the slope and curvature factor loadings for one maturity, per the
+Nelson-Siegel yield curve formula. The level factor's loading is always 1
+(a parallel shift affects every maturity equally), so it isn't returned here.
+
+The formula is as follows:
+
+$$
+y(\tau) = L + S \cdot B(\tau) + C \cdot (B(\tau) - \exp(- \lambda \cdot \tau))
+$$
+
+$$
+B(\tau) = (1 - \exp(- \lambda \cdot \tau)) / (\lambda \cdot \tau)
+$$
+
+Where L, S and C are the level, slope and curvature factors and lambda is `decay`; this returns the S and C
+loadings, B(tau) and B(tau) - exp(-lambda * tau).
+
+**Args:**
+
+- <u>tenor (float):</u> maturity, in years (must be > 0).
+- <u>decay (float):</u> the Nelson-Siegel decay parameter (lambda), annualized.
+
+**Returns:**
+
+<u>tuple[float, float]:</u> (slope_loading, curvature_loading) for this maturity.
+
+**Raises:**
+
+- <u>ValueError:</u> if tenor is not strictly positive.
+
+**References:**
+
+- Nelson, C.R., Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489. <https://doi.org/10.1086/296409> The static functional form and loadings this function implements.
+- Diebold, F.X., Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364. <https://doi.org/10.1016/j.jeconom.2005.03.005>
+
+### nelson_siegel_forward
+
+```python
+nelson_siegel_forward(
+    level: float | np.ndarray,
+    slope: float | np.ndarray,
+    curvature: float | np.ndarray,
+    tenor: float | np.ndarray,
+    decay: float,
+) -> float | np.ndarray
+```
+
+Nelson & Siegel's (1987) own instantaneous forward-rate parametrization:
+their yield curve is itself derived as the average of this forward curve, not
+the other way around. Used by `hjm_model` as the deterministic curve a
+2-factor Gaussian HJM anchors to, since it's smooth and defensible to
+extrapolate at any maturity (including beyond the 4 observed treasury
+tenors), unlike a piecewise bootstrap. Unlike `nelson_siegel_yield`, `tenor`
+may be an array (HJM evaluates this at every point of a whole time grid at
+once) and `tenor == 0` is valid (the short rate).
+
+The formula is as follows:
+
+$$
+f(\tau) = L + S \cdot \exp(- \lambda \cdot \tau) + C \cdot \lambda \cdot \tau \cdot \exp(- \lambda \cdot \tau)
+$$
+
+**Args:**
+
+- <u>level (float &#124; np.ndarray):</u> the level factor value(s).
+- <u>slope (float &#124; np.ndarray):</u> the slope factor value(s).
+- <u>curvature (float &#124; np.ndarray):</u> the curvature factor value(s).
+- <u>tenor (float &#124; np.ndarray):</u> maturity/maturities, in years (must be >= 0).
+- <u>decay (float):</u> the Nelson-Siegel decay parameter (lambda), annualized.
+
+**Returns:**
+
+<u>float &#124; np.ndarray:</u> the instantaneous forward rate at `tenor`, broadcast against whichever of the inputs is array-valued.
+
+**Raises:**
+
+- <u>ValueError:</u> if any `tenor` is negative.
+
+**References:**
+
+- Nelson, C.R., Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489. <https://doi.org/10.1086/296409>
+
+### nelson_siegel_forward_integral
+
+```python
+nelson_siegel_forward_integral(
+    level: float | np.ndarray,
+    slope: float | np.ndarray,
+    curvature: float | np.ndarray,
+    tenor: float | np.ndarray,
+    decay: float,
+) -> float | np.ndarray
+```
+
+Closed-form `integral_0^tenor nelson_siegel_forward(..., u, decay) du`:
+equivalently `tenor * nelson_siegel_yield(..., tenor, decay)` for `tenor > 0`,
+provided here directly (and valid at `tenor == 0`, where it's 0) since
+`hjm_model.hjm_zero_yield` needs the *difference* of this integral at two
+points, not a yield itself.
+
+The formula is as follows:
+
+$$
+F(\tau) = L \cdot \tau + S \cdot D(\tau) + C \cdot (D(\tau) - \tau \cdot \exp(- \lambda \cdot \tau))
+$$
+
+$$
+D(\tau) = (1 - \exp(- \lambda \cdot \tau)) / \lambda
+$$
+
+**Args:**
+
+- <u>level (float &#124; np.ndarray):</u> the level factor value(s).
+- <u>slope (float &#124; np.ndarray):</u> the slope factor value(s).
+- <u>curvature (float &#124; np.ndarray):</u> the curvature factor value(s).
+- <u>tenor (float &#124; np.ndarray):</u> maturity/maturities, in years (must be >= 0).
+- <u>decay (float):</u> the Nelson-Siegel decay parameter (lambda), annualized.
+
+**Returns:**
+
+<u>float &#124; np.ndarray:</u> the accumulated forward rate from 0 to `tenor`.
+
+**Raises:**
+
+- <u>ValueError:</u> if any `tenor` is negative.
+
+**References:**
+
+- Nelson, C.R., Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489. <https://doi.org/10.1086/296409>
+
+### fit_nelson_siegel_factors
+
+```python
+fit_nelson_siegel_factors(
+    yields_by_tenor: dict[float, pl.Series],
+    decay: float,
+    dates: pl.Series,
+) -> pl.DataFrame
+```
+
+Cross-sectionally fit Nelson-Siegel level/slope/curvature factors at every date,
+via OLS regression of that date's yields (across tenors) on the fixed
+Nelson-Siegel loadings for those tenors. Since the loadings depend only on the
+(fixed) tenor set and decay, not on the date, this is one linear system solved
+for every date at once.
+
+The formula is as follows:
+
+$$
+y_{t}(\tau_{j}) = L_{t} + S_{t} \cdot \operatorname{slope\_loading}(\tau_{j}) + C_{t} \cdot \operatorname{curvature\_loading}(\tau_{j}) + e_{t},\;\; \text{j}
+$$
+
+Solved by least squares across the tenors tau_j for each date t, as in Diebold and Li (2006).
+
+**Args:**
+
+- <u>yields_by_tenor (dict[float, pl.Series]):</u> maturity (years) -> historical yield series at that maturity, all the same length and time index.
+- <u>decay (float):</u> the Nelson-Siegel decay parameter (lambda), annualized.
+- <u>dates (pl.Series):</u> one date per observation, same length and order as every series in `yields_by_tenor`; carried through (and dropped jointly with a missing-tenor date, same as every yield column) so the returned level/slope/curvature series can be date-aligned against other factors for cross-factor correlation, instead of only being positionally ordered.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> "date", "level", "slope" and "curvature" columns, one row per date with every tenor observed (dates with any tenor missing are dropped first; see below), in the same date order as the input series.
+
+**Raises:**
+
+- <u>ValueError:</u> if fewer than 3 tenors are supplied, the tenor series aren't all the same length, or the fit produces a non-finite factor despite the null-dropping below (should be unreachable, kept as a hard failure rather than letting a silent NaN reach `fit_ou_process`).
+
+**References:**
+
+- Diebold, F.X., Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364. <https://doi.org/10.1016/j.jeconom.2005.03.005>
+
+### step_curve_factor
+
+```python
+step_curve_factor(
+    current_value: np.ndarray | float,
+    shock: np.ndarray | float,
+    time_step: float,
+    params: OUParams,
+) -> np.ndarray
+```
+
+Advance one Nelson-Siegel factor (level, slope or curvature) by one time step
+via its *exact* discrete-time transition (see
+`calibration_model.step_ou_process`), the closed-form solution of
+dx = a(theta - x)dt + sigma*dW rather than an Euler-Maruyama approximation of
+it; the same Ornstein-Uhlenbeck dynamics used for the short rate and
+inflation, applied here to a cross-sectional yield curve factor instead of a
+single-tenor rate.
+
+The formula is as follows:
+
+$$
+\beta(t + \text{dt}) = \theta + (\beta(t) - \theta) \cdot \exp(- a \cdot \text{dt}) + \sigma \cdot \sqrt{(1 - \exp(- 2 \cdot a \cdot \text{dt})) / (2 \cdot a)} \cdot z
+$$
+
+This is the AR(1) per factor that Diebold and Li (2006) forecast with, with coefficient exp(-a * dt).
+
+**Args:**
+
+- <u>current_value (np.ndarray &#124; float):</u> the factor's value at the current time step.
+- <u>shock (np.ndarray &#124; float):</u> a standard normal draw for this step.
+- <u>time_step (float):</u> the time increment, in years.
+- <u>params (OUParams):</u> calibrated mean-reversion speed, long-run mean, and volatility.
+
+**Returns:**
+
+<u>np.ndarray:</u> the factor's value at the next time step.
+
+**References:**
+
+- Diebold, F.X., Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364. <https://doi.org/10.1016/j.jeconom.2005.03.005>
+- Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188. <https://doi.org/10.1016/0304-405x(77>)90016-2 Source of the exact transition used here.

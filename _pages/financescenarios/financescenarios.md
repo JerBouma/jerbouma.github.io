@@ -70,7 +70,7 @@ Passed as `Scenarios.from_profiles(settings="...")`.
 | default      | 2,000 scenarios, one step a month, five years ahead, fitted on history since 2000.                                                               |
 | goes         | Default, but fitted on history since 2019 only; pair it with the goes factor set to match the NAIC's scenario generator.                       |
 | long_horizon | Default with 500 scenarios instead of 2,000, so multi-decade runs stay fast; pick the length with simulate(years=30).                            |
-| wilkie       | Default, fitted on 1995 to 2019 only, as the wilkie set needs.                                                                                 |
+| wilkie       | Default, fitted on 1995 to 2007 only, as the wilkie set needs.                                                                                 |
 
 </details>
 
@@ -227,42 +227,36 @@ The 60/40 earns 8.37% a year on average, between the stocks' 9.83% and the Treas
 
 ### Applying Stress Regimes
 
-Simulate under one of 12 named stress stories, such as an oil crisis. A regime changes an assumption before simulating, keeps only the scenarios that fit the story, or both.
+Run the same variables through one of 12 named stress stories, such as an oil crisis. A regime changes an assumption before simulating, keeps only the scenarios that fit the story, or both.
 
 ```python
-from financescenarios import compare_runs, plot_runs
+from financescenarios import compare_runs
 
-oil_crisis = Scenarios.from_profiles(
-    regime="oil_crisis", api_key="FINANCIAL_MODELING_PREP_KEY", fred_api_key="FRED_KEY"
-)
-shocked = oil_crisis.simulate(keep=2000)
+shocked = scenarios.simulate(regime="oil_crisis", n_simulations=2000)
 
-runs = {"baseline": result, "oil_crisis": shocked}
-compare_runs(runs)
-plot_runs(runs, "united_states_inflation")
+compare_runs({"baseline": result, "oil_crisis": shocked})
 ```
 
-`Oil Crisis` pulls US inflation towards 9% and keeps the scenarios with high interest rates and weak stocks; `keep=2000` draws enough scenarios that 2,000 fit the story. This returns the average five-year outcome of each run, four variables shown below, and the path of US inflation, with the Oil Shock and Climate Collapse regimes added the same way.
+`Oil Crisis` pulls US inflation towards 9% and keeps the scenarios with high interest rates and weak stocks; it draws as many scenarios as it takes for 2,000 to fit the story. This returns the average five-year outcome of each run, four variables shown below; the chart adds the Oil Shock and Climate Collapse regimes the same way.
 
 | factor                   | baseline | oil_crisis |
 |:-------------------------|---------:|-----------:|
-| united_states_inflation  |   0.0283 |     0.0516 |
-| united_states_short_rate |   0.0441 |     0.0647 |
-| us_broad                 |   0.0983 |     0.0178 |
-| europe                   |   0.0768 |     0.0201 |
+| united_states_inflation  |   0.0283 |     0.0512 |
+| united_states_short_rate |   0.0441 |     0.0649 |
+| us_broad                 |   0.0983 |     0.0161 |
+| europe                   |   0.0768 |     0.0180 |
 
 {% include ft-chart.html id="regimes" src="/assets/data/financescenarios-charts.json" label="US inflation in the baseline and under three stress regimes" %}
 
-In the Oil Crisis, US inflation ends at 5.16% on average instead of 2.83%, and stocks return 1.78% a year instead of 9.83%. The chart shows the regimes differ in timing as much as in level: the Oil Shock follows the baseline until its shock hits in January 2028 and then fades, while the Oil Crisis and Climate Collapse lift inflation from the first month. **Find the Notebook [here](/projects/financescenarios/regimes-notebook) and the regime documentation [here](/projects/financescenarios/docs/regimes).**
+In the Oil Crisis, US inflation ends at 5.12% on average instead of 2.83%, and stocks return 1.61% a year instead of 9.83%. The chart shows the regimes differ in timing as much as in level: the Oil Shock follows the baseline until its shock hits in January 2028 and then fades, while the Oil Crisis and Climate Collapse lift inflation from the first month. **Find the Notebook [here](/projects/financescenarios/regimes-notebook) and the regime documentation [here](/projects/financescenarios/docs/regimes).**
 
 ### Backtesting Against History
 
-Test the 60/40 against what prices actually did, and measure what it is exposed to with the [Fama-French factors](https://doi.org/10.1016/j.jfineco.2014.10.010) from [Ken French's data library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
+Run the same portfolio against what prices actually did, and measure what it is exposed to with the [Fama-French factors](https://doi.org/10.1016/j.jfineco.2014.10.010) from [Ken French's data library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
 
 ```python
 # What the 60/40's holdings actually did, month by month, as one "scenario"
-history = scenarios.history(portfolio="balanced_60_40")
-portfolio = Portfolio.from_preset(history, preset="balanced_60_40")
+portfolio = Portfolio.backtest(scenarios, "balanced_60_40")
 
 portfolio.factor_exposure()
 portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
@@ -276,7 +270,7 @@ This returns the mix's loading on each factor and how much they explain, and wha
 
 {% include ft-chart.html id="backtest" src="/assets/data/financescenarios-charts.json" label="Historical value of a 60/40 portfolio since 2000" %}
 
-A market loading of 0.54 with an R² of 0.87 says the five factors explain most of the 60/40's monthly moves, and that its stock half drives them. In money, 100,000 grew to 628,180 by October 2026, with the deepest fall, 28% from the peak, in February 2009. **Find the Notebook [here](/projects/financescenarios/portfolio-analysis-notebook).**
+A market loading of 0.54 with an R² of 0.87 says the five factors explain most of the 60/40's monthly moves, and that its stock half drives them. In money, 100,000 grew to 626,189 by October 2026, with the deepest fall, 28% from the peak, in February 2009. **Find the Notebook [here](/projects/financescenarios/portfolio-analysis-notebook).**
 
 ### Valuing Liabilities and Capital Under Solvency II
 
