@@ -24,134 +24,59 @@ from financescenarios.factors.commodities.commodities_controller import Commodit
 Commodities(toolkit: Toolkit)
 ```
 
-The Commodities module simulates commodity prices, such as crude oil, natural gas,
-gold or copper, as prices that swing widely but are pulled back toward a normal level
-over time, rather than drifting off without limit the way a stock index can.
+The Commodities module simulates commodity prices, such as crude oil or gold, as prices that swing widely but are
+pulled back toward a normal level over time.
 
-In plain terms: add one or more commodities to a run and each becomes a simulated
-price path, linked to interest rates, equities, FX and the rest through the
-correlation matrix, and usable as a portfolio sleeve like any other priced series. It
-is opt-in: `commodities` is an empty list by default, and each entry is calibrated
-independently and named by its own `name`. It has no cascade dependency on any other
-factor; the link is through correlation only, the same shape as `fx` and `credit`.
+Each entry in `commodities` (an empty list by default) becomes a simulated price path, linked to the other factors
+through the correlation matrix and usable as a portfolio holding.
 
-Why the price is pulled back, when equities and exchange rates are not: every other
-price-level factor in this project is a random walk (equities are a regime-switching
-lognormal, FX a geometric Brownian motion), since there is no economically meaningful
-long-run level for a stock index or a currency over a multi-decade horizon. A
-commodity is different. Storage costs and the convenience yield (the benefit of
-holding the physical good rather than a claim on it, such as keeping a refinery
-running) pull the spot price back toward a level set by the economics of extraction,
-production and storage. That is the founding result of
-[Schwartz (1997)](https://doi.org/10.1111/j.1540-6261.1997.tb02721.x) and the standard
-justification for mean reversion in commodity price models specifically.
-
-The default model (`method="single_factor"`) is Schwartz's single-factor process: the
-*logarithm* of the spot price follows an Ornstein-Uhlenbeck (mean-reverting) process,
+Unlike a stock index, a commodity has a natural price level: storage costs and the convenience yield (the benefit of
+holding the physical good, such as keeping a refinery running) pull the spot price back toward what it costs to
+produce and store, as [Schwartz (1997)](https://doi.org/10.1111/j.1540-6261.1997.tb02721.x) showed. The default model
+(`method="single_factor"`) lets the log price revert to a long-run level:
 
 ```text
 d(log S) = kappa * (mu - log S) dt + sigma * dW
 ```
 
-where `kappa` is the speed of mean reversion, `mu` the long-run log-price level and
-`sigma` the log-price volatility. Working in logs keeps the simulated price strictly
-positive, the same reason FX exponentiates a log-return. `exp(mu)` is the stationary
-*median* price the calibration window implies, not the mean (see `calibrate`).
+where `kappa` is the speed of the pull, `mu` the long-run log price and `sigma` the volatility. Working in logs keeps
+the price positive.
 
-Schwartz (1997) is a family of three models, genuinely distinct from each other. Model
-1 is the single-factor process above. Model 2, equivalent to
-[Gibson and Schwartz (1990)](https://doi.org/10.1111/j.1540-6261.1990.tb05114.x), adds
-a second, mean-reverting convenience-yield factor correlated with the spot price, and
-Model 3 adds a stochastic (Vasicek) interest rate as a third factor. Models 2 and 3 are
-not implemented. [Schwartz and Smith (2000)](https://doi.org/10.1287/mnsc.46.7.893.12034)
-is a separate, later re-parameterization of the same two-factor economics (not a
-further extension of Models 2 and 3): a mean-reverting short-term deviation plus a
-random-walk long-run equilibrium price, in place of spot price plus convenience yield.
-`method="schwartz_smith"` implements that one directly, under both measures.
+The two-factor model of [Schwartz and Smith (2000)](https://doi.org/10.1287/mnsc.46.7.893.12034)
+(`method="schwartz_smith"`) writes the log price as `chi + xi`: a short-term deviation that fades back to zero plus a
+long-term level that drifts as a random walk, the convenience-yield economics of
+[Gibson and Schwartz (1990)](https://doi.org/10.1111/j.1540-6261.1990.tb05114.x) in another form. It separates a
+temporary shock, such as a supply outage, from a lasting change in costs. The parts are simulated as `{name}_chi` and
+`{name}_xi`, the price itself under `name`. With `measure="risk_neutral"` the drifts match today's futures prices
+instead.
 
-Options that change the model:
-
-- `method="schwartz_smith"`: the two-factor model, `ln(S_t) = chi_t + xi_t`, where
-  `chi` is a short-term deviation that mean-reverts to exactly 0 and `xi` a long-term
-  equilibrium log-price that follows a random walk with drift. It separates a
-  *transient* shock (a supply disruption, a demand spike) from a *permanent* shift in
-  the commodity's own long-run economics. `chi` and `xi` are simulated as two named,
-  correlation-linked factors, `f"{name}_chi"` and `f"{name}_xi"` (e.g. `oil_chi` and
-  `oil_xi`); `Scenarios.simulate()` then attaches the reconstructed price
-  (`exp(chi + xi)`, `commodities_model.reconstruct_schwartz_smith_price`) under the
-  entry's own name, so `paths["oil"]` exists too and works as a portfolio sleeve or a
-  reporting-currency conversion. The two components keep category
-  `commodities_state` (not `commodities`) in `ScenarioSet.factor_categories`: they are
-  log-space state variables, not a priced series, so a portfolio sleeve cannot name
-  them. See `calibrate_schwartz_smith`.
-- `measure="risk_neutral"` (risk-neutral, or Q, measure: the drift that prices today's
-  futures without arbitrage, rather than the drift history shows): requires
-  `method="schwartz_smith"` and calibrates the drift terms against today's forward
-  curve; see `calibrate_schwartz_smith_risk_neutral`. Single-factor Schwartz (1997)
-  has no defined risk-neutral leg in this project.
-- `volatility_model="garch"` (`method="single_factor"` only): replaces the fixed
-  volatility with a GARCH(1,1) process, so calm and turbulent periods each persist
-  ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)).
-- `condition_on_business_cycle` (`method="single_factor"` only): adds a pull from the
-  leading indicator's step-to-step change, so prices tend to move with the economy.
-
-Data: the spot price is any commodity or futures ticker the shared `Toolkit` holds,
-read from the "Adj Close" column of `Toolkit.get_historical_data()` (the same call
-equities use, Yahoo Finance by default, no key needed). Common examples are `CL=F`
-(WTI crude oil, the default), `GC=F` (gold), `NG=F` (natural gas) and `HG=F` (copper).
-The Schwartz-Smith method additionally reads today's listed futures through
-`Toolkit.economics.get_commodity_forward_curve`, which only exists for the tickers in
-`_COMMODITY_NAMES`: Crude Oil, Natural Gas, Gold, Silver, Copper, Corn, Wheat and
-Soybeans. Commodity futures are quoted in US dollars worldwide, so `currency` is
-descriptive metadata for reporting only.
-
-What it does not do: no Kalman-filter estimation of Schwartz-Smith (there is no
-historical futures panel to filter against, only today's curve; see
-`calibrate_schwartz_smith`), no convenience-yield or stochastic-rate models (Schwartz
-Models 2 and 3), and no risk-neutral single-factor model.
+Data: the "Adj Close" of any commodity or futures ticker in the `Toolkit` (Yahoo Finance, no API key needed), such as
+`CL=F` (WTI crude oil) or `GC=F` (gold). The two-factor model also reads today's futures curve, available for crude
+oil, natural gas, gold, silver, copper, corn, wheat and soybeans.
 
 Configuration (`commodities[i]` in a factor set):
 
 | Key | Default | Meaning |
 |:----|:--------|:--------|
-| `name` | `commodity` | The factor's name in the output; unique across every multi-instance list. |
-| `ticker` | `CL=F` | Any commodity or futures ticker the `Toolkit` holds. |
-| `currency` | `USD` | Descriptive metadata only, consumed by `financescenarios.reporting`. |
-| `period` | `daily` | `daily`, `weekly`, `monthly`, `quarterly` or `yearly`: the fit's time step. |
-| `method` | `single_factor` | `single_factor` (Schwartz 1997) or `schwartz_smith` (Schwartz-Smith 2000). |
-| `measure` | `real_world` | `real_world` or `risk_neutral`; `risk_neutral` requires `schwartz_smith`. |
-| `contracts` | `12` | `schwartz_smith` only: monthly forward contracts to try to fetch. |
-| `long_term_window_years` | `3.0` | `schwartz_smith` only: trailing window (years) that proxies `xi`. |
-| `volatility_model` | `constant` | `single_factor` only: `constant` or `garch`. |
-| `condition_on_business_cycle` | `false` | `single_factor` only; requires `leading_indicator.enabled: true`. |
-| `beliefs.mean_reversion_speed` | `null` | `single_factor` only: override the fitted speed; must be > 0. |
-| `beliefs.long_run_mean` | `null` | `single_factor` only: override the long-run level, in log-price units. |
-| `beliefs.volatility` | `null` | `single_factor` only: override the fitted volatility; must be > 0. |
+| `name` | `commodity` | Name in the output. |
+| `ticker` | `CL=F` | Commodity or futures ticker. |
+| `currency` | `USD` | Reporting label; prices are in US dollars. |
+| `period` | `daily` | `daily`, `weekly`, `monthly`, `quarterly` or `yearly`. |
+| `method` | `single_factor` | Or `schwartz_smith`. |
+| `measure` | `real_world` | Or `risk_neutral` (`schwartz_smith` only). |
+| `contracts` | `12` | `schwartz_smith`: futures contracts to fetch. |
+| `long_term_window_years` | `3.0` | `schwartz_smith`: years of prices averaged into `xi`. |
+| `volatility_model` | `constant` | `single_factor`: or `garch`, volatility that clusters. |
+| `condition_on_business_cycle` | `false` | `single_factor`: follow the leading indicator. |
+| `beliefs.<field>` | `null` | `single_factor`: override a fitted value. |
 
-For `method="schwartz_smith"` the names `f"{name}_chi"` and `f"{name}_xi"` must also be
-free of collisions with every other factor. `contracts` and `long_term_window_years`
-are ignored for `single_factor`; `volatility_model` and `condition_on_business_cycle`
-are rejected together with `schwartz_smith`.
-
-Beliefs: a field left `null` keeps the calibrated value; the substitution happens per
-entry in `config_model.apply_commodity_beliefs`, and only when `volatility_model` is
-`constant` (a GARCH fit has no field to override). In a regime YAML, address one
-entry's beliefs with a dotted `"commodities.<name>"` key. `beliefs.long_run_mean` is
-a *log* price: check the calibrated `long_run_mean`
-(`Scenarios.calibrate(config).calibrated_params`) first, then convert a target price
-with `log(price)`. That sets the stationary *median* price; the mean is
-`exp(long_run_mean + volatility^2 / (4 * mean_reversion_speed))`, strictly higher
-because a lognormal price is skewed to the right, so for a target mean price use
-`log(price) - volatility^2 / (4 * mean_reversion_speed)`. Beliefs are rejected
-entirely for `method="schwartz_smith"` entries: their shape does not fit a two-factor
-chi/xi model.
+A belief's `long_run_mean` is a log price: for 70 USD, set `log(70)`, about 4.25.
 
 **References:**
 
 - Schwartz, E.S. (1997). "The Stochastic Behavior of Commodity Prices: Implications for Valuation and Hedging." Journal of Finance, 52(3), 923-973. <https://doi.org/10.1111/j.1540-6261.1997.tb02721.x>
 - Gibson, R., Schwartz, E.S. (1990). "Stochastic Convenience Yield and the Pricing of Oil Contingent Claims." Journal of Finance, 45(3), 959-976. <https://doi.org/10.1111/j.1540-6261.1990.tb05114.x>
 - Schwartz, E., Smith, J.E. (2000). "Short-Term Variations and Long-Term Dynamics in Commodity Prices." Management Science, 46(7), 893-911. <https://doi.org/10.1287/mnsc.46.7.893.12034>
-- Bollerslev, T. (1986). "Generalized Autoregressive Conditional Heteroskedasticity." Journal of Econometrics, 31(3), 307-327. <https://doi.org/10.1016/0304-4076(86>)90063-1
 
 ## calibrate
 
@@ -166,73 +91,33 @@ calibrate(
 ) -> CommodityParams | GARCHParams | OUCovariateParams
 ```
 
-Calibrate one commodity's single-factor Schwartz (1997) process from its price
-history: fetch the ticker's spot price and fit how fast the log price returns to
-its normal level (`mean_reversion_speed`), what that level is (`long_run_mean`) and
-how much it swings (`volatility`).
+Calibrate one commodity's single-factor model from its price history.
 
-In plain terms: this learns from the past how a commodity price behaves, so the
-simulated futures spike and slump the way the real price has and then settle back.
-The half-life of a shock is ln 2 / `mean_reversion_speed` years: a speed of 1.37 a
-year means half of a price spike has faded after about six months.
+It fits how fast the log price returns to its normal level (`mean_reversion_speed`), what that level is
+(`long_run_mean`) and how much it swings (`volatility`). A speed of 1.37 a year means half of a price spike fades
+in about six months (ln 2 / 1.37). `long_run_mean` is a log price, so `exp(long_run_mean)` is the price the
+process is pulled toward, while `initial_value` is today's actual price.
 
-The fit is on the logarithm of the price, so `long_run_mean` is a log price:
-`exp(long_run_mean)` is the price the process is pulled toward (its stationary
-median), and `initial_value` is today's actual price, not its log, matching every
-other price-level factor (equities, FX) whose `ScenarioSet.paths` hold real levels.
-The stationary mean price is `exp(mu + sigma^2 / (4 * kappa))`, a little above the
-median because a lognormal price is skewed to the right.
-
-How the fit works: the exact discrete-time version of the process is a linear
-regression of each period's change in log price on the previous log price, solved by
-ordinary least squares (`commodities_model.fit_commodity_process`, the same exact
-transition `calibration_model.fit_ou_process` uses on a level, with slope
-`e^(-kappa * dt) - 1` rather than Euler's first-order `-kappa * dt`). The slope and
-intercept convert back into the speed and the long-run level, and the residual
-standard deviation gives the volatility. Simulation then uses the same exact
-transition (`commodities_model.step_commodity_process`),
-
-```text
-next = exp(mu + (log(current) - mu) * e^(-kappa*dt)
-           + sigma * sqrt((1 - e^(-2*kappa*dt)) / (2*kappa)) * shock)
-```
-
-which has zero discretization error and is stable for any `kappa * dt`.
-
-Also known as: Schwartz one-factor model, mean-reverting log-price (exponential
-Ornstein-Uhlenbeck) commodity model.
+The fit regresses each period's change in log price on the previous log price by ordinary least squares, the exact
+discrete form of the [Schwartz (1997)](https://doi.org/10.1111/j.1540-6261.1997.tb02721.x) model. A price that
+trends rather than settles back, such as gold monthly since 2016, raises an error.
 
 **Args:**
 
-- <u>name (str):</u> this commodity's name, used to key params()/changes() and as the factor name in the simulation (e.g. "crude_oil", "gold").
-- <u>ticker (str):</u> the ticker to calibrate against, any ticker the shared Toolkit instance includes, e.g. "CL=F" (WTI crude), "GC=F" (gold), "NG=F" (natural gas), "HG=F" (copper).
-- <u>period (str):</u> sampling frequency of the underlying data ("daily", "weekly", "monthly", "quarterly", "yearly"), determines the time step used to fit.
-- <u>volatility_model (str):</u> "constant" (the default, Schwartz's own log-price OU fit via fit_commodity_process) or "garch" (GARCH(1,1) time-varying volatility, Bollerslev 1986). The GARCH path fits the raw (not log) price level via the generic fit_garch_process, the same "constant-vol path is log-space, GARCH/ covariate paths are raw-level" limitation the credit module has (fit_garch_process has no log-space variant yet).
-- <u>business_cycle_covariate (pl.Series &#124; None):</u> a business-cycle indicator's raw historical level series (e.g. LeadingIndicator.series). When supplied, adds an additive drift term on the covariate's step-to-step change (business-cycle conditioning); incompatible with volatility_model="garch". Also fits the raw price level (fit_ou_process_with_covariate), not the log price.
-- <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> the dates paired with `business_cycle_covariate` (e.g. LeadingIndicator.dates), same length and order. Required whenever `business_cycle_covariate` is supplied: the price series and the leading indicator are fetched independently and forced onto the same *period* but not guaranteed the same *start date*, so this commodity's own dates and the covariate's are inner-joined on date before fitting.
+- <u>name (str):</u> the commodity's name in the output.
+- <u>ticker (str):</u> any commodity or futures ticker in the Toolkit. Defaults to "CL=F" (WTI crude).
+- <u>period (str):</u> the fit's time step: "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>volatility_model (str):</u> "constant", or "garch" for volatility that clusters ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)). Defaults to "constant".
+- <u>business_cycle_covariate (pl.Series &#124; None):</u> a leading indicator's history, such as `LeadingIndicator.series`; when given, the price also moves with its change. Defaults to None.
+- <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> the dates of `business_cycle_covariate`, required with it. Defaults to None.
 
 **Returns:**
 
-<u>CommodityParams &#124; GARCHParams &#124; OUCovariateParams:</u> the calibrated process parameters: GARCHParams when volatility_model="garch", OUCovariateParams when business_cycle_covariate is supplied.
+<u>CommodityParams &#124; GARCHParams &#124; OUCovariateParams:</u> `mean_reversion_speed`, `long_run_mean`, `volatility` and `initial_value`, or their GARCH or business-cycle form.
 
 **Raises:**
 
-- <u>ValueError:</u> if period or volatility_model is not recognized, business_cycle_covariate is combined with volatility_model="garch", business_cycle_covariate is supplied without business_cycle_covariate_dates (or vice versa), or the underlying price series fails its fitter's own validation (fewer than 4 observations, a price that is not strictly positive, or a fitted mean-reversion speed that is not positive, meaning the series is trending or explosive at this frequency rather than mean-reverting).
-
-**Notes:**
-
-- A trending price fails the fit rather than returning a meaningless speed: gold
-  (`GC=F`) sampled monthly from 2016 raised the "no mean reversion" error when the
-  example below was run, while crude oil and natural gas calibrated fine.
-- WTI crude settled at -37.63 USD on 2020-04-20, so a *daily* `CL=F` history that
-  includes that day fails the "strictly positive" check; a monthly average or a
-  later start date avoids it.
-- The GARCH and business-cycle paths fit the raw price level, not the log price, so
-  they lose the positivity guarantee, and belief overrides do not apply to a GARCH
-  fit. With `condition_on_business_cycle`, the calibration runs on
-  `leading_indicator.period`.
-- `changes(name)` holds the dated log-price changes, reused for the correlation
-  matrix without a second fetch.
+- <u>ValueError:</u> if an option is not recognised or the covariate is combined with "garch", the ticker has no data, a price is not strictly positive (daily WTI crude closed at -37.63 USD on 2020-04-20) or the price shows no mean reversion.
 
 **As an example:**
 
@@ -255,15 +140,7 @@ Which returns (calibrated on 2026-10-04):
 | crude_oil | 1.3659 | 4.2056 | 0.4692 | 91.1100 |
 | natural_gas | 1.6133 | 1.1284 | 0.5993 | 3.0350 |
 
-Crude oil starts at 91.11 USD a barrel and is pulled toward exp(4.2056) = 67.06 USD,
-with a shock halving in about six months (ln 2 / 1.3659 = 0.51 years); natural gas
-starts at 3.04 USD and is pulled toward exp(1.1284) = 3.09 USD, a little faster
-and with larger swings.
-
-**References:**
-
-- Schwartz, E.S. (1997). "The Stochastic Behavior of Commodity Prices: Implications for Valuation and Hedging." Journal of Finance, 52(3), 923-973. <https://doi.org/10.1111/j.1540-6261.1997.tb02721.x>
-- Bollerslev, T. (1986). "Generalized Autoregressive Conditional Heteroskedasticity." Journal of Econometrics, 31(3), 307-327. <https://doi.org/10.1016/0304-4076(86>)90063-1
+Crude oil starts at 91.11 USD and is pulled toward exp(4.2056) = 67.06 USD.
 
 ## calibrate_schwartz_smith
 
@@ -277,79 +154,34 @@ calibrate_schwartz_smith(
 ) -> SchwartzSmithParams
 ```
 
-Calibrate one commodity's real-world Schwartz & Smith (2000) two-factor process:
-split the log price into a short-term deviation `chi` that fades back to zero and a
-long-term equilibrium log price `xi` that wanders as a random walk with drift, and
-fit both.
+Calibrate one commodity's two-factor Schwartz and Smith model from its price history and today's futures curve.
 
-In plain terms: this separates the part of today's price that is a temporary
-dislocation (a refinery outage, a cold snap) from the part that reflects a lasting
-change in what the commodity costs to produce. The temporary part halves in
-ln 2 / `chi.mean_reversion_speed` years; the long-term part never reverts, it only
-drifts at `xi.drift` a year. Today's price is `exp(chi.initial_value +
-xi.initial_value)`.
+The log price is split into a short-term deviation `chi` that fades back to zero and a long-term level `xi` that
+drifts as a random walk. It separates a temporary dislocation (a refinery outage) from a lasting change in
+production costs. The temporary part halves in ln 2 / `chi.mean_reversion_speed` years and today's price is
+`exp(chi.initial_value + xi.initial_value)`.
 
-The two parts are stored as two derived factors, `f"{name}_chi"` and
-`f"{name}_xi"`, so the existing `names`/`params`/`changes` accessors keep working
-unmodified. `chi` is an `OUParams` with `long_run_mean` fixed at exactly 0 (it is a
-deviation *from* `xi`, so it has no level of its own) and `xi` a `RandomWalkParams`;
-both reuse the engine's existing step functions.
-
-How the fit is assembled, from two independent sources:
-
-- `kappa` (chi's mean-reversion speed) and today's chi/xi split come from
-  `commodities_model.fit_schwartz_smith_process`, a documented simplification of
-  the paper's Kalman-filter maximum-likelihood estimate. The paper filters a
-  historical *panel* of futures prices across maturities; Finance Toolkit offers
-  only today's forward curve, so here `xi` is proxied as a
-  `long_term_window_years` trailing moving average of the log price and `chi` is
-  the residual. Only `kappa` and the split are reliable from this: a rolling mean
-  understates `xi`'s true volatility by roughly an order of magnitude (verified on
-  synthetic data), so its own volatility and correlation are a last resort.
-- `sigma_chi`, `sigma_xi` and their correlation `rho` instead come from
-  `commodities_model.fit_schwartz_smith_diffusion_from_forward_curve`, fitted to the
-  ticker's real listed forward curve (`Economics.get_commodity_forward_curve`):
-  each listed contract's recent realized volatility is regressed on the model's
-  closed-form futures-volatility formula, with `kappa` held at the spot fit. That
-  is a better-identified source than the spot series.
-
-The forward-curve fit is skipped, with a logged warning, in favor of the spot-only
-estimate when the ticker has no forward-curve mapping (`_COMMODITY_NAMES`), fewer
-than 3 contracts have enough trading history (20 closes in their last 120), or the
-fit comes back degenerate (`rho` pinned at its +-1 clipping boundary, or `sigma_xi`
-under 5% of `sigma_chi`; `commodities_model.is_degenerate_diffusion_fit`).
-
-Also known as: short-term/long-term two-factor commodity model, Schwartz-Smith
-model.
+[Schwartz and Smith (2000)](https://doi.org/10.1287/mnsc.46.7.893.12034) estimate the model from years of futures
+prices. Only today's curve is available here, so `xi` is a trailing average of the log price and `chi` the rest,
+which sets the speed and today's split. The volatilities and their correlation are fitted to the recent swings of
+each listed futures contract; failing that, with a warning, the price history alone sets them, which understates
+`xi`'s volatility.
 
 **Args:**
 
-- <u>name (str):</u> this commodity's name; `f"{name}_chi"`/`f"{name}_xi"` key `params()`/`changes()` and become the two simulated factor names (see `scenarios_controller.py`'s Schwartz-Smith wiring).
-- <u>ticker (str):</u> the spot ticker to calibrate against, e.g. "CL=F" (WTI crude), "GC=F" (gold). Must be a key of `_COMMODITY_NAMES` for the forward-curve diffusion fit to run at all; otherwise this falls back to the spot-only diffusion estimate.
-- <u>period (str):</u> sampling frequency of the underlying spot data.
-- <u>contracts (int):</u> number of sequential monthly forward contracts to attempt to fetch for the diffusion fit (forwarded to `get_commodity_forward_curve`). Not every calendar month has a listed contract, so fewer maturities than this may end up used.
-- <u>long_term_window_years (float):</u> the trailing window, in years, whose moving average of the log price proxies `xi`; forwarded to `fit_schwartz_smith_process`.
+- <u>name (str):</u> the commodity's name; its parts are stored as `{name}_chi` and `{name}_xi`.
+- <u>ticker (str):</u> the spot ticker. A futures curve exists for "CL=F", "NG=F", "GC=F", "SI=F", "HG=F", "ZC=F", "ZW=F" and "ZS=F". Defaults to "CL=F".
+- <u>period (str):</u> time step of the price history, "daily" to "yearly". Defaults to "daily".
+- <u>contracts (int):</u> monthly futures contracts to try to fetch, at least 2. Defaults to 12.
+- <u>long_term_window_years (float):</u> years of prices averaged into `xi`. Defaults to 3.0.
 
 **Returns:**
 
-<u>SchwartzSmithParams:</u> the calibrated real-world chi/xi processes.
+<u>SchwartzSmithParams:</u> `chi` (speed, a long-run mean of 0, volatility, today's value) and `xi` (drift, volatility, today's value).
 
 **Raises:**
 
-- <u>ValueError:</u> if period is not recognized, or the underlying price series fails `fit_schwartz_smith_process`'s own validation (too short for the long-term window, a price that is not strictly positive, or no short-term mean reversion in chi).
-
-**Notes:**
-
-- At simulation time, the correlation between `chi` and `xi` comes from the
-  correlation matrix estimated over `changes(f"{name}_chi")` and
-  `changes(f"{name}_xi")`, not from the forward-curve `rho`, so the simulated
-  futures-volatility term structure need not match the forward-curve fit exactly.
-- `xi.drift` always comes from the spot decomposition: under the real-world measure
-  the forward curve offers no substitute for it.
-- The forward-curve fetch can include an expired front-month contract that Yahoo
-  no longer quotes (the run below logged a 404 for `CLV26.NYM`); it is skipped.
-- Not combinable with `volatility_model="garch"`, `condition_on_business_cycle` or
-  belief overrides.
+- <u>ValueError:</u> if an input is invalid, the price history is too short or not strictly positive, `chi` does not mean-revert, or the futures curve comes back empty.
 
 **As an example:**
 
@@ -371,15 +203,7 @@ Which returns (calibrated on 2026-10-04):
 | oil_chi | 2.7274 | 0.0000 | | 0.4177 | 0.2145 |
 | oil_xi | | | -0.0251 | 0.0058 | 4.2975 |
 
-Today's 91.11 USD crude price splits into a long-term level of exp(4.2975) = 73.5
-USD and a short-term premium of exp(0.2145) = 1.24 (24% above it), which halves in
-about three months (ln 2 / 2.7274 = 0.25 years). On this run the forward-curve fit
-came back degenerate (`rho` = 1), so the logged fallback applied and the very small
-`xi` volatility is the spot-only estimate this method warns understates it.
-
-**References:**
-
-- Schwartz, E., Smith, J.E. (2000). "Short-Term Variations and Long-Term Dynamics in Commodity Prices." Management Science, 46(7), 893-911. <https://doi.org/10.1287/mnsc.46.7.893.12034>
+Today's 91.11 USD price splits into a long-term level of exp(4.2975) = 73.5 USD and a 24% short-term premium.
 
 ## calibrate_schwartz_smith_risk_neutral
 
@@ -393,57 +217,32 @@ calibrate_schwartz_smith_risk_neutral(
 ) -> SchwartzSmithParams
 ```
 
-Calibrate one commodity's risk-neutral (Q-measure) Schwartz & Smith (2000)
-two-factor process against today's observed forward curve
-(`Economics.get_commodity_forward_curve`): the drift terms are chosen so that the
-model reproduces the futures prices the market quotes today.
+Calibrate one commodity's two-factor Schwartz and Smith model so that it reproduces today's futures prices.
 
-In plain terms: instead of asking how the price has behaved, this asks what path
-the futures market is pricing in. If the curve slopes down (backwardation, futures
-below spot), the risk-neutral drift of `xi` comes out negative; if it slopes up
-(contango), positive. Use it for pricing and hedging, where the simulated
-prices must agree with tradeable futures, not for a forecast.
+Instead of asking how the price has behaved, this asks what path the futures market prices in (the risk-neutral
+view). A curve that slopes down (backwardation) gives the long-term level `xi` a negative drift; one that slopes
+up (contango), a positive one. Use it for pricing and hedging, not as a forecast.
 
-The diffusion parameters (`kappa`, `sigma_chi`, `sigma_xi`, `rho`) do not change
-under a change of measure, so they are estimated exactly as in
-`calibrate_schwartz_smith`. Only the two drift terms are fitted here, against the
-paper's futures-pricing formula (eq. 9, see
-`commodities_model.fit_schwartz_smith_risk_neutral`), which is linear in them: the
-short-term risk premium `lambda_chi`, which moves `chi`'s long-run level under Q to
-`-lambda_chi / kappa`, and `xi`'s risk-adjusted growth rate `mu*_xi`. With about
-12 listed contracts for 2 unknowns, ordinary least squares is comfortably
-over-identified.
-
-Unlike `calibrate_schwartz_smith`, a forward curve is not optional here: there is no
-market-implied drift to calibrate without one, so this raises rather than falling
-back to a spot-only estimate.
-
-Also known as: Schwartz-Smith Q-measure calibration, futures-curve calibration.
+The speed and volatilities are fitted as in `calibrate_schwartz_smith`, since they are the same under both views.
+Only the two drifts are fitted here, by ordinary least squares on the futures pricing formula of
+[Schwartz and Smith (2000)](https://doi.org/10.1287/mnsc.46.7.893.12034) (eq. 9). This needs a futures curve and
+raises without one.
 
 **Args:**
 
-- <u>name (str):</u> this commodity's name; see `calibrate_schwartz_smith`.
-- <u>ticker (str):</u> the spot ticker to calibrate against. Must be a key of `_COMMODITY_NAMES`; required, no fallback (see above).
-- <u>period (str):</u> sampling frequency of the underlying spot data, used for the real-world diffusion fit's spot leg.
-- <u>contracts (int):</u> forwarded to `get_commodity_forward_curve`.
-- <u>long_term_window_years (float):</u> forwarded to `fit_schwartz_smith_process`.
+- <u>name (str):</u> the commodity's name; its parts are stored as `{name}_chi` and `{name}_xi`.
+- <u>ticker (str):</u> a spot ticker with a futures curve: "CL=F", "NG=F", "GC=F", "SI=F", "HG=F", "ZC=F", "ZW=F" or "ZS=F". Defaults to "CL=F".
+- <u>period (str):</u> time step of the price history, "daily" to "yearly". Defaults to "daily".
+- <u>contracts (int):</u> monthly futures contracts to try to fetch, at least 2. Defaults to 12.
+- <u>long_term_window_years (float):</u> years of prices averaged into `xi`. Defaults to 3.0.
 
 **Returns:**
 
-<u>SchwartzSmithParams:</u> the calibrated risk-neutral chi/xi processes: `chi` with `long_run_mean = -lambda_chi / kappa`, `xi` with `drift = mu*_xi`, the same speed and volatilities as the real-world fit.
+<u>SchwartzSmithParams:</u> the real-world fit, with `chi`'s `long_run_mean` and `xi`'s `drift` set by today's futures prices.
 
 **Raises:**
 
-- <u>ValueError:</u> if period is not recognized, `ticker` has no known commodity mapping, the spot price series fails `fit_schwartz_smith_process`'s own validation, or the forward curve doesn't have at least 2 usable maturities (with today's price) to fit the risk-neutral drift terms.
-
-**Notes:**
-
-- The diffusion estimate goes through the same forward-curve fit and fallback as
-  `calibrate_schwartz_smith`, so a degenerate forward-curve volatility fit still
-  falls back (with a warning) to the spot-only volatilities; only the drift fit
-  strictly needs the curve.
-- Configured through `commodities[i].measure: risk_neutral` with
-  `method: schwartz_smith`; belief overrides are rejected for it.
+- <u>ValueError:</u> if an input is invalid, the ticker has no futures curve, the price history fails the real-world fit, or fewer than 2 futures contracts have a price today.
 
 **As an example:**
 
@@ -465,15 +264,9 @@ Which returns (calibrated on 2026-10-04):
 | oil_q_chi | 2.7274 | 0.1965 | | 0.4177 | 0.2145 |
 | oil_q_xi | | | -0.1775 | 0.0058 | 4.2975 |
 
-Speed, volatilities and today's state match the real-world fit; only the drifts
-moved. The crude curve that day was steeply backwardated (91.11 USD for November
-2026 down to 77.90 USD for September 2027), so the market prices the long-term
-level falling about 17.7% a year (against 2.5% in the real-world fit), while the
-short-term premium settles at 0.1965 rather than 0 under this measure.
-
-**References:**
-
-- Schwartz, E., Smith, J.E. (2000). "Short-Term Variations and Long-Term Dynamics in Commodity Prices." Management Science, 46(7), 893-911. <https://doi.org/10.1287/mnsc.46.7.893.12034>
+Only the drifts differ from the real-world fit. The crude curve that day fell from 91.11 USD (November 2026) to
+77.90 USD (September 2027), so the market prices the long-term level falling about 17.7% a year, against 2.5% in
+the real-world fit.
 
 ## names
 
@@ -481,7 +274,8 @@ short-term premium settles at 0.1965 rather than 0 under this measure.
 commodities.names  # property -> list[str]
 ```
 
-The names of every commodity calibrated so far, in calibration order.
+The names of every commodity calibrated so far, in calibration order; a two-factor entry is listed as its `_chi`
+and `_xi` parts.
 
 ## params
 
@@ -489,15 +283,15 @@ The names of every commodity calibrated so far, in calibration order.
 params(name: str) -> CommodityParams | OUParams | RandomWalkParams | GARCHParams | OUCovariateParams
 ```
 
-The calibrated process parameters for one commodity.
+The calibrated parameters of one commodity, or of one `_chi` or `_xi` part of a two-factor entry.
 
 **Args:**
 
-- <u>name (str):</u> the commodity's name, as passed to calibrate().
+- <u>name (str):</u> the name as calibrated, e.g. "crude_oil" or "oil_chi".
 
 **Raises:**
 
-- <u>RuntimeError:</u> if calibrate(name, ...) hasn't been called yet.
+- <u>RuntimeError:</u> if `name` has not been calibrated yet.
 
 ## step_function
 
@@ -505,7 +299,8 @@ The calibrated process parameters for one commodity.
 commodities.step_function  # property
 ```
 
-The Schwartz (1997) log-price step function (stateless, shared across every commodity).
+The function that moves a single-factor commodity price one time step forward in the simulation, shared by every
+entry.
 
 ## changes
 
@@ -513,18 +308,275 @@ The Schwartz (1997) log-price step function (stateless, shared across every comm
 changes(name: str) -> pl.DataFrame
 ```
 
-Dated period log-price changes for one commodity, from the same data
-calibrate() already fetched, reused for cross-factor correlation
-estimation (Dependence) instead of triggering a second Finance Toolkit fetch.
+The dated period-to-period changes in one commodity's log price (or `_chi` or `_xi` part), from the data the
+calibration already fetched. The correlation matrix is estimated from these.
 
 **Args:**
 
-- <u>name (str):</u> the commodity's name, as passed to calibrate().
+- <u>name (str):</u> the name as calibrated, e.g. "crude_oil" or "oil_chi".
 
 **Returns:**
 
-<u>pl.DataFrame:</u> two columns, `date` (pl.Date) and `value` (f64); see helpers.dated_changes().
+<u>pl.DataFrame:</u> two columns, `date` and `value`.
 
 **Raises:**
 
-- <u>RuntimeError:</u> if calibrate(name, ...) hasn't been called yet.
+- <u>RuntimeError:</u> if `name` has not been calibrated yet.
+
+## How It Is Calculated
+
+The model functions behind this page, each with the formula it implements.
+
+### fit_commodity_process
+
+```python
+fit_commodity_process(prices: pl.Series, time_step: float) -> CommodityParams
+```
+
+Fit a Schwartz (1997) single-factor commodity model to a historical spot-price series: the exact-transition
+OU regression of `calibration_model.fit_ou_process`, run on the *log* price.
+
+The formula is as follows:
+
+$$
+X_{t+1} - X_{t} = c + b \cdot X_{t} + e_{t},\;\; X_{t} = \ln(S_{t})
+$$
+
+$$
+\kappa = - \ln(1 + b) / \text{dt},\;\; \mu = - c / b
+$$
+
+$$
+\sigma = \operatorname{std}(e_{t}) / \sqrt{(1 - \exp(- 2 \cdot \kappa \cdot \text{dt})) / (2 \cdot \kappa)}
+$$
+
+**Args:**
+
+- <u>prices (pl.Series):</u> historical spot-price observations, evenly spaced in time, all > 0.
+- <u>time_step (float):</u> time increment between observations, in years.
+
+**Returns:**
+
+<u>CommodityParams:</u> the calibrated mean-reversion speed, long-run log-price level, log-price volatility, and the series' last (actual, not log) value as the simulation starting point.
+
+**Raises:**
+
+- <u>ValueError:</u> if fewer than `MINIMUM_OBSERVATIONS_OU` observations are supplied, any observation is not strictly positive, or the fitted mean-reversion speed is non-positive (the series shows no mean reversion at this time step).
+
+**References:**
+
+- Schwartz, E.S. (1997). "The Stochastic Behavior of Commodity Prices: Implications for Valuation and Hedging." Journal of Finance, 52(3), 923-973. <https://doi.org/10.1111/j.1540-6261.1997.tb02721.x>
+
+### step_commodity_process
+
+```python
+step_commodity_process(
+    current_value: np.ndarray | float,
+    shock: np.ndarray | float,
+    time_step: float,
+    params: CommodityParams,
+) -> np.ndarray
+```
+
+Advance the commodity spot price by one time step with the OU process's *exact* transition on the log price,
+matching `fit_commodity_process`. Prices go in and come out; the log transform is internal.
+
+The formula is as follows:
+
+$$
+X_{t+dt} = \mu + (X_{t} - \mu) \cdot \exp(- \kappa \cdot \text{dt}) + \sigma \cdot \sqrt{(1 - \exp(- 2 \cdot \kappa \cdot \text{dt})) / (2 \cdot \kappa)} \cdot z
+$$
+
+$$
+S_{t+dt} = \exp(X_{t+dt})
+$$
+
+**Args:**
+
+- <u>current_value (np.ndarray &#124; float):</u> the spot price at the current time step (> 0).
+- <u>shock (np.ndarray &#124; float):</u> a standard normal draw for this step.
+- <u>time_step (float):</u> the time increment, in years.
+- <u>params (CommodityParams):</u> calibrated mean-reversion speed, long-run log-price level, and log-price volatility.
+
+**Returns:**
+
+<u>np.ndarray:</u> the spot price at the next time step. Always strictly positive.
+
+**References:**
+
+- Schwartz, E.S. (1997). "The Stochastic Behavior of Commodity Prices: Implications for Valuation and Hedging." Journal of Finance, 52(3), 923-973. <https://doi.org/10.1111/j.1540-6261.1997.tb02721.x>
+
+### fit_schwartz_smith_process
+
+```python
+fit_schwartz_smith_process(
+    prices: pl.Series,
+    time_step: float,
+    long_term_window_years: float = 3.0,
+) -> tuple[SchwartzSmithParams, float, np.ndarray, np.ndarray]
+```
+
+Fit Schwartz & Smith's (2000) two-factor model to a historical spot-price series. The paper's Kalman filter
+needs a historical panel of futures prices, which isn't available, so this splits the log price with a proxy:
+xi is a trailing moving average and chi the deviation from it. chi is then fit as an OU process with its
+long-run mean fixed at 0 (a regression through the origin) and xi as a random walk with drift.
+
+The formula is as follows:
+
+$$
+\xi_{t} = \operatorname{mean}(\text{ln}\; \text{S\_t-w} + 1,\; ...,\; \text{ln}\; S_{t}),\;\; w = \text{long\_term\_window\_years} / \text{dt}
+$$
+
+$$
+\chi_{t} = \ln(S_{t}) - \xi_{t}
+$$
+
+$$
+\chi_{t+1} - \chi_{t} = b \cdot \chi_{t} + e_{t},\;\; \kappa = - \ln(1 + b) / \text{dt}
+$$
+
+$$
+\sigma_{\chi} = \operatorname{std}(e_{t}) / \sqrt{(1 - \exp(- 2 \cdot \kappa \cdot \text{dt})) / (2 \cdot \kappa)}
+$$
+
+$$
+\rho = \operatorname{corr}(e_{t},\; \xi_{t+1} - \xi_{t})
+$$
+
+kappa and today's chi/xi split are reliable. sigma_chi, sigma_xi, rho and the xi drift are not: averaging a
+random walk damps its increments, so xi's volatility comes out roughly ten times too small on synthetic data.
+When a forward curve is available, `commodities_controller.Commodities.calibrate_schwartz_smith` replaces the
+volatilities and rho with `fit_schwartz_smith_diffusion_from_forward_curve`'s.
+
+**Args:**
+
+- <u>prices (pl.Series):</u> historical spot-price observations, evenly spaced in time, all > 0.
+- <u>time_step (float):</u> time increment between observations, in years.
+- <u>long_term_window_years (float):</u> the trailing window (in years) of the xi proxy. The 3-year default matches the roughly 3-year half-life of the slow equilibrium factor in Schwartz & Smith's later three-factor note (Table A1, eta = 0.226 per year).
+
+**Returns:**
+
+<u>tuple[SchwartzSmithParams, float, np.ndarray, np.ndarray]:</u> the calibrated chi/xi processes; rho (needed by `fit_schwartz_smith_risk_neutral`, not by the simulation, which takes the chi/xi correlation from `dependence_model`); and chi's and xi's raw period-to-period changes, which the controller stores for the cross-factor correlation estimate.
+
+**Raises:**
+
+- <u>ValueError:</u> if fewer observations are supplied than `long_term_window_years` implies, any observation is not strictly positive, or chi's fitted mean-reversion speed is non-positive (regression slope outside (-1, 0) under the exact transition; see `calibration_model._fit_ou_drift`'s own docstring for why that range, not just "<= 0", is the correct guard).
+
+**References:**
+
+- Schwartz, E., Smith, J.E. (2000). "Short-Term Variations and Long-Term Dynamics in Commodity Prices." Management Science, 46(7), 893-911. <https://doi.org/10.1287/mnsc.46.7.893.12034>
+
+### fit_schwartz_smith_diffusion_from_forward_curve
+
+```python
+fit_schwartz_smith_diffusion_from_forward_curve(
+    maturities: np.ndarray,
+    volatilities: np.ndarray,
+    kappa: float,
+) -> tuple[float, float, float]
+```
+
+Recover Schwartz & Smith's (2000) chi/xi volatilities and their correlation (sigma_chi, sigma_xi, rho) from the
+realized volatility of each listed forward contract, a better-identified source than the spot series (see
+`fit_schwartz_smith_process`). The model's instantaneous futures volatility is linear in three unknowns once
+kappa is fixed, so one least-squares solve fits them.
+
+The formula is as follows:
+
+$$
+\sigma ^{2} (F_{T}) = \exp(- 2 \cdot \kappa \cdot T) \cdot \sigma_{\chi} ^{2} + \sigma_{\xi} ^{2} + 2 \cdot \exp(- \kappa \cdot T) \cdot \rho \cdot \sigma_{\chi} \cdot \sigma_{\xi}
+$$
+
+kappa comes from the spot fit rather than being searched jointly: with the dozen or so maturities a forward
+curve has, a joint four-parameter search recovered a kappa 7x too large on synthetic data, while the linear
+three-parameter solve was unbiased (rho the least precise of the three).
+
+**Args:**
+
+- <u>maturities (np.ndarray):</u> time to expiry (years) for each currently- listed forward contract.
+- <u>volatilities (np.ndarray):</u> each contract's own recent annualized realized volatility (std of daily log returns * sqrt(252) or equivalent), same length/order as `maturities`. At least 3 required to identify 3 unknowns.
+- <u>kappa (float):</u> chi's mean-reversion speed, from `fit_schwartz_smith_process`'s spot-based fit.
+
+**Returns:**
+
+<u>tuple[float, float, float]:</u> (sigma_chi, sigma_xi, rho).
+
+**Raises:**
+
+- <u>ValueError:</u> if fewer than 3 maturities are supplied.
+
+**References:**
+
+- Schwartz, E., Smith, J.E. (2000). "Short-Term Variations and Long-Term Dynamics in Commodity Prices." Management Science, 46(7), 893-911. <https://doi.org/10.1287/mnsc.46.7.893.12034>
+
+### fit_schwartz_smith_risk_neutral
+
+```python
+fit_schwartz_smith_risk_neutral(
+    maturities: np.ndarray,
+    forward_prices: np.ndarray,
+    chi_0: float,
+    xi_0: float,
+    kappa: float,
+    sigma_chi: float,
+    sigma_xi: float,
+    rho: float,
+) -> SchwartzSmithParams
+```
+
+Calibrate the risk-neutral (Q-measure) leg of a Schwartz & Smith (2000) two-factor model against today's
+forward curve. kappa, sigma_chi, sigma_xi and rho do not change with the measure, so they come from the
+real-world fit; only the short-term risk premium lambda_chi and the risk-adjusted drift mu*_xi are fit here.
+The paper's futures price (eq. 9) is linear in those two, so ordinary least squares over the listed
+maturities recovers them.
+
+The formula is as follows:
+
+$$
+d\chi_{t} = (- \kappa \cdot \chi_{t} - \lambda_{\chi}) \cdot \text{dt} + \sigma_{\chi} \cdot \text{dW}_{t} ^{\chi} \cdot
+$$
+
+$$
+d\xi_{t} = \mu \cdot \text{\_xi} \cdot \text{dt} + \sigma_{\xi} \cdot \text{dW}_{t} ^{\xi} \cdot
+$$
+
+$$
+\text{ln}\; F (0,\; T) = \exp(- \kappa \cdot T) \cdot \chi_{0} + \xi_{0} + A(T)
+$$
+
+$$
+A(T) = - (1 - \exp(- \kappa \cdot T)) / \kappa \cdot \lambda_{\chi} + \mu \cdot \text{\_xi} \cdot T + (V_{\chi} + V_{\xi} + 2 \cdot \text{V\_cross}) / 2
+$$
+
+$$
+V_{\chi} = \sigma_{\chi} ^{2} \cdot (1 - \exp(- 2 \cdot \kappa \cdot T)) / (2 \cdot \kappa),\;\; V_{\xi} = \sigma_{\xi} ^{2} \cdot T
+$$
+
+$$
+\text{V\_cross} = \rho \cdot \sigma_{\chi} \cdot \sigma_{\xi} \cdot (1 - \exp(- \kappa \cdot T)) / \kappa
+$$
+
+Where chi under Q is an OU process reverting to -lambda_chi / kappa and * marks risk-neutral quantities.
+
+**Args:**
+
+- <u>maturities (np.ndarray):</u> time to expiry (years) for each traded forward contract, e.g. from `get_commodity_forward_curve`'s column labels.
+- <u>forward_prices (np.ndarray):</u> the matching observed forward price for each maturity, same length/order as `maturities`, all > 0.
+- <u>chi_0 (float):</u> today's short-term deviation, from decomposing today's spot price the same way `fit_schwartz_smith_process` decomposed history (its returned `chi.initial_value`).
+- <u>xi_0 (float):</u> today's long-term equilibrium log-price (`xi.initial_value`).
+- <u>kappa (float):</u> chi's mean-reversion speed, from the real-world fit.
+- <u>sigma_chi (float):</u> chi's volatility, from the real-world fit.
+- <u>sigma_xi (float):</u> xi's volatility, from the real-world fit.
+- <u>rho (float):</u> correlation between chi's and xi's shocks, from the real-world fit (`fit_schwartz_smith_process`'s second return value).
+
+**Returns:**
+
+<u>SchwartzSmithParams:</u> chi (OUParams, long_run_mean=-lambda_chi/kappa) and xi (RandomWalkParams, drift=mu*_xi) under the risk-neutral measure; same mean_reversion_speed/volatility as the real-world fit, only the drift/long-run-mean terms differ.
+
+**Raises:**
+
+- <u>ValueError:</u> if fewer than 2 maturities are supplied (the regression needs at least 2 observations to identify 2 unknowns), or any forward price is not strictly positive.
+
+**References:**
+
+- Schwartz, E., Smith, J.E. (2000). "Short-Term Variations and Long-Term Dynamics in Commodity Prices." Management Science, 46(7), 893-911. <https://doi.org/10.1287/mnsc.46.7.893.12034>

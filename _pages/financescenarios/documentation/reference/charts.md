@@ -33,18 +33,19 @@ plot_factors(
 ) -> 'Figure'
 ```
 
-A small-multiples grid: one fan chart per factor, shared style, each on its
-own y-scale (never a dual axis; a rate and a price level don't share one).
-The default reads every simulated factor in the run.
+Draw a grid with one fan chart per factor, each on its own scale.
+
+The quickest look at a whole run: by default every factor, in the run's own order. A rate and a price never share
+an axis, so each panel scales to its own factor.
 
 **Args:**
 
-- <u>scenario_set (ScenarioSet):</u> the simulation to read.
-- <u>factors (Sequence[str] &#124; None):</u> which factors to draw, defaulting to every factor in the run in its own order.
-- <u>n_columns (int):</u> grid width; rows follow from the factor count.
-- <u>quantile_bands:</u> passed through to each panel's `plot_fan_chart`.
-- <u>levels (bool):</u> draw level factors as price levels instead of annualized returns since start.
-- <u>metric (str &#124; None):</u> the reading, "rate", "level", "change", "yoy", "cumulative" or "annualized" (see `ScenarioSet.metric_paths`); None keeps the factor's default.
+- <u>scenario_set (ScenarioSet):</u> the run to draw from.
+- <u>factors (Sequence[str] &#124; None):</u> the factors to draw. Defaults to None, every factor.
+- <u>n_columns (int):</u> panels per row. Defaults to 3.
+- <u>quantile_bands (Sequence[tuple[float, float]]):</u> the bands each panel shades, as in `plot_fan_chart`. Defaults to ((0.05, 0.95), (0.25, 0.75)).
+- <u>levels (bool):</u> draw prices as levels instead of yearly returns since the start. Defaults to False.
+- <u>metric (str &#124; None):</u> the reading (see `ScenarioSet.metric_paths`). Defaults to None, each factor's default.
 
 **Returns:**
 
@@ -52,7 +53,16 @@ The default reads every simulated factor in the run.
 
 **Raises:**
 
-- <u>KeyError:</u> if a named factor is not a key in `paths`.
+- <u>KeyError:</u> if a named factor is not in the run.
+- <u>ValueError:</u> if `n_columns` is below 1.
+
+**As an example:**
+
+```python
+from financescenarios import plot_factors
+
+plot_factors(result, ["united_states_short_rate", "united_states_inflation", "us_broad"])
+```
 
 ## plot_fan_chart
 
@@ -68,20 +78,21 @@ plot_fan_chart(
 ) -> 'Figure'
 ```
 
-The headline read of one simulated factor: nested cross-simulation quantile
-bands (outermost first) around the median path. Magnitude nested in
-magnitude, so the bands are one blue ramp light-to-dark rather than
-different hues, and the median is a single dark line on top.
+Draw one factor's fan chart: the median path with shaded bands around it.
+
+This is the headline picture of a simulated factor. With the default bands, the darker inner band holds the middle
+half of the scenarios, the lighter outer band nine in ten, and the dark line is the median. Rates and returns are
+drawn as percentages, prices and values in their own units.
 
 **Args:**
 
-- <u>scenario_set (ScenarioSet):</u> the simulation to read.
-- <u>factor (str):</u> the factor name, must be a key in `paths`; a `Portfolio.compute()` result's `"portfolio"` works the same way.
-- <u>quantile_bands (Sequence[tuple[float, float]]):</u> (lower, upper) quantile pairs, outermost first; each is drawn as one filled band.
-- <u>ax:</u> an existing matplotlib Axes to draw into; a new figure otherwise.
-- <u>subtitle (str &#124; None):</u> replaces the default subtitle (qualifier, bands and simulation count); `plot_factors` passes the short qualifier alone.
-- <u>levels (bool):</u> draw a level factor's native price level instead of its annualized return since start (see `ScenarioSet.metric_paths`).
-- <u>metric (str &#124; None):</u> the reading, "rate", "level", "change", "yoy", "cumulative" or "annualized" (see `ScenarioSet.metric_paths`); None keeps the factor's default.
+- <u>scenario_set (ScenarioSet):</u> the run to draw from.
+- <u>factor (str):</u> the factor to draw, including a computed portfolio's "portfolio".
+- <u>quantile_bands (Sequence[tuple[float, float]]):</u> (lower, upper) quantile pairs, outermost first. Defaults to ((0.05, 0.95), (0.25, 0.75)).
+- <u>ax (Axes &#124; None):</u> an existing matplotlib Axes to draw into. Defaults to None, a new figure.
+- <u>subtitle (str &#124; None):</u> replaces the default subtitle (the qualifier, bands and scenario count). Defaults to None.
+- <u>levels (bool):</u> draw a price's level instead of its yearly return since the start. Defaults to False.
+- <u>metric (str &#124; None):</u> the reading (see `ScenarioSet.metric_paths`). Defaults to None, the factor's default.
 
 **Returns:**
 
@@ -89,8 +100,16 @@ different hues, and the median is a single dark line on top.
 
 **Raises:**
 
-- <u>KeyError:</u> if `factor` is not a key in `paths`.
-- <u>ValueError:</u> if a band's lower quantile is not strictly below its upper.
+- <u>KeyError:</u> if the run has no such factor.
+- <u>ValueError:</u> if a band's lower quantile is not below its upper one.
+
+**As an example:**
+
+```python
+from financescenarios import plot_fan_chart
+
+plot_fan_chart(result, "us_broad")
+```
 
 ## plot_paths
 
@@ -106,20 +125,20 @@ plot_paths(
 ) -> 'Figure'
 ```
 
-A spaghetti view of individual simulated paths: the texture the fan chart's
-percentile bands smooth away (a fan says nothing about how jagged any one
-future is). A random sample of `n_paths` paths in a translucent blue, the
-cross-simulation median on top in the same dark line the fan chart uses.
+Draw a factor's individual simulated paths, with the median on top.
+
+A fan chart shows the spread but smooths away how jagged any single future is; this shows the paths themselves.
+Lines grow fainter as more are drawn, so thousands of paths stay readable.
 
 **Args:**
 
-- <u>scenario_set (ScenarioSet):</u> the simulation to read.
-- <u>factor (str):</u> the factor name, must be a key in `paths`.
-- <u>n_paths (int &#124; None):</u> how many individual paths to sample; None (the default) draws every simulated path.
-- <u>seed (int &#124; None):</u> sampling seed, for a reproducible selection.
-- <u>ax:</u> an existing matplotlib Axes to draw into; a new figure otherwise.
-- <u>levels (bool):</u> draw a level factor's native price level instead of its annualized return since start.
-- <u>metric (str &#124; None):</u> the reading, "rate", "level", "change", "yoy", "cumulative" or "annualized" (see `ScenarioSet.metric_paths`); None keeps the factor's default.
+- <u>scenario_set (ScenarioSet):</u> the run to draw from.
+- <u>factor (str):</u> the factor to draw.
+- <u>n_paths (int &#124; None):</u> how many paths to draw, picked at random. Defaults to None, every path.
+- <u>seed (int &#124; None):</u> the random seed for that pick, for a repeatable chart. Defaults to None.
+- <u>ax (Axes &#124; None):</u> an existing matplotlib Axes to draw into. Defaults to None, a new figure.
+- <u>levels (bool):</u> draw a price's level instead of its yearly return since the start. Defaults to False.
+- <u>metric (str &#124; None):</u> the reading (see `ScenarioSet.metric_paths`). Defaults to None, the factor's default.
 
 **Returns:**
 
@@ -127,7 +146,16 @@ cross-simulation median on top in the same dark line the fan chart uses.
 
 **Raises:**
 
-- <u>KeyError:</u> if `factor` is not a key in `paths`.
+- <u>KeyError:</u> if the run has no such factor.
+- <u>ValueError:</u> if `n_paths` is below 1.
+
+**As an example:**
+
+```python
+from financescenarios import plot_paths
+
+plot_paths(result, "us_broad", n_paths=200, seed=1)
+```
 
 ## plot_terminal_distribution
 
@@ -143,19 +171,20 @@ plot_terminal_distribution(
 ) -> 'Figure'
 ```
 
-The cross-simulation distribution of one factor's final-step value: the
-"where does this land" histogram every tail-risk question starts from, with
-the requested quantiles marked as labeled vertical lines.
+Draw a histogram of where one factor ends up at the horizon, with chosen percentiles marked.
+
+This is the "where does it land" chart every tail-risk question starts from. A price is shown as its yearly return
+over the whole horizon, and each marked percentile carries its value as a label.
 
 **Args:**
 
-- <u>scenario_set (ScenarioSet):</u> the simulation to read.
-- <u>factor (str):</u> the factor name, must be a key in `paths`.
-- <u>bins (int &#124; None):</u> histogram bin count; None scales it to the run (about 2 * sqrt(n_simulations), between 10 and 40), so 100 simulations don't scatter across mostly empty bins.
-- <u>quantiles (Sequence[float]):</u> quantiles to mark with vertical lines.
-- <u>ax:</u> an existing matplotlib Axes to draw into; a new figure otherwise.
-- <u>levels (bool):</u> a level factor's final price level instead of its annualized return over the whole horizon.
-- <u>metric (str &#124; None):</u> the reading, "rate", "level", "change", "yoy", "cumulative" or "annualized" (see `ScenarioSet.metric_paths`); None keeps the factor's default.
+- <u>scenario_set (ScenarioSet):</u> the run to draw from.
+- <u>factor (str):</u> the factor to draw.
+- <u>bins (int &#124; None):</u> the number of bars. Defaults to None, about 2 x the square root of the number of scenarios, between 10 and 40.
+- <u>quantiles (Sequence[float]):</u> the quantiles to mark with a line. Defaults to (0.05, 0.5, 0.95).
+- <u>ax (Axes &#124; None):</u> an existing matplotlib Axes to draw into. Defaults to None, a new figure.
+- <u>levels (bool):</u> show a price's final level instead of its yearly return. Defaults to False.
+- <u>metric (str &#124; None):</u> the reading (see `ScenarioSet.metric_paths`). Defaults to None, the factor's default.
 
 **Returns:**
 
@@ -163,7 +192,15 @@ the requested quantiles marked as labeled vertical lines.
 
 **Raises:**
 
-- <u>KeyError:</u> if `factor` is not a key in `paths`.
+- <u>KeyError:</u> if the run has no such factor.
+
+**As an example:**
+
+```python
+from financescenarios import plot_terminal_distribution
+
+plot_terminal_distribution(result, "us_broad")
+```
 
 ## plot_runs
 
@@ -178,17 +215,18 @@ plot_runs(
 ) -> 'Figure'
 ```
 
-The same factor across several runs, one fan chart per run on a shared scale, so a baseline and its stress
-regimes read side by side: the chart companion to `compare_runs`.
+Draw the same factor across several runs, one fan chart per run on a shared scale.
+
+This puts a baseline and its stress regimes side by side, the chart that goes with `compare_runs`.
 
 **Args:**
 
 - <u>runs (Mapping[str, ScenarioSet]):</u> run name -> run, drawn in that order, e.g. {"baseline": result, ...}.
 - <u>factor (str):</u> the factor to compare; every run must simulate it.
-- <u>n_columns (int):</u> grid width; rows follow from the number of runs.
-- <u>quantile_bands:</u> passed through to each panel's `plot_fan_chart`.
-- <u>levels (bool):</u> draw a level factor's native price level instead of its annualized return since start.
-- <u>metric (str &#124; None):</u> the reading (see `ScenarioSet.metric_paths`); None keeps the factor's default.
+- <u>n_columns (int):</u> panels per row. Defaults to 2.
+- <u>quantile_bands (Sequence[tuple[float, float]]):</u> the bands each panel shades, as in `plot_fan_chart`. Defaults to ((0.05, 0.95), (0.25, 0.75)).
+- <u>levels (bool):</u> draw a price's level instead of its yearly return since the start. Defaults to False.
+- <u>metric (str &#124; None):</u> the reading (see `ScenarioSet.metric_paths`). Defaults to None, the factor's default.
 
 **Returns:**
 
@@ -219,24 +257,18 @@ plot_correlation_matrix(
 ) -> 'Figure'
 ```
 
-The calibrated cross-factor correlation matrix as a diverging heatmap:
-blue for negative, neutral gray at zero, red for positive, fixed to the
-[-1, 1] domain so two runs' matrices are directly comparable. Cells are
-annotated with their values up to a readability cap (colors alone can't
-carry a two-decimal read).
+Draw a correlation matrix as a heatmap: blue for negative, gray at zero, red for positive.
 
-```python
-calibration = scenarios.calibrate(config)
-plot_correlation_matrix(calibration.correlation_matrix, calibration.factor_names)
-```
+The colors always span -1 to 1, so the matrices of two runs can be compared directly. Each cell shows its value
+while the grid stays readable, up to 14 factors by default.
 
 **Args:**
 
-- <u>correlation_matrix (np.ndarray):</u> shape (n_factors, n_factors), e.g. `CalibrationResult.correlation_matrix`.
-- <u>factor_names (list[str]):</u> axis labels, same order as the matrix rows, e.g. `CalibrationResult.factor_names`.
-- <u>annotate (bool &#124; None):</u> write each cell's value into it. Defaults to True up to 14 factors, False beyond.
-- <u>labels (list[str] &#124; None):</u> display names for the axes, same order as `factor_names`; defaults to each name humanized ("us_broad" -> "US Broad").
-- <u>ax:</u> an existing matplotlib Axes to draw into; a new figure otherwise.
+- <u>correlation_matrix (np.ndarray):</u> a square matrix, e.g. `CalibrationResult.correlation_matrix`.
+- <u>factor_names (list[str]):</u> the factor of each row, in order, e.g. `CalibrationResult.factor_names`.
+- <u>annotate (bool &#124; None):</u> write each cell's value into it. Defaults to None, which does so up to 14 factors.
+- <u>labels (list[str] &#124; None):</u> display names for the axes, in the same order. Defaults to None, each factor name tidied up ("us_broad" -> "US Broad").
+- <u>ax (Axes &#124; None):</u> an existing matplotlib Axes to draw into. Defaults to None, a new figure.
 
 **Returns:**
 
@@ -244,7 +276,16 @@ plot_correlation_matrix(calibration.correlation_matrix, calibration.factor_names
 
 **Raises:**
 
-- <u>ValueError:</u> if the matrix isn't square or doesn't match `factor_names`.
+- <u>ValueError:</u> if the matrix is not square, or does not match `factor_names` or `labels`.
+
+**As an example:**
+
+```python
+from financescenarios import plot_correlation_matrix
+
+calibration = scenarios.calibrate()
+plot_correlation_matrix(calibration.correlation_matrix, calibration.factor_names)
+```
 
 ## plot_sleeve_values
 
@@ -252,16 +293,16 @@ plot_correlation_matrix(calibration.correlation_matrix, calibration.factor_names
 plot_sleeve_values(portfolio_result: ScenarioSet, ax: 'Axes | None' = None) -> 'Figure'
 ```
 
-The median dollar value of every sleeve over time as a stacked area: how
-the portfolio's composition actually evolves (a drifting buy-and-hold
-equity sleeve visibly outgrows its band; a rebalanced one doesn't).
-Medians are taken per sleeve, so the stack is a typical composition, not
-any single simulation's.
+Plot the median value of every holding over time as a stacked area, showing how the portfolio's make-up changes.
+
+A buy-and-hold equity holding visibly grows its share; a rebalanced one keeps it. The median is taken per holding,
+so the stack shows a typical make-up rather than any single scenario. Past eight holdings, the rest are grouped as
+"Other". `result.plot(kind="sleeves")` draws the same chart.
 
 **Args:**
 
-- <u>portfolio_result (ScenarioSet):</u> a `Portfolio.compute()`/`compute_glidepath()` result; the `"<factor>_value"` sleeve paths are read, `"portfolio"` ignored.
-- <u>ax:</u> an existing matplotlib Axes to draw into; a new figure otherwise.
+- <u>portfolio_result (ScenarioSet):</u> a `Portfolio.compute()` or `compute_glidepath()` result.
+- <u>ax (matplotlib Axes &#124; None):</u> an existing Axes to draw into. Defaults to None, a new figure.
 
 **Returns:**
 
@@ -269,7 +310,16 @@ any single simulation's.
 
 **Raises:**
 
-- <u>ValueError:</u> if the scenario set holds no sleeve paths.
+- <u>ValueError:</u> if the result holds no holdings, such as a plain simulated run.
+
+**As an example:**
+
+```python
+from financescenarios import Portfolio, plot_sleeve_values
+
+values = Portfolio.from_preset(result, preset="balanced_60_40").compute(rebalance_every=12)
+plot_sleeve_values(values)
+```
 
 ## plot_weight_drift
 
@@ -281,22 +331,17 @@ plot_weight_drift(
 ) -> 'Figure'
 ```
 
-Each sleeve's median actual-minus-target weight over time: how far the
-allocation has wandered from its target between rebalances, per sleeve,
-around a zero line. Sleeves keep the same fixed categorical slots
-`plot_sleeve_values` assigns.
+Plot each holding's median weight drift over time: how far the mix has wandered from its target, around a zero
+line.
 
-```python
-portfolio = Portfolio.from_preset(result, preset="balanced_60_40")
-computed = portfolio.compute()
-plot_weight_drift(computed, portfolio.weight_drift(computed))
-```
+Between rebalances the weights wander as one asset outgrows another; this shows by how much, per holding. Each
+holding keeps the same color as in `plot_sleeve_values()`.
 
 **Args:**
 
-- <u>portfolio_result (ScenarioSet):</u> the computed portfolio the drift was measured on (supplies the date axis and sleeve ordering).
-- <u>weight_drift (dict[str, np.ndarray]):</u> factor name -> per-step drift, as `Portfolio.weight_drift()` returns: either shape (n_steps + 1,) or (n_simulations, n_steps + 1), reduced to the median here.
-- <u>ax:</u> an existing matplotlib Axes to draw into; a new figure otherwise.
+- <u>portfolio_result (ScenarioSet):</u> the computed portfolio the drift was measured on, for its dates and holdings.
+- <u>weight_drift (dict[str, np.ndarray]):</u> factor name to drift per step, as `Portfolio.weight_drift()` returns; a drift per scenario is reduced to its median.
+- <u>ax (matplotlib Axes &#124; None):</u> an existing Axes to draw into. Defaults to None, a new figure.
 
 **Returns:**
 
@@ -305,3 +350,13 @@ plot_weight_drift(computed, portfolio.weight_drift(computed))
 **Raises:**
 
 - <u>ValueError:</u> if `weight_drift` is empty.
+
+**As an example:**
+
+```python
+from financescenarios import Portfolio, plot_weight_drift
+
+portfolio = Portfolio.from_preset(result, preset="balanced_60_40")
+computed = portfolio.compute()
+plot_weight_drift(computed, portfolio.weight_drift(computed))
+```

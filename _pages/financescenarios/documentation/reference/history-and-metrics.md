@@ -30,21 +30,32 @@ fetch_historical_data(
 ) -> list[HistoricalSeries]
 ```
 
-Fetch every configured factor's raw historical series, unfitted: the same
-Finance Toolkit (or, for credit_term_structure, BondPanel) call each factor's
-own `calibrate()` makes, without the calibration itself. Pass a `toolkit`
-built via `scenarios_controller.build_toolkit(config)` so this shares (and
-warms) the exact cache a subsequent `Scenarios.simulate(config)` call hits.
+Fetch every configured factor's raw history, without fitting anything: the same data each factor's calibration
+reads.
+
+Use it to look at the data behind a run, or to build a backtest with `build_synthetic_scenario_set()`;
+`Scenarios.history()` does both in one call. Pass a toolkit made with `build_toolkit(config)`, so the downloads are
+cached and a later simulation of the same config reuses them.
 
 **Args:**
 
 - <u>config (ScenariosConfig):</u> the configuration naming every factor to fetch.
-- <u>toolkit (Toolkit):</u> a Finance Toolkit instance covering config's tickers; see `scenarios_controller.build_toolkit()`.
-- <u>bond_panel (BondPanel &#124; None):</u> the credit_term_structure factor's data source, injectable the same way `Scenarios.from_config()`'s own `bond_panel` is (e.g. a fake/pre-cached instance in tests). Built fresh on first use if omitted and `config.credit_term_structure.enabled`.
+- <u>toolkit (Toolkit):</u> a Finance Toolkit covering the config's tickers, from `build_toolkit(config)`.
+- <u>bond_panel (BondPanel &#124; None):</u> the bond data for the credit term structure factor. Defaults to None, built when that factor is enabled.
 
 **Returns:**
 
-<u>list[HistoricalSeries]:</u> one entry per configured factor entry, except yield_curve/credit_term_structure (one per tenor) and mortality (skipped entirely: no Finance Toolkit-backed fetch, caller-supplied data).
+<u>list[HistoricalSeries]:</u> one series per configured factor, with `name`, `category`, `dates` and `values`; the yield curve and credit term structure give one per maturity, and mortality is skipped, since it has no downloadable history.
+
+**As an example:**
+
+```python
+from financescenarios import build_toolkit, fetch_historical_data
+
+# config: a ScenariosConfig, such as the one in build_synthetic_scenario_set()'s example
+history = fetch_historical_data(config, build_toolkit(config))
+[series.name for series in history]
+```
 
 ## build_synthetic_scenario_set
 
@@ -56,24 +67,49 @@ build_synthetic_scenario_set(
 ) -> ScenarioSet
 ```
 
-Build a single-path (n_simulations=1) ScenarioSet from raw historical series, so
-financescenarios.portfolio can run its rebalance/cashflow/fee engine against
-realized history the same way it runs against a simulated run.
+Turn historical series into a one-path `ScenarioSet`, so a portfolio can be backtested with exactly the same calls
+as a simulated run.
+
+Every chosen factor is put on one calendar (`period`), taking the last value in each period, and only the dates
+all factors share are kept: nothing is filled in or invented. A factor published only quarterly therefore limits a
+monthly backtest to one date a quarter, so match `period` to the least frequent factor. With one path, statistics
+across scenarios (percentiles, success rates) collapse to a single number, while returns, volatility and drawdowns
+keep their usual meaning. `Scenarios.history()` does the fetching and this step in one call.
 
 **Args:**
 
-- <u>series (list[HistoricalSeries]):</u> every fetched factor (see historical_data_controller.fetch_historical_data); only the entries named in factor_names are used.
-- <u>factor_names (list[str]):</u> the factors to include (a portfolio's sleeves, plus inflation_factor if used); every name must have a matching entry in series.
-- <u>period (str):</u> the common calendar every factor is resampled onto: "daily", "weekly", "monthly" (default), "quarterly", or "yearly". Each factor is downsampled to this cadence by taking each bucket's last observation; a factor whose own native frequency is coarser than `period` has no value in the buckets between its prints, which drops those buckets out of the final intersection rather than forward-filling a stale value into them.
+- <u>series (list[HistoricalSeries]):</u> the fetched history, from `fetch_historical_data()`.
+- <u>factor_names (list[str]):</u> the factors to include, such as a portfolio's holdings and its inflation factor.
+- <u>period (str):</u> "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "monthly".
 
 **Returns:**
 
-<u>ScenarioSet:</u> paths shaped (1, n_steps + 1), dates the intersection of every requested factor's own resampled observations. Each date is a bucket-start label (e.g. the 1st of the month at period="monthly"), not the actual date its own last observation came from; see this module's own docstring for why. `factor_categories` is filled in from each series' own category, so `Portfolio` takes the result directly; calibration_metadata empty, seed None.
+<u>ScenarioSet:</u> one path per factor (`n_simulations=1`) on the shared dates, each labelled with the start of its period. It records each factor's category, so `Portfolio` takes it directly.
 
 **Raises:**
 
-- <u>KeyError:</u> if factor_names names a factor missing from series.
-- <u>ValueError:</u> if period isn't recognized, or the requested factors' resampled observations don't overlap enough to build at least two aligned points.
+- <u>KeyError:</u> if a name in `factor_names` was not fetched.
+- <u>ValueError:</u> if `period` is unknown, or the factors share fewer than two dates.
+
+**As an example:**
+
+```python
+from datetime import date
+
+from financescenarios import ScenariosConfig, build_synthetic_scenario_set, build_toolkit, fetch_historical_data
+from financescenarios.config.config_model import EquityConfig, InterestRateConfig, ToolkitConfig
+
+config = ScenariosConfig(
+    start_date=date(2000, 1, 1),
+    toolkit=ToolkitConfig(start_date=date(2000, 1, 1)),
+    interest_rates=[InterestRateConfig(name="united_states_short_rate", country="United States", currency="USD")],
+    equities=[EquityConfig(name="us_broad", ticker="SPY", currency="USD")],
+)
+history = fetch_historical_data(config, build_toolkit(config))
+backtest = build_synthetic_scenario_set(history, ["us_broad", "united_states_short_rate"], period="monthly")
+```
+
+Which gives (on 2026-10-04) 274 monthly dates, from 2004-01-01 to 2026-10-01, the window both series cover.
 
 ## compute_factor_metrics
 
@@ -81,14 +117,35 @@ realized history the same way it runs against a simulated run.
 compute_factor_metrics(paths: np.ndarray, alpha: float = DEFAULT_ALPHA) -> FactorMetrics
 ```
 
+Compute the risk and distribution statistics of one simulated factor: Value-at-Risk, drawdowns, percentiles and
+more, in one object.
+
+Most measures look at how much the factor changed from the first to the last date, across scenarios. That works for
+any factor, including ones that can turn negative such as interest rates, where a percentage return would make no
+sense. The drawdown measures look at each scenario's whole path instead, since a fall from a peak needs the path's
+history, not just where it ended. The calculations come from the Finance Toolkit's risk and performance functions.
+
 **Args:**
 
-- <u>paths (np.ndarray):</u> one factor's simulated paths, shape (n_simulations, n_steps + 1), i.e. ScenarioSet.paths[factor_name].
-- <u>alpha (float):</u> VaR/CVaR/tail-ratio/CDaR confidence level (0.05 = 95%).
+- <u>paths (np.ndarray):</u> one factor's simulated paths, shaped (n_simulations, n_steps + 1), e.g. `result["us_broad"]`.
+- <u>alpha (float):</u> the tail level for Value-at-Risk, Conditional Value-at-Risk, the tail ratio and drawdown at risk; 0.05 (the worst 5%) by default.
 
 **Returns:**
 
-<u>FactorMetrics:</u> this factor's risk metrics and distribution statistics; see FactorMetrics' docstring for which axis each field uses.
+<u>FactorMetrics:</u> `risk` (Value-at-Risk, Conditional Value-at-Risk, drawdowns and the ratios built on them) and `distribution` (mean, standard deviation, skewness, kurtosis, percentiles and more).
+
+**Raises:**
+
+- <u>ValueError:</u> if `alpha` is not between 0 and 1, or `paths` is not a finite (n_simulations, n_steps + 1) array with at least two dates.
+
+**As an example:**
+
+```python
+from financescenarios import compute_factor_metrics
+
+metrics = compute_factor_metrics(result["united_states_short_rate"])
+metrics.risk.value_at_risk_historic, metrics.distribution.percentiles["95"]
+```
 
 ## compute_price_performance_metrics
 
@@ -101,17 +158,35 @@ compute_price_performance_metrics(
 ) -> PricePerformanceMetrics
 ```
 
-The return-based axis, distinct from the level-change metrics above: a strictly positive
-price path has well-defined percentage returns, which unlocks the Sharpe/Sortino/Calmar
-family that a signed level change cannot support.
+Compute return-based performance measures for one value path, such as a portfolio's value over time: growth,
+volatility, Sharpe and Sortino ratios, drawdowns and Value-at-Risk.
+
+These measures need percentage returns, so they only make sense for a value that stays above zero, such as a
+portfolio, one of its holdings or one of its percentile bands, not for a factor like an interest rate that can cross
+zero (use `compute_factor_metrics` for that). Ratios are annualized from the spacing of `time_grid`. The
+Value-at-Risk measures here are the tail of one path's own period returns, not the spread across scenarios. The
+calculations come from the Finance Toolkit's performance and risk functions.
 
 **Args:**
 
-- <u>values (np.ndarray):</u> shape (n_steps + 1,), one price-level track over time; must be strictly positive (a portfolio/sleeve dollar value, e.g. one of `FactorResult`'s own mean/q05/q25/q75/q95 bands), never a generic factor's level or level change.
-- <u>time_grid (np.ndarray):</u> shape (n_steps + 1,), years from t0, same as `ScenarioSet.time_grid`; assumed uniformly spaced (as `build_time_grid` always produces), used to annualize.
-- <u>risk_free_rate (float):</u> annual risk-free rate subtracted from the annualized return before Sharpe/Sortino/Kappa/STARR.
-- <u>alpha (float):</u> VaR/CVaR/tail-ratio/CDaR/Rachev confidence level (0.05 = 95%), applied to the band's own period-return series.
+- <u>values (np.ndarray):</u> one value path over time, shaped (n_steps + 1,), e.g. one scenario or a percentile band.
+- <u>time_grid (np.ndarray):</u> the matching times in years from the start, evenly spaced, e.g. `result.time_grid`.
+- <u>risk_free_rate (float):</u> the annual risk-free rate taken off the return in the Sharpe, Sortino, Kappa and STARR ratios; 0.0 by default.
+- <u>alpha (float):</u> the tail level for Value-at-Risk, Conditional Value-at-Risk, the tail ratio, drawdown at risk and the Rachev ratio; 0.05 (the worst 5%) by default.
 
 **Returns:**
 
-<u>PricePerformanceMetrics:</u> all-NaN if `values[0] <= 0` (the path never had a meaningful positive starting value to compound from, e.g. a glidepath sleeve with 0 weight at t=0) or if there are fewer than 2 time points to derive a period return from. Individual fields (not the whole result) can independently come back NaN on a valid path too, e.g. `calmar_ratio` when `max_drawdown_pct` is exactly 0 (a monotonically non-decreasing path), the same "well-defined but undefined here" NaN-on-a-zero-denominator pattern the cross-sectional `RiskMetrics` already uses.
+<u>PricePerformanceMetrics:</u> `cagr`, `annualized_volatility`, `sharpe_ratio`, `sortino_ratio`, `max_drawdown_pct`, `calmar_ratio` and the other ratio, drawdown and Value-at-Risk measures. Every field is NaN when the path starts at or below zero or has a single date; a single ratio is NaN when it would divide by zero, e.g. `calmar_ratio` on a path that never falls.
+
+**Raises:**
+
+- <u>ValueError:</u> if `alpha` is not between 0 and 1, `values` is not one path as long as `time_grid`, or `risk_free_rate` is not finite.
+
+**As an example:**
+
+```python
+from financescenarios import compute_price_performance_metrics
+
+metrics = compute_price_performance_metrics(result["us_broad"][0], result.time_grid, risk_free_rate=0.04)
+metrics.cagr, metrics.sharpe_ratio, metrics.max_drawdown_pct
+```

@@ -45,7 +45,12 @@ _GREEK = {
     "Theta": r"\Theta", "rho": r"\rho", "epsilon": r"\epsilon", "lambda": r"\lambda",
     "mu": r"\mu", "pi": r"\pi", "Phi": r"\Phi", "phi": r"\phi", "tau": r"\tau",
     "omega": r"\omega", "kappa": r"\kappa", "nu": r"\nu",
+    "chi": r"\chi", "xi": r"\xi", "eta": r"\eta", "zeta": r"\zeta", "psi": r"\psi",
 }
+
+# Subscripts that contain an operator, protected from the tokenizer as one word.
+_SUB_SENTINELS = {"_t-1": "_tminusone", "_t+1": "_tplusone", "_t+dt": "_tplusdt", "_t-dt": "_tminusdt"}
+_SUB_RESTORE = {"tminusone": "t-1", "tplusone": "t+1", "tplusdt": "t+dt", "tminusdt": "t-dt"}
 
 # Unicode used in docstring formulas, normalised to ASCII before tokenizing.
 _UNICODE_MATH = {
@@ -66,7 +71,7 @@ _FUNC_MAP = {
 # (leading +/- signs read as operators). Wrapped into opaque text atoms first.
 _LITERAL_ATOMS = ("+DI", "-DI")
 
-_RE_MATHY = re.compile(r" = | ≈ | \* | / |\*\*|\^")
+_RE_MATHY = re.compile(r" = | ≈ | \* | / |\*\*|\^| ~ | != | <= | >= ")
 
 
 def _text_escape(text: str) -> str:
@@ -77,18 +82,56 @@ def _text_escape(text: str) -> str:
     return text
 
 
+_BIG_OPERATORS = {"sum": r"\sum", "Sum": r"\sum", "prod": r"\prod", "Prod": r"\prod"}
+
+
+def _greek_sub(sub: str) -> str | None:
+    """Spell a subscript made of Greek names and single letters or digits ("pipi",
+    "rpi", "0pi") symbol by symbol; None when it holds no Greek name at all."""
+    names = sorted(_GREEK, key=len, reverse=True)
+    out, i, greek = [], 0, False
+    while i < len(sub):
+        name = next((n for n in names if sub.startswith(n, i)), None)
+        if name:
+            out.append(_GREEK[name])
+            i += len(name)
+            greek = True
+        elif sub[i].isalnum():
+            out.append(sub[i])
+            i += 1
+        else:
+            return None
+    return " ".join(out) if greek else None
+
+
 def _format_word(word: str) -> str:
     """Render one identifier token as LaTeX math."""
     if word.startswith("⟦") and word.endswith("⟧"):
         return r"\text{" + _text_escape(word[1:-1]) + "}"
     if word in _GREEK:
         return _GREEK[word]
+    if word.startswith("d") and word[1:] in _GREEK:  # a differential such as dchi
+        return "d" + _GREEK[word[1:]]
     base, sep, sub = word.partition("_")
+    if sep and base in _BIG_OPERATORS and "_" not in sub:
+        # sum_i, prod_t: the operator with its index underneath
+        return _BIG_OPERATORS[base] + "_{" + (_GREEK.get(sub) or _SUB_RESTORE.get(sub, sub)) + "}"
     if sep:
-        sub = "t-1" if sub == "tminusone" else sub
-        # Single-char suffixes are true subscripts; longer ones are snake_case names.
-        if len(sub) <= 1 or sub == "t-1":
+        sub = _SUB_RESTORE.get(sub, sub)
+        # Single-char suffixes are true subscripts. A short symbol (one letter, or a Greek
+        # name) also takes a short or Greek subscript, nested when it has one itself:
+        # sigma_chi, F_ij, p_s_t. Longer names are snake_case words such as net_income.
+        if len(sub) <= 1 or sub in _SUB_RESTORE.values():
             return f"{_format_word(base)}_{{{sub}}}"
+        short_base = base in _GREEK or (base[:1] == "d" and base[1:] in _GREEK) \
+            or re.match(r"^d?[A-Za-z]'*$", base)
+        head = sub.partition("_")[0]
+        greek = _greek_sub(sub) if short_base and "_" not in sub and sub not in _GREEK else None
+        if greek:
+            return f"{_format_word(base)}_{{{greek}}}"
+        if short_base and (head in _GREEK or re.match(r"^[A-Za-z0-9]{1,3}$", head)):
+            inner = _format_word(sub) if "_" in sub else (_GREEK.get(sub) or sub)
+            return f"{_format_word(base)}_{{{inner}}}"
         return r"\text{" + _text_escape(word) + "}"
     match = re.match(r"^([A-Za-z])(\d+)$", word)
     if match:
@@ -106,6 +149,7 @@ def _format_word_run(words: list[str]) -> str:
     """Render a run of space-separated words, merging adjacent prose into \\text."""
     def is_prose(word: str) -> bool:
         return (word not in _GREEK and len(word) > 1 and not word.startswith("⟦")
+                and not (word[:1] == "d" and word[1:] in _GREEK)
                 and re.match(r"^[A-Za-z][A-Za-z'\-]*$", word) is not None
                 and re.match(r"^[A-Za-z]'+$", word) is None)
 
@@ -114,9 +158,9 @@ def _format_word_run(words: list[str]) -> str:
     subscript = ""
     if words and "_" in words[-1]:
         base, _, sub = words[-1].partition("_")
-        if is_prose(base) and (len(sub) <= 1 or sub in ("t-1", "tminusone")):
+        if is_prose(base) and base not in _BIG_OPERATORS and (len(sub) <= 1 or sub in _SUB_RESTORE):
             words = words[:-1] + [base]
-            sub = "t-1" if sub == "tminusone" else sub
+            sub = _SUB_RESTORE.get(sub, sub)
             subscript = f"_{{{sub}}}"
 
     parts: list[str] = []
@@ -126,11 +170,14 @@ def _format_word_run(words: list[str]) -> str:
             prose_run.append(word)
             continue
         if prose_run:
-            parts.append(r"\text{" + _text_escape(" ".join(prose_run)) + "}")
+            # prose after a symbol ("R_i given R_i") gets space on both sides
+            pad = r"\;" if parts else ""
+            parts.append(pad + r"\text{" + _text_escape(" ".join(prose_run)) + r"}\;")
             prose_run = []
         parts.append(_format_word(word))
     if prose_run:
-        parts.append(r"\text{" + _text_escape(" ".join(prose_run)) + "}")
+        pad = r"\;" if parts else ""
+        parts.append(pad + r"\text{" + _text_escape(" ".join(prose_run)) + "}")
     return " ".join(parts) + subscript
 
 
@@ -160,7 +207,13 @@ def _tokenize_formula(text: str, pos: int = 0, closer: str = "") -> tuple[list, 
             group, pos = _tokenize_formula(text, pos + 1, ")" if char == "(" else "]")
             tokens.append(("group", char, group))
             continue
-        if char in "=+-*/^,|<>≈":
+        # Two-character comparisons first: != <= >=
+        if text[pos:pos + 2] in ("!=", "<=", ">="):
+            flush()
+            tokens.append(("op", text[pos:pos + 2]))
+            pos += 2
+            continue
+        if char in "=+-*/^,|<>≈~":
             # A hyphen glued between word characters is part of the name, not a minus.
             if char == "-" and word and pos + 1 < len(text) and text[pos + 1].isalnum() \
                     and text[pos - 1].isalnum() and word[-1] != " ":
@@ -204,7 +257,8 @@ def _render_tokens(tokens: list) -> str:
                     parts.append(r"\sqrt{" + group + "}")
                 elif name in _FUNC_MAP:
                     parts.append(_FUNC_MAP[name] + "(" + group + ")")
-                elif name in _GREEK or re.match(r"^[A-Za-z]'*$", name):
+                elif name in _GREEK or re.match(r"^[A-Za-z]'*$", name) \
+                        or ("_" in name and not _format_word(name).startswith("\\text")):
                     parts.append(_format_word(name) + "(" + group + ")")
                 else:
                     parts.append(r"\operatorname{" + _text_escape(name) + "}(" + group + ")")
@@ -238,7 +292,8 @@ def _render_tokens(tokens: list) -> str:
             parts.append("^{" + exponent + "}")
             i = j
             continue
-        parts.append({"*": r"\cdot", "≈": r"\approx", ",": ",\\;"}.get(op, op))
+        parts.append({"*": r"\cdot", "≈": r"\approx", ",": ",\\;", "!=": r"\neq", "<=": r"\leq",
+                      ">=": r"\geq", "~": r"\sim"}.get(op, op))
         i += 1
     return " ".join(parts).replace(" ,\\;", ",\\;")
 
@@ -251,7 +306,8 @@ def _formula_to_latex(line: str) -> str:
         formula = formula.replace(literal, f"⟦{literal}⟧")
     for char, replacement in _UNICODE_MATH.items():
         formula = formula.replace(char, replacement)
-    formula = formula.replace("_t-1", "_tminusone")
+    for literal, sentinel in _SUB_SENTINELS.items():
+        formula = formula.replace(literal, sentinel)
     formula = re.sub(r"√\s*([A-Za-z0-9.]+)", r"sqrt(\1)", formula)
 
     # A leading "Label: formula" keeps the label as one prose chunk.
