@@ -1687,7 +1687,7 @@ financescenarios-docs:
     children:
     - title: "Overview"
       url: /projects/financescenarios/docs
-    - title: "Architecture"
+    - title: "How a Run Is Built"
       url: /projects/financescenarios/docs/architecture
     - title: "Simulation Engine"
       url: /projects/financescenarios/docs/simulation-engine
@@ -1699,7 +1699,7 @@ financescenarios-docs:
       url: /projects/financescenarios/docs/units
     - title: "Regimes"
       url: /projects/financescenarios/docs/regimes
-    - title: "Validation and Testing"
+    - title: "Validation"
       url: /projects/financescenarios/docs/validation
     - title: "Coverage"
       url: /projects/financescenarios/docs/coverage

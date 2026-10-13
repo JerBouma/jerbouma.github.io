@@ -1,8 +1,8 @@
 ---
 title: Units
 seo_title: Units Documentation – Finance Scenarios
-excerpt: "Every series is calibrated in the form economists and actuaries normally use for it, and every result can be shown as a rate, a level, a change or an annualized return."
-description: "The units Finance Scenarios calibrates and reports in: the calibration input of each series, the native simulated values and every metric= reading."
+excerpt: "Rates are annualized decimals and prices read as their annualized return since the start. Why, and how to convert to cumulative, simple and log returns."
+description: "Why Finance Scenarios reports annualized decimals and annualized returns since start, and how to convert to cumulative, simple and log returns."
 author_profile: false
 permalink: /projects/financescenarios/docs/units
 classes: wide-sidebar
@@ -14,105 +14,64 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Every series is calibrated in the form economists and actuaries normally use for it: an interest rate as a rate, inflation as the change in prices over the past year, a stock as its price. Every result can then be shown in whichever form you need: the rate, the level (a price or a price index), the change over one step or over one year, the change since today, or the yearly average since today.
+Every number is on one scale: an **annualized decimal**. A short rate of `0.035` is 3.5% a year, inflation of `0.026` is 2.6% a year, an equity return of `0.095` is 9.5% a year. A fitted parameter, a belief you set, a regime target and a simulated value can be compared directly, whatever the data frequency or the step of the run.
 
-There are three layers, and this page is the single statement of each; [configuration](/projects/financescenarios/docs/configuration), [regimes](/projects/financescenarios/docs/regimes) and each class's docstring point here rather than restating it:
+## How Each Series Is Fitted
 
-1. **Calibration inputs:** which transformation each fetched series gets before a model is fitted to it.
-2. **Native simulation values:** what `result.paths[factor]` holds.
-3. **Reported readings:** what every table and chart shows, chosen with `metric=`.
+Each series is fitted in the form economists and actuaries normally use for it:
 
-## 1. Calibration inputs: best practice per series
+| Series | Fitted as | Why |
+|:-------|:----------|:----|
+| Interest rates, credit spreads, unemployment, dividend yield | The level, as a decimal | They mean-revert as levels ([Vasicek, 1977](<https://doi.org/10.1016/0304-405X(77)90016-2>)) |
+| Inflation, house prices | Year-over-year change of the index | The headline figure statistics offices publish, free of seasonality |
+| Equities, commodities, FX | Log returns of the price | Prices are not stationary, their returns are, and log returns add up over time |
+| Dividends (Wilkie) | Log change of the dividend index | [Wilkie's (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) own specification |
+| Leading indicator | Index points around 100 | It is built as a stationary cycle around 100 |
+| Mortality | Logit of death rates | [Cairns, Blake and Dowd's (2006)](https://doi.org/10.1111/j.1539-6975.2006.00195.x) specification |
 
-Each series is fitted in the form that suits its economics, decided by what the series is and never by the data source it happened to come from:
+Year-over-year inflation is smooth: consecutive monthly readings share eleven of their twelve months. A monthly fit on it shows slower mean reversion and smaller monthly shocks than a fit on month-on-month changes. This is the convention economic scenario generators commonly calibrate inflation on, and it means a belief about inflation is stated as a year-over-year rate.
 
-| Series | Fitted as | Why | Where |
-|:-------|:----------|:----|:------|
-| Interest rates, yields, OECD short/long rates | Level, decimal (`3.71` percentage points becomes `0.0371`) | Rates are already annual and mean-revert as levels ([Vasicek, 1977](<https://doi.org/10.1016/0304-405X(77)90016-2>)) | `interest_rates_controller` |
-| Credit spreads, unemployment, dividend yield | Level, decimal | The same: a spread or a ratio that mean-reverts as a level | each factor's controller |
-| Inflation (CPI) | **Year over year**: `growth=True, lag=12` monthly, `lag=4` quarterly, `lag=1` yearly | The headline figure statistics offices publish; removes seasonality; identical to the Finance Toolkit's `get_inflation_rate` | `helpers.year_over_year_growth` |
-| House prices (OECD) and commercial property (FRED) | **Year over year**: `lag=4` quarterly, `lag=1` yearly; FRED publishes it only that way | One scale for both sources; removes the seasonal pattern not every country adjusts for | `helpers.year_over_year_growth` |
-| Equities, commodities, FX | **Log returns** of the price at the sampling period (daily, weekly, monthly) | Prices are not stationary but their returns are, and returns compound | each factor's controller |
-| Dividends (Wilkie) | Log change of the trailing dividend index | [Wilkie's (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) own specification | `DividendGrowth` |
-| Leading indicator (OECD CLI) | Level, index points around 100 | It is built to be a stationary cycle around 100 | `LeadingIndicator` |
-| Yield curve, credit curve | Nelson-Siegel level, slope, curvature from yield levels | The factors of the curve, fitted per date | `TermStructure`, `CreditTermStructure` |
-| HJM forward curve | Changes in forward rates | The HJM volatility functions describe changes | `Hjm` |
-| Mortality | Logit of death rates | [Cairns, Blake and Dowd's (2006)](https://doi.org/10.1111/j.1539-6975.2006.00195.x) specification | `Mortality` |
+## How Results Read
 
-[Year over year](https://en.wikipedia.org/wiki/Year_over_year) means a value is compared with the same period a year earlier. Consecutive monthly year-over-year readings share eleven of their twelve months, so the series is smooth: a monthly fit shows slower mean reversion and smaller monthly shocks than a fit on month-on-month changes, which is the convention economic scenario generators commonly calibrate inflation on. A [log return](https://en.wikipedia.org/wiki/Rate_of_return#Logarithmic_or_continuously_compounded_return) is `ln(S_t / S_{t-1})`, the continuously compounded change in a price.
+A rate reads as itself. A price (an equity, commodity, exchange rate or portfolio value) reads by default as its **annualized return since the start**, the constant yearly return that takes today's value to the value at time $$t$$ (in years):
 
-Every calibrated parameter of a rate-type factor is therefore an annualized decimal (`long_run_mean` of `0.026` is 2.6% a year), so a belief override, a regime anchor and a calibrated parameter are all on one scale:
+$$
+R_t = \left(\frac{S_t}{S_0}\right)^{1/t} - 1
+$$
 
-```python
-scenarios.calibrate().describe()   # long_run_mean/volatility, comparable down the column
-```
+An equity path from 769 to 1,209 over five years reads as 9.5% a year. This is the CAGR, the way returns are quoted in investment reports, and it puts a one-year and a thirty-year outcome on the same scale. Its spread narrows with the horizon, since good and bad years average out, while the spread of the cumulative return keeps widening. Over the first months it is extremely wide, since a few weeks' move is scaled up to a year.
 
-`helpers.annualize_period_growth` (`ln(1 + g) / dt`) remains for any other one-period growth series: its log form is exactly what `exp(rate * dt)` inverts.
+Every table and chart can show another reading instead:
 
-## 2. Native simulation values
+| Reading | A price | Inflation | A rate |
+|:--------|:--------|:----------|:-------|
+| Default | annualized return since start | the rate | the rate |
+| `level` | the price | a price index, 100 at start | the rate |
+| `change` | % change over one step | % change of the index over one step | change over one step |
+| `yoy` | % change over one year | % change of the index over one year | change over one year |
+| `cumulative` | % change since start | % change of the index since start | change since start |
+| `annualized` | yearly return since start | average yearly growth since start | not available |
 
-Each factor is simulated natively, and `ScenarioSet.factor_kind(factor)` says which of four kinds it is:
-
-| Kind | Categories | Native value |
-|:-----|:-----------|:-------------|
-| `price` | `equities`, `commodities`, `fx`, `dividend_growth`, `portfolio` and `<sleeve>_value` | A price or index level in the instrument's own currency |
-| `growth` | `inflation`, `real_estate` | The yearly growth rate of a price index, an annualized decimal |
-| `rate` | `interest_rates`, the yield-curve and credit-curve components, `credit`, `unemployment`, `dividend_yield`, `mortality` and anything uncategorized | A rate, spread or model factor as a level |
-| `index` | `leading_indicator` | Index points around 100 |
-
-`result.paths[factor]` (and `result[factor]`) holds these, and so does everything that needs a real price: portfolio construction, currency reporting, the Solvency II functions, `write_run()` and the scenario-file export. Every reporting method takes `levels=True` to show the native value.
-
-Which kind a factor is comes from the category `Scenarios.simulate()` stamps on each factor. A `ScenarioSet` you build by hand has no categories, so every factor in it reads as a rate.
-
-A portfolio holding is the one price whose value is not its return. Its path is the money held in it, which rebalancing moves in and out, so its return readings (`change`, `yoy`, `cumulative`, `annualized`) come from the asset's own growth instead, while `levels=True` and `"level"` still show the money held. See [portfolios](/projects/financescenarios/docs/portfolio).
-
-A price's parameters are annualized like everything else (an equity's `regime_means`/`regime_volatilities` are annualized log-return figures). A two-factor (`method: "schwartz_smith"`) commodity simulates `<name>_chi`/`<name>_xi` in log space, and `Scenarios.simulate()` attaches the reconstructed price under the entry's own name.
-
-A growth rate compounds into its index as `100 * exp(cumsum(rate * dt))` (`cumulative_index`). Because the rate is a year-over-year change used as the instantaneous rate, the rebuilt index follows prices with a lag of about half a year, and at 3% it compounds about 0.05 percentage points a year above simple growth: both are small next to the scenario spread.
-
-## 3. Reported readings: `metric=`
-
-`describe()`, `summary_statistics()`, `horizon_summary()`, `to_dataframe()`, `to_long()`, `compare_runs()` and every `.plot()` take `metric=`, read through `ScenarioSet.metric_paths(factor, metric=...)`:
-
-| `metric` | price | growth rate | rate | index |
-|:---------|:------|:------------|:-----|:------|
-| `None` (default) | `annualized` | `rate` | `rate` | `level` |
-| `"rate"` | not available | the simulated rate | the simulated rate | not available |
-| `"level"` | the price | the compounded index, 100 at start | the rate | the index |
-| `"change"` | % change over one step | % change of the index over one step | change over one step | % change over one step |
-| `"yoy"` | % change over one year | % change of the index over one year | change over one year | % change over one year |
-| `"cumulative"` | % change since start | % change of the index since start | change since start | % change since start |
-| `"annualized"` | yearly return since start | average yearly growth since start | not available | yearly change since start |
-
-- A change of a rate is a **difference** in its own units (`0.005` is half a percentage point), the convention for rates and spreads, not a percentage of a percentage.
-- The annualized return since start is `(S_t / S_0) ** (1 / t) - 1`, the constant yearly return that turns today's value into the value at `t`. It has no value at `t0` (null in tables), reads `-1.0` for a path that reaches zero, and its spread narrows with the horizon. For a portfolio it is the figure `Portfolio.risk_metrics()` reports as `cagr_percentiles`.
-- A change over `n` steps has no value for the first `n` points. `"yoy"` needs a time step that divides a year (monthly, quarterly, yearly, weekly, daily).
-- On a multi-factor report a metric with no reading for some factor (`"rate"` of a price, `"annualized"` of a rate) keeps that factor's default, and `describe()`'s `metric` column names the reading of every row.
-- Charts format rates, changes and returns as percentages, and prices and index levels with thousands separators.
+A change of a rate is a **difference** in its own units: `0.005` is half a percentage point (50 basis points), not a percentage of a percentage.
 
 ```python
-result.describe()                                          # each factor's default reading
-result.describe(metric="yoy")                              # every factor's change over the past year
-result.describe(levels=True)                               # the native values
-result.plot("united_states_inflation", metric="level")     # inflation as a price index from 100
-result.to_dataframe("us_broad", metric="change")           # equity returns per step
-result.factor_kind("gold")                                 # "price"
+result.describe()                                         # each factor's default reading
+result.describe(metric="cumulative")                      # change since start
+result.plot("united_states_inflation", metric="level")    # inflation as a price index from 100
+result.to_dataframe("us_broad", levels=True)              # the simulated prices themselves
 ```
 
-## Writing beliefs and regimes against this
+## Converting
 
-A belief override replaces a calibrated parameter, so it is stated in that parameter's own units: for every rate factor an annualized decimal, and for inflation a year-over-year rate:
+With $$R$$ the annualized return over $$t$$ years, $$C$$ the cumulative return and $$r$$ the log return per year:
 
-```yaml
-beliefs:
-  inflation.united_states_inflation:
-    long_run_mean:
-      anchors:
-        1.0: 0.09 # 9% a year within a year
-        3.0: 0.05
-```
+$$
+1 + C = (1 + R)^t, \qquad r = \ln(1 + R), \qquad R = e^{r} - 1
+$$
 
-`shocks` are in the same units (`magnitude: 0.03` is three percentage points of inflation). Regime filters rank a rate by its average over the window and a price by its return across the window. Check the level a belief is displacing with `scenarios.calibrate().describe()` before choosing anchors.
+So 9.5% a year for five years is a cumulative 57%, and a log return of 9.1% a year. Log returns add up over time and are what the models work in; simple returns are what a portfolio earns and reports. The gap grows with volatility: an asset with a 0% median log return still has a positive mean simple return, so the expected return sits above the median scenario.
+
+A simulated inflation rate compounds into its price index the same way, as $$100\,e^{\int \pi_s\,ds}$$. Because a year-over-year rate stands in for the instantaneous rate, the rebuilt index trails actual prices by about half a year, and at 3% it compounds about 0.05 percentage points a year above simple growth. Both are small next to the spread of the scenarios.
 
 ## References
 

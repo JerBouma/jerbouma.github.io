@@ -1,8 +1,8 @@
 ---
 title: Inflation, Labor and Longevity
 seo_title: Inflation, Labor and Longevity – Finance Scenarios
-excerpt: "How Finance Scenarios models inflation, unemployment, the business cycle and mortality: the methods on offer, when to use each, their limits and the papers behind them."
-description: "How Finance Scenarios simulates inflation, unemployment, the business cycle and longevity: each model, when to use it, its limits and its sources."
+excerpt: "The economics behind the inflation, unemployment, business-cycle and mortality models in Finance Scenarios: what each assumes, how they link and where they stop."
+description: "How Finance Scenarios models inflation, unemployment, the business cycle and longevity: the theory, the links between them, the papers and the limits."
 author_profile: false
 permalink: /projects/financescenarios/docs/economy
 classes: wide-sidebar
@@ -14,102 +14,89 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Interest rates and equity returns get most of the attention in a scenario set, but many liabilities are driven by the economy around them. Pensions are indexed to prices, wage growth and claims move with the labor market, and annuities run for as long as people live. This page covers the four factors that describe that economy in Finance Scenarios: inflation, unemployment, the leading indicator of the business cycle, and mortality.
+Many liabilities are driven by the economy rather than by markets: pensions are indexed to prices, claims move with the labor market, and annuities run for as long as people live. This page covers inflation, unemployment, the business cycle and mortality.
 
-Each factor is fitted to its own history, then simulated alongside every other factor with correlated random shocks (see the [simulation engine](/projects/financescenarios/docs/simulation-engine)). Inflation, unemployment and the leading indicator come from official statistics through the Finance Toolkit, with no API key needed. For each factor you will find what the model does in plain words, when you would pick it, what it assumes, and the papers it comes from. The full list of arguments and fields sits in the API reference pages linked from each section.
+Each factor is fitted to its own history and simulated with correlated shocks alongside everything else (see the [simulation engine](/projects/financescenarios/docs/simulation-engine)). Some are also linked directly, in one direction: inflation moves unemployment, and the business cycle moves inflation, rates, spreads and equity regimes. The data are official statistics (OECD, or the Global Macro Database outside it), with no API key.
 
 ## Inflation
 
-Inflation sets the real value of every nominal cash flow, so it is usually the first variable a pension or insurance model needs.
+Inflation sets the real value of every nominal cash flow, so it sits at the top of the model. Following [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}, inflation drives other variables, such as unemployment and, in Wilkie's setup, dividends, rather than the other way around.
 
-In Finance Scenarios, inflation sits at the top of the model, following [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}: inflation drives other parts of the model, such as unemployment and, in Wilkie's setup, dividends, rather than the other way around.
-
-### The Data
-
-Each inflation entry is the year-over-year growth of a country's Consumer Price Index: this month's price level against the same month a year earlier. That is the headline rate statistics offices publish. A reading of 0.034 means prices are 3.4% higher than a year ago, on the same annual decimal scale as interest rates.
-
-Two sources are available, neither of which needs an API key:
-
-- `source: oecd` (the default) covers the roughly 38 OECD members at monthly, quarterly or yearly frequency.
-- `source: gmdb` uses the Global Macro Database, which also covers countries such as Brazil, India and China. It is annual only, so the entry needs `period: yearly`, and its most recent year can be an IMF projection rather than an outturn.
-
-Consecutive monthly readings share eleven of their twelve months, so the series is smooth, the convention most economic scenario generators calibrate on.
-
-You can model several countries at once. `inflation` is a list, and each entry becomes its own factor, linked to the others through the correlation matrix. The shipped profiles use the shorter `defaults` and `countries` shape described in [configuration](/projects/financescenarios/docs/configuration), where `name: Eurozone` becomes the factor `eurozone_inflation`.
+The series is headline CPI inflation, year over year. Consecutive monthly readings share eleven of their twelve months, so the series is smooth, the convention most scenario generators calibrate on.
 
 ### Mean Reversion to a Target (the Default)
 
-The default `method: ou` treats inflation as an Ornstein-Uhlenbeck process ([Uhlenbeck and Ornstein, 1930](https://doi.org/10.1103/PhysRev.36.823){:target="_blank"}): each period, inflation is pulled part of the way back toward a long-run level, plus a random shock. Three numbers describe it:
+The default treats inflation as an Ornstein-Uhlenbeck process ([Uhlenbeck and Ornstein, 1930](https://doi.org/10.1103/PhysRev.36.823){:target="_blank"}):
 
-- `long_run_mean`: the level inflation settles around.
-- `mean_reversion_speed`: how hard it is pulled back. `ln 2 / mean_reversion_speed` is the half-life of a shock in years.
-- `volatility`: the size of the random shocks.
+$$
+d\pi_t = a(\theta - \pi_t)\,dt + \sigma\,dW_t
+$$
 
-Every simulated path starts from the latest observed rate. Calibrated on US data from 2000 onward, inflation started at 3.40% and was pulled toward 2.66%, halving any gap in about 1.7 years. Nothing floors the rate, so deflation can occur, as it has in history.
+Here $$\pi_t$$ is inflation, $$\theta$$ the long-run level it settles around, $$a$$ the speed of the pull back, and $$\sigma$$ the size of the shocks. A shock halves in $$\ln 2 / a$$ years.
 
-Use it when you want a simple inflation process with a clear anchor. If you hold a view on that anchor, override it with a belief:
+Central banks target a level, and deviations from it are temporary. Calibrated on US data from 2000 onward, inflation started at 3.40% and was pulled toward 2.66%, halving any gap in about 1.7 years. The shocks are normal and nothing floors the rate, so deflation can occur, as it has in history, and the tails are no fatter than a normal distribution's.
+
+A view on the anchor, such as a credible 2% target, goes in as a belief:
 
 ```yaml
 inflation:
   - name: us_inflation
     country: United States
-    period: monthly
     beliefs:
-      long_run_mean: 0.02        # anchor at 2% a year instead of the fitted level
-      mean_reversion_speed: null # null keeps the fitted value
-      volatility: null
+      long_run_mean: 0.02  # anchor at 2% instead of the fitted level
 ```
 
-Beliefs are stated on the annual scale and apply only to this constant-volatility fit. In a [regime](/projects/financescenarios/docs/regimes) file you address one entry's beliefs with a dotted key such as `"inflation.us_inflation"`.
+Two extensions address the main weaknesses of a constant-volatility fit on a recent window:
 
-Two options change how the default process behaves:
-
-- `volatility_model: garch` replaces the fixed volatility with a GARCH(1,1) process ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1){:target="_blank"}), so calm and turbulent inflation spells each persist. Beliefs then no longer apply.
-- `history_source` fits the speed, volatility and long-run level on centuries of data instead of the recent window: `millennium` for UK consumer price inflation from 1209, or `shiller` for US inflation from 1872. Today's starting level still comes from current data. `history_start_year` drops the early years, for example everything before 1900.
+- **Volatility clustering.** A GARCH(1,1) volatility ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1){:target="_blank"}) lets calm and turbulent spells persist, as in the 1970s against the 2010s.
+- **Short samples.** Twenty-five calm years understate how far inflation can drift. The dynamics can instead be fitted on UK inflation from 1209 (the Bank of England's millennium dataset) or US inflation from 1872 (Shiller's data), starting from today's rate.
 
 ### Wilkie's AR(1)
 
-`method: wilkie_ar1` is Wilkie's original inflation model: each period's value keeps a fixed share of last period's gap to the mean (`persistence`), plus a shock. On the same US data, 97% of each month's gap carried into the next month. The economics are close to the default; the difference is that Wilkie's version is fitted directly in discrete steps.
+Wilkie's original model is the discrete-time version of the same idea: each year keeps a fixed share $$a$$ of last year's gap to the mean $$\mu$$, plus a shock.
 
-Choose it when you want to reproduce the Wilkie framework as a whole. In that cascade, the dividend yield, dividend growth and the long-term (consols) yield are each computed directly from the inflation path, on top of any correlation. The consols yield follows a slowly moving average of past inflation plus a real part of its own (Wilkie's equations 3.12 and 3.13), which is why it needs a history where long yields stay above inflation; the shipped settings fit on 1995-2007. The shipped `wilkie` factor set and settings profile set this up for you. The model has no time step to rescale, so the engine's `frequency` must equal the entry's `period`. It cannot be combined with GARCH, business-cycle conditioning or belief overrides.
+$$
+I_t = \mu + a\,(I_{t-1} - \mu) + \sigma\,z_t
+$$
+
+On US monthly data, 97% of each month's gap carried into the next. The reason to choose it is the rest of Wilkie's cascade: dividend yield, dividend growth and the long-term (consols) yield all follow from the inflation path. The consols yield tracks a slow moving average of past inflation plus a real part (Wilkie's equations 3.12 and 3.13), so it needs a history in which long yields stay above inflation; the shipped `wilkie` settings fit on 1995-2007. The model runs only at the period it was fitted on.
 
 ### Hibbert's Two-Factor Model
 
-`method: hibbert_two_factor` follows [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"}. Actual inflation reverts to a second, slower-moving "expected inflation" level instead of to a fixed number, so the anchor itself drifts over time. This suits long horizons where you do not want to assume that inflation always returns to the same level.
+In [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"}, inflation reverts to a slower-moving "expected inflation" level rather than a fixed number, so the anchor itself drifts. That suits long horizons in which a shift in monetary policy is plausible.
 
-The paper estimates expected inflation with a Kalman filter, which Finance Scenarios does not have. `target_source` picks an observable stand-in instead:
+The paper estimates expected inflation with a Kalman filter. Finance Scenarios uses an observable stand-in: the same country's yearly inflation, simulated as its own correlated factor, or an exponentially weighted average of the path. Hibbert's fixed cross-factor correlations and closed-form bond prices are not replicated, and on year-over-year data most of the movement ends up in the target. The yearly target needs a long history (the shipped settings start in 2000).
 
-- `coarser_period` (the default) uses the same country's inflation at a coarser frequency (`target_period`, yearly by default) as the slow target, simulated as its own correlated factor named `<name>_target`.
-- `ewma` uses an exponentially weighted moving average of the entry's own path, with `target_smoothing` (default 0.05) as the weight on each new observation. Smaller values give a slower target.
+### Links to Interest Rates and the Business Cycle
 
-Keep the limits in mind. Hibbert's fixed cross-factor correlations and closed-form bond prices are not replicated; correlations come from the same estimated matrix as every other factor. On year-over-year data the smoothed target tracks inflation closely, so most of the movement sits in the target. The method also needs a long history: pass an early `start_date` (the shipped settings use 2000-01-01), or the yearly target has too few points to fit. GARCH, business-cycle conditioning and beliefs are not available here.
+Inflation can respond directly to a move in another variable over the same step, beyond what the correlation matrix captures:
 
-### Conditioning on Interest Rates or the Business Cycle
+- **Interest rates.** A term on the change in a paired short rate, so rate moves pass through to prices.
+- **The business cycle.** A term on the change in the leading indicator (see below), so inflation picks up in booms and eases in slowdowns.
 
-Two switches add a term that lets inflation respond to another variable's move over the same step:
-
-- `condition_on_interest_rate: true` adds a term on the change in a paired short rate, named by `interest_rate_name`. Calibration then runs at that rate's period.
-- `condition_on_business_cycle: true` adds a term on the change in the leading indicator (see below). It requires `leading_indicator.enabled: true`.
+Both links run one way: the rate or the indicator moves inflation, not the reverse. If rates and inflation should drive each other, with the short rate and inflation fitted jointly as one system, use the [KNW model](/projects/financescenarios/docs/knw).
 
 ```yaml
-interest_rates:
-  - name: short_rate
-    ticker: "^IRX"
-
 inflation:
   - name: us_inflation
     country: United States
     condition_on_interest_rate: true
-    interest_rate_name: short_rate
+    interest_rate_name: short_rate  # an interest_rates entry
 ```
-
-Both are one-way links: the rate or the indicator moves inflation, not the reverse. Use the interest-rate link when you want rate moves to feed through to prices beyond what the correlation matrix already captures. If you want rates and inflation to drive each other, with both levels fitted jointly, use the KNW model instead, set with `method: knw` or `method: knw_sv`; it is covered on the [KNW page](/projects/financescenarios/docs/knw). The two conditioning switches cannot be combined with each other, with GARCH, or with `knw`, and a conditioned entry is used as fitted, without beliefs.
 
 ### Market-Implied Inflation (Risk-Neutral)
 
-Everything above describes real-world inflation: how prices might plausibly move. To value inflation-linked cash flows in line with market prices you need the inflation the bond market prices in instead. That is the breakeven: the gap between a nominal government bond yield and an inflation-protected one of the same maturity.
+Everything above is real-world inflation. To value inflation-linked cash flows consistently with market prices you need the breakeven instead: the gap between a nominal and an inflation-protected government yield of the same maturity. It includes an inflation risk premium, so it is not a forecast.
 
-Set `measure: risk_neutral` with `method: ou` to use it:
+Finance Scenarios fits a [Nelson-Siegel (1987)](https://doi.org/10.1086/296409){:target="_blank"} curve (level, slope and hump) to the latest breakevens, with the decay parameter fixed as in [Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}. Every path then follows that curve's forward rates, with no randomness.
+
+| Market | Source | Maturities | Index |
+|:--|:--|:--|:--|
+| United States | US Treasury, nominal minus TIPS | 5 to 30 years | US CPI |
+| United Kingdom | Bank of England implied inflation curve | 3 to 40 years | RPI |
+| Germany / euro area | Bundesbank, nominal minus inflation-linked | 5 to 15 years | Euro area HICP ex tobacco |
+
+Nothing is quoted below five years (three in the UK), so the first years are extrapolated. The UK curve measures RPI, which has run above CPI.
 
 ```yaml
 inflation:
@@ -118,191 +105,129 @@ inflation:
     measure: risk_neutral
 ```
 
-Finance Scenarios fits a [Nelson-Siegel (1987)](https://doi.org/10.1086/296409){:target="_blank"} curve, with a long-run level, a slope and a hump, to the latest date on which every maturity is quoted. Every simulated path then follows that curve's forward rates, with no randomness, no mean reversion and no beliefs. The curve's decay parameter is fixed rather than fitted, following [Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}, and can be set with `tips_breakeven_decay` (default 0.7308).
+A whole-run risk-neutral simulation keeps inflation real-world, so benefits can still be indexed to it. For a stochastic risk-neutral inflation leg, use the KNW model with stochastic volatility.
 
-Three curves are available, all read without an API key:
+### Limits
 
-| `country` | Source | Maturities fitted | Inflation index |
-|:--|:--|:--|:--|
-| `United States` (default) | US Treasury, nominal minus TIPS yields | 5, 7, 10, 20 and 30 years | US CPI |
-| `United Kingdom` | Bank of England implied inflation spot curve | 3 to 40 years | Retail Prices Index (RPI) |
-| `Germany` or `Euro Area` | Bundesbank, German nominal minus inflation-linked yields | 5, 7, 10 and 15 years | Euro area HICP excluding tobacco |
-
-A few points to watch:
-
-- No US or German breakeven is quoted below five years, and no UK one below three, so the first years of the path are extrapolated from the fitted curve rather than quoted by the market. A warning is logged when today's value lands more than a percentage point away from the shortest quoted breakeven.
-- The UK curve measures RPI, which has run above CPI inflation.
-- A breakeven can be negative, and nothing floors it.
-- The entry must keep the default `source` and `period`, constant volatility, no conditioning and no beliefs, since none of them apply to a market snapshot. The configuration rejects them when it loads.
-
-The breakeven route is also not what `simulate(measure="risk_neutral")` does to inflation: that call keeps inflation as configured, real-world, so benefits can still be indexed to it. For a risk-neutral inflation leg with its own dynamics, the KNW model with stochastic volatility (`method: knw_sv` with `measure: risk_neutral`) offers that; see the [KNW page](/projects/financescenarios/docs/knw).
-
-### What Inflation Does Not Cover
-
-Finance Scenarios models headline CPI inflation only, with no core or sector price indices. The default data window of the Finance Toolkit is about five years, which is short for a stable fit, so set an early `start_date` in your settings profile.
-
-The full reference is on the [Inflation](/projects/financescenarios/docs/reference/inflation) page.
+Only headline CPI is modeled, with no core or sector indices. The default data window is about five years, too short for a stable fit, so set an early `start_date`. Full reference: [Inflation](/projects/financescenarios/docs/reference/inflation).
 
 ## Unemployment
 
-Unemployment matters for anything tied to the labor market, such as wage-linked benefits, disability claims or credit losses, and it gives you a second view of the economy alongside inflation.
+Unemployment drives wage-linked benefits, disability claims and credit losses. The model is the unemployment equation of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}: unemployment reverts to a long-run rate, plus a term on the change in inflation over the same step.
 
-The model is the unemployment equation of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}: unemployment reverts to a long-run level, like the default inflation model, with one added term for the change in inflation over the same step. That term is a Phillips curve, named after [Phillips (1958)](https://doi.org/10.1111/j.1468-0335.1958.tb00003.x){:target="_blank"}: rising inflation tends to go with falling unemployment.
+$$
+du_t = \kappa(\mu - u_t)\,dt + \alpha\,d\pi_t + \gamma\,dL_t + \sigma\,dW_t
+$$
 
-In one line, each step is:
+Here $$u_t$$ is the unemployment rate, $$\mu$$ its long-run level and $$\kappa$$ the speed of reversion. The $$\alpha$$ term is a Phillips curve ([Phillips, 1958](https://doi.org/10.1111/j.1468-0335.1958.tb00003.x){:target="_blank"}): when inflation rises, unemployment tends to fall, so $$\alpha$$ is expected to be negative. The optional $$\gamma$$ term links unemployment to the leading indicator $$L_t$$, in the spirit of Okun's law: when activity picks up, unemployment falls.
 
-`change in unemployment = pull toward the long-run level + inflation_sensitivity * change in inflation + random shock`
+Both terms read the moves already simulated on the same path, so the variables stay consistent scenario by scenario.
 
-### How It Links to Inflation
-
-Each unemployment entry is paired with one inflation entry through `inflation_name`. During the simulation, the unemployment step reads that inflation factor's simulated move for the same step, so the two stay consistent path by path. The calibration fits both effects together in one regression of each period's change in unemployment on the previous level and the same period's change in inflation, with the two series matched by date.
-
-Calibrated on US data from 2000 onward, unemployment started at 4.27% and was pulled toward 5.67% with a half-life of about 1.3 years. The fitted `inflation_sensitivity` was -0.34: a one-point rise in inflation over a step went with roughly a third of a point fall in unemployment, as the Phillips curve expects.
-
-An unemployment entry has no `period` of its own. It always uses its paired inflation entry's period, so the two series share one frequency. With `source: gmdb` (for countries outside the OECD), that paired inflation entry must be yearly.
+Calibrated on US data from 2000 onward, unemployment started at 4.27% and was pulled toward 5.67% with a half-life of about 1.3 years. The fitted inflation sensitivity was -0.34: a one-point rise in inflation went with roughly a third of a point fall in unemployment, as the Phillips curve expects.
 
 ```yaml
 unemployment:
   - name: us_unemployment
     country: United States
-    inflation_name: us_inflation  # must match an inflation entry's name
+    inflation_name: us_inflation  # the paired inflation entry
     beliefs:
-      long_run_mean: 0.045        # your own view of the normal rate
+      long_run_mean: 0.045        # your view of the natural rate
 ```
 
-Every factor set needs at least one unemployment entry. In the `defaults` and `countries` shape, `inflation_name` defaults to the same country's inflation factor.
+### Limits
 
-### Limits and When to Override
+- **The Phillips sign is not forced.** The curve has been unstable since the 1970s, and fits reflect that: Brazil, on yearly data, came out slightly positive. Override `inflation_sensitivity` with a belief if that conflicts with your view.
+- **Trends make poor anchors.** German unemployment fell steadily for fifteen years after 2000, and a quarterly fit gave almost no mean reversion and a negative long-run level. Set the level and speed yourself, or use a proxy country: the shipped `core` set uses France for the euro area.
 
-The fitted sign of the Phillips curve is not forced. Brazil, fitted on yearly Global Macro Database data, came out slightly positive. If that conflicts with your view, set `beliefs.inflation_sensitivity`, which may take any sign.
-
-A history with a long one-way trend gives a poor anchor. German unemployment fell steadily for fifteen years after 2000, and a quarterly fit gave a mean reversion speed near zero and a negative long-run mean. In such a case, set `beliefs.long_run_mean` and `beliefs.mean_reversion_speed` yourself, or use another country as a proxy: the shipped `core` factor set uses France for the euro area for this reason.
-
-The full reference is on the [Unemployment](/projects/financescenarios/docs/reference/unemployment) page.
+Full reference: [Unemployment](/projects/financescenarios/docs/reference/unemployment).
 
 ## The Leading Indicator and the Business Cycle
 
-The leading indicator gives the model an explicit business cycle, so that other factors can move with booms and slowdowns instead of only being correlated with each other.
-
-The factor is the OECD Composite Leading Indicator, an index designed to turn ahead of the economy. The OECD publishes it already detrended and scaled to swing around a long-run average of 100, so mean reversion holds largely by construction. Finance Scenarios models it with the same mean-reverting process as default inflation, with an optional GARCH volatility. The data are monthly, without an API key, and cover about 22 countries and country groups, fewer than most OECD series. A quarterly or yearly `period` averages the monthly readings.
+The leading indicator gives the model an explicit business cycle, so other factors move with booms and slowdowns, not only through average correlations. It is the OECD Composite Leading Indicator, designed to turn ahead of the economy, published detrended around 100. Mean reversion holds largely by construction, so it uses the same Ornstein-Uhlenbeck process as default inflation. It covers about 22 countries and country groups.
 
 ```yaml
 leading_indicator:
   enabled: true
   country: United States
-  period: monthly
 ```
 
-On its own, the indicator is one more correlated factor.
+### Conditioning on the Cycle
 
-### Business-Cycle Conditioning
+On its own the indicator is one more correlated factor. It earns its place when other factors condition on it. For interest rates, inflation, real estate, credit spreads, commodities and dividend yields, the step-to-step change in the indicator enters the drift:
 
-The indicator becomes more useful when other factors condition on it. Setting `condition_on_business_cycle: true` on an interest rate, inflation, real estate, credit, commodity or dividend yield entry adds a term on the indicator's step-to-step change:
+$$
+dX_t = \kappa(\mu - X_t)\,dt + \beta\,dL_t + \sigma\,dW_t
+$$
 
-`change in factor = pull toward its long-run level + sensitivity * change in leading indicator + random shock`
+The sensitivity $$\beta$$ is fitted from history. When a simulated path turns down, spreads widen and rates fall on that path, so recessions look like recessions across asset classes at the same time.
 
-The sensitivity is fitted from history. Use it when you want, for example, credit spreads to widen and rates to fall as the cycle turns down, in a way that follows the simulated cycle rather than only the average correlation.
+Two factors use the cycle differently:
 
-The rules:
+- **Unemployment** adds it as a second term next to inflation (the $$\gamma$$ term above).
+- **Equities** have no drift to extend. Instead the indicator's level changes the chance of switching between calm and crisis regimes, the time-varying transition probabilities of [Filardo (1994)](https://doi.org/10.1080/07350015.1994.10524545){:target="_blank"}. See [markets](/projects/financescenarios/docs/markets).
 
-- It requires `leading_indicator.enabled: true`.
-- The conditioned entry is calibrated at `leading_indicator.period`, so the two series line up by date. That period must be one the factor supports: real estate only works at quarterly or yearly, so the default monthly indicator cannot condition it.
-- It cannot be combined with GARCH volatility on the same factor, and a conditioned entry is used as fitted, without beliefs.
-
-Two factors work differently:
-
-- **Unemployment** adds the indicator as a second term next to its inflation term, so the fit estimates both sensitivities at once. Here `leading_indicator.period` must equal the paired inflation entry's period.
-- **Equities** have no drift term to extend, so the indicator's level instead changes the chance of switching between calm and crisis regimes, the time-varying transition probabilities of [Filardo (1994)](https://doi.org/10.1080/07350015.1994.10524545){:target="_blank"}. See [markets](/projects/financescenarios/docs/markets).
-
-The full reference is on the [LeadingIndicator](/projects/financescenarios/docs/reference/leading-indicator) page.
+A conditioned factor is fitted at the indicator's frequency, is used as fitted (no beliefs) and has constant volatility. Full reference: [LeadingIndicator](/projects/financescenarios/docs/reference/leading-indicator).
 
 ## Mortality and Longevity
 
-Longevity risk is the risk that people live longer than a pension fund or annuity provider expected. Mortality has fallen for decades, but not at a fixed pace, and that uncertain trend is what this factor captures.
+Longevity risk is the risk that people live longer than a pension fund or annuity provider expected. Mortality has fallen for decades, but not at a steady pace, and that uncertain trend is what this factor captures.
 
 ### The Cairns-Blake-Dowd Model
 
-Finance Scenarios uses the two-factor model of [Cairns, Blake and Dowd (2006)](https://doi.org/10.1111/j.1539-6975.2006.00195.x){:target="_blank"}, often called CBD. Each calendar year, the one-year probability of death at each age is described by two numbers:
+Finance Scenarios uses the two-factor model of [Cairns, Blake and Dowd (2006)](https://doi.org/10.1111/j.1539-6975.2006.00195.x){:target="_blank"}, often called CBD:
 
-- **Level** (`kappa1`): moves mortality up or down at every age alike.
-- **Age slope** (`kappa2`): how steeply mortality rises with age. A higher slope means older ages move more than younger ones.
+$$
+\operatorname{logit} q(x,t) = \kappa_1(t) + \kappa_2(t)\,(x - \bar{x})
+$$
 
-In formula terms, `logit(q) = kappa1 + kappa2 * (age - mean_age)`, where `q` is the one-year probability of death and `mean_age` is the middle of the fitted age range. The two factors are simulated as `mortality_level` and `mortality_slope`, linked to rates, equities and the rest through the correlation matrix.
+Here $$q(x,t)$$ is the one-year probability of death at age $$x$$ in year $$t$$, and $$\bar{x}$$ the middle of the fitted age range. $$\kappa_1$$ is the level, moving mortality at every age alike. $$\kappa_2$$ is the age slope: a higher slope means older ages move more than younger ones. Both are simulated, and correlated with rates, equities and the rest.
 
-Unlike the other factors on this page, the two do not revert to a normal level. Each is a random walk with drift, as in the CBD paper: mortality improvement is a sustained trend over decades, and the drift carries that trend forward with realistic surprises around it.
+Unlike the other factors on this page, $$\kappa_1$$ and $$\kappa_2$$ do not revert. Each is a random walk with drift, as in the paper:
 
-As an example, a fit on 40 years (1985 to 2024) of Dutch death probabilities at ages 60 to 84 gave a level drift of -0.0153. That means death rates fall by roughly 1.5% a year at every age. A 72-year-old in 2024 had a 1.9% chance of dying within the year, each extra year of age raised that by about 12%, and a 65-year-old's 0.89% drifts to about 0.75% in ten years.
+$$
+\kappa_i(t+1) = \kappa_i(t) + \mu_i + \sigma_i\,z_i(t)
+$$
 
-### Getting the Data
+Mortality improvement is a sustained trend over decades. The drift $$\mu_i$$ carries it forward, and the shocks put realistic uncertainty around it that widens with the horizon, which is what drives a longevity capital charge.
 
-Mortality is opt-in and stays off in the shipped factor sets. There are two ways to feed it:
+A fit on 40 years (1985 to 2024) of Dutch population death probabilities at ages 60 to 84 gave a level drift of -0.0153: death rates fall roughly 1.5% a year at every age. A 72-year-old in 2024 had a 1.9% chance of dying within the year, each extra year of age raised that by about 12%, and a 65-year-old's 0.89% drifts to about 0.75% in ten years.
 
-**Eurostat.** With `source: eurostat`, the life table of a European Economic Area country is fetched through the Finance Toolkit, yearly from 1960 for most countries, with no API key:
+### Data
+
+Mortality is opt-in. Life tables come from Eurostat (European countries, yearly, from 1960 for most) or from your own table, for example from the [Human Mortality Database](https://www.mortality.org/){:target="_blank"} or a national statistics office. The default ages 60 to 84 are deliberate: the logit-linear shape is built for older ages, and many countries grouped "85 and over" until the 2010s.
 
 ```yaml
 mortality:
   enabled: true
   source: eurostat
   country: Netherlands
-  sex: total      # total, male or female
+  sex: total
   min_age: 60
   max_age: 84
+  beliefs:
+    kappa1:
+      drift: -0.02  # death rates fall about 2% a year at every age
 ```
 
-The default age range of 60 to 84 is deliberate. The model's straight-line shape is built for older ages, and many countries published single ages only up to an "85 and over" group until the 2010s (Germany until 2013), so a higher `max_age` keeps only recent years. The maximum is 94.
-
-**Your own table.** With `source: supplied`, the default, you pass a historical table yourself, for any country: from the [Human Mortality Database](https://www.mortality.org/){:target="_blank"}, a Society of Actuaries table or a national statistics office.
-
-```python
-from financescenarios import Scenarios
-
-scenarios = Scenarios.from_profiles("default", "my_factor_set")  # mortality.enabled: true
-result = scenarios.simulate(
-    mortality_rates=mortality_rates,  # Polars DataFrame: one row per year, one column per age
-    mortality_ages=[60.0, 65.0, 70.0, 75.0, 80.0, 85.0],
-    mortality_years=list(range(1985, 2025)),  # optional: the year of each row
-)
-```
-
-Pass one-year death probabilities (`qx` in the Human Mortality Database), not central death rates (`Mx`). Both look plausible, but `Mx` biases the fit by about 2% at age 90, which matters for a pension liability. If you leave out `mortality_years`, the last row is assumed to be the most recent completed year.
-
-### Reading a Death Rate Back
-
-To turn simulated paths into a death rate at a given age, use `cbd_mortality_rate` with the fitted mean age:
+With your own table, pass one-year death probabilities ($$q_x$$), not central death rates ($$m_x$$). Both look plausible, but $$m_x$$ biases the fit by about 2% at age 90, which matters for a pension liability. To read a death rate at a given age back from the simulated factors:
 
 ```python
 from financescenarios.factors.mortality.mortality_model import cbd_mortality_rate
 
 q_70 = cbd_mortality_rate(
-    result["mortality_level"],
-    result["mortality_slope"],
-    age=70,
-    mean_age=scenarios.mortality.params.mean_age,
-)
+    result["mortality_level"], result["mortality_slope"],
+    age=70, mean_age=scenarios.mortality.params.mean_age,
+)  # one death probability per scenario and year
 ```
 
-It returns one death probability per scenario and step.
+### Limits
 
-### Beliefs and Limits
-
-You can override each factor's drift and volatility, in logit units per year:
-
-```yaml
-mortality:
-  beliefs:
-    kappa1:
-      drift: -0.02     # death rates fall about 2% a year at every age
-      volatility: null # null keeps the fitted value
-```
-
-The limits:
-
-- Cohort effects, where one generation's mortality improves differently from its neighbors, are not modeled, and there is no Lee-Carter alternative.
-- The straight-line shape holds locally. Reading a death rate far outside the fitted ages, such as age 30 from a 60 to 89 fit, is not supported by the calibration.
-- With only two ages the fit is perfect by construction and tells you nothing about fit quality. The CBD paper itself fits ages 60 to 89.
+- No cohort effects (one generation improving differently from its neighbors), and no Lee-Carter alternative.
+- The straight-line shape holds locally: a death rate far outside the fitted ages, such as age 30 from a 60 to 89 fit, is not supported.
+- With only two ages the fit is perfect by construction and says nothing about fit quality. The CBD paper fits ages 60 to 89.
 - Mortality data are yearly, so with a short table its correlation with the other factors rests on few points.
 
-The full reference is on the [Mortality](/projects/financescenarios/docs/reference/mortality) page.
+Full reference: [Mortality](/projects/financescenarios/docs/reference/mortality).
 
 ## References
 

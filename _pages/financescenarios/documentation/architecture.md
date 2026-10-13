@@ -1,8 +1,8 @@
 ---
-title: Architecture
-seo_title: Architecture Documentation – Finance Scenarios
-excerpt: "The code is split into three kinds of file so each can be read and tested on its own. This page shows which folder does what and the order a run goes through, from settings to simulated scenarios."
-description: "The Finance Scenarios module layout (model, controller and view files) and the data flow from configuration to simulated scenarios."
+title: How a Run Is Built
+seo_title: How a Run Is Built – Finance Scenarios
+excerpt: "How a scenario set is built: history for every factor, a calibration per factor, the dependence between them through the economic cascade and a correlation matrix, a correlated simulation, and the outputs."
+description: "How Finance Scenarios builds a scenario set: data, calibration of each factor, correlations and the economic cascade, correlated simulation and outputs."
 author_profile: false
 permalink: /projects/financescenarios/docs/architecture
 classes: wide-sidebar
@@ -16,100 +16,80 @@ sidebar:
 
 {% include mermaid.html %}
 
-The code is split into three kinds of file so each can be read and tested on its own: one kind does the maths, one fetches data and wires the steps together, and one draws the charts. This page shows which folder does what and the order a run goes through, from settings to simulated scenarios.
-
-Finance Scenarios separates pure calculation from orchestration from presentation. Every module follows one of four file types:
-
-- **`_model.py`**: pure functions and data schemas. No I/O, no dependency on FinanceToolkit, with no exceptions: reading a config off disk lives in `config_controller.py`, and the metric/regression functions that delegate their maths to FinanceToolkit live in `metrics_controller.py`/`factor_exposure_controller.py`, leaving their `_model.py` files holding the result schemas. Given the same inputs, a model function always produces the same output. This is where the mathematics lives.
-- **`_controller.py`**: orchestration. Pulls data from a FinanceToolkit `Toolkit` instance, calls the matching model functions, and exposes the result. This is where FinanceToolkit is called. Controllers import `Toolkit` for type hints only (under `TYPE_CHECKING`) and import FinanceToolkit at call time where they build one, so `import financescenarios` and an offline replay of a saved calibration never load it (2.8 s and 205 MB instead of 3.7 s and 254 MB).
-- **`_view.py`**: presentation. Pure matplotlib rendering of what a model object already holds: no calculation beyond percentiles, no I/O, no FinanceToolkit. No `_model.py`/`_controller.py` imports a `_view.py` at module level; the `plot_*` convenience methods on `ScenarioSet`/`CalibrationResult` delegate via a call-time import, so matplotlib loads only when a plot is actually asked for. `engine/engine_view.py` hosts the shared chart style; see [plotting](/projects/financescenarios/docs/plotting).
-- **`helpers.py`**: small utilities shared across modules (random number generation, calendar date construction, logging setup).
-
-Each folder holds exactly one `_controller.py`, named after the folder itself, the same layout FinanceToolkit uses. A second controller means a second concern and gets its own folder (`portfolio/factor_exposure/`, `validation/naic_goes/`); the package root's own entry point (`scenarios_controller.py`) is the only controller not named after its folder, mirroring FinanceToolkit's root `toolkit_controller.py`. Every module in `financescenarios/` carries one of the three suffixes; `helpers.py` and `__init__.py` are the only exceptions, and there are no others: a module that orchestrates, reads or writes anything is a `_controller.py` even when it isn't tied to one factor (`run_io_controller.py`, `profiles_controller.py`, `validation/cache_controller.py`).
-
-## Module map
-
-Factor packages live under `financescenarios/factors/`, jointly-fit model families (`knw`, `knw_sv`, `knw_sv_q`) under `financescenarios/models/`; the bare folder names below are used for brevity.
-
-| Module | Responsibility |
-|---|---|
-| `scenarios_controller.py` | `Scenarios`, the root controller. Wires calibration, dependence and the engine together into one `.simulate()` call, and `build_toolkit()`, which constructs the embedded FinanceToolkit `Toolkit` instance from `config.toolkit`. |
-| `config_controller.py` | `load_config()`/`load_profiles()`, the only place a config is read off disk. |
-| `config_model.py` | `ScenariosConfig` and its nested settings, loaded from a named settings profile (run settings, `settings/<id>.yaml`) merged with a named factor-set profile (factor definitions, `factor-sets/<id>.yaml`) via `load_profiles()` (or two explicit file paths via `load_config()`). |
-| `profiles_controller.py` | Generic `extends`-chain-walking and deep-merge machinery shared by every named-preset directory (`settings/`, `factor-sets/`, `regimes/`, `portfolios/`; see below), plus `resolve_directory()`, which falls back to the copy of those presets bundled in the package when no such directory exists where the caller is running. |
-| `calibration/calibration_controller.py` | `Calibration`, dispatches calibration across all four factors and applies belief overrides. |
-| `calibration/calibration_model.py` | `fit_ou_process`, the Ornstein-Uhlenbeck fitter shared by interest rates and inflation. |
-| `interest_rates/` | `InterestRates` controller and the Hull-White / CIR short-rate model. |
-| `inflation/` | `Inflation` controller and the inflation step function. |
-| `equities/` | `Equities` controller and the regime-switching lognormal equity model. |
-| `unemployment/` | `Unemployment` controller and the Phillips-curve-augmented mean-reverting unemployment model. |
-| `term_structure/` | `TermStructure` controller and the opt-in Nelson-Siegel dynamic yield curve model (`rate_level`/`rate_slope`/`rate_curvature`). |
-| `real_estate/` | `RealEstate` controller (opt-in). No dedicated model file; calibrates via `calibration_model.fit_ou_process`/`step_ou_process` directly. |
-| `credit/` | `Credit` controller (opt-in). Same as `real_estate/`: no dedicated model file, reuses `calibration_model` directly. |
-| `leading_indicator/` | `LeadingIndicator` controller (opt-in). Same as `real_estate/`. |
-| `fx/` | `FX` controller and the opt-in geometric Brownian motion FX model (`fx_model.py`). |
-| `commodities/` | `Commodities` controller and the opt-in Schwartz (1997) mean-reverting log-price commodity model (`commodities_model.py`). |
-| `dividend_yield/` | `DividendYield` controller and the opt-in Ahlgrim/D'Arcy/Gorvett (2005) mean-reverting log-yield model (`dividend_yield_model.py`), derived from `Close`/`Dividends` data no other factor already fetches for this purpose. |
-| `mortality/` | `Mortality` controller and the opt-in Cairns-Blake-Dowd two-factor stochastic mortality model (`mortality_level`/`mortality_slope`, `mortality_model.py`). Its mortality-rate surface is either supplied by the caller or, with `source: eurostat`, a European life table fetched through the Finance Toolkit. |
-| `dependence/` | `Dependence` controller, builds and repairs the cross-factor correlation matrix. |
-| `portfolio/` | `Portfolio` controller and the allocation math (`portfolio_model.py`), plus named presets (`portfolio_preset_*.py`, `portfolios/<id>.yaml`) and the relative-performance read (`benchmark_model.py`). A second, independent entry point next to `Scenarios`: it reads an already-simulated `ScenarioSet` (from `simulate()`, from `run_io_controller.read_run()`, or hand-built) and never calibrates or simulates anything. |
-| `regimes/` | `Regime` schema and `RegimeLibrary`: named belief overrides and/or post-simulation narrative filters, applied through `Scenarios(regime=...)`. |
-| `solvency/` | Solvency II and actuarial reads over a `ScenarioSet` (`solvency_model.py`: `martingale_test`, `zero_coupon_curve`, `best_estimate`, `solvency_capital_requirement`) and the actuarial scenario-file export plus the one-table `Solvency` report over a real-world and a risk-neutral run (`solvency_controller.py`: `write_scenario_files`, `Solvency`). Downstream and non-mutating, like `portfolio/`; see `financescenarios.solvency`. |
-| `reporting/` | `Reporting` controller (opt-in read layer). Converts one already-simulated level-type factor's native-currency path into `config.reporting.reporting_currency`; a downstream, non-mutating view on a `ScenarioSet`, not part of the calibrate/simulate pipeline itself. |
-| `engine/` | `ScenarioEngine` controller and the Monte Carlo core: time grid, correlated shocks, the stepping loop, and `ScenarioSet`. |
-| `helpers.py` | `seed_random_generator`, `build_date_grid`, `setup_logger`, `get_logger`. |
-
-## Data flow
-
-A simulation run moves through four stages: calibration, dependence, regime pre-simulation, and the stepping loop.
+A scenario set is built in five steps: collect history, calibrate each factor on its own, estimate how the factors depend on each other, simulate them jointly, and read the result. Each step can be inspected or overridden on its own, so you can see where a number comes from.
 
 {% raw %}
 <div class="mermaid">
-flowchart TD
-    config["settings profile + factor-set profile"] --> toolkit["build_toolkit: embedded FinanceToolkit Toolkit instance"]
-    toolkit --> calibration[Calibration dispatcher]
-    calibration --> interestrates[InterestRates controller]
-    calibration --> inflation[Inflation controller]
-    calibration --> equities[Equities controller]
-    calibration --> unemployment[Unemployment controller]
-    calibration -.->|if yield_curve.enabled| termstructure[TermStructure controller]
-    calibration -.->|if enabled| optional[RealEstate / Credit / LeadingIndicator / FX controllers]
-    calibration -.->|if mortality.enabled, supplied or Eurostat data| mortality[Mortality controller]
-    interestrates --> dependence[Dependence controller]
-    inflation --> dependence
-    equities --> dependence
-    unemployment --> dependence
-    termstructure -.-> dependence
-    optional -.-> dependence
-    mortality -.-> dependence
-    dependence --> engine[ScenarioEngine]
-    equities --> regimepath[Pre-simulated equity regime path]
-    regimepath --> engine
-    engine --> scenarioset[ScenarioSet]
+flowchart LR
+    data["Historical data<br/>per factor"] --> calibration["Calibration<br/>one model per factor"]
+    beliefs["Your beliefs<br/>long-run levels, anchors"] -.-> calibration
+    calibration --> dependence["Dependence<br/>cascade + correlations"]
+    dependence --> simulation["Correlated simulation<br/>thousands of paths"]
+    simulation --> outputs["Outputs<br/>fan charts, portfolios, SCR"]
 </div>
 {% endraw %}
 
-`Scenarios.simulate()` in `scenarios_controller.py` runs this sequence:
+## 1. Data
 
-1. `Calibration.calibrate_all(config)` calibrates every entry of the four always-on multi-instance MVP factors (`interest_rates`, `inflation`, `equities`, `unemployment`; each a list, one calibration per configured entry), plus every opt-in factor that's configured (`yield_curve.enabled`, `real_estate.enabled`, every `credit`/`fx`/`commodities`/`dividend_yield` list entry, `leading_indicator.enabled`, `mortality.enabled` with caller-supplied `mortality_rates`/`mortality_ages` or `source: eurostat`), and applies any belief overrides from `config`. A factor whose fit fails, and any factor depending on it, is left out and listed in `calibration_failures` rather than stopping the other factors' calibration.
-2. Each factor controller caches the historical series it fetched during calibration (its `.changes`/`.changes(name)` accessor), and `Dependence.calibrate()` reuses those series directly, instead of triggering a second FinanceToolkit fetch. Since the factors are calibrated at different sampling frequencies, the series are resampled to the coarsest configured period and inner-joined on calendar date (`align_factor_series_by_date`, not a positional "truncate to the shortest series" match) before the correlation matrix is built (then shrunk toward a constant-correlation target, Ledoit & Wolf 2004, before PSD repair; see `Dependence`).
-3. Each equity entry's own regime path (which of the two, or more, regimes is active at each time step, for each simulation) is pre-simulated once per entry, each with its own RNG stream, independently of the correlated shocks used for the continuous part of the model.
-4. `ScenarioEngine.simulate()` generates the correlated shocks, builds the time grid, and runs the stepping loop that advances every factor one time step at a time, in dependency order. Each factor's step function also receives the in-progress `paths` dict for that step, letting a factor simulated later in the order (e.g. an unemployment entry) read another factor's already-computed value for that same step (e.g. its paired inflation entry's move, the Phillips-curve input); see [simulation-engine](/projects/financescenarios/docs/simulation-engine). Most step functions ignore this and every trailing argument beyond `params`; `scenarios_controller.py`'s `_make_simple_step` helper wraps that common case once.
+Every factor is fitted on its own history, fetched through the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit): OECD and Global Macro Database series and market yields for rates, inflation and unemployment, market prices for equities, currencies and commodities, ICE BofA and Moody's indices for credit. Each series keeps its natural frequency (monthly, quarterly or yearly).
 
-The always-on factors form a directed acyclic graph (a set of dependencies with no cycles), built fully dynamically in `Scenarios.calibrate()` (no fixed factor-name constant, since every entry's name is user-configured):
+How much history to use is a modeling choice. Recent decades say a lot about today's markets but little about how far rates can move, so the default factor set fits rate dynamics on OECD data since 1950. Equities, rates and inflation can also be fitted on centuries of data (Shiller from 1871, the Bank of England's millennium dataset, Jordà-Schularick-Taylor from 1870); see [configuration](/projects/financescenarios/docs/configuration).
 
-- Each inflation entry has no dependencies.
-- Each interest-rate entry depends on every configured inflation entry, and each equity entry depends on every configured interest-rate and inflation entry. Both are cosmetic ordering edges only, since neither step function actually reads another factor's simulated value (the cascade is expressed through the correlation matrix, not sequential value-passing).
-- Each unemployment entry has exactly one *real* dependency, on its own paired inflation entry (`UnemploymentConfig.inflation_name`), whose step-to-step change its Phillips-curve term actually reads.
+## 2. Calibration
 
-This is resolved into a valid simulation order by a topological sort, described in [simulation-engine](/projects/financescenarios/docs/simulation-engine).
+Each factor gets a model suited to how it behaves, and that model's parameters are estimated from its history:
 
-Every opt-in factor (the three yield curve factors, `real_estate`, each `credit`/`fx`/`commodities`/`dividend_yield` entry, `leading_indicator`, `mortality_level`/`mortality_slope`) has no cascade dependency of its own: only the correlation matrix links each to the rest, matching how Diebold-Li's three-factor yield curve system is specified (see `TermStructure`), how Ahlgrim/D'Arcy/Gorvett found real estate's inflation-dependence not significant (see `RealEstate`), and how Cairns-Blake-Dowd specify mortality improvement as a standalone bivariate random walk with no dependence on any financial-market factor (see `Mortality`).
+- **Mean-reverting factors** (rates, inflation, spreads, unemployment, house prices) are fitted as an Ornstein-Uhlenbeck process: a regression of each change on the current level gives the long-run level, the speed of reversion and the volatility.
+- **Equities** are fitted as a regime-switching lognormal model ([Hardy, 2001](https://doi.org/10.1080/10920277.2001.10595984){:target="_blank"}): a calm and a crisis regime, each with its own return and volatility, and the probabilities of switching between them.
+- **Other factors** follow their own published models (Nelson-Siegel for the curve, Schwartz for commodities, Cairns-Blake-Dowd for mortality); the [guides](/projects/financescenarios/docs) cover each.
 
-## A library, driven directly
+A fit is only as good as its data, so the fitted values are a starting point, not a verdict. Your own views override them where you set them: a central bank's inflation target as the long-run level, or EIOPA's risk-free curve as the anchor for long-run rates (as in the default factor set). A factor whose fit fails, for example because a short window shows no mean reversion, is left out together with every factor that depends on it, and the reason is recorded.
 
-Finance Scenarios is a library: one entry point drives the `ScenariosConfig` in, `ScenarioSet` out contract: `financescenarios/` imported directly (`Scenarios.from_profiles(...)`, `Scenarios.from_config(...)`, `Portfolio`). Scripting and CI use go through the same imports. The one command line, `python -m financescenarios.release`, is a thin wrapper over `publish_calibration()` for the yearly release pipeline, not a second way to configure a run.
+## 3. Dependence
 
-A full result can be written to disk via `financescenarios/run_io/run_io_controller.py` (`write_run()`, or `Scenarios.save()`, which supplies the config, regime and calibration itself and returns the run's folder) rather than held in memory, so a written run can be re-read later (`read_run()` + `Portfolio.from_preset()`) without resimulating.
+Fitted one by one, the factors would move independently, and a scenario could combine an equity crash with tightening credit spreads. Two mechanisms link them, following [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf).
 
-`helpers.track_progress`/`count_calibration_stages` expose stage-by-stage calibration progress to any caller that wants to render it (`helpers.get_progress(token)`), which is what turns an indefinite wait into a countable one. Calibration is live network round-trips to FinanceToolkit per configured factor, so a worldwide default config takes low minutes, not milliseconds.
+**The economic cascade.** Where economic theory says one variable drives another, the driver's simulated path enters the other's equation directly:
+
+- Unemployment reacts to the change in its paired inflation rate (a Phillips curve).
+- In the Wilkie and KNW models, interest rates follow inflation.
+- Under interest-rate parity, an exchange rate drifts with the rate gap between its two currencies.
+- Wilkie-style dividend growth follows inflation, and equity prices can be derived from dividends.
+- With business-cycle conditioning, the leading indicator drives inflation, rates, spreads and the chance of an equity crisis.
+
+**The correlation matrix.** Everything else is linked through the correlation of the factors' random shocks. It is estimated from the same historical changes each factor was fitted on (changes in a rate, log returns of a price), summed up to a common frequency and matched on calendar date. Each pair uses the dates those two factors share, so a short series only weakens its own correlations.
+
+Sample correlations between dozens of factors are noisy. With the shipped settings they are shrunk toward zero by an amount chosen from the data ([Schäfer and Strimmer, 2005](https://doi.org/10.2202/1544-6115.1175)): pairs estimated from few observations pull harder. Because each pair may use a different window, the result is then moved to the nearest valid correlation matrix ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}). Details are in [simulation engine](/projects/financescenarios/docs/simulation-engine#how-the-correlations-are-estimated).
+
+Factors with no theoretical driver, such as the yield-curve factors, real estate, commodities and mortality, are linked only through correlations. That follows their source papers: Diebold and Li specify the curve factors as their own system, Ahlgrim, D'Arcy and Gorvett found real estate's dependence on inflation not significant, and Cairns, Blake and Dowd model mortality improvement independently of markets.
+
+The matrix is constant over the horizon and captures linear co-movement. Two additions address the tails: equity markets can share their crisis regime, so they enter and leave crises together, and Student-t shocks make extreme moves coincide more often than a normal distribution allows.
+
+## 4. Correlated Simulation
+
+The engine draws correlated random shocks for every factor, step and scenario, and steps every factor forward in cascade order, so a driver is always simulated before the factors that read it. Equity regimes are drawn first, separately from the continuous shocks. [Simulation engine](/projects/financescenarios/docs/simulation-engine) covers the maths: how shocks are correlated, how each process is stepped exactly, antithetic variates and Monte Carlo error.
+
+## 5. Outputs
+
+The result is a scenario set: every factor's paths, reported in one consistent unit (rates as annualized decimals, prices as annualized returns since the start; see [units](/projects/financescenarios/docs/units)). From there:
+
+- [Regimes](/projects/financescenarios/docs/regimes) keep the scenarios that tell a stress story, such as stagflation.
+- [Portfolio](/projects/financescenarios/docs/portfolio) turns the paths into the value of an investment mix with cashflows and rebalancing.
+- [Solvency](/projects/financescenarios/docs/solvency) values liabilities on a risk-neutral run and computes the SCR.
+- Prices are converted into one reporting currency after the simulation, without touching the calibration or correlations.
+
+A calibration can be saved and replayed, so the same fitted model can be simulated again with more scenarios, another seed or a stress regime, without downloading anything.
+
+```python
+from financescenarios import Scenarios
+
+scenarios = Scenarios.from_profiles(settings="default", factor_set="us_only")
+
+calibration = scenarios.calibrate()            # steps 1-3: data, fit, dependence
+calibration.save("calibration.json")
+
+result = scenarios.simulate(calibration=calibration, n_simulations=10_000)   # step 4
+result.describe()                                                            # step 5
+```
+
+The code follows the same split: pure calculation (the models and their maths), orchestration (fetching data and running the steps in order) and presentation (charts) live in separate files, so each model can be read and tested on its own.
