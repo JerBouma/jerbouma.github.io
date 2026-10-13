@@ -20,8 +20,6 @@ Ask an AI assistant for Europe's mid and small-cap drinks makers and you get a l
 
 So I gave the assistant my own database instead. The [Finance Database MCP server](/projects/financedatabase/mcp) lets Claude, ChatGPT or Copilot search the [Finance Database](/projects/financedatabase), 300,000+ stocks, ETFs, indices and (crypto)currencies, by name or by ISIN, CUSIP or FIGI. It is free and hosted, and it needs no API key: add one URL as a connector and ask. What makes it useful is the classification. Every company sits in one of 11 sectors, 25 industry groups and 75 industries, and every ETF has a category and an issuer. That turns "Europe's mid and small-cap drinks makers" into one filter instead of a guess.
 
-Most of the work went into making the data trustworthy. Every equity and ETF ISIN is checked against OpenFIGI, more than 40,000 missing ISINs were filled, and a weekly update pulls new listings straight from the exchanges' own listing directories.
-
 It pairs well with the [Finance Toolkit MCP server](/projects/financetoolkit/mcp): the Finance Database finds the peer group, the Finance Toolkit analyzes it, with ratios and what drives them, valuations, correlations, drawdowns and currency effects. For the drinks makers that turns a list into an answer: Kofola, a Czech soft drinks maker few investors outside Central Europe follow, earns the highest return on equity in the group, mostly with debt, while Rémy Cointreau lost 69% since 2021. This article connects both servers in a few minutes and works through six questions that do exactly that, search first and analysis second.
 
 <div class="ca-strip">
