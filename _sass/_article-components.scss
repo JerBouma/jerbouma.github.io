@@ -207,12 +207,14 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
-    .mcp-show__cell { min-width: 0; }
+    // cells in a row stretch to the same height and each chart grows to fill
+    // its card, so side-by-side charts line up whatever their type or title length
+    .mcp-show__cell { min-width: 0; display: flex; flex-direction: column; }
     .mcp-show__cell--wide { grid-column: 1 / -1; }
     // a chart only for the Medium image of the grid, which is always an even 2 by n
     .mcp-show__cell--medium { display: none; }
-    .ft-chart { margin: 0; }
-    .ft-chart__canvas, .ft-chart__loading { height: 320px; }
+    .ft-chart { margin: 0; flex: 1 1 auto; display: flex; flex-direction: column; }
+    .ft-chart__canvas, .ft-chart__loading { height: 320px; flex: 1 1 auto; }
     @media (max-width: 900px) { grid-template-columns: 1fr; }
   }
 
@@ -234,7 +236,7 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
   // width, plus the charts kept for Medium only
   .medium-export & .mcp-show__grid {
     .mcp-show__cell--wide { grid-column: auto; }
-    .mcp-show__cell--medium { display: block; }
+    .mcp-show__cell--medium { display: flex; }
   }
   .mcp-show__verdict {
     margin: 14px 0 0;
