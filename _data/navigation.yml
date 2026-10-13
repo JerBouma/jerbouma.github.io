@@ -1731,6 +1731,8 @@ financescenarios-docs:
       url: /projects/financescenarios/docs/reference/solvency
     - title: "Configuration and Presets"
       url: /projects/financescenarios/docs/reference/configuration
+    - title: "Configuration Classes"
+      url: /projects/financescenarios/docs/reference/configuration-classes
     - title: "Regimes and Stress Tests"
       url: /projects/financescenarios/docs/reference/regimes
     - title: "Run Files and Releases"

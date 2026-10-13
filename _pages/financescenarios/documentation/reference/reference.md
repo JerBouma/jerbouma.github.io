@@ -27,6 +27,7 @@ How a run is put together, the configuration keys and the units every result is 
 | [Portfolio](/projects/financescenarios/docs/reference/portfolio) | Read a finished run through an investment portfolio: allocations, cashflows, glidepaths, risk metrics and factor exposure. |
 | [Solvency](/projects/financescenarios/docs/reference/solvency) | Solvency II on a real-world and a risk-neutral run: the martingale test, best estimate, SCR and EIOPA curves. |
 | [Configuration and Presets](/projects/financescenarios/docs/reference/configuration) | Load settings, factor sets and presets, list every named preset and scaffold a project. |
+| [Configuration Classes](/projects/financescenarios/docs/reference/configuration-classes) | The typed settings behind each factor block, the engine and the data download, plus beliefs, belief paths and shocks. |
 | [Regimes and Stress Tests](/projects/financescenarios/docs/reference/regimes) | Named stress narratives and the official Federal Reserve and ESRB stress scenarios as regimes. |
 | [Run Files and Releases](/projects/financescenarios/docs/reference/runs-and-releases) | Write and read saved runs, and publish, load and simulate versioned calibration releases. |
 | [History and Metrics](/projects/financescenarios/docs/reference/history-and-metrics) | Fetch the realized history behind a run, turn it into a backtest and compute factor and price metrics. |

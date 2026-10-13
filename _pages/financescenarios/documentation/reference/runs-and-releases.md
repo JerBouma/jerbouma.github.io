@@ -37,37 +37,49 @@ write_run(
 ) -> str
 ```
 
-Write one run's full output to `output_dir/<run_id>/`: `config.yaml` and
-`factors.yaml` (the resolved config that produced this run, split the same
-way `load_config()` reads them: `config.yaml` for `start_date`/`engine`/
-`toolkit`/`reporting` (run settings, not factor definitions, since swapping
-factor-sets shouldn't drag `reporting_currency` along with it),
-`factors.yaml` for every factor definition), one `<factor>.<format>`
-file per simulated factor (via `ScenarioSet.to_dataframe()`), and a
-`manifest.json` (run_id, creation time, regime, factor names and their
-categories, n_simulations, seed, warnings) cheap enough to read for listing
-runs without opening any factor file.
+Save a run to disk, so it can be read back later without calibrating or simulating again.
+
+Everything goes into one folder, `<output_dir>/<run_id>/`:
+
+- `config.yaml` (run settings: start date, engine, toolkit, reporting) and `factors.yaml` (every factor
+  definition): the configuration that produced the run, split the way `load_config` reads it back.
+- One file per factor, `<factor>.parquet` or `<factor>.csv`, with one row per scenario and one column per date.
+- `manifest.json`: the run id, creation time, regime, factor names and categories, number of scenarios, seed and any
+  warnings, small enough to list many runs without opening a factor file.
+- `calibration.json`, only when `calibration` is given, so the run can be simulated again offline (see
+  `read_run_calibration`).
+
+`Scenarios.save(result)` calls this for you, into "results/".
 
 **Args:**
 
-- <u>result (ScenarioSet):</u> the simulation to persist.
-- <u>config (ScenariosConfig):</u> the resolved config that produced `result` (post regime belief-shaping, if a regime was applied).
-- <u>output_dir (str &#124; Path):</u> the runs directory; a subdirectory named `run_id` is created under it.
-- <u>regime (str &#124; None):</u> the regime name applied, if any, recorded in the manifest for display, purely informational.
-- <u>output_format (str):</u> "csv" or "parquet" (the default), the per-factor file format. Parquet is both smaller on disk (columnar, zstd-compressed by `write_parquet()`'s own default) and faster to read back (`read_run()`), so it's the default for every caller that doesn't explicitly ask for CSV.
-- <u>run_id (str &#124; None):</u> the run's identifier (its subdirectory name). Defaults to a UTC timestamp plus a short random suffix.
-- <u>warnings (list[str] &#124; None):</u> calibration/simulation warnings this run produced (e.g. from `financescenarios.helpers.collect_warnings()` wrapped around the calibrate+simulate call), persisted so a caller reading the run back later (a fresh process, a notebook) still sees them, not just whoever was watching the console when the run happened. Defaults to an empty list, not None, so every run's manifest has a consistent "warnings" key regardless of caller.
-- <u>correlation_fallback_pairs (list[str] &#124; None):</u> 'factor_a/factor_b' pairs the correlation matrix defaulted to 0.0 (assumed uncorrelated) for lack of a reliable overlap; see `Scenarios.correlation_fallback_pairs`/ `CalibrationResult.correlation_fallback_pairs`'s own docstring. Only ever populated for `engine.correlation_method="pairwise"` (the default). Same "always a list, not None, in the manifest" reasoning as `warnings`.
-- <u>calibration_failures (dict[str, str] &#124; None):</u> factor name -> failure reason, for a configured factor whose own calibration raised (or which depended on one that did) and was skipped rather than aborting the whole run; see `Scenarios.calibration_failures`/ `CalibrationResult.calibration_failures`'s own docstring. Same "always a dict, not None, in the manifest" reasoning as `warnings`.
-- <u>calibration (CalibrationResult &#124; None):</u> the calibration this run was simulated from. When given, it's written alongside as `calibration.json`, which makes the run replayable with no network or API key at all: `read_run_calibration()` reads it back for `Scenarios.simulate(calibration=...)`, e.g. to re-run the same fit at a different seed or path count. Omitted by default, since a caller that never intends to replay shouldn't pay for the extra file.
+- <u>result (ScenarioSet):</u> the run to save.
+- <u>config (ScenariosConfig):</u> the configuration that produced it, after any regime beliefs were applied.
+- <u>output_dir (str &#124; Path):</u> the runs folder; the run gets its own subfolder.
+- <u>regime (str &#124; None):</u> the name of the regime applied, recorded for display; None by default.
+- <u>output_format (str):</u> "parquet" (default; smaller and faster to read back) or "csv".
+- <u>run_id (str &#124; None):</u> the run's folder name; a UTC timestamp plus a short random suffix by default.
+- <u>warnings (list[str] &#124; None):</u> warnings the run produced, kept so they can be read back later; none by default.
+- <u>correlation_fallback_pairs (list[str] &#124; None):</u> "factor_a/factor_b" pairs whose correlation was set to 0 for lack of overlapping history; none by default.
+- <u>calibration_failures (dict[str, str] &#124; None):</u> factor name -> why its calibration failed and it was left out; none by default.
+- <u>calibration (CalibrationResult &#124; None):</u> the calibration the run came from, saved as `calibration.json`; not saved by default.
 
 **Returns:**
 
-<u>str:</u> the run_id used (generated if not given).
+<u>str:</u> the run id used.
 
 **Raises:**
 
-- <u>ValueError:</u> if `output_format` is not "parquet" or "csv", or `run_id` is not a plain folder name (a path such as "../x" would write outside `output_dir`).
+- <u>ValueError:</u> if `output_format` is not "parquet" or "csv", or `run_id` is not a plain folder name.
+
+**As an example:**
+
+```python
+from financescenarios import read_run, write_run
+
+run_id = write_run(result, config, "results", calibration=calibration)
+reloaded = read_run(f"results/{run_id}")
+```
 
 ## read_run
 
@@ -75,32 +87,33 @@ runs without opening any factor file.
 read_run(run_dir: str | Path) -> ScenarioSet
 ```
 
-Reconstruct a ScenarioSet from a directory `write_run()` wrote: reads the
-per-factor files back with polars and rebuilds the same paths/dates/
-n_simulations/seed shape, so every ScenarioSet method (`to_dataframe()`,
-`summary_statistics()`, `filter()`, `diagnose()`, ...) works on it exactly
-as it would on the original in-memory result. No calibration or simulation
-happens here, only reading and reshaping already-computed numbers.
+Read a saved run back into a `ScenarioSet`, without calibrating or simulating anything.
 
-`calibration_metadata` is empty on the returned ScenarioSet (it isn't
-persisted), so `diagnose()`, which needs it, isn't usable on a reloaded run.
-`time_grid` round-trips exactly via the manifest, so dt-sensitive readers
-(`cumulative_index()`, `discount_factors()`, a portfolio's rate sleeves)
-compound at the true `time_step`. A run written before the manifest carried
-"time_grid" falls back to a date-derived grid (years elapsed since the
-first date), whose first monthly interval is ~30/365.25 rather than 1/12.
+The run comes back with the same paths, dates, time grid, number of scenarios and seed, so `describe()`,
+`filter()`, `to_dataframe()` and portfolios work on it exactly as on the original. The fitted parameters are not
+stored with the paths, so `diagnose()`, which needs them, does not work on a reloaded run; to simulate again from
+the same fit, use `read_run_calibration`.
 
 **Args:**
 
-- <u>run_dir (str &#124; Path):</u> the run's own directory (`output_dir/<run_id>`).
+- <u>run_dir (str &#124; Path):</u> the run's own folder, `<output_dir>/<run_id>`.
 
 **Returns:**
 
-<u>ScenarioSet:</u> the reloaded simulation.
+<u>ScenarioSet:</u> the reloaded run.
 
 **Raises:**
 
-- <u>FileNotFoundError:</u> if `run_dir` has no `manifest.json` or is missing a factor file the manifest lists.
+- <u>FileNotFoundError:</u> if the folder has no `manifest.json`, or misses a factor file the manifest lists.
+
+**As an example:**
+
+```python
+from financescenarios import read_run
+
+result = read_run("results/20260819T063851Z-7bfdde41")
+result.describe()
+```
 
 ## read_run_calibration
 
@@ -108,21 +121,27 @@ first date), whose first monthly interval is ~30/365.25 rather than 1/12.
 read_run_calibration(run_dir: str | Path) -> 'CalibrationResult | None'
 ```
 
-Read back the calibration a run was simulated from, if `write_run()` was given
-one. The offline replay path: no Finance Toolkit call, no API key, no refetch.
+Read back the calibration a run was simulated from, so it can be simulated again offline.
 
-```python
-calibration = read_run_calibration("output/20260819T063851Z-7bfdde41")
-wider = Scenarios(toolkit=None, n_simulations=20_000).simulate(config, calibration=calibration)
-```
+This replays a run without any data download or API key: the same fitted parameters, at a new seed or with more
+scenarios. It works for a run saved with its calibration, `write_run(..., calibration=...)`.
 
 **Args:**
 
-- <u>run_dir (str &#124; Path):</u> the run's own directory (`output_dir/<run_id>`).
+- <u>run_dir (str &#124; Path):</u> the run's own folder, `<output_dir>/<run_id>`.
 
 **Returns:**
 
-<u>CalibrationResult &#124; None:</u> the stored calibration, or None for a run written without one (including every run written before this was recorded).
+<u>CalibrationResult &#124; None:</u> the stored calibration, or None for a run saved without one.
+
+**As an example:**
+
+```python
+from financescenarios import Scenarios, read_run_calibration
+
+calibration = read_run_calibration("results/20260819T063851Z-7bfdde41")
+wider = Scenarios(toolkit=None, n_simulations=20_000).simulate(config, calibration=calibration)
+```
 
 ## publish_calibration
 
@@ -140,43 +159,45 @@ publish_calibration(
 ) -> ReleaseResult
 ```
 
-Calibrate from named profiles and publish the result as a versioned release with a validation report.
+Calibrate from named profiles and publish the result as a versioned release, checked and with a report.
 
-In plain terms: a calibration is what the model learnt from history. Publishing one fixes it under a version
-tag, so every later run can name exactly which one it used and get the same scenarios, and checks it first:
-every factor calibrated, the parameters are plausible, the correlations are valid and reproduced by the
-simulation, each factor swings about as much as its history did, and the run is reproducible.
+A calibration is what the model learnt from history. Publishing one fixes it under a version tag, so every later run
+can name exactly which one it used and get the same scenarios. Before it is published it is checked: every factor
+calibrated, the parameters are plausible, the correlations are valid and reproduced by the simulation, each factor
+swings about as much as its history did, and the run is reproducible. Each check passes, warns or fails, and the
+worst one sets the release's status.
 
 The release folder `<output_dir>/<release_version>/` holds:
 
-- `calibration.json`: the calibration, for `CalibrationResult.load` and `simulate(calibration=...)`.
-- `manifest.json`: the version, date, profiles, a SHA-256 hash of the full configuration, the package versions
-  and the data window.
-- `checks.json` and `report.md`: every check's status, numbers and plain-language explanation, and the
-  fitted parameters.
+- `calibration.json`: the calibration, for `simulate(calibration=...)` or `simulate_release`.
+- `manifest.json`: the version, date, profiles, a fingerprint (SHA-256 hash) of the full configuration, the package
+  versions and the data window.
+- `checks.json` and `report.md`: every check's status, numbers and explanation, and the fitted parameters.
 
 **Args:**
 
-- <u>output_dir (str &#124; Path):</u> where releases are kept.
-- <u>release_version (str &#124; None):</u> the tag; today's date as "YYYY.MM.DD" by default.
-- <u>settings, factor_set (str):</u> the profiles to calibrate from (see `load_profiles`).
-- <u>settings_dir, factor_sets_dir (str &#124; Path):</u> where those profiles live; the bundled presets otherwise.
-- <u>n_simulations (int):</u> the size of the two seeded runs the checks simulate.
-- <u>toolkit (Toolkit &#124; None):</u> a pre-built Toolkit, e.g. a fake in tests; built from the settings otherwise.
-- <u>subfolder (str &#124; None):</u> write to `<output_dir>/<release_version>/<subfolder>/` instead, so several factor sets share one version (the yearly pipeline uses the factor set's name).
+- <u>output_dir (str &#124; Path):</u> where releases are kept; "calibrations" by default.
+- <u>release_version (str &#124; None):</u> the version tag; today's date as "YYYY.MM.DD" by default.
+- <u>settings (str):</u> the settings profile to calibrate with; "default" by default.
+- <u>factor_set (str):</u> the factor set to calibrate; "default" by default.
+- <u>settings_dir (str &#124; Path):</u> where the settings profiles live; the bundled presets when "settings" does not exist.
+- <u>factor_sets_dir (str &#124; Path):</u> where the factor sets live; the bundled presets when "factor-sets" does not exist.
+- <u>n_simulations (int):</u> the size of the two seeded runs the checks simulate; 1000 by default.
+- <u>toolkit (Toolkit &#124; None):</u> a ready-made Finance Toolkit `Toolkit`; built from the settings by default.
+- <u>subfolder (str &#124; None):</u> write to `<output_dir>/<release_version>/<subfolder>/` instead, so several factor sets can share one version; None by default.
 
 **Returns:**
 
-<u>ReleaseResult:</u> the folder, the manifest and the checks.
+<u>ReleaseResult:</u> the release `directory`, its `manifest` (with the overall `status`) and every check.
 
 **Raises:**
 
-- <u>FileExistsError:</u> if that version was already published, since a release must never change after the fact.
+- <u>FileExistsError:</u> if that version was already published, since a release must never change afterwards.
 
 **As an example:**
 
 ```python
-from financescenarios.release.release_controller import publish_calibration
+from financescenarios import publish_calibration
 
 release = publish_calibration(factor_set="us_only")
 release.manifest.status, release.directory
@@ -188,15 +209,23 @@ release.manifest.status, release.directory
 load_release(directory: str | Path) -> tuple[CalibrationResult, ReleaseManifest]
 ```
 
-A published calibration and its manifest, ready for `simulate(calibration=...)`.
+Read a published calibration and its manifest from a release folder, ready for `simulate(calibration=...)`.
 
 **Args:**
 
-- <u>directory (str &#124; Path):</u> the release folder, e.g. what `download_release` returns.
+- <u>directory (str &#124; Path):</u> the release folder, e.g. what `publish_calibration` wrote or `download_release` returns.
 
 **Returns:**
 
-<u>tuple[CalibrationResult, ReleaseManifest]:</u> the calibration and what identifies it.
+<u>tuple[CalibrationResult, ReleaseManifest]:</u> the calibration, and the manifest that identifies it (version, date, profiles and status).
+
+**As an example:**
+
+```python
+from financescenarios import load_release
+
+calibration, manifest = load_release("calibrations/2027.01.01")
+```
 
 ## simulate_release
 
@@ -210,14 +239,20 @@ simulate_release(
 ) -> ScenarioSet
 ```
 
-Simulate from a published calibration without fetching any data: the release's own settings and factor set
-give the engine (steps, frequency, simulations, seed), and its calibration replaces the fit.
+Simulate from a published calibration without fetching any data.
+
+The release's own settings profile and factor set give the run (steps, frequency, number of scenarios, seed), and
+its calibration replaces the fit, so the scenarios match anyone else's run from the same release. The profiles must
+still be the ones the release was calibrated with: a changed profile would describe different factors than the
+calibration holds.
 
 **Args:**
 
 - <u>directory (str &#124; Path):</u> the release folder, e.g. what `download_release` returns.
-- <u>settings_dir, factor_sets_dir (str &#124; Path):</u> where the release's profiles live; the bundled presets otherwise.
-- <u>n_simulations, seed (int &#124; None):</u> override the settings' own values for this run.
+- <u>settings_dir (str &#124; Path):</u> where the release's settings profile lives; the bundled presets when "settings" does not exist.
+- <u>factor_sets_dir (str &#124; Path):</u> where its factor set lives; the bundled presets when "factor-sets" does not exist.
+- <u>n_simulations (int &#124; None):</u> the number of scenarios; the settings profile's by default.
+- <u>seed (int &#124; None):</u> the random seed; the settings profile's by default.
 
 **Returns:**
 
@@ -225,4 +260,12 @@ give the engine (steps, frequency, simulations, seed), and its calibration repla
 
 **Raises:**
 
-- <u>ValueError:</u> if the profiles no longer hash to the release's configuration (they changed since it was published), since the calibration would not match the factors they now define.
+- <u>ValueError:</u> if the profiles changed since the release was published.
+
+**As an example:**
+
+```python
+from financescenarios import simulate_release
+
+result = simulate_release("calibrations/2027.01.01", n_simulations=500)
+```

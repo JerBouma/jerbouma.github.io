@@ -20,7 +20,6 @@ Named stress narratives and the official Federal Reserve and ESRB stress scenari
 from financescenarios import Regime, RegimeLibrary, load_regime, stress_test_regime
 ```
 
-{% raw %}
 ## Regime
 
 ```python
@@ -33,16 +32,63 @@ class Regime(BaseModel):
     target_mode: Literal['sequential', 'joint'] = Field(default='sequential', description="How targets combine: 'sequential' narrows target by target (each range is a quantile within what the previous targets left), 'joint' ranks every target against the full run and intersects; see ScenarioSet.filter_narrative().")
 ```
 
-A named stress regime; see module docstring for how targets and beliefs differ.
+A named stress regime, such as "Oil Crisis": a story about the economy you can save, share and apply to any run.
+
+A regime works in one or both of two ways:
+
+- `beliefs` change what is simulated, before the run. Each key names a factor and the belief fields to override,
+  in the same shape as that factor's `beliefs` section of the configuration. A factor that is one entry of a list
+  (interest rates, inflation, equities, FX, credit, ...) is named "<list>.<name>", e.g.
+  "inflation.united_states_inflation", or by its own name alone when that name is not also a section.
+- `targets` pick, after the run, the scenarios that match the story. Each key names a factor and a (lower, upper)
+  quantile range: `us_broad: [0.0, 0.3]` keeps the 30% of scenarios where US stocks earned least, and
+  `united_states_short_rate: [0.7, 1.0]` the 30% with the highest average short rate. The dotted form
+  ("equities.us_broad") works here too.
+
+A regime needs at least one of the two. The bundled regimes are YAML files in the `regimes/` folder; see
+`list_presets(kind="regimes")`, `load_regime` and `RegimeLibrary`, or pass one by name with
+`Scenarios.from_profiles(regime=...)`.
 
 **Attributes:**
 
-- <u>name (str):</u> a short, human-readable label, e.g. "Oil Crisis".
-- <u>description (str):</u> what this regime represents and why these targets/beliefs were chosen. Free text, purely documentation.
-- <u>targets (dict[str, tuple[float, float]] &#124; None):</u> factor name -> (lower, upper) quantile range, the same shape as ScenarioSet.filter_narrative()'s targets argument. Applied post-simulation, via RegimeLibrary.apply().
-- <u>beliefs (dict[str, dict[str, Any]] &#124; None):</u> factor name -> that factor's belief-field overrides, the same shape as ScenariosConfig's own `<factor>.beliefs` section (e.g. {"inflation": {"long_run_mean": {...}}} for a BeliefPath, or {"equity": {"regime_means": [...]}}). For a multi-instance factor (equities/fx/credit are lists in ScenariosConfig), use a dotted "<container>.<name>" key instead, e.g. {"equities.tech": {"regime_means": [...]}}, to target one list entry -- see RegimeLibrary.build_config(). Applied pre-simulation, via RegimeLibrary.build_config().
-- <u>step_range (tuple[int, int] &#124; None):</u> shared step range for every target, same semantics as filter_narrative()'s step_range. Defaults to the full path. Only meaningful together with targets.
-{% endraw %}
+- <u>name (str):</u> a short, readable label, e.g. "Oil Crisis". description (str): what the regime represents; free text, "" by default. targets (dict[str, tuple[float, float]] | None): factor name -> (lower, upper) quantile range, applied after the run; None by default. beliefs (dict[str, dict[str, Any]] | None): factor name -> belief overrides, applied before the run; None by default. step_range (tuple[int, int] | None): the (start, stop) steps every target is measured over; the whole run by default. target_mode (str): "sequential" (default) narrows target by target, each range a quantile of what the previous targets left; "joint" ranks every target against the full run and keeps the scenarios inside all of them.
+- As an example, the bundled `oil_crisis.yaml` (description left out):
+- ```yaml
+- <u>name:</u> Oil Crisis
+- <u>beliefs:</u> inflation.united_states_inflation: long_run_mean: anchors: 1.0: 0.09 3.0: 0.05 8.0: 0.025
+- <u>targets:</u> united_states_short_rate: [0.7, 1.0] us_broad: [0.0, 0.3]
+- ```
+- It pulls US inflation towards 9% in year one and back to 2.5% by year eight, then keeps the scenarios with high rates
+- and weak stocks.
+
+## Regime.factor_targets
+
+```python
+factor_targets() -> dict[str, tuple[float, float]]
+```
+
+The targets keyed by each factor's own name, the form a finished run is filtered with.
+
+A target may name one entry of a list of factors either way: "tech" or "equities.tech" (the form beliefs use).
+This returns the plain names, so `{"equities.tech": (0.0, 0.25)}` becomes `{"tech": (0.0, 0.25)}`.
+
+**Returns:**
+
+<u>dict[str, tuple[float, float]]:</u> factor name -> (lower, upper) quantile range; empty without targets.
+
+**As an example:**
+
+```python
+from financescenarios import Regime
+
+Regime(name="Tech Selloff", targets={"equities.tech": (0.0, 0.25)}).factor_targets()
+```
+
+Which returns:
+
+```
+{'tech': (0.0, 0.25)}
+```
 
 ## RegimeLibrary
 
@@ -50,12 +96,43 @@ A named stress regime; see module docstring for how targets and beliefs differ.
 RegimeLibrary(regimes: dict[str, Regime] | None = None)
 ```
 
-A named collection of Regime presets, loadable from / savable to a
-directory (one YAML file per regime), applicable to a ScenarioSet (targets)
-and/or usable to build a belief-shaped ScenariosConfig (beliefs); see
-Regime's docstring for the distinction.
+A named collection of regimes: load them from a folder, add your own, and run or apply one by name.
 
-## names
+A regime is a stress story such as "Oil Crisis" that works in one or both of two ways. Its `beliefs` change what is
+simulated, before the run (inflation heading to 9% within a year, say); its `targets` keep, after the run, only the
+scenarios that match the story (the ones with high rates and weak stocks). `build_config` and `simulate` use the
+beliefs, `apply` uses the targets. See `Regime` for how each is written.
+
+| Method | What it does |
+|:-------|:-------------|
+| `load(directory)` | Read every regime YAML file in a folder (the bundled ones by default). |
+| `names`, `get(name)`, `add(regime)` | List, look up, or add or replace a regime. |
+| `build_config(base_config, name)` | The configuration with the regime's beliefs applied. |
+| `simulate(scenarios, base_config, name)` | Apply the beliefs, simulate and keep the targets, in one call. |
+| `apply(scenario_set, name)` | Keep only the scenarios of a finished run that match the targets. |
+| `save(directory)` | Write every regime to its own YAML file. |
+
+Every method that takes a `name` accepts the regime's name ("Oil Crisis") or its id ("oil_crisis", the file name
+without ".yaml").
+
+**As an example:**
+
+```python
+from financescenarios import RegimeLibrary
+
+library = RegimeLibrary.load("regimes")
+library.names[:4]
+```
+
+Which returns:
+
+```
+['Climate Collapse', 'Commodity Supercycle', 'Credit Crunch', 'Currency Crisis']
+```
+
+Then `library.apply(result, "Oil Crisis")` narrows a finished run to its high-rate, weak-stock scenarios.
+
+## RegimeLibrary.names
 
 ```python
 regimelibrary.names  # property -> list[str]
@@ -63,7 +140,7 @@ regimelibrary.names  # property -> list[str]
 
 The names of every regime currently in this library.
 
-## add
+## RegimeLibrary.add
 
 ```python
 add(regime: Regime) -> None
@@ -75,90 +152,114 @@ Add (or replace) a regime in the library, keyed by its own name.
 
 - <u>regime (Regime):</u> the regime to add.
 
-## get
+## RegimeLibrary.get
 
 ```python
 get(name: str) -> Regime
 ```
 
+Look up one regime by its name or its id.
+
+The name is the label inside the regime ("Oil Crisis"); the id is the file it was loaded from without ".yaml"
+("oil_crisis"), or for a regime added by hand, its name in lower case with underscores, the file `save` writes.
+
 **Args:**
 
-- <u>name (str):</u> the regime's name.
+- <u>name (str):</u> the regime's name, e.g. "Oil Crisis", or its id, e.g. "oil_crisis".
 
 **Returns:**
 
-<u>Regime:</u> the regime registered under that name.
+<u>Regime:</u> the regime with that name or id.
 
 **Raises:**
 
-- <u>KeyError:</u> if no regime is registered under that name.
+- <u>KeyError:</u> if no regime has that name or id; the message lists the names available.
 
-## apply
+**As an example:**
+
+```python
+library = RegimeLibrary.load()
+library.get("oil_crisis") == library.get("Oil Crisis")
+```
+
+Which returns:
+
+```
+True
+```
+
+## RegimeLibrary.apply
 
 ```python
 apply(scenario_set: ScenarioSet, name: str) -> ScenarioSet
 ```
 
-Apply a named regime's targets to an already-simulated ScenarioSet, narrowing
-it to the subset of simulations consistent with that regime's narrative.
+Keep only the scenarios of a finished run that match a regime's targets.
+
+Each target ranks the scenarios by one factor (a rate by its average, a price by its return) and keeps a quantile
+range of them, e.g. (0.0, 0.3) for the worst 30%. Every factor of a kept scenario comes along, so its other
+variables show what tends to happen alongside the story. The result holds only what fits, so fewer scenarios
+than the run had; `simulate` (or `Scenarios.simulate(regime=...)`) draws until a set number fit instead.
 
 **Args:**
 
-- <u>scenario_set (ScenarioSet):</u> the simulation to narrow.
-- <u>name (str):</u> the regime's name, must be registered in this library and have targets set.
+- <u>scenario_set (ScenarioSet):</u> the run to narrow.
+- <u>name (str):</u> the regime's name or id; it must have `targets`.
 
 **Returns:**
 
-<u>ScenarioSet:</u> the simulations satisfying every target in the named regime, via ScenarioSet.filter_narrative().
+<u>ScenarioSet:</u> the scenarios that meet every target.
 
 **Raises:**
 
-- <u>KeyError:</u> if no regime is registered under that name, or a regime's target factor is not in scenario_set.
-- <u>ValueError:</u> if the regime has no targets (it's beliefs-only; use build_config()/simulate() instead), a quantile range is invalid, or no simulation satisfies every target at once.
+- <u>KeyError:</u> if no regime has that name, or a target factor is not in the run.
+- <u>ValueError:</u> if the regime has no targets (use `simulate` for a beliefs-only regime), a quantile range is invalid, or no scenario meets every target at once.
 
-{% raw %}
-## build_config
+**As an example:**
+
+```python
+library = RegimeLibrary.load("regimes")
+oil_crisis = library.apply(result, "Oil Crisis")
+```
+
+## RegimeLibrary.build_config
 
 ```python
 build_config(base_config: ScenariosConfig, name: str) -> ScenariosConfig
 ```
 
-Build a ScenariosConfig with a named regime's belief overrides substituted in
-on top of base_config, e.g. "Oil Crisis" believing inflation targets 8% in
-1 year, easing to 3% by year 5, rather than whatever the calibrated OU fit's
-long_run_mean would otherwise be.
+Return the configuration with a regime's beliefs applied: the settings that change what gets simulated.
 
-A regime.beliefs key is either a plain factor name (real_estate,
-leading_indicator, yield_curve, credit_term_structure, mortality: every
-single-instance factor) or a dotted "<container>.<name>" key addressing
-one entry of a multi-instance factor list (interest_rates, inflation,
-unemployment, equities, fx, credit, commodities, dividend_yield), e.g.
-"equities.us_broad" or "credit.ig_7_10y", matched against that entry's own
-`name` field.
-
-A factor override is deep-merged onto the existing belief block, not
-replaced wholesale, e.g. {"yield_curve": {"level": {"long_run_mean":
-0.05}}} only touches level.long_run_mean, leaving any other field already
-set on level (or slope/curvature) untouched, the same nested-belief shape
-yield_curve/credit_term_structure/mortality all have.
+A belief replaces what the calibration would otherwise decide, such as inflation's long-run level heading to 9% in
+a year and easing to 2.5% by year eight in "Oil Crisis". Each belief key names a factor: a single factor by its
+own name (`real_estate`, `yield_curve`, `mortality`, ...), or one entry of a list of factors as "<list>.<name>",
+e.g. "equities.us_broad", or by its own name alone, e.g. "us_broad". A name that is also a section, such as
+"inflation", needs the dotted form. Only the belief fields the regime sets change; every other setting stays as
+in `base_config`.
 
 **Args:**
 
-- <u>base_config (ScenariosConfig):</u> the config to start from; unaffected fields (everything not named in regime.beliefs) are unchanged.
-- <u>name (str):</u> the regime's name, must be registered in this library.
+- <u>base_config (ScenariosConfig):</u> the configuration to start from.
+- <u>name (str):</u> the regime's name or id.
 
 **Returns:**
 
-<u>ScenariosConfig:</u> base_config with each factor named in regime.beliefs having those belief fields overridden. Identical to base_config if the regime has no beliefs set.
+<u>ScenariosConfig:</u> `base_config` with the regime's beliefs applied; unchanged when the regime has none.
 
 **Raises:**
 
-- <u>KeyError:</u> if no regime is registered under that name.
-- <u>RegimeMismatchError:</u> (a ValueError, and a KeyError) if a dotted key names a container entry that doesn't exist in base_config, or a plain key names a multi-instance (list) factor; use a dotted "<container>.<name>" key for those instead, even when the list has only one entry.
-- <u>pydantic.ValidationError:</u> if a belief override doesn't validate against that factor's beliefs schema (e.g. an unknown field name).
-{% endraw %}
+- <u>KeyError:</u> if no regime has that name.
+- <u>RegimeMismatchError:</u> (a ValueError) if a belief names a factor or list entry `base_config` does not have, names a list of factors without picking one entry, or uses a name two lists share; the message names the dotted keys to use instead.
+- <u>pydantic.ValidationError:</u> if a belief does not fit that factor's beliefs, e.g. an unknown field.
 
-## simulate
+**As an example:**
+
+```python
+library = RegimeLibrary.load("regimes")
+config = library.build_config(base_config, "Oil Crisis")
+```
+
+## RegimeLibrary.simulate
 
 ```python
 simulate(
@@ -171,89 +272,124 @@ simulate(
 ) -> ScenarioSet
 ```
 
-Run a named regime end-to-end: build a belief-shaped config (build_config()),
-calibrate and simulate it, then narrow to the regime's targets if it has any
-(apply()'s filter_narrative() step): the single-call version of doing both
-by hand.
+Run a regime from start to finish: apply its beliefs, calibrate and simulate, then keep the scenarios that match
+its targets.
+
+This is `Scenarios.simulate(base_config, regime=name)`: the beliefs change what is simulated, and for a regime
+with targets, scenarios are drawn in batches until the configured number of scenarios fit the story, so the
+result has as many scenarios as the configuration asks for. A regime with only beliefs returns the whole
+belief-shaped run.
 
 **Args:**
 
-- <u>scenarios (Scenarios):</u> the calibration/simulation entry point to run with.
-- <u>base_config (ScenariosConfig):</u> the config to start from.
-- <u>name (str):</u> the regime's name, must be registered in this library.
-- <u>mortality_rates (pl.DataFrame &#124; None):</u> forwarded to Scenarios.simulate() if base_config.mortality.enabled; see that method's own docstring.
-- <u>mortality_ages (list[float] &#124; None):</u> forwarded to Scenarios.simulate() if base_config.mortality.enabled.
-- <u>mortality_years (list[int] &#124; None):</u> forwarded to Scenarios.simulate() if base_config.mortality.enabled.
+- <u>scenarios (Scenarios):</u> the `Scenarios` instance to calibrate and simulate with; one without a regime of its own (or with this same one).
+- <u>base_config (ScenariosConfig):</u> the configuration to start from.
+- <u>name (str):</u> the regime's name or id.
+- <u>mortality_rates (pl.DataFrame &#124; None):</u> passed on to `Scenarios.simulate`, which uses it when mortality is switched on; None by default.
+- <u>mortality_ages (list[float] &#124; None):</u> passed on likewise; None by default.
+- <u>mortality_years (list[int] &#124; None):</u> passed on likewise; None by default.
 
 **Returns:**
 
-<u>ScenarioSet:</u> the belief-shaped simulation, further narrowed by targets if the regime has any.
+<u>ScenarioSet:</u> the simulated run, narrowed to the regime's targets when it has any.
 
 **Raises:**
 
-- <u>KeyError:</u> if no regime is registered under that name.
+- <u>KeyError:</u> if no regime has that name.
+- <u>RegimeMismatchError:</u> if a belief or target does not match `base_config` (see `build_config`).
+- <u>ValueError:</u> if `scenarios` already carries another regime, or the targets keep no scenario.
 
-## load
+**As an example:**
+
+```python
+library = RegimeLibrary.load("regimes")
+oil_crisis = library.simulate(scenarios, config, "Oil Crisis")
+```
+
+## RegimeLibrary.load
 
 ```python
 RegimeLibrary.load(directory: str | Path = 'regimes') -> 'RegimeLibrary'
 ```
 
-Load every regime in a directory: one `*.yaml` file per regime, each
-optionally starting with `extends: <filename>` to inherit another
-regime's fields (see `load_one()`). Use this for "list everything"
-(any listing/picker surface); to run one specific regime,
-prefer `load_one()`, which never touches the other files in the directory.
+Read every regime in a folder, one YAML file per regime.
+
+A file may start with `extends: <filename>` to build on another regime (see `load_regime`). Use this to list or
+pick from everything a folder holds; to load a single regime, `load_regime` reads only the files it needs.
 
 **Args:**
 
-- <u>directory (str &#124; Path):</u> path to a directory of regime YAML files.
+- <u>directory (str &#124; Path):</u> the regimes folder; "regimes" by default, the bundled presets when no such folder exists.
 
 **Returns:**
 
-<u>RegimeLibrary:</u> the loaded library, keyed by each regime's `name`.
+<u>RegimeLibrary:</u> the regimes, keyed by each regime's `name` and also found by their file id.
 
-## save
+**Raises:**
+
+- <u>FileNotFoundError:</u> if the folder does not exist and is not one of the bundled preset folders.
+
+## RegimeLibrary.save
 
 ```python
 save(directory: str | Path) -> None
 ```
 
-Save every regime in this library to `directory`, one file per regime
-(named after a slugified version of its `name`); round-trips with
-`load()`. Does not preserve any `extends` relationship a regime was
-originally loaded with; every regime is written fully resolved.
+Write every regime in the library to `directory`, one YAML file each, named after the regime (e.g.
+"oil_crisis.yaml" for "Oil Crisis").
+
+The files read back with `load`. Each regime is written in full, so an `extends` link it was loaded with is not
+kept.
 
 **Args:**
 
-- <u>directory (str &#124; Path):</u> destination directory, created if missing.
+- <u>directory (str &#124; Path):</u> the folder to write into, created if missing.
 
 ## load_regime
 
 ```python
-load_regime(directory: str | Path, filename: str) -> Regime
+load_regime(directory: str | Path, filename: str | None = None) -> Regime
 ```
 
-Load exactly one regime, resolving its `extends` chain if it has one, but
-never scanning the rest of `directory`. This is the path a single simulate
-run should use to pick one regime, instead of building a full RegimeLibrary
-(which parses every file in the directory) just to pick one back out of it;
-see RegimeLibrary.load() for that "list everything" case.
+Load one regime by its id or its name, from your own `regimes/` folder or the bundled ones.
+
+A regime is named two ways: its id is the file name ("oil_crisis") and its name is the label inside it ("Oil
+Crisis"). Either works. Called with one argument, the regime is looked up the way `Scenarios.from_profiles` does
+it: in a `regimes/` folder when you have one (from `scaffold_project()`), in the bundled regimes otherwise. Called
+with two, the first is the folder to read.
+
+A regime file may start with `extends: <filename>` to build on another regime: that chain is followed and merged,
+with the file's own fields winning. Use `RegimeLibrary.load` instead to read every regime in a folder at once.
 
 **Args:**
 
-- <u>directory (str &#124; Path):</u> the regimes directory.
-- <u>filename (str):</u> the regime's own YAML filename, e.g. "oil_crisis.yaml" (the ".yaml" suffix is optional).
+- <u>directory (str &#124; Path):</u> the regimes folder, e.g. "regimes"; or, when `filename` is left out, the regime's id or name.
+- <u>filename (str &#124; None):</u> the regime's id, e.g. "oil_crisis" (".yaml" optional), or its name, e.g. "Oil Crisis". Defaults to None, which reads the regime named by `directory` from the "regimes" folder.
 
 **Returns:**
 
-<u>Regime:</u> the fully resolved regime (extends chain merged in, `name` required at the end of that chain).
+<u>Regime:</u> the regime, with its `extends` chain merged in.
 
 **Raises:**
 
-- <u>FileNotFoundError:</u> if `filename`, or a file named in its `extends` chain, doesn't exist in `directory`.
-- <u>ValueError:</u> if the `extends` chain is circular, or no file in the chain sets `name`.
-- <u>pydantic.ValidationError:</u> if the resolved fields don't form a valid Regime.
+- <u>FileNotFoundError:</u> if no regime has that id or name, or a file it extends does not exist.
+- <u>ValueError:</u> if the `extends` chain loops back on itself or never sets `name`.
+- <u>pydantic.ValidationError:</u> if the merged fields do not form a valid regime.
+
+**As an example:**
+
+```python
+from financescenarios import load_regime
+
+regime = load_regime("oil_crisis")  # the same as load_regime("regimes", "Oil Crisis")
+regime.name, regime.targets
+```
+
+Which returns:
+
+```
+('Oil Crisis', {'united_states_short_rate': (0.7, 1.0), 'us_broad': (0.0, 0.3)})
+```
 
 ## stress_test_regime
 
@@ -270,57 +406,48 @@ stress_test_regime(
 ) -> Regime
 ```
 
-A regulator's published stress-test scenario as a regime: the scenario's paths for interest rates, inflation and
-unemployment become belief paths for the matching factors of `config`, which steer each factor's long-run level
-through the stress and then back to its own calibrated level over `converge_over_years`. With `follow="path"`
-(the default) each factor is also set to the published value at every period end, so a slowly mean-reverting
-factor such as a short rate really falls to the scenario's 0.1% rather than drifting toward it; the scenarios
-then spread out again between those dates and after the scenario ends.
+Turn a regulator's published stress-test scenario into a regime that steers your scenarios through it.
 
-In plain terms: instead of writing a recession by hand, this takes the one the Federal Reserve or the European
-Systemic Risk Board prescribes for banks' stress tests (unemployment climbing to 10%, say, and rates cut), and
-lets the simulated scenarios follow it, with their own randomness around it.
+Instead of writing a recession by hand, this takes the one the Federal Reserve or the European Systemic Risk Board
+prescribes for banks' stress tests and lets the simulated scenarios follow it, each with its own randomness. Its
+paths for interest rates, inflation and unemployment steer the matching factors of `config` through the stress
+and back to their calibrated levels; stocks follow as falls and recoveries. The Federal Reserve's 2026
+adverse scenario, for example, takes US stocks about 50% below where they would otherwise be after a year.
 
-Stock prices follow the scenario too, as one-off falls and recoveries at each period end
-(`EquityBeliefs.shocks`): the Federal Reserve's stock index relative to its own baseline (so the falls are the
-stress, not the baseline's growth), or the ESRB's stock-price deviation from the starting point. The stock path
-keeps the scenario's own spacing but starts at the run's start, so the fall always happens within the run even
-when the published scenario began earlier (the ESRB's 2025 scenario runs 2025 to 2027). On the default factor
-set the Federal Reserve's 2026 adverse scenario takes US stocks about 50% below where they would otherwise be
-after a year.
+Both come through the Finance Toolkit, with no API key:
 
-The two authorities (both through the Finance Toolkit's `economics.get_stress_test_scenario`, no key):
-
-- "federal_reserve": the Federal Reserve's supervisory scenario for the United States, quarterly over 13
-  quarters: the 3-month Treasury rate (short rates), the 10-year Treasury yield (long rates), CPI inflation and
-  unemployment. Its inflation is the annualized quarter-on-quarter rate, while this project's inflation is
-  year over year, so the inflation path is on the same scale but reacts sooner than a year-over-year series.
-- "esrb": the European Systemic Risk Board's scenario for the EBA's EU-wide stress test, yearly over three years
-  for every EU member and the main other economies: the long-term interest rate, inflation and unemployment
-  (no short rate).
-
-Each entry follows its own `country` (for the Federal Reserve, only the United States). Interest rates with a
-method other than hull_white or cir, and risk-neutral entries, have no long-run level to steer and are left as
-calibrated.
+- "federal_reserve": the United States, quarterly over 13 quarters: the 3-month and 10-year Treasury rates,
+  inflation, unemployment and stocks.
+- "esrb": the scenario of the EBA's EU-wide stress test, yearly over three years for every EU member and the main
+  other economies: the long-term interest rate, inflation, unemployment and stocks.
 
 **Args:**
 
 - <u>toolkit (Toolkit):</u> the Finance Toolkit `Toolkit`.
-- <u>config (ScenariosConfig):</u> the configuration the regime will be applied to.
-- <u>authority (str):</u> "federal_reserve" or "esrb".
-- <u>scenario (str):</u> "adverse" (the Federal Reserve's severely adverse scenario) or "baseline".
-- <u>year (int &#124; None):</u> the Federal Reserve's stress-test year; the latest by default (the ESRB's is always the latest).
-- <u>converge_over_years (float):</u> years after the scenario ends over which targets return to calibrated levels.
-- <u>follow (str):</u> "path" sets each factor to the published value at every period end within the run, as well as steering its long-run level; "target" only steers the long-run level, a gentler stress.
-- <u>equity_regions (Mapping[str, str] &#124; None):</u> equity name -> the published region whose stock-market path it follows; by default every real-world equity follows the United States (Federal Reserve) or the European Union (ESRB). The ESRB also publishes the United States, the United Kingdom, Japan, Canada, Switzerland, Norway, Australia & New Zealand and the rest of the world.
+- <u>config (ScenariosConfig):</u> the configuration; each entry follows its own `country`.
+- <u>authority (str):</u> "federal_reserve" (default) or "esrb".
+- <u>scenario (str):</u> "adverse" (default) or "baseline".
+- <u>year (int &#124; None):</u> the Federal Reserve's stress-test year; the latest by default.
+- <u>converge_over_years (float):</u> the years after the scenario over which each factor returns to its calibrated level; 5.0 by default.
+- <u>follow (str):</u> "path" (default) also sets each factor to the published value at every period end; "target" only steers its long-run level, a gentler stress.
+- <u>equity_regions (Mapping[str, str] &#124; None):</u> equity name -> the published region whose stocks it follows; the United States (Federal Reserve) or European Union (ESRB) by default.
 
 **Returns:**
 
-<u>Regime:</u> a regime with belief paths, for `Scenarios.from_config(config, regime=...)` or `Scenarios.from_profiles(..., regime=...)`.
+<u>Regime:</u> the stress as belief paths, for `Scenarios.from_config(config, regime=...)`.
 
 **Raises:**
 
 - <u>ValueError:</u> if the scenario comes back empty or none of `config`'s factors has a matching country.
+
+**As an example:**
+
+```python
+from financescenarios import Scenarios, stress_test_regime
+
+regime = stress_test_regime(toolkit, config, authority="federal_reserve", scenario="adverse")
+scenarios = Scenarios.from_config(config, regime=regime)
+```
 
 **References:**
 

@@ -24,104 +24,51 @@ from financescenarios.factors.credit_term_structure.credit_term_structure_contro
 CreditTermStructure(bond_panel: BondPanel | None = None, toolkit: Toolkit | None = None)
 ```
 
-The Credit Term Structure module simulates a whole credit spread curve: the extra yield
-corporate bonds pay over government bonds, at every maturity from one year out to twenty,
-rather than one spread per bucket. The curve moves through time by three numbers (level,
-slope and curvature), so the spread at any maturity can be read off a simulated scenario.
+The Credit Term Structure module simulates a whole credit spread curve: the extra yield corporate bonds pay over
+government bonds at every maturity, rather than one spread per bucket. Three numbers (level, slope and curvature)
+move the curve through time, so the spread at any maturity can be read off a simulated scenario.
 
-In plain terms: where `Credit` gives a handful of fixed spread buckets (1-3 years,
-7-10 years, BBB and so on), this gives a continuous curve, so a 4-year or a 12-year
-corporate spread exists in every simulated scenario too. Combined with the simulated
-government curve (`yield_curve`) it gives the full discount curve a risky bond is priced
-off, which is what `BondPricer` uses. It is opt-in (`credit_term_structure.enabled`) and
-works next to `credit`, not instead of it: both can be enabled together.
+Where `Credit` gives a handful of fixed spread buckets (1-3 years, 7-10 years, BBB), this gives a
+continuous curve, so a 4-year or a 12-year spread exists in every scenario. Added to the simulated government
+curve (`yield_curve`), it gives the discount curve a risky bond is priced off, which `BondPricer` uses. It is
+opt-in (`credit_term_structure.enabled`) and runs next to `credit`, not instead of it.
 
 The model is the dynamic Nelson-Siegel curve ([Nelson & Siegel, 1987](https://doi.org/10.1086/296409);
-[Diebold & Li, 2006](https://doi.org/10.1016/j.jeconom.2005.03.005)), the same machinery the
-government `yield_curve` uses, applied to corporate spreads as in
-[Yu & Zivot (2011)](https://doi.org/10.1016/j.ijforecast.2010.04.002). At each date the
-observed spreads across maturities are summarized by three factors: `credit_level` (the
-long-maturity spread), `credit_slope` (how much lower or higher the short end sits than the
-long end) and `credit_curvature` (a hump in the middle maturities). Each factor is then
-fitted as its own mean-reverting (Ornstein-Uhlenbeck) process, a process that is pulled back
-toward a normal level at a fitted speed, and the three enter the simulation as correlated
-factors linked to the rest of the model through the correlation matrix (no cascade
-dependency on any other factor). The mathematics is not reimplemented: `term_structure_model`'s
-`fit_nelson_siegel_factors`, `fit_ou_process`, `YieldCurveParams` and `step_curve_factor`
-are reused directly, the same way `equities_model.fit_risk_neutral_equity` reuses `FXParams`.
+[Diebold & Li, 2006](https://doi.org/10.1016/j.jeconom.2005.03.005)) that `yield_curve` uses, applied to corporate
+spreads as in [Yu & Zivot (2011)](https://doi.org/10.1016/j.ijforecast.2010.04.002): `credit_level` is the
+long-maturity spread, `credit_slope` how far the short end sits below or above it and `credit_curvature` a hump at
+medium maturities. Each moves as its own mean-reverting process, correlated with the rest of the model. The
+`decay` matches `yield_curve.decay` (0.7308) on purpose: two Nelson-Siegel curves with the same decay add up, so
+the government curve plus this spread curve is again one.
 
-The `decay` (lambda) fixes where the curvature hump peaks and is not fitted, following
-Diebold and Li. Its default of 0.7308 equals `yield_curve.decay` on purpose:
-Nelson-Siegel curves with the same decay add up factor by factor, so the government curve
-plus this spread curve is again a Nelson-Siegel curve, the risky-bond discount curve.
+Two data sources are available through `source`:
 
-Two data sources are available (`source`). The default, `hqm`, is the US Treasury's High
-Quality Market (HQM) corporate bond curve through the Finance Toolkit
-(`fixedincome.get_hqm_corporate_bond_spread()`): the HQM par yield minus the Treasury par
-yield at 2, 5, 10 and 30 years, monthly from 1984 and a few kilobytes, read with a free FRED
-key. HQM is the curve US pension plans discount their obligations with
-([US Treasury](https://home.treasury.gov/data/treasury-coupon-issues-and-corporate-bond-yield-curves)),
-built from high-quality (AAA, AA and A rated) bonds, so it is the investment-grade spread
-curve rather than an all-ratings average. It can be averaged to quarters or years but not
-split finer than a month.
+- `hqm` (default): the US Treasury's High Quality Market (HQM) corporate bond curve
+  ([US Treasury](https://home.treasury.gov/data/treasury-coupon-issues-and-corporate-bond-yield-curves)) as a
+  spread over Treasuries at 2, 5, 10 and 30 years, monthly from 1984, with a free FRED key. Built from AAA, AA and
+  A rated bonds, it is the investment-grade curve.
+- `bond_panel`: the [Open Source Bond Asset Pricing](https://openbondassetpricing.com/) panel of US corporate bond
+  trades (TRACE) from July 2002 to March 2025, a 1.8 GB download. It has no ratings, so it is the average spread
+  across all bonds, and it starts from its last month, not today.
 
-The alternative, `bond_panel`, is the Open Source Bond Asset Pricing project's public corporate bond panel
-([openbondassetpricing.com](https://openbondassetpricing.com/), Dickerson, Robotti and
-Rossetti), built from TRACE, the US regulator's record of every corporate bond trade:
-29,776,137 (bond, trade date) rows from 2002-07-01 to 2025-03-31, each with a
-`credit_spread` measured against [Liu & Wu's (2021)](https://doi.org/10.1016/j.jfineco.2021.05.059)
-constant-maturity zero-coupon government curve. It does not come through the Finance
-Toolkit: `BondPanel` downloads it once (about 1.8 GB) and caches it under
-`.cache/validation/` (see `bond_panel_controller.BondPanel` for the license note). Each bond
-is assigned to its nearest requested tenor, spreads are averaged per tenor and trade date,
-then averaged again per `period` (`bond_panel_model.spread_by_tenor`). The panel ends in
-March 2025, so the curve's starting point is the panel's last usable month, not today.
-
-Two limits follow from that source. The public drop has no credit-rating field, so this is
-a curve of the average spread across all bonds, not one per rating, and it is not a
-rating-migration model (a bond moving from BBB to BB to default); that remains an open gap,
-see the coverage overview. And the three factors are fitted independently, without the cross-factor
-restrictions that would make the curve free of arbitrage; the arbitrage-free Nelson-Siegel
-variant ([Christensen, Diebold & Rudebusch, 2011](https://doi.org/10.1016/j.jeconom.2011.02.011))
-and the four-factor Svensson extension with a second hump
-([Svensson, 1994](https://doi.org/10.3386/w4871)), which credit curves sometimes show, are not
-implemented. The curve is fitted statistically; the credit-risk theory that explains why
-spread curves take this shape (default intensity and rating transitions,
-[Jarrow, Lando & Turnbull, 1997](https://doi.org/10.1093/rfs/10.2.481);
-[Duffie & Singleton, 1999](https://doi.org/10.1093/rfs/12.4.687)) is not modeled directly.
+Like `yield_curve`, it is fitted to history, with no guarantee against arbitrage between maturities.
 
 Configuration (`credit_term_structure` in a factor set):
 
 | Key | Default | Meaning |
 |:----|:--------|:--------|
 | `enabled` | `false` | Adds `credit_level`, `credit_slope` and `credit_curvature` to the run. |
-| `source` | `hqm` | `hqm` (Treasury HQM spread curve, monthly from 1984) or `bond_panel` (TRACE panel, 1.8 GB). |
-| `tenors` | `[1, 2, 3, 5, 7, 10, 15, 20]` | Bond panel maturities (years), at least 3; unused by `hqm`. |
-| `period` | `monthly` | Fitting frequency; `hqm` monthly, quarterly or yearly; panel `daily` not recommended. |
+| `source` | `hqm` | `hqm` (Treasury HQM spread curve) or `bond_panel` (TRACE bond panel). |
+| `tenors` | `[1, 2, 3, 5, 7, 10, 15, 20]` | Bond panel maturities in years, at least 3; unused by `hqm`. |
+| `period` | `monthly` | Fitting frequency; `hqm` takes `monthly`, `quarterly` or `yearly`. |
 | `decay` | `0.7308` | Nelson-Siegel decay (lambda); keep equal to `yield_curve.decay`. |
-| `beliefs.level` | `null` | Override the level factor's fitted process (same shape as `yield_curve.beliefs`). |
-| `beliefs.slope` | `null` | Override the slope factor's fitted process. |
-| `beliefs.curvature` | `null` | Override the curvature factor's fitted process. |
-
-`period` defaults to `monthly`, not `daily` as `yield_curve` does, because single-bond daily
-spreads carry bid/ask bounce and illiquid-bond noise that reverts within days. Fitted on raw
-daily data, that noise produces mean-reversion speeds of tens per year; under the old
-Euler-Maruyama discretization one real run diverged to +-1e38 within 60 months. The exact
-discrete-time transition `fit_ou_process` now uses (see simulation-engine.md) is stable at
-any speed, and its regression-slope guard usually rejects near-random daily noise outright
-as having no finite mean-reversion rate, but daily noise is still a poor fitting target.
+| `beliefs.level`, `.slope`, `.curvature` | `null` | Override a fitted process, as in `yield_curve`. |
 
 **References:**
 
 - Nelson, C.R., Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489. <https://doi.org/10.1086/296409>
 - Diebold, F.X., Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364. <https://doi.org/10.1016/j.jeconom.2005.03.005>
 - Yu, W., Zivot, E. (2011). "Forecasting the Term Structures of Treasury and Corporate Yields Using Dynamic Nelson-Siegel Models." International Journal of Forecasting, 27(2), 579-591. <https://doi.org/10.1016/j.ijforecast.2010.04.002>
-- Liu, Y., Wu, J.C. (2021). "Reconstructing the Yield Curve." Journal of Financial Economics, 142(3), 1395-1425. <https://doi.org/10.1016/j.jfineco.2021.05.059>
-- Dickerson, A., Robotti, C., Rossetti, G. Open Source Bond Asset Pricing, replication data and code. <https://openbondassetpricing.com/>
-- Svensson, L.E.O. (1994). "Estimating and Interpreting Forward Interest Rates: Sweden 1992-1994." NBER Working Paper 4871. <https://doi.org/10.3386/w4871>
-- Jarrow, R.A., Lando, D., Turnbull, S.M. (1997). "A Markov Model for the Term Structure of Credit Risk Spreads." Review of Financial Studies, 10(2), 481-523. <https://doi.org/10.1093/rfs/10.2.481>
-- Duffie, D., Singleton, K.J. (1999). "Modeling Term Structures of Defaultable Bonds." Review of Financial Studies, 12(4), 687-720. <https://doi.org/10.1093/rfs/12.4.687>
-- Christensen, J.H.E., Diebold, F.X., Rudebusch, G.D. (2011). "The Affine Arbitrage-Free Class of Nelson-Siegel Term Structure Models." Journal of Econometrics, 164(1), 4-20. <https://doi.org/10.1016/j.jeconom.2011.02.011>
 
 ## calibrate
 
@@ -134,71 +81,47 @@ calibrate(
 ) -> YieldCurveParams
 ```
 
-Calibrate the credit spread curve from the bond panel: bin every bond's spread into the
-requested maturities, summarize each period's curve by its Nelson-Siegel level, slope and
-curvature, and fit each of the three as a mean-reverting process with its own speed
-(`mean_reversion_speed`), normal level (`long_run_mean`) and swing size (`volatility`).
+Calibrate the credit spread curve from history: summarize each period's spread curve by its Nelson-Siegel
+level, slope and curvature, then fit each as its own mean-reverting process.
 
-In plain terms: this learns from 22 years of real corporate bond trades how the credit
-spread curve has moved, so the simulated curves shift, tilt and bend the way the real one
-has. A mean-reversion speed of 1.24 a year, for example, means a shock to the curve's level
-has faded by half after about seven months (ln 2 / 1.24 years).
+This learns how the corporate spread curve has moved, so the simulated curves shift, tilt and bend the way the
+real one has. Each factor gets a speed (`mean_reversion_speed`), a normal level (`long_run_mean`), a swing size
+(`volatility`) and a starting value (`initial_value`), in decimals. `level` is the long-maturity spread and
+`level + slope` the shortest one. A level speed of 1.24 a year means a shock halves in about seven months
+(ln 2 / 1.24).
 
-All values are decimals (0.01 is a 1% spread). `level` is the spread at very long
-maturities, `level + slope` the spread at the very short end, and `curvature` adds a hump
-that peaks at medium maturities. `initial_value` of each factor is the curve in the panel's
-last usable month, the starting point of every simulated scenario.
+The method is that of [Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005), applied to
+corporate spreads as in [Yu and Zivot (2011)](https://doi.org/10.1016/j.ijforecast.2010.04.002).
 
 Also known as: dynamic Nelson-Siegel credit curve, corporate spread term structure fit.
 
 **Args:**
 
-- <u>tenors (list[float]):</u> maturity points, in years, to bin the panel into; each bond is assigned to its nearest tenor. At least 3 are needed to identify level, slope and curvature; see `bond_panel_model.spread_by_tenor`.
-- <u>period (str):</u> resampling frequency ("daily", "weekly", "monthly", "quarterly", "yearly"). The panel holds raw daily trades, so this both averages the cross-section to `period` and sets the time step of the fitted processes. Defaults to "monthly", not "daily" as `TermStructure.calibrate`'s smooth government-yield data can safely use (see Notes).
-- <u>source (str):</u> "bond_panel" (the default of this method, kept for existing callers) or "hqm", the Treasury's HQM spread curve at 2, 5, 10 and 30 years read through the Toolkit; `tenors` is unused for "hqm". A config's `credit_term_structure.source` defaults to "hqm".
-- <u>decay (float):</u> the Nelson-Siegel decay parameter (lambda), annualized; fixed rather than fitted, per Diebold & Li (2006). The default 0.7308 equals `yield_curve`'s on purpose: Nelson-Siegel curves with a shared decay add up factor by factor, so the government curve plus this spread curve is exactly the risky-bond curve.
+- <u>tenors (list[float]):</u> bond panel maturities in years, at least 3; each bond goes to the nearest one. Unused by "hqm".
+- <u>period (str):</u> fitting frequency and time step: "daily", "weekly", "monthly", "quarterly" or "yearly" ("hqm": the last three). Defaults to "monthly", as daily bond spreads are too noisy.
+- <u>decay (float):</u> the Nelson-Siegel decay (lambda), annualized; fixed, not fitted. Defaults to 0.7308, as for `yield_curve`, so the two curves add up.
+- <u>source (str):</u> "bond_panel" (TRACE trades; the first call downloads about 1.8 GB) or "hqm" (the Treasury's HQM curve; FRED key). Defaults to "bond_panel"; a config defaults to "hqm".
 
 **Returns:**
 
-<u>YieldCurveParams:</u> the calibrated `level`, `slope` and `curvature` processes and the `decay`. The type is named for the government curve it was first built for and is reused as-is here.
+<u>YieldCurveParams:</u> the fitted `level`, `slope` and `curvature` processes and the `decay`.
 
 **Raises:**
 
-- <u>ValueError:</u> if `period` isn't recognized, `tenors` has fewer than 3 distinct entries or a non-positive one, or `decay` is not positive; all checked before the panel is read.
-
-**Notes:**
-
-- The first call downloads the panel (about 1.8 GB) to `.cache/validation/` (override with
-  the `FINANCESCENARIOS_VALIDATION_CACHE_DIR` environment variable); later calls read the
-  cache. The panel is scanned lazily, but grouping 29.8 million rows still needs well over
-  1 GB of memory; on a small machine, `pl.Config.set_engine_affinity("streaming")` before
-  calling keeps it within bounds.
-- Only periods in which every requested tenor has at least one bond are kept, so adding a
-  thinly traded far tenor can shorten the usable history.
-- Bonds maturing before the shortest tenor or after the longest are dropped, and so is
-  anything with less than three months (0.25 years) left, where spreads become erratic.
-- Why not daily: single-bond daily spreads carry bid/ask and illiquid-bond noise that
-  reverts within days. Fitted daily, it gives mean-reversion speeds of tens per year, and
-  the regression-slope guard of the exact OU transition often rejects it outright as
-  having no finite mean-reversion rate.
-- There is no credit rating in the panel, so the curve is the average across all bonds.
+- <u>ValueError:</u> if `source`, `period`, `decay` or `tenors` is invalid, or the HQM curve cannot be read (no Toolkit or FRED key).
 
 **As an example:**
 
 ```python
-import polars as pl
-
 from financescenarios.factors.credit_term_structure.credit_term_structure_controller import (
     CreditTermStructure,
 )
-
-pl.Config.set_engine_affinity("streaming")  # keeps the 29.8M-row scan within a small machine's memory
 
 credit_curve = CreditTermStructure()
 credit_curve.calibrate(tenors=[1, 2, 3, 5, 7, 10, 15, 20], period="monthly")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-04, 270 monthly curves from July 2002 to December 2024):
 
 | factor | mean_reversion_speed | long_run_mean | volatility | initial_value |
 |:-------|---------------------:|--------------:|-----------:|--------------:|
@@ -206,28 +129,22 @@ Which returns (calibrated on 2026-10-04):
 | slope | 1.4353 | -0.0128 | 0.0642 | -0.0125 |
 | curvature | 3.4101 | 0.0363 | 0.0967 | 0.0261 |
 
-Fitted on 270 monthly curves from July 2002 to December 2024. Put back together at the
-starting values, the spread curve is 0.71% at 1 year, rises to 1.30% at 5 years and eases
-to 1.09% at 20 years; the long-run values give a curve about twice as wide (2.28% at 1
-year, 2.90% at 5 years, 2.52% at 20 years), since the history includes 2008 and 2020.
-Level shocks halve in about seven months and the curvature hump in about two and a half.
-
-**References:**
-
-- Diebold, F.X., Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364. <https://doi.org/10.1016/j.jeconom.2005.03.005>
-- Yu, W., Zivot, E. (2011). "Forecasting the Term Structures of Treasury and Corporate Yields Using Dynamic Nelson-Siegel Models." International Journal of Forecasting, 27(2), 579-591. <https://doi.org/10.1016/j.ijforecast.2010.04.002>
-- Uhlenbeck, G.E., Ornstein, L.S. (1930). "On the Theory of the Brownian Motion." Physical Review, 36(5), 823-841. <https://doi.org/10.1103/PhysRev.36.823>
-- Christensen, J.H.E., Diebold, F.X., Rudebusch, G.D. (2011). "The Affine Arbitrage-Free Class of Nelson-Siegel Term Structure Models." Journal of Econometrics, 164(1), 4-20. <https://doi.org/10.1016/j.jeconom.2011.02.011>
-
 ## fetch_hqm_spreads
 
 ```python
 fetch_hqm_spreads(period: str) -> tuple[pl.Series, dict[float, pl.Series]]
 ```
 
-The Treasury's High Quality Market corporate spread curve (HQM par yield minus the Treasury
-par yield at 2, 5, 10 and 30 years, monthly from 1984) through the Finance Toolkit, averaged
-to `period`, in the dated per-maturity shape `fit_nelson_siegel_factors` takes.
+Fetch the Treasury's High Quality Market (HQM) corporate spread curve through the Finance Toolkit: the HQM par
+yield minus the Treasury par yield at 2, 5, 10 and 30 years, monthly from 1984, averaged to `period`.
+
+**Args:**
+
+- <u>period (str):</u> "monthly", "quarterly" or "yearly".
+
+**Returns:**
+
+<u>tuple[pl.Series, dict[float, pl.Series]]:</u> the dates, and one spread series per maturity in years.
 
 **Raises:**
 
@@ -239,11 +156,11 @@ to `period`, in the dated per-maturity shape `fit_nelson_siegel_factors` takes.
 credittermstructure.params  # property -> YieldCurveParams
 ```
 
-The last-calibrated credit curve parameters.
+The parameters from the last `calibrate` call.
 
 **Raises:**
 
-- <u>RuntimeError:</u> if calibrate() hasn't been called yet.
+- <u>RuntimeError:</u> if `calibrate` has not been called yet.
 
 ## step_function
 
@@ -251,9 +168,7 @@ The last-calibrated credit curve parameters.
 credittermstructure.step_function  # property
 ```
 
-The exact-transition OU step function shared by all three curve
-factors (`term_structure_model.step_curve_factor`, reused unchanged;
-not Euler-Maruyama, see that function's own docstring).
+The step function that moves each curve factor forward one time step, using the exact mean-reverting transition.
 
 ## changes
 
@@ -261,15 +176,13 @@ not Euler-Maruyama, see that function's own docstring).
 credittermstructure.changes  # property -> dict[str, pl.DataFrame]
 ```
 
-Dated period-over-period changes in each curve factor ("credit_level",
-"credit_slope", "credit_curvature"), from the same data calibrate()
-already fetched, reused for cross-factor correlation estimation
-(Dependence) instead of a second bond-panel scan.
+The dated period-over-period changes of `credit_level`, `credit_slope` and `credit_curvature` from the last
+`calibrate` call, from which the correlation matrix is estimated.
 
 **Returns:**
 
-<u>dict[str, pl.DataFrame]:</u> one entry per curve factor, each two columns, `date` (pl.Date) and `value` (f64); see helpers.dated_changes().
+<u>dict[str, pl.DataFrame]:</u> one table per factor, with a `date` and a `value` column.
 
 **Raises:**
 
-- <u>RuntimeError:</u> if calibrate() hasn't been called yet.
+- <u>RuntimeError:</u> if `calibrate` has not been called yet.

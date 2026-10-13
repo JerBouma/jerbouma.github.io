@@ -71,7 +71,7 @@ Two options change how the default process behaves:
 
 `method: wilkie_ar1` is Wilkie's original inflation model: each period's value keeps a fixed share of last period's gap to the mean (`persistence`), plus a shock. On the same US data, 97% of each month's gap carried into the next month. The economics are close to the default; the difference is that Wilkie's version is fitted directly in discrete steps.
 
-Choose it when you want to reproduce the Wilkie framework as a whole. In that cascade, the dividend yield, dividend growth and the long-term (consols) yield are each computed directly from the inflation path, on top of any correlation. The shipped `wilkie` factor set and settings profile set this up for you. The model has no time step to rescale, so the engine's `frequency` must equal the entry's `period`. It cannot be combined with GARCH, business-cycle conditioning or belief overrides.
+Choose it when you want to reproduce the Wilkie framework as a whole. In that cascade, the dividend yield, dividend growth and the long-term (consols) yield are each computed directly from the inflation path, on top of any correlation. The consols yield follows a slowly moving average of past inflation plus a real part of its own (Wilkie's equations 3.12 and 3.13), which is why it needs a history where long yields stay above inflation; the shipped settings fit on 1995-2007. The shipped `wilkie` factor set and settings profile set this up for you. The model has no time step to rescale, so the engine's `frequency` must equal the entry's `period`. It cannot be combined with GARCH, business-cycle conditioning or belief overrides.
 
 ### Hibbert's Two-Factor Model
 

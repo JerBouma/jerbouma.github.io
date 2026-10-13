@@ -182,7 +182,7 @@ A framework is a published recipe for how the variables relate. Each ships as a 
 | `hibbert.yaml` | [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf) | Rates and inflation revert to a slowly moving target; equities switch between two regimes. |
 | any set with `method: knw` / `knw_sv` | [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058) | Rates and inflation drive each other, optionally with shared stochastic volatility; see the [KNW guide](/projects/financescenarios/docs/knw). |
 
-Wilkie and KNW step in fixed time steps, so `engine.frequency` must match their `period`. `settings/wilkie.yaml` fits on 1995-2019, because Wilkie's long bond model assumes positive real yields.
+Wilkie and KNW step in fixed time steps, so `engine.frequency` must match their `period`. `settings/wilkie.yaml` fits on 1995-2007: Wilkie's long bond model needs the long yield to stay above average inflation, which US yields did not from 2008 to 2017.
 
 ## Long History
 
