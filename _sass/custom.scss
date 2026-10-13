@@ -4208,6 +4208,11 @@ body.article-document {
       overflow-x: hidden !important;
     }
 
+    // the breadcrumbs above already clear the masthead
+    nav.breadcrumbs + #main {
+      margin-top: 0 !important;
+    }
+
     article.page {
       width: 100% !important;
       max-width: 100% !important;
@@ -4224,28 +4229,51 @@ body.article-document {
       padding: 8px 16px 4px !important;
       max-height: none !important;
 
-      // Mobile toggle label — matches the .nav__list label in the main block
-      .nav__list label {
-        color: var(--text-primary) !important;
-        background: rgba(128, 128, 128, 0.05) !important;
-        border: 1px solid var(--card-border) !important;
-        border-radius: 10px !important;
-        font-size: 0.85rem !important;
-        font-weight: 600 !important;
-        padding: 10px 16px !important;
-        transition: all 0.2s ease !important;
+      // Mobile toggle: a full-width row with a small uppercase label and a
+      // chevron that turns when the list is open, like "On this page" on articles
+      .nav__list { margin: 0 !important; }
 
-        &:hover {
-          background: rgba(56, 189, 248, 0.06) !important;
-          border-color: var(--accent-color) !important;
-          color: var(--accent-color) !important;
+      .nav__list label {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        margin: 0 !important;
+        color: var(--text-muted) !important;
+        background: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        font-size: 0.72rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.1em !important;
+        text-transform: uppercase !important;
+        padding: 12px 0 !important;
+        cursor: pointer;
+        transition: color 0.2s ease !important;
+
+        &::before { display: none !important; }
+
+        &::after {
+          content: "" !important;
+          display: block !important;
+          position: static !important;
+          width: 7px !important;
+          height: 7px !important;
+          margin: 0 4px 3px 0 !important;
+          border-right: 2px solid currentColor !important;
+          border-bottom: 2px solid currentColor !important;
+          background: none !important;
+          transform: rotate(45deg);
+          transition: transform 0.2s ease, margin 0.2s ease;
         }
+
+        &:hover { color: var(--accent-color) !important; }
       }
 
       .nav__list input:checked + label {
-        background: rgba(56, 189, 248, 0.1) !important;
-        border-color: var(--accent-color) !important;
         color: var(--accent-color) !important;
+
+        &::after { transform: rotate(-135deg); margin-bottom: -3px !important; }
       }
     }
 

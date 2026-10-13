@@ -314,3 +314,16 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
 :root[data-theme="light"] .page__content .cov--yes { color: #059669; }
 :root[data-theme="light"] .page__content .cov--part { color: #b45309; }
 :root[data-theme="light"] .page__content .cov--no { color: #db2777; }
+
+// Setup steps: the one-line code blocks inside them (server URLs, commands)
+// wrap on narrow screens instead of running off the edge
+.page__content ol.ca-steps pre,
+.page__content ol.ca-steps pre code {
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  body .page__content ol.ca-steps div.highlighter-rouge pre.highlight { padding: 14px 12px !important; }
+  body .page__content ol.ca-steps div.highlighter-rouge pre.highlight code { font-size: 0.72rem !important; }
+}
