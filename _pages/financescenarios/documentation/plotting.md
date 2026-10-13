@@ -14,7 +14,7 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Every result can be drawn in one line. The charts are for a quick read of a run, not a reporting tool: each answers one question about the scenarios. Options such as band choice and bin count are in the [reference](/projects/financescenarios/docs/reference/charts).
+The charts are for a quick read of a run, not a reporting tool: each answers one question about the scenarios. Options such as bands and bin counts are in the [reference](/projects/financescenarios/docs/reference/charts).
 
 ```python
 from financescenarios import Scenarios
@@ -25,7 +25,7 @@ result = scenarios.simulate()
 result.plot()   # one fan chart per factor, the whole run at a glance
 ```
 
-Every chart uses the readings described under [units](/projects/financescenarios/docs/units): a rate as its rate, a price as its annualized return since the start, both as percentages. Another reading, or the price itself, is one argument away.
+Every chart uses the readings described under [units](/projects/financescenarios/docs/units): a rate as its rate, a price as its annualized return since the start, both as percentages. Other readings, or the price itself, are available too.
 
 ## Fan Chart: Where the Distribution Sits Over Time
 
@@ -58,7 +58,7 @@ result.plot("us_broad", kind="distribution")
 
 ## Correlation Matrix: What Moves with What
 
-A heatmap of the correlations the model was fitted with, red for positive, blue for negative, gray around zero. The scale always spans -1 to 1, so two calibrations can be compared by eye. Read it for the diversification the scenarios assume: whether equities and bonds hedge each other, whether currencies offset equity losses, which factors are near duplicates. The correlations are constant over the horizon; dependence that rises in a crisis comes from shared regimes and fat tails instead (see the [simulation engine](/projects/financescenarios/docs/simulation-engine)).
+A heatmap of the fitted correlations: red positive, blue negative, gray around zero, always on a -1 to 1 scale so two calibrations compare by eye. Read it for the diversification the scenarios assume: whether equities and bonds hedge each other, whether currencies offset equity losses, which factors are near duplicates. The correlations are constant over the horizon; dependence that rises in a crisis comes from shared regimes and fat tails instead (see the [simulation engine](/projects/financescenarios/docs/simulation-engine)).
 
 ```python
 scenarios.last_calibration.plot()

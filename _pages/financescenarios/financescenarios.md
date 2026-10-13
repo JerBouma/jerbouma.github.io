@@ -19,7 +19,7 @@ search: false
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceScenarios" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The question about the future is rarely "what will happen?". It is "what could happen, and how bad does it get?". How much capital does a 1-in-200-year shock eat? Will a pension fund's assets keep up with its liabilities for thirty years? A single forecast cannot answer either, because the answer lives in the spread of outcomes. The tools that do answer it, economic scenario generators, have mostly been vendor products: you receive scenario files and a calibration report while the method stays with the vendor.
+How much capital does a 1-in-200-year shock eat? Will a pension fund's assets keep up with its liabilities for thirty years? How bad is the bad year in twenty for a 60/40? A single forecast cannot answer these, because the answer lives in the spread of outcomes. Economic scenario generators answer them, but they have mostly been vendor products: you receive scenario files and a calibration report while the method stays with the vendor.
 
 **Finance Scenarios makes those methods open.** It gives you:
 
@@ -55,7 +55,7 @@ A run combines a **settings** profile (how many scenarios, how far ahead, how mu
 
 ### Simulating Correlated Scenarios {#simulating-scenarios}
 
-Each variable is fitted to its own history, and the shocks are drawn jointly so the scenarios keep the historical correlations: a bad year for equities tends to come with rising unemployment and falling short rates.
+Each variable is fitted to its own history, and the shocks are drawn jointly so the scenarios keep the co-movements seen in that history. That matters because risks rarely arrive alone: in a typical recession, equities fall, unemployment rises and central banks cut short rates.
 
 ```python
 from financescenarios import Scenarios
@@ -72,7 +72,7 @@ result.describe()
 result.plot(["united_states_short_rate", "united_states_inflation"])
 ```
 
-Rates are annual rates and priced assets annualized returns, as decimals; `terminal_q05` and `terminal_q95` are the 1-in-20 outcomes at five years.
+Rates are annual rates and priced assets annualized returns, as decimals; `terminal_q05` and `terminal_q95` are the levels that 1 in 20 scenarios end below and above after five years.
 
 | factor                     | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:---------------------------|--------:|--------------:|-------------:|-------------:|
@@ -158,7 +158,7 @@ A market loading of 0.54 with an R² of 0.87: the five factors explain most of t
 
 ### Valuing Liabilities and Capital Under Solvency II
 
-[Solvency II](https://eur-lex.europa.eu/eli/dir/2009/138/oj) needs two views of the same economy. Liabilities are valued market-consistently, from a risk-neutral run in which discounted asset prices are martingales. Capital is the one-year 99.5% loss of own funds, read from the real-world run. Below, 10,000 a year for five years is backed by 60,000 in the 60/40.
+[Solvency II](https://eur-lex.europa.eu/eli/dir/2009/138/oj) needs two views of the same economy. Liabilities are valued market-consistently, from a risk-neutral run: under that measure every asset is expected to earn the risk-free rate, so its discounted total-return price is a martingale and the scenarios reproduce today's prices. Capital is the one-year 99.5% loss of own funds, read from the real-world run. Below, 10,000 a year for five years is backed by 60,000 in the 60/40.
 
 ```python
 from financescenarios import Solvency
@@ -184,7 +184,7 @@ The SCR of 12,453 is the distance from today's own funds to the 1-in-200 outcome
 
 ### Validating the Output
 
-A scenario set is only useful if it does what its models promise. Each run can be checked for calibration, finite paths and whether the simulated correlations match the fitted ones. Most variables can also be simulated with alternative published models, such as [Hull-White](https://doi.org/10.1093/rfs/3.4.573), [CIR](https://doi.org/10.2307/1911242) and [regime-switching](https://doi.org/10.1080/10920277.2001.10595984) equities, so model risk can be compared directly.
+A scenario set is only useful if it does what its models promise. Each run can be checked for plausible fitted parameters, a valid correlation matrix, simulated correlations and volatilities in line with the calibration and history, and finite paths. Most variables can also be simulated with alternative published models, such as [Hull-White](https://doi.org/10.1093/rfs/3.4.573), [CIR](https://doi.org/10.2307/1911242) and [regime-switching](https://doi.org/10.1080/10920277.2001.10595984) equities, so model risk can be compared directly.
 
 ```python
 scenarios.validate(result)

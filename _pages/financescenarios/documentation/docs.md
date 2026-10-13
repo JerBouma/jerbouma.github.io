@@ -20,42 +20,42 @@ An ESG replaces a single forecast with a distribution. That is what ALM studies,
 
 ## What Is Modeled
 
-Every factor follows a model suited to how it behaves: rates, inflation and spreads revert to a long-run level at their own historical speed, equities switch between calm and crisis regimes so bad months cluster, and currencies keep their historical volatility.
+Each factor follows a model suited to how it behaves: rates, inflation and spreads revert to a long-run level at their own historical speed, equities switch between calm and crisis regimes so bad months cluster, and currencies keep their historical volatility.
 
-| Area | What is simulated | Model | Guide | Reference |
-|:-----|:------------------|:------|:------|:----------|
-| Short and long rates | One rate per country, short or long end | Hull-White (default, can go negative), CIR (stays at or above zero), Wilkie, Hibbert two-factor | [Interest rates](/projects/financescenarios/docs/interest-rates) | [InterestRates](/projects/financescenarios/docs/reference/interest-rates) |
-| Yield curve | Level, slope and curvature of the whole curve | Dynamic Nelson-Siegel | [Interest rates](/projects/financescenarios/docs/interest-rates) | [TermStructure](/projects/financescenarios/docs/reference/term-structure) |
-| Forward curve | The full forward curve, arbitrage-free | Two-factor Gaussian HJM | [Interest rates](/projects/financescenarios/docs/interest-rates) | [Hjm](/projects/financescenarios/docs/reference/hjm) |
-| Rates and inflation jointly | Nominal and real rates, inflation, optionally equities | KNW, with stochastic volatility or priced like the market | [KNW](/projects/financescenarios/docs/knw) | [Knw](/projects/financescenarios/docs/reference/knw) |
-| Inflation | Year-on-year inflation per country | Mean-reverting (Ornstein-Uhlenbeck) or Wilkie AR(1) | [Economy](/projects/financescenarios/docs/economy) | [Inflation](/projects/financescenarios/docs/reference/inflation) |
-| Unemployment | Unemployment rate per country | Mean-reverting with a Phillips-curve link to inflation | [Economy](/projects/financescenarios/docs/economy) | [Unemployment](/projects/financescenarios/docs/reference/unemployment) |
-| Business cycle | OECD composite leading indicator | Mean-reverting | [Economy](/projects/financescenarios/docs/economy) | [LeadingIndicator](/projects/financescenarios/docs/reference/leading-indicator) |
-| Longevity | Mortality improvement by age | Cairns-Blake-Dowd | [Economy](/projects/financescenarios/docs/economy) | [Mortality](/projects/financescenarios/docs/reference/mortality) |
-| Equities | Indices, sectors, regions, styles | Regime-switching lognormal | [Markets](/projects/financescenarios/docs/markets) | [Equities](/projects/financescenarios/docs/reference/equities) |
-| Currencies | Each currency against the dollar | Lognormal, optionally with an interest-rate-parity drift | [Markets](/projects/financescenarios/docs/markets) | [FX](/projects/financescenarios/docs/reference/fx) |
-| Commodities | Gold, oil and other futures | Mean-reverting log price (Schwartz), or two-factor | [Markets](/projects/financescenarios/docs/markets) | [Commodities](/projects/financescenarios/docs/reference/commodities) |
-| Real estate | House-price growth | Mean-reverting | [Markets](/projects/financescenarios/docs/markets) | [RealEstate](/projects/financescenarios/docs/reference/real-estate) |
-| Dividends | Dividend yield and dividend growth | Mean-reverting log yield, Wilkie-style growth | [Markets](/projects/financescenarios/docs/markets) | [DividendYield](/projects/financescenarios/docs/reference/dividend-yield) |
-| Credit | Spreads by maturity or rating, the credit curve, rating migration and default | Mean-reverting spreads, Nelson-Siegel credit curve, a credit cycle driving migration | [Markets](/projects/financescenarios/docs/markets) | [Credit](/projects/financescenarios/docs/reference/credit) |
-| Stress and climate | Fed and ESRB stress tests, NGFS climate pathways, your own narratives | Overlays on a run | [Regimes](/projects/financescenarios/docs/regimes) | [Regimes](/projects/financescenarios/docs/reference/regimes) |
+| Area | What is simulated | Model | Guide |
+|:-----|:------------------|:------|:------|
+| Short and long rates | One rate per country, short or long end | Hull-White (default, can go negative), CIR (rates kept near or above zero), Wilkie, Hibbert two-factor | [Interest rates](/projects/financescenarios/docs/interest-rates) |
+| Yield curve | Level, slope and curvature of the whole curve | Dynamic Nelson-Siegel | [Interest rates](/projects/financescenarios/docs/interest-rates) |
+| Forward curve | The full forward curve, arbitrage-free | Two-factor Gaussian HJM | [Interest rates](/projects/financescenarios/docs/interest-rates) |
+| Rates and inflation jointly | Nominal and real rates, inflation, optionally equities | KNW, with stochastic volatility or priced like the market | [KNW](/projects/financescenarios/docs/knw) |
+| Inflation | Year-over-year inflation per country | Mean-reverting (Ornstein-Uhlenbeck) or Wilkie AR(1) | [Economy](/projects/financescenarios/docs/economy) |
+| Unemployment | Unemployment rate per country | Mean-reverting with a Phillips-curve link to inflation | [Economy](/projects/financescenarios/docs/economy) |
+| Business cycle | OECD composite leading indicator | Mean-reverting | [Economy](/projects/financescenarios/docs/economy) |
+| Longevity | Mortality improvement by age | Cairns-Blake-Dowd | [Economy](/projects/financescenarios/docs/economy) |
+| Equities | Indices, sectors, regions, styles | Regime-switching lognormal | [Markets](/projects/financescenarios/docs/markets) |
+| Currencies | Each currency against the dollar | Lognormal, optionally with an interest-rate-parity drift | [Markets](/projects/financescenarios/docs/markets) |
+| Commodities | Gold, oil and other futures | Mean-reverting log price (Schwartz), or two-factor | [Markets](/projects/financescenarios/docs/markets) |
+| Real estate | House-price growth | Mean-reverting | [Markets](/projects/financescenarios/docs/markets) |
+| Dividends | Dividend yield and dividend growth | Mean-reverting log yield, Wilkie-style growth | [Markets](/projects/financescenarios/docs/markets) |
+| Credit | Spreads by maturity or rating, the credit curve, rating migration and default | Mean-reverting spreads, Nelson-Siegel credit curve, a credit cycle driving migration | [Markets](/projects/financescenarios/docs/markets) |
+| Stress and climate | Fed and ESRB stress tests, NGFS climate pathways, your own narratives | Overlays on a run | [Regimes](/projects/financescenarios/docs/regimes) |
 
-Interest rates, inflation, equities and unemployment are always on; the rest is switched on per factor set. [Coverage](/projects/financescenarios/docs/coverage) lists every model, calibration choice and known gap in one place.
+Interest rates, inflation, equities and unemployment are always simulated; the rest is switched on per factor set. [Coverage](/projects/financescenarios/docs/coverage) lists every model, calibration choice and known gap, and the [reference](/projects/financescenarios/docs/reference) documents each model's parameters.
 
 ## How the Factors Are Linked
 
-Scenarios are only useful if the factors move together plausibly: an equity sell-off should come with what history saw alongside one. Two mechanisms do that, following [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf):
+Scenarios are only useful if the factors move together plausibly: an equity sell-off should come with the spread, rate and currency moves history saw alongside one. Two mechanisms do that, following [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf):
 
 - **The economic cascade.** Where theory says one variable drives another, the simulated path of one feeds the next: inflation drives unemployment through the Phillips curve, and drives rates in the Wilkie and KNW models; the interest-rate gap between two currencies drives the exchange rate under interest-rate parity.
 - **Correlations.** Every factor's shocks are correlated through one matrix estimated from the factors' historical changes, so the joint behavior of rates, equities, spreads and currencies carries over into every scenario.
 
-[How a run is built](/projects/financescenarios/docs/architecture) shows how the two fit together, from data to a finished scenario set.
+[How a run is built](/projects/financescenarios/docs/architecture) shows how the two fit together.
 
-## Real-world and Risk-neutral Runs
+## Real-World and Risk-Neutral Runs
 
 A **real-world** run fits each factor to how it has actually behaved, with its own drift and risk premia. It answers "what could happen?" and is the run for ALM, asset allocation, capital planning and risk appetite.
 
-A **risk-neutral** run reproduces today's market prices instead: it is calibrated to today's rates and option prices, and every asset earns the risk-free rate on average. It answers "what is this worth?" and is the run for valuing options and guarantees and for the Solvency II best estimate. [Merton (1973)](https://doi.org/10.2307/3003143) gives the classic no-arbitrage argument and [the SOA (2022)](https://www.soa.org/resources/research-reports/2022/understanding-the-connection/) a practical treatment of when each measure fits. Not every factor has a risk-neutral form; [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures) lists which do and why.
+A **risk-neutral** run reproduces today's market prices instead: it is calibrated to today's curve and option prices, and every asset earns the risk-free rate on average. It answers "what is this worth?" and is the run for valuing options and guarantees and for the Solvency II best estimate. [Merton (1973)](https://doi.org/10.2307/3003143) gives the classic no-arbitrage argument and [the SOA (2022)](https://www.soa.org/resources/research-reports/2022/understanding-the-connection/) a practical treatment of when each measure fits. Not every factor has a risk-neutral form; [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures) lists which do and why.
 
 ```python
 from financescenarios import Scenarios
