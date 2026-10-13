@@ -5974,3 +5974,88 @@ body.ft-overview .page__content {
   .page__content .mcp-compare td::before { content: attr(data-label); display: block; margin-bottom: 3px; color: var(--text-muted); font-size: 0.66rem; letter-spacing: 0.05em; text-transform: uppercase; }
   .page__content .mcp-compare td:nth-of-type(2)::before { color: var(--accent-color); }
 }
+
+// ── Back to top ───────────────────────────────────────────
+// A round glass button in the corner. Out of view (moved below the screen
+// edge, not faded, so it never counts as page content) until the reader is a
+// screen down; the ring around it fills with the reading progress.
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  color: var(--text-primary) !important;
+  text-decoration: none !important;
+  transform: translateY(calc(100% + 48px));
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+
+  :root[data-theme="light"] & { box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12); }
+
+  &.is-shown { transform: none; }
+
+  &:hover, &:focus-visible {
+    border-color: var(--accent-color);
+    box-shadow: 0 10px 28px rgba(56, 189, 248, 0.25);
+    color: var(--accent-color) !important;
+
+    .back-to-top__chevron { transform: translateY(-2px); }
+  }
+
+  &:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 3px; }
+
+  .back-to-top__ring {
+    position: absolute;
+    inset: -1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    transform: rotate(-90deg);
+    pointer-events: none;
+
+    circle { fill: none; stroke-width: 2; }
+  }
+
+  .back-to-top__track { stroke: transparent; }
+
+  .back-to-top__progress {
+    stroke: var(--accent-color);
+    stroke-linecap: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    transition: stroke-dashoffset 0.1s linear;
+  }
+
+  .back-to-top__chevron {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.2s ease;
+  }
+
+  @media (max-width: 600px) {
+    right: 16px;
+    bottom: 16px;
+    width: 42px;
+    height: 42px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    .back-to-top__progress, .back-to-top__chevron { transition: none; }
+  }
+
+  @media print { display: none; }
+}
