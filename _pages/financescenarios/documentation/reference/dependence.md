@@ -24,104 +24,47 @@ from financescenarios.dependence.dependence_controller import Dependence
 Dependence(shrinkage: float | str = 0.1)
 ```
 
-The Dependence module ties the factors together: it measures how every calibrated factor
-has historically moved alongside every other one, and turns that into the correlation
-matrix the simulation engine uses to draw linked random shocks. Without it, interest
-rates, inflation, equities and unemployment would each be simulated on their own.
+Ties the factors together: measures how every factor has moved alongside every other one, and turns that into the
+correlation matrix the simulation uses to draw linked random shocks.
 
-In plain terms: in a simulated scenario where inflation surprises on the upside, you also
-want to see the interest rate, equity and unemployment moves that have historically come
-with high inflation, not a random mix. This module makes that happen. It runs
-automatically inside `Scenarios.calibrate()`/`Scenarios.simulate()`, so most users only
-meet its result: `CalibrationResult.correlation_matrix` (and its `.plot_correlation_matrix()`).
-
-A correlation matrix is a table where entry (i, j) is the correlation between factor i
-and factor j: a number between -1 and 1 that says how strongly two series move together,
-1 meaning perfectly together, -1 perfectly opposite and 0 no linear relationship. Every
-always-on factor (each interest rate, inflation, equity and unemployment entry) is in it,
-and so is every opt-in factor that is enabled or configured (`yield_curve`'s three
-factors, `real_estate`, every `credit` entry, `leading_indicator`, every `fx` entry, and
-so on). The broad factor set's 23 equity "clouds" alone already make it far larger than
-the 4 x 4 a single-equity setup produces, but it is built and repaired the same way at
-any size. The correlations are estimated from each factor's own historical *changes*
-(short-rate changes, inflation changes, equity log-returns, unemployment-rate changes),
-taken from the data each factor controller already fetched, so no second download is made.
+In a scenario where inflation surprises on the upside, you also want the interest rate, equity and unemployment
+moves that have historically come with high inflation, not a random mix. A correlation matrix holds that: entry
+(i, j) is a number between -1 and 1 that says how strongly factors i and j move together (1 fully together, -1
+fully opposite, 0 no linear link). It is estimated from each factor's historical changes (rate changes, equity log
+returns), taken from the data each factor already fetched. It runs inside `Scenarios.calibrate()` and
+`Scenarios.simulate()`, so most users only meet its result, `CalibrationResult.correlation_matrix`.
 
 Building the matrix takes three steps:
 
-1. Estimate. By default (`calibrate_pairwise`, `engine.correlation_method: pairwise`)
-   each pair of factors is correlated over just the calendar dates the two have in
-   common, at the coarser of their two frequencies, so a factor with a short history only
-   weakens the pairs it is part of. The alternative (`calibrate`,
-   `engine.correlation_method: complete_case`) first cuts every factor down to the one
-   window they all share and correlates them together. Series are always lined up by
-   *date*, never by position, so daily rates, yearly inflation and monthly equities are
-   first summed up to the coarser period and then matched on the calendar.
-2. Shrink. Plain (Pearson) sample correlation gets noisy once the number of factors is
-   large compared with the number of overlapping observations, a real risk with many
-   equity, fx and credit entries. The sample matrix is blended toward a
-   constant-correlation target, every off-diagonal entry replaced by the average pairwise
-   correlation, as in [Ledoit & Wolf (2004)](http://www.ledoit.net/Honey_2004.pdf): a
-   little bias for a large drop in estimation noise, and a better-conditioned matrix for
-   the Cholesky decomposition that follows. The blend weight `shrinkage` is fixed
-   (default 0.1). With `engine.correlation_shrinkage: auto` it is chosen from the data instead: the
-   [Schafer and Strimmer (2005)](https://doi.org/10.2202/1544-6115.1175) intensity, toward no correlation,
-   larger when correlations rest on few observations. Trained on the broad factor set's history before
-   2012 or 2016 and scored on the years after, it cut the correlation error by 7.5% and 1.6%.
-3. Repair. A matrix assembled from series of different frequencies, or from per-pair
-   windows of different lengths, may not be positive semi-definite: the property that no
-   combination of the correlated factors can have a negative variance. The Cholesky
-   decomposition used downstream to generate correlated shocks needs it (strictly,
-   positive *definite*). The matrix is moved to the nearest valid correlation matrix with
-   [Higham's (2002)](https://doi.org/10.1093/imanum/22.3.329) alternating-projections
-   algorithm. This is a numerical safeguard, not a modelling choice: a valid matrix comes
-   back unchanged.
+1. Estimate. By default each pair of factors is correlated over the dates the two share, at the coarser of their
+   two frequencies, so a short history only weakens its own pairs (`calibrate_pairwise`). The alternative cuts
+   every factor to the one window they all share (`calibrate`).
+2. Shrink. With many factors and few shared observations, sample correlations get noisy, so the matrix is blended
+   toward one where every pair has the average correlation, as in
+   [Ledoit & Wolf (2004)](http://www.ledoit.net/Honey_2004.pdf), by 10% by default. With `auto` the blend is chosen
+   from the data instead, toward no correlation, following
+   [Schafer and Strimmer (2005)](https://doi.org/10.2202/1544-6115.1175).
+3. Repair. A matrix pieced together from different windows may not be a valid correlation matrix, one where no mix
+   of factors has a negative variance. It is moved to the nearest valid one with
+   [Higham's (2002)](https://doi.org/10.1093/imanum/22.3.329) method; a valid matrix comes back unchanged.
 
-The matrix is always a *linear* correlation structure: it says how strongly two factors'
-changes move together on average, nothing about whether their most extreme moves tend to
-coincide. Which distribution it then correlates is a separate engine setting:
-`engine.shock_distribution: gaussian` (the default) correlates normally distributed
-shocks, under which joint extreme moves are never more likely than a Gaussian implies;
-`student_t` correlates a multivariate Student-t distribution with the same matrix, a
-t-copula ([Demarta & McNeil, 2005](https://doi.org/10.1111/j.1751-5823.2005.tb00254.x)),
-adding genuine tail dependence (extremes that tend to arrive together), not just fatter
-tails per factor. Correlating the random shocks of several factors this way follows the
-multi-factor models of Wilkie (1986) and Ahlgrim, D'Arcy & Gorvett (2005), both linked
-under References.
+The matrix describes average co-movement only. Whether extreme moves tend to arrive together is set by
+`engine.shock_distribution`: `gaussian` (default) or `student_t`, a t-copula
+([Demarta & McNeil, 2005](https://doi.org/10.1111/j.1751-5823.2005.tb00254.x)) that makes joint extremes more
+likely. Correlations stay constant over the horizon.
 
-There is no data source of its own: the inputs are the dated change series every factor
-controller exposes through its `changes`. Pairwise correlation is computed with Polars'
-own Pearson correlation, the same plain calculation Finance Toolkit's
-`get_correlation_matrix()` delegates to, so the data never leaves Polars/NumPy.
-
-What it does not do: asymmetric or pair-specific tail behavior that a single shared
-t-copula parameter cannot express, such as the patchwork copulas of
-[Pfeifer & Ragulina (2021)](https://doi.org/10.1515/demo-2021-0115) or the dependent
-Conditional-VaR of [Josaphat & Syuhada (2020)](https://arxiv.org/abs/2009.02904); those
-remain natural next steps. Correlations are also constant over the simulation horizon.
-
-Configuration (`engine` in a settings profile; the dependence step has no factor-set keys):
-
-| Key | Default | Meaning |
+| Key (`engine` in a settings profile) | Default | Meaning |
 |:----|:--------|:--------|
 | `engine.correlation_method` | `pairwise` | `pairwise` (`calibrate_pairwise`) or `complete_case` (`calibrate`). |
 | `engine.shock_distribution` | `gaussian` | `gaussian` or `student_t`: which distribution the matrix correlates. |
 | `engine.degrees_of_freedom` | `5.0` | Student-t degrees of freedom; lower means fatter, more joint tails. |
 | `engine.correlation_shrinkage` | `0.1` | A share in [0, 1] toward the mean correlation, or `auto` (data-driven). |
 
-`Scenarios` builds `Dependence(shrinkage=engine.correlation_shrinkage)` for every calibration and records
-the intensity used and the repair size on the result (`correlation_shrinkage`, `correlation_repair`).
-
 **References:**
 
-- Wilkie, A.D. (1986). "A Stochastic Investment Model for Actuarial Use." Transactions of the Faculty of Actuaries, 39, 341-403. <https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf>
-- Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the CAS, 92. <https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf>
 - Ledoit, O., Wolf, M. (2004). "Honey, I Shrunk the Sample Covariance Matrix." Journal of Portfolio Management, 30(4), 110-119. <http://www.ledoit.net/Honey_2004.pdf>
 - Schafer, J., Strimmer, K. (2005). "A Shrinkage Approach to Large-Scale Covariance Matrix Estimation and Implications for Functional Genomics." Statistical Applications in Genetics and Molecular Biology, 4(1). <https://doi.org/10.2202/1544-6115.1175>
 - Higham, N.J. (2002). "Computing the Nearest Correlation Matrix: A Problem from Finance." IMA Journal of Numerical Analysis, 22(3), 329-343. <https://doi.org/10.1093/imanum/22.3.329>
-- Demarta, S., McNeil, A.J. (2005). "The t Copula and Related Copulas." International Statistical Review, 73(1), 111-129. <https://doi.org/10.1111/j.1751-5823.2005.tb00254.x>
-- Pfeifer, D., Ragulina, O. (2021). "Generating Unfavourable VaR Scenarios under Solvency II with Patchwork Copulas." Dependence Modeling, 9, 327-346. <https://doi.org/10.1515/demo-2021-0115>
-- Josaphat, B., Syuhada, K. (2020). "Dependent Conditional Value-at-Risk for Aggregate Risk Models." arXiv:2009.02904. <https://arxiv.org/abs/2009.02904>
 
 ## fallback_pairs
 
@@ -129,12 +72,8 @@ the intensity used and the repair size on the result (`correlation_shrinkage`, `
 dependence.fallback_pairs  # property -> list[str]
 ```
 
-Pairs the last calibrate_pairwise() call defaulted to 0.0 (assumed
-uncorrelated) for lack of a reliable overlap; see
-dependence_model.build_pairwise_correlation_matrix()'s own docstring.
-Always empty after calibrate() (the complete-case path has no such
-fallback: every pair either has a real estimate or the whole calibration
-fails outright), and before either has been called.
+The "factor_a/factor_b" pairs the last `calibrate_pairwise()` set to zero correlation (assumed unrelated), because
+they shared fewer than 5 observations or one side never moved. Always empty after `calibrate()`.
 
 ## shrinkage_used
 
@@ -150,7 +89,8 @@ The shrinkage intensity the last calibration applied (the computed one for "auto
 dependence.repair  # property -> float | None
 ```
 
-How far the last calibration's shrunk matrix moved to become valid (Frobenius norm; 0 if it was).
+How far the last calibration's matrix had to move to become a valid correlation matrix (the Frobenius norm, the
+size of the change across all entries); 0 when it already was.
 
 ## calibrate
 
@@ -158,88 +98,42 @@ How far the last calibration's shrunk matrix moved to become valid (Frobenius no
 calibrate(factor_series: dict[str, pl.Series]) -> pl.DataFrame
 ```
 
-Build the cross-factor correlation matrix from series that are already aligned onto
-one shared set of dates (complete-case estimation), then shrink it and repair it into
-a valid correlation matrix.
+Build the correlation matrix from series already lined up on one shared set of dates, then shrink and repair it.
 
-In plain terms: hand it one equally long history per factor, covering the same
-periods, and it returns how strongly each pair has moved together, cleaned up so the
-simulation engine can use it. This is the `engine.correlation_method: complete_case`
-path; every real run uses `calibrate_pairwise` by default, and this method remains
-for direct use and for that setting.
+This is the `engine.correlation_method: complete_case` route: hand it one equally long history per factor,
+covering the same dates, and it returns how strongly each pair has moved together. Every pair uses the same
+observations, so the matrix rarely needs repair and no pair falls back to zero. The cost is that one short or
+coarse factor shortens the window for every other pair; runs use `calibrate_pairwise` by default.
 
-Because every entry comes from the same underlying observations, the sample matrix is
-positive semi-definite by construction and rarely needs repair, and there are never
-fallback pairs (`fallback_pairs` is reset to empty). The cost is that one
-short-history or coarse-period factor shrinks the window every other pair is
-estimated from. The series are typically produced by
-`dependence_model.align_factor_series_by_date`, which sums every factor's changes up
-to the coarsest period in play and inner-joins them on calendar date.
-
-Also known as: complete-case correlation, listwise-deletion correlation matrix.
+Also known as: complete-case correlation, listwise deletion.
 
 **Args:**
 
-- <u>factor_series (dict[str, pl.Series]):</u> factor name -> aligned historical series (e.g. short-rate changes, inflation changes, equity log-returns), all the same length and covering the same dates.
+- <u>factor_series (dict[str, pl.Series]):</u> factor name -> its historical changes (rate changes, equity log returns), all the same length, covering the same dates and without missing values.
 
 **Returns:**
 
-<u>pl.DataFrame:</u> the validated N x N correlation matrix, shrunk (see __init__) and PSD-repaired if needed: a `factor` column plus one numeric column per factor, in input order.
+<u>pl.DataFrame:</u> the N x N correlation matrix, a "factor" column plus one column per factor, in input order.
 
 **Raises:**
 
-- <u>ValueError:</u> if fewer than two factors are supplied, the series are not all the same length, a series is constant (zero variance), `shrinkage` is outside [0, 1], or the matrix cannot be repaired into a strictly positive-definite one.
-
-**Notes:**
-
-- A warning is logged when there are fewer than 3 x N^2 observations for N
-  factors (the estimate may be noisy), and when a pair's correlation exceeds 0.98
-  in absolute value, which usually means the same driver is configured twice.
-- The input series must be free of nulls; every controller's `changes` already is.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-from financescenarios.dependence.dependence_controller import Dependence
-from financescenarios.dependence.dependence_model import align_factor_series_by_date
-from financescenarios.factors.equities.equities_controller import Equities
-
-toolkit = Toolkit(
-    ["SPY", "TLT", "GLD"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2005-01-01", benchmark_ticker=None
-)
-equities = Equities(toolkit)
-equities.calibrate("us_stocks", "SPY", period="monthly")
-equities.calibrate("us_treasuries", "TLT", period="monthly")
-equities.calibrate("gold", "GLD", period="monthly")
-
-aligned, diagnostics = align_factor_series_by_date(
-    {name: equities.changes(name) for name in equities.names}, {name: "monthly" for name in equities.names}
-)
-dependence = Dependence()
-dependence.calibrate(aligned)
-```
-
-Which returns (calibrated on 2026-10-04):
-
-| factor | us_stocks | us_treasuries | gold |
-|:-------|----------:|--------------:|-----:|
-| us_stocks | 1.0000 | -0.0552 | 0.0934 |
-| us_treasuries | -0.0552 | 1.0000 | 0.2201 |
-| gold | 0.0934 | 0.2201 | 1.0000 |
-
-All three ETFs have the same 261 monthly returns (February 2005 to October 2026), so
-`diagnostics.aligned_length` is 261 and nothing is lost to alignment. The result is
-identical to the `calibrate_pairwise` example, as it should be when every factor
-covers the same dates.
-
-**References:**
-
-- Wilkie, A.D. (1986). "A Stochastic Investment Model for Actuarial Use." Transactions of the Faculty of Actuaries, 39, 341-403. <https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf>
-- Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the CAS, 92. <https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf>
-- Ledoit, O., Wolf, M. (2004). "Honey, I Shrunk the Sample Covariance Matrix." Journal of Portfolio Management, 30(4), 110-119. <http://www.ledoit.net/Honey_2004.pdf>
-- Higham, N.J. (2002). "Computing the Nearest Correlation Matrix: A Problem from Finance." IMA Journal of Numerical Analysis, 22(3), 329-343. <https://doi.org/10.1093/imanum/22.3.329>
+- <u>ValueError:</u> if fewer than two factors are given, the series differ in length, a series never changes, or the matrix cannot be repaired.
+- <u>As an example, with `equities` built as in `calibrate_pairwise`:</u> 
+- ```python
+- from financescenarios.dependence.dependence_controller import Dependence
+- from financescenarios.dependence.dependence_model import align_factor_series_by_date
+- <u>aligned, diagnostics = align_factor_series_by_date( {name:</u> equities.changes(name) for name in equities.names}, {name: "monthly" for name in equities.names}
+- )
+- dependence = Dependence()
+- dependence.calibrate(aligned)
+- ```
+- <u>Which returns (calibrated on 2026-10-04):</u> 
+- | factor | us_stocks | us_treasuries | gold |
+- <u>&#124;:</u> -------|----------:|--------------:|-----:|
+- | us_stocks | 1.0000 | -0.0552 | 0.0934 |
+- | us_treasuries | -0.0552 | 1.0000 | 0.2201 |
+- | gold | 0.0934 | 0.2201 | 1.0000 |
+- All three funds cover the same 261 months, so the result matches `calibrate_pairwise`, as it should.
 
 ## calibrate_pairwise
 
@@ -250,50 +144,28 @@ calibrate_pairwise(
 ) -> pl.DataFrame
 ```
 
-Build the cross-factor correlation matrix with pairwise-complete estimation, then
-shrink it and repair it into a valid correlation matrix. This is the default path
-every `Scenarios` run uses (`engine.correlation_method: pairwise`).
+Build the correlation matrix pair by pair, each pair over the dates the two factors share, then shrink and repair
+it. Every `Scenarios` run uses this by default (`engine.correlation_method: pairwise`).
 
-In plain terms: each pair of factors is correlated over just the dates the two have
-in common, so a factor with only a few years of data (a new credit bucket, a young
-commodity ticker, a quarterly-only country) weakens only the correlations it is part
-of. Two long-history equities still correlate over their full shared history.
-
-For every pair, both series are summed up to the coarser of the two factors' own
-periods (daily rate changes become yearly sums when paired with yearly inflation)
-and inner-joined on calendar date. A pair with fewer than 5 overlapping observations,
-or one side constant within the overlap, cannot be estimated reliably (with 2 points a
-correlation is forced to exactly +1 or -1), so it is set to 0.0, assumed uncorrelated,
-and listed in `fallback_pairs`. A matrix built from windows of different lengths is
-not guaranteed positive semi-definite, which is what the Higham repair step that
-follows is for.
+A factor with only a few years of data, such as a young commodity ticker or a quarterly-only country, then weakens
+only its own pairs, while two long-history equities still use their full shared history. For each pair, both
+series are summed up to the coarser of the two frequencies and matched on calendar date. A pair with fewer than 5
+shared observations, or one side that never moves, is set to 0 (assumed unrelated) and listed in `fallback_pairs`.
 
 Also known as: pairwise-complete correlation, pairwise deletion.
 
 **Args:**
 
-- <u>factor_series (dict[str, pl.DataFrame]):</u> factor name -> two-column frame (`date`: pl.Date, `value`: f64), *not* pre-aligned; each controller's own changes()/changes property already returns this shape, the same input align_factor_series_by_date() takes.
-- <u>factor_periods (dict[str, str]):</u> factor name -> that factor's own configured calibration period ("daily", "weekly", "monthly", "quarterly" or "yearly"), same keys as factor_series.
+- <u>factor_series (dict[str, pl.DataFrame]):</u> factor name -> its historical changes, a `date` and a `value` column, not lined up beforehand.
+- <u>factor_periods (dict[str, str]):</u> factor name -> its data frequency: "daily", "weekly", "monthly", "quarterly" or "yearly".
 
 **Returns:**
 
-<u>pl.DataFrame:</u> the validated N x N correlation matrix, shrunk and PSD-repaired if needed; the same shape calibrate() returns.
+<u>pl.DataFrame:</u> the N x N correlation matrix, a "factor" column plus one column per factor.
 
 **Raises:**
 
-- <u>ValueError:</u> if fewer than two factors are supplied, a factor's own full history is constant (a real data problem, not an alignment artifact), `shrinkage` is outside [0, 1], or the matrix cannot be repaired into a strictly positive-definite one.
-
-**Notes:**
-
-- Warnings are logged for fallback pairs, for pairs estimated from fewer than 12
-  overlapping observations, and for pairs whose correlation exceeds 0.98 in absolute
-  value (usually the same ticker configured twice). Long pair lists are capped at 12
-  names with an "and N more" tail.
-- The shortest factor history is logged at DEBUG level, for a quick view of which
-  factor is most data-limited.
-- Summing changes to a coarser period is correct because every factor's `changes`
-  are additive increments (rate differences, log-returns), the same way twelve
-  monthly log-returns add up to the annual one.
+- <u>ValueError:</u> if fewer than two factors are given, a factor's whole history never changes, or the matrix cannot be repaired.
 
 **As an example:**
 
@@ -325,16 +197,9 @@ Which returns (calibrated on 2026-10-04):
 | us_treasuries | -0.0552 | 1.0000 | 0.2201 |
 | gold | 0.0934 | 0.2201 | 1.0000 |
 
-Over 261 monthly returns, US stocks and long Treasuries barely move together
-(-0.06), while gold leans slightly toward Treasuries (0.22). These are the shrunk
-values: the raw sample correlations were -0.0709, 0.0942 and 0.2350, each moved 10%
-of the way toward their average of 0.0861 (`Dependence(shrinkage=0)` returns the raw
-ones). `fallback_pairs` is empty, since every pair shares all 261 months.
-
-**References:**
-
-- Ledoit, O., Wolf, M. (2004). "Honey, I Shrunk the Sample Covariance Matrix." Journal of Portfolio Management, 30(4), 110-119. <http://www.ledoit.net/Honey_2004.pdf>
-- Higham, N.J. (2002). "Computing the Nearest Correlation Matrix: A Problem from Finance." IMA Journal of Numerical Analysis, 22(3), 329-343. <https://doi.org/10.1093/imanum/22.3.329>
+Over 261 monthly returns, US stocks and long Treasuries barely move together (-0.06), while gold leans slightly
+toward Treasuries (0.22). These are shrunk 10% toward the average correlation; `Dependence(shrinkage=0)` returns
+the raw ones.
 
 ## correlation_matrix
 
@@ -342,11 +207,11 @@ ones). `fallback_pairs` is empty, since every pair shares all 261 months.
 dependence.correlation_matrix  # property -> pl.DataFrame
 ```
 
-The last-calibrated, PSD-validated correlation matrix.
+The last calibrated correlation matrix: a "factor" column plus one column per factor.
 
 **Raises:**
 
-- <u>RuntimeError:</u> if calibrate() hasn't been called yet.
+- <u>RuntimeError:</u> if neither `calibrate()` nor `calibrate_pairwise()` has run yet.
 
 ## to_numpy
 
@@ -354,8 +219,195 @@ The last-calibrated, PSD-validated correlation matrix.
 to_numpy() -> np.ndarray
 ```
 
-The correlation matrix as a plain N x N NumPy array, for Cholesky decomposition.
+The correlation matrix as a plain N x N NumPy array, the form the simulation draws its shocks with.
 
 **Raises:**
 
-- <u>RuntimeError:</u> if calibrate() hasn't been called yet.
+- <u>RuntimeError:</u> if neither `calibrate()` nor `calibrate_pairwise()` has run yet.
+
+## How It Is Calculated
+
+The model functions behind this page, each with the formula it implements.
+
+### build_pairwise_correlation_matrix
+
+```python
+build_pairwise_correlation_matrix(
+    factor_series: dict[str, pl.DataFrame],
+    factor_periods: dict[str, str],
+) -> tuple[pl.DataFrame, PairwiseAlignmentDiagnostics]
+```
+
+Build the cross-factor correlation matrix from pairwise-complete observations: each pair's
+correlation comes from that pair's own calendar overlap, resampled to the coarser of its two
+periods, instead of first cutting every factor down to one shared window
+(`align_factor_series_by_date` plus `build_correlation_matrix`, the complete-case
+alternative). One short-history or coarse-period factor, such as a new credit bucket or a
+quarterly-only country, then only shortens the pairs it is in.
+
+A matrix built from per-pair windows of different lengths is not guaranteed positive
+semi-definite; `nearest_correlation_matrix` repairs it downstream in `Dependence.calibrate()`.
+
+The formula is as follows:
+
+$$
+r_{ij} = (n \cdot S_{xy} - S_{x} \cdot S_{y}) / \sqrt{(n \cdot S_{xx} - S_{x} ^{2}) \cdot (n \cdot S_{yy} - S_{y} ^{2})}
+$$
+
+Where n is the pair's overlap and S_x, S_y, S_xx, S_yy, S_xy the sums of x, y, x^2, y^2 and
+x * y over it. Pairs with fewer than 5 overlapping observations, or constant over the overlap,
+are set to 0.0 and listed in the diagnostics.
+
+**Args:**
+
+- <u>factor_series (dict[str, pl.DataFrame]):</u> factor name -> two-column frame (`date`: pl.Date, `value`: f64), sorted ascending, no nulls; the same shape align_factor_series_by_date() takes.
+- <u>factor_periods (dict[str, str]):</u> factor name -> that factor's own configured calibration period, same keys as factor_series.
+
+**Returns:**
+
+<u>tuple[pl.DataFrame, PairwiseAlignmentDiagnostics]:</u> an N x N correlation matrix (a "factor" column plus one numeric column per factor, same shape build_correlation_matrix() returns) and alignment diagnostics.
+
+**Raises:**
+
+- <u>ValueError:</u> if factor_series has fewer than 2 factors, or any factor's own full history (at its own period, never truncated by another factor) is constant: a genuine data problem, not an alignment artifact.
+
+### optimal_shrinkage_intensity
+
+```python
+optimal_shrinkage_intensity(
+    matrix: np.ndarray,
+    factor_names: list[str],
+    pair_overlaps: dict[str, int],
+) -> float
+```
+
+The data-driven shrinkage intensity of Schafer and Strimmer (2005) for a correlation matrix
+shrunk toward the identity: the summed estimation variance of
+the off-diagonal correlations over their summed squares, capped at 1. Pairs estimated from few
+observations have a large variance and so pull the intensity up.
+
+The formula is as follows:
+
+$$
+\lambda = \min(1,\; \operatorname{sum}(\operatorname{Var}(r_{ij})) / \operatorname{sum}(r_{ij} ^{2}))
+$$
+
+$$
+\operatorname{Var}(r_{ij}) = (1 - r_{ij} ^{2}) ^{2} / (n_{ij} - 1)
+$$
+
+Where r_ij is the correlation of pair (i, j), n_ij that pair's own overlap, and Var(r_ij) the
+large-sample variance of a Pearson correlation.
+
+**Args:**
+
+- <u>matrix (np.ndarray):</u> the sample correlation matrix.
+- <u>factor_names (list[str]):</u> the matrix's row and column order.
+- <u>pair_overlaps (dict[str, int]):</u> "a/b" -> the number of observations that pair was estimated from.
+
+**Returns:**
+
+<u>float:</u> the intensity in [0, 1].
+
+**References:**
+
+- Schafer, J., Strimmer, K. (2005). "A Shrinkage Approach to Large-Scale Covariance Matrix Estimation and Implications for Functional Genomics." Statistical Applications in Genetics and Molecular Biology, 4(1). <https://doi.org/10.2202/1544-6115.1175>
+
+### shrink_correlation_matrix
+
+```python
+shrink_correlation_matrix(matrix: np.ndarray, shrinkage: float = 0.1) -> np.ndarray
+```
+
+Linearly shrink a sample correlation matrix toward a constant-correlation target (Ledoit and
+Wolf, 2004): with many factors and few overlapping observations, sample correlations are
+noisy, and shrinkage trades a little bias for much less estimation variance and a
+better-conditioned matrix for the Cholesky step. The intensity here is fixed, not Ledoit and
+Wolf's data-driven optimum (see `optimal_shrinkage_intensity` for that toward the identity).
+
+The formula is as follows:
+
+$$
+\text{R\_shrunk} = (1 - \delta) \cdot R + \delta \cdot F
+$$
+
+$$
+F_{ij} = \operatorname{mean}(R_{kl} \;\text{for}\; k \neq l) \text{for}\; i \neq j,\;\; F_{ii} = 1
+$$
+
+Where R is the sample correlation matrix and delta the shrinkage intensity.
+
+**Args:**
+
+- <u>matrix (np.ndarray):</u> a symmetric sample correlation matrix, unit diagonal.
+- <u>shrinkage (float):</u> shrinkage intensity in [0, 1]; 0 leaves matrix unchanged, 1 replaces it entirely with the constant-correlation target.
+
+**Returns:**
+
+<u>np.ndarray:</u> the shrunk correlation matrix, symmetric with unit diagonal; not guaranteed positive semi-definite on its own, so it should still be passed through nearest_correlation_matrix() afterward, same as an unshrunk sample matrix would be.
+
+**Raises:**
+
+- <u>ValueError:</u> if shrinkage is not in [0, 1].
+
+**References:**
+
+- Ledoit, O., Wolf, M. (2004). "Honey, I Shrunk the Sample Covariance Matrix." Journal of Portfolio Management, 30(4), 110-119. <https://doi.org/10.3905/jpm.2004.110>
+
+### nearest_correlation_matrix
+
+```python
+nearest_correlation_matrix(
+    matrix: np.ndarray,
+    max_iterations: int = 100,
+    tolerance: float = 1e-08,
+) -> np.ndarray
+```
+
+Repair a matrix that should be a correlation matrix but may not be positive semi-definite
+(e.g. one assembled pair by pair from different overlaps) into the nearest valid one, via
+Higham's (2002) alternating projections with Dykstra's correction. Eigenvalues are floored at
+a small positive value rather than 0, because the Cholesky step downstream needs a strictly
+positive-definite matrix.
+
+The formula is as follows:
+
+$$
+R_{k} = \text{Y\_k-1} - \text{dS\_k-1}
+$$
+
+$$
+X_{k} = P_{S}(R_{k}) = Q \cdot \max(\text{Lambda},\; \text{floor}) \cdot Q'
+$$
+
+$$
+\text{dS}_{k} = X_{k} - R_{k}
+$$
+
+$$
+Y_{k} = P_{U}(X_{k}),\;\; \text{X\_k with its diagonal set to 1}
+$$
+
+Where Q * Lambda * Q' is the eigendecomposition of R_k, P_S the projection onto PSD matrices
+and P_U onto unit-diagonal ones. Iteration stops once the Frobenius change in Y falls below
+`tolerance`, or warns after `max_iterations`. A valid input comes back unchanged; a repair is
+logged with its size. If Cholesky still rejects the result, it is blended toward the identity
+in growing steps until accepted.
+
+**Args:**
+
+- <u>matrix (np.ndarray):</u> a symmetric matrix with unit diagonal that may not be PSD.
+- <u>max_iterations (int):</u> maximum alternating-projection iterations.
+- <u>tolerance (float):</u> convergence tolerance on the Frobenius norm change per iteration.
+
+**Returns:**
+
+<u>np.ndarray:</u> the nearest valid correlation matrix (symmetric, strictly positive-definite, unit diagonal).
+
+**Raises:**
+
+- <u>ValueError:</u> if even a 90% blend toward the identity matrix is not strictly positive-definite (a fundamentally, not marginally, invalid input).
+
+**References:**
+
+- Higham, N.J. (2002). "Computing the Nearest Correlation Matrix: A Problem from Finance." IMA Journal of Numerical Analysis, 22(3), 329-343. <https://doi.org/10.1093/imanum/22.3.329>

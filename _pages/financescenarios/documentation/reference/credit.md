@@ -24,82 +24,55 @@ from financescenarios.factors.credit.credit_controller import Credit
 Credit(toolkit: Toolkit)
 ```
 
-The Credit module simulates credit spreads: the extra interest companies pay on their
-bonds compared with the government, as compensation for the risk that they fail to pay.
-A spread widens when markets worry about defaults (it roughly tripled in 2008) and tends
-to compress back toward a normal level once the worry fades, and that is the behaviour
-this module captures.
+The Credit module simulates credit spreads: the extra interest companies pay on their bonds compared with the
+government, as compensation for the risk that they fail to pay. A spread widens when markets worry about defaults (it
+roughly tripled in 2008) and tends to fall back toward a normal level once the worry fades. Each `credit[i]` entry
+becomes a simulated variable, linked to the other factors through the correlation matrix; `credit` is empty by
+default.
 
-In plain terms: add one or more credit spreads to a run, such as US investment-grade
-7-10 year bonds or BB-rated bonds, and each becomes a variable in the simulated scenarios,
-linked to interest rates, equities and the rest through the correlation matrix. It is
-opt-in: `credit` is an empty list by default, and each entry is calibrated
-independently and named by its own `name`.
+By default each spread follows a mean-reverting (Ornstein-Uhlenbeck) process on its logarithm, so a simulated
+spread can widen sharply but never turns negative. `volatility_model: garch` lets the size of the swings vary over
+time ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)), and `condition_on_business_cycle` adds a
+pull from the leading indicator, so spreads tend to widen as the economy slows.
 
-The model is a mean-reverting (Ornstein-Uhlenbeck) process fitted to the *logarithm*
-of the spread, so a simulated spread can widen sharply but never turns negative.
-Spreads are bucketed along one of two axes (`dimension`): by maturity
-(`MATURITY_BUCKETS`: 1-3, 3-5, 5-7, 7-10, 10-15 and 15+ years) or by credit rating
-(`RATING_BUCKETS`: AAA, AA, A, BBB, BB, B and CCC). Two options change the process:
-`volatility_model="garch"` lets the size of the swings vary over time, so calm and
-stressed spread environments each persist ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)),
-and `condition_on_business_cycle` adds a pull from the leading indicator, so spreads
-tend to widen as the economy slows.
+The data come through the Finance Toolkit, chosen with `dimension`:
 
-The default data are the ICE BofA option-adjusted spread indices, obtained through the Finance
-Toolkit's `fixedincome.get_ice_bofa_option_adjusted_spread` from FRED (a FRED API key
-is required). They cover US-dollar corporate bonds only, and FRED caps every ICE BofA
-series at a trailing three-year window, which is too short to estimate a reliable
-correlation against the yearly-sampled factors of `factor-sets/broad.yaml`; that is
-why the shipped factor sets leave credit off. Longer and non-US histories, all monthly:
+- `maturity` or `rating`: ICE BofA spreads of US corporate bonds by maturity or rating, from FRED (API key
+  needed), which keeps only three years of them, so the shipped factor sets leave credit off.
+- `moodys`: Moody's Aaa and Baa yields over the 10-year Treasury, monthly from 1953 (FRED key).
+- `corporate`: corporate bond spreads over government bonds, monthly, no key: Germany from 1957
+  ([Bundesbank](https://www.bundesbank.de/en/statistics/money-and-capital-markets)) or Australia's A and BBB by
+  maturity from 2005 ([RBA table F3](https://www.rba.gov.au/statistics/tables/)).
+- `borrowing_cost`: the ECB's cost of new bank loans to euro area companies, monthly from 2003
+  ([ECB MIR](https://data.ecb.europa.eu/data/datasets/MIR)), no key; a rate level rather than a spread.
 
-- `dimension: moodys`: Moody's seasoned Aaa and Baa yields over the 10-year Treasury, from 1953 (FRED key).
-- `dimension: corporate`: a country's corporate bond spread over its government bonds from
-  `fixedincome.get_corporate_bond_yields(spread=True)`, no key. `country: Germany` is the Bundesbank's
-  average over all ratings, from 1957 ([Bundesbank](https://www.bundesbank.de/en/statistics/money-and-capital-markets));
-  `country: Australia` the Reserve Bank of Australia's A and BBB non-financial corporate spreads at 3, 5, 7
-  and 10 years, from 2005 ([RBA table F3](https://www.rba.gov.au/statistics/tables/)).
-- `dimension: borrowing_cost`: the European Central Bank's composite cost of new bank loans to companies,
-  for `country: Euro Area` or a member, from 2003
-  ([ECB MIR](https://data.ecb.europa.eu/data/datasets/MIR)), no key. Most euro area companies borrow from
-  banks rather than in the bond market, which makes this the broadest free measure of their cost of credit.
-  It is a rate level, not a spread: it moves with the ECB's policy rate as well as with credit risk.
-
-Set `toolkit.start_date` back to use those histories; the Toolkit's default window is about five years.
-Live on 2026-10-07 from 2000: Germany's spread reverts to 1.57% with a one-year half-life (it touched zero
-in the past, so it is fitted unlogged), Australia's 10-year BBB to 1.32% and the euro area's borrowing cost
-to 2.54%.
-
-This models the real-world level of a spread, not rating migration (a bond moving
-from BBB to BB to default): migration needs historical transition data that has no
-open source. For a whole spread curve rather than discrete buckets, see
-`CreditTermStructure`.
+Set `toolkit.start_date` back for the longer histories. For ratings that move and default see `CreditMigration`,
+for a whole spread curve `CreditTermStructure`.
 
 Configuration (`credit[i]` in a factor set):
 
 | Key | Default | Meaning |
 |:----|:--------|:--------|
-| `name` | `credit` | The factor's name in the simulated output; unique across the list. |
-| `dimension` | `maturity` | `maturity`/`rating` (ICE BofA), `moodys`, `corporate` or `borrowing_cost`. |
-| `country` | `null` | `corporate`: `Germany` (default) or `Australia`; `borrowing_cost`: `Euro Area` or a member. |
-| `maturity_bucket` | `7-10 Years` | One of `MATURITY_BUCKETS`, used when `dimension: maturity`. |
-| `rating_bucket` | `BBB` | One of `RATING_BUCKETS`, `MOODYS_BUCKETS` or `CORPORATE_BUCKETS[country]`. |
-| `period` | `daily` | Calibration frequency; the source is daily and is averaged to coarser periods. |
+| `name` | `credit` | The factor's name, unique in the list. |
+| `dimension` | `maturity` | `maturity`, `rating`, `moodys`, `corporate` or `borrowing_cost`. |
+| `country` | `null` | `Germany` or `Australia` (`corporate`); `Euro Area` or a member (`borrowing_cost`). |
+| `maturity_bucket` | `7-10 Years` | `1-3 Years` up to `15+ Years`. |
+| `rating_bucket` | `BBB` | `AAA` to `CCC`; `Aaa`, `Baa` or `Baa - Aaa` (`moodys`); e.g. `BBB 10Y` (Australia). |
+| `period` | `daily` | Calibration frequency; `monthly` for `corporate` and `borrowing_cost`. |
+| `currency` | `USD` | `EUR` for Germany and the euro area, `AUD` for Australia. |
 | `volatility_model` | `constant` | `constant` or `garch`. |
 | `condition_on_business_cycle` | `false` | Requires `leading_indicator.enabled: true`. |
-| `beliefs.mean_reversion_speed` | `null` | Override the fitted speed (constant volatility only). |
-| `beliefs.long_run_mean` | `null` | Override the fitted normal level, in log-spread units (see below). |
-| `beliefs.volatility` | `null` | Override the fitted volatility, in log-spread units. |
+| `beliefs` | none | Override the fitted speed, level or volatility (constant volatility only). |
 
-Because the fit is on the log spread, a belief about the normal level is a log too: a
-2% target spread is `log(0.02)`, about `-3.9`, not `0.02`.
+A belief about the normal level of a log-fitted spread is a log too: a 2% target is `log(0.02)`, about `-3.9`.
+
+Fitted on 2026-10-07 on data from 2000, Germany's spread reverts to 1.57% with a one-year half-life and the euro
+area's borrowing cost to 2.54%.
 
 **References:**
 
 - Uhlenbeck, G.E., Ornstein, L.S. (1930). "On the Theory of the Brownian Motion." Physical Review, 36(5), 823-841. <https://doi.org/10.1103/PhysRev.36.823>
-- Bollerslev, T. (1986). "Generalized Autoregressive Conditional Heteroskedasticity." Journal of Econometrics, 31(3), 307-327. <https://doi.org/10.1016/0304-4076(86>)90063-1
 - Arvanitis, A., Gregory, J., Laurent, J-P. (1999). "Building Models for Credit Spreads." The Journal of Derivatives, 6(3), 27-43. <https://doi.org/10.3905/jod.1999.319117>
-- Jarrow, R.A., Lando, D., Turnbull, S.M. (1997). "A Markov Model for the Term Structure of Credit Risk Spreads." Review of Financial Studies, 10(2), 481-523. <https://doi.org/10.1093/rfs/10.2.481>
 
 ## calibrate
 
@@ -117,49 +90,33 @@ calibrate(
 ) -> OUParams | GARCHParams | OUCovariateParams
 ```
 
-Calibrate one credit spread bucket from its history: fetch the ICE BofA
-option-adjusted spread for the bucket, and fit how fast it returns to its normal
-level (`mean_reversion_speed`), what that normal level is (`long_run_mean`) and how
-much it swings (`volatility`).
+Calibrate one credit spread from its history: fetch the spread, then fit how fast it returns to its normal level
+(`mean_reversion_speed`), what that level is (`long_run_mean`) and how much it swings (`volatility`).
 
-In plain terms: this learns from the past how a credit spread behaves, so the
-simulated scenarios widen and tighten the way the real spread has. A fast
-mean-reversion speed means a widening fades quickly; a speed of 3 a year, for
-example, means a shock has faded by half after about three months (ln 2 / 3 years).
-
-The default constant-volatility fit works on the logarithm of the spread, so
-`long_run_mean` is a log spread: `exp(long_run_mean)` is the spread level the
-process is pulled toward, and `initial_value` is today's spread as a decimal.
-
-Also known as: credit spread calibration, OAS mean-reversion fit.
+This learns how a spread has behaved, so the scenarios widen and tighten the way the real spread has. A speed of
+3 a year means a widening fades by half in about three months (ln 2 / 3 years). The default fit works on the log
+of the spread: `exp(long_run_mean)` is the level it is pulled toward, and `initial_value` is today's spread as a
+decimal.
 
 **Args:**
 
-- <u>name (str):</u> this bucket's name, used to key params()/changes() and as the factor name in the simulation (e.g. "ig_7_10y", "high_yield_bb").
-- <u>dimension (str):</u> "maturity" (bucket by maturity, uses maturity_bucket) or "rating" (bucket by credit rating, uses rating_bucket).
-- <u>maturity_bucket (str):</u> which maturity bucket to calibrate against, one of MATURITY_BUCKETS. Used when dimension="maturity".
-- <u>rating_bucket (str):</u> which rating bucket to calibrate against, one of RATING_BUCKETS. Used when dimension="rating".
-- <u>period (str):</u> sampling frequency for calibration ("daily", "weekly", "monthly", "quarterly", "yearly"). The underlying data itself is always fetched daily; anything coarser than "daily" is resampled (pandas mean-resample) before fitting, so dt and the actual observation spacing stay consistent.
-- <u>volatility_model (str):</u> "constant" (Euler-Maruyama OU, the default) or "garch" (GARCH(1,1) time-varying volatility, Bollerslev 1986).
-- <u>business_cycle_covariate (pl.Series &#124; None):</u> a business-cycle indicator's raw historical level series (e.g. LeadingIndicator.series). When supplied, adds an additive drift term on the covariate's step-to-step change (business-cycle conditioning); incompatible with volatility_model="garch".
-- <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> the dates paired with `business_cycle_covariate` (e.g. LeadingIndicator.dates), same length and order. Required whenever `business_cycle_covariate` is supplied: the spread series and the leading indicator are fetched independently and forced onto the same *period* but not guaranteed the same *start date*, so this bucket's own dates and the covariate's are inner-joined on date before fitting, the same way unemployment_controller.py aligns unemployment against inflation.
-- <u>country (str &#124; None):</u> for dimension="corporate", "Germany" or "Australia" (a key of CORPORATE_BUCKETS); for dimension="borrowing_cost", "Euro Area" or a member country.
+- <u>name (str):</u> the spread's name in the simulation and in `params()` and `changes()`.
+- <u>dimension (str):</u> "maturity" or "rating" (ICE BofA), "moodys", "corporate" or "borrowing_cost". Defaults to "maturity".
+- <u>maturity_bucket (str):</u> "1-3 Years" up to "15+ Years", for "maturity". Defaults to "7-10 Years".
+- <u>rating_bucket (str):</u> "AAA" to "CCC", Moody's "Aaa", "Baa" or "Baa - Aaa", or e.g. "BBB 10Y" for "corporate". Defaults to "BBB".
+- <u>period (str):</u> "daily" up to "yearly"; a coarser period averages the data. Defaults to "daily".
+- <u>volatility_model (str):</u> "constant" or "garch". Defaults to "constant".
+- <u>business_cycle_covariate (pl.Series &#124; None):</u> leading indicator history to condition on. Defaults to None.
+- <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> its dates, needed with it. Defaults to None.
+- <u>country (str &#124; None):</u> "Germany" or "Australia" ("corporate"), "Euro Area" or a member ("borrowing_cost"). Defaults to None.
 
 **Returns:**
 
-<u>OUParams &#124; GARCHParams &#124; OUCovariateParams:</u> the calibrated process parameters: GARCHParams when volatility_model="garch", OUCovariateParams when business_cycle_covariate is supplied.
+<u>OUParams &#124; GARCHParams &#124; OUCovariateParams:</u> the fitted process; GARCHParams with "garch", OUCovariateParams with a covariate.
 
 **Raises:**
 
-- <u>ValueError:</u> if dimension is not "maturity"/"rating", maturity_bucket is not one of MATURITY_BUCKETS, rating_bucket is not one of RATING_BUCKETS, period or volatility_model is not recognized, business_cycle_covariate is combined with volatility_model="garch", or business_cycle_covariate is supplied without business_cycle_covariate_dates (or vice versa).
-
-**Notes:**
-
-- The source is always daily; `period` other than "daily" averages it to that
-  frequency before fitting, so the time step and the data spacing agree.
-- Spreads are quoted in basis points (94 meaning 0.94%) and converted to decimals.
-- FRED holds only the trailing three years of every ICE BofA series, so a fit sees
-  at most three years of history.
+- <u>ValueError:</u> if an option, bucket or country is not recognized, "garch" is combined with a covariate, or no data come back.
 
 **As an example:**
 
@@ -182,15 +139,7 @@ Which returns (calibrated on 2026-10-04):
 | ig_7_10y | 2.9710 | -4.5984 | 0.2297 | 0.0105 |
 | high_yield_bb | 6.7129 | -3.9995 | 0.3835 | 0.0204 |
 
-The 7-10 year investment-grade spread starts at 1.05% and is pulled toward
-exp(-4.5984) = 1.01%, with a half-life of about three months; the BB spread starts
-at 2.04% and is pulled toward exp(-3.9995) = 1.83%, faster and with larger swings.
-
-**References:**
-
-- Uhlenbeck, G.E., Ornstein, L.S. (1930). "On the Theory of the Brownian Motion." Physical Review, 36(5), 823-841. <https://doi.org/10.1103/PhysRev.36.823>
-- Bollerslev, T. (1986). "Generalized Autoregressive Conditional Heteroskedasticity." Journal of Econometrics, 31(3), 307-327. <https://doi.org/10.1016/0304-4076(86>)90063-1
-- Arvanitis, A., Gregory, J., Laurent, J-P. (1999). "Building Models for Credit Spreads." The Journal of Derivatives, 6(3), 27-43. <https://doi.org/10.3905/jod.1999.319117>
+The investment-grade spread starts at 1.05% and is pulled toward exp(-4.5984) = 1.01%, the BB spread toward 1.83%.
 
 ## names
 
@@ -206,15 +155,15 @@ The names of every credit bucket calibrated so far, in calibration order.
 params(name: str) -> OUParams | GARCHParams | OUCovariateParams
 ```
 
-The calibrated process parameters for one credit spread bucket.
+The calibrated process parameters of one credit spread.
 
 **Args:**
 
-- <u>name (str):</u> the bucket's name, as passed to calibrate().
+- <u>name (str):</u> the spread's name, as passed to `calibrate()`.
 
 **Raises:**
 
-- <u>RuntimeError:</u> if calibrate(name, ...) hasn't been called yet.
+- <u>RuntimeError:</u> if `calibrate(name, ...)` has not been called yet.
 
 ## step_function
 
@@ -222,13 +171,8 @@ The calibrated process parameters for one credit spread bucket.
 credit.step_function  # property
 ```
 
-The Euler-Maruyama step function for the credit spread process (stateless,
-shared across every bucket); log-space (see `fit_log_ou_process`) since
-the plain constant-volatility fit above is; only used for that path (a
-GARCH- or covariate-calibrated bucket is dispatched to its own stateful
-step function by `scenarios_controller._make_step_for` regardless of what
-this property returns, since those two branches above still fit the raw
-level, unchanged).
+The function that moves a constant-volatility spread one time step, on the scale it was fitted on (log, or plain
+for a spread that touched zero). A GARCH or business-cycle-conditioned spread uses its own step instead.
 
 ## changes
 
@@ -236,18 +180,17 @@ level, unchanged).
 changes(name: str) -> pl.DataFrame
 ```
 
-Dated period-over-period changes in one credit spread bucket, from the same
-data calibrate() already fetched, reused for cross-factor correlation
-estimation (Dependence) instead of triggering a second Finance Toolkit fetch.
+Dated period-over-period changes of one spread, from the data `calibrate()` already fetched, used to estimate its
+correlation with the other factors without fetching the data again.
 
 **Args:**
 
-- <u>name (str):</u> the bucket's name, as passed to calibrate().
+- <u>name (str):</u> the spread's name, as passed to `calibrate()`.
 
 **Returns:**
 
-<u>pl.DataFrame:</u> two columns, `date` (pl.Date) and `value` (f64); see helpers.dated_changes().
+<u>pl.DataFrame:</u> two columns, `date` and `value`.
 
 **Raises:**
 
-- <u>RuntimeError:</u> if calibrate(name, ...) hasn't been called yet.
+- <u>RuntimeError:</u> if `calibrate(name, ...)` has not been called yet.

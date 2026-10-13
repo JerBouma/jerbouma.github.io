@@ -57,7 +57,7 @@ Beliefs override the fitted `regime_means` or `regime_volatilities`, one value p
 
 ### Linking Regimes to the Business Cycle
 
-With `condition_on_business_cycle: true`, the chance of switching regime depends on the leading indicator's level, following [Filardo (1994)](https://doi.org/10.1080/07350015.1994.10524545){:target="_blank"}. For SPY, the chance of leaving the calm regime in a month rose from 5.8% at an indicator of 105 to 8.9% at 95, so a weakening economy shortens calm stretches from about 17 to 11 months. This needs `leading_indicator.enabled: true` and the default `regime_switching` method. The fit is the common two-step version of [Diebold, Lee and Weinbach (1994)](https://doi.org/10.1093/oso/9780198773917.003.0010){:target="_blank"}.
+With `condition_on_business_cycle: true`, the chance of switching regime depends on the leading indicator's level, following [Filardo (1994)](https://doi.org/10.1080/07350015.1994.10524545){:target="_blank"}. For SPY, the chance of leaving the calm regime in a month rose from 5.8% at an indicator of 105 to 8.9% at 95, so a weakening economy shortens calm stretches from about 17 to 11 months. This needs `leading_indicator.enabled: true` and the default `regime_switching` method. The fit takes two steps: the regimes first (EM), then a logit of the switches on the indicator along the most likely regime path. That is simpler than the joint estimate of Filardo and of [Diebold, Lee and Weinbach (1994)](https://doi.org/10.1093/oso/9780198773917.003.0010){:target="_blank"}.
 
 ### Long Histories: Shiller and JST
 
@@ -185,7 +185,7 @@ commodities:
 
 **Single factor.** The log price mean-reverts, which keeps the price positive. On 2026-10-04 crude oil started at 91.11 USD and was pulled toward 67.06 USD, with a shock halving in about six months. `exp(long_run_mean)` is the long-run median price, so a `long_run_mean` belief is a log price: for a 70 USD median, use `log(70)`. Optional `volatility_model: garch` ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1){:target="_blank"}) and `condition_on_business_cycle` (not together) fit the raw price rather than the log, so they lose the guarantee of a positive price.
 
-**Two factor.** A spike that should fade quickly sits in the short-term part; a lasting shift sits in the long-term part. A run holds both parts (`oil_chi` and `oil_xi`) plus the rebuilt price `oil`, which a portfolio can hold. The volatilities come from the listed futures curve where one exists (crude oil, natural gas, gold, silver, copper, corn, wheat and soybeans), with a spot-only fallback and a warning otherwise.
+**Two factor.** A spike that should fade quickly sits in the short-term part; a lasting shift sits in the long-term part. A run holds both parts (`oil_chi` and `oil_xi`) plus the rebuilt price `oil`, which a portfolio can hold. The volatilities come from the listed futures curve where one exists (crude oil, natural gas, gold, silver, copper, corn, wheat and soybeans), with a spot-only fallback and a warning otherwise. The spot price alone understates the long-term part's volatility about tenfold, so the curve fit takes over wherever a curve exists.
 
 `measure: risk_neutral` requires `schwartz_smith`. It keeps the same volatilities and fits only the two drift terms to today's futures prices, so it needs a curve and raises without one. On 2026-10-04 the steeply backwardated crude curve implied the long-term level falling about 17.7% a year, against 2.5% in the real-world fit.
 
