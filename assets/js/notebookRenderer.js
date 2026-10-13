@@ -273,6 +273,21 @@
     return !!(data["image/png"] || data["image/svg+xml"] || data["image/jpeg"]);
   }
 
+  /** A table with fewer than 15 rows is short enough to show straight away. */
+  function isShortTable(output) {
+    var d = output.data || {};
+    if (!d["text/html"]) return false;
+    var html = joinSource(d["text/html"]);
+    if (!/<table/i.test(html)) return false;
+    // Truncated tables state their real size: polars "shape: (25, 8)", pandas "25 rows × 8 columns"
+    var size = html.match(/shape:\s*\((\d+),/) || html.match(/(\d+)\s+rows\s+(?:×|&times;)/);
+    if (size) return parseInt(size[1], 10) < 15;
+    var body = html.match(/<tbody[^>]*>([\s\S]*?)<\/tbody>/i);
+    var rows = ((body ? body[1] : html).match(/<tr[\s>]/gi) || []).length;
+    if (!body) rows -= 1; // no tbody: the first row is the header
+    return rows < 15;
+  }
+
   /** A short label for a collapsed output: a table, text or a mix. */
   function outputLabel(outputs) {
     var tables = 0, others = 0;
@@ -310,14 +325,15 @@
       }
     }
 
-    // Charts are shown; tables and text sit behind a toggle unless the cell
-    // is tagged show-output. hide-output collapses a chart too.
+    // Charts and short tables are shown; long tables and text sit behind a
+    // toggle unless the cell is tagged show-output. hide-output collapses either.
     var outputs = tags["remove-output"] ? [] : (cell.outputs || []);
     var shown = "", hidden = "", hiddenOutputs = [];
     for (var i = 0; i < outputs.length; i++) {
       var rendered = renderOutput(outputs[i], execCount);
       if (!rendered) continue;
-      var open = tags["show-output"] || (isImageOutput(outputs[i]) && !tags["hide-output"]);
+      var open = tags["show-output"] ||
+        ((isImageOutput(outputs[i]) || isShortTable(outputs[i])) && !tags["hide-output"]);
       if (open) shown += rendered;
       else { hidden += rendered; hiddenOutputs.push(outputs[i]); }
     }
