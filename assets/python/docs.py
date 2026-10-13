@@ -82,6 +82,28 @@ def _text_escape(text: str) -> str:
     return text
 
 
+_BIG_OPERATORS = {"sum": r"\sum", "Sum": r"\sum", "prod": r"\prod", "Prod": r"\prod"}
+
+
+def _greek_sub(sub: str) -> str | None:
+    """Spell a subscript made of Greek names and single letters or digits ("pipi",
+    "rpi", "0pi") symbol by symbol; None when it holds no Greek name at all."""
+    names = sorted(_GREEK, key=len, reverse=True)
+    out, i, greek = [], 0, False
+    while i < len(sub):
+        name = next((n for n in names if sub.startswith(n, i)), None)
+        if name:
+            out.append(_GREEK[name])
+            i += len(name)
+            greek = True
+        elif sub[i].isalnum():
+            out.append(sub[i])
+            i += 1
+        else:
+            return None
+    return " ".join(out) if greek else None
+
+
 def _format_word(word: str) -> str:
     """Render one identifier token as LaTeX math."""
     if word.startswith("⟦") and word.endswith("⟧"):
@@ -91,6 +113,9 @@ def _format_word(word: str) -> str:
     if word.startswith("d") and word[1:] in _GREEK:  # a differential such as dchi
         return "d" + _GREEK[word[1:]]
     base, sep, sub = word.partition("_")
+    if sep and base in _BIG_OPERATORS and "_" not in sub:
+        # sum_i, prod_t: the operator with its index underneath
+        return _BIG_OPERATORS[base] + "_{" + (_GREEK.get(sub) or _SUB_RESTORE.get(sub, sub)) + "}"
     if sep:
         sub = _SUB_RESTORE.get(sub, sub)
         # Single-char suffixes are true subscripts. A short symbol (one letter, or a Greek
@@ -101,6 +126,9 @@ def _format_word(word: str) -> str:
         short_base = base in _GREEK or (base[:1] == "d" and base[1:] in _GREEK) \
             or re.match(r"^d?[A-Za-z]'*$", base)
         head = sub.partition("_")[0]
+        greek = _greek_sub(sub) if short_base and "_" not in sub and sub not in _GREEK else None
+        if greek:
+            return f"{_format_word(base)}_{{{greek}}}"
         if short_base and (head in _GREEK or re.match(r"^[A-Za-z0-9]{1,3}$", head)):
             inner = _format_word(sub) if "_" in sub else (_GREEK.get(sub) or sub)
             return f"{_format_word(base)}_{{{inner}}}"
@@ -130,7 +158,7 @@ def _format_word_run(words: list[str]) -> str:
     subscript = ""
     if words and "_" in words[-1]:
         base, _, sub = words[-1].partition("_")
-        if is_prose(base) and (len(sub) <= 1 or sub in _SUB_RESTORE):
+        if is_prose(base) and base not in _BIG_OPERATORS and (len(sub) <= 1 or sub in _SUB_RESTORE):
             words = words[:-1] + [base]
             sub = _SUB_RESTORE.get(sub, sub)
             subscript = f"_{{{sub}}}"
