@@ -14,13 +14,29 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-The chart functions behind every `.plot()`: fan charts, paths, terminal distributions, runs and portfolios. Generated from the docstrings of Finance Scenarios 0.1.0; `help(...)` in Python shows the same text.
+The chart functions behind every `.plot()`: fan charts, paths, terminal distributions, runs and portfolios.
 
 ```python
 from financescenarios import plot_factors, plot_fan_chart, plot_paths, plot_terminal_distribution, plot_runs, plot_correlation_matrix, plot_sleeve_values, plot_weight_drift
 ```
 
 ## plot_factors
+
+Draw a grid with one fan chart per factor, each on its own scale.
+
+The quickest look at a whole run: by default every factor, in the run's own order. A rate and a price never share
+an axis, so each panel scales to its own factor.
+
+**As an example:**
+
+```python
+from financescenarios import plot_factors
+
+plot_factors(result, ["united_states_short_rate", "united_states_inflation", "us_broad"])
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 plot_factors(
@@ -32,11 +48,6 @@ plot_factors(
     metric: Metric | None = None,
 ) -> 'Figure'
 ```
-
-Draw a grid with one fan chart per factor, each on its own scale.
-
-The quickest look at a whole run: by default every factor, in the run's own order. A rate and a price never share
-an axis, so each panel scales to its own factor.
 
 **Args:**
 
@@ -56,15 +67,26 @@ an axis, so each panel scales to its own factor.
 - <u>KeyError:</u> if a named factor is not in the run.
 - <u>ValueError:</u> if `n_columns` is below 1.
 
+</details>
+
+## plot_fan_chart
+
+Draw one factor's fan chart: the median path with shaded bands around it.
+
+This is the headline picture of a simulated factor. With the default bands, the darker inner band holds the middle
+half of the scenarios, the lighter outer band nine in ten, and the dark line is the median. Rates and returns are
+drawn as percentages, prices and values in their own units.
+
 **As an example:**
 
 ```python
-from financescenarios import plot_factors
+from financescenarios import plot_fan_chart
 
-plot_factors(result, ["united_states_short_rate", "united_states_inflation", "us_broad"])
+plot_fan_chart(result, "us_broad")
 ```
 
-## plot_fan_chart
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 plot_fan_chart(
@@ -77,12 +99,6 @@ plot_fan_chart(
     metric: Metric | None = None,
 ) -> 'Figure'
 ```
-
-Draw one factor's fan chart: the median path with shaded bands around it.
-
-This is the headline picture of a simulated factor. With the default bands, the darker inner band holds the middle
-half of the scenarios, the lighter outer band nine in ten, and the dark line is the median. Rates and returns are
-drawn as percentages, prices and values in their own units.
 
 **Args:**
 
@@ -103,15 +119,25 @@ drawn as percentages, prices and values in their own units.
 - <u>KeyError:</u> if the run has no such factor.
 - <u>ValueError:</u> if a band's lower quantile is not below its upper one.
 
+</details>
+
+## plot_paths
+
+Draw a factor's individual simulated paths, with the median on top.
+
+A fan chart shows the spread but smooths away how jagged any single future is; this shows the paths themselves.
+Lines grow fainter as more are drawn, so thousands of paths stay readable.
+
 **As an example:**
 
 ```python
-from financescenarios import plot_fan_chart
+from financescenarios import plot_paths
 
-plot_fan_chart(result, "us_broad")
+plot_paths(result, "us_broad", n_paths=200, seed=1)
 ```
 
-## plot_paths
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 plot_paths(
@@ -124,11 +150,6 @@ plot_paths(
     metric: Metric | None = None,
 ) -> 'Figure'
 ```
-
-Draw a factor's individual simulated paths, with the median on top.
-
-A fan chart shows the spread but smooths away how jagged any single future is; this shows the paths themselves.
-Lines grow fainter as more are drawn, so thousands of paths stay readable.
 
 **Args:**
 
@@ -149,15 +170,25 @@ Lines grow fainter as more are drawn, so thousands of paths stay readable.
 - <u>KeyError:</u> if the run has no such factor.
 - <u>ValueError:</u> if `n_paths` is below 1.
 
+</details>
+
+## plot_terminal_distribution
+
+Draw a histogram of where one factor ends up at the horizon, with chosen percentiles marked.
+
+This is the "where does it land" chart every tail-risk question starts from. A price is shown as its yearly return
+over the whole horizon, and each marked percentile carries its value as a label.
+
 **As an example:**
 
 ```python
-from financescenarios import plot_paths
+from financescenarios import plot_terminal_distribution
 
-plot_paths(result, "us_broad", n_paths=200, seed=1)
+plot_terminal_distribution(result, "us_broad")
 ```
 
-## plot_terminal_distribution
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 plot_terminal_distribution(
@@ -170,11 +201,6 @@ plot_terminal_distribution(
     metric: Metric | None = None,
 ) -> 'Figure'
 ```
-
-Draw a histogram of where one factor ends up at the horizon, with chosen percentiles marked.
-
-This is the "where does it land" chart every tail-risk question starts from. A price is shown as its yearly return
-over the whole horizon, and each marked percentile carries its value as a label.
 
 **Args:**
 
@@ -194,15 +220,24 @@ over the whole horizon, and each marked percentile carries its value as a label.
 
 - <u>KeyError:</u> if the run has no such factor.
 
+</details>
+
+## plot_runs
+
+Draw the same factor across several runs, one fan chart per run on a shared scale.
+
+This puts a baseline and its stress regimes side by side, the chart that goes with `compare_runs`.
+
 **As an example:**
 
 ```python
-from financescenarios import plot_terminal_distribution
+from financescenarios import plot_runs
 
-plot_terminal_distribution(result, "us_broad")
+plot_runs({"baseline": result, "oil_crisis": oil_crisis}, "united_states_inflation")
 ```
 
-## plot_runs
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 plot_runs(
@@ -214,10 +249,6 @@ plot_runs(
     metric: Metric | None = None,
 ) -> 'Figure'
 ```
-
-Draw the same factor across several runs, one fan chart per run on a shared scale.
-
-This puts a baseline and its stress regimes side by side, the chart that goes with `compare_runs`.
 
 **Args:**
 
@@ -237,15 +268,26 @@ This puts a baseline and its stress regimes side by side, the chart that goes wi
 - <u>ValueError:</u> if `runs` is empty or `n_columns` is below 1.
 - <u>KeyError:</u> if a run does not simulate `factor`.
 
+</details>
+
+## plot_correlation_matrix
+
+Draw a correlation matrix as a heatmap: blue for negative, gray at zero, red for positive.
+
+The colors always span -1 to 1, so the matrices of two runs can be compared directly. Each cell shows its value
+while the grid stays readable, up to 14 factors by default.
+
 **As an example:**
 
 ```python
-from financescenarios import plot_runs
+from financescenarios import plot_correlation_matrix
 
-plot_runs({"baseline": result, "oil_crisis": oil_crisis}, "united_states_inflation")
+calibration = scenarios.calibrate()
+plot_correlation_matrix(calibration.correlation_matrix, calibration.factor_names)
 ```
 
-## plot_correlation_matrix
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 plot_correlation_matrix(
@@ -256,11 +298,6 @@ plot_correlation_matrix(
     ax: 'Axes | None' = None,
 ) -> 'Figure'
 ```
-
-Draw a correlation matrix as a heatmap: blue for negative, gray at zero, red for positive.
-
-The colors always span -1 to 1, so the matrices of two runs can be compared directly. Each cell shows its value
-while the grid stays readable, up to 14 factors by default.
 
 **Args:**
 
@@ -278,26 +315,31 @@ while the grid stays readable, up to 14 factors by default.
 
 - <u>ValueError:</u> if the matrix is not square, or does not match `factor_names` or `labels`.
 
-**As an example:**
-
-```python
-from financescenarios import plot_correlation_matrix
-
-calibration = scenarios.calibrate()
-plot_correlation_matrix(calibration.correlation_matrix, calibration.factor_names)
-```
+</details>
 
 ## plot_sleeve_values
-
-```python
-plot_sleeve_values(portfolio_result: ScenarioSet, ax: 'Axes | None' = None) -> 'Figure'
-```
 
 Plot the median value of every holding over time as a stacked area, showing how the portfolio's make-up changes.
 
 A buy-and-hold equity holding visibly grows its share; a rebalanced one keeps it. The median is taken per holding,
 so the stack shows a typical make-up rather than any single scenario. Past eight holdings, the rest are grouped as
 "Other". `result.plot(kind="sleeves")` draws the same chart.
+
+**As an example:**
+
+```python
+from financescenarios import Portfolio, plot_sleeve_values
+
+values = Portfolio.from_preset(result, preset="balanced_60_40").compute(rebalance_every=12)
+plot_sleeve_values(values)
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+plot_sleeve_values(portfolio_result: ScenarioSet, ax: 'Axes | None' = None) -> 'Figure'
+```
 
 **Args:**
 
@@ -312,16 +354,28 @@ so the stack shows a typical make-up rather than any single scenario. Past eight
 
 - <u>ValueError:</u> if the result holds no holdings, such as a plain simulated run.
 
+</details>
+
+## plot_weight_drift
+
+Plot each holding's median weight drift over time: how far the mix has wandered from its target, around a zero
+line.
+
+Between rebalances the weights wander as one asset outgrows another; this shows by how much, per holding. Each
+holding keeps the same color as in `plot_sleeve_values()`.
+
 **As an example:**
 
 ```python
-from financescenarios import Portfolio, plot_sleeve_values
+from financescenarios import Portfolio, plot_weight_drift
 
-values = Portfolio.from_preset(result, preset="balanced_60_40").compute(rebalance_every=12)
-plot_sleeve_values(values)
+portfolio = Portfolio.from_preset(result, preset="balanced_60_40")
+computed = portfolio.compute()
+plot_weight_drift(computed, portfolio.weight_drift(computed))
 ```
 
-## plot_weight_drift
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 plot_weight_drift(
@@ -330,12 +384,6 @@ plot_weight_drift(
     ax: 'Axes | None' = None,
 ) -> 'Figure'
 ```
-
-Plot each holding's median weight drift over time: how far the mix has wandered from its target, around a zero
-line.
-
-Between rebalances the weights wander as one asset outgrows another; this shows by how much, per holding. Each
-holding keeps the same color as in `plot_sleeve_values()`.
 
 **Args:**
 
@@ -351,12 +399,4 @@ holding keeps the same color as in `plot_sleeve_values()`.
 
 - <u>ValueError:</u> if `weight_drift` is empty.
 
-**As an example:**
-
-```python
-from financescenarios import Portfolio, plot_weight_drift
-
-portfolio = Portfolio.from_preset(result, preset="balanced_60_40")
-computed = portfolio.compute()
-plot_weight_drift(computed, portfolio.weight_drift(computed))
-```
+</details>

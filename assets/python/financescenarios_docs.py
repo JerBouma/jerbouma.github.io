@@ -285,13 +285,19 @@ def formulas(text: str) -> str:
     return "\n\n".join(paragraphs)
 
 
-def render_doc(obj, where: str) -> str:
+API_SECTIONS = {"Args", "Attributes", "Returns", "Yields", "Raises", "Warns"}
+
+
+def render_doc(obj, where: str, signature: str | None = None) -> str:
+    """The explanation, example and references in the open; the signature, arguments, return value
+    and errors folded into one expander at the end, since the page is read for what the method does."""
     doc = inspect.getdoc(obj)
     if not doc:
         warnings.append(f"{where}: no docstring")
         return "*No docstring.*"
     description, sections = split_sections(doc)
     parts = [formulas(fence_indented(description))] if description else []
+    api = [code_block(signature)] if signature else []
     for name, body in sections:
         if name in ENTRY_SECTIONS:
             rendered = render_entries(name, body, where)
@@ -301,7 +307,14 @@ def render_doc(obj, where: str) -> str:
             rendered = render_references(body)
         else:
             rendered = formulas(fence_indented(render_free(body)))
-        parts.append(f"**{name}:**\n\n{rendered}")
+        (api if name in API_SECTIONS else parts).append(f"**{name}:**\n\n{rendered}")
+    if api:
+        label = "Arguments and returns" if len(api) > 1 or not signature else "Signature"
+        parts.append(
+            f'<details class="ft-details fs-api" markdown="1">\n<summary><b>{label}</b></summary>\n\n'
+            + "\n\n".join(api)
+            + "\n\n</details>",
+        )
     return prose("\n\n".join(parts))
 
 
@@ -421,7 +434,7 @@ def render_class(cls, own_page: bool, qualify: bool) -> tuple[list[str], int]:
         intro = format_signature(cls.__name__, cls.__init__, drop_first=True).removesuffix(" -> None")
     else:
         intro = f"{cls.__name__}()"
-    head = (code_block(intro) + "\n\n" if intro else "") + render_doc(cls, where)
+    head = render_doc(cls, where, intro)
     blocks.append(raw(head if own_page else f"## {cls.__name__}\n\n{head}"))
     for name, func, kind in public_members(cls):
         title = f"{cls.__name__}.{name}" if qualify else name
@@ -436,14 +449,14 @@ def render_class(cls, own_page: bool, qualify: bool) -> tuple[list[str], int]:
             sig = format_signature(f"{cls.__name__}.{name}", func, drop_first=kind == "classmethod")
         else:
             sig = format_signature(name, func, drop_first=True)
-        blocks.append(raw(f"## {title}\n\n{code_block(sig)}\n\n{render_doc(func, f'{where}.{name}')}"))
+        blocks.append(raw(f"## {title}\n\n{render_doc(func, f'{where}.{name}', sig)}"))
         count += 1
     return blocks, count
 
 
 def render_function(func, name: str, level: str = "##") -> str:
     sig = format_signature(name, func, drop_first=False)
-    return raw(f"{level} {name}\n\n{code_block(sig)}\n\n{render_doc(func, name)}")
+    return raw(f"{level} {name}\n\n{render_doc(func, name, sig)}")
 
 
 def model_functions(cls) -> list[tuple[str, object]]:
@@ -509,8 +522,7 @@ def build_page(slug: str, title: str, summary: str, members: list) -> tuple[str,
         if name not in fs.__all__:
             imports.append(f"from {obj.__module__} import {name}")
     intro = (
-        f"{summary.rstrip('.')}. Generated from the docstrings of Finance Scenarios "
-        f"{fs.__version__}; `help(...)` in Python shows the same text.\n\n"
+        f"{summary.rstrip('.')}.\n\n"
         f"```python\n{chr(10).join(imports)}\n```"
     )
     blocks.append(intro)
@@ -541,9 +553,9 @@ def build_page(slug: str, title: str, summary: str, members: list) -> tuple[str,
 def build_index(counts: dict[str, int]) -> str:
     lines = [
         "The reference pages are generated from the docstrings in the Finance Scenarios package, so they say exactly "
-        "what `help(...)` says in Python. Each page covers one class or area: its constructor, then every public "
-        "method and property with its signature, arguments, return value, errors and, where the docstring has one, "
-        "a worked example with real output.",
+        "what `help(...)` says in Python. Each page covers one class or area: what every public method models and "
+        "why, a worked example with real output where the docstring has one, and its arguments and return value "
+        "folded underneath.",
         "",
         "How a run is put together, the configuration keys and the units every result is reported in are on the "
         "[documentation](/projects/financescenarios/docs) pages.",

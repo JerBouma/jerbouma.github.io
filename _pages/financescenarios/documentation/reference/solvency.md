@@ -14,7 +14,7 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Solvency II on a real-world and a risk-neutral run: the martingale test, best estimate, SCR and EIOPA curves. Generated from the docstrings of Finance Scenarios 0.1.0; `help(...)` in Python shows the same text.
+Solvency II on a real-world and a risk-neutral run: the martingale test, best estimate, SCR and EIOPA curves.
 
 ```python
 from financescenarios import Solvency, best_estimate, solvency_capital_requirement, interest_rate_scr, equity_scr, martingale_test, market_consistency_check, eiopa_risk_free_curve, eiopa_symmetric_adjustment, zero_coupon_curve, curve_discount_factors, write_scenario_files
@@ -22,24 +22,19 @@ from financescenarios import Solvency, best_estimate, solvency_capital_requireme
 
 ## Solvency
 
-```python
-Solvency(
-    real_world: ScenarioSet,
-    risk_neutral: ScenarioSet,
-    short_rate: str | None = None,
-    asset: str | None = None,
-)
-```
-
 Run an insurer's two Solvency II jobs on one pair of runs and read the answers in one table.
 
 An insurer uses scenarios for two different jobs, and Solvency II names both. The first is valuing what it owes: the
 best estimate (Article 77) is the average present value of the future payments under scenarios priced like today's
-market, a risk-neutral run. The second is the capital requirement: the Solvency Capital Requirement or SCR (Article
-101) is the loss of own funds (assets minus what is owed) over one year that is exceeded only once in 200 years,
-measured on a real-world run. Before valuing anything, `Solvency` also checks that the risk-neutral run really
-reproduces today's prices. Together they answer how much is owed, valued at today's market prices, and whether
-there is enough capital to keep paying it after a very bad year.
+market, a risk-neutral run, so the liabilities are worth what a market would charge to take them over. The second
+is the capital requirement: the Solvency Capital Requirement or SCR (Article 101) is the loss of own funds (assets
+minus what is owed) over one year that is exceeded only once in 200 years, the 99.5% Value-at-Risk, measured on a
+real-world run because it asks what could actually happen next year.
+
+The calibration is a policy choice: holding the SCR means the insurer still covers its obligations after all but
+the worst 0.5% of years over the coming year (Article 101(3)). Own funds over the SCR is the solvency ratio: below 1
+the supervisor intervenes. Before valuing anything, `Solvency` checks that the risk-neutral run
+really reproduces today's prices, since a best estimate on a run that does not is not market consistent.
 
 | Method | What it gives |
 |:-------|:--------------|
@@ -78,7 +73,58 @@ Which returns:
 
 - European Parliament and Council (2009). "Directive 2009/138/EC (Solvency II)", Articles 77 and 101. <https://eur-lex.europa.eu/eli/dir/2009/138/oj>
 
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+Solvency(
+    real_world: ScenarioSet,
+    risk_neutral: ScenarioSet,
+    short_rate: str | None = None,
+    asset: str | None = None,
+)
+```
+
+</details>
+
 ## report
+
+Every Solvency II read in one table: whether the run is market consistent, what the payments are worth, own
+funds, the SCR and the solvency ratio.
+
+The best estimate is valued on the risk-neutral run. Own funds and the SCR come from the real-world run, where
+own funds are the assets minus what is still owed. A solvency ratio above 1 means there is enough capital to
+survive a 1-in-200 bad year; the gap above 1 is the room left to take more risk, pay dividends or absorb a
+shock before the supervisor steps in. The market-consistency row appears only when the risk-neutral run has an
+equity to price; it judges the size of the largest gap from today's price rather than a pass or fail per date,
+which a few dates fail by chance once there are thousands of scenarios. A failed check means the best estimate
+is not a market price and should not be reported as one.
+
+The formula is as follows:
+
+$$
+\text{passed} = \max(\operatorname{abs}(\operatorname{ratio}(t) - 1)) \leq \text{price\_tolerance}
+$$
+
+$$
+\text{solvency ratio} = \operatorname{OF}(0) / \text{SCR}
+$$
+
+Where ratio(t) is the average discounted price at date t over today's price (see `martingale_test`) and OF(0)
+today's own funds.
+
+**As an example:**
+
+With `solvency` and `assets` from the class example.
+
+```python
+solvency.report(cashflows=[10_000] * 5, assets=assets)
+```
+
+Which returns a solvency ratio of 1.26: own funds of 15,635 against an SCR of 12,453.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 report(
@@ -88,15 +134,6 @@ report(
     price_tolerance: float = 0.02,
 ) -> pl.DataFrame
 ```
-
-Every Solvency II read in one table: whether the run is market consistent, what the payments are worth, own
-funds, the SCR and the solvency ratio.
-
-The best estimate is valued on the risk-neutral run. Own funds and the SCR come from the real-world run, where
-own funds are the assets minus what is still owed. A solvency ratio above 1 means there is enough capital to
-survive a 1-in-200 bad year. The market-consistency row appears only when the risk-neutral run has an equity to
-price; it judges the size of the largest gap from today's price rather than a pass or fail per date, which a few
-dates fail by chance once there are thousands of scenarios.
 
 **Args:**
 
@@ -112,13 +149,25 @@ dates fail by chance once there are thousands of scenarios.
 **Raises:**
 
 - <u>ValueError:</u> if `assets` does not have the real-world run's shape, or the yearly payments run past its end.
-- <u>As an example, with `solvency` and `assets` from the class example:</u> 
-- ```python
-- solvency.report(cashflows=[10_000] * 5, assets=assets)
-- ```
-- <u>Which returns a solvency ratio of 1.26:</u> own funds of 15,635 against an SCR of 12,453.
+
+</details>
 
 ## plot
+
+Chart where own funds could be after `horizon_years` across every real-world scenario, discounted to today.
+
+Today's own funds and the 1-in-200 outcome are marked: the gap between them is the SCR that `report()` gives.
+The shape matters as much as the line: a long left tail means the capital requirement hinges on a few extreme
+scenarios, so it is sensitive to how fat-tailed the real-world calibration is.
+
+**As an example:**
+
+```python
+solvency.plot(cashflows=[10_000] * 5, assets=assets)
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 plot(
@@ -129,10 +178,6 @@ plot(
     ax: Axes | None = None,
 ) -> Figure
 ```
-
-Chart where own funds could be after `horizon_years` across every real-world scenario, discounted to today.
-
-Today's own funds and the 1-in-200 outcome are marked: the gap between them is the SCR that `report()` gives.
 
 **Args:**
 
@@ -146,13 +191,16 @@ Today's own funds and the 1-in-200 outcome are marked: the gap between them is t
 
 <u>matplotlib.figure.Figure:</u> the figure holding the chart.
 
-**As an example:**
-
-```python
-solvency.plot(cashflows=[10_000] * 5, assets=assets)
-```
+</details>
 
 ## write_files
+
+Write both runs as the scenario files liability and ALM systems load, under `real_world/` and `risk_neutral/`.
+
+Each run gets one file per variable, one row per trial and one column per date; see `write_scenario_files`.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 write_files(
@@ -161,10 +209,6 @@ write_files(
     file_format: Literal['csv', 'xlsx'] = 'csv',
 )
 ```
-
-Write both runs as the scenario files liability and ALM systems load, under `real_world/` and `risk_neutral/`.
-
-Each run gets one file per variable, one row per trial and one column per date; see `write_scenario_files`.
 
 **Args:**
 
@@ -176,41 +220,36 @@ Each run gets one file per variable, one row per trial and one column per date; 
 
 <u>dict[str, list[Path]]:</u> the files written, per run.
 
-## best_estimate
+</details>
 
-```python
-best_estimate(
-    scenario_set: ScenarioSet,
-    cashflows: np.ndarray | Sequence[float],
-    short_rate: str | None,
-    percentiles: Sequence[float] = _DEFAULT_PERCENTILES,
-    discount_curve: pl.DataFrame | None = None,
-) -> BestEstimateResult
-```
+## best_estimate
 
 Compute the best estimate of a stream of future payments: their average present value across scenarios, the value
 Solvency II asks an insurer to hold for what it owes (Article 77).
 
-Per scenario the present value is the sum of D(t) * cashflow(t), with D the discount factor along that scenario's
-own interest rates; on a risk-neutral run the average is the market-consistent value. The standard error says how
-precise that average is. Payments can be fixed or differ per scenario, such as inflation-linked benefits. To
-discount with EIOPA's risk-free curve instead, as Solvency II prescribes (Article 77(2)), pass `discount_curve`.
+On a risk-neutral run the average is the market-consistent value: what the obligation would cost to hand over to
+another party at today's prices. The standard error says how precise that number is, and should be small next to
+the materiality of the result; more scenarios shrink it. Payments can be fixed or differ per scenario, such as
+inflation-linked or profit-sharing benefits; when they do, the gap between this average and the value on one
+central scenario is the time value of the options and guarantees the insurer has written. To discount with
+EIOPA's risk-free curve instead, as Solvency II prescribes (Article 77(2)), pass `discount_curve`.
 
-**Args:**
+The formula is as follows:
 
-- <u>scenario_set (ScenarioSet):</u> a simulated run; risk-neutral for a market-consistent best estimate.
-- <u>cashflows (np.ndarray &#124; Sequence[float]):</u> the amount paid at each date, t0 included, positive for a payment out: one schedule, or one per scenario shaped (n_simulations, n_steps + 1).
-- <u>short_rate (str &#124; None):</u> the rate factor to discount with; None when `discount_curve` is given.
-- <u>percentiles (Sequence[float]):</u> the percentiles to report, each between 0 and 1; 0.005, 0.05, 0.25, 0.5, 0.75, 0.95 and 0.995 by default.
-- <u>discount_curve (pl.DataFrame &#124; None):</u> a published curve ("maturity", "rate") to discount with instead, e.g. from `eiopa_risk_free_curve`; None by default.
+$$
+\text{PV}_{i} = \text{CF}_{i}(t_{0}) \cdot D_{i}(t_{0}) + \text{CF}_{i}(t_{1}) \cdot D_{i}(t_{1}) + ... + \text{CF}_{i}(T) \cdot D_{i}(T)
+$$
 
-**Returns:**
+$$
+\text{BE} = \operatorname{mean}(\text{PV}_{i})
+$$
 
-<u>BestEstimateResult:</u> `best_estimate`, `standard_error`, `std` (the spread across scenarios) and `percentiles`.
+$$
+\text{SE} = \operatorname{std}(\text{PV}_{i}) / \sqrt{n}
+$$
 
-**Raises:**
-
-- <u>ValueError:</u> if `cashflows` does not match the run's dates or holds a non-finite amount.
+Where D_i is scenario i's discount factor (see `martingale_test`), or (1 + r(t)) ** -t on a `discount_curve`, and
+n the number of scenarios; when the scenarios come in antithetic pairs SE is taken over the n / 2 pair averages.
 
 **As an example:**
 
@@ -236,47 +275,76 @@ Which returns (calibrated on 2026-10-04):
 | level | 80,811.82 | 0.00 | 80,811.82 | 80,811.82 |
 | inflation-indexed | 93,142.15 | 4.05 | 83,990.68 | 103,236.21 |
 
+Indexing the annuity to inflation makes it about 15% dearer, and unlike the level annuity its value is uncertain:
+the 99.5th percentile is 11% above the best estimate.
+
 **References:**
 
 - European Parliament and Council (2009). "Directive 2009/138/EC (Solvency II)", Articles 76-77. <https://eur-lex.europa.eu/eli/dir/2009/138/oj>
 - EIOPA (2015, updated 2023). "Guidelines on valuation of technical provisions." <https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en>
+- Wüthrich, M.V., Merz, M. (2013). "State Price Deflators and Stochastic Discounting", chapter 2 of "Financial Modeling, Actuarial Valuation and Solvency in Insurance." Springer. <https://doi.org/10.1007/978-3-642-31392-9_2>
 
-## solvency_capital_requirement
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-solvency_capital_requirement(
+best_estimate(
     scenario_set: ScenarioSet,
-    own_funds: str | np.ndarray,
-    horizon_years: float = 1.0,
-    confidence: float = _SOLVENCY_II_CONFIDENCE,
-    short_rate: str | None = None,
-) -> SolvencyCapitalResult
+    cashflows: np.ndarray | Sequence[float],
+    short_rate: str | None,
+    percentiles: Sequence[float] = _DEFAULT_PERCENTILES,
+    discount_curve: pl.DataFrame | None = None,
+) -> BestEstimateResult
 ```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> a simulated run; risk-neutral for a market-consistent best estimate.
+- <u>cashflows (np.ndarray &#124; Sequence[float]):</u> the amount paid at each date, t0 included, positive for a payment out: one schedule, or one per scenario shaped (n_simulations, n_steps + 1).
+- <u>short_rate (str &#124; None):</u> the rate factor to discount with; None when `discount_curve` is given.
+- <u>percentiles (Sequence[float]):</u> the percentiles to report, each between 0 and 1; 0.005, 0.05, 0.25, 0.5, 0.75, 0.95 and 0.995 by default.
+- <u>discount_curve (pl.DataFrame &#124; None):</u> a published curve ("maturity", "rate") to discount with instead, e.g. from `eiopa_risk_free_curve`; None by default.
+
+**Returns:**
+
+<u>BestEstimateResult:</u> `best_estimate`, `standard_error`, `std` (the spread across scenarios) and `percentiles`.
+
+**Raises:**
+
+- <u>ValueError:</u> if `cashflows` does not match the run's dates or holds a non-finite amount.
+
+</details>
+
+## solvency_capital_requirement
 
 Compute the Solvency II capital requirement (SCR) the way an internal model does: the loss of own funds over one
 year that is exceeded only once in 200 years (Article 101).
 
-Own funds are assets minus what is owed, the insurer's buffer. The `solvency_ratio`, own funds divided by the SCR,
-is the headline number insurers publish: above 1 the buffer covers the 1-in-200 loss.
+Own funds are assets minus what is owed, the insurer's buffer. The SCR is the 99.5% one-year Value-at-Risk of that
+buffer: the capital that keeps the insurer able to pay policyholders over the coming year in all but the worst
+0.5% of outcomes. The `solvency_ratio`, own funds divided by the SCR, is the headline number
+insurers publish: above 1 the buffer covers the 1-in-200 loss, below 1 the supervisor requires a recovery plan.
 
-Per scenario the loss is OF(0) - D(h) * OF(h), with D the discount factor back to today (1 without `short_rate`);
-the SCR is its 99.5% quantile, floored at 0. Check another seed too: with 2,000 scenarios only 10 lie beyond it.
+The SCR says nothing about how bad the worst 0.5% are; the expected shortfall does, and a large gap between the
+two points to a tail driven by a few extreme scenarios. The probability of ruin is the share of scenarios in
+which the buffer is gone after one year.
 
-**Args:**
+The formula is as follows:
 
-- <u>scenario_set (ScenarioSet):</u> a real-world run spanning at least `horizon_years`.
-- <u>own_funds (str &#124; np.ndarray):</u> a factor name, or own funds per scenario and date, shaped (n_simulations, n_steps + 1), e.g. asset values minus liability values.
-- <u>horizon_years (float):</u> the risk horizon; 1.0 by default.
-- <u>confidence (float):</u> the quantile level, between 0 and 1; 0.995 by default.
-- <u>short_rate (str &#124; None):</u> the rate factor to discount own funds back to today with; None by default.
+$$
+L_{i} = \text{OF}_{i}(0) - D_{i}(h) \cdot \text{OF}_{i}(h)
+$$
 
-**Returns:**
+$$
+\text{SCR} = \max(\text{VaR}_{0.995}(L),\; 0)
+$$
 
-<u>SolvencyCapitalResult:</u> `scr`, `own_funds` (today), `solvency_ratio`, `expected_shortfall` (the average loss beyond the SCR) and `probability_of_ruin` (the share of scenarios where own funds turn negative).
+$$
+\text{ES} = \operatorname{mean}(L_{i} \;\text{given}\; L_{i} \geq \text{VaR}_{0.995}(L))
+$$
 
-**Raises:**
-
-- <u>ValueError:</u> if `confidence` is not between 0 and 1, the horizon is not positive or past the run's end, or `own_funds` does not match the run's shape.
+Where OF is own funds, h the horizon, D_i the discount factor back to today (1 without `short_rate`) and VaR the
+empirical quantile of the losses at `confidence`. Check another seed too: with 2,000 scenarios only 10 lie beyond it.
 
 **As an example:**
 
@@ -302,9 +370,77 @@ Which returns (calibrated on 2026-10-04), with own funds of 200,000, at two seed
 
 **References:**
 
-- European Parliament and Council (2009). "Directive 2009/138/EC (Solvency II)", Article 101. <https://eur-lex.europa.eu/eli/dir/2009/138/oj>
+- European Parliament and Council (2009). "Directive 2009/138/EC (Solvency II)", Article 101(3). <https://eur-lex.europa.eu/eli/dir/2009/138/oj>
+- Wüthrich, M.V., Merz, M. (2013). "Solvency", chapter 9 of "Financial Modeling, Actuarial Valuation and Solvency in Insurance." Springer. <https://doi.org/10.1007/978-3-642-31392-9_9>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+solvency_capital_requirement(
+    scenario_set: ScenarioSet,
+    own_funds: str | np.ndarray,
+    horizon_years: float = 1.0,
+    confidence: float = _SOLVENCY_II_CONFIDENCE,
+    short_rate: str | None = None,
+) -> SolvencyCapitalResult
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> a real-world run spanning at least `horizon_years`.
+- <u>own_funds (str &#124; np.ndarray):</u> a factor name, or own funds per scenario and date, shaped (n_simulations, n_steps + 1), e.g. asset values minus liability values.
+- <u>horizon_years (float):</u> the risk horizon; 1.0 by default.
+- <u>confidence (float):</u> the quantile level, between 0 and 1; 0.995 by default.
+- <u>short_rate (str &#124; None):</u> the rate factor to discount own funds back to today with; None by default.
+
+**Returns:**
+
+<u>SolvencyCapitalResult:</u> `scr`, `own_funds` (today), `solvency_ratio`, `expected_shortfall` (the average loss beyond the SCR) and `probability_of_ruin` (the share of scenarios where own funds turn negative).
+
+**Raises:**
+
+- <u>ValueError:</u> if `confidence` is not between 0 and 1, the horizon is not positive or past the run's end, or `own_funds` does not match the run's shape.
+
+</details>
 
 ## interest_rate_scr
+
+Compute the interest rate capital of a liability under the Solvency II standard formula: how much more it is worth
+when rates move by the regulator's prescribed shocks.
+
+The liability is valued on EIOPA's basic risk-free curve and on its two shocked curves, up and down. Lower rates
+make future payments dearer today, so for most liabilities the downward shock binds. The answer is the capital the
+standard formula sets aside for this one risk, before it is combined with the others. Only the liability is
+revalued: for the full interest rate module, revalue the assets on the same curves too, since what matters is the
+mismatch. An insurer whose bonds match the duration of its liabilities loses little under either shock.
+
+The formula is as follows:
+
+$$
+\text{SCR} = \max(\text{BE\_up} - \text{BE},\; \text{BE\_down} - \text{BE},\; 0)
+$$
+
+Where BE, BE_up and BE_down are the best estimates on the base, upward-shocked and downward-shocked curves
+(Delegated Regulation 2015/35, Articles 165-167). Positive cashflows are payments out, as in `best_estimate`.
+
+**As an example:**
+
+```python
+from financescenarios import eiopa_risk_free_curve, interest_rate_scr
+
+# `result` and `annuity` as in the `best_estimate` example, `toolkit` as in the `eiopa_risk_free_curve` one.
+base, up, down = (eiopa_risk_free_curve(toolkit, curve=name) for name in ("spot_no_va", "shock_up", "shock_down"))
+interest_rate_scr(result, annuity, base, up, down)
+```
+
+**References:**
+
+- European Commission (2015). "Commission Delegated Regulation (EU) 2015/35", Articles 165-167 (interest rate risk sub-module). <https://eur-lex.europa.eu/eli/reg_del/2015/35/oj>
+- EIOPA. "Risk-free interest rate term structures." <https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 interest_rate_scr(
@@ -315,17 +451,6 @@ interest_rate_scr(
     down_curve: pl.DataFrame,
 ) -> InterestRateScrResult
 ```
-
-Compute the interest rate capital of a liability under the Solvency II standard formula: how much more it is worth
-when rates move by the regulator's prescribed shocks.
-
-The liability is valued on EIOPA's basic risk-free curve and on its two shocked curves, up and down. Lower rates
-make future payments dearer today, so for most liabilities the downward shock binds. The answer is the capital the
-standard formula sets aside for this one risk, before it is combined with the others. Only the liability is
-revalued: for the full interest rate module, revalue the assets on the same curves too.
-
-The formula is SCR = max(BE_up - BE, BE_down - BE, 0), with BE the best estimate on each curve (Delegated
-Regulation 2015/35, Articles 165-167). Positive cashflows are payments out, as in `best_estimate`.
 
 **Args:**
 
@@ -343,30 +468,10 @@ Regulation 2015/35, Articles 165-167). Positive cashflows are payments out, as i
 
 - <u>ValueError:</u> if a curve or the cashflows are malformed (see `best_estimate`).
 
-**As an example:**
+</details>
 
-```python
-from financescenarios import eiopa_risk_free_curve, interest_rate_scr
-
-# `result` and `annuity` as in the `best_estimate` example, `toolkit` as in the `eiopa_risk_free_curve` one.
-base, up, down = (eiopa_risk_free_curve(toolkit, curve=name) for name in ("spot_no_va", "shock_up", "shock_down"))
-interest_rate_scr(result, annuity, base, up, down)
-```
-
-**References:**
-
-- European Commission (2015). "Commission Delegated Regulation (EU) 2015/35", Articles 165-167 (interest rate risk sub-module). <https://eur-lex.europa.eu/eli/reg_del/2015/35/oj>
-- EIOPA. "Risk-free interest rate term structures." <https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en>
-
+{% raw %}
 ## equity_scr
-
-```python
-equity_scr(
-    type_1_value: float,
-    type_2_value: float = 0.0,
-    symmetric_adjustment: float = 0.0,
-) -> EquityScrResult
-```
 
 Compute the equity risk capital of the Solvency II standard formula: the loss on an insurer's shares after the
 regulator's prescribed stock market fall.
@@ -377,23 +482,25 @@ adjustment, the "equity dampener", raises the shock by up to 10 points after a r
 points after a fall, so insurers are not forced to sell into a falling market; EIOPA publishes it every month (see
 `eiopa_symmetric_adjustment`).
 
-The two losses combine with a 0.75 correlation, SCR = sqrt(L1 ** 2 + 2 * 0.75 * L1 * L2 + L2 ** 2), so the total
-is less than their sum (Delegated Regulation 2015/35, Articles 168-169). Strategic participations, long-term equity
-investments and the transitional measure are not covered.
+The two losses combine with a 0.75 correlation, so the total is less than their sum (Delegated Regulation 2015/35,
+Articles 168-169). Strategic participations, long-term equity investments and the transitional measure are not
+covered.
 
-**Args:**
+The formula is as follows:
 
-- <u>type_1_value (float):</u> the market value of type 1 equity holdings.
-- <u>type_2_value (float):</u> the market value of type 2 equity holdings; 0.0 by default.
-- <u>symmetric_adjustment (float):</u> EIOPA's symmetric adjustment as a decimal (0.0771 for 7.71 points), between -0.10 and 0.10; 0.0 by default.
+$$
+L_{1} = (0.39 + \text{SA}) \cdot V_{1}
+$$
 
-**Returns:**
+$$
+L_{2} = (0.49 + \text{SA}) \cdot V_{2}
+$$
 
-<u>EquityScrResult:</u> `type_1_charge` and `type_2_charge` (the shocks), `type_1_scr` and `type_2_scr` (the losses) and `scr`, the combined equity risk capital.
+$$
+\text{SCR} = \sqrt{L_{1} ^{2} + 2 \cdot 0.75 \cdot L_{1} \cdot L_{2} + L_{2} ^{2}}
+$$
 
-**Raises:**
-
-- <u>ValueError:</u> if a value is negative or not finite, or the adjustment lies outside -0.10 to 0.10.
+Where V1 and V2 are the market values of type 1 and type 2 equities and SA the symmetric adjustment.
 
 **As an example:**
 
@@ -412,17 +519,35 @@ perfectly together.
 - European Commission (2015). "Commission Delegated Regulation (EU) 2015/35", Articles 168-172 (equity risk sub-module and symmetric adjustment). <https://eur-lex.europa.eu/eli/reg_del/2015/35/oj>
 - EIOPA. "Symmetric adjustment of the equity capital charge." <https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en>
 
-## martingale_test
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-martingale_test(
-    scenario_set: ScenarioSet,
-    asset: str,
-    short_rate: str,
-    dividend_yield: float = 0.0,
-    confidence: float = 0.95,
-) -> MartingaleTestResult
+equity_scr(
+    type_1_value: float,
+    type_2_value: float = 0.0,
+    symmetric_adjustment: float = 0.0,
+) -> EquityScrResult
 ```
+
+**Args:**
+
+- <u>type_1_value (float):</u> the market value of type 1 equity holdings.
+- <u>type_2_value (float):</u> the market value of type 2 equity holdings; 0.0 by default.
+- <u>symmetric_adjustment (float):</u> EIOPA's symmetric adjustment as a decimal (0.0771 for 7.71 points), between -0.10 and 0.10; 0.0 by default.
+
+**Returns:**
+
+<u>EquityScrResult:</u> `type_1_charge` and `type_2_charge` (the shocks), `type_1_scr` and `type_2_scr` (the losses) and `scr`, the combined equity risk capital.
+
+**Raises:**
+
+- <u>ValueError:</u> if a value is negative or not finite, or the adjustment lies outside -0.10 to 0.10.
+
+</details>
+{% endraw %}
+
+## martingale_test
 
 Check that a risk-neutral run is market consistent: discounted back, a traded asset must be worth today's price on
 average at every future date.
@@ -431,25 +556,31 @@ In market-consistent scenarios no asset beats the risk-free cash account on aver
 scenario's own short rate, dividends added back, the asset's average value at any date must equal today's price, up
 to Monte Carlo noise. EIOPA's guidelines expect a scenario generator used for valuation to pass this test.
 
-The test is E[D(t) * S(t) * exp(q * t)] = S(0) at every date t, with D the discount factor and q the dividend yield
-(Varnell, 2011); a date passes when S(0) lies inside a normal band around the average.
+It tells you whether the run can be trusted to put a price on anything that depends on that asset. A run whose
+discounted equity drifts above today's price creates value out of nothing, so the cost of guarantees and options
+valued on it is understated (or overstated if it drifts below). Read `max_abs_deviation` first: a gap of a few
+tenths of a percent is noise, a steady gap of several percent is a calibration error. With 95% bands about one
+date in twenty falls outside by chance, and neighbouring dates share the same scenarios, so a pass rate a little
+under 1 is no reason for concern.
 
-**Args:**
+The formula is as follows:
 
-- <u>scenario_set (ScenarioSet):</u> a risk-neutral run.
-- <u>asset (str):</u> the price factor to test, such as an equity.
-- <u>short_rate (str):</u> the rate factor to discount with.
-- <u>dividend_yield (float):</u> the asset's dividend yield q, added back; 0.0 by default.
-- <u>confidence (float):</u> the width of each date's band, between 0 and 1; 0.95 by default.
+$$
+D(t) = \exp(- (r(t_{0}) + r(t_{1}) + ... + r(t - \text{dt})) \cdot \text{dt})
+$$
 
-**Returns:**
+$$
+\operatorname{ratio}(t) = \operatorname{mean}(D(t) \cdot S(t) \cdot \exp(q \cdot t)) / S(0)
+$$
 
-<u>MartingaleTestResult:</u> `passed`, `pass_rate`, `max_abs_deviation` (largest gap from today's price) and a per-date `table` with 'ratio' (average over today's price) and 'within_band'.
+$$
+\operatorname{band}(t) = \operatorname{mean}(D(t) \cdot S(t) \cdot \exp(q \cdot t)) + / - z \cdot \operatorname{SE}(t)
+$$
 
-**Raises:**
-
-- <u>KeyError:</u> if either factor is not in the run.
-- <u>ValueError:</u> if `confidence` is not between 0 and 1, or `asset` is not a price that starts above 0.
+Where r is the simulated short rate, q the dividend yield, z the normal quantile at (1 + `confidence`) / 2 and SE
+the standard error over scenarios (over pair averages when the scenarios come in antithetic pairs). A date passes
+when S(0) lies
+inside its band; a martingale has ratio(t) = 1 at every date (Varnell, 2011).
 
 **As an example:**
 
@@ -477,15 +608,39 @@ A few dates fall outside their band; at other seeds, or 99% confidence, it passe
 - EIOPA (2015, updated 2023). "Guidelines on valuation of technical provisions." <https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en>
 - Varnell, E.M. (2011). "Economic Scenario Generators and Solvency II." British Actuarial Journal, 16(1), 121-159. <https://doi.org/10.1017/S1357321711000079>
 
-## market_consistency_check
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-market_consistency_check(
+martingale_test(
     scenario_set: ScenarioSet,
+    asset: str,
     short_rate: str,
-    discount_curve: pl.DataFrame,
-) -> pl.DataFrame
+    dividend_yield: float = 0.0,
+    confidence: float = 0.95,
+) -> MartingaleTestResult
 ```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> a risk-neutral run.
+- <u>asset (str):</u> the price factor to test, such as an equity.
+- <u>short_rate (str):</u> the rate factor to discount with.
+- <u>dividend_yield (float):</u> the asset's dividend yield q, added back; 0.0 by default.
+- <u>confidence (float):</u> the width of each date's band, between 0 and 1; 0.95 by default.
+
+**Returns:**
+
+<u>MartingaleTestResult:</u> `passed`, `pass_rate`, `max_abs_deviation` (largest gap from today's price) and a per-date `table` with 'ratio' (average over today's price) and 'within_band'.
+
+**Raises:**
+
+- <u>KeyError:</u> if either factor is not in the run.
+- <u>ValueError:</u> if `confidence` is not between 0 and 1, or `asset` is not a price that starts above 0.
+
+</details>
+
+## market_consistency_check
 
 Compare the bond curve a risk-neutral run implies with a published risk-free curve, at every whole year of the run.
 
@@ -493,21 +648,6 @@ This asks whether the simulated interest rates price bonds the way the official 
 rates-side test EIOPA's guidelines ask of a Solvency II scenario generator. A difference inside about two standard
 errors at every maturity means yes. A steady gap means the run was calibrated to a different curve (Treasury yields
 rather than EIOPA's, say) or the short rate is not risk neutral.
-
-**Args:**
-
-- <u>scenario_set (ScenarioSet):</u> a risk-neutral run.
-- <u>short_rate (str):</u> its short-rate factor.
-- <u>discount_curve (pl.DataFrame):</u> the curve to compare with, "maturity" and "rate" columns, annually compounded like EIOPA's.
-
-**Returns:**
-
-<u>pl.DataFrame:</u> "maturity", "model_rate" (annually compounded, from the simulated bond price), "curve_rate", "difference" (model minus curve) and "standard_error" (of the model rate).
-
-**Raises:**
-
-- <u>KeyError:</u> if `short_rate` is not in the run.
-- <u>ValueError:</u> if the curve is malformed or the run is shorter than a year.
 
 **As an example:**
 
@@ -524,45 +664,69 @@ market_consistency_check(result, "united_states_short_rate", curve)
 
 - EIOPA (2015, updated 2023). "Guidelines on valuation of technical provisions." <https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en>
 
-## eiopa_risk_free_curve
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-eiopa_risk_free_curve(
-    toolkit: Toolkit,
-    country: str = 'Euro Area',
-    curve: str = 'spot_no_va',
-    as_of: date | str | None = None,
+market_consistency_check(
+    scenario_set: ScenarioSet,
+    short_rate: str,
+    discount_curve: pl.DataFrame,
 ) -> pl.DataFrame
 ```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> a risk-neutral run.
+- <u>short_rate (str):</u> its short-rate factor.
+- <u>discount_curve (pl.DataFrame):</u> the curve to compare with, "maturity" and "rate" columns, annually compounded like EIOPA's.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> "maturity", "model_rate" (annually compounded, from the simulated bond price), "curve_rate", "difference" (model minus curve) and "standard_error" (of the model rate).
+
+**Raises:**
+
+- <u>KeyError:</u> if `short_rate` is not in the run.
+- <u>ValueError:</u> if the curve is malformed or the run is shorter than a year.
+
+</details>
+
+## eiopa_risk_free_curve
 
 Fetch one EIOPA risk-free interest rate curve, the curve European insurers must discount what they owe with under
 Solvency II.
 
 It gives the official interest rate for every maturity from 1 to 150 years (Directive 2009/138/EC, Article 77(2)).
 Past the last maturity where bonds trade freely (20 years for the euro), the curve bends toward a fixed long-term
-rate the regulator sets, the ultimate forward rate. The table plugs straight into
-`best_estimate(..., discount_curve=...)`, `interest_rate_scr` and `market_consistency_check`.
+rate the regulator sets, the ultimate forward rate. For long-dated liabilities such as annuities and pensions that
+extrapolated part carries most of the value, so the choice of curve (with or without the volatility adjustment,
+which adds part of the spread insurers earn on their bonds to damp the effect of spread swings) moves the best
+estimate and own funds directly. The
+table plugs straight into `best_estimate(..., discount_curve=...)`, `interest_rate_scr` and
+`market_consistency_check`.
 
-The data come through the Finance Toolkit (`fixedincome.get_eiopa_risk_free_rate`) with no API key: one release a
-month from January 2023, for the euro, every European Economic Area currency, the Swiss franc, the pound, the
-Australian, Canadian and US dollar, the yen and a few others. Rates are annually compounded decimals.
+EIOPA fits and extrapolates the curve with the Smith-Wilson method; this reads the result as published.
+
+The formula is as follows:
+
+$$
+p(v) = \exp(- \omega \cdot v) \cdot (1 + H(v,\; u) \cdot b)
+$$
+
+$$
+y(v) = - \ln(p(v)) / v
+$$
+
+Where p is the price of a zero-coupon bond maturing at v, omega the ultimate forward rate as a continuous
+intensity, u the liquid maturities, H the Wilson kernel and b chosen so p matches the market at every u (RFR
+Technical Documentation, sections 9.7-9.12).
+
+The data come through the Finance Toolkit with no API key: one release a month from January 2023, for the euro,
+every European Economic Area currency, the Swiss franc, the pound, the Australian, Canadian and US dollar, the yen
+and a few others. Rates are annually compounded decimals.
 
 Also known as: EIOPA RFR, Solvency II discount curve, risk-free rate term structure, UFR curve.
-
-**Args:**
-
-- <u>toolkit (Toolkit):</u> the Finance Toolkit `Toolkit`; its start and end dates bound the releases read.
-- <u>country (str):</u> the currency area as EIOPA names it, e.g. "United Kingdom"; "Euro Area" by default.
-- <u>curve (str):</u> "spot_no_va" (the basic curve, default), "spot_with_va" (with the volatility adjustment), "shock_up" or "shock_down" (after the standard formula's interest rate shocks).
-- <u>as_of (date &#124; str &#124; None):</u> the month of the release, e.g. "2026-09"; the latest available by default.
-
-**Returns:**
-
-<u>pl.DataFrame:</u> "maturity" (years) and "rate" (decimal), one row per published maturity.
-
-**Raises:**
-
-- <u>ValueError:</u> if `curve` is unknown, nothing comes back for `country`, or `as_of` has no release.
 
 **As an example:**
 
@@ -589,36 +753,59 @@ Which returns:
 **References:**
 
 - EIOPA. "Risk-free interest rate term structures." <https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en>
+- EIOPA (2025). "RFR Technical Documentation" (EIOPA-BoS-25-599), section 9 (Smith-Wilson extrapolation). <https://www.eiopa.europa.eu/document/download/f7fca58f-4d24-4441-ac60-de562bf26d77_en>
 - European Parliament and Council (2009). "Directive 2009/138/EC (Solvency II)", Article 77. <https://eur-lex.europa.eu/eli/dir/2009/138/oj>
 
-## eiopa_symmetric_adjustment
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-eiopa_symmetric_adjustment(toolkit: Toolkit, as_of: date | str | None = None) -> float
+eiopa_risk_free_curve(
+    toolkit: Toolkit,
+    country: str = 'Euro Area',
+    curve: str = 'spot_no_va',
+    as_of: date | str | None = None,
+) -> pl.DataFrame
 ```
+
+**Args:**
+
+- <u>toolkit (Toolkit):</u> the Finance Toolkit `Toolkit`; its start and end dates bound the releases read.
+- <u>country (str):</u> the currency area as EIOPA names it, e.g. "United Kingdom"; "Euro Area" by default.
+- <u>curve (str):</u> "spot_no_va" (the basic curve, default), "spot_with_va" (with the volatility adjustment), "shock_up" or "shock_down" (after the standard formula's interest rate shocks).
+- <u>as_of (date &#124; str &#124; None):</u> the month of the release, e.g. "2026-09"; the latest available by default.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> "maturity" (years) and "rate" (decimal), one row per published maturity.
+
+**Raises:**
+
+- <u>ValueError:</u> if `curve` is unknown, nothing comes back for `country`, or `as_of` has no release.
+
+</details>
+
+## eiopa_symmetric_adjustment
 
 Fetch EIOPA's symmetric adjustment of the Solvency II equity capital charge, the "equity dampener", for one month.
 
 It is the number of percentage points EIOPA adds to the 39% and 49% equity shocks of the standard formula after a
 rally, or takes off after a fall, between -10 and +10, based on where equity prices stand against their three-year
-average. It keeps insurers from being forced to sell into a falling market. Pass it to
+average. It is counter-cyclical: after a crash the charge falls, so insurers are not forced to sell equities into
+a falling market to restore their ratio, and after a rally it rises. Pass it to
 `equity_scr(..., symmetric_adjustment=...)`.
 
-The data come through the Finance Toolkit (`fixedincome.get_eiopa_symmetric_adjustment`), daily from 1991, with no
-API key; this reads the month-end value insurers apply at that reporting date.
+The formula is as follows:
 
-**Args:**
+$$
+\text{SA} = \min(\max(1 / 2 \cdot ((\text{CI} - \text{AI}) / \text{AI} - 0.08),\; - 0.10),\; 0.10)
+$$
 
-- <u>toolkit (Toolkit):</u> the Finance Toolkit `Toolkit`; its start and end dates bound the history read.
-- <u>as_of (date &#124; str &#124; None):</u> the month, e.g. "2026-09"; the latest available by default.
+Where CI is the current level of EIOPA's equity index and AI the average of its daily levels over the last 36
+months (Delegated Regulation 2015/35, Article 172).
 
-**Returns:**
-
-<u>float:</u> the symmetric adjustment as a decimal (0.0771 for 7.71 points).
-
-**Raises:**
-
-- <u>ValueError:</u> if nothing comes back or `as_of` has no value.
+The data come through the Finance Toolkit, daily from 1991, with no API key; this reads the month-end value
+insurers apply at that reporting date.
 
 **As an example:**
 
@@ -635,13 +822,32 @@ Which returns 0.0771: the equity shocks that month are 46.71% and 56.71% instead
 
 **References:**
 
+- European Commission (2015). "Commission Delegated Regulation (EU) 2015/35", Article 172 (symmetric adjustment). <https://eur-lex.europa.eu/eli/reg_del/2015/35/oj>
 - EIOPA. "Symmetric adjustment of the equity capital charge." <https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en>
 
-## zero_coupon_curve
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-zero_coupon_curve(scenario_set: ScenarioSet, short_rate: str) -> pl.DataFrame
+eiopa_symmetric_adjustment(toolkit: Toolkit, as_of: date | str | None = None) -> float
 ```
+
+**Args:**
+
+- <u>toolkit (Toolkit):</u> the Finance Toolkit `Toolkit`; its start and end dates bound the history read.
+- <u>as_of (date &#124; str &#124; None):</u> the month, e.g. "2026-09"; the latest available by default.
+
+**Returns:**
+
+<u>float:</u> the symmetric adjustment as a decimal (0.0771 for 7.71 points).
+
+**Raises:**
+
+- <u>ValueError:</u> if nothing comes back or `as_of` has no value.
+
+</details>
+
+## zero_coupon_curve
 
 Compute the bond curve a simulated short rate implies: what a bond paying 1 at each future date is worth today, and
 the yield that price implies.
@@ -652,22 +858,18 @@ beside the curve the run was calibrated to checks the rates side of market consi
 standard errors means the run is off. `market_consistency_check` does this against a published curve such as
 EIOPA's.
 
-The price is the average discount factor across scenarios, P(0, t) = E[D(t)], and the spot rate is
--ln P(0, t) / t, continuously compounded.
+The formula is as follows:
 
-**Args:**
+$$
+P(0,\; t) = \operatorname{mean}(D(t))
+$$
 
-- <u>scenario_set (ScenarioSet):</u> a simulated run.
-- <u>short_rate (str):</u> the rate factor to discount with.
+$$
+R(0,\; t) = - \ln(P(0,\; t)) / t
+$$
 
-**Returns:**
-
-<u>pl.DataFrame:</u> "date", "maturity" (years), "price", "standard_error" and "spot_rate" (empty at maturity 0).
-
-**Raises:**
-
-- <u>KeyError:</u> if `short_rate` is not in the run.
-- <u>ValueError:</u> if `short_rate` is a price rather than a rate.
+Where D(t) is each scenario's discount factor along its simulated short rate (see `martingale_test`), P the
+zero-coupon bond price and R the continuously compounded spot rate (Wüthrich and Merz, 2013, chapter 2).
 
 **As an example:**
 
@@ -697,19 +899,51 @@ off exactly that rate with no Monte Carlo error.
 - Varnell, E.M. (2011). "Economic Scenario Generators and Solvency II." British Actuarial Journal, 16(1), 121-159. <https://doi.org/10.1017/S1357321711000079>
 - Wüthrich, M.V., Merz, M. (2013). "Financial Modeling, Actuarial Valuation and Solvency in Insurance." Springer. <https://doi.org/10.1007/978-3-642-31392-9>
 
-## curve_discount_factors
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-curve_discount_factors(discount_curve: pl.DataFrame, times: np.ndarray) -> np.ndarray
+zero_coupon_curve(scenario_set: ScenarioSet, short_rate: str) -> pl.DataFrame
 ```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> a simulated run.
+- <u>short_rate (str):</u> the rate factor to discount with.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> "date", "maturity" (years), "price", "standard_error" and "spot_rate" (empty at maturity 0).
+
+**Raises:**
+
+- <u>KeyError:</u> if `short_rate` is not in the run.
+- <u>ValueError:</u> if `short_rate` is a price rather than a rate.
+
+</details>
+
+## curve_discount_factors
 
 Compute discount factors from a published interest-rate curve: the value today of 1 paid at each time `t`.
 
 This reads the value off a curve such as EIOPA's risk-free curve (see `eiopa_risk_free_curve`) rather than off the
 simulated rates. A 3% rate at ten years, for example, values 1 paid then at 1.03 ** -10 = 0.744.
 
-The formula is (1 + r(t)) ** -t, annually compounded like EIOPA's curves, with r read linearly between the curve's
-maturities and held flat before the first and after the last.
+The formula is as follows:
+
+$$
+\operatorname{DF}(t) = (1 + r(t)) ^{-t}
+$$
+
+Where r(t) is the curve's annually compounded rate, like EIOPA's, read linearly between the curve's maturities and
+held flat before the first and after the last.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+curve_discount_factors(discount_curve: pl.DataFrame, times: np.ndarray) -> np.ndarray
+```
 
 **Args:**
 
@@ -724,17 +958,9 @@ maturities and held flat before the first and after the last.
 
 - <u>ValueError:</u> if the curve lacks the two columns, is empty, unsorted or holds non-finite values.
 
-## write_scenario_files
+</details>
 
-```python
-write_scenario_files(
-    scenario_set: ScenarioSet,
-    directory: str | Path,
-    factors: Sequence[str] | None = None,
-    file_format: Literal['csv', 'xlsx'] = 'csv',
-    step_stride: int = 1,
-) -> list[Path]
-```
+## write_scenario_files
 
 Write a run as the scenario files actuarial and asset-liability (ALM) systems load: one table per variable, with
 one row per trial and one column per projection time.
@@ -744,23 +970,6 @@ Trials are numbered from 1, as scenario vendors ship them, and columns are label
 "10") rather than by date, so a file reads the same whatever the run's start date. An `index` table gives each
 variable's label, category and unit: an annualized decimal rate (0.04 is 4% a year), or a price or index level.
 Either kind of run works: risk neutral for market-consistent valuation, real world for projections.
-
-**Args:**
-
-- <u>scenario_set (ScenarioSet):</u> the run to export.
-- <u>directory (str &#124; Path):</u> the folder to write into, created if missing.
-- <u>factors (Sequence[str] &#124; None):</u> the variables to write; every factor by default.
-- <u>file_format ("csv" &#124; "xlsx"):</u> "csv" (default) writes `<variable>.csv` files plus `index.csv`; "xlsx" writes one `scenarios.xlsx` workbook with an `index` sheet and one sheet per variable. Prefer CSV for large runs.
-- <u>step_stride (int):</u> keep every n-th time point, e.g. 12 on a monthly run for yearly columns; time 0 is always kept. 1 (every point) by default.
-
-**Returns:**
-
-<u>list[Path]:</u> every file written, the index first.
-
-**Raises:**
-
-- <u>KeyError:</u> if a requested factor is not in the run.
-- <u>ValueError:</u> if `step_stride` is below 1, `file_format` is unknown, or two variable names share their first 31 characters (Excel's limit for a sheet name).
 
 **As an example:**
 
@@ -781,3 +990,608 @@ Which writes (calibrated on 2026-10-04) `index.csv`, reading:
 
 and one CSV per variable, such as `united_states_short_rate.csv`, with 2,000 rows (trials) and columns "trial"
 and "0" to "10" (years).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+write_scenario_files(
+    scenario_set: ScenarioSet,
+    directory: str | Path,
+    factors: Sequence[str] | None = None,
+    file_format: Literal['csv', 'xlsx'] = 'csv',
+    step_stride: int = 1,
+) -> list[Path]
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> the run to export.
+- <u>directory (str &#124; Path):</u> the folder to write into, created if missing.
+- <u>factors (Sequence[str] &#124; None):</u> the variables to write; every factor by default.
+- <u>file_format ("csv" &#124; "xlsx"):</u> "csv" (default) writes `<variable>.csv` files plus `index.csv`; "xlsx" writes one `scenarios.xlsx` workbook with an `index` sheet and one sheet per variable. Prefer CSV for large runs.
+- <u>step_stride (int):</u> keep every n-th time point, e.g. 12 on a monthly run for yearly columns; time 0 is always kept. 1 (every point) by default.
+
+**Returns:**
+
+<u>list[Path]:</u> every file written, the index first.
+
+**Raises:**
+
+- <u>KeyError:</u> if a requested factor is not in the run.
+- <u>ValueError:</u> if `step_stride` is below 1, `file_format` is unknown, or two variable names share their first 31 characters (Excel's limit for a sheet name).
+
+</details>
+
+## How It Is Calculated
+
+The model functions behind this page, each with the formula it implements.
+
+### martingale_test
+
+Check that a risk-neutral run is market consistent: discounted back, a traded asset must be worth today's price on
+average at every future date.
+
+In market-consistent scenarios no asset beats the risk-free cash account on average: discounted with each
+scenario's own short rate, dividends added back, the asset's average value at any date must equal today's price, up
+to Monte Carlo noise. EIOPA's guidelines expect a scenario generator used for valuation to pass this test.
+
+It tells you whether the run can be trusted to put a price on anything that depends on that asset. A run whose
+discounted equity drifts above today's price creates value out of nothing, so the cost of guarantees and options
+valued on it is understated (or overstated if it drifts below). Read `max_abs_deviation` first: a gap of a few
+tenths of a percent is noise, a steady gap of several percent is a calibration error. With 95% bands about one
+date in twenty falls outside by chance, and neighbouring dates share the same scenarios, so a pass rate a little
+under 1 is no reason for concern.
+
+The formula is as follows:
+
+$$
+D(t) = \exp(- (r(t_{0}) + r(t_{1}) + ... + r(t - \text{dt})) \cdot \text{dt})
+$$
+
+$$
+\operatorname{ratio}(t) = \operatorname{mean}(D(t) \cdot S(t) \cdot \exp(q \cdot t)) / S(0)
+$$
+
+$$
+\operatorname{band}(t) = \operatorname{mean}(D(t) \cdot S(t) \cdot \exp(q \cdot t)) + / - z \cdot \operatorname{SE}(t)
+$$
+
+Where r is the simulated short rate, q the dividend yield, z the normal quantile at (1 + `confidence`) / 2 and SE
+the standard error over scenarios (over pair averages when the scenarios come in antithetic pairs). A date passes
+when S(0) lies
+inside its band; a martingale has ratio(t) = 1 at every date (Varnell, 2011).
+
+**As an example:**
+
+```python
+from financescenarios import martingale_test
+
+# `result`: a risk-neutral ten-year monthly run of SPY ("us_broad") and US rates; `calibration`: its fit.
+dividend_yield = calibration.calibrated_params["spy_yield"].initial_value
+test = martingale_test(result, "us_broad", "united_states_short_rate", dividend_yield=dividend_yield)
+test.table.filter(test.table["time"].is_in([1.0, 5.0, 10.0]))
+```
+
+Which returns (calibrated on 2026-10-04), with `passed` False, `pass_rate` 0.825 and `max_abs_deviation` 0.0091:
+
+| date | time | ratio | within_band |
+|:-----|-----:|------:|:------------|
+| 2027-10-01 | 1 | 0.9990 | false |
+| 2031-10-01 | 5 | 0.9994 | true |
+| 2036-09-30 | 10 | 0.9922 | true |
+
+A few dates fall outside their band; at other seeds, or 99% confidence, it passes.
+
+**References:**
+
+- EIOPA (2015, updated 2023). "Guidelines on valuation of technical provisions." <https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en>
+- Varnell, E.M. (2011). "Economic Scenario Generators and Solvency II." British Actuarial Journal, 16(1), 121-159. <https://doi.org/10.1017/S1357321711000079>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+martingale_test(
+    scenario_set: ScenarioSet,
+    asset: str,
+    short_rate: str,
+    dividend_yield: float = 0.0,
+    confidence: float = 0.95,
+) -> MartingaleTestResult
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> a risk-neutral run.
+- <u>asset (str):</u> the price factor to test, such as an equity.
+- <u>short_rate (str):</u> the rate factor to discount with.
+- <u>dividend_yield (float):</u> the asset's dividend yield q, added back; 0.0 by default.
+- <u>confidence (float):</u> the width of each date's band, between 0 and 1; 0.95 by default.
+
+**Returns:**
+
+<u>MartingaleTestResult:</u> `passed`, `pass_rate`, `max_abs_deviation` (largest gap from today's price) and a per-date `table` with 'ratio' (average over today's price) and 'within_band'.
+
+**Raises:**
+
+- <u>KeyError:</u> if either factor is not in the run.
+- <u>ValueError:</u> if `confidence` is not between 0 and 1, or `asset` is not a price that starts above 0.
+
+</details>
+
+### zero_coupon_curve
+
+Compute the bond curve a simulated short rate implies: what a bond paying 1 at each future date is worth today, and
+the yield that price implies.
+
+A price of 0.82 at five years, for example, means 1 paid in five years is worth 0.82 today, a yield of
+-ln(0.82) / 5 = 4.0% a year. On a risk-neutral run this is the curve the scenarios price bonds off, so setting it
+beside the curve the run was calibrated to checks the rates side of market consistency: a gap wider than a few
+standard errors means the run is off. `market_consistency_check` does this against a published curve such as
+EIOPA's.
+
+The formula is as follows:
+
+$$
+P(0,\; t) = \operatorname{mean}(D(t))
+$$
+
+$$
+R(0,\; t) = - \ln(P(0,\; t)) / t
+$$
+
+Where D(t) is each scenario's discount factor along its simulated short rate (see `martingale_test`), P the
+zero-coupon bond price and R the continuously compounded spot rate (Wüthrich and Merz, 2013, chapter 2).
+
+**As an example:**
+
+```python
+from financescenarios import zero_coupon_curve
+
+# `result`: the risk-neutral run set up in full in the Solvency II guide,
+# https://www.jeroenbouma.com/projects/financescenarios/docs/solvency#martingale-test-example
+curve = zero_coupon_curve(result, "united_states_short_rate")
+curve.filter(curve["maturity"].is_in([1.0, 2.0, 5.0, 10.0]))
+```
+
+Which returns (calibrated on 2026-10-04):
+
+| date | maturity | price | standard_error | spot_rate |
+|:-----|---------:|------:|---------------:|----------:|
+| 2027-10-01 | 1 | 0.9609 | 0.0000 | 0.03993 |
+| 2028-09-30 | 2 | 0.9232 | 0.0000 | 0.03993 |
+| 2031-10-01 | 5 | 0.8190 | 0.0000 | 0.03993 |
+| 2036-09-30 | 10 | 0.6708 | 0.0000 | 0.03993 |
+
+By default the risk-neutral short rate stays at today's 13-week Treasury yield, 3.993%, so every maturity prices
+off exactly that rate with no Monte Carlo error.
+
+**References:**
+
+- Varnell, E.M. (2011). "Economic Scenario Generators and Solvency II." British Actuarial Journal, 16(1), 121-159. <https://doi.org/10.1017/S1357321711000079>
+- Wüthrich, M.V., Merz, M. (2013). "Financial Modeling, Actuarial Valuation and Solvency in Insurance." Springer. <https://doi.org/10.1007/978-3-642-31392-9>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+zero_coupon_curve(scenario_set: ScenarioSet, short_rate: str) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> a simulated run.
+- <u>short_rate (str):</u> the rate factor to discount with.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> "date", "maturity" (years), "price", "standard_error" and "spot_rate" (empty at maturity 0).
+
+**Raises:**
+
+- <u>KeyError:</u> if `short_rate` is not in the run.
+- <u>ValueError:</u> if `short_rate` is a price rather than a rate.
+
+</details>
+
+### curve_discount_factors
+
+Compute discount factors from a published interest-rate curve: the value today of 1 paid at each time `t`.
+
+This reads the value off a curve such as EIOPA's risk-free curve (see `eiopa_risk_free_curve`) rather than off the
+simulated rates. A 3% rate at ten years, for example, values 1 paid then at 1.03 ** -10 = 0.744.
+
+The formula is as follows:
+
+$$
+\operatorname{DF}(t) = (1 + r(t)) ^{-t}
+$$
+
+Where r(t) is the curve's annually compounded rate, like EIOPA's, read linearly between the curve's maturities and
+held flat before the first and after the last.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+curve_discount_factors(discount_curve: pl.DataFrame, times: np.ndarray) -> np.ndarray
+```
+
+**Args:**
+
+- <u>discount_curve (pl.DataFrame):</u> a "maturity" column (years, increasing) and a "rate" column (decimals).
+- <u>times (np.ndarray):</u> the times in years to discount from, e.g. a run's `time_grid`.
+
+**Returns:**
+
+<u>np.ndarray:</u> one discount factor per time, 1 at t = 0.
+
+**Raises:**
+
+- <u>ValueError:</u> if the curve lacks the two columns, is empty, unsorted or holds non-finite values.
+
+</details>
+
+### best_estimate
+
+Compute the best estimate of a stream of future payments: their average present value across scenarios, the value
+Solvency II asks an insurer to hold for what it owes (Article 77).
+
+On a risk-neutral run the average is the market-consistent value: what the obligation would cost to hand over to
+another party at today's prices. The standard error says how precise that number is, and should be small next to
+the materiality of the result; more scenarios shrink it. Payments can be fixed or differ per scenario, such as
+inflation-linked or profit-sharing benefits; when they do, the gap between this average and the value on one
+central scenario is the time value of the options and guarantees the insurer has written. To discount with
+EIOPA's risk-free curve instead, as Solvency II prescribes (Article 77(2)), pass `discount_curve`.
+
+The formula is as follows:
+
+$$
+\text{PV}_{i} = \text{CF}_{i}(t_{0}) \cdot D_{i}(t_{0}) + \text{CF}_{i}(t_{1}) \cdot D_{i}(t_{1}) + ... + \text{CF}_{i}(T) \cdot D_{i}(T)
+$$
+
+$$
+\text{BE} = \operatorname{mean}(\text{PV}_{i})
+$$
+
+$$
+\text{SE} = \operatorname{std}(\text{PV}_{i}) / \sqrt{n}
+$$
+
+Where D_i is scenario i's discount factor (see `martingale_test`), or (1 + r(t)) ** -t on a `discount_curve`, and
+n the number of scenarios; when the scenarios come in antithetic pairs SE is taken over the n / 2 pair averages.
+
+**As an example:**
+
+```python
+import numpy as np
+
+from financescenarios import best_estimate
+
+# `result`: the risk-neutral run set up in full in the Solvency II guide,
+# https://www.jeroenbouma.com/projects/financescenarios/docs/solvency#martingale-test-example
+annuity = np.zeros(len(result.time_grid))
+annuity[12::12] = 10_000.0  # 10,000 a year at each year end
+level = best_estimate(result, annuity, short_rate="united_states_short_rate")
+
+index = result.cumulative_index("united_states_inflation", initial_index=1.0).drop("scenario").to_numpy()
+indexed = best_estimate(result, annuity * index, short_rate="united_states_short_rate")
+```
+
+Which returns (calibrated on 2026-10-04):
+
+| annuity | best_estimate | standard_error | p0.5 | p99.5 |
+|:--------|--------------:|---------------:|-----:|------:|
+| level | 80,811.82 | 0.00 | 80,811.82 | 80,811.82 |
+| inflation-indexed | 93,142.15 | 4.05 | 83,990.68 | 103,236.21 |
+
+Indexing the annuity to inflation makes it about 15% dearer, and unlike the level annuity its value is uncertain:
+the 99.5th percentile is 11% above the best estimate.
+
+**References:**
+
+- European Parliament and Council (2009). "Directive 2009/138/EC (Solvency II)", Articles 76-77. <https://eur-lex.europa.eu/eli/dir/2009/138/oj>
+- EIOPA (2015, updated 2023). "Guidelines on valuation of technical provisions." <https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en>
+- Wüthrich, M.V., Merz, M. (2013). "State Price Deflators and Stochastic Discounting", chapter 2 of "Financial Modeling, Actuarial Valuation and Solvency in Insurance." Springer. <https://doi.org/10.1007/978-3-642-31392-9_2>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+best_estimate(
+    scenario_set: ScenarioSet,
+    cashflows: np.ndarray | Sequence[float],
+    short_rate: str | None,
+    percentiles: Sequence[float] = _DEFAULT_PERCENTILES,
+    discount_curve: pl.DataFrame | None = None,
+) -> BestEstimateResult
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> a simulated run; risk-neutral for a market-consistent best estimate.
+- <u>cashflows (np.ndarray &#124; Sequence[float]):</u> the amount paid at each date, t0 included, positive for a payment out: one schedule, or one per scenario shaped (n_simulations, n_steps + 1).
+- <u>short_rate (str &#124; None):</u> the rate factor to discount with; None when `discount_curve` is given.
+- <u>percentiles (Sequence[float]):</u> the percentiles to report, each between 0 and 1; 0.005, 0.05, 0.25, 0.5, 0.75, 0.95 and 0.995 by default.
+- <u>discount_curve (pl.DataFrame &#124; None):</u> a published curve ("maturity", "rate") to discount with instead, e.g. from `eiopa_risk_free_curve`; None by default.
+
+**Returns:**
+
+<u>BestEstimateResult:</u> `best_estimate`, `standard_error`, `std` (the spread across scenarios) and `percentiles`.
+
+**Raises:**
+
+- <u>ValueError:</u> if `cashflows` does not match the run's dates or holds a non-finite amount.
+
+</details>
+
+### solvency_capital_requirement
+
+Compute the Solvency II capital requirement (SCR) the way an internal model does: the loss of own funds over one
+year that is exceeded only once in 200 years (Article 101).
+
+Own funds are assets minus what is owed, the insurer's buffer. The SCR is the 99.5% one-year Value-at-Risk of that
+buffer: the capital that keeps the insurer able to pay policyholders over the coming year in all but the worst
+0.5% of outcomes. The `solvency_ratio`, own funds divided by the SCR, is the headline number
+insurers publish: above 1 the buffer covers the 1-in-200 loss, below 1 the supervisor requires a recovery plan.
+
+The SCR says nothing about how bad the worst 0.5% are; the expected shortfall does, and a large gap between the
+two points to a tail driven by a few extreme scenarios. The probability of ruin is the share of scenarios in
+which the buffer is gone after one year.
+
+The formula is as follows:
+
+$$
+L_{i} = \text{OF}_{i}(0) - D_{i}(h) \cdot \text{OF}_{i}(h)
+$$
+
+$$
+\text{SCR} = \max(\text{VaR}_{0.995}(L),\; 0)
+$$
+
+$$
+\text{ES} = \operatorname{mean}(L_{i} \;\text{given}\; L_{i} \geq \text{VaR}_{0.995}(L))
+$$
+
+Where OF is own funds, h the horizon, D_i the discount factor back to today (1 without `short_rate`) and VaR the
+empirical quantile of the losses at `confidence`. Check another seed too: with 2,000 scenarios only 10 lie beyond it.
+
+**As an example:**
+
+```python
+from financescenarios import solvency_capital_requirement
+
+# `result`: a one-year monthly real-world run of SPY and US rates. 1,000,000 in SPY against a liability of 800,000
+# that grows at the short rate.
+equity = result["us_broad"]
+assets = 1_000_000.0 * equity / equity[:, [0]]
+liabilities = 800_000.0 / result.discount_factor_paths("united_states_short_rate")
+scr = solvency_capital_requirement(
+    result, assets - liabilities, horizon_years=1.0, short_rate="united_states_short_rate"
+)
+```
+
+Which returns (calibrated on 2026-10-04), with own funds of 200,000, at two seeds:
+
+| seed | scr | solvency_ratio | probability_of_ruin |
+|-----:|----:|---------------:|--------------------:|
+| 42 | 254,117.61 | 0.7870 | 0.0220 |
+| 1 | 284,116.51 | 0.7039 | 0.0220 |
+
+**References:**
+
+- European Parliament and Council (2009). "Directive 2009/138/EC (Solvency II)", Article 101(3). <https://eur-lex.europa.eu/eli/dir/2009/138/oj>
+- Wüthrich, M.V., Merz, M. (2013). "Solvency", chapter 9 of "Financial Modeling, Actuarial Valuation and Solvency in Insurance." Springer. <https://doi.org/10.1007/978-3-642-31392-9_9>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+solvency_capital_requirement(
+    scenario_set: ScenarioSet,
+    own_funds: str | np.ndarray,
+    horizon_years: float = 1.0,
+    confidence: float = _SOLVENCY_II_CONFIDENCE,
+    short_rate: str | None = None,
+) -> SolvencyCapitalResult
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> a real-world run spanning at least `horizon_years`.
+- <u>own_funds (str &#124; np.ndarray):</u> a factor name, or own funds per scenario and date, shaped (n_simulations, n_steps + 1), e.g. asset values minus liability values.
+- <u>horizon_years (float):</u> the risk horizon; 1.0 by default.
+- <u>confidence (float):</u> the quantile level, between 0 and 1; 0.995 by default.
+- <u>short_rate (str &#124; None):</u> the rate factor to discount own funds back to today with; None by default.
+
+**Returns:**
+
+<u>SolvencyCapitalResult:</u> `scr`, `own_funds` (today), `solvency_ratio`, `expected_shortfall` (the average loss beyond the SCR) and `probability_of_ruin` (the share of scenarios where own funds turn negative).
+
+**Raises:**
+
+- <u>ValueError:</u> if `confidence` is not between 0 and 1, the horizon is not positive or past the run's end, or `own_funds` does not match the run's shape.
+
+</details>
+
+### interest_rate_scr
+
+Compute the interest rate capital of a liability under the Solvency II standard formula: how much more it is worth
+when rates move by the regulator's prescribed shocks.
+
+The liability is valued on EIOPA's basic risk-free curve and on its two shocked curves, up and down. Lower rates
+make future payments dearer today, so for most liabilities the downward shock binds. The answer is the capital the
+standard formula sets aside for this one risk, before it is combined with the others. Only the liability is
+revalued: for the full interest rate module, revalue the assets on the same curves too, since what matters is the
+mismatch. An insurer whose bonds match the duration of its liabilities loses little under either shock.
+
+The formula is as follows:
+
+$$
+\text{SCR} = \max(\text{BE\_up} - \text{BE},\; \text{BE\_down} - \text{BE},\; 0)
+$$
+
+Where BE, BE_up and BE_down are the best estimates on the base, upward-shocked and downward-shocked curves
+(Delegated Regulation 2015/35, Articles 165-167). Positive cashflows are payments out, as in `best_estimate`.
+
+**As an example:**
+
+```python
+from financescenarios import eiopa_risk_free_curve, interest_rate_scr
+
+# `result` and `annuity` as in the `best_estimate` example, `toolkit` as in the `eiopa_risk_free_curve` one.
+base, up, down = (eiopa_risk_free_curve(toolkit, curve=name) for name in ("spot_no_va", "shock_up", "shock_down"))
+interest_rate_scr(result, annuity, base, up, down)
+```
+
+**References:**
+
+- European Commission (2015). "Commission Delegated Regulation (EU) 2015/35", Articles 165-167 (interest rate risk sub-module). <https://eur-lex.europa.eu/eli/reg_del/2015/35/oj>
+- EIOPA. "Risk-free interest rate term structures." <https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+interest_rate_scr(
+    scenario_set: ScenarioSet,
+    cashflows: np.ndarray | Sequence[float],
+    base_curve: pl.DataFrame,
+    up_curve: pl.DataFrame,
+    down_curve: pl.DataFrame,
+) -> InterestRateScrResult
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> the run whose dates (and, for cashflows that differ per scenario, whose scenarios) the cashflows follow.
+- <u>cashflows (np.ndarray &#124; Sequence[float]):</u> the amount paid at each date, as in `best_estimate`.
+- <u>base_curve (pl.DataFrame):</u> the basic risk-free curve, e.g. `eiopa_risk_free_curve(toolkit, curve="spot_no_va")`.
+- <u>up_curve (pl.DataFrame):</u> the curve after the upward shock (`curve="shock_up"`).
+- <u>down_curve (pl.DataFrame):</u> the curve after the downward shock (`curve="shock_down"`).
+
+**Returns:**
+
+<u>InterestRateScrResult:</u> `best_estimate`, `best_estimate_up`, `best_estimate_down`, `scr` and `binding_shock` ("up", "down", or None when neither costs anything).
+
+**Raises:**
+
+- <u>ValueError:</u> if a curve or the cashflows are malformed (see `best_estimate`).
+
+</details>
+
+{% raw %}
+### equity_scr
+
+Compute the equity risk capital of the Solvency II standard formula: the loss on an insurer's shares after the
+regulator's prescribed stock market fall.
+
+Type 1 equities (listed in the European Economic Area or the OECD) fall by 39% and type 2 equities (all others:
+unlisted shares, private equity, hedge funds, commodities) by 49%, each plus EIOPA's symmetric adjustment. That
+adjustment, the "equity dampener", raises the shock by up to 10 points after a rally and lowers it by up to 10
+points after a fall, so insurers are not forced to sell into a falling market; EIOPA publishes it every month (see
+`eiopa_symmetric_adjustment`).
+
+The two losses combine with a 0.75 correlation, so the total is less than their sum (Delegated Regulation 2015/35,
+Articles 168-169). Strategic participations, long-term equity investments and the transitional measure are not
+covered.
+
+The formula is as follows:
+
+$$
+L_{1} = (0.39 + \text{SA}) \cdot V_{1}
+$$
+
+$$
+L_{2} = (0.49 + \text{SA}) \cdot V_{2}
+$$
+
+$$
+\text{SCR} = \sqrt{L_{1} ^{2} + 2 \cdot 0.75 \cdot L_{1} \cdot L_{2} + L_{2} ^{2}}
+$$
+
+Where V1 and V2 are the market values of type 1 and type 2 equities and SA the symmetric adjustment.
+
+**As an example:**
+
+```python
+from financescenarios import equity_scr
+
+equity_scr(type_1_value=1_000_000, type_2_value=250_000, symmetric_adjustment=0.0771)
+```
+
+Which returns a type 1 charge of 46.71% and a type 2 charge of 56.71%, losses of 467,100 and 141,775, and an
+equity risk capital of 581,048: less than the sum of the two (608,875), since the two types do not fall
+perfectly together.
+
+**References:**
+
+- European Commission (2015). "Commission Delegated Regulation (EU) 2015/35", Articles 168-172 (equity risk sub-module and symmetric adjustment). <https://eur-lex.europa.eu/eli/reg_del/2015/35/oj>
+- EIOPA. "Symmetric adjustment of the equity capital charge." <https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+equity_scr(
+    type_1_value: float,
+    type_2_value: float = 0.0,
+    symmetric_adjustment: float = 0.0,
+) -> EquityScrResult
+```
+
+**Args:**
+
+- <u>type_1_value (float):</u> the market value of type 1 equity holdings.
+- <u>type_2_value (float):</u> the market value of type 2 equity holdings; 0.0 by default.
+- <u>symmetric_adjustment (float):</u> EIOPA's symmetric adjustment as a decimal (0.0771 for 7.71 points), between -0.10 and 0.10; 0.0 by default.
+
+**Returns:**
+
+<u>EquityScrResult:</u> `type_1_charge` and `type_2_charge` (the shocks), `type_1_scr` and `type_2_scr` (the losses) and `scr`, the combined equity risk capital.
+
+**Raises:**
+
+- <u>ValueError:</u> if a value is negative or not finite, or the adjustment lies outside -0.10 to 0.10.
+
+</details>
+{% endraw %}
+
+### liability_values
+
+What the payments not yet made are worth at each date of each scenario, the one due that date included (the assets
+still hold it), discounted at that future's own short rate on that date as if it stayed flat. This is how the SCR
+revalues the liabilities: when rates fall, they are worth more, and own funds (assets minus liabilities) fall
+unless the assets move the same way.
+
+The formula is as follows:
+
+$$
+V_{i}(t) = \text{CF}_{i}(t) + \text{CF}_{i}(t + \text{dt}) \cdot \exp(- r_{i}(t) \cdot \text{dt}) + ... + \text{CF}_{i}(T) \cdot \exp(- r_{i}(t) \cdot (T - t))
+$$
+
+Where r_i(t) is scenario i's short rate at t, held flat over the remaining term.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+liability_values(
+    scenario_set: ScenarioSet,
+    cashflows: np.ndarray | Sequence[float],
+    short_rate: str,
+) -> np.ndarray
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> the run, usually real-world.
+- <u>cashflows (np.ndarray &#124; Sequence[float]):</u> one amount per date (t0 included), or one schedule per simulation, shaped (n_simulations, n_steps + 1).
+- <u>short_rate (str):</u> the rate factor to discount with.
+
+**Returns:**
+
+<u>np.ndarray:</u> shaped (n_simulations, n_steps + 1), the value at each date of every payment from that date on.
+
+</details>

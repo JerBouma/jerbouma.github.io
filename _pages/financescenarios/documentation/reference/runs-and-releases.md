@@ -14,13 +14,39 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Write and read saved runs, and publish, load and simulate versioned calibration releases. Generated from the docstrings of Finance Scenarios 0.1.0; `help(...)` in Python shows the same text.
+Write and read saved runs, and publish, load and simulate versioned calibration releases.
 
 ```python
 from financescenarios import write_run, read_run, read_run_calibration, publish_calibration, load_release, simulate_release
 ```
 
 ## write_run
+
+Save a run to disk, so it can be read back later without calibrating or simulating again.
+
+Everything goes into one folder, `<output_dir>/<run_id>/`:
+
+- `config.yaml` (run settings: start date, engine, toolkit, reporting) and `factors.yaml` (every factor
+  definition): the configuration that produced the run, split the way `load_config` reads it back.
+- One file per factor, `<factor>.parquet` or `<factor>.csv`, with one row per scenario and one column per date.
+- `manifest.json`: the run id, creation time, regime, factor names and categories, number of scenarios, seed and any
+  warnings, small enough to list many runs without opening a factor file.
+- `calibration.json`, only when `calibration` is given, so the run can be simulated again offline (see
+  `read_run_calibration`).
+
+`Scenarios.save(result)` calls this for you, into "results/".
+
+**As an example:**
+
+```python
+from financescenarios import read_run, write_run
+
+run_id = write_run(result, config, "results", calibration=calibration)
+reloaded = read_run(f"results/{run_id}")
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 write_run(
@@ -36,20 +62,6 @@ write_run(
     calibration: 'CalibrationResult | None' = None,
 ) -> str
 ```
-
-Save a run to disk, so it can be read back later without calibrating or simulating again.
-
-Everything goes into one folder, `<output_dir>/<run_id>/`:
-
-- `config.yaml` (run settings: start date, engine, toolkit, reporting) and `factors.yaml` (every factor
-  definition): the configuration that produced the run, split the way `load_config` reads it back.
-- One file per factor, `<factor>.parquet` or `<factor>.csv`, with one row per scenario and one column per date.
-- `manifest.json`: the run id, creation time, regime, factor names and categories, number of scenarios, seed and any
-  warnings, small enough to list many runs without opening a factor file.
-- `calibration.json`, only when `calibration` is given, so the run can be simulated again offline (see
-  `read_run_calibration`).
-
-`Scenarios.save(result)` calls this for you, into "results/".
 
 **Args:**
 
@@ -72,20 +84,9 @@ Everything goes into one folder, `<output_dir>/<run_id>/`:
 
 - <u>ValueError:</u> if `output_format` is not "parquet" or "csv", or `run_id` is not a plain folder name.
 
-**As an example:**
-
-```python
-from financescenarios import read_run, write_run
-
-run_id = write_run(result, config, "results", calibration=calibration)
-reloaded = read_run(f"results/{run_id}")
-```
+</details>
 
 ## read_run
-
-```python
-read_run(run_dir: str | Path) -> ScenarioSet
-```
 
 Read a saved run back into a `ScenarioSet`, without calibrating or simulating anything.
 
@@ -93,6 +94,22 @@ The run comes back with the same paths, dates, time grid, number of scenarios an
 `filter()`, `to_dataframe()` and portfolios work on it exactly as on the original. The fitted parameters are not
 stored with the paths, so `diagnose()`, which needs them, does not work on a reloaded run; to simulate again from
 the same fit, use `read_run_calibration`.
+
+**As an example:**
+
+```python
+from financescenarios import read_run
+
+result = read_run("results/20260819T063851Z-7bfdde41")
+result.describe()
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+read_run(run_dir: str | Path) -> ScenarioSet
+```
 
 **Args:**
 
@@ -106,33 +123,14 @@ the same fit, use `read_run_calibration`.
 
 - <u>FileNotFoundError:</u> if the folder has no `manifest.json`, or misses a factor file the manifest lists.
 
-**As an example:**
-
-```python
-from financescenarios import read_run
-
-result = read_run("results/20260819T063851Z-7bfdde41")
-result.describe()
-```
+</details>
 
 ## read_run_calibration
-
-```python
-read_run_calibration(run_dir: str | Path) -> 'CalibrationResult | None'
-```
 
 Read back the calibration a run was simulated from, so it can be simulated again offline.
 
 This replays a run without any data download or API key: the same fitted parameters, at a new seed or with more
 scenarios. It works for a run saved with its calibration, `write_run(..., calibration=...)`.
-
-**Args:**
-
-- <u>run_dir (str &#124; Path):</u> the run's own folder, `<output_dir>/<run_id>`.
-
-**Returns:**
-
-<u>CalibrationResult &#124; None:</u> the stored calibration, or None for a run saved without one.
 
 **As an example:**
 
@@ -143,21 +141,24 @@ calibration = read_run_calibration("results/20260819T063851Z-7bfdde41")
 wider = Scenarios(toolkit=None, n_simulations=20_000).simulate(config, calibration=calibration)
 ```
 
-## publish_calibration
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-publish_calibration(
-    output_dir: str | Path = 'calibrations',
-    release_version: str | None = None,
-    settings: str = 'default',
-    factor_set: str = 'default',
-    settings_dir: str | Path = 'settings',
-    factor_sets_dir: str | Path = 'factor-sets',
-    n_simulations: int = 1000,
-    toolkit: Toolkit | None = None,
-    subfolder: str | None = None,
-) -> ReleaseResult
+read_run_calibration(run_dir: str | Path) -> 'CalibrationResult | None'
 ```
+
+**Args:**
+
+- <u>run_dir (str &#124; Path):</u> the run's own folder, `<output_dir>/<run_id>`.
+
+**Returns:**
+
+<u>CalibrationResult &#124; None:</u> the stored calibration, or None for a run saved without one.
+
+</details>
+
+## publish_calibration
 
 Calibrate from named profiles and publish the result as a versioned release, checked and with a report.
 
@@ -173,6 +174,32 @@ The release folder `<output_dir>/<release_version>/` holds:
 - `manifest.json`: the version, date, profiles, a fingerprint (SHA-256 hash) of the full configuration, the package
   versions and the data window.
 - `checks.json` and `report.md`: every check's status, numbers and explanation, and the fitted parameters.
+
+**As an example:**
+
+```python
+from financescenarios import publish_calibration
+
+release = publish_calibration(factor_set="us_only")
+release.manifest.status, release.directory
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+publish_calibration(
+    output_dir: str | Path = 'calibrations',
+    release_version: str | None = None,
+    settings: str = 'default',
+    factor_set: str = 'default',
+    settings_dir: str | Path = 'settings',
+    factor_sets_dir: str | Path = 'factor-sets',
+    n_simulations: int = 1000,
+    toolkit: Toolkit | None = None,
+    subfolder: str | None = None,
+) -> ReleaseResult
+```
 
 **Args:**
 
@@ -194,30 +221,11 @@ The release folder `<output_dir>/<release_version>/` holds:
 
 - <u>FileExistsError:</u> if that version was already published, since a release must never change afterwards.
 
-**As an example:**
-
-```python
-from financescenarios import publish_calibration
-
-release = publish_calibration(factor_set="us_only")
-release.manifest.status, release.directory
-```
+</details>
 
 ## load_release
 
-```python
-load_release(directory: str | Path) -> tuple[CalibrationResult, ReleaseManifest]
-```
-
 Read a published calibration and its manifest from a release folder, ready for `simulate(calibration=...)`.
-
-**Args:**
-
-- <u>directory (str &#124; Path):</u> the release folder, e.g. what `publish_calibration` wrote or `download_release` returns.
-
-**Returns:**
-
-<u>tuple[CalibrationResult, ReleaseManifest]:</u> the calibration, and the manifest that identifies it (version, date, profiles and status).
 
 **As an example:**
 
@@ -227,7 +235,42 @@ from financescenarios import load_release
 calibration, manifest = load_release("calibrations/2027.01.01")
 ```
 
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+load_release(directory: str | Path) -> tuple[CalibrationResult, ReleaseManifest]
+```
+
+**Args:**
+
+- <u>directory (str &#124; Path):</u> the release folder, e.g. what `publish_calibration` wrote or `download_release` returns.
+
+**Returns:**
+
+<u>tuple[CalibrationResult, ReleaseManifest]:</u> the calibration, and the manifest that identifies it (version, date, profiles and status).
+
+</details>
+
 ## simulate_release
+
+Simulate from a published calibration without fetching any data.
+
+The release's own settings profile and factor set give the run (steps, frequency, number of scenarios, seed), and
+its calibration replaces the fit, so the scenarios match anyone else's run from the same release. The profiles must
+still be the ones the release was calibrated with: a changed profile would describe different factors than the
+calibration holds.
+
+**As an example:**
+
+```python
+from financescenarios import simulate_release
+
+result = simulate_release("calibrations/2027.01.01", n_simulations=500)
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 simulate_release(
@@ -238,13 +281,6 @@ simulate_release(
     seed: int | None = None,
 ) -> ScenarioSet
 ```
-
-Simulate from a published calibration without fetching any data.
-
-The release's own settings profile and factor set give the run (steps, frequency, number of scenarios, seed), and
-its calibration replaces the fit, so the scenarios match anyone else's run from the same release. The profiles must
-still be the ones the release was calibrated with: a changed profile would describe different factors than the
-calibration holds.
 
 **Args:**
 
@@ -262,10 +298,4 @@ calibration holds.
 
 - <u>ValueError:</u> if the profiles changed since the release was published.
 
-**As an example:**
-
-```python
-from financescenarios import simulate_release
-
-result = simulate_release("calibrations/2027.01.01", n_simulations=500)
-```
+</details>

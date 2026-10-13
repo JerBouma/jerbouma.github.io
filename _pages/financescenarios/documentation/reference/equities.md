@@ -14,28 +14,22 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Equity indices, sectors, regions and styles with regime switching. Generated from the docstrings of Finance Scenarios 0.1.0; `help(...)` in Python shows the same text.
+Equity indices, sectors, regions and styles with regime switching.
 
 ```python
 from financescenarios.factors.equities.equities_controller import Equities
 ```
 
-```python
-Equities(toolkit: Toolkit)
-```
-
 Simulate equity prices: a broad stock index, a sector, a region or an investment style, each tracked through one
 ticker such as SPY or an ETF.
 
-Stock markets alternate between calm stretches of steady gains and turbulent stretches of losses and large swings, and
-this module captures that switching. Every run has at least one equity (by default `SPY`, named `equity`); add as many
-as you like, such as technology or Europe. Each becomes its own variable in the scenarios, linked to the rest through
-the correlation matrix.
-
-The model is the regime-switching lognormal model of [Hardy (2001)](https://doi.org/10.1080/10920277.2001.10595984):
-the market is always in one of a few regimes, by default a calm and a turbulent one, each with its own mean and
-volatility of log-returns (the logarithm of each period's price change). It switches regime at random with fitted
-probabilities (a Markov chain), each equity on its own regime path.
+The model is the regime-switching lognormal model of [Hardy (2001)](https://doi.org/10.1080/10920277.2001.10595984).
+Markets alternate between calm stretches of steady gains and turbulent stretches of losses and large swings, and
+once turbulent they tend to stay so for months. Each regime has its own mean and volatility of log-returns, and the
+market switches between them with fitted chances. A single lognormal understates crashes; the mixture of regimes
+gives the fatter left tail and the clustered, multi-period drawdowns that matter for guarantees, capital and
+tail metrics, while prices stay positive. Each equity, such as SPY or a sector, region or style ETF, follows its own
+regime path and is linked to the other factors through the correlation matrix.
 
 The options:
 
@@ -47,14 +41,12 @@ The options:
   or `knw_sv`, the equity leg of the Koijen, Nijman and Werker model, fitted together with its interest rate.
 - `condition_on_business_cycle`: turbulence becomes more likely when the leading indicator signals a downturn
   ([Filardo, 1994](https://doi.org/10.1080/07350015.1994.10524545)).
-- `measure: risk_neutral`: one volatility and a drift of the risk-free rate minus the dividend yield, for pricing
-  rather than forecasting ([Black and Scholes, 1973](https://doi.org/10.1086/260062)), or a volatility that moves with
-  `volatility_source: heston` ([Heston, 1993](https://doi.org/10.1093/rfs/6.2.327)).
+- `measure: risk_neutral`: one volatility and a drift of the risk-free rate minus the dividend yield, for
+  market-consistent valuation ([Black and Scholes, 1973](https://doi.org/10.1086/260062)), or a volatility that moves
+  with `volatility_source: heston` ([Heston, 1993](https://doi.org/10.1093/rfs/6.2.327)).
 - `beliefs`: your own regime means and volatilities instead of the fitted ones.
 
-Prices are each ticker's adjusted closes from the Finance Toolkit (Yahoo Finance, or Financial Modeling Prep with a
-`FINANCIAL_MODELING_PREP_API_KEY`); any ticker worldwide works, given at least `n_regimes * 5` of them. Pass
-`benchmark_ticker=None` when you build a `Toolkit` yourself.
+Prices are each ticker's adjusted closes (dividends reinvested) from the Finance Toolkit; any ticker worldwide works.
 
 Configuration (`equities[i]` in a factor set):
 
@@ -76,40 +68,30 @@ Configuration (`equities[i]` in a factor set):
 Beliefs cannot be combined with `measure: risk_neutral` or `wilkie_derived`; in a regime YAML, address one entry as
 `"equities.<name>"`.
 
-## calibrate
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
-calibrate(name: str, ticker: str, n_regimes: int = 2, period: str = 'monthly') -> RegimeParams
+Equities(toolkit: Toolkit)
 ```
+
+</details>
+
+## calibrate
 
 Calibrate one equity from its price history: the mean and volatility of its log-return in each regime, and the
 chance of moving between regimes each period.
 
-This learns from the past how a market alternates between calm and turbulent stretches, so the scenarios switch
-the same way. The diagonal of the transition matrix is the chance of staying in a regime one more period, so the
-expected stay is 1 / (1 - that chance): a 0.90 monthly chance of staying calm means calm stretches last about ten
-months. Regime 0 is always the one with the lowest mean return.
+The scenarios inherit the market's own history of calm and turbulent stretches: how deep and how long its
+drawdowns were, and how often they came. The diagonal of the transition matrix is the chance of staying in a
+regime one more period, so the expected stay is 1 / (1 - that chance): a 0.90 monthly chance of staying calm means
+calm stretches last about ten months. Regime 0 is always the one with the lowest mean return.
 
 The regimes are never observed, only the returns, so the fit is the Baum-Welch expectation-maximization algorithm
 for hidden Markov models ([Baum et al., 1970](https://doi.org/10.1214/aoms/1177697196)). Means and volatilities
 are annual; the transition matrix is per period of the data.
 
 Also known as: regime-switching lognormal (RSLN), hidden Markov model of equity returns.
-
-**Args:**
-
-- <u>name (str):</u> the equity's name in the simulation and in `params()`/`changes()`, e.g. "us_broad".
-- <u>ticker (str):</u> the ticker to fit, such as "SPY" or a sector, regional or style ETF.
-- <u>n_regimes (int):</u> the number of regimes, at least 2. Defaults to 2 (calm and turbulent, as in Hardy 2001).
-- <u>period (str):</u> the price frequency: "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "monthly".
-
-**Returns:**
-
-<u>RegimeParams:</u> `regime_means`, `regime_volatilities`, `transition_matrix`, `stationary_distribution` (long-run share of time per regime), `initial_regime` and `initial_value` (the last price).
-
-**Raises:**
-
-- <u>ValueError:</u> if `period`, `n_regimes` or `ticker` is invalid, there are fewer than `n_regimes * 5` prices, or a regime ends up with almost no observations.
 
 **As an example:**
 
@@ -133,18 +115,31 @@ Which returns (calibrated on 2026-10-04):
 
 The S&P 500's turbulent regime has a flat average return at 20% volatility, its calm one 18.5% a year at 8%.
 
-## calibrate_tvtp
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-calibrate_tvtp(
-    name: str,
-    ticker: str,
-    business_cycle_covariate: pl.Series,
-    business_cycle_covariate_dates: pl.Series,
-    n_regimes: int = 2,
-    period: str = 'monthly',
-) -> RegimeParams
+calibrate(name: str, ticker: str, n_regimes: int = 2, period: str = 'monthly') -> RegimeParams
 ```
+
+**Args:**
+
+- <u>name (str):</u> the equity's name in the scenarios, e.g. "us_broad".
+- <u>ticker (str):</u> the ticker to fit, such as "SPY" or a sector, regional or style ETF.
+- <u>n_regimes (int):</u> the number of regimes, at least 2. Defaults to 2 (calm and turbulent, as in Hardy 2001).
+- <u>period (str):</u> the price frequency: "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "monthly".
+
+**Returns:**
+
+<u>RegimeParams:</u> `regime_means`, `regime_volatilities`, `transition_matrix`, `stationary_distribution` (long-run share of time per regime), `initial_regime` and `initial_value` (the last price).
+
+**Raises:**
+
+- <u>ValueError:</u> if `period`, `n_regimes` or `ticker` is invalid, there are fewer than `n_regimes * 5` prices, or a regime ends up with almost no observations.
+
+</details>
+
+## calibrate_tvtp
 
 Calibrate one equity whose regime switching follows the business cycle: `calibrate()`'s fit plus a regression that
 ties the chance of switching regime to the leading indicator.
@@ -157,23 +152,6 @@ turbulent stretches cluster around weak economies. This is the time-varying tran
 logit regression of which regime came next on the indicator's level.
 
 In a factor set this is `condition_on_business_cycle: true`, which needs `leading_indicator.enabled: true`.
-
-**Args:**
-
-- <u>name (str):</u> the equity's name in the simulation and in `params()`/`changes()`.
-- <u>ticker (str):</u> the ticker to fit, as in `calibrate()`.
-- <u>business_cycle_covariate (pl.Series):</u> the leading indicator's historical levels, e.g. `LeadingIndicator.series`.
-- <u>business_cycle_covariate_dates (pl.Series):</u> the dates of those levels, e.g. `LeadingIndicator.dates`.
-- <u>n_regimes (int):</u> the number of regimes, at least 2. Defaults to 2.
-- <u>period (str):</u> the price frequency, as in `calibrate()`. Defaults to "monthly".
-
-**Returns:**
-
-<u>RegimeParams:</u> the regime fit, with `tvtp` holding `baseline_log_odds` and `covariate_sensitivity`, one row per starting regime.
-
-**Raises:**
-
-- <u>ValueError:</u> if `period`, `n_regimes` or `ticker` is invalid, too few prices line up with the indicator by date, or a regime has too few observed transitions to fit.
 
 **As an example:**
 
@@ -203,17 +181,40 @@ Which returns (calibrated on 2026-10-04):
 In the calm regime (row 1) the chance of turning turbulent is 5.8% a month at a leading indicator of 105 and 8.9%
 at 95, so a weakening economy shortens calm stretches from about 17 to 11 months.
 
-## calibrate_hibbert_regime_switching
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-calibrate_hibbert_regime_switching(
+calibrate_tvtp(
     name: str,
     ticker: str,
-    risk_free_rate: pl.Series,
+    business_cycle_covariate: pl.Series,
+    business_cycle_covariate_dates: pl.Series,
     n_regimes: int = 2,
     period: str = 'monthly',
 ) -> RegimeParams
 ```
+
+**Args:**
+
+- <u>name (str):</u> the equity's name in the scenarios.
+- <u>ticker (str):</u> the ticker to fit, as in `calibrate()`.
+- <u>business_cycle_covariate (pl.Series):</u> the leading indicator's historical levels, e.g. `LeadingIndicator.series`.
+- <u>business_cycle_covariate_dates (pl.Series):</u> the dates of those levels, e.g. `LeadingIndicator.dates`.
+- <u>n_regimes (int):</u> the number of regimes, at least 2. Defaults to 2.
+- <u>period (str):</u> the price frequency, as in `calibrate()`. Defaults to "monthly".
+
+**Returns:**
+
+<u>RegimeParams:</u> the regime fit, with `tvtp` holding `baseline_log_odds` and `covariate_sensitivity`, one row per starting regime.
+
+**Raises:**
+
+- <u>ValueError:</u> if `period`, `n_regimes` or `ticker` is invalid, too few prices line up with the indicator by date, or a regime has too few observed transitions to fit.
+
+</details>
+
+## calibrate_hibbert_regime_switching
 
 Calibrate one equity on its return above a short interest rate, as in the Barrie & Hibbert model of Hibbert,
 Mowbray and Turnbull
@@ -226,22 +227,6 @@ top keeps its own calm and turbulent regimes.
 
 In a factor set this is `method: hibbert_regime_switching`, with `nominal_rate_name` naming the interest rate; it
 has no risk-neutral version.
-
-**Args:**
-
-- <u>name (str):</u> the equity's name in the simulation and in `params()`/`changes()`.
-- <u>ticker (str):</u> the ticker to fit, as in `calibrate()`.
-- <u>risk_free_rate (pl.Series):</u> the paired interest rate's historical levels (annual, as decimals), e.g. `InterestRates.series(name)`, sampled at the same `period` as the prices.
-- <u>n_regimes (int):</u> the number of regimes, at least 2. Defaults to 2.
-- <u>period (str):</u> the price frequency, as in `calibrate()`. Defaults to "monthly".
-
-**Returns:**
-
-<u>RegimeParams:</u> the regime fit, with `regime_means` as annual returns above the short rate.
-
-**Raises:**
-
-- <u>ValueError:</u> if `period`, `n_regimes` or `ticker` is invalid, there are fewer than `n_regimes * 5` prices, or a regime ends up with almost no observations.
 
 **As an example:**
 
@@ -273,28 +258,49 @@ Which returns (calibrated on 2026-10-04):
 Against the 13-week Treasury bill, the S&P 500's calm regime earns 16.5% a year above cash and its turbulent
 regime 1.5% below it.
 
-## calibrate_risk_neutral
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-calibrate_risk_neutral(
+calibrate_hibbert_regime_switching(
     name: str,
     ticker: str,
-    risk_free_rate: float,
-    dividend_yield: float,
-    volatility_source: str = 'implied',
-    expiration_date: str | None = None,
+    risk_free_rate: pl.Series,
+    n_regimes: int = 2,
     period: str = 'monthly',
-) -> FXParams
+) -> RegimeParams
 ```
+
+**Args:**
+
+- <u>name (str):</u> the equity's name in the scenarios.
+- <u>ticker (str):</u> the ticker to fit, as in `calibrate()`.
+- <u>risk_free_rate (pl.Series):</u> the paired interest rate's historical levels (annual, as decimals), e.g. `InterestRates.series(name)`, sampled at the same `period` as the prices.
+- <u>n_regimes (int):</u> the number of regimes, at least 2. Defaults to 2.
+- <u>period (str):</u> the price frequency, as in `calibrate()`. Defaults to "monthly".
+
+**Returns:**
+
+<u>RegimeParams:</u> the regime fit, with `regime_means` as annual returns above the short rate.
+
+**Raises:**
+
+- <u>ValueError:</u> if `period`, `n_regimes` or `ticker` is invalid, there are fewer than `n_regimes * 5` prices, or a regime ends up with almost no observations.
+
+</details>
+
+## calibrate_risk_neutral
 
 Calibrate one equity for pricing rather than forecasting: a constant volatility and a drift of the risk-free rate
 minus the dividend yield, as in Black and Scholes [(1973)](https://doi.org/10.1086/260062) and Merton
 [(1973)](https://doi.org/10.2307/3003143).
 
-`calibrate()` forecasts how the market will behave; this matches today's market prices instead, so an option
-valued on the simulated paths allows no riskless profit (an arbitrage). The price follows
+`calibrate()` forecasts how the market will behave, with an equity risk premium and regimes; this matches today's
+market prices instead. Every path is expected to earn the risk-free rate, so discounted scenario values
+reproduce today's prices and an option or guarantee valued on them has its market-consistent value, as a
+Solvency II best estimate or an IFRS 17 fulfillment value requires. The price follows
 `d(log S) = (r - q - 0.5 * sigma^2) dt + sigma dW`, with `r` the risk-free rate, `q` the dividend yield and
-`sigma` the volatility; the result is an `FXParams`, as for FX.
+`sigma` the volatility.
 
 `volatility_source` picks `sigma`:
 
@@ -305,24 +311,6 @@ valued on the simulated paths allows no riskless profit (an arbitrage). The pric
 
 The first two fall back to `"realized"`, with a warning, without options data; `calibrate_heston` lets the
 volatility itself move.
-
-**Args:**
-
-- <u>name (str):</u> the equity's name in the simulation and in `params()`/`changes()`.
-- <u>ticker (str):</u> the ticker, such as "SPY".
-- <u>risk_free_rate (float):</u> today's annual risk-free rate, as a decimal (0.04 is 4%).
-- <u>dividend_yield (float):</u> today's annual dividend yield, as a decimal.
-- <u>volatility_source (str):</u> "implied", "svi" or "realized". Defaults to "implied".
-- <u>expiration_date (str &#124; None):</u> the option expiration for "implied". Defaults to None, the first one at least a week away.
-- <u>period (str):</u> the price frequency, as in `calibrate()`. Defaults to "monthly".
-
-**Returns:**
-
-<u>FXParams:</u> `drift` (risk-free rate minus dividend yield), `volatility` and `initial_value` (today's price).
-
-**Raises:**
-
-- <u>ValueError:</u> if `volatility_source` or `period` is not recognized, or a rate is not a finite number.
 
 **As an example:**
 
@@ -350,17 +338,42 @@ Which returns (calibrated on 2026-10-04):
 | svi | 0.0284 | 0.1349 |
 | realized | 0.0284 | 0.1486 |
 
-## calibrate_derived
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-calibrate_derived(
+calibrate_risk_neutral(
     name: str,
-    dividend_growth_changes: pl.DataFrame,
-    dividend_growth_initial_value: float,
-    dividend_yield_changes: pl.DataFrame,
-    dividend_yield_initial_value: float,
-) -> EquityDerivedParams
+    ticker: str,
+    risk_free_rate: float,
+    dividend_yield: float,
+    volatility_source: str = 'implied',
+    expiration_date: str | None = None,
+    period: str = 'monthly',
+) -> FXParams
 ```
+
+**Args:**
+
+- <u>name (str):</u> the equity's name in the scenarios.
+- <u>ticker (str):</u> the ticker, such as "SPY".
+- <u>risk_free_rate (float):</u> today's annual risk-free rate, as a decimal (0.04 is 4%).
+- <u>dividend_yield (float):</u> today's annual dividend yield, as a decimal.
+- <u>volatility_source (str):</u> "implied", "svi" or "realized". Defaults to "implied".
+- <u>expiration_date (str &#124; None):</u> the option expiration for "implied". Defaults to None, the first one at least a week away.
+- <u>period (str):</u> the price frequency, as in `calibrate()`. Defaults to "monthly".
+
+**Returns:**
+
+<u>FXParams:</u> `drift` (risk-free rate minus dividend yield), `volatility` and `initial_value` (today's price).
+
+**Raises:**
+
+- <u>ValueError:</u> if `volatility_source` or `period` is not recognized, or a rate is not a finite number.
+
+</details>
+
+## calibrate_derived
 
 Set up an equity price derived from dividends, as in Wilkie
 [(1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf):
@@ -374,18 +387,6 @@ dividend growth, which in turn give the price.
 
 In a factor set this is `method: wilkie_derived` with `dividend_growth_name` and `dividend_yield_name`; `ticker`,
 `n_regimes` and `period` are ignored, and beliefs and `measure: risk_neutral` are not allowed.
-
-**Args:**
-
-- <u>name (str):</u> the equity's name in the simulation and in `params()`/`changes()`.
-- <u>dividend_growth_changes (pl.DataFrame):</u> the dividend growth entry's `changes()` output (`date` and `value`).
-- <u>dividend_growth_initial_value (float):</u> that entry's calibrated `initial_value`, the dividend index D(0).
-- <u>dividend_yield_changes (pl.DataFrame):</u> the dividend yield entry's `changes()` output (`date` and `value`).
-- <u>dividend_yield_initial_value (float):</u> that entry's calibrated `initial_value`, the yield Y(0).
-
-**Returns:**
-
-<u>EquityDerivedParams:</u> `initial_value`, the starting price D(0) / Y(0).
 
 **As an example:**
 
@@ -433,17 +434,34 @@ Which returns (calibrated on 2026-10-04):
 Johnson & Johnson's $3.75 dividend at a 2.63% yield gives a starting price of $142.47 at the end of 2019, close to
 its actual closing price of $145.87.
 
-## calibrate_heston
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-calibrate_heston(
+calibrate_derived(
     name: str,
-    ticker: str,
-    risk_free_rate: float,
-    dividend_yield: float,
-    period: str = 'monthly',
-) -> HestonParams | FXParams
+    dividend_growth_changes: pl.DataFrame,
+    dividend_growth_initial_value: float,
+    dividend_yield_changes: pl.DataFrame,
+    dividend_yield_initial_value: float,
+) -> EquityDerivedParams
 ```
+
+**Args:**
+
+- <u>name (str):</u> the equity's name in the scenarios.
+- <u>dividend_growth_changes (pl.DataFrame):</u> the dividend growth entry's `changes()` output (`date` and `value`).
+- <u>dividend_growth_initial_value (float):</u> that entry's calibrated `initial_value`, the dividend index D(0).
+- <u>dividend_yield_changes (pl.DataFrame):</u> the dividend yield entry's `changes()` output (`date` and `value`).
+- <u>dividend_yield_initial_value (float):</u> that entry's calibrated `initial_value`, the yield Y(0).
+
+**Returns:**
+
+<u>EquityDerivedParams:</u> `initial_value`, the starting price D(0) / Y(0).
+
+</details>
+
+## calibrate_heston
 
 Calibrate one equity for pricing with the Heston [(1993)](https://doi.org/10.1093/rfs/6.2.327) model, in which the
 volatility itself moves, fitted to today's option prices.
@@ -458,22 +476,6 @@ months, on strikes within 20% of today's price; the drift is as in `calibrate_ri
 full-truncation scheme of [Lord, Koekkoek and van Dijk (2010)](https://doi.org/10.1080/14697680802392496). Without
 usable options data this falls back to `calibrate_risk_neutral` with `volatility_source="realized"` and logs a
 warning.
-
-**Args:**
-
-- <u>name (str):</u> the equity's name in the simulation and in `params()`/`changes()`.
-- <u>ticker (str):</u> the ticker whose options to fit; it needs a liquid options market, such as SPY.
-- <u>risk_free_rate (float):</u> today's risk-free rate, annual, as a decimal.
-- <u>dividend_yield (float):</u> today's dividend yield, annual, as a decimal.
-- <u>period (str):</u> the frequency of the price history behind `changes()` and the fallback. Defaults to "monthly".
-
-**Returns:**
-
-<u>HestonParams &#124; FXParams:</u> the Heston fit, or the flat-volatility fallback.
-
-**Raises:**
-
-- <u>ValueError:</u> if `period` is not recognized or a rate is not a finite number.
 
 **As an example:**
 
@@ -502,22 +504,61 @@ Which returns (calibrated on 2026-10-07 on 545 quotes):
 Today's volatility is 14.2% (the square root of 0.0201), the long-run level 14.8%, and the -0.51 correlation is
 the skew.
 
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+calibrate_heston(
+    name: str,
+    ticker: str,
+    risk_free_rate: float,
+    dividend_yield: float,
+    period: str = 'monthly',
+) -> HestonParams | FXParams
+```
+
+**Args:**
+
+- <u>name (str):</u> the equity's name in the scenarios.
+- <u>ticker (str):</u> the ticker whose options to fit; it needs a liquid options market, such as SPY.
+- <u>risk_free_rate (float):</u> today's risk-free rate, annual, as a decimal.
+- <u>dividend_yield (float):</u> today's dividend yield, annual, as a decimal.
+- <u>period (str):</u> the frequency of the price history behind `changes()` and the fallback. Defaults to "monthly".
+
+**Returns:**
+
+<u>HestonParams &#124; FXParams:</u> the Heston fit, or the flat-volatility fallback.
+
+**Raises:**
+
+- <u>ValueError:</u> if `period` is not recognized or a rate is not a finite number.
+
+</details>
+
 ## names
+
+The names of every equity calibrated so far, in calibration order.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 equities.names  # property -> list[str]
 ```
 
-The names of every equity calibrated so far, in calibration order.
+</details>
 
 ## params
+
+The calibrated parameters for one equity: `RegimeParams` for a regime fit, `FXParams` for a risk-neutral one,
+`HestonParams` for a Heston fit and `EquityDerivedParams` for a Wilkie-derived one.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 params(name: str) -> RegimeParams | FXParams | HestonParams | EquityDerivedParams
 ```
-
-The calibrated parameters for one equity: `RegimeParams` for a regime fit, `FXParams` for a risk-neutral one,
-`HestonParams` for a Heston fit and `EquityDerivedParams` for a Wilkie-derived one.
 
 **Args:**
 
@@ -527,22 +568,33 @@ The calibrated parameters for one equity: `RegimeParams` for a regime fit, `FXPa
 
 - <u>RuntimeError:</u> if no `calibrate` method has been called for `name` yet.
 
+</details>
+
 ## step_function
+
+The price step of the regime-switching lognormal model: a lognormal move with the current regime's mean and
+volatility.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 equities.step_function  # property
 ```
 
-The regime-switching lognormal step function; it holds no state, so every regime-switching equity shares it.
+</details>
 
 ## changes
+
+The historical log-returns of one equity, by date, from which its correlations with the other factors are
+estimated.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 changes(name: str) -> pl.DataFrame
 ```
-
-The dated period log-returns of one equity, from the prices already fetched during calibration. The correlation
-estimate reuses them instead of fetching the data again.
 
 **Args:**
 
@@ -556,12 +608,47 @@ estimate reuses them instead of fetching the data again.
 
 - <u>RuntimeError:</u> if no `calibrate` method has been called for `name` yet.
 
+</details>
+
 ## How It Is Calculated
 
 The model functions behind this page, each with the formula it implements.
 
 {% raw %}
 ### rescale_transition_matrix
+
+Convert regime-switching probabilities fitted on one data frequency to another, so calm and turbulent
+stretches last just as long in calendar time whatever step the scenarios use.
+
+A transition matrix fitted on monthly returns gives the chance of switching regime per month. Applied
+unchanged to weekly steps, the market would switch about 4.3 times too often and turbulent spells would be
+far too short. The matrix is turned into a continuous-time rate of switching (its generator) and back into
+probabilities at the new step, as is standard for rating migration matrices (Israel, Rosenthal and Wei,
+2001). The long-run share of time in each regime is unchanged.
+
+The formula is as follows:
+
+$$
+Q = \operatorname{logm}(P) / \text{from\_dt}
+$$
+
+$$
+P_{\text{rescaled}} = \operatorname{expm}(Q \cdot \text{to\_dt})
+$$
+
+$$
+P_{\text{rescaled}} = \text{Pi} + \lambda ^{\text{to\_dt} / \text{from\_dt}} \cdot (I - \text{Pi}),\;\; \lambda = p_{00} + p_{11} - 1 (\text{two regimes})
+$$
+
+Where Pi has both rows equal to the stationary distribution, pi_0 = (1 - p_11) / (2 - p_00 - p_11). The
+two-regime closed form applies when 0 < lambda < 1 and gives the same answer as the general one.
+
+**References:**
+
+- Israel, R.B., Rosenthal, J.S., Wei, J.Z. (2001). "Finding Generators for Markov Chains via Empirical Transition Matrices, with Applications to Credit Ratings." Mathematical Finance, 11(2), 245-265. <https://doi.org/10.1111/1467-9965.00114>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 rescale_transition_matrix(
@@ -571,58 +658,33 @@ rescale_transition_matrix(
 ) -> list[list[float]]
 ```
 
-Rescale a Markov transition matrix fit at one step size to another via its continuous-time generator, since
-`simulate_regime_path` steps it once per *simulation* step (a monthly-fit chain stepped weekly would otherwise
-switch regimes ~4.3x too fast).
-
-The formula is as follows:
-
-$$
-Q = \operatorname{logm}(P) / \text{from\_dt}
-$$
-
-$$
-\text{P\_rescaled} = \operatorname{expm}(Q \cdot \text{to\_dt})
-$$
-
-$$
-\text{P\_rescaled} = \text{Pi} + \lambda ^{\text{to\_dt} / \text{from\_dt}} \cdot (I - \text{Pi}),\;\; \lambda = p_{00} + p_{11} - 1 (\text{two regimes})
-$$
-
-Where Pi has both rows equal to the stationary distribution, pi_0 = (1 - p_11) / (2 - p_00 - p_11). The
-two-regime closed form applies when 0 < lambda < 1 and matches logm/expm to float noise.
-
 **Args:**
 
-- <u>transition_matrix (list[list[float]]):</u> row-stochastic transition probabilities, fit at `from_dt`'s granularity.
-- <u>from_dt (float):</u> the time step (in years) `transition_matrix` was fit at.
-- <u>to_dt (float):</u> the time step (in years) to rescale to.
+- <u>transition_matrix (list[list[float]]):</u> the chances of moving between regimes per period of the fit.
+- <u>from_dt (float):</u> the length of that period, in years (1/12 for monthly).
+- <u>to_dt (float):</u> the length of the scenario step, in years.
 
 **Returns:**
 
-<u>list[list[float]]:</u> the rescaled row-stochastic transition matrix. Identical to the input (as a plain list round-trip) when `from_dt == to_dt`.
+<u>list[list[float]]:</u> the chances of moving between regimes per scenario step; unchanged when the two periods match.
 
-**References:**
-
-- Israel, R.B., Rosenthal, J.S., Wei, J.Z. (2001). "Finding Generators for Markov Chains via Empirical Transition Matrices, with Applications to Credit Ratings." Mathematical Finance, 11(2), 245-265. <https://doi.org/10.1111/1467-9965.00114>
+</details>
 {% endraw %}
 
 ### fit_regime_switching_lognormal
 
-```python
-fit_regime_switching_lognormal(
-    prices: pl.Series,
-    time_step: float,
-    n_regimes: int = 2,
-    max_iterations: int = _MAX_EM_ITERATIONS,
-    tolerance: float = 1e-06,
-) -> RegimeParams
-```
+Fit Hardy's (2001) regime-switching lognormal model to an equity's price history: a calm and a turbulent
+market, each with its own mean return and volatility, and the chance of moving between them.
 
-Fit Hardy's (2001) regime-switching lognormal model to a price series: each log-return is normal with the mean
-and volatility of a hidden regime that follows a Markov chain. Baum-Welch EM alternates an E-step (Hamilton's
-1989 filter forward, a smoother backward, giving each step's regime probabilities) and an M-step (the parameters
-as probability-weighted averages) until the log-likelihood gains less than `tolerance`.
+A single lognormal return distribution understates crashes: real equity returns have fatter tails and
+volatility comes in clusters. Hardy's model keeps returns normal within each regime but lets the market sit
+in a high-volatility regime for months at a time, so a mixture of the two produces the fat left tail and the
+clustered losses that guarantees and capital requirements are most sensitive to. It is widely used for
+equity-linked guarantees such as segregated funds and variable annuities.
+
+The regimes are never observed, so the fit is Baum-Welch expectation-maximization: Hamilton's (1989) filter
+gives the chance of each regime at every date, the parameters are re-estimated as weighted averages, and the
+two steps repeat until the likelihood stops improving.
 
 The formula is as follows:
 
@@ -659,42 +721,22 @@ $$
 $$
 
 Where r_t is the log-return, e_t(k) the normal density of r_t in regime k, c_t the scale that makes alpha_t sum
-to 1 and gamma_t(k) the smoothed probability of regime k at t. Only the returned means and volatilities are
-annualized (divided by `time_step` and `sqrt(time_step)`), so a simulation can use its own step size.
-
-**Args:**
-
-- <u>prices (pl.Series):</u> historical price levels, evenly spaced in time (not returns).
-- <u>time_step (float):</u> time increment between price observations, in years; used only to annualize the returned regime_means/regime_volatilities, not part of the EM fit itself.
-- <u>n_regimes (int):</u> number of regimes to fit (2 = the standard Hardy bull/bear model).
-- <u>max_iterations (int):</u> maximum EM iterations before stopping.
-- <u>tolerance (float):</u> stop when the log-likelihood improves by less than this.
-
-**Returns:**
-
-<u>RegimeParams:</u> calibrated regime means/volatilities (annualized) /transition matrix (in this fit's own per-observation units, see RegimeParams.transition_matrix), the most likely current regime, and the last observed price as x0.
-
-**Raises:**
-
-- <u>ValueError:</u> if prices has fewer than n_regimes * 5 observations, or the EM fit collapses a regime to ~zero posterior mass (a degenerate fit with no observations assigned to it).
-
-**Warns:**
-
-- <u>UserWarning:</u> if the log-likelihood decreases between iterations (should be monotonically non-decreasing; signals a real bug/numerical instability, not just slow convergence), or if max_iterations is reached without the tolerance being satisfied.
+to 1 and gamma_t(k) the smoothed probability of regime k at t. Means and volatilities are reported per year;
+the switching chances stay per period of the data.
 
 **References:**
 
 - Hardy, M.R. (2001). "A Regime-Switching Model of Long-Term Stock Returns." North American Actuarial Journal, 5(2), 41-53. <https://doi.org/10.1080/10920277.2001.10595984>
 - Hamilton, J.D. (1989). "A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle." Econometrica, 57(2), 357-384. <https://doi.org/10.2307/1912559>
-- Alswaidan, A., Jin, C., Varner, J.D. "Continuous Hidden Markov Models for Equity Returns: Heavy-Tail Emission Families and Regime-Conditional Value-at-Risk." arXiv:2606.23492. <https://arxiv.org/abs/2606.23492>. Only its shared Gaussian EM/forward-backward machinery is used here, not its heavy-tail emission families.
+- Alswaidan, A., Jin, C., Varner, J.D. "Continuous Hidden Markov Models for Equity Returns: Heavy-Tail Emission Families and Regime-Conditional Value-at-Risk." arXiv:2606.23492. <https://arxiv.org/abs/2606.23492>. Its Gaussian fitting algorithm only.
 - Baum, L.E., Petrie, T., Soules, G., Weiss, N. (1970). "A Maximization Technique Occurring in the Statistical Analysis of Probabilistic Functions of Markov Chains." The Annals of Mathematical Statistics, 41(1), 164-171. <https://doi.org/10.1214/aoms/1177697196>
 
-### fit_hibbert_regime_switching
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-fit_hibbert_regime_switching(
+fit_regime_switching_lognormal(
     prices: pl.Series,
-    risk_free_rate: pl.Series,
     time_step: float,
     n_regimes: int = 2,
     max_iterations: int = _MAX_EM_ITERATIONS,
@@ -702,11 +744,40 @@ fit_hibbert_regime_switching(
 ) -> RegimeParams
 ```
 
-Fit Hibbert, Mowbray and Turnbull's (2001) regime-switching equity: the same Baum-Welch EM as
-`fit_regime_switching_lognormal`, but on log-returns in excess of the nominal short rate, so the regimes
-describe the equity risk premium and the simulated short rate is added back at each step (see
-scenarios_controller._make_hibbert_equity_step). `prices` and `risk_free_rate` are paired by their trailing
-observations, not joined on date.
+**Args:**
+
+- <u>prices (pl.Series):</u> the equity's price history, evenly spaced in time.
+- <u>time_step (float):</u> the time between prices, in years (1/12 for monthly).
+- <u>n_regimes (int):</u> the number of regimes, default 2 (calm and turbulent, as in Hardy 2001).
+- <u>max_iterations (int):</u> the most fitting rounds before stopping.
+- <u>tolerance (float):</u> stop once the likelihood improves by less than this.
+
+**Returns:**
+
+<u>RegimeParams:</u> each regime's annual mean and volatility, the chances of switching, the long-run share of time per regime, today's most likely regime and the last price.
+
+**Raises:**
+
+- <u>ValueError:</u> if there are fewer than `n_regimes * 5` prices, or a regime ends up with almost no observations.
+
+**Warns:**
+
+- <u>UserWarning:</u> if the fit does not settle within `max_iterations`, or the likelihood falls between rounds.
+
+</details>
+
+### fit_hibbert_regime_switching
+
+Fit the regime-switching equity of Hibbert, Mowbray and Turnbull (2001): Hardy's calm and turbulent regimes,
+fitted on the return stocks earn above cash rather than on the total return.
+
+Equity returns are cash plus a risk premium. Modeling the premium, not the total return, ties equities to the
+rate environment: in a scenario where short rates climb to 6%, expected equity returns climb with them, and in
+a zero-rate world they fall. That consistency between asset classes is what the Barrie & Hibbert model was
+built for, and it matters for long-horizon ALM, where a fixed equity return next to a moving yield curve would
+make equities look too cheap or too dear against bonds. The premium itself keeps its regimes, so the fat
+left tail and clustered losses of the plain model remain. In the scenarios the simulated short rate is added
+back each step.
 
 The formula is as follows:
 
@@ -720,36 +791,18 @@ $$
 
 Where r_t is the annualized short rate and s_t the hidden regime.
 
-**Args:**
-
-- <u>prices (pl.Series):</u> historical price levels, evenly spaced in time.
-- <u>risk_free_rate (pl.Series):</u> the paired nominal short-rate factor's raw historical level series (annualized, decimal fraction), the same period as `prices`, trailing-truncated to `prices`' length if longer.
-- <u>time_step (float):</u> time increment between observations, in years.
-- <u>n_regimes (int):</u> number of regimes to fit (2 = bull/bear, per Hardy 2001).
-- <u>max_iterations (int):</u> maximum EM iterations before stopping.
-- <u>tolerance (float):</u> stop when the log-likelihood improves by less than this.
-
-**Returns:**
-
-<u>RegimeParams:</u> calibrated regime means/volatilities of the *excess* log-return (annualized), transition matrix, most likely current regime, and the last observed price as x0.
-
-**Raises:**
-
-- <u>ValueError:</u> if prices has fewer than n_regimes * 5 observations, or the EM fit collapses a regime to ~zero posterior mass.
-
 **References:**
 
 - Hibbert, J., Mowbray, P., Turnbull, C. (2001). "A Stochastic Asset Model & Calibration for Long-Term Financial Planning Purposes." Barrie & Hibbert Limited. <https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf>
 - Hardy, M.R. (2001). "A Regime-Switching Model of Long-Term Stock Returns." North American Actuarial Journal, 5(2), 41-53. <https://doi.org/10.1080/10920277.2001.10595984>
 
-### fit_regime_switching_tvtp
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-fit_regime_switching_tvtp(
+fit_hibbert_regime_switching(
     prices: pl.Series,
-    price_dates: pl.Series,
-    business_cycle_covariate: pl.Series,
-    business_cycle_covariate_dates: pl.Series,
+    risk_free_rate: pl.Series,
     time_step: float,
     n_regimes: int = 2,
     max_iterations: int = _MAX_EM_ITERATIONS,
@@ -757,11 +810,38 @@ fit_regime_switching_tvtp(
 ) -> RegimeParams
 ```
 
-Fit a regime-switching lognormal model whose transition probabilities vary with a business-cycle covariate
-(Filardo's 1994 time-varying transition probabilities, see RegimeTVTPParams). Two steps rather than a joint
-maximum-likelihood fit (Filardo; Diebold, Lee and Weinbach's 1994 EM): fit the plain model with Baum-Welch EM, then
-take each return's most likely regime as the state path and fit, per origin regime, a multinomial logit of the
-next regime on the covariate. Prices and covariate are inner-joined on date.
+**Args:**
+
+- <u>prices (pl.Series):</u> the equity's price history, evenly spaced in time.
+- <u>risk_free_rate (pl.Series):</u> the short rate's history at the same frequency, annual, as decimals; the two are lined up on their latest observations.
+- <u>time_step (float):</u> the time between prices, in years.
+- <u>n_regimes (int):</u> the number of regimes, default 2 (calm and turbulent).
+- <u>max_iterations (int):</u> the most fitting rounds before stopping.
+- <u>tolerance (float):</u> stop once the likelihood improves by less than this.
+
+**Returns:**
+
+<u>RegimeParams:</u> each regime's annual mean and volatility of the return above cash, the chances of switching, today's most likely regime and the last price.
+
+**Raises:**
+
+- <u>ValueError:</u> if there are fewer than `n_regimes * 5` prices, or a regime ends up with almost no observations.
+
+</details>
+
+### fit_regime_switching_tvtp
+
+Fit a regime-switching equity whose chance of turning turbulent depends on the business cycle, the
+time-varying transition probabilities of Filardo (1994).
+
+In the plain regime model a calm market is as likely to turn turbulent in a boom as in a slowdown. In practice
+bear markets cluster around recessions. Here the chance of switching moves with a business-cycle indicator
+such as the OECD leading indicator, so scenarios that start or pass through a weak economy carry a higher
+chance of an equity drawdown, and equity losses line up with weak growth across the other factors.
+
+The fit takes two steps rather than the joint estimation of Filardo and of Diebold, Lee and Weinbach (1994):
+first the plain regime model, then, for each starting regime, a logit regression of which regime came next on
+the indicator. A small penalty keeps the regression finite when the data separate perfectly.
 
 The formula is as follows:
 
@@ -777,27 +857,8 @@ $$
 p_{ij}(z_{t}) = \exp(\theta_{ij} + \gamma_{ij} \cdot z_{t}) / \sum_{k} \;\text{exp} (\theta_{ik} + \gamma_{ik} \cdot z_{t})
 $$
 
-Where P(s_t = k | r_1, ..., r_T) is the smoothed regime probability and z_t the covariate at the end of return
-t; the small ridge penalty keeps the fit finite when a row's transitions separate perfectly by covariate level.
-
-**Args:**
-
-- <u>prices (pl.Series):</u> historical price levels, evenly spaced in time.
-- <u>price_dates (pl.Series):</u> one date per `prices` observation.
-- <u>business_cycle_covariate (pl.Series):</u> the business-cycle indicator's raw historical level series (e.g. LeadingIndicator.series).
-- <u>business_cycle_covariate_dates (pl.Series):</u> the dates paired with `business_cycle_covariate` (e.g. LeadingIndicator.dates).
-- <u>time_step (float):</u> time increment between price observations, in years.
-- <u>n_regimes (int):</u> number of regimes to fit (2 = the standard Hardy bull/bear model).
-- <u>max_iterations (int):</u> maximum EM iterations before stopping (baseline fit only).
-- <u>tolerance (float):</u> stop when the log-likelihood improves by less than this (baseline fit only).
-
-**Returns:**
-
-<u>RegimeParams:</u> the baseline calibration (regime_means/regime_volatilities/ transition_matrix, exactly as fit_regime_switching_lognormal would produce against the date-joined price series), plus `tvtp`: the fitted RegimeTVTPParams.
-
-**Raises:**
-
-- <u>ValueError:</u> if fewer than `n_regimes * 5` price observations remain after the date join, the baseline EM fit collapses a regime, or a row of the transition matrix has too few observed transitions to fit its own multinomial logit (fewer than `2*(n_regimes-1)*_MINIMUM_TVTP_ROW_OBSERVATIONS_MULTIPLE`).
+Where P(s_t = k | r_1, ..., r_T) is the smoothed regime probability and z_t the indicator's level at the end of
+return t.
 
 **References:**
 
@@ -805,8 +866,70 @@ t; the small ridge penalty keeps the fit finite when a row's transitions separat
 - Diebold, F.X., Lee, J.H., Weinbach, G.C. (1994). "Regime Switching with Time-Varying Transition Probabilities." In Hargreaves, C. (ed.), Nonstationary Time Series Analysis and Cointegration, Oxford University Press, 283-302. The joint EM estimator this two-step fit approximates. <https://doi.org/10.1093/oso/9780198773917.003.0010>
 - Hardy, M.R. (2001). "A Regime-Switching Model of Long-Term Stock Returns." North American Actuarial Journal, 5(2), 41-53. <https://doi.org/10.1080/10920277.2001.10595984>
 
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+fit_regime_switching_tvtp(
+    prices: pl.Series,
+    price_dates: pl.Series,
+    business_cycle_covariate: pl.Series,
+    business_cycle_covariate_dates: pl.Series,
+    time_step: float,
+    n_regimes: int = 2,
+    max_iterations: int = _MAX_EM_ITERATIONS,
+    tolerance: float = 1e-06,
+) -> RegimeParams
+```
+
+**Args:**
+
+- <u>prices (pl.Series):</u> the equity's price history, evenly spaced in time.
+- <u>price_dates (pl.Series):</u> the date of each price.
+- <u>business_cycle_covariate (pl.Series):</u> the business-cycle indicator's history, such as `LeadingIndicator.series`.
+- <u>business_cycle_covariate_dates (pl.Series):</u> the date of each indicator value; only dates both share are used.
+- <u>time_step (float):</u> the time between prices, in years.
+- <u>n_regimes (int):</u> the number of regimes, default 2 (calm and turbulent).
+- <u>max_iterations (int):</u> the most fitting rounds for the regime fit.
+- <u>tolerance (float):</u> stop the regime fit once the likelihood improves by less than this.
+
+**Returns:**
+
+<u>RegimeParams:</u> the plain regime fit on the shared dates, plus `tvtp`, the logit coefficients that tie each regime's switching chances to the indicator.
+
+**Raises:**
+
+- <u>ValueError:</u> if fewer than `n_regimes * 5` prices share a date with the indicator, a regime ends up with almost no observations, or a regime has too few observed switches to fit (ten per regime with two regimes).
+
+</details>
+
 {% raw %}
 ### simulate_regime_path
+
+Draw the sequence of calm and turbulent regimes each scenario passes through, starting from today's most
+likely regime.
+
+Each step the market stays in its regime or switches, with the fitted chances. Because regimes persist, a
+scenario that enters the turbulent regime tends to stay there for several periods, which produces the
+multi-period drawdowns that a single lognormal distribution cannot. The regime path is drawn separately from
+the return shocks, so the regime decides each period's mean and volatility while the shock, correlated with
+the other factors, decides where in that distribution the return lands. Each equity follows its own regime
+path.
+
+The formula is as follows:
+
+$$
+s_{t+1} = \text{number of}\; j \;\text{with}\; u_{t} > p_{s_{t}},\;\; \text{0 + ... + p\_s\_t},\;\; \text{j},\;\; u_{t} \sim \operatorname{Uniform}(0,\; 1)
+$$
+
+**References:**
+
+- Hardy, M.R. (2001). "A Regime-Switching Model of Long-Term Stock Returns." North American Actuarial Journal, 5(2), 41-53. <https://doi.org/10.1080/10920277.2001.10595984>
+- Alswaidan, A., Jin, C., Varner, J.D. "Continuous Hidden Markov Models for Equity Returns: Heavy-Tail Emission Families and Regime-Conditional Value-at-Risk." arXiv:2606.23492. <https://arxiv.org/abs/2606.23492>
+- Israel, R.B., Rosenthal, J.S., Wei, J.Z. (2001). "Finding Generators for Markov Chains via Empirical Transition Matrices, with Applications to Credit Ratings." Mathematical Finance, 11(2), 245-265. <https://doi.org/10.1111/1467-9965.00114>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 simulate_regime_path(
@@ -818,36 +941,46 @@ simulate_regime_path(
 ) -> np.ndarray
 ```
 
-Pre-simulate every path's regime sequence as a Markov chain, independent of the correlated return shocks, so it
-is drawn once upfront rather than inside the engine loop. Each step inverts the current row's cumulative
-transition probabilities at a uniform draw.
+**Args:**
+
+- <u>params (RegimeParams):</u> the calibrated switching chances and today's regime.
+- <u>n_simulations (int):</u> the number of scenarios.
+- <u>n_steps (int):</u> the number of steps per scenario.
+- <u>rng (np.random.Generator):</u> the random number generator.
+- <u>simulation_time_step (float &#124; None):</u> the scenario step in years; when it differs from the data frequency the switching chances are converted first (see `rescale_transition_matrix`). Default None, no conversion.
+
+**Returns:**
+
+<u>np.ndarray:</u> the regime of every scenario at every step, starting from today's regime.
+
+</details>
+{% endraw %}
+
+### fit_risk_neutral_equity
+
+Set up a risk-neutral equity for market-consistent valuation: a lognormal price that grows at the risk-free
+rate minus the dividend yield, with one volatility, as in Black and Scholes (1973) and Merton (1973).
+
+Under the risk-neutral measure every asset is expected to earn the risk-free rate, so the equity risk premium
+drops out and the only parameter to choose is the volatility. Discounted at the risk-free rate, the expected
+simulated price then equals today's price, which is what a market-consistent valuation of guarantees or
+options (for example a Solvency II best estimate) requires. The dividend yield is subtracted because the
+holder of the index receives it in cash, not in price. Returns are normal in log terms with no regimes, so
+tail risk is set by the volatility alone.
 
 The formula is as follows:
 
 $$
-s_{t+1} = \text{number of}\; j \;\text{with}\; u_{t} > p_{s_{t}},\;\; \text{0 + ... + p\_s\_t},\;\; \text{j},\;\; u_{t} \sim \operatorname{Uniform}(0,\; 1)
+\text{dS}_{t} = (r - q) \cdot S_{t} \cdot \text{dt} + \sigma \cdot S_{t} \cdot \text{dW}_{t}
 $$
-
-**Args:**
-
-- <u>params (RegimeParams):</u> calibrated regime transition matrix and initial regime.
-- <u>n_simulations (int):</u> number of Monte Carlo paths.
-- <u>n_steps (int):</u> number of time steps per path.
-- <u>rng (np.random.Generator):</u> the random generator to draw regime transitions from.
-- <u>simulation_time_step (float &#124; None):</u> the *simulation*'s own time step (in years), which need not match `params.time_step` (the historical fit's observation spacing). When given and different from `params.time_step`, `params.transition_matrix` is rescaled to this step size first (see rescale_transition_matrix); otherwise regime dwell times would be off by the frequency ratio. None (the default) steps `transition_matrix` as-is, at its own fit granularity.
-
-**Returns:**
-
-<u>np.ndarray:</u> shape (n_simulations, n_steps + 1), int regime index per simulation/time-step, column 0 is params.initial_regime for every simulation.
 
 **References:**
 
-- Hardy, M.R. (2001). "A Regime-Switching Model of Long-Term Stock Returns." North American Actuarial Journal, 5(2), 41-53. <https://doi.org/10.1080/10920277.2001.10595984>
-- Alswaidan, A., Jin, C., Varner, J.D. "Continuous Hidden Markov Models for Equity Returns: Heavy-Tail Emission Families and Regime-Conditional Value-at-Risk." arXiv:2606.23492. <https://arxiv.org/abs/2606.23492>
-- Israel, R.B., Rosenthal, J.S., Wei, J.Z. (2001). "Finding Generators for Markov Chains via Empirical Transition Matrices, with Applications to Credit Ratings." Mathematical Finance, 11(2), 245-265. <https://doi.org/10.1111/1467-9965.00114>
-{% endraw %}
+- Black, F., Scholes, M. (1973). "The Pricing of Options and Corporate Liabilities." Journal of Political Economy, 81(3), 637-654. <https://doi.org/10.1086/260062>
+- Merton, R.C. (1973). "Theory of Rational Option Pricing." Bell Journal of Economics and Management Science, 4(1), 141-183. <https://doi.org/10.2307/3003143>
 
-### fit_risk_neutral_equity
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 fit_risk_neutral_equity(
@@ -858,34 +991,46 @@ fit_risk_neutral_equity(
 ) -> FXParams
 ```
 
-Build risk-neutral (Q-measure) equity parameters: geometric Brownian motion with the Black-Scholes-Merton
-drift, the cost of carry r - q, instead of a fitted real-world drift. Reuses `FXParams`/`step_fx_process`,
-the same GBM; see equities_controller.Equities.calibrate_risk_neutral().
+**Args:**
+
+- <u>risk_free_rate (float):</u> today's continuously compounded risk-free rate, annual, as a decimal.
+- <u>dividend_yield (float):</u> today's dividend yield, annual, as a decimal.
+- <u>volatility (float):</u> the annual volatility, implied by options or realized.
+- <u>initial_value (float):</u> today's price.
+
+**Returns:**
+
+<u>FXParams:</u> `drift` (the risk-free rate minus the dividend yield), `volatility` and `initial_value`.
+
+</details>
+
+{% raw %}
+### step_regime_switching
+
+Move an equity price one step forward in the regime the scenario is in, the price step of Hardy's (2001)
+regime-switching lognormal model.
+
+Within a regime the log-return is normal, so the price stays positive and returns compound. Between regimes
+the mean and volatility jump: a turbulent step can have a volatility two to three times that of a calm one
+and a mean near zero or below. Over a horizon the result is a mixture of normals, with a fatter left tail and
+more clustered losses than any single lognormal with the same average volatility. The shock is the
+equity's correlated draw, so equities still move with rates, credit and the other factors within a step.
 
 The formula is as follows:
 
 $$
-\text{dS}_{t} = (r - q) \cdot S_{t} \cdot \text{dt} + \sigma \cdot S_{t} \cdot \text{dW}_{t}
+S_{t+dt} = S_{t} \cdot \exp(m + v \cdot z),\;\; m = \mu_{k} \cdot \text{dt},\;\; v = \sigma_{k} \cdot \sqrt{\text{dt}}
 $$
 
-**Args:**
-
-- <u>risk_free_rate (float):</u> today's continuously-compounded risk-free rate (annualized, decimal fraction), typically the already-calibrated interest_rates factor's current level.
-- <u>dividend_yield (float):</u> today's dividend yield (annualized, decimal fraction), typically the already-calibrated dividend_yield factor's current level.
-- <u>volatility (float):</u> annualized volatility to simulate with, either options-implied (ATM) or realized, see Equities.calibrate_risk_neutral().
-- <u>initial_value (float):</u> the last observed price level, the simulation's S0.
-
-**Returns:**
-
-<u>FXParams:</u> drift = risk_free_rate - dividend_yield, the given volatility and initial_value.
+Where k is the regime over the step and z the standard normal shock.
 
 **References:**
 
-- Black, F., Scholes, M. (1973). "The Pricing of Options and Corporate Liabilities." Journal of Political Economy, 81(3), 637-654. <https://doi.org/10.1086/260062>
-- Merton, R.C. (1973). "Theory of Rational Option Pricing." Bell Journal of Economics and Management Science, 4(1), 141-183. <https://doi.org/10.2307/3003143>
+- Hardy, M.R. (2001). "A Regime-Switching Model of Long-Term Stock Returns." North American Actuarial Journal, 5(2), 41-53. <https://doi.org/10.1080/10920277.2001.10595984>
+- Alswaidan, A., Jin, C., Varner, J.D. "Continuous Hidden Markov Models for Equity Returns: Heavy-Tail Emission Families and Regime-Conditional Value-at-Risk." arXiv:2606.23492. <https://arxiv.org/abs/2606.23492>
 
-{% raw %}
-### step_regime_switching
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 step_regime_switching(
@@ -896,30 +1041,16 @@ step_regime_switching(
 ) -> np.ndarray
 ```
 
-Advance a lognormal price by one step in an already-drawn regime (see simulate_regime_path). The caller passes
-mean and volatility already scaled to the step, so there is no time_step argument.
-
-The formula is as follows:
-
-$$
-S_{t+dt} = S_{t} \cdot \exp(m + v \cdot z),\;\; m = \mu_{k} \cdot \text{dt},\;\; v = \sigma_{k} \cdot \sqrt{\text{dt}}
-$$
-
-Where k is the regime over the step and z the standard normal shock.
-
 **Args:**
 
-- <u>current_value (np.ndarray &#124; float):</u> the price level at the current time step.
-- <u>shock (np.ndarray &#124; float):</u> a standard normal draw for the return innovation this step.
-- <u>mean (np.ndarray &#124; float):</u> the active regime's mean log-return, already scaled by time_step.
-- <u>volatility (np.ndarray &#124; float):</u> the active regime's log-return volatility, already scaled by sqrt(time_step).
+- <u>current_value (np.ndarray &#124; float):</u> today's price in each scenario.
+- <u>shock (np.ndarray &#124; float):</u> the equity's correlated standard normal shock for this step.
+- <u>mean (np.ndarray &#124; float):</u> the regime's mean log-return over the step (annual mean times the step).
+- <u>volatility (np.ndarray &#124; float):</u> the regime's volatility over the step (annual volatility times the square root of the step).
 
 **Returns:**
 
-<u>np.ndarray:</u> the price at the next time step.
+<u>np.ndarray:</u> the price at the end of the step.
 
-**References:**
-
-- Hardy, M.R. (2001). "A Regime-Switching Model of Long-Term Stock Returns." North American Actuarial Journal, 5(2), 41-53. <https://doi.org/10.1080/10920277.2001.10595984>
-- Alswaidan, A., Jin, C., Varner, J.D. "Continuous Hidden Markov Models for Equity Returns: Heavy-Tail Emission Families and Regime-Conditional Value-at-Risk." arXiv:2606.23492. <https://arxiv.org/abs/2606.23492>
+</details>
 {% endraw %}

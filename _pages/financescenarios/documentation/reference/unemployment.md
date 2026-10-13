@@ -14,14 +14,10 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Unemployment rates, each paired with an inflation entry. Generated from the docstrings of Finance Scenarios 0.1.0; `help(...)` in Python shows the same text.
+Unemployment rates, each paired with an inflation entry.
 
 ```python
 from financescenarios.factors.unemployment.unemployment_controller import Unemployment
-```
-
-```python
-Unemployment(toolkit: Toolkit)
 ```
 
 The Unemployment module simulates the unemployment rate: the share of people who want work but cannot find it.
@@ -71,18 +67,16 @@ A belief left `null` keeps the fitted value; a regime file addresses one entry a
 models the unemployment rate itself, not wages or employment by sector, and the Phillips curve is a statistical link
 fitted to history, not a model of how central banks or wage setters respond.
 
-## calibrate
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
-calibrate(
-    name: str,
-    country: str = 'United States',
-    period: str = 'yearly',
-    source: str = 'oecd',
-    business_cycle_covariate: pl.Series | None = None,
-    business_cycle_covariate_dates: pl.Series | None = None,
-) -> UnemploymentParams
+Unemployment(toolkit: Toolkit)
 ```
+
+</details>
+
+## calibrate
 
 Calibrate one country's unemployment process from its history: how fast unemployment returns to its normal
 level (`mean_reversion_speed`), what that level is (`long_run_mean`), how strongly it moves with the change in
@@ -96,23 +90,6 @@ The fit regresses each period's change in unemployment on its previous level and
 inflation, matched by date, following
 [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf).
 Use an early Toolkit `start_date`, as the default window is short.
-
-**Args:**
-
-- <u>name (str):</u> the entry's name, e.g. "united_states".
-- <u>country (str):</u> the country for both data series, default "United States".
-- <u>period (str):</u> data frequency: "yearly" (default), "quarterly" or "monthly"; only "yearly" for "gmdb". A configured run uses the paired inflation entry's period.
-- <u>source (str):</u> "oecd" (default) or "gmdb" (the Global Macro Database, for countries outside the OECD).
-- <u>business_cycle_covariate (pl.Series &#124; None):</u> the leading indicator's level, a second driver next to inflation, default None.
-- <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> its dates; required with it.
-
-**Returns:**
-
-<u>UnemploymentParams:</u> `mean_reversion_speed`, `long_run_mean`, `inflation_sensitivity`, `volatility`, `initial_value` (the last observed rate) and, with the leading indicator, `business_cycle_sensitivity`.
-
-**Raises:**
-
-- <u>ValueError:</u> if `period` or `source` is not recognized, only one covariate argument is given, no data come back (the OECD sends none after too many requests; retry a minute later), or the history is too short or shows no pull toward a normal level.
 
 **As an example:**
 
@@ -135,21 +112,66 @@ Which returns (calibrated on 2026-10-05):
 
 US unemployment starts at 4.27% and is pulled toward 5.67%.
 
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+calibrate(
+    name: str,
+    country: str = 'United States',
+    period: str = 'yearly',
+    source: str = 'oecd',
+    business_cycle_covariate: pl.Series | None = None,
+    business_cycle_covariate_dates: pl.Series | None = None,
+    inflation: pl.Series | None = None,
+    inflation_dates: pl.Series | None = None,
+) -> UnemploymentParams
+```
+
+**Args:**
+
+- <u>name (str):</u> the entry's name, e.g. "united_states".
+- <u>country (str):</u> the country for both data series, default "United States".
+- <u>period (str):</u> data frequency: "yearly" (default), "quarterly" or "monthly"; only "yearly" for "gmdb". A configured run uses the paired inflation entry's period.
+- <u>source (str):</u> "oecd" (default) or "gmdb" (the Global Macro Database, for countries outside the OECD).
+- <u>business_cycle_covariate (pl.Series &#124; None):</u> the leading indicator's level, a second driver next to inflation, default None.
+- <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> its dates; required with it.
+- <u>inflation (pl.Series &#124; None):</u> an already-fetched year-over-year inflation rate for `country` at `period` (as decimals, e.g. `Inflation.series(name)`), to skip fetching it again; default None fetches it.
+- <u>inflation_dates (pl.Series &#124; None):</u> its dates; required with it.
+
+**Returns:**
+
+<u>UnemploymentParams:</u> `mean_reversion_speed`, `long_run_mean`, `inflation_sensitivity`, `volatility`, `initial_value` (the last observed rate) and, with the leading indicator, `business_cycle_sensitivity`.
+
+**Raises:**
+
+- <u>ValueError:</u> if `period` or `source` is not recognized, a series is given without its dates, no data come back (the OECD sends none after too many requests; retry a minute later), or the history is too short or shows no pull toward a normal level.
+
+</details>
+
 ## names
+
+The names of every unemployment entry calibrated so far, in calibration order.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 unemployment.names  # property -> list[str]
 ```
 
-The names of every unemployment entry calibrated so far, in calibration order.
+</details>
 
 ## params
+
+The calibrated parameters for one unemployment entry.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 params(name: str) -> UnemploymentParams
 ```
-
-The calibrated parameters for one unemployment entry.
 
 **Args:**
 
@@ -159,23 +181,32 @@ The calibrated parameters for one unemployment entry.
 
 - <u>RuntimeError:</u> if that entry has not been calibrated yet.
 
+</details>
+
 ## step_function
+
+The one-step unemployment update: the exact mean-reverting step plus the Phillips-curve term.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 unemployment.step_function  # property
 ```
 
-The function that moves unemployment one step: the exact mean-reverting step plus the Phillips-curve term,
-shared by every entry.
+</details>
 
 ## changes
+
+Dated period-over-period changes in one entry's unemployment rate: the history its correlations with the other
+factors are estimated from.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 changes(name: str) -> pl.DataFrame
 ```
-
-Dated period-over-period changes in one entry's unemployment rate, from the data `calibrate` already fetched; used
-to estimate the correlations between factors.
 
 **Args:**
 
@@ -189,24 +220,23 @@ to estimate the correlations between factors.
 
 - <u>RuntimeError:</u> if that entry has not been calibrated yet.
 
+</details>
+
 ## How It Is Calculated
 
 The model functions behind this page, each with the formula it implements.
 
 ### fit_unemployment_process
 
-```python
-fit_unemployment_process(
-    unemployment: pl.Series,
-    inflation: pl.Series,
-    time_step: float,
-    business_cycle: pl.Series | None = None,
-) -> UnemploymentParams
-```
+Estimate how unemployment returns to its normal level and how it moves with inflation, from a country's history.
 
-Fit the unemployment process to historical unemployment and inflation series by OLS regression of the change in
-unemployment on its own level and the same-period change in inflation, the discretized form of Ahlgrim, D'Arcy
-and Gorvett's (2005) Phillips-curve-augmented Ornstein-Uhlenbeck process (their eq. 3.19-3.21).
+The model is the Phillips-curve-augmented mean-reverting process of Ahlgrim, D'Arcy and Gorvett (2005), eq.
+3.19-3.21. It assumes unemployment is pulled toward a natural rate (frictional and structural unemployment that
+persists through the cycle) and that a rise in inflation comes with a tighter labour market, as Phillips (1958)
+found for UK wages. The fit is one regression of each period's change in unemployment on its previous level and the
+same period's change in inflation: the level term gives the speed and the natural rate, the inflation term the
+Phillips-curve sensitivity alpha_u, expected to be negative. With a business-cycle series, the leading indicator's
+change enters as a second driver next to inflation, never in its place.
 
 The formula is as follows:
 
@@ -218,45 +248,52 @@ $$
 \kappa_{u} = - \ln(1 + b) / \text{dt},\;\; \mu_{u} = - c / b
 $$
 
-Without `business_cycle` the gamma_u term is dropped and the fit is `calibration_model.
-fit_ou_process_with_covariate`. With it, the leading indicator's change is a second covariate alongside
-inflation (never a replacement), fit through `calibration_model._fit_ou_drift`'s `extra_columns`.
-
-**Args:**
-
-- <u>unemployment (pl.Series):</u> historical unemployment-rate observations, evenly spaced in time.
-- <u>inflation (pl.Series):</u> historical inflation-rate observations, the same length and time index as `unemployment`.
-- <u>time_step (float):</u> time increment between observations, in years.
-- <u>business_cycle (pl.Series &#124; None):</u> the leading indicator's raw historical level series, the same length and time index as `unemployment`/ `inflation` (already date-aligned by the caller; see `unemployment_controller.Unemployment.calibrate`). None (the default) fits the single-covariate (inflation only) process.
-
-**Returns:**
-
-<u>UnemploymentParams:</u> the calibrated mean-reversion speed, long-run mean, inflation sensitivity, volatility, and the series' last value as the simulation starting point, plus `business_cycle_sensitivity` when `business_cycle` was given.
-
-**Raises:**
-
-- <u>ValueError:</u> if the series have different lengths, too few observations remain after jointly dropping nulls, or the fitted mean-reversion speed is non-positive.
+Without a business-cycle series the gamma_u term is dropped. The Phillips curve is a statistical link fitted to
+history; it has flattened in many countries since the 1990s, so expect a small sensitivity on recent data.
 
 **References:**
 
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the Casualty Actuarial Society, 92. <https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf>
 - Phillips, A.W. (1958). "The Relation Between Unemployment and the Rate of Change of Money Wage Rates in the United Kingdom, 1861-1957." Economica, 25(100), 283-299. <https://doi.org/10.1111/j.1468-0335.1958.tb00003.x>
 
-### step_unemployment
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
-step_unemployment(
-    current_value: np.ndarray | float,
-    shock: np.ndarray | float,
+fit_unemployment_process(
+    unemployment: pl.Series,
+    inflation: pl.Series,
     time_step: float,
-    params: UnemploymentParams,
-    inflation_change: np.ndarray | float,
-    business_cycle_change: np.ndarray | float | None = None,
-) -> np.ndarray
+    business_cycle: pl.Series | None = None,
+) -> UnemploymentParams
 ```
 
-Advance the unemployment process by one time step with the exact OU transition plus the per-step covariate terms.
-Without `params.business_cycle_sensitivity` this is `calibration_model.step_ou_process_with_covariate`.
+**Args:**
+
+- <u>unemployment (pl.Series):</u> the historical unemployment rate, evenly spaced.
+- <u>inflation (pl.Series):</u> the historical inflation rate on the same dates.
+- <u>time_step (float):</u> the time between observations, in years.
+- <u>business_cycle (pl.Series &#124; None):</u> the leading indicator's level on the same dates, a second driver next to inflation; None (the default) uses inflation only.
+
+**Returns:**
+
+<u>UnemploymentParams:</u> the reversion speed, natural rate, inflation sensitivity, volatility and the latest rate as the starting point, plus `business_cycle_sensitivity` with a business-cycle series.
+
+**Raises:**
+
+- <u>ValueError:</u> if the series differ in length, too few dates have both values, or unemployment shows no pull toward a normal level.
+
+</details>
+
+### step_unemployment
+
+Move the unemployment rate one step forward: pulled toward its natural rate and pushed by the simulated change in
+inflation (and, if configured, in the leading indicator).
+
+Because the inflation term uses the same scenario's simulated inflation move, unemployment and inflation stay
+linked path by path: an inflation surge tends to come with falling unemployment, and a disinflation with rising
+unemployment, on top of whatever correlation their own shocks have. The mean-reverting part uses the exact
+transition, so a gap to the natural rate halves in ln(2) / kappa_u years whatever the step size.
 
 The formula is as follows:
 
@@ -269,26 +306,43 @@ s = \sigma_{u} \cdot \sqrt{(1 - \exp(- 2 \cdot \kappa_{u} \cdot \text{dt})) / (2
 $$
 
 Where dpi and dCLI are the simulated inflation and leading-indicator changes over the same step and z is a
-standard normal draw. The result is clipped to [0, 1].
-
-**Args:**
-
-- <u>current_value (np.ndarray &#124; float):</u> the unemployment rate at the current time step.
-- <u>shock (np.ndarray &#124; float):</u> a standard normal draw for this step.
-- <u>time_step (float):</u> the time increment, in years.
-- <u>params (UnemploymentParams):</u> calibrated mean-reversion speed, long-run mean, inflation sensitivity, volatility, and (optionally) business-cycle sensitivity.
-- <u>inflation_change (np.ndarray &#124; float):</u> the change in the inflation rate over this same step (the already-simulated inflation factor's move this step), the Phillips-curve input.
-- <u>business_cycle_change (np.ndarray &#124; float &#124; None):</u> the change in the leading indicator's level over this same step (the already-simulated leading_indicator factor's move this step). Required when `params.business_cycle_sensitivity` is set, unused otherwise.
-
-**Returns:**
-
-<u>np.ndarray:</u> the unemployment rate at the next time step, kept within [0, 1]: a rate is a share of the labour force, and the Gaussian step alone can cross zero in a few paths (about 0.3% of monthly paths in a default run) or, under an extreme inflation belief, pass 100%.
-
-**Raises:**
-
-- <u>ValueError:</u> if `params.business_cycle_sensitivity` is set but `business_cycle_change` is not supplied.
+standard normal draw. The result is clipped to [0, 1], since a rate is a share of the labour force: the normal
+shock alone could push a few paths (about 0.3% of monthly paths in a default run) below zero.
 
 **References:**
 
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the Casualty Actuarial Society, 92. <https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf>
 - Phillips, A.W. (1958). "The Relation Between Unemployment and the Rate of Change of Money Wage Rates in the United Kingdom, 1861-1957." Economica, 25(100), 283-299. <https://doi.org/10.1111/j.1468-0335.1958.tb00003.x>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+step_unemployment(
+    current_value: np.ndarray | float,
+    shock: np.ndarray | float,
+    time_step: float,
+    params: UnemploymentParams,
+    inflation_change: np.ndarray | float,
+    business_cycle_change: np.ndarray | float | None = None,
+) -> np.ndarray
+```
+
+**Args:**
+
+- <u>current_value (np.ndarray &#124; float):</u> today's unemployment rate.
+- <u>shock (np.ndarray &#124; float):</u> a standard normal draw.
+- <u>time_step (float):</u> the step length, in years.
+- <u>params (UnemploymentParams):</u> the reversion speed, natural rate, inflation sensitivity, volatility and, if fitted, the business-cycle sensitivity.
+- <u>inflation_change (np.ndarray &#124; float):</u> the simulated change in inflation over the same step.
+- <u>business_cycle_change (np.ndarray &#124; float &#124; None):</u> the simulated change in the leading indicator over the same step; required when a business-cycle sensitivity was fitted.
+
+**Returns:**
+
+<u>np.ndarray:</u> the unemployment rate one step later, between 0 and 1.
+
+**Raises:**
+
+- <u>ValueError:</u> if a business-cycle sensitivity was fitted but no leading-indicator change is given.
+
+</details>
