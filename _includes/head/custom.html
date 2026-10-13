@@ -71,6 +71,52 @@
 }
 </script>
 
+{% if page.url == "/" or page.url == "/resume" %}
+<!-- ProfilePage: the home page and resume are about one person (Google's profile page markup) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "url": {{ page.url | absolute_url | jsonify }},
+  "name": {{ page.title | default: site.title | jsonify }},{% if page.last_modified_at %}
+  "dateModified": "{{ page.last_modified_at | date_to_xmlschema }}",{% endif %}
+  "mainEntity": {
+    "@type": "Person",
+    "name": {{ site.name | jsonify }},
+    "url": {{ site.url | jsonify }},
+    "image": {{ "/assets/images/default/bio-photo.jpg" | absolute_url | jsonify }},
+    "jobTitle": "Quantitative Investment Strategist",
+    "description": {{ site.description | jsonify }},
+    "knowsAbout": ["Strategic Asset Allocation", "Asset Liability Management", "Economic Scenario Generation", "Solvency II", "Python", "Artificial Intelligence"],
+    "sameAs": [
+      "https://www.linkedin.com/in/boumajeroen/",
+      "https://github.com/JerBouma"
+    ]
+  }
+}
+</script>
+{% endif %}
+
+{% if page.url == "/insights" %}
+<!-- CollectionPage: the articles listed on /insights, newest first -->
+{%- assign _articles = site.pages | where: "collection", "article" | sort: "date" | reverse -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "url": {{ page.url | absolute_url | jsonify }},
+  "name": {{ page.title | jsonify }},
+  "description": {{ page.description | default: page.excerpt | strip_html | jsonify }},
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": [{% for a in _articles %}
+      { "@type": "ListItem", "position": {{ forloop.index }}, "url": {{ a.url | absolute_url | jsonify }}, "name": {{ a.title | jsonify }} }{% unless forloop.last %},{% endunless %}{% endfor %}
+    ]
+  }
+}
+</script>
+{% endif %}
+
 {% if page.date %}
 <!-- Article structured data for blog posts -->
 <script type="application/ld+json">
