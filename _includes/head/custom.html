@@ -14,8 +14,12 @@
   }
 </script>
 
-<!-- MathJax — only on the Finance Toolkit and Finance Scenarios documentation pages, which render formulas as \[...\] math blocks -->
-{% if page.permalink contains "financetoolkit/docs" or page.permalink contains "financescenarios/docs" %}
+<!-- MathJax: only on documentation pages that contain a formula (\[...\] or \(...\) blocks) -->
+{%- assign has_math = false -%}
+{%- if page.permalink contains "financetoolkit/docs" or page.permalink contains "financescenarios/docs" -%}
+  {%- if content contains "\[" or content contains "\(" -%}{%- assign has_math = true -%}{%- endif -%}
+{%- endif -%}
+{% if has_math %}
 <script>
   window.MathJax = {
     output: { displayOverflow: "linebreak" }

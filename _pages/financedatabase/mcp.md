@@ -26,7 +26,7 @@ The Finance Database MCP server gives the assistant the database instead of its 
   <div class="mcp-fact"><strong>Any client</strong><span>Claude, ChatGPT, Copilot, Cursor, Windsurf, Gemini, Codex</span></div>
 </div>
 
-<img src="/assets/images/projects/FinanceDatabaseMCP.jpg" alt="Finance Database MCP: a table of European semiconductor companies returned by the server" width="100%"/>
+<img src="/assets/images/projects/FinanceDatabaseMCP.webp" alt="Finance Database MCP: a table of European semiconductor companies returned by the server" width="100%"/>
 
 ## Why the Finance Database MCP
 

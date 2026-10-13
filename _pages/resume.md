@@ -28,7 +28,7 @@ author_profile: false
 
 <div markdown="1" class="thirty-column">
 
-<img src="/assets/images/default/bio-photo.jpg" alt="Portrait photo of Jeroen Bouma" class='testimoninals'>
+<img src="/assets/images/default/bio-photo.webp" alt="Portrait photo of Jeroen Bouma" class='testimoninals'>
 
 </div>
 </div>

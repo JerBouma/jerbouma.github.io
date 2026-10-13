@@ -51,7 +51,7 @@ reddit:
       - Company data needs an FMP API key. The free plan covers five years of history and 250 requests a day; the full 30+ years and quarterly data need a paid plan.
       - The numbers are only as good as the underlying filings and the provider. The difference is that the formula on top is visible.
 
-      Screenshot of it running in Claude Desktop: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q0o5322rfem76oub01l5.png
+      Screenshot of it running in Claude Desktop: https://www.jeroenbouma.com/assets/images/articles/introducing-the-finance-toolkit-mcp-server/claude-desktop-config.webp
 
       The full write-up with examples (semiconductor multiples, European sector RSI through 2020, Fama-French on South American stocks, Asian GDP growth): https://www.jeroenbouma.com/articles/introducing-the-finance-toolkit-mcp-server
 

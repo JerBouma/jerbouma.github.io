@@ -20,7 +20,7 @@ classes: custom-splash home-v2
   </div>
   <div class="hp-hero__visual">
     <div class="hp-portrait">
-      <img src="/assets/images/default/bio-photo.jpg" alt="Jeroen Bouma" width="640" height="654" fetchpriority="high">
+      <img src="/assets/images/default/bio-photo.webp" alt="Jeroen Bouma" width="640" height="654" fetchpriority="high">
     </div>
   </div>
 </section>
@@ -28,10 +28,10 @@ classes: custom-splash home-v2
 <section data-reveal class="hp-logos" aria-label="Where I have worked and studied">
   <p class="hp-logos__label">Experience and education</p>
   <div class="hp-logos__row">
-    <span class="hp-logos__tile"><img src="/assets/images/resume/asr.png" alt="a.s.r. asset management" loading="lazy"></span>
+    <span class="hp-logos__tile"><img src="/assets/images/resume/asr.webp" alt="a.s.r. asset management" loading="lazy"></span>
     <span class="hp-logos__tile"><img src="/assets/images/resume/pggm.png" alt="PGGM" loading="lazy"></span>
-    <span class="hp-logos__tile"><img src="/assets/images/resume/openbb.png" alt="OpenBB" loading="lazy"></span>
-    <span class="hp-logos__tile"><img src="/assets/images/resume/cfasocietynetherlands.png" alt="CFA Society Netherlands" loading="lazy"></span>
+    <span class="hp-logos__tile"><img src="/assets/images/resume/openbb.webp" alt="OpenBB" loading="lazy"></span>
+    <span class="hp-logos__tile"><img src="/assets/images/resume/cfasocietynetherlands.webp" alt="CFA Society Netherlands" loading="lazy"></span>
     <span class="hp-logos__tile"><img src="/assets/images/resume/utrechtuniversity.png" alt="Utrecht University" loading="lazy"></span>
   </div>
 </section>
@@ -185,7 +185,7 @@ toolkit.econometrics.<span class="f">get_johansen_cointegration</span>(
 <section data-reveal class="hp-quote">
   <blockquote>“Jeroen was at the intersection of finance, programming and open source, which is a combination that is very hard to find.”</blockquote>
   <div class="hp-quote__who">
-    <img src="/assets/images/testimonials/DidierLopes.jpeg" alt="Didier Lopes" loading="lazy">
+    <img src="/assets/images/testimonials/DidierLopes.webp" alt="Didier Lopes" loading="lazy">
     <div><strong>Didier Lopes</strong><span>CEO at OpenBB</span></div>
   </div>
   <a href="/resume" class="hp-link">Read more testimonials <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
