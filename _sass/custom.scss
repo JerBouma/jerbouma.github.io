@@ -5954,3 +5954,16 @@ body.ft-overview .page__content {
   .page__content .mcp-compare td::before { content: attr(data-label); display: block; margin-bottom: 3px; color: var(--text-muted); font-size: 0.66rem; letter-spacing: 0.05em; text-transform: uppercase; }
   .page__content .mcp-compare td:nth-of-type(2)::before { color: var(--accent-color); }
 }
+
+// Mermaid labels are HTML (<p> inside a foreignObject); the page's paragraph
+// size and margins would make them larger than Mermaid measured them
+.mermaid foreignObject {
+  overflow: visible;
+
+  p, span, div {
+    font-size: inherit !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+}
