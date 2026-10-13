@@ -55,9 +55,12 @@
       });
     </script>
 
-    <aside class="sidebar__top">
-      <a href="#site-nav" aria-label="Back to top"><i class="fas fa-arrow-circle-up fa-2x" aria-hidden="true"></i></a>
-      </aside>
+    {%- comment -%} Back to top: slides in once the reader is a screen down; the ring fills
+    with the reading progress (_includes/scripts.html, _sass/custom.scss) {%- endcomment -%}
+    <a href="#site-nav" class="back-to-top" aria-label="Back to top">
+      <svg class="back-to-top__ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="back-to-top__track" cx="22" cy="22" r="20"></circle><circle class="back-to-top__progress" cx="22" cy="22" r="20" pathLength="100"></circle></svg>
+      <svg class="back-to-top__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"></path></svg>
+    </a>
 
   </body>
 </html>

@@ -44,6 +44,34 @@
   });
 </script>
 
+<script>
+  // back to top: shown a screen down the page, its ring filled with the reading progress
+  // (the button comes after this script in the layout, so wait for the whole page)
+  document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.querySelector('.back-to-top');
+    if (!btn) return;
+    var ring = btn.querySelector('.back-to-top__progress');
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var y = window.scrollY;
+      btn.classList.toggle('is-shown', y > window.innerHeight * 0.8);
+      if (ring) ring.style.strokeDashoffset = String(100 - (max > 0 ? Math.min(100, (y / max) * 100) : 0));
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+    }, { passive: true });
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var smooth = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
+      btn.blur();
+    });
+    update();
+  });
+</script>
+
 {% if site.after_footer_scripts %}
   {% for script in site.after_footer_scripts %}
     <script src="{{ script | relative_url }}"></script>
