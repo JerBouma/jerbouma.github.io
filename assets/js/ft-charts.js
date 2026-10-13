@@ -18,7 +18,7 @@
   });
   if (!boxes.length) return;
 
-  var ECHARTS = '/assets/js/lib/echarts-5.5.1.min.js';
+  var ECHARTS = '/assets/js/lib/echarts-5.5.1-site.min.js';
   var DATA = '/assets/data/financetoolkit-charts.json';
   var PALETTE = ['#38bdf8', '#818cf8', '#f97316', '#34d399', '#f472b6', '#fbbf24', '#a78bfa'];
   var instances = [];
@@ -704,11 +704,14 @@
     });
   }
 
-  // load ECharts and every data file the page uses right away, so the
-  // charts are ready by the time they scroll into view
-  boxes.map(function (b) { return b.getAttribute('data-src') || DATA; })
-    .filter(function (src, i, all) { return all.indexOf(src) === i; })
-    .forEach(function (src) { start(src).catch(function () {}); });
+  // fetch ECharts and every data file the page uses once the page has loaded
+  // (a chart near the screen starts them sooner), so the charts are ready by
+  // the time they scroll into view without competing with the first paint
+  window.addEventListener('load', function () {
+    boxes.map(function (b) { return b.getAttribute('data-src') || DATA; })
+      .filter(function (src, i, all) { return all.indexOf(src) === i; })
+      .forEach(function (src) { start(src).catch(function () {}); });
+  });
 
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
@@ -716,16 +719,32 @@
     }, { rootMargin: '300px 0px' });
     boxes.forEach(function (b) { io.observe(b); });
     // charts that are not reached by scrolling (a fast fling, a jump from the
-    // table of contents) are drawn in the background once everything has
-    // loaded, one at a time, so none stays a grey placeholder
-    window.addEventListener('load', function () {
+    // table of contents) are drawn in the background once the page has settled,
+    // one at a time and only while the browser is idle, so none stays a grey
+    // placeholder and none delays the first interaction
+    var idle = window.requestIdleCallback || function (fn) { return setTimeout(function () { fn({ timeRemaining: function () { return 0; } }); }, 200); };
+    // they start on the reader's first scroll, click or key press (or after 8
+    // seconds), so loading the page itself does no drawing beyond the first screen
+    var started = false;
+    function begin() {
+      if (started) return;
+      started = true;
+      ['scroll', 'pointerdown', 'keydown'].forEach(function (t) { window.removeEventListener(t, begin); });
       var rest = boxes.slice();
       (function next() {
-        var box = rest.shift();
-        if (!box) return;
-        if (!box.ftShown) { io.unobserve(box); show(box); }
-        setTimeout(next, 120);
+        idle(function () {
+          var box = rest.shift();
+          while (box && box.ftShown) box = rest.shift();
+          if (!box) return;
+          io.unobserve(box);
+          show(box);
+          setTimeout(next, 250);
+        }, { timeout: 3000 });
       })();
+    }
+    window.addEventListener('load', function () {
+      ['scroll', 'pointerdown', 'keydown'].forEach(function (t) { window.addEventListener(t, begin, { passive: true }); });
+      setTimeout(begin, 8000);
     });
   } else {
     boxes.forEach(show);

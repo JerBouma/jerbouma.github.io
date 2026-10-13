@@ -59,7 +59,7 @@ Once it is running, the server groups the 500+ Finance Toolkit methods into 22 c
 Once set up, it looks like this in Claude Desktop.
 
 <p align="center">
-  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q0o5322rfem76oub01l5.png" alt="Finance Toolkit MCP server configured in Claude Desktop" width="600">
+  <img src="/assets/images/articles/introducing-the-finance-toolkit-mcp-server/claude-desktop-config.webp" alt="Finance Toolkit MCP server configured in Claude Desktop" width="600">
   <br><em>Once everything is set up, you should see the Finance Toolkit as one of the available connectors.</em>
 </p>
 
@@ -102,7 +102,7 @@ What stands out is the dispersion inside one industry. NVDA turned a 2015 positi
 Asking the Finance Toolkit MCP the same question returns an answer like the one below.
 
 <p align="center">
-  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hbwucatw62srxqu3qc3v.png" alt="Finance Toolkit MCP response comparing semiconductor equity ratios" width="600">
+  <img src="/assets/images/articles/introducing-the-finance-toolkit-mcp-server/semiconductor-ratios.webp" alt="Finance Toolkit MCP response comparing semiconductor equity ratios" width="600">
   <br><em>Over the last decade semiconductors went from a cyclical industrial sector to the backbone of AI infrastructure, and the market priced that transition in. NVDA and AMD returned over 150x since 2015, while the S&P 500 sits at the bottom of the same chart.</em>
 </p>
 
@@ -134,7 +134,7 @@ The reversal is more interesting. The same two sectors that bottomed hardest, Oi
 The Finance Toolkit MCP shows the same pattern when you ask it:
 
 <p align="center">
-  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ef2dxd12heokum126nsl.png" alt="Finance Toolkit MCP response on European sector RSI during the 2020 crash" width="600">
+  <img src="/assets/images/articles/introducing-the-finance-toolkit-mcp-server/europe-sector-rsi.webp" alt="Finance Toolkit MCP response on European sector RSI during the 2020 crash" width="600">
   <br><em>The COVID crash was swift but uneven. Oil & Gas (EXH1, mislabelled "Airlines & travel" in this chart) fell into extreme oversold territory, with an RSI of about 22 in April 2020 and below 20 by the autumn, levels that signal panic selling rather than a fundamental repricing. Technology barely dipped. Basic Resources (EXV6, labelled "Oil & gas" in the chart) swung to an RSI of 91 by May 2021 as the commodity cycle turned. Always check the tickers an AI assistant puts on a chart.</em>
 </p>
 
@@ -177,7 +177,7 @@ MELI's R-squared has fallen almost every year since 2021, from 0.619 to 0.122, m
 Through the Finance Toolkit MCP, the answer looks like this.
 
 <p align="center">
-  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mcpyhbr1gwkezepzvss0.png" alt="Finance Toolkit MCP response on the Fama-French factor model for South American equities" width="600">
+  <img src="/assets/images/articles/introducing-the-finance-toolkit-mcp-server/fama-french-south-america.webp" alt="Finance Toolkit MCP response on the Fama-French factor model for South American equities" width="600">
   <br><em>The Fama-French 5-factor model decomposes stock returns into market beta, size, value, profitability, and investment exposure. Applied to South American industries, it shows that MercadoLibre behaves more like a US growth stock than a Latin American consumer play, while energy names like Petrobras and YPF are primarily market-beta bets with a secondary value tilt.</em>
 </p>
 
@@ -205,7 +205,7 @@ India has held growth above 9.5% every year since the 2020 contraction, while Ch
 Asking the Finance Toolkit MCP gives an answer like the one below.
 
 <p align="center">
-  <img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6o1jp35n33itf807nhx5.png" alt="Finance Toolkit MCP response on investment as a share of GDP across Asian economies" width="600">
+  <img src="/assets/images/articles/introducing-the-finance-toolkit-mcp-server/asia-investment-gdp.webp" alt="Finance Toolkit MCP response on investment as a share of GDP across Asian economies" width="600">
   <br><em>Investment as a share of GDP is one of the cleanest leading indicators of structural economic development. Vietnam and India led the region in the 2000s, fuelling their infrastructure and manufacturing buildouts. Bangladesh has been rising steadily since 2010, which is typical of an economy still in the upgrading phase rather than one that has plateaued like Malaysia or Thailand.</em>
 </p>
 

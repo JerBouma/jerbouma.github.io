@@ -30,7 +30,7 @@ The Finance Toolkit MCP server takes the calculation out of the model's hands. I
 
 <div class="mcp-video-wrapper">
   <video class="mcp-demo-video" autoplay muted playsinline loop preload="metadata"
-         width="1280" height="720" poster="/assets/images/projects/FinanceToolkitMCP.jpg">
+         width="1280" height="720" poster="/assets/images/projects/FinanceToolkitMCP.webp">
     <source src="/assets/video/mcp-demo.mp4" type="video/mp4">
   </video>
 </div>
