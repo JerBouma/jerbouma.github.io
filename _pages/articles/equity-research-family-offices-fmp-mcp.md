@@ -38,7 +38,7 @@ Get an API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free tier c
 
 Any investment story first needs the numbers to support it. FMP's key metrics endpoint bundles return on equity, return on invested capital, and EV/EBITDA into a single call, the kind of thing that normally means pulling three statements and building the ratios by hand.
 
-![Claude Desktop response showing AXON's ROE, ROIC, and EV/EBITDA trend](/assets/images/articles/equity-research-family-offices-fmp-mcp/financial-health-metrics.png)
+![Claude Desktop response showing AXON's ROE, ROIC, and EV/EBITDA trend](/assets/images/articles/equity-research-family-offices-fmp-mcp/financial-health-metrics.webp)
 
 *"Pull Axon Enterprise's (AXON) key financial metrics for the last five fiscal years and show me how ROE, ROIC, and EV/EBITDA have moved."*
 
@@ -48,7 +48,7 @@ This is uncomfortable on its own: ROIC peaked in 2023 at 6% and has since gone n
 
 A small fund without in-house sell-side coverage can still use consensus, as long as it doesn't treat it as a target to chase. The spread between analysts is usually more useful than the average.
 
-![Claude Desktop response showing AXON's analyst price targets and revenue and EPS estimates](/assets/images/articles/equity-research-family-offices-fmp-mcp/analyst-estimates-price-targets.png)
+![Claude Desktop response showing AXON's analyst price targets and revenue and EPS estimates](/assets/images/articles/equity-research-family-offices-fmp-mcp/analyst-estimates-price-targets.webp)
 
 *"Show me the current analyst price target range and consensus for AXON, plus 2026 through 2028 revenue and EPS estimates."*
 
@@ -58,7 +58,7 @@ The response comes back in two parts. The price targets show a consensus of $658
 
 A DCF is a pressure test: does the current price only make sense under aggressive assumptions, or does it hold up under conservative ones? That matters more when a fund holds six positions than when it holds three hundred, because there's no portfolio-level averaging to absorb being wrong on one name.
 
-![Claude Desktop response showing a levered DCF valuation for AXON versus its share price](/assets/images/articles/equity-research-family-offices-fmp-mcp/dcf-valuation.png)
+![Claude Desktop response showing a levered DCF valuation for AXON versus its share price](/assets/images/articles/equity-research-family-offices-fmp-mcp/dcf-valuation.webp)
 
 *"Run a levered discounted cash flow valuation on AXON and compare it to the current share price."*
 
@@ -88,7 +88,7 @@ The transactions that come back show Patrick Smith selling in small tranches, an
 
 Before taking a meaningful position, it helps to know whether a fund is early or late relative to institutional flow. A stock where ownership just climbed from 80% to 83% of float in one quarter is a different setup than one where the same institutions are quietly leaving.
 
-![Claude Desktop response showing AXON's institutional ownership trends from 13F filings](/assets/images/articles/equity-research-family-offices-fmp-mcp/institutional-ownership.png)
+![Claude Desktop response showing AXON's institutional ownership trends from 13F filings](/assets/images/articles/equity-research-family-offices-fmp-mcp/institutional-ownership.webp)
 
 *"Show me institutional ownership trends for AXON from the latest 13F filings, including how many holders opened new positions versus closed them."*
 
@@ -100,7 +100,7 @@ Everything above comes straight out of FMP's raw endpoints, and for pulling a sp
 
 The [Finance Toolkit MCP](/projects/financetoolkit/mcp) extends FMP's endpoints in that direction. It's built directly on top of FMP's data, using the same API key, so there's no second account or separate integration to manage.
 
-![Claude Desktop response showing the Finance Toolkit MCP's health overview across efficiency, liquidity, profitability, solvency, valuation, performance, and risk for AXON](/assets/images/articles/equity-research-family-offices-fmp-mcp/finance-toolkit-health-overview.png)
+![Claude Desktop response showing the Finance Toolkit MCP's health overview across efficiency, liquidity, profitability, solvency, valuation, performance, and risk for AXON](/assets/images/articles/equity-research-family-offices-fmp-mcp/finance-toolkit-health-overview.webp)
 
 *"Explore the areas of efficiency, liquidity, profitability, solvency, valuation, performance and risk for AXON. How healthy is the company?"*
 

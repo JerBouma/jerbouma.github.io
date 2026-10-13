@@ -6,7 +6,7 @@ talks:
   - title: "Speaker at the Student Capital Society Rotterdam"
     date: "Nov 2024"
     place: "Rotterdam"
-    photo: /assets/images/appearances/RotterdamSociety.jpg
+    photo: /assets/images/appearances/RotterdamSociety.webp
     text:
       - "The Student Capital Society Rotterdam is a young society, and I was glad to speak at its first event, with over 100 students attending. I talked about my role in the financial sector, how institutional investors put financial theory into practice and the role Python plays in that."
       - "The other speaker, Vladimir Mikirtumov, discussed the potential role of cryptocurrencies for institutional investors, which left plenty of room for discussion."
@@ -16,10 +16,10 @@ talks:
     date: "Nov 2023"
     place: "Utrecht University"
     photos:
-      - /assets/images/appearances/hackathon/DSC06281.jpg
-      - /assets/images/appearances/hackathon/DSC06385.jpg
-      - /assets/images/appearances/hackathon/DSC06451.jpg
-      - /assets/images/appearances/hackathon/DSC06491.jpg
+      - /assets/images/appearances/hackathon/DSC06281.webp
+      - /assets/images/appearances/hackathon/DSC06385.webp
+      - /assets/images/appearances/hackathon/DSC06451.webp
+      - /assets/images/appearances/hackathon/DSC06491.webp
     text:
       - "Finance students built a Robo Advisor in Python on a dataset of nearly 2,500 ETFs: construct a portfolio for a given investor profile, and make sure the optimized result still makes practical sense."
       - "As a jury member I helped them combine financial theory with their Python skills to give sound investment advice. Python keeps becoming more important in the industry, which is why I keep coming back each year."

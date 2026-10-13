@@ -102,7 +102,9 @@
       fontSize: 13
     });
 
-    mermaid.run();
+    // measure the labels with the page font, not the fallback it replaces
+    // later (which cut the last letter off every label)
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () { mermaid.run(); });
   }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js" defer onload="_initMermaid()"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js" defer onload="_initMermaid()"></script>

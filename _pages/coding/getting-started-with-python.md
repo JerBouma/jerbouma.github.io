@@ -34,7 +34,7 @@ I recommend starting with a project that interests you. All the projects listed 
 <div class="row">
 <div markdown="1" class="thirty-three-column mobile-max-column-width">
 
-<a href="/projects/financetoolkit"><img src="https://user-images.githubusercontent.com/46355364/242269801-198d47bd-e1b3-492d-acc4-5d9f02d1d009.jpg" alt="Finance Toolkit project banner" width="400"></a>
+<a href="/projects/financetoolkit"><img src="/assets/images/projects/financetoolkit-banner.webp" alt="Finance Toolkit project banner" width="400"></a>
 
 With the **Finance Toolkit**, I wanted to see if I could improve my fundamental analysis using Python while also getting familiar with NumPy and Pandas.
 
@@ -42,7 +42,7 @@ With the **Finance Toolkit**, I wanted to see if I could improve my fundamental 
 
 <div markdown="1" class="thirty-three-column mobile-max-column-width">
 
-<a href="/projects/financedatabase"><img src="https://user-images.githubusercontent.com/46355364/220746807-669cdbc1-ac67-404c-b0bb-4a3d67d9931f.jpg" alt="Finance Database project banner" width="400"></a>
+<a href="/projects/financedatabase"><img src="/assets/images/projects/financedatabase-banner.webp" alt="Finance Database project banner" width="400"></a>
 
 With the **Finance Database**, I aimed to create a database to find products compatible with the Finance Toolkit functions.
 
@@ -50,7 +50,7 @@ With the **Finance Database**, I aimed to create a database to find products com
 
 <div markdown="1" class="thirty-three-column mobile-max-column-width" style="padding-right:0px">
 
-<a href="https://github.com/JerBouma/PersonalFinance" target="_blank" rel="noopener"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/46355364/275324611-33a88b7d-f48f-42f0-83ae-d0950a3aed6e.jpg" alt="Personal Finance project banner" width="400"></a>
+<a href="https://github.com/JerBouma/PersonalFinance" target="_blank" rel="noopener"><img src="/assets/images/projects/personalfinance-banner.webp" alt="Personal Finance project banner" width="400"></a>
 
 With **Personal Finance**, I wanted to understand my spending habits and determine how much money would be left at the end of the month for investing. This also allowed me to experiment with Excel and Power BI integrations.
 
@@ -67,7 +67,7 @@ Today, most Python is written in a code editor with an AI assistant built in, an
 3. **Add an AI assistant.** Sign in to [GitHub Copilot](https://code.visualstudio.com/docs/copilot/setup){: target="_blank"}, which is built into VS Code and has a free tier, and/or install the [Claude Code](https://docs.anthropic.com/en/docs/claude-code/ide-integrations){: target="_blank"} extension. Both can explain code, answer questions about your project and, in agent mode, create and edit files and run commands for you.
 4. **Open a folder and start.** Create a folder for your first project, open it in VS Code and create a file ending in `.ipynb` to start a notebook.
 
-![VS Code with GitHub Copilot in agent mode, editing files and running tests](/assets/images/modelling/getting-started-with-python/vscode-copilot-agent.png)
+![VS Code with GitHub Copilot in agent mode, editing files and running tests](/assets/images/modelling/getting-started-with-python/vscode-copilot-agent.webp)
 <p class="image-credit">VS Code with GitHub Copilot in agent mode. Image: <a href="https://code.visualstudio.com/docs/copilot/overview" target="_blank">Visual Studio Code documentation</a>, <a href="https://creativecommons.org/licenses/by/3.0/us/" target="_blank">CC BY 3.0</a>.</p>
 
 ### Jupyter Notebooks as your Playground
