@@ -18,7 +18,7 @@ In 2022, Brazil's central bank had its policy rate at 13.75% while the Bank of J
 
 To me, that is the most interesting part of macro data: how differently economies move through the same event. The Finance Toolkit's Economics module pulls unemployment, GDP growth, inflation, government debt, central bank rates, and bond yields for 60+ countries going back, in some series, over a century, sourced from the OECD and the Global Macro Database. Unlike the rest of the Toolkit, none of this requires an FMP API key. It is public macro data and free to query.
 
-In this article I track five economies (the United States, United Kingdom, Germany, Japan, and Brazil) through the 2021-2023 inflation shock and the years since. **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
+In this article I track five economies (the United States, United Kingdom, Germany, Japan, and Brazil) through the 2021-2023 inflation shock and the years since. **For more information, see the [Finance Toolkit on GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
 ## Setting Things Up
 

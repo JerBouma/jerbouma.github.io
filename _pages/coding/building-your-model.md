@@ -27,7 +27,7 @@ You might be accustomed to specific styling methods from your firm or university
 
 Throughout this page, PEP (Python Enhancement Proposal) is frequently referenced. A PEP is a technical design document for the Python community, outlining new features, processes, or environmental standards for the language. These proposals represent community consensus and therefore describe established best practices.
 
-The styles described by **PEP 8** (see [here](https://peps.python.org/pep-0008/){: target="_blank"}) define conventions for general code structure. As the default style adopted by numerous developers, it ensures consistency across both internal and external tooling. I recommend reading the PEP 8 documentation itself for a thorough understanding; this section summarizes the main components.
+The styles described by **[PEP 8](https://peps.python.org/pep-0008/){: target="_blank"}** define conventions for general code structure. As the default style adopted by numerous developers, it ensures consistency across both internal and external tooling. I recommend reading the PEP 8 documentation itself for a thorough understanding; this section summarizes the main components.
 
 Key aspects of code layout include:
 

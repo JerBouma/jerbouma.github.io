@@ -28,7 +28,7 @@ Every project of mine contains the files below. A good request is to point the a
 This consists of the following files:
 
 - **README.md**: Includes a (short) description of the repository with useful links, similar to the file you are currently reading.
-- **.gitignore**: Includes Python-specific and project-specific exclusions (e.g., `.idea`, `.vscode`, `.venv`, `.pytest_cache`, `.DS_Store`). See an example [here](https://github.com/JerBouma/FinanceToolkit/blob/main/.gitignore){: target="_blank"}.
+- **.gitignore**: Includes Python-specific and project-specific exclusions (e.g., `.idea`, `.vscode`, `.venv`, `.pytest_cache`, `.DS_Store`). See [the Finance Toolkit's `.gitignore`](https://github.com/JerBouma/FinanceToolkit/blob/main/.gitignore){: target="_blank"} for an example.
 - **pyproject.toml**: Includes build setups, linter configurations, and dependencies ([example](https://github.com/JerBouma/FinanceToolkit/blob/main/pyproject.toml){: target="_blank"}). This file is central to the project, containing all necessary information to run it. It succeeds the older `setup.py` and `setup.cfg` files. Read more about it in [PEP 518](https://peps.python.org/pep-0518/){: target="_blank"}.
 - **.pre-commit-config.yaml**: A configuration file for `pre-commit`. It specifies which linters should run before code is committed, which helps keep the code quality high ([example](https://github.com/JerBouma/FinanceToolkit/blob/main/.pre-commit-config.yaml){: target="_blank"}). Activate it by running `pre-commit install` in the terminal.
 
@@ -78,13 +78,13 @@ dev = [
 ]
 ```
 
-This example uses the dependency manager **uv**, a fast tool written in Rust that handles dependency resolution, virtual environment creation, and package installation. It is much faster than alternatives like pip or Poetry and supports the standard `pyproject.toml` format. The uv documentation is well written and worth reading, see [here](https://docs.astral.sh/uv/){: target="_blank"}.
+This example uses the dependency manager **uv**, a fast tool written in Rust that handles dependency resolution, virtual environment creation, and package installation. It is much faster than alternatives like pip or Poetry and supports the standard `pyproject.toml` format. The uv documentation is well written and worth reading, see [docs.astral.sh/uv](https://docs.astral.sh/uv/){: target="_blank"}.
 
 In practice your assistant runs these commands when it needs a new package, so review what it adds: every dependency is code you rely on and have to keep up to date. Once set up, you can add dependencies using `uv add` (e.g., `uv add pandas`). This command adds the package (like pandas) to the `[project]` dependencies section. With dependencies listed, running `uv sync` installs them all within a virtual environment that uv manages automatically. This command also creates a `uv.lock` file, which records the exact versions of all installed packages and their sub-dependencies. Because the versions are locked, builds are reproducible.
 
 ___
 
-**Pro-tip:** Keeping track of new versions for every package can be tedious, so consider using `extras` as defined with Pandas. These optional dependency groups bundle related packages (like those needed for data wrangling), simplifying maintenance. See [here](https://pandas.pydata.org/docs/getting_started/install.html#install-recommended-dependencies).
+**Pro-tip:** Keeping track of new versions for every package can be tedious, so consider using `extras` as defined with Pandas. These optional dependency groups bundle related packages (like those needed for data wrangling), simplifying maintenance. See [pandas' recommended dependencies](https://pandas.pydata.org/docs/getting_started/install.html#install-recommended-dependencies).
 
 ___
 

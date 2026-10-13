@@ -129,7 +129,7 @@ And below the number of companies in each of these industries is shown. Each com
 
 {% include ft-chart.html id="options" src="/assets/data/financedatabase-charts.json" label="Financial companies in the Netherlands per industry" %}
 
-The options of every column can be shown this way, including `currency`, `exchange`, `market`, `country` and `market_cap` (Mega, Large, Mid, Small, Micro and Nano Cap). **Find the Notebook [here](/projects/financedatabase/getting-started).**
+The options of every column can be shown this way, including `currency`, `exchange`, `market`, `country` and `market_cap` (Mega, Large, Mid, Small, Micro and Nano Cap). **Find [the Notebook](/projects/financedatabase/getting-started).**
 
 ### Selecting Equities
 
@@ -176,7 +176,7 @@ This gives the following three companies:
 | ASRNL.AS | ASR Nederland N.V. | EUR        | Financials | Insurance  | AMS        | Euronext Amsterdam | Netherlands | Large Cap    | NL0011872643 |
 | NN.AS    | NN Group N.V.      | EUR        | Financials | Insurance  | AMS        | Euronext Amsterdam | Netherlands | Large Cap    | NL0010773842 |
 
-Every filter also accepts a list, so both queries can be combined into one with `country=["Netherlands", "United States"]` and `market=["Euronext Amsterdam", "New York Stock Exchange", "NASDAQ Global Select"]`. Equities can be selected on `country`, `sector`, `industry_group`, `industry`, `currency`, `exchange`, `mic`, `market` and `market_cap`. **Find the Notebook [here](/projects/financedatabase/getting-started).**
+Every filter also accepts a list, so both queries can be combined into one with `country=["Netherlands", "United States"]` and `market=["Euronext Amsterdam", "New York Stock Exchange", "NASDAQ Global Select"]`. Equities can be selected on `country`, `sector`, `industry_group`, `industry`, `currency`, `exchange`, `mic`, `market` and `market_cap`. **Find [the Notebook](/projects/financedatabase/getting-started).**
 
 ### Searching the Database
 
@@ -206,7 +206,7 @@ And below the results are counted per industry.
 
 {% include ft-chart.html id="search" src="/assets/data/financedatabase-charts.json" label="Frankfurt search results per industry" %}
 
-The `search` function works on every column of every asset class, including `name`, `isin`, `cusip` and `figi`. **Find the Notebook [here](/projects/financedatabase/getting-started).**
+The `search` function works on every column of every asset class, including `name`, `isin`, `cusip` and `figi`. **Find [the Notebook](/projects/financedatabase/getting-started).**
 
 ### Exploring Other Asset Classes
 
@@ -257,7 +257,7 @@ And below all actively listed ETFs are divided over their category groups.
 
 {% include ft-chart.html id="etfs" src="/assets/data/financedatabase-charts.json" label="Actively listed ETFs per category group" %}
 
-The categories of each asset class can again be found with `show_options`, e.g. `fd.Indices().show_options(selection="category")` returns the index categories, from 'Corporate Bonds' and 'Emerging Markets' to 'Small Cap' and 'Value'. Cryptocurrencies are selected on `cryptocurrency` and `currency` and currencies on `base_currency` and `quote_currency`. **Find the Notebook [here](/projects/financedatabase/getting-started).**
+The categories of each asset class can again be found with `show_options`, e.g. `fd.Indices().show_options(selection="category")` returns the index categories, from 'Corporate Bonds' and 'Emerging Markets' to 'Small Cap' and 'Value'. Cryptocurrencies are selected on `cryptocurrency` and `currency` and currencies on `base_currency` and `quote_currency`. **Find [the Notebook](/projects/financedatabase/getting-started).**
 
 ### Combining with the Finance Toolkit
 
@@ -329,7 +329,7 @@ And below these and other profitability ratios of ASR Nederland, each with its l
 
 {% include ft-chart.html id="ratios" src="/assets/data/financedatabase-charts.json" label="Profitability ratios of ASR Nederland" %}
 
-This works for the other asset classes too. For example, Ethereum quoted in BTC, CAD, EUR, GBP and USD can be loaded with `fd.Cryptos().select(cryptocurrency="ETH").to_toolkit(api_key="FINANCIAL_MODELING_PREP_KEY")`, after which `get_historical_data(period="quarterly")` returns its quarterly returns in each currency. **This is just a small snippet of what is available within the Finance Toolkit. For more information, see the Finance Toolkit page [here](/projects/financetoolkit) or the example Notebook [here](/projects/financetoolkit/getting-started).**
+This works for the other asset classes too. For example, Ethereum quoted in BTC, CAD, EUR, GBP and USD can be loaded with `fd.Cryptos().select(cryptocurrency="ETH").to_toolkit(api_key="FINANCIAL_MODELING_PREP_KEY")`, after which `get_historical_data(period="quarterly")` returns its quarterly returns in each currency. **This is just a small snippet of what is available within the Finance Toolkit. For more information, see [the Finance Toolkit page](/projects/financetoolkit) or [the example Notebook](/projects/financetoolkit/getting-started).**
 
 ## MCP Server
 {: .heading-as-h1}
@@ -345,7 +345,7 @@ This section includes frequently asked questions. If you have any questions that
 
 > **How is the data obtained?**
 
-The data is an aggregation of publicly available sources: the official listing directories that exchanges publish (such as Nasdaq Trader, HKEX, NSE, the Japan Exchange Group, ASX, TSX, Deutsche Börse Xetra, Euronext and SIX Swiss Exchange), open reference data (OpenFIGI, SEC EDGAR, the ISO 4217 currency lists, CoinGecko) and contributions from the community. I strictly maintain the rule that all data in this database must be freely accessible to everyone. Data requiring paid subscriptions is never included. Information that companies charge for is typically owned and maintained by those companies, making public sharing of such data a violation of their Terms of Service (ToS). However, publicly available data can be freely shared (read more about the legality of web scraping [here](https://techcrunch.com/2022/04/18/web-scraping-legal-court/){:target="_blank"}). This database will always remain <u>completely free</u>.
+The data is an aggregation of publicly available sources: the official listing directories that exchanges publish (such as Nasdaq Trader, HKEX, NSE, the Japan Exchange Group, ASX, TSX, Deutsche Börse Xetra, Euronext and SIX Swiss Exchange), open reference data (OpenFIGI, SEC EDGAR, the ISO 4217 currency lists, CoinGecko) and contributions from the community. I strictly maintain the rule that all data in this database must be freely accessible to everyone. Data requiring paid subscriptions is never included. Information that companies charge for is typically owned and maintained by those companies, making public sharing of such data a violation of their Terms of Service (ToS). However, publicly available data can be freely shared (read more about [the legality of web scraping](https://techcrunch.com/2022/04/18/web-scraping-legal-court/){:target="_blank"}). This database will always remain <u>completely free</u>.
 
 > **What categorization method is used?**
 

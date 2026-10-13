@@ -1,5 +1,6 @@
 ---
 title: Understanding Risk Exposure Across Major Indices
+seo_title: "Risk Exposure Across Major Indices"
 date: 2026-07-21
 last_modified_at: 2026-07-26
 permalink: /articles/risk-exposure-major-indices-finance-toolkit
@@ -15,7 +16,7 @@ share: true
 
 In the week of March 31 to April 6, 2025, the S&P 500 ETF fell 5.85%. A weekly move like that is not unusual in itself; it happens most years. What stands out is that the rest of 2025 behaved close to normal around it. That single week is enough to push the S&P 500's kurtosis for the year to 26, roughly nine times its typical reading in a calmer year like 2023. Volatility alone would not show this, but kurtosis does.
 
-That is a good reason to look beyond plain volatility when measuring risk. The Finance Toolkit's risk module covers Value at Risk, Conditional Value at Risk, maximum drawdown, the Ulcer Index, GARCH volatility, skewness, and kurtosis, each describing a different shape of risk that a single standard deviation number flattens into one figure. In this article I run all five across six major indices: the S&P 500 (SPY), Nasdaq 100 (QQQ), Dow Jones (DIA), Russell 2000 (IWM), MSCI EAFE developed markets (EFA), and MSCI Emerging Markets (EEM). **For more information on Finance Toolkit, have a look [here](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
+That is a good reason to look beyond plain volatility when measuring risk. The Finance Toolkit's risk module covers Value at Risk, Conditional Value at Risk, maximum drawdown, the Ulcer Index, GARCH volatility, skewness, and kurtosis, each describing a different shape of risk that a single standard deviation number flattens into one figure. In this article I run all five across six major indices: the S&P 500 (SPY), Nasdaq 100 (QQQ), Dow Jones (DIA), Russell 2000 (IWM), MSCI EAFE developed markets (EFA), and MSCI Emerging Markets (EEM). **For more information, see the [Finance Toolkit on GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
 ## Setting Things Up
 

@@ -1,6 +1,6 @@
 ---
 title: Portfolio
-seo_title: Portfolio Module Documentation – Finance Toolkit
+seo_title: Portfolio Module – Finance Toolkit Docs
 excerpt: The Portfolio module is meant to calculate important portfolio metrics allows you to compare your own portfolio to a benchmark, seeing performance of individual assets and directly load the portfolio into the Finance Toolkit.
 description: "Reference for every function and parameter in the Finance Toolkit's Portfolio module: load your transactions, track holdings and compare to a benchmark."
 author_profile: false

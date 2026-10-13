@@ -119,7 +119,7 @@ And below all twelve are ranked by market cap.
 
 {% include ft-chart.html id="discovery" label="US semiconductor companies worth more than $100 billion" %}
 
-This module also includes [stock screeners](/projects/financetoolkit/docs/discovery#get_stock_screener), [sector/industry performance](/projects/financetoolkit/docs/discovery#get_sectors_performance), [news feeds](/projects/financetoolkit/docs/discovery#get_stock_news) and more. Find the full instrument discovery documentation [here](/projects/financetoolkit/docs/discovery).
+This module also includes [stock screeners](/projects/financetoolkit/docs/discovery#get_stock_screener), [sector/industry performance](/projects/financetoolkit/docs/discovery#get_sectors_performance), [news feeds](/projects/financetoolkit/docs/discovery#get_stock_news) and more. Find [the full instrument discovery documentation](/projects/financetoolkit/docs/discovery).
 
 ### Obtaining Historical Data
 
@@ -457,7 +457,7 @@ And below each coefficient is shown with its 95% confidence interval, with stars
 
 {% include ft-chart.html id="econometrics" label="OLS coefficients with 95% confidence intervals" %}
 
-Only `QCOM`, `SWKS`, `MSFT`, `GOOGL` and `PG` come out statistically significant once every regressor is controlled for at once. The module covers 48 methods in total, including [unit root tests](/projects/financetoolkit/docs/econometrics#get_augmented_dickey_fuller) (ADF, KPSS, Phillips-Perron, Zivot-Andrews), [cointegration and Granger causality](/projects/financetoolkit/docs/econometrics#get_engle_granger_cointegration), [panel data estimators](/projects/financetoolkit/docs/econometrics#get_fixed_effects) (Fixed/Random Effects, Hausman), [causal inference](/projects/financetoolkit/docs/econometrics#get_propensity_score_matching) (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching, Synthetic Control), [time-series forecasting](/projects/financetoolkit/docs/econometrics#get_arima_forecast) (ARIMA, VAR, VECM, impulse response) and [event studies](/projects/financetoolkit/docs/econometrics#get_event_study). Find the full econometrics documentation [here](/projects/financetoolkit/docs/econometrics).
+Only `QCOM`, `SWKS`, `MSFT`, `GOOGL` and `PG` come out statistically significant once every regressor is controlled for at once. The module covers 48 methods in total, including [unit root tests](/projects/financetoolkit/docs/econometrics#get_augmented_dickey_fuller) (ADF, KPSS, Phillips-Perron, Zivot-Andrews), [cointegration and Granger causality](/projects/financetoolkit/docs/econometrics#get_engle_granger_cointegration), [panel data estimators](/projects/financetoolkit/docs/econometrics#get_fixed_effects) (Fixed/Random Effects, Hausman), [causal inference](/projects/financetoolkit/docs/econometrics#get_propensity_score_matching) (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching, Synthetic Control), [time-series forecasting](/projects/financetoolkit/docs/econometrics#get_arima_forecast) (ARIMA, VAR, VECM, impulse response) and [event studies](/projects/financetoolkit/docs/econometrics#get_event_study). Find [the full econometrics documentation](/projects/financetoolkit/docs/econometrics).
 
 ## How-To Guides for the FinanceToolkit
 

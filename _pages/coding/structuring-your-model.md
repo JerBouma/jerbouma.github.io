@@ -15,7 +15,7 @@ sidebar:
 
 The structure of a model is the part you should design yourself, even when an assistant writes all the code. It decides where every calculation lives, how data flows and how easy it is to check a change. Once you have chosen a structure, write it down in your [instruction file](/modelling/working-with-ai#instruction-files) so the assistant follows it in every task. Treat the guidelines below as a reference rather than as strict rules: what matters most is a structure that is understandable and maintainable.
 
-My preferred approach for structuring a model is the **Model, View, Controller (MVC)** pattern. This software design pattern is commonly used to separate user interfaces, data, and controlling logic. It emphasizes separating the software's business logic from its presentation. This "separation of concerns" makes it easier to divide the work and to maintain the code. Models and Views should ideally function independently, while Controllers depend on Models or a combination of Models and Views. Note that while many variations of this pattern exist (see [here](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller#See_also){: target="_blank"}), they all adhere to the same core principles.
+My preferred approach for structuring a model is the **Model, View, Controller (MVC)** pattern. This software design pattern is commonly used to separate user interfaces, data, and controlling logic. It emphasizes separating the software's business logic from its presentation. This "separation of concerns" makes it easier to divide the work and to maintain the code. Models and Views should ideally function independently, while Controllers depend on Models or a combination of Models and Views. Note that while many variations of this pattern exist (see [Wikipedia](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller#See_also){: target="_blank"}), they all adhere to the same core principles.
 
 The following diagrams illustrate different data flows within the MVC pattern, depending on the model's structure and purpose.
 
@@ -69,7 +69,7 @@ Step2["Profitability Model"]  -- "3. Returns Gross Margin" --> Step0["User"]
 
 For example, a Gross Margin calculation function shouldn't require input data with specific column names. Instead, it should accept generic inputs like two Series, Arrays, Floats, or Integers. This leads to "dumb" calculation functions that contain no application-specific logic.
 
-You can see how simple such a model is [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/profitability_model.py){:target="_blank"} and below:
+You can see how simple [such a model](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/profitability_model.py){:target="_blank"} and below:
 
 ```python
 def get_gross_margin(revenue: pd.Series, cost_of_goods_sold: pd.Series) -> pd.Series:
@@ -143,7 +143,7 @@ Step3["Ratios Controller"] <-- "2. Calculates Gross Margin" --> Step2["Profitabi
 Step3["Ratios Controller"] -- "3. Shows Gross Margin" --> Step0["User"]
 </div>
 
-The Controller should perform <u>no</u> core calculations. Assistants regularly break this rule by computing something "just here" inside a controller method, so it is worth stating explicitly in your instructions. Its only job is to direct the data flow between the Model and View. Controller logic is often encapsulated within classes. For instance, the Gross Margin calculation might be accessed via a method within a `Ratios` class (see the actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/ratios_controller.py#L2310-L2374){: target="_blank"}):
+The Controller should perform <u>no</u> core calculations. Assistants regularly break this rule by computing something "just here" inside a controller method, so it is worth stating explicitly in your instructions. Its only job is to direct the data flow between the Model and View. Controller logic is often encapsulated within classes. For instance, the Gross Margin calculation might be accessed via a method within a `Ratios` class (see [the actual code](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/ratios_controller.py#L2310-L2374){: target="_blank"}):
 
 ```python
 class Ratios:
@@ -201,7 +201,7 @@ Step1["Toolkit Controller"] <-- "3. Historical Data" --> Step2b["Historical Mode
 Step1["Toolkit Controller"] -- "4. Init Ratios" --> Step3["Ratios Controller"]
 </div>
 
-This main controller then initializes a dedicated `ratios_controller.py` responsible for ratio calculations. This separation prevents the main Toolkit Controller from becoming overloaded and allows the Ratios Controller to be potentially used independently. For example, in `toolkit_controller.py`, the Ratios Controller is initialized like this (see actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/toolkit_controller.py#L400-L523){: target="_blank"}):
+This main controller then initializes a dedicated `ratios_controller.py` responsible for ratio calculations. This separation prevents the main Toolkit Controller from becoming overloaded and allows the Ratios Controller to be potentially used independently. For example, in `toolkit_controller.py`, the Ratios Controller is initialized like this (see [the actual code](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/toolkit_controller.py#L400-L523){: target="_blank"}):
 
 ```python
 class Toolkit:
@@ -255,7 +255,7 @@ Step4["Ratios Controller"] <-- "3. Calculates Growth" --> Step3["Helpers"]
 Step4["Ratios Controller"] -- "4. Shows Result" --> Step0["User"]
 </div>
 
-For example, consider a function that calculates the growth of a pd.Series or pd.DataFrame. Since growth calculation might be needed for ratios, technical indicators, performance metrics, etc., placing it in a central `helpers` module avoids code duplication. See the actual code [here](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/helpers.py#L129-L207){: target="_blank"} and an example below:
+For example, consider a function that calculates the growth of a pd.Series or pd.DataFrame. Since growth calculation might be needed for ratios, technical indicators, performance metrics, etc., placing it in a central `helpers` module avoids code duplication. See [the actual code](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/helpers.py#L129-L207){: target="_blank"} and an example below:
 
 ```python
 def calculate_growth(

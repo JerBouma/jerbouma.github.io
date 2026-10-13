@@ -1,6 +1,6 @@
 ---
 title: Discovery
-seo_title: Discovery Module Documentation – Finance Toolkit
+seo_title: Discovery Module – Finance Toolkit Docs
 excerpt: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit.
 description: "Reference for every function and parameter in the Finance Toolkit's Discovery module: screeners, quotes and lists of stocks, crypto, ETFs and indices."
 author_profile: false
