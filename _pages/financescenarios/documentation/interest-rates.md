@@ -20,7 +20,9 @@ Every model is fitted to market or official data, so simulated rates start from 
 
 ## Short-Rate Models
 
-A short-rate model is enough when you need one rate per country, such as a 3-month bill rate or a 10-year yield, around a normal level. Each rate is its own factor, correlated with everything else in the run.
+A short-rate model is enough when you need one rate per country around a normal level, such as a 3-month bill rate. Each rate is its own factor, correlated with everything else in the run.
+
+The same models can also drive a single long yield, such as the 10-year Treasury, as its own mean-reverting factor. That is a model of one yield, not a short-rate model that implies a curve: a short and a long rate entered this way are linked only by correlation (Hibbert's model below is the exception), so their spread can invert at random rather than with the cycle. For a coherent curve across maturities, use the [Nelson-Siegel curve](#the-nelson-siegel-yield-curve).
 
 ```yaml
 interest_rates:
@@ -158,7 +160,7 @@ Rates can also respond to the economy on top of their own mean reversion, throug
 
 Market-consistent valuation, such as a Solvency II best estimate, needs rates whose expected discounting reproduces today's bond prices. Hull-White has two risk-neutral versions:
 
-- **Flat path.** Today's rate is held constant along every path; no speed or volatility is fitted, since no market price would discipline them.
+- **Flat path (deterministic discounting).** Today's rate is held constant along every path, with no volatility. It discounts fixed cash flows, but gives interest rate options and guarantees no time value, so it is not for valuing them.
 - **Forward curve.** $$\theta$$ becomes a time-dependent path chosen so that the model reproduces today's forward curve (a Nelson-Siegel fit to the four Treasury yields), following [Brigo and Mercurio (2006, section 3.3)](https://doi.org/10.1007/978-3-540-34604-3){:target="_blank"}.
 
 ```yaml
@@ -180,7 +182,7 @@ y(\tau) = L + S\,\frac{1 - e^{-\lambda\tau}}{\lambda\tau} + C\left(\frac{1 - e^{
 $$
 
 - **Level** $$L$$ moves every maturity equally: a parallel shift. It is the long end of the curve and tracks long-run inflation expectations and the neutral rate.
-- **Slope** $$S$$ moves short maturities more than long ones. The very short end is $$L + S$$, so a negative slope is a normal upward curve and a positive one an inverted curve; it moves with monetary policy and the cycle.
+- **Slope** $$S$$ moves short maturities more than long ones. In this formula it is the short end minus the long end: the very short yield is $$L + S$$ and the long yield $$L$$. A normal, upward-sloping curve therefore has a negative $$S$$, and an inverted curve a positive one. It moves with monetary policy and the cycle.
 - **Curvature** $$C$$ moves medium maturities most: a hump or a trough in the belly of the curve.
 
 The decay $$\lambda$$ (0.7308 by default, as in Diebold and Li) fixes where the curvature loading peaks. The factors are fitted to observed yields on every historical date, then each is simulated as its own mean-reverting process, correlated with the rest of the model.
@@ -193,22 +195,7 @@ yield_curve:
   period: monthly
 ```
 
-The curve can come from the four Yahoo Treasury yields, the official 12-maturity US Treasury par curve (which needs an FMP key), or the official government curve of the United States, the Euro Area (ECB), Germany, the United Kingdom, Japan, Canada, Sweden or Norway. The simulated factors convert to a yield at any maturity, and to statistics such as how often the curve inverts:
-
-```python
-from financescenarios import Scenarios
-from financescenarios.factors.term_structure.term_structure_model import (
-    curve_inversion_frequency,
-    nelson_siegel_yield,
-)
-
-# Every shipped factor set built on broad (default, core, us_only) includes the Nelson-Siegel curve
-result = Scenarios.from_profiles(settings="default", factor_set="default").simulate(n_simulations=1000)
-level, slope, curvature = (result.paths[name] for name in ("rate_level", "rate_slope", "rate_curvature"))
-
-ten_year = nelson_siegel_yield(level, slope, curvature, tenor=10.0, decay=0.7308)  # scenarios x steps
-inverted = curve_inversion_frequency(level, slope, curvature, short_tenor=0.25, long_tenor=10.0, decay=0.7308)
-```
+The curve can come from the four Yahoo Treasury yields, the official 12-maturity US Treasury par curve (which needs an FMP key), or the official government curve of the United States, the Euro Area (ECB), Germany, the United Kingdom, Japan, Canada, Sweden or Norway. The simulated factors convert to a yield at any maturity, and to statistics such as how often the curve inverts; the [TermStructure reference](/projects/financescenarios/docs/reference/term-structure) shows how.
 
 ### Limits
 
@@ -230,7 +217,7 @@ credit_term_structure:
 
 Two sources are available:
 
-- The US Treasury's [High Quality Market corporate bond curve](https://home.treasury.gov/data/treasury-coupon-issues-and-corporate-bond-yield-curves){:target="_blank"} minus the Treasury par curve, monthly from 1984: an investment-grade (AAA to A) spread curve, the one US pension plans discount with. It needs a free FRED key.
+- The US Treasury's [High Quality Market corporate bond curve](https://home.treasury.gov/data/treasury-coupon-issues-and-corporate-bond-yield-curves){:target="_blank"}: its par yields minus Treasury constant-maturity (par) yields at 2, 5, 10 and 30 years, monthly averages from 1984. It is an investment-grade (AAA to A) spread curve, the basis of the IRS segment rates for US pension minimum funding; accounting discount rates usually come from AA curves instead. It needs a free FRED key.
 - The [Open Source Bond Asset Pricing](https://openbondassetpricing.com/){:target="_blank"} panel of US corporate bond trades (TRACE), July 2002 to March 2025, with spreads over the government curve of [Liu and Wu (2021)](https://doi.org/10.1016/j.jfineco.2021.05.059){:target="_blank"}. The curve starts from the panel's last month, not today.
 
 Monthly data is the default: daily single-bond spreads carry bid/ask bounce that would fit an unrealistically fast mean reversion.

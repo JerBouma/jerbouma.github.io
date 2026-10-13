@@ -24,7 +24,7 @@ Each factor follows a model suited to how it behaves: rates, inflation and sprea
 
 | Area | What is simulated | Model | Guide |
 |:-----|:------------------|:------|:------|
-| Short and long rates | One rate per country, short or long end | Hull-White (default, can go negative), CIR (rates kept near or above zero), Wilkie, Hibbert two-factor | [Interest rates](/projects/financescenarios/docs/interest-rates) |
+| Short and long rates | One rate per country, short or long end | Vasicek (default, can go negative; Hull-White when fitted to today's curve), CIR (rates kept near or above zero), Wilkie, Hibbert two-factor | [Interest rates](/projects/financescenarios/docs/interest-rates) |
 | Yield curve | Level, slope and curvature of the whole curve | Dynamic Nelson-Siegel | [Interest rates](/projects/financescenarios/docs/interest-rates) |
 | Forward curve | The full forward curve, arbitrage-free | Two-factor Gaussian HJM | [Interest rates](/projects/financescenarios/docs/interest-rates) |
 | Rates and inflation jointly | Nominal and real rates, inflation, optionally equities | KNW, with stochastic volatility or priced like the market | [KNW](/projects/financescenarios/docs/knw) |
@@ -44,7 +44,7 @@ Interest rates, inflation, equities and unemployment are always simulated; the r
 
 ## How the Factors Are Linked
 
-A sell-off should come with the spread, rate and currency moves history saw alongside one. Where theory says one variable drives another (inflation driving unemployment, a rate gap driving an exchange rate), the driver's simulated path feeds the next factor; everything else is tied together by one correlation matrix of the historical shocks. [How a run is built](/projects/financescenarios/docs/architecture#dependence) explains both.
+When equities fall, spreads, rates and currencies should move the way they did in past sell-offs. Where theory says one variable drives another (inflation driving unemployment, a rate gap driving an exchange rate), the driver's simulated path feeds the next factor; everything else is tied together by one correlation matrix of the historical shocks. [How a run is built](/projects/financescenarios/docs/architecture#dependence) explains both.
 
 ## Real-World and Risk-Neutral Runs
 
@@ -64,20 +64,6 @@ All history comes from the [Finance Toolkit](https://github.com/JerBouma/Finance
 
 ## Map of the Documentation
 
-| Page | What it covers |
-|:-----|:---------------|
-| [How a run is built](/projects/financescenarios/docs/architecture) | How a scenario set is built: data, calibration, dependence, simulation, output. |
-| [Simulation engine](/projects/financescenarios/docs/simulation-engine) | Correlated shocks, fat tails, time stepping, Monte Carlo error and working with a run. |
-| [Configuration](/projects/financescenarios/docs/configuration) | Profiles, beliefs, published frameworks (Wilkie, Ahlgrim, Hibbert, KNW), long history and the two measures. |
-| [Units](/projects/financescenarios/docs/units) | How every result reads: rates as annualized decimals, prices as annualized returns since the start. |
-| [Interest rates](/projects/financescenarios/docs/interest-rates) | Short-rate models and when to pick each, the zero lower bound, the yield curve, credit curve and HJM. |
-| [KNW](/projects/financescenarios/docs/knw) | The joint interest-rate and inflation models behind De Nederlandsche Bank's scenario set. |
-| [Economy](/projects/financescenarios/docs/economy) | Inflation, unemployment, the business cycle and mortality. |
-| [Markets](/projects/financescenarios/docs/markets) | Equities, currencies, commodities, real estate, dividends, credit spreads and rating migration. |
-| [Regimes](/projects/financescenarios/docs/regimes) | Stress narratives, official stress tests and climate pathways. |
-| [Portfolio](/projects/financescenarios/docs/portfolio) | From scenarios to an investment mix: rebalancing, cashflows, glidepaths, fees, risk metrics and backtests. |
-| [Solvency](/projects/financescenarios/docs/solvency) | Best estimate, own funds and the SCR under Solvency II, and the market-consistency check. |
-| [Validation](/projects/financescenarios/docs/validation) | How the output is checked against theory and external benchmarks. |
-| [Coverage](/projects/financescenarios/docs/coverage) | What the project can and can't do, and why. |
-| [Plotting](/projects/financescenarios/docs/plotting) | Fan charts, paths and distributions for every result. |
-| [Reference](/projects/financescenarios/docs/reference) | Every class and function, with its parameters, papers and a worked example. |
+- **Documentation**: how a run is [built](/projects/financescenarios/docs/architecture) and [simulated](/projects/financescenarios/docs/simulation-engine), how to [configure](/projects/financescenarios/docs/configuration) it and [read](/projects/financescenarios/docs/units) the results, plus [regimes](/projects/financescenarios/docs/regimes), [validation](/projects/financescenarios/docs/validation) and [coverage](/projects/financescenarios/docs/coverage).
+- **Guides**: the models per area, from [interest rates](/projects/financescenarios/docs/interest-rates) and [KNW](/projects/financescenarios/docs/knw) to the [economy](/projects/financescenarios/docs/economy) and [markets](/projects/financescenarios/docs/markets), and their use in a [portfolio](/projects/financescenarios/docs/portfolio) and for [Solvency II](/projects/financescenarios/docs/solvency).
+- **Reference**: every class and function, with its parameters and papers, in [the reference](/projects/financescenarios/docs/reference).

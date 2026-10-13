@@ -82,7 +82,7 @@ scenarios = Scenarios.from_profiles(
 
 ## Calibration Window
 
-Today's data tells the model where things are; the history tells it how they move. The window decides which economic regimes the fitted parameters have seen. A window from 2000 has seen near-zero rates and low inflation, and little else. Fitted on it, the US short rate settles at 5.3% and the 10-year at 3.2%: an inverted curve forever. Fitted on the OECD's rates since 1950, every curve slopes upward again, with US rates at 4.5% short and 6.0% long.
+Today's data tells the model where things are; the history tells it how they move. The window decides which economic regimes the fitted parameters have seen. A window from 2000 has seen a decade of near-zero rates and low inflation. Rates drift so slowly against its length that the speed of mean reversion is barely pinned down, and the long-run level, estimated together with it, swings with small changes in the data. Fitted on it, the US short rate settles at 5.3% and the 10-year at 3.2%, an inverted curve forever. That is a weakly identified estimate, not a forecast. Fitted on the OECD's rates since 1950, every curve slopes upward again, with US rates at 4.5% short and 6.0% long.
 
 Short windows also understate tail events that did not happen in them. For runs of decades, the speed of mean reversion and the volatility should come from a history that includes the inflation of the 1970s and a few full rate cycles.
 
@@ -109,7 +109,7 @@ Every factor is real-world by default; a single factor or a whole run can switch
 | Factor | Risk-neutral version |
 |:-------|:---------------------|
 | Equities | Grows at the risk-free rate minus the dividend yield; volatility from option prices or a Heston model fitted to the volatility smile |
-| Interest rates | Today's rate, or a Hull-White rate that follows today's forward curve |
+| Interest rates | A Hull-White rate whose average path follows today's forward curve (the default when the whole run is risk-neutral); switched on one factor alone, a flat path at today's rate |
 | FX | The interest-rate gap between the two currencies |
 | Inflation | A forward curve from breakeven inflation (US, UK, Germany or the euro area) |
 | KNW with stochastic volatility | A market price of risk fitted to the yield curve |
@@ -119,6 +119,8 @@ Every factor is real-world by default; a single factor or a whole run can switch
 ```python
 result = scenarios.simulate(measure="risk_neutral")   # or measure: risk_neutral on one factor
 ```
+
+A flat rate at today's level is deterministic discounting: it has no rate volatility and ignores the shape of the curve, so it does not value options or guarantees on rates. Use the forward-curve version for those.
 
 The [Solvency II](/projects/financescenarios/docs/solvency) guide shows how the two measures work together in a nested valuation.
 
@@ -145,7 +147,7 @@ Beliefs don't apply to risk-neutral factors, which exist to match the market. A 
 
 ### Anchoring Long-Run Rate Levels {#anchoring-long-run-rate-levels}
 
-Instead of your own view, a rate's long-run level can follow an official path. Anchored to EIOPA, it follows the forward rates of EIOPA's risk-free curve for its currency (USD, EUR or GBP), ending at the [ultimate forward rate](https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en) Solvency II insurers discount with. Anchored to DNB (euro only), it follows the median of [De Nederlandsche Bank's](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/) pension scenario set. Speed and volatility stay fitted, and an explicit belief still wins. The default factor set uses EIOPA: over 30 years its US 10-year median ends at 4.8%, against 4.5% in the NAIC's generator.
+Instead of your own view, a rate's long-run level can follow an official path. Anchored to EIOPA, it follows the forward rates of EIOPA's risk-free curve for its currency (USD, EUR or GBP), which converge to the [ultimate forward rate](https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en) Solvency II insurers discount with only beyond the last liquid maturity (50 years for the dollar). Over a few decades the anchor therefore still follows market forwards, not the UFR. Anchored to DNB (euro only), it follows the median of [De Nederlandsche Bank's](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/) pension scenario set. Speed and volatility stay fitted, and an explicit belief still wins. The default factor set uses EIOPA: over 30 years its US 10-year median ends at 4.8%, against 4.5% in the NAIC's generator.
 
 ```yaml
 interest_rates:
@@ -181,7 +183,7 @@ Economic scenario generators differ mostly in how they link the variables. Each 
 | `hibbert` | [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf) | Rates and inflation revert to a slowly moving target; equities switch between two regimes. |
 | any set with the KNW method | [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058) | Rates and inflation drive each other, optionally with shared stochastic volatility; see the [KNW guide](/projects/financescenarios/docs/knw). |
 
-Wilkie and KNW are discrete-time models, so the step must match the frequency they were fitted at. Wilkie's long bond model needs the long yield to stay above average inflation, which US yields did not from 2008 to 2017, so its settings profile fits on 1995 to 2007: the calibration window is a modeling choice, not a technicality.
+Wilkie is a discrete-time model. KNW is continuous-time in the paper, but the package fits its discrete-time version, a VAR(1) of the short rate and expected inflation, as DNB's Commissie Parameters (2022) does. For both, the step must match the frequency they were fitted at. Wilkie's long bond model needs the long yield to stay above average inflation, which US yields did not from 2008 to 2017, so its settings profile fits on 1995 to 2007: the calibration window is a modeling choice, not a technicality.
 
 ```python
 scenarios = Scenarios.from_profiles(settings="wilkie", factor_set="wilkie")

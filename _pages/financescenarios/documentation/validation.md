@@ -38,7 +38,7 @@ A risk-neutral run used for valuation must reproduce today's prices: discounted 
 
 ## Checking a Run Against History
 
-The same checks run on every published calibration and on any run of your own. Each passes, warns or fails, with the numbers and what they mean.
+The same checks run on every published calibration and on any run of your own. Each passes, warns or fails, with the numbers and what they mean. They are screens for errors in the fit or the implementation, not acceptance criteria for the model. The bands are wide on purpose: mean-reverting, regime-switching and GARCH factors legitimately move a little differently at another step size than their history, and a correlation gap above 0.25 points to a wiring problem rather than noise. A factor fitted on a longer history than the recent window is reported but not graded on volatility.
 
 | Check | Warns or fails when | What a failure implies |
 |:------|:--------------------|:-----------------------|
@@ -70,17 +70,12 @@ The checks above compare the model with itself and its own data. The benchmarks 
 
 A published calibration is fixed under a version tag, passes the checks above before release, and records its data window, package versions and a hash of its configuration. A run can then state exactly which calibration it used, and anyone can reproduce its scenarios offline. A release whose configuration no longer matches its hash is refused rather than silently mixing two sets of assumptions. Reference calibrations are meant to be published once a year.
 
-```python
-from financescenarios.release.release_controller import download_release, simulate_release
-
-folder = download_release("latest", factor_set="default")  # or a version such as "2027.01.01"
-result = simulate_release(folder)
-```
+Downloading and simulating a release is covered in the [runs and releases reference](/projects/financescenarios/docs/reference/runs-and-releases).
 
 ## What Is Not Validated
 
 - **Dependence is one linear correlation matrix**, constant over the horizon. A Student-t shock distribution adds joint tail risk through one shared t-copula (see [fat tails](/projects/financescenarios/docs/simulation-engine#fat-tails-and-tail-dependence)), but tail dependence that differs by pair or is asymmetric is not captured.
 - **Risk-neutral calibration is limited in scope.** Interest rates, inflation, equities, FX and commodities can be calibrated risk neutral, but without a full arbitrage-free volatility surface; see the [measures section of the configuration page](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures).
-- **No currency conversion at the factor level.** Each region's factors are calibrated and simulated in their own currency; conversion to one reporting currency happens only after simulation.
 - **Judgment calls are not checked for economic sense.** The number of equity regimes and every belief override are the user's choice; only their shape is checked, not whether they are reasonable.
+- **No out-of-sample backtest.** Nothing checks how often realized history fell inside the bands a calibration would have predicted at the time. Historical paths can be fetched in the same shape as a run for a portfolio backtest, but a coverage test of the bands is left to the user.
 - **No scenario reduction or moment matching.** Every simulated path is returned as drawn; none are selected or reweighted to match target moments with fewer scenarios.

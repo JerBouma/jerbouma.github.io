@@ -18,7 +18,7 @@ sidebar:
 
 A pension fund with inflation-indexed benefits, discounted at nominal rates, is exposed to the joint behavior of rates and inflation more than to either one alone. The KNW models simulate the two as one system: today's inflation shapes where rates go next, and today's rate shapes where inflation goes next.
 
-They follow the term-structure model of [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058){:target="_blank"}, which the Dutch Commissie Parameters extends in its CP2022 model, the model behind the scenario sets De Nederlandsche Bank (DNB) publishes for Dutch pension funds. For the single-factor short-rate models and the Nelson-Siegel curve, see [interest rates](/projects/financescenarios/docs/interest-rates).
+They follow the term-structure model of [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058){:target="_blank"}, which the Dutch Commissie Parameters extends in its CP2022 model, the model behind the scenario sets De Nederlandsche Bank (DNB) publishes for Dutch pension funds. Finance Scenarios implements a discrete, reduced-form approximation inspired by both: a VAR on the observed short rate and inflation, fitted by least squares, not the latent-factor model those papers filter from the yield curve. For the single-factor short-rate models and the Nelson-Siegel curve, see [interest rates](/projects/financescenarios/docs/interest-rates).
 
 ## Why Model Rates and Inflation Together
 
@@ -79,7 +79,7 @@ On 146 quarters of the US OECD short rate and CPI growth, 1990Q1 to 2026Q2 (cali
 | interest rate | -0.0009 | 0.9397 | 0.0918 | 0.0044 |
 | inflation | 0.0036 | 0.8910 | -0.0246 | 0.0073 |
 
-One percentage point more inflation adds 0.092 points to next quarter's rate, in line with central banks raising rates when inflation runs high, though a reduced-form regression cannot single out that channel. A higher rate nudges inflation down only slightly. A joint shock halves in about 8 quarters, and the pair settles at a 2.60% rate and 2.74% inflation: a long-run rate just below long-run inflation, which reflects the long near-zero-rate spell in the sample.
+One percentage point more inflation adds 0.092 points to next quarter's rate, in line with central banks raising rates when inflation runs high, though a reduced-form regression cannot single out that channel. A higher rate nudges inflation down only slightly. A joint shock halves in about 8 quarters, and the pair settles at a 2.60% rate and 2.74% inflation: a long-run rate just below long-run inflation, which reflects the long near-zero-rate spell in the sample. Over a long pension projection this fit implies a slightly negative real short rate on average. A belief cannot override it, since the long-run levels are a joint property of both legs; the history window the pair is fitted on is the lever.
 
 ## Stochastic Volatility
 
@@ -99,7 +99,7 @@ with the same shape for inflation. $$\lambda$$ lets turbulence move the expected
 
 **Estimating turbulence.** DNB recovers $$v$$ from market yields on each date. Finance Scenarios estimates it from the pair's own history: a trailing four-period average of plain KNW's squared surprises, lagged one period, is the proxy for $$v$$. A CIR process is fitted to that proxy and both legs are refitted with it as an extra input; if neither leg's variance rises with $$v$$, the fit suggests plain KNW. Simulation uses [Andersen's (2008)](https://doi.org/10.21314/jcf.2008.189){:target="_blank"} Quadratic-Exponential scheme, which keeps $$v$$ non-negative with little bias.
 
-On the same US quarterly data (calibrated on 2026-10-05), turbulence halves in about 1.7 years. Its current value (0.0000094) is well below its long-run level (0.0000627), so the pair starts calmer than usual. Inflation responds most: its standard deviation is 0.31% a quarter at $$v = 0$$ and 0.68% at the long-run level. The Feller condition $$2a_v\theta_v \ge \sigma_v^2$$ fails on this fit, so simulated turbulence touches zero more often than its long-run distribution suggests.
+On the same US quarterly data (calibrated on 2026-10-05), turbulence halves in about 1.7 years. Turbulence is the variance of a quarter's combined rate and inflation surprise. Today it corresponds to a surprise of about 0.3 percentage points a quarter, against about 0.8 at its long-run level, so the pair starts calmer than usual. Inflation responds most: its standard deviation is 0.31% a quarter at $$v = 0$$ and 0.68% at the long-run level. The Feller condition $$2a_v\theta_v \ge \sigma_v^2$$ fails on this fit, so simulated turbulence touches zero more often than its long-run distribution suggests.
 
 ## The Equity Leg
 
@@ -146,14 +146,14 @@ In one fit (calibrated on 2026-10-04) the curve started at the 3.75% short rate,
 
 **Limits.**
 
-- The closed-form prices assume uncorrelated rate and inflation shocks; the simulation still uses the full correlation matrix.
+- The closed-form prices assume uncorrelated rate and inflation shocks, while the simulation uses the full correlation matrix. Model bond prices and simulated discount factors can therefore differ when the shocks are correlated.
 - The inflation risk premium is weakly identified: without a real (TIPS) curve or inflation swaps, nothing separates real rates from the inflation premium. Judge the fit by how well it reprices nominal yields, not by the individual premiums.
 
 ### The Stochastic Deflator
 
 A deflator values a liability straight off a real-world run, so you don't need a second, risk-neutral simulation. Following [Cheng and Planchet (2018)](https://hal.science/hal-01730072){:target="_blank"}, $$D(T)$$ combines discounting at the simulated short rate with a path weight that turns real-world paths into risk-neutral ones; the value of a cash flow $$X_T$$ is the path average of $$D(T)\,X_T$$.
 
-The weight covers the rate and inflation shocks but not turbulence's, so accuracy depends on the turbulence premium. With that premium at zero, the average deflator matches closed-form bond prices within about 0.1% to 2% up to ten years. With a premium of about 15% of turbulence's mean-reversion speed, it undershoots by about 1% at 2 years, 8% at 5 years and 20% at 10 years. On the live US fit the premium was about two-thirds of that speed and the average deflator collapsed toward zero, so it is not usable there; the fit warns once the premium passes 5% of the speed. The deflator is available in Python only; the [KnwSvQ reference](/projects/financescenarios/docs/reference/knw-sv-q) has a worked example.
+The weight leaves out turbulence's shock, so the deflator is only accurate when the turbulence premium is small. On the live US fit that premium is large and the deflator is not usable; the fit warns when it is too large. The deflator is available in Python only; the [KnwSvQ reference](/projects/financescenarios/docs/reference/knw-sv-q) has a worked example.
 
 ## Configuring a KNW Run
 

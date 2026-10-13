@@ -54,7 +54,7 @@ $$
 I_t = \theta + \phi\,(I_{t-1} - \theta) + \sigma\,z_t
 $$
 
-On US monthly data, 97% of each month's gap carried into the next. Because $$\phi$$ is a share per period, not a speed, the model runs only at the frequency it was fitted on. The reason to choose it is the rest of Wilkie's cascade: dividend yield, dividend growth and the long-term (consols) yield all follow from the inflation path. Its long-yield equation needs long yields above average inflation throughout the fit, which US data meet only until 2007, hence the Wilkie settings fit on 1995-2007 ([Wilkie consols](/projects/financescenarios/docs/interest-rates#wilkie-consols)).
+Wilkie fitted it on yearly data. The shipped Wilkie set fits it monthly on year-over-year CPI; on US monthly data, 97% of each month's gap carried into the next. Much of that persistence comes from the overlap of consecutive year-over-year readings, which also leaves the monthly surprises autocorrelated, so the monthly fit is an approximation; fit on yearly data to stay close to Wilkie. Because $$\phi$$ is a share per period, not a speed, the model runs only at the frequency it was fitted on. The reason to choose it is the rest of Wilkie's cascade: dividend yield, dividend growth and the long-term (consols) yield all follow from the inflation path. Its long-yield equation needs long yields above average inflation throughout the fit, which US data meet only until 2007, hence the Wilkie settings fit on 1995-2007 ([Wilkie consols](/projects/financescenarios/docs/interest-rates#wilkie-consols)).
 
 ### Hibbert's Two-Factor Model
 
@@ -78,7 +78,7 @@ inflation:
 
 Everything above is real-world inflation. To value inflation-linked cash flows in line with market prices you need the breakeven: the gap between a nominal and an inflation-protected government yield of the same maturity. It includes an inflation risk premium, so it is not a forecast.
 
-Finance Scenarios fits a [Nelson-Siegel (1987)](https://doi.org/10.1086/296409){:target="_blank"} curve (level, slope and hump) to the latest breakevens, with the decay parameter fixed as in [Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}. Every path then follows that curve, with no randomness.
+Finance Scenarios fits a [Nelson-Siegel (1987)](https://doi.org/10.1086/296409){:target="_blank"} curve (level, slope and hump) to the latest breakevens, with the decay parameter fixed as in [Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}. Every path then follows that curve, with no randomness, so inflation options such as capped indexation or LPI get no time value from it.
 
 | Market | Source | Maturities | Index |
 |:--|:--|:--|:--|
@@ -95,7 +95,7 @@ inflation:
     measure: risk_neutral
 ```
 
-A whole-run risk-neutral simulation keeps inflation real-world, so benefits can still be indexed to it. For a stochastic risk-neutral inflation leg, use the KNW model with stochastic volatility.
+A whole-run risk-neutral simulation keeps inflation (and unemployment) real-world, so indexed best estimates from such a run mix two measures and are not fully market consistent. For a stochastic risk-neutral inflation leg, use the KNW model with stochastic volatility.
 
 ### Limits
 
@@ -206,7 +206,7 @@ q_70 = cbd_mortality_rate(
 ### Limits
 
 - No cohort effects (one generation improving differently from its neighbors) and no Lee-Carter alternative.
-- The straight-line shape holds locally: a death rate far outside the fitted ages, such as age 30 from a 60 to 89 fit, is not reliable.
+- The straight-line shape holds locally: a death rate far outside the fitted ages, such as age 30 from a 60 to 84 fit, is not reliable.
 - Mortality data are yearly, so with a short table its correlation with the other factors rests on few points.
 
 Full reference: [Mortality](/projects/financescenarios/docs/reference/mortality).

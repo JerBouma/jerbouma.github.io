@@ -38,6 +38,8 @@ $$
 
 where $$\nu$$ is the degrees of freedom. When $$W_t$$ is small, all factors take a large shock at once, so extreme moves cluster across factors (tail dependence). The $$\nu - 2$$ keeps the variance at one, so every fitted volatility keeps its meaning and only the tails change. Lower $$\nu$$ means fatter tails and must exceed 2; 5 is a common choice for financial returns, not a fitted value. Normal shocks are the default.
 
+The scale is drawn independently at every step. With monthly steps, twelve fat-tailed shocks partly average out over a year, so Student-t shocks add less to a one-year 99.5% figure than the monthly tails suggest.
+
 ```yaml
 engine:
   shock_distribution: student_t   # default: gaussian
@@ -56,7 +58,7 @@ $$
 x_{t+\Delta t} = \theta + (x_t - \theta)\, e^{-a \Delta t} + \sigma \sqrt{\frac{1 - e^{-2 a \Delta t}}{2a}}\; \varepsilon_t
 $$
 
-where $$\theta$$ is the long-run level, $$a$$ the speed of mean reversion, $$\sigma$$ the volatility and $$\varepsilon_t$$ the correlated shock. Each step closes a share $$1 - e^{-a\Delta t}$$ of the gap to $$\theta$$, and the long-run standard deviation settles at $$\sigma/\sqrt{2a}$$. Because the transition is exact, the step length adds no error: a yearly step gives the same year-end distribution as twelve monthly ones. A rate stepped this way is Gaussian and can go negative; a factor modeled in logs stays positive.
+where $$\theta$$ is the long-run level, $$a$$ the speed of mean reversion, $$\sigma$$ the volatility and $$\varepsilon_t$$ the correlated shock. Each step closes a share $$1 - e^{-a\Delta t}$$ of the gap to $$\theta$$, and the long-run standard deviation settles at $$\sigma/\sqrt{2a}$$. Because the transition is exact, the step length adds no error: for a stand-alone factor, a yearly step gives the same year-end distribution as twelve monthly ones. Factors that react to another factor's path, regime switches and Student-t shocks do depend on the step. A rate stepped this way is Gaussian and can go negative; a factor modeled in logs stays positive.
 
 Prices (equities, currencies) are stepped exactly in log space, so they stay positive and their returns are lognormal:
 
@@ -89,7 +91,7 @@ $$
 
 with $$s$$ the standard deviation across scenarios. Halving the error takes four times as many scenarios. Tail percentiles are less precise still, because they rest on few scenarios: the 1st percentile of 1,000 scenarios is set by about ten of them. A practical check is to rerun with several seeds and see how much the number you report moves.
 
-**Antithetic variates** reduce that error without more random draws. Every shock $$Z$$ is paired with its mirror image $$-Z$$ (under Student-t, the scale draw $$U$$ on the uniform scale with $$1 - U$$), so each pair's errors partly cancel; the standard error is then computed from the independent pair averages. On the default factor set it cut the seed-to-seed spread of a 60/40 portfolio's five-year 5th percentile by about a quarter. It is off in the shipped settings and needs an even number of scenarios.
+**Antithetic variates** reduce that error without more random draws. Every shock $$Z$$ is paired with its mirror image $$-Z$$ (under Student-t, a large common scale is also paired with a small one), so each pair's errors partly cancel; the standard error is then computed from the independent pair averages. On the default factor set it cut the seed-to-seed spread of a 60/40 portfolio's five-year 5th percentile by about a quarter. It is off in the shipped settings and needs an even number of scenarios.
 
 ```python
 result = scenarios.simulate(n_simulations=2000)

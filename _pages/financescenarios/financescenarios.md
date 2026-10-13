@@ -39,7 +39,7 @@ Finance Scenarios requires Python 3.11 or higher.
 pip install financescenarios -U
 ```
 
-Most factors run on free OECD and Yahoo Finance data without any key. A FinancialModelingPrep key widens the ticker coverage for equities, dividends, the yield curve and commodities; without one these fall back to Yahoo Finance and US exchanges. The free plan allows 250 requests a day, 5 years of data and US-listed securities only.
+Most factors run on free OECD and Yahoo Finance data without any key. A FinancialModelingPrep key widens the ticker coverage for equities, dividends, the yield curve and commodities; without one these fall back to Yahoo Finance and US exchanges.
 
 [Obtain an API Key from FinancialModelingPrep](/fmp){: .btn .btn--warning .btn--large .align-center target="_blank"}
 
@@ -98,7 +98,7 @@ result.plot("us_broad", kind="distribution")
 
 {% include ft-chart.html id="distribution" src="/assets/data/financescenarios-charts.json" label="Distribution of the five-year US equity return" %}
 
-The median scenario returns 10.04% a year, above the 9.83% mean, because the left tail reaches further than the right: the worst 1 in 20 lose more than 4.65% a year, 14.7 points below the median, while the best 1 in 20 gain more than 23.21%, 13.2 points above it. **Find [the documentation](/projects/financescenarios/docs/units).**
+The median scenario returns 10.04% a year, above the 9.83% mean, because the left tail reaches further than the right: the worst 1 in 20 lose more than 4.65% a year, 14.7 points below the median, while the best 1 in 20 gain more than 23.21%, 13.2 points above it. These equity returns are fitted on history; for planning work, a long-run [belief](/projects/financescenarios/docs/configuration#beliefs) about the equity return is advisable. **Find [the documentation](/projects/financescenarios/docs/units).**
 
 ### Building a Portfolio
 
@@ -175,7 +175,7 @@ solvency.report(cashflows=[10_000] * 5, assets=assets)
 | market consistent   | passed (largest gap 1.0%) | discounted back, us_broad stays within 2% of today's price |
 | best estimate       | 43,444                    | what the payments are worth today                          |
 | own funds           | 15,635                    | assets minus what is owed, today                           |
-| SCR (1 in 200 year) | 12,453                    | the capital that survives a 1-in-200 bad year              |
+| SCR (1 in 200 year) | 12,453                    | the capital to absorb the 1-in-200 one-year loss           |
 | solvency ratio      | 1.26                      | own funds / SCR; above 1 means enough capital              |
 
 {% include ft-chart.html id="solvency" src="/assets/data/financescenarios-charts.json" label="Distribution of own funds after one year" %}

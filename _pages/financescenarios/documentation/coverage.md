@@ -14,7 +14,7 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Does Finance Scenarios cover the model, measure or Solvency II output you need, and if not, why not? Pick a topic or search across all of them: each card says in plain words what a feature does or what is still missing, and **Technical details** gives the precise notes for quants. When a run uses something with a more capable alternative that isn't available yet, the calibration says so in an informational notice.
+Does Finance Scenarios cover the model, measure or Solvency II output you need, and if not, why not? Pick a topic or search across all of them: each card says in plain words what a feature does or what is still missing, and **Technical details** gives the precise notes for quants.
 
 {% include fs-coverage.html %}
 

@@ -40,7 +40,7 @@ This is the difference between a stress test (an imposed shock) and scenario ana
 | `oil_crisis` | Inflation pulled to 9% in year one and back to 2.5% by year eight, with high rates and weak stocks | Both |
 | `oil_shock` | A one-off three-point jump in US inflation in year two, then business as usual | Beliefs |
 | `soft_landing` | Inflation eases smoothly to 2% by year five and stays there | Beliefs |
-| `rate_cut_cycle` | Soft landing, then inflation drifts to 2.5% by year ten and back to its usual level | Beliefs |
+| `rate_cut_cycle` | Soft landing, then inflation drifts to 2.5% by year ten and back to its usual level; rates keep their own calibration, so the cuts are not imposed (add a rate belief for that) | Beliefs |
 | `yield_curve_inversion` | Short rates two points above long ones within six months, then the curve slowly rights itself | Both |
 | `real_estate_crash` | House-price growth falls to -8% within a year and recovers over four | Both |
 | `currency_crisis` | The Brazilian real devalues about 22% a year against the dollar (needs `us_only` or `broad`) | Both |
@@ -85,13 +85,13 @@ baseline = scenarios.simulate(n_simulations=2000)
 oil_crisis = scenarios.simulate(regime="oil_crisis", n_simulations=2000)
 ```
 
-A targeted regime keeps only part of each draw, about 9% for Oil Crisis, so the run draws batches until 2,000 scenarios fit (about 22,700 draws here). The stressed percentiles then rest on as many scenarios as the baseline's. Each batch ranks its own draws, so "the worst 30%" means the worst 30% of a batch.
+A targeted regime keeps only part of each draw, about 9% for Oil Crisis, so the run draws batches until 2,000 scenarios fit (about 22,700 draws here). The stressed percentiles then rest on as many scenarios as the baseline's. Each batch ranks its own draws, so "the worst 30%" means the worst 30% of a batch, not of all draws pooled: each batch's cutoff carries its own sampling noise, most in the first batch of 2,000, so the stressed quantiles are close to, not exactly, those of one large ranked run.
 
 ## Official Stress Tests as Regimes
 
 Instead of writing a recession by hand, a regime can follow a regulator's published scenario, fetched through the Finance Toolkit with no API key:
 
-- **Federal Reserve**: the US supervisory scenario, 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market.
+- **Federal Reserve**: the US supervisory scenarios, baseline and severely adverse (`scenario="adverse"`), 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market.
 - **ESRB**: the European Systemic Risk Board's scenario for the EBA's EU-wide bank stress test, three years of the long-term rate, inflation, unemployment and stock prices for every EU member and the main other economies.
 
 The published path becomes beliefs, not one deterministic path. Each interest rate, inflation and unemployment factor follows the scenario for its own country: by default it is set to the published value at each period end and its long-run level follows the scenario in between, so every scenario hits the published values, even for a slow-moving short rate. A gentler option steers only the long-run level. Afterwards each factor returns to its calibrated level over five years by default, and the usual randomness stays around the path, so you get a distribution around the regulator's story rather than one line.
@@ -104,15 +104,16 @@ from financescenarios import Scenarios, build_toolkit, load_profiles, stress_tes
 config = load_profiles(settings_id="default", factor_set_id="default")
 toolkit = build_toolkit(config, api_key="FINANCIAL_MODELING_PREP_KEY")
 
-regime = stress_test_regime(toolkit, config, authority="federal_reserve", scenario="adverse")  # or "esrb"
+# "adverse" is the Fed's severely adverse scenario; authority="esrb" for the EBA test
+regime = stress_test_regime(toolkit, config, authority="federal_reserve", scenario="adverse")
 stressed = Scenarios.from_config(config, toolkit=toolkit, regime=regime).simulate()
 ```
 
-Only factors with a long-run level can follow the scenario: real-world interest rates under Hull-White or CIR, inflation under the plain mean-reverting model, and unemployment. Other models and every risk-neutral factor keep their calibration. The Federal Reserve covers only the United States, so under it only US factors move. Its inflation is an annualized quarter-on-quarter rate, while this package's is year over year: the same scale, but it reacts sooner.
+Only factors with a long-run level can follow the scenario: real-world interest rates under Hull-White or CIR, inflation under the plain mean-reverting model, and unemployment. Other models and every risk-neutral factor keep their calibration. The Federal Reserve covers only the United States, so under it only US factors move. Its inflation is an annualized quarter-on-quarter rate, while this package's is year over year, and the published values are used as they are. Quarter-on-quarter inflation moves sooner and further than year over year, so the simulated inflation peaks earlier and higher than the scenario's own year-over-year path would.
 
 ## Reading the Results Against the Base Run
 
-Compare a stressed run with the baseline, factor by factor on the same scale. The size of the stress shows there: the Federal Reserve's 2026 adverse scenario, for example, takes US stocks about 50% below where they would otherwise be after a year.
+Compare a stressed run with the baseline, factor by factor on the same scale. The size of the stress shows there: the Federal Reserve's 2026 severely adverse scenario, for example, takes US stocks about 50% below where they would otherwise be after a year.
 
 - **Belief-driven runs are conditional, not likely.** The percentiles describe uncertainty given the story, not the probability of the story. Don't read a stressed 99.5% quantile as a capital number.
 - **Targets select by rank, not by level.** Sequential targets keep a fixed share (30% of 30% is 9%) whatever the correlations, so the share says nothing about how likely the story is. In joint mode the share kept is the model's own estimate of how often the combination occurs; if it is tiny, the story is far in the tail of the calibration. Fewer than 30 scenarios left raises a warning, because their percentiles are noise.

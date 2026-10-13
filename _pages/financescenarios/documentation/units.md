@@ -41,6 +41,8 @@ $$
 
 An equity path from 769 to 1,209 over five years reads as 9.5% a year. This is the CAGR, as investment reports quote returns, and it puts a one-year and a thirty-year outcome on the same scale. Its spread narrows with the horizon as good and bad years average out, while the spread of the cumulative return keeps widening. Over the first months it is extremely wide, since a few weeks' move is scaled up to a year.
 
+The mean of these annualized returns across scenarios is not the expected return: compounding is convex, so the expected value at the horizon is higher than today's value grown at that mean.
+
 Every table and chart can show another reading instead:
 
 | Reading | A price | Inflation | A rate |
@@ -71,5 +73,5 @@ $$
 
 So 9.5% a year for five years is a cumulative 57%, or a log return of 9.1% a year. Log returns add up over time and are what the models work in; simple returns are what a portfolio earns and reports. The gap grows with volatility: an asset with a 0% median log return still has a positive mean simple return, so the expected outcome sits above the median scenario.
 
-A simulated inflation rate $$\pi_s$$ compounds into a price index as $$100\,e^{\int_0^t \pi_s\,ds}$$. Because a year-over-year rate stands in for the instantaneous rate, the rebuilt index trails actual prices by about half a year, and at 3% it compounds about 0.05 percentage points a year above simple growth. Both are small next to the spread of the scenarios.
+A simulated inflation rate $$\pi_s$$ compounds into a price index as $$100\,e^{\int_0^t \pi_s\,ds}$$. A year-over-year rate measures inflation over the past twelve months, so an index built from it runs about half a year behind actual prices, and at 3% it compounds about 0.05 percentage points a year above simple growth. Both are small next to the spread of the scenarios.
 

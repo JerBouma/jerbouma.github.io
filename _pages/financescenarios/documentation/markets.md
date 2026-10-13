@@ -50,6 +50,8 @@ equities:
 
 With business-cycle conditioning, the probability of switching regime depends on the leading indicator's level: the time-varying transition probabilities of [Filardo (1994)](https://doi.org/10.1080/07350015.1994.10524545){:target="_blank"}. For SPY, the chance of leaving the calm regime in a month rose from 5.8% at an indicator of 105 to 8.9% at 95, so a weakening economy shortens calm stretches from about 17 to 11 months and crises start more often in simulated downturns. The estimate takes the simpler two-step route of [Diebold, Lee and Weinbach (1994)](https://doi.org/10.1093/oso/9780198773917.003.0010){:target="_blank"}: first the regimes, then a logit of the next regime on the indicator.
 
+These stays are longer than the 10 months of the plain fit above, mainly because the logit counts switches between each month's most likely regime, which ignores brief one-month visits that the plain fit's transition probabilities include. Read the conditioning as relative: calm stretches about a third shorter in a weak economy than in a strong one.
+
 ### Long Histories: Shiller and JST
 
 A window from 2005 misses the 1930s, the wars and the 1970s. For runs of 50 to 100 years the regimes can be fitted on [Shiller's](https://shillerdata.com/){:target="_blank"} US total returns (monthly, from 1871) or the [Jordà-Schularick-Taylor](https://doi.org/10.1093/qje/qjz012){:target="_blank"} equity returns of 18 countries (yearly, from 1870; non-commercial use only), while today's price and the correlations still come from the ticker.
@@ -77,7 +79,7 @@ Here $$r$$ is today's short rate, $$q$$ today's dividend yield of the same ticke
 | Realized | Historical return volatility | Tickers without liquid options |
 | Heston | A stochastic variance ([Heston, 1993](https://doi.org/10.1093/rfs/6.2.327){:target="_blank"}) fitted to one- to twelve-month options | Keeping the smile and term structure |
 
-For SPY on 2026-10-04, with a 3.99% bill rate and a 1.15% dividend yield, the drift was 2.84% and the volatility sources agreed within about three points (13.5% to 16.2%). Beliefs don't apply here: the entry must match market prices.
+For SPY on 2026-10-04 the bill rate was 3.99% and the dividend yield entry started at 0.99% (twelve months of dividends over the price, averaged over the last month, the same level used [below](#dividend-yield)), a drift of about 3.0%. The implied, SVI and realized volatilities came out between 13.5% and 14.9%. Beliefs don't apply here: the entry must match market prices.
 
 ```yaml
 equities:
@@ -143,9 +145,9 @@ $$
 \ln S_t = \chi_t + \xi_t, \qquad d\chi_t = -a\,\chi_t\,dt + \sigma_\chi\,dW^\chi_t, \qquad d\xi_t = \mu_\xi\,dt + \sigma_\xi\,dW^\xi_t
 $$
 
-The two shocks are correlated. Long-dated futures reflect almost only $$\xi_t$$, so the futures curve separates the two. The volatilities are fitted to the listed futures (crude oil, natural gas, gold, silver, copper, corn, wheat and soybeans); spot prices alone understate the long-term volatility roughly tenfold.
+The two shocks are correlated. Long-dated futures reflect almost only $$\xi_t$$, so the futures curve separates the two. The volatilities are fitted to the listed futures (crude oil, natural gas, gold, silver, copper, corn, wheat and soybeans). Fitted on spot prices alone, with a moving average standing in for the long-term level, the long-term volatility comes out far too low, because the averaging smooths it away.
 
-The risk-neutral version keeps the same volatilities and fits only the two drift terms to today's futures prices: a backwardated curve gives a falling long-term level, a contango curve a rising one. On 2026-10-04 the crude curve implied the long-term level falling about 17.7% a year, against 2.5% a year in the real-world fit.
+The risk-neutral version keeps the same volatilities and fits only the two drift terms to today's futures prices: a backwardated curve gives a falling long-term level, a contango curve a rising one. The fit uses the first twelve monthly contracts, and the drift it finds is held for the whole horizon. On 2026-10-04 crude fell from 91.11 USD (November 2026) to 77.90 USD (September 2027), so the long-term level drifted down about 17.7% a year, against 2.5% a year in the real-world fit. A steep front-end backwardation is thus carried well past the last contract; for long horizons, read it as a pricing input, not as a path for the oil price.
 
 ```yaml
 commodities:
@@ -162,13 +164,15 @@ A trending price over a short window has no mean reversion to fit: gold sampled 
 
 The model follows eq. 3.18 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}: the year-over-year growth rate of property prices, not the price level, reverts to a long-run rate, since a price index has no level to return to over decades. Booms fade in growth but leave a permanent mark on the price level.
 
+The simulated path is price growth only: it leaves out rental income, which makes up much of a property investment's total return. Held as an asset (see [portfolio](/projects/financescenarios/docs/portfolio)), it therefore understates what property earns.
+
 The data are OECD residential house-price growth for many countries, or for the United States the IMF's commercial property index on FRED ([`COMREPUSQ159N`](https://fred.stlouisfed.org/series/COMREPUSQ159N){:target="_blank"}; quarterly, needs a FRED key). On 2026-10-06, US house prices were 2.1% above a year earlier and pulled toward 3.4% a year, with a boom or slump fading by half in about 5.7 years. Commercial property reverted within about a year and was almost four times as volatile.
 
 Neither source matches the paper's appraisal-based NCREIF index; appraisals smooth prices and understate volatility, and there is no open equivalent (see [coverage](/projects/financescenarios/docs/coverage)). Reference: [Real estate API](/projects/financescenarios/docs/reference/real-estate).
 
 ## Dividend Yield and Dividend Growth
 
-### Dividend Yield
+### Dividend Yield {#dividend-yield}
 
 When dividend income matters on its own, the yield is simulated separately from the equity's total return. Following eq. 3.17 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}, the log of the yield mean-reverts, so the yield stays positive:
 
@@ -206,7 +210,7 @@ $$
 d\ln s_t = a(\theta - \ln s_t)\,dt + \sigma\,dW_t
 $$
 
-Spreads revert quickly: on 2026-10-04 the 7-10 year investment-grade spread started at 1.05% and was pulled toward a median of 1.01% with a half-life of about three months. Business-cycle conditioning lets spreads widen as a simulated path turns down, but that variant, like GARCH volatility, is fitted on the spread level rather than its log, so it can turn negative.
+On 2026-10-04 the 7-10 year investment-grade spread started at 1.05% and was pulled toward a median of 1.01%, with a half-life of about three months. That speed comes from three years of monthly data, too few for a reliable estimate, and short samples tend to overstate how fast a series reverts; the Moody's series, monthly from 1953, gives a steadier read. Business-cycle conditioning lets spreads widen as a simulated path turns down, but that variant, like GARCH volatility, is fitted on the spread level rather than its log, so it can turn negative.
 
 | Data | History |
 |:--|:--|
@@ -237,7 +241,7 @@ $$
 
 where $$\Phi$$ is the standard normal distribution function. The same shift applies to every threshold, so a bad year ($$Z$$ below zero) moves every rating toward downgrade and default at once. This is the one-factor approach of [Kim (1999)](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984){:target="_blank"}, in the Markov rating framework of [Jarrow, Lando and Turnbull (1997)](https://doi.org/10.1093/rfs/10.2.481){:target="_blank"}, and the same formula that underlies the Basel IRB capital charge.
 
-The data are ESMA's [CEREP](https://registers.esma.europa.eu/cerep-publication){:target="_blank"} rating agency statistics, which lag one to two years. The cycle is backed out year by year from default rates, then simulated as mean-reverting around zero (the through-the-cycle average) and correlated with the other factors. A rating that never defaulted in the sample gets the regulatory 0.03% floor ([CRR Article 160(1)](https://eur-lex.europa.eu/eli/reg/2013/575/oj){:target="_blank"}). On S&P corporate ratings from 2000 to 2025, the worst years came out as 2009, 2001, 2020 and 2002, the asset correlation was about 0.10, and a shock to the cycle halved in about eight months.
+The data are ESMA's [CEREP](https://registers.esma.europa.eu/cerep-publication){:target="_blank"} rating agency statistics, which lag one to two years. The cycle is backed out year by year from default rates, then simulated as mean-reverting around zero (the through-the-cycle average) and correlated with the other factors. A rating that never defaulted in the sample gets a 0.03% floor, the corporate PD floor of Basel II and the original [CRR Article 160(1)](https://eur-lex.europa.eu/eli/reg/2013/575/oj){:target="_blank"}. CRR3 (Regulation (EU) 2024/1623) raised that floor to 0.05% from 2025; the package still applies 0.03%. On S&P corporate ratings from 2000 to 2025, the worst years came out as 2009, 2001, 2020 and 2002, the asset correlation was about 0.10, and a shock to the cycle halved in about eight months.
 
 ```yaml
 credit_migration:

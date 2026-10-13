@@ -58,7 +58,7 @@ result.plot("us_broad", kind="distribution")
 
 ## Correlation Matrix: What Moves with What
 
-A heatmap of the fitted correlations: red positive, blue negative, gray around zero, always on a -1 to 1 scale so two calibrations compare by eye. Read it for the diversification the scenarios assume: whether equities and bonds hedge each other, whether currencies offset equity losses, which factors are near duplicates. The correlations are constant over the horizon; dependence that rises in a crisis comes from shared regimes and fat tails instead (see the [simulation engine](/projects/financescenarios/docs/simulation-engine)).
+A heatmap of the fitted correlations. Read it for the diversification the scenarios assume: whether equities and bonds hedge each other, whether currencies offset equity losses, which factors are near duplicates. The correlations are constant over the horizon; dependence that rises in a crisis comes from shared regimes and fat tails instead (see the [simulation engine](/projects/financescenarios/docs/simulation-engine)).
 
 ```python
 scenarios.last_calibration.plot()

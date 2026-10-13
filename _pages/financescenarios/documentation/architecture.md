@@ -51,7 +51,7 @@ Fitted one by one, the factors would move independently, and a scenario could co
 
 **The economic cascade.** Where economic theory says one variable drives another, the driver's simulated path enters the other's equation directly:
 
-- Unemployment reacts to the change in its paired inflation rate (a Phillips curve).
+- Unemployment responds to changes in its paired inflation rate, as in the Phillips-curve term of Ahlgrim, D'Arcy and Gorvett.
 - In the Wilkie and KNW models, interest rates follow inflation.
 - Under interest-rate parity, an exchange rate drifts with the rate gap between its two currencies.
 - Wilkie-style dividend growth follows inflation, and equity prices can be derived from dividends.
@@ -65,7 +65,7 @@ The matrix is constant over the horizon and captures linear co-movement. Two add
 
 ## 4. Correlated Simulation
 
-Correlated random shocks are drawn for every factor, step and scenario, and every factor is stepped forward in cascade order, so a driver is always simulated before the factors that react to it. Equity regimes are drawn first, separately from the continuous shocks. [Simulation engine](/projects/financescenarios/docs/simulation-engine) covers the maths: correlated and fat-tailed shocks, exact time stepping and Monte Carlo error.
+The factors are stepped forward with these correlated shocks, each driver before the factors that react to it; the [simulation engine](/projects/financescenarios/docs/simulation-engine) covers the maths.
 
 ## 5. Outputs
 

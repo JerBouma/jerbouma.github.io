@@ -28,7 +28,7 @@ portfolio = Portfolio(scenario_set)
 result = portfolio.compute({"us_broad": 0.6, "united_states_short_rate": 0.4}, initial_value=100.0)
 ```
 
-The numbers on this page come from one example run: 1,000 scenarios over 30 yearly steps of US stocks (SPY), the US short rate and US inflation, starting 2026-10-01 and simulated on 2026-10-04. They show how the choices compare; other runs give other numbers. Every option is listed in the [Portfolio reference](/projects/financescenarios/docs/reference/portfolio).
+The numbers on this page come from one example run: 1,000 scenarios over 30 yearly steps of US stocks (SPY), the US short rate and US inflation, starting 2026-10-01 and simulated on 2026-10-04. Its "60/40" is 60% equities and 40% cash (the short rate); the 60/40 preset [below](#glidepaths) holds Treasuries instead. They show how the choices compare; other runs give other numbers. Every option is listed in the [Portfolio reference](/projects/financescenarios/docs/reference/portfolio).
 
 ## What a Portfolio Can Hold
 
@@ -37,7 +37,7 @@ Only assets you could own can be held, and how a holding grows depends on what i
 | Kind | Examples | How a holding grows |
 |---|---|---|
 | Price factors | Equities, commodities | Along the simulated price path. |
-| Rate factors | Interest rates, credit, real estate | The rate is compounded, like a rolled money-market or floating-rate holding. Real estate belongs here because its simulated path is a house-price growth rate. |
+| Rate factors | Interest rates, credit, real estate | The simulated rate is compounded, like a rolled money-market holding. That is a proxy: a credit holding earns only the spread (not the yield plus spread minus default losses), and real estate earns house-price growth without rental income. |
 | Not investable | Inflation, unemployment, dividend yields, FX | Cannot be held, only used as inputs (for example to index cashflows). |
 
 With holdings in several currencies, each equity, commodity and real-estate holding can be converted into the reporting currency first, so a euro equity in a dollar portfolio carries the currency return too. Rates are never converted (see [units](/projects/financescenarios/docs/units)).
@@ -62,7 +62,7 @@ $$
 
 with $$w_i$$ the target weights (non-negative, summing to 1) and $$\sigma_i$$ each asset's volatility. That is the rebalancing (or diversification) premium: largest for volatile, weakly correlated assets, and zero only when the assets are perfectly correlated and equally volatile. Buy-and-hold forgoes it but lets winners run, so it keeps more upside when one asset steadily outgrows the others.
 
-The example run shows the trade-off. A 60/40 of US equities and the short rate ended at almost the same 5th percentile (about 426 from 100) under both approaches, but buy-and-hold had a far higher 95th percentile (5,925 against 2,996), because it ends up holding mostly equities and takes the equity risk that comes with that.
+The example run shows the trade-off. A mix of 60% US equities and 40% cash ended at almost the same 5th percentile (about 426 from 100) under both approaches, but buy-and-hold had a far higher 95th percentile (5,925 against 2,996), because it ends up holding mostly equities and takes the equity risk that comes with that.
 
 **Costs.** An annual fee is charged continuously, as $$e^{-f\,\Delta t}$$ per step for a fee rate $$f$$ and step length $$\Delta t$$ in years. It compounds: 1% a year removes about 26% of the final value over 30 years ($$1 - e^{-0.3}$$). Trading costs apply only when a rebalance trades, on the one-way turnover, so frequent rebalancing has to earn its premium net of costs.
 
@@ -108,19 +108,19 @@ $$
 
 where $$D$$ is the modified duration and $$y$$ the simulated yield: the price effect of the yield change plus the interest earned. The fund rolls to keep its duration constant, like a long-Treasury ETF, rather than ageing like a single bond.
 
-In the example run, the floating-rate roll earned the starting 4.0% in year one in every scenario. At duration 7 the same position ranged from 96.32 to 111.72 (5th to 95th percentile) after one year, with a median worst drawdown of 7.0% against none for the roll.
+Use a long rate for $$y$$, such as the 10-year yield in the default factor set. A duration on the short rate prices a constant-duration fund off three-month bill moves, which follow policy rates rather than long yields, so it is not a stand-in for a bond of that maturity. In the example run, which has only the short rate, the cash roll earned the starting 4.0% in year one in every scenario.
 
 This is first-order duration only: convexity is ignored, and compounding the return as a log return understates a very large one-step loss. On monthly or weekly steps both effects are small.
 
 ```python
-bonds = portfolio.compute({"united_states_short_rate": 1.0}, durations={"united_states_short_rate": 7.0})
+bonds = portfolio.compute({"united_states_long_rate": 1.0}, durations={"united_states_long_rate": 7.0})
 ```
 
 ## Glidepaths
 
 A target-date or lifecycle plan moves from growth to safety as the target date nears. Target weights are set at a few checkpoints, move in a straight line between them, and the portfolio is rebalanced to the moving target.
 
-In the example run, gliding from 90% to 30% equities over 30 years ended at a median of 1,210, close to a yearly rebalanced 60/40's 1,183, with more of the risk taken early, when the amount at stake is smallest.
+In the example run, gliding from 90% to 30% equities over 30 years ended at a median of 1,210, close to a yearly rebalanced 60/40 equity-cash mix's 1,183, with more of the risk taken early, when the amount at stake is smallest.
 
 ```python
 from financescenarios import GlidepathCheckpoint
@@ -134,7 +134,7 @@ glide = portfolio.compute_glidepath(
 )
 ```
 
-Well-known allocations ship as presets, such as a 60/40, the all-weather and permanent portfolios, a three-fund portfolio, an endowment model and a target-date glidepath. The 60/40 preset holds its bonds at a duration of 5.4 years.
+Well-known allocations ship as presets, such as a 60/40, the all-weather and permanent portfolios, a three-fund portfolio, an endowment model and a target-date glidepath. The 60/40 preset holds 60% US equities and 40% US Treasuries: the 10-year yield priced as a bond fund of duration 5.4 years, about that of a broad Treasury ETF.
 
 ```python
 result = Portfolio.from_preset(scenario_set, preset="balanced_60_40").compute()
@@ -156,7 +156,7 @@ All metrics are counted over the simulated paths, not from a formula that assume
 
 VaR, Expected Shortfall and the probability of loss describe the total return over the whole horizon: on a 30-year run that is a 30-year outcome, not a one-year loss. With cashflows they mix returns with deposits and withdrawals. All values are nominal unless deflated by a scenario's own cumulative inflation, which gives the value in today's money; in the example run a saver's median portfolio was worth 1,064,686 after 20 years in nominal terms and 636,645 in today's money.
 
-In the example run, rebalancing the 60/40 yearly with a 0.2% fee lowered the median worst drawdown from -23.84% to -17.25% and the annualized volatility from 13.21% to 10.45%, at the cost of a lower median CAGR (8.37% against 9.28%): the buy-and-hold portfolio earned more because it had drifted into more equity risk.
+In the example run, rebalancing the 60/40 equity-cash mix yearly with a 0.2% fee lowered the median worst drawdown from -23.84% to -17.25% and the annualized volatility from 13.21% to 10.45%, at the cost of a lower median CAGR (8.37% against 9.28%): the buy-and-hold portfolio earned more because it had drifted into more equity risk.
 
 ```python
 risk = portfolio.risk_metrics(yearly)
@@ -176,7 +176,7 @@ backtest = Portfolio.backtest(scenarios, preset="balanced_60_40", period="monthl
 values = backtest.compute(rebalance_every=12)
 ```
 
-Against a benchmark (an index, another mix, or the same mix over other dates) the comparison covers tracking error, correlation, beta, the differences in CAGR and Sharpe ratio ([Sharpe, 1966](https://doi.org/10.1086/294846){:target="_blank"}) and active share, half the sum of the absolute weight differences ([Cremers and Petajisto, 2009](https://doi.org/10.1093/rfs/hhp057){:target="_blank"}). On a simulated run both sides are first reduced to their mean path, so tracking error there describes the two average paths, not the risk inside a scenario.
+Against a benchmark (an index, another mix, or the same mix over other dates) the comparison covers tracking error, correlation, beta, the differences in CAGR and Sharpe ratio ([Sharpe, 1966](https://doi.org/10.1086/294846){:target="_blank"}) and active share, half the sum of the absolute weight differences ([Cremers and Petajisto, 2009](https://doi.org/10.1093/rfs/hhp057){:target="_blank"}). On a simulated run each side is first averaged into its mean path, which removes most of the scenario-level noise, so tracking error, correlation and beta there understate the active risk. Read them on a backtest.
 
 ## Factor Exposure
 
@@ -188,7 +188,7 @@ $$
 
 where $$R_t - R_{f,t}$$ is the return above the risk-free rate, $$\alpha$$ the part the factors do not explain, and $$\beta_i$$ the loading on factor $$F_i$$: the market (Mkt-RF), small versus large companies (SMB), cheap versus expensive (HML), robust versus weak profitability (RMW) and companies that invest conservatively versus aggressively (CMA). The model is the three-factor one of [Fama and French (1993)](https://doi.org/10.1016/0304-405X(93)90023-5){:target="_blank"} or the five-factor one of [Fama and French (2015)](https://doi.org/10.1016/j.jfineco.2014.10.010){:target="_blank"} (the default), with factor data from Kenneth French's [Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html){:target="_blank"}.
 
-On monthly history from 2004-01 to 2026-10, 100% SPY showed a market beta of 0.997 and an R-squared of 0.996, with a slight large-company tilt (SMB -0.12). A 60/40 of SPY and the US short rate, rebalanced yearly, showed a market beta of 0.594, close to its equity weight. A "balanced" portfolio with a beta near 1 would be an equity portfolio in disguise.
+On monthly history from 2004-01 to 2026-10, 100% SPY showed a market beta of 0.997 and an R-squared of 0.996, with a slight large-company tilt (SMB -0.12). 60% SPY and 40% cash (the US short rate), rebalanced yearly, showed a market beta of 0.594, close to its equity weight. A "balanced" portfolio with a beta near 1 would be an equity portfolio in disguise.
 
 ```python
 exposure = backtest.factor_exposure(model="five_factor")

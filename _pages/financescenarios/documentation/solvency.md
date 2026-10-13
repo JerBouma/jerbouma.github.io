@@ -23,7 +23,7 @@ Solvency II asks two questions. What is owed, valued at today's market prices (t
 | One-year SCR, internal-model view | Real world | The 1-in-200 loss is about how markets are likely to move, risk premia included. |
 | SCR, standard formula | EIOPA's prescribed shocks | Interest rate and equity shocks set by regulation, not by a model. |
 
-A *risk-neutral* run grows every traded asset at the risk-free short rate on average, equity prices at that rate minus their dividend yield; by default the short rate stays at today's level, or it can reproduce today's forward curve (see [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)). A *real-world* run keeps the risk premia and mean reversion the model was calibrated on.
+A *risk-neutral* run grows every traded asset at the risk-free short rate on average, equity prices at that rate minus their dividend yield; a whole-run risk-neutral simulation puts the short rate on a Hull-White process along today's Treasury forward curve, while an entry switched to risk-neutral on its own holds today's rate flat (for the US, the 13-week Treasury yield); neither is fitted to EIOPA's curve (see [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)). A *real-world* run keeps the risk premia and mean reversion the model was calibrated on.
 
 Both discount along each scenario with the bank-account deflator, the value today of 1 paid at time $$t$$:
 
@@ -74,7 +74,7 @@ index = result.cumulative_index("united_states_inflation", initial_index=1.0).dr
 indexed = best_estimate(result, annuity * index, short_rate="united_states_short_rate")
 ```
 
-The risk-neutral short rate is today's 13-week Treasury yield, 3.993%, held flat, so bond prices carry no Monte Carlo error.
+The example switches the short rate to risk-neutral on its own, so it is today's 13-week Treasury yield, 3.993%, held flat, and bond prices carry no Monte Carlo error.
 
 ## Market Consistency: The Martingale Test
 
@@ -84,9 +84,9 @@ $$
 \mathbb{E}\left[ D(t)\, S(t)\, e^{q t} \right] = S(0) \quad \text{at every date } t
 $$
 
-where $$S$$ is the asset price and $$q$$ its dividend yield. Each date passes when $$S(0)$$ lies inside a 95% confidence band around the simulated mean.
+where $$S$$ is the asset price and $$q$$ its dividend yield. Each date passes when $$S(0)$$ lies inside a 95% confidence band around the simulated mean, and the test as a whole passes strictly only when every date does.
 
-The example run fails strictly: 82.5% of dates pass, with a largest gap of 0.91%.
+With 120 dates each tested at 95%, a correct run is expected to miss about 5% of them by chance, so the strict pass is a high bar and the pass rate is the better read: a correct drift gives about 95% on average, varying from seed to seed. The example run passes 82.5% of dates, with a largest gap of 0.91%.
 
 | date | ratio to today's price | within band |
 |:-----|-----:|:------------|
@@ -95,7 +95,9 @@ The example run fails strictly: 82.5% of dates pass, with a largest gap of 0.91%
 | 2031-10-01 | 0.9994 | true |
 | 2036-09-30 | 0.9922 | true |
 
-SPY stays within 0.9% of today's price for all ten years, yet 21 of 120 dates fall just outside a very tight band. Neighboring dates share their paths, so a strict fail is common: seeds 2 and 3 pass everywhere and seed 42 passes at 99% confidence. That is Monte Carlo noise, not a wrong drift. Failing at most dates means the drift is wrong, typically a real-world run tested by mistake; leaving out the dividend yield makes every date fail.
+SPY stays within 0.9% of today's price for all ten years, yet 21 of 120 dates fall just outside a very tight band. Neighboring dates share their paths, so misses come in runs and the pass rate swings from seed to seed: seeds 2 and 3 pass everywhere and seed 42 passes at 99% confidence. That is Monte Carlo noise, not a wrong drift. Failing at most dates means the drift is wrong, typically a real-world run tested by mistake; leaving out the dividend yield makes every date fail.
+
+The one-table Solvency II summary on the [overview page](/projects/financescenarios) uses a practical criterion instead: the run counts as market consistent when the largest gap stays within 2% of today's price. By that measure the example run, at 0.91%, passes.
 
 The rates side has the same test: the bond prices the run implies, $$P(0,t) = \mathbb{E}[D(t)]$$, should match the published curve within about two standard errors. On the example run every maturity prices off the flat 3.993%, from 0.9609 at one year to 0.6708 at ten, so a comparison with EIOPA's curve mostly shows the gap between US Treasury and EIOPA rates.
 
@@ -109,7 +111,9 @@ Market rates are used up to the last liquid point, 20 years for the euro. Beyond
 |:---------|--:|---:|---:|---:|----:|
 | spot rate | 3.27% | 3.58% | 3.60% | 3.42% | 3.35% |
 
-The simulated risk-neutral rate is fitted to its own market data, not to EIOPA's curve.
+The simulated risk-neutral rate is fitted to its own market data (US Treasuries in the example), not to EIOPA's curve.
+
+The Solvency II review (Directive (EU) 2025/2), which applies from 2027, replaces Smith-Wilson with a new extrapolation method that gives more weight to market rates beyond the last liquid point. The package reads whichever curve EIOPA publishes, so the change arrives with EIOPA's own curves.
 
 ## Best Estimate
 
@@ -126,7 +130,9 @@ where $$CF(t)$$ is the amount paid at time $$t$$ and $$Q$$ the risk-neutral meas
 | level | 80,811.82 | 0.00 | 80,811.82 | 80,811.82 |
 | inflation-indexed | 93,142.15 | 4.05 | 83,990.68 | 103,236.21 |
 
-Ten yearly payments of 10,000 are worth 80,812 at the flat 3.99%, with no spread across scenarios. Indexed to simulated inflation they are worth 93,142, ranging from about 84,000 to 103,000 across scenarios; a standard error of 4 shows 2,000 scenarios are plenty. The same cashflows can be discounted on EIOPA's curve instead.
+Ten yearly payments of 10,000 are worth 80,812 at the flat 3.99%, with no spread across scenarios. Indexed to simulated inflation they are worth 93,142, ranging from about 84,000 to 103,000 across scenarios; a standard error of 4 shows 2,000 scenarios are plenty.
+
+For Solvency II, the discount curve matters. Passing EIOPA's curve to the best estimate discounts each scenario's cashflows on that curve, as Article 77(2) requires. Without it, discounting runs along the simulated short rate (in the example, today's Treasury bill rate held flat). Either way, cashflows that depend on the path of rates or equities (guarantees, profit sharing) are generated on the simulated risk-neutral run, so such a best estimate is consistent with the simulated rate, not with EIOPA's curve.
 
 ## Solvency Capital Requirement
 
@@ -138,7 +144,7 @@ $$
 
 where $$OF$$ is own funds, $$h$$ the one-year horizon, $$D(h)$$ the deflator back to today and $$q_{99.5\%}$$ the empirical quantile across scenarios. The Expected Shortfall beyond the SCR shows how bad the tail is past the 1-in-200 point.
 
-On a one-year real-world run of SPY and US rates, 1,000,000 in SPY against a liability of 800,000 growing at the short rate gave an SCR of about a quarter of the assets, more than the 200,000 of own funds: a solvency ratio of 79% at seed 42. Across four seeds the SCR ranged from 250,819 to 284,117, because only 10 of 2,000 scenarios lie beyond the 99.5% quantile. Check several seeds, or use more scenarios, before relying on it.
+On a one-year real-world run of SPY and US rates, 1,000,000 in SPY against a liability of 800,000 growing at the short rate gave an SCR of about a quarter of the assets, more than the 200,000 of own funds: a solvency ratio of 79% at seed 42. That is well below the standard formula's 46.71% type 1 shock [below](#standard-formula-interest-rate-and-equity-risk): the model's 1-in-200 year comes from regimes fitted on SPY since 2005, a period of strong calm-regime returns, while the standard formula prescribes one shock calibrated by the regulator on long equity histories, raised further after a rally by the symmetric adjustment. Across four seeds the SCR ranged from 250,819 to 284,117, because only 10 of 2,000 scenarios lie beyond the 99.5% quantile. Check several seeds, or use more scenarios, before relying on it.
 
 The own-funds path is yours to build: assets from a [portfolio](/projects/financescenarios/docs/portfolio), liabilities from your own projection.
 
