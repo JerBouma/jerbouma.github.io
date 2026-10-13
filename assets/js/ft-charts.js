@@ -171,6 +171,7 @@
     strip.className = 'ft-dupont';
     box.appendChild(head);
     box.appendChild(strip);
+    compactTabs(tabs);
 
     var minis = [];
     function panel(part, op, isResult) {
@@ -498,19 +499,34 @@
   function renderScatter(box, chart) {
     var inst = chrome(chart)(box, 380);
     var fx = formatter(chart.xformat), fy = formatter(chart.yformat);
+    var xs = chart.points.map(function (pt) { return pt.x; });
+    var xMin = Math.min.apply(null, xs), xSpan = Math.max.apply(null, xs) - xMin;
     function draw() {
       var c = axisColors();
       inst.setOption({
         animationDuration: 600,
         textStyle: { fontFamily: 'inherit' },
-        grid: { left: 8, right: 96, top: 34, bottom: 30, containLabel: true },
+        grid: { left: 8, right: 24, top: 34, bottom: 30, containLabel: true },
         tooltip: Object.assign({ trigger: 'item', formatter: function (p) { return '<b>' + p.data.name + '</b><br>' + chart.xname + ': ' + fx(p.data.value[0]) + '<br>' + chart.yname + ': ' + fy(p.data.value[1]); } }, tooltipStyle()),
         xAxis: { type: 'value', scale: true, splitNumber: 4, name: chart.xname, nameLocation: 'middle', nameGap: 28, nameTextStyle: { color: c.muted }, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fx, hideOverlap: true } },
         yAxis: { type: 'value', scale: true, name: chart.yname, nameTextStyle: { color: c.muted, align: 'left' }, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fy } },
         series: [{
           type: 'scatter', symbolSize: 18,
-          // pos: where a point's name goes when it would cover a neighbour ('left', 'top', 'bottom')
-          data: chart.points.map(function (pt, i) { var d = { name: pt.name, value: [pt.x, pt.y], itemStyle: { color: i === chart.highlight ? PALETTE[2] : PALETTE[0], opacity: 0.9 } }; if (pt.pos) d.label = { position: pt.pos }; return d; }),
+          // pos: where a point's name goes when it would cover a neighbour ('left', 'top', 'topleft', 'bottom', 'bottomleft')
+          // points in the right-hand third carry their name on the left, so the plot
+          // can use the full width instead of keeping a margin free for labels
+          data: chart.points.map(function (pt, i) {
+            var d = { name: pt.name, value: [pt.x, pt.y], itemStyle: { color: i === chart.highlight ? PALETTE[2] : PALETTE[0], opacity: 0.9 } };
+            // a name that would run past the right edge of the plot goes on the left
+            var plotW = inst.getWidth() - 80;
+            var px = xSpan > 0 ? (pt.x - xMin) / xSpan * plotW : 0;
+            var pos = pt.pos || (px + 14 + pt.name.length * 6.6 > plotW ? 'left' : null);
+            // 'topleft': above the point and ending at it, for a point at the right edge
+            if (pos === 'topleft') d.label = { position: 'top', align: 'right', offset: [8, 0] };
+            else if (pos === 'bottomleft') d.label = { position: 'bottom', align: 'right', offset: [8, 0] };
+            else if (pos) d.label = { position: pos };
+            return d;
+          }),
           label: { show: true, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return p.data.name; } },
           // points close together: push their names apart instead of printing them over each other
           labelLayout: { moveOverlap: 'shiftY' }
@@ -617,6 +633,40 @@
     instances.push({ draw: draw });
   }
 
+
+  // Tab buttons that would wrap onto more lines become one dropdown with the same
+  // choices; the buttons come back when there is room again
+  function compactTabs(tabs) {
+    var head = tabs.parentElement;
+    var buttons = Array.prototype.slice.call(tabs.children);
+    var select = document.createElement('select');
+    select.className = 'ft-chart__select';
+    select.setAttribute('aria-label', 'Choose a view');
+    buttons.forEach(function (b, i) {
+      var o = document.createElement('option');
+      o.value = String(i);
+      o.textContent = b.textContent;
+      select.appendChild(o);
+    });
+    tabs.insertAdjacentElement('afterend', select);
+    select.addEventListener('change', function () { buttons[Number(select.value)].click(); });
+    tabs.addEventListener('click', function () {
+      buttons.forEach(function (b, i) { if (b.classList.contains('is-active')) select.value = String(i); });
+    });
+    var needed = 0;
+    function fit() {
+      if (!needed) {
+        // the buttons' own width on one line, measured once while they are shown
+        head.classList.remove('is-compact');
+        needed = buttons.reduce(function (w, b) { return w + b.getBoundingClientRect().width; }, 0) + 4 * (buttons.length - 1);
+      }
+      head.classList.toggle('is-compact', needed > head.clientWidth);
+    }
+    fit();
+    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(head);
+    else window.addEventListener('resize', fit);
+  }
+
   function render(box, chart) {
     if (chart.type === 'dupont') return renderDupont(box, chart);
     if (chart.type === 'kpis') return renderKpis(box, chart);
@@ -654,6 +704,7 @@
     canvas.className = 'ft-chart__canvas';
     box.appendChild(head);
     box.appendChild(canvas);
+    if (tabs) compactTabs(tabs);
 
     var instance = window.echarts.init(canvas, null, { renderer: 'canvas' });
     var current = 0;

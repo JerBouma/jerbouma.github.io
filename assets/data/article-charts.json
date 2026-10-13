@@ -3150,7 +3150,8 @@
     {
      "name": "Lam Research",
      "x": 34.76,
-     "y": 0.2991
+     "y": 0.2991,
+     "pos": "bottomleft"
     },
     {
      "name": "Applied Materials",
@@ -10318,7 +10319,7 @@
      "name": "Malteries Franco-Belges",
      "x": 37.2347,
      "y": 0.0467,
-     "pos": "top"
+     "pos": "topleft"
     }
    ]
   },

@@ -5747,6 +5747,31 @@ body.ft-overview .page__content {
     &.is-active { color: var(--accent-color); border-color: var(--card-hover-border); background: rgba(56, 189, 248, 0.1); }
   }
 
+  // the same choice as a dropdown, shown instead of the buttons when they would
+  // not fit on one line (ft-charts.js, compactTabs)
+  &__select {
+    display: none;
+    max-width: 100%;
+    padding: 6px 34px 6px 12px;
+    border: 1px solid var(--card-hover-border);
+    border-radius: 8px;
+    background: rgba(56, 189, 248, 0.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center / 14px;
+    color: var(--accent-color);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+
+    option { color: initial; }
+  }
+
+  &__head.is-compact {
+    .ft-chart__tabs { display: none; }
+    .ft-chart__select { display: block; }
+  }
+
   &__canvas { width: 100%; height: 440px; }
 
   &__loading {
