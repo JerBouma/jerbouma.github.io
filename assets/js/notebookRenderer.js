@@ -252,6 +252,7 @@
   /* ── cell renderers ────────────────────────────────────── */
 
   function renderMarkdownCell(cell) {
+    if (cellTags(cell)["remove-cell"]) return "";
     var src = joinSource(cell.source);
     if (!src.trim()) return "";
     var html = typeof marked !== "undefined" ? marked.parse(src) : "<p>" + escapeHtml(src) + "</p>";
@@ -259,7 +260,34 @@
     return '<div class="nb-cell nb-markdown-cell">' + html + "</div>";
   }
 
+  /** Cell tags (Jupyter Book names) that change how a cell is shown. */
+  function cellTags(cell) {
+    var tags = (cell.metadata && cell.metadata.tags) || [];
+    var set = {};
+    for (var i = 0; i < tags.length; i++) set[tags[i]] = true;
+    return set;
+  }
+
+  function isImageOutput(output) {
+    var data = output.data || {};
+    return !!(data["image/png"] || data["image/svg+xml"] || data["image/jpeg"]);
+  }
+
+  /** A short label for a collapsed output: a table, text or a mix. */
+  function outputLabel(outputs) {
+    var tables = 0, others = 0;
+    for (var i = 0; i < outputs.length; i++) {
+      var d = outputs[i].data || {};
+      if (d["text/html"] && /<table/i.test(joinSource(d["text/html"]))) tables++;
+      else others++;
+    }
+    return tables && !others ? (tables > 1 ? "Show tables" : "Show table") : "Show output";
+  }
+
   function renderCodeCell(cell) {
+    var tags = cellTags(cell);
+    if (tags["remove-cell"]) return "";
+
     var src = joinSource(cell.source);
     var execCount = cell.execution_count;
     var label = execCount != null ? "[" + execCount + "]" : "[ ]";
@@ -268,22 +296,38 @@
     var highlighted = highlightPython(src);
 
     var html = '<div class="nb-cell nb-code-cell">';
-    html += '<div class="nb-input">';
-    html += '<div class="nb-prompt nb-input-prompt">' + escapeHtml(label) + "</div>";
-    html += '<div class="nb-source highlight"><pre><code>' + highlighted + "</code></pre></div>";
-    html += "</div>";
-
-    // Outputs — wrapped in a collapsible details block
-    if (cell.outputs && cell.outputs.length) {
-      var outputsHtml = '';
-      for (var i = 0; i < cell.outputs.length; i++) {
-        outputsHtml += renderOutput(cell.outputs[i], execCount);
+    if (!tags["remove-input"]) {
+      var input = '<div class="nb-input">';
+      input += '<div class="nb-prompt nb-input-prompt">' + escapeHtml(label) + "</div>";
+      input += '<div class="nb-source highlight"><pre><code>' + highlighted + "</code></pre></div>";
+      input += "</div>";
+      if (tags["hide-input"]) {
+        html += '<details class="nb-output-details nb-input-details">';
+        html += '<summary class="nb-output-summary"><span class="nb-output-summary__icon"></span>Show code</summary>';
+        html += input + "</details>";
+      } else {
+        html += input;
       }
-      html += '<details class="nb-output-details">';
-      html += '<summary class="nb-output-summary"><span class="nb-output-summary__icon"></span>Show output</summary>';
-      html += '<div class="nb-output-area">' + outputsHtml + '</div>';
-      html += '</details>';
     }
+
+    // Charts are shown; tables and text sit behind a toggle unless the cell
+    // is tagged show-output. hide-output collapses a chart too.
+    var outputs = tags["remove-output"] ? [] : (cell.outputs || []);
+    var shown = "", hidden = "", hiddenOutputs = [];
+    for (var i = 0; i < outputs.length; i++) {
+      var rendered = renderOutput(outputs[i], execCount);
+      if (!rendered) continue;
+      var open = tags["show-output"] || (isImageOutput(outputs[i]) && !tags["hide-output"]);
+      if (open) shown += rendered;
+      else { hidden += rendered; hiddenOutputs.push(outputs[i]); }
+    }
+    if (hidden) {
+      html += '<details class="nb-output-details">';
+      html += '<summary class="nb-output-summary"><span class="nb-output-summary__icon"></span>' + outputLabel(hiddenOutputs) + "</summary>";
+      html += '<div class="nb-output-area">' + hidden + "</div>";
+      html += "</details>";
+    }
+    if (shown) html += '<div class="nb-output-area nb-output-area--open">' + shown + "</div>";
 
     html += "</div>";
     return html;
