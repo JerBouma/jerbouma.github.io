@@ -272,15 +272,15 @@ index = result.cumulative_index("united_states_inflation", initial_index=1.0).dr
 indexed = best_estimate(result, annuity * index, short_rate="united_states_short_rate")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | annuity | best_estimate | standard_error | p0.5 | p99.5 |
 |:--------|--------------:|---------------:|-----:|------:|
-| level | 80,811.82 | 0.00 | 80,811.82 | 80,811.82 |
-| inflation-indexed | 93,142.15 | 4.05 | 83,990.68 | 103,236.21 |
+| level | 80,532.45 | 0.00 | 80,532.45 | 80,532.45 |
+| inflation-indexed | 93,976.96 | 6.15 | 83,336.15 | 106,135.94 |
 
-Indexing the annuity to inflation makes it about 15% dearer, and unlike the level annuity its value is uncertain:
-the 99.5th percentile is 11% above the best estimate.
+Indexing the annuity to inflation makes it about 17% dearer, and unlike the level annuity its value is uncertain:
+the 99.5th percentile is 13% above the best estimate.
 
 **References:**
 
@@ -740,14 +740,14 @@ test = martingale_test(result, "us_broad", "united_states_short_rate", dividend_
 test.table.filter(test.table["time"].is_in([1.0, 5.0, 10.0]))
 ```
 
-Which returns (calibrated on 2026-10-04), with `pass_rate` 0.825 against an `expected_pass_rate` of 0.95 and
-`max_abs_deviation` 0.0091:
+Which returns (calibrated on 2026-10-14), with `pass_rate` 0.80 against an `expected_pass_rate` of 0.95 and
+`max_abs_deviation` 0.0094:
 
 | date | time | ratio | within_band |
 |:-----|-----:|------:|:------------|
 | 2027-10-01 | 1 | 0.9990 | false |
-| 2031-10-01 | 5 | 0.9994 | true |
-| 2036-09-30 | 10 | 0.9922 | true |
+| 2031-10-01 | 5 | 0.9992 | true |
+| 2036-09-30 | 10 | 0.9918 | false |
 
 A few neighbouring dates fall just outside their band, which is chance on 120 related dates.
 
@@ -1043,16 +1043,16 @@ curve = zero_coupon_curve(result, "united_states_short_rate")
 curve.filter(curve["maturity"].is_in([1.0, 2.0, 5.0, 10.0]))
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | date | maturity | price | standard_error | spot_rate |
 |:-----|---------:|------:|---------------:|----------:|
-| 2027-10-01 | 1 | 0.9609 | 0.0000 | 0.03993 |
-| 2028-09-30 | 2 | 0.9232 | 0.0000 | 0.03993 |
-| 2031-10-01 | 5 | 0.8190 | 0.0000 | 0.03993 |
-| 2036-09-30 | 10 | 0.6708 | 0.0000 | 0.03993 |
+| 2027-10-01 | 1 | 0.9602 | 0.0000 | 0.04060 |
+| 2028-09-30 | 2 | 0.9220 | 0.0000 | 0.04060 |
+| 2031-10-01 | 5 | 0.8163 | 0.0000 | 0.04060 |
+| 2036-09-30 | 10 | 0.6663 | 0.0000 | 0.04060 |
 
-By default the risk-neutral short rate stays at today's 13-week Treasury yield, 3.993%, so every maturity prices
+By default the risk-neutral short rate stays at today's 13-week Treasury yield, 4.06%, so every maturity prices
 off exactly that rate with no Monte Carlo error.
 
 **References:**
@@ -1253,14 +1253,14 @@ test = martingale_test(result, "us_broad", "united_states_short_rate", dividend_
 test.table.filter(test.table["time"].is_in([1.0, 5.0, 10.0]))
 ```
 
-Which returns (calibrated on 2026-10-04), with `pass_rate` 0.825 against an `expected_pass_rate` of 0.95 and
-`max_abs_deviation` 0.0091:
+Which returns (calibrated on 2026-10-14), with `pass_rate` 0.80 against an `expected_pass_rate` of 0.95 and
+`max_abs_deviation` 0.0094:
 
 | date | time | ratio | within_band |
 |:-----|-----:|------:|:------------|
 | 2027-10-01 | 1 | 0.9990 | false |
-| 2031-10-01 | 5 | 0.9994 | true |
-| 2036-09-30 | 10 | 0.9922 | true |
+| 2031-10-01 | 5 | 0.9992 | true |
+| 2036-09-30 | 10 | 0.9918 | false |
 
 A few neighbouring dates fall just outside their band, which is chance on 120 related dates.
 
@@ -1340,16 +1340,16 @@ curve = zero_coupon_curve(result, "united_states_short_rate")
 curve.filter(curve["maturity"].is_in([1.0, 2.0, 5.0, 10.0]))
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | date | maturity | price | standard_error | spot_rate |
 |:-----|---------:|------:|---------------:|----------:|
-| 2027-10-01 | 1 | 0.9609 | 0.0000 | 0.03993 |
-| 2028-09-30 | 2 | 0.9232 | 0.0000 | 0.03993 |
-| 2031-10-01 | 5 | 0.8190 | 0.0000 | 0.03993 |
-| 2036-09-30 | 10 | 0.6708 | 0.0000 | 0.03993 |
+| 2027-10-01 | 1 | 0.9602 | 0.0000 | 0.04060 |
+| 2028-09-30 | 2 | 0.9220 | 0.0000 | 0.04060 |
+| 2031-10-01 | 5 | 0.8163 | 0.0000 | 0.04060 |
+| 2036-09-30 | 10 | 0.6663 | 0.0000 | 0.04060 |
 
-By default the risk-neutral short rate stays at today's 13-week Treasury yield, 3.993%, so every maturity prices
+By default the risk-neutral short rate stays at today's 13-week Treasury yield, 4.06%, so every maturity prices
 off exactly that rate with no Monte Carlo error.
 
 **References:**
@@ -1548,15 +1548,15 @@ index = result.cumulative_index("united_states_inflation", initial_index=1.0).dr
 indexed = best_estimate(result, annuity * index, short_rate="united_states_short_rate")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | annuity | best_estimate | standard_error | p0.5 | p99.5 |
 |:--------|--------------:|---------------:|-----:|------:|
-| level | 80,811.82 | 0.00 | 80,811.82 | 80,811.82 |
-| inflation-indexed | 93,142.15 | 4.05 | 83,990.68 | 103,236.21 |
+| level | 80,532.45 | 0.00 | 80,532.45 | 80,532.45 |
+| inflation-indexed | 93,976.96 | 6.15 | 83,336.15 | 106,135.94 |
 
-Indexing the annuity to inflation makes it about 15% dearer, and unlike the level annuity its value is uncertain:
-the 99.5th percentile is 11% above the best estimate.
+Indexing the annuity to inflation makes it about 17% dearer, and unlike the level annuity its value is uncertain:
+the 99.5th percentile is 13% above the best estimate.
 
 **References:**
 

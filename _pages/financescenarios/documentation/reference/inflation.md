@@ -184,8 +184,9 @@ on the latest date every maturity is quoted. The data come from the US Treasury,
 Germany, the Bundesbank's federal securities yields (inflation-linked minus nominal), with no API key needed.
 The shortest breakeven is three (UK) or five years out (US, Germany); before it the curve holds the fitted
 breakeven at that maturity flat, the constant-forward rule EIOPA uses before its first quoted maturity (RFR
-Technical Documentation EIOPA-BoS-26/198, Annex G.6.12: "All yields below the available first maturity are
-equal to the first yield available"), rather than extrapolate the Nelson-Siegel forward to today.
+Technical Documentation EIOPA-BoS-26/198, Annex D.8.2-D.8.3: "the constant forward assumption implies the
+following relation: f_j-1,j = f_j = f_1 = r_t1 for j = 1, 2, ..., t1", so "z_j = r_t1"), rather than
+extrapolate the Nelson-Siegel forward to today.
 
 **As an example:**
 
@@ -643,8 +644,8 @@ Breakevens are quoted from three (UK) or five years (US, Germany) out, so a Nels
 horizons is an extrapolation the data do not support: on 2026-10-14 it started the German curve at 5.72% against
 a 2.28% five-year quote, and the UK one at 7.76% against a 4.03% three-year quote. Below the shortest maturity the
 forward is held at the fitted yield there, the constant-forward rule EIOPA applies before its first quoted
-maturity (RFR Technical Documentation EIOPA-BoS-26/198, Annex D.8.2: "f_j-1,j = f_j = f_1 = r_t1 for j = 1, 2,
-..., t1"; Annex G.6.12: "All yields below the available first maturity are equal to the first yield available").
+maturity (RFR Technical Documentation EIOPA-BoS-26/198, Annex D.8.2: "the constant forward assumption implies the
+following relation: f_j-1,j = f_j = f_1 = r_t1 for j = 1, 2, ..., t1"; D.8.3: "z_j = r_t1 for j = 1, 2, ..., t1").
 The accumulated forward to the shortest maturity is unchanged, so every breakeven yield from that maturity on is
 still the Nelson-Siegel one and inflation-linked cashflows from there are priced as before.
 
@@ -662,7 +663,7 @@ Where T1 is `params.shortest_maturity` and y_NS the Nelson-Siegel yield; with T1
 
 **References:**
 
-- EIOPA (2026). "RFR Technical Documentation", EIOPA-BoS-26/198, Annexes D.8 and G.6. <https://www.eiopa.europa.eu/eiopa-publishes-rfr-technical-documentation-become-applicable-30-january-2027-2026-05-26_en>
+- EIOPA (2026). "RFR Technical Documentation", EIOPA-BoS-26/198, Annex D.8. <https://www.eiopa.europa.eu/eiopa-publishes-rfr-technical-documentation-become-applicable-30-january-2027-2026-05-26_en>
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>

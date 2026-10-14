@@ -157,7 +157,7 @@ for tenor in [0.25, 1, 5, 10, 30]:
     print(tenor, knw_sv_q.zero_coupon_yield("interest_rate", tenor))
 ```
 
-In one fit (calibrated on 2026-10-04) the curve started at the 3.75% short rate, rose to about 4.5% at five years and flattened just under 5% beyond ten, below the latest Treasury yields, since the premiums are fitted across the whole history.
+In one fit (calibrated on 2026-10-14) the curve started at the 3.75% short rate, rose to about 4.5% at five years and flattened near 4.8% beyond ten, below the latest Treasury yields, since the premiums are fitted across the whole history.
 
 **Limits.**
 
@@ -171,7 +171,7 @@ In one fit (calibrated on 2026-10-04) the curve started at the 3.75% short rate,
 
 A deflator values a liability straight off a real-world run, so you don't need a second, risk-neutral simulation. Following [Cheng and Planchet (2018)](https://hal.science/hal-01730072){:target="_blank"}, $$D(T)$$ combines discounting at the simulated short rate with a path weight that turns real-world paths into risk-neutral ones; the value of a cash flow $$X_T$$ is the path average of $$D(T)\,X_T$$.
 
-The weight leaves out turbulence's shock, so the deflator is only accurate when the turbulence premium is small. On the live US fit that premium is large and the deflator is not usable; the fit warns when it is too large. The deflator is available in Python only; the [KnwSvQ reference](/projects/financescenarios/docs/reference/knw-sv-q) has a worked example.
+The weight leaves out turbulence's shock, so the deflator is only accurate when the turbulence premium is small. On the live US fit that premium is large (38.5% of turbulence's speed), and the deflator's average misses the model's own bond prices by about 2% at one year and 5% at five (0.9827 against 0.9620, and 0.7606 against 0.7996); the fit warns when the premium is this large. The deflator is available in Python only; the [KnwSvQ reference](/projects/financescenarios/docs/reference/knw-sv-q) has a worked example.
 
 ## Configuring a KNW Run
 

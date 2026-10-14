@@ -483,9 +483,10 @@ Instead of writing a recession by hand, this takes the one the Federal Reserve o
 prescribes for banks' stress tests and lets the simulated scenarios follow it, each with its own randomness. Its
 paths for interest rates, inflation and unemployment steer the matching factors of `config` through the stress
 and back to their calibrated levels; stocks follow as falls and recoveries, measured against each regulator's
-own baseline so the equity model's normal growth is not counted twice. The Federal Reserve's 2026 severely adverse
-scenario, for example, takes US stocks 59% below its baseline after three quarters and 56% below after a year
-("Equity prices fall about 58 percent in the first three quarters of the scenario", 2026 Final Scenarios, p. 4).
+own baseline so the equity model's normal growth is not counted twice. In the Federal Reserve's 2026 severely
+adverse scenario, for example, "Equity prices fall about 58 percent in the first three quarters of the scenario"
+(2026 Final Scenarios, p. 4), a fall from their starting level; against the Fed's own baseline, which keeps
+rising, that is 59% below it after three quarters and 56% below after a year, the falls the regime uses.
 The ESRB's stocks are published as a "Deviation from the starting point (%)", with "stock prices ... assumed to
 remain unchanged" in its baseline (2025 scenario, section 4.1.7), so that deviation is already the gap to its
 baseline: -50% for the EU in 2025 and -42% by 2027.

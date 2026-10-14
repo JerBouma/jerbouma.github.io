@@ -111,13 +111,13 @@ knw_sv_q = KnwSvQ(toolkit)
 knw_sv_q.calibrate_mpr(knw_sv, "interest_rate", "inflation", period="quarterly")
 ```
 
-Which returns (calibrated on 2026-10-05):
+Which returns (calibrated on 2026-10-14):
 
 | risk_premium_v | rate_constant | rate_variance | inflation_constant | inflation_variance |
 |---------------:|--------------:|--------------:|-------------------:|-------------------:|
-| -0.1532 | 0.0001 | -8.5226 | -0.0027 | 9.4999 |
+| -0.1536 | 0.0001 | -8.4981 | -0.0027 | 9.3876 |
 
-Under Q, `v` reverts at 0.399 - 0.153 = 0.246 a year toward 1.6 times its historical normal level: the curve
+Under Q, `v` reverts at 0.399 - 0.154 = 0.245 a year toward 1.6 times its historical normal level: the curve
 prices in more turbulence than history shows, and the deflator warning fires.
 
 <details class="ft-details fs-api" markdown="1">
@@ -244,14 +244,15 @@ for tenor in [0.25, 1, 2, 5, 10, 20, 30]:
     print(tenor, knw_sv_q.zero_coupon_yield("interest_rate", tenor))
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | tenor (years) | 0.25 | 1 | 2 | 5 | 10 | 20 | 30 |
 |:--------------|-----:|--:|--:|--:|---:|---:|---:|
-| yield | 0.0375 | 0.0381 | 0.0404 | 0.0453 | 0.0487 | 0.0496 | 0.0492 |
+| yield | 0.0375 | 0.0387 | 0.0405 | 0.0447 | 0.0478 | 0.0484 | 0.0483 |
 
-The curve starts at today's 3.75% short rate, rises to 4.5% at five years and flattens just under 5% beyond
-ten, below the latest observed Treasury yields, since the premiums are fit across the whole history.
+The curve starts at the 3.75% short rate of the last quarter, rises to 4.5% at five years and flattens near
+4.8% beyond ten, below the latest observed Treasury yields, since the premiums are fit across the whole
+history.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -295,22 +296,22 @@ speed, or at short maturities; `calibrate_mpr` warns past 5% of that speed. A sc
 **As an example:**
 
 Continuing from `calibrate_mpr`, with `v_path`, `rate_path` and `inflation_path` simulated by hand over 20
-quarters and 20,000 paths.
+quarters and 20,000 paths (seed 42, the rate and inflation shocks correlated at `shock_correlation`, 0.14).
 
 ```python
 rate, inflation = knw_sv.params("interest_rate"), knw_sv.params("inflation")
 deflator = knw_sv_q.deflator("interest_rate", v_path, rate_path, inflation_path, rate, inflation)
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | T (years) | mean of D(T) | closed-form Q bond price |
 |----------:|-------------:|-------------------------:|
-| 1 | 0.2818 | 0.9626 |
-| 5 | 0.0001 | 0.7972 |
+| 1 | 0.9827 | 0.9620 |
+| 5 | 0.7606 | 0.7996 |
 
-Here `|risk_premium_v|` is 66% of `v`'s speed, so the average collapses toward zero instead of matching the
-bond price: the regime `calibrate_mpr` warns about.
+Here `|risk_premium_v|` is 38.5% of `v`'s speed, so the average misses the bond price, by 2% at one year and 5%
+at five: the regime `calibrate_mpr` warns about.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>

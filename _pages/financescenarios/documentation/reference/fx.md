@@ -431,7 +431,7 @@ long horizons. The scenarios still spread out with the historical volatility. Go
 same finding: "the evidence suggests that at short- and medium-term horizons, a random walk characterizes
 exchange rate movements better than most conventional fundamental-based exchange rate models" (Rosenberg, 1996).
 Over long horizons Barrie & Hibbert have exchange rates "respect purchasing power parity relationships at long
-horizons" (Hibbert, Mowbray and Turnbull 2001, section 9.3, p. 70), which also rules out a lasting trend beyond
+horizons" (Hibbert, Mowbray and Turnbull 2001, section 9.3, p. 69), which also rules out a lasting trend beyond
 the inflation gap; this is the default `drift_mode`.
 
 The formula is as follows:

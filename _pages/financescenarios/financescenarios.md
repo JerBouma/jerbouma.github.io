@@ -120,7 +120,7 @@ Passed as `Portfolio.from_preset(result, preset="...")`, see [Building a Portfol
 
 | id                    | description                                                                                                                                   |
 |:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------|
-| all_weather           | Ray Dalio's mix for every economic climate: 30% US stocks, 55% long US Treasuries and 15% gold.                                               |
+| all_weather           | Ray Dalio's mix: 30% US stocks, 55% Treasuries for his 40% long and 15% intermediate bonds, 15% gold for his 7.5% gold and 7.5% commodities.  |
 | balanced_60_40        | The textbook mix: 60% US stocks and 40% US Treasury bonds.                                                                                    |
 | barbell               | Nassim Taleb's barbell: 85% Treasury bills, 15% small-cap and growth stocks, nothing in between. Needs the broad set.                         |
 | bogleheads_three_fund | The Bogleheads' three funds: 40% US stocks, 20% international stocks and 40% US Treasury bonds. Needs the default, core or broad set.         |

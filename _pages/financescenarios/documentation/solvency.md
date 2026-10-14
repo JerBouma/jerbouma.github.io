@@ -35,7 +35,7 @@ where $$r_s$$ is the simulated short rate and $$\Delta t$$ the step length in ye
 
 ## The Example Run {#martingale-test-example}
 
-The results on this page and in the [Solvency reference](/projects/financescenarios/docs/reference/solvency) come from one risk-neutral run: SPY and US rates, inflation and unemployment, 2,000 scenarios, monthly over ten years, seed 42, calibrated on 2026-10-04. SPY's dividend yield is its own entry so the martingale test can add it back.
+The results on this page and in the [Solvency reference](/projects/financescenarios/docs/reference/solvency) come from one risk-neutral run: SPY and US rates, inflation and unemployment, 2,000 scenarios, monthly over ten years, seed 42, calibrated on 2026-10-14. SPY's dividend yield is its own entry so the martingale test can add it back.
 
 ```python
 from datetime import date
@@ -74,7 +74,7 @@ index = result.cumulative_index("united_states_inflation", initial_index=1.0).dr
 indexed = best_estimate(result, annuity * index, short_rate="united_states_short_rate")
 ```
 
-The example switches the short rate to risk-neutral on its own, so it is today's 13-week Treasury yield, 3.993%, held flat, and bond prices carry no Monte Carlo error.
+The example switches the short rate to risk-neutral on its own, so it is today's 13-week Treasury yield, 4.06%, held flat, and bond prices carry no Monte Carlo error.
 
 ## Market Consistency: The Martingale Test
 
@@ -96,20 +96,19 @@ $$
 
 where $$S$$ is the asset price and $$q$$ its dividend yield. Each date gets a 95% confidence band around the simulated mean and a p-value for the gap between that mean and $$S(0)$$.
 
-With 120 dates each tested at 95%, a correct run still misses about six of them by chance, so requiring every date to pass would fail a true martingale about half the time. The verdict therefore uses [Holm's (1979)](https://www.jstor.org/stable/4615733){:target="_blank"} step-down adjustment for testing many dates at once: the run fails only when the smallest adjusted p-value drops below 5%, which keeps the chance of wrongly failing a correct run at 5% however closely neighboring dates are related. The stricter every-date rule remains available (`criterion="every_date"`). The pass rate is reported beside the 95% a correct drift gives on average. The example run passes 82.5% of dates, with a largest gap of 0.91%, and passes the test.
+With 120 dates each tested at 95%, a correct run still misses about six of them by chance, so requiring every date to pass would fail a true martingale about half the time. The verdict therefore uses [Holm's (1979)](https://www.jstor.org/stable/4615733){:target="_blank"} step-down adjustment for testing many dates at once: the run fails only when the smallest adjusted p-value drops below 5%, which keeps the chance of wrongly failing a correct run at 5% however closely neighboring dates are related. The stricter every-date rule remains available (`criterion="every_date"`). The pass rate is reported beside the 95% a correct drift gives on average. The example run passes 80% of dates, with a largest gap of 0.94%.
 
 | date | ratio to today's price | within band |
 |:-----|-----:|:------------|
 | 2027-10-01 | 0.9990 | false |
-| 2028-09-30 | 0.9996 | true |
-| 2031-10-01 | 0.9994 | true |
-| 2036-09-30 | 0.9922 | true |
+| 2031-10-01 | 0.9992 | true |
+| 2036-09-30 | 0.9918 | false |
 
-SPY stays within 0.9% of today's price for all ten years, yet 21 of 120 dates fall just outside a very tight band. Neighboring dates share their paths, so misses come in runs and the pass rate swings from seed to seed: seeds 2 and 3 pass everywhere and seed 42 keeps every date inside a 99% band. That is Monte Carlo noise, not a wrong drift, and the Holm verdict treats it as such. Failing at most dates means the drift is wrong, typically a real-world run tested by mistake; leaving out the dividend yield makes every date fail.
+SPY stays within 0.94% of today's price for all ten years, yet 24 of 120 dates fall just outside a very tight band. Neighboring dates share their paths, so misses come in runs and the pass rate swings from seed to seed. That is Monte Carlo noise, not a wrong drift. Failing at most dates means the drift is wrong, typically a real-world run tested by mistake; leaving out the dividend yield makes every date fail.
 
-The one-table Solvency II summary on the [overview page](/projects/financescenarios) uses a practical criterion instead: the run counts as market consistent when the largest gap stays within 2% of today's price. By that measure the example run, at 0.91%, passes.
+The one-table Solvency II summary on the [overview page](/projects/financescenarios) uses a practical criterion instead: the run counts as market consistent when the largest gap stays within 2% of today's price. By that measure the example run, at 0.94%, passes.
 
-The rates side has the same test: the bond prices the run implies, $$P(0,t) = \mathbb{E}[D(t)]$$, should match the published curve within about two standard errors. On the example run every maturity prices off the flat 3.993%, from 0.9609 at one year to 0.6708 at ten, so a comparison with EIOPA's curve mostly shows the gap between US Treasury and EIOPA rates.
+The rates side has the same test: the bond prices the run implies, $$P(0,t) = \mathbb{E}[D(t)]$$, should match the published curve within about two standard errors. On the example run every maturity prices off the flat 4.06%, from 0.9602 at one year to 0.6663 at ten, so a comparison with EIOPA's curve mostly shows the gap between US Treasury and EIOPA rates.
 
 ## EIOPA's Curve and the Ultimate Forward Rate
 
@@ -171,10 +170,10 @@ For fixed cashflows this collapses to discounting on a curve, which is why plain
 
 | annuity | best estimate | standard error | 0.5th percentile | 99.5th percentile |
 |:--------|--------------:|---------------:|-----:|------:|
-| level | 80,811.82 | 0.00 | 80,811.82 | 80,811.82 |
-| inflation-indexed | 93,142.15 | 4.05 | 83,990.68 | 103,236.21 |
+| level | 80,532.45 | 0.00 | 80,532.45 | 80,532.45 |
+| inflation-indexed | 93,976.96 | 6.15 | 83,336.15 | 106,135.94 |
 
-Ten yearly payments of 10,000 are worth 80,812 at the flat 3.99%, with no spread across scenarios. Indexed to simulated inflation they are worth 93,142, ranging from about 84,000 to 103,000 across scenarios; a standard error of 4 shows 2,000 scenarios are plenty.
+Ten yearly payments of 10,000 are worth 80,532 at the flat 4.06%, with no spread across scenarios. Indexed to simulated inflation they are worth 93,977, about 17% more, ranging from about 83,000 to 106,000 across scenarios; a standard error of 6 shows 2,000 scenarios are plenty.
 
 For Solvency II, the discount curve matters. Passing EIOPA's curve to the best estimate discounts each scenario's cashflows on that curve, as Article 77(2) requires. Without it, discounting runs along the simulated short rate: on a whole-run risk-neutral simulation that rate reproduces EIOPA's curve on average, so cashflows that depend on the path of rates or equities (guarantees, profit sharing) are generated and discounted consistently with it. In the example, which holds today's Treasury bill rate flat, they are not.
 

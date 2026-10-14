@@ -197,14 +197,14 @@ rates = InterestRates(toolkit)
 rates.calibrate_risk_neutral("united_states", ticker="^IRX")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | Field | Value |
 |:------|------:|
-| level | 0.0399 |
-| initial_value | 0.0399 |
+| level | 0.0406 |
+| initial_value | 0.0406 |
 
-Every simulated path holds the 13-week Treasury bill rate at today's 3.99%.
+Every simulated path holds the 13-week Treasury bill rate at today's 4.06%.
 
 **References:**
 
