@@ -1,6 +1,7 @@
 ---
 title: Models
-seo_title: Models Module – Finance Toolkit Docs
+seo_title: "Models Module | Finance Toolkit"
+seo_title_suffix: false
 excerpt: The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
 description: "Reference for every function and parameter in the Finance Toolkit's Models module: DuPont analysis, Discounted Cash Flow (DCF) and valuation models."
 author_profile: false

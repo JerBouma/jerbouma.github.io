@@ -1,6 +1,7 @@
 ---
 title: "TermStructure"
-seo_title: "TermStructure Reference – Finance Scenarios"
+seo_title: "TermStructure Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The yield curve as Nelson-Siegel level, slope and curvature."
 description: "The yield curve as Nelson-Siegel level, slope and curvature."
 author_profile: false

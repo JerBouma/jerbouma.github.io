@@ -53,7 +53,7 @@ maintained:
 contributed:
   - name: "OpenBB"
     url: /projects/openbbterminal
-    github: "https://github.com/OpenBB-finance/OpenBB"
+    github: "https://github.com/openbq-org/OpenBB"
     image: "/assets/images/projects/openbb-banner.webp"
     years: "2022 – 2023"
     text: "An open-source investment research platform that set out to compete with Bloomberg, Reuters and FactSet. As Product Manager I also wrote a lot of its code, mostly the Economy, Econometrics and Fundamental Analysis parts of what is now the OpenBB Platform."

@@ -1,6 +1,7 @@
 ---
 title: KNW Models
-seo_title: KNW Models Documentation – Finance Scenarios
+seo_title: "KNW Models Documentation | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The Koijen-Nijman-Werker family behind the Dutch CP2022 scenario model: nominal rates and inflation as one coupled system, shared stochastic volatility, an equity leg and a risk-neutral version fitted to the yield curve."
 description: "Nominal rates and inflation as one coupled system, KNW style: two-way coupling, stochastic volatility, the risk-neutral version and how it compares with DNB."
 author_profile: false

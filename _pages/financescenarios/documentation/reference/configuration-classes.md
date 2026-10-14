@@ -1,6 +1,7 @@
 ---
 title: "Configuration Classes"
-seo_title: "Configuration Classes Reference – Finance Scenarios"
+seo_title: "Configuration Classes Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The typed settings behind each factor block, the engine and the data download, plus beliefs, belief paths and shocks."
 description: "The typed settings behind each factor block, the engine and the data download, plus beliefs, belief paths and shocks."
 author_profile: false

@@ -1,6 +1,7 @@
 ---
 title: Configuration
-seo_title: Configuration Documentation – Finance Scenarios
+seo_title: "Configuration Documentation | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The modeling choices behind a run: horizon and step, number of scenarios, calibration window, real-world or risk-neutral measure, expert beliefs and published frameworks."
 description: "The modeling choices behind a Finance Scenarios run: horizon, scenario count, calibration window, measure, expert beliefs and published frameworks."
 author_profile: false

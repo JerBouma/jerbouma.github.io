@@ -27,7 +27,8 @@
 {% endif %}
 
 {%- if seo_title -%}
-  {%- assign seo_title = seo_title | markdownify | strip_html | strip_newlines | escape_once -%}
+  {%- comment -%} a bare "|" would read as a Markdown table and vanish {%- endcomment -%}
+  {%- assign seo_title = seo_title | replace: '|', '&#124;' | markdownify | strip_html | strip_newlines | strip | escape_once -%}
 {%- endif -%}
 
 {% if page.canonical_url %}

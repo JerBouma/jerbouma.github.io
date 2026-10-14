@@ -1,8 +1,10 @@
 ---
 title: Getting Started with the Finance Database
 permalink: /projects/financedatabase/getting-started
+seo_title: "Getting Started Notebook | Finance Database"
+seo_title_suffix: false
 excerpt: This notebook demonstrates how to use the FinanceDatabase to look into companies and filter through them accordingly.
-description: This notebook demonstrates how to use the FinanceDatabase to look into companies and filter through them accordingly.
+description: "Search and filter 300,000+ stocks, ETFs and indices by sector, industry, country and exchange with the Finance Database in Python, step by step."
 classes: wide-no-sidebar no-title
 author_profile: false
 redirect_from:

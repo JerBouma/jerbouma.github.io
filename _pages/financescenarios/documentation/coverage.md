@@ -1,6 +1,7 @@
 ---
 title: Coverage
-seo_title: Coverage – Finance Scenarios
+seo_title: "Coverage | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "What Finance Scenarios can and can't do, and why: every factor, every calibration method, every measure and every known gap, in one place."
 description: "What Finance Scenarios covers: every factor, calibration method, real-world and risk-neutral measure and known gap, with where each one lives."
 author_profile: false

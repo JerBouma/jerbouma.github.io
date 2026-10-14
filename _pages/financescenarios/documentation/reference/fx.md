@@ -1,6 +1,7 @@
 ---
 title: "FX"
-seo_title: "FX Reference – Finance Scenarios"
+seo_title: "FX Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Exchange rates, one per currency against the US dollar."
 description: "Exchange rates, one per currency against the US dollar."
 author_profile: false

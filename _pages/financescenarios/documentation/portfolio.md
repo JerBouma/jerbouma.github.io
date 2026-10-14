@@ -1,6 +1,7 @@
 ---
 title: Portfolio
-seo_title: Portfolio Documentation – Finance Scenarios
+seo_title: "Portfolio Documentation | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "How simulated returns become the value of a real portfolio: rebalancing and the rebalancing premium, cashflows and sequence risk, glidepaths, fees, risk metrics, backtests and factor exposure."
 description: "From scenario returns to portfolio value: rebalancing, cashflows and sequence risk, glidepaths, fees, VaR and Expected Shortfall, backtests and factor exposure."
 author_profile: false

@@ -1,6 +1,7 @@
 ---
 title: "Configuration and Presets"
-seo_title: "Configuration and Presets Reference – Finance Scenarios"
+seo_title: "Configuration and Presets Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Load settings, factor sets and presets, list every named preset and scaffold a project."
 description: "Load settings, factor sets and presets, list every named preset and scaffold a project."
 author_profile: false

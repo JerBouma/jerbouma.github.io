@@ -3,7 +3,6 @@ title: Build your Model
 seo_title: Build a Financial Model in Python
 excerpt: "Build financial models that last, with modular code, clear styling, the PEP 8 conventions and a careful review of AI-written code."
 description: "Build financial models that last, with modular code, clear styling, the PEP 8 conventions and a careful review of AI-written code."
-author_profile: true
 permalink: /modelling/build-your-model
 classes: wide-sidebar
 author_profile: false
@@ -11,7 +10,7 @@ sidebar:
     nav: "modelling"
 ---
 
-A financial model can serve multiple purposes, ranging from simple data aggregation to complex forecasting and scenario analysis. However complex it is, the model should be clear, maintainable, and easy to extend. That is why the modular programming discussed in [Structure your Model](/modelling/structure-your-model) matters so much. For examples of this method and inspiration for building your own model, have a look at projects like the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"}, [Finance Database](https://github.com/JerBouma/FinanceDatabase){: target="_blank"}, [OpenBB Terminal](https://github.com/OpenBB-finance/OpenBB){: target="_blank"}, [yfinance](https://github.com/ranaroussi/yfinance){: target="_blank"}, and [Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){: target="_blank"}.
+A financial model can serve multiple purposes, ranging from simple data aggregation to complex forecasting and scenario analysis. However complex it is, the model should be clear, maintainable, and easy to extend. That is why the modular programming discussed in [Structure your Model](/modelling/structure-your-model) matters so much. For examples of this method and inspiration for building your own model, have a look at projects like the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"}, [Finance Database](https://github.com/JerBouma/FinanceDatabase){: target="_blank"}, [OpenBB Terminal](https://github.com/openbq-org/OpenBB){: target="_blank"}, [yfinance](https://github.com/ranaroussi/yfinance){: target="_blank"}, and [Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){: target="_blank"}.
 
 Regardless of the model's purpose, applying consistent styling and coding guidelines helps remove the subjective nature of coding. A style guide ensures code consistency, making it easier to read and maintain. This matters most when multiple developers work on the same codebase or when colleagues move between teams and need to understand models they haven't seen before.
 

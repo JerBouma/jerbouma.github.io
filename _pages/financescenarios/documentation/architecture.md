@@ -1,6 +1,7 @@
 ---
 title: How a Run Is Built
-seo_title: How a Run Is Built – Finance Scenarios
+seo_title: "How a Run Is Built | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "How a scenario set is built: history for every factor, a calibration per factor, the dependence between them through the economic cascade and a correlation matrix, a correlated simulation, and the outputs."
 description: "How Finance Scenarios builds a scenario set: data, calibration of each factor, correlations and the economic cascade, correlated simulation and outputs."
 author_profile: false

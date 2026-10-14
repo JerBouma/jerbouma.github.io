@@ -1,6 +1,7 @@
 ---
 title: "Portfolio"
-seo_title: "Portfolio Reference – Finance Scenarios"
+seo_title: "Portfolio Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Read a finished run through an investment portfolio: allocations, cashflows, glidepaths, risk metrics and factor exposure."
 description: "Read a finished run through an investment portfolio: allocations, cashflows, glidepaths, risk metrics and factor exposure."
 author_profile: false

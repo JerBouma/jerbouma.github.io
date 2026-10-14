@@ -1,6 +1,7 @@
 ---
 title: "History and Metrics"
-seo_title: "History and Metrics Reference – Finance Scenarios"
+seo_title: "History and Metrics Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Fetch the realized history behind a run, turn it into a backtest and compute factor and price metrics."
 description: "Fetch the realized history behind a run, turn it into a backtest and compute factor and price metrics."
 author_profile: false

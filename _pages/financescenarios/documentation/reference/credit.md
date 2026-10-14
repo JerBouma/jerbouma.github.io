@@ -1,6 +1,7 @@
 ---
 title: "Credit"
-seo_title: "Credit Reference – Finance Scenarios"
+seo_title: "Credit Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Credit spreads by maturity, rating bucket or country."
 description: "Credit spreads by maturity, rating bucket or country."
 author_profile: false

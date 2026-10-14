@@ -1,6 +1,7 @@
 ---
 title: "Dependence"
-seo_title: "Dependence Reference – Finance Scenarios"
+seo_title: "Dependence Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The correlation matrix that links every factor: estimation, shrinkage and repair."
 description: "The correlation matrix that links every factor: estimation, shrinkage and repair."
 author_profile: false

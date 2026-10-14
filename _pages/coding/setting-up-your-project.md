@@ -3,7 +3,6 @@ title: Setting up your Project
 seo_title: Set Up a Python Financial Modelling Project
 excerpt: "How to set up a financial model in Python: project management, directory structure, dependency management, a Git workflow and exceptions."
 description: "How to set up a financial model in Python: project management, directory structure, dependency management, a Git workflow and exceptions."
-author_profile: true
 permalink: /modelling/setting-up-your-project
 classes: wide-sidebar
 author_profile: false
@@ -46,7 +45,7 @@ The `tests` folder mirrors this structure but contains unit tests for `pytest`:
 
 You can modify this structure, as long as the model is organized in a way that you and others can understand and maintain.
 
-For instance, my [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} package follows this exact structure. You'll find a similar structure in other projects such as [OpenBB](https://github.com/OpenBB-finance/OpenBB){: target="_blank"}, a major open-source finance project. This structure can also be expanded, for example, by adding `_view` modules.
+For instance, my [FinanceToolkit](https://github.com/JerBouma/FinanceToolkit){: target="_blank"} package follows this exact structure. You'll find a similar structure in other projects such as [OpenBB](https://github.com/openbq-org/OpenBB){: target="_blank"}, a major open-source finance project. This structure can also be expanded, for example, by adding `_view` modules.
 
 In any case, using the structure described above clarifies the location and purpose of each file, as discussed further in [Structure your Model](/modelling/structure-your-model). A predictable structure also helps AI assistants: when tests mirror the model and every module has a clear name, an assistant (and a colleague) knows where new code and its test belong.
 

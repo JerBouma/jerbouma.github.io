@@ -1,6 +1,7 @@
 ---
 title: Interest Rates and Yield Curves
-seo_title: Interest Rates Documentation – Finance Scenarios
+seo_title: "Interest Rates Documentation | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Short-rate models (Vasicek/Hull-White, CIR, Wilkie, Hibbert), what each implies for negative rates and mean reversion, Nelson-Siegel government and credit curves, and HJM."
 description: "Short-rate models, Nelson-Siegel yield and credit curves and the HJM forward curve in Finance Scenarios: assumptions, implications and limits."
 author_profile: false

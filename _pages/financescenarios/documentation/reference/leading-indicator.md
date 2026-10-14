@@ -1,6 +1,7 @@
 ---
 title: "LeadingIndicator"
-seo_title: "LeadingIndicator Reference – Finance Scenarios"
+seo_title: "LeadingIndicator Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The OECD composite leading indicator."
 description: "The OECD composite leading indicator."
 author_profile: false

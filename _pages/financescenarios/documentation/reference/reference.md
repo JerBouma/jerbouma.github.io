@@ -1,6 +1,7 @@
 ---
 title: "Reference"
-seo_title: "Reference – Finance Scenarios"
+seo_title: "Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Reference for the Finance Scenarios Python package, generated from its docstrings: every public class, method and function."
 description: "Reference for the Finance Scenarios Python package, generated from its docstrings: every public class, method and function."
 author_profile: false

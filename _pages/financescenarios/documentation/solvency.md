@@ -1,6 +1,7 @@
 ---
 title: Solvency II
-seo_title: Solvency II Documentation – Finance Scenarios
+seo_title: "Solvency II Documentation | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Solvency II with Finance Scenarios: the best estimate on a risk-neutral run, the martingale test, EIOPA curves and the UFR, the one-year 99.5% SCR on a real-world run against the standard formula, and what is simplified."
 description: "Best estimate, martingale test, EIOPA curves and the SCR under Solvency II: real-world VaR against the standard formula, and where the rules are simplified."
 author_profile: false

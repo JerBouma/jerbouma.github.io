@@ -1,6 +1,7 @@
 ---
 title: Inflation, Labor and Longevity
-seo_title: Inflation, Labor and Longevity – Finance Scenarios
+seo_title: "Inflation, Labor and Longevity | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The economics behind the inflation, unemployment, business-cycle and mortality models in Finance Scenarios: what each assumes, how they link and where they stop."
 description: "How Finance Scenarios models inflation, unemployment, the business cycle and longevity: the theory, the links between them, the papers and the limits."
 author_profile: false

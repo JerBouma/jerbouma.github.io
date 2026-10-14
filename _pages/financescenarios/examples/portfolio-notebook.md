@@ -1,6 +1,7 @@
 ---
 title: Portfolio Notebook
-seo_title: Portfolio Simulation Notebook – Finance Scenarios
+seo_title: "Portfolio Simulation Notebook | Finance Scenarios"
+seo_title_suffix: false
 permalink: /projects/financescenarios/portfolio-notebook
 excerpt: "The Portfolio layer puts a mix of investments through every simulated scenario: ready-made portfolios, risk metrics, the chance of reaching a goal, your own weights and fees, saving and withdrawing, and glidepaths."
 description: "Worked example notebook for the Finance Scenarios Portfolio layer: allocations, rebalancing, risk metrics, goals, withdrawals that last and glidepaths."

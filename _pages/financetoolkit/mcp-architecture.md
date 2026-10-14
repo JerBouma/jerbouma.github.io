@@ -2,8 +2,8 @@
 permalink: /projects/financetoolkit/mcp/architecture
 title: Finance Toolkit MCP Architecture
 seo_title: Finance Toolkit MCP Server Architecture
-excerpt: "How the Finance Toolkit MCP server is built: the router pattern that packs 500+ methods into 22 tools, the startup sequence, dispatch categories, OAuth 2.1 with PKCE and API key handling."
-description: "How the open-source Finance Toolkit MCP server works: the router pattern behind its 22 tools, startup sequence, OAuth 2.1 and API key handling."
+excerpt: "How the Finance Toolkit MCP server is built: the router pattern that packs 500+ methods into 22 categorical tools, the startup sequence, dispatch categories, OAuth 2.1 with PKCE and API key handling."
+description: "How the open-source Finance Toolkit MCP server works: the router pattern behind its 22 categorical tools, startup sequence, OAuth 2.1 and API key handling."
 classes: wide-sidebar
 author_profile: false
 layout: single

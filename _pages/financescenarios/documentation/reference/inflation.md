@@ -1,6 +1,7 @@
 ---
 title: "Inflation"
-seo_title: "Inflation Reference – Finance Scenarios"
+seo_title: "Inflation Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Consumer price inflation, one per country or region."
 description: "Consumer price inflation, one per country or region."
 author_profile: false

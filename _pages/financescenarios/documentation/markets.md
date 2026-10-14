@@ -1,6 +1,7 @@
 ---
 title: Markets and Credit
-seo_title: Markets and Credit Documentation – Finance Scenarios
+seo_title: "Markets and Credit Documentation | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The theory behind the equity, FX, commodity, real estate, dividend, credit spread and rating migration models in Finance Scenarios: what each assumes, what it implies and where it stops."
 description: "How Finance Scenarios models equities, FX, commodities, real estate, dividends, credit spreads and rating migration: assumptions, papers and limits."
 author_profile: false

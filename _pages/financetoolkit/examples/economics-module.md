@@ -1,6 +1,7 @@
 ---
 title: Economics Notebook
-seo_title: Economic Data Notebook – Finance Toolkit
+seo_title: "Economic Data Notebook | Finance Toolkit"
+seo_title_suffix: false
 permalink: /projects/financetoolkit/economics-notebook
 excerpt: The Economics module gives insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and 3-month and 10-year Government Interest Rates. This is done through the economics module and can be used as a standalone module as well.
 description: "Worked example notebook for the Finance Toolkit's Economics module: pull and plot CPI, GDP, unemployment and government interest rates for 60+ countries."

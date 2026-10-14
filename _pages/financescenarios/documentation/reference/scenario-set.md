@@ -1,6 +1,7 @@
 ---
 title: "ScenarioSet"
-seo_title: "ScenarioSet Reference – Finance Scenarios"
+seo_title: "ScenarioSet Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The result of a run: describe, filter, plot, diagnose and compare simulated scenarios."
 description: "The result of a run: describe, filter, plot, diagnose and compare simulated scenarios."
 author_profile: false

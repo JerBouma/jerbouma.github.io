@@ -1,6 +1,7 @@
 ---
 title: "DividendYield"
-seo_title: "DividendYield Reference – Finance Scenarios"
+seo_title: "DividendYield Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Dividend yields, one per ticker."
 description: "Dividend yields, one per ticker."
 author_profile: false

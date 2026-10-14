@@ -1,6 +1,7 @@
 ---
 title: "DividendGrowth"
-seo_title: "DividendGrowth Reference – Finance Scenarios"
+seo_title: "DividendGrowth Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Dividend growth, one per ticker."
 description: "Dividend growth, one per ticker."
 author_profile: false

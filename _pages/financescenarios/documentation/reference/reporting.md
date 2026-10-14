@@ -1,6 +1,7 @@
 ---
 title: "Reporting"
-seo_title: "Reporting Reference – Finance Scenarios"
+seo_title: "Reporting Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Convert simulated prices into one reporting currency after the simulation."
 description: "Convert simulated prices into one reporting currency after the simulation."
 author_profile: false

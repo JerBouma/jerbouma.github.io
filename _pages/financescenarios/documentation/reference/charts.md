@@ -1,6 +1,7 @@
 ---
 title: "Charts"
-seo_title: "Charts Reference – Finance Scenarios"
+seo_title: "Charts Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The chart functions behind every .plot(): fan charts, paths, terminal distributions, runs and portfolios."
 description: "The chart functions behind every .plot(): fan charts, paths, terminal distributions, runs and portfolios."
 author_profile: false

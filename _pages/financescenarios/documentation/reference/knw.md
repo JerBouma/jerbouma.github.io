@@ -1,6 +1,7 @@
 ---
 title: "Knw"
-seo_title: "Knw Reference – Finance Scenarios"
+seo_title: "Knw Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The KNW model: interest rate and inflation fitted jointly."
 description: "The KNW model: interest rate and inflation fitted jointly."
 author_profile: false

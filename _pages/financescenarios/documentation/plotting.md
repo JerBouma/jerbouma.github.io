@@ -1,6 +1,7 @@
 ---
 title: Plotting
-seo_title: Plotting Documentation – Finance Scenarios
+seo_title: "Plotting Documentation | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "What each chart tells you and how to read it: fan charts, individual paths, the distribution at the horizon, the correlation matrix and stress runs side by side."
 description: "How to read Finance Scenarios charts: fan charts, individual paths, the distribution at the horizon, the correlation matrix and stress runs side by side."
 author_profile: false

@@ -1,6 +1,7 @@
 ---
 title: "Regimes and Stress Tests"
-seo_title: "Regimes and Stress Tests Reference – Finance Scenarios"
+seo_title: "Regimes and Stress Tests Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Named stress narratives and the official Federal Reserve and ESRB stress scenarios as regimes."
 description: "Named stress narratives and the official Federal Reserve and ESRB stress scenarios as regimes."
 author_profile: false

@@ -337,7 +337,7 @@ And below the Ichimoku Cloud of the last twelve months is plotted for Apple and 
 
 {% include ft-chart.html id="technicals" label="Ichimoku Cloud" %}
 
-The 40+ indicators are divided into four categories: [**Breadth**](/projects/financetoolkit/docs/technicals) (McClellan Oscillator, Advancers/Decliners, OBV, ADL, Chaikin Oscillator, TRIN, New Highs - New Lows), [**Momentum**](/projects/financetoolkit/docs/technicals) (RSI, MACD, Stochastic, Williams %R, Aroon, CCI, ADX and more), [**Overlap**](/projects/financetoolkit/docs/technicals) (SMA, EMA, DEMA, TRIX, WMA, Hull MA, VWAP, Parabolic SAR, Pivot Points, Support/Resistance) and [**Volatility**](/projects/financetoolkit/docs/technicals) (ATR, Keltner Channels, Bollinger Bands, Donchian Channels, Volatility Cone).
+The 50+ indicators are divided into four categories: [**Breadth**](/projects/financetoolkit/docs/technicals) (McClellan Oscillator, Advancers/Decliners, OBV, ADL, Chaikin Oscillator, TRIN, New Highs - New Lows), [**Momentum**](/projects/financetoolkit/docs/technicals) (RSI, MACD, Stochastic, Williams %R, Aroon, CCI, ADX and more), [**Overlap**](/projects/financetoolkit/docs/technicals) (SMA, EMA, DEMA, TRIX, WMA, Hull MA, VWAP, Parabolic SAR, Pivot Points, Support/Resistance) and [**Volatility**](/projects/financetoolkit/docs/technicals) (ATR, Keltner Channels, Bollinger Bands, Donchian Channels, Volatility Cone).
 
 ### Obtaining Fixed Income Metrics
 
@@ -509,7 +509,7 @@ Each of the Jupyter Notebooks below covers a different area of financial analysi
     <div class="bento-content">
       <i class="fas fa-chart-line bento-icon"></i>
       <h2>Technicals</h2>
-      <p>40+ Technical Indicators across breadth, momentum, overlap and volatility categories. Use them alongside fundamental data to get a fuller view of market behavior.</p>
+      <p>50+ Technical Indicators across breadth, momentum, overlap and volatility categories. Use them alongside fundamental data to get a fuller view of market behavior.</p>
     </div>
   </a>
 

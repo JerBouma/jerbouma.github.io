@@ -1,9 +1,10 @@
 ---
 title: Ratios Notebook
-seo_title: Financial Ratios Notebook – Finance Toolkit
+seo_title: "Financial Ratios Notebook | Finance Toolkit"
+seo_title_suffix: false
 permalink: /projects/financetoolkit/ratios-notebook
 excerpt: The Ratios Module contains 80+ ratios that can be used to analyze companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module. 
-description: "Worked example notebook for the Finance Toolkit's Ratios module: compute and plot 50+ efficiency, liquidity, profitability, solvency and valuation ratios."
+description: "Worked example notebook for the Finance Toolkit's Ratios module: compute and plot 80+ efficiency, liquidity, profitability, solvency and valuation ratios."
 classes: wide-no-sidebar no-title
 author_profile: false
 redirect_from:

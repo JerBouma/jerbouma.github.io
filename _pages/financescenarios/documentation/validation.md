@@ -1,6 +1,7 @@
 ---
 title: Validation
-seo_title: Validation Documentation – Finance Scenarios
+seo_title: "Validation Documentation | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "How to trust a run: whether the scenarios reproduce the model's own long-run moments and correlations, pass the martingale test, and land near outside benchmarks such as NAIC GOES, DNB, a bond panel and option-implied densities."
 description: "How to trust a Finance Scenarios run: long-run moments, correlations, martingale test, NAIC GOES, DNB, bond-panel and option-implied benchmarks, and limits."
 author_profile: false
