@@ -1079,33 +1079,37 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+// a small version of the homepage portrait, in the same gradient ring
 .masthead .site-title__mark {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14), 0 4px 12px -4px rgba(37, 99, 235, 0.6);
-  color: #ffffff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  padding: 2px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #818cf8 0%, var(--accent-color) 100%);
+  transition: box-shadow 0.2s ease;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--masthead-bg);
+    object-fit: cover;
+    display: block;
+  }
 }
 
 .masthead .site-title__name {
-  font-size: 1rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
   transition: color 0.15s ease;
 }
 
 .masthead .site-title:hover {
   .site-title__mark {
-    transform: translateY(-1px);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 6px 16px -4px rgba(37, 99, 235, 0.7);
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
   }
 
   .site-title__name {
@@ -2364,14 +2368,18 @@ body.wide-no-sidebar:not(.no-title) {
   }
 
   .masthead .site-title {
-    font-size: 1.5rem !important;
     border-right: none !important;
     padding-right: 6px !important;
   }
 
-  // Show the signature title on homepage on mobile (hero heading is below the fold)
+  // Show the name on the homepage on mobile (the hero heading is below the fold);
+  // the portrait itself is right below, so the small one stays out
   body.custom-splash .masthead .site-title {
-    display: inline-block !important;
+    display: inline-flex !important;
+  }
+
+  body.custom-splash .masthead .site-title__mark {
+    display: none;
   }
 }
 
