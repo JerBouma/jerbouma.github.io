@@ -60,11 +60,15 @@ The main advantage of the MVC pattern is its clear structure, which makes it obv
 The Model layer is where data manipulation occurs. This can range from complex calculations to simple data transformations. Ideally, Models should operate on various data inputs and have minimal dependencies.
 
 <div class="mermaid">
-flowchart LR;
-
-Step0["User"] -- "1. Provides Data" -->  Step2["Profitability Model"]
-Step2["Profitability Model"] <-- "2. Calculates Gross Margin" -->  Step3["Get Gross Margin"]
-Step2["Profitability Model"]  -- "3. Returns Gross Margin" --> Step0["User"]
+sequenceDiagram
+autonumber
+participant U as User
+participant M as Profitability Model
+participant F as get_gross_margin
+U->>M: Provides data
+M->>F: Calculates gross margin
+F-->>M: Gross margin
+M-->>U: Returns gross margin
 </div>
 
 For example, a Gross Margin calculation function shouldn't require input data with specific column names. Instead, it should accept generic inputs like two Series, Arrays, Floats, or Integers. This leads to "dumb" calculation functions that contain no application-specific logic.
@@ -96,14 +100,20 @@ Because these functions are so small, they are also the easiest to verify. You c
 The View layer is responsible for presenting data. This can be a table, a graph, a dashboard, etc. In some cases, the data structure (like a DataFrame) produced by the Model might suffice as a "View," making a dedicated View component optional.
 
 <div class="mermaid">
-flowchart LR;
-
-Step0["User"] -- "1. Provides Data" -->  Step2["Profitability Model"]
-Step2["Profitability Model"] <-- "2. Calculates Gross Margin" -->  Step3["Get Gross Margin"]
-Step2["Profitability Model"]  -- "3. Returns Gross Margin" --> Step0["User"]
-Step0["User"] -- "4. Provides Gross Margin" -->  Step4["Profitability View"]
-Step4["Profitability View"] <-- "5. Plot Gross Margin" -->  Step5["Plot Gross Margin"]
-Step4["Profitability View"] -- "6. Shows Plot" --> Step0["User"]
+sequenceDiagram
+autonumber
+participant U as User
+participant M as Profitability Model
+participant F as get_gross_margin
+participant V as Profitability View
+participant P as plot_gross_margin
+U->>M: Provides data
+M->>F: Calculates gross margin
+F-->>M: Gross margin
+M-->>U: Returns gross margin
+U->>V: Provides gross margin
+V->>P: Plots gross margin
+V-->>U: Shows plot
 </div>
 
 Below is an example of what such a view could look like:
@@ -136,11 +146,15 @@ Similar to the Model layer, the View layer is typically organized into modules. 
 The Controller layer contains the logic that connects the Model and View. It handles application-specific logic and data preparation. For example, when calculating the Gross Margin, the Controller extracts the 'Revenue' and 'Cost of Goods Sold' data from the specific dataset and passes it to the Model function.
 
 <div class="mermaid">
-flowchart LR;
-
-Step0["User"] -- "1. Request Data" -->  Step3["Ratios Controller"]
-Step3["Ratios Controller"] <-- "2. Calculates Gross Margin" --> Step2["Profitability Model"]
-Step3["Ratios Controller"] -- "3. Shows Gross Margin" --> Step0["User"]
+sequenceDiagram
+autonumber
+participant U as User
+participant C as Ratios Controller
+participant M as Profitability Model
+U->>C: Requests data
+C->>M: Calculates gross margin
+M-->>C: Gross margin
+C-->>U: Shows gross margin
 </div>
 
 The Controller should perform <u>no</u> core calculations. Assistants regularly break this rule by computing something "just here" inside a controller method, so it is worth stating explicitly in your instructions. Its only job is to direct the data flow between the Model and View. Controller logic is often encapsulated within classes. For instance, the Gross Margin calculation might be accessed via a method within a `Ratios` class (see [the actual code](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/ratios_controller.py#L2310-L2374){: target="_blank"}):
@@ -193,12 +207,19 @@ Unlike the Model and View layers, a single Controller module might handle multip
 It's also possible, and sometimes useful, to have multiple Controllers. For example, the Finance Toolkit uses a main `toolkit_controller.py` for initialization.
 
 <div class="mermaid">
-flowchart LR;
-
-Step0["User"] -- "1. Initialize" -->  Step1["Toolkit Controller"]
-Step1["Toolkit Controller"] <-- "2. Fundamental Data" --> Step2a["Fundamentals Model"]
-Step1["Toolkit Controller"] <-- "3. Historical Data" --> Step2b["Historical Model"]
-Step1["Toolkit Controller"] -- "4. Init Ratios" --> Step3["Ratios Controller"]
+sequenceDiagram
+autonumber
+participant U as User
+participant T as Toolkit Controller
+participant F as Fundamentals Model
+participant H as Historical Model
+participant R as Ratios Controller
+U->>T: Initializes
+T->>F: Fundamental data
+F-->>T: Statements
+T->>H: Historical data
+H-->>T: Prices
+T->>R: Initializes ratios
 </div>
 
 This main controller then initializes a dedicated `ratios_controller.py` responsible for ratio calculations. This separation prevents the main Toolkit Controller from becoming overloaded and allows the Ratios Controller to be potentially used independently. For example, in `toolkit_controller.py`, the Ratios Controller is initialized like this (see [the actual code](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/toolkit_controller.py#L400-L523){: target="_blank"}):
@@ -247,12 +268,18 @@ class Toolkit:
 In addition to the Model, View, and Controller modules, a `helpers` module is useful. This module houses utility functions used across different parts of the application.
 
 <div class="mermaid">
-flowchart LR;
-
-Step0["User"] -- "1. Request Data" -->  Step4["Ratios Controller"]
-Step4["Ratios Controller"] <-- "2. Calculates Gross Margin" --> Step2["Profitability Model"]
-Step4["Ratios Controller"] <-- "3. Calculates Growth" --> Step3["Helpers"]
-Step4["Ratios Controller"] -- "4. Shows Result" --> Step0["User"]
+sequenceDiagram
+autonumber
+participant U as User
+participant C as Ratios Controller
+participant M as Profitability Model
+participant H as Helpers
+U->>C: Requests data
+C->>M: Calculates gross margin
+M-->>C: Gross margin
+C->>H: Calculates growth
+H-->>C: Growth
+C-->>U: Shows result
 </div>
 
 For example, consider a function that calculates the growth of a pd.Series or pd.DataFrame. Since growth calculation might be needed for ratios, technical indicators, performance metrics, etc., placing it in a central `helpers` module avoids code duplication. See [the actual code](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/helpers.py#L129-L207){: target="_blank"} and an example below:
@@ -300,15 +327,22 @@ As discussed in the [Setting up your Project](/modelling/setting-up-your-project
 The Finance Toolkit applies this approach and uses the structure shown in the final diagram:
 
 <div class="mermaid">
-flowchart TB;
-
-Step0["User"] -- "1. Initialize" -->  Step1["Toolkit Controller"]
-Step1["Toolkit Controller"] <-- "2. Fundamental Data" --> Step2a["Fundamentals Model"]
-Step1["Toolkit Controller"] <-- "3. Historical Data" --> Step2b["Historical Model"]
-Step1["Toolkit Controller"] -- "4. Init Ratios" --> Step3["Ratios Controller"]
-Step3["Ratios Controller"] -- "5a. Calculates Gross Margin" --> Step2["Profitability Model"]
-Step3["Ratios Controller"] -- "5b. Growth Calculation" --> Step4["Helpers"]
-Step3["Ratios Controller"] -- "6. Shows Result" --> Step0["User"]
+sequenceDiagram
+autonumber
+participant U as User
+participant T as Toolkit Controller
+participant F as Fundamentals Model
+participant H as Historical Model
+participant R as Ratios Controller
+participant M as Profitability Model
+participant X as Helpers
+U->>T: Initializes
+T->>F: Fundamental data
+T->>H: Historical data
+T->>R: Initializes ratios
+R->>M: Calculates gross margin
+R->>X: Calculates growth
+R-->>U: Shows result
 </div>
 
 Following this structure, here's how you might execute the code:

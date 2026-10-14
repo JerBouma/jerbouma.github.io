@@ -39,7 +39,7 @@ The tree is constructed by applying these up and down factors sequentially from 
 {% raw %}
 <div class="mermaid" style="text-align:center">
 flowchart LR;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
+classDef boxfont stroke-width:1.25px;
 Step0["$100"]:::boxfont -- U --> Step1["$110"]:::boxfont
 Step0["$100"] -- D --> Step2["$90"]:::boxfont
 
@@ -134,7 +134,7 @@ This results in the following binomial trees for Call and Put options, assuming 
 {% raw %}
 <div class="mermaid">
 flowchart TD;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
+classDef boxfont stroke-width:1.25px;
 Step0["$16.03"]:::boxfont -- U --> Step1["$27.25"]:::boxfont
 Step0["$16.03"] -- D --> Step2["$5.83"]:::boxfont
 Step1["$27.25"] -- U --> Step3["$43.84"]:::boxfont
@@ -159,7 +159,7 @@ Step5["$0.00"] -- D --> Step9["$0.00"]:::boxfont
 {% raw %}
 <div class="mermaid">
 flowchart TD;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
+classDef boxfont stroke-width:1.25px;
 Step0["$4.75"]:::boxfont -- U --> Step1["$0.91"]:::boxfont
 Step0["$4.75"] -- D --> Step2["$8.37"]:::boxfont
 Step1["$0.91"] -- U --> Step3["$0.00"]:::boxfont
@@ -218,8 +218,8 @@ This results in the following binomial trees for American Call and Put options, 
 {% raw %}
 <div class="mermaid">
 flowchart TD;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
-classDef highlightfont fill:#d67f05,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
+classDef boxfont stroke-width:1.25px;
+classDef highlightfont stroke-width:1.25px;
 Step0["$16.03"]:::boxfont -- U --> Step1["$27.25"]:::boxfont
 Step0["$16.03"] -- D --> Step2["$5.83"]:::boxfont
 Step1["$27.25"] -- U --> Step3["$43.84"]:::boxfont
@@ -244,8 +244,8 @@ Step5["$0.00"] -- D --> Step9["$0.00"]:::boxfont
 {% raw %}
 <div class="mermaid">
 flowchart TD;
-classDef boxfont fill:#3b9cba,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
-classDef highlightfont fill:#d67f05,stroke-width:0px,fill-opacity:0.7,color:white,radius:20px;
+classDef boxfont stroke-width:1.25px;
+classDef highlightfont stroke-width:1.25px;
 Step0["$4.88"]:::highlightfont -- U --> Step1["$0.91"]:::boxfont
 Step0["$4.88"] -- D --> Step2["$8.61"]:::highlightfont
 Step1["$0.91"] -- U --> Step3["$0.00"]:::boxfont

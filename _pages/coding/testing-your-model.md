@@ -32,16 +32,24 @@ def test_get_gross_margin(recorder):
 This is a test created for the function defined in [Structure your Model](/modelling/structure-your-model). Graphically, the process looks like this:
 
 <div class="mermaid">
-flowchart LR;
-
-Step0["User"] -- <b>Step 1<br></b>Execute Pytest --> Step1["Profitability Model Tests"]
-Step1["Profitability Model Tests"] -- <b>Step 2<br></b>Run Test --> Step2["test_get_gross_margin"]
-Step2["test_get_gross_margin"] -- <b>Step 3<br></b>Run Function with Test Data --> Step3["get_gross_margin"]
-Step3["get_gross_margin"] -- <b>Step 4a<br></b>Return the Output --> Step2["test_get_gross_margin"]
-Step2["test_get_gross_margin"] -- <b>Step 4b<br></b> (On Rewrite) Save the Output --> Step4["test_get_gross_margin.csv"]
-Step2["test_get_gross_margin"] <-- <b>Step 5<br></b> Compare Result with Saved Output --> Step4["test_get_gross_margin.csv"]
-Step2["test_get_gross_margin"] -- <b>Step 6<br></b>Return Test Result --> Step1["Profitability Model Tests"]
-Step1["Profitability Model Tests"] -- <b>Step 7<br></b>Return Summarized Test Result --> Step0["User"]
+sequenceDiagram
+autonumber
+participant U as User
+participant S as Profitability Model Tests
+participant T as test_get_<br/>gross_margin
+participant F as get_gross_margin
+participant D as test_get_<br/>gross_margin.csv
+U->>S: Runs pytest
+S->>T: Runs the test
+T->>F: Runs the function on test data
+F-->>T: Returns the output
+opt When rewriting the saved output
+T->>D: Saves the output
+end
+T->>D: Compares with the saved output
+D-->>T: Match or mismatch
+T-->>S: Returns the test result
+S-->>U: Summarizes the test results
 </div>
 
 The process above illustrates that data is saved to CSV when tests are run in rewrite mode. This means rerunning the test in this mode overwrites existing data, which is useful when you've identified that the expected output needs adjustment.

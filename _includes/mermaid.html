@@ -1,110 +1,145 @@
 <script>
-  function _initMermaid() {
-    var theme = document.documentElement.getAttribute('data-theme');
-    var isDark = theme !== 'light';
+  function _mermaidConfig() {
+    var isDark = document.documentElement.getAttribute('data-theme') !== 'light';
 
-    mermaid.initialize({
+    // Nodes look like the site's cards: a quiet surface, a thin accent border and
+    // readable text. Shape, shadow and edge labels are finished in custom.scss.
+    var surface = isDark ? {
+      node: '#132238', border: '#2d6f97', text: '#e2e8f0', line: '#5f88ab',
+      label: '#0d1828', muted: '#94a3b8', cluster: '#0f1b2d', clusterBorder: '#22384f',
+      note: '#1b2c44', accent: '#0284c7'
+    } : {
+      node: '#f2f8fc', border: '#8cc4e2', text: '#0f172a', line: '#7f9bb5',
+      label: '#ffffff', muted: '#475569', cluster: '#f8fafc', clusterBorder: '#d5e2ec',
+      note: '#fff7ed', accent: '#0284c7'
+    };
+
+    return {
       startOnLoad: false,
       theme: 'base',
-      themeVariables: isDark ? {
-        darkMode: true,
+      themeVariables: {
+        darkMode: isDark,
         background: 'transparent',
-        primaryColor: '#0284c7',
-        primaryBorderColor: '#38bdf8',
-        primaryTextColor: '#ffffff',
-        secondaryColor: '#1d4ed8',
-        secondaryBorderColor: 'rgba(56,189,248,0.4)',
-        secondaryTextColor: '#ffffff',
-        tertiaryColor: 'rgba(2, 132, 199, 0.2)',
-        tertiaryBorderColor: 'rgba(56,189,248,0.3)',
-        tertiaryTextColor: '#f8fafc',
-        lineColor: '#7dd3fc',
-        textColor: '#f8fafc',
-        mainBkg: '#0284c7',
-        nodeBorder: '#38bdf8',
-        clusterBkg: 'rgba(15, 23, 42, 0.5)',
-        clusterBorder: 'rgba(255,255,255,0.08)',
-        titleColor: '#f8fafc',
-        nodeTextColor: '#f8fafc',
-        labelTextColor: '#e2e8f0',
+        fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        fontSize: '14px',
 
-        git0: '#38bdf8',
-        git1: '#a78bfa',
-        git2: '#34d399',
-        git3: '#fb923c',
-        git4: '#f472b6',
-        git5: '#facc15',
-        git6: '#67e8f9',
-        git7: '#c084fc',
-        gitBranchLabel0: '#f8fafc',
-        gitBranchLabel1: '#f8fafc',
-        gitBranchLabel2: '#f8fafc',
-        gitBranchLabel3: '#f8fafc',
-        gitInv0: '#0f172a',
-        tagLabelColor: '#f8fafc',
-        tagLabelBackground: '#0284c7',
-        tagLabelBorder: '#38bdf8',
-        commitLabelColor: '#cbd5e1',
-        commitLabelBackground: 'rgba(30, 41, 59, 0.8)'
-      } : {
-        darkMode: false,
-        background: 'transparent',
-        primaryColor: '#0284c7',
-        primaryBorderColor: '#0369a1',
-        primaryTextColor: '#ffffff',
-        secondaryColor: '#2563eb',
-        secondaryBorderColor: '#1d4ed8',
-        secondaryTextColor: '#ffffff',
-        tertiaryColor: 'rgba(2, 132, 199, 0.1)',
-        tertiaryBorderColor: 'rgba(2, 132, 199, 0.35)',
-        tertiaryTextColor: '#0f172a',
-        lineColor: '#0284c7',
-        textColor: '#0f172a',
-        mainBkg: '#0284c7',
-        nodeBorder: '#0369a1',
-        clusterBkg: 'rgba(241, 245, 249, 0.6)',
-        clusterBorder: 'rgba(0,0,0,0.1)',
-        titleColor: '#0f172a',
-        nodeTextColor: '#ffffff',
+        primaryColor: surface.node,
+        primaryBorderColor: surface.border,
+        primaryTextColor: surface.text,
+        secondaryColor: surface.node,
+        secondaryBorderColor: surface.border,
+        secondaryTextColor: surface.text,
+        tertiaryColor: surface.cluster,
+        tertiaryBorderColor: surface.clusterBorder,
+        tertiaryTextColor: surface.text,
+        mainBkg: surface.node,
+        nodeBorder: surface.border,
+        nodeTextColor: surface.text,
+        textColor: surface.text,
+        titleColor: surface.text,
+        lineColor: surface.line,
+        edgeLabelBackground: surface.label,
+        clusterBkg: surface.cluster,
+        clusterBorder: surface.clusterBorder,
 
-        git0: '#0284c7',
-        git1: '#7c3aed',
-        git2: '#059669',
-        git3: '#ea580c',
-        git4: '#db2777',
-        git5: '#ca8a04',
-        git6: '#0891b2',
-        git7: '#9333ea',
-        gitBranchLabel0: '#f8fafc',
-        gitBranchLabel1: '#f8fafc',
-        gitBranchLabel2: '#f8fafc',
-        gitBranchLabel3: '#f8fafc',
-        tagLabelColor: '#f8fafc',
-        tagLabelBackground: '#0284c7',
-        tagLabelBorder: '#0284c7',
-        commitLabelColor: '#334155',
-        commitLabelBackground: 'rgba(226, 232, 240, 0.8)'
+        // sequence diagrams
+        actorBkg: surface.node,
+        actorBorder: surface.border,
+        actorTextColor: surface.text,
+        actorLineColor: surface.clusterBorder,
+        signalColor: surface.line,
+        signalTextColor: surface.text,
+        labelBoxBkgColor: surface.node,
+        labelBoxBorderColor: surface.border,
+        labelTextColor: surface.text,
+        loopTextColor: surface.muted,
+        noteBkgColor: surface.note,
+        noteBorderColor: surface.border,
+        noteTextColor: surface.text,
+        activationBkgColor: surface.border,
+        activationBorderColor: surface.border,
+        sequenceNumberColor: '#ffffff',
+
+        // git graphs
+        git0: isDark ? '#38bdf8' : '#0284c7',
+        git1: isDark ? '#a78bfa' : '#7c3aed',
+        git2: isDark ? '#34d399' : '#059669',
+        git3: isDark ? '#fb923c' : '#ea580c',
+        git4: isDark ? '#f472b6' : '#db2777',
+        git5: isDark ? '#facc15' : '#ca8a04',
+        git6: isDark ? '#67e8f9' : '#0891b2',
+        git7: isDark ? '#c084fc' : '#9333ea',
+        gitBranchLabel0: '#ffffff',
+        gitBranchLabel1: '#ffffff',
+        gitBranchLabel2: '#ffffff',
+        gitBranchLabel3: '#ffffff',
+        gitInv0: isDark ? '#0f172a' : '#ffffff',
+        tagLabelColor: surface.text,
+        tagLabelBackground: surface.node,
+        tagLabelBorder: surface.border,
+        commitLabelColor: surface.muted,
+        commitLabelBackground: surface.label
       },
       flowchart: {
         curve: 'basis',
-        padding: 20,
-        nodeSpacing: 30,
-        rankSpacing: 40,
+        padding: 14,
+        nodeSpacing: 36,
+        rankSpacing: 46,
+        diagramPadding: 8,
         htmlLabels: true,
-        useMaxWidth: false
+        useMaxWidth: true
+      },
+      sequence: {
+        useMaxWidth: true,
+        mirrorActors: false,
+        width: 150,
+        height: 44,
+        actorMargin: 22,
+        wrap: true,
+        messageFontSize: 14,
+        actorFontSize: 13,
+        actorFontWeight: 600,
+        boxMargin: 8,
+        messageMargin: 34,
+        noteMargin: 10,
+        rightAngles: false,
+        showSequenceNumbers: false
       },
       gitGraph: {
+        useMaxWidth: true,
         showBranches: true,
         showCommitLabel: false,
         mainBranchName: 'main'
-      },
-      fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      fontSize: 13
-    });
+      }
+    };
+  }
 
+  // Draw every diagram with the current theme. Mermaid replaces each block's
+  // source with an SVG, so the source is kept to redraw when the theme changes.
+  function _renderMermaid() {
+    var blocks = document.querySelectorAll('.mermaid');
+    blocks.forEach(function (el) {
+      if (el.dataset.source === undefined) el.dataset.source = el.innerHTML;
+      el.innerHTML = el.dataset.source;
+      el.removeAttribute('data-processed');
+    });
+    mermaid.initialize(_mermaidConfig());
+    return mermaid.run({ nodes: blocks });
+  }
+
+  function _initMermaid() {
     // measure the labels with the page font, not the fallback it replaces
     // later (which cut the last letter off every label)
-    (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () { mermaid.run(); });
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(_renderMermaid);
+
+    // the masthead toggle switches data-theme on <html>: redraw in the new colours
+    var current = document.documentElement.getAttribute('data-theme');
+    new MutationObserver(function () {
+      var theme = document.documentElement.getAttribute('data-theme');
+      if (theme === current) return;
+      current = theme;
+      _renderMermaid();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js" defer onload="_initMermaid()"></script>

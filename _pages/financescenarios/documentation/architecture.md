@@ -20,12 +20,13 @@ Where does each number in a run come from? A scenario set is built in five steps
 
 {% raw %}
 <div class="mermaid">
-flowchart LR
-    data["Historical data<br/>per factor"] --> calibration["Calibration<br/>one model per factor"]
-    beliefs["Your beliefs<br/>long-run levels, anchors"] -.-> calibration
-    calibration --> dependence["Dependence<br/>cascade + correlations"]
-    dependence --> simulation["Correlated simulation<br/>thousands of scenarios"]
-    simulation --> outputs["Outputs<br/>fan charts, portfolios, SCR"]
+flowchart TD
+    data["<b>1. Data</b><small>history per factor</small>"] --> calibration["<b>2. Calibration</b><small>one model per factor</small>"]
+    beliefs["<b>Your beliefs</b><small>long-run levels, anchors</small>"] -.-> calibration
+    calibration --> dependence["<b>3. Dependence</b><small>cascade and correlations</small>"]
+    dependence --> simulation["<b>4. Correlated simulation</b><small>thousands of scenarios</small>"]
+    simulation --> outputs["<b>5. Outputs</b><small>fan charts, portfolios, SCR</small>"]
+    class simulation accent
 </div>
 {% endraw %}
 
@@ -70,16 +71,17 @@ The correlated shocks for the whole horizon are drawn first. Then the run moves 
 {% raw %}
 <div class="mermaid">
 flowchart TD
-    shocks["Correlated shocks for this month<br/>one per factor, drawn jointly"] --> indicator
-    indicator["0. Leading indicator<br/>only with business-cycle conditioning"] --> inflation
-    inflation["1. Inflation"] --> rates
-    rates["2. Interest rates<br/>Wilkie and KNW rates read inflation"] --> unemployment
-    unemployment["3. Unemployment<br/>reads inflation: Phillips curve"] --> dividends
-    dividends["4. Dividends, Wilkie-style<br/>read inflation"] --> equities
-    equities["5. Equities<br/>Wilkie share prices read dividends"] --> fx
-    fx["6. Exchange rates<br/>interest-rate parity reads both rates"] --> rest
-    rest["7. Linked by the shocks only<br/>commodities, yield-curve factors,<br/>credit, real estate, mortality"] --> next
-    next["Next month"] -.-> shocks
+    shocks["<b>Correlated shocks for this month</b><small>one per factor, drawn jointly</small>"] --> indicator
+    indicator["<b>0. Leading indicator</b><small>only with business-cycle conditioning</small>"] --> inflation
+    inflation["<b>1. Inflation</b><small>the cascade starts here</small>"] --> rates
+    rates["<b>2. Interest rates</b><small>Wilkie and KNW rates read inflation</small>"] --> unemployment
+    unemployment["<b>3. Unemployment</b><small>reads inflation: Phillips curve</small>"] --> dividends
+    dividends["<b>4. Dividends, Wilkie-style</b><small>read inflation</small>"] --> equities
+    equities["<b>5. Equities</b><small>Wilkie share prices read dividends</small>"] --> fx
+    fx["<b>6. Exchange rates</b><small>interest-rate parity reads both rates</small>"] --> rest
+    rest["<b>7. Linked by the shocks only</b><small>commodities, yield curve, credit,<br/>real estate, mortality</small>"] --> next
+    next["<b>Next month</b>"] -.-> shocks
+    class inflation accent
 </div>
 {% endraw %}
 
