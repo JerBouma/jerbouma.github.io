@@ -6149,3 +6149,22 @@ body.ft-overview .page__content {
     max-width: none !important;
   }
 }
+
+// A quoted source: the quote in italics, the source on its own quieter line
+.page__content blockquote cite {
+  display: block;
+  margin-top: 0.55em;
+  font-style: normal;
+  font-size: 0.82em;
+  color: var(--text-muted);
+
+  &:before {
+    content: "\2014";
+    padding-right: 6px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-color: rgba(148, 163, 184, 0.5);
+  }
+}

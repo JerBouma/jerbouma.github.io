@@ -18,7 +18,12 @@ sidebar:
 
 A pension fund with inflation-indexed benefits, discounted at nominal rates, is exposed to the joint behavior of rates and inflation more than to either one alone. The KNW models simulate the two as one system: today's inflation shapes where rates go next, and today's rate shapes where inflation goes next.
 
-They follow the term-structure model of [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058){:target="_blank"}, which the Dutch Commissie Parameters extends in its CP2022 model, the model behind the scenario sets De Nederlandsche Bank (DNB) publishes for Dutch pension funds. Finance Scenarios implements a discrete, reduced-form approximation inspired by both: a VAR on the observed short rate and inflation, fitted by least squares, not the latent-factor model those papers filter from the yield curve. For the single-factor short-rate models and the Nelson-Siegel curve, see [interest rates](/projects/financescenarios/docs/interest-rates).
+They follow the term-structure model of [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058){:target="_blank"}, which the Dutch Commissie Parameters extends in its CP2022 model, the model behind the scenario sets De Nederlandsche Bank (DNB) publishes for Dutch pension funds.
+
+> "The model CP2022 is an extension of the model used in 2019 by the previous Commissie Parameters, which was based on the KNW model [8] and subsequent modifications and analysis by Draper [3] and Muns [9]."
+> <cite>[Commissie Parameters (2022), Technical Appendix: Specification of the CP2022 Model, p. 1](https://open.overheid.nl/repository/ronl-f2685a42fd0bf01d5821446bcda34e719fdf7ef1/1/pdf/bijlage-2-technische-appendix.pdf#page=1)</cite>
+
+Finance Scenarios implements a discrete, reduced-form approximation inspired by both: a VAR on the observed short rate and inflation, fitted by least squares, not the latent-factor model those papers filter from the yield curve. For the single-factor short-rate models and the Nelson-Siegel curve, see [interest rates](/projects/financescenarios/docs/interest-rates).
 
 ## Why Model Rates and Inflation Together
 
@@ -89,6 +94,9 @@ $$
 dv_t = a_v(\theta_v - v_t)\,dt + \sigma_v\sqrt{v_t}\,dW^v_t
 $$
 
+> "…a stochastic variance process v (see Heston [6]) which equals the square of the stochastic volatility process."
+> <cite>[Commissie Parameters (2022), Technical Appendix: Specification of the CP2022 Model, section 1, p. 1](https://open.overheid.nl/repository/ronl-f2685a42fd0bf01d5821446bcda34e719fdf7ef1/1/pdf/bijlage-2-technische-appendix.pdf#page=1)</cite>
+
 Each leg reads last period's $$v$$ twice, in its drift and in its variance:
 
 $$
@@ -98,6 +106,9 @@ $$
 with the same shape for inflation. $$\lambda$$ lets turbulence move the expected level, as in DNB's model, $$h$$ is the calm-state variance and $$\eta$$ how strongly variance rises with turbulence. Because one $$v$$ drives every leg, volatility in rates, inflation and equity rises and falls together: the clustering of stress across asset classes that a constant-volatility model misses.
 
 **Estimating turbulence.** DNB recovers $$v$$ from market yields on each date. Finance Scenarios estimates it from the pair's own history: a trailing four-period average of plain KNW's squared surprises, lagged one period, is the proxy for $$v$$. A CIR process is fitted to that proxy and both legs are refitted with it as an extra input; if neither leg's variance rises with $$v$$, the fit suggests plain KNW. Simulation uses [Andersen's (2008)](https://doi.org/10.21314/jcf.2008.189){:target="_blank"} Quadratic-Exponential scheme, which keeps $$v$$ non-negative with little bias.
+
+> "…we first use Andersen's exact simulation scheme with martingale correction [1] for the Heston model…"
+> <cite>[Commissie Parameters (2022), Technical Appendix: Specification of the CP2022 Model, section 9.1, p. 8](https://open.overheid.nl/repository/ronl-f2685a42fd0bf01d5821446bcda34e719fdf7ef1/1/pdf/bijlage-2-technische-appendix.pdf#page=8)</cite>
 
 On the same US quarterly data (calibrated on 2026-10-05), turbulence halves in about 1.7 years. Turbulence is the variance of a quarter's combined rate and inflation surprise. Today it corresponds to a surprise of about 0.3 percentage points a quarter, against about 0.8 at its long-run level, so the pair starts calmer than usual. Inflation responds most: its standard deviation is 0.31% a quarter at $$v = 0$$ and 0.68% at the long-run level. The Feller condition $$2a_v\theta_v \ge \sigma_v^2$$ fails on this fit, so simulated turbulence touches zero more often than its long-run distribution suggests.
 
@@ -114,6 +125,9 @@ $$\Delta t$$ is the period length in years and $$\mu$$ the premium per period, c
 ## The Risk-Neutral Version
 
 A real-world run answers "where might rates go?"; valuing liabilities asks "what is a future cash flow worth today?". The bridge is the market price of risk, the extra return investors demand per unit of each risk. The risk-neutral version fits it so that the model's yields match the 13-week, 5, 10 and 30-year US Treasury yields over the historical sample. It changes only the drift, through five premiums: one on turbulence's mean-reversion speed, and a constant and a turbulence-proportional premium per leg. Premiums that depend on a constant and on $$v$$ only are the completely affine form of [Duffie and Kan (1996)](https://doi.org/10.1111/j.1467-9965.1996.tb00123.x){:target="_blank"}. DNB uses the richer essentially affine form of [Duffee (2002)](https://doi.org/10.1111/1540-6261.00426){:target="_blank"}, whose time-varying bond risk premia are what KNW (2010) is about; its extra parameters are hard to pin down on a short quarterly sample and a nominal curve alone.
+
+> "We thus adopt the essentially affine model as proposed by Duffee (2002). … This specification accommodates time variation in bond risk premia…"
+> <cite>[Koijen, Nijman and Werker, When Can Life-Cycle Investors Benefit from Time-Varying Bond Risk Premia?, Netspar Discussion Paper 2006-017 (revised 2009), section 1.1, p. 6](https://www.netspar.nl/wp-content/uploads/werkernijman06017.pdf)</cite>
 
 Zero-coupon prices follow from an affine recursion, for a bond $$n$$ periods out:
 
@@ -148,6 +162,9 @@ In one fit (calibrated on 2026-10-04) the curve started at the 3.75% short rate,
 
 - The closed-form prices assume uncorrelated rate and inflation shocks, while the simulation uses the full correlation matrix. Model bond prices and simulated discount factors can therefore differ when the shocks are correlated.
 - The inflation risk premium is weakly identified: without a real (TIPS) curve or inflation swaps, nothing separates real rates from the inflation premium. Judge the fit by how well it reprices nominal yields, not by the individual premiums.
+
+  > "The price of unexpected inflation risk cannot be identified on the basis of data on the nominal side of the economy alone."
+  > <cite>[Koijen, Nijman and Werker, When Can Life-Cycle Investors Benefit from Time-Varying Bond Risk Premia?, Netspar Discussion Paper 2006-017 (revised 2009), section 1.4, p. 11](https://www.netspar.nl/wp-content/uploads/werkernijman06017.pdf)</cite>
 
 ### The Stochastic Deflator
 
