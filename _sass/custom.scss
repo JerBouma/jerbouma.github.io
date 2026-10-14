@@ -2002,6 +2002,19 @@ body.wide-no-sidebar:not(.no-title) {
   margin-top: 6px;
 }
 
+// Charts shown without a toggle, aligned with the code above them
+.nb-output-area--open {
+  margin-left: 64px;
+}
+
+// A collapsed code cell (hide-input) keeps its prompt column
+.nb-input-details {
+  margin-left: 0;
+  margin-bottom: 4px;
+  > .nb-output-summary { margin-left: 64px; width: calc(100% - 64px); }
+  > .nb-input { margin-top: 6px; }
+}
+
 .nb-output {
   display: flex;
   gap: 0;
@@ -2157,6 +2170,17 @@ body.wide-no-sidebar:not(.no-title) {
 
   .nb-output-details {
     margin-left: 40px;
+  }
+
+  // Charts take the full width on phones
+  .nb-output-area--open {
+    margin-left: 0;
+    .nb-output-prompt { display: none; }
+  }
+
+  .nb-input-details {
+    margin-left: 0;
+    > .nb-output-summary { margin-left: 40px; width: calc(100% - 40px); }
   }
 
   .nb-source pre {
