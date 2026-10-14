@@ -1079,42 +1079,20 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-// a small version of the homepage portrait, in the same gradient ring
+// the JB mark, the same drawing as the favicon (_includes/brand-mark.svg, made by
+// assets/python/gen_favicon.py)
 .masthead .site-title__mark {
-  display: inline-flex;
+  display: block;
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  padding: 2px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #818cf8 0%, var(--accent-color) 100%);
-  transition: box-shadow 0.2s ease;
-
-  img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 2px solid var(--masthead-bg);
-    object-fit: cover;
-    display: block;
-  }
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.masthead .site-title__name {
-  font-size: 0.98rem;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  transition: color 0.15s ease;
-}
-
-.masthead .site-title:hover {
-  .site-title__mark {
-    box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
-  }
-
-  .site-title__name {
-    color: var(--accent-color);
-  }
+.masthead .site-title:hover .site-title__mark {
+  box-shadow: 0 0 18px rgba(129, 140, 248, 0.4);
+  transform: scale(1.04);
 }
 
 // Hide site title on homepage (redundant with hero heading)
@@ -2372,14 +2350,9 @@ body.wide-no-sidebar:not(.no-title) {
     padding-right: 6px !important;
   }
 
-  // Show the name on the homepage on mobile (the hero heading is below the fold);
-  // the portrait itself is right below, so the small one stays out
+  // Show the monogram on the homepage on mobile too (the hero heading is below the fold)
   body.custom-splash .masthead .site-title {
     display: inline-flex !important;
-  }
-
-  body.custom-splash .masthead .site-title__mark {
-    display: none;
   }
 }
 
