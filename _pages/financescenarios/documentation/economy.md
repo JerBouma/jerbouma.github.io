@@ -22,6 +22,9 @@ Each factor is fitted to its own history and simulated with correlated shocks al
 
 Inflation sets the real value of every nominal cash flow, so it sits at the top of the model. As in [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}, inflation drives other variables (unemployment and, in Wilkie's setup, dividends), not the other way around.
 
+> "I postulate that inflation is the driving force for the other investment variables that have been investigated. Each is thus made dependent on inflation rather than vice versa."
+> <cite>[Wilkie (1986), A Stochastic Investment Model for Actuarial Use, section 2.5](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=2)</cite>
+
 The series is headline CPI inflation, year over year, the convention most scenario generators calibrate on. Consecutive monthly readings share eleven of their twelve months, so the series is smooth: a monthly fit shows slower mean reversion and smaller shocks than one on month-on-month changes.
 
 ### Mean Reversion to a Target (the Default)
@@ -34,7 +37,10 @@ $$
 
 Here $$\pi_t$$ is inflation, $$\theta$$ the long-run level, $$a$$ the speed of the pull back and $$\sigma$$ the size of the shocks; a gap halves in $$\ln 2 / a$$ years. The assumption fits a world of inflation targeting, where deviations are temporary. Calibrated on US data from 2000 onward, inflation started at 3.40% and was pulled toward 2.66%, halving any gap in about 1.7 years. The shocks are normal and nothing floors the rate: deflation can occur, as it has in history, but the tails are no fatter than a normal distribution's.
 
-A view on the anchor, such as a credible 2% target, goes in as a belief (beliefs apply to this constant-volatility fit only):
+A view on the anchor, such as a credible 2% target, goes in as a belief (beliefs apply to this constant-volatility fit only). The Federal Reserve's 2% is defined on PCE prices, not the CPI modeled here:
+
+> "The Committee reaffirms its judgment that inflation at the rate of 2 percent, as measured by the annual change in the price index for personal consumption expenditures, is most consistent over the longer run with the Federal Reserve’s statutory maximum employment and price stability mandates."
+> <cite>[FOMC, Statement on Longer-Run Goals and Monetary Policy Strategy (reaffirmed January 2026), p. 1](https://www.federalreserve.gov/monetarypolicy/files/FOMC_LongerRunGoals.pdf#page=1)</cite>
 
 ```yaml
 inflation:
@@ -54,13 +60,19 @@ $$
 I_t = \theta + \phi\,(I_{t-1} - \theta) + \sigma\,z_t
 $$
 
+> "This model says that the annual rate of inflation follows a first order autoregressive process, with a fixed mean QMU, and a parameter QA such that the expected rate of inflation each year is equal to the mean plus QA times last year's deviation from the mean."
+> <cite>[Wilkie (1986), A Stochastic Investment Model for Actuarial Use, section 3.4](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4)</cite>
+
 Wilkie fitted it on yearly data. The shipped Wilkie set fits it monthly on year-over-year CPI; on US monthly data, 97% of each month's gap carried into the next. Much of that persistence comes from the overlap of consecutive year-over-year readings, which also leaves the monthly surprises autocorrelated, so the monthly fit is an approximation; fit on yearly data to stay close to Wilkie. Because $$\phi$$ is a share per period, not a speed, the model runs only at the frequency it was fitted on. The reason to choose it is the rest of Wilkie's cascade: dividend yield, dividend growth and the long-term (consols) yield all follow from the inflation path. Its long-yield equation needs long yields above average inflation throughout the fit, which US data meet only until 2007, hence the Wilkie settings fit on 1995-2007 ([Wilkie consols](/projects/financescenarios/docs/interest-rates#wilkie-consols)).
 
 ### Hibbert's Two-Factor Model
 
 In [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"}, inflation reverts to a slower-moving "expected inflation" level rather than a fixed number, so the anchor itself drifts. That suits long horizons in which a shift in monetary policy is plausible.
 
-The paper extracts expected inflation with a Kalman filter. Finance Scenarios uses an observable stand-in: the same country's yearly inflation, simulated as its own correlated factor, or an exponentially weighted average of the path. Hibbert's prescribed correlations and closed-form bond prices are not replicated; correlations are estimated from data, as for every other factor.
+> "Using two factors to drive the inflation process, rather than a single factor (as in the Wilkie model) has some major advantages. Firstly, it means that changes in inflation rate expectations at different terms can have a correlation less than 1 (so short-term inflation rates and long-run expectations do not always have to move in lock-step)."
+> <cite>[Hibbert, Mowbray and Turnbull (2001), section 5.1.2, p. 19](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf#page=19)</cite>
+
+In the paper that level is a second, unobserved factor with its own reversion and volatility. Finance Scenarios uses an observable stand-in: the same country's yearly inflation, simulated as its own correlated factor, or an exponentially weighted average of the path. Hibbert's prescribed correlations and closed-form bond prices are not replicated; correlations are estimated from data, as for every other factor.
 
 ### Links to Interest Rates and the Business Cycle
 
@@ -109,7 +121,12 @@ $$
 du_t = a(\theta - u_t)\,dt + \alpha\,d\pi_t + \gamma\,dL_t + \sigma\,dW_t
 $$
 
-Here $$u_t$$ is the unemployment rate, $$\theta$$ its long-run level and $$a$$ the speed of reversion. The $$\alpha$$ term is a Phillips curve ([Phillips, 1958](https://doi.org/10.1111/j.1468-0335.1958.tb00003.x){:target="_blank"}): when inflation rises, unemployment tends to fall, so $$\alpha$$ is expected to be negative. The optional $$\gamma$$ term links unemployment to the leading indicator $$L_t$$, in the spirit of Okun's law: when activity picks up, unemployment falls. Both terms read the moves already simulated on the same path, so the variables stay consistent scenario by scenario.
+Here $$u_t$$ is the unemployment rate, $$\theta$$ its long-run level and $$a$$ the speed of reversion. The $$\alpha$$ term is a Phillips curve ([Phillips, 1958](https://doi.org/10.1111/j.1468-0335.1958.tb00003.x){:target="_blank"}): when inflation rises, unemployment tends to fall, so $$\alpha$$ is expected to be negative.
+
+> "It is expected that when inflation increases ($$dq_t > 0$$), unemployment decreases (i.e., $$\alpha_u < 0$$)."
+> <cite>[Ahlgrim, D'Arcy and Gorvett (2005), section 3, after eq. 3.19](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=22)</cite>
+
+The optional $$\gamma$$ term links unemployment to the leading indicator $$L_t$$, in the spirit of Okun's law: when activity picks up, unemployment falls. Both terms read the moves already simulated on the same path, so the variables stay consistent scenario by scenario.
 
 Calibrated on US data from 2000 onward, unemployment started at 4.27% and was pulled toward 5.67% with a half-life of about 1.3 years. The fitted inflation sensitivity was -0.34: a one-point rise in inflation went with roughly a third of a point fall in unemployment.
 
@@ -170,6 +187,9 @@ Unlike the other factors on this page, $$\kappa_1$$ and $$\kappa_2$$ do not reve
 $$
 \kappa_i(t+1) = \kappa_i(t) + \mu_i + \sigma_i\,z_i(t)
 $$
+
+> "To make forecasts of the future distribution of A(t) = (A1(t), A2(t))′, we will model A(t) as a two-dimensional random walk with drift."
+> <cite>[Cairns, Blake and Dowd (2006), Journal of Risk and Insurance 73(4), p. 692, eq. (2)](https://www.pensions-institute.org/wp-content/uploads/2019/workingpapers/wp0611.pdf#page=7)</cite>
 
 The drift $$\mu_i$$ carries the trend forward, and the shocks put uncertainty around it that widens with the horizon: the source of a longevity capital charge.
 

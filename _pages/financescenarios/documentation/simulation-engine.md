@@ -38,6 +38,9 @@ $$
 
 where $$\nu$$ is the degrees of freedom. When $$W_t$$ is small, all factors take a large shock at once, so extreme moves cluster across factors (tail dependence). The $$\nu - 2$$ keeps the variance at one, so every fitted volatility keeps its meaning and only the tails change. Lower $$\nu$$ means fatter tails and must exceed 2; 5 is a common choice for financial returns, not a fitted value. Normal shocks are the default.
 
+> "Using an identical approach we can show that the Gaussian copula has no tail dependence, provided ρ < 1. … Perhaps surprisingly, even for negative and zero correlations, the t-copula gives asymptotic dependence in the tail."
+> <cite>[Demarta and McNeil, The t Copula and Related Copulas (2004 preprint of the 2005 paper), section 3.2, p. 5](https://www.risknet.de/fileadmin/eLibrary/t-Copula-Demarta-ETH.pdf#page=5)</cite>
+
 The scale is drawn independently at every step. With monthly steps, twelve fat-tailed shocks partly average out over a year, so Student-t shocks add less to a one-year 99.5% figure than the monthly tails suggest.
 
 ```yaml
@@ -77,7 +80,14 @@ The correlation matrix comes from the same historical changes each factor was fi
 - **Mixed frequencies.** Changes are summed up to the coarser frequency and matched on calendar date, the way twelve monthly log returns add up to a yearly one.
 - **Pairwise windows.** Each pair uses the dates those two factors share, so a short series only weakens its own pairs. A pair with fewer than 5 shared observations is set to zero; fewer than 12, or a correlation above 0.98 (usually the same series configured twice), is flagged.
 - **Shrinkage.** Sample correlations are noisy, more so with many factors, so they are pulled toward a simpler target, trading a little bias for much less noise: toward zero by a data-driven amount ([Schäfer and Strimmer, 2005](https://doi.org/10.2202/1544-6115.1175)) in the shipped settings, or toward the average correlation by a fixed share ([Ledoit and Wolf, 2004](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}).
+
+  > "Like the simpler targets A and B it shrinks the off-diagonal entries to zero. … In this formulation, shrinkage is applied to the correlations rather than the covariances."
+  > <cite>[Schäfer and Strimmer (2005), section 2, pp. 12-13](https://strimmerlab.github.io/publications/journals/shrinkcov2005.pdf#page=14)</cite>
+
 - **Repair.** A matrix built from different windows can be internally inconsistent (not positive definite) and then has no Cholesky factor. It is moved to the nearest valid correlation matrix ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}) and the size of the repair is reported.
+
+  > "Given a symmetric matrix what is the nearest correlation matrix, that is, the nearest symmetric positive semidefinite matrix with unit diagonal?"
+  > <cite>[Higham (2002), abstract (author eprint)](https://eprints.maths.manchester.ac.uk/232/1/paper3.pdf#page=2)</cite>
 
 The matrix is linear and constant over the horizon: correlations do not rise in a crisis except through the Student-t shocks and shared equity regimes above.
 

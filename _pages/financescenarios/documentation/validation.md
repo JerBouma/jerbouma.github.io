@@ -30,7 +30,13 @@ Here $$a$$ is the mean-reversion speed, $$\theta$$ the long-run level and $$\sig
 
 **Boundary behavior.** Hull-White rates are Gaussian and can go negative, as they should. CIR rates can dip very slightly below zero because of the full-truncation scheme, the least biased of those compared by Lord, Koekkoek and van Dijk (2010); see [time stepping](/projects/financescenarios/docs/simulation-engine#time-stepping).
 
-**Correlations.** The correlated shocks reproduce their target: 50,000 draws with a target of 0.6 land within 0.02. Across a full run, the simulated factor moves are compared with the calibrated matrix (see the checks below). Where a model links one factor's drift to another, the two legitimately differ, so those pairs are reported but not graded.
+> "The full truncation scheme by far outperforms all biased schemes in terms of bias, root-mean-squared error, and hence should be the preferred discretisation method for simulation of the Heston model and extensions thereof."
+> <cite>[Lord, Koekkoek and van Dijk (2006), A comparison of biased simulation schemes for stochastic volatility models, Tinbergen Institute Discussion Paper TI 2006-046/4, abstract](https://repub.eur.nl/pub/7738/2006-0464.pdf#page=3)</cite>
+
+**Correlations.** The correlated shocks reproduce their target: 50,000 draws with a target of 0.6 land within 0.02. Across a full run, the simulated factor moves are compared with the calibrated matrix (see the checks below); pairs where a model links one factor's drift to the other legitimately differ, so they are reported but not graded. This is the correlation test EIOPA lists for a generator.
+
+> "(c) Correlation tests: comparison of the simulated correlations with the historical correlations."
+> <cite>[EIOPA, Guidelines on valuation of technical provisions (EIOPA-BoS-14/166), Guideline 58, paragraph 1.105](https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en)</cite>
 
 ## Market Consistency: The Martingale Test
 
@@ -68,7 +74,10 @@ The checks above compare the model with itself and its own data. The benchmarks 
 
 ## Published Calibrations {#published-calibrations}
 
-A published calibration is fixed under a version tag, passes the checks above before release, and records its data window, package versions and a hash of its configuration. A run can then state exactly which calibration it used, and anyone can reproduce its scenarios offline. A release whose configuration no longer matches its hash is refused rather than silently mixing two sets of assumptions. Reference calibrations are meant to be published once a year.
+A published calibration is fixed under a version tag, passes the checks above before release, and records its data window, package versions and a hash of its configuration. A run can then state exactly which calibration it used, and anyone can reproduce its scenarios offline. A release whose configuration no longer matches its hash is refused rather than silently mixing two sets of assumptions. Reference calibrations are meant to be published once a year, the minimum frequency EIOPA sets for these tests.
+
+> "Insurance and reinsurance undertakings should ensure that the tests of accuracy, robustness and market consistency of the ESG are performed on a regular basis and at least annually."
+> <cite>[EIOPA, Guidelines on valuation of technical provisions (EIOPA-BoS-14/166), Guideline 58, paragraph 1.106](https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en)</cite>
 
 Downloading and simulating a release is covered in the [runs and releases reference](/projects/financescenarios/docs/reference/runs-and-releases).
 
