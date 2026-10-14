@@ -49,19 +49,8 @@ The data are the Finance Toolkit's unemployment rate and year-over-year Consumer
 Database) adds countries such as Brazil and India, yearly only. An entry has no `period` of its own: it uses the
 paired inflation entry's, so the two series share one frequency.
 
-Configuration (`unemployment[i]` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `name` | `unemployment` | The factor's name; unique across all factors. |
-| `country` | `United States` | The country for both the unemployment and the inflation data. |
-| `source` | `oecd` | `oecd` or `gmdb`; `gmdb` needs the paired inflation entry to be `yearly`. |
-| `inflation_name` | `inflation` | The `inflation[i].name` that drives the Phillips-curve term. |
-| `condition_on_business_cycle` | `false` | Adds the leading indicator; needs `leading_indicator.enabled: true`. |
-| `beliefs.mean_reversion_speed` | `null` | Your own speed in place of the fit; greater than 0. |
-| `beliefs.long_run_mean` | `null` | Your own long-run unemployment rate. |
-| `beliefs.inflation_sensitivity` | `null` | Your own Phillips-curve sensitivity; any sign. |
-| `beliefs.volatility` | `null` | Your own volatility; greater than 0. |
+The `unemployment[i]` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 A belief left `null` keeps the fitted value; a regime file addresses one entry as `"unemployment.<name>"`. This
 models the unemployment rate itself, not wages or employment by sector, and the Phillips curve is a statistical link
@@ -235,8 +224,12 @@ The model is the Phillips-curve-augmented mean-reverting process of Ahlgrim, D'A
 persists through the cycle) and that a rise in inflation comes with a tighter labour market, as Phillips (1958)
 found for UK wages. The fit is one regression of each period's change in unemployment on its previous level and the
 same period's change in inflation: the level term gives the speed and the natural rate, the inflation term the
-Phillips-curve sensitivity alpha_u, expected to be negative. With a business-cycle series, the leading indicator's
-change enters as a second driver next to inflation, never in its place.
+Phillips-curve sensitivity alpha_u, expected to be negative. This is the paper's own regression, eq. 3.21, with the
+same-period change in inflation: "To keep the model simple, we did not pursue any distributed lag approach"
+(section 3, "Unemployment"). On US monthly data from 1948 to 2001 they find a speed of 0.13, a natural rate of
+6.1%, alpha_u of -0.72 and a volatility of 0.76% (eq. 3.22). With a business-cycle series, the leading indicator's
+change enters as a second driver next to inflation, never in its place; that second term is this package's
+extension, built the same way as the paper's inflation term.
 
 The formula is as follows:
 

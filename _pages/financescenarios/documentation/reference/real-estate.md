@@ -39,33 +39,31 @@ d(re) = a * (theta - re) * dt + sigma * dW
 Growth is pulled toward a normal level `theta` at speed `a`, with random swings of size `sigma`. It is the real estate
 process of the
 [Ahlgrim, D'Arcy & Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf)
-scenario generator (their eq. 3.18). The growth rate is modelled rather than the price index, because an index level
-has no normal level to return to over decades, while its growth rate does. `volatility_model: garch` lets the size of
-the swings vary over time ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)), and
-`condition_on_business_cycle` adds a pull from the leading indicator, so property growth tends to slow as the economy
-does; the two cannot be combined.
+scenario generator (their eq. 3.18): "Using quarterly return data from NCREIF from 1978 to 2001, we estimated two
+separate Ornstein-Uhlenbeck models for real estate" (section 3, "Real Estate (Property)"). The growth rate is
+modelled rather than the price index, because an index level has no normal level to return to over decades, while
+its growth rate does. Where the paper fits quarterly returns, this fits year-over-year growth sampled each quarter,
+so residential and commercial read on one scale (a judgement; FRED publishes commercial prices only as "Percent
+Change from Year Ago"). Consecutive year-over-year readings share three of their four quarters, so a
+quarter-to-quarter regression would read that overlap as slow reversion; each value is regressed on the value a
+year earlier instead, as the paper does for inflation: "Given the noisy fluctuations in monthly data, we selected
+the parameters for the inflation process by looking at annual regressions" (section 3).
+`volatility_model: garch` lets the size of the swings vary over time
+([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)), and `condition_on_business_cycle` adds a pull
+from the leading indicator, so property growth tends to slow as the economy does; the two cannot be combined.
 
 Two data sources (`source`), both through the Finance Toolkit and both as year-over-year growth (0.04 is 4% a year):
 
 - `house_price` (default): the OECD residential house-price index for `country`, quarterly or yearly, no API
   key.
-- `commercial`: FRED's US Commercial Real Estate Price Index (from the IMF), office, retail, industrial and
-  apartment prices. United States and quarterly only, and it needs a FRED API key.
+- `commercial`: FRED's US Commercial Real Estate Prices
+  ([COMREPUSQ159N](https://fred.stlouisfed.org/series/COMREPUSQ159N), from the IMF), published as "Percent Change
+  from Year Ago". United States and quarterly only, and it needs a FRED API key.
 
 Neither is the appraisal-based NCREIF index the paper was calibrated on, which has no open equivalent.
 
-Configuration (`real_estate` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `enabled` | `false` | Adds a `real_estate` factor to the simulation when `true`. |
-| `source` | `house_price` | `house_price` (OECD residential) or `commercial` (FRED/IMF US commercial). |
-| `country` | `United States` | The house-price country; must be `United States` for `commercial`. |
-| `currency` | `USD` | The currency the prices are in, used when `Reporting` converts them. |
-| `period` | `quarterly` | `quarterly` or `yearly`; must be `quarterly` for `commercial`. |
-| `volatility_model` | `constant` | `constant` or `garch`. |
-| `condition_on_business_cycle` | `false` | Needs `leading_indicator.enabled` with a quarterly or yearly period. |
-| `beliefs` | none | Override the fitted speed, normal growth rate or volatility (constant volatility only). |
+The `real_estate` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 **References:**
 
@@ -109,15 +107,17 @@ real_estate.calibrate(country="United States", period="quarterly")
 real_estate.calibrate(source="commercial", period="quarterly")
 ```
 
-Which returns (calibrated on 2026-10-06):
+Which returns (calibrated on 2026-10-14):
 
 | source | mean_reversion_speed | long_run_mean | volatility | initial_value |
 |:-------|---------------------:|--------------:|-----------:|--------------:|
-| house_price | 0.1221 | 0.0343 | 0.0282 | 0.0214 |
-| commercial | 0.6735 | 0.0245 | 0.1083 | 0.0658 |
+| house_price | 0.3689 | 0.0429 | 0.0492 | 0.0214 |
+| commercial | 1.8231 | 0.0535 | 0.1064 | 0.0224 |
 
-US house prices are 2.1% higher than a year ago and are pulled toward 3.4% a year, a slump fading by half in about
-5.7 years; commercial prices revert within about a year, with almost four times the volatility.
+US house prices are 2.1% higher than a year ago and are pulled toward 4.3% a year, a slump fading by half in about
+1.9 years; commercial prices revert within about five months. The quarter-to-quarter fit (`ou_fit="step"`) gives
+house prices a speed of 0.1221, a half-life of 5.7 years, because it reads the overlap of year-over-year
+readings as persistence; both fits give growth the same long-run spread, about 5.7%.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -130,6 +130,7 @@ calibrate(
     source: str = 'house_price',
     business_cycle_covariate: pl.Series | None = None,
     business_cycle_covariate_dates: pl.Series | None = None,
+    ou_fit: str = 'year_apart',
 ) -> OUParams | GARCHParams | OUCovariateParams
 ```
 
@@ -141,6 +142,7 @@ calibrate(
 - <u>source (str):</u> "house_price" (OECD) or "commercial" (FRED, key needed). Defaults to "house_price".
 - <u>business_cycle_covariate (pl.Series &#124; None):</u> leading indicator history to condition on. Defaults to None.
 - <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> its dates, needed with it. Defaults to None.
+- <u>ou_fit (str):</u> "year_apart" (default) reads persistence from values a year apart; "step" from neighbouring quarters, which reads their overlap as slow reversion (the fit before October 2026).
 
 **Returns:**
 

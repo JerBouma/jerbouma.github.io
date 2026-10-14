@@ -47,23 +47,14 @@ The options:
 - `beliefs`: your own regime means and volatilities instead of the fitted ones.
 
 Prices are each ticker's adjusted closes (dividends reinvested) from the Finance Toolkit; any ticker worldwide works.
+Total returns are what Hardy fitted: Ahlgrim, D'Arcy and Gorvett (2005, section 3) note that "Hardy looks at total
+equity returns, including dividends and the underlying compensation from the risk free rate". The default monthly
+frequency is also the providers' own: Barrie & Hibbert's model steps monthly (Hibbert, Mowbray and Turnbull 2001,
+section 5.2.1: "for the results presented below this is one month"), and so do Ahlgrim, D'Arcy and Gorvett's
+"Excess Monthly Returns".
 
-Configuration (`equities[i]` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `name` | `equity` | The name in the output; unique across the list. |
-| `ticker` | `SPY` | Any ticker: an index, sector, regional or style ETF. |
-| `asset_class` | `null` | A private-market class (e.g. `Private Equity`); sets `ticker` to its listed proxy. |
-| `n_regimes` | `2` | Number of regimes, at least 2. |
-| `period` | `monthly` | Price frequency, `daily` to `yearly`. |
-| `nominal_rate_name` | `null` | The paired `interest_rates[i].name`; `hibbert_regime_switching` and `knw_sv`. |
-| `dividend_growth_name`, `dividend_yield_name` | `null` | The paired dividend entries; `wilkie_derived` only. |
-| `condition_on_business_cycle` | `false` | Needs `leading_indicator.enabled: true`; `regime_switching` only. |
-| `measure` | `real_world` | `real_world` or `risk_neutral` (with `regime_switching` only). |
-| `volatility_source` | `implied` | `implied`, `svi`, `heston` or `realized`; `risk_neutral` only. |
-| `history_source` | `null` | `shiller` or `jst`: fit the regimes on history since the 1870s. |
-| `beliefs.regime_means`, `beliefs.regime_volatilities` | `null` | Annual values, one per regime. |
+The `equities[i]` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 Beliefs cannot be combined with `measure: risk_neutral` or `wilkie_derived`; in a regime YAML, address one entry as
 `"equities.<name>"`.
@@ -306,11 +297,15 @@ Solvency II best estimate or an IFRS 17 fulfillment value requires. The price fo
 
 - `"implied"`: the options market's volatility at the strike nearest today's price, at one expiration.
 - `"svi"`: the at-the-money point of the Finance Toolkit's smoothed volatility surface
-  ([Gatheral and Jacquier, 2014](https://doi.org/10.1080/14697688.2013.819986)), longest expiration.
+  ([Gatheral and Jacquier, 2014](https://doi.org/10.1080/14697688.2013.819986), who calibrate "the widely-used
+  SVI parameterization of the implied volatility smile in such a way as to guarantee the absence of static
+  arbitrage"), longest expiration.
 - `"realized"`: the ticker's own historical volatility, for tickers without liquid options.
 
 The first two fall back to `"realized"`, with a warning, without options data; `calibrate_heston` lets the
-volatility itself move.
+volatility itself move. Whichever is chosen is held flat for the whole horizon. `"implied"` reads the first
+expiry at least a week out, so for guarantees running many years `"svi"`, at the longest expiry, is the closer
+match (a judgement: one-month and one-year volatilities can differ by several points).
 
 **As an example:**
 
@@ -624,7 +619,9 @@ A transition matrix fitted on monthly returns gives the chance of switching regi
 unchanged to weekly steps, the market would switch about 4.3 times too often and turbulent spells would be
 far too short. The matrix is turned into a continuous-time rate of switching (its generator) and back into
 probabilities at the new step, as is standard for rating migration matrices (Israel, Rosenthal and Wei,
-2001). The long-run share of time in each regime is unchanged.
+2001). The long-run share of time in each regime is unchanged. Where no exact generator exists the paper shows
+"how to obtain an approximate generator when a true generator does not exist" (abstract); here negative
+entries of the converted matrix are set to zero and each row rescaled to sum to 1, a simpler judgement.
 
 The formula is as follows:
 
@@ -684,7 +681,15 @@ equity-linked guarantees such as segregated funds and variable annuities.
 
 The regimes are never observed, so the fit is Baum-Welch expectation-maximization: Hamilton's (1989) filter
 gives the chance of each regime at every date, the parameters are re-estimated as weighted averages, and the
-two steps repeat until the likelihood stops improving.
+two steps repeat until the likelihood stops improving. It maximizes the same likelihood as Hardy's direct maximum
+likelihood fit; Ahlgrim, D'Arcy and Gorvett (2005), "Equity Returns", describe that fit as "maximizing the
+likelihood function implied from the regime switching process". Two regimes is the default because, in their
+summary, "Hardy (2001) finds marginal improvement in fit when extending the equity return model to more than two
+regimes". For comparison, their fit on Shiller's large-stock excess returns for 1871-2002 has monthly means of
+0.8% and -1.1%, volatilities of 3.9% and 11.3% and switching chances of 1.1% and 5.9%, and Barrie & Hibbert's base
+calibration of its monthly model (Hibbert, Mowbray and Turnbull 2001, Exhibit 7.1A) has means of 0.118 and -0.136,
+volatilities of 0.098 and 0.244 and chances of staying of 0.929 and 0.879. A history needs at least five prices
+per regime (a judgement: two moments and a row of switching chances per regime).
 
 The formula is as follows:
 
@@ -727,6 +732,8 @@ the switching chances stay per period of the data.
 **References:**
 
 - Hardy, M.R. (2001). "A Regime-Switching Model of Long-Term Stock Returns." North American Actuarial Journal, 5(2), 41-53. <https://doi.org/10.1080/10920277.2001.10595984>
+- Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the Casualty Actuarial Society, 92, sections 2 and 3 ("Equity Returns"). <https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf>
+- Hibbert, J., Mowbray, P., Turnbull, C. (2001). "A Stochastic Asset Model & Calibration for Long-Term Financial Planning Purposes." Barrie & Hibbert Limited, Exhibit 7.1A. <https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf>
 - Hamilton, J.D. (1989). "A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle." Econometrica, 57(2), 357-384. <https://doi.org/10.2307/1912559>
 - Alswaidan, A., Jin, C., Varner, J.D. "Continuous Hidden Markov Models for Equity Returns: Heavy-Tail Emission Families and Regime-Conditional Value-at-Risk." arXiv:2606.23492. <https://arxiv.org/abs/2606.23492>. Its Gaussian fitting algorithm only.
 - Baum, L.E., Petrie, T., Soules, G., Weiss, N. (1970). "A Maximization Technique Occurring in the Statistical Analysis of Probabilistic Functions of Markov Chains." The Annals of Mathematical Statistics, 41(1), 164-171. <https://doi.org/10.1214/aoms/1177697196>
@@ -777,7 +784,10 @@ a zero-rate world they fall. That consistency between asset classes is what the 
 built for, and it matters for long-horizon ALM, where a fixed equity return next to a moving yield curve would
 make equities look too cheap or too dear against bonds. The premium itself keeps its regimes, so the fat
 left tail and clustered losses of the plain model remain. In the scenarios the simulated short rate is added
-back each step.
+back each step. Hibbert, Mowbray and Turnbull (2001), section 5.2.1: "We use this regime switching approach to
+model log equity returns in excess of the log return on a riskless asset." Ahlgrim, D'Arcy and Gorvett (2005)
+do the same: "we use the excess equity returns x". When the two histories differ in length they are lined up
+on their latest observations (a judgement; the dated join of the business-cycle fit is the stricter option).
 
 The formula is as follows:
 
@@ -914,7 +924,11 @@ scenario that enters the turbulent regime tends to stay there for several period
 multi-period drawdowns that a single lognormal distribution cannot. The regime path is drawn separately from
 the return shocks, so the regime decides each period's mean and volatility while the shock, correlated with
 the other factors, decides where in that distribution the return lands. Each equity follows its own regime
-path.
+path; Ahlgrim, D'Arcy and Gorvett (2005), "Equity Returns", note that "The regimes switches are correlated, so if
+large stocks are in the low volatility regime, then small stocks are more likely to be in the low volatility
+regime as well", which the engine setting `shared_equity_regimes` (on in the default settings) reproduces by
+drawing every equity's switches from one random stream. Each scenario starts in the regime most likely at the
+last date (a judgement; the alternative, drawing it from the filtered probabilities, adds no data).
 
 The formula is as follows:
 
@@ -966,7 +980,9 @@ drops out and the only parameter to choose is the volatility. Discounted at the 
 simulated price then equals today's price, which is what a market-consistent valuation of guarantees or
 options (for example a Solvency II best estimate) requires. The dividend yield is subtracted because the
 holder of the index receives it in cash, not in price. Returns are normal in log terms with no regimes, so
-tail risk is set by the volatility alone.
+tail risk is set by the volatility alone. This is the provider practice too: Hibbert, Mowbray and Turnbull
+(2001), section 9.6: "Mean returns on all assets are set equal to the risk-free rate of interest and then a mean
+estimate for the expected cash flow from the derivative is calculated using Monte-Carlo methods."
 
 The formula is as follows:
 
@@ -1011,9 +1027,10 @@ Move an equity price one step forward in the regime the scenario is in, the pric
 regime-switching lognormal model.
 
 Within a regime the log-return is normal, so the price stays positive and returns compound. Between regimes
-the mean and volatility jump: a turbulent step can have a volatility two to three times that of a calm one
-and a mean near zero or below. Over a horizon the result is a mixture of normals, with a fatter left tail and
-more clustered losses than any single lognormal with the same average volatility. The shock is the
+the mean and volatility jump: a turbulent step can have a volatility two to three times that of a calm one and a
+mean near zero or below (11.3% against 3.9% a month in Ahlgrim, D'Arcy and Gorvett's 2005 fit, 0.244 against 0.098
+in Barrie & Hibbert's 2001 base calibration). Over a horizon the result is a mixture of normals, with a fatter
+left tail and more clustered losses than any single lognormal with the same average volatility. The shock is the
 equity's correlated draw, so equities still move with rates, credit and the other factors within a step.
 
 The formula is as follows:

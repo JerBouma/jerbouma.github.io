@@ -24,13 +24,13 @@ The Credit module simulates credit spreads: the extra yield corporate bonds pay 
 compensation for default and liquidity risk. Each `credit[i]` entry is one spread series, correlated with the other
 factors (typically widening when equities fall); `credit` is empty by default.
 
-The model assumes a spread has a normal level it returns to: it widens in a sell-off (investment-grade spreads
-roughly tripled in 2008) and tightens again once the stress fades, rather than wandering off. By default the
-logarithm of the spread follows a mean-reverting Ornstein-Uhlenbeck process, as in
-[Arvanitis, Gregory and Laurent (1999)](https://doi.org/10.3905/jod.1999.319117). Working in logs keeps every
-simulated spread positive and makes the swings proportional to the level, so a wide spread moves more in basis
-points than a tight one and the distribution of future spreads is skewed toward sharp widenings, as in
-credit history.
+The model assumes a spread has a normal level it returns to: it widens sharply in a sell-off such as 2008 and
+tightens again once the stress fades, rather than wandering off: an Ornstein-Uhlenbeck process
+([Uhlenbeck and Ornstein, 1930](https://doi.org/10.1103/PhysRev.36.823)). Fitting the logarithm of the spread, the
+default, is a judgement: it keeps every simulated spread positive and makes the swings proportional to the level,
+so a wide spread moves more in basis points than a tight one and the distribution of future spreads is skewed
+toward sharp widenings, as in credit history. A series that has touched zero or below is
+fitted on its level instead.
 
 `volatility_model: garch` lets the size of the swings cluster in time, so a volatile month tends to be followed by
 another ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)), and `condition_on_business_cycle` adds a
@@ -39,7 +39,9 @@ pull from the leading indicator, so spreads tend to widen as the economy slows.
 The data come through the Finance Toolkit, chosen with `dimension`:
 
 - `maturity` or `rating`: ICE BofA spreads of US corporate bonds by maturity or rating, from FRED (API key
-  needed), which keeps only three years of them, so the shipped factor sets leave credit off.
+  needed), which keeps only three years of them ("Starting in April 2026, this series will only include 3 years
+  of observations", [FRED](https://fred.stlouisfed.org/series/BAMLC0A4CBBB)), so the shipped factor sets leave
+  credit off.
 - `moodys`: Moody's Aaa and Baa yields over the 10-year Treasury, monthly from 1953 (FRED key).
 - `corporate`: corporate bond spreads over government bonds, monthly, no key: Germany from 1957
   ([Bundesbank](https://www.bundesbank.de/en/statistics/money-and-capital-markets)) or Australia's A and BBB by
@@ -50,20 +52,8 @@ The data come through the Finance Toolkit, chosen with `dimension`:
 Set `toolkit.start_date` back for the longer histories. For ratings that move and default see `CreditMigration`,
 for a whole spread curve `CreditTermStructure`.
 
-Configuration (`credit[i]` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `name` | `credit` | The factor's name, unique in the list. |
-| `dimension` | `maturity` | `maturity`, `rating`, `moodys`, `corporate` or `borrowing_cost`. |
-| `country` | `null` | `Germany` or `Australia` (`corporate`); `Euro Area` or a member (`borrowing_cost`). |
-| `maturity_bucket` | `7-10 Years` | `1-3 Years` up to `15+ Years`. |
-| `rating_bucket` | `BBB` | `AAA` to `CCC`; `Aaa`, `Baa` or `Baa - Aaa` (`moodys`); e.g. `BBB 10Y` (Australia). |
-| `period` | `daily` | Calibration frequency; `monthly` for `corporate` and `borrowing_cost`. |
-| `currency` | `USD` | `EUR` for Germany and the euro area, `AUD` for Australia. |
-| `volatility_model` | `constant` | `constant` or `garch`. |
-| `condition_on_business_cycle` | `false` | Requires `leading_indicator.enabled: true`. |
-| `beliefs` | none | Override the fitted speed, level or volatility (constant volatility only). |
+The `credit[i]` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 A belief about the normal level of a log-fitted spread is a log too: a 2% target is `log(0.02)`, about `-3.9`.
 
@@ -73,7 +63,6 @@ area's borrowing cost to 2.54%.
 **References:**
 
 - Uhlenbeck, G.E., Ornstein, L.S. (1930). "On the Theory of the Brownian Motion." Physical Review, 36(5), 823-841. <https://doi.org/10.1103/PhysRev.36.823>
-- Arvanitis, A., Gregory, J., Laurent, J-P. (1999). "Building Models for Credit Spreads." The Journal of Derivatives, 6(3), 27-43. <https://doi.org/10.3905/jod.1999.319117>
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Signature</b></summary>
@@ -93,8 +82,8 @@ Fitting these to the observed spread means the scenarios widen and tighten at th
 real market has shown. The speed sets how long a credit shock lasts: a speed of
 3 a year means a widening fades by half in about three months (ln 2 / 3 years), so short-horizon stresses are
 severe while long-horizon spreads cluster around the normal level. The default fit works on the log of the
-spread ([Arvanitis, Gregory and Laurent, 1999](https://doi.org/10.3905/jod.1999.319117)): `exp(long_run_mean)`
-is the level it is pulled toward, and every path starts from `initial_value`, today's spread as a decimal.
+spread, a judgement that keeps every spread positive: `exp(long_run_mean)` is the level it is pulled toward,
+and every path starts from `initial_value`, today's spread as a decimal.
 
 **As an example:**
 
@@ -140,7 +129,7 @@ calibrate(
 
 - <u>name (str):</u> the spread's name in the scenarios.
 - <u>dimension (str):</u> "maturity" or "rating" (ICE BofA), "moodys", "corporate" or "borrowing_cost". Defaults to "maturity".
-- <u>maturity_bucket (str):</u> "1-3 Years" up to "15+ Years", for "maturity". Defaults to "7-10 Years".
+- <u>maturity_bucket (str):</u> "1-3 Years" up to "15+ Years", for "maturity". Defaults to "7-10 Years", a judgement: a medium-to-long investment-grade maturity.
 - <u>rating_bucket (str):</u> "AAA" to "CCC", Moody's "Aaa", "Baa" or "Baa - Aaa", or e.g. "BBB 10Y" for "corporate". Defaults to "BBB".
 - <u>period (str):</u> "daily" up to "yearly"; a coarser period averages the data. Defaults to "daily".
 - <u>volatility_model (str):</u> "constant" or "garch". Defaults to "constant".

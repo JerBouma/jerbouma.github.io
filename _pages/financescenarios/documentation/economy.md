@@ -25,7 +25,10 @@ Inflation sets the real value of every nominal cash flow, so it sits at the top 
 > "I postulate that inflation is the driving force for the other investment variables that have been investigated. Each is thus made dependent on inflation rather than vice versa."
 > <cite>[Wilkie (1986), A Stochastic Investment Model for Actuarial Use, section 2.5](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=2)</cite>
 
-The series is headline CPI inflation, year over year, the convention most scenario generators calibrate on. Consecutive monthly readings share eleven of their twelve months, so the series is smooth: a monthly fit shows slower mean reversion and smaller shocks than one on month-on-month changes.
+The series is headline CPI inflation, year over year, the convention most scenario generators calibrate on. Consecutive monthly readings share eleven of their twelve months, so a regression of each month on the month before reads that overlap as slow mean reversion: a spike looks as if it lingers for years. Every inflation fit therefore regresses each reading on the one a year earlier, as Ahlgrim, D'Arcy and Gorvett did, and steps the result at the run's frequency (`ou_fit: step` restores the month-to-month fit).
+
+> "Given the noisy fluctuations in monthly data, we selected the parameters for the inflation process by looking at annual regressions."
+> <cite>[Ahlgrim, D'Arcy and Gorvett (2005), section 3, Inflation, p. 15](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=15)</cite>
 
 ### Mean Reversion to a Target (the Default)
 
@@ -35,7 +38,7 @@ $$
 d\pi_t = a(\theta - \pi_t)\,dt + \sigma\,dW_t
 $$
 
-Here $$\pi_t$$ is inflation, $$\theta$$ the long-run level, $$a$$ the speed of the pull back and $$\sigma$$ the size of the shocks; a gap halves in $$\ln 2 / a$$ years. The assumption fits a world of inflation targeting, where deviations are temporary. Calibrated on US data from 2000 onward, inflation started at 3.40% and was pulled toward 2.66%, halving any gap in about 1.7 years. The shocks are normal and nothing floors the rate: deflation can occur, as it has in history, but the tails are no fatter than a normal distribution's.
+Here $$\pi_t$$ is inflation, $$\theta$$ the long-run level, $$a$$ the speed of the pull back and $$\sigma$$ the size of the shocks; a gap halves in $$\ln 2 / a$$ years. The assumption fits a world of inflation targeting, where deviations are temporary. Calibrated on US data from 2000 onward, inflation started at 3.40% and was pulled toward 2.57%, halving any gap in about seven months; the month-to-month fit on the same data would have said 1.7 years. The shocks are normal and nothing floors the rate: deflation can occur, as it has in history, but the tails are no fatter than a normal distribution's.
 
 A view on the anchor, such as a credible 2% target, goes in as a belief (beliefs apply to this constant-volatility fit only). The Federal Reserve's 2% is defined on PCE prices, not the CPI modeled here:
 
@@ -50,7 +53,7 @@ inflation:
       long_run_mean: 0.02  # anchor at 2% instead of the fitted level
 ```
 
-Two extensions address the weaknesses of a constant-volatility fit on a recent window. A GARCH(1,1) volatility ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1){:target="_blank"}) lets calm and turbulent spells persist, as in the 1970s against the 2010s. And because twenty-five calm years understate how far inflation can drift, the dynamics can instead be fitted on UK inflation from 1209 (the Bank of England's millennium dataset) or US inflation from 1872 (Shiller's data), still starting from today's rate.
+Two extensions address the weaknesses of a constant-volatility fit on a recent window. A GARCH(1,1) volatility ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1){:target="_blank"}) lets calm and turbulent spells persist, as in the 1970s against the 2010s. And because twenty-five calm years understate how far inflation can drift, the dynamics can instead be fitted on UK inflation from 1210 (the Bank of England's millennium dataset) or US inflation from 1872 (Shiller's data), still starting from today's rate.
 
 ### Wilkie's AR(1)
 
@@ -63,7 +66,7 @@ $$
 > "This model says that the annual rate of inflation follows a first order autoregressive process, with a fixed mean QMU, and a parameter QA such that the expected rate of inflation each year is equal to the mean plus QA times last year's deviation from the mean."
 > <cite>[Wilkie (1986), A Stochastic Investment Model for Actuarial Use, section 3.4](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4)</cite>
 
-Wilkie fitted it on yearly data. The shipped Wilkie set fits it monthly on year-over-year CPI; on US monthly data, 97% of each month's gap carried into the next. Much of that persistence comes from the overlap of consecutive year-over-year readings, which also leaves the monthly surprises autocorrelated, so the monthly fit is an approximation; fit on yearly data to stay close to Wilkie. Because $$\phi$$ is a share per period, not a speed, the model runs only at the frequency it was fitted on. The reason to choose it is the rest of Wilkie's cascade: dividend yield, dividend growth and the long-term (consols) yield all follow from the inflation path. Its long-yield equation needs long yields above average inflation throughout the fit, which US data meet only until 2007, hence the Wilkie settings fit on 1995-2007 ([Wilkie consols](/projects/financescenarios/docs/interest-rates#wilkie-consols)).
+Wilkie fitted it on yearly data, so $$\phi$$ (his QA) is the share of a gap left after a year. The fit keeps that meaning on monthly data: $$\phi$$ comes from readings a year apart, and the monthly step is then set so that inflation and, more importantly, the price level keep the long-run spread of the yearly model, so indexed cash flows far out carry the right uncertainty. The shipped Wilkie set fits it on US inflation since 1919 (Shiller's data), the year Wilkie's own UK fit starts: a long-run level of 2.7%, $$\phi$$ of 0.54 and yearly shocks of 3.4%, against his 5%, 0.6 and 5% for the UK. A fit on 1995-2007 alone gives a $$\phi$$ near zero. The model runs at the frequency it was fitted on. The reason to choose it is the rest of Wilkie's cascade: dividend yield, dividend growth and the long-term (consols) yield all follow from the inflation path. Its long-yield equation needs long yields above average inflation throughout the fit, which US data meet only until 2007, hence the Wilkie settings fit everything else on 1995-2007 ([Wilkie consols](/projects/financescenarios/docs/interest-rates#wilkie-consols)).
 
 ### Hibbert's Two-Factor Model
 
@@ -72,7 +75,7 @@ In [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.ne
 > "Using two factors to drive the inflation process, rather than a single factor (as in the Wilkie model) has some major advantages. Firstly, it means that changes in inflation rate expectations at different terms can have a correlation less than 1 (so short-term inflation rates and long-run expectations do not always have to move in lock-step)."
 > <cite>[Hibbert, Mowbray and Turnbull (2001), section 5.1.2, p. 19](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf#page=19)</cite>
 
-In the paper that level is a second, unobserved factor with its own reversion and volatility. Finance Scenarios uses an observable stand-in: the same country's yearly inflation, simulated as its own correlated factor, or an exponentially weighted average of the path. Hibbert's prescribed correlations and closed-form bond prices are not replicated; correlations are estimated from data, as for every other factor.
+In the paper that level is a second, unobserved factor with its own reversion and volatility, and inflation sits next to a real short rate of the same structure, with nominal rates built from the two. Finance Scenarios approximates it with an observable stand-in: the same country's yearly inflation, simulated as its own correlated factor, or an exponentially weighted average of the path. Both legs read their persistence from values a year apart, like the default fit. Hibbert's real-rate split, prescribed correlations and closed-form bond prices are not replicated; correlations are estimated from data, as for every other factor.
 
 ### Links to Interest Rates and the Business Cycle
 
@@ -90,7 +93,13 @@ inflation:
 
 Everything above is real-world inflation. To value inflation-linked cash flows in line with market prices you need the breakeven: the gap between a nominal and an inflation-protected government yield of the same maturity. It includes an inflation risk premium, so it is not a forecast.
 
-Finance Scenarios fits a [Nelson-Siegel (1987)](https://doi.org/10.1086/296409){:target="_blank"} curve (level, slope and hump) to the latest breakevens, with the decay parameter fixed as in [Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}. Every path then follows that curve, with no randomness, so inflation options such as capped indexation or LPI get no time value from it.
+Finance Scenarios fits a [Nelson-Siegel (1987)](https://doi.org/10.1086/296409){:target="_blank"} curve (level, slope and hump) to the latest breakevens, with the decay parameter fixed as in [Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}. Inflation then moves randomly around that curve, with the speed $$a$$ and volatility $$\sigma$$ of the country's own CPI history:
+
+$$
+\pi_t = f_{BE}(t) - \frac{\sigma^2}{2a^2}\left(1 - e^{-at}\right)^2 + y_t, \qquad dy_t = -a\,y_t\,dt + \sigma\,dW_t, \quad y_0 = 0
+$$
+
+Here $$f_{BE}(t)$$ is today's breakeven forward at horizon $$t$$. The middle term is a convexity correction that keeps the expected price index, not the expected rate, on the breakeven curve, as inflation swaps price it. So a plain inflation-linked cash flow is still valued at the market's breakeven, while a cap or floor on indexation (LPI, a 0% to 5% pension increase) gets a time value. It is the inflation counterpart of a Hull-White short rate fitted to today's yield curve. The volatility is historical, since there are no prices of inflation caps and floors to imply one from, and option-implied inflation densities tend to have fatter tails than history, so treat that time value as indicative. `risk_neutral_volatility: none` makes every path follow the curve exactly.
 
 | Market | Source | Maturities | Index |
 |:--|:--|:--|:--|
@@ -98,7 +107,7 @@ Finance Scenarios fits a [Nelson-Siegel (1987)](https://doi.org/10.1086/296409){
 | United Kingdom | Bank of England implied inflation curve | 3 to 40 years | RPI |
 | Germany / euro area | Bundesbank, nominal minus inflation-linked | 5 to 15 years | Euro area HICP ex tobacco |
 
-Nothing is quoted below five years (three in the UK), so the first years are extrapolated. The UK curve prices RPI, which has run above CPI.
+Nothing is quoted below five years (three in the UK). Before that maturity the curve holds the fitted breakeven there flat, the constant-forward rule EIOPA applies before the first quoted maturity of its risk-free curve ([RFR Technical Documentation, EIOPA-BoS-26/198, Annex D.8](https://www.eiopa.europa.eu/eiopa-publishes-rfr-technical-documentation-become-applicable-30-january-2027-2026-05-26_en){:target="_blank"}), rather than extrapolating the fitted curve back to today: on 2026-10-14 that extrapolation started the German curve at 5.72% against 2.28% at five years. From the shortest maturity on, every breakeven is still the fitted one. The UK curve prices RPI, which has run above CPI.
 
 ```yaml
 inflation:
@@ -107,7 +116,7 @@ inflation:
     measure: risk_neutral
 ```
 
-A whole-run risk-neutral simulation keeps inflation (and unemployment) real-world, so indexed best estimates from such a run mix two measures and are not fully market consistent. For a stochastic risk-neutral inflation leg, use the KNW model with stochastic volatility.
+A whole-run risk-neutral simulation switches inflation in these four markets to this breakeven version, so indexed best estimates follow market prices; inflation elsewhere and unemployment stay real-world. To price rates and inflation jointly, use the KNW model with stochastic volatility.
 
 ### Limits
 

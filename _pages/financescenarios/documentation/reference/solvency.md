@@ -17,7 +17,7 @@ sidebar:
 Solvency II on a real-world and a risk-neutral run: the martingale test, best estimate, SCR and EIOPA curves.
 
 ```python
-from financescenarios import Solvency, best_estimate, solvency_capital_requirement, interest_rate_scr, equity_scr, martingale_test, market_consistency_check, eiopa_risk_free_curve, eiopa_symmetric_adjustment, zero_coupon_curve, curve_discount_factors, write_scenario_files
+from financescenarios import Solvency, best_estimate, solvency_capital_requirement, interest_rate_scr, equity_scr, symmetric_adjustment_cap, eiopa_extrapolation, martingale_test, market_consistency_check, eiopa_risk_free_curve, eiopa_symmetric_adjustment, zero_coupon_curve, curve_discount_factors, write_scenario_files
 ```
 
 ## Solvency
@@ -34,7 +34,11 @@ real-world run because it asks what could actually happen next year.
 The calibration is a policy choice: holding the SCR means the insurer still covers its obligations after all but
 the worst 0.5% of years over the coming year (Article 101(3)). Own funds over the SCR is the solvency ratio: below 1
 the supervisor intervenes. Before valuing anything, `Solvency` checks that the risk-neutral run
-really reproduces today's prices, since a best estimate on a run that does not is not market consistent.
+really reproduces today's prices, since a best estimate on a run that does not is not market consistent. The
+risk-neutral run of `Scenarios.simulate(measure="risk_neutral")` discounts with a Hull-White short rate fitted to
+EIOPA's risk-free curve and moves inflation around its breakeven curve, both with historical volatility, so
+guarantees and capped indexation get a time value; the volatilities are not implied from swaption or inflation
+option prices, so treat that time value as indicative.
 
 | Method | What it gives |
 |:-------|:--------------|
@@ -140,7 +144,7 @@ report(
 - <u>cashflows (Sequence[float] &#124; np.ndarray):</u> what is paid: one amount per year (`[10_000] * 5`, paid at each year end), or one amount per date of the run, t0 included.
 - <u>assets (ScenarioSet &#124; str &#124; np.ndarray):</u> what backs it on the real-world run: a `Portfolio.compute()` result, a factor name, or a value array shaped (n_simulations, n_steps + 1).
 - <u>horizon_years (float):</u> the capital requirement's horizon; 1.0 (one year, as Solvency II asks) by default.
-- <u>price_tolerance (float):</u> how far the discounted price may drift from today's, as a fraction, before the run counts as not market consistent; 0.02 (2%) by default.
+- <u>price_tolerance (float):</u> how far the discounted price may drift from today's, as a fraction, before the run counts as not market consistent; 0.02 (2%) by default. Solvency II and EIOPA's Guideline 58 set no tolerance, so 2% is a judgement: about twice the largest gap a calibrated 2,000-scenario, ten-year run shows from Monte Carlo noise alone (1.0% in the example), yet small next to a mispriced drift.
 
 **Returns:**
 
@@ -268,15 +272,15 @@ index = result.cumulative_index("united_states_inflation", initial_index=1.0).dr
 indexed = best_estimate(result, annuity * index, short_rate="united_states_short_rate")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | annuity | best_estimate | standard_error | p0.5 | p99.5 |
 |:--------|--------------:|---------------:|-----:|------:|
-| level | 80,811.82 | 0.00 | 80,811.82 | 80,811.82 |
-| inflation-indexed | 93,142.15 | 4.05 | 83,990.68 | 103,236.21 |
+| level | 80,532.45 | 0.00 | 80,532.45 | 80,532.45 |
+| inflation-indexed | 93,976.96 | 6.15 | 83,336.15 | 106,135.94 |
 
-Indexing the annuity to inflation makes it about 15% dearer, and unlike the level annuity its value is uncertain:
-the 99.5th percentile is 11% above the best estimate.
+Indexing the annuity to inflation makes it about 17% dearer, and unlike the level annuity its value is uncertain:
+the 99.5th percentile is 13% above the best estimate.
 
 **References:**
 
@@ -478,9 +482,11 @@ regulator's prescribed stock market fall.
 
 Type 1 equities (listed in the European Economic Area or the OECD) fall by 39% and type 2 equities (all others:
 unlisted shares, private equity, hedge funds, commodities) by 49%, each plus EIOPA's symmetric adjustment. That
-adjustment, the "equity dampener", raises the shock by up to 10 points after a rally and lowers it by up to 10
-points after a fall, so insurers are not forced to sell into a falling market; EIOPA publishes it every month (see
-`eiopa_symmetric_adjustment`).
+adjustment, the "equity dampener", raises the shock after a rally and lowers it after a fall, so insurers are not
+forced to sell into a falling market; EIOPA publishes it every month (see `eiopa_symmetric_adjustment`). It is
+capped at 10 points either way until 29 January 2027 and at 13 points from 30 January 2027 (Delegated Regulation
+(EU) 2026/269, point (51): "The symmetric adjustment shall not be lower than – 13 % or higher than 13 %"), so pass
+`valuation_date` to apply the cap in force on that date (see `symmetric_adjustment_cap`).
 
 The two losses combine with a 0.75 correlation, so the total is less than their sum (Delegated Regulation 2015/35,
 Articles 168-169). Strategic participations, long-term equity investments and the transitional measure are not
@@ -517,6 +523,7 @@ perfectly together.
 **References:**
 
 - European Commission (2015). "Commission Delegated Regulation (EU) 2015/35", Articles 168-172 (equity risk sub-module and symmetric adjustment). <https://eur-lex.europa.eu/eli/reg_del/2015/35/oj>
+- European Commission (2025). "Commission Delegated Regulation (EU) 2026/269", Article 1, point (51) (the 13% cap from 30 January 2027). <http://data.europa.eu/eli/reg_del/2026/269/oj>
 - EIOPA. "Symmetric adjustment of the equity capital charge." <https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en>
 
 <details class="ft-details fs-api" markdown="1">
@@ -527,6 +534,7 @@ equity_scr(
     type_1_value: float,
     type_2_value: float = 0.0,
     symmetric_adjustment: float = 0.0,
+    valuation_date: date | str | None = None,
 ) -> EquityScrResult
 ```
 
@@ -534,7 +542,8 @@ equity_scr(
 
 - <u>type_1_value (float):</u> the market value of type 1 equity holdings.
 - <u>type_2_value (float):</u> the market value of type 2 equity holdings; 0.0 by default.
-- <u>symmetric_adjustment (float):</u> EIOPA's symmetric adjustment as a decimal (0.0771 for 7.71 points), between -0.10 and 0.10; 0.0 by default.
+- <u>symmetric_adjustment (float):</u> EIOPA's symmetric adjustment as a decimal (0.0771 for 7.71 points), within the cap in force; 0.0 by default.
+- <u>valuation_date (date &#124; str &#124; None):</u> the valuation date, which sets the cap: 0.10 before 30 January 2027, 0.13 from it; None by default, which keeps the 0.10 cap.
 
 **Returns:**
 
@@ -542,11 +551,131 @@ equity_scr(
 
 **Raises:**
 
-- <u>ValueError:</u> if a value is negative or not finite, or the adjustment lies outside -0.10 to 0.10.
+- <u>ValueError:</u> if a value is negative or not finite, or the adjustment lies outside the cap in force.
 
 </details>
 {% endraw %}
 
+## symmetric_adjustment_cap
+
+The largest symmetric adjustment, up or down, Solvency II allows on a valuation date: 10 percentage points
+before 30 January 2027 and 13 from that date.
+
+Directive 2009/138/EC, Article 106(3), originally said the adjustment "shall not result in an equity capital charge
+being applied that is more than 10 percentage points lower or 10 percentage points higher than the standard equity
+capital charge"; Directive (EU) 2025/2 replaced that with "more than 13 percentage points lower or higher", and
+Delegated Regulation (EU) 2026/269, point (51), rewrites Article 172(4) of Delegated Regulation 2015/35 to "The
+symmetric adjustment shall not be lower than – 13 % or higher than 13 %", applying "from 30 January 2027"
+(Article 2).
+
+**References:**
+
+- European Commission (2015). "Commission Delegated Regulation (EU) 2015/35", Article 172(4). <https://eur-lex.europa.eu/eli/reg_del/2015/35/oj>
+- European Commission (2025). "Commission Delegated Regulation (EU) 2026/269", Article 1, point (51), and Article 2. <http://data.europa.eu/eli/reg_del/2026/269/oj>
+- European Parliament and Council (2024). "Directive (EU) 2025/2", amending Directive 2009/138/EC (Article 106(3)). <http://data.europa.eu/eli/dir/2025/2/oj>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+symmetric_adjustment_cap(valuation_date: date | str | None = None) -> float
+```
+
+**Args:**
+
+- <u>valuation_date (date &#124; str &#124; None):</u> the valuation date, e.g. "2027-03-31"; None keeps the 10-point cap.
+
+**Returns:**
+
+<u>float:</u> 0.10 before 30 January 2027 (or with no date), 0.13 from it.
+
+</details>
+
+## eiopa_extrapolation
+
+Extrapolate a risk-free curve beyond its First Smoothing Point the way EIOPA does from 30 January 2027, so the
+effect of the amended Solvency II rules on a best estimate can be measured before EIOPA's own releases switch.
+
+Until 29 January 2027 EIOPA extrapolates past the Last Liquid Point with the Smith-Wilson method. The amended
+Directive (Article 77a, as changed by Directive (EU) 2025/2) and Delegated Regulation (EU) 2026/269 replace it:
+the curve is interpolated with constant forwards up to the First Smoothing Point (FSP, 20 years for the euro),
+and beyond it each forward rate starting at the FSP is a weighted average of the Last Liquid Forward Rate (LLFR,
+the forward rate at the FSP) and the Ultimate Forward Rate (UFR), with the weight on the LLFR fading at the
+convergence speed alpha. Market information past the FSP therefore keeps more weight than under Smith-Wilson,
+so where the forward rate at the FSP sits below the UFR, long rates come out lower and the best estimate of
+long-dated liabilities higher.
+
+The formula is as follows:
+
+$$
+f(\text{FSP},\; \text{FSP} + h) = \text{UFR}_{c} + (\text{LLFR} - \text{UFR}_{c}) \cdot B(\alpha,\; h),\;\; \text{with}\; B (\alpha,\; h) = (1 - \exp(- \alpha \cdot h)) / (\alpha \cdot h)
+$$
+
+$$
+z_{c}(\text{FSP} + h) = (\text{FSP} \cdot z_{c}(\text{FSP}) + h \cdot f(\text{FSP},\; \text{FSP} + h)) / (\text{FSP} + h)
+$$
+
+$$
+z(\text{FSP} + h) = \exp(z_{c}(\text{FSP} + h)) - 1,\;\; \text{with UFR}_{c} = \ln(1 + \text{UFR}) \text{and}\; z_{c} (t) = \ln(1 + z(t))
+$$
+
+Where f(FSP, FSP + h) is the continuously compounded forward rate from the FSP for h years and z the annually
+compounded zero rate (RFR Technical Documentation EIOPA-BoS-26-198, paragraphs 8.5.5-8.5.8). The LLFR is EIOPA's
+swap-volume-weighted average of the one-year forward just before the FSP and the forwards from the FSP to longer
+liquid maturities; those volumes come from EIOPA's annual liquidity assessment, so by default the LLFR is the
+one-year forward just before the FSP, EIOPA's rule when no liquid maturity lies beyond the FSP. Pass EIOPA's
+published LLFR when it differs. The defaults are EIOPA's: alpha "equals 40% for the Swedish Krona and 11% for all
+other currencies" (paragraph 8.1.5; Table 4 phases it in from 20% in 2027 for undertakings that apply the
+phasing-in), and the euro's FSP is 20 years with an LLFR weight of 100% on the forward just before it (Table 2).
+
+**As an example:**
+
+```python
+from financescenarios import eiopa_extrapolation, eiopa_risk_free_curve
+
+# `toolkit` as in the `eiopa_risk_free_curve` example.
+published = eiopa_risk_free_curve(toolkit, country="Euro Area", as_of="2026-09")
+amended = eiopa_extrapolation(published, ultimate_forward_rate=0.033)
+```
+
+**References:**
+
+- EIOPA (2026). "RFR Technical Documentation" (EIOPA-BoS-26-198), applicable from 30 January 2027, section 8.5. <https://www.eiopa.europa.eu/eiopa-publishes-rfr-technical-documentation-become-applicable-30-january-2027-2026-05-26_en>
+- European Commission (2025). "Commission Delegated Regulation (EU) 2026/269", amending Delegated Regulation (EU) 2015/35 (Articles 43a and 46). <http://data.europa.eu/eli/reg_del/2026/269/oj>
+- European Parliament and Council (2024). "Directive (EU) 2025/2", amending Directive 2009/138/EC (Article 77a). <http://data.europa.eu/eli/dir/2025/2/oj>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+eiopa_extrapolation(
+    base_curve: pl.DataFrame,
+    ultimate_forward_rate: float,
+    first_smoothing_point: int = 20,
+    convergence: float = 0.11,
+    last_liquid_forward_rate: float | None = None,
+) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>base_curve (pl.DataFrame):</u> the curve up to at least the FSP, "maturity" (years) and "rate" (annually compounded), e.g. `eiopa_risk_free_curve(toolkit, curve="spot_no_va")`.
+- <u>ultimate_forward_rate (float):</u> the currency's UFR, annually compounded, e.g. 0.033 for 3.3%.
+- <u>first_smoothing_point (int):</u> the FSP in whole years; 20 by default, the euro's.
+- <u>convergence (float):</u> alpha, 0.11 by default (0.40 for the Swedish krona; higher under the phase-in).
+- <u>last_liquid_forward_rate (float &#124; None):</u> the LLFR, continuously compounded; None takes the one-year forward just before the FSP.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> "maturity" (1 to 150 years) and "rate" (annually compounded): the curve as given up to the FSP and extrapolated beyond it.
+
+**Raises:**
+
+- <u>ValueError:</u> if the curve lacks a maturity up to the FSP, or `convergence` is not positive.
+
+</details>
+
+{% raw %}
 ## martingale_test
 
 Check that a risk-neutral run is market consistent: discounted back, a traded asset must be worth today's price on
@@ -559,9 +688,18 @@ to Monte Carlo noise. EIOPA's guidelines expect a scenario generator used for va
 It tells you whether the run can be trusted to put a price on anything that depends on that asset. A run whose
 discounted equity drifts above today's price creates value out of nothing, so the cost of guarantees and options
 valued on it is understated (or overstated if it drifts below). Read `max_abs_deviation` first: a gap of a few
-tenths of a percent is noise, a steady gap of several percent is a calibration error. With 95% bands about one
-date in twenty falls outside by chance, and neighbouring dates share the same scenarios, so a pass rate a little
-under 1 is no reason for concern.
+tenths of a percent is noise, a steady gap of several percent is a calibration error.
+
+EIOPA's Guideline 58 (paragraph 1.105(b)) asks undertakings to "verify the Martingale test for the asset classes
+... that have been used in the calibration process of the ESG" but prescribes no confidence level; the 95% default
+is the conventional statistical one. Testing many dates at once needs care. With 120 monthly dates and a 95% band
+at each, a perfect martingale still sees about six dates fall outside by chance, so "every date inside its band"
+fails a true martingale about half the time. The verdict therefore uses Holm's (1979) step-down adjustment, which
+"has a prescribed level of significance protection against error of the first kind for any combination of true
+hypotheses" (Holm, 1979, abstract), so the chance of wrongly failing a true martingale stays at most 1 -
+`confidence` however strongly the dates are related (neighbouring dates share the same scenarios, so a binomial
+count of passing dates, which assumes independent dates, would be misleading). `pass_rate` is still reported
+beside `expected_pass_rate`, the rate a true martingale shows on average, as a plain read of the per-date bands.
 
 The formula is as follows:
 
@@ -577,10 +715,19 @@ $$
 \operatorname{band}(t) = \operatorname{mean}(D(t) \cdot S(t) \cdot \exp(q \cdot t)) + / - z \cdot \operatorname{SE}(t)
 $$
 
-Where r is the simulated short rate, q the dividend yield, z the normal quantile at (1 + `confidence`) / 2 and SE
-the standard error over scenarios (over pair averages when the scenarios come in antithetic pairs). A date passes
-when S(0) lies
-inside its band; a martingale has ratio(t) = 1 at every date (Varnell, 2011).
+$$
+p(t) = 2 \cdot (1 - N(| \operatorname{mean}(D(t) \cdot S(t) \cdot \exp(q \cdot t)) - S(0) | / \operatorname{SE}(t)))
+$$
+
+$$
+p_{\text{holm}}(k) = \max(p_{\text{holm}}(k - 1),\; \min(1,\; (m - k + 1) \cdot p(k)))
+$$
+
+Where r is the simulated short rate, q the dividend yield, z the normal quantile at (1 + `confidence`) / 2, N the
+standard normal distribution, p(k) the k-th smallest of the m dates' p-values, and SE the standard error over
+scenarios (over pair averages when the scenarios come in antithetic pairs). A date's band holds when S(0) lies
+inside it; the run passes when the smallest Holm-adjusted p-value is at least 1 - `confidence`. A martingale has
+ratio(t) = 1 at every date (Varnell, 2011).
 
 **As an example:**
 
@@ -593,20 +740,22 @@ test = martingale_test(result, "us_broad", "united_states_short_rate", dividend_
 test.table.filter(test.table["time"].is_in([1.0, 5.0, 10.0]))
 ```
 
-Which returns (calibrated on 2026-10-04), with `passed` False, `pass_rate` 0.825 and `max_abs_deviation` 0.0091:
+Which returns (calibrated on 2026-10-14), with `pass_rate` 0.80 against an `expected_pass_rate` of 0.95 and
+`max_abs_deviation` 0.0094:
 
 | date | time | ratio | within_band |
 |:-----|-----:|------:|:------------|
 | 2027-10-01 | 1 | 0.9990 | false |
-| 2031-10-01 | 5 | 0.9994 | true |
-| 2036-09-30 | 10 | 0.9922 | true |
+| 2031-10-01 | 5 | 0.9992 | true |
+| 2036-09-30 | 10 | 0.9918 | false |
 
-A few dates fall outside their band; at other seeds, or 99% confidence, it passes.
+A few neighbouring dates fall just outside their band, which is chance on 120 related dates.
 
 **References:**
 
-- EIOPA (2015, updated 2023). "Guidelines on valuation of technical provisions." <https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en>
+- EIOPA (2015, updated 2023). "Guidelines on valuation of technical provisions", Guideline 58. <https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en>
 - Varnell, E.M. (2011). "Economic Scenario Generators and Solvency II." British Actuarial Journal, 16(1), 121-159. <https://doi.org/10.1017/S1357321711000079>
+- Holm, S. (1979). "A Simple Sequentially Rejective Multiple Test Procedure." Scandinavian Journal of Statistics, 6(2), 65-70. <https://www.jstor.org/stable/4615733>
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -618,6 +767,7 @@ martingale_test(
     short_rate: str,
     dividend_yield: float = 0.0,
     confidence: float = 0.95,
+    criterion: Literal['holm', 'every_date'] = 'holm',
 ) -> MartingaleTestResult
 ```
 
@@ -627,18 +777,20 @@ martingale_test(
 - <u>asset (str):</u> the price factor to test, such as an equity.
 - <u>short_rate (str):</u> the rate factor to discount with.
 - <u>dividend_yield (float):</u> the asset's dividend yield q, added back; 0.0 by default.
-- <u>confidence (float):</u> the width of each date's band, between 0 and 1; 0.95 by default.
+- <u>confidence (float):</u> the width of each date's band and the test's overall confidence; 0.95 by default.
+- <u>criterion (str):</u> "holm" (default) for the multiple-testing verdict, or "every_date" to require every date's own band to hold.
 
 **Returns:**
 
-<u>MartingaleTestResult:</u> `passed`, `pass_rate`, `max_abs_deviation` (largest gap from today's price) and a per-date `table` with 'ratio' (average over today's price) and 'within_band'.
+<u>MartingaleTestResult:</u> `passed`, `pass_rate` against `expected_pass_rate`, `family_p_value`, `max_abs_deviation` (largest gap from today's price) and a per-date `table`.
 
 **Raises:**
 
 - <u>KeyError:</u> if either factor is not in the run.
-- <u>ValueError:</u> if `confidence` is not between 0 and 1, or `asset` is not a price that starts above 0.
+- <u>ValueError:</u> if `confidence` is not between 0 and 1, `criterion` is unknown, or `asset` is not a price that starts above 0.
 
 </details>
+{% endraw %}
 
 ## market_consistency_check
 
@@ -698,15 +850,19 @@ Fetch one EIOPA risk-free interest rate curve, the curve European insurers must 
 Solvency II.
 
 It gives the official interest rate for every maturity from 1 to 150 years (Directive 2009/138/EC, Article 77(2)).
-Past the last maturity where bonds trade freely (20 years for the euro), the curve bends toward a fixed long-term
-rate the regulator sets, the ultimate forward rate. For long-dated liabilities such as annuities and pensions that
-extrapolated part carries most of the value, so the choice of curve (with or without the volatility adjustment,
-which adds part of the spread insurers earn on their bonds to damp the effect of spread swings) moves the best
-estimate and own funds directly. The
-table plugs straight into `best_estimate(..., discount_curve=...)`, `interest_rate_scr` and
-`market_consistency_check`.
+Past the last maturity where markets are deep and liquid, the Last Liquid Point (20 years for the euro, 30 for
+the US dollar and 50 for the pound: RFR Technical Documentation EIOPA-BoS-25-599, Tables 7-8), the curve bends
+toward a fixed long-term rate the regulator sets, the ultimate forward rate. For long-dated liabilities such as
+annuities and pensions that extrapolated part carries most of the value, so the choice of curve (with or without
+the volatility adjustment, which adds part of the spread insurers earn on their bonds to damp the effect of
+spread swings) moves the best estimate and own funds directly. The table plugs straight into
+`best_estimate(..., discount_curve=...)`, `interest_rate_scr` and `market_consistency_check`.
 
-EIOPA fits and extrapolates the curve with the Smith-Wilson method; this reads the result as published.
+This reads the curve as EIOPA publishes it and does not refit it. Up to 29 January 2027 EIOPA extrapolates past
+the Last Liquid Point with the Smith-Wilson method below. From 30 January 2027 the amended rules (Directive (EU)
+2025/2 and Delegated Regulation (EU) 2026/269) switch to an extrapolation from the First Smoothing Point, in which
+market forward rates past that point keep more weight; releases from that date carry the new method as published,
+and `eiopa_extrapolation` applies it to an earlier curve to measure the change in a best estimate.
 
 The formula is as follows:
 
@@ -754,6 +910,7 @@ Which returns:
 
 - EIOPA. "Risk-free interest rate term structures." <https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en>
 - EIOPA (2025). "RFR Technical Documentation" (EIOPA-BoS-25-599), section 9 (Smith-Wilson extrapolation). <https://www.eiopa.europa.eu/document/download/f7fca58f-4d24-4441-ac60-de562bf26d77_en>
+- EIOPA (2026). "RFR Technical Documentation" (EIOPA-BoS-26-198), applicable from 30 January 2027. <https://www.eiopa.europa.eu/eiopa-publishes-rfr-technical-documentation-become-applicable-30-january-2027-2026-05-26_en>
 - European Parliament and Council (2009). "Directive 2009/138/EC (Solvency II)", Article 77. <https://eur-lex.europa.eu/eli/dir/2009/138/oj>
 
 <details class="ft-details fs-api" markdown="1">
@@ -790,19 +947,22 @@ eiopa_risk_free_curve(
 Fetch EIOPA's symmetric adjustment of the Solvency II equity capital charge, the "equity dampener", for one month.
 
 It is the number of percentage points EIOPA adds to the 39% and 49% equity shocks of the standard formula after a
-rally, or takes off after a fall, between -10 and +10, based on where equity prices stand against their three-year
-average. It is counter-cyclical: after a crash the charge falls, so insurers are not forced to sell equities into
-a falling market to restore their ratio, and after a rally it rises. Pass it to
-`equity_scr(..., symmetric_adjustment=...)`.
+rally, or takes off after a fall, based on where equity prices stand against their three-year average: between -10
+and +10 until 29 January 2027 (Delegated Regulation 2015/35, Article 172(4)) and between -13 and +13 from 30
+January 2027 (Delegated Regulation (EU) 2026/269, point (51): "The symmetric adjustment shall not be lower than
+– 13 % or higher than 13 %"). It is counter-cyclical: after a crash the charge falls, so insurers are not forced
+to sell equities into a falling market to restore their ratio, and after a rally it rises. Pass it to
+`equity_scr(..., symmetric_adjustment=..., valuation_date=...)`.
 
 The formula is as follows:
 
 $$
-\text{SA} = \min(\max(1 / 2 \cdot ((\text{CI} - \text{AI}) / \text{AI} - 0.08),\; - 0.10),\; 0.10)
+\text{SA} = \min(\max(1 / 2 \cdot ((\text{CI} - \text{AI}) / \text{AI} - 0.08),\; - \text{cap}),\; \text{cap})
 $$
 
-Where CI is the current level of EIOPA's equity index and AI the average of its daily levels over the last 36
-months (Delegated Regulation 2015/35, Article 172).
+Where CI is the current level of EIOPA's equity index, AI "the weighted average of the daily levels of the equity
+index over the last 36 months" (Delegated Regulation 2015/35, Article 172(2)) and cap 0.10, or 0.13 from 30
+January 2027.
 
 The data come through the Finance Toolkit, daily from 1991, with no API key; this reads the month-end value
 insurers apply at that reporting date.
@@ -823,6 +983,7 @@ Which returns 0.0771: the equity shocks that month are 46.71% and 56.71% instead
 **References:**
 
 - European Commission (2015). "Commission Delegated Regulation (EU) 2015/35", Article 172 (symmetric adjustment). <https://eur-lex.europa.eu/eli/reg_del/2015/35/oj>
+- European Commission (2025). "Commission Delegated Regulation (EU) 2026/269", Article 1, point (51). <http://data.europa.eu/eli/reg_del/2026/269/oj>
 - EIOPA. "Symmetric adjustment of the equity capital charge." <https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en>
 
 <details class="ft-details fs-api" markdown="1">
@@ -882,16 +1043,16 @@ curve = zero_coupon_curve(result, "united_states_short_rate")
 curve.filter(curve["maturity"].is_in([1.0, 2.0, 5.0, 10.0]))
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | date | maturity | price | standard_error | spot_rate |
 |:-----|---------:|------:|---------------:|----------:|
-| 2027-10-01 | 1 | 0.9609 | 0.0000 | 0.03993 |
-| 2028-09-30 | 2 | 0.9232 | 0.0000 | 0.03993 |
-| 2031-10-01 | 5 | 0.8190 | 0.0000 | 0.03993 |
-| 2036-09-30 | 10 | 0.6708 | 0.0000 | 0.03993 |
+| 2027-10-01 | 1 | 0.9602 | 0.0000 | 0.04060 |
+| 2028-09-30 | 2 | 0.9220 | 0.0000 | 0.04060 |
+| 2031-10-01 | 5 | 0.8163 | 0.0000 | 0.04060 |
+| 2036-09-30 | 10 | 0.6663 | 0.0000 | 0.04060 |
 
-By default the risk-neutral short rate stays at today's 13-week Treasury yield, 3.993%, so every maturity prices
+By default the risk-neutral short rate stays at today's 13-week Treasury yield, 4.06%, so every maturity prices
 off exactly that rate with no Monte Carlo error.
 
 **References:**
@@ -1027,6 +1188,7 @@ write_scenario_files(
 
 The model functions behind this page, each with the formula it implements.
 
+{% raw %}
 ### martingale_test
 
 Check that a risk-neutral run is market consistent: discounted back, a traded asset must be worth today's price on
@@ -1039,9 +1201,18 @@ to Monte Carlo noise. EIOPA's guidelines expect a scenario generator used for va
 It tells you whether the run can be trusted to put a price on anything that depends on that asset. A run whose
 discounted equity drifts above today's price creates value out of nothing, so the cost of guarantees and options
 valued on it is understated (or overstated if it drifts below). Read `max_abs_deviation` first: a gap of a few
-tenths of a percent is noise, a steady gap of several percent is a calibration error. With 95% bands about one
-date in twenty falls outside by chance, and neighbouring dates share the same scenarios, so a pass rate a little
-under 1 is no reason for concern.
+tenths of a percent is noise, a steady gap of several percent is a calibration error.
+
+EIOPA's Guideline 58 (paragraph 1.105(b)) asks undertakings to "verify the Martingale test for the asset classes
+... that have been used in the calibration process of the ESG" but prescribes no confidence level; the 95% default
+is the conventional statistical one. Testing many dates at once needs care. With 120 monthly dates and a 95% band
+at each, a perfect martingale still sees about six dates fall outside by chance, so "every date inside its band"
+fails a true martingale about half the time. The verdict therefore uses Holm's (1979) step-down adjustment, which
+"has a prescribed level of significance protection against error of the first kind for any combination of true
+hypotheses" (Holm, 1979, abstract), so the chance of wrongly failing a true martingale stays at most 1 -
+`confidence` however strongly the dates are related (neighbouring dates share the same scenarios, so a binomial
+count of passing dates, which assumes independent dates, would be misleading). `pass_rate` is still reported
+beside `expected_pass_rate`, the rate a true martingale shows on average, as a plain read of the per-date bands.
 
 The formula is as follows:
 
@@ -1057,10 +1228,19 @@ $$
 \operatorname{band}(t) = \operatorname{mean}(D(t) \cdot S(t) \cdot \exp(q \cdot t)) + / - z \cdot \operatorname{SE}(t)
 $$
 
-Where r is the simulated short rate, q the dividend yield, z the normal quantile at (1 + `confidence`) / 2 and SE
-the standard error over scenarios (over pair averages when the scenarios come in antithetic pairs). A date passes
-when S(0) lies
-inside its band; a martingale has ratio(t) = 1 at every date (Varnell, 2011).
+$$
+p(t) = 2 \cdot (1 - N(| \operatorname{mean}(D(t) \cdot S(t) \cdot \exp(q \cdot t)) - S(0) | / \operatorname{SE}(t)))
+$$
+
+$$
+p_{\text{holm}}(k) = \max(p_{\text{holm}}(k - 1),\; \min(1,\; (m - k + 1) \cdot p(k)))
+$$
+
+Where r is the simulated short rate, q the dividend yield, z the normal quantile at (1 + `confidence`) / 2, N the
+standard normal distribution, p(k) the k-th smallest of the m dates' p-values, and SE the standard error over
+scenarios (over pair averages when the scenarios come in antithetic pairs). A date's band holds when S(0) lies
+inside it; the run passes when the smallest Holm-adjusted p-value is at least 1 - `confidence`. A martingale has
+ratio(t) = 1 at every date (Varnell, 2011).
 
 **As an example:**
 
@@ -1073,20 +1253,22 @@ test = martingale_test(result, "us_broad", "united_states_short_rate", dividend_
 test.table.filter(test.table["time"].is_in([1.0, 5.0, 10.0]))
 ```
 
-Which returns (calibrated on 2026-10-04), with `passed` False, `pass_rate` 0.825 and `max_abs_deviation` 0.0091:
+Which returns (calibrated on 2026-10-14), with `pass_rate` 0.80 against an `expected_pass_rate` of 0.95 and
+`max_abs_deviation` 0.0094:
 
 | date | time | ratio | within_band |
 |:-----|-----:|------:|:------------|
 | 2027-10-01 | 1 | 0.9990 | false |
-| 2031-10-01 | 5 | 0.9994 | true |
-| 2036-09-30 | 10 | 0.9922 | true |
+| 2031-10-01 | 5 | 0.9992 | true |
+| 2036-09-30 | 10 | 0.9918 | false |
 
-A few dates fall outside their band; at other seeds, or 99% confidence, it passes.
+A few neighbouring dates fall just outside their band, which is chance on 120 related dates.
 
 **References:**
 
-- EIOPA (2015, updated 2023). "Guidelines on valuation of technical provisions." <https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en>
+- EIOPA (2015, updated 2023). "Guidelines on valuation of technical provisions", Guideline 58. <https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en>
 - Varnell, E.M. (2011). "Economic Scenario Generators and Solvency II." British Actuarial Journal, 16(1), 121-159. <https://doi.org/10.1017/S1357321711000079>
+- Holm, S. (1979). "A Simple Sequentially Rejective Multiple Test Procedure." Scandinavian Journal of Statistics, 6(2), 65-70. <https://www.jstor.org/stable/4615733>
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -1098,6 +1280,7 @@ martingale_test(
     short_rate: str,
     dividend_yield: float = 0.0,
     confidence: float = 0.95,
+    criterion: Literal['holm', 'every_date'] = 'holm',
 ) -> MartingaleTestResult
 ```
 
@@ -1107,18 +1290,20 @@ martingale_test(
 - <u>asset (str):</u> the price factor to test, such as an equity.
 - <u>short_rate (str):</u> the rate factor to discount with.
 - <u>dividend_yield (float):</u> the asset's dividend yield q, added back; 0.0 by default.
-- <u>confidence (float):</u> the width of each date's band, between 0 and 1; 0.95 by default.
+- <u>confidence (float):</u> the width of each date's band and the test's overall confidence; 0.95 by default.
+- <u>criterion (str):</u> "holm" (default) for the multiple-testing verdict, or "every_date" to require every date's own band to hold.
 
 **Returns:**
 
-<u>MartingaleTestResult:</u> `passed`, `pass_rate`, `max_abs_deviation` (largest gap from today's price) and a per-date `table` with 'ratio' (average over today's price) and 'within_band'.
+<u>MartingaleTestResult:</u> `passed`, `pass_rate` against `expected_pass_rate`, `family_p_value`, `max_abs_deviation` (largest gap from today's price) and a per-date `table`.
 
 **Raises:**
 
 - <u>KeyError:</u> if either factor is not in the run.
-- <u>ValueError:</u> if `confidence` is not between 0 and 1, or `asset` is not a price that starts above 0.
+- <u>ValueError:</u> if `confidence` is not between 0 and 1, `criterion` is unknown, or `asset` is not a price that starts above 0.
 
 </details>
+{% endraw %}
 
 ### zero_coupon_curve
 
@@ -1155,16 +1340,16 @@ curve = zero_coupon_curve(result, "united_states_short_rate")
 curve.filter(curve["maturity"].is_in([1.0, 2.0, 5.0, 10.0]))
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | date | maturity | price | standard_error | spot_rate |
 |:-----|---------:|------:|---------------:|----------:|
-| 2027-10-01 | 1 | 0.9609 | 0.0000 | 0.03993 |
-| 2028-09-30 | 2 | 0.9232 | 0.0000 | 0.03993 |
-| 2031-10-01 | 5 | 0.8190 | 0.0000 | 0.03993 |
-| 2036-09-30 | 10 | 0.6708 | 0.0000 | 0.03993 |
+| 2027-10-01 | 1 | 0.9602 | 0.0000 | 0.04060 |
+| 2028-09-30 | 2 | 0.9220 | 0.0000 | 0.04060 |
+| 2031-10-01 | 5 | 0.8163 | 0.0000 | 0.04060 |
+| 2036-09-30 | 10 | 0.6663 | 0.0000 | 0.04060 |
 
-By default the risk-neutral short rate stays at today's 13-week Treasury yield, 3.993%, so every maturity prices
+By default the risk-neutral short rate stays at today's 13-week Treasury yield, 4.06%, so every maturity prices
 off exactly that rate with no Monte Carlo error.
 
 **References:**
@@ -1192,6 +1377,90 @@ zero_coupon_curve(scenario_set: ScenarioSet, short_rate: str) -> pl.DataFrame
 
 - <u>KeyError:</u> if `short_rate` is not in the run.
 - <u>ValueError:</u> if `short_rate` is a price rather than a rate.
+
+</details>
+
+### eiopa_extrapolation
+
+Extrapolate a risk-free curve beyond its First Smoothing Point the way EIOPA does from 30 January 2027, so the
+effect of the amended Solvency II rules on a best estimate can be measured before EIOPA's own releases switch.
+
+Until 29 January 2027 EIOPA extrapolates past the Last Liquid Point with the Smith-Wilson method. The amended
+Directive (Article 77a, as changed by Directive (EU) 2025/2) and Delegated Regulation (EU) 2026/269 replace it:
+the curve is interpolated with constant forwards up to the First Smoothing Point (FSP, 20 years for the euro),
+and beyond it each forward rate starting at the FSP is a weighted average of the Last Liquid Forward Rate (LLFR,
+the forward rate at the FSP) and the Ultimate Forward Rate (UFR), with the weight on the LLFR fading at the
+convergence speed alpha. Market information past the FSP therefore keeps more weight than under Smith-Wilson,
+so where the forward rate at the FSP sits below the UFR, long rates come out lower and the best estimate of
+long-dated liabilities higher.
+
+The formula is as follows:
+
+$$
+f(\text{FSP},\; \text{FSP} + h) = \text{UFR}_{c} + (\text{LLFR} - \text{UFR}_{c}) \cdot B(\alpha,\; h),\;\; \text{with}\; B (\alpha,\; h) = (1 - \exp(- \alpha \cdot h)) / (\alpha \cdot h)
+$$
+
+$$
+z_{c}(\text{FSP} + h) = (\text{FSP} \cdot z_{c}(\text{FSP}) + h \cdot f(\text{FSP},\; \text{FSP} + h)) / (\text{FSP} + h)
+$$
+
+$$
+z(\text{FSP} + h) = \exp(z_{c}(\text{FSP} + h)) - 1,\;\; \text{with UFR}_{c} = \ln(1 + \text{UFR}) \text{and}\; z_{c} (t) = \ln(1 + z(t))
+$$
+
+Where f(FSP, FSP + h) is the continuously compounded forward rate from the FSP for h years and z the annually
+compounded zero rate (RFR Technical Documentation EIOPA-BoS-26-198, paragraphs 8.5.5-8.5.8). The LLFR is EIOPA's
+swap-volume-weighted average of the one-year forward just before the FSP and the forwards from the FSP to longer
+liquid maturities; those volumes come from EIOPA's annual liquidity assessment, so by default the LLFR is the
+one-year forward just before the FSP, EIOPA's rule when no liquid maturity lies beyond the FSP. Pass EIOPA's
+published LLFR when it differs. The defaults are EIOPA's: alpha "equals 40% for the Swedish Krona and 11% for all
+other currencies" (paragraph 8.1.5; Table 4 phases it in from 20% in 2027 for undertakings that apply the
+phasing-in), and the euro's FSP is 20 years with an LLFR weight of 100% on the forward just before it (Table 2).
+
+**As an example:**
+
+```python
+from financescenarios import eiopa_extrapolation, eiopa_risk_free_curve
+
+# `toolkit` as in the `eiopa_risk_free_curve` example.
+published = eiopa_risk_free_curve(toolkit, country="Euro Area", as_of="2026-09")
+amended = eiopa_extrapolation(published, ultimate_forward_rate=0.033)
+```
+
+**References:**
+
+- EIOPA (2026). "RFR Technical Documentation" (EIOPA-BoS-26-198), applicable from 30 January 2027, section 8.5. <https://www.eiopa.europa.eu/eiopa-publishes-rfr-technical-documentation-become-applicable-30-january-2027-2026-05-26_en>
+- European Commission (2025). "Commission Delegated Regulation (EU) 2026/269", amending Delegated Regulation (EU) 2015/35 (Articles 43a and 46). <http://data.europa.eu/eli/reg_del/2026/269/oj>
+- European Parliament and Council (2024). "Directive (EU) 2025/2", amending Directive 2009/138/EC (Article 77a). <http://data.europa.eu/eli/dir/2025/2/oj>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+eiopa_extrapolation(
+    base_curve: pl.DataFrame,
+    ultimate_forward_rate: float,
+    first_smoothing_point: int = 20,
+    convergence: float = 0.11,
+    last_liquid_forward_rate: float | None = None,
+) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>base_curve (pl.DataFrame):</u> the curve up to at least the FSP, "maturity" (years) and "rate" (annually compounded), e.g. `eiopa_risk_free_curve(toolkit, curve="spot_no_va")`.
+- <u>ultimate_forward_rate (float):</u> the currency's UFR, annually compounded, e.g. 0.033 for 3.3%.
+- <u>first_smoothing_point (int):</u> the FSP in whole years; 20 by default, the euro's.
+- <u>convergence (float):</u> alpha, 0.11 by default (0.40 for the Swedish krona; higher under the phase-in).
+- <u>last_liquid_forward_rate (float &#124; None):</u> the LLFR, continuously compounded; None takes the one-year forward just before the FSP.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> "maturity" (1 to 150 years) and "rate" (annually compounded): the curve as given up to the FSP and extrapolated beyond it.
+
+**Raises:**
+
+- <u>ValueError:</u> if the curve lacks a maturity up to the FSP, or `convergence` is not positive.
 
 </details>
 
@@ -1279,15 +1548,15 @@ index = result.cumulative_index("united_states_inflation", initial_index=1.0).dr
 indexed = best_estimate(result, annuity * index, short_rate="united_states_short_rate")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | annuity | best_estimate | standard_error | p0.5 | p99.5 |
 |:--------|--------------:|---------------:|-----:|------:|
-| level | 80,811.82 | 0.00 | 80,811.82 | 80,811.82 |
-| inflation-indexed | 93,142.15 | 4.05 | 83,990.68 | 103,236.21 |
+| level | 80,532.45 | 0.00 | 80,532.45 | 80,532.45 |
+| inflation-indexed | 93,976.96 | 6.15 | 83,336.15 | 106,135.94 |
 
-Indexing the annuity to inflation makes it about 15% dearer, and unlike the level annuity its value is uncertain:
-the 99.5th percentile is 11% above the best estimate.
+Indexing the annuity to inflation makes it about 17% dearer, and unlike the level annuity its value is uncertain:
+the 99.5th percentile is 13% above the best estimate.
 
 **References:**
 
@@ -1489,9 +1758,11 @@ regulator's prescribed stock market fall.
 
 Type 1 equities (listed in the European Economic Area or the OECD) fall by 39% and type 2 equities (all others:
 unlisted shares, private equity, hedge funds, commodities) by 49%, each plus EIOPA's symmetric adjustment. That
-adjustment, the "equity dampener", raises the shock by up to 10 points after a rally and lowers it by up to 10
-points after a fall, so insurers are not forced to sell into a falling market; EIOPA publishes it every month (see
-`eiopa_symmetric_adjustment`).
+adjustment, the "equity dampener", raises the shock after a rally and lowers it after a fall, so insurers are not
+forced to sell into a falling market; EIOPA publishes it every month (see `eiopa_symmetric_adjustment`). It is
+capped at 10 points either way until 29 January 2027 and at 13 points from 30 January 2027 (Delegated Regulation
+(EU) 2026/269, point (51): "The symmetric adjustment shall not be lower than – 13 % or higher than 13 %"), so pass
+`valuation_date` to apply the cap in force on that date (see `symmetric_adjustment_cap`).
 
 The two losses combine with a 0.75 correlation, so the total is less than their sum (Delegated Regulation 2015/35,
 Articles 168-169). Strategic participations, long-term equity investments and the transitional measure are not
@@ -1528,6 +1799,7 @@ perfectly together.
 **References:**
 
 - European Commission (2015). "Commission Delegated Regulation (EU) 2015/35", Articles 168-172 (equity risk sub-module and symmetric adjustment). <https://eur-lex.europa.eu/eli/reg_del/2015/35/oj>
+- European Commission (2025). "Commission Delegated Regulation (EU) 2026/269", Article 1, point (51) (the 13% cap from 30 January 2027). <http://data.europa.eu/eli/reg_del/2026/269/oj>
 - EIOPA. "Symmetric adjustment of the equity capital charge." <https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en>
 
 <details class="ft-details fs-api" markdown="1">
@@ -1538,6 +1810,7 @@ equity_scr(
     type_1_value: float,
     type_2_value: float = 0.0,
     symmetric_adjustment: float = 0.0,
+    valuation_date: date | str | None = None,
 ) -> EquityScrResult
 ```
 
@@ -1545,7 +1818,8 @@ equity_scr(
 
 - <u>type_1_value (float):</u> the market value of type 1 equity holdings.
 - <u>type_2_value (float):</u> the market value of type 2 equity holdings; 0.0 by default.
-- <u>symmetric_adjustment (float):</u> EIOPA's symmetric adjustment as a decimal (0.0771 for 7.71 points), between -0.10 and 0.10; 0.0 by default.
+- <u>symmetric_adjustment (float):</u> EIOPA's symmetric adjustment as a decimal (0.0771 for 7.71 points), within the cap in force; 0.0 by default.
+- <u>valuation_date (date &#124; str &#124; None):</u> the valuation date, which sets the cap: 0.10 before 30 January 2027, 0.13 from it; None by default, which keeps the 0.10 cap.
 
 **Returns:**
 
@@ -1553,7 +1827,7 @@ equity_scr(
 
 **Raises:**
 
-- <u>ValueError:</u> if a value is negative or not finite, or the adjustment lies outside -0.10 to 0.10.
+- <u>ValueError:</u> if a value is negative or not finite, or the adjustment lies outside the cap in force.
 
 </details>
 {% endraw %}

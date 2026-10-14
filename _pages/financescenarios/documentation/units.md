@@ -23,7 +23,7 @@ Each series is fitted in the form economists and actuaries normally use for it:
 | Series | Fitted as | Why |
 |:-------|:----------|:----|
 | Interest rates, credit spreads, unemployment, dividend yield | The level, as a decimal | They mean-revert as levels ([Vasicek, 1977](<https://doi.org/10.1016/0304-405X(77)90016-2>)) |
-| Inflation, house prices | Year-over-year change of the index | The headline figure statistics offices publish, free of seasonality |
+| Inflation, house prices | Year-over-year change of the index, each reading regressed on the one a year earlier | The headline figure statistics offices publish, free of seasonality; neighbouring monthly or quarterly readings overlap, so they would overstate persistence |
 | Equities, commodities, FX | Log returns of the price | Prices are not stationary, their returns are, and log returns add up over time |
 | Dividends (Wilkie) | Log change of the dividend index | [Wilkie's (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) own specification |
 | Leading indicator | Index points around 100 | It is built as a stationary cycle around 100 |

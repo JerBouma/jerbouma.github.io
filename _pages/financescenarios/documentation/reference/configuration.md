@@ -537,8 +537,8 @@ Polars, the table library every result here comes as, shortens what it prints: a
 cell, 10 rows and 8 columns. That cuts off the "detail" and "meaning" of `scenarios.validate(result)`, the factors
 of a long `describe()` and the quantile columns of `compare_runs`. This sets the table width, the text length per
 cell, and the rows and columns shown, so those tables print whole; long text wraps within its cell instead. It only
-changes how tables are shown, never their values, and lasts for the session. `reset=True` hands these four
-options back to Polars' own defaults.
+changes how tables are shown, never their values, and lasts for the session. `decimals=4` also rounds how floats
+print, so 0.051953 reads 0.0520. `reset=True` hands these options back to Polars' own defaults.
 
 **As an example:**
 
@@ -547,6 +547,7 @@ from financescenarios import set_display
 
 set_display()                    # validate(), describe() and compare_runs() print in full
 set_display(width=120, rows=30)  # narrower, fewer rows
+set_display(decimals=4)          # floats as 0.0520 instead of 0.051953
 set_display(reset=True)          # back to Polars' defaults
 ```
 
@@ -560,6 +561,7 @@ set_display(
     rows: int = 100,
     columns: int = 20,
     reset: bool = False,
+    decimals: int | None = None,
 ) -> None
 ```
 
@@ -570,9 +572,10 @@ set_display(
 - <u>rows (int):</u> the most rows shown before the middle is cut; -1 for every row. Defaults to 100.
 - <u>columns (int):</u> the most columns shown before the middle is cut; -1 for every column. Defaults to 20.
 - <u>reset (bool):</u> restore Polars' defaults instead, ignoring the other arguments. Defaults to False.
+- <u>decimals (int &#124; None):</u> the decimals shown per float; None leaves Polars' setting as it is. Defaults to None.
 
 **Raises:**
 
-- <u>ValueError:</u> if an argument is not a whole number, `text` is below 1, or `width` is 0.
+- <u>ValueError:</u> if an argument is not a whole number, `text` or `decimals` is below its minimum, or `width` is 0.
 
 </details>

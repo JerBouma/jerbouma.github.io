@@ -103,9 +103,16 @@ An exchange rate has no natural long-run level over decades, so it is not modele
 
 | Drift | Assumption | When to use it |
 |:------|:-----------|:---------------|
-| Historical (default) | The sample's own trend continues | Short horizons |
-| Random walk (used by the default factor set) | No trend: the median stays at today's rate | Long horizons; a random walk forecasts at least as well as structural models ([Meese and Rogoff, 1983](https://doi.org/10.1016/0022-1996(83)90017-X){:target="_blank"}) |
+| Random walk (default) | No trend: the median stays at today's rate | Most uses; a random walk forecasts at least as well as structural models ([Meese and Rogoff, 1983](https://doi.org/10.1016/0022-1996(83)90017-X){:target="_blank"}) |
+| Historical | The sample's own trend continues | A deliberate currency view, over short horizons |
 | Interest-rate parity | Each step, the gap between the two simulated short rates | Currency moves that follow rate differentials |
+
+A fitted trend is a currency view carried forward for decades: on 2021-2026 data the yen would get a 7.1% yearly drift from the dollar's strong run against it. Over long horizons Barrie & Hibbert's model instead ties exchange rates to purchasing power, which rules out a lasting trend of their own:
+
+> "Exchange rates respect purchasing power parity relationships at long horizons."
+> <cite>[Hibbert, Mowbray and Turnbull (2001), section 9.3, p. 69](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf#page=69)</cite>
+
+The volatility comes from the rate at the end of each month (or quarter or year), published by the BIS. The OECD publishes averages over each period, and changes of averages keep only about two-thirds of a random walk's variance ([Working, 1960](https://doi.org/10.2307/1907574){:target="_blank"}): on monthly data since 2021 the euro's volatility is 7.4% from month-end rates against 5.9% from the averages, the yen's 10.8% against 8.6%. The yearly Global Macro Database has averages only, so there the volatility is scaled up by Working's factor; `end_of_period: false` fits the averages as published.
 
 Under uncovered interest-rate parity the higher-yielding currency is expected to depreciate by the rate gap, so both currencies earn the same in expectation:
 
@@ -113,7 +120,7 @@ $$
 d\ln S_t = \left(r^f_t - r^d_t - \tfrac{1}{2}\sigma^2\right)dt + \sigma\,dW_t
 $$
 
-Here $$S_t$$ is foreign currency per dollar, $$r^f_t$$ the foreign and $$r^d_t$$ the US short rate, both read from the same simulated path. A higher foreign rate pushes the quote up (the foreign currency weakens); a higher US rate pushes it down. Uncovered parity often fails empirically (the carry trade profits from that), which is why the default factor set uses the random walk.
+Here $$S_t$$ is foreign currency per dollar, $$r^f_t$$ the foreign and $$r^d_t$$ the US short rate, both read from the same simulated path. A higher foreign rate pushes the quote up (the foreign currency weakens); a higher US rate pushes it down. Uncovered parity often fails empirically (the carry trade profits from that), one more reason the random walk is the default.
 
 ```yaml
 fx:
@@ -178,9 +185,9 @@ The model follows eq. 3.18 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.c
 > "Using quarterly return data from NCREIF from 1978 to 2001, we estimated two separate Ornstein-Uhlenbeck models for real estate: the first model included the level of inflation while the second model did not."
 > <cite>[Ahlgrim, D'Arcy and Gorvett (2005), section 3, eq. 3.18](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=21)</cite>
 
-The simulated path is price growth only: it leaves out rental income, which makes up much of a property investment's total return. Held as an asset (see [portfolio](/projects/financescenarios/docs/portfolio)), it therefore understates what property earns.
+The simulated path is price growth only. Rental income, about half of housing's long-run return, is added when real estate is held as an asset (see [portfolio](/projects/financescenarios/docs/portfolio#what-a-portfolio-can-hold)).
 
-The data are OECD residential house-price growth for many countries, or for the United States the IMF's commercial property index on FRED ([`COMREPUSQ159N`](https://fred.stlouisfed.org/series/COMREPUSQ159N){:target="_blank"}; quarterly, needs a FRED key). On 2026-10-06, US house prices were 2.1% above a year earlier and pulled toward 3.4% a year, with a boom or slump fading by half in about 5.7 years. Commercial property reverted within about a year and was almost four times as volatile.
+The data are OECD residential house-price growth for many countries, or for the United States the IMF's commercial property index on FRED ([`COMREPUSQ159N`](https://fred.stlouisfed.org/series/COMREPUSQ159N){:target="_blank"}; quarterly, needs a FRED key). Where the paper fits quarterly returns, this fits year-over-year growth read each quarter, so residential and commercial sit on one scale. Neighbouring readings then share three of their four quarters, so, as for [inflation](/projects/financescenarios/docs/economy#inflation), each is regressed on the reading a year earlier (`ou_fit: step` restores the quarter-to-quarter fit). On 2026-10-14, US house prices were 2.1% above a year earlier and pulled toward 4.3% a year, with a boom or slump fading by half in about 1.9 years; the quarter-to-quarter fit said 5.7 years. Commercial property reverted within about five months, with about twice the yearly volatility.
 
 Neither source matches the paper's appraisal-based NCREIF index; appraisals smooth prices and understate volatility, and there is no open equivalent (see [coverage](/projects/financescenarios/docs/coverage)). Reference: [Real estate API](/projects/financescenarios/docs/reference/real-estate).
 
@@ -201,21 +208,24 @@ On 2026-10-04 SPY yielded 0.99% and was pulled toward 1.39% with a half-life of 
 
 ### Dividend Growth (Wilkie)
 
-[Wilkie's (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} model is a one-way cascade: inflation, then dividend yield, dividend growth and the share price (dividend index divided by yield). Dividend growth is his "Reduced Basis" equation, with $$\Delta\ln Q_t$$ the force of inflation (the log change in the price index):
+[Wilkie's (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} model is a one-way cascade: inflation, then dividend yield, dividend growth and the share price (dividend index divided by yield). Dividend growth is his "Reduced Standard Basis" equation, with $$\Delta\ln Q_t$$ the force of inflation (the log change in the price index):
 
 $$
-\Delta \ln D_t = \mu_D + w\,\Delta\ln Q_t + x\,M_{t-1} + y\,\varepsilon^Y_{t-1} + \sigma_D\,z_t
+\Delta \ln D_t = \mu_D + w\,M_t + x\,\Delta\ln Q_t + y\,\varepsilon^Y_{t-1} + \sigma_D\,z_t, \qquad w + x = 1
 $$
 
 | Term | Wilkie | Economics |
 |:-----|:-------|:----------|
 | $$\mu_D$$ | DMU | Real dividend growth |
-| $$w\,\Delta\ln Q_t$$ | DW | Part of this period's inflation passes straight into dividends |
-| $$x\,M_{t-1}$$ | DX | Smoothed past inflation, $$M_t = 0.2\,\Delta\ln Q_t + 0.8\,M_{t-1}$$: dividends catch up with prices over time |
+| $$w\,M_t$$ | DW | Smoothed inflation, $$M_t = 0.2\,\Delta\ln Q_t + 0.8\,M_{t-1}$$ a year: dividends catch up with prices over time |
+| $$x\,\Delta\ln Q_t$$ | DX | Part of this period's inflation passes straight into dividends |
 | $$y\,\varepsilon^Y_{t-1}$$ | DY | Last period's dividend yield surprise: prices anticipate dividend changes, so the yield moves first |
 | $$\sigma_D\,z_t$$ | DSD | The dividend index's own shock |
 
-The smoothing weight is fixed at Wilkie's 0.2 and the rest is fitted by one regression.
+The two inflation weights add up to one, Wilkie's unit gain: in the long run dividends, and so share prices, keep their real value. The fit imposes it, fixes the smoothing weight at Wilkie's 0.2 a year (converted to the data's step) and estimates the rest by one regression.
+
+> "The parameters are such that a given percentage increase in the Retail Prices Index ultimately results in the same percentage increase in the dividend index, so the model is said to have unit gain."
+> <cite>[Wilkie (1986), A Stochastic Investment Model for Actuarial Use, section 3.7](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4)</cite>
 
 > "Investigations showed that for practical purposes in the long term very similar results could be obtained from a slightly simpler model that omits the term in DB, and alters two other parameters to give: DW = 0.8, DD = 0.2, DX = 0.2, DMU = 0.0, DY = -0.3, DB = 0.0, DSD = 0.10."
 > <cite>[Wilkie (1986), A Stochastic Investment Model for Actuarial Use, section 3.9](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4)</cite>
@@ -226,13 +236,13 @@ References: [Dividend yield API](/projects/financescenarios/docs/reference/divid
 
 ## Credit Spreads
 
-A credit spread is the extra yield a company pays over government debt: expected default losses plus a risk and liquidity premium that widens sharply in a downturn. As in [Arvanitis, Gregory and Laurent (1999)](https://doi.org/10.3905/jod.1999.319117){:target="_blank"}, the spread mean-reverts in logs. That keeps it positive and makes its swings proportional to its level, so wide spreads are the most volatile and the distribution is skewed toward sharp widenings:
+A credit spread is the extra yield a company pays over government debt: expected default losses plus a risk and liquidity premium that widens sharply in a downturn. The spread reverts to a normal level as an Ornstein-Uhlenbeck process. Fitting it in logs is a modeling judgement rather than a published specification: it keeps the spread positive and makes its swings proportional to its level, so wide spreads are the most volatile and the distribution is skewed toward sharp widenings:
 
 $$
 d\ln s_t = a(\theta - \ln s_t)\,dt + \sigma\,dW_t
 $$
 
-On 2026-10-04 the 7-10 year investment-grade spread started at 1.05% and was pulled toward a median of 1.01%, with a half-life of about three months. That speed comes from three years of monthly data, too few for a reliable estimate, and short samples tend to overstate how fast a series reverts; the Moody's series, monthly from 1953, gives a steadier read. Business-cycle conditioning lets spreads widen as a simulated path turns down, but that variant, like GARCH volatility, is fitted on the spread level rather than its log, so it can turn negative.
+A series that has touched zero or below is fitted on its level instead. On 2026-10-04 the 7-10 year investment-grade spread started at 1.05% and was pulled toward a median of 1.01%, with a half-life of about three months. That speed comes from three years of monthly data, too few for a reliable estimate, and short samples tend to overstate how fast a series reverts; the Moody's series, monthly from 1953, gives a steadier read. Business-cycle conditioning lets spreads widen as a simulated path turns down, but that variant, like GARCH volatility, is fitted on the spread level rather than its log, so it can turn negative.
 
 | Data | History |
 |:--|:--|
@@ -268,13 +278,17 @@ The data are ESMA's [CEREP](https://registers.esma.europa.eu/cerep-publication){
 > "… the PD value that is used for each exposure as an input of the risk-weighted exposure amounts and expected loss formulae shall not be less than the following PD input floor value: 0,05 %."
 > <cite>[Regulation (EU) 2024/1623, Article 1, point (86)(a), replacing Article 160(1) of Regulation (EU) No 575/2013](https://eur-lex.europa.eu/eli/reg/2024/1623/oj/eng)</cite>
 
+The calibration's `pd_floor` argument restores 0.03% where a Basel II comparison is needed. The transition matrix pools the rating changes of every year in the history, not only the latest ones, so it reflects an average year across good and bad ones, as Basel asks of PD estimation:
+
+> "If the available observation period spans a longer period for any source, and this data are relevant and material, this longer period must be used. The data should include a representative mix of good and bad years."
+> <cite>[Basel Framework, CRE36.79](https://www.bis.org/basel_framework/chapter/CRE/36.htm)</cite>
+
 On S&P corporate ratings from 2000 to 2025, the worst years came out as 2009, 2001, 2020 and 2002, the asset correlation was about 0.10, and a shock to the cycle halved in about eight months.
 
 ```yaml
 credit_migration:
   enabled: true
   agency: S&P
-  matrix_years: 10  # years of transitions pooled into the matrix
 ```
 
 ```python

@@ -37,8 +37,14 @@ Only assets you could own can be held, and how a holding grows depends on what i
 | Kind | Examples | How a holding grows |
 |---|---|---|
 | Price factors | Equities, commodities | Along the simulated price path. |
-| Rate factors | Interest rates, credit, real estate | The simulated rate is compounded, like a rolled money-market holding. That is a proxy: a credit holding earns only the spread (not the yield plus spread minus default losses), and real estate earns house-price growth without rental income. |
+| Interest rates | Short and long rates | The rate is compounded like a rolled money-market holding or, with a duration, priced as a bond fund ([below](#bonds-cash-roll-or-duration)). |
+| Credit | Spreads by maturity or rating | The government yield the spread sits on, plus the spread, less the yearly default loss for its rating. With a duration, a widening also marks the holding down at once. |
+| Real estate | House-price growth | Price growth plus a 5% net rental yield. |
 | Not investable | Inflation, unemployment, dividend yields, FX | Cannot be held, only used as inputs (for example to index cashflows). |
+
+A spread is not a return. A corporate bond earns the risk-free yield plus the spread, less what defaults cost after recoveries, and for investment grade that loss is a small part of the spread. The default loss is Moody's average five-year credit loss for the holding's rating, net of recoveries, spread evenly over the five years ([Moody's, 2005, Exhibit 11](https://www.bu.edu/econ/files/2015/01/Moodys_Default_1920-2004.pdf){:target="_blank"}): 0.11% a year for investment grade, 2.98% for speculative grade, or a rate you set. The government yield is a long rate in the spread's currency or, when the run has the US yield curve, the curve at the holding's duration, since spreads are quoted over Treasuries of matching maturity. A run without any rate earns the spread less losses, an excess return over government bonds.
+
+Rents are about half of housing's long-run return, so leaving them out makes property look like a poor investment: across 16 countries from 1870 to 2015, rental income averaged 5.49% a year of an 11.22% nominal total return, and 5.26% since 1950 ([Jordà, Knoll, Kuvshinov, Schularick and Taylor, 2017, Table 6](https://doi.org/10.24148/wp2017-25){:target="_blank"}). The 5% default sits a little below that history; set your own per holding.
 
 With holdings in several currencies, each equity, commodity and real-estate holding can be converted into the reporting currency first, so a euro equity in a dollar portfolio carries the currency return too. Rates are never converted (see [units](/projects/financescenarios/docs/units)).
 
@@ -82,7 +88,7 @@ Deposits and withdrawals turn a return distribution into a plan: save for 15 yea
 
 With withdrawals, the **order** of returns matters, not only their average. A crash early in the withdrawal phase forces selling at low prices, and the units sold never recover; the same crash late does far less damage. That is sequence-of-returns risk, and why a plan has to be tested on paths, not on an expected return.
 
-Withdrawals can be indexed to each scenario's own simulated inflation, so they keep their purchasing power. This matters a lot: in the example run (100,000 to start, 10,000 a year saved for 15 years, then 40,000 a year withdrawn), the money lasted 30 years in 91.7% of scenarios with a fixed nominal withdrawal, and in only 58% when the withdrawal rose with inflation.
+Withdrawals can be indexed to each scenario's own simulated inflation, so they keep their purchasing power. This matters a lot: in the example run (100,000 to start, 10,000 a year saved for 15 years, then 40,000 a year withdrawn), the money lasted 30 years in 91.7% of scenarios with a fixed nominal withdrawal, and far less often when the withdrawal rose with inflation.
 
 ```python
 rules = [
@@ -108,7 +114,7 @@ $$
 
 where $$D$$ is the modified duration and $$y$$ the simulated yield: the price effect of the yield change plus the interest earned. The fund rolls to keep its duration constant, like a long-Treasury ETF, rather than ageing like a single bond.
 
-Use a long rate for $$y$$, such as the 10-year yield in the default factor set. A duration on the short rate prices a constant-duration fund off three-month bill moves, which follow policy rates rather than long yields, so it is not a stand-in for a bond of that maturity. In the example run, which has only the short rate, the cash roll earned the starting 4.0% in year one in every scenario.
+A bond fund earns the yield at its own maturity, so $$y$$ should be a long rate, such as the 10-year yield in the default factor set. Three-month bills follow policy rates rather than long yields, so a short rate given a duration is priced off the US yield curve at that duration when the run has the curve, else off the same country's long rate; only a run with neither prices it off the bill rate itself, with a warning. In the example run, which has only the short rate, the cash roll earned the starting 4.0% in year one in every scenario.
 
 This is first-order duration only: convexity is ignored, and compounding the return as a log return understates a very large one-step loss. On monthly or weekly steps both effects are small.
 
@@ -134,7 +140,7 @@ glide = portfolio.compute_glidepath(
 )
 ```
 
-Well-known allocations ship as presets, such as a 60/40, the all-weather and permanent portfolios, a three-fund portfolio, an endowment model and a target-date glidepath. The 60/40 preset holds 60% US equities and 40% US Treasuries: the 10-year yield priced as a bond fund of duration 5.4 years, about that of a broad Treasury ETF.
+Well-known allocations ship as presets, such as a 60/40, the all-weather and permanent portfolios, a three-fund portfolio, an endowment model, Taleb's barbell (85% Treasury bills, 15% small-cap and growth stocks) and a target-date glidepath. The glidepath follows Vanguard's Target Retirement funds: 90% equities until 25 years before the target date, 50% at it and 30% seven years after. The 60/40 preset holds 60% US equities and 40% US Treasuries: the 10-year yield priced as a bond fund of duration 5.4 years, about that of a broad Treasury ETF.
 
 ```python
 result = Portfolio.from_preset(scenario_set, preset="balanced_60_40").compute()
@@ -154,7 +160,7 @@ All metrics are counted over the simulated paths, not from a formula that assume
 | Probability of loss | How often does the portfolio end below its starting value? |
 | Probability of shortfall | How often does the money run out, or a target (say one million) not get reached? |
 
-VaR, Expected Shortfall and the probability of loss describe the total return over the whole horizon: on a 30-year run that is a 30-year outcome, not a one-year loss. With cashflows they mix returns with deposits and withdrawals. All values are nominal unless deflated by a scenario's own cumulative inflation, which gives the value in today's money; in the example run a saver's median portfolio was worth 1,064,686 after 20 years in nominal terms and 636,645 in today's money.
+VaR, Expected Shortfall and the probability of loss describe the total return over the whole horizon: on a 30-year run that is a 30-year outcome, not a one-year loss. With cashflows they mix returns with deposits and withdrawals. All values are nominal unless deflated by a scenario's own cumulative inflation, which gives the value in today's money; in the example run a saver's median portfolio was worth 1,064,686 after 20 years in nominal terms, and markedly less once deflated by its own inflation.
 
 In the example run, rebalancing the 60/40 equity-cash mix yearly with a 0.2% fee lowered the median worst drawdown from -23.84% to -17.25% and the annualized volatility from 13.21% to 10.45%, at the cost of a lower median CAGR (8.37% against 9.28%): the buy-and-hold portfolio earned more because it had drifted into more equity risk.
 
@@ -176,7 +182,16 @@ backtest = Portfolio.backtest(scenarios, preset="balanced_60_40", period="monthl
 values = backtest.compute(rebalance_every=12)
 ```
 
-Against a benchmark (an index, another mix, or the same mix over other dates) the comparison covers tracking error, correlation, beta, the differences in CAGR and Sharpe ratio ([Sharpe, 1966](https://doi.org/10.1086/294846){:target="_blank"}) and active share, half the sum of the absolute weight differences ([Cremers and Petajisto, 2009](https://doi.org/10.1093/rfs/hhp057){:target="_blank"}). On a simulated run each side is first averaged into its mean path, which removes most of the scenario-level noise, so tracking error, correlation and beta there understate the active risk. Read them on a backtest.
+Several presets can be backtested together. They share one calendar, the dates on which every holding of every preset has a price, so no mix gets a crisis the others skip; a holding with a short history shortens the window for all of them. Each read (risk metrics, factor exposure, the comparison with a benchmark) then gives one row per preset, and the chart draws one line per portfolio on a shared axis.
+
+```python
+presets = ["balanced_60_40", "all_weather", "permanent_portfolio"]
+comparison = Portfolio.backtest(scenarios, presets, period="monthly")
+comparison.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
+comparison.risk_metrics()   # one row per preset
+```
+
+Against a benchmark (an index, another mix, or the same mix over other dates) the comparison covers tracking error, correlation, beta, the differences in CAGR and Sharpe ratio ([Sharpe, 1966](https://doi.org/10.1086/294846){:target="_blank"}) and active share, half the sum of the absolute weight differences ([Cremers and Petajisto, 2009](https://doi.org/10.1093/rfs/hhp057){:target="_blank"}). On a simulated run tracking error is measured within each scenario, the deviation a manager actually lives through, and the median is reported with its spread across scenarios; averaging the scenarios first would cancel most of the deviations. Correlation and beta there compare the two mean paths, so they describe the average scenario rather than any single one; read them on a backtest.
 
 ## Factor Exposure
 

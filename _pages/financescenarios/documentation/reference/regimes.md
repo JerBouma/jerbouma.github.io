@@ -49,15 +49,15 @@ beliefs:
   inflation.united_states_inflation:
     long_run_mean:
       anchors:
-        1.0: 0.09
-        3.0: 0.05
+        1.0: 0.12
+        3.0: 0.055
         8.0: 0.025
 targets:
   united_states_short_rate: [0.7, 1.0]
   us_broad: [0.0, 0.3]
 ```
 
-It pulls US inflation towards 9% in year one and back to 2.5% by year eight, then keeps the scenarios with high rates
+It pulls US inflation towards 12% in year one and back to 2.5% by year eight, then keeps the scenarios with high rates
 and weak stocks.
 
 <details class="ft-details fs-api" markdown="1">
@@ -482,33 +482,46 @@ Turn a regulator's published stress-test scenario into a regime that steers your
 Instead of writing a recession by hand, this takes the one the Federal Reserve or the European Systemic Risk Board
 prescribes for banks' stress tests and lets the simulated scenarios follow it, each with its own randomness. Its
 paths for interest rates, inflation and unemployment steer the matching factors of `config` through the stress
-and back to their calibrated levels; stocks follow as falls and recoveries. The Federal Reserve's 2026
-adverse scenario, for example, takes US stocks about 50% below where they would otherwise be after a year.
+and back to their calibrated levels; stocks follow as falls and recoveries, measured against each regulator's
+own baseline so the equity model's normal growth is not counted twice. In the Federal Reserve's 2026 severely
+adverse scenario, for example, "Equity prices fall about 58 percent in the first three quarters of the scenario"
+(2026 Final Scenarios, p. 4), a fall from their starting level; against the Fed's own baseline, which keeps
+rising, that is 59% below it after three quarters and 56% below after a year, the falls the regime uses.
+The ESRB's stocks are published as a "Deviation from the starting point (%)", with "stock prices ... assumed to
+remain unchanged" in its baseline (2025 scenario, section 4.1.7), so that deviation is already the gap to its
+baseline: -50% for the EU in 2025 and -42% by 2027.
 
 The value is in running your own portfolio or balance sheet through the same story supervisors use: the published
 scenario is one narrative path, and laying it over simulated scenarios turns it into a distribution around that
-narrative, so you see both the stressed outcome and how much worse it could get within the stress. "adverse" is
-the stress; "baseline" is the authority's central view, a useful reference to measure the stress against.
+narrative, so you see both the stressed outcome and how much worse it could get within the stress. Each
+regulator publishes two scenarios, a stress and its own central view ("baseline"), a useful reference to measure
+the stress against. Both come through the Finance Toolkit, with no API key:
 
-Both come through the Finance Toolkit, with no API key:
-
-- "federal_reserve": the United States, quarterly over 13 quarters: the 3-month and 10-year Treasury rates,
-  inflation, unemployment and stocks.
-- "esrb": the scenario of the EBA's EU-wide stress test, yearly over three years for every EU member and the main
-  other economies: the long-term interest rate, inflation, unemployment and stocks.
+- "federal_reserve": "baseline" and "severely_adverse", the two scenarios the Federal Reserve's scenario
+  documents have contained since 2020 (their section "Baseline and Severely Adverse Scenarios", in the 2020
+  Supervisory Scenarios and on p. 8 of the final 2026 scenarios), for the United States, quarterly over 13 quarters:
+  the 3-month and 10-year Treasury rates, inflation, unemployment and stocks. "adverse" is accepted as the same
+  severely adverse scenario.
+- "esrb": "baseline" and "adverse", the scenarios the ESRB designs for the EBA's EU-wide stress test ("This
+  document presents the baseline and adverse macro-financial scenarios that banks are required to use", ESRB
+  2025 scenario, p. 1), yearly over three years for every EU member and the main other economies: the long-term
+  interest rate, inflation, unemployment and stocks. The ESRB publishes no "severely_adverse" scenario.
 
 **As an example:**
 
 ```python
 from financescenarios import Scenarios, stress_test_regime
 
-regime = stress_test_regime(toolkit, config, authority="federal_reserve", scenario="adverse")
+regime = stress_test_regime(toolkit, config, authority="federal_reserve", scenario="severely_adverse")
 scenarios = Scenarios.from_config(config, regime=regime)
 ```
 
 **References:**
 
 - Board of Governors of the Federal Reserve System. "Stress test scenarios." <https://www.federalreserve.gov/supervisionreg/dfast-archive.htm>
+- Board of Governors of the Federal Reserve System (2020). "2020 Supervisory Scenarios for Annual Stress Tests." <https://www.federalreserve.gov/newsevents/pressreleases/files/bcreg20200206a1.pdf>
+- Board of Governors of the Federal Reserve System (2026). "2026 Final Supervisory Stress Test Scenarios." <https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf>
+- European Systemic Risk Board (2025). "Macro-financial scenario for the 2025 EU-wide banking sector stress test." <https://www.eba.europa.eu/sites/default/files/2025-02/f23c8470-a2e1-410f-b752-55aff8f8e8f4/2025-02-26%20-%20ESRB%20-%20Macrofinancial%20scenario%20for%20the%202025%20EU-wide%20banking%20sector%20stress%20test%20%28updated%2026%20February%202025%29.pdf>
 - European Systemic Risk Board. "EBA EU-wide stress test, macro-financial scenario." <https://www.esrb.europa.eu/mppa/stress/html/index.en.html>
 
 <details class="ft-details fs-api" markdown="1">
@@ -519,7 +532,7 @@ stress_test_regime(
     toolkit: Toolkit,
     config: ScenariosConfig,
     authority: Literal['federal_reserve', 'esrb'] = 'federal_reserve',
-    scenario: Literal['baseline', 'adverse'] = 'adverse',
+    scenario: Literal['baseline', 'adverse', 'severely_adverse'] = 'adverse',
     year: int | None = None,
     converge_over_years: float = 5.0,
     follow: Literal['path', 'target'] = 'path',
@@ -532,10 +545,10 @@ stress_test_regime(
 - <u>toolkit (Toolkit):</u> the Finance Toolkit `Toolkit`.
 - <u>config (ScenariosConfig):</u> the configuration; each entry follows its own `country`.
 - <u>authority (str):</u> "federal_reserve" (default) or "esrb".
-- <u>scenario (str):</u> "adverse" (default) or "baseline".
+- <u>scenario (str):</u> "severely_adverse" (Federal Reserve), "adverse" (ESRB; the severely adverse one for the Federal Reserve) or "baseline". Defaults to "adverse", the stress of either authority.
 - <u>year (int &#124; None):</u> the Federal Reserve's stress-test year; the latest by default.
-- <u>converge_over_years (float):</u> the years after the scenario over which each factor returns to its calibrated level; 5.0 by default.
-- <u>follow (str):</u> "path" (default) also sets each factor to the published value at every period end; "target" only steers its long-run level, a gentler stress.
+- <u>converge_over_years (float):</u> the years after the scenario over which each factor returns to its calibrated level; 5.0 by default. Neither regulator publishes a path past its horizon (13 quarters, three years), so this is a judgement: about the length of a full recovery, during which the stress fades linearly.
+- <u>follow (str):</u> "path" (default) also sets each factor to the published value at every period end, as the regulators prescribe the path itself; "target" only steers its long-run level, a gentler stress.
 - <u>equity_regions (Mapping[str, str] &#124; None):</u> equity name -> the published region whose stocks it follows; the United States (Federal Reserve) or European Union (ESRB) by default.
 
 **Returns:**
@@ -544,6 +557,6 @@ stress_test_regime(
 
 **Raises:**
 
-- <u>ValueError:</u> if the scenario comes back empty or none of `config`'s factors has a matching country.
+- <u>ValueError:</u> if the authority does not publish the scenario, it comes back empty or none of `config`'s factors has a matching country.
 
 </details>

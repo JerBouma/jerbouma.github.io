@@ -37,7 +37,11 @@ d(CLI) = a * (theta - CLI) * dt + sigma * dW
 ```
 
 where `a` is the mean-reversion speed, `theta` the long-run level and `sigma` the volatility. Mean reversion holds
-almost by construction: the OECD publishes the CLI with its long-run trend removed, scaled to swing around 100.
+almost by construction: the OECD publishes the CLI with its long-run trend removed, scaled to swing around 100
+("long-term trend = 100"): "The CLI is the average of de-trended and smoothed component series ... The amplitude
+adjusted CLI rescales this 'averaged' CLI to match the amplitudes of the de-trended reference series" (OECD, 2012,
+"OECD System of Composite Leading Indicators", pp. 3 and 9,
+[OECD](https://www.oecd.org/content/dam/oecd/en/data/methods/OECD-System-of-Composite-Leading-Indicators.pdf)).
 `volatility_model: garch` lets the size of the swings vary over time, so calm and turbulent periods each persist
 ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)).
 
@@ -48,6 +52,8 @@ entry gains a pull from the indicator's change:
 d(x) = a * (theta - x) * dt + beta * d(CLI) + sigma * dW
 ```
 
+The beta term is a judgement with no published source: it is built like the inflation term of the
+Ahlgrim, D'Arcy and Gorvett (2005) unemployment equation, a covariate's same-period change added to the drift.
 It is then calibrated at `leading_indicator.period`, which that factor must support (`real_estate` needs quarterly or
 yearly), it cannot use `volatility_model: garch`, and its belief overrides do not apply. Equities instead let their
 regime-switching probabilities depend on the indicator
@@ -58,16 +64,8 @@ The data are the OECD's monthly Composite Leading Indicator for about 22 countri
 needed. It models the index level only, not recession dates or the
 probability of a recession.
 
-Configuration (`leading_indicator` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `enabled` | `false` | Adds a `leading_indicator` factor to the simulation when `true`. |
-| `country` | `United States` | The country whose indicator is fetched. |
-| `currency` | `USD` | A label only: the index has no currency and is never converted. |
-| `period` | `monthly` | `monthly`, `quarterly` or `yearly`: the calibration time step. |
-| `volatility_model` | `constant` | `constant` or `garch`. |
-| `beliefs` | none | Override the fitted speed, long-run level or volatility (constant volatility only). |
+The `leading_indicator` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 **References:**
 

@@ -31,11 +31,12 @@ the 13-week, 5-, 10- and 30-year Treasury yields, then gives you model yields at
 (`zero_coupon_yield`), the Q-measure parameters to simulate with (`q_params`) and a deflator to price claims off
 a real-world run (`deflator`).
 
-De Nederlandsche Bank (DNB) derives the Q-measure of its scenario sets from option, swaption and inflation-cap
-prices ([CP2022 Technical Appendix](
-https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix), sections 5-6), data
-this project does not have. This module fits the market price of risk to the yield curve instead: a different,
-not merely simplified, alternative. The price of risk is completely affine
+De Nederlandsche Bank (DNB) fits its Q-measure to nominal yields at "{1, 5, 10, 20, 30}" years and real yields
+at "{1, 5, 15, 20, 30}" ([CP2022 Technical Appendix](
+https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix), section 4), and
+constrains it with option, swaption and inflation-cap implied volatilities (section 5, eq. 25), data this project
+does not have. This module keeps the yield-curve part on the four US Treasury points Yahoo Finance quotes (13
+weeks, 5, 10 and 30 years): no real yields and no implied volatilities. The price of risk is completely affine
 ([Duffie & Kan, 1996](https://doi.org/10.1111/j.1467-9965.1996.tb00123.x)), with five parameters that change only
 the drift: under Q, `v`'s mean-reversion speed is its real-world speed plus `risk_premium_v`, and each leg's
 `intercept` and `variance_coupling` drop by its constant and variance premium. Everything else stays the same, so
@@ -47,17 +48,17 @@ The stochastic deflator follows [Cheng & Planchet (2018)](https://hal.science/ha
 `risk_premium_v` is small relative to `v`'s mean-reversion speed (`calibrate_mpr` warns past 5%), and it needs
 the path of `v`, which a scenario set does not include, so you simulate and record it yourself.
 
-Limits: the closed-form prices assume uncorrelated rate and inflation shocks (the Monte Carlo engine does not),
-the inflation premiums are weakly identified from a nominal-only curve, and there is no Q-measure equity leg.
+The closed-form prices, the market price of risk fit and the deflator all use the correlation of the rate and
+inflation shocks, estimated from the same period changes the scenarios' correlation matrix is built from, so model
+prices and discounting along simulated paths agree. Limits: the inflation premiums are weakly identified from a
+nominal-only curve, and there is no Q-measure equity leg.
 
 Configuration: set `measure: risk_neutral` on both entries of a `method: knw_sv` pair; everything else is as for
 `KnwSv`, including `period` equal to `engine.frequency`. The four Treasury tickers (`^IRX`, `^FVX`, `^TNX`,
 `^TYX`) are added to the run automatically.
 
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `interest_rates[i].measure` | `real_world` | `risk_neutral` fits the market price of risk and simulates under Q. |
-| `inflation[j].measure` | `real_world` | Must equal the paired rate entry's `measure`. |
+The keys and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 **References:**
 
@@ -85,9 +86,12 @@ speed plus `risk_premium_v`, and each leg's expected next value drops by its `..
 `..._variance` premium times `v`.
 
 The fit minimizes the squared gap between model and observed yields over all four tenors, with the completely
-affine form of [Duffie & Kan (1996)](https://doi.org/10.1111/j.1467-9965.1996.tb00123.x). The inflation
-premiums are only weakly pinned down by a nominal-only curve. When `|risk_premium_v|` exceeds 5% of `v`'s
-real-world speed, a warning says `deflator` is materially biased at long maturities.
+affine form of [Duffie & Kan (1996)](https://doi.org/10.1111/j.1467-9965.1996.tb00123.x). The model yields
+include the convexity from the correlation between rate and inflation shocks, the one the scenarios simulate
+with. Every date and tenor weighs the same, and the observed yields, those of coupon-paying Treasuries, stand
+in for zero-coupon yields: both are judgements, the second close when coupons sit near the yield. The
+inflation premiums are only weakly pinned down by a nominal-only curve. When `|risk_premium_v|`
+exceeds 5% of `v`'s real-world speed, a warning says `deflator` is materially biased at long maturities.
 
 **As an example:**
 
@@ -107,13 +111,13 @@ knw_sv_q = KnwSvQ(toolkit)
 knw_sv_q.calibrate_mpr(knw_sv, "interest_rate", "inflation", period="quarterly")
 ```
 
-Which returns (calibrated on 2026-10-05):
+Which returns (calibrated on 2026-10-14):
 
 | risk_premium_v | rate_constant | rate_variance | inflation_constant | inflation_variance |
 |---------------:|--------------:|--------------:|-------------------:|-------------------:|
-| -0.1532 | 0.0001 | -8.5226 | -0.0027 | 9.4999 |
+| -0.1536 | 0.0001 | -8.4981 | -0.0027 | 9.3876 |
 
-Under Q, `v` reverts at 0.399 - 0.153 = 0.246 a year toward 1.6 times its historical normal level: the curve
+Under Q, `v` reverts at 0.399 - 0.154 = 0.245 a year toward 1.6 times its historical normal level: the curve
 prices in more turbulence than history shows, and the deflator warning fires.
 
 <details class="ft-details fs-api" markdown="1">
@@ -125,6 +129,7 @@ calibrate_mpr(
     interest_rate_name: str,
     inflation_name: str,
     period: str,
+    shock_correlation: float | None = None,
 ) -> CompletelyAffineMprParams
 ```
 
@@ -134,6 +139,7 @@ calibrate_mpr(
 - <u>interest_rate_name (str):</u> the pair's rate leg name, as passed to `knw_sv.calibrate_triple`.
 - <u>inflation_name (str):</u> the pair's inflation leg name, as passed to `knw_sv.calibrate_triple`.
 - <u>period (str):</u> the frequency `knw_sv.calibrate_triple` used: "monthly" or "quarterly" ("yearly" raises, as the 13-week tenor is not a whole number of years).
+- <u>shock_correlation (float &#124; None):</u> the correlation of the rate and inflation shocks. Defaults to None, the correlation of the two legs' historical period changes, the input of the scenarios' correlation matrix.
 
 **Returns:**
 
@@ -141,8 +147,29 @@ calibrate_mpr(
 
 **Raises:**
 
-- <u>ValueError:</u> if `period` is not supported, a tenor is not a whole number of periods, or fewer than 10 dates overlap.
+- <u>ValueError:</u> if `period` is not supported, a tenor is not a whole number of periods, fewer than 10 dates overlap, or the correlation is not strictly between -1 and 1.
 - <u>RuntimeError:</u> if `knw_sv.calibrate_triple` has not been run for this pair.
+
+</details>
+
+## shock_correlation
+
+The correlation of one pair's rate and inflation shocks that its bond prices and deflator use.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+shock_correlation(interest_rate_name: str) -> float
+```
+
+**Args:**
+
+- <u>interest_rate_name (str):</u> the pair's rate leg name, as passed to `calibrate_mpr`.
+
+**Raises:**
+
+- <u>RuntimeError:</u> if calibrate_mpr(...) naming this pair hasn't been called yet.
 
 </details>
 
@@ -205,8 +232,8 @@ exp(-0.04 * 10) = 0.67 per unit of face value. The one-period yield equals today
 
 The price comes from the discrete-time affine recursion `exp(A[n] + Bv[n]*v + Br[n]*r + Bpi[n]*pi)` with
 `n = tenor / period length` ([Duffie & Kan, 1996](https://doi.org/10.1111/j.1467-9965.1996.tb00123.x)), and the
-yield, continuously compounded, is `-log(price) / tenor`. It assumes uncorrelated rate and inflation shocks,
-which the Monte Carlo engine does not.
+yield, continuously compounded, is `-log(price) / tenor`. The convexity includes the correlation of rate and
+inflation shocks, so the price matches the average discount factor along paths simulated under Q.
 
 **As an example:**
 
@@ -217,14 +244,15 @@ for tenor in [0.25, 1, 2, 5, 10, 20, 30]:
     print(tenor, knw_sv_q.zero_coupon_yield("interest_rate", tenor))
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | tenor (years) | 0.25 | 1 | 2 | 5 | 10 | 20 | 30 |
 |:--------------|-----:|--:|--:|--:|---:|---:|---:|
-| yield | 0.0375 | 0.0381 | 0.0404 | 0.0453 | 0.0487 | 0.0496 | 0.0492 |
+| yield | 0.0375 | 0.0387 | 0.0405 | 0.0447 | 0.0478 | 0.0484 | 0.0483 |
 
-The curve starts at today's 3.75% short rate, rises to 4.5% at five years and flattens just under 5% beyond
-ten, below the latest observed Treasury yields, since the premiums are fit across the whole history.
+The curve starts at the 3.75% short rate of the last quarter, rises to 4.5% at five years and flattens near
+4.8% beyond ten, below the latest observed Treasury yields, since the premiums are fit across the whole
+history.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -260,29 +288,30 @@ simulated short rate with a per-path weight that makes paths the market fears mo
 
 Each step recovers the rate's and inflation's realized shock `z` from the path and weights it by
 `exp(-theta*z - 0.5*theta^2)`, where `theta` is the gap between the real-world and risk-neutral expected value
-divided by the volatility. `v`'s own shock is not reweighted, so the deflator is accurate only when
-`risk_premium_v` is small relative to `v`'s mean-reversion speed, or at short maturities; `calibrate_mpr` warns
-past 5% of that speed. A scenario set does not include `v`, so you simulate and record it yourself.
+divided by the volatility, with the correlation of the two shocks taken into account. `v`'s own shock is not
+reweighted, so the deflator is accurate only when `risk_premium_v` is small relative to `v`'s mean-reversion
+speed, or at short maturities; `calibrate_mpr` warns past 5% of that speed. A scenario set does not include
+`v`, so you simulate and record it yourself.
 
 **As an example:**
 
 Continuing from `calibrate_mpr`, with `v_path`, `rate_path` and `inflation_path` simulated by hand over 20
-quarters and 20,000 paths.
+quarters and 20,000 paths (seed 42, the rate and inflation shocks correlated at `shock_correlation`, 0.14).
 
 ```python
 rate, inflation = knw_sv.params("interest_rate"), knw_sv.params("inflation")
 deflator = knw_sv_q.deflator("interest_rate", v_path, rate_path, inflation_path, rate, inflation)
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | T (years) | mean of D(T) | closed-form Q bond price |
 |----------:|-------------:|-------------------------:|
-| 1 | 0.2818 | 0.9626 |
-| 5 | 0.0001 | 0.7972 |
+| 1 | 0.9827 | 0.9620 |
+| 5 | 0.7606 | 0.7996 |
 
-Here `|risk_premium_v|` is 66% of `v`'s speed, so the average collapses toward zero instead of matching the
-bond price: the regime `calibrate_mpr` warns about.
+Here `|risk_premium_v|` is 38.5% of `v`'s speed, so the average misses the bond price, by 2% at one year and 5%
+at five: the regime `calibrate_mpr` warns about.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -420,12 +449,15 @@ $$
 $$
 
 $$
-\ln(D_{t}) = \ln(D_{t-1}) - r_{t-1} \cdot \text{dt} - \operatorname{sum}(\lambda_{t-1} \cdot z_{t} + 0.5 \cdot \lambda_{t-1} ^{2}),\;\; \text{over the r and pi legs}
+\ln(D_{t}) = \ln(D_{t-1}) - r_{t-1} \cdot \text{dt} - \lambda_{t-1} ^{T} \cdot R ^{-1} \cdot z_{t} - 0.5 \cdot \lambda_{t-1} ^{T} \cdot R ^{-1} \cdot \lambda_{t-1}
 $$
 
-Where x is each leg, y the other one and z_t the real-world shock read back from the simulated path. `v`'s own
-shock is not reweighted, so the deflator is accurate only when `v`'s risk premium is small relative to its
-mean-reversion speed; `v` still drives both legs' drift and variance.
+Where x is each leg, y the other one, z_t the pair of real-world shocks read back from the simulated path,
+lambda_t-1 the pair of prices of risk and R the 2x2 correlation matrix of the rate and inflation shocks (rho
+off the diagonal). The correlation matters: the scenarios draw correlated shocks, and a weight that treated them
+as independent would no longer average to the bond price. `v`'s own shock is not reweighted, so the deflator is
+accurate only when `v`'s risk premium is small relative to its mean-reversion speed; `v` still drives both legs'
+drift and variance.
 
 **References:**
 
@@ -443,6 +475,7 @@ compute_stochastic_deflator(
     inflation_params: KnwSvLegParams,
     mpr: CompletelyAffineMprParams,
     time_step: float,
+    shock_correlation: float = 0.0,
 ) -> np.ndarray
 ```
 
@@ -455,6 +488,7 @@ compute_stochastic_deflator(
 - <u>inflation_params (KnwSvLegParams):</u> the real-world inflation parameters.
 - <u>mpr (CompletelyAffineMprParams):</u> the fitted market price of risk (see `calibrate_completely_affine_mpr`).
 - <u>time_step (float):</u> dt, in years.
+- <u>shock_correlation (float):</u> rho, the correlation of the rate and inflation shocks the scenarios were simulated with. Defaults to 0.0.
 
 **Returns:**
 
@@ -462,7 +496,7 @@ compute_stochastic_deflator(
 
 **Raises:**
 
-- <u>ValueError:</u> if a leg's volatility is exactly 0 at some step, so its shock cannot be read back.
+- <u>ValueError:</u> if a leg's volatility is exactly 0 at some step, so its shock cannot be read back, or the correlation is not strictly between -1 and 1.
 
 </details>
 {% endraw %}
@@ -482,11 +516,19 @@ Bv says how turbulence moves prices, through expected rates, convexity and the r
 The formula is as follows:
 
 $$
-A(n + 1) = A(n) + C(\operatorname{Bv}(n)) + \operatorname{Br}(n) \cdot c_{r} + \operatorname{Bpi}(n) \cdot c_{\pi} + 0.5 \cdot (\operatorname{Br}(n) ^{2} \cdot g_{0r} + \operatorname{Bpi}(n) ^{2} \cdot g_{0 \pi})
+\operatorname{Q0}(n) = 0.5 \cdot (\operatorname{Br}(n) ^{2} \cdot g_{0r} + \operatorname{Bpi}(n) ^{2} \cdot g_{0 \pi}) + \rho \cdot \operatorname{Br}(n) \cdot \operatorname{Bpi}(n) \cdot h_{0}
 $$
 
 $$
-\operatorname{Bv}(n + 1) = L(\operatorname{Bv}(n)) + \operatorname{Br}(n) \cdot k_{vr} + \operatorname{Bpi}(n) \cdot k_{v \pi} + 0.5 \cdot (\operatorname{Br}(n) ^{2} \cdot g_{1r} + \operatorname{Bpi}(n) ^{2} \cdot g_{1 \pi})
+\operatorname{Q1}(n) = 0.5 \cdot (\operatorname{Br}(n) ^{2} \cdot g_{1r} + \operatorname{Bpi}(n) ^{2} \cdot g_{1 \pi}) + \rho \cdot \operatorname{Br}(n) \cdot \operatorname{Bpi}(n) \cdot h_{1}
+$$
+
+$$
+A(n + 1) = A(n) + C(\operatorname{Bv}(n)) + \operatorname{Br}(n) \cdot c_{r} + \operatorname{Bpi}(n) \cdot c_{\pi} + \operatorname{Q0}(n)
+$$
+
+$$
+\operatorname{Bv}(n + 1) = L(\operatorname{Bv}(n)) + \operatorname{Br}(n) \cdot k_{vr} + \operatorname{Bpi}(n) \cdot k_{v \pi} + \operatorname{Q1}(n)
 $$
 
 $$
@@ -499,8 +541,15 @@ $$
 
 Where A(0) = Bv(0) = Br(0) = Bpi(0) = 0, L and C come from the closed-form expectation of the CIR process `v`
 ([Cox, Ingersoll & Ross, 1985](https://doi.org/10.2307/1911242)), the r and pi suffixes name the leg, phi_pir is
-the inflation leg's coefficient on r and phi_rpi the rate leg's on pi. The legs' shocks are taken independent of
-each other and of `v`'s, a simplification the scenarios themselves do not make.
+the inflation leg's coefficient on r and phi_rpi the rate leg's on pi. Q0 and Q1 are the convexity of the bond
+price: half the variance of next period's log price, the rate-inflation covariance included.
+
+rho is the correlation of the rate and inflation shocks, the same one the scenarios draw with, so model prices
+and discounting along the simulated paths agree. Their covariance rho * sqrt(g_0r + g_1r * v) *
+sqrt(g_0pi + g_1pi * v) is not linear in `v` unless both legs load on `v` in the same proportion, so it is
+replaced by its tangent h_0 + h_1 * v at `v`'s risk-neutral long-run level: exact at constant volatility and for
+proportional loadings, and off only to second order in `v`'s distance from that level otherwise. `v`'s own shock
+is independent of both legs, as in the scenarios.
 
 **References:**
 
@@ -517,6 +566,7 @@ zero_coupon_bond_recursion(
     inflation_params_q: KnwSvLegParams,
     time_step: float,
     n_periods: int,
+    shock_correlation: float = 0.0,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]
 ```
 
@@ -527,10 +577,15 @@ zero_coupon_bond_recursion(
 - <u>inflation_params_q (KnwSvLegParams):</u> the inflation leg's risk-neutral parameters.
 - <u>time_step (float):</u> dt, years per period.
 - <u>n_periods (int):</u> the longest maturity, in periods.
+- <u>shock_correlation (float):</u> rho, the correlation of the rate and inflation shocks. Defaults to 0.0.
 
 **Returns:**
 
 <u>tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:</u> (A, Bv, Br, Bpi), one value per maturity from 0 to `n_periods` periods.
+
+**Raises:**
+
+- <u>ValueError:</u> if the correlation is not strictly between -1 and 1.
 
 </details>
 
@@ -631,6 +686,7 @@ calibrate_completely_affine_mpr(
     inflation_series: pl.Series,
     yield_dates: pl.Series,
     yields_by_tenor: dict[float, pl.Series],
+    shock_correlation: float = 0.0,
 ) -> CompletelyAffineMprParams
 ```
 
@@ -646,6 +702,7 @@ calibrate_completely_affine_mpr(
 - <u>inflation_series (pl.Series):</u> inflation on each of those dates.
 - <u>yield_dates (pl.Series):</u> the dates of the observed yield curve.
 - <u>yields_by_tenor (dict[float, pl.Series]):</u> the observed yield history per maturity in years.
+- <u>shock_correlation (float):</u> the correlation of the rate and inflation shocks, as in the scenarios. Defaults to 0.0.
 
 **Returns:**
 

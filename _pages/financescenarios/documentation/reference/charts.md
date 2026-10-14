@@ -17,7 +17,7 @@ sidebar:
 The chart functions behind every `.plot()`: fan charts, paths, terminal distributions, runs and portfolios.
 
 ```python
-from financescenarios import plot_factors, plot_fan_chart, plot_paths, plot_terminal_distribution, plot_runs, plot_correlation_matrix, plot_sleeve_values, plot_weight_drift
+from financescenarios import plot_factors, plot_fan_chart, plot_paths, plot_terminal_distribution, plot_runs, plot_portfolios, plot_correlation_matrix, plot_sleeve_values, plot_weight_drift
 ```
 
 ## plot_factors
@@ -25,7 +25,8 @@ from financescenarios import plot_factors, plot_fan_chart, plot_paths, plot_term
 Draw a grid with one fan chart per factor, each on its own scale.
 
 The quickest look at a whole run: by default every factor, in the run's own order. A rate and a price never share
-an axis, so each panel scales to its own factor.
+an axis, so each panel scales to its own factor. Several portfolios of one `Portfolio.compute()` are the exception:
+they share one chart, one line each, so they compare on the same scale.
 
 **As an example:**
 
@@ -267,6 +268,57 @@ plot_runs(
 
 - <u>ValueError:</u> if `runs` is empty or `n_columns` is below 1.
 - <u>KeyError:</u> if a run does not simulate `factor`.
+
+</details>
+
+## plot_portfolios
+
+Plot several portfolios on one chart, one line each, to see which mix grew most and when they parted ways.
+
+On history each line is what the portfolio was worth; on simulated scenarios it is the median, with the middle half
+of the scenarios shaded in the same color. Every portfolio shares one axis, so the gap between two lines is the
+difference an investor would have seen. `result.plot()` draws this chart for a `compute()` of several presets.
+
+**As an example:**
+
+```python
+from financescenarios import Portfolio, Scenarios
+
+portfolio = Portfolio.backtest(Scenarios.from_profiles(), ["balanced_60_40", "all_weather"])
+portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+plot_portfolios(
+    portfolio_result: ScenarioSet,
+    portfolios: Sequence[str] | None = None,
+    ax: 'Axes | None' = None,
+    levels: bool = False,
+    metric: Metric | None = None,
+    quantile_band: tuple[float, float] = (0.25, 0.75),
+) -> 'Figure'
+```
+
+**Args:**
+
+- <u>portfolio_result (ScenarioSet):</u> a `Portfolio.compute()` result of several presets, one path per preset.
+- <u>portfolios (Sequence[str] &#124; None):</u> the portfolios to draw. Defaults to None, every one in the result.
+- <u>ax (matplotlib Axes &#124; None):</u> an existing Axes to draw into. Defaults to None, a new figure.
+- <u>levels (bool):</u> draw values in money instead of the yearly return since the start. Defaults to False.
+- <u>metric (str &#124; None):</u> the reading (see `ScenarioSet.metric_paths`). Defaults to None, the yearly return.
+- <u>quantile_band (tuple[float, float]):</u> the range shaded around each median on scenarios. Defaults to (0.25, 0.75).
+
+**Returns:**
+
+<u>matplotlib.figure.Figure:</u> the figure holding the chart.
+
+**Raises:**
+
+- <u>ValueError:</u> if the result holds no portfolios.
+- <u>KeyError:</u> if a named portfolio is not in the result.
 
 </details>
 

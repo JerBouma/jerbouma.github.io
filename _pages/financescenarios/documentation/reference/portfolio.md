@@ -30,8 +30,9 @@ will the money last, will a goal be reached, what is it worth after inflation an
 calibrates, simulates or changes the run it is given.
 
 A holding can be anything with a price or a return: equities, commodities, interest rates, credit and real estate
-(`investable_factors` lists them). An interest rate or credit holding earns its rate like cash, or is priced as a
-bond fund when given a duration. Inflation, unemployment and other economic series cannot be held.
+(`investable_factors` lists them). An interest rate holding earns its rate like cash, or is priced as a bond fund
+when given a duration; a credit holding earns a government yield plus its spread less default losses; real estate
+earns its price growth plus rents. Inflation, unemployment and other economic series cannot be held.
 
 Left alone (buy-and-hold), every holding grows with its own asset, so the weights drift towards whatever did best
 and the portfolio's risk drifts with them. Rebalancing resets every holding to its target weight, selling what rose
@@ -55,10 +56,14 @@ money in and out of a holding.
 | `inflation_factor` | `None` | Raise every cashflow with this simulated inflation. |
 | `fee_rate` | `0.0` | Yearly fee on assets, flat or per holding. |
 | `durations` | `None` | Price a rate or credit holding as a bond fund of this duration. |
+| `base_rates` | auto | The government rate each credit holding's spread sits on. |
+| `default_loss_rate` | by rating | Yearly loss to defaults on a credit holding. |
+| `income_yield` | `0.05` | Yearly net rental yield on a real estate holding. |
 | `config` | `None` | Convert holdings into the run's reporting currency. |
 
 Mixes that change over time use `compute_glidepath()`, ready-made mixes ship as presets (`from_preset()`), and on
-history (`backtest()`) the same calls give a backtest.
+history (`backtest()`) the same calls give a backtest. Given several presets, one `Portfolio` holds them all on the
+same run, so every read compares them side by side.
 
 **As an example:**
 
@@ -86,7 +91,7 @@ Portfolio(
     scenario_set: ScenarioSet,
     config: ScenariosConfig | None = None,
     category_map: dict[str, str] | None = None,
-    preset: PortfolioPreset | None = None,
+    preset: PortfolioPreset | Sequence[PortfolioPreset] | None = None,
 )
 ```
 
@@ -104,7 +109,8 @@ glidepath. Fourteen presets ship with the package, among them `balanced_60_40`, 
 a local folder wins over the bundled one.
 
 The presets hold factors of the broad factor set (`us_broad`, `united_states_long_rate`, `gold`, ...). On a run
-without one of them, `compute()` names the missing factor.
+without one of them, `compute()` names the missing factor. A list of presets holds them all on the same run, so
+`compute()` gives one value path per preset and the reads compare them row by row.
 
 Also known as: model portfolio, named allocation, strategic asset allocation template.
 
@@ -128,7 +134,7 @@ Which returns the description "The textbook mix: 60% US stocks and 40% US Treasu
 ```python
 Portfolio.from_preset(
     scenario_set: ScenarioSet,
-    preset: str | PortfolioPreset,
+    preset: str | PortfolioPreset | Sequence[str | PortfolioPreset],
     config: ScenariosConfig | None = None,
     portfolios_dir: str | Path = 'portfolios',
     category_map: dict[str, str] | None = None,
@@ -138,31 +144,38 @@ Portfolio.from_preset(
 **Args:**
 
 - <u>scenario_set (ScenarioSet):</u> the run to build the portfolio on.
-- <u>preset (str &#124; PortfolioPreset):</u> a preset id such as "balanced_60_40" (".yaml" optional), or a loaded preset.
+- <u>preset (str &#124; PortfolioPreset &#124; Sequence[str &#124; PortfolioPreset]):</u> a preset id such as "balanced_60_40" (".yaml" optional), a loaded preset, or a list of either to compare.
 - <u>config (ScenariosConfig &#124; None):</u> the run's config, to convert currencies (see the class). Defaults to None.
 - <u>portfolios_dir (str &#124; Path):</u> the folder presets are read from; the bundled presets when it does not exist. Defaults to "portfolios".
 - <u>category_map (dict[str, str] &#124; None):</u> factor name to category, for a hand-built run. Defaults to None.
 
 **Returns:**
 
-<u>Portfolio:</u> a portfolio whose `compute()` uses the preset's mix.
+<u>Portfolio:</u> a portfolio whose `compute()` uses the preset's mix, or each listed preset's.
 
 **Raises:**
 
 - <u>FileNotFoundError:</u> if no such preset exists.
 - <u>pydantic.ValidationError:</u> if the preset file is invalid, for example weights that don't sum to 1.0.
+- <u>ValueError:</u> if a list of presets is empty or names the same preset twice.
 
 </details>
 
 ## Portfolio.backtest
 
-Build a ready-made mix on what markets actually did, naming the preset once, so its `compute()` is a backtest.
+Build one or more ready-made mixes on what markets actually did, naming each preset once, so `compute()` is a
+backtest.
 
-A backtest asks how a strategy would have done in the past. It fetches the history of exactly the preset's
-holdings, lines them up on one calendar and builds the portfolio on it. Every read then works as on simulated
+A backtest asks how a strategy would have done in the past. It fetches the history of exactly the presets'
+holdings, lines them up on one calendar and builds the portfolios on it. Every read then works as on simulated
 scenarios, with one path instead of thousands: `compute()`, `risk_metrics()`, `factor_exposure()` and
 `benchmark()`. One path is one draw from history, so read it as a check on the simulation (does the strategy
 behave in the past as the scenarios say it should?), not as a forecast.
+
+Several presets share one calendar: the dates on which every holding of every preset has a price. That makes
+the comparison fair, since no mix gets a crisis the others skip, but a holding with a short history (gold,
+say) shortens the window for all of them. Each reads one row per preset, and `portfolios` gives each on its
+own, with exactly the values of a backtest of that preset alone on the same dates.
 
 Also known as: historical simulation, strategy backtest.
 
@@ -171,12 +184,16 @@ Also known as: historical simulation, strategy backtest.
 ```python
 from financescenarios import Portfolio, Scenarios
 
-portfolio = Portfolio.backtest(Scenarios.from_profiles(), preset="balanced_60_40")
-values = portfolio.compute(initial_value=100_000, rebalance_every=12)
+scenarios = Scenarios.from_profiles()
+portfolio = Portfolio.backtest(scenarios, ["balanced_60_40", "all_weather", "permanent_portfolio"])
 portfolio.factor_exposure()
+portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
 ```
 
-This is the same as `Portfolio.from_preset(scenarios.history(portfolio="balanced_60_40"), "balanced_60_40")`.
+Which returns (backtested on 2026-10-14, 315 monthly dates from 2000-08-01 to 2026-10-01) one row of factor
+loadings per portfolio (see `factor_exposure()`) and one chart with a line per portfolio. Rebalanced yearly,
+100,000 grew to 550,844 in the 60/40, 541,700 in All Weather and 555,950 in the Permanent Portfolio: the same
+end within 3%, with the 60/40 carrying more than twice the stock market risk of the other two.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -184,7 +201,7 @@ This is the same as `Portfolio.from_preset(scenarios.history(portfolio="balanced
 ```python
 Portfolio.backtest(
     scenarios: 'Scenarios',
-    preset: str | PortfolioPreset,
+    preset: str | PortfolioPreset | Sequence[str | PortfolioPreset],
     period: str = 'monthly',
     portfolios_dir: str | Path = 'portfolios',
 ) -> 'Portfolio'
@@ -193,31 +210,59 @@ Portfolio.backtest(
 **Args:**
 
 - <u>scenarios (Scenarios):</u> the `Scenarios` to fetch history through, e.g. `Scenarios.from_profiles()`.
-- <u>preset (str &#124; PortfolioPreset):</u> a preset id such as "balanced_60_40", or a loaded preset.
+- <u>preset (str &#124; PortfolioPreset &#124; Sequence[str &#124; PortfolioPreset]):</u> a preset id such as "balanced_60_40", a loaded preset, or a list of either to compare.
 - <u>period (str):</u> the calendar to line the history up on: "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "monthly".
 - <u>portfolios_dir (str &#124; Path):</u> the folder presets are read from; the bundled presets when it does not exist. Defaults to "portfolios".
 
 **Returns:**
 
-<u>Portfolio:</u> the preset's portfolio on history; `compute()` without weights gives the backtest.
+<u>Portfolio:</u> the presets' portfolios on history; `compute()` without weights gives the backtest.
 
 **Raises:**
 
 - <u>FileNotFoundError:</u> if no such preset exists.
-- <u>ValueError:</u> if `scenarios` has no Finance Toolkit, or the holdings share too few dates.
+- <u>ValueError:</u> if `scenarios` has no Finance Toolkit, the holdings share too few dates, or a list of presets is empty or names the same preset twice.
 - <u>KeyError:</u> if a holding has no history.
 
 </details>
 
 ## Portfolio.preset
 
-The ready-made mix this portfolio uses by default, if it was built with `from_preset()`; None otherwise.
+The ready-made mix this portfolio uses by default, if it was built with `from_preset()` on one preset; None
+otherwise (`presets` lists several).
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Signature</b></summary>
 
 ```python
 portfolio.preset  # property -> PortfolioPreset | None
+```
+
+</details>
+
+## Portfolio.presets
+
+Every ready-made mix this portfolio holds: the one preset, each of a list, or none.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+portfolio.presets  # property -> list[PortfolioPreset]
+```
+
+</details>
+
+## Portfolio.portfolios
+
+One Portfolio per preset, by the preset's name, all on this same run: the way to read one of several
+presets on its own, for example its `weight_drift()` or `withdrawal_success()`.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+portfolio.portfolios  # property -> dict[str, 'Portfolio']
 ```
 
 </details>
@@ -307,13 +352,23 @@ Give it `{"us_broad": 0.6, "united_states_short_rate": 0.4}` to see that 60/40 p
 scenario; without options it is bought once and held. Rebalancing, fees, trading costs and cashflows are the
 levers that turn the same market scenarios into a different spread of outcomes for the investor.
 
-Interest rate and credit holdings earn their rate like cash, unless `durations` prices them as a bond fund, which
-a rate rise marks down at once ([Redington, 1952](https://doi.org/10.1017/S0020268100052811)). Without a
-duration a long-bond holding carries no price risk, so the portfolio looks safer than a real bond fund would be:
+Interest rate holdings earn their rate like cash, unless `durations` prices them as a bond fund, which a rate
+rise marks down at once ([Redington, 1952](https://doi.org/10.1017/S0020268100052811)). Without a duration a
+long-bond holding carries no price risk, so the portfolio looks safer than a real bond fund would be:
 
 ```text
 return(t) = -duration * (y(t) - y(t-1)) + y(t-1) * dt
 ```
+
+A bond fund earns the yield at its own maturity, so a short rate given a duration is priced off the US yield
+curve at that maturity, or else the same country's long rate, when the run has one (and warns when it has not).
+A credit holding earns the government yield its spread sits on plus the spread, as ICE BofA quotes its spreads
+over the Treasury curve: the curve at the holding's duration when the run has it, else a long rate of its
+currency. Defaults then cost it Moody's average yearly loss for its rating (`portfolio_model.CREDIT_LOSS_RATES`,
+0.11% for the investment-grade ICE BofA US Corporate Index, 2.98% for speculative grade), a small share of an
+investment-grade spread ([Elton et al., 2001](https://doi.org/10.1111/0022-1082.00324)). A real estate holding
+adds a 5% net rental yield to its price growth: 5.49% across 16 countries over 1870-2015
+([Jorda et al., 2019](https://doi.org/10.1093/qje/qjz012)) and 4.8% on the NCREIF Property Index in 2025.
 
 **As an example:**
 
@@ -348,6 +403,9 @@ compute(
     rebalance_band: float | None = None,
     transaction_cost_rate: float = 0.0,
     inflation_factor: str | None = None,
+    base_rates: dict[str, str | None] | None = None,
+    default_loss_rate: float | dict[str, float] | None = None,
+    income_yield: float | dict[str, float] | None = None,
 ) -> ScenarioSet
 ```
 
@@ -362,10 +420,13 @@ compute(
 - <u>rebalance_band (float &#124; None):</u> also rebalance when a weight drifts this far from target. Defaults to None.
 - <u>transaction_cost_rate (float):</u> cost as a fraction of the amount traded. Defaults to 0.0.
 - <u>inflation_factor (str &#124; None):</u> an inflation factor every cashflow rises with. Defaults to None.
+- <u>base_rates (dict[str, str &#124; None] &#124; None):</u> per credit holding, the interest rate its spread sits on, or None for the spread alone. Defaults to None, a long rate of the spread's currency, else a short rate.
+- <u>default_loss_rate (float &#124; dict[str, float] &#124; None):</u> yearly loss to defaults net of recoveries, flat or per credit holding. Defaults to None, Moody's loss rate for the config's rating, else investment grade.
+- <u>income_yield (float &#124; dict[str, float] &#124; None):</u> yearly net rental yield, flat or per real estate holding; 0.0 gives price growth only. Defaults to None, 5%.
 
 **Returns:**
 
-<u>ScenarioSet:</u> a new run with "portfolio" (the total value) and "<factor>_value" (each holding's value).
+<u>ScenarioSet:</u> a new run with "portfolio" (the total value) and "<factor>_value" (each holding's value). On several presets and no weights, one path per preset named after it, such as "60/40 Balanced".
 
 **Raises:**
 
@@ -428,6 +489,9 @@ compute_glidepath(
     rebalance_band: float | None = None,
     transaction_cost_rate: float = 0.0,
     inflation_factor: str | None = None,
+    base_rates: dict[str, str | None] | None = None,
+    default_loss_rate: float | dict[str, float] | None = None,
+    income_yield: float | dict[str, float] | None = None,
 ) -> ScenarioSet
 ```
 
@@ -442,6 +506,9 @@ compute_glidepath(
 - <u>rebalance_band (float &#124; None):</u> as in `compute()`. Defaults to None.
 - <u>transaction_cost_rate (float):</u> as in `compute()`. Defaults to 0.0.
 - <u>inflation_factor (str &#124; None):</u> as in `compute()`. Defaults to None.
+- <u>base_rates (dict[str, str &#124; None] &#124; None):</u> as in `compute()`. Defaults to None.
+- <u>default_loss_rate (float &#124; dict[str, float] &#124; None):</u> as in `compute()`. Defaults to None.
+- <u>income_yield (float &#124; dict[str, float] &#124; None):</u> as in `compute()`. Defaults to None.
 
 **Returns:**
 
@@ -590,20 +657,26 @@ A market Beta of 0.66 means the portfolio moved about 0.66% for every 1% the sto
 tilt toward small (SMB), cheap (HML), profitable (RMW) or conservative (CMA) companies. R-squared says how much of
 its ups and downs these factors explain. It checks whether a mix delivers the exposures it is meant to: a
 "balanced" portfolio with a market Beta near 1 is an equity portfolio in disguise, and an unintended value or
-size tilt is a bet nobody chose.
+size tilt is a bet nobody chose. On several presets it gives one row per preset, over the same dates.
 
 **As an example:**
 
 ```python
-history = scenarios.history(portfolio="balanced_60_40")
-Portfolio.from_preset(history, preset="balanced_60_40").factor_exposure()
+portfolio = Portfolio.backtest(scenarios, ["balanced_60_40", "all_weather", "permanent_portfolio"])
+portfolio.factor_exposure()
 ```
 
-Which returns, on the default settings and factor set (monthly, 2000-01-01 to 2026-10-01):
+Which returns, on the default settings and factor set (backtested on 2026-10-14, monthly, 2000-08-01 to
+2026-10-01, 312 observations):
 
-| portfolio | Mkt-RF | SMB | HML | RMW | CMA | r_squared | observations |
-|:----------|-------:|----:|----:|----:|----:|----------:|-------------:|
-| 60/40 Balanced | 0.5399 | -0.0714 | -0.0420 | 0.1201 | -0.0168 | 0.8654 | 319 |
+| portfolio | Mkt-RF | SMB | HML | RMW | CMA | r_squared |
+|:----------|-------:|----:|----:|----:|----:|----------:|
+| 60/40 Balanced | 0.5370 | -0.0687 | -0.0450 | 0.1215 | -0.0111 | 0.8616 |
+| All Weather | 0.2043 | -0.0621 | -0.1444 | 0.2166 | 0.0344 | 0.1324 |
+| Permanent Portfolio | 0.2175 | -0.0615 | -0.1424 | 0.2018 | 0.0479 | 0.1244 |
+
+The 60/40 is mostly a stock market portfolio; the other two hold so much in bonds and gold that the equity
+factors explain little more than a tenth of their swings.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -622,7 +695,7 @@ factor_exposure(
 
 **Returns:**
 
-<u>pl.DataFrame:</u> one row with 'portfolio', one column per factor, 'alpha' (the return per period no factor explains), 'r_squared', 'observations' and the 'from' and 'to' dates.
+<u>pl.DataFrame:</u> one row per portfolio with 'portfolio', one column per factor, 'alpha' (the return per period no factor explains), 'r_squared', 'observations' and the 'from' and 'to' dates.
 
 **Raises:**
 
@@ -642,7 +715,8 @@ counted over the simulated paths. The Expected Shortfall (CVaR) averages the wor
 whole run, deposits and withdrawals included, so on a 30-year run they describe a 30-year outcome, not a
 one-year capital number. The drawdown is often the figure that matters most in practice: it is the paper loss
 an investor has to sit through without selling, and for a plan with withdrawals a deep early fall does lasting
-damage.
+damage. On several presets it gives one row per preset: on the backtest of `backtest()`'s example, the 60/40's
+deepest fall was 27.8%, All Weather's 21.1% and the Permanent Portfolio's 15.0%.
 
 Also known as: Value at Risk, Expected Shortfall, maximum drawdown.
 
@@ -677,7 +751,7 @@ to 10.4%, in exchange for a lower median growth rate.
 <summary><b>Arguments and returns</b></summary>
 
 ```python
-risk_metrics(portfolio_scenario_set: ScenarioSet | None = None) -> PortfolioRiskMetrics
+risk_metrics(portfolio_scenario_set: ScenarioSet | None = None) -> Any
 ```
 
 **Args:**
@@ -686,7 +760,7 @@ risk_metrics(portfolio_scenario_set: ScenarioSet | None = None) -> PortfolioRisk
 
 **Returns:**
 
-<u>PortfolioRiskMetrics:</u> `max_drawdown_percentiles` (worst fall from a high, a negative fraction), `value_at_risk_95` and `conditional_value_at_risk_95` (loss over the whole run, negative for a gain), `annualized_volatility`, `cagr_percentiles` (yearly growth rate) and `probability_of_loss`.
+<u>PortfolioRiskMetrics:</u> `max_drawdown_percentiles` (worst fall from a high, a negative fraction), `value_at_risk_95` and `conditional_value_at_risk_95` (loss over the whole run, negative for a gain), `annualized_volatility`, `cagr_percentiles` (yearly growth rate) and `probability_of_loss`. On several presets, a pl.DataFrame with one row per portfolio and those figures as columns ("max_drawdown_50", "value_at_risk_95", ...).
 
 **Raises:**
 
@@ -929,10 +1003,13 @@ the other (a Beta of 0.6 means 0.6% for every 1% of the benchmark). Relative CAG
 ([Sharpe, 1966](https://doi.org/10.1086/294846)) are this one's growth rate and return per unit of risk minus the
 benchmark's. Active share is the part of the mix that differs
 ([Cremers and Petajisto, 2009](https://doi.org/10.1093/rfs/hhp057)). The two are compared over the dates they
-share; on simulated scenarios each side is first averaged into its mean path, so the figures describe the two
-average paths and understate how far apart they can end in a single scenario. A low tracking error with a
+share. On simulated scenarios tracking error is measured within each scenario and the median reported
+(`tracking_error_percentiles` gives its spread), since that is the deviation an investor lives through; the
+other figures compare the two average paths. A low tracking error with a
 positive relative Sharpe ratio is the case for a mix that stays close to its benchmark while using its risk
-better; a large tracking error is risk relative to the benchmark that has to be paid for.
+better; a large tracking error is risk relative to the benchmark that has to be paid for. A result of several
+presets compares each with the benchmark, one row per preset: against SPY on the backtest of `backtest()`'s
+example, the 60/40 has a Beta of 0.56 and the Permanent Portfolio 0.22.
 
 **As an example:**
 
@@ -963,7 +1040,7 @@ benchmark(
     benchmark_scenario_set: ScenarioSet,
     weights: dict[str, float] | None = None,
     benchmark_weights: dict[str, float] | None = None,
-) -> RelativeMetrics
+) -> Any
 ```
 
 **Args:**
@@ -975,11 +1052,11 @@ benchmark(
 
 **Returns:**
 
-<u>RelativeMetrics:</u> `tracking_error`, `correlation`, `beta`, `relative_cagr`, `relative_sharpe_ratio` and `active_share`.
+<u>RelativeMetrics:</u> `tracking_error`, `correlation`, `beta`, `relative_cagr`, `relative_sharpe_ratio` and `active_share`. On several presets, a pl.DataFrame with one row per portfolio and those as columns.
 
 **Raises:**
 
-- <u>ValueError:</u> if the two share fewer than two dates.
+- <u>ValueError:</u> if the two share fewer than two dates, or `weights` is given for several presets.
 
 </details>
 
@@ -1423,7 +1500,7 @@ duration_growth_factor(rate_path: np.ndarray, time_step: float, duration: float)
 
 - <u>rate_path (np.ndarray):</u> the simulated yield or spread per scenario and date, in decimals.
 - <u>time_step (float):</u> the years between steps.
-- <u>duration (float):</u> the fund's modified duration in years, e.g. about 17 for 20+ year Treasuries or 7 for an aggregate bond index; above 0.
+- <u>duration (float):</u> the fund's modified duration in years, e.g. about 15 for 20+ year Treasuries or 6 for an aggregate bond index (iShares TLT 14.69 and AGG 5.69 years effective duration on 9 October 2026, ishares.com fund pages); above 0.
 
 **Returns:**
 
@@ -1435,10 +1512,104 @@ duration_growth_factor(rate_path: np.ndarray, time_step: float, duration: float)
 
 </details>
 
+### credit_growth_factor
+
+Price a corporate bond holding from its simulated credit spread: it earns the government yield plus the spread,
+loses a little to defaults each year, and, held as a bond fund, is marked down at once when yields or spreads rise.
+
+A credit spread is not itself a return. A corporate bond investor earns the risk-free yield the spread sits on plus
+the spread, less what defaults cost after recoveries. For investment-grade bonds that loss is a small part of the
+spread: expected default "accounts for a surprisingly small fraction" of it
+([Elton, Gruber, Agrawal and Mann, 2001](https://doi.org/10.1111/0022-1082.00324)), and over 1982-2004 Moody's
+investment-grade issuers lost 0.55% of par over five years against 14.88% for speculative grade (Moody's, 2005,
+Exhibit 11). Across all ratings since 1866 spreads ran about twice the losses
+([Giesecke, Longstaff, Schaefer and Strebulaev, 2011](https://doi.org/10.1016/j.jfineco.2011.01.011)), so taking
+half of an investment-grade spread as loss would overstate it several times over. The default is therefore Moody's
+loss rate for investment grade, 0.11% a year; pass the rating's rate from `CREDIT_LOSS_RATES` for other bonds.
+Without a duration the holding rolls like a floating-rate note and spread moves carry no price effect; with one, a
+widening of 1% costs about the duration in percent at once, the main source of losses in a credit sell-off.
+
+The formula is as follows:
+
+$$
+y(t) = b(t) + s(t)
+$$
+
+$$
+r(t) = - D \cdot (y(t) - y(t - \text{dt})) + (y(t - \text{dt}) - L) \cdot \text{dt}
+$$
+
+$$
+G(t) = \exp(r(\text{dt}) + r(2 \cdot \text{dt}) + ... + r(t))
+$$
+
+Where b is the government yield, s the credit spread, D the duration (0 for a floating-rate holding) and L the
+yearly default loss net of recoveries. With a constant yield, spread and no losses the holding grows as
+exp((b + s) * t).
+
+**As an example:**
+
+```python
+import numpy as np
+
+spread = np.full((1, 11), 0.02)
+spread[:, 6:] = 0.03  # a one-point widening after five years
+growth = credit_growth_factor(spread, 1.0, base_yield=np.full((1, 11), 0.04), duration=6.0, default_loss_rate=0.0)
+```
+
+Which returns a growth index that rises by 6.2% a year (4% government yield plus a 2% spread), stands still in the
+year the spread widens by one point (its 6% price loss eats that year's carry), then rises by 7.3% a year.
+
+**References:**
+
+- Elton, E.J., Gruber, M.J., Agrawal, D., Mann, C. (2001). "Explaining the Rate Spread on Corporate Bonds." The Journal of Finance, 56(1), 247-277. <https://doi.org/10.1111/0022-1082.00324>
+- Giesecke, K., Longstaff, F.A., Schaefer, S., Strebulaev, I. (2011). "Corporate Bond Default Risk: A 150-Year Perspective." Journal of Financial Economics, 102(2), 233-250. <https://doi.org/10.1016/j.jfineco.2011.01.011>
+- Moody's Investors Service (2005). "Default and Recovery Rates of Corporate Bond Issuers, 1920-2004." Special Comment, Exhibit 11. <https://www.bu.edu/econ/files/2015/01/Moodys_Default_1920-2004.pdf>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+credit_growth_factor(
+    spread_path: np.ndarray,
+    time_step: float,
+    base_yield: np.ndarray | None = None,
+    duration: float | None = None,
+    default_loss_rate: float | None = None,
+) -> np.ndarray
+```
+
+**Args:**
+
+- <u>spread_path (np.ndarray):</u> the simulated credit spread per scenario and date, in decimals.
+- <u>time_step (float):</u> the years between dates.
+- <u>base_yield (np.ndarray &#124; None):</u> the government yield the spread sits on, per scenario and date. Defaults to None, the spread alone: an excess return over government bonds.
+- <u>duration (float &#124; None):</u> the bond fund's duration in years. Defaults to None, a floating-rate holding.
+- <u>default_loss_rate (float &#124; None):</u> the yearly loss to defaults net of recoveries, e.g. 0.004 for 0.4%. Defaults to None, Moody's investment-grade rate of 0.11% a year (`CREDIT_LOSS_RATES["investment_grade"]`).
+
+**Returns:**
+
+<u>np.ndarray:</u> the holding's growth index per scenario and date, 1.0 at the start.
+
+**Raises:**
+
+- <u>ValueError:</u> if duration is not above 0, or the default loss rate is negative.
+
+</details>
+
 ### growth_factor
 
 Turn one factor's simulated path into what one unit invested in it grows to, 1.0 at the start, whether the factor
-is a price (a stock index, gold) or a rate (a yield, a credit spread, a rental yield).
+is a price (a stock index, gold) or a rate (a yield, a credit spread, house-price growth).
+
+Each asset class earns what an investor in it actually earns. A price grows with itself. An interest rate is held
+like cash (a floating-rate note earning the rate each step) or, with a duration, as a bond fund that loses value
+when yields rise (`duration_growth_factor`). A credit spread earns the government yield it sits on plus the spread
+less default losses (`credit_growth_factor`). Real estate earns its price growth plus a net rental yield: rents are
+about half of housing's long-run return, 5.49% of 11.22% a year across 16 countries over 1870-2015
+([Jorda, Knoll, Kuvshinov, Schularick and Taylor, 2019](https://doi.org/10.1093/qje/qjz012); Table 6 of the
+[working paper](https://doi.org/10.24148/wp2017-25)), so leaving them out makes property look like a poor
+investment. The 5% default sits between that history and today's 4.8% income return on the NCREIF Property Index.
 
 The formula is as follows:
 
@@ -1450,9 +1621,17 @@ $$
 G(t) = \exp((r(t_{0}) + r(t_{1}) + ... + r(t - \text{dt})) \cdot \text{dt})
 $$
 
-The first applies to a price (equities, commodities), the second to a rate (interest rates, credit, real estate),
-held as a floating-rate note that earns the rate each step. With a `duration`, a bond holding is priced as a
-constant-duration fund instead (`duration_growth_factor`), so it also loses value when rates rise.
+$$
+G(t) = H(t) / H(0) \cdot \exp(q \cdot t)
+$$
+
+The first applies to a price (equities, commodities), the second to an interest rate held as cash and the third
+to real estate, where H is the house-price index compounded from the simulated growth rate and q the net rental
+yield.
+
+**References:**
+
+- Jorda, O., Knoll, K., Kuvshinov, D., Schularick, M., Taylor, A.M. (2019). "The Rate of Return on Everything, 1870-2015." The Quarterly Journal of Economics, 134(3), 1225-1298. <https://doi.org/10.1093/qje/qjz012>
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -1464,6 +1643,9 @@ growth_factor(
     factor_type: str,
     reporting: 'Reporting | None' = None,
     duration: float | None = None,
+    base_yield: np.ndarray | None = None,
+    default_loss_rate: float | None = None,
+    income_yield: float | None = None,
 ) -> np.ndarray
 ```
 
@@ -1474,6 +1656,9 @@ growth_factor(
 - <u>factor_type (str):</u> the factor's asset class: equities, commodities, interest_rates, credit or real_estate.
 - <u>reporting (Reporting &#124; None):</u> converts a foreign equity, commodity or real estate holding into the reporting currency, so it carries its exchange-rate return. Defaults to None, each factor in its own currency.
 - <u>duration (float &#124; None):</u> for a rate or credit holding, the duration of the bond fund it stands for. Defaults to None, held like cash.
+- <u>base_yield (np.ndarray &#124; None):</u> for a credit holding, the government yield its spread sits on; for a rate holding with a duration, the yield at that duration to price the fund off instead of the factor itself. Defaults to None.
+- <u>default_loss_rate (float &#124; None):</u> for a credit holding, the yearly loss to defaults. Defaults to None, Moody's investment-grade rate of 0.11%.
+- <u>income_yield (float &#124; None):</u> for a real estate holding, the yearly net rental yield. Defaults to None, 5%.
 
 **Returns:**
 
@@ -1482,7 +1667,7 @@ growth_factor(
 **Raises:**
 
 - <u>KeyError:</u> if `factor_name` is not in the run.
-- <u>ValueError:</u> if `factor_type` is not a sleeve type, or `duration` is not above 0.
+- <u>ValueError:</u> if `factor_type` is not a sleeve type, `duration` is not above 0, or a yield or loss is invalid.
 
 </details>
 

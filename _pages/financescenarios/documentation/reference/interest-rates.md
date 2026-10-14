@@ -38,7 +38,7 @@ process:
 | `hull_white` (default) | The model above; the rate can go negative ([Hull and White, 1990][hull-white-1990]). |
 | `cir` | Swings shrink with the level, so rates stay near zero or above ([Cox, Ingersoll, Ross, 1985][cir-1985]). |
 | `wilkie_consols` | A long yield = expected inflation + a real yield ([Wilkie, 1986][wilkie-1986]). |
-| `hibbert_two_factor` | Pulled toward a long-term rate that itself moves ([Hibbert et al., 2001][hibbert-2001]). |
+| `hibbert_two_factor` | Toward a moving long rate (the real rate in [Hibbert et al., 2001][hibbert-2001]). |
 | `knw` | Linked both ways with a paired inflation entry; fitted by `Knw`. |
 | `knw_sv` | `knw` with a shared, randomly changing volatility; fitted by `KnwSv`. |
 
@@ -54,28 +54,18 @@ Real rate volatility comes in bursts (2008, 2022), so `volatility_model: garch` 
 over time ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)), with `hull_white` only, giving
 calm and turbulent stretches and fatter tails. `condition_on_business_cycle` tilts the rate with the leading
 indicator. `measure: risk_neutral` follows today's market instead of history, for valuing cash flows at market
-prices: a flat path at today's rate or, with `risk_neutral_forward_curve`, a random rate whose average path
-follows today's forward curve.
+prices: a flat path at today's rate or, with `risk_neutral_forward_curve`, a random Hull-White rate whose average
+discount factor reproduces today's Treasury curve or, with `risk_neutral_curve: eiopa`, EIOPA's risk-free curve,
+the Solvency II default of `Scenarios.simulate(measure="risk_neutral")`.
 
 The data come through the Finance Toolkit, with no API key needed: a Yahoo Finance Treasury yield such as `^IRX`
 (`source: ticker`, US only in practice), an OECD member's short- or long-term rate (`oecd`, monthly or slower) or
 the Global Macro Database, which adds countries such as Brazil and India (`gmdb`, yearly only).
 
-Configuration (`interest_rates[i]` in a factor set):
+The `interest_rates[i]` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `name` | `interest_rate` | The factor's name; unique across all factors. |
-| `source` | `ticker` | `ticker`, `oecd` or `gmdb`. |
-| `method` | `hull_white` | One of the methods above. |
-| `ticker` | `^IRX` | With `source: ticker`. |
-| `country`, `term` | `United States`, `short` | With `oecd` or `gmdb`; `term` is `short` or `long`. |
-| `period` | `daily` | Data frequency, `daily` to `yearly`. |
-| `volatility_model` | `constant` | `constant` or `garch`. |
-| `measure` | `real_world` | `real_world` or `risk_neutral`. |
-| `beliefs` | `null` | Your own `mean_reversion_speed`, `long_run_mean` or `volatility`. |
-
-Other keys are in the configuration documentation. Beliefs apply to `hull_white` and `cir` with constant
+Beliefs apply to `hull_white` and `cir` with constant
 volatility, not with `risk_neutral`; a regime file addresses one entry as `"interest_rates.<name>"`.
 
 <details class="ft-details fs-api" markdown="1">
@@ -152,7 +142,7 @@ calibrate(
 - <u>name (str):</u> the entry's name (e.g. "united_states").
 - <u>source (str):</u> "ticker" (default), "oecd" or "gmdb".
 - <u>method (str):</u> "hull_white" (default), "cir", "wilkie_consols" or "hibbert_two_factor".
-- <u>ticker (str):</u> the yield ticker for "ticker", default "^IRX"; must be in the Toolkit.
+- <u>ticker (str):</u> the yield ticker for "ticker", default "^IRX", the 13-week bill; must be in the Toolkit. Ahlgrim, D'Arcy and Gorvett (2005, section 3) likewise "use the three-month Constant Maturity Treasury (CMT) as a proxy for the instantaneous short rate".
 - <u>country (str):</u> the country for "oecd" or "gmdb", default "United States".
 - <u>term (str):</u> "short" (default) or "long", for "oecd" or "gmdb".
 - <u>period (str):</u> data frequency, default "daily"; "monthly" or slower for "oecd", "yearly" for "gmdb".
@@ -160,12 +150,12 @@ calibrate(
 - <u>business_cycle_covariate (pl.Series &#124; None):</u> the leading indicator's level to move with, default None.
 - <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> its dates; required with it.
 - <u>inflation (pl.Series &#124; None):</u> the paired inflation history, for "wilkie_consols" only (required there).
-- <u>inflation_weight (float):</u> how much of expected inflation passes into the long yield (Wilkie's CW), default 1.0, one for one.
-- <u>inflation_decay (float):</u> how fast expected inflation adapts to new inflation (Wilkie's CD), default 0.05 a year, a memory of about 20 years.
+- <u>inflation_weight (float):</u> how much of expected inflation passes into the long yield (Wilkie's CW), default 1.0, one for one (Wilkie 1986, section 3.15: "CW = 1.0").
+- <u>inflation_decay (float):</u> how fast expected inflation adapts to new inflation (Wilkie's CD), default 0.05 a year, a memory of about 20 years (section 3.15, Reduced Standard Basis: "CD = 0.05").
 - <u>target_source (str):</u> the "hibbert_two_factor" target: "long_term_rate" (default) or "ewma" (a smoothed average of the rate itself).
 - <u>target_term (str):</u> the target's term for "oecd" or "gmdb", default "long"; not equal to `term`.
-- <u>target_ticker (str):</u> the target's ticker for "ticker", default "^TNX"; not equal to `ticker`.
-- <u>target_smoothing (float):</u> the "ewma" weight on each new observation, between 0 and 1, default 0.05.
+- <u>target_ticker (str):</u> the target's ticker for "ticker", default "^TNX", the 10-year yield, which Ahlgrim, D'Arcy and Gorvett (2005, section 3) use "as a proxy for the long rate"; not equal to `ticker`.
+- <u>target_smoothing (float):</u> the "ewma" weight on each new observation, between 0 and 1, default 0.05, a judgement (an average with a memory of about 20 observations; the paper's target is unobserved).
 
 **Returns:**
 
@@ -187,8 +177,10 @@ answer that respects this is to take today's rate as given and hold it, rather t
 that no market price confirms. Every scenario then discounts at the same rate, so all spread in a valuation
 comes from the other factors: a risk-neutral equity entry grows at this rate, and a risk-neutral exchange rate
 drifts by the gap between two countries' rates (covered interest parity). This is what
-`measure: risk_neutral` selects. Use `calibrate_risk_neutral_forward` when the shape of today's curve, or
-interest-rate risk itself, matters for the valuation.
+`measure: risk_neutral` selects. A flat rate ignores the shape of today's curve and gives interest-rate
+guarantees no time value, so it does not suit a Solvency II best estimate; use `calibrate_risk_neutral_forward`
+(the default of `Scenarios.simulate(measure="risk_neutral")`) when the curve, or interest-rate risk itself,
+matters for the valuation.
 
 The rate's history still sets its correlation with the other factors.
 
@@ -205,14 +197,14 @@ rates = InterestRates(toolkit)
 rates.calibrate_risk_neutral("united_states", ticker="^IRX")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | Field | Value |
 |:------|------:|
-| level | 0.0399 |
-| initial_value | 0.0399 |
+| level | 0.0406 |
+| initial_value | 0.0406 |
 
-Every simulated path holds the 13-week Treasury bill rate at today's 3.99%.
+Every simulated path holds the 13-week Treasury bill rate at today's 4.06%.
 
 **References:**
 
@@ -253,22 +245,33 @@ calibrate_risk_neutral(
 
 ## calibrate_risk_neutral_forward
 
-Calibrate one country or region's risk-neutral short rate that follows today's forward curve: a random,
-mean-reverting rate whose average path matches the curve the market prices today.
+Calibrate one country or region's risk-neutral short rate that follows today's yield curve: a random,
+mean-reverting rate whose average discount factor reproduces today's zero-coupon bond prices.
 
-The rate still moves randomly, but it reverts toward the path today's Treasury curve implies rather than toward
-one historical average, so the average discount factor across scenarios reproduces today's zero-coupon bond
-prices at every maturity. That is the property a market-consistent valuation of interest-rate-sensitive
-liabilities and options needs: the curve is matched exactly, and the spread around it prices the optionality.
-This is what `risk_neutral_forward_curve: true` selects.
+The rate still moves randomly, but it reverts toward the path today's curve implies rather than toward one
+historical average, so the average discount factor across scenarios matches today's bond prices at every
+maturity. That is what a market-consistent valuation of interest-rate-sensitive liabilities needs: the curve is
+matched exactly, and the spread around it gives guarantees and options their time value, which a flat path
+at today's rate cannot. Pass EIOPA's risk-free curve as `discount_curve` (see `eiopa_risk_free_curve`) for a
+Solvency II best estimate; `Scenarios.simulate(measure="risk_neutral")` does this for the euro, the pound
+and the US dollar. Without one, the curve is a [Nelson-Siegel (1987)](https://doi.org/10.1086/296409) fit to
+the latest 13-week, 5, 10 and 30-year Treasury yields (`^IRX`, `^FVX`, `^TNX`, `^TYX`), which the Toolkit
+must include.
 
 The model is [Hull-White (1990)](https://doi.org/10.1093/rfs/3.4.573) in the form of
 [Brigo and Mercurio (2006)](https://doi.org/10.1007/978-3-540-34604-3), Section 3.3: `r(t) = x(t) + alpha(t)`, a
 mean-reverting random part plus a fixed shift that matches the forward curve at every maturity. Rates are
-normally distributed, so they can go negative. The speed and volatility are the historical ones from
-`calibrate`, not implied from swaption prices, so treat option values as indicative. The curve is a
-[Nelson-Siegel (1987)](https://doi.org/10.1086/296409) fit to the latest 13-week, 5, 10 and 30-year Treasury
-yields (`^IRX`, `^FVX`, `^TNX`, `^TYX`), which the Toolkit must include.
+normally distributed, so they can go negative. The speed and volatility are not implied from swaption prices,
+since the Finance Toolkit has no swaption volatilities. The speed is the short rate's own historical speed of
+mean reversion. By default the volatility is then fitted so the model moves yields at every maturity as much
+as they have moved historically (`fit_hull_white_to_yield_volatilities`): the 13-week, 5, 10 and 30-year
+Treasury yields for a ticker source, or the country's short and long rate for "oecd" and "gmdb". That ties the
+spread of long rates, which drives the time value of long guarantees, to how much long yields have actually
+moved, rather than to the 13-week bill alone, whose moves are damped by the policy rate. The result is
+historical, not the market's price of options, so treat the cost of guarantees as indicative. EIOPA's
+Guideline 57 (paragraph 1.101) asks that an ESG used for market-consistent valuation be calibrated to "data
+from financial markets that are deep, liquid and transparent", which a historical volatility is not; for a
+reported best estimate, replace `volatility` with one implied from swaption prices.
 
 **As an example:**
 
@@ -277,23 +280,27 @@ from financetoolkit import Toolkit
 
 from financescenarios.factors.interest_rates.interest_rates_controller import InterestRates
 
-toolkit = Toolkit(["SPY", "^IRX", "^FVX", "^TNX", "^TYX"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["SPY", "^IRX", "^FVX", "^TNX", "^TYX"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2005-01-01"
+)
 rates = InterestRates(toolkit)
 
 rates.calibrate_risk_neutral_forward("united_states", ticker="^IRX", period="monthly")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | Field | Value |
 |:------|------:|
-| mean_reversion_speed | 0.7344 |
-| volatility | 0.0071 |
-| anchor_level | 0.0572 |
-| anchor_slope | -0.0181 |
-| initial_value | 0.0391 |
+| mean_reversion_speed | 0.0358 |
+| volatility | 0.0090 |
+| anchor_level | 0.0564 |
+| anchor_slope | -0.0165 |
+| initial_value | 0.0399 |
 
-Today's curve starts at 3.91% (5.72% - 1.81%) and rises toward 5.72%, steering the simulated rate upward.
+Since 2005 the 13-week, 5, 10 and 30-year yields moved 69, 87, 85 and 79 basis points a year; a 90 basis point
+short-rate volatility at that speed moves them 89, 82, 75 and 55. Today's curve starts at 3.99% and rises
+toward 5.64%, steering the simulated rate upward.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -307,6 +314,9 @@ calibrate_risk_neutral_forward(
     term: str = 'short',
     period: str = 'daily',
     decay: float = 0.7308,
+    discount_curve: pl.DataFrame | None = None,
+    curve_name: str = 'supplied',
+    volatility_fit: str = 'yield_curve',
 ) -> HullWhiteForwardParams
 ```
 
@@ -318,15 +328,18 @@ calibrate_risk_neutral_forward(
 - <u>country (str):</u> the country for "oecd" or "gmdb", default "United States".
 - <u>term (str):</u> "short" (default) or "long", for "oecd" or "gmdb".
 - <u>period (str):</u> data frequency for both fits, default "daily".
-- <u>decay (float):</u> the Nelson-Siegel decay, which sets where the curve's hump sits, default 0.7308.
+- <u>decay (float):</u> the Nelson-Siegel decay of the Treasury curve, which sets where its hump sits, default 0.7308, from Diebold and Li (2006, section 3 of NBER w10048): "The λ value that maximizes the loading on the medium-term factor at exactly 30 months is λ=0.0609"; 0.0609 a month × 12 = 0.7308 a year.
+- <u>discount_curve (pl.DataFrame &#124; None):</u> a published curve to reproduce, "maturity" (years) and "rate" (annually compounded), such as EIOPA's; None (default) fits the Treasury curve.
+- <u>curve_name (str):</u> the name recorded for `discount_curve`, e.g. "eiopa".
+- <u>volatility_fit (str):</u> "yield_curve" (default) fits the volatility to the historical volatility of yields across maturities; "short_rate" takes it from the short rate's own history.
 
 **Returns:**
 
-<u>HullWhiteForwardParams:</u> `mean_reversion_speed`, `volatility`, the curve's `anchor_level`, `anchor_slope`, `anchor_curvature` and `anchor_decay`, and `initial_value`, today's short rate.
+<u>HullWhiteForwardParams:</u> `mean_reversion_speed`, `volatility`, today's curve and `initial_value`, today's short rate.
 
 **Raises:**
 
-- <u>ValueError:</u> if `source`, `period` or `decay` is not valid, no data come back, or the rate shows no pull toward a normal level.
+- <u>ValueError:</u> if `source`, `period`, `decay` or `discount_curve` is not valid, no data come back, or the rate shows no pull toward a normal level.
 
 </details>
 
@@ -493,7 +506,7 @@ the theoretical model would.
 
 - Cox, J.C., Ingersoll, J.E., Ross, S.A. (1985). "A Theory of the Term Structure of Interest Rates." Econometrica, 53(2), 385-407. <https://doi.org/10.2307/1911242>
 - Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188. <https://doi.org/10.1016/0304-405x(77>)90016-2
-- Chan, K.C., Karolyi, G.A., Longstaff, F.A., Sanders, A.B. (1992). "An Empirical Comparison of Alternative Models of the Short-Term Interest Rate." Journal of Finance, 47(3), 1209-1227. Nests Vasicek and CIR as special cases of one level-scaled diffusion. <https://doi.org/10.1111/j.1540-6261.1992.tb04011.x>
+- Chan, K.C., Karolyi, G.A., Longstaff, F.A., Sanders, A.B. (1992). "An Empirical Comparison of Alternative Models of the Short-Term Interest Rate." Journal of Finance, 47(3), 1209-1227. Section II, eqs. (2)-(3), the discrete-time fit used for sigma: "r_t+1 - r_t = alpha + beta r_t + e_t+1, ... E[e^2_t+1] = sigma^2 r_t^(2 gamma)", with gamma = 1/2 for CIR. <https://doi.org/10.1111/j.1540-6261.1992.tb04011.x>
 - Ahlgrim, K.C. "Hull-White Term Structure Model." CAS Exam 8 Online Course, Module 4. <https://www.casact.org/sites/default/files/old/oncourses_module4_ahlgrim.pdf>
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2008). "A Comparison of Actuarial Financial Scenario Generators." Casualty Actuarial Society. <https://www.casact.org/sites/default/files/document/darcy_1.pdf>
 
@@ -547,8 +560,8 @@ Nothing stops the rate from going below zero, which is how Hull-White allows for
 
 **References:**
 
-- Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188. Source of the exact transition used here. <https://doi.org/10.1016/0304-405x(77>)90016-2
-- Hull, J., White, A. (1990). "Pricing Interest-Rate-Derivative Securities." The Review of Financial Studies, 3(4), 573-592. The Gaussian, mean-reverting short-rate model generalizing Vasicek (1977) to a time-varying long-run mean, universally known as "the Hull-White model". <https://doi.org/10.1093/rfs/3.4.573>
+- Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188. Section 5, p. 185: "dr = α(γ−r)dt+ρdz, (24)", with the exact transition "E_t r(s) = γ+(r(t)−γ)e^{−α(s−t)}" (25) and "Var_t r(s) = ρ²/(2α)(1−e^{−2α(s−t)})" (26). <https://doi.org/10.1016/0304-405x(77>)90016-2
+- Hull, J., White, A. (1990). "Pricing Interest-Rate-Derivative Securities." The Review of Financial Studies, 3(4), 573-592. Section 2, eq. (3): "Our proposed extension of Vasicek's model is given by (2) with β = 0"; with constant a and σ it is "the Hull-White model". <https://doi.org/10.1093/rfs/3.4.573>
 - Ahlgrim, K.C. "Hull-White Term Structure Model." CAS Exam 8 Online Course, Module 4. <https://www.casact.org/sites/default/files/old/oncourses_module4_ahlgrim.pdf>
 - Society of Actuaries & Casualty Actuarial Society (2002). "Report on Modeling of Economic Series Coordinated with Interest Rate Scenarios." <https://www.soa.org/globalassets/assets/files/sections/modeling-of-economic-scenarios.pdf>
 
@@ -604,7 +617,7 @@ monthly or finer steps keep this rare.
 **References:**
 
 - Cox, J.C., Ingersoll, J.E., Ross, S.A. (1985). "A Theory of the Term Structure of Interest Rates." Econometrica, 53(2), 385-407. <https://doi.org/10.2307/1911242>
-- Lord, R., Koekkoek, R., van Dijk, D. (2010). "A Comparison of Biased Simulation Schemes for Stochastic Volatility Models." Quantitative Finance, 10(2), 177-194. <https://doi.org/10.1080/14697680802392496>
+- Lord, R., Koekkoek, R., van Dijk, D. (2010). "A Comparison of Biased Simulation Schemes for Stochastic Volatility Models." Quantitative Finance, 10(2), 177-194. Abstract: "The full truncation scheme outperforms all considered biased schemes in terms of bias and root-mean-squared error" (working-paper version, TI 2006-046/4). <https://doi.org/10.1080/14697680802392496>
 - Andersen, L. (2008). "Simple and Efficient Simulation of the Heston Stochastic Volatility Model." Journal of Computational Finance, 11(3), 1-42. Its Quadratic-Exponential scheme is a lower-bias alternative for a CIR process, not implemented here. <https://doi.org/10.21314/JCF.2008.189>
 - Ahlgrim, K.C. "Hull-White Term Structure Model." CAS Exam 8 Online Course, Module 4. <https://www.casact.org/sites/default/files/old/oncourses_module4_ahlgrim.pdf>
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2008). "A Comparison of Actuarial Financial Scenario Generators." Casualty Actuarial Society. <https://www.casact.org/sites/default/files/document/darcy_1.pdf>
@@ -635,6 +648,80 @@ step_cir(
 </details>
 {% endraw %}
 
+### hull_white_yield_volatility
+
+How much a Hull-White model moves the zero-coupon yield of a given maturity, per year: the short rate's volatility
+damped by mean reversion, since a shock to the short rate is expected to fade before a long bond matures.
+
+The formula is as follows:
+
+$$
+\operatorname{vol}(T) = \sigma \cdot (1 - \exp(- a \cdot T)) / (a \cdot T)
+$$
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+hull_white_yield_volatility(
+    maturity: float | np.ndarray,
+    mean_reversion_speed: float,
+    volatility: float,
+)
+```
+
+**Args:**
+
+- <u>maturity (float &#124; np.ndarray):</u> the yield's maturity in years.
+- <u>mean_reversion_speed (float):</u> a.
+- <u>volatility (float):</u> sigma, the short rate's yearly volatility.
+
+**Returns:**
+
+<u>float &#124; np.ndarray:</u> the yearly volatility of the T-year yield, in the same units as sigma.
+
+</details>
+
+### curve_forward_rates
+
+The continuously compounded forward rates a published spot curve implies between its maturities, the
+constant-forward interpolation EIOPA itself uses (RFR Technical Documentation EIOPA-BoS-26/198, 3.7.1: "the
+forward interest rate remains constant between known DLT points").
+
+The formula is as follows:
+
+$$
+z(T) = \ln(1 + s(T))
+$$
+
+$$
+f(T_{i}) = (T_{i} \cdot z(T_{i}) - \text{T\_i-1} \cdot z(\text{T\_i-1})) / (T_{i} - \text{T\_i-1}),\;\; \text{with}\; T_{0} = 0
+$$
+
+Where s(T) is the annually compounded spot rate at maturity T and f(T_i) the forward rate between T_i-1 and T_i.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+curve_forward_rates(maturities: np.ndarray, spot_rates: np.ndarray) -> np.ndarray
+```
+
+**Args:**
+
+- <u>maturities (np.ndarray):</u> the curve's maturities in years, positive and ascending.
+- <u>spot_rates (np.ndarray):</u> annually compounded spot rates, one per maturity.
+
+**Returns:**
+
+<u>np.ndarray:</u> one continuously compounded forward rate per maturity.
+
+**Raises:**
+
+- <u>ValueError:</u> if the inputs are empty, unequal in length or the maturities are not positive and ascending.
+
+</details>
+
 ### hull_white_alpha
 
 The path a risk-neutral Hull-White short rate is centred on, chosen so the scenarios reprice today's yield curve
@@ -642,10 +729,10 @@ exactly.
 
 The short rate is split into a random, mean-reverting part x(t) that starts at zero and a fixed path alpha(t)
 (Brigo and Mercurio, 2006, Section 3.3). alpha(t) is today's instantaneous forward rate f^M(0, t), read off the
-Nelson-Siegel fit to today's curve, plus a small convexity term. That term is needed because discounting is
-convex in rates: random rates raise the average discount factor, so the centre is lifted slightly to keep zero-
-coupon bond prices where the market has them. The adjustment grows with volatility and maturity and is small
-for typical parameters (a few basis points).
+Nelson-Siegel fit to today's Treasury curve or off a supplied curve such as EIOPA's, plus a small convexity term.
+That term is needed because discounting is convex in rates: random rates raise the average discount factor, so
+the centre is lifted slightly to keep zero-coupon bond prices where the market has them. The adjustment grows
+with volatility and maturity and is small for typical parameters (a few basis points).
 
 The formula is as follows:
 
@@ -680,7 +767,7 @@ hull_white_alpha(
 **Args:**
 
 - <u>elapsed_time (float &#124; np.ndarray):</u> years since the valuation date.
-- <u>params (HullWhiteForwardParams):</u> the calibrated speed, volatility and today's Nelson-Siegel curve.
+- <u>params (HullWhiteForwardParams):</u> the calibrated speed, volatility and today's curve.
 
 **Returns:**
 
@@ -803,6 +890,10 @@ $$
 \text{ln CN} (t) = \text{ln CMU} + \text{CA1} \cdot (\text{ln CN} (t-1) - \text{ln CMU}) + \text{CSD} \cdot \operatorname{CZ}(t)
 $$
 
+CD_dt makes 1/dt steps decay as much as one year at Wilkie's yearly CD (his model steps a year: "he is usually
+content to progress there by annual steps", section 1.3). Starting CM at the first observation is a judgement:
+Wilkie's "neutral value" for CM is QMU (section 4.5), which is not known before inflation is fitted.
+
 **References:**
 
 - Wilkie, A.D. (1986). "A stochastic investment model for actuarial use." Transactions of the Faculty of Actuaries, 39, 341-403. Section 3.12-3.15, the Consols yield model and its Reduced Basis parameterisation. <https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf>
@@ -824,8 +915,8 @@ fit_wilkie_consols_process(
 
 - <u>consols_yield (pl.Series):</u> the long-term government yield history as decimals (0.04 is 4%), evenly spaced.
 - <u>inflation (pl.Series):</u> the inflation history over the same dates (Wilkie's dlnQ(t)).
-- <u>inflation_weight (float):</u> CW, how much of expected inflation passes into the yield, default 1.0 (Wilkie).
-- <u>inflation_decay (float):</u> CD, the yearly weight of new inflation in expected inflation, default 0.05 (Wilkie).
+- <u>inflation_weight (float):</u> CW, how much of expected inflation passes into the yield, default 1.0 (Wilkie, section 3.15: "CW = 1.0").
+- <u>inflation_decay (float):</u> CD, the yearly weight of new inflation in expected inflation, default 0.05 (Wilkie, section 3.15 Reduced Standard Basis: "CD = 0.05"; his full basis has 0.045).
 - <u>time_step (float):</u> the time between observations in years, default 1.0; 1/12 for monthly data keeps Wilkie's roughly 20-year memory.
 
 **Returns:**

@@ -65,16 +65,8 @@ ten_year_paths = nelson_siegel_yield(
 )
 ```
 
-Configuration (`yield_curve` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `enabled` | `false` | Adds `rate_level`, `rate_slope` and `rate_curvature` when `true`. |
-| `source` | `yahoo` | `yahoo` (four Yahoo tickers), `treasury` (12-maturity par curve, FMP key) or `government`. |
-| `country` | `United States` | The country of a `government` curve. |
-| `period` | `daily` | The time step: `daily` with `treasury`; `daily`, `weekly` or `monthly` with `government`. |
-| `decay` | `0.7308` | The Nelson-Siegel decay (lambda), annualized; fixed, not fitted. |
-| `beliefs.level`, `.slope`, `.curvature` | `null` | Override a fitted speed, long-run mean or volatility. |
+The `yield_curve` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 **References:**
 
@@ -143,7 +135,7 @@ calibrate(
 **Args:**
 
 - <u>period (str):</u> data frequency and time step: "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
-- <u>decay (float):</u> the Nelson-Siegel decay (lambda), annualized; fixed, not fitted. Defaults to 0.7308.
+- <u>decay (float):</u> the Nelson-Siegel decay (lambda), annualized; fixed, not fitted. Defaults to 0.7308, from Diebold and Li (2006, section 3 of NBER w10048): "The λ value that maximizes the loading on the medium- term factor at exactly 30 months is λ=0.0609"; 0.0609 a month × 12 = 0.7308 a year.
 - <u>source (str):</u> "yahoo" (four Yahoo treasury tickers), "treasury" (the 12-maturity Treasury par curve; FMP key, daily only, falls back to "yahoo") or "government" (one country's official curve). Defaults to "yahoo".
 - <u>country (str):</u> the "government" curve's country, such as "Germany", "Euro Area" or "Japan". Defaults to "United States".
 
@@ -318,8 +310,9 @@ nelson_siegel_yield(
 The instantaneous forward rate at a maturity from the curve's level, slope and curvature: the rate the curve
 implies today for borrowing over a very short period starting `tenor` years from now.
 
-Nelson and Siegel (1987) define their curve through this forward rate; the yield at a maturity is its average
-out to that maturity. It starts at L + S, today's short rate, and tends to L, the long-run rate, with the
+Nelson and Siegel (1987) define their curve through this forward rate, "r(m) = β0 + β1 exp(−m/τ) + β2[(m/τ) *
+exp(−m/τ)]" (eq. 2.1 of the working-paper version, NBER w1594, with 1/τ the decay); the yield at a maturity is its
+average out to that maturity. It starts at L + S, today's short rate, and tends to L, the long-run rate, with the
 curvature adding a hump in between. Because it is smooth and settles at a finite level, it extrapolates sensibly
 beyond the longest observed bond, unlike a piecewise bootstrap, which is why the arbitrage-free `Hjm` curve and
 the risk-neutral Hull-White short rate use it as today's forward curve.
@@ -424,8 +417,11 @@ The share of all simulated scenario-periods in which the curve is inverted: the 
 long-maturity one.
 
 Inversions happen in practice (ahead of most US recessions) and the curve model allows them, so this checks that
-they appear about as often as history and the NAIC GOES acceptance criteria (its inversion-frequency check)
-suggest. Far more inversions point to a slope that is too volatile; almost none, to one that reverts too fast.
+they appear about as often as history suggests. The NAIC's draft GOES acceptance criteria (October 2023, T3b) ask
+only that "The frequency of different yield curve shapes in early durations should be reasonable considering the
+shape of the starting yield curve", with no number
+(https://content.naic.org/sites/default/files/call_materials/GOES%20Acceptance%20Criteria%20100523.pdf). Far more
+inversions point to a slope that is too volatile; almost none, to one that reverts too fast.
 
 The formula is as follows:
 
@@ -534,7 +530,8 @@ $$
 y_{t}(\tau_{j}) = L_{t} + S_{t} \cdot \operatorname{slope\_loading}(\tau_{j}) + C_{t} \cdot \operatorname{curvature\_loading}(\tau_{j}) + e_{t},\;\; \text{j}
 $$
 
-Solved by least squares across the tenors tau_j for each date t, as in Diebold and Li (2006).
+Solved by least squares across the tenors tau_j for each date t, as in Diebold and Li (2006, section 3):
+"Applying ordinary least squares to the yield data for each month gives us a time series of estimates".
 
 **References:**
 
@@ -584,7 +581,8 @@ $$
 \beta(t + \text{dt}) = \theta + (\beta(t) - \theta) \cdot \exp(- a \cdot \text{dt}) + \sigma \cdot \sqrt{(1 - \exp(- 2 \cdot a \cdot \text{dt})) / (2 \cdot a)} \cdot z
 $$
 
-This is the AR(1) per factor that Diebold and Li (2006) forecast with, with coefficient exp(-a * dt).
+This is the AR(1) per factor that Diebold and Li (2006, section 3) forecast with, with coefficient exp(-a * dt):
+"We model and forecast the Nelson-Siegel factors as univariate AR(1) processes".
 
 **References:**
 

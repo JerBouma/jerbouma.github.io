@@ -94,12 +94,14 @@ def main() -> None:
     charts["regimes"] = {"type": "fan", "title": "US inflation under three stress regimes against the baseline",
                          "x": dates, "format": "percent", "series": fans}
 
-    backtest = Portfolio.backtest(scenarios, "balanced_60_40")
+    backtest = Portfolio.backtest(scenarios, ["balanced_60_40", "all_weather", "permanent_portfolio"])
     hist_values = backtest.compute(initial_value=100_000, rebalance_every=12)
-    path = hist_values.metric_paths("portfolio", levels=True)[0]
-    charts["backtest"] = {"type": "line", "title": "What 100,000 in the 60/40 actually did since 2000",
+    print("backtest series:", hist_values.factor_names)
+    paths = {name: hist_values.metric_paths(name, levels=True)[0] for name in hist_values.factor_names}
+    start = hist_values.dates[0].strftime("%B %Y")
+    charts["backtest"] = {"type": "line", "title": f"What 100,000 in each mix actually did since {start}",
                           "x": [d.strftime("%Y-%m") for d in hist_values.dates], "format": "amount",
-                          "series": [{"name": "60/40 portfolio", "data": r(path, 0)}]}
+                          "series": [{"name": name, "data": r(path, 0)} for name, path in paths.items()]}
 
     # a risk-neutral run calibrates its own market-consistent config, on the same day
     risk_neutral = scenarios.simulate(n_simulations=2000, seed=SEED, measure="risk_neutral")
@@ -138,9 +140,11 @@ def main() -> None:
             print(f, "mean return", round(float(result.metric_paths(f)[:, -1].mean()), 4))
         except Exception:
             pass
-    drawdown = path / np.maximum.accumulate(path) - 1
-    print("backtest deepest fall:", round(float(drawdown.min()), 3), hist_values.dates[int(drawdown.argmin())])
-    print("backtest end value:", round(float(path[-1])), "| SCR (today - 1-in-200):", round(today - float(np.quantile(outcome, 0.005))))
+    for name, path in paths.items():
+        drawdown = path / np.maximum.accumulate(path) - 1
+        print(name, "end value", round(float(path[-1])), "deepest fall", round(float(drawdown.min()), 3),
+              hist_values.dates[int(drawdown.argmin())])
+    print("SCR (today - 1-in-200):", round(today - float(np.quantile(outcome, 0.005))))
 
 
 if __name__ == "__main__":

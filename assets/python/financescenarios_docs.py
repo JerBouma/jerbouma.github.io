@@ -26,6 +26,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from docs import _RE_FORMULA_INTRO, _formula_to_latex, _looks_like_formula  # noqa: E402
 
 import financescenarios as fs
+from financescenarios.config.config_model import (
+    CreditMigrationConfig,
+    CreditTermStructureConfig,
+    HjmConfig,
+    LeadingIndicatorConfig,
+    MortalityConfig,
+)
 from financescenarios.dependence.dependence_controller import Dependence
 from financescenarios.factors.commodities.commodities_controller import Commodities
 from financescenarios.factors.credit.credit_controller import Credit
@@ -69,7 +76,7 @@ CORE = [
     ("solvency", "Solvency",
      "Solvency II on a real-world and a risk-neutral run: the martingale test, best estimate, SCR and EIOPA curves.",
      ["Solvency", "best_estimate", "solvency_capital_requirement", "interest_rate_scr", "equity_scr",
-      "martingale_test", "market_consistency_check", "eiopa_risk_free_curve", "eiopa_symmetric_adjustment",
+      "symmetric_adjustment_cap", "eiopa_extrapolation", "martingale_test", "market_consistency_check", "eiopa_risk_free_curve", "eiopa_symmetric_adjustment",
       "zero_coupon_curve", "curve_discount_factors", "write_scenario_files"]),
     ("configuration", "Configuration and Presets",
      "Load settings, factor sets and presets, list every named preset and scaffold a project.",
@@ -79,7 +86,8 @@ CORE = [
      "The typed settings behind each factor block, the engine and the data download, plus beliefs, belief paths and shocks.",
      ["EngineConfig", "ToolkitConfig", "InterestRateConfig", "InflationConfig", "UnemploymentConfig", "EquityConfig",
       "FXConfig", "CreditConfig", "CommodityConfig", "DividendYieldConfig", "DividendGrowthConfig", "RealEstateConfig",
-      "YieldCurveConfig", "OUBeliefs", "EquityBeliefs", "BeliefPath", "Shock"]),
+      "YieldCurveConfig", CreditTermStructureConfig, HjmConfig, CreditMigrationConfig, LeadingIndicatorConfig,
+      MortalityConfig, "OUBeliefs", "EquityBeliefs", "BeliefPath", "Shock"]),
     ("regimes", "Regimes and Stress Tests",
      "Named stress narratives and the official Federal Reserve and ESRB stress scenarios as regimes.",
      ["Regime", "RegimeLibrary", "load_regime", "stress_test_regime"]),
@@ -93,7 +101,7 @@ CORE = [
       "compute_price_performance_metrics"]),
     ("charts", "Charts",
      "The chart functions behind every `.plot()`: fan charts, paths, terminal distributions, runs and portfolios.",
-     ["plot_factors", "plot_fan_chart", "plot_paths", "plot_terminal_distribution", "plot_runs",
+     ["plot_factors", "plot_fan_chart", "plot_paths", "plot_terminal_distribution", "plot_runs", "plot_portfolios",
       "plot_correlation_matrix", "plot_sleeve_values", "plot_weight_drift"]),
     ("dependence", "Dependence",
      "The correlation matrix that links every factor: estimation, shrinkage and repair.",

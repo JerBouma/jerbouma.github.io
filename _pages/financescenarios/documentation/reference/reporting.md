@@ -42,7 +42,7 @@ currencies are bridged through the dollar in two steps, since every `fx` factor 
 `fx` entry names its currency in `currency`; when that is unset, it is read from an `interest_rates` or `inflation`
 entry for the same `country`, or is `EUR` for the OECD's euro area codes.
 
-With the default `fx[i].drift_mode: historical` the exchange rate follows its own history, independent of the
+With the default `fx[i].drift_mode: random_walk` (or `historical`) the exchange rate moves independently of the
 simulated interest rates; `drift_mode: irp` or `measure: risk_neutral` ties its expected move to the rate gap
 between the two currencies through interest rate parity, as a market-consistent valuation needs
 ([Gorvett, 2001](https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf)).
@@ -124,18 +124,18 @@ reporting = Reporting(result, config)
 jp_equity_in_usd = reporting.convert("jp_equity")
 ```
 
-Which returns (calibrated on 2026-10-04), as percentiles across the 1,000 paths next to the median yen price
+Which returns (calibrated on 2026-10-14), as percentiles across the 1,000 paths next to the median yen price
 and yen per dollar:
 
 | date | jp_equity (JPY), median | usd_jpy, median | jp_equity (USD), 5% | median | 95% |
 |:-----|------------------------:|----------------:|--------------------:|-------:|----:|
-| 2026-10-01 | 430.2 | 158.79 | 2.71 | 2.71 | 2.71 |
-| 2027-10-01 | 483.0 | 162.17 | 2.02 | 2.98 | 3.70 |
-| 2031-10-01 | 661.8 | 174.18 | 1.79 | 3.78 | 7.12 |
+| 2026-10-01 | 431.3 | 157.00 | 2.75 | 2.75 | 2.75 |
+| 2027-10-01 | 483.5 | 157.14 | 2.13 | 3.10 | 3.80 |
+| 2031-10-01 | 666.5 | 156.49 | 2.01 | 4.19 | 7.71 |
 
-The yen price grows 54% in five years, but the yen weakens to 174 per dollar, so the dollar value grows less,
-and the 5% to 95% range in dollars is wide: the dollar investor carries the currency risk on top of the
-equity risk.
+The yen price grows 55% in five years and the median exchange rate stays near 157 yen per dollar, so the
+median dollar value grows about as much, but the 5% to 95% range in dollars is wide: the dollar investor
+carries the currency risk on top of the equity risk.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>

@@ -24,7 +24,7 @@ A run combines two profiles. A **settings profile** says how the run executes: s
 |:-----------------|:---------------|
 | `default` | 2,000 scenarios, monthly steps, five years ahead, fitted on history since 2000 |
 | `long_horizon` | 500 scenarios, so runs of several decades stay fast; the length is chosen per run |
-| `wilkie` | Fitted on 1995 to 2007 only, as the Wilkie model needs |
+| `wilkie` | Fitted on 1995 to 2007 only, as Wilkie's long-yield equation needs (inflation's own dynamics come from US history since 1919) |
 | `goes` | Fitted on history since 2019, to match the NAIC's generator with the `goes` factor set |
 
 | Factor set | What it simulates |
@@ -34,7 +34,7 @@ A run combines two profiles. A **settings profile** says how the run executes: s
 | `us_only` | US rates, inflation, unemployment and equities, plus the shared factors (currencies, commodities); quick to run |
 | `broad` | Everything the package can simulate, across many countries; the widest and slowest to fit |
 | `private_markets` | `us_only` plus listed stand-ins for private equity, infrastructure, hedge funds and private credit |
-| `goes` | `us_only` with the short rate's long-run level set to the NAIC generator's (about 3.67%) |
+| `goes` | `us_only` with the short rate's long-run level set to the NAIC generator's (about 3.73%) |
 | `ahlgrim`, `wilkie`, `hibbert` | A published model as its paper wrote it; see [published frameworks](#published-frameworks) |
 
 ```python
@@ -112,9 +112,9 @@ Every factor is real-world by default; a single factor or a whole run can switch
 | Factor | Risk-neutral version |
 |:-------|:---------------------|
 | Equities | Grows at the risk-free rate minus the dividend yield; volatility from option prices or a Heston model fitted to the volatility smile |
-| Interest rates | A Hull-White rate whose average path follows today's forward curve (the default when the whole run is risk-neutral); switched on one factor alone, a flat path at today's rate |
+| Interest rates | A Hull-White rate that reproduces EIOPA's risk-free curve for the dollar, euro and pound (the Treasury curve otherwise), with its volatility fitted to how much yields across maturities have moved; the default when the whole run is risk-neutral. Switched on one factor alone, a flat path at today's rate, or the Treasury curve with `risk_neutral_forward_curve` (`risk_neutral_curve: eiopa` for EIOPA's) |
 | FX | The interest-rate gap between the two currencies |
-| Inflation | A forward curve from breakeven inflation (US, UK, Germany or the euro area) |
+| Inflation | Random around the breakeven inflation curve (US, UK, Germany or the euro area) with its historical volatility, so the expected price index matches the curve; part of a whole risk-neutral run. `risk_neutral_volatility: none` follows the curve exactly |
 | KNW with stochastic volatility | A market price of risk fitted to the yield curve |
 | Commodities (two-factor) | Fitted to the futures curve |
 | Unemployment, real estate, leading indicator, mortality, credit | Not available: there is no traded price to match |
