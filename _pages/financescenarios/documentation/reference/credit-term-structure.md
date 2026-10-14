@@ -39,18 +39,18 @@ usual shape. Three factors are enough because spread curves, like yield curves, 
 and they keep every maturity consistent with every other. The factors are normally distributed, so a spread can
 turn slightly negative in a benign tail scenario. The
 `decay` matches `yield_curve.decay` (0.7308) on purpose: two Nelson-Siegel curves with the same decay add up, so
-the government curve plus this spread curve is again one. The value is Diebold and Li's: "Two- or three-year
-maturities are commonly used in that regard, so we simply picked the average, 30 months. The λ value that
-maximizes the loading on the medium-term factor at exactly 30 months is λ=0.0609" (working-paper version,
-section 3, [NBER w10048](https://www.nber.org/papers/w10048)), monthly, so 0.0609 × 12 = 0.7308 a year.
+the government curve plus this spread curve is again one. The value is Diebold and Li's: they put the curvature
+factor's peak at 30 months, the average of the two- and three-year maturities commonly used, which gives
+λ = 0.0609 (working-paper version, section 3, [NBER w10048](https://www.nber.org/papers/w10048)), monthly, so
+0.0609 × 12 = 0.7308 a year.
 
 Two data sources are available through `source`:
 
 - `hqm` (default): the US Treasury's High Quality Market (HQM) corporate bond curve
   ([US Treasury](https://home.treasury.gov/data/treasury-coupon-issues-and-corporate-bond-yield-curves)) as a
   spread over Treasuries at 2, 5, 10 and 30 years, monthly from 1984, with a free FRED key. It is the
-  investment-grade curve: "The HQM yield curve pertains to the high quality corporate bond market, i.e., corporate
-  bonds rated AAA, AA, or A" (Girola, 2011, "The HQM Yield Curve: Basic Concepts", slide 2,
+  investment-grade curve, built from corporate bonds rated AAA, AA or A (Girola, 2011, The HQM Yield Curve: Basic
+  Concepts, slide 2,
   [US Treasury](https://home.treasury.gov/system/files/226/ycp_oct2011.pdf)).
 - `bond_panel`: the [Open Source Bond Asset Pricing](https://openbondassetpricing.com/) panel of US corporate bond
   trades (TRACE) from July 2002 to March 2025, a 1.8 GB download. It has no ratings, so it is the average spread

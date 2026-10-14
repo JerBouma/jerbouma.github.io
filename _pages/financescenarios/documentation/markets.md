@@ -26,8 +26,7 @@ $$
 \ln\frac{S_{t+\Delta t}}{S_t} \,\Big|\, s_t = k \;\sim\; N\!\left(\mu_k \Delta t,\; \sigma_k^2 \Delta t\right)
 $$
 
-> "In this paper I first define the regime-switching lognormal model. Monthly data from the Standard and Poor’s 500 and the Toronto Stock Exchange 300 indices are used to fit the model parameters, using maximum likelihood estimation."
-> <cite>[Hardy (2001), A Regime-Switching Model of Long-Term Stock Returns, North American Actuarial Journal 5(2), abstract](https://www.casact.org/abstract/regime-switching-model-long-term-stock-returns)</cite>
+Hardy fitted it by maximum likelihood to monthly S&P 500 and TSX 300 returns ([abstract](https://www.casact.org/abstract/regime-switching-model-long-term-stock-returns){:target="_blank"}).
 
 This suits long-horizon risk: a mix of a low- and a high-volatility normal has fatter tails than one normal of the same variance, regimes persist so turbulent months cluster (2008, 2020), and drawdowns run over several periods, which is what a guarantee or funding ratio feels.
 
@@ -107,10 +106,7 @@ An exchange rate has no natural long-run level over decades, so it is not modele
 | Historical | The sample's own trend continues | A deliberate currency view, over short horizons |
 | Interest-rate parity | Each step, the gap between the two simulated short rates | Currency moves that follow rate differentials |
 
-A fitted trend is a currency view carried forward for decades: on 2021-2026 data the yen would get a 7.1% yearly drift from the dollar's strong run against it. Over long horizons Barrie & Hibbert's model instead ties exchange rates to purchasing power, which rules out a lasting trend of their own:
-
-> "Exchange rates respect purchasing power parity relationships at long horizons."
-> <cite>[Hibbert, Mowbray and Turnbull (2001), section 9.3, p. 69](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf#page=69)</cite>
+A fitted trend is a currency view carried forward for decades: on 2021-2026 data the yen would get a 7.1% yearly drift from the dollar's strong run against it. Over long horizons Barrie & Hibbert's model instead ties exchange rates to purchasing power, which rules out a lasting trend of their own ([Hibbert, Mowbray and Turnbull, 2001, section 9.3, p. 69](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf#page=69){:target="_blank"}).
 
 The volatility comes from the rate at the end of each month (or quarter or year), published by the BIS. The OECD publishes averages over each period, and changes of averages keep only about two-thirds of a random walk's variance ([Working, 1960](https://doi.org/10.2307/1907574){:target="_blank"}): on monthly data since 2021 the euro's volatility is 7.4% from month-end rates against 5.9% from the averages, the yen's 10.8% against 8.6%. The yearly Global Macro Database has averages only, so there the volatility is scaled up by Working's factor; `end_of_period: false` fits the averages as published.
 
@@ -139,14 +135,11 @@ A commodity price is pulled toward a level set by production cost: high prices b
 
 ### Single Factor (the Default)
 
-The log price reverts to one long-run level, which keeps the price positive and its distribution lognormal:
+The log price reverts to one long-run level, as in the one-factor model of [Schwartz (1997, abstract, p. 923)](https://afajof.org/issue/volume-52-issue-3){:target="_blank"}, which keeps the price positive and its distribution lognormal:
 
 $$
 dX_t = a(\theta - X_t)\,dt + \sigma\,dW_t, \qquad X_t = \ln S_t
 $$
-
-> "The first model is a simple one‐factor model in which the logarithm of the spot price of the commodity is assumed to follow a mean reverting process."
-> <cite>[Schwartz (1997), The Stochastic Behavior of Commodity Prices, Journal of Finance 52(3), abstract, p. 923](https://afajof.org/issue/volume-52-issue-3)</cite>
 
 Here $$a$$ is the speed of reversion and $$\theta$$ the long-run log price, so $$e^{\theta}$$ is the long-run median price; a belief of a 70 USD median is written as $$\ln 70$$. On 2026-10-04 crude oil started at 91.11 USD and was pulled toward 67.06 USD, with a shock halving in about six months.
 
@@ -158,10 +151,7 @@ $$
 \ln S_t = \chi_t + \xi_t, \qquad d\chi_t = -a\,\chi_t\,dt + \sigma_\chi\,dW^\chi_t, \qquad d\xi_t = \mu_\xi\,dt + \sigma_\xi\,dW^\xi_t
 $$
 
-The two shocks are correlated. Long-dated futures reflect almost only $$\xi_t$$, so the futures curve separates the two.
-
-> "Intuitively, movements in prices for long-maturity futures contracts provide information about the equilibrium price level, and differences between the prices for the short- and long-term contracts provide information about short-term variations in prices."
-> <cite>[Schwartz and Smith (2000), Short-Term Variations and Long-Term Dynamics in Commodity Prices, Management Science 46(7), abstract, p. 893](https://jimsmith.host.dartmouth.edu/wp-content/uploads/2022/04/Short-term_Long-term_Model.pdf#page=1)</cite>
+The two shocks are correlated. Long-dated futures reflect almost only $$\xi_t$$ and the gap between short and long contracts reflects $$\chi_t$$, so the futures curve separates the two ([Schwartz and Smith, 2000, abstract, p. 893](https://jimsmith.host.dartmouth.edu/wp-content/uploads/2022/04/Short-term_Long-term_Model.pdf#page=1){:target="_blank"}).
 
 The volatilities are fitted to the listed futures (crude oil, natural gas, gold, silver, copper, corn, wheat and soybeans). Fitted on spot prices alone, with a moving average standing in for the long-term level, the long-term volatility comes out far too low, because the averaging smooths it away.
 
@@ -180,14 +170,11 @@ A trending price over a short window has no mean reversion to fit: gold sampled 
 
 ## Real Estate
 
-The model follows eq. 3.18 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}: the year-over-year growth rate of property prices, not the price level, reverts to a long-run rate, since a price index has no level to return to over decades. Booms fade in growth but leave a permanent mark on the price level.
-
-> "Using quarterly return data from NCREIF from 1978 to 2001, we estimated two separate Ornstein-Uhlenbeck models for real estate: the first model included the level of inflation while the second model did not."
-> <cite>[Ahlgrim, D'Arcy and Gorvett (2005), section 3, eq. 3.18](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=21)</cite>
+The model follows eq. 3.18 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=21){:target="_blank"}: the year-over-year growth rate of property prices, not the price level, reverts to a long-run rate, since a price index has no level to return to over decades. Booms fade in growth but leave a permanent mark on the price level. The paper fitted it on quarterly NCREIF returns from 1978 to 2001.
 
 The simulated path is price growth only. Rental income, about half of housing's long-run return, is added when real estate is held as an asset (see [portfolio](/projects/financescenarios/docs/portfolio#what-a-portfolio-can-hold)).
 
-The data are OECD residential house-price growth for many countries, or for the United States the IMF's commercial property index on FRED ([`COMREPUSQ159N`](https://fred.stlouisfed.org/series/COMREPUSQ159N){:target="_blank"}; quarterly, needs a FRED key). Where the paper fits quarterly returns, this fits year-over-year growth read each quarter, so residential and commercial sit on one scale. Neighbouring readings then share three of their four quarters, so, as for [inflation](/projects/financescenarios/docs/economy#inflation), each is regressed on the reading a year earlier (`ou_fit: step` restores the quarter-to-quarter fit). On 2026-10-14, US house prices were 2.1% above a year earlier and pulled toward 4.3% a year, with a boom or slump fading by half in about 1.9 years; the quarter-to-quarter fit said 5.7 years. Commercial property reverted within about five months, with about twice the yearly volatility.
+The data are OECD residential house-price growth for many countries, or for the United States the IMF's commercial property index on FRED ([`COMREPUSQ159N`](https://fred.stlouisfed.org/series/COMREPUSQ159N){:target="_blank"}; quarterly, needs a FRED key). Where the paper fits quarterly returns, this fits year-over-year growth read each quarter, so residential and commercial sit on one scale. Neighbouring readings then share three of their four quarters, so, as for [inflation](/projects/financescenarios/docs/economy#inflation), each is regressed on the reading a year earlier. On 2026-10-14, US house prices were 2.1% above a year earlier and pulled toward 4.3% a year, with a boom or slump fading by half in about 1.9 years; the quarter-to-quarter fit said 5.7 years. Commercial property reverted within about five months, with about twice the yearly volatility.
 
 Neither source matches the paper's appraisal-based NCREIF index; appraisals smooth prices and understate volatility, and there is no open equivalent (see [coverage](/projects/financescenarios/docs/coverage)). Reference: [Real estate API](/projects/financescenarios/docs/reference/real-estate).
 
@@ -195,20 +182,17 @@ Neither source matches the paper's appraisal-based NCREIF index; appraisals smoo
 
 ### Dividend Yield {#dividend-yield}
 
-When dividend income matters on its own, the yield is simulated separately from the equity's total return. Following eq. 3.17 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}, the log of the yield mean-reverts, so the yield stays positive:
+When dividend income matters on its own, the yield is simulated separately from the equity's total return. Following eq. 3.17 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=20){:target="_blank"}, who follow Wilkie (1986) and Hibbert, Mowbray and Turnbull (2001), the log of the yield mean-reverts, so the yield stays positive:
 
 $$
 d\ln y_t = a(\theta - \ln y_t)\,dt + \sigma\,dW_t
 $$
 
-> "Similar to the process used by HMT and Wilkie (1986), we assume that (the log of) the dividend yield follows an autoregressive process."
-> <cite>[Ahlgrim, D'Arcy and Gorvett (2005), section 3, eq. 3.17](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=20)</cite>
-
 On 2026-10-04 SPY yielded 0.99% and was pulled toward 1.39% with a half-life of about 4.7 years. The paper found the speed "not significantly different from zero" on 1871-2003 data, so a short window may show no reversion at all. A belief about the normal level is a log too ($$\ln 0.02$$ for 2%). An optional term on the same step's change in inflation, as in Wilkie, links the yield to inflation.
 
 ### Dividend Growth (Wilkie)
 
-[Wilkie's (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} model is a one-way cascade: inflation, then dividend yield, dividend growth and the share price (dividend index divided by yield). Dividend growth is his "Reduced Standard Basis" equation, with $$\Delta\ln Q_t$$ the force of inflation (the log change in the price index):
+[Wilkie's (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} model is a one-way cascade: inflation, then dividend yield, dividend growth and the share price (dividend index divided by yield). Dividend growth is his "Reduced Standard Basis" equation ([section 3.9](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4){:target="_blank"}), a slightly simpler form that he found gives very similar long-term results, with $$\Delta\ln Q_t$$ the force of inflation (the log change in the price index):
 
 $$
 \Delta \ln D_t = \mu_D + w\,M_t + x\,\Delta\ln Q_t + y\,\varepsilon^Y_{t-1} + \sigma_D\,z_t, \qquad w + x = 1
@@ -222,13 +206,8 @@ $$
 | $$y\,\varepsilon^Y_{t-1}$$ | DY | Last period's dividend yield surprise: prices anticipate dividend changes, so the yield moves first |
 | $$\sigma_D\,z_t$$ | DSD | The dividend index's own shock |
 
-The two inflation weights add up to one, Wilkie's unit gain: in the long run dividends, and so share prices, keep their real value. The fit imposes it, fixes the smoothing weight at Wilkie's 0.2 a year (converted to the data's step) and estimates the rest by one regression.
+The two inflation weights add up to one, Wilkie's unit gain ([section 3.7](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4){:target="_blank"}): in the long run dividends, and so share prices, keep their real value. The fit imposes it, fixes the smoothing weight at Wilkie's 0.2 a year (converted to the data's step) and estimates the rest by one regression.
 
-> "The parameters are such that a given percentage increase in the Retail Prices Index ultimately results in the same percentage increase in the dividend index, so the model is said to have unit gain."
-> <cite>[Wilkie (1986), A Stochastic Investment Model for Actuarial Use, section 3.7](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4)</cite>
-
-> "Investigations showed that for practical purposes in the long term very similar results could be obtained from a slightly simpler model that omits the term in DB, and alters two other parameters to give: DW = 0.8, DD = 0.2, DX = 0.2, DMU = 0.0, DY = -0.3, DB = 0.0, DSD = 0.10."
-> <cite>[Wilkie (1986), A Stochastic Investment Model for Actuarial Use, section 3.9](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4)</cite>
 
 Wilkie fitted 1919-1982 UK data; the shipped Wilkie factor set applies the same equations to US data.
 
@@ -273,15 +252,9 @@ $$
 
 where $$\Phi$$ is the standard normal distribution function. The same shift applies to every threshold, so a bad year ($$Z$$ below zero) moves every rating toward downgrade and default at once. This is the one-factor approach of [Kim (1999)](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984){:target="_blank"}, in the Markov rating framework of [Jarrow, Lando and Turnbull (1997)](https://doi.org/10.1093/rfs/10.2.481){:target="_blank"}, and the same formula that underlies the Basel IRB capital charge.
 
-The data are ESMA's [CEREP](https://registers.esma.europa.eu/cerep-publication){:target="_blank"} rating agency statistics, which lag one to two years. The cycle is backed out year by year from default rates, then simulated as mean-reverting around zero (the through-the-cycle average) and correlated with the other factors. Every rating's long-run default probability is floored at 0.05%, so one that never defaulted in the sample still carries some risk. That is the corporate PD input floor of CRR3 (Regulation (EU) 2024/1623), which from 2025 replaced the 0.03% of the original [CRR Article 160(1)](https://eur-lex.europa.eu/eli/reg/2013/575/oj){:target="_blank"}:
+The data are ESMA's [CEREP](https://registers.esma.europa.eu/cerep-publication){:target="_blank"} rating agency statistics, which lag one to two years. The cycle is backed out year by year from default rates, then simulated as mean-reverting around zero (the through-the-cycle average) and correlated with the other factors. Every rating's long-run default probability is floored at 0.05%, so one that never defaulted in the sample still carries some risk. That is the corporate PD input floor of CRR3 ([Regulation (EU) 2024/1623, Article 1, point (86)(a)](https://eur-lex.europa.eu/eli/reg/2024/1623/oj/eng){:target="_blank"}), which from 2025 replaced the 0.03% of the original [CRR Article 160(1)](https://eur-lex.europa.eu/eli/reg/2013/575/oj){:target="_blank"}.
 
-> "… the PD value that is used for each exposure as an input of the risk-weighted exposure amounts and expected loss formulae shall not be less than the following PD input floor value: 0,05 %."
-> <cite>[Regulation (EU) 2024/1623, Article 1, point (86)(a), replacing Article 160(1) of Regulation (EU) No 575/2013](https://eur-lex.europa.eu/eli/reg/2024/1623/oj/eng)</cite>
-
-The calibration's `pd_floor` argument restores 0.03% where a Basel II comparison is needed. The transition matrix pools the rating changes of every year in the history, not only the latest ones, so it reflects an average year across good and bad ones, as Basel asks of PD estimation:
-
-> "If the available observation period spans a longer period for any source, and this data are relevant and material, this longer period must be used. The data should include a representative mix of good and bad years."
-> <cite>[Basel Framework, CRE36.79](https://www.bis.org/basel_framework/chapter/CRE/36.htm)</cite>
+The 0.03% floor remains available for a Basel II comparison. The transition matrix pools the rating changes of every year in the history, not only the latest ones, so it reflects an average year across good and bad ones, as Basel asks of PD estimation: the longest relevant observation period, with a representative mix of good and bad years ([Basel Framework, CRE36.79](https://www.bis.org/basel_framework/chapter/CRE/36.htm){:target="_blank"}).
 
 On S&P corporate ratings from 2000 to 2025, the worst years came out as 2009, 2001, 2020 and 2002, the asset correlation was about 0.10, and a shock to the cycle halved in about eight months.
 

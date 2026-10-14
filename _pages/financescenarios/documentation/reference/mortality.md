@@ -105,8 +105,8 @@ fetch_life_table(
 
 - <u>country (str):</u> a European Economic Area country as Eurostat names it, e.g. "Germany".
 - <u>sex (str):</u> "total", "male" or "female". Defaults to "total".
-- <u>min_age (int):</u> the youngest age to fit. Defaults to 60: Cairns, Blake and Dowd (2006) fit "mortality rates above the age of 60".
-- <u>max_age (int):</u> the oldest age, at most 94. Defaults to 84: Eurostat "extended the calculation of the life table and life expectancy from up to age 85+ to up to age 95+ by single ages" only from reference year 2014 ([metadata](https://ec.europa.eu/eurostat/cache/metadata/en/demo_mor_esms.htm)), so a higher age keeps only recent years.
+- <u>min_age (int):</u> the youngest age to fit. Defaults to 60: Cairns, Blake and Dowd (2006) fit mortality rates above age 60.
+- <u>max_age (int):</u> the oldest age, at most 94. Defaults to 84: Eurostat extended its life tables and life expectancy by single age from an open 85+ group to an open 95+ group only from reference year 2014 ([metadata](https://ec.europa.eu/eurostat/cache/metadata/en/demo_mor_esms.htm)), so a higher age keeps only recent years.
 
 **Returns:**
 
@@ -316,9 +316,9 @@ This turns a table with dozens of ages per year into two time series, whose tren
 longevity scenarios project: a falling `kappa1` is mortality improvement at every age, a changing `kappa2` means
 older ages improve faster or slower than younger ones. A straight line in age fits mortality well from about 60
 upward, the range that matters for pensions and annuities
-([Cairns, Blake and Dowd, 2006](https://doi.org/10.1111/j.1539-6975.2006.00195.x)), fitted the paper's way: "For
-each t, A1 and A2 were estimated using least squares by transforming the ungraduated mortality rates from qy to
-log qy/py = A1 + A2 y + error" (footnote 8; working-paper version, Pensions Institute PI-0611).
+([Cairns, Blake and Dowd, 2006](https://doi.org/10.1111/j.1539-6975.2006.00195.x)), fitted the paper's way:
+for each year, a least-squares regression of the ungraduated log-odds of death log(q/p) on age (footnote 8;
+working-paper version, Pensions Institute PI-0611).
 
 The formula is as follows:
 

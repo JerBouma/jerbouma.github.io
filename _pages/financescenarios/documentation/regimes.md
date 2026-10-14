@@ -91,15 +91,9 @@ A targeted regime keeps only part of each draw, about 9% for Oil Crisis, so the 
 
 Instead of writing a recession by hand, a regime can follow a regulator's published scenario, fetched through the Finance Toolkit with no API key:
 
-- **Federal Reserve**: the US supervisory scenarios, baseline and severely adverse (`scenario="severely_adverse"`), 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market.
+- **Federal Reserve**: the US supervisory scenarios, baseline and severely adverse, 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market, from the first quarter of 2026 to the first quarter of 2029 ([2026 Supervisory Stress Test Scenarios, p. 7](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=13){:target="_blank"}).
 
-  > "The severely adverse scenario describes a hypothetical set of conditions designed to assess the strength and resilience of banks in an adverse economic environment. … The scenarios start in the first quarter of 2026 and extend through the first quarter of 2029."
-  > <cite>[Federal Reserve, 2026 Supervisory Stress Test Scenarios (February 2026), p. 7](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=13)</cite>
-
-- **ESRB**: the European Systemic Risk Board's scenario for the EBA's EU-wide bank stress test, three years of the long-term rate, inflation, unemployment and stock prices for every EU member and the main other economies.
-
-  > "The 2025 EU-wide stress test will assess EU banks’ performance under a baseline and adverse scenario during a three-year time horizon, from 2025 to 2027."
-  > <cite>[EBA, The EBA launches its 2025 EU-wide stress test (press release)](https://www.eba.europa.eu/publications-and-media/press-releases/eba-launches-its-2025-eu-wide-stress-test)</cite>
+- **ESRB**: the European Systemic Risk Board's scenario for the [EBA's 2025 EU-wide bank stress test](https://www.eba.europa.eu/publications-and-media/press-releases/eba-launches-its-2025-eu-wide-stress-test){:target="_blank"}, three years (2025 to 2027) of the long-term rate, inflation, unemployment and stock prices for every EU member and the main other economies.
 
 The published path becomes beliefs, not one deterministic path. Each interest rate, inflation and unemployment factor follows the scenario for its own country: by default it is set to the published value at each period end and its long-run level follows the scenario in between, so every scenario hits the published values, even for a slow-moving short rate. A gentler option steers only the long-run level. Afterwards each factor returns to its calibrated level over five years by default, and the usual randomness stays around the path, so you get a distribution around the regulator's story rather than one line.
 
@@ -116,17 +110,11 @@ regime = stress_test_regime(toolkit, config, authority="federal_reserve", scenar
 stressed = Scenarios.from_config(config, toolkit=toolkit, regime=regime).simulate()
 ```
 
-Only factors with a long-run level can follow the scenario: real-world interest rates under Hull-White or CIR, inflation under the plain mean-reverting model, and unemployment. Other models and every risk-neutral factor keep their calibration. The Federal Reserve covers only the United States, so under it only US factors move. Its inflation is an annualized quarter-on-quarter rate, while this package's is year over year, and the published values are used as they are. Quarter-on-quarter inflation moves sooner and further than year over year, so the simulated inflation peaks earlier and higher than the scenario's own year-over-year path would.
-
-> "Inflation, measured as the quarterly change in the CPI and reported as an annualized rate, …"
-> <cite>[Federal Reserve, 2026 Supervisory Stress Test Scenarios (February 2026), p. 8](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=14)</cite>
+Only factors with a long-run level can follow the scenario: real-world interest rates under Hull-White or CIR, inflation under the plain mean-reverting model, and unemployment. Other models and every risk-neutral factor keep their calibration. The Federal Reserve covers only the United States, so under it only US factors move. Its inflation is an annualized quarter-on-quarter rate ([2026 Supervisory Stress Test Scenarios, p. 8](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=14){:target="_blank"}), while this package's is year over year, and the published values are used as they are. Quarter-on-quarter inflation moves sooner and further than year over year, so the simulated inflation peaks earlier and higher than the scenario's own year-over-year path would.
 
 ## Reading the Results Against the Base Run
 
-Compare a stressed run with the baseline, factor by factor on the same scale. The size of the stress shows there: the Federal Reserve's 2026 severely adverse scenario, for example, leaves the Dow Jones Total Stock Market Index at 31,161 at the end of 2026, against 70,592 in the baseline: 56% lower.
-
-> "Equity prices fall about 58 percent in the first three quarters of the scenario …"
-> <cite>[Federal Reserve, 2026 Supervisory Stress Test Scenarios (February 2026), p. 4](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=10)</cite>
+Compare a stressed run with the baseline, factor by factor on the same scale. The size of the stress shows there: the Federal Reserve's 2026 severely adverse scenario, for example, leaves the Dow Jones Total Stock Market Index at 31,161 at the end of 2026, against 70,592 in the baseline: 56% lower, after a fall of about 58% in the scenario's first three quarters ([Federal Reserve, 2026 Supervisory Stress Test Scenarios, p. 4](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=10){:target="_blank"}).
 
 - **Belief-driven runs are conditional, not likely.** The percentiles describe uncertainty given the story, not the probability of the story. Don't read a stressed 99.5% quantile as a capital number.
 - **Targets select by rank, not by level.** Sequential targets keep a fixed share (30% of 30% is 9%) whatever the correlations, so the share says nothing about how likely the story is. In joint mode the share kept is the model's own estimate of how often the combination occurs; if it is tiny, the story is far in the tail of the calibration. Fewer than 30 scenarios left raises a warning, because their percentiles are noise.

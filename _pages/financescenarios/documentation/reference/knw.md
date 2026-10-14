@@ -51,12 +51,12 @@ The data come from the Finance Toolkit without an API key: the rate from a Treas
 country's short or long rate, inflation from OECD consumer price index growth. OECD data are not daily or
 weekly, so a pair runs monthly, quarterly or yearly.
 
-In KNW the inflation factor is expected inflation, not the measured rate: "dPi_t / Pi_t = pi_t dt + sigma_Pi' dZ_t
-... where pi_t denotes the instantaneous expected inflation" (working paper, section 1.1, eq. 3), so measured
-inflation is expected inflation plus noise. KNW filter it from yields and CPI with a Kalman filter (section
-1.4.2) and CP2022 backs it out of a real bond yield; here year-over-year CPI growth stands in for it, a judgement
-that keeps the model on keyless data. Averaging twelve months of price changes damps much of that noise; what is
-left ends up in the fitted inflation volatility.
+In KNW the inflation factor is expected inflation, not the measured rate: the price index follows dPi_t / Pi_t =
+pi_t dt + sigma_Pi' dZ_t with pi_t the instantaneous expected inflation (working paper, section 1.1, eq. 3), so
+measured inflation is expected inflation plus noise. KNW filter it from yields and CPI with a Kalman filter
+(section 1.4.2) and CP2022 backs it out of a real bond yield; here year-over-year CPI growth stands in for it, a
+judgement that keeps the model on keyless data. Averaging twelve months of price changes damps much of that noise;
+what is left ends up in the fitted inflation volatility.
 
 A pair is an `interest_rates[i]` and an `inflation[j]` entry; their keys and defaults are listed on the reference page
 [Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
@@ -310,8 +310,8 @@ $$
 
 Where (x, y) is (r, pi) for the rate leg and (pi, r) for the inflation leg, m the sample average of each series and
 T the number of transitions. The long-run levels the pair settles at are then the historical averages, a VAR fitted
-on mean-adjusted data, the estimator of Lutkepohl (2005), section 3.3, "Least Squares Estimation with Mean-Adjusted
-Data" (3.3.3, "Estimation with Unknown Process Mean"). The alternative, an intercept fitted freely in each
+on mean-adjusted data, the estimator of Lutkepohl (2005), section 3.3 on least squares with mean-adjusted data
+(subsection 3.3.3, where the process mean is unknown). The alternative, an intercept fitted freely in each
 regression, puts the long-run levels at (I - Phi)^-1 * c, which for a pair this persistent amplifies where the
 sample happens to start and end: on US data since 1990 it puts the long-run rate 0.5 percentage points below the
 rate's own average and the long-run real rate below zero. The fit is accepted only when the 2x2 coefficient matrix

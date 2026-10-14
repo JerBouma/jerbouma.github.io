@@ -31,8 +31,8 @@ the 13-week, 5-, 10- and 30-year Treasury yields, then gives you model yields at
 (`zero_coupon_yield`), the Q-measure parameters to simulate with (`q_params`) and a deflator to price claims off
 a real-world run (`deflator`).
 
-De Nederlandsche Bank (DNB) fits its Q-measure to nominal yields at "{1, 5, 10, 20, 30}" years and real yields
-at "{1, 5, 15, 20, 30}" ([CP2022 Technical Appendix](
+De Nederlandsche Bank (DNB) fits its Q-measure to nominal yields at 1, 5, 10, 20 and 30 years and real yields
+at 1, 5, 15, 20 and 30 ([CP2022 Technical Appendix](
 https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix), section 4), and
 constrains it with option, swaption and inflation-cap implied volatilities (section 5, eq. 25), data this project
 does not have. This module keeps the yield-curve part on the four US Treasury points Yahoo Finance quotes (13

@@ -226,6 +226,21 @@ Portfolio.backtest(
 
 </details>
 
+## Portfolio.scenario_set
+
+The run this portfolio is built on: simulated scenarios, or for a backtest the history it fetched. Save that
+history with `write_run()` and `Portfolio.from_preset(read_run(path), preset=...)` replays the backtest
+offline, with the same values.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+portfolio.scenario_set  # property -> ScenarioSet
+```
+
+</details>
+
 ## Portfolio.preset
 
 The ready-made mix this portfolio uses by default, if it was built with `from_preset()` on one preset; None
@@ -1519,7 +1534,7 @@ loses a little to defaults each year, and, held as a bond fund, is marked down a
 
 A credit spread is not itself a return. A corporate bond investor earns the risk-free yield the spread sits on plus
 the spread, less what defaults cost after recoveries. For investment-grade bonds that loss is a small part of the
-spread: expected default "accounts for a surprisingly small fraction" of it
+spread: expected default explains a surprisingly small part of it
 ([Elton, Gruber, Agrawal and Mann, 2001](https://doi.org/10.1111/0022-1082.00324)), and over 1982-2004 Moody's
 investment-grade issuers lost 0.55% of par over five years against 14.88% for speculative grade (Moody's, 2005,
 Exhibit 11). Across all ratings since 1866 spreads ran about twice the losses

@@ -46,10 +46,7 @@ result = scenarios.simulate()
 
 ## Horizon and Step
 
-The horizon follows the question: one year for a Solvency II view, 15 to 60 years for an ALM study or a pension fund's continuity analysis. The step should match what the liabilities and the investment policy react to: monthly for rebalancing and hedging decisions, yearly for long projections where intra-year noise adds nothing.
-
-> "It shall correspond to the Value-at-Risk of the basic own funds of an insurance or reinsurance undertaking subject to a confidence level of 99,5 % over a one-year period."
-> <cite>[Directive 2009/138/EC (Solvency II), Article 101(3)](https://eur-lex.europa.eu/eli/dir/2009/138/oj)</cite>
+The horizon follows the question: one year for a Solvency II view, since the solvency capital requirement is the 99.5% Value-at-Risk of basic own funds over one year ([Solvency II Directive, Article 101(3)](https://eur-lex.europa.eu/eli/dir/2009/138/oj){:target="_blank"}); 15 to 60 years for an ALM study or a pension fund's continuity analysis. The step should match what the liabilities and the investment policy react to: monthly for rebalancing and hedging decisions, yearly for long projections where intra-year noise adds nothing.
 
 Over long horizons the long-run parameters (where rates and inflation revert to, and how fast) dominate, and today's starting point fades. Small biases also compound: a 0.5 percentage point difference in the long-run equity return is about 15% of terminal wealth after 30 years.
 
@@ -57,7 +54,7 @@ Over long horizons the long-run parameters (where rates and inflation revert to,
 
 Monte Carlo error falls with the square root of the number of scenarios, and a tail percentile converges far more slowly than the mean: with 2,000 scenarios a 1-in-200 outcome rests on about ten of them. If the figure you report moves more than you could act on when you rerun with another seed, add scenarios or use antithetic variates; the [simulation engine](/projects/financescenarios/docs/simulation-engine#monte-carlo-error) covers both.
 
-A profile of your own can start from a shipped one and state only what differs. It extends a file in its own folder, so copy the shipped profiles there first with `scaffold_project`.
+A profile of your own can start from a shipped one and state only what differs. It extends a file in its own folder, so first copy the shipped profiles into that folder.
 
 ```yaml
 # my-project/settings/my_alm.yaml
@@ -150,10 +147,7 @@ Beliefs don't apply to risk-neutral factors, which exist to match the market. A 
 
 ### Anchoring Long-Run Rate Levels {#anchoring-long-run-rate-levels}
 
-Instead of your own view, a rate's long-run level can follow an official path. Anchored to EIOPA, it follows the forward rates of EIOPA's risk-free curve for its currency (USD, EUR or GBP), which converge to the [ultimate forward rate](https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en) Solvency II insurers discount with only beyond the last liquid point (30 years for the dollar, 20 for the euro and 50 for sterling; from 30 January 2027 the amended rules extrapolate from a first smoothing point instead). Over a few decades the anchor therefore still follows market forwards, not the UFR. Anchored to DNB (euro only), it follows the median of [De Nederlandsche Bank's](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/) pension scenario set. Speed and volatility stay fitted, and an explicit belief still wins. The default factor set uses EIOPA: over 30 years its US 10-year median ends at 4.8%, against 4.5% in the NAIC's generator.
-
-> "For all other currencies, the LLP has been chosen according to the results of the DLT assessment. It is the longest maturity for which risk-free interest rates can be derived from DLT markets."
-> <cite>[EIOPA, RFR Technical Documentation (EIOPA-BoS-25-599, applicable from 31 March 2026), section 9.2.2 and Tables 7-8](https://www.eiopa.europa.eu/document/download/f7fca58f-4d24-4441-ac60-de562bf26d77_en?filename=EIOPA-BoS-25-599%20-%20RFR%20Technical%20Documentation.pdf#page=44)</cite>
+Instead of your own view, a rate's long-run level can follow an official path. Anchored to EIOPA, it follows the forward rates of EIOPA's risk-free curve for its currency (USD, EUR or GBP), which converge to the [ultimate forward rate](https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en) Solvency II insurers discount with only beyond the last liquid point (30 years for the dollar, 20 for the euro and 50 for sterling, as set in [EIOPA's RFR technical documentation, EIOPA-BoS-25-599, section 9.2.2 and Tables 7-8](https://www.eiopa.europa.eu/document/download/f7fca58f-4d24-4441-ac60-de562bf26d77_en?filename=EIOPA-BoS-25-599%20-%20RFR%20Technical%20Documentation.pdf#page=44){:target="_blank"}; from 30 January 2027 the amended rules extrapolate from a first smoothing point instead). Over a few decades the anchor therefore still follows market forwards, not the UFR. Anchored to DNB (euro only), it follows the median of [De Nederlandsche Bank's](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/) pension scenario set. Speed and volatility stay fitted, and an explicit belief still wins. The default factor set uses EIOPA: over 30 years its US 10-year median ends at 4.8%, against 4.5% in the NAIC's generator.
 
 ```yaml
 interest_rates:
@@ -189,10 +183,7 @@ Economic scenario generators differ mostly in how they link the variables. Each 
 | `hibbert` | [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf) | Rates and inflation revert to a slowly moving target; equities switch between two regimes. |
 | any set with the KNW method | [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058) | Rates and inflation drive each other, optionally with shared stochastic volatility; see the [KNW guide](/projects/financescenarios/docs/knw). |
 
-Wilkie is a discrete-time model. KNW is continuous-time in the paper, but the package fits its discrete-time version, a VAR(1) of the short rate and expected inflation, as DNB's Commissie Parameters (2022) does. For both, the step must match the frequency they were fitted at. Wilkie's long bond model needs the long yield to stay above average inflation, which US yields did not from 2008 to 2017, so its settings profile fits on 1995 to 2007: the calibration window is a modeling choice, not a technicality.
-
-> "The Consols yield is assumed to consist of a real part, CN(t), plus an allowance for expected future inflation."
-> <cite>[Wilkie (1986), A Stochastic Investment Model for Actuarial Use, section 3.12](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=5)</cite>
+Wilkie is a discrete-time model. KNW is continuous-time in the paper, but the package fits its discrete-time version, a VAR(1) of the short rate and expected inflation, as DNB's Commissie Parameters (2022) does. For both, the step must match the frequency they were fitted at. Wilkie's long bond model, a real yield plus an allowance for expected inflation ([Wilkie, 1986, section 3.12](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=5){:target="_blank"}), needs the long yield to stay above average inflation, which US yields did not from 2008 to 2017, so its settings profile fits on 1995 to 2007: the calibration window is a modeling choice, not a technicality.
 
 ```python
 scenarios = Scenarios.from_profiles(settings="wilkie", factor_set="wilkie")

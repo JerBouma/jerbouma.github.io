@@ -29,26 +29,25 @@ The goal is not to compete with a vendor model but to make the published methods
 
 ## Installation
 
-The project requires Python 3.11 or higher. To install Finance Scenarios it simply requires the following:
+Finance Scenarios requires Python 3.11 or higher and installs with a single command:
 
 ```bash
 pip install financescenarios -U
 ```
 
-To be able to get the most out of it, you need an API key from FinancialModelingPrep. It is used for the price histories behind every ticker-priced factor: stock markets such as the S&P 500 (`SPY`), Europe (`VGK`) and Japan (`EWJ`), Treasury yields such as the 10-year (`^TNX`), commodities such as gold (`GC=F`) and Brent oil (`BZ=F`), and the dividends of those funds. Note that the Free plan is limited to 250 requests each day, 5 years of data and only companies listed on US exchanges.
+The scenarios are fitted to market history, so to get the most out of it you need an API key from FinancialModelingPrep. It supplies the price histories the model learns from: stock markets, government bond yields, commodities and dividends. The Free plan allows 250 requests a day, five years of data and US-listed securities only, which is enough to try it out; longer histories and markets outside the US need a premium plan.
 
 [Obtain an API Key from FinancialModelingPrep](/fmp){: .btn .btn--warning .btn--large .align-center target="_blank"}
 
-Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time.
+The link gives access to the free plan and to premium plans at a **15% discount**. It is an affiliate link, so it supports the project at the same time.
 
-Optionally, add a free [FRED key](https://fred.stlouisfed.org/docs/api/api_key.html) from the Federal Reserve Bank of St. Louis. It is used for US corporate bond spreads (the ICE BofA option-adjusted spreads behind `credit`) and US commercial property prices (`real_estate` with `source: commercial`). The [configuration documentation](/projects/financescenarios/docs/configuration#secrets) lists exactly which key each factor uses. The `default` factor set reads EIOPA's risk-free curves, which need Finance Toolkit 2.2.2 or newer (`pip install -U financetoolkit`).
-
+A free [FRED key](https://fred.stlouisfed.org/docs/api/api_key.html) from the Federal Reserve Bank of St. Louis is optional and adds US corporate bond spreads and commercial property prices. The [configuration documentation](/projects/financescenarios/docs/configuration#secrets) shows which data each part of the model relies on.
 
 ## Functionality
 
-Every table below is real output, cut to a few rows, and every chart is interactive, from one run calibrated on {{ site.data.financescenarios_run.date }}. Live data moves, so another day gives slightly different numbers. The full [documentation](/projects/financescenarios/docs) explains each model and its assumptions.
+This section is an introduction to Finance Scenarios, run on the default settings and the default factor set (the US, the euro area and the UK) with 2,000 scenarios. Every table is the actual output of the snippet above it, cut down to a few rows, and every chart is interactive and drawn from that same run, calibrated on {{ site.data.financescenarios_run.date }}; live data moves, so another day gives slightly different numbers. Every class also documents itself through Python's built-in help, and the [documentation](/projects/financescenarios/docs) explains each model and its assumptions.
 
-Every run combines two ready-made *profiles*: a **settings** profile, which says how the run goes (how many scenarios, how far ahead, how much history to learn from), and a **factor set**, which says what gets simulated (which interest rates, stock markets, currencies and so on). Optionally a **regime** adds a stress story, and a **portfolio** is an investment mix to read the scenarios through. `list_presets()` lists them all with what each is for; `kind=` narrows it to one kind:
+Every run combines two ready-made *profiles*: a **settings** profile, which says how the run goes (how many scenarios, how far ahead, how much history to learn from), and a **factor set**, which says what gets simulated (which interest rates, stock markets, currencies and so on). Optionally a **regime** adds a stress story, and a **portfolio** is an investment mix to read the scenarios through. Every one of them can be listed with what it is for, all at once or one kind at a time:
 
 ```python
 from financescenarios import list_presets
@@ -56,12 +55,10 @@ from financescenarios import list_presets
 list_presets(kind="settings")  # or "factor-sets", "regimes", "portfolios"; leave it out for all 39
 ```
 
-Open a kind below to see its options and the call it goes in.
+Each kind's output is below; open one to see its options.
 
 <details class="ft-details" markdown="1">
 <summary><i class="fas fa-sliders-h"></i> <b>Settings profiles</b> <span class="ft-details__meta">4</span></summary>
-
-Passed as `Scenarios.from_profiles(settings="...")`.
 
 | id           | description                                                                                                              |
 |:-------------|:-------------------------------------------------------------------------------------------------------------------------|
@@ -74,8 +71,6 @@ Passed as `Scenarios.from_profiles(settings="...")`.
 
 <details class="ft-details" markdown="1">
 <summary><i class="fas fa-layer-group"></i> <b>Factor sets</b> <span class="ft-details__meta">9</span></summary>
-
-Passed as `Scenarios.from_profiles(factor_set="...")`.
 
 | id              | description                                                                                                                                           |
 |:----------------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -93,8 +88,6 @@ Passed as `Scenarios.from_profiles(factor_set="...")`.
 
 <details class="ft-details" markdown="1">
 <summary><i class="fas fa-bolt"></i> <b>Stress regimes</b> <span class="ft-details__meta">12</span></summary>
-
-Passed as `Scenarios.from_profiles(regime="...")`, see [Applying Stress Regimes](#applying-stress-regimes).
 
 | id                    | description                                                                                                                                             |
 |:----------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -115,8 +108,6 @@ Passed as `Scenarios.from_profiles(regime="...")`, see [Applying Stress Regimes]
 
 <details class="ft-details" markdown="1">
 <summary><i class="fas fa-chart-pie"></i> <b>Portfolios</b> <span class="ft-details__meta">14</span></summary>
-
-Passed as `Portfolio.from_preset(result, preset="...")`, see [Building a Portfolio](#building-a-portfolio).
 
 | id                    | description                                                                                                                                   |
 |:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -139,160 +130,226 @@ Passed as `Portfolio.from_preset(result, preset="...")`, see [Building a Portfol
 
 The examples below use the default settings and the default factor set.
 
-### Simulating Correlated Scenarios {#simulating-scenarios}
+### Simulating Scenarios {#simulating-scenarios}
 
-Each variable is fitted to its own history, and the shocks are drawn jointly so the scenarios keep the co-movements seen in that history. That matters because risks rarely arrive alone: in a typical recession, equities fall, unemployment rises and central banks cut short rates.
+Fit every variable to its history and draw 2,000 scenarios at once. The API keys go in here, as with the Finance Toolkit; leave them out to read them from your environment or a .env file.
 
 ```python
 from financescenarios import Scenarios
 
+# The default settings and the default factor set: the US, the euro area and the UK
 scenarios = Scenarios.from_profiles(
     settings="default",
     factor_set="default",
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    fred_api_key="FRED_KEY",  # optional
+    api_key="FINANCIAL_MODELING_PREP_KEY",  # replace with your actual API key
+    fred_api_key="FRED_KEY",  # optional, replace with your actual FRED key or leave it out
 )
-result = scenarios.simulate(n_simulations=2000)
+result = scenarios.simulate(n_simulations=2000, seed=42)
 
+# Where every variable starts and where it ends up after five years
 result.describe()
-result.plot(["united_states_short_rate", "united_states_inflation"])
 ```
 
-Rates are annual rates and priced assets annualized returns, as decimals; `terminal_q05` and `terminal_q95` are the levels that 1 in 20 scenarios end below and above after five years.
+For example, 6 of the 27 variables are shown below. Rates are yearly rates and anything with a price a yearly return, written as decimals (0.0442 is 4.42%).
 
-| factor                     | initial | terminal_mean | terminal_q05 | terminal_q95 |
-|:---------------------------|--------:|--------------:|-------------:|-------------:|
-| united_states_inflation    |  0.0340 |        0.0262 |      -0.0033 |       0.0549 |
-| united_states_short_rate   |  0.0406 |        0.0442 |       0.0050 |       0.0859 |
-| united_states_unemployment |  0.0410 |        0.0557 |       0.0210 |       0.0904 |
-| us_broad                   |         |        0.0983 |      -0.0465 |       0.2318 |
-| europe                     |         |        0.0766 |      -0.0925 |       0.2197 |
-| gold                       |         |        0.0596 |      -0.0614 |       0.1936 |
+| factor                     | category       | initial | terminal_mean | terminal_q05 | terminal_q95 |
+|:---------------------------|:---------------|--------:|--------------:|-------------:|-------------:|
+| united_states_inflation    | inflation      |  0.0340 |        0.0262 |      -0.0033 |       0.0549 |
+| united_states_short_rate   | interest_rates |  0.0406 |        0.0442 |       0.0049 |       0.0859 |
+| united_states_unemployment | unemployment   |  0.0410 |        0.0557 |       0.0210 |       0.0904 |
+| us_broad                   | equities       |         |        0.0983 |      -0.0465 |       0.2318 |
+| europe                     | equities       |         |        0.0765 |      -0.0927 |       0.2197 |
+| gold                       | commodities    |         |        0.0594 |      -0.0614 |       0.1926 |
+
+The chart below follows the US short rate, US inflation and US equities through all 2,000 scenarios. **Find [the Notebook](/projects/financescenarios/getting-started) and [the simulation documentation](/projects/financescenarios/docs/simulation-engine).**
+
+```python
+result.plot(["united_states_short_rate", "united_states_inflation", "us_broad"])
+```
 
 {% include ft-chart.html id="simulation" src="/assets/data/financescenarios-charts.json" label="Simulated short rate, inflation and US equities" %}
 
-The fan charts show the median and the bands holding half and nine in ten of the scenarios. The US short rate starts at 4.06% and averages 4.42% after five years, but 1 in 20 scenarios end below 0.50% and 1 in 20 above 8.59%. In money, 100 in US equities becomes 161 in the median scenario, below 79 in the worst 1 in 20 and above 284 in the best. **Find [the Notebook](/projects/financescenarios/getting-started) and [the simulation documentation](/projects/financescenarios/docs/simulation-engine).**
+### Reading the Distribution
 
-### Reading the Tails
-
-The mean hides the asymmetry that matters for risk. The distribution of the five-year equity return shows it directly.
+Follow any variable date by date as percentile bands, or read it off at chosen horizons.
 
 ```python
-result.summary_statistics("us_broad")
+result.summary_statistics("united_states_short_rate")
+```
+
+For example, the last three months of the US short rate are shown below.
+
+| date       |   mean |    std |  q0.05 |  q0.25 |   q0.5 |  q0.75 |  q0.95 |
+|:-----------|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
+| 2030-11-01 | 0.0442 | 0.0244 | 0.0048 | 0.0277 | 0.0447 | 0.0600 | 0.0857 |
+| 2030-12-02 | 0.0441 | 0.0245 | 0.0043 | 0.0276 | 0.0439 | 0.0607 | 0.0856 |
+| 2031-01-01 | 0.0442 | 0.0245 | 0.0049 | 0.0276 | 0.0442 | 0.0604 | 0.0859 |
+
+The chart below shows how widely the five-year US equity return spreads across the scenarios. **Find [the documentation](/projects/financescenarios/docs/units).**
+
+```python
 result.plot("us_broad", kind="distribution")
 ```
 
 {% include ft-chart.html id="distribution" src="/assets/data/financescenarios-charts.json" label="Distribution of the five-year US equity return" %}
 
-The median scenario returns 10.04% a year, above the 9.83% mean, because the left tail reaches further than the right: the worst 1 in 20 lose more than 4.65% a year, 14.7 points below the median, while the best 1 in 20 gain more than 23.18%, 13.1 points above it. These equity returns are fitted on history; for planning work, a long-run [belief](/projects/financescenarios/docs/configuration#beliefs) about the equity return is advisable. **Find [the documentation](/projects/financescenarios/docs/units).**
-
 ### Building a Portfolio
 
-An asset mix inherits the correlations of its holdings, so diversification shows up in the scenarios rather than being assumed. Here a 60/40 of US stocks and Treasuries, rebalanced once a year. Shipped mixes range from all-weather and permanent portfolios to a target-date glidepath and an endowment model.
+Put an investment mix through the same scenarios, here the 60/40 (60% US stocks, 40% US government bonds) from the 14 ready-made mixes, rebalanced once a year.
 
 ```python
 from financescenarios import Portfolio
 
+# 60% broad US equities, 40% US government bonds, rebalanced once a year
 portfolio = Portfolio.from_preset(result, preset="balanced_60_40")
 values = portfolio.compute(initial_value=100_000, rebalance_every=12)
+
+values.describe()
+```
+
+This returns the portfolio's yearly return over the five years, and what each holding earned on its own:
+
+| factor                        | category  | initial | terminal_mean | terminal_q05 | terminal_q95 |
+|:------------------------------|:----------|--------:|--------------:|-------------:|-------------:|
+| portfolio                     | portfolio |         |        0.0835 |      -0.0004 |       0.1609 |
+| us_broad_value                | holding   |         |        0.0983 |      -0.0465 |       0.2318 |
+| united_states_long_rate_value | holding   |         |        0.0539 |       0.0328 |       0.0748 |
+
+The 60/40 earns 8.35% a year on average, between the stocks' 9.83% and the Treasury fund's 5.39%, so 100,000 grows to 152,361. The same portfolio also reports its drawdowns and Value at Risk, and covers saving and withdrawal plans, glidepaths and fees. The chart below shows the portfolio's value in money across the scenarios. **Find [the Notebook](/projects/financescenarios/portfolio-notebook).**
+
+```python
 values.plot(levels=True)
 ```
 
 {% include ft-chart.html id="portfolio" src="/assets/data/financescenarios-charts.json" label="Simulated value of a 60/40 portfolio" %}
 
-The 60/40 earns 8.34% a year on average, less than the stocks' 9.83% but with a narrower range. The median scenario turns 100,000 into 150,012 and the best 1 in 20 into more than 210,721, while the worst 1 in 20 end below 99,780: five years without a gain. Drawdowns, Value at Risk, saving and withdrawal plans, glidepaths and fees build on the same values. **Find [the Notebook](/projects/financescenarios/portfolio-notebook).**
-
 ### Applying Stress Regimes
 
-A stress regime tells a story: it shifts an assumption before simulating (inflation pulled towards 12%), keeps only the scenarios consistent with the story (high rates and weak stocks), or both. Because the kept scenarios still come from the fitted model, the other variables move with the stress in a way the history supports. Twelve regimes ship, from an oil crisis and a credit crunch to a soft landing and a yield-curve inversion.
+Run the same variables through one of 12 named stress stories, such as an oil crisis. A regime changes an assumption before simulating, keeps only the scenarios that fit the story, or both.
 
 ```python
 from financescenarios import compare_runs
 
-shocked = scenarios.simulate(regime="oil_crisis", n_simulations=2000)
+shocked = scenarios.simulate(regime="oil_crisis", n_simulations=2000, seed=42)
+
 compare_runs({"baseline": result, "oil_crisis": shocked})
 ```
+
+Oil Crisis pulls US inflation towards 12% and keeps the scenarios with high interest rates and weak stocks; it draws as many scenarios as it takes for 2,000 to fit the story. For example, four of the variables are shown below.
 
 | factor                   | baseline | oil_crisis |
 |:-------------------------|---------:|-----------:|
 | united_states_inflation  |   0.0262 |     0.0492 |
-| united_states_short_rate |   0.0442 |     0.0648 |
-| us_broad                 |   0.0983 |     0.0161 |
-| europe                   |   0.0766 |     0.0178 |
+| united_states_short_rate |   0.0442 |     0.0649 |
+| us_broad                 |   0.0983 |     0.0158 |
+| europe                   |   0.0765 |     0.0177 |
+
+The chart below sets US inflation in the baseline next to the Oil Shock, Oil Crisis and Climate Collapse regimes, 2,000 scenarios each. **Find [the Notebook](/projects/financescenarios/regimes-notebook) and [the regime documentation](/projects/financescenarios/docs/regimes).**
+
+```python
+from financescenarios import plot_runs
+
+runs = {"baseline": result}
+for regime in ("oil_shock", "oil_crisis", "climate_collapse"):
+    runs[regime] = scenarios.simulate(regime=regime, n_simulations=2000, seed=42)
+
+plot_runs(runs, "united_states_inflation")
+```
 
 {% include ft-chart.html id="regimes" src="/assets/data/financescenarios-charts.json" label="US inflation in the baseline and under three stress regimes" %}
 
-In the oil crisis, US inflation ends at 4.92% instead of 2.62% and stocks return 1.61% a year instead of 9.83%. The regimes differ in timing as much as in level: the oil shock follows the baseline until its shock hits in January 2028 and then fades, while the oil crisis and climate collapse lift inflation from the first month. **Find [the Notebook](/projects/financescenarios/regimes-notebook) and [the regime documentation](/projects/financescenarios/docs/regimes).**
-
 ### Backtesting Against History
 
-Any number of mixes can run against what prices actually did, on one shared calendar, with their exposure measured against the [Fama-French factors](https://doi.org/10.1016/j.jfineco.2014.10.010) from [Ken French's data library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
+Run ready-made mixes against what prices actually did, on one shared calendar, and measure what each is exposed to with the [Fama-French factors](https://doi.org/10.1016/j.jfineco.2014.10.010) from [Ken French's data library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
 
 ```python
+# What each mix's holdings actually did, month by month, as one "scenario" per mix
 portfolio = Portfolio.backtest(scenarios, ["balanced_60_40", "all_weather", "permanent_portfolio"])
+
 portfolio.factor_exposure()
+```
+
+Which gives each mix's loading on each factor and how much they explain:
+
+| portfolio           | Mkt-RF |     SMB |     HML |    RMW |     CMA |  alpha | r_squared | observations | from       | to         |
+|:--------------------|-------:|--------:|--------:|-------:|--------:|-------:|----------:|-------------:|:-----------|:-----------|
+| 60/40 Balanced      | 0.5369 | -0.0687 | -0.0450 | 0.1216 | -0.0113 | 0.0007 |    0.8615 |          312 | 2000-08-01 | 2026-10-01 |
+| All Weather         | 0.2043 | -0.0621 | -0.1445 | 0.2166 |  0.0344 | 0.0029 |    0.1324 |          312 | 2000-08-01 | 2026-10-01 |
+| Permanent Portfolio | 0.2175 | -0.0615 | -0.1424 | 0.2019 |  0.0478 | 0.0033 |    0.1244 |          312 | 2000-08-01 | 2026-10-01 |
+
+The chart below shows what each mix actually did since August 2000, rebalanced once a year: 100,000 grew to 550,744 in the 60/40, 541,653 in All Weather and 555,908 in the Permanent Portfolio by October 2026, with the 60/40 carrying more than twice the stock market risk of the other two. **Find [the Notebook](/projects/financescenarios/portfolio-analysis-notebook).**
+
+```python
 portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
 ```
 
-| portfolio           | Mkt-RF |     SMB |     HML |    RMW |     CMA |  alpha | r_squared | from       | to         |
-|:--------------------|-------:|--------:|--------:|-------:|--------:|-------:|----------:|:-----------|:-----------|
-| 60/40 Balanced      | 0.5369 | -0.0687 | -0.0447 | 0.1215 | -0.0116 | 0.0007 |    0.8615 | 2000-08-01 | 2026-10-01 |
-| All Weather         | 0.2039 | -0.0620 | -0.1435 | 0.2162 |  0.0335 | 0.0029 |    0.1318 | 2000-08-01 | 2026-10-01 |
-| Permanent Portfolio | 0.2173 | -0.0615 | -0.1418 | 0.2017 |  0.0473 | 0.0033 |    0.1240 | 2000-08-01 | 2026-10-01 |
-
 {% include ft-chart.html id="backtest" src="/assets/data/financescenarios-charts.json" label="Historical value of the 60/40, All Weather and Permanent Portfolio mixes since 2000" %}
-
-The three mixes ended within 3% of each other: 100,000 invested in August 2000 grew to 550,762 in the 60/40, 541,823 in All Weather and 556,105 in the Permanent Portfolio by October 2026. They got there very differently. The 60/40 carries more than twice the stock-market loading of the other two (0.54 against about 0.21), and the five factors explain 86% of its monthly moves but only 13% of the others', whose bonds and gold the equity factors don't capture. Its deepest fall was 28% from the peak, in February 2009; the other two fell furthest in September 2022, by 21% and 15%, when stocks and bonds dropped together. **Find [the Notebook](/projects/financescenarios/portfolio-analysis-notebook).**
 
 ### Valuing Liabilities and Capital Under Solvency II
 
-[Solvency II](https://eur-lex.europa.eu/eli/dir/2009/138/oj) needs two views of the same economy. Liabilities are valued market-consistently, from a risk-neutral run: under that measure every asset is expected to earn the risk-free rate, so its discounted total-return price is a martingale and the scenarios reproduce today's prices. Capital is the one-year 99.5% loss of own funds, read from the real-world run. Below, 10,000 a year for five years is backed by 60,000 in the 60/40.
+Value what an insurer owes from a run priced like today's market (risk-neutral) and its one-year 99.5% capital requirement (the SCR) from the real-world run, as [Solvency II](https://eur-lex.europa.eu/eli/dir/2009/138/oj) asks.
 
 ```python
 from financescenarios import Solvency
 
-risk_neutral = scenarios.simulate(n_simulations=2000, measure="risk_neutral")
+# The same factors priced the way markets price them today, for valuing what is owed
+risk_neutral = scenarios.simulate(n_simulations=2000, seed=42, measure="risk_neutral")
 solvency = Solvency(real_world=result, risk_neutral=risk_neutral)
 
+# Pay out 10,000 a year for five years, backed by 60,000 invested in the 60/40
 assets = Portfolio.from_preset(result, preset="balanced_60_40").compute(initial_value=60_000, rebalance_every=12)
 solvency.report(cashflows=[10_000] * 5, assets=assets)
 ```
 
+Which gives every number in one table:
+
 | item                | value                     | meaning                                                    |
 |:--------------------|:--------------------------|:-----------------------------------------------------------|
-| market consistent   | passed (largest gap 0.7%) | discounted back, us_broad stays within 2% of today's price |
+| market consistent   | passed (largest gap 0.1%) | discounted back, us_broad stays within 2% of today's price |
 | best estimate       | 43,514                    | what the payments are worth today                          |
-| own funds           | 15,657                    | assets minus what is owed, today                           |
-| SCR (1 in 200 year) | 12,482                    | the capital that survives a 1-in-200 bad year              |
+| own funds           | 15,661                    | assets minus what is owed, today                           |
+| SCR (1 in 200 year) | 12,487                    | the capital that survives a 1-in-200 bad year              |
 | solvency ratio      | 1.25                      | own funds / SCR; above 1 means enough capital              |
+
+The chart below shows where own funds could be after one year, with today's level and the 1-in-200 outcome marked. **Find [the documentation](/projects/financescenarios/docs).**
+
+```python
+solvency.plot(cashflows=[10_000] * 5, assets=assets)
+```
 
 {% include ft-chart.html id="solvency" src="/assets/data/financescenarios-charts.json" label="Distribution of own funds after one year" %}
 
-The SCR of 12,482 is the distance from today's own funds to the 1-in-200 outcome at the left of the chart, where own funds fall to around 3,200. A ratio of 1.25 means the 60,000 covers both the payments and the required capital. **Find [the documentation](/projects/financescenarios/docs).**
-
 ### Validating the Output
 
-A scenario set is only useful if it does what its models promise. Each run can be checked for plausible fitted parameters, a valid correlation matrix, simulated correlations and volatilities in line with the calibration and history, and finite paths. Most variables can also be simulated with alternative published models, such as [Hull-White](https://doi.org/10.1093/rfs/3.4.573), [CIR](https://doi.org/10.2307/1911242) and [regime-switching](https://doi.org/10.1080/10920277.2001.10595984) equities, so model risk can be compared directly.
+Check a run against what its own models promise. Most variables can also be simulated with other published models through a single setting, such as [Hull-White](https://doi.org/10.1093/rfs/3.4.573), [CIR](https://doi.org/10.2307/1911242) and [regime-switching](https://doi.org/10.1080/10920277.2001.10595984) equities, and the published Wilkie, Ahlgrim, Hibbert and GOES specifications ship as whole factor sets.
 
 ```python
 scenarios.validate(result)
 ```
 
+For example, three of the checks are shown below.
+
+| check                                  | status | detail                                                                                                                                   |
+|:---------------------------------------|:-------|:-----------------------------------------------------------------------------------------------------------------------------------------|
+| Every factor calibrated                | pass   | every factor calibrated                                                                                                                  |
+| Simulation reproduces the correlations | pass   | largest gap 0.068 (us_broad/europe); pairs with a linked factor, not graded: largest gap 0.312 (eurozone_inflation/eurozone_unemployment) |
+| Every path is finite                   | pass   | 27 factors, all finite                                                                                                                   |
+
 **Find [every model and its status](/projects/financescenarios/docs/coverage) and [the validation documentation](/projects/financescenarios/docs/validation).**
 
 ### Starting Your Own Project
 
-To change an assumption, add a market or keep your results, copy the profiles into a folder of your own; runs from there read your files instead of the bundled ones.
+Everything above runs on the ready-made profiles as they ship. To change an assumption, add a market of your own or keep your results, copy the profiles into a folder of your own:
 
 ```python
 from financescenarios import read_run, scaffold_project
 
-scaffold_project("my-project")              # editable settings, factor sets, regimes and portfolios
-path = scenarios.save(result, "results/")   # the run with its settings and calibration
-result = read_run(path)                     # read it back without fitting again
+scaffold_project("my-project")              # editable settings, factor sets, regimes, portfolios and a .env
+path = scenarios.save(result, "results/")   # the run, its settings and its calibration, in its own folder
+result = read_run(path)
 ```
 
-**Find [the configuration documentation](/projects/financescenarios/docs/configuration).**
+Run Python from inside `my-project` and every run reads its YAML files instead of the bundled ones, and the keys pasted into its .env file, so the API key can be left out. A saved run reads back without downloading or simulating anything again. **Find [the configuration documentation](/projects/financescenarios/docs/configuration).**
 
 ## Notebooks
 
@@ -336,29 +393,72 @@ Each notebook covers a different part of Finance Scenarios. Click a card to open
 
 ## Questions & Answers
 
-> **Do I need an economic scenario generator?**
+<details class="ft-details" markdown="1">
+  <summary><h3>Do I need an economic scenario generator?</h3></summary>
 
-When the answer you need is a range rather than one number: Solvency II capital and technical provisions, pension funding projections, asset-liability matching, portfolio tail risk, stress testing, or whether retirement withdrawals last.
+  When the answer you need is a range rather than one number. A single forecast tells you where rates or markets are expected to go; it says nothing about how bad things could get, how often, or what moves together when they do. Those are exactly the questions behind Solvency II capital and technical provisions, pension funding projections, asset-liability matching, portfolio tail risk, stress testing and whether retirement withdrawals last thirty years.
 
-> **How does this relate to the Finance Toolkit?**
+  A scenario generator answers them by simulating thousands of internally consistent paths for the whole economy: when inflation rises, rates and unemployment respond in the same scenario, and equities share their crisis spells. You then put your assets or liabilities through every path and read the full distribution: the median, the bad year in twenty, the 1-in-200 event.
 
-The [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) looks backwards: it retrieves and calculates from historical data. Finance Scenarios looks forwards: it fits models to that history and simulates where things could go next.
+  You don't need one when one number is enough: a point forecast for a budget, or a single prescribed shock such as the Solvency II standard formula, which applies fixed stresses rather than a simulation.
 
-> **How do I know whether the method I need is supported?**
+</details>
 
-The [coverage overview](/projects/financescenarios/docs/coverage) lists every factor, model, measure, portfolio analytic and Solvency II output as available, partial or unavailable.
+<details class="ft-details" markdown="1">
+  <summary><h3>How does this relate to the Finance Toolkit?</h3></summary>
 
-> **Are my results reproducible?**
+  They are two halves of the same workflow. The [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) looks backwards: it retrieves and calculates from historical data, from financial statements and ratios to yield curves, inflation and unemployment. Finance Scenarios looks forwards: it fits models to that history and simulates where things could go next.
 
-The random draws are fixed by a seed in the settings. The calibration follows live data, so save it and load it later to pin both.
+  Finance Scenarios gets its history through the Finance Toolkit: market prices, government bond yields, OECD and central-bank series, EIOPA's risk-free curves and credit spreads. That means the scenarios start from the same data you would analyse in the Toolkit, and a backtest of a portfolio uses the same prices as its simulation.
 
-> **How long does a run take?**
+</details>
 
-Calibration takes a couple of minutes for the default factor set on a cold cache and seconds once the data is cached. Simulating is fast.
+<details class="ft-details" markdown="1">
+  <summary><h3>How do I know whether the method I need is supported?</h3></summary>
 
-> **Can I add my own regime, portfolio or model?**
+  The [coverage overview](/projects/financescenarios/docs/coverage) lists every factor, model, measure, portfolio analytic and Solvency II output as available, partial or unavailable. Where something is partial, it says what is missing: the risk-neutral rate volatility, for example, is fitted to historical yield moves rather than implied from swaption prices.
 
-A regime or a portfolio is a YAML file: copy a shipped one and edit it. A new model or factor plugs into the same calibration and correlation steps as the shipped ones; the [reference](/projects/financescenarios/docs/reference) shows what each one provides.
+  Each model is documented with the paper it follows and the choices made where the implementation departs from it, so you can judge whether it fits your purpose before you run it. The guides explain the financial logic behind each factor, and every regulatory choice cites the article, section or table it comes from.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>Are my results reproducible?</h3></summary>
+
+  Yes, once you pin down both of the things a run depends on. The random draws are fixed by a seed in the settings, so the same calibration with the same seed gives exactly the same scenarios.
+
+  The calibration itself follows live data: every day adds observations, and statistical agencies revise past figures, so fitting again tomorrow gives slightly different parameters. To reproduce a result months later, for an audit trail or a regulatory submission, save the calibration together with the run. A saved calibration can be simulated again with more scenarios or another seed without downloading or fitting anything, and a saved run keeps its settings alongside the results.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>How long does a run take?</h3></summary>
+
+  Most of the time goes into the first calibration: downloading the history for every factor and fitting each model. For the default factor set that takes a couple of minutes on a cold cache, and seconds once the data is cached.
+
+  Simulating is fast by comparison and grows with the number of scenarios and the length of the horizon. For long projections the long-horizon settings use 500 scenarios instead of 2,000 to keep runs quick. A risk-neutral run for valuation calibrates its own market-consistent setup, so it adds a second fit.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>Can I add my own regime, portfolio or model?</h3></summary>
+
+  Yes. Regimes, portfolios and profiles are plain YAML files, so the easiest start is to copy a shipped one into your own project folder and edit it. A regime can shift an assumption before simulating (inflation pulled toward a level by a given year), keep only the scenarios that fit its story (high rates and weak stocks), or both. A portfolio sets the weights of its holdings, the duration of its bond funds and how often it rebalances. A profile of your own can extend a shipped one and state only what differs.
+
+  Your own views on long-run levels, such as a central bank's inflation target or an equity risk premium, go in as beliefs that override the fitted values. A new model or factor plugs into the same calibration and correlation steps as the shipped ones, so it is linked to everything else automatically; the [reference](/projects/financescenarios/docs/reference) shows what each one provides.
+
+</details>
+
+## Contributing
+
+First of all, thank you for taking the time to contribute (or at least read the section about contributing)! 🚀
+
+The most useful contributions are the gaps marked unavailable or partial in the [coverage overview](/projects/financescenarios/docs/coverage), for which the [`resources`](https://github.com/JerBouma/FinanceScenarios/tree/main/resources) catalog usually already names the paper, and validation against a published scenario set this project does not check yet. If a calibration here disagrees with your own implementation or with a vendor's, please open an issue. Read the [architecture](/projects/financescenarios/docs/architecture) before opening a pull request, and run the tests:
+
+```bash
+uv sync --all-extras --group dev
+uv run pytest tests
+```
 
 ## Contact
 

@@ -43,9 +43,10 @@ currencies are bridged through the dollar in two steps, since every `fx` factor 
 entry for the same `country`, or is `EUR` for the OECD's euro area codes.
 
 With the default `fx[i].drift_mode: random_walk` (or `historical`) the exchange rate moves independently of the
-simulated interest rates; `drift_mode: irp` or `measure: risk_neutral` ties its expected move to the rate gap
-between the two currencies through interest rate parity, as a market-consistent valuation needs
-([Gorvett, 2001](https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf)).
+simulated interest rates. `drift_mode: irp` ties its expected move to the simulated rate gap between the two
+currencies through uncovered interest rate parity, a real-world view; `measure: risk_neutral` fixes its drift at
+today's rate gap through covered interest rate parity, the forward's no-arbitrage drift a market-consistent
+valuation needs ([Gorvett, 2001](https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf)).
 
 Configuration (`reporting` in a settings profile, beside `engine` and `toolkit`):
 

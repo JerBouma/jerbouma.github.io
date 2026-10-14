@@ -1,28 +1,34 @@
-"""Builds every table and chart on /projects/financescenarios from one run.
+"""Builds the charts on /projects/financescenarios from the README's own run.
 
-All of it comes from a single calibration made today, so the page has one
-calibration date: the charts, the tables printed here for the page, and the
-date in _data/financescenarios_run.yml that the page quotes.
+The page shows the same run as the Finance Scenarios README: the README notebook
+saves its calibrations (docs/assets/readme/calibration*.json) and simulates with
+seed 42, so replaying them here gives back exactly the same scenarios. The tables
+on the page are the README's; this script draws the interactive charts and
+writes the calibration date the README states to _data/financescenarios_run.yml.
 
     FINANCIAL_MODELING_PREP_API_KEY=... FRED_API_KEY=... \
-        python _scripts/financescenarios_charts.py
+        python _scripts/financescenarios_charts.py /path/to/FinanceScenarios
 
 Writes assets/data/financescenarios-charts.json, drawn by assets/js/ft-charts.js.
 """
 
-import datetime
 import json
+import re
+import sys
 from pathlib import Path
 
 import numpy as np
 
 import polars as pl
 
-from financescenarios import Portfolio, Scenarios, Solvency, compare_runs
+from financescenarios import CalibrationResult, Portfolio, Scenarios, Solvency, compare_runs, read_run
+from financescenarios.config.config_model import risk_neutral_config
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "assets" / "data" / "financescenarios-charts.json"
 RUN_DATE = ROOT / "_data" / "financescenarios_run.yml"
+REPO = Path(sys.argv[1] if len(sys.argv) > 1 else "/sources/finance-scenarios")
+README_RUN = REPO / "docs" / "assets" / "readme"
 SEED = 42
 QUANTILES = ["q0.05", "q0.25", "q0.5", "q0.75", "q0.95"]
 
@@ -54,8 +60,8 @@ def main() -> None:
     charts = {}
 
     scenarios = Scenarios.from_profiles(settings="default", factor_set="default")
-    calibration = scenarios.calibrate()
-    run_date = datetime.date.today().isoformat()
+    calibration = CalibrationResult.load(README_RUN / "calibration.json")
+    run_date = re.search(r"calibrated on (\d{4}-\d{2}-\d{2})", (REPO / "README.md").read_text()).group(1)
 
     def simulate(**kwargs):
         return scenarios.simulate(calibration=calibration, n_simulations=2000, seed=SEED, **kwargs)
@@ -94,8 +100,11 @@ def main() -> None:
     charts["regimes"] = {"type": "fan", "title": "US inflation under three stress regimes against the baseline",
                          "x": dates, "format": "percent", "series": fans}
 
-    backtest = Portfolio.backtest(scenarios, ["balanced_60_40", "all_weather", "permanent_portfolio"])
-    hist_values = backtest.compute(initial_value=100_000, rebalance_every=12)
+    mixes = ["balanced_60_40", "all_weather", "permanent_portfolio"]
+    backtest = Portfolio.backtest(scenarios, mixes)  # the factor exposure reads Fama-French live
+    # the history the README backtested on, saved with its run, so the chart matches it exactly
+    history = read_run(README_RUN / "backtest_history")
+    hist_values = Portfolio.from_preset(history, preset=mixes).compute(initial_value=100_000, rebalance_every=12)
     print("backtest series:", hist_values.factor_names)
     paths = {name: hist_values.metric_paths(name, levels=True)[0] for name in hist_values.factor_names}
     start = hist_values.dates[0].strftime("%B %Y")
@@ -103,8 +112,10 @@ def main() -> None:
                           "x": [d.strftime("%Y-%m") for d in hist_values.dates], "format": "amount",
                           "series": [{"name": name, "data": r(path, 0)} for name, path in paths.items()]}
 
-    # a risk-neutral run calibrates its own market-consistent config, on the same day
-    risk_neutral = scenarios.simulate(n_simulations=2000, seed=SEED, measure="risk_neutral")
+    # the risk-neutral run has its own market-consistent calibration, saved next to the real-world one
+    market = Scenarios.from_config(risk_neutral_config(scenarios.config), toolkit=scenarios._toolkit)
+    risk_neutral = market.simulate(calibration=CalibrationResult.load(README_RUN / "calibration_risk_neutral.json"),
+                                   n_simulations=2000, seed=SEED)
     solvency = Solvency(real_world=result, risk_neutral=risk_neutral)
     assets = Portfolio.from_preset(result, preset="balanced_60_40").compute(initial_value=60_000, rebalance_every=12)
     cashflows = [10_000] * 5

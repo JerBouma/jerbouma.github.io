@@ -28,15 +28,9 @@ $$
 
 Here $$a$$ is the mean-reversion speed, $$\theta$$ the long-run level and $$\sigma$$ the volatility. For CIR the long-run variance is $$\sigma^2\theta/(2a)$$. Each mean-reverting factor's simulated mean and standard deviation at the horizon are compared with these values, allowing three standard errors of Monte Carlo noise. A gap is not always a fault: with a horizon shorter than about three time constants ($$1/a$$) the factor has not settled yet, and a factor on a belief path is deliberately steered elsewhere. A gap that remains points to the discretization or the calibration.
 
-**Boundary behavior.** Hull-White rates are Gaussian and can go negative, as they should. CIR rates can dip very slightly below zero because of the full-truncation scheme, the least biased of those compared by Lord, Koekkoek and van Dijk (2010); see [time stepping](/projects/financescenarios/docs/simulation-engine#time-stepping).
+**Boundary behavior.** Hull-White rates are Gaussian and can go negative, as they should. CIR rates can dip very slightly below zero because of the full-truncation scheme, the least biased of those compared by [Lord, Koekkoek and van Dijk (2010, abstract)](https://repub.eur.nl/pub/7738/2006-0464.pdf#page=3){:target="_blank"}; see [time stepping](/projects/financescenarios/docs/simulation-engine#time-stepping).
 
-> "The full truncation scheme by far outperforms all biased schemes in terms of bias, root-mean-squared error, and hence should be the preferred discretisation method for simulation of the Heston model and extensions thereof."
-> <cite>[Lord, Koekkoek and van Dijk (2006), A comparison of biased simulation schemes for stochastic volatility models, Tinbergen Institute Discussion Paper TI 2006-046/4, abstract](https://repub.eur.nl/pub/7738/2006-0464.pdf#page=3)</cite>
-
-**Correlations.** The correlated shocks reproduce their target: 50,000 draws with a target of 0.6 land within 0.02. Across a full run, the simulated factor moves are compared with the calibrated matrix (see the checks below); pairs where a model links one factor's drift to the other legitimately differ, so they are reported but not graded. This is the correlation test EIOPA lists for a generator.
-
-> "(c) Correlation tests: comparison of the simulated correlations with the historical correlations."
-> <cite>[EIOPA, Guidelines on valuation of technical provisions (EIOPA-BoS-14/166), Guideline 58, paragraph 1.105](https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en)</cite>
+**Correlations.** The correlated shocks reproduce their target: 50,000 draws with a target of 0.6 land within 0.02. Across a full run, the simulated factor moves are compared with the calibrated matrix (see the checks below); pairs where a model links one factor's drift to the other legitimately differ, so they are reported but not graded. This is the correlation test EIOPA lists for a generator: simulated against historical correlations ([Guidelines on valuation of technical provisions, EIOPA-BoS-14/166, Guideline 58, paragraph 1.105](https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en){:target="_blank"}).
 
 ## Market Consistency: The Martingale Test
 
@@ -67,10 +61,7 @@ A "warn" is worth a look, not a reason to discard the run. The run itself also w
 
 The checks above compare the model with itself and its own data. The benchmarks below compare a calibrated factor with independent sources. Each reference embeds its own model choices, so a gap is not automatically an error, but a large or systematic one needs explaining.
 
-- **NAIC GOES.** The Generator of Economic Scenarios, the prescribed generator of the NAIC Valuation Manual for US principle-based reserves (VM-20 for life, VM-21 for variable annuities), run by Conning for the NAIC. Prescribed is not mandatory: a company may use its own generator if the result meets the Valuation Manual's standard.
-
-  > "At the option of the company, interest rates and total investment return scenarios for equity or bond fund assets may be generated in part or in full using non-prescribed scenario generators in lieu of the prescribed economic generator referred to in Appendix 1, provided that the use of such scenarios satisfies section 2.G."
-  > <cite>[NAIC, Valuation Manual (2026 edition), VM-20 Appendix 1, Section E](https://content.naic.org/sites/default/files/pbr_data_valuation_manual_current_edition.pdf#page=132)</cite>
+- **NAIC GOES.** The Generator of Economic Scenarios, the prescribed generator of the NAIC Valuation Manual for US principle-based reserves (VM-20 for life, VM-21 for variable annuities), run by Conning for the NAIC. Prescribed is not mandatory: a company may use its own generator if the result meets the Valuation Manual's standard in section 2.G ([NAIC Valuation Manual, 2026 edition, VM-20 Appendix 1, Section E](https://content.naic.org/sites/default/files/pbr_data_valuation_manual_current_edition.pdf#page=132){:target="_blank"}).
 
   A US Treasury rate's simulated percentile bands are compared with the percentile grid of NAIC's 10,000-scenario set for the matching tenor; the result is a set of differences, not a pass or fail. A large gap usually means the long-run level or the volatility differs from what US regulators consider a reasonable real-world spread of rates.
 - **DNB scenario set.** De Nederlandsche Bank publishes a scenario set every quarter: 20,000 scenarios over 100 years from the Commissie Parameters 2022 model, both real world (the P-set) and market consistent (the Q-set, calibrated to market prices including swaptions). A run's interest rate, inflation or equity is compared with it at every whole year, quantile by quantile: rates and inflation by level, equities by yearly return. It is a regulator-reviewed reference for a euro run and the only free swaption-consistent one. The same sets, and NAIC's 16 deterministic stress scenarios for US rates (the set of the Valuation Manual's Stochastic Exclusion Ratio Test, SERT), can also replace factors in a run (see the [configuration reference](/projects/financescenarios/docs/reference/configuration)).
@@ -79,10 +70,7 @@ The checks above compare the model with itself and its own data. The benchmarks 
 
 ## Published Calibrations {#published-calibrations}
 
-A published calibration is fixed under a version tag, passes the checks above before release, and records its data window, package versions and a hash of its configuration. A run can then state exactly which calibration it used, and anyone can reproduce its scenarios offline. A release whose configuration no longer matches its hash is refused rather than silently mixing two sets of assumptions. Reference calibrations are meant to be published once a year, the minimum frequency EIOPA sets for these tests.
-
-> "Insurance and reinsurance undertakings should ensure that the tests of accuracy, robustness and market consistency of the ESG are performed on a regular basis and at least annually."
-> <cite>[EIOPA, Guidelines on valuation of technical provisions (EIOPA-BoS-14/166), Guideline 58, paragraph 1.106](https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en)</cite>
+A published calibration is fixed under a version tag, passes the checks above before release, and records its data window, package versions and a hash of its configuration. A run can then state exactly which calibration it used, and anyone can reproduce its scenarios offline. A release whose configuration no longer matches its hash is refused rather than silently mixing two sets of assumptions. Reference calibrations are meant to be published once a year, the minimum frequency EIOPA sets for these tests ([Guidelines on valuation of technical provisions, Guideline 58, paragraph 1.106](https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en){:target="_blank"}).
 
 Downloading and simulating a release is covered in the [runs and releases reference](/projects/financescenarios/docs/reference/runs-and-releases).
 

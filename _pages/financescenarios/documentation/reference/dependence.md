@@ -39,12 +39,12 @@ Building the matrix takes three steps:
    every factor to the one window they all share (`calibrate`).
 2. Shrink. With many factors and few shared observations, sample correlations get noisy, so by default every
    correlation is pulled toward zero by an intensity chosen from the data, following
-   [Schafer and Strimmer (2005)](https://doi.org/10.2202/1544-6115.1175), whose target D "shrinks the
-   off-diagonal entries to zero" (section 3): the shorter the shared history, the stronger the pull. A fixed
+   [Schafer and Strimmer (2005)](https://doi.org/10.2202/1544-6115.1175), whose target D shrinks the
+   off-diagonal entries to zero (section 3): the shorter the shared history, the stronger the pull. A fixed
    share instead blends toward the average correlation, as in
-   [Ledoit & Wolf (2004)](http://www.ledoit.net/Honey_2004.pdf), a target they built for stocks and say "would
-   not be appropriate if the assets came from different asset classes, such as stocks and bonds" (footnote 4),
-   which is what a factor set of rates, inflation, equities and currencies is.
+   [Ledoit & Wolf (2004)](http://www.ledoit.net/Honey_2004.pdf), a target they built for stocks and rule out for
+   assets from different classes such as stocks and bonds (footnote 4), which is what a factor set of rates,
+   inflation, equities and currencies is.
 3. Repair. A matrix pieced together from different windows may not be a valid correlation matrix, one where no mix
    of factors has a negative variance. It is moved to the nearest valid one with
    [Higham's (2002)](https://doi.org/10.1093/imanum/22.3.329) method; a valid matrix comes back unchanged.
@@ -284,8 +284,8 @@ The model functions behind this page, each with the formula it implements.
 Build the correlation matrix pair by pair: each pair of factors is correlated over the dates the two have in
 common, at the coarser of their two frequencies, rather than cutting every factor down to one shared window.
 
-This is the practice Higham (2002, section 1) describes for stock correlations, "using data drawn only from the
-days on which both stocks have data available", followed by a repair to the nearest valid matrix. Histories
+This is the practice Higham (2002, section 1) describes for stock correlations, each pair using only the days on
+which both stocks have data, followed by a repair to the nearest valid matrix. Histories
 differ a lot in length: an equity index goes back decades, a credit bucket or a quarterly-only country a few
 years. Using each pair's own overlap means one short or coarse factor only weakens the correlations it is
 part of, while two long-history factors keep their full shared record, so long-run relationships (stocks versus
@@ -343,8 +343,8 @@ A correlation estimated from a few years of monthly data is noisy, and a simulat
 builds spurious diversification or concentration into the scenarios. This sets the shrinkage intensity to the
 share of the correlations' size that is estimation noise, so pairs with a short overlap push it up and a long,
 clean history leaves the matrix close to the sample one. It is what `engine.correlation_shrinkage: auto` uses.
-Shrinking toward zero is Schafer and Strimmer's target D (section 3), whose intensity they call "remarkably
-simple" (eq. 10): the summed variance of the correlations over their summed squares. Where they estimate each
+Shrinking toward zero is Schafer and Strimmer's target D (section 3), whose intensity has a simple closed form
+(eq. 10): the summed variance of the correlations over their summed squares. Where they estimate each
 Var(r_ij) from the data (Appendix A), this uses the large-sample formula below, as pairs differ in overlap.
 
 The formula is as follows:
@@ -396,13 +396,13 @@ Blend the sample correlation matrix with one in which every pair has the average
 With many factors and limited history, sample correlations are noisy: some pairs look more related, others less,
 than they really are, purely by chance. Pulling every correlation part of the way toward the common average
 trades a little bias for much less estimation error, and gives a better-behaved matrix, so the scenarios do not
-lean on correlations the data cannot support. The target is Ledoit and Wolf's (section 3.2): "The average of all
-the sample correlations is the estimator of the common constant correlation."
+lean on correlations the data cannot support. The target is Ledoit and Wolf's (section 3.2), which estimates the
+common constant correlation as the average of all the sample correlations.
 
 The 10% default is a judgement, not a published value. Ledoit and Wolf derive the optimal intensity from the
-data (Appendix B: it "asymptotically behaves like a constant over T", so it falls as the history grows), and
-they built this target for stocks: it "would not be appropriate if the assets came from different asset
-classes, such as stocks and bonds" (footnote 4). That is why runs default to `engine.correlation_shrinkage: auto`,
+data (Appendix B: it behaves asymptotically like a constant over T, so it falls as the history grows), and they
+built this target for stocks and rule it out for assets from different classes such as stocks and bonds
+(footnote 4). That is why runs default to `engine.correlation_shrinkage: auto`,
 which shrinks a mixed set of rates, inflation and equities toward zero correlation by a data-driven intensity
 (`optimal_shrinkage_intensity`); this blend is what a fixed share selects.
 
@@ -475,9 +475,9 @@ Y_{k} = P_{U}(X_{k}),\;\; \text{X\_k with its diagonal set to 1}
 $$
 
 Where Q * Lambda * Q' is the eigendecomposition of R_k, P_S the projection onto positive semi-definite matrices
-and P_U onto those with a unit diagonal: Higham's Algorithm 3.3, in which "dS_k-1 is Dykstra's correction". The
-iteration stops once Y changes by less than `tolerance`; the default 1e-8 is the one of his section 4 example
-("With tol = 10^-8, Algorithm 3.3 converges in 19 iterations"), and 100 rounds leave ample room. In the rare
+and P_U onto those with a unit diagonal: Higham's Algorithm 3.3, in which dS_k-1 is Dykstra's correction. The
+iteration stops once Y changes by less than `tolerance`; the default 1e-8 is the one of his section 4 example,
+where Algorithm 3.3 converges in 19 iterations, and 100 rounds leave ample room. In the rare
 case the result is still not strictly valid, it is blended toward no correlation in growing steps until it is.
 
 **References:**

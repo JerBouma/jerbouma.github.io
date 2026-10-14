@@ -39,15 +39,15 @@ d(re) = a * (theta - re) * dt + sigma * dW
 Growth is pulled toward a normal level `theta` at speed `a`, with random swings of size `sigma`. It is the real estate
 process of the
 [Ahlgrim, D'Arcy & Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf)
-scenario generator (their eq. 3.18): "Using quarterly return data from NCREIF from 1978 to 2001, we estimated two
-separate Ornstein-Uhlenbeck models for real estate" (section 3, "Real Estate (Property)"). The growth rate is
+scenario generator (their eq. 3.18), which fits two separate Ornstein-Uhlenbeck models to quarterly NCREIF returns
+from 1978 to 2001 (section 3, Real Estate (Property)). The growth rate is
 modelled rather than the price index, because an index level has no normal level to return to over decades, while
 its growth rate does. Where the paper fits quarterly returns, this fits year-over-year growth sampled each quarter,
-so residential and commercial read on one scale (a judgement; FRED publishes commercial prices only as "Percent
-Change from Year Ago"). Consecutive year-over-year readings share three of their four quarters, so a
+so residential and commercial read on one scale (a judgement; FRED publishes commercial prices only as Percent
+Change from Year Ago). Consecutive year-over-year readings share three of their four quarters, so a
 quarter-to-quarter regression would read that overlap as slow reversion; each value is regressed on the value a
-year earlier instead, as the paper does for inflation: "Given the noisy fluctuations in monthly data, we selected
-the parameters for the inflation process by looking at annual regressions" (section 3).
+year earlier instead, as the paper does for inflation, where noisy monthly data led the authors to select the
+parameters from annual regressions (section 3).
 `volatility_model: garch` lets the size of the swings vary over time
 ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)), and `condition_on_business_cycle` adds a pull
 from the leading indicator, so property growth tends to slow as the economy does; the two cannot be combined.
@@ -57,8 +57,8 @@ Two data sources (`source`), both through the Finance Toolkit and both as year-o
 - `house_price` (default): the OECD residential house-price index for `country`, quarterly or yearly, no API
   key.
 - `commercial`: FRED's US Commercial Real Estate Prices
-  ([COMREPUSQ159N](https://fred.stlouisfed.org/series/COMREPUSQ159N), from the IMF), published as "Percent Change
-  from Year Ago". United States and quarterly only, and it needs a FRED API key.
+  ([COMREPUSQ159N](https://fred.stlouisfed.org/series/COMREPUSQ159N), from the IMF), published as Percent Change
+  from Year Ago. United States and quarterly only, and it needs a FRED API key.
 
 Neither is the appraisal-based NCREIF index the paper was calibrated on, which has no open equivalent.
 
