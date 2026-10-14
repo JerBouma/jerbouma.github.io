@@ -501,8 +501,16 @@
     var fx = formatter(chart.xformat), fy = formatter(chart.yformat);
     var xs = chart.points.map(function (pt) { return pt.x; });
     var xMin = Math.min.apply(null, xs), xSpan = Math.max.apply(null, xs) - xMin;
+    // highlight: one point's index, or a list of them (e.g. the stocks that pass a screen)
+    var marked = [].concat(chart.highlight === undefined ? [] : chart.highlight);
     function draw() {
       var c = axisColors();
+      // lines: dashed thresholds, e.g. [{"axis": "x", "value": 20, "label": "P/E 20"}]
+      var lines = (chart.lines || []).map(function (l) {
+        var d = { name: l.label || '', label: { formatter: l.label || '', color: c.muted, fontSize: 11, position: l.axis === 'x' ? 'end' : 'insideEndTop' } };
+        d[l.axis === 'x' ? 'xAxis' : 'yAxis'] = l.value;
+        return d;
+      });
       inst.setOption({
         animationDuration: 600,
         textStyle: { fontFamily: 'inherit' },
@@ -516,7 +524,7 @@
           // points in the right-hand third carry their name on the left, so the plot
           // can use the full width instead of keeping a margin free for labels
           data: chart.points.map(function (pt, i) {
-            var d = { name: pt.name, value: [pt.x, pt.y], itemStyle: { color: i === chart.highlight ? PALETTE[2] : PALETTE[0], opacity: 0.9 } };
+            var d = { name: pt.name, value: [pt.x, pt.y], itemStyle: { color: marked.indexOf(i) >= 0 ? PALETTE[2] : PALETTE[0], opacity: 0.9 } };
             // a name that would run past the right edge of the plot goes on the left
             var plotW = inst.getWidth() - 80;
             var px = xSpan > 0 ? (pt.x - xMin) / xSpan * plotW : 0;
@@ -529,7 +537,8 @@
           }),
           label: { show: true, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return p.data.name; } },
           // points close together: push their names apart instead of printing them over each other
-          labelLayout: { moveOverlap: 'shiftY' }
+          labelLayout: { moveOverlap: 'shiftY' },
+          markLine: lines.length ? { silent: true, symbol: 'none', lineStyle: { type: 'dashed', width: 1.5, color: c.muted }, data: lines } : undefined
         }]
       }, true);
     }

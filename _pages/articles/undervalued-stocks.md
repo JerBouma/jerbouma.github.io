@@ -2,10 +2,10 @@
 title: Screening for Undervalued Stocks with the Finance Toolkit
 seo_title: "Screening for Undervalued Stocks in Python"
 date: 2026-06-14
-last_modified_at: 2026-10-02
+last_modified_at: 2026-10-14
 permalink: /articles/screening-undervalued-stocks-finance-toolkit
-excerpt: "How to build a systematic stock screen with the Finance Toolkit: pull valuation multiples across a universe of stocks, filter on several metrics at once and add profitability metrics to tell real value from value traps."
-description: "Build a Python-based stock screener using P/E, EV/EBITDA, ROIC, and gross margins with the Finance Toolkit."
+excerpt: "Merck traded at 14 times its fiscal 2025 earnings and Walmart at 41 times, yet Merck earned more on its capital. A two-pass screen of 15 large caps, valuation first and quality second, shows how to separate cheap from merely low-priced."
+description: "A stock screen in Python on P/E, EV/EBITDA, ROIC and gross margins across 15 large caps, separating real value from value traps with the Finance Toolkit."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -14,23 +14,21 @@ tags: [Fundamental Analysis]
 share: true
 ---
 
-With thousands of publicly listed companies, finding undervalued stocks by hand is impractical. A systematic screen makes it manageable: you pull valuation multiples across an entire universe, filter on several criteria at once, and overlay profitability metrics to separate real value from value traps. With the Finance Toolkit, each of those steps takes a few lines of Python.
+At the end of their 2025 fiscal years, Merck traded at 14.2 times earnings and Walmart at 40.6 times. On the multiple alone, Merck is the bargain and Walmart the expensive one. Yet Merck also earned more on its capital: a return on invested capital of 19.4%, against 13.2% for Walmart. A low multiple and a strong business at the same time is what a value screen is looking for, and it is rarer than either on its own.
 
-In this article I walk through a complete screening process, from defining the universe to a final shortlist. It uses 15 stocks across five sectors to illustrate the logic. A real screen would cast a wider net, which the Discovery module also supports.
+The difficulty is that a low multiple is just as often a warning. Stocks get cheap because investors expect earnings to fall, the balance sheet to strain or the industry to shrink, the classic value trap. In this article I build a two-pass screen on 15 large caps across technology, healthcare, consumer staples, financials and energy: valuation multiples first, then profitability to test whether the low price is deserved. It ends with a watchlist of two names, and with the reasons the other thirteen dropped out. A real screen would cast a wider net, which the [Discovery module](/projects/financetoolkit/docs/discovery) supports, but fifteen names are enough to show the logic.
 
 **For more information, see the [Finance Toolkit on GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
-> **Try this with the Finance Toolkit MCP:** *"Screen 15 stocks across technology, healthcare, consumer staples, financials, and energy for P/E below 20, EV/EBITDA below 18, and ROIC above 10%. Show the valuation and quality metrics side by side."*
-
 ## Setting Things Up
 
-Start by installing the Finance Toolkit:
+Start by installing, or updating, the Finance Toolkit:
 
 ```bash
-pip install financetoolkit
+pip install financetoolkit -U
 ```
 
-Then import the library and define a universe of tickers. The example below uses 15 stocks across technology, healthcare, consumer staples, financials, and energy.
+Then import the library and define the universe: 15 stocks across five sectors.
 
 ```python
 import pandas as pd
@@ -50,14 +48,14 @@ screener = Toolkit(
 )
 ```
 
-Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history; a paid plan gives access to deeper history and a larger universe.
+Everything below uses fiscal year 2025, the latest year all fifteen companies have reported, with data retrieved on October 14, 2026. Fiscal years don't line up: Microsoft's 2025 ends in June, Apple's in September and Walmart's in January 2026. Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history; a paid plan gives access to deeper history and a larger universe.
 
-## Step 1: Pulling Valuation Multiples
+## The Valuation Map: Five Stocks Are Cheap on Two Measures
 
-The first pass uses four ratios to get a broad picture of relative cheapness. P/E and EV/EBITDA are the most common entry points; P/FCF and P/B provide cross-checks that are harder to manipulate.
+The first pass uses four [valuation ratios](/projects/financetoolkit/docs/ratios). P/E (price over earnings per share) and EV/EBITDA (enterprise value, so equity plus net debt, over operating earnings before depreciation) are the usual entry points. Price to free cash flow and price to book are cross-checks that accounting choices move less easily.
 
 ```python
-# Capture the most recent annual date, in this case 2025
+# Fiscal year 2025 for every company
 pe = screener.ratios.get_price_to_earnings_ratio()["2025"]
 pfcf = screener.ratios.get_price_to_free_cash_flow_ratio()["2025"]
 pb = screener.ratios.get_price_to_book_ratio()["2025"]
@@ -76,60 +74,65 @@ Which returns:
 
 | Ticker | P/E | P/FCF | P/B | EV/EBITDA |
 |--------|----:|------:|----:|----------:|
-| INTC | - | - | 1.6 | 19.1 |
-| BAC | 14.3 | 32.9 | 1.5 | 14.4 |
-| MRK | 14.5 | 21.4 | 5.0 | 10.2 |
-| JPM | 16.2 | 8.9 | 2.6 | 18.7 |
-| XOM | 18.0 | 21.9 | 2.0 | 9.3 |
-| PFE | 18.3 | 15.6 | 1.6 | 9.4 |
-| JNJ | 18.8 | 25.5 | 6.2 | 16.0 |
-| CVX | 23.0 | 17.0 | 1.5 | 8.9 |
-| KO | 23.0 | 56.9 | 9.4 | 22.9 |
-| IBM | 26.5 | 24.3 | 8.6 | 21.8 |
-| META | 28.1 | 36.8 | 7.8 | 17.1 |
-| GOOGL | 29.0 | 52.2 | 9.2 | 25.7 |
-| MSFT | 35.5 | 50.4 | 10.5 | 22.7 |
-| AAPL | 36.4 | 41.3 | 55.3 | 28.7 |
-| WMT | 46.3 | 71.1 | 9.9 | 22.6 |
+| INTC | -670.9 | -36.2 | 1.6 | 23.6 |
+| BAC | 14.1 | 32.4 | 1.5 | 14.2 |
+| MRK | 14.2 | 20.9 | 4.9 | 10.0 |
+| JPM | 15.9 | -6.0 | 2.6 | 18.5 |
+| PFE | 17.4 | 14.8 | 1.6 | 9.1 |
+| XOM | 17.6 | 21.5 | 2.0 | 9.1 |
+| JNJ | 18.5 | 25.1 | 6.1 | 15.8 |
+| CVX | 22.4 | 16.6 | 1.5 | 8.6 |
+| KO | 22.6 | 55.9 | 9.2 | 22.6 |
+| IBM | 26.0 | 22.8 | 8.4 | 18.8 |
+| META | 28.0 | 36.8 | 7.8 | 17.1 |
+| GOOGL | 28.9 | 52.1 | 9.2 | 25.6 |
+| MSFT | 35.2 | 50.1 | 10.4 | 22.6 |
+| AAPL | 36.3 | 41.2 | 55.2 | 28.6 |
+| WMT | 40.6 | 59.5 | 8.9 | 21.6 |
 
-The spread is wide: BAC and MRK trade below 15x earnings while WMT trades at 46x. INTC appears at the top of the sort only because its P/E is negative (the company reported a net loss), which is why sorting by a single metric is misleading without additional filters.
+The spread is wide: Bank of America and Merck trade at about 14 times earnings, Walmart at 40.6. Intel sorts to the top only because its P/E is negative: a net loss so small that the ratio runs to -670.9, which means nothing. That is why sorting on a single metric misleads without further filters.
 
-A few other readings are worth noting. KO trades at 57x free cash flow despite a relatively modest P/E of 23x, suggesting either elevated CapEx or capital structure effects. The P/B of 55.3x for AAPL reflects that Apple has bought back so much equity that it has almost none left, which is a reminder that P/B is most useful for asset-heavy sectors like financials and energy.
+The cross-checks add their own warnings. Coca-Cola trades at 55.9 times free cash flow on a P/E of 22.6, a gap that points at cash going into capital spending and working capital rather than into free cash flow. Apple's price to book of 55.2 reflects years of buybacks that left it with little book equity, a reminder that P/B works best for asset-heavy businesses such as banks and energy companies. And JPMorgan's negative P/FCF says more about how a bank's cash flow statement moves with its loan book and trading positions than about its value.
 
-## Step 2: Applying the Filter
+Plotting the two main multiples against each other shows where the cheap corner is:
 
-A single-metric screen is easy to game by accounting choices, one-time charges, or unusual capital structures. The approach here requires two metrics to pass simultaneously: a P/E below 20x and an EV/EBITDA below 18x, with negative earners excluded.
+{% include ft-chart.html id="screen-valuation" src="/assets/data/article-charts.json" label="P/E against EV/EBITDA for 14 large caps, fiscal 2025" %}
+
+## The Filter: Requiring Two Multiples to Agree
+
+A single multiple is easy to distort through one-time charges, accounting choices or an unusual capital structure. The filter therefore requires two to pass at the same time: a P/E below 20 and an EV/EBITDA below 18, with negative earners excluded. The dashed lines in the chart above are these thresholds.
 
 ```python
-# Apply thorough filtering
+# Both multiples must pass
 value_candidates = valuation[
     (valuation["P/E"] > 0) &
     (valuation["P/E"] < 20) &
     (valuation["EV/EBITDA"] < 18)
 ]
 
-# List the available companies
+# List the remaining companies
 list(value_candidates.index)
 ```
 
 Which returns:
 
 ```
-['BAC', 'JNJ', 'MRK', 'PFE', 'XOM']
+['BAC', 'MRK', 'PFE', 'XOM', 'JNJ']
 ```
 
-JPM passes the P/E filter but misses on EV/EBITDA at 18.7x, marginally above the threshold. CVX passes on EV/EBITDA (8.9x) but its P/E of 23x falls just outside the cut. Five stocks pass both filters: BAC, JNJ, MRK, PFE, and XOM.
+Five stocks pass both filters. The near misses are as informative as the passes. JPMorgan clears the P/E filter but misses on EV/EBITDA at 18.5, just above the threshold. Chevron is the mirror image: the lowest EV/EBITDA of the fifteen at 8.6, but a P/E of 22.4 after its 2025 earnings fell.
 
-Note that EV/EBITDA is less meaningful for banks, where the concept of enterprise value and operating earnings work differently from industrial companies. JPM at 16x P/E with a P/FCF of 8.9x deserves separate consideration using bank-specific metrics like price-to-tangible-book and return on equity.
+**For the two banks, EV/EBITDA is a poor fit**: deposits and debt are their raw material rather than their financing, so enterprise value and operating earnings don't mean what they mean for an industrial company. Bank of America passes on paper, and JPMorgan deserves a separate look with bank-specific measures such as price to tangible book and return on equity.
 
-## Step 3: The Quality Overlay
+## The Quality Test: Which Low Multiples Are Deserved?
 
-A low valuation does not automatically make a stock undervalued. Stocks often trade at low multiples because investors expect deteriorating earnings, balance sheet stress, or structural decline, which is the classic value trap. Before acting on any of the five candidates, the profitability picture needs to hold up.
+A low valuation doesn't make a stock undervalued. Before any of the five goes on a watchlist, its profitability has to hold up. Three [profitability ratios](/projects/financetoolkit/docs/ratios) do most of the work. Return on equity (ROE) is net income over average shareholders' equity. Return on invested capital (ROIC) here is net income over the average of debt plus equity, so it measures the return on all the capital the business uses, regardless of how it is financed. The gross margin shows how much of each dollar of sales is left after the direct cost of producing it, a rough measure of pricing power.
 
 ```python
-# Collect data from the most recent year
+# Fiscal year 2025 for every company
 roe = screener.ratios.get_return_on_equity()["2025"]
-roic = screener.ratios.get_return_on_invested_capital()["2025"]
+roic = screener.ratios.get_return_on_invested_capital(
+    dividend_adjusted=False)["2025"]
 gross_margin = screener.ratios.get_gross_margin()["2025"]
 
 # Combine them into one DataFrame
@@ -139,53 +142,55 @@ quality = pd.DataFrame({
     "Gross Margin": gross_margin
 })
 
-# Keep the candidates from Step 2
+# Keep the five candidates from the filter
 quality = quality.loc[value_candidates.index]
-quality
 ```
+
+The `dividend_adjusted=False` matters for a value screen. By default the Toolkit subtracts dividends from net income, a measure of what the company reinvests, and that would penalise exactly the steady dividend payers a value screen tends to find. The second tab adds the same ROIC from 2022 on, because a value trap is usually a trend before it shows up in a single year.
 
 Which returns:
 
-| Ticker | ROE | ROIC | Gross Margin |
-|--------|----:|-----:|-------------:|
-| BAC | 9.7% | 4.8% | 56.1% |
-| JNJ | 35.0% | 33.0% | 72.8% |
-| MRK | 36.9% | 28.1% | 71.8% |
-| PFE | 8.8% | 11.3% | 70.3% |
-| XOM | 10.7% | 14.8% | 21.7% |
+{% include ft-chart.html id="screen-quality" src="/assets/data/article-charts.json" label="Return on equity, ROIC and gross margin of the five value candidates" %}
 
-This table separates the candidates. JNJ and MRK both earn above 28% on invested capital with gross margins above 71%. Their low valuations come from broader pressure on pharmaceutical stocks, patent cliff concerns (MRK), and litigation overhangs (JNJ) rather than from a deteriorating business, and the underlying profitability is intact.
+The candidates split into two groups. Johnson & Johnson and Merck earn 22.6% and 19.4% on invested capital with gross margins of 67.9% and 72.0%. Their low multiples reflect pressure across pharmaceuticals, with Merck's Keytruda patent expiry ahead and Johnson & Johnson's litigation, rather than a weakening business. Merck's dip to 0.5% in 2023 was a one-off: a large acquisition charge for research in progress, after which ROIC was back above 21% the following year.
 
-XOM earns 14.8% ROIC, which is solid for an energy company operating with large fixed asset bases. The thin gross margin of 21.7% reflects the commodity economics of oil refining and distribution rather than a structural weakness. The risk here is cyclical: energy earnings compress when oil prices fall.
+Exxon Mobil and Pfizer are the opposite story when you look at the trend. Exxon's ROIC fell every year, from 23.9% in 2022 to 9.3% in 2025, as oil and gas prices came down from their 2022 peak; its gross margin of 21.7% reflects the commodity economics of refining and distribution. Pfizer's ROIC collapsed from 25.6% in 2022 to 1.5% in 2023 once COVID vaccine revenue ran off, and has stayed around 5% since. A gross margin of 70.3% says the underlying drug business still has pricing power, but **a low multiple on earnings that have already reset is not the same as a low multiple on earnings that are intact**.
 
-PFE at 11.3% ROIC is borderline. Its gross margin of 70.3% confirms the underlying pharmaceutical business generates strong economics, but the headline return metrics are depressed by the revenue reset after COVID vaccine revenues ran off. Whether this is a real recovery opportunity or a prolonged restructuring depends on the pipeline.
+Bank of America earns 3.6% on invested capital, which would disqualify an industrial company. For a bank funded largely by deposits, ROE of 9.7% is the more relevant measure, and it suggests the market's discount is fair rather than an obvious bargain.
 
-BAC at 4.8% ROIC would look like a disqualifier in an industrial context. For a bank, where assets are funded by deposits rather than equity, ROE of 9.7% is the more relevant metric. That said, it suggests the market's discount is modest rather than an obvious bargain.
+## The Shortlist: Where Quality Comes Cheap
 
-## Step 4: The Final Screen
-After narrowing the universe down to fundamentally sound businesses, the final screen applies a strict, if somewhat arbitrarily chosen, Return on Invested Capital (ROIC) threshold.
+The final step applies a quality threshold: an ROIC above 10%. The level is a judgment call; it roughly separates businesses that earn well above a typical cost of capital from those that don't.
 
 ```python
-# Apply a strict threshold on ROIC
+# Keep the candidates that earn more than 10% on invested capital
 final_screen = quality[
-  quality["ROIC"] > 0.10].sort_values("ROIC", ascending=False)
+    quality["ROIC"] > 0.10].sort_values("ROIC", ascending=False)
 ```
 
 Which returns:
 
 | Ticker | ROE | ROIC | Gross Margin |
 |--------|----:|-----:|-------------:|
-| JNJ | 35.0% | 33.0% | 72.8% |
-| MRK | 36.9% | 28.1% | 71.8% |
-| XOM | 10.7% | 14.8% | 21.7% |
-| PFE | 8.8% | 11.3% | 70.3% |
+| JNJ | 35.0% | 22.6% | 67.9% |
+| MRK | 36.9% | 19.4% | 72.0% |
 
-BAC falls out at 4.8% ROIC under the industrial threshold, though the banking context warrants separate analysis. The remaining four have quite different risk profiles.
+Two names remain. Exxon Mobil misses at 9.3%, which shows how much a hard cutoff decides: a year earlier it would have passed. Pfizer and Bank of America fall away clearly.
 
-JNJ and MRK are the strongest combination of value and quality in this screen. Both earn well above their cost of capital, carry strong franchise positions, and trade at multiples that imply no earnings growth, which is conservative given both have significant product pipelines. XOM offers commodity exposure with decent capital efficiency and a low EV/EBITDA of 9.3x, appropriate for investors comfortable with oil cycle risk. PFE is the speculative recovery candidate: the business model is intact and the discount is real, but the recovery timeline is uncertain.
+Placing all fifteen stocks on a map of quality against price shows what the screen does:
 
-## Conclusion
+{% include ft-chart.html id="screen-final" src="/assets/data/article-charts.json" label="ROIC against EV/EBITDA for all 15 stocks, fiscal 2025" %}
 
-Each of these names requires analysis the Toolkit can support but cannot automate: debt maturity profiles, near-term earnings catalysts, management capital allocation track records, and sector-specific risk factors. MRK’s patent cliff on Keytruda is a known risk not captured in trailing ROIC. XOM’s capital expenditure plans depend heavily on a commodity price path no screen can forecast.
+Quality is not scarce in this universe. Apple (61.9%), Alphabet (32.0%), Microsoft (24.8%), Meta (22.7%) and Coca-Cola (17.1%) all earn more on their capital than the 10% threshold, but at 17 to 29 times EBITDA. Johnson & Johnson and Merck are the two that combine an ROIC near 20% with EV/EBITDA of 15.8 and 10.0. In the bottom left, Pfizer, Chevron and Exxon Mobil are cheaper still, at 8.6 to 9.1 times EBITDA, but earn 5.0% to 9.3% on their capital.
 
-The output of this screen is a watchlist rather than a buy list. What it does well is eliminate the 11 stocks where the combination of price and quality does not justify closer attention.
+## Conclusion: A Watchlist, Not a Buy List
+
+The screen reduced fifteen stocks to two, and the reasons the others dropped out are as useful as the result: Intel and Pfizer on earnings that have collapsed or reset, Chevron and Exxon Mobil on falling returns as commodity prices normalised, the banks on metrics that don't fit them, and most of technology and consumer staples on price rather than quality.
+
+What the screen can't tell you is whether the market's reasons for the low multiples are right. Merck's trailing ROIC says nothing about revenue after Keytruda loses patent protection, and Johnson & Johnson's says nothing about the outcome of its litigation. Those need analysis the Toolkit can support but not automate: pipelines, debt maturities, capital allocation and the catalysts in the next few quarters. The thresholds are also choices: an ROIC limit of 9% instead of 10% would have kept Exxon Mobil on the list.
+
+The output of this screen is a watchlist rather than a buy list. What it does well is take thirteen names off the desk quickly, for reasons you can check, so the time goes to the two where price and quality point the same way. This is an illustration of a method, not investment advice.
+
+> **Try this with the Finance Toolkit MCP:** *"Screen AAPL, MSFT, INTC, IBM, JNJ, PFE, MRK, KO, WMT, JPM, BAC, XOM, CVX, META and GOOGL for fiscal 2025 P/E below 20 and EV/EBITDA below 18. For the ones that pass, show return on equity, ROIC without the dividend adjustment and gross margin, and the ROIC trend since 2022. Which low multiples look deserved?"*
+
+{% include ft-charts-script.html %}
