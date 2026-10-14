@@ -45,15 +45,16 @@ Each builds on the previous one: with the turbulence terms at zero, KNW with sto
 {% raw %}
 <div class="mermaid">
 flowchart TD
-    v["Turbulence v (hidden, shared)"]
-    r[Interest rate]
-    pi[Inflation]
-    eq["Equity (optional)"]
-    v -->|"drift and volatility"| r
-    v -->|"drift and volatility"| pi
+    v["<b>Turbulence v</b><small>hidden, shared by all three</small>"]
+    r["<b>Interest rate</b>"]
+    pi["<b>Inflation</b>"]
+    eq["<b>Equity</b><small>optional</small>"]
+    v -->|drift and volatility| r
+    v -->|drift and volatility| pi
     v -->|volatility| eq
-    r <-->|"last period's level"| pi
-    r -->|"drift: short rate plus premium"| eq
+    r <-->|last period's level| pi
+    r -->|drift: short rate plus premium| eq
+    class v accent
 </div>
 {% endraw %}
 
