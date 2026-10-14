@@ -995,16 +995,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 // =======================================================
-// ── Nav visibility utilities ───────────────────────────────
-// Used in masthead.html to show different items per breakpoint.
-.show-on-desktop { display: list-item !important; }
-.show-on-mobile  { display: none !important; }
-
-@media (max-width: 1023px) {
-  .show-on-desktop { display: none !important; }
-  .show-on-mobile  { display: list-item !important; }
-}
-
+// =======================================================
 //  Masthead / Navigation — Full Overhaul
 // =======================================================
 
@@ -1053,46 +1044,72 @@ h1, h2, h3, h4, h5, h6 {
 
 // ── Inner nav row ──────────────────────────────────────────
 .masthead__menu,
-#site-nav,
-.greedy-nav {
+#site-nav {
   background: transparent !important;
-  background-color: transparent !important;
   border: none !important;
 }
 
-.greedy-nav {
-  display: flex !important;
-  align-items: center !important;
-  width: 100% !important;
-  height: 100% !important;
-  gap: 2px;
-  overflow: visible !important;
-  position: relative !important;
+.site-nav {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
-
-
 
 // ── Logo ──────────────────────────────────────────────────
 .site-logo {
   display: none !important;
 }
 
-// ── Site title — signature font ──────────────────────
+// ── Site title: a monogram tile and the name in the site's type ──
 .masthead .site-title {
-  display: inline-block !important;
-  font-family: 'Mr Dafoe', cursive !important;
-  font-size: 1.5rem !important;
-  font-weight: 300 !important;
-  color: var(--text-primary) !important;
-  letter-spacing: 0.03em !important;
-  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 10px;
   margin-right: 20px !important;
+  color: var(--text-primary) !important;
+  text-decoration: none !important;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
   line-height: 1 !important;
 
-  &:hover {
-    color: var(--accent-color) !important;
+  &::before {
+    display: none !important;
+  }
+}
+
+.masthead .site-title__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14), 0 4px 12px -4px rgba(37, 99, 235, 0.6);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.masthead .site-title__name {
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  transition: color 0.15s ease;
+}
+
+.masthead .site-title:hover {
+  .site-title__mark {
+    transform: translateY(-1px);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 6px 16px -4px rgba(37, 99, 235, 0.7);
+  }
+
+  .site-title__name {
+    color: var(--accent-color);
   }
 }
 
@@ -1101,469 +1118,496 @@ body.custom-splash .masthead .site-title {
   display: none !important;
 }
 
-// ── Nav links (visible) ────────────────────────────────────
-.masthead .visible-links {
-  display: flex !important;
-  align-items: center !important;
-  gap: 2px !important;
-  list-style: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  flex: 1 !important;
-  overflow: visible !important;
+// ── Site navigation ────────────────────────────────────────
+// One menu (_includes/masthead.html): a bar with dropdown cards on desktop, a sheet
+// with expandable sections on phones. Section pages are set apart from the
+// sections by a guide line, and the current page carries the accent.
+:root {
+  --nav-sheet-bg: #0f172a;
+  --nav-hover: rgba(148, 163, 184, 0.1);
+  --nav-accent-soft: rgba(56, 189, 248, 0.12);
+  --nav-guide: rgba(148, 163, 184, 0.22);
+}
 
-  // On mobile: become a full-width dropdown drawer (hidden until .mobile-open)
-  @media (max-width: 1023px) {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 0 !important;
-    position: fixed !important;
-    top: 60px !important;
-    left: 0 !important;
-    width: 100% !important;
-    border-bottom: 1px solid var(--masthead-border) !important;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35) !important;
-    padding: 8px !important;
-    z-index: 9998 !important;
-    flex: none !important;
-    max-height: 0 !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transition: max-height 0.28s ease, opacity 0.2s ease !important;
+:root[data-theme="light"] {
+  --nav-sheet-bg: #ffffff;
+  --nav-hover: rgba(15, 23, 42, 0.05);
+  --nav-accent-soft: rgba(2, 132, 199, 0.1);
+  --nav-guide: rgba(15, 23, 42, 0.14);
+}
 
-    &.mobile-open {
-      max-height: 80vh !important;
-      overflow-y: auto !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-    }
+.masthead .site-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  margin: 0 0 0 auto;
+  padding: 0;
 
-    > li {
-      width: 100% !important;
-
-      > a {
-        padding: 11px 16px !important;
-        font-size: 0.92rem !important;
-        border-radius: 8px !important;
-        width: 100% !important;
-        display: block !important;
-      }
-    }
+  > li {
+    margin: 0;
+    padding: 0;
+    position: relative;
   }
 
-  >li {
-    margin: 0 !important;
-    padding: 0 !important;
-    list-style: none !important;
-    position: relative !important;
-  }
-
-  a,
-  .dropdown-toggle {
-    color: var(--text-secondary) !important;
-    font-weight: 500 !important;
-    font-size: 0.88rem !important;
-    letter-spacing: 0.1px !important;
-    padding: 6px 14px !important;
-    border-radius: 6px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 5px !important;
-    text-decoration: none !important;
-    white-space: nowrap !important;
-    transition: color 0.18s ease, background 0.18s ease !important;
-    line-height: 1 !important;
-    border: none !important;
-    background: transparent !important;
-
-    i.fa-chevron-down {
-      font-size: 0.6rem !important;
-      color: var(--text-muted) !important;
-      transition: transform 0.2s ease, color 0.18s ease !important;
-    }
-
-    &:hover {
-      color: var(--accent-color) !important;
-      background: rgba(56, 189, 248, 0.1) !important;
-
-      i.fa-chevron-down {
-        color: var(--accent-color) !important;
-        transform: rotate(180deg) !important;
-      }
-    }
-  }
-
-  .active>a,
-  .active>.dropdown-toggle {
-    color: var(--accent-color) !important;
-    background: rgba(56, 189, 248, 0.08) !important;
+  a::before {
+    display: none !important; // the theme's underline animation
   }
 }
 
-// ── Mobile accordion (sublinks inside hamburger drawer) ────
-.mobile-accordion {
-  width: 100%;
-
-  .mobile-accordion__row {
-    display: flex !important;
-    align-items: stretch !important;
-    width: 100% !important;
-  }
-
-  .mobile-accordion__link {
-    flex: 1 !important;
-    padding: 11px 12px 11px 16px !important;
-    font-size: 0.92rem !important;
-    font-weight: 500 !important;
-    color: var(--text-secondary) !important;
-    border-radius: 8px 0 0 8px !important;
-    text-decoration: none !important;
-    transition: background 0.15s ease, color 0.15s ease !important;
-    white-space: nowrap !important;
-    display: block !important;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.06) !important;
-      color: var(--text-primary) !important;
-    }
-
-    :root[data-theme="light"] &:hover {
-      background: rgba(0, 0, 0, 0.04) !important;
-    }
-  }
-
-  .mobile-accordion__chevron {
-    flex-shrink: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 40px !important;
-    background: transparent !important;
-    border: none !important;
-    border-left: 1px solid var(--masthead-border) !important;
-    border-radius: 0 8px 8px 0 !important;
-    color: var(--text-muted) !important;
-    cursor: pointer !important;
-    transition: background 0.15s ease, color 0.15s ease !important;
-
-    .mobile-accordion__icon {
-      font-size: 0.65rem !important;
-      transition: transform 0.2s ease !important;
-    }
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.06) !important;
-      color: var(--accent-color) !important;
-    }
-
-    &[aria-expanded="true"] {
-      color: var(--accent-color) !important;
-      .mobile-accordion__icon { transform: rotate(180deg) !important; }
-    }
-  }
-
-  .mobile-accordion__sub {
-    list-style: none !important;
-    margin: 0 !important;
-    padding: 0 0 4px 0 !important;
-    max-height: 0 !important;
-    overflow: hidden !important;
-    transition: max-height 0.25s ease !important;
-
-    &.open { max-height: 600px !important; }
-
-    li { margin: 0 !important; }
-
-    a {
-      display: block !important;
-      padding: 9px 16px 9px 30px !important;
-      font-size: 0.85rem !important;
-      color: var(--text-muted) !important;
-      border-radius: 6px !important;
-      text-decoration: none !important;
-      transition: background 0.15s ease, color 0.15s ease !important;
-
-      &:hover {
-        background: rgba(56, 189, 248, 0.08) !important;
-        color: var(--text-primary) !important;
-      }
-    }
-  }
-}
-
-// ── Theme toggle button ────────────────────────────────────
-.masthead .masthead__menu-item button.theme__toggle,
-.theme__toggle {
-  background: transparent !important;
-  border: none !important;
-  color: var(--text-muted) !important;
-  font-size: 0.9rem !important;
-  cursor: pointer !important;
-  padding: 7px 10px !important;
-  border-radius: 6px !important;
-  transition: color 0.18s ease, background 0.18s ease !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 !important;
+.masthead .nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  color: var(--text-secondary) !important;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none !important;
+  transition: color 0.15s ease, background 0.15s ease;
 
   &:hover {
-    color: var(--accent-color) !important;
-    background: rgba(255, 255, 255, 0.06) !important;
+    color: var(--text-primary) !important;
+    background: var(--nav-hover);
   }
 }
 
-// ── Dropdown menus ─────────────────────────────────────────
+// the section you are in: accent text and a short bar under it
+.masthead .is-active > .nav-link,
+.masthead .is-active > .nav-group__row > .nav-link {
+  color: var(--text-primary) !important;
 
-// Suppress the theme's ::before underbar animation on all nav links
-.masthead .visible-links a::before,
-.masthead .dropdown-content a::before,
-.masthead .dropdown-submenu-content a::before {
-  display: none !important;
-}
-
-.masthead .dropdown {
-  position: relative !important;
-
-  &:hover .dropdown-content {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateX(-50%) translateY(0) !important;
-    pointer-events: auto !important;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 2px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent-color);
   }
 }
 
-.masthead .dropdown-content {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-  position: absolute !important;
-  top: 100% !important;
-  left: 50% !important;
-  transform: translateX(-50%) translateY(-6px) !important;
-  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s !important;
-  min-width: 200px !important;
-  background: var(--card-bg) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid var(--card-border) !important;
-  border-radius: 10px !important;
-  padding: 6px !important;
-  padding-top: 12px !important;
-  list-style: none !important;
-  margin: 0 !important;
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.4) !important;
-  z-index: 1000 !important;
+.masthead .nav-group__row {
+  display: flex;
+  align-items: center;
 
-  // Transparent bridge so hovering from the nav item into the panel doesn't break
+  .nav-link {
+    padding-right: 4px;
+  }
+}
+
+.masthead .nav-group__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    color: var(--text-primary);
+  }
+
+  &:focus { outline: none; }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: -2px;
+  }
+}
+
+.masthead .nav-group.is-open .nav-group__toggle svg {
+  transform: rotate(180deg);
+}
+
+// a dropdown: a card under its section, aligned to it
+.masthead .nav-group__menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  z-index: 1000;
+  min-width: 250px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--nav-sheet-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  box-shadow: 0 24px 48px -16px rgba(2, 6, 23, 0.55), 0 2px 6px rgba(2, 6, 23, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s;
+
+  // keeps the dropdown open while the pointer crosses the gap
   &::before {
-    content: '';
-    position: absolute !important;
-    top: -10px !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 10px !important;
-    background: transparent !important;
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 0;
+    right: 0;
+    height: 12px;
   }
 
   li {
-    margin: 0 !important;
-    padding: 0 !important;
-    list-style: none !important;
+    margin: 0;
+    padding: 0;
   }
 
   a {
+    display: block;
+    padding: 9px 12px;
+    border-radius: 8px;
     color: var(--text-secondary) !important;
-    font-size: 0.85rem !important;
-    font-weight: 500 !important;
-    padding: 8px 14px 8px 12px !important;
-    border-left: 2px solid transparent !important;
-    border-radius: 6px !important;
-    display: block !important;
+    font-size: 0.87rem;
+    font-weight: 450;
+    line-height: 1.3;
+    white-space: nowrap;
     text-decoration: none !important;
-    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease !important;
-    white-space: nowrap !important;
+    transition: color 0.12s ease, background 0.12s ease;
 
     &:hover {
-      background: rgba(56, 189, 248, 0.15) !important;
+      color: var(--text-primary) !important;
+      background: var(--nav-hover);
+    }
+
+    &.is-current {
       color: var(--accent-color) !important;
-      text-decoration: none !important;
-      border-left: 2px solid var(--accent-color) !important;
-      padding-left: 12px !important;
+      background: var(--nav-accent-soft);
+      font-weight: 550;
     }
   }
 }
 
-// ── Nested submenu ─────────────────────────────────────────
-.masthead .dropdown-submenu {
-  position: relative !important;
+:root[data-theme="light"] .masthead .nav-group__menu {
+  box-shadow: 0 20px 40px -16px rgba(15, 23, 42, 0.18), 0 2px 6px rgba(15, 23, 42, 0.06);
+}
 
-  > a i {
-    float: right !important;
-    margin-top: 4px !important;
-    font-size: 0.65rem !important;
-    opacity: 0.6;
-    transition: transform 0.15s ease, opacity 0.15s ease;
-  }
+// the section's name above its pages, like the "Sections" label in the sidebars
+.masthead .nav-group__label {
+  padding: 8px 12px 6px !important;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
 
-  &:hover > a i {
+.masthead .nav-group.is-open .nav-group__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+@media (hover: hover) and (min-width: 1024px) {
+  .masthead .nav-group:hover .nav-group__menu {
     opacity: 1;
-    transform: translateX(2px);
+    visibility: visible;
+    transform: none;
   }
 
-  .dropdown-submenu-content {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 100% !important;
-    transform: translateX(-6px) !important;
-    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s !important;
-    min-width: 220px !important;
-    background: var(--card-bg) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    border: 1px solid var(--card-border) !important;
-    border-radius: 10px !important;
-    padding: 6px !important;
-    list-style: none !important;
-    margin: 0 !important;
-    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.4) !important;
-    z-index: 1001 !important;
-
-    // Transparent bridge on the left so mouse travel between panel and submenu stays continuous
-    &::before {
-      content: '';
-      position: absolute !important;
-      top: 0 !important;
-      left: -10px !important;
-      width: 10px !important;
-      height: 100% !important;
-      background: transparent !important;
-    }
-
-    li {
-      margin: 0 !important;
-      padding: 0 !important;
-      list-style: none !important;
-    }
-
-    a {
-      color: var(--text-secondary) !important;
-      font-size: 0.85rem !important;
-      font-weight: 500 !important;
-      padding: 8px 14px 8px 12px !important;
-      border-left: 2px solid transparent !important;
-      border-radius: 6px !important;
-      display: block !important;
-      text-decoration: none !important;
-      white-space: nowrap !important;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease !important;
-
-      &:hover {
-        background: rgba(56, 189, 248, 0.15) !important;
-        color: var(--accent-color) !important;
-        text-decoration: none !important;
-        border-left: 2px solid var(--accent-color) !important;
-        padding-left: 12px !important;
-      }
-    }
-  }
-
-  &:hover .dropdown-submenu-content {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateX(0) !important;
-    pointer-events: auto !important;
+  .masthead .nav-group:hover .nav-group__toggle svg {
+    transform: rotate(180deg);
   }
 }
 
+// ── Theme toggle ───────────────────────────────────────────
+.masthead .nav-theme {
+  display: flex;
+  align-items: center;
+  margin-left: 6px !important;
+  padding-left: 6px !important;
+  border-left: 1px solid var(--masthead-border);
+}
 
-// ── Greedy nav overflow ("…") button ──────────────────────
-.greedy-nav__toggle {
-  background: transparent !important;
-  border: 1px solid var(--masthead-border) !important;
-  border-radius: 100px !important;
-  color: var(--text-secondary) !important;
-  padding: 5px 10px !important;
-  font-size: 0.8rem !important;
-  cursor: pointer !important;
-  transition: all 0.18s ease !important;
-  flex-shrink: 0 !important;
+.masthead .nav-theme__label {
+  display: none;
+}
 
-  // Disable the full-screen overlay that turns the page white
-  &::before {
-    display: none !important;
-  }
+.masthead .theme__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.07) !important;
-    color: var(--text-primary) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
-  }
-
-  .navicon,
-  .navicon::before,
-  .navicon::after {
-    background: var(--text-secondary) !important;
-    border-radius: 2px !important;
-    width: 18px !important;
-    height: 2px !important;
+    color: var(--accent-color);
+    background: var(--nav-hover);
   }
 }
 
-// Force hamburger visible on mobile — override MM's .hidden class
-@media (max-width: 1023px) {
-  .greedy-nav__toggle,
-  .greedy-nav__toggle.hidden {
-    display: flex !important;
-    visibility: visible !important;
-    align-items: center !important;
-    justify-content: center !important;
-    margin-left: auto !important;
+// ── Menu button (phones) ───────────────────────────────────
+.masthead .site-nav__toggle {
+  display: none;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 1px solid var(--card-border);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background: var(--nav-hover);
+  }
+
+  &:focus { outline: none; }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
   }
 }
 
-// ── Hidden overflow links panel ────────────────────────────
-.masthead .hidden-links {
-  position: absolute !important;
-  right: 0 !important;
-  top: calc(100% + 8px) !important;
-  background: var(--masthead-bg) !important;
-  border: 1px solid var(--masthead-border) !important;
-  border-radius: 16px !important;
-  padding: 6px !important;
-  min-width: 180px !important;
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5) !important;
+// three bars that turn into a cross
+.masthead .site-nav__bars,
+.masthead .site-nav__bars::before,
+.masthead .site-nav__bars::after {
+  position: absolute;
+  left: 50%;
+  width: 16px;
+  height: 1.6px;
+  margin-left: -8px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.masthead .site-nav__bars {
+  top: 50%;
+  margin-top: -0.8px;
 
   &::before,
   &::after {
-    display: none !important;
-  }
-  z-index: 1000 !important;
-
-  li {
-    margin: 0 !important;
-    list-style: none !important;
-    border-bottom: none !important;
+    content: "";
+    left: 0;
+    margin-left: 0;
   }
 
-  a {
-    color: var(--text-secondary) !important;
-    font-size: 0.82rem !important;
-    font-weight: 500 !important;
-    padding: 8px 14px !important;
-    border-radius: 10px !important;
-    display: block !important;
-    text-decoration: none !important;
-    transition: background 0.15s ease, color 0.15s ease !important;
+  &::before { top: -5px; }
+  &::after { top: 5px; }
+}
+
+.masthead .site-nav.is-open .site-nav__bars {
+  background: transparent;
+
+  &::before { transform: translateY(5px) rotate(45deg); }
+  &::after { transform: translateY(-5px) rotate(-45deg); }
+}
+
+// ── Phones and small tablets: the menu as a sheet ──────────
+@media (max-width: 1023px) {
+  .masthead .site-nav__toggle {
+    display: block;
+  }
+
+  .masthead .site-nav__links {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    z-index: 9998;
+    display: block;
+    max-height: calc(100vh - 60px);
+    max-height: calc(100dvh - 60px);
+    margin: 0;
+    padding: 8px 20px 20px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    // solid: a blur nested inside the masthead's own blur lets the page show through
+    background: var(--nav-sheet-bg);
+    border-bottom: 1px solid var(--card-border);
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 28px 48px -12px rgba(2, 6, 23, 0.6);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+
+    &.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+
+    // sections, one per row, divided by hairlines
+    > li {
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    > li:last-child {
+      border-bottom: none;
+    }
+  }
+
+  :root[data-theme="light"] .masthead .site-nav__links {
+    box-shadow: 0 28px 48px -12px rgba(15, 23, 42, 0.18);
+  }
+
+  .masthead .nav-link {
+    height: auto;
+    flex: 1;
+    padding: 15px 4px;
+    border-radius: 0;
+    color: var(--text-primary) !important;
+    font-size: 1.02rem;
+    font-weight: 600;
 
     &:hover {
-      background: rgba(56, 189, 248, 0.12) !important;
-      color: var(--text-primary) !important;
+      background: transparent;
+      color: var(--accent-color) !important;
     }
+  }
+
+  .masthead .is-active > .nav-link,
+  .masthead .is-active > .nav-group__row > .nav-link {
+    color: var(--accent-color) !important;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .masthead .nav-group__row .nav-link {
+    padding-right: 4px;
+  }
+
+  .masthead .nav-group__toggle {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  .masthead .nav-group.is-open .nav-group__toggle {
+    color: var(--accent-color);
+    background: var(--nav-accent-soft);
+    border-color: transparent;
+  }
+
+  // the pages of a section: indented on a guide line, lighter than the sections
+  .masthead .nav-group__menu {
+    position: static;
+    min-width: 0;
+    max-height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0 0 0 6px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    opacity: 1;
+    visibility: hidden;
+    transform: none;
+    transition: max-height 0.25s ease, visibility 0.25s, padding 0.25s ease;
+
+    &::before {
+      display: none;
+    }
+
+    li {
+      border-left: 2px solid var(--nav-guide);
+    }
+
+    a {
+      margin-left: 8px;
+      padding: 10px 12px;
+      color: var(--text-secondary) !important;
+      font-size: 0.94rem;
+      font-weight: 400;
+      white-space: normal;
+
+      &:hover {
+        background: var(--nav-hover);
+      }
+    }
+
+    // the current page: accent on the guide line too
+    li:has(> a.is-current) {
+      border-left-color: var(--accent-color);
+    }
+  }
+
+  .masthead .nav-group__label {
+    display: none;
+  }
+
+  .masthead .nav-group.is-open .nav-group__menu {
+    max-height: 640px;
+    padding-bottom: 14px;
+    visibility: visible;
+  }
+
+  .masthead .nav-theme {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 !important;
+    padding: 10px 4px 0 !important;
+    border-left: none;
+  }
+
+  .masthead .nav-theme__label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .masthead .theme__toggle {
+    border: 1px solid var(--card-border);
+    border-radius: 50%;
+  }
+
+  // the page behind the sheet stays put
+  html.nav-sheet-open,
+  html.nav-sheet-open body {
+    overflow: hidden;
   }
 }
 

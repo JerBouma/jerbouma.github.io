@@ -38,23 +38,6 @@
 
     {% include scripts.html %}
 
-    <script>
-      // Force all nav items into the hamburger menu on mobile
-      window.addEventListener('load', function() {
-        if (window.innerWidth <= 768) {
-          var vlinks = document.querySelector('nav.greedy-nav .visible-links');
-          var hlinks = document.querySelector('nav.greedy-nav .hidden-links');
-          var btn = document.querySelector('nav.greedy-nav .greedy-nav__toggle');
-          if (vlinks && hlinks) {
-            while (vlinks.children.length > 0) {
-              hlinks.insertBefore(vlinks.children[0], hlinks.firstChild);
-            }
-            if (btn) btn.classList.remove('hidden');
-          }
-        }
-      });
-    </script>
-
     {%- comment -%} Back to top: slides in once the reader is a screen down; the ring fills
     with the reading progress (_includes/scripts.html, _sass/custom.scss) {%- endcomment -%}
     <a href="#site-nav" class="back-to-top" aria-label="Back to top">
