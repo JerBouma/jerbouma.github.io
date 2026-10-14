@@ -5,8 +5,8 @@ software:
   repository: "https://github.com/JerBouma/FinanceScenarios"
   download: "https://pypi.org/project/financescenarios/"
 title: Finance Scenarios
-excerpt: An open-source economic scenario generator in Python. Correlated scenarios for rates, inflation, equities, currencies and more, fitted to live data, with portfolio outcomes and Solvency II capital on top.
-description: "Open-source Python economic scenario generator: correlated rates, inflation and equity scenarios fitted to live data, portfolio outcomes and Solvency II."
+excerpt: An open-source economic scenario generator in Python. It simulates thousands of possible scenarios for interest rates, inflation, equities, currencies and more, calibrated on live data from the Finance Toolkit, with portfolio analysis and Solvency II on top.
+description: "Finance Scenarios is an open-source Python economic scenario generator: simulate correlated rates, inflation, equities and more, then put portfolios and liabilities through them."
 classes: wide-sidebar ft-overview
 author_profile: false
 sidebar:
@@ -19,33 +19,30 @@ search: false
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceScenarios" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-How much capital does a 1-in-200-year shock eat? Will a pension fund's assets keep up with its liabilities for thirty years? How bad is the bad year in twenty for a 60/40? A single forecast cannot answer these, because the answer lives in the spread of outcomes. Economic scenario generators answer them, but they have mostly been vendor products: you receive scenario files and a calibration report while the method stays with the vendor.
+Whether you are saving for retirement or running the balance sheet of an insurer, the question about the future is rarely "what will happen?". It is "what could happen, and how bad does it get?". Will my savings last thirty years of withdrawals? How much capital does a 1-in-200-year market shock eat? A single forecast cannot answer either, because the answer lives in the spread of outcomes, not in the middle of it. The tools that do answer it, economic scenario generators, have mostly been vendor products from Moody's, Conning, Ortec Finance and Barrie & Hibbert: you receive a set of scenario files and a calibration report while the method itself stays with the vendor.
 
-**Finance Scenarios makes those methods open.** It gives you:
+**Finance Scenarios tries to solve that.** It simulates thousands of possible scenarios for interest rates, inflation, equities, unemployment and more, all linked to each other the way they have been historically, and calibrated on live data pulled through the [Finance Toolkit 🛠️](https://github.com/JerBouma/FinanceToolkit). Put your portfolio or your liabilities through those scenarios and you see the full range: the typical outcome, the bad year in twenty, and the 1-in-200 event a regulator asks about.
 
-- **Correlated scenarios fitted to live data.** Thousands of scenarios for interest rates, inflation, equities, unemployment, currencies, commodities and more, linked to each other the way they have moved historically, calibrated on data pulled through the [Finance Toolkit 🛠️](https://github.com/JerBouma/FinanceToolkit).
-- **Published models, written out.** Each calibration method follows its paper, from [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf) to [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf), [Cairns, Blake and Dowd (2006)](https://www.macs.hw.ac.uk/~andrewc/papers/jri2006e.pdf) and [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058), with a documentation page per factor and model.
-- **Portfolio and balance-sheet outcomes.** Put an asset mix or a stream of liabilities through the scenarios and read the median, the bad year in twenty and the 1-in-200 event, including a Solvency II best estimate and SCR.
-
-Assumptions, parameters, correlations and stress stories live in editable files, so you can change one and see what it does. The results still depend on the assumptions you chose, the data available and your own judgement.
+The goal is not to compete with a vendor model but to make the published methods accessible and reproducible in the open. Every calibration method is written out in plain Python and linked to the paper it came from, from [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf) to [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf), [Cairns, Blake and Dowd (2006)](https://www.macs.hw.ac.uk/~andrewc/papers/jri2006e.pdf) and [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058), with a documentation page per factor and per model. The assumptions, parameters, beliefs and correlations all live in files you can edit, so you can change one and run it again to see what it does. The results still depend on the assumptions you chose, on the data available, and on your own judgement.
 
 <img src="/assets/images/projects/financescenarios/banner.webp" alt="Finance Scenarios" width="100%"/>
 
 ## Installation
 
-Finance Scenarios requires Python 3.11 or higher.
+The project requires Python 3.11 or higher. To install Finance Scenarios it simply requires the following:
 
 ```bash
 pip install financescenarios -U
 ```
 
-Most factors run on free OECD and Yahoo Finance data without any key. A FinancialModelingPrep key widens the ticker coverage for equities, dividends, the yield curve and commodities; without one these fall back to Yahoo Finance and US exchanges.
+To be able to get the most out of it, you need an API key from FinancialModelingPrep. It is used for the price histories behind every ticker-priced factor: stock markets such as the S&P 500 (`SPY`), Europe (`VGK`) and Japan (`EWJ`), Treasury yields such as the 10-year (`^TNX`), commodities such as gold (`GC=F`) and Brent oil (`BZ=F`), and the dividends of those funds. Note that the Free plan is limited to 250 requests each day, 5 years of data and only companies listed on US exchanges.
 
 [Obtain an API Key from FinancialModelingPrep](/fmp){: .btn .btn--warning .btn--large .align-center target="_blank"}
 
-The link gives a **15% discount** on premium plans; it is an affiliate link and supports the project.
+Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time.
 
-A free [FRED key](https://fred.stlouisfed.org/docs/api/api_key.html) is optional and adds US corporate bond spreads and commercial property prices. The default factor set anchors rates to EIOPA's risk-free curves, which needs Finance Toolkit 2.2.2 or newer. The [configuration documentation](/projects/financescenarios/docs/configuration#secrets) lists which key each factor uses.
+Optionally, add a free [FRED key](https://fred.stlouisfed.org/docs/api/api_key.html) from the Federal Reserve Bank of St. Louis. It is used for US corporate bond spreads (the ICE BofA option-adjusted spreads behind `credit`) and US commercial property prices (`real_estate` with `source: commercial`). The [configuration documentation](/projects/financescenarios/docs/configuration#secrets) lists exactly which key each factor uses. The `default` factor set reads EIOPA's risk-free curves, which need Finance Toolkit 2.2.2 or newer (`pip install -U financetoolkit`).
+
 
 ## Functionality
 
