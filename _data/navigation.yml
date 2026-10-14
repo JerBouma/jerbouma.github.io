@@ -207,20 +207,42 @@ financetoolkit-docs:
         url: /projects/financetoolkit/docs#get_rating
       - title: "Analyst Estimates"
         url: /projects/financetoolkit/docs#get_analyst_estimates
+      - title: "Analyst Grades"
+        url: /projects/financetoolkit/docs#get_stock_grades
       - title: "Earnings Calendar"
         url: /projects/financetoolkit/docs#get_earnings_calendar
+      - title: "Earnings Call Transcripts"
+        url: /projects/financetoolkit/docs#get_earnings_call_transcripts
       - title: "Dividend Calendar"
         url: /projects/financetoolkit/docs#get_dividend_calendar
+      - title: "Stock Splits"
+        url: /projects/financetoolkit/docs#get_stock_splits
       - title: "Stock News"
         url: /projects/financetoolkit/docs#get_stock_news
       - title: "Press Releases"
         url: /projects/financetoolkit/docs#get_press_releases
+      - title: "Mergers & Acquisitions"
+        url: /projects/financetoolkit/docs#get_mergers_acquisitions
       - title: "Revenue Geographic Segmentation"
         url: /projects/financetoolkit/docs#get_revenue_geographic_segmentation
       - title: "Revenue Product Segmentation"
         url: /projects/financetoolkit/docs#get_revenue_product_segmentation
       - title: "ESG Scores"
         url: /projects/financetoolkit/docs#get_esg_scores
+      - title: "Employee Count"
+        url: /projects/financetoolkit/docs#get_employee_count
+      - title: "Listed Notes"
+        url: /projects/financetoolkit/docs#get_company_notes
+  - title: Insiders & Ownership
+    children:
+      - title: "Key Executives"
+        url: /projects/financetoolkit/docs#get_executives
+      - title: "Executive Compensation"
+        url: /projects/financetoolkit/docs#get_executive_compensation
+      - title: "Insider Trade Statistics"
+        url: /projects/financetoolkit/docs#get_insider_trade_statistics
+      - title: "Free Float"
+        url: /projects/financetoolkit/docs#get_shares_float
   - title: Statements
     children:
       - title: "Balance Sheet Statements"
@@ -249,6 +271,16 @@ financetoolkit-docs:
         url: /projects/financetoolkit/docs#get_market_risk_premium
       - title: "Commitment of Traders"
         url: /projects/financetoolkit/docs#get_commitment_of_traders
+  - title: ETF Data
+    children:
+      - title: "ETF Information"
+        url: /projects/financetoolkit/docs#get_etf_information
+      - title: "ETF Holdings"
+        url: /projects/financetoolkit/docs#get_etf_holdings
+      - title: "ETF Country Weightings"
+        url: /projects/financetoolkit/docs#get_etf_country_weightings
+      - title: "ETF Sector Weightings"
+        url: /projects/financetoolkit/docs#get_etf_sector_weightings
   - title: Cache
     children:
       - title: "Cache Contents"
@@ -351,6 +383,14 @@ financetoolkit-docs-discovery:
       url: /projects/financetoolkit/docs/discovery#get_ipo_prospectuses
     - title: Stock Splits Calendar
       url: /projects/financetoolkit/docs/discovery#get_stock_splits_calendar
+    - title: Earnings Calendar
+      url: /projects/financetoolkit/docs/discovery#get_earnings_calendar
+  - title: SEC Filings
+    children:
+    - title: Latest 8-K Filings
+      url: /projects/financetoolkit/docs/discovery#get_sec_filings_8k
+    - title: Latest Insider Trades
+      url: /projects/financetoolkit/docs/discovery#get_insider_trading_latest
   - title: Sector & Industry
     children:
     - title: Sector Performance
@@ -1257,6 +1297,10 @@ financetoolkit-docs-fixedincome:
       url:  /projects/financetoolkit/docs/fixedincome#get_government_bond_yield
     - title: U.S. Treasury Par Yield Curve
       url: /projects/financetoolkit/docs/fixedincome#get_treasury_rates
+    - title: Government Bond Yield Curve
+      url: /projects/financetoolkit/docs/fixedincome#get_government_bond_yield_curve
+    - title: Bank of England Yield Curve
+      url: /projects/financetoolkit/docs/fixedincome#get_bank_of_england_yield_curve
   - title: Corporate Bonds
     children:
     - title: Option Adjusted Spread (OAS)
@@ -1267,6 +1311,32 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_total_return
     - title: Yield to Worst
       url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_yield_to_worst
+    - title: Corporate Bond Yields
+      url: /projects/financetoolkit/docs/fixedincome#get_corporate_bond_yields
+    - title: Moody's Corporate Bond Yields
+      url: /projects/financetoolkit/docs/fixedincome#get_moodys_corporate_bond_yields
+    - title: HQM Corporate Bond Yield Curve
+      url: /projects/financetoolkit/docs/fixedincome#get_hqm_corporate_bond_yield_curve
+    - title: HQM Corporate Bond Spread
+      url: /projects/financetoolkit/docs/fixedincome#get_hqm_corporate_bond_spread
+    - title: Corporate Borrowing Cost (ECB)
+      url: /projects/financetoolkit/docs/fixedincome#get_corporate_borrowing_cost
+  - title: Credit Risk & Stress
+    children:
+    - title: Rating Transition Matrix
+      url: /projects/financetoolkit/docs/fixedincome#get_rating_transition_matrix
+    - title: Default Rates
+      url: /projects/financetoolkit/docs/fixedincome#get_default_rates
+    - title: Excess Bond Premium
+      url: /projects/financetoolkit/docs/fixedincome#get_excess_bond_premium
+    - title: Financial Stress Index (CISS)
+      url: /projects/financetoolkit/docs/fixedincome#get_financial_stress_index
+  - title: Regulatory Curves
+    children:
+    - title: EIOPA Risk-Free Rate
+      url: /projects/financetoolkit/docs/fixedincome#get_eiopa_risk_free_rate
+    - title: EIOPA Symmetric Adjustment
+      url: /projects/financetoolkit/docs/fixedincome#get_eiopa_symmetric_adjustment
   - title: Central Banks
     children:
     - title: Euro Interbank Offered Rate (Euribor)
@@ -1463,6 +1533,8 @@ financetoolkit-docs-economics:
     children:
     - title: Gross Domestic Product (GDP)
       url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product
+    - title: GDP Growth
+      url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product_growth
     - title: GDP Deflator
       url:  /projects/financetoolkit/docs/economics#get_gross_domestic_product_deflator
     - title: Total Consumption
@@ -1563,12 +1635,16 @@ financetoolkit-docs-economics:
         url:  /projects/financetoolkit/docs/economics#get_commodity_forward_curve
       - title: Recession Indicator
         url:  /projects/financetoolkit/docs/economics#get_recession_indicator
+      - title: Economic Calendar
+        url:  /projects/financetoolkit/docs/economics#get_economic_calendar
   - title: Finance
     children:
     - title: Money Supply
       url:  /projects/financetoolkit/docs/economics#get_money_supply
     - title: Central Bank Policy Rate
       url:  /projects/financetoolkit/docs/economics#get_central_bank_policy_rate
+    - title: Overnight Rate
+      url:  /projects/financetoolkit/docs/economics#get_overnight_rate
     - title: Short Term Interest Rate
       url:  /projects/financetoolkit/docs/economics#get_short_term_interest_rate
     - title: Long Term Interest Rate
@@ -1581,14 +1657,26 @@ financetoolkit-docs-economics:
       url:  /projects/financetoolkit/docs/economics#get_real_yield_curve
     - title: Breakeven Inflation Expectations
       url:  /projects/financetoolkit/docs/economics#get_breakeven_inflation_expectations
+    - title: Survey Inflation Expectations
+      url:  /projects/financetoolkit/docs/economics#get_inflation_expectations
     - title: 30-Year Mortgage Rate
       url:  /projects/financetoolkit/docs/economics#get_mortgage_rate_30_year
+    - title: Market Risk Premium
+      url:  /projects/financetoolkit/docs/economics#get_market_risk_premium
+    - title: Implied Volatility Indices
+      url:  /projects/financetoolkit/docs/economics#get_implied_volatility
+    - title: Asset Class Proxies
+      url:  /projects/financetoolkit/docs/economics#get_asset_class_proxies
   - title: Environment
     children:
       - title: Renewable Energy
         url: /projects/financetoolkit/docs/economics#get_renewable_energy
       - title: Carbon Footprint
         url: /projects/financetoolkit/docs/economics#get_carbon_footprint
+      - title: Carbon Price (EU ETS)
+        url: /projects/financetoolkit/docs/economics#get_carbon_price
+      - title: Climate Scenarios (NGFS)
+        url: /projects/financetoolkit/docs/economics#get_climate_scenario
   - title: Jobs & Society
     children:
       - title: Unemployment Rates
@@ -1599,6 +1687,8 @@ financetoolkit-docs-economics:
         url:  /projects/financetoolkit/docs/economics#get_income_inequality
       - title: Population
         url: /projects/financetoolkit/docs/economics#get_population_statistics
+      - title: Life Tables
+        url: /projects/financetoolkit/docs/economics#get_life_table
       - title: Poverty Rate
         url: /projects/financetoolkit/docs/economics#get_poverty_rate
       - title: Nonfarm Payrolls
@@ -1613,6 +1703,20 @@ financetoolkit-docs-economics:
         url: /projects/financetoolkit/docs/economics#get_currency_crisis
       - title: Sovereign Debt Crisis
         url: /projects/financetoolkit/docs/economics#get_sovereign_debt_crisis
+  - title: Long-Run History
+    children:
+      - title: Long-Run Asset Returns
+        url: /projects/financetoolkit/docs/economics#get_long_run_asset_returns
+      - title: Shiller Stock Market Data
+        url: /projects/financetoolkit/docs/economics#get_shiller_stock_market_data
+      - title: Millennium of UK Macro Data
+        url: /projects/financetoolkit/docs/economics#get_millennium_of_macroeconomic_data
+  - title: Scenarios & Stress Tests
+    children:
+      - title: Stress Test Scenarios
+        url: /projects/financetoolkit/docs/economics#get_stress_test_scenario
+      - title: Regulatory Scenario Set
+        url: /projects/financetoolkit/docs/economics#get_scenario_set
 
 financetoolkit-docs-portfolio:
   - title: Modules

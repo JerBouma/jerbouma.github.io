@@ -16,8 +16,9 @@ _RE_URL = re.compile(r"https?://\S+")
 _RE_ARG_LABEL = re.compile(r"\w+ \([^)]+\):")
 _RE_MULTI_SPACE = re.compile(r" +")
 _RE_BLANK_LINE = re.compile(r"\n[ \t]*\n")
-_RE_DESCRIPTION = re.compile(r"([\s\S]*?)(?:Args:|As an example:|$)", re.DOTALL)
-_RE_ARGUMENTS = re.compile(r"(Args:[\s\S]*?)(```python|$)", re.DOTALL)
+# A method without arguments starts its argument block at "Returns:".
+_RE_DESCRIPTION = re.compile(r"([\s\S]*?)(?:Args:|Returns:|As an example:|$)", re.DOTALL)
+_RE_ARGUMENTS = re.compile(r"((?:Args:|Returns:)[\s\S]*?)(```python|$)", re.DOTALL)
 _RE_CODE = re.compile(r"```python([\s\S]*?)```", re.DOTALL)
 _RE_RESULT = re.compile(r"Which returns:[\s\S]*$", re.DOTALL)
 _RE_NUMBERED = re.compile(r"^\d+\. ")
@@ -354,7 +355,10 @@ def _formula_to_latex(line: str) -> str:
             segment = match.group(2)
         if _RE_MATHY.search(segment) or " = " in f" {segment} ":
             tokens, _ = _tokenize_formula(segment)
-            rendered.append(prefix + _render_tokens(tokens))
+            latex = _render_tokens(tokens)
+            # "u_(t-1)": the bracket is the subscript, not an argument
+            latex = re.sub(r"_\{\}\(([^()]*)\)", lambda m: "_{" + m.group(1) + "}", latex)
+            rendered.append(prefix + latex)
         else:
             rendered.append(r"\text{" + _text_escape(segment) + "}")
     return "$$\n" + label + ",\\;\\; ".join(rendered) + "\n$$"
@@ -633,6 +637,17 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
             "example_code": example_code,
             "example_result": example_result,
         })
+
+    # The front matter and introduction are edited on the page itself (SEO titles,
+    # descriptions, counts), so an existing page keeps its own; the header here is
+    # only the starting point for a new page.
+    if os.path.exists(location):
+        with open(location, encoding="utf-8") as f:
+            existing = f.read()
+        # everything before the first function section is the page's own header
+        end = existing.find("\n## ")
+        if end != -1:
+            header = existing[: end + 1]
 
     markdown_content = header
     for fn in functions_with_docstrings:
