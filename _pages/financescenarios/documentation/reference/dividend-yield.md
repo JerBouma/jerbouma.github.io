@@ -39,8 +39,8 @@ d(log y) = kappa * (mu - log y) * dt + sigma * dW
 
 where `kappa` is the speed of the pull, `exp(mu)` the normal yield and `sigma` the size of the swings. Working in logs
 keeps the yield positive and makes its swings proportional to its level, so a 1% yield moves less in absolute terms
-than a 5% one. The pull is slow: the authors found it weak over 1871-2003, so yields can stay far from normal for
-years. A history with no pull at all raises an error.
+than a 5% one. The pull is slow: the authors report "The mean reversion speed of the series is not significantly
+different from zero", so yields can stay far from normal for years. A history with no pull at all raises an error.
 
 Three options change the model; only one can be used at a time:
 
@@ -56,20 +56,8 @@ Data: the dividends paid over the trailing `window` trading days divided by the 
 Finance Toolkit. A ticker that pays no dividends raises an error. Use Yahoo Finance (no API key): the Financial
 Modeling Prep Free plan returns only the last five payments, too few for a trailing-year yield.
 
-Configuration (`dividend_yield[i]` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `name` | `dividend_yield` | Name in the output. |
-| `ticker` | `SPY` | A dividend-paying ticker. |
-| `currency` | `USD` | Reporting label. |
-| `window` | `252` | Trading days of dividends summed for one yield (about a year). |
-| `period` | `daily` | `daily`, `weekly`, `monthly`, `quarterly` or `yearly`. |
-| `condition_on_inflation` | `false` | Add Wilkie's inflation term. |
-| `inflation_name` | `inflation` | The `inflation[i].name` that term reads. |
-| `volatility_model` | `constant` | Or `garch`. |
-| `condition_on_business_cycle` | `false` | Follow the leading indicator. |
-| `beliefs.<field>` | `null` | Override `mean_reversion_speed`, `long_run_mean` or `volatility`. |
+The `dividend_yield[i]` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 A belief's `long_run_mean` is a log yield: a 2% target is `log(0.02)`, about -3.9.
 

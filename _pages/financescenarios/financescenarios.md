@@ -63,12 +63,12 @@ Open a kind below to see its options and the call it goes in.
 
 Passed as `Scenarios.from_profiles(settings="...")`.
 
-| id           | description                                                                                                                                    |
-|:-------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
-| default      | 2,000 scenarios, one step a month, five years ahead, fitted on history since 2000.                                                               |
-| goes         | Default, but fitted on history since 2019 only; pair it with the goes factor set to match the NAIC's scenario generator.                       |
-| long_horizon | Default with 500 scenarios instead of 2,000, so multi-decade runs stay fast; pick the length with simulate(years=30).                            |
-| wilkie       | Default, fitted on 1995 to 2007 only, as the wilkie set needs.                                                                                 |
+| id           | description                                                                                                              |
+|:-------------|:-------------------------------------------------------------------------------------------------------------------------|
+| default      | 2,000 scenarios, one step a month, five years ahead, fitted on history since 2000.                                       |
+| goes         | Default, but fitted on history since 2019 only; pair it with the goes factor set to match the NAIC's scenario generator. |
+| long_horizon | Default with 500 scenarios instead of 2,000, so multi-decade runs stay fast; pick the length with simulate(years=30).    |
+| wilkie       | Default, fitted on 1995 to 2007 only, as the wilkie set needs.                                                           |
 
 </details>
 
@@ -83,7 +83,7 @@ Passed as `Scenarios.from_profiles(factor_set="...")`.
 | broad           | Everything this project can simulate, across many countries: the widest set, and the slowest to fit.                                                  |
 | core            | The US, the euro area and the UK, with global equities, gold, oil and the major currencies; a curated set that passes every release check.            |
 | default         | Core, with interest rates anchored to EIOPA's official forward rates and their swings fitted on rates since 1950; the recommended starting point.     |
-| goes            | US Only, with the short rate's long-run level set to the NAIC scenario generator's own (about 3.67%); pair it with the goes settings.                 |
+| goes            | US Only, with the short rate's long-run level set to the NAIC scenario generator's own (about 3.73%); pair it with the goes settings.                 |
 | hibbert         | The two-factor model of Hibbert, Mowbray and Turnbull (2001): short rate and inflation that chase moving targets, regime-switching equities.          |
 | private_markets | US Only plus listed stand-ins for private equity, infrastructure, hedge funds and private credit.                                                     |
 | us_only         | The United States only: its rates, inflation, unemployment and stock market, plus currencies, commodities and the other shared factors; quick to run. |
@@ -96,20 +96,20 @@ Passed as `Scenarios.from_profiles(factor_set="...")`.
 
 Passed as `Scenarios.from_profiles(regime="...")`, see [Applying Stress Regimes](#applying-stress-regimes).
 
-| id                    | description                                                                                                                                           |
-|:----------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id                    | description                                                                                                                                             |
+|:----------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | climate_collapse      | Rough stand-in for a climate shock: keeps the scenarios with the highest US inflation and the weakest US stocks.                                        |
 | commodity_supercycle  | A long oil boom: keeps the scenarios where crude oil earns a top-quarter return.                                                                        |
 | credit_crunch         | Bank stocks collapse and the market follows: a harsher bear market for financials, then their worst scenarios. Needs the financials equity (broad set). |
 | currency_crisis       | The Brazilian real devalues sharply against the dollar, about 22% a year, then keeps its worst scenarios. Needs the us_only or broad set.               |
 | financial_crisis      | Stocks fall, unemployment rises and rates are cut, all at once: keeps the scenarios where that happens together.                                        |
-| oil_crisis            | Pulls inflation towards 9% in year one and back to 2.5% by year 8, then keeps the scenarios with high rates and weak stocks.                              |
-| oil_shock             | A one-off three-point jump in US inflation in year 2, after which everything behaves normally again.                                                  |
-| rate_cut_cycle        | Inflation eases to 2% by year 5 and 2.5% by year 10, then drifts back to its usual level.                                                             |
+| oil_crisis            | Pulls inflation towards 12% in year one and back to 2.5% by year 8, then keeps the scenarios with high rates and weak stocks.                           |
+| oil_shock             | A one-off three-point jump in US inflation in year 2, after which everything behaves normally again.                                                    |
+| rate_cut_cycle        | Inflation eases to 2% by year 5 and 2.5% by year 10, then drifts back to its usual level.                                                               |
 | real_estate_crash     | House-price growth falls to -8% within a year and recovers over four, then keeps the worst housing scenarios.                                           |
 | soft_landing          | Inflation eases smoothly to 2% by year 5 and stays there; no scenarios are filtered out.                                                                |
 | tech_selloff          | Tech stocks fall while the wider market holds up; keeps the worst tech scenarios. Needs the broad set.                                                  |
-| yield_curve_inversion | Short rates rise two points above long ones within six months, then the curve slowly rights itself.                                                   |
+| yield_curve_inversion | Short rates rise two points above long ones within six months, then the curve slowly rights itself.                                                     |
 
 </details>
 
@@ -122,7 +122,7 @@ Passed as `Portfolio.from_preset(result, preset="...")`, see [Building a Portfol
 |:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------|
 | all_weather           | Ray Dalio's mix for every economic climate: 30% US stocks, 55% long US Treasuries and 15% gold.                                               |
 | balanced_60_40        | The textbook mix: 60% US stocks and 40% US Treasury bonds.                                                                                    |
-| barbell               | Nassim Taleb's barbell: 80% Treasury bills, 20% small-cap and growth stocks, nothing in between. Needs the broad set.                         |
+| barbell               | Nassim Taleb's barbell: 85% Treasury bills, 15% small-cap and growth stocks, nothing in between. Needs the broad set.                         |
 | bogleheads_three_fund | The Bogleheads' three funds: 40% US stocks, 20% international stocks and 40% US Treasury bonds. Needs the default, core or broad set.         |
 | buffett_90_10         | Warren Buffett's advice for his estate: 90% in an S&P 500 fund and 10% in Treasury bills.                                                     |
 | conservative_income   | Mostly US, euro-area and UK government bonds, with 10% in US stocks for growth. Needs the default, core or broad set.                         |
@@ -132,7 +132,7 @@ Passed as `Portfolio.from_preset(result, preset="...")`, see [Building a Portfol
 | golden_butterfly      | Equal fifths of stocks, small-cap and value stocks, long bonds, Treasury bills and gold. Needs the broad set.                                 |
 | permanent_portfolio   | Harry Browne's four quarters: US stocks, long US Treasuries, Treasury bills and gold.                                                         |
 | small_cap_value_tilt  | 80% in small-cap and value stocks, the Fama-French premia, with 20% US Treasury bonds. Needs the broad set.                                   |
-| target_date_glidepath | A target-date fund: 90% stocks today, gliding to 30% stocks over 30 years as the target date nears.                                           |
+| target_date_glidepath | A target-date fund on Vanguard's glide path: 90% stocks until 25 years out, 50% at the target date and 30% seven years after.                 |
 | us_equity_sectors     | All stocks, split evenly across nine US sectors. Needs the broad set.                                                                         |
 
 </details>
@@ -162,12 +162,12 @@ Rates are annual rates and priced assets annualized returns, as decimals; `termi
 
 | factor                     | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:---------------------------|--------:|--------------:|-------------:|-------------:|
-| united_states_inflation    |  0.0340 |        0.0283 |      -0.0005 |       0.0570 |
+| united_states_inflation    |  0.0340 |        0.0262 |      -0.0033 |       0.0549 |
 | united_states_short_rate   |  0.0406 |        0.0442 |       0.0050 |       0.0859 |
-| united_states_unemployment |  0.0410 |        0.0558 |       0.0216 |       0.0903 |
-| us_broad                   |         |        0.0983 |      -0.0466 |       0.2321 |
-| europe                     |         |        0.0766 |      -0.0919 |       0.2202 |
-| gold                       |         |        0.0594 |      -0.0636 |       0.1970 |
+| united_states_unemployment |  0.0410 |        0.0557 |       0.0210 |       0.0904 |
+| us_broad                   |         |        0.0983 |      -0.0465 |       0.2318 |
+| europe                     |         |        0.0766 |      -0.0925 |       0.2197 |
+| gold                       |         |        0.0596 |      -0.0614 |       0.1936 |
 
 {% include ft-chart.html id="simulation" src="/assets/data/financescenarios-charts.json" label="Simulated short rate, inflation and US equities" %}
 
@@ -184,7 +184,7 @@ result.plot("us_broad", kind="distribution")
 
 {% include ft-chart.html id="distribution" src="/assets/data/financescenarios-charts.json" label="Distribution of the five-year US equity return" %}
 
-The median scenario returns 10.04% a year, above the 9.83% mean, because the left tail reaches further than the right: the worst 1 in 20 lose more than 4.66% a year, 14.7 points below the median, while the best 1 in 20 gain more than 23.21%, 13.2 points above it. These equity returns are fitted on history; for planning work, a long-run [belief](/projects/financescenarios/docs/configuration#beliefs) about the equity return is advisable. **Find [the documentation](/projects/financescenarios/docs/units).**
+The median scenario returns 10.04% a year, above the 9.83% mean, because the left tail reaches further than the right: the worst 1 in 20 lose more than 4.65% a year, 14.7 points below the median, while the best 1 in 20 gain more than 23.18%, 13.1 points above it. These equity returns are fitted on history; for planning work, a long-run [belief](/projects/financescenarios/docs/configuration#beliefs) about the equity return is advisable. **Find [the documentation](/projects/financescenarios/docs/units).**
 
 ### Building a Portfolio
 
@@ -200,11 +200,11 @@ values.plot(levels=True)
 
 {% include ft-chart.html id="portfolio" src="/assets/data/financescenarios-charts.json" label="Simulated value of a 60/40 portfolio" %}
 
-The 60/40 earns 8.34% a year on average, less than the stocks' 9.83% but with a narrower range. The median scenario turns 100,000 into 149,916 and the best 1 in 20 into more than 210,755, while the worst 1 in 20 end below 99,843: five years without a gain. Drawdowns, Value at Risk, saving and withdrawal plans, glidepaths and fees build on the same values. **Find [the Notebook](/projects/financescenarios/portfolio-notebook).**
+The 60/40 earns 8.34% a year on average, less than the stocks' 9.83% but with a narrower range. The median scenario turns 100,000 into 150,012 and the best 1 in 20 into more than 210,721, while the worst 1 in 20 end below 99,780: five years without a gain. Drawdowns, Value at Risk, saving and withdrawal plans, glidepaths and fees build on the same values. **Find [the Notebook](/projects/financescenarios/portfolio-notebook).**
 
 ### Applying Stress Regimes
 
-A stress regime tells a story: it shifts an assumption before simulating (inflation pulled towards 9%), keeps only the scenarios consistent with the story (high rates and weak stocks), or both. Because the kept scenarios still come from the fitted model, the other variables move with the stress in a way the history supports. Twelve regimes ship, from an oil crisis and a credit crunch to a soft landing and a yield-curve inversion.
+A stress regime tells a story: it shifts an assumption before simulating (inflation pulled towards 12%), keeps only the scenarios consistent with the story (high rates and weak stocks), or both. Because the kept scenarios still come from the fitted model, the other variables move with the stress in a way the history supports. Twelve regimes ship, from an oil crisis and a credit crunch to a soft landing and a yield-curve inversion.
 
 ```python
 from financescenarios import compare_runs
@@ -215,32 +215,34 @@ compare_runs({"baseline": result, "oil_crisis": shocked})
 
 | factor                   | baseline | oil_crisis |
 |:-------------------------|---------:|-----------:|
-| united_states_inflation  |   0.0283 |     0.0512 |
+| united_states_inflation  |   0.0262 |     0.0492 |
 | united_states_short_rate |   0.0442 |     0.0648 |
-| us_broad                 |   0.0983 |     0.0160 |
-| europe                   |   0.0766 |     0.0181 |
+| us_broad                 |   0.0983 |     0.0161 |
+| europe                   |   0.0766 |     0.0178 |
 
 {% include ft-chart.html id="regimes" src="/assets/data/financescenarios-charts.json" label="US inflation in the baseline and under three stress regimes" %}
 
-In the oil crisis, US inflation ends at 5.12% instead of 2.83% and stocks return 1.60% a year instead of 9.83%. The regimes differ in timing as much as in level: the oil shock follows the baseline until its shock hits in January 2028 and then fades, while the oil crisis and climate collapse lift inflation from the first month. **Find [the Notebook](/projects/financescenarios/regimes-notebook) and [the regime documentation](/projects/financescenarios/docs/regimes).**
+In the oil crisis, US inflation ends at 4.92% instead of 2.62% and stocks return 1.61% a year instead of 9.83%. The regimes differ in timing as much as in level: the oil shock follows the baseline until its shock hits in January 2028 and then fades, while the oil crisis and climate collapse lift inflation from the first month. **Find [the Notebook](/projects/financescenarios/regimes-notebook) and [the regime documentation](/projects/financescenarios/docs/regimes).**
 
 ### Backtesting Against History
 
-The same portfolio can run against what prices actually did, with its exposure measured against the [Fama-French factors](https://doi.org/10.1016/j.jfineco.2014.10.010) from [Ken French's data library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
+Any number of mixes can run against what prices actually did, on one shared calendar, with their exposure measured against the [Fama-French factors](https://doi.org/10.1016/j.jfineco.2014.10.010) from [Ken French's data library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
 
 ```python
-portfolio = Portfolio.backtest(scenarios, "balanced_60_40")
+portfolio = Portfolio.backtest(scenarios, ["balanced_60_40", "all_weather", "permanent_portfolio"])
 portfolio.factor_exposure()
 portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
 ```
 
-| portfolio      | Mkt-RF |     SMB |     HML |    RMW |     CMA |  alpha | r_squared | from       | to         |
-|:---------------|-------:|--------:|--------:|-------:|--------:|-------:|----------:|:-----------|:-----------|
-| 60/40 Balanced | 0.5398 | -0.0715 | -0.0416 | 0.1200 | -0.0172 | 0.0008 |    0.8653 | 2000-01-01 | 2026-10-01 |
+| portfolio           | Mkt-RF |     SMB |     HML |    RMW |     CMA |  alpha | r_squared | from       | to         |
+|:--------------------|-------:|--------:|--------:|-------:|--------:|-------:|----------:|:-----------|:-----------|
+| 60/40 Balanced      | 0.5369 | -0.0687 | -0.0447 | 0.1215 | -0.0116 | 0.0007 |    0.8615 | 2000-08-01 | 2026-10-01 |
+| All Weather         | 0.2039 | -0.0620 | -0.1435 | 0.2162 |  0.0335 | 0.0029 |    0.1318 | 2000-08-01 | 2026-10-01 |
+| Permanent Portfolio | 0.2173 | -0.0615 | -0.1418 | 0.2017 |  0.0473 | 0.0033 |    0.1240 | 2000-08-01 | 2026-10-01 |
 
-{% include ft-chart.html id="backtest" src="/assets/data/financescenarios-charts.json" label="Historical value of a 60/40 portfolio since 2000" %}
+{% include ft-chart.html id="backtest" src="/assets/data/financescenarios-charts.json" label="Historical value of the 60/40, All Weather and Permanent Portfolio mixes since 2000" %}
 
-A market loading of 0.54 with an R² of 0.87: the five factors explain most of the 60/40's monthly moves, and its equity half drives them. 100,000 invested in 2000 grew to 628,229 by October 2026, with the deepest fall, 28% from the peak, in February 2009. **Find [the Notebook](/projects/financescenarios/portfolio-analysis-notebook).**
+The three mixes ended within 3% of each other: 100,000 invested in August 2000 grew to 550,762 in the 60/40, 541,823 in All Weather and 556,105 in the Permanent Portfolio by October 2026. They got there very differently. The 60/40 carries more than twice the stock-market loading of the other two (0.54 against about 0.21), and the five factors explain 86% of its monthly moves but only 13% of the others', whose bonds and gold the equity factors don't capture. Its deepest fall was 28% from the peak, in February 2009; the other two fell furthest in September 2022, by 21% and 15%, when stocks and bonds dropped together. **Find [the Notebook](/projects/financescenarios/portfolio-analysis-notebook).**
 
 ### Valuing Liabilities and Capital Under Solvency II
 
@@ -259,14 +261,14 @@ solvency.report(cashflows=[10_000] * 5, assets=assets)
 | item                | value                     | meaning                                                    |
 |:--------------------|:--------------------------|:-----------------------------------------------------------|
 | market consistent   | passed (largest gap 0.7%) | discounted back, us_broad stays within 2% of today's price |
-| best estimate       | 43,434                    | what the payments are worth today                          |
+| best estimate       | 43,514                    | what the payments are worth today                          |
 | own funds           | 15,657                    | assets minus what is owed, today                           |
-| SCR (1 in 200 year) | 12,484                    | the capital that survives a 1-in-200 bad year              |
+| SCR (1 in 200 year) | 12,482                    | the capital that survives a 1-in-200 bad year              |
 | solvency ratio      | 1.25                      | own funds / SCR; above 1 means enough capital              |
 
 {% include ft-chart.html id="solvency" src="/assets/data/financescenarios-charts.json" label="Distribution of own funds after one year" %}
 
-The SCR of 12,484 is the distance from today's own funds to the 1-in-200 outcome at the left of the chart, where own funds fall to around 3,200. A ratio of 1.25 means the 60,000 covers both the payments and the required capital. **Find [the documentation](/projects/financescenarios/docs).**
+The SCR of 12,482 is the distance from today's own funds to the 1-in-200 outcome at the left of the chart, where own funds fall to around 3,200. A ratio of 1.25 means the 60,000 covers both the payments and the required capital. **Find [the documentation](/projects/financescenarios/docs).**
 
 ### Validating the Output
 

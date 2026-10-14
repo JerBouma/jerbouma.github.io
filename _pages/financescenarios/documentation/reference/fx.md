@@ -39,32 +39,29 @@ standard treatment, surveyed in
 [Gorvett (2001)](https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf). The trend is the
 assumption that matters most over long horizons, so it has three options:
 
+- `drift_mode: random_walk`, the default: no trend, so the median rate stays at today's level
+  ([Meese and Rogoff, 1983](https://doi.org/10.1016/0022-1996(83)90017-X)). Barrie & Hibbert's model has exchange
+  rates "respect purchasing power parity relationships at long horizons" (Hibbert, Mowbray and Turnbull 2001,
+  section 9.3), so no provider carries a fitted trend forward for decades.
+- `drift_mode: historical`: the trend fitted on the calibration window, a currency view.
 - `drift_mode: irp`: the drift at every step is the gap between two simulated short rates, foreign minus US (uncovered
   interest rate parity: the higher-rate currency is expected to weaken by about the rate gap).
-- `drift_mode: random_walk`: no trend, so the median rate stays at today's level
-  ([Meese and Rogoff, 1983](https://doi.org/10.1016/0022-1996(83)90017-X)).
 - `measure: risk_neutral`: a fixed drift from today's two interest rates, for pricing; see `calibrate_risk_neutral`.
 - `source: gmdb`: the Global Macro Database instead of the OECD, for countries such as Brazil, India or China, yearly
   only.
 
-The data are OECD (or Global Macro Database) exchange rates in national currency per US dollar, with no API key
-needed. The OECD series is keyed by currency area: use `EA20` for the euro area, as `Germany` has no exchange
-rate of its own there. Volatility is always historical, as there is no FX options data.
+The data are exchange rates in national currency per US dollar, with no API key needed: by default the rate at the
+end of each month, quarter or year from the Bank for International Settlements (`end_of_period: true`). The OECD
+and Global Macro Database publish averages over each period instead, which smooth the changes: for a random walk
+the changes of averages keep only about two-thirds of the variance (Working, 1960,
+https://doi.org/10.2307/1907574). On 2021-2026 monthly data the end-of-month rates give a volatility of 7.4% for
+the euro and 10.8% for the yen, against 5.9% and 8.6% from the OECD averages. The Global Macro Database has no
+end-of-period series, so there the volatility is scaled up by Working's factor instead; `end_of_period: false`
+fits the averages as they are. Use `EA20` for the euro area, as `Germany` has no exchange rate of its own there.
+Volatility is always historical, as there is no FX options data.
 
-Configuration (`fx[i]` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `name` | `fx` | The name in the simulated output; unique across the list. |
-| `country` | `EA20` | The country or currency area paired against the US dollar. |
-| `currency` | `null` | The quoted currency (e.g. `EUR`) for reporting; else from a same-country rate or `EA20`. |
-| `source` | `oecd` | `oecd` or `gmdb` (`period: yearly` only). |
-| `period` | `monthly` | `monthly`, `quarterly` or `yearly`. |
-| `measure` | `real_world` | `real_world` or `risk_neutral`. |
-| `drift_mode` | `historical` | `historical`, `irp` or `random_walk`. |
-| `domestic_rate_name` | `null` | With `drift_mode: irp`, required: the `interest_rates[i].name` of the US rate. |
-| `foreign_rate_name` | `null` | With `drift_mode: irp`: the foreign rate; defaults to `<country>_short_rate`. |
-| `beliefs.drift`, `beliefs.volatility` | `null` | Your own annual drift or volatility (volatility above 0). |
+The `fx[i]` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 `beliefs.drift` cannot be combined with `drift_mode: irp`, and no belief with `measure: risk_neutral`. In a regime
 YAML, address one entry with a dotted `"fx.<name>"` key.
@@ -83,16 +80,17 @@ FX(toolkit: Toolkit)
 Calibrate one currency pair from its history: fetch the US dollar exchange rate against `country`'s currency and
 fit its annual drift and volatility.
 
-A volatility of 0.06 means a typical year moves the rate by about 6% either way; a drift near 0 means no built-in
-tendency for the dollar to strengthen or weaken. Both are annualized from the historical log-returns, so the
-fitted drift carries the sample's own dollar cycle forward; over decades that can dominate a foreign
-portfolio's result, which is why the trend is a choice.
+A volatility of 0.07 means a typical year moves the rate by about 7% either way; a drift near 0 means no built-in
+tendency for the dollar to strengthen or weaken. Both are annualized from the historical log-returns; a fitted
+drift carries the sample's own dollar cycle forward, and over decades that can dominate a foreign portfolio's
+result, which is why the trend is a choice.
 
-`drift_mode` sets the trend: `"historical"` fits it, `"random_walk"` drops it (the median rate stays at today's
-level), and `"irp"` replaces it each step with the gap between two simulated short rates, foreign minus US
-(uncovered interest rate parity: the higher-rate currency is expected to weaken by the rate gap), named in a
-factor set by `domestic_rate_name` and `foreign_rate_name`. As the rate is in foreign currency per dollar, a
-higher US rate pulls it down.
+`drift_mode` sets the trend: `"random_walk"`, the default, drops it (the median rate stays at today's level, as
+the random-walk evidence of Meese and Rogoff (1983) and the long-run parity of Barrie & Hibbert's model both
+suggest), `"historical"` fits it, and `"irp"` replaces it each step with the gap between two simulated short
+rates, foreign minus US (uncovered interest rate parity: the higher-rate currency is expected to weaken by the
+rate gap), named in a factor set by `domestic_rate_name` and `foreign_rate_name`. As the rate is in foreign
+currency per dollar, a higher US rate pulls it down.
 
 **As an example:**
 
@@ -109,16 +107,18 @@ fx.calibrate("jpy", country="Japan", period="monthly")
 fx.calibrate("brl", country="Brazil", period="yearly", source="gmdb")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | name | drift | volatility | initial_value |
 |:-----|------:|-----------:|--------------:|
-| eur | 0.0019 | 0.0593 | 0.8625 |
-| jpy | 0.0740 | 0.0867 | 158.7871 |
-| brl | -0.0145 | 0.0624 | 5.0517 |
+| eur | 0.0027 | 0.0736 | 0.8807 |
+| jpy | 0.0058 | 0.1080 | 156.9969 |
+| brl | 0.0024 | 0.0696 | 5.5896 |
 
-A dollar buys 0.86 euros, 158.79 yen and 5.05 reais today; the yen's 7.4% drift reflects the dollar's strong run
-against it over the Toolkit's default five-year window.
+A dollar buys 0.88 euros, 157.00 yen and 5.59 reais at the latest month- or year-end. Each drift is half the
+variance, so the median rate stays flat. With `drift_mode="historical"` the yen would get a 7.1% yearly drift
+from the dollar's strong run against it over the Toolkit's default five-year window: carried forward for
+decades, a strong currency view that no provider builds in.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -129,7 +129,8 @@ calibrate(
     country: str = 'EA20',
     period: str = 'monthly',
     source: str = 'oecd',
-    drift_mode: str = 'historical',
+    drift_mode: str = 'random_walk',
+    end_of_period: bool = True,
 ) -> FXParams
 ```
 
@@ -139,7 +140,8 @@ calibrate(
 - <u>country (str):</u> the country or currency area paired against the dollar. Defaults to "EA20", the euro area.
 - <u>period (str):</u> the data frequency: "monthly", "quarterly" or "yearly" ("yearly" only with `source="gmdb"`). Defaults to "monthly".
 - <u>source (str):</u> "oecd" or "gmdb" (Global Macro Database, for non-OECD countries). Defaults to "oecd".
-- <u>drift_mode (str):</u> "historical", "random_walk" or "irp", as above. Defaults to "historical".
+- <u>drift_mode (str):</u> "random_walk", "historical" or "irp", as above. Defaults to "random_walk".
+- <u>end_of_period (bool):</u> fit on the rate at the end of each period (BIS) rather than its average, or with `source="gmdb"` scale the averages' volatility up by Working's factor. Defaults to True.
 
 **Returns:**
 
@@ -162,7 +164,10 @@ the higher-rate currency earns more interest, so its forward price must be lower
 `foreign_rate - domestic_rate`: with a 4.25% US rate and a 2% euro rate, the euros-per-dollar quote drifts down
 about 2.25% a year.
 
-The drift is fixed at today's rate gap, unlike `drift_mode="irp"`, which follows the simulated rates. In a
+The drift is fixed at today's rate gap, unlike `drift_mode="irp"`, which follows the simulated rates. It is
+the drift of the Garman and Kohlhagen [(1983)](https://doi.org/10.1016/S0261-5606(83)80001-1) currency option
+model, and follows from Gorvett's (2001, p. 43) parity relation between spot S and forward f, both in foreign
+currency per dollar, "S(1 + r_F) = (1 + r_U)f" in continuous compounding. In a
 factor set this is `measure: risk_neutral`, which takes today's levels of the configured United States interest
 rate and the interest rate for `country`; both must be configured.
 
@@ -179,11 +184,11 @@ fx = FX(toolkit)
 fx.calibrate_risk_neutral("eur_q", domestic_rate=0.0425, foreign_rate=0.0200, country="EA20")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | name | drift | volatility | initial_value |
 |:-----|------:|-----------:|--------------:|
-| eur_q | -0.0225 | 0.0593 | 0.8625 |
+| eur_q | -0.0225 | 0.0736 | 0.8807 |
 
 The drift is 2.00% - 4.25% = -2.25% a year; volatility and today's rate match `calibrate("eur", ...)`.
 
@@ -199,6 +204,7 @@ calibrate_risk_neutral(
     country: str = 'EA20',
     period: str = 'monthly',
     source: str = 'oecd',
+    end_of_period: bool = True,
 ) -> FXParams
 ```
 
@@ -211,6 +217,7 @@ calibrate_risk_neutral(
 - <u>country (str):</u> the country or currency area, as in `calibrate()`. Defaults to "EA20".
 - <u>period (str):</u> the data frequency, as in `calibrate()`. Defaults to "monthly".
 - <u>source (str):</u> "oecd" or "gmdb", as in `calibrate()`. Defaults to "oecd".
+- <u>end_of_period (bool):</u> fit the volatility on end-of-period rates, as in `calibrate()`. Defaults to True.
 
 **Returns:**
 
@@ -307,10 +314,18 @@ Estimate an exchange rate's annual drift and volatility from its history, for a 
 The model assumes the log exchange rate is a random walk with a constant trend: currencies have no natural
 level to return to, so shocks are permanent, the spread of outcomes widens with the square root of the horizon
 and the rate can never turn negative
-([Gorvett, 2001](https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf)).
+([Gorvett, 2001](https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf), p. 40: "FX rates
+can be viewed as a geometric Brownian motion process evolving over time"). Gorvett leaves the estimation open
+("estimating the parameters of the model ... beyond the scope of this paper", p. 42), so the moment estimates
+below are the plain choice.
 The estimates are the mean and standard deviation of the log-returns, annualized. The average log-return is the
 median growth of the rate, so half the variance is added back to get the expected growth mu. A drift fitted
 on a short window extrapolates that window's trend for decades, which is why `random_walk` and `irp` exist.
+
+Rates that are averages over each period (the OECD and Global Macro Database series) smooth the changes: for a
+random walk the changes of averages keep only about two-thirds of the variance (Working, 1960,
+https://doi.org/10.2307/1907574), so with `period_averages=True` the variance is scaled back up by 3/2.
+End-of-period rates need no correction.
 
 The formula is as follows:
 
@@ -319,7 +334,7 @@ r_{t} = \ln(S_{t} / S_{t-1})
 $$
 
 $$
-\sigma = \operatorname{std}(r_{t}) / \sqrt{\text{dt}}
+\sigma = \operatorname{std}(r_{t}) / \sqrt{\text{dt}},\;\; \text{divided by sqrt(2/3) for period averages}
 $$
 
 $$
@@ -334,13 +349,18 @@ $$
 <summary><b>Arguments and returns</b></summary>
 
 ```python
-fit_fx_process(exchange_rate: pl.Series, time_step: float) -> FXParams
+fit_fx_process(
+    exchange_rate: pl.Series,
+    time_step: float,
+    period_averages: bool = False,
+) -> FXParams
 ```
 
 **Args:**
 
 - <u>exchange_rate (pl.Series):</u> the historical rate in foreign currency per US dollar, evenly spaced, all above 0.
 - <u>time_step (float):</u> the time between observations, in years.
+- <u>period_averages (bool):</u> whether each rate is an average over its period rather than the rate at its end. Defaults to False.
 
 **Returns:**
 
@@ -407,7 +427,12 @@ A drift fitted on five or ten years of data mostly reflects that window's dollar
 decades would build a strong currency view into every scenario. Meese and Rogoff
 [(1983)](https://doi.org/10.1016/0022-1996(83)90017-X) found a random walk forecasts exchange rates out of
 sample at least as well as the structural models of the time, so a trend-free rate is the neutral choice for
-long horizons. The scenarios still spread out with the historical volatility.
+long horizons. The scenarios still spread out with the historical volatility. Gorvett (2001, p. 40) quotes the
+same finding: "the evidence suggests that at short- and medium-term horizons, a random walk characterizes
+exchange rate movements better than most conventional fundamental-based exchange rate models" (Rosenberg, 1996).
+Over long horizons Barrie & Hibbert have exchange rates "respect purchasing power parity relationships at long
+horizons" (Hibbert, Mowbray and Turnbull 2001, section 9.3, p. 70), which also rules out a lasting trend beyond
+the inflation gap; this is the default `drift_mode`.
 
 The formula is as follows:
 
@@ -418,18 +443,24 @@ $$
 **References:**
 
 - Meese, R.A. and Rogoff, K. (1983). "Empirical exchange rate models of the seventies: Do they fit out of sample?" Journal of International Economics, 14(1-2), 3-24. <https://doi.org/10.1016/0022-1996(83>)90017-X
+- Hibbert, J., Mowbray, P., Turnbull, C. (2001). "A Stochastic Asset Model & Calibration for Long-Term Financial Planning Purposes." Barrie & Hibbert Limited, section 9.3. <https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf>
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
 
 ```python
-fit_fx_process_random_walk(exchange_rate: pl.Series, time_step: float) -> FXParams
+fit_fx_process_random_walk(
+    exchange_rate: pl.Series,
+    time_step: float,
+    period_averages: bool = False,
+) -> FXParams
 ```
 
 **Args:**
 
 - <u>exchange_rate (pl.Series):</u> the historical rate in foreign currency per US dollar, evenly spaced, all above 0.
 - <u>time_step (float):</u> the time between observations, in years.
+- <u>period_averages (bool):</u> whether each rate is a period average; see `fit_fx_process`. Defaults to False.
 
 **Returns:**
 
@@ -452,7 +483,10 @@ investor earns the same expected return in either currency. Tying the trend to t
 makes currencies respond to the rate scenarios: when US rates rise relative to the foreign rate, the dollar
 is expected to weaken over the following period, and FX and rates stay consistent in every path. Parity is a
 long-run tendency rather than a short-run law (the carry trade profits from its failure), so treat this as a
-structural, not a forecasting, choice.
+structural, not a forecasting, choice. Gorvett (2001, p. 43): "Interest rate parity thus requires that equal
+returns be generated in two different currencies when the expected change in the exchange rate is taken into
+account". Barrie & Hibbert's model instead makes exchange rates "respect purchasing power parity relationships
+at long horizons" (Hibbert, Mowbray and Turnbull 2001, section 9.3), which no mode here does.
 
 The formula is as follows:
 
@@ -466,6 +500,7 @@ makes the quote fall, the same direction as the risk-neutral drift.
 **References:**
 
 - Gorvett, R.W. (2001). "Foreign Exchange Rate Risk: Institutional Issues and Stochastic Modeling." CAS Discussion Paper Program. <https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf>
+- Hibbert, J., Mowbray, P., Turnbull, C. (2001). "A Stochastic Asset Model & Calibration for Long-Term Financial Planning Purposes." Barrie & Hibbert Limited, section 9.3. <https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf>
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>

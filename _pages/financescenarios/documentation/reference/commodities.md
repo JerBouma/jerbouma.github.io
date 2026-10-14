@@ -51,21 +51,8 @@ Data: the "Adj Close" of any commodity or futures ticker in the `Toolkit` (Yahoo
 `CL=F` (WTI crude oil) or `GC=F` (gold). The two-factor model also reads today's futures curve, available for crude
 oil, natural gas, gold, silver, copper, corn, wheat and soybeans.
 
-Configuration (`commodities[i]` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `name` | `commodity` | Name in the output. |
-| `ticker` | `CL=F` | Commodity or futures ticker. |
-| `currency` | `USD` | Reporting label; prices are in US dollars. |
-| `period` | `daily` | `daily`, `weekly`, `monthly`, `quarterly` or `yearly`. |
-| `method` | `single_factor` | Or `schwartz_smith`. |
-| `measure` | `real_world` | Or `risk_neutral` (`schwartz_smith` only). |
-| `contracts` | `12` | `schwartz_smith`: futures contracts to fetch. |
-| `long_term_window_years` | `3.0` | `schwartz_smith`: years of prices averaged into `xi`. |
-| `volatility_model` | `constant` | `single_factor`: or `garch`, volatility that clusters. |
-| `condition_on_business_cycle` | `false` | `single_factor`: follow the leading indicator. |
-| `beliefs.<field>` | `null` | `single_factor`: override a fitted value. |
+The `commodities[i]` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 A belief's `long_run_mean` is a log price: for 70 USD, set `log(70)`, about 4.25.
 
@@ -118,7 +105,11 @@ Which returns (calibrated on 2026-10-04):
 | crude_oil | 1.3659 | 4.2056 | 0.4692 | 91.1100 |
 | natural_gas | 1.6133 | 1.1284 | 0.5993 | 3.0350 |
 
-Crude oil starts at 91.11 USD and is pulled toward exp(4.2056) = 67.06 USD.
+Crude oil starts at 91.11 USD and is pulled toward exp(4.2056) = 67.06 USD. A price far above that level falls
+on average in the scenarios: in the default factor set on 2026-10-14, Brent (`BZ=F`, daily since July 2007)
+started at 106.10 USD against exp(4.3403) = 76.71 USD with a speed of 0.69, so it lost 5.7% a year on average
+over five years. The futures market priced a steeper fall that day: WTI for November 2026 at 94.14 USD and for
+September 2031 at 61.17 USD.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -165,8 +156,10 @@ production costs. The temporary part halves in ln 2 / `chi.mean_reversion_speed`
 [Schwartz and Smith (2000)](https://doi.org/10.1287/mnsc.46.7.893.12034) estimate the model from years of futures
 prices. Only today's curve is available here, so `xi` is a trailing average of the log price and `chi` the rest,
 which sets the speed and today's split. The volatilities and their correlation are fitted to the recent swings of
-each listed futures contract; failing that, with a warning, the price history alone sets them, which understates
-`xi`'s volatility.
+each listed futures contract. When the curve cannot separate the two parts, `xi`'s volatility comes from the
+longest contract, whose volatility tends to it as maturity grows (Schwartz and Smith, section 3.1), and the
+rest from the price history, with a warning. Without any futures curve the price history sets all three,
+which understates `xi`'s volatility by more than an order of magnitude.
 
 **As an example:**
 
@@ -181,14 +174,15 @@ commodities = Commodities(toolkit)
 commodities.calibrate_schwartz_smith("oil", ticker="CL=F", period="daily")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | factor | mean_reversion_speed | long_run_mean | drift | volatility | initial_value |
 |:-------|---------------------:|--------------:|------:|-----------:|--------------:|
-| oil_chi | 2.7274 | 0.0000 | | 0.4177 | 0.2145 |
-| oil_xi | | | -0.0251 | 0.0058 | 4.2975 |
+| oil_chi | 2.5872 | 0.0000 | | 0.4162 | 0.2508 |
+| oil_xi | | | -0.0246 | 0.1984 | 4.2983 |
 
-Today's 91.11 USD price splits into a long-term level of exp(4.2975) = 73.5 USD and a 24% short-term premium.
+Today's 94.55 USD price splits into a long-term level of exp(4.2983) = 73.6 USD and a 29% short-term
+premium. The long-term volatility of 19.8% a year compares with 14.5% in Schwartz and Smith's own oil fit.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -247,15 +241,15 @@ commodities = Commodities(toolkit)
 commodities.calibrate_schwartz_smith_risk_neutral("oil_q", ticker="CL=F", period="daily")
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | factor | mean_reversion_speed | long_run_mean | drift | volatility | initial_value |
 |:-------|---------------------:|--------------:|------:|-----------:|--------------:|
-| oil_q_chi | 2.7274 | 0.1965 | | 0.4177 | 0.2145 |
-| oil_q_xi | | | -0.1775 | 0.0058 | 4.2975 |
+| oil_q_chi | 2.5872 | 0.2474 | | 0.4162 | 0.2508 |
+| oil_q_xi | | | -0.1850 | 0.1984 | 4.2983 |
 
-Only the drifts differ from the real-world fit. The crude curve that day fell from 91.11 USD (November 2026) to
-77.90 USD (September 2027), so the market prices the long-term level falling about 17.7% a year, against 2.5% in
+Only the drifts differ from the real-world fit. The crude curve that day fell from 94.14 USD (November 2026) to
+83.02 USD (September 2027), so the market prices the long-term level falling about 18.5% a year, against 2.5% in
 the real-world fit.
 
 <details class="ft-details fs-api" markdown="1">
@@ -374,9 +368,14 @@ Estimate a commodity's mean-reverting price model from its spot price history, a
 A commodity, unlike a stock index, has a natural price level: when the price is high, producers expand supply and
 inventories build, and the convenience yield of holding the physical good falls, so the price is pulled back
 toward its cost of production and storage. The model lets the log price revert to a long-run level at speed kappa,
-which keeps the price positive and makes price spikes temporary. The fit is a regression of each period's change in
-log price on the previous level; the slope gives the speed, the intercept the long-run level and the residuals the
-volatility, using the exact discrete form of the process so the time step adds no bias.
+which keeps the price positive and makes price spikes temporary. Schwartz (1997), abstract: "The first model is a
+simple one-factor model in which the logarithm of the spot price of the commodity is assumed to follow a mean
+reverting process", and "The analysis reveals strong mean reversion in the commercial commodity prices." The fit
+is a regression of each period's change in log price on the previous level; the slope gives the speed, the
+intercept the long-run level and the residuals the volatility, using the exact discrete form of the process so the
+time step adds no bias. Schwartz estimates the model from futures prices with "The Kalman filter methodology";
+regressing on the spot (front-month) price is a judgement that needs no futures history, and it includes each
+month's roll from one contract to the next.
 
 The formula is as follows:
 
@@ -479,7 +478,10 @@ the front of the futures curve but barely touches the long end, while a change i
 shifts the whole curve for good. In the scenarios, short-term shocks fade but long-term uncertainty keeps growing
 with the horizon.
 
-The paper estimates both parts from years of futures prices with a Kalman filter. Without that history, xi is
+The paper estimates both parts from years of futures prices with a Kalman filter. Its section 2 defines them:
+"changes in the short-term deviations (χt) represent temporary changes in prices (resulting from, for example,
+unusual weather or a supply disruption) that are not expected to persist", while changes in the equilibrium
+level "represent fundamental changes that are expected to persist". Without that history, xi is
 proxied by a trailing average of the log price and chi by the deviation from it; chi is then fitted as a
 mean-reverting process around zero and xi as a random walk with drift.
 
@@ -508,9 +510,9 @@ $$
 The mean runs over the last w observations s up to t, with w = long_term_window_years / dt.
 
 The reversion speed and today's split between the two parts are reliable. The volatilities, their correlation and
-the long-term drift are not: averaging smooths the long-term level, so its volatility comes out roughly ten times
-too small. When a futures curve is available, the volatilities and correlation are refitted from the futures
-contracts instead.
+the long-term drift are not: averaging smooths the long-term level, so its volatility comes out far too small (0.6%
+a year for WTI on 2026-10-14, against 14.5% in Schwartz and Smith's Table 2). When a futures curve is available,
+the volatilities and correlation are refitted from the futures contracts instead.
 
 **References:**
 
@@ -531,7 +533,7 @@ fit_schwartz_smith_process(
 
 - <u>prices (pl.Series):</u> the historical spot price, evenly spaced, all above 0.
 - <u>time_step (float):</u> the time between observations, in years.
-- <u>long_term_window_years (float):</u> the years of prices averaged into the long-term level; the 3-year default matches the roughly 3-year half-life of the slow factor in Schwartz and Smith's later three-factor note.
+- <u>long_term_window_years (float):</u> the years of prices averaged into the long-term level. The 3-year default is a judgement: long enough to average out short-term deviations, whose half-life is ln 2 / kappa (about half a year at Schwartz and Smith's kappa of 1.49), short enough to follow the long-term level. Their three-factor note reports a half-life of "approximately 3 years" only for the equilibrium growth rate.
 
 **Returns:**
 
@@ -560,8 +562,11 @@ $$
 \sigma ^{2} (F_{T}) = \exp(- 2 \cdot \kappa \cdot T) \cdot \sigma_{\chi} ^{2} + \sigma_{\xi} ^{2} + 2 \cdot \exp(- \kappa \cdot T) \cdot \rho \cdot \sigma_{\chi} \cdot \sigma_{\xi}
 $$
 
-Fixing kappa is deliberate: with the dozen or so maturities a futures curve has, also fitting kappa overstated it
-about sevenfold on simulated data, while this fit was unbiased. The correlation is the least precise of the three.
+Schwartz and Smith (2000), section 3.1, derive this from their futures price (eq. 9): "The volatility is thus
+independent of the state variables. For near maturity futures contracts (i.e., T = 0), the volatility is equal
+to the volatility of the sum of the short- and long-term factors." Fixing kappa is a judgement: with the dozen or
+so maturities a futures curve has, also fitting kappa overstated it about sevenfold in this package's own
+simulation check, while this fit was unbiased. The correlation is the least precise of the three.
 
 **References:**
 
@@ -591,6 +596,62 @@ fit_schwartz_smith_diffusion_from_forward_curve(
 **Raises:**
 
 - <u>ValueError:</u> if fewer than 3 maturities are supplied.
+
+</details>
+
+### long_term_volatility_from_contract
+
+The long-term factor's volatility implied by one futures contract's volatility, given the short-term factor's
+volatility, speed and correlation: the futures volatility formula of Schwartz and Smith (2000) solved for
+sigma_xi.
+
+Schwartz and Smith (2000), section 3.1: "as T → ∞, the instantaneous volatility approaches the volatility of the
+equilibrium price level (σξ)". The longest listed contract is therefore the one that measures sigma_xi best when
+the three-parameter fit to the whole curve cannot separate the two factors. A spot price history alone smooths
+the long-term level away: on WTI on 2026-10-14 it gave 0.6% a year against about 20% from the longest contract,
+where Schwartz and Smith's own oil estimates are 14.5% (futures data) and 11.5% (Enron data) in Table 2.
+
+The formula is as follows:
+
+$$
+\sigma ^{2} (F_{T}) = \exp(- 2 \cdot \kappa \cdot T) \cdot \sigma_{\chi} ^{2} + \sigma_{\xi} ^{2} + 2 \cdot \exp(- \kappa \cdot T) \cdot \rho \cdot \sigma_{\chi} \cdot \sigma_{\xi}
+$$
+
+$$
+\sigma_{\xi} = - d \cdot \rho \cdot \sigma_{\chi} + \sqrt{\sigma ^{2} (F_{T}) - d ^{2} \cdot \sigma_{\chi} ^{2} \cdot (1 - \rho ^{2})},\;\; d = \exp(- \kappa \cdot T)
+$$
+
+Where sigma(F_T) is the contract's volatility; when the root has no positive solution the contract's own
+volatility is returned, its value as T grows.
+
+**References:**
+
+- Schwartz, E., Smith, J.E. (2000). "Short-Term Variations and Long-Term Dynamics in Commodity Prices." Management Science, 46(7), 893-911. <https://doi.org/10.1287/mnsc.46.7.893.12034>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+long_term_volatility_from_contract(
+    maturity: float,
+    contract_volatility: float,
+    kappa: float,
+    sigma_chi: float,
+    rho: float,
+) -> float
+```
+
+**Args:**
+
+- <u>maturity (float):</u> the contract's time to expiry, in years.
+- <u>contract_volatility (float):</u> the contract's recent annualized volatility.
+- <u>kappa (float):</u> the short-term factor's reversion speed.
+- <u>sigma_chi (float):</u> the short-term factor's volatility.
+- <u>rho (float):</u> the correlation of the two factors' shocks.
+
+**Returns:**
+
+<u>float:</u> the long-term factor's annual volatility.
 
 </details>
 

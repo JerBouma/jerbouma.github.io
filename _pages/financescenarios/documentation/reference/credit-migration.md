@@ -48,21 +48,23 @@ The data come from CEREP, the European Securities and Markets Authority's centra
 statistics, through the Finance Toolkit, with no API key needed: every agency registered in the EU (S&P, Moody's,
 Fitch and others) in its own rating scale. On S&P's corporate ratings from 2000 to 2025 the worst years come out
 as 2009, 2001, 2020 and 2002, the asset correlation is about 0.10, and a shock to the cycle halves in about 8
-months.
+months. That correlation sits below Basel's supervisory 12% to 24% for corporates, which is set to be prudent
+([BCBS, 2005](https://www.bis.org/bcbs/irbriskweight.pdf), section 5.2); a half-life well under a year means the
+yearly cycle values are close to independent from one year to the next.
+
+The matrix pools every year of the default-rate history, as Basel CRE36.79 asks of PD estimation: the observation
+period "must be at least five years for at least one source. If the available observation period spans a longer
+period for any source, and this data are relevant and material, this longer period must be used. The data should
+include a representative mix of good and bad years"
+([BCBS, CRE36.79](https://www.bis.org/basel_framework/chapter/CRE/36.htm)). One choice is judgement rather than
+taken from a source: the cycle is simulated as a mean-reverting process held at a long-run mean of 0, so the
+simulated matrix averages back to the through-the-cycle one.
 
 It does not derive spreads from the ratings (use `credit` for spreads by rating), recovery rates are a fixed input of
 `rating_migration`, and the cycle is one index for all sectors and regions.
 
-Configuration (`credit_migration` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `enabled` | `false` | Adds the `credit_cycle` factor. |
-| `agency` | `S&P` | The rating agency, e.g. `S&P`, `Moody's`, `Fitch`. |
-| `rating_type` | `corporate` | `corporate`, `sovereign`, `structured_finance` or `covered_bonds`. |
-| `region` | `null` | Limit to rated entities in a region, e.g. `Europe`; all by default. |
-| `matrix_years` | `10` | Years of transition counts pooled into the average transition matrix. |
-| `beliefs` | none | Override the cycle's `long_run_mean` (-0.5: a lasting downturn), speed, volatility, shocks. |
+The `credit_migration` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 **References:**
 
@@ -84,9 +86,10 @@ CreditMigration(toolkit: Toolkit)
 Calibrate the credit cycle from an agency's rating history: the average one-year transition matrix, the asset
 correlation and the yearly cycle, which is then fitted as a mean-reverting process.
 
-The transition matrix pools the agency's most recent years of rating changes, so it reflects how often each
-rating is upgraded, downgraded or defaults in an average year. The asset correlation and the historical cycle
-come from the default rates per rating
+The transition matrix pools the agency's rating changes over every year of the default-rate history, so it
+reflects how often each rating is upgraded, downgraded or defaults in an average year across good and bad years
+(Basel CRE36.79: where a longer observation period is available, "this longer period must be used"). The
+asset correlation and the historical cycle come from the default rates per rating
 ([Vasicek, 2002](https://www.risk.net/risk-management/credit-risk/1500333/loan-portfolio-value);
 [Kim, 1999](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984)): they measure
 how strongly good and bad years move all ratings together. A higher correlation means more years like 2009 in
@@ -117,7 +120,8 @@ calibrate(
     agency: str = 'S&P',
     rating_type: str = 'corporate',
     region: str | None = None,
-    matrix_years: int = 10,
+    matrix_years: int | None = None,
+    pd_floor: float = PD_FLOOR,
 ) -> CreditCycleParams
 ```
 
@@ -126,7 +130,8 @@ calibrate(
 - <u>agency (str):</u> the rating agency as CEREP names it, e.g. "S&P", "Moody's", "Fitch". Defaults to "S&P".
 - <u>rating_type (str):</u> "corporate", "sovereign", "structured_finance" or "covered_bonds". Defaults to "corporate".
 - <u>region (str &#124; None):</u> limit to rated entities in one region, e.g. "Europe". Defaults to None (all regions).
-- <u>matrix_years (int):</u> how many recent years of transition counts to pool, at least 1. Defaults to 10.
+- <u>matrix_years (int &#124; None):</u> how many recent years of transition counts to pool, at least 1. Defaults to None: every year from the first year of the default-rate history, the same window as the default probabilities (Basel CRE36.79).
+- <u>pd_floor (float):</u> the lowest one-year default probability any rating gets. Defaults to 0.0005, the Basel III / CRR3 corporate floor; 0.0003 gives the Basel II floor.
 
 **Returns:**
 
@@ -232,7 +237,7 @@ rating_migration(
 
 - <u>scenario_set (ScenarioSet):</u> a run with `credit_migration.enabled: true`, so it holds `credit_cycle`.
 - <u>holdings (Mapping[str, float]):</u> exposure per starting rating, e.g. {"A": 40, "BBB": 50, "BB": 10}.
-- <u>recovery_rate (float):</u> the share of a defaulted exposure recovered, in [0, 1). Defaults to 0.4, a common assumption for senior unsecured corporate bonds.
+- <u>recovery_rate (float):</u> the share of a defaulted exposure recovered, in [0, 1). Defaults to 0.4, the senior unsecured bond recovery by the rating held a year before default: "$39.0" per $100 par for all ratings, 1982-2004, in Moody's (2005) Exhibit 28 (https://www.bu.edu/econ/files/2015/01/Moodys_Default_1920-2004.pdf).
 - <u>params (CreditCycleParams &#124; None):</u> the calibrated cycle. Defaults to None, which takes it from the run; pass `calibration.calibrated_params["credit_cycle"]` for a run read back from disk.
 
 **Returns:**
@@ -259,7 +264,11 @@ Every borrower's credit quality is a standard normal variable, part shared cycle
 defaults when that quality falls below the threshold set by its long-run default rate PD. The asset correlation rho
 is the shared part: the higher it is, the more a bad year lifts every default rate at once, and the fatter the tail
 of portfolio losses. The long-run PD is still the average across years, so the model redistributes defaults over
-good and bad years rather than adding to them. This is the structure behind the Basel internal-ratings formula.
+good and bad years rather than adding to them. This is the structure behind the Basel internal-ratings formula:
+"Vasicek (cf. Vasicek, 2002) showed that under certain conditions, Merton's model can naturally be extended to a
+specific ASRF credit portfolio model" (BCBS, 2005, "An Explanatory Note on the Basel II IRB Risk Weight Functions",
+section 4.2, https://www.bis.org/bcbs/irbriskweight.pdf). Basel's supervisory corporate rho is "built of two limit
+correlations of 12% and 24%" (section 5.2), a deliberately prudent value; rho here is fitted to default history.
 
 The formula is as follows:
 
@@ -287,7 +296,9 @@ conditional_default_rate(
 
 Read the credit cycle off history: the asset correlation and one cycle value per year, from the default rates per
 rating (Belkin, Suchower and Forest 1998, as presented in
-[Kim, 1999](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984)).
+[Kim, 1999](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984): "Belkin, Forest, and
+Suchower (1998) present a one-parameter representation of credit risk and transition matrices", from which "we
+first build a credit cycle index, which indicates the credit state of the financial market as a whole").
 
 Each year's cycle value is the one that best explains that year's default rates across all ratings at once, so
 years such as 2009 and 2001 come out strongly negative and quiet years positive. The asset correlation is the one at
@@ -396,6 +407,8 @@ Roll a portfolio's rating mix forward one year at a time along simulated credit 
 value in a year picks that year's transition matrix, so downgrades and defaults bunch in the scenarios and years
 where the cycle turns bad, as they do in recessions. A portfolio downgraded in a bad year starts the next year
 from a weaker mix, so a run of bad years compounds. Losses apply a fixed recovery rate to the defaulted share.
+Recovery in fact falls when defaults rise (Moody's, 2005, Exhibit 10: "Recovery Rate = 0.52 - 6.9* Default
+Rate"), so a fixed rate understates the loss in the worst years.
 
 The formula is as follows:
 
@@ -427,7 +440,7 @@ migrate_ratings(
 - <u>cycle_paths (np.ndarray):</u> the simulated `credit_cycle` per scenario at each whole year; the value at the end of a year drives that year's transitions.
 - <u>params (CreditCycleParams):</u> the calibrated cycle, matrix and asset correlation.
 - <u>holdings (Mapping[str, float]):</u> exposure per starting rating, e.g. {"A": 40, "BBB": 50, "BB": 10}.
-- <u>recovery_rate (float):</u> the share of a defaulted exposure recovered, in [0, 1).
+- <u>recovery_rate (float):</u> the share of a defaulted exposure recovered, in [0, 1). Defaults to 0.4 (Moody's, 2005, Exhibit 28: senior unsecured bonds recover "$39.0" per $100 par, all ratings held a year before default).
 
 **Returns:**
 

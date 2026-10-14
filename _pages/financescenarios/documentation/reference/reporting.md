@@ -42,7 +42,7 @@ currencies are bridged through the dollar in two steps, since every `fx` factor 
 `fx` entry names its currency in `currency`; when that is unset, it is read from an `interest_rates` or `inflation`
 entry for the same `country`, or is `EUR` for the OECD's euro area codes.
 
-With the default `fx[i].drift_mode: historical` the exchange rate follows its own history, independent of the
+With the default `fx[i].drift_mode: random_walk` (or `historical`) the exchange rate moves independently of the
 simulated interest rates; `drift_mode: irp` or `measure: risk_neutral` ties its expected move to the rate gap
 between the two currencies through interest rate parity, as a market-consistent valuation needs
 ([Gorvett, 2001](https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf)).

@@ -44,21 +44,19 @@ pi(t) = c_pi + gamma_pi*v(t-1) + phi_pi_r*r(t-1) + phi_pipi*pi(t-1)
 
 With `variance_coupling` (gamma) and `variance_sensitivity` (sens) at zero this is exactly `Knw`. `v` is simulated
 with [Andersen's (2008)](https://doi.org/10.21314/jcf.2008.189) QE scheme, which never goes negative; the rate
-and inflation can. Unlike DNB, which recovers `v` from market yields, `v` is estimated here from history: a
-rolling average of the pair's squared surprises. An optional equity leg (`calibrate_equity_leg`) reads the same
-`v`, so stock and rate turbulence rise together.
+and inflation can. DNB treats `v` as an observed input ("the squared volatility v_t ... can be observed without
+measurement error", Technical Appendix section 4) and backs the rate and expected inflation out of a nominal and
+a real yield; here `v` is estimated from history instead, as a rolling average of the pair's squared surprises.
+An optional equity leg (`calibrate_equity_leg`) reads the same `v`, so stock and rate turbulence rise together.
 
-Configuration (both entries of a pair, plus an optional equity entry, in a factor set):
+`v` follows the first row of the appendix's eq. 2, dv = K_vv * (E_v - v) * dt + omega * sqrt(v) * dW, "a
+stochastic variance process v (see Heston [6]) which equals the square of the stochastic volatility process".
+DNB's eq. 3 also lets the rate and inflation load on `v`'s own shock (sigma_vr, sigma_vpi); here `v`'s shock is
+independent of theirs, a simplification that leaves out any leverage-type link between turbulence and rates.
 
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `interest_rates[i].method` | `hull_white` | Set to `knw_sv` to make this entry the pair's rate leg. |
-| `interest_rates[i].inflation_name` | `inflation` | The `name` of the paired `inflation[j]` entry. |
-| `interest_rates[i].period` | `daily` | Shared by every entry using this `v`, equal to `engine.frequency`. |
-| `inflation[j].method` | `ou` | Set to `knw_sv` to make this entry the pair's inflation leg. |
-| `inflation[j].interest_rate_name` | `interest_rate` | The `name` of the paired `interest_rates[i]` entry. |
-| `equities[k].method` | (regime switching) | Set to `knw_sv` for an equity leg on the pair's `v`. |
-| `equities[k].nominal_rate_name` | `null` | Required for `knw_sv`: the pair's rate entry `name`. |
+A pair is an `interest_rates[i]` and an `inflation[j]` entry, plus an optional `equities[k]` leg; their keys and
+defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 Data sources and pairing rules are as for `Knw`, and a `knw_sv` entry's partner must also be `knw_sv`. Every
 entry sharing a `v`, the equity leg included, must use one `period` equal to `engine.frequency`, which the config
@@ -89,7 +87,7 @@ a half-life of ln 2 / speed years) and how jumpy it is (`volatility`). A leg's `
 much its per-period variance grows with `v`, and `variance_coupling` how much `v` shifts its expected next
 value; the rest reads as in `Knw.calibrate_pair`.
 
-The surprises of a constant-volatility fit, averaged over four periods and lagged one, stand in for `v`; a CIR
+The surprises of a constant-volatility fit, averaged over the past year and lagged one, stand in for `v`; a CIR
 process ([Cox, Ingersoll & Ross, 1985](https://doi.org/10.2307/1911242)) is fit to that, and both legs are
 refit with `v` as an extra input. If no leg's variance rises with `v`, a warning suggests `method: knw`: the
 history then shows no volatility clustering worth modelling. Read `v`'s parameters with
@@ -134,6 +132,7 @@ calibrate_triple(
     interest_rate_country: str = 'United States',
     interest_rate_term: str = 'short',
     inflation_country: str = 'United States',
+    variance_window: int | None = None,
 ) -> tuple[OUParams, KnwSvLegParams, KnwSvLegParams]
 ```
 
@@ -147,6 +146,7 @@ calibrate_triple(
 - <u>interest_rate_country (str):</u> the country for the "oecd" source. Defaults to "United States".
 - <u>interest_rate_term (str):</u> "short" or "long" OECD rate. Defaults to "short".
 - <u>inflation_country (str):</u> the country of the OECD consumer price index. Defaults to "United States".
+- <u>variance_window (int &#124; None):</u> the observations averaged into each `v` estimate. Defaults to None, one year at `period` (4 quarters or 12 months), the window of Engle's (1982) four-quarter ARCH model.
 
 **Returns:**
 
@@ -154,7 +154,7 @@ calibrate_triple(
 
 **Raises:**
 
-- <u>ValueError:</u> if fewer than 11 dates overlap, or the fitted coupling is not stationary.
+- <u>ValueError:</u> if fewer than one year plus 7 dates overlap, or the fitted coupling is not stationary.
 
 </details>
 
@@ -347,8 +347,10 @@ The model functions behind this page, each with the formula it implements.
 Estimate the hidden turbulence factor v from history: how large the rate and inflation surprises have been
 lately.
 
-v cannot be observed directly. DNB backs it out of market yields; here it is the average squared surprise of a
-constant-volatility rate and inflation fit over the last few periods. When both legs have recently surprised by
+v is not a market price. DNB's CP2022 calibration takes it as given: "the squared volatility v_t and the yields
+of one nominal and one real bond ... can be observed without measurement error" (Technical Appendix, section
+4). Without that series, here it is the average squared surprise of a constant-volatility rate and inflation
+fit over the past year. When both legs have recently surprised by
 a lot, v is high; in quiet spells it is low. The rate and inflation legs, the equity leg and the risk-neutral
 market price of risk are all fitted against this one estimate, so they agree on when markets were turbulent.
 
@@ -362,8 +364,19 @@ $$
 V_{t} = (1 / W) \cdot \operatorname{sum}(e_{s} \;\text{for}\; s = t - W + 1 \;\text{to}\; t)
 $$
 
-Where u and w are the rate and inflation surprises of the constant-volatility fit and W the window, four
-periods. Each date is paired with the window ending one period earlier, so a surprise never explains itself.
+Where u and w are the rate and inflation surprises of the constant-volatility fit and W the window, one year of
+observations. Each date is paired with the window ending one period earlier, so a surprise never explains itself.
+
+The window follows Engle's (1982, section 9, p. 1002) model of UK inflation variance: "testing for a fourth-order
+linear ARCH process, the chi-squared statistic with 4 degrees of freedom was 15.2, which is highly significant",
+giving "h_t = a_0 + a_1(0.4 e_t-1^2 + 0.3 e_t-2^2 + 0.2 e_t-3^2 + 0.1 e_t-4^2)" (eq. 38) on quarterly data: the
+last four quarters, one year. The window keeps that year at the data's frequency, 12 months on monthly data and
+one observation on yearly data. Equal weights and adding the two legs' surprises are judgements: they keep one
+turbulence measure for both legs.
+
+**References:**
+
+- Engle, R.F. (1982). "Autoregressive Conditional Heteroscedasticity with Estimates of the Variance of United Kingdom Inflation." Econometrica, 50(4), 987-1007. <https://doi.org/10.2307/1912773>
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -374,6 +387,7 @@ compute_v_proxy(
     interest_rate_dates: pl.Series,
     inflation: pl.Series,
     inflation_dates: pl.Series,
+    window: int | None = None,
 ) -> pl.DataFrame
 ```
 
@@ -383,6 +397,7 @@ compute_v_proxy(
 - <u>interest_rate_dates (pl.Series):</u> the dates of those observations.
 - <u>inflation (pl.Series):</u> the historical inflation rate, as decimals, at the same frequency as the rate.
 - <u>inflation_dates (pl.Series):</u> the dates of those observations.
+- <u>window (int &#124; None):</u> the number of observations averaged; None (the default) uses one year at the data's spacing, 4 for quarterly data.
 
 **Returns:**
 
@@ -390,7 +405,7 @@ compute_v_proxy(
 
 **Raises:**
 
-- <u>ValueError:</u> if a series and its dates differ in length, or too little overlapping history remains (11 dates at least).
+- <u>ValueError:</u> if a series and its dates differ in length, the window is below 1, or too little overlapping history remains (the window plus 7 dates: 11 for quarterly data).
 
 </details>
 
@@ -445,6 +460,7 @@ fit_knw_sv_triple(
     inflation: pl.Series,
     inflation_dates: pl.Series,
     time_step: float,
+    variance_window: int | None = None,
 ) -> tuple[OUParams, KnwSvLegParams, KnwSvLegParams]
 ```
 
@@ -455,6 +471,7 @@ fit_knw_sv_triple(
 - <u>inflation (pl.Series):</u> the historical inflation rate, as decimals, at the same frequency as the rate.
 - <u>inflation_dates (pl.Series):</u> the dates of those observations.
 - <u>time_step (float):</u> the years between observations (0.25 for quarterly); v is a continuous-time process.
+- <u>variance_window (int &#124; None):</u> the observations behind each v estimate; None (the default) uses one year.
 
 **Returns:**
 
@@ -462,7 +479,7 @@ fit_knw_sv_triple(
 
 **Raises:**
 
-- <u>ValueError:</u> if too little overlapping history remains (11 dates at least), or the rate and inflation block has spectral radius 1 or more.
+- <u>ValueError:</u> if too little overlapping history remains (one year plus 7 dates), or the rate and inflation block has spectral radius 1 or more.
 
 </details>
 

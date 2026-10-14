@@ -77,7 +77,7 @@ Scenarios(
     seed: int | None = None,
     antithetic: bool = False,
     shock_distribution: Literal['gaussian', 'student_t'] = 'gaussian',
-    degrees_of_freedom: float = 5.0,
+    degrees_of_freedom: float = 12.0,
     bond_panel: BondPanel | None = None,
     config: ScenariosConfig | None = None,
     regime: Regime | None = None,
@@ -613,12 +613,14 @@ others through their historical correlations.
 
 The default real-world run answers "how might the economy evolve?", from history and your beliefs: the run for
 ALM, asset allocation and risk budgets. The risk-neutral run (`measure="risk_neutral"`) answers "what is it worth
-today?": the short rate follows today's forward curve and equities earn that rate less their dividend yield, so
-discounted prices stay at today's prices, as Solvency II's best estimate requires. Factors without a traded
-price, such as credit or real estate, are left out of it; inflation stays real-world for indexation.
+today?": the short rate is a Hull-White rate that reproduces EIOPA's risk-free curve (the Treasury curve for a
+currency EIOPA does not cover), equities earn that rate less their dividend yield, so discounted prices stay
+at today's prices, and inflation moves around the bond market's breakeven curve, as Solvency II's best
+estimate requires. Rate and inflation volatilities come from history, since no option prices are available.
+Factors without a traded price, such as credit or real estate, are left out of it; see `risk_neutral_config`.
 
 A `regime` such as "oil_crisis" tells a stress story. Its beliefs shift what the model expects (inflation pulled
-towards 9%); its targets keep the scenarios that play out the story (high rates, weak stocks). Targets are
+towards 12%); its targets keep the scenarios that play out the story (high rates, weak stocks). Targets are
 quantiles of what the model itself produces, so the kept paths stay plausible. You still get `n_simulations`
 scenarios back.
 
@@ -829,14 +831,14 @@ calibration.save("calibration.json")
 
 ```python
 class CalibrationResult(BaseModel):
-    calibrated_params: dict[str, CreditCycleParams | OUParams | RegimeParams | UnemploymentParams | YieldCurveParams | FXParams | CommodityParams | DividendYieldParams | DividendGrowthParams | WilkieConsolsParams | EquityDerivedParams | RandomWalkParams | GARCHParams | OUCovariateParams | DeterministicParams | DeterministicPathParams | HullWhiteForwardParams | AR1Params | MovingTargetOUParams | KnwParams | KnwSvLegParams | KnwSvEquityParams | HjmFactorParams | HestonParams]
+    calibrated_params: dict[str, CreditCycleParams | OUParams | RegimeParams | UnemploymentParams | YieldCurveParams | FXParams | CommodityParams | DividendYieldParams | DividendGrowthParams | WilkieConsolsParams | EquityDerivedParams | RandomWalkParams | GARCHParams | OUCovariateParams | DeterministicParams | BreakevenInflationParams | DeterministicPathParams | HullWhiteForwardParams | AR1Params | MovingTargetOUParams | KnwParams | KnwSvLegParams | KnwSvEquityParams | HjmFactorParams | HestonParams]
     correlation_matrix: np.ndarray
     factor_names: list[str]
     dependencies: dict[str, list[str]]
     raw_long_run_means: dict[str, float] = Field(default_factory=dict, description='factor name -> its fitted long-run mean before any belief override. Only for mean-reverting factors (rates, inflation, unemployment and the like).')
     correlation_fallback_pairs: list[str] = Field(default_factory=list, description="'factor_a/factor_b' pairs set to 0 correlation because their histories overlap too little to estimate one.")
     beliefs: dict[str, Any] | None = Field(default=None, description="the belief overrides this calibration applied, keyed '<category>.<name>'; simulate() refuses to replay it under a config with different beliefs.")
-    correlation_shrinkage: float | None = Field(default=None, description='how far the historical correlations were pulled toward their average to tame estimation noise (0 is none, 1 is all the way).')
+    correlation_shrinkage: float | None = Field(default=None, description="how far the historical correlations were shrunk to tame estimation noise, toward zero for 'auto' and toward their average for a fixed share (0 is none, 1 is all the way).")
     correlation_repair: float | None = Field(default=None, description='how far the correlation matrix moved to become a valid one (0 if it already was); large values mean the pairwise estimates disagreed.')
     long_run_anchors: dict[str, dict[str, float]] = Field(default_factory=dict, description="interest-rate factor name -> {year: long-run level} from EIOPA's forward rates, the path the rate is pulled towards unless the config sets a long-run belief itself.")
     calibration_failures: dict[str, str] = Field(default_factory=dict, description='factor name -> why it could not be fitted (e.g. no mean reversion over a short history), or the factor it depends on that failed. Those factors are left out of the run instead of stopping it; empty when everything calibrated.')
@@ -851,7 +853,7 @@ class CalibrationResult(BaseModel):
 - <u>raw_long_run_means (dict[str, float]):</u> factor name -> its fitted long-run mean before any belief override.
 - <u>correlation_fallback_pairs (list[str]):</u> "factor_a/factor_b" pairs set to zero correlation for lack of shared history.
 - <u>beliefs (dict[str, Any] &#124; None):</u> the fixed belief overrides this calibration applied.
-- <u>correlation_shrinkage (float &#124; None):</u> how far the correlations were pulled toward their average.
+- <u>correlation_shrinkage (float &#124; None):</u> how far the correlations were shrunk (toward zero for "auto").
 - <u>correlation_repair (float &#124; None):</u> how far the matrix moved to become valid; large means the pairs disagreed.
 - <u>long_run_anchors (dict[str, dict[str, float]]):</u> interest rate -> {year: long-run level} from EIOPA's curve.
 - <u>calibration_failures (dict[str, str]):</u> factor name -> why it could not be fitted; it is left out of the run.

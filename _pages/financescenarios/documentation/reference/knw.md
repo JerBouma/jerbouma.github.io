@@ -51,17 +51,15 @@ The data come from the Finance Toolkit without an API key: the rate from a Treas
 country's short or long rate, inflation from OECD consumer price index growth. OECD data are not daily or
 weekly, so a pair runs monthly, quarterly or yearly.
 
-Configuration (both entries of a pair in a factor set):
+In KNW the inflation factor is expected inflation, not the measured rate: "dPi_t / Pi_t = pi_t dt + sigma_Pi' dZ_t
+... where pi_t denotes the instantaneous expected inflation" (working paper, section 1.1, eq. 3), so measured
+inflation is expected inflation plus noise. KNW filter it from yields and CPI with a Kalman filter (section
+1.4.2) and CP2022 backs it out of a real bond yield; here year-over-year CPI growth stands in for it, a judgement
+that keeps the model on keyless data. Averaging twelve months of price changes damps much of that noise; what is
+left ends up in the fitted inflation volatility.
 
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `interest_rates[i].method` | `hull_white` | Set to `knw` to make this entry the pair's rate leg. |
-| `interest_rates[i].inflation_name` | `inflation` | The `name` of the paired `inflation[j]` entry. |
-| `interest_rates[i].source` | `ticker` | `ticker` (set `ticker`, default `^IRX`) or `oecd` (set `country`, `term`). |
-| `interest_rates[i].period` | `daily` | Shared by both legs and equal to `engine.frequency`. |
-| `inflation[j].method` | `ou` | Set to `knw` to make this entry the pair's inflation leg. |
-| `inflation[j].interest_rate_name` | `interest_rate` | The `name` of the paired `interest_rates[i]` entry. |
-| `inflation[j].country` | `United States` | The country whose OECD consumer price index is used. |
+A pair is an `interest_rates[i]` and an `inflation[j]` entry; their keys and defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 Both entries set `method: knw` and name each other, and both use one `period` equal to `engine.frequency`. The
 config is rejected otherwise: the fitted coefficients hold per period, so another frequency would compound them
@@ -92,9 +90,11 @@ leg's last value spills into it (`cross_coupling`), a constant (`intercept`) and
 surprise per period (`volatility`). An `own_persistence` of 0.9 a quarter means half of a deviation is left
 after ln(0.5) / ln(0.9) = 6.6 quarters, ignoring cross effects. Rates and inflation are decimals (0.04 = 4%).
 
-Each leg is one least squares regression on the previous rate and inflation, the bivariate VAR(1) of
-[Lutkepohl (2005)](https://doi.org/10.1007/978-3-540-27752-1). Only dates both series cover are used, and the
-fitted system must settle down over time (be stationary).
+Each leg is one least squares regression of its deviation from its historical average on the previous rate's
+and inflation's deviations, a bivariate VAR(1)
+([Lutkepohl, 2005](https://doi.org/10.1007/978-3-540-27752-1)) fitted on mean-adjusted data, so the pair
+settles at the history's averages. Only dates both series cover are used, and the fitted system must settle
+down over time (be stationary).
 
 **As an example:**
 
@@ -109,15 +109,21 @@ knw = Knw(toolkit)
 knw.calibrate_pair("interest_rate", "inflation", period="quarterly")
 ```
 
-Which returns (calibrated on 2026-10-05):
+Which returns (calibrated on 2026-10-14):
 
 | leg | intercept | own_persistence | cross_coupling | volatility |
 |:----|----------:|----------------:|---------------:|-----------:|
-| interest_rate | -0.0009 | 0.9397 | 0.0918 | 0.0044 |
-| inflation | 0.0036 | 0.8910 | -0.0246 | 0.0073 |
+| interest_rate | -0.0005 | 0.9432 | 0.0803 | 0.0043 |
+| inflation | 0.0037 | 0.8890 | -0.0206 | 0.0073 |
 
-One percentage point more inflation adds 0.092 points to next quarter's rate, and the pair settles at a 2.60%
-rate and 2.74% inflation in the long run.
+One percentage point more inflation adds 0.080 points to next quarter's rate, and the pair settles at the
+history's averages: a 3.04% rate and 2.72% inflation, a long-run real short rate of 0.3%. That sits below the
+1.0% of the Federal Reserve's longer-run projection (a 3.0% federal funds rate against 2.0% PCE inflation,
+Summary of Economic Projections, Table 1, September 2025:
+https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20250917.pdf) and the 1.7% that Koijen, Nijman
+and Werker estimate on 1959-2005 data (Table 1: 5.89% nominal rate, 4.20% expected inflation), because this
+history includes the zero-rate years 2009-2015 and 2020-2021. With 36 years of quarterly data and a rate that
+keeps 94% of a gap each quarter, the long-run levels carry a sampling error of about 0.6 percentage points.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -132,6 +138,7 @@ calibrate_pair(
     interest_rate_country: str = 'United States',
     interest_rate_term: str = 'short',
     inflation_country: str = 'United States',
+    mean_estimate: Literal['sample', 'regression'] = 'sample',
 ) -> tuple[KnwParams, KnwParams]
 ```
 
@@ -145,6 +152,7 @@ calibrate_pair(
 - <u>interest_rate_country (str):</u> the country when the source is "oecd". Defaults to "United States".
 - <u>interest_rate_term (str):</u> "short" or "long" OECD rate when the source is "oecd". Defaults to "short".
 - <u>inflation_country (str):</u> the country whose OECD consumer price index is used. Defaults to "United States".
+- <u>mean_estimate (str):</u> "sample" (default) puts the long-run levels at the history's averages; "regression" at the free intercepts of the two regressions.
 
 **Returns:**
 
@@ -289,24 +297,33 @@ already as efficient as a joint estimate.
 The formula is as follows:
 
 $$
-x_{t} = c_{x} + \phi_{x} \cdot x_{t-1} + \phi_{y} \cdot y_{t-1} + u_{t}
+x_{t} - m_{x} = \phi_{x} \cdot (x_{t-1} - m_{x}) + \phi_{y} \cdot (y_{t-1} - m_{y}) + u_{t}
+$$
+
+$$
+c_{x} = m_{x} - \phi_{x} \cdot m_{x} - \phi_{y} \cdot m_{y}
 $$
 
 $$
 \sigma_{x} = \sqrt{\operatorname{sum}(u_{t} ^{2}) / (T - 3)}
 $$
 
-Where (x, y) is (r, pi) for the rate leg and (pi, r) for the inflation leg, and T the number of transitions. The
-fit is accepted only when the 2x2 coefficient matrix Phi has spectral radius below 1, the condition for the joint
-system to be stationary: only then does a shock fade and the pair settle at long-run levels, rather than drift
-off. Only dates both histories cover are used.
+Where (x, y) is (r, pi) for the rate leg and (pi, r) for the inflation leg, m the sample average of each series and
+T the number of transitions. The long-run levels the pair settles at are then the historical averages, a VAR fitted
+on mean-adjusted data, the estimator of Lutkepohl (2005), section 3.3, "Least Squares Estimation with Mean-Adjusted
+Data" (3.3.3, "Estimation with Unknown Process Mean"). The alternative, an intercept fitted freely in each
+regression, puts the long-run levels at (I - Phi)^-1 * c, which for a pair this persistent amplifies where the
+sample happens to start and end: on US data since 1990 it puts the long-run rate 0.5 percentage points below the
+rate's own average and the long-run real rate below zero. The fit is accepted only when the 2x2 coefficient matrix
+Phi has spectral radius below 1, the condition for the joint system to be stationary: only then does a shock fade
+and the pair settle at long-run levels, rather than drift off. Only dates both histories cover are used.
 
 **References:**
 
 - Koijen, R.S.J., Nijman, T.E., Werker, B.J.M. (2010). "When Can Life Cycle Investors Benefit from Time-Varying Bond Risk Premia?" The Review of Financial Studies, 23(2), 741-780. The model CP2022 extends. <https://doi.org/10.1093/rfs/hhp058> (open working paper: <https://doi.org/10.2139/ssrn.795925>)
 - Commissie Parameters (2022). "Technical Appendix: Specification of the CP2022 Model." Eq. 52, the discrete-time recursion fit here at zero stochastic volatility. <https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix>
 - Dai, Q., Singleton, K.J. (2000). "Specification Analysis of Affine Term Structure Models." Journal of Finance, 55(5), 1943-1978. Why a matrix (not scalar) mean reversion is standard here. <https://doi.org/10.1111/0022-1082.00278>
-- Lutkepohl, H. (2005). "New Introduction to Multiple Time Series Analysis." Springer. The reduced-form VAR(1) OLS estimator and its stability condition. <https://doi.org/10.1007/978-3-540-27752-1>
+- Lutkepohl, H. (2005). "New Introduction to Multiple Time Series Analysis." Springer. The reduced-form VAR(1) OLS estimator (section 3.2), its mean-adjusted form (section 3.3) and its stability condition. <https://doi.org/10.1007/978-3-540-27752-1>
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -317,6 +334,7 @@ fit_knw_pair(
     interest_rate_dates: pl.Series,
     inflation: pl.Series,
     inflation_dates: pl.Series,
+    mean_estimate: Literal['sample', 'regression'] = 'sample',
 ) -> tuple[KnwParams, KnwParams]
 ```
 
@@ -326,6 +344,7 @@ fit_knw_pair(
 - <u>interest_rate_dates (pl.Series):</u> the dates of those observations.
 - <u>inflation (pl.Series):</u> the historical inflation rate, as decimals, at the same frequency as the rate.
 - <u>inflation_dates (pl.Series):</u> the dates of those observations.
+- <u>mean_estimate (str):</u> "sample" (default) sets the long-run levels to the historical averages; "regression" fits a free intercept per equation instead.
 
 **Returns:**
 

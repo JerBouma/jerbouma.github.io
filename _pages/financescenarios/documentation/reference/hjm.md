@@ -73,16 +73,8 @@ ten_year_paths = hjm_forward_rate(
 )
 ```
 
-Configuration (`hjm` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `enabled` | `false` | Adds `hjm_factor_1` and `hjm_factor_2` when `true`. |
-| `period` | `daily` | Calibration frequency; sets the time step. |
-| `decay` | `0.7308` | Nelson-Siegel decay (lambda) for HJM's own anchor curve. |
-| `kappa_bounds` | `(0.01, 6.0)` | Search range for both factors' volatility decay. |
-| `beliefs.factor_1`, `.factor_2` | `null` | Override `volatility`, `volatility_decay` or `market_price_of_risk`. |
-| `beliefs.factor_correlation` | `null` | Override the fitted correlation, between -1 and 1. |
+The `hjm` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 **References:**
 
@@ -157,8 +149,8 @@ calibrate(
 **Args:**
 
 - <u>period (str):</u> data frequency and time step: "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
-- <u>decay (float):</u> the Nelson-Siegel decay (lambda), annualized, for the historical and anchor curves. Defaults to 0.7308.
-- <u>kappa_bounds (tuple[float, float]):</u> the lowest and highest `volatility_decay` searched for both factors. Defaults to (0.01, 6.0); a floor of 0.03 to 0.10 tempers long-horizon convexity.
+- <u>decay (float):</u> the Nelson-Siegel decay (lambda), annualized, for the historical and anchor curves. Defaults to 0.7308, from Diebold and Li (2006, section 3 of NBER w10048): "The λ value that maximizes the loading on the medium-term factor at exactly 30 months is λ=0.0609"; 0.0609 a month × 12 = 0.7308 a year.
+- <u>kappa_bounds (tuple[float, float]):</u> the lowest and highest `volatility_decay` searched for both factors. Defaults to (0.01, 6.0), a judgement; a floor of 0.03 to 0.10 tempers long-horizon convexity.
 
 **Returns:**
 
@@ -255,8 +247,10 @@ $$
 K(k) = \exp(- k \cdot x) \cdot (1 - \exp(- k \cdot t)) / k
 $$
 
-The first line is the Heath, Jarrow and Morton (1992) drift condition for correlated factors; Phi(t, x) is that
-drift integrated from 0 to t at a fixed time-to-maturity x = T - t.
+The first line is the Heath, Jarrow and Morton (1992) drift condition for correlated factors, which they call "the
+forward rate drift restriction" (working-paper version, Cornell ORIE Technical Report 900, 1989, Proposition 3,
+eq. (19), with the market price of risk set to 0); Phi(t, x) is that drift integrated from 0 to t at a fixed
+time-to-maturity x = T - t.
 
 **References:**
 

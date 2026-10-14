@@ -30,10 +30,11 @@ run, and an inflation shock first lowers real dividends before they catch up. Di
 the index gives the simulated share price (`equities[].method="wilkie_derived"`). Every entry needs a paired
 `inflation[]` and `dividend_yield[]` entry.
 
-The model is the share dividend index of Wilkie (1986), in his "Reduced Basis" form:
+The model is the share dividend index of Wilkie (1986), section 3.7, in the form of his "Reduced Standard Basis"
+(Table 1; section 3.9 calls it "a slightly simpler model that omits the term in DB"):
 
 ```text
-dln D(t) = DMU + DW * dlnQ(t) + DX * DM(t-1) + DY * YE(t-1) + DSD * DZ(t)
+dln D(t) = DMU + DW * DM(t) + DX * dlnQ(t) + DY * YE(t-1) + DSD * DZ(t)
 DM(t) = DD * dlnQ(t) + (1 - DD) * DM(t-1)
 ```
 
@@ -41,28 +42,22 @@ where `dln D(t)` is the growth of the log dividend index and `dlnQ(t)` the infla
 coefficient has a plain reading:
 
 - `DMU` (`long_run_drift`): long-term real dividend growth, net of inflation.
-- `DW` (`inflation_sensitivity`): how much of this period's inflation passes straight into dividends.
-- `DM`, with weight `DD` (`carried_forward_weight`, fixed at Wilkie's 0.2): a slowly updating average of past
-  inflation, so dividends keep catching up after inflation moves; `DX` (`carried_forward_sensitivity`) is its effect.
+- `DM`, with weight `DD` (`carried_forward_weight`, Wilkie's 0.2 a year): a slowly updating average of past
+  inflation, so dividends keep catching up after inflation moves; `DW` (`lagged_inflation_weight`) is its effect.
+- `DX` (`direct_inflation_weight`): how much of this period's inflation passes straight into dividends.
 - `DY` (`yield_residual_sensitivity`): the effect of last period's surprise in the dividend yield, `YE(t-1)`.
 - `DSD` (`volatility`): the size of the index's own random shock.
+
+Wilkie's model has unit gain, DW + DX = 1 (section 3.7: "a given percentage increase in the Retail Prices Index
+ultimately results in the same percentage increase in the dividend index"), and the fit imposes it; his bases use
+DW = 0.8 and DX = 0.2 (section 3.9).
 
 Data: the Finance Toolkit has no dividend index series, so the `Dividends` paid over the trailing `window` trading
 days are summed, the numerator `DividendYield` divides by the price. An entry runs at its paired inflation entry's
 period, and the paired dividend yield must use the plain fit (no `garch` or business-cycle option).
 
-Configuration (`dividend_growth[i]` in a factor set):
-
-| Key | Default | Meaning |
-|:----|:--------|:--------|
-| `name` | `dividend_growth` | Name in the output. |
-| `ticker` | `SPY` | A dividend-paying ticker. |
-| `currency` | `USD` | Reporting label. |
-| `window` | `252` | Trading days of dividends summed for one index value. |
-| `inflation_name` | `inflation` | The `inflation[i].name` that drives `dlnQ(t)` and sets the period. |
-| `dividend_yield_name` | `dividend_yield` | The `dividend_yield[i].name` that supplies `YE(t-1)`. |
-| `carried_forward_weight` | `0.2` | `DD`, strictly between 0 and 1. |
-| `beliefs.<field>` | `null` | Override a fitted value, such as `inflation_sensitivity` or `volatility`. |
+The `dividend_growth[i]` keys of a factor set and their defaults are listed on the reference page
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
 
 **References:**
 
@@ -82,18 +77,16 @@ DividendGrowth(toolkit: Toolkit)
 
 Calibrate one ticker's Wilkie (1986) dividend growth model from its dividend history.
 
-It fits how dividend growth responds to current inflation (`inflation_sensitivity`), to past inflation carried
-forward (`carried_forward_sensitivity`) and to the dividend yield's last surprise (`yield_residual_sensitivity`),
-plus its own drift (`long_run_drift`) and swings (`volatility`). Once inflation has been steady for a while the
-carried-forward average equals it, so `inflation_sensitivity + carried_forward_sensitivity` is the share of
-inflation that eventually reaches dividends: 1 is full pass-through, and the fit lets the data decide. A negative
-`yield_residual_sensitivity` means a jump in the yield (a price fall) is followed by slower dividend growth, as
-when a falling market anticipates dividend cuts.
-
-As in Wilkie
+It fits how much of current inflation reaches dividends at once (`direct_inflation_weight`, Wilkie's DX), the
+rest arriving through the carried-forward average (`lagged_inflation_weight`, DW = 1 - DX), plus the dividend
+yield's last surprise (`yield_residual_sensitivity`), the real drift (`long_run_drift`) and the swings
+(`volatility`). As in Wilkie
 ([1986](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf)),
-with `carried_forward_weight` fixed, one ordinary least squares regression fits them all. The inputs are matched
-by length, so they must share a period and end date.
+DW + DX = 1, so inflation passes fully into dividends in the long run and equities keep their real value. A
+negative `yield_residual_sensitivity` means a jump in the yield (a price fall) is followed by slower dividend
+growth, as when a falling market anticipates dividend cuts. Wilkie's DD is a yearly weight and inflation a
+yearly rate, so both are converted to the data's period. The inputs are matched by length, so they must share
+a period and end date.
 
 **As an example:**
 
@@ -131,19 +124,19 @@ dividend_growth.calibrate(
 )
 ```
 
-Which returns (calibrated on 2026-10-04):
+Which returns (calibrated on 2026-10-14):
 
 | Parameter | Value |
 |:----------|------:|
-| long_run_drift (DMU) | 0.0085 |
-| inflation_sensitivity (DW) | 0.0205 |
-| carried_forward_sensitivity (DX) | -0.0176 |
-| yield_residual_sensitivity (DY) | -0.1927 |
-| volatility (DSD) | 0.0274 |
+| long_run_drift (DMU) | 0.0020 |
+| direct_inflation_weight (DX) | 1.6891 |
+| lagged_inflation_weight (DW) | -0.6891 |
+| yield_residual_sensitivity (DY) | -0.0923 |
+| volatility (DSD) | 0.0355 |
 | initial_value | 3.7500 |
 
-The coefficients are per month, while inflation is an annual rate: 0.0205 x 12 = 0.25, so about a quarter of
-inflation passes into the same month's dividends.
+Johnson & Johnson's dividends grew 0.2% a month above inflation. They took up inflation faster than Wilkie's
+0.2 / 0.8 split: a rise lifts them at once and the slow average then gives part back, one for one in the end.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -157,6 +150,7 @@ calibrate(
     window: int = 252,
     period: str = 'daily',
     carried_forward_weight: float = 0.2,
+    unit_gain: bool = True,
 ) -> DividendGrowthParams
 ```
 
@@ -168,7 +162,8 @@ calibrate(
 - <u>ticker (str):</u> any dividend-paying ticker in the Toolkit. Defaults to "SPY".
 - <u>window (int):</u> trading days of dividends summed for one index value. Defaults to 252.
 - <u>period (str):</u> the fit's time step, "daily" to "yearly", matching both inputs. Defaults to "daily".
-- <u>carried_forward_weight (float):</u> `DD`, the weight of current inflation in the carried-forward average, strictly between 0 and 1. Defaults to 0.2.
+- <u>carried_forward_weight (float):</u> `DD`, the yearly weight of current inflation in the carried-forward average, strictly between 0 and 1. Defaults to 0.2, Wilkie's value (section 3.9).
+- <u>unit_gain (bool):</u> impose Wilkie's DW + DX = 1. Defaults to True; False gives the earlier free fit.
 
 **Returns:**
 
@@ -244,36 +239,50 @@ changes(name: str) -> pl.DataFrame
 
 The model functions behind this page, each with the formula it implements.
 
+{% raw %}
 ### fit_dividend_growth_process
 
-Fit Wilkie's (1986) Reduced Basis share dividend index process to a historical dividend index series, a paired
-inflation-rate series, and a paired dividend yield process's reconstructed own shocks. `carried_forward_weight`
-(DD) is fixed, not fit; given DD, the carried-forward inflation influence DM(t) is a deterministic function of
-`inflation`, so DMU/DW/DX/DY come from one OLS regression and DSD is its residual standard deviation.
+Fit Wilkie's (1986) share dividend index to a dividend history, a paired inflation history and the paired
+dividend yield's past shocks.
+
+Wilkie ties dividends to inflation with unit gain. Section 3.7: "The parameters are such that a given percentage
+increase in the Retail Prices Index ultimately results in the same percentage increase in the dividend index, so
+the model is said to have unit gain." Part of the effect is immediate (DX) and part arrives through a slowly
+updating average of past inflation (DW); his bases use DW = 0.8 and DX = 0.2 (section 3.9). The fit imposes
+DW + DX = 1, so equities hold their real value against inflation in the long run, and estimates DX, DMU and DY
+by one ordinary least squares regression. DD is fixed, not fitted: Wilkie's DD is a yearly weight ("the amount
+that enters the dividend model each year is DD times the current inflation rate", section 3.8), so it is
+converted to the data's step, as is the inflation rate, which is quoted per year.
 
 The formula is as follows:
 
 $$
-\text{ln}\; D (t) - \text{ln}\; D (t-1) = \text{DMU} + \text{DW} \cdot \operatorname{dlnQ}(t) + \text{DX} \cdot \operatorname{DM}(t-1) + \text{DY} \cdot \operatorname{YE}(t-1) + e(t)
+d = 1 - (1 - \text{DD}) ^{\text{dt}}
 $$
 
 $$
-\operatorname{DM}(t) = \text{DD} \cdot \operatorname{dlnQ}(t) + (1 - \text{DD}) \cdot \operatorname{DM}(t-1)
+\operatorname{DM}(t) = d \cdot I(t) + (1 - d) \cdot \operatorname{DM}(t-1),\;\; \operatorname{DM}(0) = I(0)
 $$
 
 $$
-\operatorname{DM}(0) = \operatorname{dlnQ}(0)
+\text{ln}\; D (t) - \text{ln}\; D (t-1) - \operatorname{DM}(t) \cdot \text{dt} = \text{DMU} + \text{DX} \cdot (I(t) - \operatorname{DM}(t)) \cdot \text{dt} + \text{DY} \cdot \operatorname{YE}(t-1) + e(t)
 $$
 
 $$
-\text{DSD} = \sqrt{\text{sum}\; e (t) ^{2} / (n - 4)}
+\text{DW} = 1 - \text{DX}
 $$
 
-Where n is the number of regression rows and YE(t-1) is zero on the first row, which has no earlier shock.
+$$
+\text{DSD} = \sqrt{\text{sum}\; e (t) ^{2} / (n - 3)}
+$$
+
+Where I(t) is the annual inflation rate, dt the step in years, n the number of regression rows and YE(t-1) zero
+on the first row. With `unit_gain=False` the earlier free fit is used instead: DW and DX unrestricted, inflation
+and DD taken per step as given.
 
 **References:**
 
-- Wilkie, A.D. (1986). "A Stochastic Investment Model for Actuarial Use." Transactions of the Faculty of Actuaries, 39, 341-403. Sections 3.7-3.9, the share dividend index model and its Reduced Basis parameterisation. <https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf>
+- Wilkie, A.D. (1986). "A Stochastic Investment Model for Actuarial Use." Transactions of the Faculty of Actuaries, 39, 341-403. Sections 3.7-3.9 and Table 1. <https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf>
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
@@ -284,22 +293,27 @@ fit_dividend_growth_process(
     inflation: pl.Series,
     yield_residual: np.ndarray,
     carried_forward_weight: float = 0.2,
+    time_step: float = 1.0,
+    unit_gain: bool = True,
 ) -> DividendGrowthParams
 ```
 
 **Args:**
 
-- <u>dividend_index (pl.Series):</u> historical dividend index levels, evenly spaced in time, all > 0. Length n.
-- <u>inflation (pl.Series):</u> the paired inflation entry's raw historical rate series (Wilkie's dlnQ(t)), same length n and time index as `dividend_index`.
-- <u>yield_residual (np.ndarray):</u> the paired dividend yield process's own reconstructed shocks (see dividend_yield_model. reconstruct_dividend_yield_residuals), length n - 1; index i is the shock realised moving from observation i to i+1, i.e. the same alignment `np.diff` produces.
-- <u>carried_forward_weight (float):</u> DD, the fixed EWMA smoothing weight on current inflation in the carried-forward influence DM(t). Wilkie's own published value (both his full and Reduced Basis parameterisations use DD=0.2) is the default.
+- <u>dividend_index (pl.Series):</u> the dividend index history, evenly spaced, all above 0.
+- <u>inflation (pl.Series):</u> the paired annual inflation rate, same length and dates as `dividend_index`.
+- <u>yield_residual (np.ndarray):</u> the paired dividend yield's past shocks (see `reconstruct_dividend_yield_residuals`), one shorter than `dividend_index`.
+- <u>carried_forward_weight (float):</u> DD, Wilkie's yearly weight of current inflation in DM(t); default 0.2, his value in both bases (Table 1).
+- <u>time_step (float):</u> the time between observations, in years; default 1.0, Wilkie's yearly step.
+- <u>unit_gain (bool):</u> impose Wilkie's DW + DX = 1 (default); False gives the free fit.
 
 **Returns:**
 
-<u>DividendGrowthParams:</u> the calibrated process parameters.
+<u>DividendGrowthParams:</u> the fitted parameters, with DW and DX in Wilkie's own terms.
 
 **Raises:**
 
-- <u>ValueError:</u> if `dividend_index`/`inflation` aren't the same length, or `yield_residual` isn't exactly one shorter, if fewer than `MINIMUM_OBSERVATIONS_COVARIATE` regression rows result, if any dividend index observation is not strictly positive, or if `carried_forward_weight` isn't strictly between 0 and 1.
+- <u>ValueError:</u> if the inputs differ in length, there are too few rows, a dividend index value is not above 0, or `carried_forward_weight` is not strictly between 0 and 1.
 
 </details>
+{% endraw %}
