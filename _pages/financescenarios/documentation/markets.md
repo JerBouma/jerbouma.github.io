@@ -26,6 +26,9 @@ $$
 \ln\frac{S_{t+\Delta t}}{S_t} \,\Big|\, s_t = k \;\sim\; N\!\left(\mu_k \Delta t,\; \sigma_k^2 \Delta t\right)
 $$
 
+> "In this paper I first define the regime-switching lognormal model. Monthly data from the Standard and Poor’s 500 and the Toronto Stock Exchange 300 indices are used to fit the model parameters, using maximum likelihood estimation."
+> <cite>[Hardy (2001), A Regime-Switching Model of Long-Term Stock Returns, North American Actuarial Journal 5(2), abstract](https://www.casact.org/abstract/regime-switching-model-long-term-stock-returns)</cite>
+
 This suits long-horizon risk: a mix of a low- and a high-volatility normal has fatter tails than one normal of the same variance, regimes persist so turbulent months cluster (2008, 2020), and drawdowns run over several periods, which is what a guarantee or funding ratio feels.
 
 The regimes are estimated with the Baum-Welch algorithm ([Baum et al., 1970](https://doi.org/10.1214/aoms/1177697196){:target="_blank"}), and the simulation starts in the regime most likely today. SPY calibrated from 2005 on 2026-10-04 gave:
@@ -135,6 +138,9 @@ $$
 dX_t = a(\theta - X_t)\,dt + \sigma\,dW_t, \qquad X_t = \ln S_t
 $$
 
+> "The first model is a simple one‐factor model in which the logarithm of the spot price of the commodity is assumed to follow a mean reverting process."
+> <cite>[Schwartz (1997), The Stochastic Behavior of Commodity Prices, Journal of Finance 52(3), abstract, p. 923](https://afajof.org/issue/volume-52-issue-3)</cite>
+
 Here $$a$$ is the speed of reversion and $$\theta$$ the long-run log price, so $$e^{\theta}$$ is the long-run median price; a belief of a 70 USD median is written as $$\ln 70$$. On 2026-10-04 crude oil started at 91.11 USD and was pulled toward 67.06 USD, with a shock halving in about six months.
 
 ### Schwartz-Smith Two Factor
@@ -145,7 +151,12 @@ $$
 \ln S_t = \chi_t + \xi_t, \qquad d\chi_t = -a\,\chi_t\,dt + \sigma_\chi\,dW^\chi_t, \qquad d\xi_t = \mu_\xi\,dt + \sigma_\xi\,dW^\xi_t
 $$
 
-The two shocks are correlated. Long-dated futures reflect almost only $$\xi_t$$, so the futures curve separates the two. The volatilities are fitted to the listed futures (crude oil, natural gas, gold, silver, copper, corn, wheat and soybeans). Fitted on spot prices alone, with a moving average standing in for the long-term level, the long-term volatility comes out far too low, because the averaging smooths it away.
+The two shocks are correlated. Long-dated futures reflect almost only $$\xi_t$$, so the futures curve separates the two.
+
+> "Intuitively, movements in prices for long-maturity futures contracts provide information about the equilibrium price level, and differences between the prices for the short- and long-term contracts provide information about short-term variations in prices."
+> <cite>[Schwartz and Smith (2000), Short-Term Variations and Long-Term Dynamics in Commodity Prices, Management Science 46(7), abstract, p. 893](https://jimsmith.host.dartmouth.edu/wp-content/uploads/2022/04/Short-term_Long-term_Model.pdf#page=1)</cite>
+
+The volatilities are fitted to the listed futures (crude oil, natural gas, gold, silver, copper, corn, wheat and soybeans). Fitted on spot prices alone, with a moving average standing in for the long-term level, the long-term volatility comes out far too low, because the averaging smooths it away.
 
 The risk-neutral version keeps the same volatilities and fits only the two drift terms to today's futures prices: a backwardated curve gives a falling long-term level, a contango curve a rising one. The fit uses the first twelve monthly contracts, and the drift it finds is held for the whole horizon. On 2026-10-04 crude fell from 91.11 USD (November 2026) to 77.90 USD (September 2027), so the long-term level drifted down about 17.7% a year, against 2.5% a year in the real-world fit. A steep front-end backwardation is thus carried well past the last contract; for long horizons, read it as a pricing input, not as a path for the oil price.
 
@@ -164,6 +175,9 @@ A trending price over a short window has no mean reversion to fit: gold sampled 
 
 The model follows eq. 3.18 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}: the year-over-year growth rate of property prices, not the price level, reverts to a long-run rate, since a price index has no level to return to over decades. Booms fade in growth but leave a permanent mark on the price level.
 
+> "Using quarterly return data from NCREIF from 1978 to 2001, we estimated two separate Ornstein-Uhlenbeck models for real estate: the first model included the level of inflation while the second model did not."
+> <cite>[Ahlgrim, D'Arcy and Gorvett (2005), section 3, eq. 3.18](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=21)</cite>
+
 The simulated path is price growth only: it leaves out rental income, which makes up much of a property investment's total return. Held as an asset (see [portfolio](/projects/financescenarios/docs/portfolio)), it therefore understates what property earns.
 
 The data are OECD residential house-price growth for many countries, or for the United States the IMF's commercial property index on FRED ([`COMREPUSQ159N`](https://fred.stlouisfed.org/series/COMREPUSQ159N){:target="_blank"}; quarterly, needs a FRED key). On 2026-10-06, US house prices were 2.1% above a year earlier and pulled toward 3.4% a year, with a boom or slump fading by half in about 5.7 years. Commercial property reverted within about a year and was almost four times as volatile.
@@ -179,6 +193,9 @@ When dividend income matters on its own, the yield is simulated separately from 
 $$
 d\ln y_t = a(\theta - \ln y_t)\,dt + \sigma\,dW_t
 $$
+
+> "Similar to the process used by HMT and Wilkie (1986), we assume that (the log of) the dividend yield follows an autoregressive process."
+> <cite>[Ahlgrim, D'Arcy and Gorvett (2005), section 3, eq. 3.17](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=20)</cite>
 
 On 2026-10-04 SPY yielded 0.99% and was pulled toward 1.39% with a half-life of about 4.7 years. The paper found the speed "not significantly different from zero" on 1871-2003 data, so a short window may show no reversion at all. A belief about the normal level is a log too ($$\ln 0.02$$ for 2%). An optional term on the same step's change in inflation, as in Wilkie, links the yield to inflation.
 
@@ -198,7 +215,12 @@ $$
 | $$y\,\varepsilon^Y_{t-1}$$ | DY | Last period's dividend yield surprise: prices anticipate dividend changes, so the yield moves first |
 | $$\sigma_D\,z_t$$ | DSD | The dividend index's own shock |
 
-The smoothing weight is fixed at Wilkie's 0.2 and the rest is fitted by one regression. Wilkie fitted 1919-1982 UK data; the shipped Wilkie factor set applies the same equations to US data.
+The smoothing weight is fixed at Wilkie's 0.2 and the rest is fitted by one regression.
+
+> "Investigations showed that for practical purposes in the long term very similar results could be obtained from a slightly simpler model that omits the term in DB, and alters two other parameters to give: DW = 0.8, DD = 0.2, DX = 0.2, DMU = 0.0, DY = -0.3, DB = 0.0, DSD = 0.10."
+> <cite>[Wilkie (1986), A Stochastic Investment Model for Actuarial Use, section 3.9](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4)</cite>
+
+Wilkie fitted 1919-1982 UK data; the shipped Wilkie factor set applies the same equations to US data.
 
 References: [Dividend yield API](/projects/financescenarios/docs/reference/dividend-yield), [Dividend growth API](/projects/financescenarios/docs/reference/dividend-growth).
 
@@ -241,7 +263,12 @@ $$
 
 where $$\Phi$$ is the standard normal distribution function. The same shift applies to every threshold, so a bad year ($$Z$$ below zero) moves every rating toward downgrade and default at once. This is the one-factor approach of [Kim (1999)](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984){:target="_blank"}, in the Markov rating framework of [Jarrow, Lando and Turnbull (1997)](https://doi.org/10.1093/rfs/10.2.481){:target="_blank"}, and the same formula that underlies the Basel IRB capital charge.
 
-The data are ESMA's [CEREP](https://registers.esma.europa.eu/cerep-publication){:target="_blank"} rating agency statistics, which lag one to two years. The cycle is backed out year by year from default rates, then simulated as mean-reverting around zero (the through-the-cycle average) and correlated with the other factors. A rating that never defaulted in the sample gets a 0.03% floor, the corporate PD floor of Basel II and the original [CRR Article 160(1)](https://eur-lex.europa.eu/eli/reg/2013/575/oj){:target="_blank"}. CRR3 (Regulation (EU) 2024/1623) raised that floor to 0.05% from 2025; the package still applies 0.03%. On S&P corporate ratings from 2000 to 2025, the worst years came out as 2009, 2001, 2020 and 2002, the asset correlation was about 0.10, and a shock to the cycle halved in about eight months.
+The data are ESMA's [CEREP](https://registers.esma.europa.eu/cerep-publication){:target="_blank"} rating agency statistics, which lag one to two years. The cycle is backed out year by year from default rates, then simulated as mean-reverting around zero (the through-the-cycle average) and correlated with the other factors. Every rating's long-run default probability is floored at 0.05%, so one that never defaulted in the sample still carries some risk. That is the corporate PD input floor of CRR3 (Regulation (EU) 2024/1623), which from 2025 replaced the 0.03% of the original [CRR Article 160(1)](https://eur-lex.europa.eu/eli/reg/2013/575/oj){:target="_blank"}:
+
+> "… the PD value that is used for each exposure as an input of the risk-weighted exposure amounts and expected loss formulae shall not be less than the following PD input floor value: 0,05 %."
+> <cite>[Regulation (EU) 2024/1623, Article 1, point (86)(a), replacing Article 160(1) of Regulation (EU) No 575/2013](https://eur-lex.europa.eu/eli/reg/2024/1623/oj/eng)</cite>
+
+On S&P corporate ratings from 2000 to 2025, the worst years came out as 2009, 2001, 2020 and 2002, the asset correlation was about 0.10, and a shock to the cycle halved in about eight months.
 
 ```yaml
 credit_migration:
