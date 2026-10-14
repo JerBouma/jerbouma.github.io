@@ -3,86 +3,46 @@
 <div class="masthead">
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
-      <nav id="site-nav" class="greedy-nav">
-        {% unless logo_path == empty %}
-        <a class="site-logo" href="{{ '/' | relative_url }}"><img src="{{ logo_path | relative_url }}"
-            alt="{{ site.masthead_title | default: site.title }}"></a>
-        {% endunless %}
-        <a class="site-title" href="{{ '/' | relative_url }}">
-          {{ site.masthead_title | default: site.title }}
-          {% if site.subtitle %}<span class="site-subtitle">{{ site.subtitle }}</span>{% endif %}
+      <nav id="site-nav" class="site-nav" aria-label="Main">
+        <a class="site-title" href="{{ '/' | relative_url }}" aria-label="{{ site.masthead_title | default: site.title }}, home">
+          <span class="site-title__mark" aria-hidden="true">JB</span>
+          <span class="site-title__name">{{ site.masthead_title | default: site.title }}</span>
         </a>
-        <ul class="visible-links">
+        {%- comment -%} One menu for every screen: a bar with dropdowns on desktop, a sheet with
+        expandable sections on phones (_sass/custom.scss, "Site navigation"). The masthead is
+        include_cached, one copy for every page, so the script below marks the current section. {%- endcomment -%}
+        <ul class="site-nav__links" id="site-nav-links">
           {%- for link in site.data.navigation.main -%}
-          {% assign class = nil %}
-          {% if page.url contains link.url %}
-          {% assign class = 'active' %}
-          {% endif %}
           {% if link.sublinks %}
-          <!-- Show the main link and sub links on desktop, exclude mobile -->
-          <li class="dropdown {{ class }} show-on-desktop">
-            <a href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-              aria-expanded="false">{{ link.title }} <i class="fa fa-chevron-down fa-sm"
-                aria-hidden="true"></i><span class="caret"></span></a>
-            <ul class="dropdown-content">
-              {% for sublink in link.sublinks %}
-              {% if sublink.sublinks %}
-              <li class="dropdown-submenu">
-                <a href="{{ site.baseurl }}{{ sublink.url }}">{{ sublink.title }} <i class="fa fa-chevron-right fa-xs" aria-hidden="true"></i></a>
-                <ul class="dropdown-submenu-content">
-                  {% for childlink in sublink.sublinks %}
-                  <li><a href="{{ site.baseurl }}{{ childlink.url }}">{{ childlink.title }}</a></li>
-                  {% endfor %}
-                </ul>
-              </li>
-              {% else %}
-              <li>
-                <a href="{{ site.baseurl }}{{ sublink.url }}">{{ sublink.title }}</a>
-              </li>
-              {% endif %}
-              {% endfor %}
-            </ul>
-          </li>
-
-          <!-- Mobile: nav link + separate chevron to expand sublinks -->
-          <li class="masthead__menu-item show-on-mobile mobile-accordion">
-            <div class="mobile-accordion__row">
-              <a href="{{ site.baseurl }}{{ link.url }}" class="mobile-accordion__link">{{ link.title }}</a>
-              <button class="mobile-accordion__chevron" type="button" aria-expanded="false" aria-label="Expand {{ link.title }}">
-                <i class="fa fa-chevron-down fa-xs mobile-accordion__icon" aria-hidden="true"></i>
-              </button>
+          <li class="nav-group">
+            <div class="nav-group__row">
+              <a href="{{ site.baseurl }}{{ link.url }}" class="nav-link">{{ link.title }}</a>
+              <button class="nav-group__toggle" type="button" aria-expanded="false" aria-controls="nav-menu-{{ forloop.index }}"
+                aria-label="{{ link.title }} pages"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3"/></svg></button>
             </div>
-            <ul class="mobile-accordion__sub">
+            <ul class="nav-group__menu" id="nav-menu-{{ forloop.index }}">
+              <li class="nav-group__label" aria-hidden="true">{{ link.title }}</li>
               {% for sublink in link.sublinks %}
               <li><a href="{{ site.baseurl }}{{ sublink.url }}">{{ sublink.title }}</a></li>
               {% endfor %}
             </ul>
           </li>
           {% else %}
-          <li class="masthead__menu-item">
-            <a href="{{ site.baseurl }}{{ link.url }}">{{ link.title }}</a>
+          <li class="nav-item">
+            <a href="{{ site.baseurl }}{{ link.url }}" class="nav-link">{{ link.title }}</a>
           </li>
           {% endif %}
-          {% endfor %}
-          <li class="masthead__menu-item">
-            <button class="theme__toggle" type="button" title="Toggle theme"
-              style="background:transparent; border:none; cursor:pointer; font-size:1.1rem; color:var(--text-secondary); padding: 0.5rem;">
+          {%- endfor -%}
+          <li class="nav-theme">
+            <span class="nav-theme__label">Appearance</span>
+            <button class="theme__toggle" type="button" title="Toggle theme" aria-label="Toggle light and dark mode">
               <i class="fas fa-moon"></i>
             </button>
           </li>
         </ul>
-        {% if site.search == true %}
-        <button class="search__toggle" type="button">
-          <span class="visually-hidden">{{ site.data.ui-text[site.locale].search_label | default: "Toggle search"
-            }}</span>
-          <i class="fas fa-search"></i>
+        <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-links" aria-label="Menu">
+          <span class="site-nav__bars" aria-hidden="true"></span>
         </button>
-        {% endif %}
-        <button class="greedy-nav__toggle hidden" type="button">
-          <span class="visually-hidden">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle menu" }}</span>
-          <div class="navicon"></div>
-        </button>
-        <ul class="hidden-links hidden"></ul>
       </nav>
     </div>
   </div>
@@ -120,52 +80,90 @@
   // Initial icon setup
   updateThemeIcon();
 
-  // ── Mobile accordion sublink toggles ──────────────────
+  // ── Site navigation ────────────────────────────────────
+  // Desktop: dropdowns open on hover, or on the chevron for keyboard and touch.
+  // Phones: the toggle opens a sheet; the chevrons expand one section at a time.
   (function () {
-    var allChevrons = document.querySelectorAll('.mobile-accordion__chevron');
-    allChevrons.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var sub = btn.closest('.mobile-accordion').querySelector('.mobile-accordion__sub');
-        var opening = !sub.classList.contains('open');
-        // close all others first
-        allChevrons.forEach(function (other) {
-          if (other !== btn) {
-            other.setAttribute('aria-expanded', 'false');
-            other.closest('.mobile-accordion').querySelector('.mobile-accordion__sub').classList.remove('open');
-          }
-        });
-        sub.classList.toggle('open', opening);
-        btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
-      });
-    });
-  })();
+    var nav = document.getElementById('site-nav');
+    var links = document.getElementById('site-nav-links');
+    var toggle = nav && nav.querySelector('.site-nav__toggle');
+    if (!nav || !links || !toggle) return;
+    var groups = Array.prototype.slice.call(nav.querySelectorAll('.nav-group'));
+    var phone = window.matchMedia('(max-width: 1023px)');
 
-  // ── Mobile nav drawer ──────────────────────────────────
-  (function () {
-    var toggle = document.querySelector('.greedy-nav__toggle');
-    var visibleLinks = document.querySelector('.masthead .visible-links');
-    if (!toggle || !visibleLinks) return;
+    // mark the section of this page, and the page itself in its dropdown
+    function clean(path) { return path.replace(/\.html$/, '').replace(/\/$/, '') || '/'; }
+    var here = clean(location.pathname);
+    function within(url) {
+      url = clean(url);
+      return url === '/' ? here === '/' : here === url || here.indexOf(url + '/') === 0;
+    }
+    Array.prototype.forEach.call(links.children, function (item) {
+      var top = item.querySelector('.nav-link');
+      if (!top) return;
+      var path = clean(new URL(top.href).pathname);
+      var section = path === '/' ? null : '/' + path.split('/')[1];
+      var active = path === '/' ? here === '/' : within(section);
+      Array.prototype.forEach.call(item.querySelectorAll('.nav-group__menu a'), function (a) {
+        var sub = new URL(a.href).pathname;
+        if (clean(sub) === here) { a.classList.add('is-current'); a.setAttribute('aria-current', 'page'); }
+        if (within(sub)) active = true;
+      });
+      if (active) item.classList.add('is-active');
+    });
+
+    function setGroup(group, open) {
+      group.classList.toggle('is-open', open);
+      group.querySelector('.nav-group__toggle').setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    function setSheet(open) {
+      links.classList.toggle('is-open', open);
+      nav.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Menu');
+      document.documentElement.classList.toggle('nav-sheet-open', open);
+      if (open) {
+        // start with the section of the current page expanded
+        groups.forEach(function (g) { setGroup(g, g.classList.contains('is-active')); });
+      }
+    }
 
     toggle.addEventListener('click', function (e) {
-      if (window.innerWidth > 1023) return; // desktop handled by greedy-nav.js
       e.stopPropagation();
-      var isOpen = visibleLinks.classList.toggle('mobile-open');
-      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      setSheet(!links.classList.contains('is-open'));
+    });
+
+    groups.forEach(function (group) {
+      group.querySelector('.nav-group__toggle').addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = !group.classList.contains('is-open');
+        groups.forEach(function (g) { if (g !== group) setGroup(g, false); });
+        setGroup(group, open);
+      });
+      // a dropdown opened by hover closes when the pointer leaves it
+      group.addEventListener('mouseleave', function () { if (!phone.matches) setGroup(group, false); });
     });
 
     document.addEventListener('click', function (e) {
-      if (!e.target.closest('.masthead') && visibleLinks.classList.contains('mobile-open')) {
-        visibleLinks.classList.remove('mobile-open');
-        toggle.setAttribute('aria-expanded', 'false');
+      if (nav.contains(e.target)) return;
+      groups.forEach(function (g) { setGroup(g, false); });
+      if (links.classList.contains('is-open')) setSheet(false);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var focusIn = nav.contains(document.activeElement);
+      groups.forEach(function (g) { setGroup(g, false); });
+      if (links.classList.contains('is-open')) { setSheet(false); toggle.focus(); }
+      else if (focusIn && document.activeElement.closest('.nav-group')) {
+        document.activeElement.closest('.nav-group').querySelector('.nav-group__toggle').focus();
       }
     });
 
-    // Close drawer on resize back to desktop
-    window.addEventListener('resize', function () {
-      if (window.innerWidth > 1023) {
-        visibleLinks.classList.remove('mobile-open');
-        toggle.setAttribute('aria-expanded', 'false');
-      }
+    phone.addEventListener('change', function () {
+      setSheet(false);
+      groups.forEach(function (g) { setGroup(g, false); });
     });
   })();
 </script>
