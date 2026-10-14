@@ -74,23 +74,17 @@ CM_t = CD\,I_t + (1 - CD)\,CM_{t-1}, \qquad
 \ln CN_t = \ln CMU + CA1\,(\ln CN_{t-1} - \ln CMU) + CSD\,\varepsilon_t
 $$
 
-Here $$I_t$$ is the force of inflation (the log change in the price index) from the paired inflation factor and $$CM_t$$ an exponentially weighted average of it, a simple adaptive model of inflation expectations. $$CW = 1$$ and $$CD = 0.05$$ are fixed at Wilkie's published values, so all expected inflation passes into the yield. The real part $$CN_t$$ mean-reverts in logs toward $$CMU$$ with persistence $$CA1$$, so it is always positive. This is the paper's reduced basis, where the real part is a plain AR(1).
-
-> "…very similar long-term forecasts were obtained by setting three of these parameters equal to zero, and changing the values of three of the others, to give: CW = 1.0, CD = 0.05, CMU = 0.035, CA1 = 0.91…"
-> <cite>[Wilkie (1986), A Stochastic Investment Model for Actuarial Use, section 3.15](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf)</cite>
+Here $$I_t$$ is the force of inflation (the log change in the price index) from the paired inflation factor and $$CM_t$$ an exponentially weighted average of it, a simple adaptive model of inflation expectations. $$CW = 1$$ and $$CD = 0.05$$ are fixed at Wilkie's published values, so all expected inflation passes into the yield. The real part $$CN_t$$ mean-reverts in logs toward $$CMU$$ with persistence $$CA1$$, so it is always positive. This is the reduced basis Wilkie gives in [section 3.15](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"}: he found that setting three parameters to zero gave very similar long-term forecasts, which leaves the real part a plain AR(1).
 
 That positivity is also its main limit: the yield must exceed average inflation over the whole fit window. US long yields sat at or below average inflation from 2008 to 2017, so the shipped Wilkie profile fits the yield on 1995-2007 only, while its inflation takes its dynamics from US history since 1919, the start of Wilkie's own window. Use it to reproduce the Wilkie framework.
 
 ### Hibbert Two-Factor
 
-[Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"} let the short rate revert toward a second, slower-moving rate $$m_t$$ instead of a fixed level:
+[Hibbert, Mowbray and Turnbull (2001, section 5.1.1, p. 15)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf#page=15){:target="_blank"} let the short rate revert toward a second, slower-moving rate $$m_t$$ instead of a fixed level:
 
 $$
 dr_t = a(m_t - r_t)\,dt + \sigma\,dW_t
 $$
-
-> "The model can be extended with the addition of a second stochastic factor. This factor allows the mean reversion level for the short rate also to follow a mean-reverting stochastic process."
-> <cite>[Hibbert, Mowbray and Turnbull (2001), A Stochastic Asset Model & Calibration for Long-Term Financial Planning Purposes, section 5.1.1, p. 15](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf)</cite>
 
 There is no single long-run level: the short end follows the long end, the way policy rates track the market's view of the medium term. The paper uses this structure for the real short rate and builds nominal rates by adding inflation on top; Finance Scenarios applies it to the nominal rate directly, an approximation that keeps the two speeds but not the split into real rate and inflation. The paper filters $$m_t$$ as a hidden state; Finance Scenarios approximates it with observable data, by default the same country's long-term rate (its own mean-reverting factor), or an exponentially weighted average of the short rate's history. It is real-world only and does not reproduce the paper's fixed correlations or closed-form bond prices.
 
@@ -115,10 +109,7 @@ None of the short-rate sources needs an API key: Yahoo Finance Treasury yields (
 A recent five- or ten-year window says little about a rate's long-run level: the half-life is often years, so the sample holds only a handful of independent cycles. Two remedies apply to real-world Hull-White and CIR entries:
 
 - **Long history.** Fit speed, volatility and long-run level on decades or centuries of yearly data (OECD from 1950, UK rates from 1694, bill rates across countries from 1870), while today's level still comes from current data.
-- **Long-run anchor.** Replace the single fitted $$\theta$$ with a path of forward rates from EIOPA's risk-free curve for USD, EUR or GBP, ending at the ultimate forward rate (UFR), so simulated rates converge where the Solvency II curve says they should. An alternative follows the median of De Nederlandsche Bank's scenario set for euro rates.
-
-  > "The extrapolated part of the relevant risk-free interest rate term structure shall be based on forward rates converging smoothly from one or a set of forward rates in relation to the longest maturities for which the relevant financial instrument and the bonds can be observed in a deep, liquid and transparent market to an ultimate forward rate."
-  > <cite>[Directive 2009/138/EC, Article 77a](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009L0138-20250117#art_77a)</cite>
+- **Long-run anchor.** Replace the single fitted $$\theta$$ with a path of forward rates from EIOPA's risk-free curve for USD, EUR or GBP, ending at the ultimate forward rate (UFR), so simulated rates converge where the Solvency II curve says they should: beyond the last liquid maturity, that curve runs smoothly to the UFR ([Solvency II Directive, Article 77a](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009L0138-20250117#art_77a){:target="_blank"}). An alternative follows the median of De Nederlandsche Bank's scenario set for euro rates.
 
 The shipped default factor set uses both. See [Long history](/projects/financescenarios/docs/configuration#long-history) and [Anchoring long-run rate levels](/projects/financescenarios/docs/configuration#anchoring-long-run-rate-levels).
 
@@ -167,10 +158,7 @@ Rates can also respond to the economy on top of their own mean reversion, throug
 
 ## Real-World and Risk-Neutral Rates
 
-Market-consistent valuation, such as a Solvency II best estimate, needs rates whose expected discounting reproduces today's bond prices.
-
-> "The best estimate shall correspond to the probability-weighted average of future cash-flows, taking account of the time value of money (expected present value of future cash-flows), using the relevant risk-free interest rate term structure."
-> <cite>[Directive 2009/138/EC, Article 77(2)](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009L0138-20250117#art_77)</cite>
+Market-consistent valuation needs rates whose expected discounting reproduces today's bond prices. A Solvency II best estimate, for example, is the probability-weighted expected present value of future cash flows, discounted at the risk-free curve ([Solvency II Directive, Article 77(2)](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009L0138-20250117#art_77){:target="_blank"}).
 
 Hull-White has two risk-neutral versions:
 
@@ -200,10 +188,7 @@ $$
 - **Slope** $$S$$ moves short maturities more than long ones. In this formula it is the short end minus the long end: the very short yield is $$L + S$$ and the long yield $$L$$. A normal, upward-sloping curve therefore has a negative $$S$$, and an inverted curve a positive one. It moves with monetary policy and the cycle.
 - **Curvature** $$C$$ moves medium maturities most: a hump or a trough in the belly of the curve.
 
-The decay $$\lambda$$ fixes where the curvature loading peaks. The default, 0.7308 with maturities in years, is Diebold and Li's 0.0609 with maturities in months, which puts the peak at 30 months:
-
-> "Two- or three-year maturities are commonly used in that regard, so we simply picked the average, 30 months. The λ<sub>t</sub> value that maximizes the loading on the medium-term factor at exactly 30 months is λ<sub>t</sub> = 0.0609."
-> <cite>[Diebold and Li (2006), Forecasting the Term Structure of Government Bond Yields, section 3.2, pp. 346-347](https://www.sas.upenn.edu/~fdiebold/papers/paper49/Diebold-Li.pdf)</cite>
+The decay $$\lambda$$ fixes where the curvature loading peaks. The default, 0.7308 with maturities in years, is Diebold and Li's 0.0609 with maturities in months, which puts the peak at 30 months, the average of the two- and three-year maturities usually taken as medium term ([their section 3.2, pp. 346-347](https://www.sas.upenn.edu/~fdiebold/papers/paper49/Diebold-Li.pdf){:target="_blank"}).
 
 The factors are fitted to observed yields on every historical date, then each is simulated as its own mean-reverting process, correlated with the rest of the model.
 

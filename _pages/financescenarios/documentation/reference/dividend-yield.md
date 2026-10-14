@@ -39,8 +39,8 @@ d(log y) = kappa * (mu - log y) * dt + sigma * dW
 
 where `kappa` is the speed of the pull, `exp(mu)` the normal yield and `sigma` the size of the swings. Working in logs
 keeps the yield positive and makes its swings proportional to its level, so a 1% yield moves less in absolute terms
-than a 5% one. The pull is slow: the authors report "The mean reversion speed of the series is not significantly
-different from zero", so yields can stay far from normal for years. A history with no pull at all raises an error.
+than a 5% one. The pull is slow: the authors find a mean reversion speed not significantly different from
+zero, so yields can stay far from normal for years. A history with no pull at all raises an error.
 
 Three options change the model; only one can be used at a time:
 

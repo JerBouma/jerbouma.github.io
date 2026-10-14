@@ -53,9 +53,8 @@ months. That correlation sits below Basel's supervisory 12% to 24% for corporate
 yearly cycle values are close to independent from one year to the next.
 
 The matrix pools every year of the default-rate history, as Basel CRE36.79 asks of PD estimation: the observation
-period "must be at least five years for at least one source. If the available observation period spans a longer
-period for any source, and this data are relevant and material, this longer period must be used. The data should
-include a representative mix of good and bad years"
+period covers at least five years for at least one source, a longer relevant and material period is used whenever
+one is available, and the data hold a representative mix of good and bad years
 ([BCBS, CRE36.79](https://www.bis.org/basel_framework/chapter/CRE/36.htm)). One choice is judgement rather than
 taken from a source: the cycle is simulated as a mean-reverting process held at a long-run mean of 0, so the
 simulated matrix averages back to the through-the-cycle one.
@@ -88,7 +87,7 @@ correlation and the yearly cycle, which is then fitted as a mean-reverting proce
 
 The transition matrix pools the agency's rating changes over every year of the default-rate history, so it
 reflects how often each rating is upgraded, downgraded or defaults in an average year across good and bad years
-(Basel CRE36.79: where a longer observation period is available, "this longer period must be used"). The
+(Basel CRE36.79 requires the longer observation period wherever one is available). The
 asset correlation and the historical cycle come from the default rates per rating
 ([Vasicek, 2002](https://www.risk.net/risk-management/credit-risk/1500333/loan-portfolio-value);
 [Kim, 1999](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984)): they measure
@@ -261,14 +260,14 @@ The default rate of a rating in a year with credit-cycle value Z, from Vasicek's
 good year with fewer defaults, a low Z a recession with many.
 
 Every borrower's credit quality is a standard normal variable, part shared cycle and part its own luck, and it
-defaults when that quality falls below the threshold set by its long-run default rate PD. The asset correlation rho
-is the shared part: the higher it is, the more a bad year lifts every default rate at once, and the fatter the tail
-of portfolio losses. The long-run PD is still the average across years, so the model redistributes defaults over
-good and bad years rather than adding to them. This is the structure behind the Basel internal-ratings formula:
-"Vasicek (cf. Vasicek, 2002) showed that under certain conditions, Merton's model can naturally be extended to a
-specific ASRF credit portfolio model" (BCBS, 2005, "An Explanatory Note on the Basel II IRB Risk Weight Functions",
-section 4.2, https://www.bis.org/bcbs/irbriskweight.pdf). Basel's supervisory corporate rho is "built of two limit
-correlations of 12% and 24%" (section 5.2), a deliberately prudent value; rho here is fitted to default history.
+defaults when that quality falls below the threshold set by its long-run default rate PD. The asset correlation rho is
+the shared part: the higher it is, the more a bad year lifts every default rate at once, and the fatter the tail of
+portfolio losses. The long-run PD is still the average across years, so the model redistributes defaults over good and
+bad years rather than adding to them. This is the structure behind the Basel internal-ratings formula, where Vasicek's
+extension of Merton's model to an asymptotic single risk factor portfolio model is the basis (BCBS, 2005, An
+Explanatory Note on the Basel II IRB Risk Weight Functions, section 4.2, https://www.bis.org/bcbs/irbriskweight.pdf).
+Basel's supervisory corporate rho moves between limit correlations of 12% and 24% (section 5.2), a deliberately
+prudent value; rho here is fitted to default history.
 
 The formula is as follows:
 
@@ -296,9 +295,9 @@ conditional_default_rate(
 
 Read the credit cycle off history: the asset correlation and one cycle value per year, from the default rates per
 rating (Belkin, Suchower and Forest 1998, as presented in
-[Kim, 1999](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984): "Belkin, Forest, and
-Suchower (1998) present a one-parameter representation of credit risk and transition matrices", from which "we
-first build a credit cycle index, which indicates the credit state of the financial market as a whole").
+[Kim, 1999](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984): a one-parameter
+representation of transition matrices, built on a credit cycle index for the credit state of the market as a
+whole).
 
 Each year's cycle value is the one that best explains that year's default rates across all ratings at once, so
 years such as 2009 and 2001 come out strongly negative and quiet years positive. The asset correlation is the one at
@@ -407,8 +406,8 @@ Roll a portfolio's rating mix forward one year at a time along simulated credit 
 value in a year picks that year's transition matrix, so downgrades and defaults bunch in the scenarios and years
 where the cycle turns bad, as they do in recessions. A portfolio downgraded in a bad year starts the next year
 from a weaker mix, so a run of bad years compounds. Losses apply a fixed recovery rate to the defaulted share.
-Recovery in fact falls when defaults rise (Moody's, 2005, Exhibit 10: "Recovery Rate = 0.52 - 6.9* Default
-Rate"), so a fixed rate understates the loss in the worst years.
+Recovery in fact falls when defaults rise (Moody's, 2005, Exhibit 10, fits a recovery rate of 0.52 minus 6.9
+times the default rate), so a fixed rate understates the loss in the worst years.
 
 The formula is as follows:
 

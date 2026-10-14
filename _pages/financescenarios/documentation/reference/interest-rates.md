@@ -142,7 +142,7 @@ calibrate(
 - <u>name (str):</u> the entry's name (e.g. "united_states").
 - <u>source (str):</u> "ticker" (default), "oecd" or "gmdb".
 - <u>method (str):</u> "hull_white" (default), "cir", "wilkie_consols" or "hibbert_two_factor".
-- <u>ticker (str):</u> the yield ticker for "ticker", default "^IRX", the 13-week bill; must be in the Toolkit. Ahlgrim, D'Arcy and Gorvett (2005, section 3) likewise "use the three-month Constant Maturity Treasury (CMT) as a proxy for the instantaneous short rate".
+- <u>ticker (str):</u> the yield ticker for "ticker", default "^IRX", the 13-week bill; must be in the Toolkit. Ahlgrim, D'Arcy and Gorvett (2005, section 3) likewise proxy the instantaneous short rate with the three-month Constant Maturity Treasury (CMT).
 - <u>country (str):</u> the country for "oecd" or "gmdb", default "United States".
 - <u>term (str):</u> "short" (default) or "long", for "oecd" or "gmdb".
 - <u>period (str):</u> data frequency, default "daily"; "monthly" or slower for "oecd", "yearly" for "gmdb".
@@ -150,11 +150,11 @@ calibrate(
 - <u>business_cycle_covariate (pl.Series &#124; None):</u> the leading indicator's level to move with, default None.
 - <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> its dates; required with it.
 - <u>inflation (pl.Series &#124; None):</u> the paired inflation history, for "wilkie_consols" only (required there).
-- <u>inflation_weight (float):</u> how much of expected inflation passes into the long yield (Wilkie's CW), default 1.0, one for one (Wilkie 1986, section 3.15: "CW = 1.0").
-- <u>inflation_decay (float):</u> how fast expected inflation adapts to new inflation (Wilkie's CD), default 0.05 a year, a memory of about 20 years (section 3.15, Reduced Standard Basis: "CD = 0.05").
+- <u>inflation_weight (float):</u> how much of expected inflation passes into the long yield (Wilkie's CW), default 1.0, one for one (Wilkie 1986, section 3.15, CW = 1.0).
+- <u>inflation_decay (float):</u> how fast expected inflation adapts to new inflation (Wilkie's CD), default 0.05 a year, a memory of about 20 years (section 3.15, Reduced Standard Basis, CD = 0.05).
 - <u>target_source (str):</u> the "hibbert_two_factor" target: "long_term_rate" (default) or "ewma" (a smoothed average of the rate itself).
 - <u>target_term (str):</u> the target's term for "oecd" or "gmdb", default "long"; not equal to `term`.
-- <u>target_ticker (str):</u> the target's ticker for "ticker", default "^TNX", the 10-year yield, which Ahlgrim, D'Arcy and Gorvett (2005, section 3) use "as a proxy for the long rate"; not equal to `ticker`.
+- <u>target_ticker (str):</u> the target's ticker for "ticker", default "^TNX", the 10-year yield, which Ahlgrim, D'Arcy and Gorvett (2005, section 3) use as their long-rate proxy; not equal to `ticker`.
 - <u>target_smoothing (float):</u> the "ewma" weight on each new observation, between 0 and 1, default 0.05, a judgement (an average with a memory of about 20 observations; the paper's target is unobserved).
 
 **Returns:**
@@ -269,8 +269,8 @@ Treasury yields for a ticker source, or the country's short and long rate for "o
 spread of long rates, which drives the time value of long guarantees, to how much long yields have actually
 moved, rather than to the 13-week bill alone, whose moves are damped by the policy rate. The result is
 historical, not the market's price of options, so treat the cost of guarantees as indicative. EIOPA's
-Guideline 57 (paragraph 1.101) asks that an ESG used for market-consistent valuation be calibrated to "data
-from financial markets that are deep, liquid and transparent", which a historical volatility is not; for a
+Guideline 57 (paragraph 1.101) asks that an ESG used for market-consistent valuation be calibrated to data
+from deep, liquid and transparent financial markets, which a historical volatility is not; for a
 reported best estimate, replace `volatility` with one implied from swaption prices.
 
 **As an example:**
@@ -328,7 +328,7 @@ calibrate_risk_neutral_forward(
 - <u>country (str):</u> the country for "oecd" or "gmdb", default "United States".
 - <u>term (str):</u> "short" (default) or "long", for "oecd" or "gmdb".
 - <u>period (str):</u> data frequency for both fits, default "daily".
-- <u>decay (float):</u> the Nelson-Siegel decay of the Treasury curve, which sets where its hump sits, default 0.7308, from Diebold and Li (2006, section 3 of NBER w10048): "The λ value that maximizes the loading on the medium-term factor at exactly 30 months is λ=0.0609"; 0.0609 a month × 12 = 0.7308 a year.
+- <u>decay (float):</u> the Nelson-Siegel decay of the Treasury curve, which sets where its hump sits, default 0.7308, from Diebold and Li (2006, section 3 of NBER w10048), whose λ of 0.0609 a month puts the medium-term factor's peak loading at 30 months; 0.0609 a month × 12 = 0.7308 a year.
 - <u>discount_curve (pl.DataFrame &#124; None):</u> a published curve to reproduce, "maturity" (years) and "rate" (annually compounded), such as EIOPA's; None (default) fits the Treasury curve.
 - <u>curve_name (str):</u> the name recorded for `discount_curve`, e.g. "eiopa".
 - <u>volatility_fit (str):</u> "yield_curve" (default) fits the volatility to the historical volatility of yields across maturities; "short_rate" takes it from the short rate's own history.
@@ -506,7 +506,7 @@ the theoretical model would.
 
 - Cox, J.C., Ingersoll, J.E., Ross, S.A. (1985). "A Theory of the Term Structure of Interest Rates." Econometrica, 53(2), 385-407. <https://doi.org/10.2307/1911242>
 - Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188. <https://doi.org/10.1016/0304-405x(77>)90016-2
-- Chan, K.C., Karolyi, G.A., Longstaff, F.A., Sanders, A.B. (1992). "An Empirical Comparison of Alternative Models of the Short-Term Interest Rate." Journal of Finance, 47(3), 1209-1227. Section II, eqs. (2)-(3), the discrete-time fit used for sigma: "r_t+1 - r_t = alpha + beta r_t + e_t+1, ... E[e^2_t+1] = sigma^2 r_t^(2 gamma)", with gamma = 1/2 for CIR. <https://doi.org/10.1111/j.1540-6261.1992.tb04011.x>
+- Chan, K.C., Karolyi, G.A., Longstaff, F.A., Sanders, A.B. (1992). "An Empirical Comparison of Alternative Models of the Short-Term Interest Rate." Journal of Finance, 47(3), 1209-1227. Section II, eqs. (2)-(3), the discrete-time fit used for sigma, r_t+1 - r_t = alpha + beta r_t + e_t+1 with E[e^2_t+1] = sigma^2 r_t^(2 gamma), and gamma = 1/2 for CIR. <https://doi.org/10.1111/j.1540-6261.1992.tb04011.x>
 - Ahlgrim, K.C. "Hull-White Term Structure Model." CAS Exam 8 Online Course, Module 4. <https://www.casact.org/sites/default/files/old/oncourses_module4_ahlgrim.pdf>
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2008). "A Comparison of Actuarial Financial Scenario Generators." Casualty Actuarial Society. <https://www.casact.org/sites/default/files/document/darcy_1.pdf>
 
@@ -560,8 +560,8 @@ Nothing stops the rate from going below zero, which is how Hull-White allows for
 
 **References:**
 
-- Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188. Section 5, p. 185: "dr = α(γ−r)dt+ρdz, (24)", with the exact transition "E_t r(s) = γ+(r(t)−γ)e^{−α(s−t)}" (25) and "Var_t r(s) = ρ²/(2α)(1−e^{−2α(s−t)})" (26). <https://doi.org/10.1016/0304-405x(77>)90016-2
-- Hull, J., White, A. (1990). "Pricing Interest-Rate-Derivative Securities." The Review of Financial Studies, 3(4), 573-592. Section 2, eq. (3): "Our proposed extension of Vasicek's model is given by (2) with β = 0"; with constant a and σ it is "the Hull-White model". <https://doi.org/10.1093/rfs/3.4.573>
+- Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188. Section 5, p. 185: dr = α(γ−r)dt+ρdz, eq. (24), with the exact transition E_t r(s) = γ+(r(t)−γ)e^{−α(s−t)}, eq. (25), and Var_t r(s) = ρ²/(2α)(1−e^{−2α(s−t)}), eq. (26). <https://doi.org/10.1016/0304-405x(77>)90016-2
+- Hull, J., White, A. (1990). "Pricing Interest-Rate-Derivative Securities." The Review of Financial Studies, 3(4), 573-592. Section 2, eq. (3): their extension of Vasicek's model is eq. (2) with β = 0; with constant a and σ it is the Hull-White model. <https://doi.org/10.1093/rfs/3.4.573>
 - Ahlgrim, K.C. "Hull-White Term Structure Model." CAS Exam 8 Online Course, Module 4. <https://www.casact.org/sites/default/files/old/oncourses_module4_ahlgrim.pdf>
 - Society of Actuaries & Casualty Actuarial Society (2002). "Report on Modeling of Economic Series Coordinated with Interest Rate Scenarios." <https://www.soa.org/globalassets/assets/files/sections/modeling-of-economic-scenarios.pdf>
 
@@ -617,7 +617,7 @@ monthly or finer steps keep this rare.
 **References:**
 
 - Cox, J.C., Ingersoll, J.E., Ross, S.A. (1985). "A Theory of the Term Structure of Interest Rates." Econometrica, 53(2), 385-407. <https://doi.org/10.2307/1911242>
-- Lord, R., Koekkoek, R., van Dijk, D. (2010). "A Comparison of Biased Simulation Schemes for Stochastic Volatility Models." Quantitative Finance, 10(2), 177-194. Abstract: "The full truncation scheme outperforms all considered biased schemes in terms of bias and root-mean-squared error" (working-paper version, TI 2006-046/4). <https://doi.org/10.1080/14697680802392496>
+- Lord, R., Koekkoek, R., van Dijk, D. (2010). "A Comparison of Biased Simulation Schemes for Stochastic Volatility Models." Quantitative Finance, 10(2), 177-194. Abstract: full truncation beats every other biased scheme they test on bias and root-mean-squared error (working-paper version, TI 2006-046/4). <https://doi.org/10.1080/14697680802392496>
 - Andersen, L. (2008). "Simple and Efficient Simulation of the Heston Stochastic Volatility Model." Journal of Computational Finance, 11(3), 1-42. Its Quadratic-Exponential scheme is a lower-bias alternative for a CIR process, not implemented here. <https://doi.org/10.21314/JCF.2008.189>
 - Ahlgrim, K.C. "Hull-White Term Structure Model." CAS Exam 8 Online Course, Module 4. <https://www.casact.org/sites/default/files/old/oncourses_module4_ahlgrim.pdf>
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2008). "A Comparison of Actuarial Financial Scenario Generators." Casualty Actuarial Society. <https://www.casact.org/sites/default/files/document/darcy_1.pdf>
@@ -685,8 +685,8 @@ hull_white_yield_volatility(
 ### curve_forward_rates
 
 The continuously compounded forward rates a published spot curve implies between its maturities, the
-constant-forward interpolation EIOPA itself uses (RFR Technical Documentation EIOPA-BoS-26/198, 3.7.1: "the
-forward interest rate remains constant between known DLT points").
+constant-forward interpolation EIOPA itself uses (RFR Technical Documentation EIOPA-BoS-26/198, section 3.7.1,
+which holds the forward rate constant between known DLT points).
 
 The formula is as follows:
 
@@ -890,9 +890,9 @@ $$
 \text{ln CN} (t) = \text{ln CMU} + \text{CA1} \cdot (\text{ln CN} (t-1) - \text{ln CMU}) + \text{CSD} \cdot \operatorname{CZ}(t)
 $$
 
-CD_dt makes 1/dt steps decay as much as one year at Wilkie's yearly CD (his model steps a year: "he is usually
-content to progress there by annual steps", section 1.3). Starting CM at the first observation is a judgement:
-Wilkie's "neutral value" for CM is QMU (section 4.5), which is not known before inflation is fitted.
+CD_dt makes 1/dt steps decay as much as one year at Wilkie's yearly CD (his model steps a year, since an actuary is
+usually content to project in annual steps, section 1.3). Starting CM at the first observation is a judgement:
+Wilkie's neutral value for CM is QMU (section 4.5), which is not known before inflation is fitted.
 
 **References:**
 
@@ -915,8 +915,8 @@ fit_wilkie_consols_process(
 
 - <u>consols_yield (pl.Series):</u> the long-term government yield history as decimals (0.04 is 4%), evenly spaced.
 - <u>inflation (pl.Series):</u> the inflation history over the same dates (Wilkie's dlnQ(t)).
-- <u>inflation_weight (float):</u> CW, how much of expected inflation passes into the yield, default 1.0 (Wilkie, section 3.15: "CW = 1.0").
-- <u>inflation_decay (float):</u> CD, the yearly weight of new inflation in expected inflation, default 0.05 (Wilkie, section 3.15 Reduced Standard Basis: "CD = 0.05"; his full basis has 0.045).
+- <u>inflation_weight (float):</u> CW, how much of expected inflation passes into the yield, default 1.0 (Wilkie, section 3.15, CW = 1.0).
+- <u>inflation_decay (float):</u> CD, the yearly weight of new inflation in expected inflation, default 0.05 (Wilkie, section 3.15, Reduced Standard Basis, CD = 0.05; his full basis has 0.045).
 - <u>time_step (float):</u> the time between observations in years, default 1.0; 1/12 for monthly data keeps Wilkie's roughly 20-year memory.
 
 **Returns:**

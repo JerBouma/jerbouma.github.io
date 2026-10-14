@@ -225,8 +225,8 @@ persists through the cycle) and that a rise in inflation comes with a tighter la
 found for UK wages. The fit is one regression of each period's change in unemployment on its previous level and the
 same period's change in inflation: the level term gives the speed and the natural rate, the inflation term the
 Phillips-curve sensitivity alpha_u, expected to be negative. This is the paper's own regression, eq. 3.21, with the
-same-period change in inflation: "To keep the model simple, we did not pursue any distributed lag approach"
-(section 3, "Unemployment"). On US monthly data from 1948 to 2001 they find a speed of 0.13, a natural rate of
+same-period change in inflation, as the paper keeps it simple and uses no distributed lags (section 3,
+Unemployment). On US monthly data from 1948 to 2001 they find a speed of 0.13, a natural rate of
 6.1%, alpha_u of -0.72 and a volatility of 0.76% (eq. 3.22). With a business-cycle series, the leading indicator's
 change enters as a second driver next to inflation, never in its place; that second term is this package's
 extension, built the same way as the paper's inflation term.

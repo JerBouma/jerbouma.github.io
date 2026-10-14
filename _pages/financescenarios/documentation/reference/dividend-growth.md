@@ -30,8 +30,8 @@ run, and an inflation shock first lowers real dividends before they catch up. Di
 the index gives the simulated share price (`equities[].method="wilkie_derived"`). Every entry needs a paired
 `inflation[]` and `dividend_yield[]` entry.
 
-The model is the share dividend index of Wilkie (1986), section 3.7, in the form of his "Reduced Standard Basis"
-(Table 1; section 3.9 calls it "a slightly simpler model that omits the term in DB"):
+The model is the share dividend index of Wilkie (1986), section 3.7, in the form of his Reduced Standard Basis
+(Table 1), the simpler version without the DB term that section 3.9 describes:
 
 ```text
 dln D(t) = DMU + DW * DM(t) + DX * dlnQ(t) + DY * YE(t-1) + DSD * DZ(t)
@@ -48,8 +48,8 @@ coefficient has a plain reading:
 - `DY` (`yield_residual_sensitivity`): the effect of last period's surprise in the dividend yield, `YE(t-1)`.
 - `DSD` (`volatility`): the size of the index's own random shock.
 
-Wilkie's model has unit gain, DW + DX = 1 (section 3.7: "a given percentage increase in the Retail Prices Index
-ultimately results in the same percentage increase in the dividend index"), and the fit imposes it; his bases use
+Wilkie's model has unit gain, DW + DX = 1 (section 3.7: a given percentage rise in the Retail Prices Index
+ends up as the same percentage rise in the dividend index), and the fit imposes it; his bases use
 DW = 0.8 and DX = 0.2 (section 3.9).
 
 Data: the Finance Toolkit has no dividend index series, so the `Dividends` paid over the trailing `window` trading
@@ -245,13 +245,13 @@ The model functions behind this page, each with the formula it implements.
 Fit Wilkie's (1986) share dividend index to a dividend history, a paired inflation history and the paired
 dividend yield's past shocks.
 
-Wilkie ties dividends to inflation with unit gain. Section 3.7: "The parameters are such that a given percentage
-increase in the Retail Prices Index ultimately results in the same percentage increase in the dividend index, so
-the model is said to have unit gain." Part of the effect is immediate (DX) and part arrives through a slowly
+Wilkie ties dividends to inflation with unit gain. A given percentage rise in the Retail Prices Index ends up as
+the same percentage rise in the dividend index (section 3.7). Part of the effect is immediate (DX) and part
+arrives through a slowly
 updating average of past inflation (DW); his bases use DW = 0.8 and DX = 0.2 (section 3.9). The fit imposes
 DW + DX = 1, so equities hold their real value against inflation in the long run, and estimates DX, DMU and DY
-by one ordinary least squares regression. DD is fixed, not fitted: Wilkie's DD is a yearly weight ("the amount
-that enters the dividend model each year is DD times the current inflation rate", section 3.8), so it is
+by one ordinary least squares regression. DD is fixed, not fitted: Wilkie's DD is a yearly weight, the share of
+the current inflation rate that enters the dividend model each year (section 3.8), so it is
 converted to the data's step, as is the inflation rate, which is quoted per year.
 
 The formula is as follows:

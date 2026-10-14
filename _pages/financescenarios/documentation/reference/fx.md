@@ -41,7 +41,7 @@ assumption that matters most over long horizons, so it has three options:
 
 - `drift_mode: random_walk`, the default: no trend, so the median rate stays at today's level
   ([Meese and Rogoff, 1983](https://doi.org/10.1016/0022-1996(83)90017-X)). Barrie & Hibbert's model has exchange
-  rates "respect purchasing power parity relationships at long horizons" (Hibbert, Mowbray and Turnbull 2001,
+  rates respect purchasing power parity over long horizons (Hibbert, Mowbray and Turnbull 2001,
   section 9.3), so no provider carries a fitted trend forward for decades.
 - `drift_mode: historical`: the trend fitted on the calibration window, a currency view.
 - `drift_mode: irp`: the drift at every step is the gap between two simulated short rates, foreign minus US (uncovered
@@ -167,7 +167,7 @@ about 2.25% a year.
 The drift is fixed at today's rate gap, unlike `drift_mode="irp"`, which follows the simulated rates. It is
 the drift of the Garman and Kohlhagen [(1983)](https://doi.org/10.1016/S0261-5606(83)80001-1) currency option
 model, and follows from Gorvett's (2001, p. 43) parity relation between spot S and forward f, both in foreign
-currency per dollar, "S(1 + r_F) = (1 + r_U)f" in continuous compounding. In a
+currency per dollar, S(1 + r_F) = (1 + r_U)f, here in continuous compounding. In a
 factor set this is `measure: risk_neutral`, which takes today's levels of the configured United States interest
 rate and the interest rate for `country`; both must be configured.
 
@@ -314,9 +314,9 @@ Estimate an exchange rate's annual drift and volatility from its history, for a 
 The model assumes the log exchange rate is a random walk with a constant trend: currencies have no natural
 level to return to, so shocks are permanent, the spread of outcomes widens with the square root of the horizon
 and the rate can never turn negative
-([Gorvett, 2001](https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf), p. 40: "FX rates
-can be viewed as a geometric Brownian motion process evolving over time"). Gorvett leaves the estimation open
-("estimating the parameters of the model ... beyond the scope of this paper", p. 42), so the moment estimates
+([Gorvett, 2001](https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf), p. 40, where FX
+rates are treated as a geometric Brownian motion). Gorvett leaves the parameter estimation outside the scope of
+the paper (p. 42), so the moment estimates
 below are the plain choice.
 The estimates are the mean and standard deviation of the log-returns, annualized. The average log-return is the
 median growth of the rate, so half the variance is added back to get the expected growth mu. A drift fitted
@@ -427,11 +427,10 @@ A drift fitted on five or ten years of data mostly reflects that window's dollar
 decades would build a strong currency view into every scenario. Meese and Rogoff
 [(1983)](https://doi.org/10.1016/0022-1996(83)90017-X) found a random walk forecasts exchange rates out of
 sample at least as well as the structural models of the time, so a trend-free rate is the neutral choice for
-long horizons. The scenarios still spread out with the historical volatility. Gorvett (2001, p. 40) quotes the
-same finding: "the evidence suggests that at short- and medium-term horizons, a random walk characterizes
-exchange rate movements better than most conventional fundamental-based exchange rate models" (Rosenberg, 1996).
-Over long horizons Barrie & Hibbert have exchange rates "respect purchasing power parity relationships at long
-horizons" (Hibbert, Mowbray and Turnbull 2001, section 9.3, p. 69), which also rules out a lasting trend beyond
+long horizons. The scenarios still spread out with the historical volatility. Gorvett (2001, p. 40) cites the
+same finding from Rosenberg (1996): at short and medium horizons a random walk describes exchange rates better
+than most fundamentals-based models. Over long horizons Barrie & Hibbert have exchange rates respect purchasing
+power parity (Hibbert, Mowbray and Turnbull 2001, section 9.3, p. 69), which also rules out a lasting trend beyond
 the inflation gap; this is the default `drift_mode`.
 
 The formula is as follows:
@@ -483,10 +482,10 @@ investor earns the same expected return in either currency. Tying the trend to t
 makes currencies respond to the rate scenarios: when US rates rise relative to the foreign rate, the dollar
 is expected to weaken over the following period, and FX and rates stay consistent in every path. Parity is a
 long-run tendency rather than a short-run law (the carry trade profits from its failure), so treat this as a
-structural, not a forecasting, choice. Gorvett (2001, p. 43): "Interest rate parity thus requires that equal
-returns be generated in two different currencies when the expected change in the exchange rate is taken into
-account". Barrie & Hibbert's model instead makes exchange rates "respect purchasing power parity relationships
-at long horizons" (Hibbert, Mowbray and Turnbull 2001, section 9.3), which no mode here does.
+structural, not a forecasting, choice. Gorvett (2001, p. 43) states parity as equal returns in the two
+currencies once the expected change in the exchange rate is counted. Barrie & Hibbert's model instead makes
+exchange rates respect purchasing power parity over long horizons (Hibbert, Mowbray and
+Turnbull 2001, section 9.3), which no mode here does.
 
 The formula is as follows:
 

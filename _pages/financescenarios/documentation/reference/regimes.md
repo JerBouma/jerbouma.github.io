@@ -481,15 +481,14 @@ Turn a regulator's published stress-test scenario into a regime that steers your
 
 Instead of writing a recession by hand, this takes the one the Federal Reserve or the European Systemic Risk Board
 prescribes for banks' stress tests and lets the simulated scenarios follow it, each with its own randomness. Its
-paths for interest rates, inflation and unemployment steer the matching factors of `config` through the stress
-and back to their calibrated levels; stocks follow as falls and recoveries, measured against each regulator's
-own baseline so the equity model's normal growth is not counted twice. In the Federal Reserve's 2026 severely
-adverse scenario, for example, "Equity prices fall about 58 percent in the first three quarters of the scenario"
-(2026 Final Scenarios, p. 4), a fall from their starting level; against the Fed's own baseline, which keeps
-rising, that is 59% below it after three quarters and 56% below after a year, the falls the regime uses.
-The ESRB's stocks are published as a "Deviation from the starting point (%)", with "stock prices ... assumed to
-remain unchanged" in its baseline (2025 scenario, section 4.1.7), so that deviation is already the gap to its
-baseline: -50% for the EU in 2025 and -42% by 2027.
+paths for interest rates, inflation and unemployment steer the matching factors of `config` through the stress and
+back to their calibrated levels; stocks follow as falls and recoveries, measured against each regulator's own
+baseline so the equity model's normal growth is not counted twice. In the Federal Reserve's 2026 severely adverse
+scenario, for example, equity prices fall about 58% in the first three quarters (2026 Final Scenarios, p. 4), a fall
+from their starting level; against the Fed's own baseline, which keeps rising, that is 59% below it after three
+quarters and 56% below after a year, the falls the regime uses. The ESRB's stocks are published as a percentage
+deviation from the starting point, with stock prices unchanged in its baseline (2025 scenario, section 4.1.7), so
+that deviation is already the gap to its baseline: -50% for the EU in 2025 and -42% by 2027.
 
 The value is in running your own portfolio or balance sheet through the same story supervisors use: the published
 scenario is one narrative path, and laying it over simulated scenarios turns it into a distribution around that
@@ -497,15 +496,15 @@ narrative, so you see both the stressed outcome and how much worse it could get 
 regulator publishes two scenarios, a stress and its own central view ("baseline"), a useful reference to measure
 the stress against. Both come through the Finance Toolkit, with no API key:
 
-- "federal_reserve": "baseline" and "severely_adverse", the two scenarios the Federal Reserve's scenario
-  documents have contained since 2020 (their section "Baseline and Severely Adverse Scenarios", in the 2020
-  Supervisory Scenarios and on p. 8 of the final 2026 scenarios), for the United States, quarterly over 13 quarters:
-  the 3-month and 10-year Treasury rates, inflation, unemployment and stocks. "adverse" is accepted as the same
-  severely adverse scenario.
-- "esrb": "baseline" and "adverse", the scenarios the ESRB designs for the EBA's EU-wide stress test ("This
-  document presents the baseline and adverse macro-financial scenarios that banks are required to use", ESRB
-  2025 scenario, p. 1), yearly over three years for every EU member and the main other economies: the long-term
-  interest rate, inflation, unemployment and stocks. The ESRB publishes no "severely_adverse" scenario.
+- "federal_reserve": "baseline" and "severely_adverse", the two scenarios the Federal Reserve's scenario documents
+  have contained since 2020 (their section Baseline and Severely Adverse Scenarios, in the 2020 Supervisory
+  Scenarios and on p. 8 of the final 2026 scenarios), for the United States, quarterly over 13 quarters: the 3-month
+  and 10-year Treasury rates, inflation, unemployment and stocks. "adverse" is accepted as the same severely adverse
+  scenario.
+- "esrb": "baseline" and "adverse", the scenarios the ESRB designs for the EBA's EU-wide stress test, the two
+  macro-financial scenarios banks are required to use (ESRB 2025 scenario, p. 1), yearly over three years for every
+  EU member and the main other economies: the long-term interest rate, inflation, unemployment and stocks. The ESRB
+  publishes no "severely_adverse" scenario.
 
 **As an example:**
 

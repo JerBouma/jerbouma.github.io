@@ -184,8 +184,8 @@ on the latest date every maturity is quoted. The data come from the US Treasury,
 Germany, the Bundesbank's federal securities yields (inflation-linked minus nominal), with no API key needed.
 The shortest breakeven is three (UK) or five years out (US, Germany); before it the curve holds the fitted
 breakeven at that maturity flat, the constant-forward rule EIOPA uses before its first quoted maturity (RFR
-Technical Documentation EIOPA-BoS-26/198, Annex D.8.2-D.8.3: "the constant forward assumption implies the
-following relation: f_j-1,j = f_j = f_1 = r_t1 for j = 1, 2, ..., t1", so "z_j = r_t1"), rather than
+Technical Documentation EIOPA-BoS-26/198, Annex D.8.2-D.8.3, where a constant forward makes every forward
+and every spot rate before the first maturity t1 equal to the spot rate r_t1 at t1), rather than
 extrapolate the Nelson-Siegel forward to today.
 
 **As an example:**
@@ -232,7 +232,7 @@ calibrate_risk_neutral(
 **Args:**
 
 - <u>name (str):</u> the entry's name, also its factor name in the simulation.
-- <u>decay (float):</u> the Nelson-Siegel decay, which sets where the hump sits, default 0.7308; fixed rather than fitted, from Diebold and Li (2006, section 3 of NBER w10048): "The λ value that maximizes the loading on the medium-term factor at exactly 30 months is λ=0.0609"; 0.0609 a month × 12 = 0.7308 a year.
+- <u>decay (float):</u> the Nelson-Siegel decay, which sets where the hump sits, default 0.7308; fixed rather than fitted, from Diebold and Li (2006, section 3 of NBER w10048), whose λ of 0.0609 a month puts the medium-term factor's peak loading at 30 months; 0.0609 a month × 12 = 0.7308 a year.
 - <u>country (str):</u> "United States" (default, 5 to 30 years), "United Kingdom" (3 to 40 years, against the Retail Prices Index), or "Germany" or "Euro Area" (German bonds paying euro area inflation).
 - <u>volatility (str):</u> "history" (default) for random inflation around the curve, or "none" to follow the curve exactly in every scenario.
 - <u>source (str):</u> "oecd" (default) or "gmdb", the consumer price history the volatility is fitted on.
@@ -384,8 +384,8 @@ Wilkie's persistence QA is a yearly coefficient: the share of this year's gap to
 year. Year-over-year inflation sampled monthly overlaps: two neighbouring months share 11 of their 12 months of
 price changes, so a month-to-month regression measures that overlap rather than how inflation itself fades, and
 reads 0.9 to 0.99 a month even when a shock is gone within a year. Here each value is regressed on the value one
-year earlier instead, which measures exactly what QA means. Wilkie's own values on UK data ("from 1919 to 1982 at
-annual intervals", section 2.11) are "QMU = 0.05, QA = 0.6, QSD = 0.05" (section 3.4); a fit on a short, calm
+year earlier instead, which measures exactly what QA means. Wilkie's own values on UK data (yearly from 1919 to 1982,
+section 2.11) are QMU = 0.05, QA = 0.6 and QSD = 0.05 (section 3.4); a fit on a short, calm
 history can land far from them, as US inflation from 1995 to 2007 does (QA near 0, QSD 0.8%), so check the fitted
 values against that benchmark. US inflation since 1919 (Shiller's yearly series, `history_source: shiller`) gives
 QMU 2.6%, QA 0.54 and QSD 3.4%, which is what the shipped Wilkie preset uses.
@@ -490,9 +490,8 @@ of a gap after a year, where the data keep 73% (a value regressed on the value a
 uncertainty. This fit is `fit_wilkie_ar1` written as an OU process: an OU stepped at the data's frequency makes the
 same moves as Wilkie's per-step AR(1), so the two methods agree on the same history. With yearly data it is the
 plain exact OU fit (`fit_ou_process`). Ahlgrim, D'Arcy and Gorvett (2005, section 3) do the same for their OU
-inflation: "Given the noisy fluctuations in monthly data, we selected the parameters for the inflation process by
-looking at annual regressions", finding a speed of 0.37 on 1913-2001 and 0.47 on 1946-2001 and choosing 0.4; this
-fit gives 0.32 on US inflation since 1960.
+inflation, choosing its parameters from annual regressions because monthly data are noisy: they find a speed of
+0.37 on 1913-2001 and 0.47 on 1946-2001 and choose 0.4; this fit gives 0.32 on US inflation since 1960.
 
 The formula is as follows:
 
@@ -644,8 +643,8 @@ Breakevens are quoted from three (UK) or five years (US, Germany) out, so a Nels
 horizons is an extrapolation the data do not support: on 2026-10-14 it started the German curve at 5.72% against
 a 2.28% five-year quote, and the UK one at 7.76% against a 4.03% three-year quote. Below the shortest maturity the
 forward is held at the fitted yield there, the constant-forward rule EIOPA applies before its first quoted
-maturity (RFR Technical Documentation EIOPA-BoS-26/198, Annex D.8.2: "the constant forward assumption implies the
-following relation: f_j-1,j = f_j = f_1 = r_t1 for j = 1, 2, ..., t1"; D.8.3: "z_j = r_t1 for j = 1, 2, ..., t1").
+maturity (RFR Technical Documentation EIOPA-BoS-26/198, Annex D.8.2, where a constant forward sets f_j-1,j = f_j =
+f_1 = r_t1 for j = 1, 2, ..., t1, and D.8.3, which gives the spot rates z_j = r_t1 for the same j).
 The accumulated forward to the shortest maturity is unchanged, so every breakeven yield from that maturity on is
 still the Nelson-Siegel one and inflation-linked cashflows from there are priced as before.
 

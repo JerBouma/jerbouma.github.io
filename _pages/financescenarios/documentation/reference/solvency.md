@@ -482,10 +482,10 @@ regulator's prescribed stock market fall.
 
 Type 1 equities (listed in the European Economic Area or the OECD) fall by 39% and type 2 equities (all others:
 unlisted shares, private equity, hedge funds, commodities) by 49%, each plus EIOPA's symmetric adjustment. That
-adjustment, the "equity dampener", raises the shock after a rally and lowers it after a fall, so insurers are not
+adjustment, the equity dampener, raises the shock after a rally and lowers it after a fall, so insurers are not
 forced to sell into a falling market; EIOPA publishes it every month (see `eiopa_symmetric_adjustment`). It is
-capped at 10 points either way until 29 January 2027 and at 13 points from 30 January 2027 (Delegated Regulation
-(EU) 2026/269, point (51): "The symmetric adjustment shall not be lower than – 13 % or higher than 13 %"), so pass
+capped at 10 points either way until 29 January 2027 and at 13 points from 30 January 2027 (Article 172(4) of
+Delegated Regulation 2015/35 as rewritten by Delegated Regulation (EU) 2026/269, point (51)), so pass
 `valuation_date` to apply the cap in force on that date (see `symmetric_adjustment_cap`).
 
 The two losses combine with a 0.75 correlation, so the total is less than their sum (Delegated Regulation 2015/35,
@@ -561,12 +561,10 @@ equity_scr(
 The largest symmetric adjustment, up or down, Solvency II allows on a valuation date: 10 percentage points
 before 30 January 2027 and 13 from that date.
 
-Directive 2009/138/EC, Article 106(3), originally said the adjustment "shall not result in an equity capital charge
-being applied that is more than 10 percentage points lower or 10 percentage points higher than the standard equity
-capital charge"; Directive (EU) 2025/2 replaced that with "more than 13 percentage points lower or higher", and
-Delegated Regulation (EU) 2026/269, point (51), rewrites Article 172(4) of Delegated Regulation 2015/35 to "The
-symmetric adjustment shall not be lower than – 13 % or higher than 13 %", applying "from 30 January 2027"
-(Article 2).
+Directive 2009/138/EC, Article 106(3), originally kept the adjusted equity charge within 10 percentage points of
+the standard charge either way; Directive (EU) 2025/2 widened that to 13 percentage points, and Delegated
+Regulation (EU) 2026/269, point (51), rewrites Article 172(4) of Delegated Regulation 2015/35 so the symmetric
+adjustment lies between -13% and +13%, applying from 30 January 2027 (Article 2 of that Regulation).
 
 **References:**
 
@@ -624,8 +622,8 @@ compounded zero rate (RFR Technical Documentation EIOPA-BoS-26-198, paragraphs 8
 swap-volume-weighted average of the one-year forward just before the FSP and the forwards from the FSP to longer
 liquid maturities; those volumes come from EIOPA's annual liquidity assessment, so by default the LLFR is the
 one-year forward just before the FSP, EIOPA's rule when no liquid maturity lies beyond the FSP. Pass EIOPA's
-published LLFR when it differs. The defaults are EIOPA's: alpha "equals 40% for the Swedish Krona and 11% for all
-other currencies" (paragraph 8.1.5; Table 4 phases it in from 20% in 2027 for undertakings that apply the
+published LLFR when it differs. The defaults are EIOPA's: alpha is 40% for the Swedish krona and 11% for every
+other currency (paragraph 8.1.5; Table 4 phases it in from 20% in 2027 for undertakings that apply the
 phasing-in), and the euro's FSP is 20 years with an LLFR weight of 100% on the forward just before it (Table 2).
 
 **As an example:**
@@ -690,13 +688,13 @@ discounted equity drifts above today's price creates value out of nothing, so th
 valued on it is understated (or overstated if it drifts below). Read `max_abs_deviation` first: a gap of a few
 tenths of a percent is noise, a steady gap of several percent is a calibration error.
 
-EIOPA's Guideline 58 (paragraph 1.105(b)) asks undertakings to "verify the Martingale test for the asset classes
-... that have been used in the calibration process of the ESG" but prescribes no confidence level; the 95% default
-is the conventional statistical one. Testing many dates at once needs care. With 120 monthly dates and a 95% band
-at each, a perfect martingale still sees about six dates fall outside by chance, so "every date inside its band"
-fails a true martingale about half the time. The verdict therefore uses Holm's (1979) step-down adjustment, which
-"has a prescribed level of significance protection against error of the first kind for any combination of true
-hypotheses" (Holm, 1979, abstract), so the chance of wrongly failing a true martingale stays at most 1 -
+EIOPA's Guideline 58 (paragraph 1.105(b)) asks undertakings to run the martingale test on every asset class used
+to calibrate the scenario generator but prescribes no confidence level; the 95% default is the conventional
+statistical one. Testing many dates at once needs care. With 120 monthly dates and a 95% band
+at each, a perfect martingale still sees about six dates fall outside by chance, so requiring every date inside
+its band fails a true martingale about half the time. The verdict therefore uses Holm's (1979) step-down
+adjustment, which controls the chance of a false rejection at the chosen level whatever combination of the
+hypotheses is true (Holm, 1979, abstract), so the chance of wrongly failing a true martingale stays at most 1 -
 `confidence` however strongly the dates are related (neighbouring dates share the same scenarios, so a binomial
 count of passing dates, which assumes independent dates, would be misleading). `pass_rate` is still reported
 beside `expected_pass_rate`, the rate a true martingale shows on average, as a plain read of the per-date bands.
@@ -944,15 +942,14 @@ eiopa_risk_free_curve(
 
 ## eiopa_symmetric_adjustment
 
-Fetch EIOPA's symmetric adjustment of the Solvency II equity capital charge, the "equity dampener", for one month.
+Fetch EIOPA's symmetric adjustment of the Solvency II equity capital charge, the equity dampener, for one month.
 
 It is the number of percentage points EIOPA adds to the 39% and 49% equity shocks of the standard formula after a
 rally, or takes off after a fall, based on where equity prices stand against their three-year average: between -10
-and +10 until 29 January 2027 (Delegated Regulation 2015/35, Article 172(4)) and between -13 and +13 from 30
-January 2027 (Delegated Regulation (EU) 2026/269, point (51): "The symmetric adjustment shall not be lower than
-– 13 % or higher than 13 %"). It is counter-cyclical: after a crash the charge falls, so insurers are not forced
-to sell equities into a falling market to restore their ratio, and after a rally it rises. Pass it to
-`equity_scr(..., symmetric_adjustment=..., valuation_date=...)`.
+and +10 until 29 January 2027 (Delegated Regulation 2015/35, Article 172(4)) and between -13 and +13 from 30 January
+2027 (Article 172(4) as rewritten by Delegated Regulation (EU) 2026/269, point (51)). It is counter-cyclical: after
+a crash the charge falls, so insurers are not forced to sell equities into a falling market to restore their ratio,
+and after a rally it rises. Pass it to `equity_scr(..., symmetric_adjustment=..., valuation_date=...)`.
 
 The formula is as follows:
 
@@ -960,8 +957,8 @@ $$
 \text{SA} = \min(\max(1 / 2 \cdot ((\text{CI} - \text{AI}) / \text{AI} - 0.08),\; - \text{cap}),\; \text{cap})
 $$
 
-Where CI is the current level of EIOPA's equity index, AI "the weighted average of the daily levels of the equity
-index over the last 36 months" (Delegated Regulation 2015/35, Article 172(2)) and cap 0.10, or 0.13 from 30
+Where CI is the current level of EIOPA's equity index, AI the weighted average of its daily levels over the last
+36 months (Delegated Regulation 2015/35, Article 172(2)) and cap 0.10, or 0.13 from 30
 January 2027.
 
 The data come through the Finance Toolkit, daily from 1991, with no API key; this reads the month-end value
@@ -1203,13 +1200,13 @@ discounted equity drifts above today's price creates value out of nothing, so th
 valued on it is understated (or overstated if it drifts below). Read `max_abs_deviation` first: a gap of a few
 tenths of a percent is noise, a steady gap of several percent is a calibration error.
 
-EIOPA's Guideline 58 (paragraph 1.105(b)) asks undertakings to "verify the Martingale test for the asset classes
-... that have been used in the calibration process of the ESG" but prescribes no confidence level; the 95% default
-is the conventional statistical one. Testing many dates at once needs care. With 120 monthly dates and a 95% band
-at each, a perfect martingale still sees about six dates fall outside by chance, so "every date inside its band"
-fails a true martingale about half the time. The verdict therefore uses Holm's (1979) step-down adjustment, which
-"has a prescribed level of significance protection against error of the first kind for any combination of true
-hypotheses" (Holm, 1979, abstract), so the chance of wrongly failing a true martingale stays at most 1 -
+EIOPA's Guideline 58 (paragraph 1.105(b)) asks undertakings to run the martingale test on every asset class used
+to calibrate the scenario generator but prescribes no confidence level; the 95% default is the conventional
+statistical one. Testing many dates at once needs care. With 120 monthly dates and a 95% band
+at each, a perfect martingale still sees about six dates fall outside by chance, so requiring every date inside
+its band fails a true martingale about half the time. The verdict therefore uses Holm's (1979) step-down
+adjustment, which controls the chance of a false rejection at the chosen level whatever combination of the
+hypotheses is true (Holm, 1979, abstract), so the chance of wrongly failing a true martingale stays at most 1 -
 `confidence` however strongly the dates are related (neighbouring dates share the same scenarios, so a binomial
 count of passing dates, which assumes independent dates, would be misleading). `pass_rate` is still reported
 beside `expected_pass_rate`, the rate a true martingale shows on average, as a plain read of the per-date bands.
@@ -1413,8 +1410,8 @@ compounded zero rate (RFR Technical Documentation EIOPA-BoS-26-198, paragraphs 8
 swap-volume-weighted average of the one-year forward just before the FSP and the forwards from the FSP to longer
 liquid maturities; those volumes come from EIOPA's annual liquidity assessment, so by default the LLFR is the
 one-year forward just before the FSP, EIOPA's rule when no liquid maturity lies beyond the FSP. Pass EIOPA's
-published LLFR when it differs. The defaults are EIOPA's: alpha "equals 40% for the Swedish Krona and 11% for all
-other currencies" (paragraph 8.1.5; Table 4 phases it in from 20% in 2027 for undertakings that apply the
+published LLFR when it differs. The defaults are EIOPA's: alpha is 40% for the Swedish krona and 11% for every
+other currency (paragraph 8.1.5; Table 4 phases it in from 20% in 2027 for undertakings that apply the
 phasing-in), and the euro's FSP is 20 years with an LLFR weight of 100% on the forward just before it (Table 2).
 
 **As an example:**
@@ -1758,10 +1755,10 @@ regulator's prescribed stock market fall.
 
 Type 1 equities (listed in the European Economic Area or the OECD) fall by 39% and type 2 equities (all others:
 unlisted shares, private equity, hedge funds, commodities) by 49%, each plus EIOPA's symmetric adjustment. That
-adjustment, the "equity dampener", raises the shock after a rally and lowers it after a fall, so insurers are not
+adjustment, the equity dampener, raises the shock after a rally and lowers it after a fall, so insurers are not
 forced to sell into a falling market; EIOPA publishes it every month (see `eiopa_symmetric_adjustment`). It is
-capped at 10 points either way until 29 January 2027 and at 13 points from 30 January 2027 (Delegated Regulation
-(EU) 2026/269, point (51): "The symmetric adjustment shall not be lower than – 13 % or higher than 13 %"), so pass
+capped at 10 points either way until 29 January 2027 and at 13 points from 30 January 2027 (Article 172(4) of
+Delegated Regulation 2015/35 as rewritten by Delegated Regulation (EU) 2026/269, point (51)), so pass
 `valuation_date` to apply the cap in force on that date (see `symmetric_adjustment_cap`).
 
 The two losses combine with a 0.75 correlation, so the total is less than their sum (Delegated Regulation 2015/35,

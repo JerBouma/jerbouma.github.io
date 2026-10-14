@@ -38,9 +38,9 @@ d(CLI) = a * (theta - CLI) * dt + sigma * dW
 
 where `a` is the mean-reversion speed, `theta` the long-run level and `sigma` the volatility. Mean reversion holds
 almost by construction: the OECD publishes the CLI with its long-run trend removed, scaled to swing around 100
-("long-term trend = 100"): "The CLI is the average of de-trended and smoothed component series ... The amplitude
-adjusted CLI rescales this 'averaged' CLI to match the amplitudes of the de-trended reference series" (OECD, 2012,
-"OECD System of Composite Leading Indicators", pp. 3 and 9,
+as its long-term trend: the CLI averages de-trended, smoothed component series, and the amplitude-adjusted CLI
+rescales that average to the amplitude of the de-trended reference series (OECD, 2012, OECD System of Composite
+Leading Indicators, pp. 3 and 9,
 [OECD](https://www.oecd.org/content/dam/oecd/en/data/methods/OECD-System-of-Composite-Leading-Indicators.pdf)).
 `volatility_model: garch` lets the size of the swings vary over time, so calm and turbulent periods each persist
 ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)).

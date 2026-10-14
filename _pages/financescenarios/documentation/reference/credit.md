@@ -39,8 +39,8 @@ pull from the leading indicator, so spreads tend to widen as the economy slows.
 The data come through the Finance Toolkit, chosen with `dimension`:
 
 - `maturity` or `rating`: ICE BofA spreads of US corporate bonds by maturity or rating, from FRED (API key
-  needed), which keeps only three years of them ("Starting in April 2026, this series will only include 3 years
-  of observations", [FRED](https://fred.stlouisfed.org/series/BAMLC0A4CBBB)), so the shipped factor sets leave
+  needed), which keeps only the last three years of them from April 2026 (the series notes on
+  [FRED](https://fred.stlouisfed.org/series/BAMLC0A4CBBB)), so the shipped factor sets leave
   credit off.
 - `moodys`: Moody's Aaa and Baa yields over the 10-year Treasury, monthly from 1953 (FRED key).
 - `corporate`: corporate bond spreads over government bonds, monthly, no key: Germany from 1957

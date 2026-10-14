@@ -368,12 +368,11 @@ Estimate a commodity's mean-reverting price model from its spot price history, a
 A commodity, unlike a stock index, has a natural price level: when the price is high, producers expand supply and
 inventories build, and the convenience yield of holding the physical good falls, so the price is pulled back
 toward its cost of production and storage. The model lets the log price revert to a long-run level at speed kappa,
-which keeps the price positive and makes price spikes temporary. Schwartz (1997), abstract: "The first model is a
-simple one-factor model in which the logarithm of the spot price of the commodity is assumed to follow a mean
-reverting process", and "The analysis reveals strong mean reversion in the commercial commodity prices." The fit
+which keeps the price positive and makes price spikes temporary. This is the first, one-factor model of Schwartz
+(1997), whose abstract also reports strong mean reversion in the commercial commodities (copper and oil). The fit
 is a regression of each period's change in log price on the previous level; the slope gives the speed, the
 intercept the long-run level and the residuals the volatility, using the exact discrete form of the process so the
-time step adds no bias. Schwartz estimates the model from futures prices with "The Kalman filter methodology";
+time step adds no bias. Schwartz estimates the model from futures prices with a Kalman filter (abstract);
 regressing on the spot (front-month) price is a judgement that needs no futures history, and it includes each
 month's roll from one contract to the next.
 
@@ -478,11 +477,10 @@ the front of the futures curve but barely touches the long end, while a change i
 shifts the whole curve for good. In the scenarios, short-term shocks fade but long-term uncertainty keeps growing
 with the horizon.
 
-The paper estimates both parts from years of futures prices with a Kalman filter. Its section 2 defines them:
-"changes in the short-term deviations (χt) represent temporary changes in prices (resulting from, for example,
-unusual weather or a supply disruption) that are not expected to persist", while changes in the equilibrium
-level "represent fundamental changes that are expected to persist". Without that history, xi is
-proxied by a trailing average of the log price and chi by the deviation from it; chi is then fitted as a
+The paper estimates both parts from years of futures prices with a Kalman filter. In its section 2, changes in the
+short-term deviation are temporary price moves that are not expected to last, such as unusual weather or a supply
+disruption, while changes in the equilibrium level are fundamental and expected to persist. Without that history, xi
+is proxied by a trailing average of the log price and chi by the deviation from it; chi is then fitted as a
 mean-reverting process around zero and xi as a random walk with drift.
 
 The formula is as follows:
@@ -533,7 +531,7 @@ fit_schwartz_smith_process(
 
 - <u>prices (pl.Series):</u> the historical spot price, evenly spaced, all above 0.
 - <u>time_step (float):</u> the time between observations, in years.
-- <u>long_term_window_years (float):</u> the years of prices averaged into the long-term level. The 3-year default is a judgement: long enough to average out short-term deviations, whose half-life is ln 2 / kappa (about half a year at Schwartz and Smith's kappa of 1.49), short enough to follow the long-term level. Their three-factor note reports a half-life of "approximately 3 years" only for the equilibrium growth rate.
+- <u>long_term_window_years (float):</u> the years of prices averaged into the long-term level. The 3-year default is a judgement: long enough to average out short-term deviations, whose half-life is ln 2 / kappa (about half a year at Schwartz and Smith's kappa of 1.49), short enough to follow the long-term level. Their three-factor note reports a half-life of about 3 years, but only for the equilibrium growth rate.
 
 **Returns:**
 
@@ -562,9 +560,9 @@ $$
 \sigma ^{2} (F_{T}) = \exp(- 2 \cdot \kappa \cdot T) \cdot \sigma_{\chi} ^{2} + \sigma_{\xi} ^{2} + 2 \cdot \exp(- \kappa \cdot T) \cdot \rho \cdot \sigma_{\chi} \cdot \sigma_{\xi}
 $$
 
-Schwartz and Smith (2000), section 3.1, derive this from their futures price (eq. 9): "The volatility is thus
-independent of the state variables. For near maturity futures contracts (i.e., T = 0), the volatility is equal
-to the volatility of the sum of the short- and long-term factors." Fixing kappa is a judgement: with the dozen or
+Schwartz and Smith (2000), section 3.1, derive this from their futures price (eq. 9): the
+volatility does not depend on the state variables, and for a contract at maturity (T = 0) it equals the volatility
+of the sum of the short- and long-term factors. Fixing kappa is a judgement: with the dozen or
 so maturities a futures curve has, also fitting kappa overstated it about sevenfold in this package's own
 simulation check, while this fit was unbiased. The correlation is the least precise of the three.
 
@@ -605,11 +603,11 @@ The long-term factor's volatility implied by one futures contract's volatility, 
 volatility, speed and correlation: the futures volatility formula of Schwartz and Smith (2000) solved for
 sigma_xi.
 
-Schwartz and Smith (2000), section 3.1: "as T → ∞, the instantaneous volatility approaches the volatility of the
-equilibrium price level (σξ)". The longest listed contract is therefore the one that measures sigma_xi best when
-the three-parameter fit to the whole curve cannot separate the two factors. A spot price history alone smooths
-the long-term level away: on WTI on 2026-10-14 it gave 0.6% a year against about 20% from the longest contract,
-where Schwartz and Smith's own oil estimates are 14.5% (futures data) and 11.5% (Enron data) in Table 2.
+As the maturity grows, a contract's instantaneous volatility approaches that of the equilibrium price level, sigma_xi
+(Schwartz and Smith, 2000, section 3.1). The longest listed contract is therefore the one that measures sigma_xi best
+when the three-parameter fit to the whole curve cannot separate the two factors. A spot price history alone smooths
+the long-term level away: on WTI on 2026-10-14 it gave 0.6% a year against about 20% from the longest contract, where
+Schwartz and Smith's own oil estimates are 14.5% (futures data) and 11.5% (Enron data) in Table 2.
 
 The formula is as follows:
 

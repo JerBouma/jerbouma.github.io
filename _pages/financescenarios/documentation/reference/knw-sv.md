@@ -44,13 +44,13 @@ pi(t) = c_pi + gamma_pi*v(t-1) + phi_pi_r*r(t-1) + phi_pipi*pi(t-1)
 
 With `variance_coupling` (gamma) and `variance_sensitivity` (sens) at zero this is exactly `Knw`. `v` is simulated
 with [Andersen's (2008)](https://doi.org/10.21314/jcf.2008.189) QE scheme, which never goes negative; the rate
-and inflation can. DNB treats `v` as an observed input ("the squared volatility v_t ... can be observed without
-measurement error", Technical Appendix section 4) and backs the rate and expected inflation out of a nominal and
+and inflation can. DNB treats `v` as an input observed without measurement error (Technical Appendix,
+section 4) and backs the rate and expected inflation out of a nominal and
 a real yield; here `v` is estimated from history instead, as a rolling average of the pair's squared surprises.
 An optional equity leg (`calibrate_equity_leg`) reads the same `v`, so stock and rate turbulence rise together.
 
-`v` follows the first row of the appendix's eq. 2, dv = K_vv * (E_v - v) * dt + omega * sqrt(v) * dW, "a
-stochastic variance process v (see Heston [6]) which equals the square of the stochastic volatility process".
+`v` follows the first row of the appendix's eq. 2, dv = K_vv * (E_v - v) * dt + omega * sqrt(v) * dW, a
+Heston-type stochastic variance process equal to the square of the stochastic volatility.
 DNB's eq. 3 also lets the rate and inflation load on `v`'s own shock (sigma_vr, sigma_vpi); here `v`'s shock is
 independent of theirs, a simplification that leaves out any leverage-type link between turbulence and rates.
 
@@ -347,12 +347,12 @@ The model functions behind this page, each with the formula it implements.
 Estimate the hidden turbulence factor v from history: how large the rate and inflation surprises have been
 lately.
 
-v is not a market price. DNB's CP2022 calibration takes it as given: "the squared volatility v_t and the yields
-of one nominal and one real bond ... can be observed without measurement error" (Technical Appendix, section
-4). Without that series, here it is the average squared surprise of a constant-volatility rate and inflation
-fit over the past year. When both legs have recently surprised by
-a lot, v is high; in quiet spells it is low. The rate and inflation legs, the equity leg and the risk-neutral
-market price of risk are all fitted against this one estimate, so they agree on when markets were turbulent.
+v is not a market price. DNB's CP2022 calibration takes it as given: v_t and the yields of one nominal and one
+real bond are treated as observed without measurement error (Technical Appendix, section 4). Without that series,
+here it is the average squared surprise of a constant-volatility rate and inflation fit over the past year. When
+both legs have recently surprised by a lot, v is high; in quiet spells it is low. The rate and inflation legs, the
+equity leg and the risk-neutral market price of risk are all fitted against this one estimate, so they agree on
+when markets were turbulent.
 
 The formula is as follows:
 
@@ -367,10 +367,10 @@ $$
 Where u and w are the rate and inflation surprises of the constant-volatility fit and W the window, one year of
 observations. Each date is paired with the window ending one period earlier, so a surprise never explains itself.
 
-The window follows Engle's (1982, section 9, p. 1002) model of UK inflation variance: "testing for a fourth-order
-linear ARCH process, the chi-squared statistic with 4 degrees of freedom was 15.2, which is highly significant",
-giving "h_t = a_0 + a_1(0.4 e_t-1^2 + 0.3 e_t-2^2 + 0.2 e_t-3^2 + 0.1 e_t-4^2)" (eq. 38) on quarterly data: the
-last four quarters, one year. The window keeps that year at the data's frequency, 12 months on monthly data and
+The window follows Engle's (1982, section 9, p. 1002) model of UK inflation variance: a test for fourth-order
+linear ARCH gives a highly significant chi-squared statistic of 15.2 with 4 degrees of freedom, and the fitted
+variance is h_t = a_0 + a_1(0.4 e_t-1^2 + 0.3 e_t-2^2 + 0.2 e_t-3^2 + 0.1 e_t-4^2) (eq. 38) on quarterly data:
+the last four quarters, one year. The window keeps that year at the data's frequency, 12 months on monthly data and
 one observation on yearly data. Equal weights and adding the two legs' surprises are judgements: they keep one
 turbulence measure for both legs.
 
