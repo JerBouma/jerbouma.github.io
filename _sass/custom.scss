@@ -1079,38 +1079,20 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+// the JB mark, the same drawing as the favicon (_includes/brand-mark.svg, made by
+// assets/python/gen_favicon.py)
 .masthead .site-title__mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14), 0 4px 12px -4px rgba(37, 99, 235, 0.6);
-  color: #ffffff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: block;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.masthead .site-title__name {
-  font-size: 1rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-  transition: color 0.15s ease;
-}
-
-.masthead .site-title:hover {
-  .site-title__mark {
-    transform: translateY(-1px);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 6px 16px -4px rgba(37, 99, 235, 0.7);
-  }
-
-  .site-title__name {
-    color: var(--accent-color);
-  }
+.masthead .site-title:hover .site-title__mark {
+  box-shadow: 0 0 18px rgba(129, 140, 248, 0.4);
+  transform: scale(1.04);
 }
 
 // Hide site title on homepage (redundant with hero heading)
@@ -2364,14 +2346,13 @@ body.wide-no-sidebar:not(.no-title) {
   }
 
   .masthead .site-title {
-    font-size: 1.5rem !important;
     border-right: none !important;
     padding-right: 6px !important;
   }
 
-  // Show the signature title on homepage on mobile (hero heading is below the fold)
+  // Show the monogram on the homepage on mobile too (the hero heading is below the fold)
   body.custom-splash .masthead .site-title {
-    display: inline-block !important;
+    display: inline-flex !important;
   }
 }
 
