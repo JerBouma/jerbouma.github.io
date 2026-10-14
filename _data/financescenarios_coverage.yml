@@ -58,11 +58,11 @@
     summary: For risk-neutral (pricing) scenarios, the rate stays flat at today's observed level in every path. There is no randomness yet, and it can't be combined with the Hibbert two-factor model.
     location: '`measure: "risk_neutral"`, [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)''s Real-world and risk-neutral measures section'
     details: 'v1 scope: a flat path at today''s observed rate, not a fitted stochastic process; raises if paired with `method: "hibbert_two_factor"`.'
-  - name: 'Risk-neutral: forward-curve-consistent stochastic short rate'
-    status: available
-    summary: A random Hull-White short rate whose average path matches today's forward curve, as pricing work requires. Speed of mean reversion and volatility come from the historical fit, since there are no option prices to fit them to.
-    location: '`measure: "risk_neutral"` + `risk_neutral_forward_curve: true` (`method="hull_white"` only), [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)''s Real-world and risk-neutral measures section'
-    details: 'Brigo & Mercurio''s (2006) x-process Hull-White: mean_reversion_speed/volatility reuse the real-world historical fit (no options/swaption panel to fit them under Q), theta(t) forced to match today''s Nelson-Siegel forward curve (same anchor machinery `hjm_model` already uses).'
+  - name: 'Risk-neutral: stochastic short rate on EIOPA''s or the Treasury curve'
+    status: partial
+    summary: A random Hull-White short rate whose average discount factor reproduces today's curve at every maturity, as pricing work requires. For the euro, the pound and the US dollar that is EIOPA's risk-free curve, the default of a whole risk-neutral run, so the best estimate discounts at the Solvency II curve. Partial because the volatility comes from history, fitted to how much yields across the curve have moved, not from swaption prices as EIOPA's Guideline 57 asks, so the time value of guarantees is indicative.
+    location: '`measure: "risk_neutral"` + `risk_neutral_forward_curve: true` (`method="hull_white"` only), `risk_neutral_curve: eiopa` or `treasury`, `risk_neutral_volatility_fit`, `Scenarios.simulate(measure="risk_neutral")`, [interest rates](/projects/financescenarios/docs/interest-rates#real-world-and-risk-neutral-rates)'
+    details: 'Brigo & Mercurio''s (2006) x-process Hull-White, theta(t) fitted to EIOPA''s published curve (USD, EUR, GBP; forwards flat between maturities) or a Nelson-Siegel fit to the four Treasury yields. The speed is the short rate''s historical speed; by default (`risk_neutral_volatility_fit: yield_curve`) sigma is fitted so the model''s yield volatilities match the historical volatility of the 13-week, 5, 10 and 30-year yields (0.90% on US data since 2005), or `short_rate` takes the short rate''s own. Not implied from swaptions: EIOPA Guideline 57 (paragraph 1.101) asks for calibration to deep, liquid and transparent market data, which the Finance Toolkit does not provide for rate options.'
   - name: knw/knw_sv Q-measure, an options/swaption-calibrated method
     status: partial
     summary: The model can't fit its own risk-neutral version to option or swaption prices, as there is no free data for that. Instead you can use DNB's market-consistent scenario set, built from market prices including swaptions, as your paths or as a benchmark to compare against.
@@ -146,9 +146,9 @@
     details: Paired with an `interest_rates[]` entry of the same method; see the Interest rates rows above.
   - name: Standalone risk-neutral / market-implied inflation
     status: available
-    summary: 'The model: inflation is priced like the market today by fitting a curve to that breakeven data, for the US (5-30 years), UK (3-40 years) or the euro area through Germany (5-15 years). Years before the shortest maturity are extrapolated, with a warning when that looks off. The stochastic-volatility model is the other market-consistent route.'
+    summary: 'The model: inflation moves randomly around the breakeven curve the bond market prices today, for the US (5-30 years), UK (3-40 years) or the euro area through Germany (5-15 years), so the expected price index matches the curve and caps and floors on indexation get a time value. Before the shortest quoted maturity the curve is held at its first quote. The volatility comes from inflation''s own history, not from inflation options. The stochastic-volatility model is the other market-consistent route.'
     location: '`measure: "risk_neutral"` (`method="ou"`), [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)''s Real-world and risk-neutral measures section'
-    details: 'A Nelson-Siegel instantaneous forward-rate curve fit against the breakeven term structure of the United States (TIPS, 5-30 years), the United Kingdom (Bank of England, RPI, 3-40 years) or the euro area through Germany (Bundesbank, HICP-indexed federal bonds, 5-15 years); the same v1 "match an observable market input, don''t invent dynamics" scope as the interest_rates/equities/fx risk-neutral legs, term-structure-shaped instead of one flat level. The years before the shortest quoted maturity are a Nelson-Siegel extrapolation, flagged with a warning when today''s value is more than a point off the shortest breakeven (live 2026-10-07: Germany starts at 5.6% against a 2.2% 5-year, reaching 2.5% at year 1).'
+    details: 'A Nelson-Siegel instantaneous forward-rate curve fit against the breakeven term structure of the United States (TIPS, 5-30 years), the United Kingdom (Bank of England, RPI, 3-40 years) or the euro area through Germany (Bundesbank, HICP-indexed federal bonds, 5-15 years). Below the shortest quoted maturity the forward is held at the fitted yield there, EIOPA''s constant-forward rule before its first quoted maturity, instead of extrapolating the Nelson-Siegel forward (which on 2026-10-14 started Germany at 5.72% against a 2.28% five-year quote). Inflation is that forward plus a zero-mean Ornstein-Uhlenbeck part with the speed and volatility of its own history and a convexity correction, so E[index] equals the breakeven index (Jarrow-Yildirim style); `risk_neutral_volatility: none` follows the curve exactly. The volatility is historical, not implied from inflation caps and floors.'
   - name: TIPS/breakeven-based market-implied inflation
     status: available
     summary: 'The data: market-implied inflation (nominal minus inflation-linked bond yields) for the US, UK and euro area (through Germany), from the US Treasury, the Bank of England and the Bundesbank. No key needed. It does not yet feed the inflation risk premium of the stochastic-volatility pricing model.'
@@ -240,9 +240,9 @@
   items:
   - name: Real-world GBM
     status: available
-    summary: Exchange rates move randomly around the trend and volatility seen in their own history. The basic choice for currency exposure.
+    summary: Exchange rates move randomly with the volatility seen in their own history, by default without carrying the past trend forward (see Trend-free exchange rates below). The basic choice for currency exposure.
     location: "`FX`"
-    details: Geometric Brownian motion fit on the historical exchange-rate return series.
+    details: 'Geometric Brownian motion fit on historical exchange-rate returns, by default on end-of-period BIS rates (`end_of_period: true`), since changes of period averages keep only about two-thirds of a random walk''s variance (Working 1960); GMDB averages are scaled up by that factor.'
   - name: 'Risk-neutral: covered interest-rate parity drift'
     status: available
     summary: For pricing, the exchange rate drifts by the gap between the two currencies' simulated interest rates, so currency forwards stay consistent with rates.
@@ -260,9 +260,9 @@
     details: A non-US government curve can now be fitted (see Interest rates above), but only one curve per run, so several currencies' curves cannot yet be simulated side by side.
   - name: Trend-free exchange rates
     status: available
-    summary: Keeps the historical volatility but drops the past trend, so the median exchange rate stays at today's level (a random walk, Meese and Rogoff, 1983). The default factor set uses it.
+    summary: 'Keeps the historical volatility but drops the past trend, so the median exchange rate stays at today''s level (a random walk, Meese and Rogoff, 1983). It is the default; `drift_mode: historical` carries the fitted trend forward instead.'
     location: '`drift_mode: "random_walk"`, `FX`'
-    details: Keeps the historical volatility but not the sample's trend, so the median rate stays at today's level (random walk, Meese and Rogoff 1983); used by the `default` factor set.
+    details: Keeps the historical volatility but not the sample's trend, so the median rate stays at today's level (random walk, Meese and Rogoff 1983); the default `drift_mode` since Hibbert, Mowbray and Turnbull (2001, section 9.3) have exchange rates respect purchasing power parity at long horizons.
 - topic: Multi-currency
   intro: How far scenarios can handle several currencies at once, from tagging each factor with its currency to converting results into one reporting currency.
   items:
@@ -391,9 +391,9 @@
   items:
   - name: Empirically-estimated correlation
     status: available
-    summary: Correlations between factors are estimated from history and pulled toward a simpler, more stable estimate, so noise in the data does not distort them. Out-of-sample tests showed this reduced correlation errors by 1.6% to 7.5%.
+    summary: Correlations between factors are estimated from history and, by default, pulled toward zero by an amount the data set, larger when they rest on few observations, so noise in the data does not distort them. Out-of-sample tests showed this reduced correlation errors by 1.6% to 7.5%.
     location: "`dependence_model.py`, `Dependence`"
-    details: 'Ledoit-Wolf-style shrinkage toward a constant-correlation target at a fixed intensity (default 0.1), or with `engine.correlation_shrinkage: auto` (the shipped default settings) the data-driven Schäfer-Strimmer (2005) intensity toward no correlation, using each pair''s own overlap; projected to the nearest valid correlation matrix (Higham). Out of sample on the default factor set (train before 2012/2016, score after) `auto` lowered the correlation RMSE by 7.5%/1.6%; a common coarser estimation frequency and a statistical factor model were tested and did worse. The repair size and intensity are recorded per calibration and graded in release reports.'
+    details: 'By default (`engine.correlation_shrinkage: auto`) the data-driven Schäfer-Strimmer (2005) intensity toward no correlation (their target D), using each pair''s own overlap; a number in [0, 1] instead shrinks toward the constant average correlation at that fixed intensity (Ledoit-Wolf, whose target they say does not suit a mix of asset classes); projected to the nearest valid correlation matrix (Higham). Out of sample on the default factor set (train before 2012/2016, score after) `auto` lowered the correlation RMSE by 7.5%/1.6%; a common coarser estimation frequency and a statistical factor model were tested and did worse. The repair size and intensity are recorded per calibration and graded in release reports.'
   - name: Gaussian-copula correlated shocks
     status: available
     summary: By default, the random shocks to each factor are linked through their correlations using a normal distribution. Markets move together on average, but extreme joint crashes are not given extra weight.
@@ -401,7 +401,7 @@
     details: The default cross-factor shock-correlation mechanism.
   - name: Student-t copula
     status: available
-    summary: An option that makes extreme moves more likely to happen together across all factors, so a crash in one market tends to coincide with crashes in others. Use it when joint tail risk matters, as in stress testing.
+    summary: An option that makes extreme moves more likely to happen together across all factors, so a crash in one market tends to coincide with crashes in others. Use it when joint tail risk matters, as in stress testing. The default of 12 degrees of freedom is the value fitted to stock, bond and real estate returns by Kole, Koedijk and Verbeek (2007).
     location: '`engine.shock_distribution: "student_t"`, [simulation-engine](/projects/financescenarios/docs/simulation-engine)'
     details: Shared chi-square mixing variable per (simulation, step) across every factor; genuine tail dependence, not just fatter individual marginals.
   - name: Asymmetric / pairwise-varying tail dependence
@@ -432,7 +432,7 @@
     details: 'Phase 5 (2024) scenarios'' deviation from baseline for rates, inflation, unemployment and equities per country, measured from the run''s start, plus the carbon price as a factor. A deterministic shift: it moves the distribution''s centre, not its spread; no physical-damage channel beyond NiGEM''s own.'
   - name: Regulators' stress tests as regimes
     status: available
-    summary: You can steer rates, inflation and unemployment along the Federal Reserve's or the European (ESRB/EBA) stress scenarios, and equities follow the published stock-market falls. House prices and credit spreads from these tests are not included.
+    summary: You can steer rates, inflation and unemployment along the Federal Reserve's or the European (ESRB/EBA) stress scenarios, and equities follow the published stock-market falls, measured against each regulator's own baseline (the Federal Reserve's 2026 severely adverse scenario puts US stocks about 56% below its baseline after a year). House prices and credit spreads from these tests are not included.
     location: "`stress_test_regime`, `stress_tests/`"
     details: Federal Reserve (US, quarterly) and ESRB/EBA (EU members and more, yearly) paths for rates, inflation and unemployment, pinned at each period end or used as long-run targets; real-world equities follow the published stock-market path as one-off price jumps; house-price and credit-spread paths are not mapped.
   - name: One-call run validation
@@ -543,9 +543,9 @@
   items:
   - name: Martingale (market-consistency) test
     status: available
-    summary: Checks, at every date, that the discounted value of an investment today equals its price today on average across scenarios, within simulation noise. This is the standard test that market-consistent scenarios price assets correctly.
+    summary: Checks, at every date, that the discounted value of an investment today equals its price today on average across scenarios, within simulation noise. This is the standard test that market-consistent scenarios price assets correctly. The verdict allows for the few dates a correct run misses by chance when many dates are tested at once.
     location: "`martingale_test`, `financescenarios.solvency`; part of `Solvency(...).report`"
-    details: '`E[D(t) S(t) e^{qt}] = S(0)` checked at every date against a Monte Carlo band (antithetic-aware standard error); meaningful on a `measure: "risk_neutral"` run.'
+    details: '`E[D(t) S(t) e^{qt}] = S(0)` checked at every date against a Monte Carlo band (antithetic-aware standard error), with a per-date p-value; the run passes unless a Holm (1979) adjusted p-value falls below 1 - confidence (`criterion="every_date"` requires every band to hold); the pass rate is reported beside the expected 95%. Meaningful on a `measure: "risk_neutral"` run.'
   - name: Monte Carlo zero-coupon curve
     status: available
     summary: Rebuilds today's yield curve from the simulated short rates by averaging the discount factors across scenarios. You can compare it with the curve you put in to check the rates price bonds correctly.
@@ -565,7 +565,7 @@
     status: available
     summary: One table with the market-consistency check, best estimate, own funds, capital requirement and solvency ratio, from yearly payments and an asset path. Liabilities are revalued in each scenario at that scenario's short rate held flat, as a shortcut for full revaluation.
     location: '`Solvency(real_world, risk_neutral).report(cashflows, assets)`, `Scenarios.simulate(measure="risk_neutral")`'
-    details: 'Market-consistency check, best estimate, own funds, SCR and solvency ratio from yearly payments and an asset path; the risk-neutral run is derived from the same config (`risk_neutral_config`: the first rate on today''s forward curve, equities at that rate). Liabilities are revalued on each real-world scenario at its own short rate held flat, not a full nested revaluation.'
+    details: 'Market-consistency check, best estimate, own funds, SCR and solvency ratio from yearly payments and an asset path; the risk-neutral run is derived from the same config (`risk_neutral_config`: the first rate a Hull-White rate on EIOPA''s curve, or the Treasury curve outside USD, EUR and GBP; equities at that rate; inflation around its breakeven curve where one exists). Liabilities are revalued on each real-world scenario at its own short rate held flat, not a full nested revaluation.'
   - name: Scenario-file export (trial x time per variable)
     status: available
     summary: Writes the scenarios to CSV files or one Excel workbook, with one row per scenario and one column per point in time. This is the layout insurance cashflow and ALM models usually read, with an option to keep only yearly points.
@@ -575,7 +575,7 @@
     status: available
     summary: 'Downloads EIOPA''s monthly risk-free curves for every currency it publishes: the basic curve, the curve with volatility adjustment, and the standard-formula up and down shocks. No API key is needed.'
     location: "`eiopa_risk_free_curve`, `financescenarios.solvency`"
-    details: EIOPA's monthly curves (basic, with volatility adjustment, and the standard-formula up and down shocks) for every currency it publishes, fetched through the Finance Toolkit with no key.
+    details: EIOPA's monthly curves (basic, with volatility adjustment, and the standard-formula up and down shocks) for every currency it publishes, fetched through the Finance Toolkit with no key, read as published (Smith-Wilson until 29 January 2027, the First Smoothing Point method from 30 January 2027). `eiopa_extrapolation` applies the 2027 method (constant forwards to the FSP, then LLFR blended into the UFR at alpha 11%, 40% for SEK) to an earlier curve, to measure the change in a best estimate. Volatility and matching adjustments and transitional measures are not modelled.
   - name: Best estimate discounted with EIOPA's curve
     status: available
     summary: Discounts your liability cashflows with EIOPA's risk-free curve, as Article 77(2) requires, instead of with the simulated rates. Cashflows can still differ by scenario.
@@ -593,7 +593,7 @@
     details: Liability side on EIOPA's base and shocked curves; assets are not revalued, so this is the liability half of the sub-module.
   - name: Standard-formula equity risk
     status: partial
-    summary: Applies the standard-formula equity shocks, 39% for listed and 49% for other equity, adjusted by EIOPA's current symmetric adjustment and combined with a 0.75 correlation. Strategic participations, the duration-based approach and transitional rules are not covered.
+    summary: Applies the standard-formula equity shocks, 39% for listed and 49% for other equity, adjusted by EIOPA's current symmetric adjustment (capped at 10 points, 13 from 30 January 2027) and combined with a 0.75 correlation. Strategic participations, the duration-based approach and transitional rules are not covered.
     location: "`equity_scr`, `eiopa_symmetric_adjustment`"
     details: Type 1 (39%) and type 2 (49%) shocks plus EIOPA's live symmetric adjustment, combined with a 0.75 correlation; strategic participations, duration-based and transitional equity are not modelled.
 - topic: Frameworks

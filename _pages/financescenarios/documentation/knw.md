@@ -76,16 +76,16 @@ $$
 
 $$r_t$$ is the nominal short rate and $$\pi_t$$ year-over-year CPI inflation. The diagonal of $$\Phi$$ is each variable's own persistence, the off-diagonal terms the cross-coupling: how much of the other variable's level spills over. $$c$$ holds two intercepts and $$\sigma$$ the size of each period's surprise.
 
-There is no long-run mean per leg. The pair settles jointly at $$(I - \Phi)^{-1}c$$, and the system must be stable: if a shock would never die out (the largest eigenvalue of $$\Phi$$ is 1 or more), the fit stops with an error. Both legs are fitted by ordinary least squares on the dates both series cover.
+There is no long-run mean per leg. The pair settles jointly at $$(I - \Phi)^{-1}c$$, and the system must be stable: if a shock would never die out (the largest eigenvalue of $$\Phi$$ is 1 or more), the fit stops with an error. Both legs are fitted by ordinary least squares on the dates both series cover, on deviations from the history's averages ([Lütkepohl, 2005](https://doi.org/10.1007/978-3-540-27752-1){:target="_blank"}, section 3.3), so the pair settles at those averages. Fitting a free intercept per leg instead lets a pair this persistent amplify where the sample happens to start and end.
 
-On 146 quarters of the US OECD short rate and CPI growth, 1990Q1 to 2026Q2 (calibrated on 2026-10-05):
+On 146 quarters of the US OECD short rate and CPI growth, 1990Q1 to 2026Q2 (calibrated on 2026-10-14):
 
 | leg | intercept | own persistence | cross coupling | volatility |
 |:----|----------:|----------------:|---------------:|-----------:|
-| interest rate | -0.0009 | 0.9397 | 0.0918 | 0.0044 |
-| inflation | 0.0036 | 0.8910 | -0.0246 | 0.0073 |
+| interest rate | -0.0005 | 0.9432 | 0.0803 | 0.0043 |
+| inflation | 0.0037 | 0.8890 | -0.0206 | 0.0073 |
 
-One percentage point more inflation adds 0.092 points to next quarter's rate, in line with central banks raising rates when inflation runs high, though a reduced-form regression cannot single out that channel. A higher rate nudges inflation down only slightly. A joint shock halves in about 8 quarters, and the pair settles at a 2.60% rate and 2.74% inflation: a long-run rate just below long-run inflation, which reflects the long near-zero-rate spell in the sample. Over a long pension projection this fit implies a slightly negative real short rate on average. A belief cannot override it, since the long-run levels are a joint property of both legs; the history window the pair is fitted on is the lever.
+One percentage point more inflation adds 0.080 points to next quarter's rate, in line with central banks raising rates when inflation runs high, though a reduced-form regression cannot single out that channel. A higher rate nudges inflation down only slightly. A joint shock halves in about 8 quarters, and the pair settles at a 3.04% rate and 2.72% inflation: a long-run real short rate of about 0.3%. That is below the 1.0% in the Federal Reserve's longer-run projections (a 3.0% federal funds rate against 2.0% PCE inflation in the [September 2025 Summary of Economic Projections](https://www.federalreserve.gov/monetarypolicy/files/fomcprojtabl20250917.pdf){:target="_blank"}, Table 1), because the sample includes the zero-rate years 2009-2015 and 2020-2021, and with 36 years of data the long-run levels carry a sampling error of about 0.6 percentage points. A belief cannot override them, since the long-run levels are a joint property of both legs; the history window the pair is fitted on is the lever.
 
 ## Stochastic Volatility
 
@@ -106,7 +106,7 @@ $$
 
 with the same shape for inflation. $$\lambda$$ lets turbulence move the expected level, as in DNB's model, $$h$$ is the calm-state variance and $$\eta$$ how strongly variance rises with turbulence. Because one $$v$$ drives every leg, volatility in rates, inflation and equity rises and falls together: the clustering of stress across asset classes that a constant-volatility model misses.
 
-**Estimating turbulence.** DNB recovers $$v$$ from market yields on each date. Finance Scenarios estimates it from the pair's own history: a trailing four-period average of plain KNW's squared surprises, lagged one period, is the proxy for $$v$$. A CIR process is fitted to that proxy and both legs are refitted with it as an extra input; if neither leg's variance rises with $$v$$, the fit suggests plain KNW. Simulation uses [Andersen's (2008)](https://doi.org/10.21314/jcf.2008.189){:target="_blank"} Quadratic-Exponential scheme, which keeps $$v$$ non-negative with little bias.
+**Estimating turbulence.** DNB recovers $$v$$ from market yields on each date. Finance Scenarios estimates it from the pair's own history: the average of plain KNW's squared surprises over the past year (four quarters, or twelve months), lagged one period, is the proxy for $$v$$. The one-year window follows [Engle's (1982)](https://doi.org/10.2307/1912773){:target="_blank"} four-quarter ARCH model of inflation variance. A CIR process is fitted to that proxy and both legs are refitted with it as an extra input; if neither leg's variance rises with $$v$$, the fit suggests plain KNW. Simulation uses [Andersen's (2008)](https://doi.org/10.21314/jcf.2008.189){:target="_blank"} Quadratic-Exponential scheme, which keeps $$v$$ non-negative with little bias.
 
 > "…we first use Andersen's exact simulation scheme with martingale correction [1] for the Heston model…"
 > <cite>[Commissie Parameters (2022), Technical Appendix: Specification of the CP2022 Model, section 9.1, p. 8](https://open.overheid.nl/repository/ronl-f2685a42fd0bf01d5821446bcda34e719fdf7ef1/1/pdf/bijlage-2-technische-appendix.pdf#page=8)</cite>
@@ -161,7 +161,7 @@ In one fit (calibrated on 2026-10-04) the curve started at the 3.75% short rate,
 
 **Limits.**
 
-- The closed-form prices assume uncorrelated rate and inflation shocks, while the simulation uses the full correlation matrix. Model bond prices and simulated discount factors can therefore differ when the shocks are correlated.
+- The closed-form prices and the market price of risk include the correlation between rate and inflation shocks, estimated from the same changes as the run's correlation matrix, so model bond prices and simulated discount factors agree. Turbulence's own shock is independent of both.
 - The inflation risk premium is weakly identified: without a real (TIPS) curve or inflation swaps, nothing separates real rates from the inflation premium. Judge the fit by how well it reprices nominal yields, not by the individual premiums.
 
   > "The price of unexpected inflation risk cannot be identified on the basis of data on the nominal side of the economy alone."
@@ -226,13 +226,13 @@ The [CP2022 Technical Appendix](https://www.rijksoverheid.nl/documenten/rapporte
 |:--|:--|:--|
 | Rate and inflation coupling | Full 2x2 matrix | Same |
 | Stochastic volatility | Heston-type factor scaling rate, inflation, equity and CPI index | Same structure |
-| How turbulence is recovered | Inverted from market yields on each date | Rolling average of the pair's squared surprises |
+| How turbulence is recovered | Treated as observed, with the rate and expected inflation backed out of a nominal and a real yield | Past year's average of the pair's squared surprises |
 | Leverage effect | Turbulence shocks correlated with rate and inflation shocks | Not fitted: independent |
 | Equity | Premium and variance constrained by option-implied volatility | Fitted on price history only |
 | CPI index row | Modeled | Not modeled |
-| Risk-neutral measure | Essentially affine, fitted to option, swaption and inflation-cap prices | Completely affine, fitted to the Treasury yield curve |
+| Risk-neutral measure | Essentially affine, fitted to nominal and real yields and constrained by option, swaption and inflation-cap implied volatilities | Completely affine, fitted to four nominal Treasury yields |
 
-Without rate or inflation derivatives data, the risk-neutral version is fitted to the yield curve, standard affine term-structure practice. It is a genuine change of measure, but on different data, so it is a different model from DNB's own, not a simplified copy.
+Without real yields or rate and inflation derivatives data, the risk-neutral version is fitted to the nominal yield curve, standard affine term-structure practice. It is a genuine change of measure, but on different data, so it is a different model from DNB's own, not a simplified copy.
 
 ## References
 
@@ -244,4 +244,5 @@ Without rate or inflation derivatives data, the risk-neutral version is fitted t
 - Duffie, D., Kan, R. (1996). [A Yield-Factor Model of Interest Rates](https://doi.org/10.1111/j.1467-9965.1996.tb00123.x){:target="_blank"}. Mathematical Finance, 6(4), 379-406.
 - Duffee, G.R. (2002). [Term Premia and Interest Rate Forecasts in Affine Models](https://doi.org/10.1111/1540-6261.00426){:target="_blank"}. Journal of Finance, 57(1), 405-443.
 - Cheng, P.-K., Planchet, F. (2018). [Stochastic Deflator for an Economic Scenario Generator with Five Factors](https://hal.science/hal-01730072){:target="_blank"}. HAL preprint.
+- Engle, R.F. (1982). [Autoregressive Conditional Heteroscedasticity with Estimates of the Variance of United Kingdom Inflation](https://doi.org/10.2307/1912773){:target="_blank"}. Econometrica, 50(4), 987-1007.
 - Lütkepohl, H. (2005). [New Introduction to Multiple Time Series Analysis](https://doi.org/10.1007/978-3-540-27752-1){:target="_blank"}. Springer.

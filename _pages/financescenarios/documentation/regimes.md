@@ -37,7 +37,7 @@ This is the difference between a stress test (an imposed shock) and scenario ana
 |:-------|:----------|:----|
 | `financial_crisis` | Stocks fall, unemployment rises and rates are cut, all at once | Targets |
 | `credit_crunch` | Bank stocks collapse and the market follows (needs the `broad` set) | Both |
-| `oil_crisis` | Inflation pulled to 9% in year one and back to 2.5% by year eight, with high rates and weak stocks | Both |
+| `oil_crisis` | Inflation pulled to 12% in year one, 5.5% by year three and 2.5% by year eight, the path of the 1973 embargo, with high rates and weak stocks | Both |
 | `oil_shock` | A one-off three-point jump in US inflation in year two, then business as usual | Beliefs |
 | `soft_landing` | Inflation eases smoothly to 2% by year five and stays there | Beliefs |
 | `rate_cut_cycle` | Soft landing, then inflation drifts to 2.5% by year ten and back to its usual level; rates keep their own calibration, so the cuts are not imposed (add a rate belief for that) | Beliefs |
@@ -52,20 +52,20 @@ This is the difference between a stress test (an imposed shock) and scenario ana
 
 A long-run level can follow a term structure instead of a single number: anchors at chosen horizons, interpolated in between, and an optional period over which it fades back to the calibrated level after the last anchor. Because the factor still mean-reverts, it is pulled towards the moving target rather than set to it: a fast-reverting factor tracks the path closely, a slow one lags it. Which factors accept beliefs is set out under [beliefs](/projects/financescenarios/docs/configuration#beliefs).
 
-Oil Crisis uses both mechanisms:
+Oil Crisis uses both mechanisms. Its path follows US CPI inflation after the 1973 embargo, which peaked at 12.2% in November 1974 and was 5.5% by October 1976; 2.5% by year eight is a return to normal, a little above the 2.3% ten-year CPI forecast of the Philadelphia Fed's Survey of Professional Forecasters (Q3 2026).
 
 ```yaml
 name: Oil Crisis
 beliefs:
   inflation.united_states_inflation:
     long_run_mean:
-      anchors: {1.0: 0.09, 3.0: 0.05, 8.0: 0.025}   # year: target inflation
+      anchors: {1.0: 0.12, 3.0: 0.055, 8.0: 0.025}   # year: target inflation
 targets:
   united_states_short_rate: [0.7, 1.0]   # top 30% by average short rate
   us_broad: [0.0, 0.3]                   # bottom 30% by equity return
 ```
 
-Rates are annualized decimals (0.09 is 9% a year); see [units](/projects/financescenarios/docs/units). Check a factor's calibrated level before choosing anchors. A belief naming a factor that is not in the run is refused, so a regime written for one factor set fails loudly on another. A regime can extend another and state only what differs, as Rate Cut Cycle does with Soft Landing.
+Rates are annualized decimals (0.12 is 12% a year); see [units](/projects/financescenarios/docs/units). Check a factor's calibrated level before choosing anchors. A belief naming a factor that is not in the run is refused, so a regime written for one factor set fails loudly on another. A regime can extend another and state only what differs, as Rate Cut Cycle does with Soft Landing.
 
 ## How Targets Rank Scenarios
 
@@ -91,7 +91,7 @@ A targeted regime keeps only part of each draw, about 9% for Oil Crisis, so the 
 
 Instead of writing a recession by hand, a regime can follow a regulator's published scenario, fetched through the Finance Toolkit with no API key:
 
-- **Federal Reserve**: the US supervisory scenarios, baseline and severely adverse (`scenario="adverse"`), 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market.
+- **Federal Reserve**: the US supervisory scenarios, baseline and severely adverse (`scenario="severely_adverse"`), 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market.
 
   > "The severely adverse scenario describes a hypothetical set of conditions designed to assess the strength and resilience of banks in an adverse economic environment. … The scenarios start in the first quarter of 2026 and extend through the first quarter of 2029."
   > <cite>[Federal Reserve, 2026 Supervisory Stress Test Scenarios (February 2026), p. 7](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=13)</cite>
@@ -111,8 +111,8 @@ from financescenarios import Scenarios, build_toolkit, load_profiles, stress_tes
 config = load_profiles(settings_id="default", factor_set_id="default")
 toolkit = build_toolkit(config, api_key="FINANCIAL_MODELING_PREP_KEY")
 
-# "adverse" is the Fed's severely adverse scenario; authority="esrb" for the EBA test
-regime = stress_test_regime(toolkit, config, authority="federal_reserve", scenario="adverse")
+# authority="esrb" with scenario="adverse" for the EBA test
+regime = stress_test_regime(toolkit, config, authority="federal_reserve", scenario="severely_adverse")
 stressed = Scenarios.from_config(config, toolkit=toolkit, regime=regime).simulate()
 ```
 

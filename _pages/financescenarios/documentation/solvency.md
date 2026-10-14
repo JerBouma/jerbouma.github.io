@@ -23,7 +23,7 @@ Solvency II asks two questions. What is owed, valued at today's market prices (t
 | One-year SCR, internal-model view | Real world | The 1-in-200 loss is about how markets are likely to move, risk premia included. |
 | SCR, standard formula | EIOPA's prescribed shocks | Interest rate and equity shocks set by regulation, not by a model. |
 
-A *risk-neutral* run grows every traded asset at the risk-free short rate on average, equity prices at that rate minus their dividend yield; a whole-run risk-neutral simulation puts the short rate on a Hull-White process along today's Treasury forward curve, while an entry switched to risk-neutral on its own holds today's rate flat (for the US, the 13-week Treasury yield); neither is fitted to EIOPA's curve (see [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)). A *real-world* run keeps the risk premia and mean reversion the model was calibrated on.
+A *risk-neutral* run grows every traded asset at the risk-free short rate on average, equity prices at that rate minus their dividend yield. A whole-run risk-neutral simulation puts the short rate on a Hull-White process that reproduces EIOPA's risk-free curve for the euro, the pound and the US dollar (the Treasury curve for other currencies), and moves inflation randomly around the bond market's breakeven curve, so the expected price index is the breakeven index; both get their volatility from history, so guarantees and capped indexation get a time value. An entry switched to risk-neutral on its own holds today's rate flat instead (for the US, the 13-week Treasury yield); see [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures). A *real-world* run keeps the risk premia and mean reversion the model was calibrated on.
 
 Both discount along each scenario with the bank-account deflator, the value today of 1 paid at time $$t$$:
 
@@ -94,9 +94,9 @@ $$
 \mathbb{E}\left[ D(t)\, S(t)\, e^{q t} \right] = S(0) \quad \text{at every date } t
 $$
 
-where $$S$$ is the asset price and $$q$$ its dividend yield. Each date passes when $$S(0)$$ lies inside a 95% confidence band around the simulated mean, and the test as a whole passes strictly only when every date does.
+where $$S$$ is the asset price and $$q$$ its dividend yield. Each date gets a 95% confidence band around the simulated mean and a p-value for the gap between that mean and $$S(0)$$.
 
-With 120 dates each tested at 95%, a correct run is expected to miss about 5% of them by chance, so the strict pass is a high bar and the pass rate is the better read: a correct drift gives about 95% on average, varying from seed to seed. The example run passes 82.5% of dates, with a largest gap of 0.91%.
+With 120 dates each tested at 95%, a correct run still misses about six of them by chance, so requiring every date to pass would fail a true martingale about half the time. The verdict therefore uses [Holm's (1979)](https://www.jstor.org/stable/4615733){:target="_blank"} step-down adjustment for testing many dates at once: the run fails only when the smallest adjusted p-value drops below 5%, which keeps the chance of wrongly failing a correct run at 5% however closely neighboring dates are related. The stricter every-date rule remains available (`criterion="every_date"`). The pass rate is reported beside the 95% a correct drift gives on average. The example run passes 82.5% of dates, with a largest gap of 0.91%, and passes the test.
 
 | date | ratio to today's price | within band |
 |:-----|-----:|:------------|
@@ -105,7 +105,7 @@ With 120 dates each tested at 95%, a correct run is expected to miss about 5% of
 | 2031-10-01 | 0.9994 | true |
 | 2036-09-30 | 0.9922 | true |
 
-SPY stays within 0.9% of today's price for all ten years, yet 21 of 120 dates fall just outside a very tight band. Neighboring dates share their paths, so misses come in runs and the pass rate swings from seed to seed: seeds 2 and 3 pass everywhere and seed 42 passes at 99% confidence. That is Monte Carlo noise, not a wrong drift. Failing at most dates means the drift is wrong, typically a real-world run tested by mistake; leaving out the dividend yield makes every date fail.
+SPY stays within 0.9% of today's price for all ten years, yet 21 of 120 dates fall just outside a very tight band. Neighboring dates share their paths, so misses come in runs and the pass rate swings from seed to seed: seeds 2 and 3 pass everywhere and seed 42 keeps every date inside a 99% band. That is Monte Carlo noise, not a wrong drift, and the Holm verdict treats it as such. Failing at most dates means the drift is wrong, typically a real-world run tested by mistake; leaving out the dividend yield makes every date fail.
 
 The one-table Solvency II summary on the [overview page](/projects/financescenarios) uses a practical criterion instead: the run counts as market consistent when the largest gap stays within 2% of today's price. By that measure the example run, at 0.91%, passes.
 
@@ -137,14 +137,19 @@ For long-dated liabilities the UFR, not the market, drives much of the value. Th
 |:---------|--:|---:|---:|---:|----:|
 | spot rate | 3.27% | 3.58% | 3.60% | 3.42% | 3.35% |
 
-The simulated risk-neutral rate is fitted to its own market data (US Treasuries in the example), not to EIOPA's curve.
+A whole-run risk-neutral simulation reproduces this curve: its Hull-White short rate reverts toward the path EIOPA's forwards imply, so the average discount factor across scenarios returns EIOPA's bond prices at every maturity, the UFR-driven long end included. The example above holds the Treasury bill rate flat instead.
 
-The Solvency II review (Directive (EU) 2025/2 and Delegated Regulation (EU) 2026/269), which applies from 30 January 2027, replaces Smith-Wilson: beyond the first smoothing point (still 20 years for the euro), each forward rate is a weighted average of a last liquid forward rate and the UFR, so market rates keep more weight. An optional phase-in slows the convergence until 2032.
+The Solvency II review (Directive (EU) 2025/2 and Delegated Regulation (EU) 2026/269), which applies from 30 January 2027, replaces Smith-Wilson: beyond the first smoothing point (still 20 years for the euro), each forward rate is a weighted average of a last liquid forward rate and the UFR, so market rates keep more weight. The convergence speed is set by regulation:
+
+> "In accordance with Articles 46(1b) and 46a of the Delegated Regulation, the convergence parameter α equals 40% for the Swedish Krona and 11% for all other currencies, except when insurance or reinsurance undertakings are allowed to apply the phasing-in mechanism referred to in Article 77a(2) of the Solvency II Directive."
+> <cite>[EIOPA, RFR Technical Documentation (EIOPA-BoS-26-198), paragraph 8.1.5](https://www.eiopa.europa.eu/eiopa-publishes-rfr-technical-documentation-become-applicable-30-january-2027-2026-05-26_en)</cite>
+
+An optional phase-in slows the convergence until 2032.
 
 > "The extrapolated forward rate shall be equal to a weighted average of a liquid forward rate and the UFR. The liquid forward rate shall be based on one or a set of forward rates in relation to the longest maturities for which the relevant financial instrument can be observed in a deep, liquid and transparent market. For maturities of at least 40 years past the first smoothing point the weight of the UFR shall be at least 77,5 %."
 > <cite>[Directive (EU) 2025/2, Article 1, point (39), replacing Article 77a(1) of Directive 2009/138/EC](https://eur-lex.europa.eu/eli/dir/2025/2/oj)</cite>
 
-The package reads whichever curve EIOPA publishes, so the change arrives with EIOPA's own curves.
+The package reads whichever curve EIOPA publishes, so the change arrives with EIOPA's own curves. To measure its effect on a best estimate before then, the new method can be applied to a current curve: the published rates up to the first smoothing point, then forwards that blend the last liquid forward rate into the UFR at EIOPA's speed of 11%. Where the forward at 20 years sits below the UFR, long rates come out lower and the best estimate of long-dated liabilities higher.
 
 ## Best Estimate
 
@@ -171,7 +176,14 @@ For fixed cashflows this collapses to discounting on a curve, which is why plain
 
 Ten yearly payments of 10,000 are worth 80,812 at the flat 3.99%, with no spread across scenarios. Indexed to simulated inflation they are worth 93,142, ranging from about 84,000 to 103,000 across scenarios; a standard error of 4 shows 2,000 scenarios are plenty.
 
-For Solvency II, the discount curve matters. Passing EIOPA's curve to the best estimate discounts each scenario's cashflows on that curve, as Article 77(2) requires. Without it, discounting runs along the simulated short rate (in the example, today's Treasury bill rate held flat). Either way, cashflows that depend on the path of rates or equities (guarantees, profit sharing) are generated on the simulated risk-neutral run, so such a best estimate is consistent with the simulated rate, not with EIOPA's curve.
+For Solvency II, the discount curve matters. Passing EIOPA's curve to the best estimate discounts each scenario's cashflows on that curve, as Article 77(2) requires. Without it, discounting runs along the simulated short rate: on a whole-run risk-neutral simulation that rate reproduces EIOPA's curve on average, so cashflows that depend on the path of rates or equities (guarantees, profit sharing) are generated and discounted consistently with it. In the example, which holds today's Treasury bill rate flat, they are not.
+
+The time value of those guarantees depends on how much rates and inflation move, and there the run falls short of a full market-consistent calibration. EIOPA asks for market data:
+
+> "Insurance and reinsurance undertakings should ensure that the calibration process of an ESG used for a market consistent valuation is based on data from financial markets that are deep, liquid and transparent as defined in Article 1 of Commission Delegated Regulation 2015/35 and that reflect the current market conditions."
+> <cite>[EIOPA, Guidelines on valuation of technical provisions (EIOPA-BoS-14/166), Guideline 57, paragraph 1.101](https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en)</cite>
+
+Without swaption or inflation-option prices, the rate's volatility is fitted to how much yields across the curve have moved in history (fitted on US Treasuries since 2005, a short-rate volatility of 0.90% a year, which moves the 13-week, 5, 10 and 30-year yields by 89, 82, 75 and 55 basis points a year, against the 69, 87, 85 and 79 they actually moved), and inflation's to its own history. Treat the resulting cost of guarantees as indicative, and replace the volatility with a swaption-implied one for a reported best estimate.
 
 ## Solvency Capital Requirement
 
@@ -222,10 +234,13 @@ Lower rates make future payments dearer, so for most liabilities the down shock 
 > "The capital requirement for type 1 equities … shall be equal to the loss in the basic own funds that would result from the following instantaneous decreases: … (b) an instantaneous decrease equal to the sum of 39 % and the symmetric adjustment as referred to in Article 172 of this Regulation, in the value of type 1 equities other than those referred to in point (a)."
 > <cite>[Delegated Regulation (EU) 2015/35, Article 169(1); 49% for type 2 in Article 169(2)](https://eur-lex.europa.eu/eli/reg_del/2015/35/oj#art_169)</cite>
 
-The symmetric adjustment, the "equity dampener", raises both shocks after a rally and lowers them after a fall, capped at 10 points either way (13 points from 30 January 2027, [Delegated Regulation (EU) 2026/269](https://eur-lex.europa.eu/eli/reg_del/2026/269/oj){:target="_blank"}), so insurers are not pushed to sell into a falling market.
+The symmetric adjustment, the "equity dampener", raises both shocks after a rally and lowers them after a fall, so insurers are not pushed to sell into a falling market. It is capped at 10 points either way, and at 13 points from 30 January 2027; given a valuation date, the cap in force on that date applies.
 
 > "The symmetric adjustment shall not be lower than – 10 % or higher than 10 %."
 > <cite>[Delegated Regulation (EU) 2015/35, Article 172(4)](https://eur-lex.europa.eu/eli/reg_del/2015/35/oj#art_172)</cite>
+
+> "The symmetric adjustment shall not be lower than – 13 % or higher than 13 %."
+> <cite>[Delegated Regulation (EU) 2026/269, Article 1, point (51), replacing Article 172(4) of Delegated Regulation (EU) 2015/35 (applies from 30 January 2027)](https://eur-lex.europa.eu/eli/reg_del/2026/269/oj)</cite>
 
 The two losses $$L_1$$ and $$L_2$$ combine with a correlation of 0.75:
 
@@ -248,8 +263,8 @@ Runs export in the shape liability and ALM systems load: one file per variable, 
 | SCR, standard formula | The interest rate sub-module (liability side) and the equity sub-module | The asset side of interest rate risk, every other module, and the aggregation across them |
 | Equity risk | Type 1 and type 2 shocks with the symmetric adjustment | Strategic participations, long-term equity investments, the transitional measure |
 | Liabilities in the combined table | Revalued at each scenario's short rate, held flat | A full yield curve per scenario |
-| Market consistency | The drift: rates and equities grow at the risk-free rate | Option prices across strikes, except for an equity with Heston volatility; elsewhere volatility is a single number |
-| Risk-free curve | Fetches EIOPA's curves and compares against them | Calibrating the simulated short rate to EIOPA's curve |
+| Market consistency | The drift: rates and equities grow at the risk-free rate, inflation around its breakeven curve | Option prices across strikes, except for an equity with Heston volatility; rate and inflation volatilities come from history, not swaption or inflation-option prices |
+| Risk-free curve | Fetches EIOPA's curves, fits the simulated short rate to them, and applies the 2027 extrapolation to a current curve | The volatility adjustment, matching adjustment and transitional measures |
 
 ## References
 
@@ -259,7 +274,9 @@ Runs export in the shape liability and ALM systems load: one file per variable, 
 - European Commission (2025). "Commission Delegated Regulation (EU) 2026/269", amending Delegated Regulation (EU) 2015/35, Articles 46, 46a and 172(4), applying from 30 January 2027. [eur-lex.europa.eu](https://eur-lex.europa.eu/eli/reg_del/2026/269/oj){:target="_blank"}
 - EIOPA (2015, updated 2023). "Guidelines on valuation of technical provisions." [eiopa.europa.eu](https://www.eiopa.europa.eu/publications/guidelines-valuation-technical-provisions_en){:target="_blank"}
 - EIOPA. "Risk-free interest rate term structures." [eiopa.europa.eu](https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en){:target="_blank"}
+- EIOPA (2026). "RFR Technical Documentation" (EIOPA-BoS-26-198), applicable from 30 January 2027, section 8. [eiopa.europa.eu](https://www.eiopa.europa.eu/eiopa-publishes-rfr-technical-documentation-become-applicable-30-january-2027-2026-05-26_en){:target="_blank"}
 - EIOPA (2025). "RFR Technical Documentation" (EIOPA-BoS-25-599), sections 9.1-9.4 and Annex E. [eiopa.europa.eu](https://www.eiopa.europa.eu/document/download/f7fca58f-4d24-4441-ac60-de562bf26d77_en){:target="_blank"}
 - EIOPA. "Symmetric adjustment of the equity capital charge." [eiopa.europa.eu](https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en){:target="_blank"}
+- Holm, S. (1979). "A Simple Sequentially Rejective Multiple Test Procedure." Scandinavian Journal of Statistics, 6(2), 65-70. [jstor.org](https://www.jstor.org/stable/4615733){:target="_blank"}
 - Varnell, E.M. (2011). "Economic Scenario Generators and Solvency II." British Actuarial Journal, 16(1), 121-159. [doi.org](https://doi.org/10.1017/S1357321711000079){:target="_blank"}
 - Wüthrich, M.V., Merz, M. (2013). "Financial Modeling, Actuarial Valuation and Solvency in Insurance." Springer. [doi.org](https://doi.org/10.1007/978-3-642-31392-9){:target="_blank"}

@@ -88,3 +88,10 @@ values = portfolio.compute()
 values.plot()                 # the portfolio value's fan chart
 values.plot(kind="sleeves")   # what each holding is worth over time
 ```
+
+Several presets computed together share one chart instead, a line per portfolio on one axis, so the gap between two lines is the difference an investor would have seen. On simulated scenarios each line is the median, with the middle half of the scenarios shaded in its color; on a backtest it is the realized value.
+
+```python
+presets = Portfolio.from_preset(result, preset=["balanced_60_40", "all_weather"], config=scenarios.config)
+presets.compute().plot(levels=True)   # one line per preset, in money
+```

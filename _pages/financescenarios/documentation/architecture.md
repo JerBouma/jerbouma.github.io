@@ -40,7 +40,7 @@ How much history to use is a modeling choice: the default factor set fits rate d
 
 Each factor gets a model suited to how it behaves, and that model's parameters are estimated from its history:
 
-- **Mean-reverting factors** (rates, inflation, spreads, unemployment, house prices) are fitted as an Ornstein-Uhlenbeck process: a regression of each change on the current level gives the long-run level, the speed of reversion and the volatility.
+- **Mean-reverting factors** (rates, inflation, spreads, unemployment, house prices) are fitted as an Ornstein-Uhlenbeck process: a regression of each value on an earlier one gives the long-run level, the speed of reversion and the volatility. For inflation and house-price growth, year-over-year rates whose neighbouring readings share most of their months, the earlier value is the one a year before, so the overlap does not pass for slow reversion.
 - **Equities** are fitted as a regime-switching lognormal model ([Hardy, 2001](https://doi.org/10.1080/10920277.2001.10595984){:target="_blank"}): a calm and a crisis regime, each with its own return and volatility, and the probabilities of switching between them.
 - **Other factors** follow their own published models (Nelson-Siegel for the curve, Schwartz for commodities, Cairns-Blake-Dowd for mortality); the [guides](/projects/financescenarios/docs) cover each.
 

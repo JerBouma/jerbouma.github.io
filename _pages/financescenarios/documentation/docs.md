@@ -24,16 +24,16 @@ Each factor follows a model suited to how it behaves: rates, inflation and sprea
 
 | Area | What is simulated | Model | Guide |
 |:-----|:------------------|:------|:------|
-| Short and long rates | One rate per country, short or long end | Vasicek (default, can go negative; Hull-White when fitted to today's curve), CIR (rates kept near or above zero), Wilkie, Hibbert two-factor | [Interest rates](/projects/financescenarios/docs/interest-rates) |
+| Short and long rates | One rate per country, short or long end | Vasicek (default, can go negative; Hull-White when fitted to today's curve, EIOPA's in a risk-neutral run), CIR (rates kept near or above zero), Wilkie, Hibbert two-factor | [Interest rates](/projects/financescenarios/docs/interest-rates) |
 | Yield curve | Level, slope and curvature of the whole curve | Dynamic Nelson-Siegel | [Interest rates](/projects/financescenarios/docs/interest-rates) |
 | Forward curve | The full forward curve, arbitrage-free | Two-factor Gaussian HJM | [Interest rates](/projects/financescenarios/docs/interest-rates) |
 | Rates and inflation jointly | Nominal and real rates, inflation, optionally equities | KNW, with stochastic volatility or priced like the market | [KNW](/projects/financescenarios/docs/knw) |
-| Inflation | Year-over-year inflation per country | Mean-reverting (Ornstein-Uhlenbeck) or Wilkie AR(1) | [Economy](/projects/financescenarios/docs/economy) |
+| Inflation | Year-over-year inflation per country | Mean-reverting (Ornstein-Uhlenbeck) or Wilkie AR(1); risk-neutral, random around the breakeven curve | [Economy](/projects/financescenarios/docs/economy) |
 | Unemployment | Unemployment rate per country | Mean-reverting with a Phillips-curve link to inflation | [Economy](/projects/financescenarios/docs/economy) |
 | Business cycle | OECD composite leading indicator | Mean-reverting | [Economy](/projects/financescenarios/docs/economy) |
 | Longevity | Mortality improvement by age | Cairns-Blake-Dowd | [Economy](/projects/financescenarios/docs/economy) |
 | Equities | Indices, sectors, regions, styles | Regime-switching lognormal | [Markets](/projects/financescenarios/docs/markets) |
-| Currencies | Each currency against the dollar | Lognormal, optionally with an interest-rate-parity drift | [Markets](/projects/financescenarios/docs/markets) |
+| Currencies | Each currency against the dollar | Lognormal with no trend by default, or a historical or interest-rate-parity drift | [Markets](/projects/financescenarios/docs/markets) |
 | Commodities | Gold, oil and other futures | Mean-reverting log price (Schwartz), or two-factor | [Markets](/projects/financescenarios/docs/markets) |
 | Real estate | House-price growth | Mean-reverting | [Markets](/projects/financescenarios/docs/markets) |
 | Dividends | Dividend yield and dividend growth | Mean-reverting log yield, Wilkie-style growth | [Markets](/projects/financescenarios/docs/markets) |
