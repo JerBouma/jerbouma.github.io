@@ -1,8 +1,7 @@
 ---
 title: Econometrics
-seo_title: Econometrics Module – Finance Toolkit Docs
 excerpt: The Econometrics module contains statistical tests and estimators for financial time series and panel data, including unit root and cointegration tests, regression estimators, causal inference methods, diagnostics, forecasting and event studies.
-description: "Reference for every function and parameter in the Finance Toolkit's Econometrics module: unit root and cointegration tests, regressions and forecasting."
+description: The Econometrics module contains statistical tests and estimators for financial time series and panel data, including unit root and cointegration tests, regression estimators, causal inference methods, diagnostics, forecasting and event studies.
 author_profile: false
 permalink: /projects/financetoolkit/docs/econometrics
 classes: wide-sidebar
@@ -40,7 +39,8 @@ For more information about the method, see the following paper:
 Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the test within the specified period or for
 the entire period. Thus whether to look at the test within a specific year (if period = 'yearly')
-or look at the entirety of all years. Defaults to False.
+or look at the entirety of all years. Defaults to False. Note that this requires intraday data
+when period = 'daily', since a single day only nests observations when intraday data was fetched.
 - <u>lags (int, optional):</u> The number of lags to test for ARCH effects. Defaults to 5.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
@@ -60,17 +60,22 @@ test for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_arch_lm_test(period="quarterly")
 ```
 
 Which returns:
 
-|                   |     AMZN |   TSLA |
-|:------------------|---------:|-------:|
-| ARCH-LM Statistic |   4.0116 | 3.7793 |
-| P-Value           |   0.548  | 0.5817 |
+|                   |   AMZN |   TSLA |
+|:------------------|-------:|-------:|
+| ARCH-LM Statistic | 9.5073 | 1.6855 |
+| P-Value           | 0.0905 | 0.8907 |
 
 ---
 
@@ -91,7 +96,8 @@ For more information about the method, see the following paper:
 Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the test within the specified period or for
 the entire period. Thus whether to look at the test within a specific year (if period = 'yearly')
-or look at the entirety of all years. Defaults to False.
+or look at the entirety of all years. Defaults to False. Note that this requires intraday data
+when period = 'daily', since a single day only nests observations when intraday data was fetched.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -110,17 +116,22 @@ Jarque-Bera test for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_jarque_bera_test(period="quarterly")
 ```
 
 Which returns:
 
-|                       |    AMZN |    TSLA |
-|:----------------------|--------:|--------:|
-| Jarque-Bera Statistic |  3.0505 |  1.9354 |
-| P-Value               |  0.2175 |  0.38   |
+|                       |   AMZN |   TSLA |
+|:----------------------|-------:|-------:|
+| Jarque-Bera Statistic | 1.852  | 0.3192 |
+| P-Value               | 0.3961 | 0.8525 |
 
 ---
 
@@ -141,7 +152,8 @@ For more information about the method, see the following paper:
 Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the test within the specified period or for
 the entire period. Thus whether to look at the test within a specific year (if period = 'yearly')
-or look at the entirety of all years. Defaults to False.
+or look at the entirety of all years. Defaults to False. Note that this requires intraday data
+when period = 'daily', since a single day only nests observations when intraday data was fetched.
 - <u>lags (int, optional):</u> The number of lags to test for autocorrelation up to. Defaults to 10.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
@@ -161,7 +173,12 @@ Ljung-Box test for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_ljung_box_test(period="quarterly", within_period=False)
 ```
@@ -170,8 +187,8 @@ Which returns:
 
 |                     |   AMZN |   TSLA |
 |:--------------------|-------:|-------:|
-| Ljung-Box Statistic | 8.7703 | 7.1814 |
-| P-Value             | 0.554  | 0.7082 |
+| Ljung-Box Statistic | 8.702  | 9.7873 |
+| P-Value             | 0.5606 | 0.4594 |
 
 ---
 
@@ -192,7 +209,8 @@ For more information about the method, see the following paper:
 Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the test within the specified period or for
 the entire period. Thus whether to look at the test within a specific year (if period = 'yearly')
-or look at the entirety of all years. Defaults to False.
+or look at the entirety of all years. Defaults to False. Note that this requires intraday data
+when period = 'daily', since a single day only nests observations when intraday data was fetched.
 - <u>q (int, optional):</u> The number of periods to compound returns over. Defaults to 2.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
@@ -213,7 +231,12 @@ Variance Ratio test for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_variance_ratio_test(period="quarterly", within_period=False)
 ```
@@ -222,9 +245,9 @@ Which returns:
 
 |                          |    AMZN |    TSLA |
 |:-------------------------|--------:|--------:|
-| Variance Ratio           |  0.8526 |  0.7523 |
-| Variance Ratio Statistic | -0.6757 | -1.1353 |
-| P-Value                  |  0.4993 |  0.2563 |
+| Variance Ratio           |  0.8952 |  0.7879 |
+| Variance Ratio Statistic | -0.4568 | -0.9247 |
+| P-Value                  |  0.6478 |  0.3551 |
 
 ---
 
@@ -245,7 +268,8 @@ For more information about the method, see the following paper:
 Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the test within the specified period or for
 the entire period. Thus whether to look at the test within a specific year (if period = 'yearly')
-or look at the entirety of all years. Defaults to False.
+or look at the entirety of all years. Defaults to False. Note that this requires intraday data
+when period = 'daily', since a single day only nests observations when intraday data was fetched.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
 assets tested. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -330,16 +354,16 @@ toolkit.econometrics.get_augmented_dickey_fuller(period="quarterly")
 
 Which returns:
 
-|                       |     AMZN |     TSLA |
-|:----------------------|---------:|---------:|
-| ADF Statistic         |  -7.1569 |  -2.2371 |
-| P-Value               |   0      |   0.1931 |
-| Lags Used             |   8      |   8      |
-| Observations          |  11      |  11      |
-| Critical Value 1%     |  -4.2232 |  -4.2232 |
-| Critical Value 5%     |  -3.1894 |  -3.1894 |
-| Critical Value 10%    |  -2.7298 |  -2.7298 |
-| Reject Unit Root (5%) |   1      |   0      |
+|                       |         AMZN |      TSLA |
+|:----------------------|-------------:|----------:|
+| ADF Statistic         | -7.15693     | -2.23772  |
+| P-Value               |  3.03759e-10 |  0.192841 |
+| Lags Used             |  8           |  8        |
+| Observations          | 11           | 11        |
+| Critical Value 1%     | -4.22324     | -4.22324  |
+| Critical Value 5%     | -3.18937     | -3.18937  |
+| Critical Value 10%    | -2.72984     | -2.72984  |
+| Reject Unit Root (5%) |  1           |  0        |
 
 ---
 
@@ -452,22 +476,27 @@ Phillips-Perron test for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_phillips_perron_test(period="quarterly")
 ```
 
 Which returns:
 
-|                           |     AMZN |     TSLA |
-|:--------------------------|---------:|---------:|
-| Phillips-Perron Statistic |  -0.6688 |  -1.2623 |
-| Lags Used                 |   9      |   9      |
-| Observations              |  46      |  46      |
-| Critical Value 1%         |  -3.43   |  -3.43   |
-| Critical Value 5%        |  -2.86   |  -2.86   |
-| Critical Value 10%       |  -2.57   |  -2.57   |
-| Reject Unit Root (5%)     |   0      |   0      |
+|                           |      AMZN |     TSLA |
+|:--------------------------|----------:|---------:|
+| Phillips-Perron Statistic | -0.773263 | -1.92247 |
+| Lags Used                 |  7        |  7       |
+| Observations              | 19        | 19       |
+| Critical Value 1%         | -3.43     | -3.43    |
+| Critical Value 5%         | -2.86     | -2.86    |
+| Critical Value 10%        | -2.57     | -2.57    |
+| Reject Unit Root (5%)     |  0        |  0       |
 
 ---
 
@@ -528,17 +557,17 @@ toolkit.econometrics.get_zivot_andrews_test(period="weekly")
 
 Which returns:
 
-|                         |     AAPL |     MSFT |
-|:------------------------|---------:|---------:|
-| Zivot-Andrews Statistic |  -4.7109 |  -4.4313 |
-| P-Value                 |   0.0686 |   0.1414 |
-| Break Index             | 169      | 169      |
-| Observations            | 261      | 261      |
-| Lags Used               |   0      |   0      |
-| Critical Value 1%       |  -5.2764 |  -5.2764 |
-| Critical Value 5%       |  -4.8107 |  -4.8107 |
-| Critical Value 10%      |  -4.5662 |  -4.5662 |
-| Reject Unit Root (5%)   |   0      |   0      |
+|                         |        AAPL |       MSFT |
+|:------------------------|------------:|-----------:|
+| Zivot-Andrews Statistic |  -4.71085   |  -4.43116  |
+| P-Value                 |   0.0685808 |   0.141445 |
+| Break Index             | 169         | 169        |
+| Observations            | 261         | 261        |
+| Lags Used               |   0         |   0        |
+| Critical Value 1%       |  -5.27644   |  -5.27644  |
+| Critical Value 5%       |  -4.81067   |  -4.81067  |
+| Critical Value 10%      |  -4.56618   |  -4.56618  |
+| Reject Unit Root (5%)   |   0         |   0        |
 
 ---
 
@@ -582,7 +611,12 @@ ticker in the Toolkit instance and runs the Engle-Granger test on every ordered 
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_engle_granger_cointegration(period="quarterly")
 ```
@@ -592,10 +626,10 @@ Which returns:
 (the 1%/10% critical value columns follow the same pattern as
 5%, omitted here for width)
 
-| Dependent   | Independent   |   EG Statistic |   P-Value |   Crit. 5% | Cointegrated (5%)   |
-|:------------|:--------------|---------------:|----------:|-----------:|:--------------------|
-| AAPL        | MSFT          |        -1.4334 |    0.7858 |    -3.8927 | False               |
-| MSFT        | AAPL          |        -2.8297 |    0.1564 |    -3.8927 | False               |
+|                  |   Engle-Granger Statistic |   P-Value |   Critical Value 1% |   Critical Value 5% |   Critical Value 10% | Cointegrated (5%)   |
+|:-----------------|--------------------------:|----------:|--------------------:|--------------------:|---------------------:|:--------------------|
+| ('AAPL', 'MSFT') |                        -0 |    0.9859 |            -4.56573 |            -3.67661 |             -3.27521 | False               |
+| ('MSFT', 'AAPL') |                        -0 |    0.9859 |            -4.56573 |            -3.67661 |             -3.27521 | False               |
 
 ---
 
@@ -644,7 +678,12 @@ in the Toolkit instance and runs the Johansen test jointly across all of them.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_johansen_cointegration(period="quarterly")
 ```
@@ -654,10 +693,10 @@ Which returns:
 (showing the trace-statistic columns; the max-eigenvalue-statistic
 columns follow the same pattern)
 
-|        |   Eigenvalue |   Trace Statistic |   Trace Critical Value 95% |   Reject (Trace, 5%)   |
-|:-------|-------------:|-------------------:|-----------------------------:|:------------------------|
-| r <= 0 |       0.5653 |             14.1993 |                       15.4943 | False                   |
-| r <= 1 |       0.3674 |              5.0363 |                        3.8415 | True                    |
+|        |   Eigenvalue |   Trace Statistic |   Trace Critical Value 95% | Reject (Trace, 5%)   |
+|:-------|-------------:|------------------:|---------------------------:|:---------------------|
+| r <= 0 |       0.528  |           13.6694 |                    15.4943 | False                |
+| r <= 1 |       0.0086 |            0.1564 |                     3.8415 | False                |
 
 ---
 
@@ -703,17 +742,22 @@ ticker in the Toolkit instance and runs the Granger causality test on every orde
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_granger_causality(period="weekly", max_lag=3)
 ```
 
 Which returns:
 
-| Dependent   | Independent   |   F-Statistic |   P-Value | Granger-Causes (5%)   |
-|:------------|:--------------|--------------:|----------:|:----------------------|
-| AAPL        | MSFT          |        2.4852 |    0.0630 | False                 |
-| MSFT        | AAPL          |        0.3750 |    0.7712 | False                 |
+|                  |   F-Statistic |   P-Value | Granger-Causes (5%)   |
+|:-----------------|--------------:|----------:|:----------------------|
+| ('AAPL', 'MSFT') |       2.47418 | 0.0621177 | False                 |
+| ('MSFT', 'AAPL') |       1.44163 | 0.231182  | False                 |
 
 ---
 
@@ -766,28 +810,43 @@ history than a single sub-period provides.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_diebold_mariano_test(method_a="ewma", method_b="rolling")
 ```
 
 Which returns:
 
-|                           |     AAPL |     MSFT |
-|:--------------------------|---------:|---------:|
-| Diebold-Mariano Statistic |  -2.4324 |  -2.8338 |
-| P-Value                   |   0.0152 |   0.0047 |
-| Mean Loss Differential    |  -0.0000 |  -0.0000 |
-| Observations              | 735      | 735      |
+|                           |      AAPL |      MSFT |
+|:--------------------------|----------:|----------:|
+| Diebold-Mariano Statistic |   -2.1569 |   -1.3434 |
+| P-Value                   |    0.0312 |    0.1794 |
+| Mean Loss Differential    |   -0      |   -0      |
+| Observations              | 1232      | 1232      |
 
 ---
 
 ## get_ols
-Fit an Ordinary Least Squares (OLS) regression of `dependent_ticker` on `independent_tickers`.
+Fit an Ordinary Least Squares (OLS) regression of `dependent_ticker` on `independent_tickers`, using the selected `column` (returns by default) of each ticker.
+
+OLS estimates the coefficients that minimise the sum of squared residuals, i.e. the line (or plane) that best explains the dependent ticker from the independent tickers:
+
+- beta_hat = (X'X)^-1 X'y
+
+Each coefficient is the expected change in `dependent_ticker` for a one-unit change in that independent ticker, holding the others fixed, and the intercept is what remains when all of them are zero. With returns this is the familiar way to estimate how strongly one asset moves with others (e.g. a beta against an index).
+
+Under the classical assumptions (linearity, no perfect multicollinearity, homoskedastic and uncorrelated errors) OLS is the Best Linear Unbiased Estimator (Gauss-Markov). The coefficients stay unbiased when the errors are heteroskedastic, but the classical standard errors do not: check with `get_breusch_pagan_test` or `get_white_test` and, if needed, refit with a robust `cov_type` such as "HC1" (or "HC3" for small samples), or "HAC" when the errors are also autocorrelated.
+
+For more information about the HAC covariance, see the following paper:
+
+- Newey, W.K. & West, K.D. (1987). "A Simple, Positive Semi-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix." Econometrica, 55(3), 703-708.
 
 **Also known as:** linear regression, least squares regression.
-
-For more information about the method, see `regression_model.get_ols`.
 
 **Args:**
 
@@ -832,7 +891,12 @@ indexed by regressor name.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # AMZN (the first ticker) is dependent; TSLA is independent
 toolkit.econometrics.get_ols(period="quarterly")
@@ -859,17 +923,21 @@ Which returns:
 
 |           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
 |:----------|--------------:|-------------:|--------------:|----------:|
-| Intercept |        0.0134 |       0.026  |        0.5143 |    0.6119 |
-| TSLA      |        0.2479 |       0.0817 |        3.0331 |    0.0059 |
+| Intercept |        0.0069 |       0.04   |        0.1731 |    0.8626 |
+| TSLA      |        0.3094 |       0.1116 |        2.7738 |    0.0055 |
 
 ---
 
 ## get_wls
 Fit a Weighted Least Squares (WLS) regression of `dependent_ticker` on `independent_tickers`.
 
-**Also known as:** weighted regression.
+When the error variance differs across observations (heteroskedasticity) with a known or estimable structure, `Var(e_i) = sigma^2 / w_i`, OLS remains unbiased but is no longer the most efficient estimator. WLS restores efficiency by minimising the weighted sum of squared residuals, so noisier observations (low weight) count less than precise ones (high weight):
 
-For more information about the method, see `regression_model.get_wls`.
+- beta_hat = (X'WX)^-1 X'Wy, with W = diag(weights)
+
+With equal weights WLS reduces to OLS. A typical use is down-weighting periods of high volatility, so that a few turbulent periods do not dominate the estimated relationship. Use `get_breusch_pagan_test` or `get_white_test` to establish whether heteroskedasticity is present before choosing WLS over OLS.
+
+**Also known as:** weighted regression.
 
 **Args:**
 
@@ -909,7 +977,12 @@ indexed by regressor name.
 import pandas as pd
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 returns = toolkit.econometrics._get_price_column("weekly", "Return")
 weights = pd.Series(1.0, index=returns.index)
@@ -922,17 +995,25 @@ Which returns:
 
 |           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
 |:----------|--------------:|-------------:|--------------:|----------:|
-| Intercept |        0.0016 |       0.0024 |        0.6712 |    0.5031 |
-| MSFT      |        0.8681 |       0.0596 |       14.5659 |    0      |
+| Intercept |        0.0012 |       0.0019 |        0.6332 |    0.5272 |
+| MSFT      |        0.6281 |       0.058  |       10.8297 |    0      |
 
 ---
 
 ## get_gls
 Fit a Generalized Least Squares (GLS) regression of `dependent_ticker` on `independent_tickers`, given a known error covariance structure `omega`.
 
-**Also known as:** GLS.
+GLS generalises WLS to an arbitrary error covariance matrix `Var(e) = sigma^2 * Omega`. Where WLS only corrects for heteroskedasticity (a diagonal `Omega`), GLS also corrects for correlation between the errors of different observations, such as the autocorrelation that is common in financial time series (a non-diagonal `Omega`):
 
-For more information about the method, see `regression_model.get_gls`.
+- beta_hat = (X' Omega^-1 X)^-1 X' Omega^-1 y
+
+Under a correctly specified `Omega` this is the most efficient linear unbiased estimator. Note that `omega` must be supplied, for example from a fitted AR(1) error structure: this performs the GLS estimation step itself, not the separate problem of estimating `Omega` (Feasible GLS). `get_durbin_watson_test` helps establish whether the residuals are autocorrelated in the first place.
+
+For more information about the method, see the following paper:
+
+- Aitken, A.C. (1935). "On Least Squares and Linear Combinations of Observations." Proceedings of the Royal Society of Edinburgh, 55, 42-48.
+
+**Also known as:** GLS.
 
 **Args:**
 
@@ -965,7 +1046,12 @@ import numpy as np
 import pandas as pd
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 returns = toolkit.econometrics._get_price_column("weekly", "Return")
 n = len(returns["AAPL"].dropna())
@@ -979,17 +1065,25 @@ Which returns:
 
 |           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
 |:----------|--------------:|-------------:|--------------:|----------:|
-| Intercept |        0.0016 |       0.0024 |        0.6712 |    0.5031 |
-| MSFT      |        0.8681 |       0.0596 |       14.5659 |    0      |
+| Intercept |        0.0012 |       0.0019 |        0.6332 |    0.5272 |
+| MSFT      |        0.6281 |       0.058  |       10.8297 |    0      |
 
 ---
 
 ## get_logistic_regression
 Fit a Logistic Regression (Logit model) of whether `dependent_ticker`'s return is positive on `independent_tickers`.
 
-**Also known as:** logit model, logit regression.
+The dependent variable is turned into a binary outcome (1 when the return is positive, 0 otherwise) and the model estimates the probability of that outcome through the logistic (sigmoid) function, which maps any value onto the 0 to 1 range:
 
-For more information about the method, see `regression_model.get_logistic_regression`.
+- P(y = 1 &#124; x) = 1 / (1 + e^(-x'beta))
+
+The model is fitted by Maximum Likelihood. Coefficients are log-odds: a one-unit increase in an independent ticker changes the log-odds of a positive return by that coefficient, holding the others fixed, so a positive coefficient means a higher probability of a positive return. This answers "does this asset tend to be up when the others move this way" rather than "by how much", which is what `get_ols` estimates. `get_probit_regression` is the closely related alternative with a normal instead of a logistic link.
+
+For more information about the method, see the following paper:
+
+- Berkson, J. (1944). "Application of the Logistic Function to Bio-Assay." Journal of the American Statistical Association, 39(227), 357-365.
+
+**Also known as:** logit model, logit regression.
 
 **Args:**
 
@@ -1026,7 +1120,12 @@ magnitude, of the dependent asset's return.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # AAPL (the first ticker) is dependent; MSFT and Benchmark are independent
 toolkit.econometrics.get_logistic_regression(
@@ -1038,18 +1137,26 @@ Which returns:
 
 |           |   Coefficient |   Std. Error |   z-Statistic |   P-Value |
 |:----------|--------------:|-------------:|--------------:|----------:|
-| Intercept |        0.0909 |       0.2195 |        0.4139 |    0.6789 |
-| MSFT      |       24.8481 |      10.1178 |        2.4559 |    0.0141 |
-| Benchmark |       63.677  |      15.5493 |        4.0952 |    0      |
+| Intercept |       -0.0124 |       0.1626 |       -0.0763 |    0.9392 |
+| MSFT      |        6.8387 |       7.6454 |        0.8945 |    0.3711 |
+| Benchmark |       89.7491 |      15.0025 |        5.9823 |    0      |
 
 ---
 
 ## get_probit_regression
 Fit a Probit Regression of whether `dependent_ticker`'s return is positive on `independent_tickers`.
 
-**Also known as:** probit model.
+As with `get_logistic_regression`, the dependent variable is turned into a binary outcome (1 when the return is positive, 0 otherwise). The probability of that outcome is modelled through the standard normal cumulative distribution function instead of the logistic function:
 
-For more information about the method, see `regression_model.get_probit_regression`.
+- P(y = 1 &#124; x) = Phi(x'beta)
+
+Where `Phi` is the standard normal CDF. The model is fitted by Maximum Likelihood. A positive coefficient means a higher probability of a positive return, but the size of a coefficient is not a log-odds ratio as in the Logit model. In practice Probit and Logit give very similar fitted probabilities; Probit is the convention in parts of the econometrics literature and underlies two-step estimators such as the Heckman selection correction.
+
+For more information about the method, see the following paper:
+
+- Bliss, C.I. (1934). "The Method of Probits." Science, 79(2037), 38-39.
+
+**Also known as:** probit model.
 
 **Args:**
 
@@ -1086,7 +1193,12 @@ magnitude, of the dependent asset's return.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # AAPL (the first ticker) is dependent; MSFT and Benchmark are independent
 toolkit.econometrics.get_probit_regression(
@@ -1098,18 +1210,26 @@ Which returns:
 
 |           |   Coefficient |   Std. Error |   z-Statistic |   P-Value |
 |:----------|--------------:|-------------:|--------------:|----------:|
-| Intercept |        0.0498 |       0.1266 |        0.3935 |    0.694  |
-| MSFT      |       15.7063 |       5.7385 |        2.737  |    0.0062 |
-| Benchmark |       35.3471 |       8.1355 |        4.3448 |    0      |
+| Intercept |       -0.0156 |       0.0946 |       -0.1652 |    0.8688 |
+| MSFT      |        3.1338 |       4.2175 |        0.743  |    0.4575 |
+| Benchmark |       52.7578 |       8.2654 |        6.383  |    0      |
 
 ---
 
 ## get_quantile_regression
 Fit a Quantile Regression of `dependent_ticker` on `independent_tickers` at quantile `tau`.
 
-**Also known as:** QR.
+Where OLS estimates how the average (conditional mean) of the dependent ticker depends on the independent tickers, Quantile Regression estimates how a chosen quantile of it does. It minimises an asymmetric ("pinball") loss that is smallest at the conditional `tau`-quantile:
 
-For more information about the method, see `regression_model.get_quantile_regression`.
+- minimise SUM(tau * max(r_t, 0) + (1 - tau) * max(-r_t, 0)), with r_t = y_t - x_t'beta
+
+With `tau = 0.5` this is the median regression, which is far less sensitive to outliers than OLS. Fitting at several quantiles (e.g. 0.05, 0.5 and 0.95) shows how the whole distribution of returns responds to the independent tickers, for example whether an asset's sensitivity to the market is larger in sell-offs (low quantiles) than in normal periods, which is directly relevant for downside risk.
+
+For more information about the method, see the following paper:
+
+- Koenker, R., & Bassett, G. (1978). "Regression Quantiles." Econometrica, 46(1), 33-50.
+
+**Also known as:** QR.
 
 **Args:**
 
@@ -1141,7 +1261,12 @@ pd.DataFrame: A coefficient table (Coefficient, Std. Error), indexed by regresso
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # AAPL (the first ticker) is dependent; MSFT and Benchmark are independent
 toolkit.econometrics.get_quantile_regression(
@@ -1153,18 +1278,32 @@ Which returns:
 
 |           |   Coefficient |   Std. Error |
 |:----------|--------------:|-------------:|
-| Intercept |        0.0007 |       0.0021 |
-| MSFT      |        0.3593 |       0.0854 |
-| Benchmark |        0.6885 |       0.1037 |
+| Intercept |       -0.0004 |       0.0017 |
+| MSFT      |        0.1922 |       0.0732 |
+| Benchmark |        0.9121 |       0.1089 |
 
 ---
 
 ## get_fama_macbeth_regression
 Fit a Fama-MacBeth (1973) two-pass cross-sectional regression: `asset_tickers` is treated as the cross-section of test assets, `factor_tickers` as the risk factor(s) whose risk premia are estimated -- the standard procedure for testing whether a proposed risk factor is actually priced.
 
-**Also known as:** two-pass regression, Fama-MacBeth procedure.
+The method runs in two passes:
 
-For more information about the method, see `fama_macbeth_model.get_fama_macbeth_regression`.
+1. Time-series pass (per asset): regress each asset's returns on the factor(s) to estimate its factor loadings (betas).
+2. Cross-sectional pass (per period): regress that period's returns of all assets on those betas, which gives one estimate of each factor's risk premium per period.
+- First pass: R_i,t = alpha_i + beta_i' * F_t + e_i,t, for each asset i
+- Second pass: R_i,t = gamma_0,t + gamma_t' * beta_i + u_i,t, for each period t
+- Risk premium: gamma_hat = mean_t(gamma_t)
+- Standard error: SE(gamma_hat) = std_t(gamma_t) / sqrt(T)
+
+The risk premium is the average of the per-period estimates, and its standard error comes from how much those estimates vary over time. That is the method's key contribution: it accounts for correlation between the assets' residuals without having to model it. A significant positive premium means investors are compensated for exposure to the factor. This uses a single full-sample set of betas (the textbook variant), not the original rolling-window betas.
+
+For more information about the method, see the following papers:
+
+- Fama, E.F. & MacBeth, J.D. (1973). "Risk, Return, and Equilibrium: Empirical Tests." Journal of Political Economy, 81(3), 607-636.
+- Cochrane, J.H. (2005). "Asset Pricing." Princeton University Press, Chapter 12.
+
+**Also known as:** two-pass regression, Fama-MacBeth procedure.
 
 **Args:**
 
@@ -1201,7 +1340,12 @@ not a limitation of this method's implementation.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # Benchmark (the default factor) is the single risk factor; AAPL and MSFT
 # are the test assets. add_constant=False since only 2 assets are available.
@@ -1214,16 +1358,25 @@ Which returns:
 
 |           |   Risk Premium |   Std. Error |   t-Statistic |   P-Value |
 |:----------|---------------:|-------------:|--------------:|----------:|
-| Benchmark |         0.0032 |       0.0016 |        1.9798 |    0.0486 |
+| Benchmark |         0.0032 |       0.0017 |        1.8775 |    0.0616 |
 
 ---
 
 ## get_two_sample_t_test
 Calculate a two-sample t-test for a difference in mean `column` between every unordered pair of tickers in the Toolkit instance.
 
-**Also known as:** independent samples t-test, Welch's t-test (default), Student's t-test (`equal_variance=True`).
+The test checks the null hypothesis that two samples come from distributions with the same mean, against the two-sided alternative that the means differ. Applied to returns it answers whether one asset has had a genuinely different average return than another, or whether the difference could be down to chance. By default this is Welch's t-test, which does not assume the two tickers have the same variance:
 
-For more information about the method, see `hypothesis_testing_model.get_two_sample_t_test`.
+- t = (mean_a - mean_b) / sqrt(s_a^2 / n_a + s_b^2 / n_b)
+
+With degrees of freedom from the Welch-Satterthwaite equation. Setting `equal_variance=True` pools the two variances instead (Student's t-test), which is slightly more powerful but only valid when the variances are truly equal. Welch's version is the safer default since assets rarely share the same volatility. A low p-value (e.g. below 0.05) means the difference in means is statistically significant.
+
+For more information about the method, see the following papers:
+
+- Student (1908). "The Probable Error of a Mean." Biometrika, 6(1), 1-25.
+- Welch, B.L. (1947). "The Generalization of 'Student's' Problem when Several Different Population Variances are Involved." Biometrika, 34(1/2), 28-35.
+
+**Also known as:** independent samples t-test, Welch's t-test (default), Student's t-test (`equal_variance=True`).
 
 **Args:**
 
@@ -1254,25 +1407,34 @@ instead, take the difference of the two return series and run a one-sample test 
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_two_sample_t_test(period="weekly")
 ```
 
 Which returns:
 
-| Ticker A   | Ticker B   |   T-Statistic |   Degrees of Freedom |   P-Value |   Mean A |   Mean B |
-|:-----------|:-----------|--------------:|----------------------:|----------:|---------:|---------:|
-| AAPL       | MSFT       |        0.2318 |               306.6549 |    0.8168 |   0.0047 |   0.0036 |
+|                  |   T-Statistic |   Degrees of Freedom |   P-Value |   Mean A |   Mean B |
+|:-----------------|--------------:|---------------------:|----------:|---------:|---------:|
+| ('AAPL', 'MSFT') |       -0.0515 |               511.12 |    0.9589 |   0.0036 |   0.0037 |
 
 ---
 
 ## get_f_test
 Calculate a nested-model F-test for the joint significance of the regressors in `unrestricted_independent_tickers` that are not already in `restricted_independent_tickers`.
 
-**Also known as:** nested F-test, restricted vs. unrestricted F-test, partial F-test.
+Two OLS regressions of `dependent_ticker` are fitted internally: a "restricted" one on `restricted_independent_tickers` and an "unrestricted" one that adds the extra tickers. The test checks the null hypothesis that the `q` extra tickers are jointly zero, i.e. that adding them does not explain the dependent ticker any better, by comparing how much the Residual Sum of Squares (RSS) drops when they are added:
 
-Fits both a "restricted" and an "unrestricted" OLS regression of `dependent_ticker` internally (via `regression_model.get_ols`) and compares them. For more information about the method, see `hypothesis_testing_model.get_f_test`.
+- F = ((RSS_restricted - RSS_unrestricted) / q) / (RSS_unrestricted / (n - k_unrestricted))
+
+Where `q = k_unrestricted - k_restricted` is the number of added regressors, `n` the number of observations and `k_unrestricted` the number of parameters of the larger model. Under the null, `F` follows an F(q, n - k_unrestricted) distribution. A low p-value means the extra tickers meaningfully improve the fit as a group, even when none of them is significant individually. `get_likelihood_ratio_test` is the asymptotic Maximum Likelihood counterpart.
+
+**Also known as:** nested F-test, restricted vs. unrestricted F-test, partial F-test.
 
 **Args:**
 
@@ -1299,7 +1461,12 @@ and whether the added regressors are jointly significant at the 5% level.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_f_test(
     "AAPL", "MSFT", ["MSFT", "Benchmark"], period="weekly"
@@ -1308,22 +1475,30 @@ toolkit.econometrics.get_f_test(
 
 Which returns:
 
-| Metric                     |     Value |
-|:----------------------------|----------:|
-| F-Statistic                 |   43.6897 |
-| Df Numerator                 |    1      |
-| Df Denominator                |  154      |
-| P-Value                      |    0.0000 |
-| Reject Restrictions (5%)      |    1      |
+|                          |       0 |
+|:-------------------------|--------:|
+| F-Statistic              | 104.748 |
+| Df Numerator             |   1     |
+| Df Denominator           | 257     |
+| P-Value                  |   0     |
+| Reject Restrictions (5%) |   1     |
 
 ---
 
 ## get_likelihood_ratio_test
 Calculate a nested-model Likelihood Ratio (LR) test, the Maximum Likelihood analogue of `get_f_test`, for the joint significance of the regressors in `unrestricted_independent_tickers` that are not already in `restricted_independent_tickers`.
 
-**Also known as:** LR test, Wilks' likelihood ratio test.
+As with `get_f_test`, a "restricted" and an "unrestricted" OLS regression of `dependent_ticker` are fitted internally and the null hypothesis is that the `q` extra tickers are jointly zero. Instead of an F-statistic, the two models are compared through the ratio of their likelihoods, which for linear models with normal errors reduces to a function of the two Residual Sums of Squares (RSS):
 
-Fits both a "restricted" and an "unrestricted" OLS regression of `dependent_ticker` internally (via `regression_model.get_ols`) and compares them. For more information about the method, see `hypothesis_testing_model.get_likelihood_ratio_test`.
+- LR = n * ln(RSS_restricted / RSS_unrestricted)
+
+Under the null this is asymptotically chi-squared distributed with `q` degrees of freedom. Where the F-test is exact in small samples under the classical assumptions, the LR test relies on a large-sample approximation: both agree for long return histories and can differ somewhat for short ones. A low p-value means the extra tickers meaningfully improve the model.
+
+For more information about the method, see the following paper:
+
+- Wilks, S.S. (1938). "The Large-Sample Distribution of the Likelihood Ratio for Testing Composite Hypotheses." Annals of Mathematical Statistics, 9(1), 60-62.
+
+**Also known as:** LR test, Wilks' likelihood ratio test.
 
 **Args:**
 
@@ -1350,7 +1525,12 @@ regressors are jointly significant at the 5% level.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_likelihood_ratio_test(
     "AAPL", "MSFT", ["MSFT", "Benchmark"], period="weekly"
@@ -1359,21 +1539,29 @@ toolkit.econometrics.get_likelihood_ratio_test(
 
 Which returns:
 
-| Metric                     |    Value |
-|:----------------------------|---------:|
-| LR Statistic                 |  39.2102 |
-| Degrees of Freedom            |   1      |
-| P-Value                       |   0.0000 |
-| Reject Restrictions (5%)       |   1      |
+|                          |       0 |
+|:-------------------------|--------:|
+| LR Statistic             | 88.8863 |
+| Degrees of Freedom       |  1      |
+| P-Value                  |  0      |
+| Reject Restrictions (5%) |  1      |
 
 ---
 
 ## get_wald_test
 Calculate a Wald test of `q` general linear restriction(s) on the coefficients of an OLS regression of `dependent_ticker` on `independent_tickers`.
 
-**Also known as:** Wald chi-squared test.
+A single OLS regression is fitted internally and the test checks the null hypothesis `H0: R @ beta = r`, where `R` (`restriction_matrix`) encodes `q` linear restrictions on the coefficients and `r` (`restriction_values`) holds their hypothesised values (zero by default). This generalises the t-test reported for each coefficient to combinations of coefficients, for example that two coefficients are jointly zero, that a coefficient equals a specific value (such as a beta of exactly 1), or that two tickers have the same coefficient:
 
-Fits a single OLS regression internally (via `regression_model.get_ols`) and tests `H0: restriction_matrix @ beta = restriction_values` on its coefficients. For more information about the method, see `hypothesis_testing_model.get_wald_test`.
+- W = (R @ beta_hat - r)' @ (R @ Cov(beta_hat) @ R')^-1 @ (R @ beta_hat - r)
+
+Which is asymptotically chi-squared distributed with `q` degrees of freedom. `W / q` is reported alongside it as an F-statistic for small samples; for a single restriction it equals the squared t-statistic of that coefficient. A low p-value means the data reject the restriction(s).
+
+For more information about the method, see the following paper:
+
+- Wald, A. (1943). "Tests of Statistical Hypotheses Concerning Several Parameters When the Number of Observations is Large." Transactions of the American Mathematical Society, 54(3), 426-482.
+
+**Also known as:** Wald chi-squared test.
 
 **Args:**
 
@@ -1409,7 +1597,12 @@ and its p-value, the number of restrictions, and whether they are rejected at th
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # H0: the coefficients on both MSFT and Benchmark are jointly zero.
 toolkit.econometrics.get_wald_test(
@@ -1421,23 +1614,33 @@ toolkit.econometrics.get_wald_test(
 
 Which returns:
 
-| Metric                      |     Value |
-|:-----------------------------|----------:|
-| Wald Statistic (Chi2)         |  314.2908 |
-| Chi2 P-Value                  |    0.0000 |
-| F-Statistic                   |  157.1454 |
-| F P-Value                     |    0.0000 |
-| Restrictions (q)              |    2      |
-| Reject Restrictions (5%)       |    1      |
+|                          |       0 |
+|:-------------------------|--------:|
+| Wald Statistic (Chi2)    | 269.191 |
+| Chi2 P-Value             |   0     |
+| F-Statistic              | 134.595 |
+| F P-Value                |   0     |
+| Restrictions (q)         |   2     |
+| Reject Restrictions (5%) |   1     |
 
 ---
 
 ## get_hausman_wu_test
 Calculate a regression-based Hausman-Wu test for the endogeneity of `suspect_ticker` in a regression of `dependent_ticker` on `suspect_ticker` (and, optionally, `other_independent_tickers`), using `instrument_tickers` as instruments for `suspect_ticker`.
 
-**Also known as:** Hausman test, Durbin-Wu-Hausman test, regression test for endogeneity.
+OLS requires every regressor to be uncorrelated with the error term. When that fails, for example because of an omitted common driver, reverse causality or measurement error, the regressor is "endogenous" and OLS is biased; an instrumental-variables approach such as `get_iv_2sls` is then needed. This test checks whether that is the case before committing to a full IV fit, using two auxiliary OLS regressions:
 
-For more information about the method, see `hypothesis_testing_model.get_hausman_wu_test`.
+1. Regress `suspect_ticker` on the instruments (and the other tickers, if given) and keep the residuals: the part of `suspect_ticker` that the instruments do not explain.
+2. Regress `dependent_ticker` on `suspect_ticker`, those residuals (and the other tickers) and test whether the coefficient on the residuals is zero.
+
+If `suspect_ticker` is exogenous the residuals add no information, so their coefficient should be statistically zero. A low p-value is evidence that `suspect_ticker` is endogenous and that the OLS estimate is unreliable. The test is only as good as the instruments: they must be correlated with `suspect_ticker` but not with the error term.
+
+For more information about the method, see the following papers:
+
+- Wu, D-M. (1973). "Alternative Tests of Independence Between Stochastic Regressors and Disturbances." Econometrica, 41(4), 733-750.
+- Hausman, J.A. (1978). "Specification Tests in Econometrics." Econometrica, 46(6), 1251-1271.
+
+**Also known as:** Hausman test, Durbin-Wu-Hausman test, regression test for endogeneity.
 
 **Args:**
 
@@ -1464,7 +1667,12 @@ whether `suspect_ticker` is flagged as endogenous at the 5% level.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_hausman_wu_test(
     "AAPL", "MSFT", "Benchmark", period="weekly"
@@ -1473,22 +1681,30 @@ toolkit.econometrics.get_hausman_wu_test(
 
 Which returns:
 
-| Metric                  |    Value |
-|:-------------------------|---------:|
-| V-Hat Coefficient         |  -0.7162 |
-| T-Statistic               |  -6.6098 |
-| Degrees of Freedom         | 154      |
-| P-Value                   |   0.0000 |
-| Endogenous (5%)            |   1      |
+|                    |        0 |
+|:-------------------|---------:|
+| V-Hat Coefficient  |  -1.0052 |
+| T-Statistic        | -10.2346 |
+| Degrees of Freedom | 257      |
+| P-Value            |   0      |
+| Endogenous (5%)    |   1      |
 
 ---
 
 ## get_breusch_pagan_test
 Calculate the Breusch-Pagan test for heteroskedasticity of a regression of `dependent_ticker` on `independent_tickers`.
 
-**Also known as:** BP test, Breusch-Pagan-Godfrey test.
+OLS standard errors assume that the residual variance is constant (homoskedasticity). The test regresses the squared residuals of the regression on the original independent tickers and checks whether they explain any of the residual variance, by testing whether the R-squared of that auxiliary regression is significantly different from zero:
 
-For more information about the method, see `specification_tests_model.get_breusch_pagan_test`.
+- LM = n * R^2_auxiliary
+
+Which is asymptotically chi-squared distributed with `k - 1` degrees of freedom under the null hypothesis of homoskedasticity, where `k` is the number of parameters of the auxiliary regression. A low p-value means the residual variance moves with the independent tickers (for example, errors grow when the market moves more), so the regression's standard errors, t-statistics and p-values are unreliable even though the coefficients themselves remain unbiased. Remedies are a robust `cov_type` in `get_ols` or `get_wls`. `get_white_test` is a more general alternative that also catches non-linear forms of heteroskedasticity.
+
+For more information about the method, see the following paper:
+
+- Breusch, T.S., & Pagan, A.R. (1979). "A Simple Test for Heteroscedasticity and Random Coefficient Variation." Econometrica, 47(5), 1287-1294.
+
+**Also known as:** BP test, Breusch-Pagan-Godfrey test.
 
 **Args:**
 
@@ -1518,7 +1734,12 @@ rejected at the 5% level.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # AAPL (the first ticker) is dependent; MSFT and Benchmark are independent
 toolkit.econometrics.get_breusch_pagan_test(
@@ -1528,20 +1749,28 @@ toolkit.econometrics.get_breusch_pagan_test(
 
 Which returns:
 
-| Metric                        |   Value |
-|:-------------------------------|--------:|
-| Breusch-Pagan Statistic       |  1.5544 |
-| P-Value                       |  0.4597 |
-| Reject Homoskedasticity (5%)  |  0      |
+|                              |      0 |
+|:-----------------------------|-------:|
+| Breusch-Pagan Statistic      | 0.2068 |
+| P-Value                      | 0.9018 |
+| Reject Homoskedasticity (5%) | 0      |
 
 ---
 
 ## get_white_test
 Calculate White's test for heteroskedasticity of a regression of `dependent_ticker` on `independent_tickers`.
 
-**Also known as:** White's general test.
+A more general version of `get_breusch_pagan_test`. Instead of regressing the squared residuals on only the original independent tickers, the auxiliary regression uses each ticker, its square and every pairwise cross-product:
 
-For more information about the method, see `specification_tests_model.get_white_test`.
+- e_t^2 = a_0 + SUM_i(a_i * x_it) + SUM_i(b_i * x_it^2) + SUM_{i<j}(c_ij * x_it * x_jt) + v_t
+
+The test statistic is `LM = n * R^2_auxiliary`, chi-squared distributed with degrees of freedom equal to the number of terms in the auxiliary regression, under the null hypothesis of homoskedasticity (constant residual variance). A low p-value means the regression's standard errors are unreliable and a robust `cov_type` should be used. Because it also detects non-linear patterns in the residual variance, White's test makes fewer assumptions than Breusch-Pagan, at the cost of power when there are many independent tickers, since the number of auxiliary terms grows quadratically.
+
+For more information about the method, see the following paper:
+
+- White, H. (1980). "A Heteroskedasticity-Consistent Covariance Matrix Estimator and a Direct Test for Heteroskedasticity." Econometrica, 48(4), 817-838.
+
+**Also known as:** White's general test.
 
 **Args:**
 
@@ -1571,7 +1800,12 @@ the 5% level.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # AAPL (the first ticker) is dependent; MSFT and Benchmark are independent
 toolkit.econometrics.get_white_test(
@@ -1581,20 +1815,28 @@ toolkit.econometrics.get_white_test(
 
 Which returns:
 
-| Metric                        |   Value |
-|:-------------------------------|--------:|
-| White Statistic                |  2.2886 |
-| P-Value                        |  0.8079 |
-| Reject Homoskedasticity (5%)   |  0      |
+|                              |      0 |
+|:-----------------------------|-------:|
+| White Statistic              | 1.5118 |
+| P-Value                      | 0.9117 |
+| Reject Homoskedasticity (5%) | 0      |
 
 ---
 
 ## get_durbin_watson_test
 Calculate the Durbin-Watson statistic for first-order autocorrelation in the residuals of a regression of `dependent_ticker` on `independent_tickers`.
 
-**Also known as:** DW statistic.
+OLS standard errors assume that the residuals of consecutive periods are uncorrelated. The Durbin-Watson statistic compares each residual with the one before it:
 
-For more information about the method, see `specification_tests_model.get_durbin_watson_test`.
+- DW = SUM_{t=2}^{n}((e_t - e_(t-1))^2) / SUM_{t=1}^{n}(e_t^2)
+
+The statistic ranges from 0 to 4. A value near 2 means no first-order autocorrelation; values below 2 point to positive autocorrelation (consecutive residuals tend to share the same sign, often a sign of an omitted trend or lagged effect) and values above 2 to negative autocorrelation (residuals tend to alternate in sign). Like heteroskedasticity, autocorrelation leaves the coefficients unbiased but makes the standard errors unreliable; a "HAC" `cov_type` in `get_ols`, or `get_gls` with an AR(1) `omega`, are common remedies. There is no exact p-value: the returned interpretation is a rule of thumb (below 1.5 is likely positive, above 2.5 likely negative autocorrelation).
+
+For more information about the method, see the following paper:
+
+- Durbin, J., & Watson, G.S. (1950). "Testing for Serial Correlation in Least Squares Regression I." Biometrika, 37(3/4), 409-428.
+
+**Also known as:** DW statistic.
 
 **Args:**
 
@@ -1628,7 +1870,12 @@ stated significance level -- see `specification_tests_model.get_durbin_watson_te
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # AAPL (the first ticker) is dependent; MSFT and Benchmark are independent
 toolkit.econometrics.get_durbin_watson_test(
@@ -1638,19 +1885,23 @@ toolkit.econometrics.get_durbin_watson_test(
 
 Which returns:
 
-| Metric                    | Value               |
-|:---------------------------|:---------------------|
-| Durbin-Watson Statistic    | 2.0538               |
-| Interpretation             | No Strong Evidence   |
+|                         | 0                  |
+|:------------------------|:-------------------|
+| Durbin-Watson Statistic | 2.1372             |
+| Interpretation          | No Strong Evidence |
 
 ---
 
 ## get_vif
 Calculate the Variance Inflation Factor (VIF) of every ticker in the Toolkit instance, treated as regressors against one another.
 
-**Also known as:** VIF.
+Multicollinearity, where one regressor can (nearly) be predicted from the others, does not bias regression coefficients but inflates their standard errors. Individual coefficients can then look insignificant, and swing wildly between samples, even when the regressors jointly explain the dependent variable well. VIF measures this for each ticker by regressing it on all the other tickers:
 
-For more information about the method, see `specification_tests_model.get_vif`.
+- VIF_i = 1 / (1 - R^2_i)
+
+Where `R^2_i` is the R-squared of regressing ticker `i` on all other tickers. A VIF of 1 means the ticker is uncorrelated with the others; a VIF of `V` means the variance of its coefficient is `V` times larger than it would be without multicollinearity. As a rule of thumb, a VIF above 10 (or above 5 for a stricter cutoff) signals problematic multicollinearity. This is common with assets that move closely together, such as several stocks from the same sector, and is worth checking before using them together as independent tickers in `get_ols` or the other regression methods.
+
+**Also known as:** VIF.
 
 **Args:**
 
@@ -1677,7 +1928,12 @@ property of the regressors alone, independent of any particular dependent variab
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_vif(period="weekly")
 ```
@@ -1686,17 +1942,25 @@ Which returns:
 
 |      |    VIF |
 |:-----|-------:|
-| AAPL | 2.3688 |
-| MSFT | 2.3688 |
+| AAPL | 1.4546 |
+| MSFT | 1.4546 |
 
 ---
 
 ## get_ramsey_reset_test
 Calculate Ramsey's RESET test for functional form misspecification of a regression of `dependent_ticker` on `independent_tickers`.
 
-**Also known as:** RESET test, Ramsey RESET.
+If the true relationship is non-linear, or a relevant transformation or variable is missing, the fitted values of a linear regression still carry information about that missing piece. RESET tests for this by adding powers of the fitted values (`fitted^2`, ..., `fitted^power`) to the regression and checking whether they are jointly significant with an F-test that compares the original (restricted) and augmented (unrestricted) model:
 
-For more information about the method, see `specification_tests_model.get_ramsey_reset_test`.
+- F = ((RSS_r - RSS_u) / q) / (RSS_u / (n - k_u))
+
+Where `RSS_r` and `RSS_u` are the residual sums of squares of both models, `q` is the number of added terms (`power - 1`), `n` the number of observations and `k_u` the number of parameters of the augmented model. Under the null hypothesis that the linear form is correct, `F` follows an F(q, n - k_u) distribution. A low p-value suggests the model is missing something, for example a squared or interaction term or a log transformation, without saying what; it is a signal to reconsider the specification, not a prescription.
+
+For more information about the method, see the following paper:
+
+- Ramsey, J.B. (1969). "Tests for Specification Errors in Classical Linear Least-Squares Regression Analysis." Journal of the Royal Statistical Society, Series B, 31(2), 350-371.
+
+**Also known as:** RESET test, Ramsey RESET.
 
 **Args:**
 
@@ -1727,7 +1991,12 @@ rejected at the 5% level.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # AAPL (the first ticker) is dependent; MSFT and Benchmark are independent
 toolkit.econometrics.get_ramsey_reset_test(
@@ -1737,20 +2006,28 @@ toolkit.econometrics.get_ramsey_reset_test(
 
 Which returns:
 
-| Metric                              |   Value |
-|:--------------------------------------|--------:|
-| RESET F-Statistic                    |  1.1591 |
-| P-Value                              |  0.3165 |
-| Reject Correct Specification (5%)    |  0      |
+|                                   |      0 |
+|:----------------------------------|-------:|
+| RESET F-Statistic                 | 0.7233 |
+| P-Value                           | 0.4861 |
+| Reject Correct Specification (5%) | 0      |
 
 ---
 
 ## get_chow_test
 Calculate the Chow test for a structural break at `break_date` in a regression of `dependent_ticker` on `independent_tickers`.
 
-**Also known as:** Chow breakpoint test.
+The sample is split at `break_date` into a "before" and "after" period, a regression is fitted on each part separately and on the full sample, and an F-test checks whether allowing the coefficients to differ between the two periods significantly reduces the residual sum of squares:
 
-For more information about the method, see `specification_tests_model.get_chow_test`.
+- F = ((RSS_pooled - (RSS_1 + RSS_2)) / k) / ((RSS_1 + RSS_2) / (n - 2k))
+
+Where `RSS_pooled` is the residual sum of squares of the full-sample regression, `RSS_1` and `RSS_2` those of the two sub-periods, `k` the number of parameters and `n` the total number of observations. Under the null hypothesis of no structural break (the same coefficients apply throughout), `F` follows an F(k, n - 2k) distribution. A low p-value means the relationship changed at `break_date`, for example an asset's beta shifting after a merger, a regulatory change or a market regime change, so a single regression over the full sample is misspecified. The break date must be chosen in advance; testing many candidate dates and keeping the most significant overstates the evidence.
+
+For more information about the method, see the following paper:
+
+- Chow, G.C. (1960). "Tests of Equality Between Sets of Coefficients in Two Linear Regressions." Econometrica, 28(3), 591-605.
+
+**Also known as:** Chow breakpoint test.
 
 **Args:**
 
@@ -1788,7 +2065,12 @@ split to estimate the regression's parameters.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # AAPL (the first ticker) is dependent; MSFT and Benchmark are independent
 toolkit.econometrics.get_chow_test(
@@ -1800,11 +2082,11 @@ toolkit.econometrics.get_chow_test(
 
 Which returns:
 
-| Metric                              |   Value |
-|:--------------------------------------|--------:|
-| Chow F-Statistic                     |  1.6807 |
-| P-Value                              |  0.1736 |
-| Reject No Structural Break (5%)      |  0      |
+|                                 |      0 |
+|:--------------------------------|-------:|
+| Chow F-Statistic                | 3.6234 |
+| P-Value                         | 0.0137 |
+| Reject No Structural Break (5%) | 1      |
 
 ---
 
@@ -1847,7 +2129,12 @@ approach would report.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_iv_2sls("AAPL", "MSFT", "Benchmark", period="weekly")
 ```
@@ -1855,9 +2142,9 @@ toolkit.econometrics.get_iv_2sls("AAPL", "MSFT", "Benchmark", period="weekly")
 Which returns:
 
 |           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
-|:----------|---------------:|--------------:|---------------:|-----------:|
-| Intercept |         0.0006 |        0.0025 |         0.2336 |     0.8156 |
-| MSFT      |         1.1453 |        0.0813 |        14.0938 |     0.0000 |
+|:----------|--------------:|-------------:|--------------:|----------:|
+| Intercept |       -0.0005 |       0.0022 |       -0.2361 |    0.8135 |
+| MSFT      |        1.0951 |       0.0887 |       12.3511 |    0      |
 
 ---
 
@@ -1897,7 +2184,12 @@ which is the DiD treatment-effect estimate.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_difference_in_differences(
     treated_tickers="AAPL", treatment_date="2021-06-30", period="weekly"
@@ -1906,12 +2198,12 @@ toolkit.econometrics.get_difference_in_differences(
 
 Which returns:
 
-|                 |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
-|:----------------|---------------:|--------------:|---------------:|-----------:|
-| Intercept       |         0.0064 |        0.0031 |         2.0495 |     0.0410 |
-| Treated         |         0.0029 |        0.0054 |         0.5399 |     0.5896 |
-| Post            |        -0.0074 |        0.0045 |        -1.6572 |     0.0982 |
-| Treated x Post  |        -0.0020 |        0.0077 |        -0.2571 |     0.7972 |
+|                |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
+|:---------------|--------------:|-------------:|--------------:|----------:|
+| Intercept      |        0.0078 |       0.0045 |        1.7302 |    0.084  |
+| Treated        |       -0.0047 |       0.0078 |       -0.6015 |    0.5477 |
+| Post           |       -0.005  |       0.0047 |       -1.0591 |    0.2899 |
+| Treated x Post |        0.0056 |       0.0082 |        0.6779 |    0.498  |
 
 ---
 
@@ -1954,7 +2246,12 @@ standard error/t-statistic/p-value, and the cutoff/bandwidth/sample sizes used.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_regression_discontinuity(
     "AAPL", "MSFT", cutoff=0.0, period="weekly"
@@ -1965,14 +2262,14 @@ Which returns:
 
 |               |    Value |
 |:--------------|---------:|
-| Discontinuity |   0.0003 |
-| Std. Error    |   0.0077 |
-| t-Statistic   |   0.0343 |
-| P-Value       |   0.9726 |
-| Cutoff        |   0.0000 |
-| Bandwidth     |   0.1257 |
-| N Left        |  71      |
-| N Right       |  85      |
+| Discontinuity |  -0.0009 |
+| Std. Error    |   0.0067 |
+| t-Statistic   |  -0.1394 |
+| P-Value       |   0.8892 |
+| Cutoff        |   0      |
+| Bandwidth     |   0.0993 |
+| N Left        | 116      |
+| N Right       | 141      |
 
 ---
 
@@ -2016,7 +2313,12 @@ number of matched pairs/treated/control observations.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_propensity_score_matching(
     "AAPL", "MSFT", "Benchmark", period="weekly"
@@ -2025,24 +2327,35 @@ toolkit.econometrics.get_propensity_score_matching(
 
 Which returns:
 
-| Metric        |    Value |
+|               |        0 |
 |:--------------|---------:|
-| ATT           |   0.0335 |
-| Std. Error    |   0.0060 |
-| t-Statistic   |   5.5598 |
-| P-Value       |   0.0000 |
-| Matched Pairs |  33      |
-| N Treated     |  84      |
-| N Control     |  73      |
+| ATT           |   0.0078 |
+| Std. Error    |   0.0054 |
+| t-Statistic   |   1.4538 |
+| P-Value       |   0.1516 |
+| Matched Pairs |  57      |
+| N Treated     | 144      |
+| N Control     | 116      |
 
 ---
 
 ## get_synthetic_control
 Construct a Synthetic Control for `treated_ticker` from a weighted combination of `donor_tickers` (Abadie, Diamond & Hainmueller, 2010), and estimate the effect of an event/intervention as the post-`treatment_period` gap between `treated_ticker`'s actual and synthetic counterfactual return path.
 
-**Also known as:** SCM, synthetic control method.
+When a single company or market experiences an event (an acquisition, a regulatory change, an index inclusion) and there is no single obvious comparison, the synthetic control builds one from the data: a weighted average of unaffected "donor" tickers, with weights chosen so it tracks the treated ticker as closely as possible before the event. If that pre-event fit is good, the synthetic control's path after the event estimates what would have happened without it, and the gap is the estimated effect:
 
-For more information about the method, see `causal_inference_model.get_synthetic_control`.
+- Weights: w* = argmin_w &#124;&#124;treated_pre - donors_pre @ w&#124;&#124;^2, subject to w >= 0 and sum(w) = 1
+- Synthetic control: synthetic_t = donors_t @ w*, for every period t
+- Treatment effect: gap_t = treated_t - synthetic_t, for every post-event period t
+
+Unlike difference-in-differences, this does not require the treated and comparison units to follow parallel trends, as the synthetic control is built to match the treated ticker's own pre-event path. Because there is only one treated unit, the p-value comes from placebo tests: the procedure is rerun with each donor as if it were treated, and the treated ticker's post/pre fit ratio is compared with theirs. Matching is done on the pre-event outcome path only, a common simplification of the original method.
+
+For more information about the method, see the following papers:
+
+- Abadie, A., Diamond, A., & Hainmueller, J. (2010). "Synthetic Control Methods for Comparative Case Studies: Estimating the Effect of California's Tobacco Control Program." Journal of the American Statistical Association, 105(490), 493-505.
+- Abadie, A. (2021). "Using Synthetic Controls: Feasibility, Data Requirements, and Methodological Aspects." Journal of Economic Literature, 59(2), 391-425.
+
+**Also known as:** SCM, synthetic control method.
 
 **Args:**
 
@@ -2082,7 +2395,12 @@ poorly-identified synthetic control and a very coarse placebo p-value (with
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_synthetic_control(
     "AAPL",
@@ -2094,16 +2412,16 @@ toolkit.econometrics.get_synthetic_control(
 
 Which returns:
 
-|                           |   Value |
-|:--------------------------|--------:|
-| Average Treatment Effect  |  0.0012 |
-| Pre-Treatment RMSPE       |  0.0286 |
-| Post-Treatment RMSPE      |  0.024  |
-| RMSPE Ratio               |  0.8417 |
-| P-Value                   |  0.3333 |
-| N Donors                  |  2      |
-| N Pre-Periods             | 78      |
-| N Post-Periods            | 79      |
+|                          |        0 |
+|:-------------------------|---------:|
+| Average Treatment Effect |   0.0008 |
+| Pre-Treatment RMSPE      |   0.0222 |
+| Post-Treatment RMSPE     |   0.0308 |
+| RMSPE Ratio              |   1.3885 |
+| P-Value                  |   0.3333 |
+| N Donors                 |   2      |
+| N Pre-Periods            |  24      |
+| N Post-Periods           | 236      |
 
 ---
 
@@ -2160,7 +2478,12 @@ requested fixed effects.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_fixed_effects(
     independent_tickers="Benchmark", period="weekly"
@@ -2169,11 +2492,11 @@ toolkit.econometrics.get_fixed_effects(
 
 Which returns:
 
-|                        |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
-|:-----------------------|---------------:|--------------:|---------------:|-----------:|
-| Benchmark              |         1.0772 |        0.0331 |        32.5314 |     0.0000 |
-| Entity Effect: AAPL    |         0.0022 |      nan      |       nan      |   nan      |
-| Entity Effect: MSFT    |         0.0017 |      nan      |       nan      |   nan      |
+|                     |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
+|:--------------------|--------------:|-------------:|--------------:|----------:|
+| Benchmark           |        1.1403 |       0.0482 |       23.6381 |         0 |
+| Entity Effect: AAPL |        0.0004 |     nan      |      nan      |       nan |
+| Entity Effect: MSFT |        0.0006 |     nan      |      nan      |       nan |
 
 ---
 
@@ -2226,7 +2549,9 @@ to estimate the model.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "MSFT", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY"
+    ["AAPL", "MSFT", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY",
+                              start_date="2021-01-01",
+                              end_date="2025-12-31",
 )
 
 toolkit.econometrics.get_random_effects(
@@ -2237,9 +2562,9 @@ toolkit.econometrics.get_random_effects(
 Which returns:
 
 |           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
-|:----------|---------------:|--------------:|---------------:|-----------:|
-| Intercept |         0.0094 |        0.0012 |         7.7341 |     0.0000 |
-| Volume    |        -0.0000 |        0.0000 |        -5.1258 |     0.0000 |
+|:----------|--------------:|-------------:|--------------:|----------:|
+| Intercept |         0.007 |       0.0024 |        2.8772 |    0.0041 |
+| Volume    |        -0     |       0      |       -1.7774 |    0.0758 |
 
 ---
 
@@ -2287,7 +2612,9 @@ model, or the two estimators share no common regressors to compare.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "MSFT", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY"
+    ["AAPL", "MSFT", "AMZN"], api_key="FINANCIAL_MODELING_PREP_KEY",
+                              start_date="2021-01-01",
+                              end_date="2025-12-31",
 )
 
 toolkit.econometrics.get_hausman_test(
@@ -2297,12 +2624,12 @@ toolkit.econometrics.get_hausman_test(
 
 Which returns:
 
-| Metric                     |   Value |
-|:----------------------------|--------:|
-| Hausman Statistic           |  8.1289 |
-| Degrees of Freedom          |  1      |
-| P-Value                     |  0.0044 |
-| Prefer Fixed Effects (5%)   |  1      |
+|                           |      0 |
+|:--------------------------|-------:|
+| Hausman Statistic         | 1.6066 |
+| Degrees of Freedom        | 1      |
+| P-Value                   | 0.205  |
+| Prefer Fixed Effects (5%) | 0      |
 
 ---
 
@@ -2351,29 +2678,42 @@ practical limitations (in particular, keep `p + q` small).
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_arima_forecast(period="quarterly")
 ```
 
 Which returns:
 
-| Step |    AAPL |    MSFT |
-|-----:|--------:|--------:|
-|    1 | 138.273 | 243.199 |
-|    2 | 147.039 | 250.190 |
-|    3 | 154.992 | 257.106 |
-|    4 | 162.323 | 264.014 |
-|    5 | 169.180 | 270.922 |
+|   Step |    AAPL |    MSFT |
+|-------:|--------:|--------:|
+|      1 | 265.182 | 493.438 |
+|      2 | 267.177 | 506.734 |
+|      3 | 272.247 | 520.271 |
+|      4 | 278.508 | 533.944 |
+|      5 | 285.232 | 547.694 |
 
 ---
 
 ## get_var_forecast
 Fit a Vector Autoregression (VAR) across every ticker in the Toolkit instance and forecast `forecast_steps` periods ahead.
 
-**Also known as:** VAR model, vector autoregressive model.
+A VAR models several series jointly: each ticker's value is regressed on `lags` past values of all tickers, including its own. Each asset's future can therefore depend on its own history and on the history of the others, without deciding in advance which one drives which:
 
-A VAR jointly models every ticker's series, regressing each of them on `lags` lagged values of ALL of them (including itself) -- see `time_series_model.get_var_forecast` for the full formula and estimation method (equation-by-equation OLS, reusing `regression_model.get_ols`).
+- Y_t = c + SUM_{l=1}^{lags}(Phi_l * Y_(t-l)) + e_t
+
+Where `Y_t` holds the values of all tickers at time `t` and each `Phi_l` is a matrix of coefficients. Because every equation has the same regressors, the model is estimated exactly by a separate OLS regression per ticker. Forecasts are produced by running the fitted equations forward one step at a time, feeding each forecast back in as the most recent lag. The coefficients show how shocks spread between assets; `get_impulse_response_function` and `get_variance_decomposition` summarise that, and `get_granger_causality` tests whether one ticker helps predict another. A VAR assumes stationary series, so returns are generally more suitable than prices (see `get_augmented_dickey_fuller`).
+
+For more information about the method, see the following paper:
+
+- Sims, C.A. (1980). "Macroeconomics and Reality." Econometrica, 48(1), 1-48.
+
+**Also known as:** VAR model, vector autoregressive model.
 
 **Args:**
 
@@ -2409,20 +2749,25 @@ instead if the assets' price levels are cointegrated.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_var_forecast(period="quarterly")
 ```
 
 Which returns:
 
-| Step |   AAPL |   MSFT |
-|-----:|-------:|-------:|
-|    1 | 0.1271 | 0.1046 |
-|    2 | 0.1069 | 0.0640 |
-|    3 | 0.0704 | 0.0428 |
-|    4 | 0.0661 | 0.0454 |
-|    5 | 0.0716 | 0.0496 |
+|   Step |    AAPL |   MSFT |
+|-------:|--------:|-------:|
+|      1 | -0.0185 | 0.0141 |
+|      2 |  0.0547 | 0.0584 |
+|      3 |  0.0514 | 0.0432 |
+|      4 |  0.0445 | 0.0412 |
+|      5 |  0.046  | 0.0431 |
 
 ---
 
@@ -2469,21 +2814,26 @@ order -- see `time_series_model.get_impulse_response_function`'s `Notes`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_impulse_response_function(period="quarterly", periods=5)
 ```
 
 Which returns:
 
-| Horizon   |   ('AAPL', 'AAPL') |   ('AAPL', 'MSFT') |   ('MSFT', 'AAPL') |   ('MSFT', 'MSFT') |
-|:----------|--------------------:|--------------------:|--------------------:|--------------------:|
-| 0         |              0.1667 |              0.0865 |               0     |              0.0708 |
-| 1         |              0.0075 |             -0.0196 |               0.0836|              0.0553 |
-| 2         |             -0.0274 |             -0.0192 |               0.0178|             -0.0006 |
-| 3         |             -0.0071 |             -0.0007 |              -0.0108|             -0.0097 |
-| 4         |              0.0033 |              0.0032 |              -0.0054|             -0.002  |
-| 5         |              0.0019 |              0.0008 |               0.0007|              0.0013 |
+|   Horizon |   ('AAPL', 'AAPL') |   ('AAPL', 'MSFT') |   ('MSFT', 'AAPL') |   ('MSFT', 'MSFT') |
+|----------:|-------------------:|-------------------:|-------------------:|-------------------:|
+|         0 |             0.141  |             0.0571 |             0      |             0.1247 |
+|         1 |            -0.0213 |            -0.035  |             0.0658 |             0.0248 |
+|         2 |            -0.0107 |             0      |            -0.0109 |            -0.0167 |
+|         3 |             0.0039 |             0.0035 |            -0.0048 |             0.0003 |
+|         4 |             0.0004 |            -0.0006 |             0.0019 |             0.0016 |
+|         5 |            -0.0005 |            -0.0003 |             0.0002 |            -0.0003 |
 
 ---
 
@@ -2524,20 +2874,25 @@ the same identifying assumption applies here.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_variance_decomposition(period="quarterly", periods=5)
 ```
 
 Which returns:
 
-| Horizon   |   ('AAPL', 'AAPL') |   ('AAPL', 'MSFT') |   ('MSFT', 'AAPL') |   ('MSFT', 'MSFT') |
-|:----------|--------------------:|--------------------:|--------------------:|--------------------:|
-| 1         |              1      |              0      |              0.5984 |              0.4016 |
-| 2         |              0.7993 |              0.2007 |              0.4935 |              0.5065 |
-| 3         |              0.7965 |              0.2035 |              0.5049 |              0.4951 |
-| 4         |              0.7942 |              0.2058 |              0.502  |              0.498  |
-| 5         |              0.7936 |              0.2064 |              0.5022 |              0.4978 |
+|   Horizon |   ('AAPL', 'AAPL') |   ('AAPL', 'MSFT') |   ('MSFT', 'AAPL') |   ('MSFT', 'MSFT') |
+|----------:|-------------------:|-------------------:|-------------------:|-------------------:|
+|         1 |             1      |             0      |             0.1735 |             0.8265 |
+|         2 |             0.8246 |             0.1754 |             0.2172 |             0.7828 |
+|         3 |             0.8215 |             0.1785 |             0.2144 |             0.7856 |
+|         4 |             0.8209 |             0.1791 |             0.2148 |             0.7852 |
+|         5 |             0.8208 |             0.1792 |             0.2148 |             0.7852 |
 
 ---
 
@@ -2591,7 +2946,12 @@ of them.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 # AAPL/MSFT alone aren't cointegrated in this sample -- add Benchmark to the
 # system to get one that is.
@@ -2600,13 +2960,8 @@ toolkit.econometrics.get_vecm_forecast(period="quarterly", include_benchmark=Tru
 
 Which returns:
 
-| Step |    AAPL |    MSFT |   Benchmark |
-|-----:|--------:|--------:|------------:|
-|    1 | 131.672 | 237.052 |     380.084 |
-|    2 | 136.414 | 266.892 |     404.920 |
-|    3 | 147.872 | 281.265 |     413.975 |
-|    4 | 154.833 | 289.048 |     413.568 |
-|    5 | 152.306 | 273.929 |     396.546 |
+| 0   |
+|-----|
 
 ---
 
@@ -2637,25 +2992,36 @@ pd.Series: The RMSE, indexed by unordered `(Ticker A, Ticker B)` pair.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_rmse(period="quarterly")
 ```
 
 Which returns:
 
-| Ticker A   | Ticker B   |   RMSE |
-|:-----------|:-----------|-------:|
-| AAPL       | MSFT       | 0.1084 |
+|                  |   RMSE |
+|:-----------------|-------:|
+| ('AAPL', 'MSFT') | 0.1396 |
 
 ---
 
 ## get_mae
 Calculate the Mean Absolute Error (MAE) between every unordered pair of tickers' series in the Toolkit instance.
 
-**Also known as:** MAD (Mean Absolute Deviation).
+MAE is the average absolute difference between two series:
 
-See `forecast_evaluation_model.get_mae` for the formula, and `get_rmse`'s docstring for why this controller method compares two ASSETS directly (rather than an asset against an actual forecasting model's output -- see `get_out_of_sample_validation` for that).
+- MAE = mean(&#124;actual_t - forecast_t&#124;)
+
+It is expressed in the units of the series itself (e.g. a return difference) and answers "how far apart are the two series in a typical period". Every difference counts in proportion to its size, so unlike `get_rmse`, which squares the differences and is therefore dominated by a few large gaps, MAE is robust to occasional outliers. A lower value means the two tickers track each other more closely.
+
+This method compares two assets directly, for example how closely a fund tracks its index or how two related stocks move together, rather than an asset against a model's forecast; see `get_rmse` for the reasoning, and `get_out_of_sample_validation` for evaluating actual forecasts.
+
+**Also known as:** MAD (Mean Absolute Deviation).
 
 **Args:**
 
@@ -2677,16 +3043,21 @@ pd.Series: The MAE, indexed by unordered `(Ticker A, Ticker B)` pair.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_mae(period="quarterly")
 ```
 
 Which returns:
 
-| Ticker A   | Ticker B   |    MAE |
-|:-----------|:-----------|-------:|
-| AAPL       | MSFT       | 0.0887 |
+|                  |    MAE |
+|:-----------------|-------:|
+| ('AAPL', 'MSFT') | 0.1035 |
 
 ---
 
@@ -2742,7 +3113,12 @@ fewer than 2 tickers are available to form a VAR system.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_out_of_sample_validation(
     period="weekly", model="arima", p=1, d=1, q=1
@@ -2751,11 +3127,11 @@ toolkit.econometrics.get_out_of_sample_validation(
 
 Which returns:
 
-|                       |    AAPL |    MSFT |
-|:----------------------|--------:|--------:|
-| RMSE                  | 12.9091 | 24.2258 |
-| MAE                   | 10.2476 | 20.6824 |
-| Holdout Observations  | 32      | 32      |
+|                      |    AAPL |    MSFT |
+|:---------------------|--------:|--------:|
+| RMSE                 | 44.5713 | 38.7415 |
+| MAE                  | 38.6048 | 32.369  |
+| Holdout Observations | 53      | 53      |
 
 ---
 
@@ -2803,20 +3179,25 @@ column.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_event_study(event_date="2023-05-04")
 ```
 
 Which returns:
 
-|                                |    Value |
+|                                |        0 |
 |:-------------------------------|---------:|
-| Cumulative Abnormal Return     |   0.0181 |
-| CAR t-statistic                |   0.3693 |
-| CAR p-value                    |   0.7122 |
-| Alpha                          |   0.0005 |
-| Beta                           |   1.294  |
+| Cumulative Abnormal Return     |   0.0207 |
+| CAR t-statistic                |   0.4243 |
+| CAR p-value                    |   0.6717 |
+| Alpha                          |   0.0004 |
+| Beta                           |   1.3001 |
 | Estimation Window Observations | 250      |
 
 ---

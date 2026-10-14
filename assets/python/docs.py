@@ -354,7 +354,10 @@ def _formula_to_latex(line: str) -> str:
             segment = match.group(2)
         if _RE_MATHY.search(segment) or " = " in f" {segment} ":
             tokens, _ = _tokenize_formula(segment)
-            rendered.append(prefix + _render_tokens(tokens))
+            latex = _render_tokens(tokens)
+            # "u_(t-1)": the bracket is the subscript, not an argument
+            latex = re.sub(r"_\{\}\(([^()]*)\)", lambda m: "_{" + m.group(1) + "}", latex)
+            rendered.append(prefix + latex)
         else:
             rendered.append(r"\text{" + _text_escape(segment) + "}")
     return "$$\n" + label + ",\\;\\; ".join(rendered) + "\n$$"
@@ -633,6 +636,16 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
             "example_code": example_code,
             "example_result": example_result,
         })
+
+    # The front matter and introduction are edited on the page itself (SEO titles,
+    # descriptions, counts), so an existing page keeps its own; the header here is
+    # only the starting point for a new page.
+    if os.path.exists(location):
+        with open(location, encoding="utf-8") as f:
+            existing = f.read()
+        end = existing.find(_INSTALL_SNIPPET)
+        if end != -1:
+            header = existing[: end + len(_INSTALL_SNIPPET)]
 
     markdown_content = header
     for fn in functions_with_docstrings:

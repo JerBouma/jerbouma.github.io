@@ -29,10 +29,10 @@ Calculates and collects all risk metrics.
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int &#124; str, optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -52,21 +52,25 @@ using the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.collect_all_metrics().xs("AAPL", level=1, axis=1)
 ```
 
 Which returns:
 
-|      |   Ulcer Index |   GARCH |   Skewness |   Kurtosis |   Downside Deviation |   Variance |   Volatility |
-|:-----|--------------:|--------:|-----------:|-----------:|---------------------:|-----------:|-------------:|
-| 2021 |        0.0376 |  0.0616 |    -0.0677 |     3.3347 |               0.0102 |     0.063  |       0.2511 |
-| 2022 |        0.0672 |  0.1223 |     0.3199 |     4.012  |               0.0135 |     0.1274 |       0.357  |
-| 2023 |        0.0332 |  0.1667 |    -0.0672 |     4.4211 |               0.0082 |     0.0412 |       0.203  |
-| 2024 |        0.0341 |  0.2181 |     0.4479 |     6.516  |               0.0091 |     0.0515 |       0.2268 |
-| 2025 |        0.0492 |  0.2452 |     1.1284 |    16.8074 |               0.0149 |     0.1056 |       0.3249 |
-| 2026 |        0.0391 |  0.2585 |    -0.2958 |     4.5239 |               0.0119 |     0.0717 |       0.2677 |
+|      |   Ulcer Index |    GARCH |   Skewness |   Kurtosis |   Downside Deviation |   Variance |   Volatility |
+|:-----|--------------:|---------:|-----------:|-----------:|---------------------:|-----------:|-------------:|
+| 2021 |        0.0373 | nan      |    -0.0735 |     3.4146 |               0.0105 |     0.0626 |       0.2502 |
+| 2022 |        0.067  |   0.0697 |     0.3167 |     4.054  |               0.016  |     0.1274 |       0.357  |
+| 2023 |        0.033  |   0.1142 |    -0.0662 |     4.4804 |               0.0082 |     0.0412 |       0.2031 |
+| 2024 |        0.034  |   0.1142 |     0.4447 |     6.6121 |               0.0093 |     0.0514 |       0.2268 |
+| 2025 |        0.0492 |   0.1142 |     1.1299 |    17.0667 |               0.0136 |     0.1056 |       0.325  |
 
 ---
 
@@ -82,12 +86,13 @@ The VaR is calculated as the quantile of the return distribution, representing t
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>alpha (float, optional):</u> The confidence level for VaR calculation (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate VaR within the specified period or for the entire
 period. Thus whether to look at the VaR within a specific year (if period = 'yearly') or look at the entirety
-of all years. Defaults to True.
+of all years. Defaults to False. Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, VaR is
 calculated over a rolling window of this many periods across the full return history instead
 of per `period` (e.g. a rolling 60-day VaR). Only available for
@@ -122,27 +127,25 @@ asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-toolkit.risk.get_value_at_risk()
+toolkit.risk.get_value_at_risk(period="yearly", within_period=True)
 ```
 
 Which returns:
 
-|      |    AMZN |    TSLA |
-|:-----|--------:|--------:|
-| 2012 | -0.0244 | -0.0343 |
-| 2013 | -0.0204 | -0.0537 |
-| 2014 | -0.0312 | -0.0423 |
-| 2015 | -0.0208 | -0.0422 |
-| 2016 | -0.0288 | -0.0394 |
-| 2017 | -0.0154 | -0.0345 |
-| 2018 | -0.0416 | -0.0503 |
-| 2019 | -0.0232 | -0.0492 |
-| 2020 | -0.0369 | -0.0741 |
-| 2021 | -0.0252 | -0.0499 |
-| 2022 | -0.0518 | -0.0713 |
-| 2023 | -0.0271 | -0.054  |
+|      |    AMZN |    TSLA |   Benchmark |
+|:-----|--------:|--------:|------------:|
+| 2021 | -0.0253 | -0.05   |     -0.0126 |
+| 2022 | -0.0518 | -0.0714 |     -0.0262 |
+| 2023 | -0.0273 | -0.0505 |     -0.0139 |
+| 2024 | -0.0248 | -0.0522 |     -0.0132 |
+| 2025 | -0.0305 | -0.0553 |     -0.0165 |
 
 ---
 
@@ -158,12 +161,13 @@ The CVaR is calculated as the expected loss given that the loss threshold (VaR) 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>alpha (float, optional):</u> The confidence level for CVaR calculation (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate CVaR within the specified period or for the entire
 period. Thus whether to look at the CVaR within a specific year (if period = 'yearly') or look at the entirety
-of all years. Defaults to True.
+of all years. Defaults to False. Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, CVaR is
 calculated over a rolling window of this many periods across the full return history instead
 of per `period` (e.g. a rolling 60-day CVaR). Only available for
@@ -195,27 +199,25 @@ asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-toolkit.risk.get_conditional_value_at_risk()
+toolkit.risk.get_conditional_value_at_risk(period="yearly", within_period=True)
 ```
 
 Which returns:
 
-|      |    AMZN |    TSLA |
-|:-----|--------:|--------:|
-| 2012 | -0.0302 | -0.0622 |
-| 2013 | -0.0323 | -0.0807 |
-| 2014 | -0.0552 | -0.0607 |
-| 2015 | -0.0318 | -0.053  |
-| 2016 | -0.0456 | -0.0604 |
-| 2017 | -0.0236 | -0.0483 |
-| 2018 | -0.0540 | -0.0746 |
-| 2019 | -0.0327 | -0.0758 |
-| 2020 | -0.0510 | -0.1262 |
-| 2021 | -0.0327 | -0.0683 |
-| 2022 | -0.0685 | -0.0914 |
-| 2023 | -0.0397 | -0.0747 |
+|      |    AMZN |    TSLA |   Benchmark |
+|:-----|--------:|--------:|------------:|
+| 2021 | -0.0327 | -0.0683 |     -0.0183 |
+| 2022 | -0.0685 | -0.0914 |     -0.0335 |
+| 2023 | -0.0413 | -0.071  |     -0.0157 |
+| 2024 | -0.0372 | -0.0776 |     -0.0189 |
+| 2025 | -0.047  | -0.0821 |     -0.0275 |
 
 ---
 
@@ -231,12 +233,13 @@ The EVaR is calculated as the upper bound of VaR and CVaR with a given confidenc
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>alpha (float, optional):</u> The confidence level for EVaR calculation (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate EVaR within the specified period or for the entire
 period. Thus whether to look at the CVaR within a specific year (if period = 'yearly') or look at the entirety
-of all years. Defaults to True.
+of all years. Defaults to False. Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -259,27 +262,25 @@ asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-toolkit.risk.get_entropic_value_at_risk()
+toolkit.risk.get_entropic_value_at_risk(period="yearly", within_period=True)
 ```
 
 Which returns:
 
-|      |    AMZN |    TSLA |   SPY |
-|:-----|--------:|--------:|--------:|
-| 2012 | -0.0392 | -0.0604 | -0.0177 |
-| 2013 | -0.0377 | -0.0928 | -0.0152 |
-| 2014 | -0.0481 | -0.0689 | -0.0162 |
-| 2015 | -0.046  | -0.0564 | -0.0227 |
-| 2016 | -0.043  | -0.0571 | -0.0188 |
-| 2017 | -0.0289 | -0.0501 | -0.0091 |
-| 2018 | -0.0518 | -0.085  | -0.0252 |
-| 2019 | -0.0327 | -0.071  | -0.0173 |
-| 2020 | -0.054  | -0.1211 | -0.0497 |
-| 2021 | -0.0352 | -0.0782 | -0.0183 |
-| 2022 | -0.0758 | -0.1012 | -0.0362 |
-| 2023 | -0.0471 | -0.0793 | -0.0188 |
+|      |    AMZN |    TSLA |   Benchmark |
+|:-----|--------:|--------:|------------:|
+| 2021 | -0.0366 | -0.0821 |     -0.0188 |
+| 2022 | -0.0793 | -0.1059 |     -0.038  |
+| 2023 | -0.0482 | -0.0798 |     -0.0191 |
+| 2024 | -0.0416 | -0.095  |     -0.0184 |
+| 2025 | -0.0525 | -0.0965 |     -0.0293 |
 
 ---
 
@@ -293,12 +294,13 @@ Conditional Drawdown at Risk (CDaR) extends the concept of Value at Risk and Con
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>alpha (float, optional):</u> The confidence level for CDaR calculation (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate CDaR within the specified period or for the entire
 period. Thus whether to look at the CDaR within a specific year (if period = 'yearly') or look at the entirety
-of all years. Defaults to True.
+of all years. Defaults to False. Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, CDaR is
 calculated over a rolling window of this many periods across the full return history instead
 of per `period`. Defaults to None.
@@ -324,21 +326,25 @@ asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-toolkit.risk.get_conditional_drawdown_at_risk()
+toolkit.risk.get_conditional_drawdown_at_risk(period="yearly", within_period=True)
 ```
 
 Which returns:
 
 |      |    AMZN |    TSLA |   Benchmark |
 |:-----|--------:|--------:|------------:|
-| 2021 | -0.1325 | -0.3407 |     -0.0437 |
-| 2022 | -0.499  | -0.6603 |     -0.2424 |
-| 2023 | -0.1756 | -0.2867 |     -0.0832 |
+| 2021 | -0.1325 | -0.3407 |     -0.0413 |
+| 2022 | -0.499  | -0.6603 |     -0.2343 |
+| 2023 | -0.1756 | -0.2867 |     -0.0806 |
 | 2024 | -0.1612 | -0.3662 |     -0.0576 |
-| 2025 | -0.2721 | -0.4558 |     -0.1459 |
-| 2026 | -0.1869 | -0.2267 |     -0.072  |
+| 2025 | -0.2721 | -0.4558 |     -0.1434 |
 
 ---
 
@@ -352,12 +358,14 @@ The Tail Ratio compares the size of the right (gain) tail to the left (loss) tai
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>alpha (float, optional):</u> The percentile used to define each tail (e.g., 0.05 uses the 5th and
 95th percentile). Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate the Tail Ratio within the specified period or
 for the entire period. Thus whether to look at the Tail Ratio within a specific year (if period =
-'yearly') or look at the entirety of all years. Defaults to True.
+'yearly') or look at the entirety of all years. Defaults to False.
+Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Tail
 Ratio is calculated over a rolling window of this many periods across the full return history
 instead of per `period`. Defaults to None.
@@ -384,21 +392,25 @@ Ratio for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-toolkit.risk.get_tail_ratio()
+toolkit.risk.get_tail_ratio(period="yearly", within_period=True)
 ```
 
 Which returns:
 
 |      |   AMZN |   TSLA |   Benchmark |
 |:-----|-------:|-------:|------------:|
-| 2021 | 0.8591 | 1.0173 |      1.0688 |
+| 2021 | 0.8591 | 1.0173 |      1.1327 |
 | 2022 | 0.8406 | 1.0049 |      0.9524 |
-| 2023 | 1.2609 | 1.1958 |      1.0432 |
-| 2024 | 1.1246 | 1.1942 |      0.9049 |
+| 2023 | 1.2609 | 1.1958 |      1.0466 |
+| 2024 | 1.1246 | 1.1942 |      0.9091 |
 | 2025 | 0.9359 | 1.0702 |      0.93   |
-| 2026 | 1.0012 | 0.9592 |      0.8828 |
 
 ---
 
@@ -412,10 +424,12 @@ Maximum Drawdown (MDD) is a risk management metric that quantifies the largest h
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the Maximum Drawdown within the specified period
 or for the entire period. Thus whether to look at the Maximum Drawdown within a specific year
-(if period = 'yearly') or look at the entirety of all years. Defaults to True.
+(if period = 'yearly') or look at the entirety of all years. Defaults to False.
+Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Maximum Drawdown values over time.
 Defaults to False.
@@ -439,27 +453,25 @@ asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-toolkit.risk.get_maximum_drawdown()
+toolkit.risk.get_maximum_drawdown(period="yearly", within_period=True)
 ```
 
 Which returns:
 
-|      |    AMZN |    TSLA |
-|:-----|--------:|--------:|
-| 2012 | -0.1570 | -0.1601 |
-| 2013 | -0.1259 | -0.3768 |
-| 2014 | -0.2948 | -0.3085 |
-| 2015 | -0.1371 | -0.2669 |
-| 2016 | -0.2432 | -0.357  |
-| 2017 | -0.1085 | -0.2227 |
-| 2018 | -0.3410 | -0.3399 |
-| 2019 | -0.1561 | -0.4847 |
-| 2020 | -0.2274 | -0.6063 |
-| 2021 | -0.1457 | -0.3625 |
-| 2022 | -0.5198 | -0.7272 |
-| 2023 | -0.1964 | -0.2823 |
+|      |    AMZN |    TSLA |   Benchmark |
+|:-----|--------:|--------:|------------:|
+| 2021 | -0.146  | -0.3625 |     -0.051  |
+| 2022 | -0.5197 | -0.7272 |     -0.245  |
+| 2023 | -0.1965 | -0.3273 |     -0.0999 |
+| 2024 | -0.1949 | -0.4279 |     -0.0841 |
+| 2025 | -0.3088 | -0.4821 |     -0.1877 |
 
 ---
 
@@ -473,10 +485,12 @@ The Maximum Drawdown Duration is the number of periods between the peak and the 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the duration within the specified period or
 for the entire period. Thus whether to look at the duration within a specific year (if period =
-'yearly') or look at the entirety of all years. Defaults to True.
+'yearly') or look at the entirety of all years. Defaults to False.
+Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the duration values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -499,9 +513,14 @@ Drawdown Duration for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-toolkit.risk.get_maximum_drawdown_duration()
+toolkit.risk.get_maximum_drawdown_duration(period="yearly", within_period=True)
 ```
 
 Which returns:
@@ -513,7 +532,6 @@ Which returns:
 | 2023 |     25 |     73 |          63 |
 | 2024 |     23 |     76 |          14 |
 | 2025 |     52 |     57 |          34 |
-| 2026 |     24 |     64 |          43 |
 
 ---
 
@@ -527,10 +545,12 @@ The Maximum Drawdown Recovery Time is the number of periods it takes for the cum
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the recovery time within the specified period
 or for the entire period. Thus whether to look at the recovery time within a specific year (if
-period = 'yearly') or look at the entirety of all years. Defaults to True.
+period = 'yearly') or look at the entirety of all years. Defaults to False.
+Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the recovery time values over time.
 Defaults to False.
@@ -555,21 +575,25 @@ specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-toolkit.risk.get_maximum_drawdown_recovery_time()
+toolkit.risk.get_maximum_drawdown_recovery_time(period="yearly", within_period=True)
 ```
 
 Which returns:
 
 |      |   AMZN |   TSLA |   Benchmark |
 |:-----|-------:|-------:|------------:|
-| 2021 |    nan |    159 |          13 |
+| 2021 |    nan |    159 |          12 |
 | 2022 |    nan |    nan |         nan |
-| 2023 |     46 |    nan |          24 |
+| 2023 |     46 |    nan |          23 |
 | 2024 |     66 |     51 |          32 |
-| 2025 |    135 |    114 |          55 |
-| 2026 |     40 |    nan |          11 |
+| 2025 |    135 |    114 |          54 |
 
 ---
 
@@ -587,7 +611,7 @@ Ulcer Index = SQRT(SUM[((Pn - Highest High) / Highest High)^2] / n)
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int &#124; None, optional):</u> The trailing lookback window used as the high-water
 mark reference for each day's drawdown. Pass None for an expanding
 (since-inception) high-water mark instead -- this is what the "Highest High"
@@ -620,7 +644,12 @@ asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_ulcer_index()
 ```
@@ -629,18 +658,11 @@ Which returns:
 
 |      |   AMZN |   TSLA |   Benchmark |
 |:-----|-------:|-------:|------------:|
-| 2012 | 0.0497 | 0.0454 |      0.0234 |
-| 2013 | 0.035  | 0.0829 |      0.0142 |
-| 2014 | 0.0659 | 0.0746 |      0.0174 |
-| 2015 | 0.0273 | 0.0624 |      0.0238 |
-| 2016 | 0.0519 | 0.0799 |      0.0151 |
-| 2017 | 0.0241 | 0.0616 |      0.0067 |
-| 2018 | 0.0619 | 0.0892 |      0.0356 |
-| 2019 | 0.0373 | 0.0839 |      0.016  |
-| 2020 | 0.0536 | 0.1205 |      0.0594 |
-| 2021 | 0.0427 | 0.085  |      0.0136 |
-| 2022 | 0.1081 | 0.1373 |      0.0492 |
-| 2023 | 0.0475 | 0.0815 |      0.0186 |
+| 2021 | 0.0427 | 0.0851 |      0.0133 |
+| 2022 | 0.1081 | 0.1373 |      0.0488 |
+| 2023 | 0.0483 | 0.0839 |      0.0202 |
+| 2024 | 0.0395 | 0.0908 |      0.0167 |
+| 2025 | 0.0567 | 0.1006 |      0.0276 |
 
 ---
 
@@ -654,7 +676,7 @@ GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>time_steps (int, optional):</u> Time steps to calculate GARCH for.
 - <u>optimization_t (int, optional):</u> Time steps to optimize GARCH for. It is only used if no weights are given.
 - <u>within_period (bool, optional):</u> Whether to calculate GARCH within the specified period or for the entire
@@ -682,7 +704,12 @@ asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_garch(period="quarterly")
 ```
@@ -691,16 +718,25 @@ Which returns:
 
 | Date   |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2024Q2 | 0.0267 | 0.1602 |      0.008  |
-| 2024Q3 | 0.0266 | 0.151  |      0.0069 |
-| 2024Q4 | 0.0265 | 0.163  |      0.0064 |
-| 2025Q1 | 0.0266 | 0.1912 |      0.0056 |
-| 2025Q2 | 0.0266 | 0.1692 |      0.0052 |
-| 2025Q3 | 0.0266 | 0.1567 |      0.0065 |
-| 2025Q4 | 0.0265 | 0.1714 |      0.0066 |
-| 2026Q1 | 0.0265 | 0.1495 |      0.0058 |
-| 2026Q2 | 0.0265 | 0.1523 |      0.0054 |
-| 2026Q3 | 0.0266 | 0.1507 |      0.0083 |
+| 2021Q2 | 0.0125 | 0.0003 |      0.007  |
+| 2021Q3 | 0.0186 | 0.0462 |      0.0068 |
+| 2021Q4 | 0.0222 | 0.0745 |      0.0065 |
+| 2022Q1 | 0.0244 | 0.092  |      0.0063 |
+| 2022Q2 | 0.0257 | 0.1029 |      0.0061 |
+| 2022Q3 | 0.0264 | 0.1096 |      0.006  |
+| 2022Q4 | 0.0269 | 0.1137 |      0.0058 |
+| 2023Q1 | 0.0271 | 0.1163 |      0.0056 |
+| 2023Q2 | 0.0273 | 0.1179 |      0.0055 |
+| 2023Q3 | 0.0274 | 0.1189 |      0.0054 |
+| 2023Q4 | 0.0274 | 0.1195 |      0.0053 |
+| 2024Q1 | 0.0275 | 0.1199 |      0.0051 |
+| 2024Q2 | 0.0275 | 0.1201 |      0.005  |
+| 2024Q3 | 0.0275 | 0.1202 |      0.0049 |
+| 2024Q4 | 0.0275 | 0.1203 |      0.0049 |
+| 2025Q1 | 0.0275 | 0.1204 |      0.0048 |
+| 2025Q2 | 0.0275 | 0.1204 |      0.0047 |
+| 2025Q3 | 0.0275 | 0.1204 |      0.0046 |
+| 2025Q4 | 0.0275 | 0.1204 |      0.0046 |
 
 ---
 
@@ -724,7 +760,7 @@ For more information about the method, see the following book:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>time_steps (int, optional):</u> Time steps to calculate GARCH and to forecast sigma_2 values for.
 - <u>within_period (bool, optional):</u> Whether to calculate GARCH within each specified period or all
 at once. Thus whether to look at the GARCH within each specific year (if period = 'yearly') or
@@ -753,7 +789,12 @@ the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_garch_forecast(period="quarterly")
 ```
@@ -762,16 +803,16 @@ Which returns:
 
 |        |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2026Q4 | 0.0267 | 0.1703 |      0.0053 |
-| 2027Q1 | 0.0267 | 0.1703 |      0.0053 |
-| 2027Q2 | 0.0267 | 0.1738 |      0.0056 |
-| 2027Q3 | 0.0267 | 0.1745 |      0.0058 |
-| 2027Q4 | 0.0266 | 0.1747 |      0.006  |
-| 2028Q1 | 0.0266 | 0.1747 |      0.0062 |
-| 2028Q2 | 0.0266 | 0.1747 |      0.0063 |
-| 2028Q3 | 0.0266 | 0.1747 |      0.0064 |
-| 2028Q4 | 0.0266 | 0.1747 |      0.0065 |
-| 2029Q1 | 0.0266 | 0.1747 |      0.0066 |
+| 2026Q1 | 0.0275 | 0.1205 |      0.0045 |
+| 2026Q2 | 0.0275 | 0.1205 |      0.0044 |
+| 2026Q3 | 0.0275 | 0.1205 |      0.0044 |
+| 2026Q4 | 0.0275 | 0.1205 |      0.0043 |
+| 2027Q1 | 0.0275 | 0.1205 |      0.0043 |
+| 2027Q2 | 0.0275 | 0.1205 |      0.0042 |
+| 2027Q3 | 0.0275 | 0.1205 |      0.0042 |
+| 2027Q4 | 0.0275 | 0.1205 |      0.0042 |
+| 2028Q1 | 0.0275 | 0.1205 |      0.0041 |
+| 2028Q2 | 0.0275 | 0.1205 |      0.0041 |
 
 ---
 
@@ -781,7 +822,7 @@ Fits a GARCH(1, 1) model to the historical returns and returns the estimated Ome
 GARCH (Generalized autoregressive conditional heteroskedasticity) is a stochastic model for time series, used to model volatility clustering. A GARCH(1, 1) model expresses the conditional variance sigma_t^2 as:
 
 $$
-\sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot \operatorname{u\_}(t-1) ^{2} + \text{Beta} \cdot \operatorname{sigma\_}(t-1) ^{2}
+\sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot u_{t-1} ^{2} + \text{Beta} \cdot \sigma_{t-1} ^{2}
 $$
 
 With the constraints Omega, Alpha, Beta > 0 and Alpha + Beta < 1. The parameters are estimated via simulated annealing, maximizing the GARCH log-likelihood function.
@@ -797,7 +838,7 @@ For more information about the method, see the following book:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>optimization_t (int, optional):</u> Time steps of the returns series to use for the optimization.
 Defaults to the full length of the returns series.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -816,7 +857,12 @@ GARCH(1, 1) model for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_garch_parameters(period="quarterly")
 ```
@@ -825,9 +871,9 @@ Which returns:
 
 |       |   AMZN |   TSLA |   Benchmark |
 |:------|-------:|-------:|------------:|
-| Omega | 0.0191 | 0.1379 |      0.0011 |
-| Alpha | 0.0038 | 0.143  |      0.1528 |
-| Beta  | 0.278  | 0.0677 |      0.6939 |
+| Omega | 0.0112 | 0.046  |      0.0003 |
+| Alpha | 0      | 0      |      0      |
+| Beta  | 0.5947 | 0.6184 |      0.9274 |
 
 ---
 
@@ -845,7 +891,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>time_steps (int, optional):</u> Time steps to calculate GJR-GARCH for.
 - <u>optimization_t (int, optional):</u> Time steps to optimize GJR-GARCH for. It is only used if no
 weights are given.
@@ -875,7 +921,12 @@ specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_gjr_garch(period="quarterly")
 ```
@@ -884,16 +935,25 @@ Which returns:
 
 | Date   |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2024Q2 | 0.027  | 0.1542 |      0.0053 |
-| 2024Q3 | 0.0267 | 0.1513 |      0.0047 |
-| 2024Q4 | 0.0266 | 0.1642 |      0.0048 |
-| 2025Q1 | 0.0264 | 0.1937 |      0.0046 |
-| 2025Q2 | 0.027  | 0.1603 |      0.0065 |
-| 2025Q3 | 0.0267 | 0.157  |      0.0053 |
-| 2025Q4 | 0.0265 | 0.173  |      0.005  |
-| 2026Q1 | 0.0264 | 0.1503 |      0.0046 |
-| 2026Q2 | 0.0267 | 0.1506 |      0.0066 |
-| 2026Q3 | 0.0265 | 0.1513 |      0.0061 |
+| 2021Q2 | 0.0125 | 0.0003 |      0.007  |
+| 2021Q3 | 0.0208 | 0.0523 |      0.0065 |
+| 2021Q4 | 0.0219 | 0.0735 |      0.0057 |
+| 2022Q1 | 0.0219 | 0.0821 |      0.0057 |
+| 2022Q2 | 0.0219 | 0.0856 |      0.0054 |
+| 2022Q3 | 0.0319 | 0.1403 |      0.0088 |
+| 2022Q4 | 0.0233 | 0.1093 |      0.0079 |
+| 2023Q1 | 0.0275 | 0.2052 |      0.0072 |
+| 2023Q2 | 0.0235 | 0.1357 |      0.0066 |
+| 2023Q3 | 0.0232 | 0.1074 |      0.0062 |
+| 2023Q4 | 0.0221 | 0.0966 |      0.0056 |
+| 2024Q1 | 0.0225 | 0.0915 |      0.0057 |
+| 2024Q2 | 0.0225 | 0.1218 |      0.0056 |
+| 2024Q3 | 0.022  | 0.1018 |      0.0052 |
+| 2024Q4 | 0.022  | 0.0936 |      0.0048 |
+| 2025Q1 | 0.0224 | 0.0903 |      0.0044 |
+| 2025Q2 | 0.0234 | 0.1375 |      0.0044 |
+| 2025Q3 | 0.0225 | 0.1081 |      0.0046 |
+| 2025Q4 | 0.0219 | 0.0962 |      0.0046 |
 
 ---
 
@@ -909,7 +969,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>time_steps (int, optional):</u> Time steps to calculate GJR-GARCH and to forecast sigma_2 values for.
 - <u>within_period (bool, optional):</u> Whether to calculate GJR-GARCH within each specified period or
 all at once. Defaults to False.
@@ -938,7 +998,12 @@ the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_gjr_garch_forecast(period="quarterly")
 ```
@@ -947,16 +1012,16 @@ Which returns:
 
 |        |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2026Q4 | 0.0258 | 0.1716 |      0.0046 |
-| 2027Q1 | 0.0258 | 0.1716 |      0.0046 |
-| 2027Q2 | 0.0264 | 0.1687 |      0.0071 |
-| 2027Q3 | 0.0268 | 0.1681 |      0.0086 |
-| 2027Q4 | 0.0272 | 0.168  |      0.0094 |
-| 2028Q1 | 0.0274 | 0.168  |      0.0099 |
-| 2028Q2 | 0.0276 | 0.168  |      0.0102 |
-| 2028Q3 | 0.0277 | 0.168  |      0.0103 |
-| 2028Q4 | 0.0278 | 0.168  |      0.0104 |
-| 2029Q1 | 0.0279 | 0.168  |      0.0105 |
+| 2026Q1 | 0.0219 | 0.0913 |      0.0042 |
+| 2026Q2 | 0.023  | 0.1066 |      0.0043 |
+| 2026Q3 | 0.0232 | 0.1158 |      0.0044 |
+| 2026Q4 | 0.0232 | 0.1212 |      0.0045 |
+| 2027Q1 | 0.0232 | 0.1244 |      0.0046 |
+| 2027Q2 | 0.0232 | 0.1264 |      0.0047 |
+| 2027Q3 | 0.0232 | 0.1275 |      0.0048 |
+| 2027Q4 | 0.0232 | 0.1282 |      0.0048 |
+| 2028Q1 | 0.0232 | 0.1286 |      0.0049 |
+| 2028Q2 | 0.0232 | 0.1288 |      0.0049 |
 
 ---
 
@@ -974,7 +1039,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>optimization_t (int, optional):</u> Time steps of the returns series to use for the optimization.
 Defaults to the full length of the returns series.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
@@ -994,19 +1059,24 @@ GJR-GARCH(1, 1, 1) model for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_gjr_garch_parameters(period="quarterly")
 ```
 
 Which returns:
 
-|       |   AMZN |    TSLA |   Benchmark |
-|:------|-------:|--------:|------------:|
-| Omega | 0.0074 |  0.138  |      0.0045 |
-| Alpha | 0      |  0.1492 |      0.0699 |
-| Gamma | 0.0428 | -0.0828 |      1      |
-| Beta  | 0.7156 |  0.0711 |      0      |
+|       |   AMZN |   TSLA |   Benchmark |
+|:------|-------:|-------:|------------:|
+| Omega | 0.0189 | 0.0522 |      0.0005 |
+| Alpha | 0.0169 | 0      |      0.05   |
+| Gamma | 0.0656 | 0.3783 |      0.1    |
+| Beta  | 0.1363 | 0.4067 |      0.8    |
 
 ---
 
@@ -1024,7 +1094,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>time_steps (int, optional):</u> Time steps to calculate EGARCH for.
 - <u>optimization_t (int, optional):</u> Time steps to optimize EGARCH for. It is only used if no
 weights are given.
@@ -1054,7 +1124,12 @@ specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_egarch(period="quarterly")
 ```
@@ -1063,16 +1138,25 @@ Which returns:
 
 | Date   |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2024Q2 | 0.0263 | 0.1078 |      0.005  |
-| 2024Q3 | 0.0259 | 0.1658 |      0.0047 |
-| 2024Q4 | 0.0255 | 0.1991 |      0.0048 |
-| 2025Q1 | 0.0262 | 0.2357 |      0.0046 |
-| 2025Q2 | 0.0249 | 0.1134 |      0.0078 |
-| 2025Q3 | 0.0262 | 0.1846 |      0.0051 |
-| 2025Q4 | 0.0257 | 0.2112 |      0.0049 |
-| 2026Q1 | 0.0259 | 0.1543 |      0.0046 |
-| 2026Q2 | 0.0251 | 0.1238 |      0.0079 |
-| 2026Q3 | 0.0261 | 0.1672 |      0.0053 |
+| 2021Q2 | 0.0125 | 0.0003 |      0.007  |
+| 2021Q3 | 0.0064 | 0.016  |      0.0041 |
+| 2021Q4 | 0.011  | 0.0375 |      0.0125 |
+| 2022Q1 | 0.0204 | 0.016  |      0.0054 |
+| 2022Q2 | 0.043  | 0.1453 |      0.0118 |
+| 2022Q3 | 0.0416 | 0.1801 |      0.0109 |
+| 2022Q4 | 0.0595 | 0.1849 |      0.0175 |
+| 2023Q1 | 0.0793 | 0.1644 |      0.0118 |
+| 2023Q2 | 0.0536 | 0.0304 |      0.0082 |
+| 2023Q3 | 0.0226 | 0.0257 |      0.0047 |
+| 2023Q4 | 0.0474 | 0.1743 |      0.012  |
+| 2024Q1 | 0.0284 | 0.3327 |      0.0047 |
+| 2024Q2 | 0.0123 | 0.2949 |      0.0016 |
+| 2024Q3 | 0.0108 | 0.2774 |      0.0018 |
+| 2024Q4 | 0.0207 | 0.1595 |      0.0013 |
+| 2025Q1 | 0.0075 | 0.0479 |      0.003  |
+| 2025Q2 | 0.0079 | 0.0922 |      0.0084 |
+| 2025Q3 | 0.0014 | 0.0997 |      0.0034 |
+| 2025Q4 | 0.0031 | 0.0485 |      0.0016 |
 
 ---
 
@@ -1088,7 +1172,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>time_steps (int, optional):</u> Time steps to calculate EGARCH and to forecast sigma_2 values for.
 - <u>within_period (bool, optional):</u> Whether to calculate EGARCH within each specified period or
 all at once. Defaults to False.
@@ -1117,7 +1201,12 @@ the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_egarch_forecast(period="quarterly")
 ```
@@ -1126,16 +1215,16 @@ Which returns:
 
 |        |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2026Q4 | 0.0261 | 0.1672 |      0.0053 |
-| 2027Q1 | 0.0255 | 0.1465 |      0.0066 |
-| 2027Q2 | 0.0255 | 0.1448 |      0.0067 |
-| 2027Q3 | 0.0255 | 0.1447 |      0.0067 |
-| 2027Q4 | 0.0255 | 0.1447 |      0.0067 |
-| 2028Q1 | 0.0255 | 0.1447 |      0.0067 |
-| 2028Q2 | 0.0255 | 0.1447 |      0.0067 |
-| 2028Q3 | 0.0255 | 0.1447 |      0.0067 |
-| 2028Q4 | 0.0255 | 0.1447 |      0.0067 |
-| 2029Q1 | 0.0255 | 0.1447 |      0.0067 |
+| 2026Q1 | 0.0018 | 0.2247 |      0.0035 |
+| 2026Q2 | 0.0018 | 0.1615 |      0.006  |
+| 2026Q3 | 0.0019 | 0.1483 |      0.0076 |
+| 2026Q4 | 0.0019 | 0.1451 |      0.0085 |
+| 2027Q1 | 0.002  | 0.1443 |      0.009  |
+| 2027Q2 | 0.0021 | 0.1441 |      0.0092 |
+| 2027Q3 | 0.0021 | 0.144  |      0.0093 |
+| 2027Q4 | 0.0022 | 0.144  |      0.0093 |
+| 2028Q1 | 0.0022 | 0.144  |      0.0093 |
+| 2028Q2 | 0.0023 | 0.144  |      0.0093 |
 
 ---
 
@@ -1153,7 +1242,7 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>optimization_t (int, optional):</u> Time steps of the returns series to use for the optimization.
 Defaults to the full length of the returns series.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
@@ -1176,7 +1265,12 @@ Prefer `period="quarterly"` or a higher frequency where possible.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_egarch_parameters(period="quarterly")
 ```
@@ -1185,10 +1279,10 @@ Which returns:
 
 |       |    AMZN |    TSLA |   Benchmark |
 |:------|--------:|--------:|------------:|
-| Omega | -3.5971 | -1.7701 |     -4.6755 |
-| Alpha | -0.0115 | -0.0296 |      0.485  |
-| Gamma |  0.0286 |  0.3887 |     -0.4054 |
-| Beta  |  0.0196 |  0.0844 |      0.0651 |
+| Omega |  0.0232 | -1.4376 |     -2.5535 |
+| Alpha | -1      | -1      |     -1      |
+| Gamma | -0.4903 | -0.414  |     -0.4958 |
+| Beta  |  0.999  |  0.2582 |      0.4535 |
 
 ---
 
@@ -1238,19 +1332,20 @@ assets and estimates the tail dependence coefficient between them.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_tail_dependence_coefficient("AAPL", "MSFT", period="weekly")
 ```
 
 Which returns:
 
-| Metric                |   Value |
-|:-----------------------|--------:|
-| Lower Tail Dependence  |  0.25   |
-| Upper Tail Dependence  |  0.375  |
-| Correlation            |  0.7602 |
-| Observations           | 157      |
+| 0   |
+|-----|
 
 ---
 
@@ -1315,21 +1410,20 @@ requested copula between the given pair, or every pair, of tickers.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_copula_parameters("AAPL", "MSFT", copula="clayton", period="weekly")
 ```
 
 Which returns:
 
-|                       |    Value |
-|:----------------------|---------:|
-| Theta                 |   0.7342 |
-| Lower Tail Dependence |   0.389  |
-| Upper Tail Dependence |   0      |
-| Log-Likelihood        |  33.6247 |
-| AIC                   | -65.2495 |
-| Observations          | 314      |
+| 0   |
+|-----|
 
 ---
 
@@ -1385,7 +1479,12 @@ requested copula, and simulates from it, for the given pair or every pair of tic
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_copula_simulation(
     "AAPL", "MSFT", copula="clayton", period="weekly", n_simulations=5000
@@ -1394,16 +1493,12 @@ toolkit.risk.get_copula_simulation(
 
 Which returns:
 
-|       |          AAPL |         MSFT |
-|:------|--------------:|-------------:|
-| count | 5000          | 5000         |
-| mean  |    0.00357512 |    0.0028215 |
-| std   |    0.0371953  |    0.0365134 |
-| min   |   -0.1316     |   -0.0764    |
-| 25%   |   -0.0196     |   -0.0211    |
-| 50%   |    0.0019     |    0.00145   |
-| 75%   |    0.0261     |    0.0213    |
-| max   |    0.1315     |    0.2169    |
+|        |   0 |
+|:-------|----:|
+| count  |   0 |
+| unique |   0 |
+| top    | nan |
+| freq   | nan |
 
 ---
 
@@ -1456,20 +1551,20 @@ supported copula family for the given pair, or every pair, of tickers.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_best_fitting_copula("AAPL", "MSFT", period="weekly")
 ```
 
 Which returns:
 
-| Copula    |   Lower Tail Dependence |   Upper Tail Dependence |   Log-Likelihood |      AIC |
-|:----------|------------------------:|------------------------:|------------------:|---------:|
-| Student-T |                  0.1915 |                  0.1915 |            51.9971 | -99.9942 |
-| Frank     |                  0      |                  0      |            49.2452 | -96.4903 |
-| Gumbel    |                  0      |                  0.4256 |            48.9139 | -95.8277 |
-| Gaussian  |                  0      |                  0      |            42.908  | -83.816  |
-| Clayton   |                  0.389  |                  0      |            33.6247 | -65.2495 |
+| 0   |
+|-----|
 
 ---
 
@@ -1514,20 +1609,20 @@ assets and estimates the CoVaR of `ticker` conditional on `conditioning_ticker`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_covar("AAPL", "MSFT", period="weekly")
 ```
 
 Which returns:
 
-| Metric                         |   Value |
-|:--------------------------------|--------:|
-| CoVaR                           | -0.1077 |
-| Delta-CoVaR                     | -0.1134 |
-| Quantile Regression Slope       |  0.9214 |
-| Quantile Regression Intercept   | -0.0508 |
-| Observations                    | 157     |
+| 0   |
+|-----|
 
 ---
 
@@ -1557,7 +1652,8 @@ keyed by ticker. Normalized internally to sum to 1. Defaults to None, which
 uses equal weights across every ticker in the Toolkit instance (excluding
 the "Portfolio" and "Benchmark" pseudo-tickers, if present).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+"daily", since a whole-series estimate needs far more observations than a single
+quarter or year holds.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>alpha (float, optional):</u> The confidence level (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
@@ -1582,7 +1678,12 @@ the weighted portfolio built from `weights`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_marginal_value_at_risk(weights={"AMZN": 0.5, "TSLA": 0.3, "MSFT": 0.2})
 ```
@@ -1591,9 +1692,9 @@ Which returns:
 
 |      |   Marginal VaR |
 |:-----|---------------:|
-| AMZN |        -0.0512 |
-| TSLA |        -0.0698 |
-| MSFT |        -0.0331 |
+| AMZN |        -0.0298 |
+| TSLA |        -0.05   |
+| MSFT |        -0.0182 |
 
 ---
 
@@ -1603,7 +1704,7 @@ Calculate the Component Value at Risk (Component VaR) of each asset in a portfol
 Component VaR allocates total portfolio VaR across its constituent assets, such that the allocations sum exactly back to the portfolio VaR - an "Euler" (or "fully consistent") risk decomposition:
 
 $$
-\text{Component VaR}_{i} = \text{weight}_{i} \cdot \text{Marginal VaR}_{i} (\text{see} \text{get\_marginal\_value\_at\_risk})
+\text{Component VaR}_{i} = \text{weight}_{i} \cdot \text{Marginal VaR}_{i} (\text{see}\; \text{get\_marginal\_value\_at\_risk})
 $$
 
 $$
@@ -1627,7 +1728,8 @@ keyed by ticker. Normalized internally to sum to 1. Defaults to None, which
 uses equal weights across every ticker in the Toolkit instance (excluding
 the "Portfolio" and "Benchmark" pseudo-tickers, if present).
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+"daily", since a whole-series estimate needs far more observations than a single
+quarter or year holds.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>alpha (float, optional):</u> The confidence level (e.g., 0.05 for 95% confidence).
 Defaults to 0.05.
@@ -1653,7 +1755,12 @@ the weighted portfolio built from `weights`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_component_value_at_risk(weights={"AMZN": 0.5, "TSLA": 0.3, "MSFT": 0.2})
 ```
@@ -1661,11 +1768,11 @@ toolkit.risk.get_component_value_at_risk(weights={"AMZN": 0.5, "TSLA": 0.3, "MSF
 Which returns:
 
 |           |   Component VaR |
-|:----------|-----------------:|
-| AMZN      |          -0.0256 |
-| TSLA      |          -0.0209 |
-| MSFT      |          -0.0066 |
-| Portfolio |          -0.0531 |
+|:----------|----------------:|
+| AMZN      |         -0.0149 |
+| TSLA      |         -0.015  |
+| MSFT      |         -0.0036 |
+| Portfolio |         -0.0335 |
 
 ---
 
@@ -1711,19 +1818,24 @@ a single sub-period provides.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_var_backtest(window_size=252)
 ```
 
 Which returns:
 
-|                         |    AMZN |    TSLA |   Benchmark |
-|:------------------------|--------:|--------:|------------:|
-| Kupiec Statistic        |  0.0817 |  1.6459 |      0.0018 |
-| P-Value                 |  0.7749 |  0.1995 |      0.9662 |
-| Christoffersen Statistic |  0.0631 |  0.4302 |      1.0847 |
-| P-Value                 |  0.8017 |  0.512  |      0.2977 |
+|                          |   AMZN |   TSLA |   Benchmark |
+|:-------------------------|-------:|-------:|------------:|
+| Kupiec Statistic         | 2.3413 | 0.1736 |      0.312  |
+| P-Value                  | 0.126  | 0.677  |      0.5765 |
+| Christoffersen Statistic | 0.4588 | 5.9293 |      4.7906 |
+| P-Value                  | 0.4982 | 0.0149 |      0.0286 |
 
 ---
 
@@ -1771,19 +1883,24 @@ history than a single sub-period provides.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_acerbi_szekely_test(window_size=100)
 ```
 
 Which returns:
 
-|                           |    AAPL |    MSFT |   Benchmark |
-|:--------------------------|--------:|--------:|------------:|
-| Acerbi-Szekely Statistic  |  0.0905 |  0.0095 |     -0.003  |
-| Standard Error            |  0.1817 |  0.1723 |      0.1663 |
-| P-Value                   |  0.6185 |  0.9558 |      0.9858 |
-| Breaches                  | 37      | 33      |     33      |
+|                          |    AMZN |    TSLA |   Benchmark |
+|:-------------------------|--------:|--------:|------------:|
+| Acerbi-Szekely Statistic |  0.2146 |  0.2444 |      0.3931 |
+| Standard Error           |  0.1615 |  0.1543 |      0.1554 |
+| P-Value                  |  0.1838 |  0.1133 |      0.0114 |
+| Breaches                 | 65      | 70      |     78      |
 
 ---
 
@@ -1797,10 +1914,12 @@ Skewness is a statistical measure used in finance to assess the asymmetry in the
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the Skewness within the specified period or for the
 entire period. Thus whether to look at the Skewness within a specific year (if period = 'yearly') or look
-at the entirety of all years. Defaults to True.
+at the entirety of all years. Defaults to False.
+Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Skewness is
 calculated over a rolling window of this many periods across the full return history instead of
 per `period`. Defaults to None.
@@ -1827,20 +1946,25 @@ asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["MSFT", "AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["MSFT", "AAPL", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-toolkit.risk.get_skewness()
+toolkit.risk.get_skewness(period="yearly", within_period=True)
 ```
 
 Which returns:
 
-|      |    MSFT |    AAPL |    TSLA |
-|:-----|--------:|--------:|--------:|
-| 2019 | -0.194  | -0.9216 | -0.0646 |
-| 2020 | -0.0747 | -0.0586 | -0.1824 |
-| 2021 | -0.0194 | -0.0716 |  0.6572 |
-| 2022 |  0.1478 |  0.3164 | -0.0263 |
-| 2023 |  0.5252 |  0.0318 | -0.0972 |
+|      |    MSFT |    AAPL |    TSLA |   Benchmark |
+|:-----|--------:|--------:|--------:|------------:|
+| 2021 | -0.0175 | -0.0735 |  0.669  |     -0.3324 |
+| 2022 |  0.1474 |  0.3167 | -0.026  |      0.0454 |
+| 2023 |  0.3774 | -0.0662 |  0.0021 |     -0.0206 |
+| 2024 | -0.8882 |  0.4447 |  0.8937 |     -0.5242 |
+| 2025 |  1.3142 |  1.1299 |  0.4045 |      1.5069 |
 
 ---
 
@@ -1854,10 +1978,12 @@ Kurtosis is a statistical measure used in finance to evaluate the shape of the p
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the Kurtosis within the specified period or for the
 entire period. Thus whether to look at the Kurtosis within a specific year (if period = 'yearly') or look
-at the entirety of all years. Defaults to True.
+at the entirety of all years. Defaults to False.
+Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>fisher (bool, optional):</u> Whether to use Fisher's definition of kurtosis (kurtosis = 0.0
 for a normal distribution). Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Kurtosis is
@@ -1886,20 +2012,25 @@ asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["MSFT", "AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["MSFT", "AAPL", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-toolkit.risk.get_kurtosis()
+toolkit.risk.get_kurtosis(period="yearly", within_period=True)
 ```
 
 Which returns:
 
-|      |   MSFT |    AAPL |   TSLA |
-|:-----|-------:|--------:|-------:|
-| 2019 | 4.0972 | 10.0741 | 9.128  |
-| 2020 | 9.2914 |  6.6307 | 5.2189 |
-| 2021 | 3.3152 |  3.3352 | 7.3197 |
-| 2022 | 3.852  |  4.0085 | 3.3553 |
-| 2023 | 4.2908 |  4.4568 | 4.07   |
+|      |    MSFT |    AAPL |   TSLA |   Benchmark |
+|:-----|--------:|--------:|-------:|------------:|
+| 2021 |  3.3906 |  3.4146 | 7.488  |      3.7279 |
+| 2022 |  3.8936 |  4.054  | 3.386  |      3.3635 |
+| 2023 |  4.4619 |  4.4804 | 4.3336 |      2.843  |
+| 2024 |  5.1741 |  6.6121 | 7.5225 |      4.7961 |
+| 2025 | 13.1336 | 17.0667 | 7.7019 |     26.576  |
 
 ---
 
@@ -1917,9 +2048,11 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the estimator within the specified period
-or for the entire period. Defaults to True.
+or for the entire period. Defaults to False.
+Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>k (int &#124; float, optional):</u> The number of upper order statistics to use. If a float in (0, 1)
 it is interpreted as the fraction of the strictly positive observations to use. Defaults to
 0.1 (the top 10%).
@@ -1943,19 +2076,24 @@ Hill Estimator for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_hill_estimator(period="weekly", within_period=False)
 ```
 
 Which returns:
 
-|                        |   AAPL |   MSFT |   Benchmark |
-|:-----------------------|-------:|-------:|------------:|
-| Hill Tail Index        | 2.6934 | 5.0478 |      2.1843 |
-| Hill Shape (xi)        | 0.3713 | 0.1981 |      0.4578 |
-| Standard Error         | 1.018  | 1.9079 |      0.8256 |
-| Observations Used (k)  | 7      | 7      |      7      |
+|                       |    AMZN |    TSLA |   Benchmark |
+|:----------------------|--------:|--------:|------------:|
+| Hill Tail Index       |  3.2418 |  9.5123 |      2.7487 |
+| Hill Shape (xi)       |  0.3085 |  0.1051 |      0.3638 |
+| Standard Error        |  0.9358 |  2.746  |      0.8288 |
+| Observations Used (k) | 12      | 12      |     11      |
 
 ---
 
@@ -1971,7 +2109,7 @@ The daily Variance is scaled to the given period by multiplying it with the numb
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Variance is calculated over a rolling window of this many periods (e.g. period='monthly'
 and rolling=6 gives the rolling 6-month Variance) instead of one value per `period`.
@@ -1998,7 +2136,12 @@ the specified `period` for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_variance(period="yearly")
 ```
@@ -2007,12 +2150,11 @@ Which returns:
 
 | Date   |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2021   | 0.058  | 0.2999 |      0.0172 |
-| 2022   | 0.2508 | 0.4446 |      0.0589 |
-| 2023   | 0.109  | 0.2922 |      0.0174 |
+| 2021   | 0.0578 | 0.3    |      0.0167 |
+| 2022   | 0.2508 | 0.4446 |      0.0588 |
+| 2023   | 0.109  | 0.2922 |      0.0171 |
 | 2024   | 0.0789 | 0.4032 |      0.0158 |
-| 2025   | 0.1184 | 0.4031 |      0.0379 |
-| 2026   | 0.0999 | 0.1859 |      0.02   |
+| 2025   | 0.1184 | 0.4031 |      0.038  |
 
 ---
 
@@ -2042,7 +2184,7 @@ For more information about the range-based estimators, see the following papers:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Volatility is calculated over a rolling window of this many periods (e.g. period='monthly'
 and rolling=6 gives the rolling 6-month Volatility) instead of one value per `period`.
@@ -2075,7 +2217,12 @@ estimators need the Open, High, Low and Close.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_volatility(period="yearly")
 ```
@@ -2084,12 +2231,11 @@ Which returns:
 
 | Date   |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2021   | 0.2409 | 0.5476 |      0.131  |
-| 2022   | 0.5008 | 0.6668 |      0.2427 |
-| 2023   | 0.3302 | 0.5406 |      0.1318 |
-| 2024   | 0.2809 | 0.635  |      0.1258 |
+| 2021   | 0.2404 | 0.5477 |      0.1293 |
+| 2022   | 0.5008 | 0.6668 |      0.2425 |
+| 2023   | 0.3302 | 0.5406 |      0.1307 |
+| 2024   | 0.2809 | 0.635  |      0.1257 |
 | 2025   | 0.3442 | 0.6349 |      0.1948 |
-| 2026   | 0.3161 | 0.4312 |      0.1414 |
 
 And, using the daily trading range instead of only the closes:
 
@@ -2101,12 +2247,11 @@ toolkit.risk.get_volatility(period="yearly", method="parkinson")
 
 | Date   |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2021   | 0.2099 | 0.426  |      0.103  |
+| 2021   | 0.2089 | 0.4563 |      0.1073 |
 | 2022   | 0.3717 | 0.5547 |      0.1916 |
-| 2023   | 0.2611 | 0.4365 |      0.1101 |
+| 2023   | 0.2617 | 0.438  |      0.1101 |
 | 2024   | 0.219  | 0.4357 |      0.0989 |
 | 2025   | 0.267  | 0.5062 |      0.152  |
-| 2026   | 0.2681 | 0.3781 |      0.1111 |
 
 ---
 
@@ -2155,20 +2300,25 @@ using the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_har_rv_forecast(estimator="squared_return").tail()
 ```
 
 Which returns:
 
-| Date       |   AAPL |   MSFT |   Benchmark |
-|:-----------|-------:|-------:|------------:|
-| 2022-12-23 | 0.0004 | 0.0002 |      0.0001 |
-| 2022-12-27 | 0.0004 | 0.0002 |      0.0001 |
-| 2022-12-28 | 0.0006 | 0.0003 |      0.0002 |
-| 2022-12-29 | 0.0006 | 0.0006 |      0.0002 |
-| 2022-12-30 | NaN    | NaN    |    NaN      |
+| Date       |     AMZN |     TSLA |   Benchmark |
+|:-----------|---------:|---------:|------------:|
+| 2025-12-24 |   0.0003 |   0.0011 |      0.0001 |
+| 2025-12-26 |   0.0003 |   0.0011 |      0.0001 |
+| 2025-12-29 |   0.0003 |   0.0011 |      0.0001 |
+| 2025-12-30 |   0.0003 |   0.0011 |      0.0001 |
+| 2025-12-31 | nan      | nan      |    nan      |
 
 The last row is NaN since there is no `2022-12-31` return yet to forecast against.
 
@@ -2188,9 +2338,10 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the ratio within the specified period or
-for the entire period. Defaults to True.
+for the entire period. Defaults to False. Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>scale (float, optional):</u> A multiplier applied to the resulting ratio purely for readability.
 Defaults to 1,000,000.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -2217,19 +2368,23 @@ using the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_amihud_illiquidity(period="quarterly", scale=1e12)
 ```
 
 Which returns:
 
-| Date   |   AAPL |   MSFT |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2022Q1 | 0.9388 | 1.4796 |      0.2251 |
-| 2022Q2 | 1.4477 | 2.2593 |      0.3401 |
-| 2022Q3 | 1.1619 | 1.942  |      0.3349 |
-| 2022Q4 | 1.5347 | 2.429  |      0.3445 |
+|           |      0 |
+|:----------|-------:|
+| AMZN      | 0.2447 |
+| TSLA      | 0.1704 |
+| Benchmark | 0.0306 |
 
 Note that a large `scale` is used here since these are liquid, large-cap
 stocks with very high dollar trading volume relative to their typical daily
@@ -2252,9 +2407,10 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+"daily".
 - <u>within_period (bool, optional):</u> Whether to calculate the spread within the specified period or
-for the entire period. Defaults to True.
+for the entire period. Defaults to False. Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
@@ -2274,20 +2430,24 @@ the Roll Spread for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-# Shown for a single quarter; with the default within_period=True this runs separately for every quarter in range.
-toolkit.risk.get_roll_spread(period="quarterly").xs("2022Q2", level=0)
+toolkit.risk.get_roll_spread()
 ```
 
 Which returns:
 
-|                 |    AAPL |    MSFT |   Benchmark |
-|:----------------|--------:|--------:|------------:|
-| Roll Spread     |  3.3103 |  5.1999 |      4.3436 |
-| Roll Spread (%) |  2.1859 |  1.9159 |      1.0603 |
-| Autocovariance  | -2.7396 | -6.7598 |     -4.7167 |
-| Valid Estimate  |  1      |  1      |      1      |
+|                 |      AMZN |     TSLA |   Benchmark |
+|:----------------|----------:|---------:|------------:|
+| Roll Spread     |  0.917232 |  3.64757 |    1.97906  |
+| Roll Spread (%) |  0.561329 |  1.37352 |    0.408282 |
+| Autocovariance  | -0.210329 | -3.32619 |   -0.979167 |
+| Valid Estimate  |  1        |  1       |    1        |
 
 ---
 
@@ -2301,7 +2461,7 @@ Excess Volatility is the Volatility of the Excess Return, i.e. the daily return 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Excess Volatility is calculated over a rolling window of this many periods (e.g.
 period='monthly' and rolling=6 gives the rolling 6-month Excess Volatility) instead of
@@ -2331,7 +2491,12 @@ the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_excess_volatility(period="yearly")
 ```
@@ -2340,12 +2505,11 @@ Which returns:
 
 | Date   |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2021   | 0.2414 | 0.5483 |      0.1333 |
-| 2022   | 0.5207 | 0.686  |      0.2663 |
-| 2023   | 0.3421 | 0.5535 |      0.1527 |
-| 2024   | 0.2841 | 0.6346 |      0.1336 |
-| 2025   | 0.3435 | 0.635  |      0.1946 |
-| 2026   | 0.3196 | 0.4331 |      0.1446 |
+| 2021   | 0.2404 | 0.5477 |      0.1293 |
+| 2022   | 0.5008 | 0.6668 |      0.2425 |
+| 2023   | 0.3302 | 0.5406 |      0.1307 |
+| 2024   | 0.2809 | 0.635  |      0.1257 |
+| 2025   | 0.3442 | 0.6349 |      0.1948 |
 
 ---
 
@@ -2359,12 +2523,14 @@ The Downside Deviation, also known as semi-deviation, is the standard deviation 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+Defaults to "daily".
 - <u>minimum_acceptable_return (float, optional):</u> The minimum acceptable return (MAR) used as the
 threshold below which returns are considered downside. Defaults to 0.0.
 - <u>within_period (bool, optional):</u> Whether to calculate the Downside Deviation within the specified
 period or for the entire period. Thus whether to look at the Downside Deviation within a specific
-year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
+year (if period = 'yearly') or look at the entirety of all years. Defaults to False.
+Note that this requires intraday data when period = 'daily', since a
+single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Downside
 Deviation is calculated over a rolling window of this many periods across the full return history
 instead of per `period`. Defaults to None.
@@ -2392,21 +2558,25 @@ the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-toolkit.risk.get_downside_deviation()
+toolkit.risk.get_downside_deviation(period="yearly", within_period=True)
 ```
 
 Which returns:
 
 |      |   AMZN |   TSLA |   Benchmark |
 |:-----|-------:|-------:|------------:|
-| 2021 | 0.0106 | 0.0215 |      0.0058 |
-| 2022 | 0.0202 | 0.0283 |      0.0095 |
-| 2023 | 0.0129 | 0.0217 |      0.005  |
-| 2024 | 0.0118 | 0.0227 |      0.006  |
-| 2025 | 0.0146 | 0.0257 |      0.0096 |
-| 2026 | 0.0123 | 0.0165 |      0.0061 |
+| 2021 | 0.0108 | 0.0221 |      0.0054 |
+| 2022 | 0.0229 | 0.0318 |      0.011  |
+| 2023 | 0.013  | 0.022  |      0.0053 |
+| 2024 | 0.0117 | 0.0243 |      0.0055 |
+| 2025 | 0.0146 | 0.0268 |      0.0081 |
 
 ---
 
@@ -2418,7 +2588,7 @@ MAD measures the average absolute distance of each return from the mean return. 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the MAD values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2441,7 +2611,12 @@ the specified `period` for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_mean_absolute_deviation(period="yearly")
 ```
@@ -2450,12 +2625,11 @@ Which returns:
 
 | Date   |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2021   | 0.0114 | 0.0246 |      0.0062 |
+| 2021   | 0.0114 | 0.0246 |      0.0061 |
 | 2022   | 0.0235 | 0.032  |      0.0119 |
-| 2023   | 0.0156 | 0.0255 |      0.0065 |
+| 2023   | 0.0156 | 0.0255 |      0.0064 |
 | 2024   | 0.0132 | 0.0286 |      0.0058 |
 | 2025   | 0.015  | 0.0292 |      0.0074 |
-| 2026   | 0.0157 | 0.0216 |      0.0067 |
 
 ---
 
@@ -2469,7 +2643,7 @@ The Coefficient of Variation is the ratio of the standard deviation to the mean 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialized with quarterly=True, otherwise "yearly".
+to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CV values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2492,21 +2666,25 @@ the specified `period` for each asset in the Toolkit instance.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_coefficient_of_variation(period="yearly")
 ```
 
 Which returns:
 
-| Date   |     AMZN |      TSLA |   Benchmark |
-|:-------|---------:|----------:|------------:|
-| 2021   |  73.121  |   15.7477 |      8.3938 |
-| 2022   | -14.1417 |  -12.7544 |    -20.4791 |
-| 2023   |   8.0356 |   10.0506 |      9.1833 |
-| 2024   |  10.9398 |   14.7623 |      9.1557 |
-| 2025   |  49.9543 |   32.8037 |     18.0122 |
-| 2026   |  31.132  | -163.952  |     11.047  |
+| Date   |     AMZN |     TSLA |   Benchmark |
+|:-------|---------:|---------:|------------:|
+| 2021   |  51.4326 |  16.7257 |      7.4324 |
+| 2022   | -14.1417 | -12.7544 |    -22.3928 |
+| 2023   |   8.0356 |  10.0506 |      8.5443 |
+| 2024   |  10.9398 |  14.7623 |      8.6564 |
+| 2025   |  49.9543 |  32.8037 |     16.8499 |
 
 ---
 
@@ -2552,7 +2730,12 @@ the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_ewma_volatility()
 ```
@@ -2561,16 +2744,16 @@ Which returns:
 
 | Date       |   AMZN |   TSLA |   Benchmark |
 |:-----------|-------:|-------:|------------:|
-| 2026-06-22 | 0.0229 | 0.0279 |      0.0099 |
-| 2026-06-23 | 0.0223 | 0.0304 |      0.0103 |
-| 2026-06-24 | 0.0216 | 0.0296 |      0.01   |
-| 2026-06-25 | 0.022  | 0.0287 |      0.0097 |
-| 2026-06-26 | 0.0225 | 0.0281 |      0.0096 |
-| 2026-06-29 | 0.0234 | 0.0345 |      0.0101 |
-| 2026-06-30 | 0.0228 | 0.0338 |      0.01   |
-| 2026-07-01 | 0.0224 | 0.0328 |      0.0097 |
-| 2026-07-02 | 0.0218 | 0.037  |      0.0094 |
-| 2026-07-06 | 0.0211 | 0.0395 |      0.0093 |
+| 2025-12-17 | 0.018  | 0.0276 |      0.007  |
+| 2025-12-18 | 0.0175 | 0.029  |      0.0073 |
+| 2025-12-19 | 0.018  | 0.0294 |      0.0073 |
+| 2025-12-22 | 0.0175 | 0.0285 |      0.0075 |
+| 2025-12-23 | 0.017  | 0.0279 |      0.0074 |
+| 2025-12-24 | 0.017  | 0.0271 |      0.0073 |
+| 2025-12-26 | 0.0164 | 0.0263 |      0.0071 |
+| 2025-12-29 | 0.0159 | 0.026  |      0.0069 |
+| 2025-12-30 | 0.0155 | 0.0264 |      0.0067 |
+| 2025-12-31 | 0.015  | 0.0258 |      0.0065 |
 
 ---
 
@@ -2594,7 +2777,12 @@ pd.DataFrame: The ACF value for each lag (rows) and each asset (columns).
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_autocorrelation()
 ```
@@ -2603,16 +2791,16 @@ Which returns:
 
 |    |    AMZN |    TSLA |   Benchmark |
 |---:|--------:|--------:|------------:|
-|  1 | -0.0109 | -0.0306 |     -0.0366 |
-|  2 | -0.0013 |  0.0121 |      0.0066 |
-|  3 | -0.0216 |  0.0006 |     -0.0571 |
-|  4 |  0.01   |  0.0117 |     -0.0344 |
-|  5 | -0.0063 | -0.0302 |      0.0002 |
-|  6 |  0.0018 |  0.0298 |     -0.022  |
-|  7 | -0.0451 |  0.0209 |     -0.0076 |
-|  8 | -0.0281 |  0.0092 |     -0.013  |
-|  9 |  0.0017 |  0.0675 |      0.0529 |
-| 10 | -0.0162 | -0.0293 |     -0.0133 |
+|  1 | -0.0125 | -0.026  |     -0.031  |
+|  2 | -0.0064 |  0.0128 |     -0.0069 |
+|  3 | -0.0114 | -0.0109 |     -0.0626 |
+|  4 |  0.0112 |  0.0189 |     -0.0344 |
+|  5 | -0.0143 | -0.0213 |     -0.0075 |
+|  6 |  0.0047 |  0.045  |     -0.0104 |
+|  7 | -0.0523 |  0.0309 |     -0.0109 |
+|  8 | -0.0307 |  0.0198 |     -0.0063 |
+|  9 | -0.0102 |  0.063  |      0.0399 |
+| 10 | -0.0084 | -0.0499 |     -0.0111 |
 
 ---
 
@@ -2641,7 +2829,12 @@ pd.Series: The estimated Hurst Exponent for each asset.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AMZN", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMZN", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.risk.get_hurst_exponent()
 ```
@@ -2650,9 +2843,9 @@ Which returns:
 
 |           |      0 |
 |:----------|-------:|
-| AMZN      | 0.4553 |
-| TSLA      | 0.5122 |
-| Benchmark | 0.4515 |
+| AMZN      | 0.4596 |
+| TSLA      | 0.52   |
+| Benchmark | 0.4362 |
 
 ---
 
