@@ -1,6 +1,7 @@
 ---
 title: Regimes
-seo_title: Stress Regimes Documentation – Finance Scenarios
+seo_title: "Stress Regimes Documentation | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "A regime is a named stress narrative, such as an oil crisis or a regulator's adverse scenario. It changes the economics before simulating, keeps only the scenarios that fit the story afterwards, or both."
 description: "Stress narratives in Finance Scenarios: belief overrides before simulating, conditioning on a story after, Fed and ESRB stress tests, reading the results."
 author_profile: false

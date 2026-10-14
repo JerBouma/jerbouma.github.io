@@ -1,6 +1,7 @@
 ---
 title: "Unemployment"
-seo_title: "Unemployment Reference – Finance Scenarios"
+seo_title: "Unemployment Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Unemployment rates, each paired with an inflation entry."
 description: "Unemployment rates, each paired with an inflation entry."
 author_profile: false

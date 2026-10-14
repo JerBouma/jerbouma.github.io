@@ -1,6 +1,7 @@
 ---
 title: Units
-seo_title: Units Documentation – Finance Scenarios
+seo_title: "Units Documentation | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Rates are annualized decimals and prices read as their annualized return since the start. Why, and how to convert to cumulative, simple and log returns."
 description: "Why Finance Scenarios reports annualized decimals and annualized returns since start, and how to convert to cumulative, simple and log returns."
 author_profile: false

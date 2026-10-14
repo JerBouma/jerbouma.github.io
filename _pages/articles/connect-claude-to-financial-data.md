@@ -20,7 +20,7 @@ The fix is to give Claude a tool that fetches and computes the numbers for it. T
 
 <div class="ca-strip">
   <div><strong>1 minute</strong><span>to connect Claude Desktop, claude.ai or Claude Code</span></div>
-  <div><strong>500+</strong><span>financial methods behind 22 tools</span></div>
+  <div><strong>500+</strong><span>financial methods behind 22 tools, plus 3 for search</span></div>
   <div><strong>10</strong><span>real questions answered below, with charts</span></div>
   <div><strong>Free</strong><span>hosted server, open-source code</span></div>
 </div>

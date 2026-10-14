@@ -18,7 +18,7 @@ When people connect Claude, ChatGPT or Cursor to `https://financetoolkit.jeroenb
 
 That may sound like a hobby setup for a public service, but an MCP server is an unusually good fit for it. It needs little compute, it holds no user data, and the parts that matter for a public endpoint (TLS, protection against abuse, a stable address) are what Cloudflare already provides for free. This article explains how the pieces fit together and what to think about if you want to host an MCP server of your own.
 
-**The code side of the server (the router pattern behind its 22 tools, the OAuth 2.1 flow and how API keys are handled) is covered on the [Under the Hood](/projects/financetoolkit/mcp/architecture) page. This article is about where and how it runs.**
+**The code side of the server (the router pattern behind its 22 categorical tools, the OAuth 2.1 flow and how API keys are handled) is covered on the [Under the Hood](/projects/financetoolkit/mcp/architecture) page. This article is about where and how it runs.**
 
 ## Why Not a Cloud Platform?
 

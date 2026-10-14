@@ -1,6 +1,7 @@
 ---
 title: "CreditTermStructure"
-seo_title: "CreditTermStructure Reference – Finance Scenarios"
+seo_title: "CreditTermStructure Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "A Nelson-Siegel credit spread curve."
 description: "A Nelson-Siegel credit spread curve."
 author_profile: false

@@ -494,6 +494,7 @@ def front_matter(title: str, permalink: str, excerpt: str, seo_title: str) -> st
     return f"""---
 title: {yaml_quote(title)}
 seo_title: {yaml_quote(seo_title)}
+seo_title_suffix: false
 excerpt: {yaml_quote(excerpt)}
 description: {yaml_quote(excerpt)}
 author_profile: false
@@ -553,7 +554,7 @@ def build_page(slug: str, title: str, summary: str, members: list) -> tuple[str,
         blocks.append("## How It Is Calculated\n\nThe model functions behind this page, each with the formula it implements.")
         blocks.extend(formulas)
         count += len(formulas)
-    seo = f"{title} Reference – Finance Scenarios"
+    seo = f"{title} Reference | Finance Scenarios"
     page = front_matter(title, f"{BASE_URL}/{slug}", summary.replace("`", ""), seo) + "\n" + "\n\n".join(blocks) + "\n"
     return page, count
 
@@ -573,7 +574,7 @@ def build_index(counts: dict[str, int]) -> str:
         for slug, title, summary, _ in pages:
             lines.append(f"| [{title}]({BASE_URL}/{slug}) | {summary} |")
     excerpt = "Reference for the Finance Scenarios Python package, generated from its docstrings: every public class, method and function."
-    return front_matter("Reference", BASE_URL, excerpt, "Reference – Finance Scenarios") + "\n" + "\n".join(lines) + "\n"
+    return front_matter("Reference", BASE_URL, excerpt, "Reference | Finance Scenarios") + "\n" + "\n".join(lines) + "\n"
 
 
 def main() -> None:

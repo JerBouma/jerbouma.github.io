@@ -1,6 +1,7 @@
 ---
 title: "Scenarios"
-seo_title: "Scenarios Reference – Finance Scenarios"
+seo_title: "Scenarios Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Calibrate every configured factor and simulate correlated scenarios; also the saved calibration and the Toolkit builder."
 description: "Calibrate every configured factor and simulate correlated scenarios; also the saved calibration and the Toolkit builder."
 author_profile: false

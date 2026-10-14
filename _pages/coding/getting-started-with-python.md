@@ -3,7 +3,6 @@ title: Getting Started with Python
 seo_title: Getting Started with Python for Finance
 excerpt: "Where to start with Python for finance: nailing down the basics so you understand how code works, and then handing more of the work to an AI assistant."
 description: "Getting started with Python for finance: the basics on Kaggle, your first financial models and managing projects with Git and a code editor."
-author_profile: true
 permalink: /modelling/getting-started
 classes: wide-sidebar
 author_profile: false

@@ -1,6 +1,7 @@
 ---
 title: Getting Started with Finance Scenarios
-seo_title: Getting Started Notebook – Finance Scenarios
+seo_title: "Getting Started Notebook | Finance Scenarios"
+seo_title_suffix: false
 permalink: /projects/financescenarios/getting-started
 excerpt: "Demonstrates the basic usage of Finance Scenarios: choosing a settings profile and a factor set, running a simulation, reading and charting the result, checking the run, building a configuration by hand and saving a run to read back later."
 description: "Worked example notebook introducing Finance Scenarios: choose a profile, simulate correlated economic scenarios, then read, chart, check and save the result."

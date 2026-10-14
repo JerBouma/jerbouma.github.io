@@ -1,6 +1,7 @@
 ---
 title: "Commodities"
-seo_title: "Commodities Reference – Finance Scenarios"
+seo_title: "Commodities Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Commodity futures, one per commodity."
 description: "Commodity futures, one per commodity."
 author_profile: false

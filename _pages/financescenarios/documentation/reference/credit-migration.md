@@ -1,6 +1,7 @@
 ---
 title: "CreditMigration"
-seo_title: "CreditMigration Reference – Finance Scenarios"
+seo_title: "CreditMigration Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "A credit cycle driving rating migrations and defaults."
 description: "A credit cycle driving rating migrations and defaults."
 author_profile: false

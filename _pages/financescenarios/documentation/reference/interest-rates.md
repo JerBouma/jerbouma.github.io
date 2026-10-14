@@ -1,6 +1,7 @@
 ---
 title: "InterestRates"
-seo_title: "InterestRates Reference – Finance Scenarios"
+seo_title: "InterestRates Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Short and long interest rates, one per country or region."
 description: "Short and long interest rates, one per country or region."
 author_profile: false

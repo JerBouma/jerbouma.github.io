@@ -1,6 +1,7 @@
 ---
 title: "Mortality"
-seo_title: "Mortality Reference – Finance Scenarios"
+seo_title: "Mortality Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Mortality improvement with the Cairns-Blake-Dowd model."
 description: "Mortality improvement with the Cairns-Blake-Dowd model."
 author_profile: false

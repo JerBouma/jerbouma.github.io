@@ -1,6 +1,7 @@
 ---
 title: "KnwSvQ"
-seo_title: "KnwSvQ Reference – Finance Scenarios"
+seo_title: "KnwSvQ Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The risk-neutral (Q-measure) side of the KNW models."
 description: "The risk-neutral (Q-measure) side of the KNW models."
 author_profile: false

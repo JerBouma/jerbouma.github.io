@@ -1,6 +1,7 @@
 ---
 title: "KnwSv"
-seo_title: "KnwSv Reference – Finance Scenarios"
+seo_title: "KnwSv Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The KNW model with stochastic volatility."
 description: "The KNW model with stochastic volatility."
 author_profile: false

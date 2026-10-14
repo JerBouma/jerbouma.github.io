@@ -1,6 +1,7 @@
 ---
 title: Econometrics Notebook
-seo_title: Econometrics Notebook – Finance Toolkit
+seo_title: "Econometrics Notebook | Finance Toolkit"
+seo_title_suffix: false
 permalink: /projects/financetoolkit/econometrics-notebook
 excerpt: The Econometrics module contains statistical tests and estimators for financial time series and panel data, including regression, unit root and cointegration tests, causal inference, forecasting and event studies.
 description: "Worked example notebook for the Finance Toolkit's Econometrics module: regressions, unit root and cointegration tests, causal inference and event studies."

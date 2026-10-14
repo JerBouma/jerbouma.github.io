@@ -1,6 +1,7 @@
 ---
 title: "Equities"
-seo_title: "Equities Reference – Finance Scenarios"
+seo_title: "Equities Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Equity indices, sectors, regions and styles with regime switching."
 description: "Equity indices, sectors, regions and styles with regime switching."
 author_profile: false

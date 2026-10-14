@@ -22,7 +22,7 @@ Ask an AI assistant for Apple's return on invested capital and you will usually 
 The Finance Toolkit MCP server takes the calculation out of the model's hands. It is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that connects Claude, ChatGPT, GitHub Copilot, Cursor, Gemini and other assistants to the [Finance Toolkit](/projects/financetoolkit): current financial statements and market data, and 500+ documented methods that turn them into ratios, valuations, risk metrics, technical indicators and macroeconomic series. The assistant decides what to calculate and explains the result; the numbers themselves come from code you can read.
 
 <div class="mcp-facts">
-  <div class="mcp-fact"><strong>500+</strong><span>ratios, models, risk metrics, indicators and macro series in 22 tools</span></div>
+  <div class="mcp-fact"><strong>500+</strong><span>ratios, models, risk metrics, indicators and macro series in 22 tools, plus 3 for search</span></div>
   <div class="mcp-fact"><strong>Calculated</strong><span>not recalled: the same question returns the same number in any model</span></div>
   <div class="mcp-fact"><strong>Free</strong><span>hosted at one URL, or run locally; MIT-licensed source code</span></div>
   <div class="mcp-fact"><strong>Any client</strong><span>Claude, ChatGPT, Copilot, Cursor, Windsurf, Gemini, Codex</span></div>
@@ -437,7 +437,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
 
 Four questions of the kind an analyst or portfolio manager would ask, each answered by Claude through the server. None of them is a single lookup: Claude decides which calculations it needs, chains them across tools and builds its conclusion on the results. Every number and chart below comes from a Finance Toolkit calculation, with data up to October 2, 2026.
 
-The server returns the same calculated data to every model, and I designed its 22 tools to be simple enough for smaller models as well: GPT-5 mini, Claude Haiku and similar models pick the right tools and report the same numbers. A larger model mostly adds depth, such as the follow-up calculations and caveats you see here.
+The server returns the same calculated data to every model, and I designed its 22 categorical tools to be simple enough for smaller models as well: GPT-5 mini, Claude Haiku and similar models pick the right tools and report the same numbers. A larger model mostly adds depth, such as the follow-up calculations and caveats you see here.
 
 <div class="ca-nav ca-nav--4">
   <a href="#ex-asml"><i class="fas fa-microchip" aria-hidden="true"></i>An investment case for ASML</a>

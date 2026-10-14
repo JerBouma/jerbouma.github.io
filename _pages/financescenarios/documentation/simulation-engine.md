@@ -1,6 +1,7 @@
 ---
 title: Simulation Engine
-seo_title: Simulation Engine Documentation – Finance Scenarios
+seo_title: "Simulation Engine Documentation | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "The Monte Carlo engine behind every run: correlated and fat-tailed shocks, exact time stepping, antithetic variates, Monte Carlo error, and how correlations are estimated."
 description: "The Finance Scenarios Monte Carlo engine: correlated and fat-tailed shocks, exact time stepping, antithetic variates and Monte Carlo error."
 author_profile: false

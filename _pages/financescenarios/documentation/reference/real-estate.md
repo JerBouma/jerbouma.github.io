@@ -1,6 +1,7 @@
 ---
 title: "RealEstate"
-seo_title: "RealEstate Reference – Finance Scenarios"
+seo_title: "RealEstate Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "House-price and commercial property growth."
 description: "House-price and commercial property growth."
 author_profile: false

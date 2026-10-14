@@ -1,6 +1,7 @@
 ---
 title: Options
-seo_title: Options Module – Finance Toolkit Docs
+seo_title: "Options Module | Finance Toolkit"
+seo_title_suffix: false
 excerpt: The Options module is meant to calculate important options metrics such as the First, Second and Third Order Greeks, the Black Scholes Model and the Option Chains as well as Implied Volatilities, Breeden Litzenberger and more.
 description: "Reference for every function and parameter in the Finance Toolkit's Options module: Black-Scholes, Greeks, option chains and implied volatility."
 author_profile: false

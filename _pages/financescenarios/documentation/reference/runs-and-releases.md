@@ -1,6 +1,7 @@
 ---
 title: "Run Files and Releases"
-seo_title: "Run Files and Releases Reference – Finance Scenarios"
+seo_title: "Run Files and Releases Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Write and read saved runs, and publish, load and simulate versioned calibration releases."
 description: "Write and read saved runs, and publish, load and simulate versioned calibration releases."
 author_profile: false

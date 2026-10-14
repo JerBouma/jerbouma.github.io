@@ -1,6 +1,7 @@
 ---
 title: "Solvency"
-seo_title: "Solvency Reference – Finance Scenarios"
+seo_title: "Solvency Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "Solvency II on a real-world and a risk-neutral run: the martingale test, best estimate, SCR and EIOPA curves."
 description: "Solvency II on a real-world and a risk-neutral run: the martingale test, best estimate, SCR and EIOPA curves."
 author_profile: false

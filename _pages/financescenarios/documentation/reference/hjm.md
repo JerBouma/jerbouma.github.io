@@ -1,6 +1,7 @@
 ---
 title: "Hjm"
-seo_title: "Hjm Reference – Finance Scenarios"
+seo_title: "Hjm Reference | Finance Scenarios"
+seo_title_suffix: false
 excerpt: "A two-factor Gaussian HJM forward curve."
 description: "A two-factor Gaussian HJM forward curve."
 author_profile: false
