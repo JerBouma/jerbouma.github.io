@@ -1,7 +1,6 @@
 <script>
-  function _initMermaid() {
-    var theme = document.documentElement.getAttribute('data-theme');
-    var isDark = theme !== 'light';
+  function _mermaidConfig() {
+    var isDark = document.documentElement.getAttribute('data-theme') !== 'light';
 
     // Nodes look like the site's cards: a quiet surface, a thin accent border and
     // readable text. Shape, shadow and edge labels are finished in custom.scss.
@@ -15,7 +14,7 @@
       note: '#fff7ed', accent: '#0284c7'
     };
 
-    mermaid.initialize({
+    return {
       startOnLoad: false,
       theme: 'base',
       themeVariables: {
@@ -112,11 +111,35 @@
         showCommitLabel: false,
         mainBranchName: 'main'
       }
-    });
+    };
+  }
 
+  // Draw every diagram with the current theme. Mermaid replaces each block's
+  // source with an SVG, so the source is kept to redraw when the theme changes.
+  function _renderMermaid() {
+    var blocks = document.querySelectorAll('.mermaid');
+    blocks.forEach(function (el) {
+      if (el.dataset.source === undefined) el.dataset.source = el.innerHTML;
+      el.innerHTML = el.dataset.source;
+      el.removeAttribute('data-processed');
+    });
+    mermaid.initialize(_mermaidConfig());
+    return mermaid.run({ nodes: blocks });
+  }
+
+  function _initMermaid() {
     // measure the labels with the page font, not the fallback it replaces
     // later (which cut the last letter off every label)
-    (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () { mermaid.run(); });
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(_renderMermaid);
+
+    // the masthead toggle switches data-theme on <html>: redraw in the new colours
+    var current = document.documentElement.getAttribute('data-theme');
+    new MutationObserver(function () {
+      var theme = document.documentElement.getAttribute('data-theme');
+      if (theme === current) return;
+      current = theme;
+      _renderMermaid();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js" defer onload="_initMermaid()"></script>
