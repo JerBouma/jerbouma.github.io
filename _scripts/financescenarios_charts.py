@@ -1,28 +1,29 @@
-"""Builds the data behind the interactive charts on /projects/financescenarios.
+"""Builds every table and chart on /projects/financescenarios from one run.
 
-The simulation, distribution and portfolio charts read the saved run the
-landing page's tables come from (runs/readme/<RUN_ID> in the Finance
-Scenarios repository), so chart and table always agree. The stress regimes,
-the backtest and the Solvency II chart need a live run, which is calibrated
-here with the same profiles as the page's examples.
+All of it comes from a single calibration made today, so the page has one
+calibration date: the charts, the tables printed here for the page, and the
+date in _data/financescenarios_run.yml that the page quotes.
 
     FINANCIAL_MODELING_PREP_API_KEY=... FRED_API_KEY=... \
-        python _scripts/financescenarios_charts.py /path/to/FinanceScenarios
+        python _scripts/financescenarios_charts.py
 
 Writes assets/data/financescenarios-charts.json, drawn by assets/js/ft-charts.js.
 """
 
+import datetime
 import json
-import sys
 from pathlib import Path
 
 import numpy as np
 
-from financescenarios import Portfolio, Scenarios, Solvency, read_run
+import polars as pl
 
-REPO = Path(sys.argv[1] if len(sys.argv) > 1 else "/sources/finance-scenarios")
-RUN_ID = "20261008T211905Z-53984c77"
-OUTPUT = Path(__file__).resolve().parent.parent / "assets" / "data" / "financescenarios-charts.json"
+from financescenarios import Portfolio, Scenarios, Solvency, compare_runs
+
+ROOT = Path(__file__).resolve().parent.parent
+OUTPUT = ROOT / "assets" / "data" / "financescenarios-charts.json"
+RUN_DATE = ROOT / "_data" / "financescenarios_run.yml"
+SEED = 42
 QUANTILES = ["q0.05", "q0.25", "q0.5", "q0.75", "q0.95"]
 
 
@@ -52,37 +53,40 @@ def histogram(values, markers, fmt, title, xname, digits=5):
 def main() -> None:
     charts = {}
 
-    # 1-3: the saved run behind the page's tables
-    saved = read_run(REPO / "runs" / "readme" / RUN_ID)
+    scenarios = Scenarios.from_profiles(settings="default", factor_set="default")
+    calibration = scenarios.calibrate()
+    run_date = datetime.date.today().isoformat()
+
+    def simulate(**kwargs):
+        return scenarios.simulate(calibration=calibration, n_simulations=2000, seed=SEED, **kwargs)
+
+    result = simulate()
     series, dates = [], None
     tabs = []
     for factor, name in [("united_states_short_rate", "US short rate"), ("united_states_inflation", "US inflation")]:
-        band, dates = fan(saved, factor, name)
+        band, dates = fan(result, factor, name)
         tabs.append({"label": name, "type": "fan", "title": "", "x": dates, "format": "percent", "series": [band]})
     # equities as the value of 100 invested, so the widening range of outcomes shows
-    band, dates = fan(saved, "us_broad", "US equities", levels=True)
+    band, dates = fan(result, "us_broad", "US equities", levels=True)
     start = band["q5"][0]
     band = {k: v if k == "name" else [None if x is None else round(100 * x / start, 1) for x in v] for k, v in band.items()}
     tabs.append({"label": "US equities (100 invested)", "type": "fan", "title": "", "x": dates, "format": "amount", "series": [band]})
     charts["simulation"] = {"type": "tabs", "title": "2,000 simulated scenarios, five years ahead", "tabs": tabs}
 
-    terminal = saved.metric_paths("us_broad")[:, -1]
+    terminal = result.metric_paths("us_broad")[:, -1]
     charts["distribution"] = histogram(
         terminal, [("5th percentile", np.quantile(terminal, 0.05)), ("Median", np.quantile(terminal, 0.5)),
                    ("95th percentile", np.quantile(terminal, 0.95))],
         "percent", "Where the five-year US equity return lands, across 2,000 scenarios", "Annualized return over five years")
 
-    values = Portfolio.from_preset(saved, preset="balanced_60_40").compute(initial_value=100_000, rebalance_every=12)
+    values = Portfolio.from_preset(result, preset="balanced_60_40").compute(initial_value=100_000, rebalance_every=12)
     band, dates = fan(values, "portfolio", "60/40 portfolio", levels=True, digits=0)
     charts["portfolio"] = {"type": "fan", "title": "Value of 100,000 in a 60/40 portfolio, rebalanced yearly",
                            "x": dates, "format": "amount", "series": [band]}
 
-    # 4-6: live runs
-    scenarios = Scenarios.from_profiles(settings="default", factor_set="default")
-    result = scenarios.simulate(n_simulations=2000)
     runs = {"Baseline": result}
     for regime, name in [("oil_shock", "Oil Shock"), ("oil_crisis", "Oil Crisis"), ("climate_collapse", "Climate Collapse")]:
-        runs[name] = scenarios.simulate(regime=regime, n_simulations=2000)
+        runs[name] = simulate(regime=regime)
     fans = []
     for name, run in runs.items():
         band, dates = fan(run, "united_states_inflation", name)
@@ -90,13 +94,15 @@ def main() -> None:
     charts["regimes"] = {"type": "fan", "title": "US inflation under three stress regimes against the baseline",
                          "x": dates, "format": "percent", "series": fans}
 
-    hist_values = Portfolio.backtest(scenarios, "balanced_60_40").compute(initial_value=100_000, rebalance_every=12)
+    backtest = Portfolio.backtest(scenarios, "balanced_60_40")
+    hist_values = backtest.compute(initial_value=100_000, rebalance_every=12)
     path = hist_values.metric_paths("portfolio", levels=True)[0]
     charts["backtest"] = {"type": "line", "title": "What 100,000 in the 60/40 actually did since 2000",
                           "x": [d.strftime("%Y-%m") for d in hist_values.dates], "format": "amount",
                           "series": [{"name": "60/40 portfolio", "data": r(path, 0)}]}
 
-    risk_neutral = scenarios.simulate(n_simulations=2000, measure="risk_neutral")
+    # a risk-neutral run calibrates its own market-consistent config, on the same day
+    risk_neutral = scenarios.simulate(n_simulations=2000, seed=SEED, measure="risk_neutral")
     solvency = Solvency(real_world=result, risk_neutral=risk_neutral)
     assets = Portfolio.from_preset(result, preset="balanced_60_40").compute(initial_value=60_000, rebalance_every=12)
     cashflows = [10_000] * 5
@@ -110,10 +116,30 @@ def main() -> None:
         "amount", "Own funds after one year across 2,000 scenarios, discounted to today", "Own funds", digits=0)
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps({"charts": charts}, separators=(",", ":")))
+    OUTPUT.write_text(json.dumps({"charts": charts, "calibrated": run_date}, separators=(",", ":")))
+    RUN_DATE.write_text(f"# Written by _scripts/financescenarios_charts.py: the day the landing page's run was calibrated\ndate: {run_date}\n")
     print(f"Wrote {len(charts)} charts to {OUTPUT} ({OUTPUT.stat().st_size // 1024} KB)")
     for name, run in runs.items():
         print(name, {f: round(float(run.metric_paths(f)[:, -1].mean()), 4) for f in ["united_states_inflation", "united_states_short_rate", "us_broad", "europe"]})
+    # the page's tables and the numbers its text quotes, all from this run
+    pl.Config.set_tbl_rows(50); pl.Config.set_tbl_cols(20); pl.Config.set_float_precision(4); pl.Config.set_tbl_width_chars(400); pl.Config.set_fmt_str_lengths(200)
+    print(result.describe())
+    print(result.summary_statistics("us_broad"))
+    print(values.summary_statistics("portfolio", levels=True).tail(1))
+    print(values.summary_statistics("portfolio").tail(1))
+    sixty_forty = Portfolio.from_preset(result, preset="balanced_60_40")
+    sixty_forty.compute(initial_value=100_000, rebalance_every=12)
+    print(sixty_forty.summary())
+    print(compare_runs({"baseline": result, "oil_crisis": runs["Oil Crisis"]}))
+    print(backtest.factor_exposure())
+    print(solvency.report(cashflows=cashflows, assets=assets))
+    for f in ["us_broad"]:
+        try:
+            print(f, "mean return", round(float(result.metric_paths(f)[:, -1].mean()), 4))
+        except Exception:
+            pass
+    drawdown = path / np.maximum.accumulate(path) - 1
+    print("backtest deepest fall:", round(float(drawdown.min()), 3), hist_values.dates[int(drawdown.argmin())])
     print("backtest end value:", round(float(path[-1])), "| SCR (today - 1-in-200):", round(today - float(np.quantile(outcome, 0.005))))
 
 

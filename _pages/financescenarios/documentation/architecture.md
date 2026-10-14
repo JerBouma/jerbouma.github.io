@@ -65,7 +65,25 @@ The matrix is constant over the horizon and captures linear co-movement. Two add
 
 ## 4. Correlated Simulation
 
-The factors are stepped forward with these correlated shocks, each driver before the factors that react to it; the [simulation engine](/projects/financescenarios/docs/simulation-engine) covers the maths.
+The correlated shocks for the whole horizon are drawn first. Then the run moves forward one step at a time, and within each step the factors are updated in a fixed order: a driver always before the factors that react to it, so they read its value for that same month. Inflation comes first, preceded only by the leading indicator when business-cycle conditioning is on. The diagram shows the order of the default factor set; a step a factor set does not use is skipped.
+
+{% raw %}
+<div class="mermaid">
+flowchart TD
+    shocks["Correlated shocks for this month<br/>one per factor, drawn jointly"] --> indicator
+    indicator["0. Leading indicator<br/>only with business-cycle conditioning"] --> inflation
+    inflation["1. Inflation"] --> rates
+    rates["2. Interest rates<br/>Wilkie and KNW rates read inflation"] --> unemployment
+    unemployment["3. Unemployment<br/>reads inflation: Phillips curve"] --> dividends
+    dividends["4. Dividends, Wilkie-style<br/>read inflation"] --> equities
+    equities["5. Equities<br/>Wilkie share prices read dividends"] --> fx
+    fx["6. Exchange rates<br/>interest-rate parity reads both rates"] --> rest
+    rest["7. Linked by the shocks only<br/>commodities, yield-curve factors,<br/>credit, real estate, mortality"] --> next
+    next["Next month"] -.-> shocks
+</div>
+{% endraw %}
+
+The order guarantees that a driver is known before anything that needs it; it does not mean each step reads the one above it. Where the box names a link, the factor's equation reads that driver's value for the month. Elsewhere, for most rate and equity models, the link to inflation runs through the correlated shocks. With business-cycle conditioning, the leading indicator also drives rates, spreads and the chance of an equity crisis. One exception reverses the first two steps: an inflation factor set to follow its interest rate is stepped after that rate. The [simulation engine](/projects/financescenarios/docs/simulation-engine) covers the maths of each step.
 
 ## 5. Outputs
 
