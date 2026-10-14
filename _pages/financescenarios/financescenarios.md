@@ -342,42 +342,56 @@ Each notebook covers a different part of Finance Scenarios. Click a card to open
 <details class="ft-details" markdown="1">
   <summary><h3>Do I need an economic scenario generator?</h3></summary>
 
-  When the answer you need is a range rather than one number: Solvency II capital and technical provisions, pension funding projections, asset-liability matching, portfolio tail risk, stress testing, or whether retirement withdrawals last.
+  When the answer you need is a range rather than one number. A single forecast tells you where rates or markets are expected to go; it says nothing about how bad things could get, how often, or what moves together when they do. Those are exactly the questions behind Solvency II capital and technical provisions, pension funding projections, asset-liability matching, portfolio tail risk, stress testing and whether retirement withdrawals last thirty years.
+
+  A scenario generator answers them by simulating thousands of internally consistent paths for the whole economy: when inflation rises, rates and unemployment respond in the same scenario, and equities share their crisis spells. You then put your assets or liabilities through every path and read the full distribution: the median, the bad year in twenty, the 1-in-200 event.
+
+  You don't need one when one number is enough: a point forecast for a budget, or a single prescribed shock such as the Solvency II standard formula, which applies fixed stresses rather than a simulation.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><h3>How does this relate to the Finance Toolkit?</h3></summary>
 
-  The [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) looks backwards: it retrieves and calculates from historical data. Finance Scenarios looks forwards: it fits models to that history and simulates where things could go next.
+  They are two halves of the same workflow. The [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) looks backwards: it retrieves and calculates from historical data, from financial statements and ratios to yield curves, inflation and unemployment. Finance Scenarios looks forwards: it fits models to that history and simulates where things could go next.
+
+  Finance Scenarios gets its history through the Finance Toolkit: market prices, government bond yields, OECD and central-bank series, EIOPA's risk-free curves and credit spreads. That means the scenarios start from the same data you would analyse in the Toolkit, and a backtest of a portfolio uses the same prices as its simulation.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><h3>How do I know whether the method I need is supported?</h3></summary>
 
-  The [coverage overview](/projects/financescenarios/docs/coverage) lists every factor, model, measure, portfolio analytic and Solvency II output as available, partial or unavailable.
+  The [coverage overview](/projects/financescenarios/docs/coverage) lists every factor, model, measure, portfolio analytic and Solvency II output as available, partial or unavailable. Where something is partial, it says what is missing: the risk-neutral rate volatility, for example, is fitted to historical yield moves rather than implied from swaption prices.
+
+  Each model is documented with the paper it follows and the choices made where the implementation departs from it, so you can judge whether it fits your purpose before you run it. The guides explain the financial logic behind each factor, and the regulatory choices quote the source text they come from.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><h3>Are my results reproducible?</h3></summary>
 
-  The random draws are fixed by a seed in the settings. The calibration follows live data, so save it and load it later to pin both.
+  Yes, once you pin down both of the things a run depends on. The random draws are fixed by a seed in the settings, so the same calibration with the same seed gives exactly the same scenarios.
+
+  The calibration itself follows live data: every day adds observations, and statistical agencies revise past figures, so fitting again tomorrow gives slightly different parameters. To reproduce a result months later, for an audit trail or a regulatory submission, save the calibration together with the run. A saved calibration can be simulated again with more scenarios or another seed without downloading or fitting anything, and a saved run keeps its settings alongside the results.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><h3>How long does a run take?</h3></summary>
 
-  Calibration takes a couple of minutes for the default factor set on a cold cache and seconds once the data is cached. Simulating is fast.
+  Most of the time goes into the first calibration: downloading the history for every factor and fitting each model. For the default factor set that takes a couple of minutes on a cold cache, and seconds once the data is cached.
+
+  Simulating is fast by comparison and grows with the number of scenarios and the length of the horizon. For long projections the long-horizon settings use 500 scenarios instead of 2,000 to keep runs quick. A risk-neutral run for valuation calibrates its own market-consistent setup, so it adds a second fit.
 
 </details>
 
 <details class="ft-details" markdown="1">
   <summary><h3>Can I add my own regime, portfolio or model?</h3></summary>
 
-  A regime or a portfolio is a YAML file: copy a shipped one and edit it. A new model or factor plugs into the same calibration and correlation steps as the shipped ones; the [reference](/projects/financescenarios/docs/reference) shows what each one provides.
+  Yes. Regimes, portfolios and profiles are plain YAML files, so the easiest start is to copy a shipped one into your own project folder and edit it. A regime can shift an assumption before simulating (inflation pulled toward a level by a given year), keep only the scenarios that fit its story (high rates and weak stocks), or both. A portfolio sets the weights of its holdings, the duration of its bond funds and how often it rebalances. A profile of your own can extend a shipped one and state only what differs.
+
+  Your own views on long-run levels, such as a central bank's inflation target or an equity risk premium, go in as beliefs that override the fitted values. A new model or factor plugs into the same calibration and correlation steps as the shipped ones, so it is linked to everything else automatically; the [reference](/projects/financescenarios/docs/reference) shows what each one provides.
 
 </details>
 
