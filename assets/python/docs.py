@@ -644,9 +644,10 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
     if os.path.exists(location):
         with open(location, encoding="utf-8") as f:
             existing = f.read()
-        end = existing.find(_INSTALL_SNIPPET)
+        # everything before the first function section is the page's own header
+        end = existing.find("\n## ")
         if end != -1:
-            header = existing[: end + len(_INSTALL_SNIPPET)]
+            header = existing[: end + 1]
 
     markdown_content = header
     for fn in functions_with_docstrings:
