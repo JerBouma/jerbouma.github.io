@@ -9,7 +9,6 @@ writes the calibration date the README states to _data/financescenarios_run.yml.
     FINANCIAL_MODELING_PREP_API_KEY=... FRED_API_KEY=... \
         python _scripts/financescenarios_charts.py /path/to/FinanceScenarios
 
-The backtest reads market history, so run it on the README's calibration date.
 Writes assets/data/financescenarios-charts.json, drawn by assets/js/ft-charts.js.
 """
 
@@ -22,7 +21,7 @@ import numpy as np
 
 import polars as pl
 
-from financescenarios import CalibrationResult, Portfolio, Scenarios, Solvency, compare_runs
+from financescenarios import CalibrationResult, Portfolio, Scenarios, Solvency, compare_runs, read_run
 from financescenarios.config.config_model import risk_neutral_config
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -101,8 +100,11 @@ def main() -> None:
     charts["regimes"] = {"type": "fan", "title": "US inflation under three stress regimes against the baseline",
                          "x": dates, "format": "percent", "series": fans}
 
-    backtest = Portfolio.backtest(scenarios, ["balanced_60_40", "all_weather", "permanent_portfolio"])
-    hist_values = backtest.compute(initial_value=100_000, rebalance_every=12)
+    mixes = ["balanced_60_40", "all_weather", "permanent_portfolio"]
+    backtest = Portfolio.backtest(scenarios, mixes)  # the factor exposure reads Fama-French live
+    # the history the README backtested on, saved with its run, so the chart matches it exactly
+    history = read_run(README_RUN / "backtest_history")
+    hist_values = Portfolio.from_preset(history, preset=mixes).compute(initial_value=100_000, rebalance_every=12)
     print("backtest series:", hist_values.factor_names)
     paths = {name: hist_values.metric_paths(name, levels=True)[0] for name in hist_values.factor_names}
     start = hist_values.dates[0].strftime("%B %Y")

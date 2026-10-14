@@ -176,7 +176,7 @@ today's market says, so that nothing priced off the rate offers a riskless profi
 answer that respects this is to take today's rate as given and hold it, rather than fit a speed and volatility
 that no market price confirms. Every scenario then discounts at the same rate, so all spread in a valuation
 comes from the other factors: a risk-neutral equity entry grows at this rate, and a risk-neutral exchange rate
-drifts by the gap between two countries' rates (covered interest parity). This is what
+drifts by the gap between two countries' rates (covered interest rate parity). This is what
 `measure: risk_neutral` selects. A flat rate ignores the shape of today's curve and gives interest-rate
 guarantees no time value, so it does not suit a Solvency II best estimate; use `calibrate_risk_neutral_forward`
 (the default of `Scenarios.simulate(measure="risk_neutral")`) when the curve, or interest-rate risk itself,

@@ -226,6 +226,21 @@ Portfolio.backtest(
 
 </details>
 
+## Portfolio.scenario_set
+
+The run this portfolio is built on: simulated scenarios, or for a backtest the history it fetched. Save that
+history with `write_run()` and `Portfolio.from_preset(read_run(path), preset=...)` replays the backtest
+offline, with the same values.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+portfolio.scenario_set  # property -> ScenarioSet
+```
+
+</details>
+
 ## Portfolio.preset
 
 The ready-made mix this portfolio uses by default, if it was built with `from_preset()` on one preset; None

@@ -45,8 +45,9 @@ assumption that matters most over long horizons, so it has three options:
   section 9.3), so no provider carries a fitted trend forward for decades.
 - `drift_mode: historical`: the trend fitted on the calibration window, a currency view.
 - `drift_mode: irp`: the drift at every step is the gap between two simulated short rates, foreign minus US (uncovered
-  interest rate parity: the higher-rate currency is expected to weaken by about the rate gap).
-- `measure: risk_neutral`: a fixed drift from today's two interest rates, for pricing; see `calibrate_risk_neutral`.
+  interest rate parity, a real-world view: the higher-rate currency is expected to weaken by about the rate gap).
+- `measure: risk_neutral`: a fixed drift from today's two interest rates, foreign minus US, for pricing (covered
+  interest rate parity: the forward's no-arbitrage drift); see `calibrate_risk_neutral`.
 - `source: gmdb`: the Global Macro Database instead of the OECD, for countries such as Brazil, India or China, yearly
   only.
 
@@ -164,7 +165,8 @@ the higher-rate currency earns more interest, so its forward price must be lower
 `foreign_rate - domestic_rate`: with a 4.25% US rate and a 2% euro rate, the euros-per-dollar quote drifts down
 about 2.25% a year.
 
-The drift is fixed at today's rate gap, unlike `drift_mode="irp"`, which follows the simulated rates. It is
+The drift is fixed at today's rate gap, unlike `drift_mode="irp"`, which follows the simulated rates through
+uncovered interest rate parity, a real-world view of where the rate is expected to go. It is
 the drift of the Garman and Kohlhagen [(1983)](https://doi.org/10.1016/S0261-5606(83)80001-1) currency option
 model, and follows from Gorvett's (2001, p. 43) parity relation between spot S and forward f, both in foreign
 currency per dollar, S(1 + r_F) = (1 + r_U)f, here in continuous compounding. In a

@@ -418,7 +418,7 @@ Each notebook covers a different part of Finance Scenarios. Click a card to open
 
   The [coverage overview](/projects/financescenarios/docs/coverage) lists every factor, model, measure, portfolio analytic and Solvency II output as available, partial or unavailable. Where something is partial, it says what is missing: the risk-neutral rate volatility, for example, is fitted to historical yield moves rather than implied from swaption prices.
 
-  Each model is documented with the paper it follows and the choices made where the implementation departs from it, so you can judge whether it fits your purpose before you run it. The guides explain the financial logic behind each factor, and the regulatory choices quote the source text they come from.
+  Each model is documented with the paper it follows and the choices made where the implementation departs from it, so you can judge whether it fits your purpose before you run it. The guides explain the financial logic behind each factor, and every regulatory choice cites the article, section or table it comes from.
 
 </details>
 

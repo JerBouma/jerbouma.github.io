@@ -30,8 +30,9 @@ their own historical speed; equities switch between calm and turbulent regimes, 
 keep their historical volatility. The factors are linked in two ways. A correlation matrix estimated from their
 historical changes means a scenario with an equity sell-off also tends to see what history saw alongside one. A
 cascade lets one factor's path drive another's where theory says it should: inflation drives rates in the Wilkie
-and KNW models, and the rate gap drives a currency under interest-rate parity. Your own views (a long-run inflation
-target, a stress story) override the fit where you set them.
+and KNW models, and with `drift_mode: irp` the rate gap drives a currency under uncovered interest rate parity
+(the risk-neutral run uses covered parity instead). Your own views (a long-run inflation target, a stress story)
+override the fit where you set them.
 
 The real-world run (`simulate()`) is for ALM, strategic asset allocation and risk: how the economy may plausibly
 evolve. The risk-neutral run (`measure="risk_neutral"`) is for valuation: it reproduces today's yield curve and
