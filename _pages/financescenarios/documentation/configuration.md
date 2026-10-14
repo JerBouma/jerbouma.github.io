@@ -57,7 +57,7 @@ Over long horizons the long-run parameters (where rates and inflation revert to,
 
 Monte Carlo error falls with the square root of the number of scenarios, and a tail percentile converges far more slowly than the mean: with 2,000 scenarios a 1-in-200 outcome rests on about ten of them. If the figure you report moves more than you could act on when you rerun with another seed, add scenarios or use antithetic variates; the [simulation engine](/projects/financescenarios/docs/simulation-engine#monte-carlo-error) covers both.
 
-A profile of your own can start from a shipped one and state only what differs. It extends a file in its own folder, so copy the shipped profiles there first with `scaffold_project`.
+A profile of your own can start from a shipped one and state only what differs. It extends a file in its own folder, so first copy the shipped profiles into that folder.
 
 ```yaml
 # my-project/settings/my_alm.yaml

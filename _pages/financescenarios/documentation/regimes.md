@@ -91,7 +91,7 @@ A targeted regime keeps only part of each draw, about 9% for Oil Crisis, so the 
 
 Instead of writing a recession by hand, a regime can follow a regulator's published scenario, fetched through the Finance Toolkit with no API key:
 
-- **Federal Reserve**: the US supervisory scenarios, baseline and severely adverse (`scenario="severely_adverse"`), 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market.
+- **Federal Reserve**: the US supervisory scenarios, baseline and severely adverse, 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market.
 
   > "The severely adverse scenario describes a hypothetical set of conditions designed to assess the strength and resilience of banks in an adverse economic environment. … The scenarios start in the first quarter of 2026 and extend through the first quarter of 2029."
   > <cite>[Federal Reserve, 2026 Supervisory Stress Test Scenarios (February 2026), p. 7](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=13)</cite>

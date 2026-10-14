@@ -96,7 +96,7 @@ $$
 
 where $$S$$ is the asset price and $$q$$ its dividend yield. Each date gets a 95% confidence band around the simulated mean and a p-value for the gap between that mean and $$S(0)$$.
 
-With 120 dates each tested at 95%, a correct run still misses about six of them by chance, so requiring every date to pass would fail a true martingale about half the time. The verdict therefore uses [Holm's (1979)](https://www.jstor.org/stable/4615733){:target="_blank"} step-down adjustment for testing many dates at once: the run fails only when the smallest adjusted p-value drops below 5%, which keeps the chance of wrongly failing a correct run at 5% however closely neighboring dates are related. The stricter every-date rule remains available (`criterion="every_date"`). The pass rate is reported beside the 95% a correct drift gives on average. The example run passes 80% of dates, with a largest gap of 0.94%.
+With 120 dates each tested at 95%, a correct run still misses about six of them by chance, so requiring every date to pass would fail a true martingale about half the time. The verdict therefore uses [Holm's (1979)](https://www.jstor.org/stable/4615733){:target="_blank"} step-down adjustment for testing many dates at once: the run fails only when the smallest adjusted p-value drops below 5%, which keeps the chance of wrongly failing a correct run at 5% however closely neighboring dates are related. The stricter rule, every date passing, remains available. The pass rate is reported beside the 95% a correct drift gives on average. The example run passes 80% of dates, with a largest gap of 0.94%.
 
 | date | ratio to today's price | within band |
 |:-----|-----:|:------------|

@@ -151,7 +151,7 @@ unemployment:
 ### Limits
 
 - **The Phillips sign is not forced.** The curve has been unstable since the 1970s, and a fit can come out with the "wrong" sign. Set the sensitivity as a belief if the fit conflicts with your view.
-- **Trends make poor anchors.** German unemployment fell structurally after the mid-2000s labor reforms, so a fit on 2000 onward gives a half-life of about 53 years. Set the level and speed yourself, or use a proxy country: the shipped `core` set uses France, which reverts in about 4.5 years, for the euro area.
+- **Trends make poor anchors.** German unemployment fell structurally after the mid-2000s labor reforms, so a fit on 2000 onward gives a half-life of about 53 years. Set the level and speed yourself, or use a proxy country: the shipped core set uses France, which reverts in about 4.5 years, for the euro area.
 
 Full reference: [Unemployment](/projects/financescenarios/docs/reference/unemployment).
 

@@ -29,26 +29,25 @@ The goal is not to compete with a vendor model but to make the published methods
 
 ## Installation
 
-The project requires Python 3.11 or higher. To install Finance Scenarios it simply requires the following:
+Finance Scenarios requires Python 3.11 or higher and installs with a single command:
 
 ```bash
 pip install financescenarios -U
 ```
 
-To be able to get the most out of it, you need an API key from FinancialModelingPrep. It is used for the price histories behind every ticker-priced factor: stock markets such as the S&P 500 (`SPY`), Europe (`VGK`) and Japan (`EWJ`), Treasury yields such as the 10-year (`^TNX`), commodities such as gold (`GC=F`) and Brent oil (`BZ=F`), and the dividends of those funds. Note that the Free plan is limited to 250 requests each day, 5 years of data and only companies listed on US exchanges.
+The scenarios are fitted to market history, so to get the most out of it you need an API key from FinancialModelingPrep. It supplies the price histories the model learns from: stock markets, government bond yields, commodities and dividends. The Free plan allows 250 requests a day, five years of data and US-listed securities only, which is enough to try it out; longer histories and markets outside the US need a premium plan.
 
 [Obtain an API Key from FinancialModelingPrep](/fmp){: .btn .btn--warning .btn--large .align-center target="_blank"}
 
-Through the link you are able to subscribe for the free plan and also premium plans at a **15% discount**. This is an affiliate link and thus supports the project at the same time.
+The link gives access to the free plan and to premium plans at a **15% discount**. It is an affiliate link, so it supports the project at the same time.
 
-Optionally, add a free [FRED key](https://fred.stlouisfed.org/docs/api/api_key.html) from the Federal Reserve Bank of St. Louis. It is used for US corporate bond spreads (the ICE BofA option-adjusted spreads behind `credit`) and US commercial property prices (`real_estate` with `source: commercial`). The [configuration documentation](/projects/financescenarios/docs/configuration#secrets) lists exactly which key each factor uses. The `default` factor set reads EIOPA's risk-free curves, which need Finance Toolkit 2.2.2 or newer (`pip install -U financetoolkit`).
-
+A free [FRED key](https://fred.stlouisfed.org/docs/api/api_key.html) from the Federal Reserve Bank of St. Louis is optional and adds US corporate bond spreads and commercial property prices. The [configuration documentation](/projects/financescenarios/docs/configuration#secrets) shows which data each part of the model relies on.
 
 ## Functionality
 
 Every table below is real output, cut to a few rows, and every chart is interactive, from one run calibrated on {{ site.data.financescenarios_run.date }}. Live data moves, so another day gives slightly different numbers. The full [documentation](/projects/financescenarios/docs) explains each model and its assumptions.
 
-Every run combines two ready-made *profiles*: a **settings** profile, which says how the run goes (how many scenarios, how far ahead, how much history to learn from), and a **factor set**, which says what gets simulated (which interest rates, stock markets, currencies and so on). Optionally a **regime** adds a stress story, and a **portfolio** is an investment mix to read the scenarios through. `list_presets()` lists them all with what each is for; `kind=` narrows it to one kind:
+Every run combines two ready-made *profiles*: a **settings** profile, which says how the run goes (how many scenarios, how far ahead, how much history to learn from), and a **factor set**, which says what gets simulated (which interest rates, stock markets, currencies and so on). Optionally a **regime** adds a stress story, and a **portfolio** is an investment mix to read the scenarios through. Each kind comes with ready-made options:
 
 ```python
 from financescenarios import list_presets
@@ -56,12 +55,11 @@ from financescenarios import list_presets
 list_presets(kind="settings")  # or "factor-sets", "regimes", "portfolios"; leave it out for all 39
 ```
 
-Open a kind below to see its options and the call it goes in.
+Open a kind below to see what each option is for.
 
 <details class="ft-details" markdown="1">
 <summary><i class="fas fa-sliders-h"></i> <b>Settings profiles</b> <span class="ft-details__meta">4</span></summary>
 
-Passed as `Scenarios.from_profiles(settings="...")`.
 
 | id           | description                                                                                                              |
 |:-------------|:-------------------------------------------------------------------------------------------------------------------------|
@@ -75,7 +73,6 @@ Passed as `Scenarios.from_profiles(settings="...")`.
 <details class="ft-details" markdown="1">
 <summary><i class="fas fa-layer-group"></i> <b>Factor sets</b> <span class="ft-details__meta">9</span></summary>
 
-Passed as `Scenarios.from_profiles(factor_set="...")`.
 
 | id              | description                                                                                                                                           |
 |:----------------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -94,7 +91,6 @@ Passed as `Scenarios.from_profiles(factor_set="...")`.
 <details class="ft-details" markdown="1">
 <summary><i class="fas fa-bolt"></i> <b>Stress regimes</b> <span class="ft-details__meta">12</span></summary>
 
-Passed as `Scenarios.from_profiles(regime="...")`, see [Applying Stress Regimes](#applying-stress-regimes).
 
 | id                    | description                                                                                                                                             |
 |:----------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -116,7 +112,6 @@ Passed as `Scenarios.from_profiles(regime="...")`, see [Applying Stress Regimes]
 <details class="ft-details" markdown="1">
 <summary><i class="fas fa-chart-pie"></i> <b>Portfolios</b> <span class="ft-details__meta">14</span></summary>
 
-Passed as `Portfolio.from_preset(result, preset="...")`, see [Building a Portfolio](#building-a-portfolio).
 
 | id                    | description                                                                                                                                   |
 |:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -169,9 +164,11 @@ Rates are annual rates and priced assets annualized returns, as decimals; `termi
 | europe                     |         |        0.0766 |      -0.0925 |       0.2197 |
 | gold                       |         |        0.0596 |      -0.0614 |       0.1936 |
 
+The table gives the end point; the fan charts show how the range opens up month by month, with the median and the bands holding half and nine in ten of the scenarios.
+
 {% include ft-chart.html id="simulation" src="/assets/data/financescenarios-charts.json" label="Simulated short rate, inflation and US equities" %}
 
-The fan charts show the median and the bands holding half and nine in ten of the scenarios. The US short rate starts at 4.06% and averages 4.42% after five years, but 1 in 20 scenarios end below 0.50% and 1 in 20 above 8.59%. In money, 100 in US equities becomes 161 in the median scenario, below 79 in the worst 1 in 20 and above 284 in the best. **Find [the Notebook](/projects/financescenarios/getting-started) and [the simulation documentation](/projects/financescenarios/docs/simulation-engine).**
+The US short rate starts at 4.06% and averages 4.42% after five years, but 1 in 20 scenarios end below 0.50% and 1 in 20 above 8.59%. In money, 100 in US equities becomes 161 in the median scenario, below 79 in the worst 1 in 20 and above 284 in the best. **Find [the Notebook](/projects/financescenarios/getting-started) and [the simulation documentation](/projects/financescenarios/docs/simulation-engine).**
 
 ### Reading the Tails
 
@@ -220,9 +217,11 @@ compare_runs({"baseline": result, "oil_crisis": shocked})
 | us_broad                 |   0.0983 |     0.0161 |
 | europe                   |   0.0766 |     0.0178 |
 
+The stories differ in timing as much as in size. Below, US inflation under three regimes against the baseline, each with its median and spread.
+
 {% include ft-chart.html id="regimes" src="/assets/data/financescenarios-charts.json" label="US inflation in the baseline and under three stress regimes" %}
 
-In the oil crisis, US inflation ends at 4.92% instead of 2.62% and stocks return 1.61% a year instead of 9.83%. The regimes differ in timing as much as in level: the oil shock follows the baseline until its shock hits in January 2028 and then fades, while the oil crisis and climate collapse lift inflation from the first month. **Find [the Notebook](/projects/financescenarios/regimes-notebook) and [the regime documentation](/projects/financescenarios/docs/regimes).**
+In the oil crisis, US inflation ends at 4.92% instead of 2.62% and stocks return 1.61% a year instead of 9.83%. The oil shock follows the baseline until its shock hits in January 2028 and then fades, while the oil crisis and climate collapse lift inflation from the first month. **Find [the Notebook](/projects/financescenarios/regimes-notebook) and [the regime documentation](/projects/financescenarios/docs/regimes).**
 
 ### Backtesting Against History
 
@@ -239,6 +238,8 @@ portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
 | 60/40 Balanced      | 0.5369 | -0.0687 | -0.0447 | 0.1215 | -0.0116 | 0.0007 |    0.8615 | 2000-08-01 | 2026-10-01 |
 | All Weather         | 0.2039 | -0.0620 | -0.1435 | 0.2162 |  0.0335 | 0.0029 |    0.1318 | 2000-08-01 | 2026-10-01 |
 | Permanent Portfolio | 0.2173 | -0.0615 | -0.1418 | 0.2017 |  0.0473 | 0.0033 |    0.1240 | 2000-08-01 | 2026-10-01 |
+
+The loadings say how each mix is built; the chart shows where that took 100,000 invested in August 2000.
 
 {% include ft-chart.html id="backtest" src="/assets/data/financescenarios-charts.json" label="Historical value of the 60/40, All Weather and Permanent Portfolio mixes since 2000" %}
 
@@ -265,6 +266,8 @@ solvency.report(cashflows=[10_000] * 5, assets=assets)
 | own funds           | 15,657                    | assets minus what is owed, today                           |
 | SCR (1 in 200 year) | 12,482                    | the capital that survives a 1-in-200 bad year              |
 | solvency ratio      | 1.25                      | own funds / SCR; above 1 means enough capital              |
+
+Behind the SCR is the distribution of own funds one year ahead, discounted to today, across the 2,000 scenarios.
 
 {% include ft-chart.html id="solvency" src="/assets/data/financescenarios-charts.json" label="Distribution of own funds after one year" %}
 
