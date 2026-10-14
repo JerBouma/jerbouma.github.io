@@ -4999,8 +4999,12 @@ The same data is available as Toolkit.get_market_risk_premium; both share one ca
 
 **Also known as:** equity risk premium, country risk premium, MRP.
 
-Returns: pd.DataFrame: The country and total equity risk premium per country, as decimals (0.0446 for 4.46%).
+**Returns:**
 
+pd.DataFrame: The country and total equity risk premium per country, as decimals
+(0.0446 for 4.46%).
+
+**As an example:**
 
 ```python
 from financetoolkit import Economics

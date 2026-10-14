@@ -1836,8 +1836,11 @@ Retrieve statistics about each ticker's historical data. This is especially usef
 
 **Also known as:** key statistics over time, historical key metrics.
 
-Returns: pd.DataFrame: A DataFrame containing the statistics for each ticker.
+**Returns:**
 
+pd.DataFrame: A DataFrame containing the statistics for each ticker.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit
@@ -2349,8 +2352,13 @@ The cache stores data per source, per dataset and per entity (a ticker, a countr
 
 The cache is inspected even when this Toolkit was created with use_cached_data=False, so a cache filled by an earlier session can always be reviewed.
 
-Returns: pd.DataFrame: One row per source and dataset combination, with the number of entities, the number of stored entries and when they were written. An empty DataFrame when the cache holds nothing.
+**Returns:**
 
+pd.DataFrame: One row per source and dataset combination, with the number
+of entities, the number of stored entries and when they were written.
+An empty DataFrame when the cache holds nothing.
+
+**As an example:**
 
 ```python
 from financetoolkit import Toolkit

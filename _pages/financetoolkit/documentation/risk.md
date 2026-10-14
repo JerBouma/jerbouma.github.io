@@ -1087,9 +1087,12 @@ EGARCH models the log of the conditional variance, which avoids having to constr
 
 For more information about the method, see the following paper:
 
-- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset Returns: A New Approach." Econometrica, 59(2), 347-370.
+- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset
 
-**Also known as:** exponential GARCH, log-GARCH.
+**Returns:** A New
+Approach." Econometrica, 59(2), 347-370.
+
+Also known as: exponential GARCH, log-GARCH.
 
 **Args:**
 
@@ -1165,9 +1168,12 @@ Calculates sigma_2 forecasts based on the EGARCH model.
 
 For more information about the method, see the following paper:
 
-- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset Returns: A New Approach." Econometrica, 59(2), 347-370.
+- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset
 
-**Also known as:** volatility forecast, predicted volatility.
+**Returns:** A New
+Approach." Econometrica, 59(2), 347-370.
+
+Also known as: volatility forecast, predicted volatility.
 
 **Args:**
 
@@ -1235,9 +1241,12 @@ A negative Gamma indicates the presence of a leverage effect (negative shocks ra
 
 For more information about the method, see the following paper:
 
-- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset Returns: A New Approach." Econometrica, 59(2), 347-370.
+- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset
 
-**Also known as:** EGARCH weights, EGARCH coefficients, leverage parameters.
+**Returns:** A New
+Approach." Econometrica, 59(2), 347-370.
+
+Also known as: EGARCH weights, EGARCH coefficients, leverage parameters.
 
 **Args:**
 
@@ -2331,9 +2340,12 @@ The Amihud ratio measures the average price impact of trading -- how much the pr
 
 For more information about the method, see the following paper:
 
-- Amihud, Y. (2002). "Illiquidity and Stock Returns: Cross-Section and Time-Series Effects." Journal of Financial Markets, 5(1), 31-56.
+- Amihud, Y. (2002). "Illiquidity and Stock
 
-**Also known as:** Amihud illiquidity ratio, ILLIQ, price impact ratio.
+**Returns:** Cross-Section and
+Time-Series Effects." Journal of Financial Markets, 5(1), 31-56.
+
+Also known as: Amihud illiquidity ratio, ILLIQ, price impact ratio.
 
 **Args:**
 

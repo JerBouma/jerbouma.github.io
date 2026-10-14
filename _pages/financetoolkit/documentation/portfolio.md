@@ -161,15 +161,23 @@ The following columns are included:
 - Close: the closing price for the benchmark over time.
 - Adj Close: the adjusted closing price for the benchmark over time.
 - Volume: the volume of the benchmark over time.
-- Dividends: the dividends of the benchmark over time.
-- Returns: the returns of the benchmark over time.
+- Dividends: the dividends of the benchmark over time. -
+
+**Returns:** the returns of the benchmark over time.
 - Cumulative Return: the cumulative return of the benchmark over time.
 
-Volatility, Excess Return and Excess Volatility are no longer included here. These are available via the Risk module (e.g. toolkit.risk.get_volatility) and the Performance module (e.g. toolkit.performance.get_excess_return) instead.
+Volatility, Excess Return and Excess Volatility are no longer included here. These are
+available via the Risk module (e.g. toolkit.risk.get_volatility) and the Performance
+module (e.g. toolkit.performance.get_excess_return) instead.
 
-This method retrieves historical benchmark data (daily, weekly, monthly, quarterly, and yearly) for the portfolio, based on a specified benchmark ticker or a mapping of portfolio tickers to their corresponding benchmark tickers. The retrieved benchmark data is then aligned with the portfolio's historical data, ensuring that the dates of the benchmark data match the dates of the portfolio's transactions.
+This method retrieves historical benchmark data (daily, weekly, monthly, quarterly, and yearly)
+for the portfolio, based on a specified benchmark ticker or a mapping of portfolio tickers to
+their corresponding benchmark tickers. The retrieved benchmark data is then aligned with the
+portfolio's historical data, ensuring that the dates of the benchmark data match the dates of
+the portfolio's transactions.
 
-The method can retrieve data for a single benchmark ticker or for multiple benchmarks depending on the portfolio tickers. The resulting benchmark data is returned in a structured DataFrame.
+The method can retrieve data for a single benchmark ticker or for multiple benchmarks depending
+on the portfolio tickers. The resulting benchmark data is returned in a structured DataFrame.
 
 **Args:**
 
@@ -234,15 +242,23 @@ The following columns are included:
 - Close: the closing price of each asset over time.
 - Adj Close: the adjusted closing price of each asset over time.
 - Volume: the volume of each asset over time.
-- Dividends: the dividends of each asset over time.
-- Returns: the returns of each asset over time.
+- Dividends: the dividends of each asset over time. -
+
+**Returns:** the returns of each asset over time.
 - Cumulative Return: the cumulative return of each asset over time.
 
-Volatility, Excess Return and Excess Volatility are no longer included here. These are available via the Risk module (e.g. toolkit.risk.get_volatility) and the Performance module (e.g. toolkit.performance.get_excess_return) instead.
+Volatility, Excess Return and Excess Volatility are no longer included here. These are
+available via the Risk module (e.g. toolkit.risk.get_volatility) and the Performance
+module (e.g. toolkit.performance.get_excess_return) instead.
 
-This method retrieves historical price data (daily, weekly, monthly, quarterly, and yearly) for the portfolio's tickers and adjusts for any currency mismatches if necessary. It fetches data from a specified data source, applies currency conversion where applicable, and stores the adjusted data in separate DataFrames for different time periods (daily, weekly, monthly, quarterly, yearly).
+This method retrieves historical price data (daily, weekly, monthly, quarterly, and yearly)
+for the portfolio's tickers and adjusts for any currency mismatches if necessary. It fetches
+data from a specified data source, applies currency conversion where applicable, and stores the
+adjusted data in separate DataFrames for different time periods (daily, weekly, monthly, quarterly, yearly).
 
-The method uses the Toolkit class to fetch historical price data and the Currency Toolkit to handle currency conversions if the portfolio’s transaction currency does not match the historical data's currency.
+The method uses the Toolkit class to fetch historical price data and the Currency Toolkit to
+handle currency conversions if the portfolio’s transaction currency does not match the historical
+data's currency.
 
 **Args:**
 

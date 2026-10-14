@@ -166,8 +166,11 @@ Which returns:
 ## get_stock_list
 The stock list function returns a complete list of all the symbols that can be used in the Finance Toolkit. These are over 60.000 symbols.
 
-Returns: pd.DataFrame: A dataframe with all the symbols in the toolkit.
+**Returns:**
 
+pd.DataFrame: A dataframe with all the symbols in the toolkit.
+
+**As an example:**
 
 ```python
 from financetoolkit import Discovery
@@ -200,8 +203,11 @@ Which returns:
 ## get_stock_shares_float
 Returns the shares float for each company. The shares float is the number of shares available for trading for each company. It also includes the number of shares outstanding and the date.
 
-Returns: pd.DataFrame: A dataframe with the shares float for each company.
+**Returns:**
 
+pd.DataFrame: A dataframe with the shares float for each company.
+
+**As an example:**
 
 ```python
 from financetoolkit import Discovery
@@ -275,8 +281,11 @@ Which returns:
 ## get_biggest_gainers
 Returns the biggest gainers for the day. This includes the symbol, the name, the price, the change and the change percentage.
 
-Returns: pd.DataFrame: A dataframe with the biggest gainers for the day.
+**Returns:**
 
+pd.DataFrame: A dataframe with the biggest gainers for the day.
+
+**As an example:**
 
 ```python
 from financetoolkit import Discovery
@@ -308,8 +317,11 @@ Which returns:
 ## get_biggest_losers
 Returns the biggest losers for the day. This includes the symbol, the name, the price, the change and the change percentage.
 
-Returns: pd.DataFrame: A dataframe with the biggest losers for the day.
+**Returns:**
 
+pd.DataFrame: A dataframe with the biggest losers for the day.
+
+**As an example:**
 
 ```python
 from financetoolkit import Discovery
@@ -341,8 +353,11 @@ Which returns:
 ## get_most_active_stocks
 Returns the most active stocks for the day. This includes the symbol, the name, the price, the change and the change percentage.
 
-Returns: pd.DataFrame: A dataframe with the most active stocks for the day.
+**Returns:**
 
+pd.DataFrame: A dataframe with the most active stocks for the day.
+
+**As an example:**
 
 ```python
 from financetoolkit import Discovery
@@ -417,8 +432,11 @@ Which returns:
 ## get_crypto_list
 The crypto list function returns a complete list of all crypto symbols that can be used in the Finance Toolkit. These are over 4.000 symbols.
 
-Returns: pd.DataFrame: A dataframe with all the symbols in the toolkit.
+**Returns:**
 
+pd.DataFrame: A dataframe with all the symbols in the toolkit.
+
+**As an example:**
 
 ```python
 from financetoolkit import Discovery
@@ -450,8 +468,11 @@ Which returns:
 ## get_forex_list
 The forex list function returns a complete list of all forex symbols that can be used in the Finance Toolkit. These are over 1.000 symbols.
 
-Returns: pd.DataFrame: A dataframe with the forex symbols.
+**Returns:**
 
+pd.DataFrame: A dataframe with the forex symbols.
+
+**As an example:**
 
 ```python
 from financetoolkit import Discovery
@@ -483,8 +504,11 @@ Which returns:
 ## get_commodity_list
 The commodity list function returns a complete list of all commodity symbols that can be used in the Finance Toolkit.
 
-Returns: pd.DataFrame: A dataframe with all the commodities available.
+**Returns:**
 
+pd.DataFrame: A dataframe with all the commodities available.
+
+**As an example:**
 
 ```python
 from financetoolkit import Discovery
@@ -516,8 +540,11 @@ Which returns:
 ## get_etf_list
 The etf list function returns a complete list of all etf symbols that can be used in the Finance Toolkit.
 
-Returns: pd.DataFrame: A dataframe with all the etf symbols.
+**Returns:**
 
+pd.DataFrame: A dataframe with all the etf symbols.
+
+**As an example:**
 
 ```python
 from financetoolkit import Discovery
@@ -549,8 +576,11 @@ Which returns:
 ## get_index_list
 The index list function returns a complete list of all etf symbols that can be used in the Finance Toolkit.
 
-Returns: pd.DataFrame: A dataframe with all the index symbols.
+**Returns:**
 
+pd.DataFrame: A dataframe with all the index symbols.
+
+**As an example:**
 
 ```python
 from financetoolkit import Discovery
