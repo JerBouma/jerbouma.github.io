@@ -1,8 +1,8 @@
 ---
 title: Documentation
 seo_title: Finance Scenarios Documentation
-excerpt: "The documentation of Finance Scenarios, an open-source economic scenario generator that simulates thousands of possible scenarios for interest rates, inflation, stock markets, currencies and other economic variables, linked to each other the way they have been historically."
-description: "Documentation for Finance Scenarios, an open-source Python economic scenario generator: configuration, simulation engine, units, regimes, plotting and validation."
+excerpt: "Finance Scenarios is an open-source economic scenario generator: thousands of joint scenarios for interest rates, inflation, equities, currencies, credit and more, linked the way they have been historically."
+description: "Finance Scenarios documentation: what the economic scenario generator models, how factors are linked, real-world vs risk-neutral runs, and a map of the guides."
 author_profile: false
 permalink: /projects/financescenarios/docs
 classes: wide-sidebar
@@ -14,91 +14,56 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Finance Scenarios is an economic scenario generator (ESG): it simulates thousands of possible scenarios for interest rates, inflation, stock markets, currencies and other economic variables, linked to each other the way they have been historically.
+Finance Scenarios is an economic scenario generator (ESG). It simulates thousands of joint scenarios for interest rates, inflation, equities, currencies, credit and other economic variables, each fitted to its own history and linked to the others the way they have moved together.
 
-Instead of one forecast you get a range of plausible scenarios, so you can see the typical outcome, the bad years and the extreme cases. That is what risk analysis, actuarial reserving, pension and retirement planning, and stress testing need.
+An ESG replaces a single forecast with a distribution. That is what ALM studies, strategic asset allocation, pension and retirement planning, reserving and Solvency II valuation need: the median path, but also the bad years and the tail. Installation and a first run are on the [Finance Scenarios page](/projects/financescenarios#installation); the [example notebooks](/projects/financescenarios#notebooks) show every part with real output.
 
-Installing the package and a first run are covered on the [Finance Scenarios page](/projects/financescenarios#installation), and the [example notebooks](/projects/financescenarios#notebooks) show each part with real output.
+## What Is Modeled
 
-## Where the documentation lives
+Each factor follows a model suited to how it behaves: rates, inflation and spreads revert to a long-run level at their own historical speed, equities switch between calm and crisis regimes so bad months cluster, and currencies keep their historical volatility.
 
-The documentation is split the same way as the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit)'s:
+| Area | What is simulated | Model | Guide |
+|:-----|:------------------|:------|:------|
+| Short and long rates | One rate per country, short or long end | Vasicek (default, can go negative; Hull-White when fitted to today's curve), CIR (rates kept near or above zero), Wilkie, Hibbert two-factor | [Interest rates](/projects/financescenarios/docs/interest-rates) |
+| Yield curve | Level, slope and curvature of the whole curve | Dynamic Nelson-Siegel | [Interest rates](/projects/financescenarios/docs/interest-rates) |
+| Forward curve | The full forward curve, arbitrage-free | Two-factor Gaussian HJM | [Interest rates](/projects/financescenarios/docs/interest-rates) |
+| Rates and inflation jointly | Nominal and real rates, inflation, optionally equities | KNW, with stochastic volatility or priced like the market | [KNW](/projects/financescenarios/docs/knw) |
+| Inflation | Year-over-year inflation per country | Mean-reverting (Ornstein-Uhlenbeck) or Wilkie AR(1) | [Economy](/projects/financescenarios/docs/economy) |
+| Unemployment | Unemployment rate per country | Mean-reverting with a Phillips-curve link to inflation | [Economy](/projects/financescenarios/docs/economy) |
+| Business cycle | OECD composite leading indicator | Mean-reverting | [Economy](/projects/financescenarios/docs/economy) |
+| Longevity | Mortality improvement by age | Cairns-Blake-Dowd | [Economy](/projects/financescenarios/docs/economy) |
+| Equities | Indices, sectors, regions, styles | Regime-switching lognormal | [Markets](/projects/financescenarios/docs/markets) |
+| Currencies | Each currency against the dollar | Lognormal, optionally with an interest-rate-parity drift | [Markets](/projects/financescenarios/docs/markets) |
+| Commodities | Gold, oil and other futures | Mean-reverting log price (Schwartz), or two-factor | [Markets](/projects/financescenarios/docs/markets) |
+| Real estate | House-price growth | Mean-reverting | [Markets](/projects/financescenarios/docs/markets) |
+| Dividends | Dividend yield and dividend growth | Mean-reverting log yield, Wilkie-style growth | [Markets](/projects/financescenarios/docs/markets) |
+| Credit | Spreads by maturity or rating, the credit curve, rating migration and default | Mean-reverting spreads, Nelson-Siegel credit curve, a credit cycle driving migration | [Markets](/projects/financescenarios/docs/markets) |
+| Stress and climate | Fed and ESRB stress tests, NGFS climate pathways, your own narratives | Overlays on a run | [Regimes](/projects/financescenarios/docs/regimes) |
 
-- **Each component documents itself.** What a factor or module models, which papers it follows, its options, its data source and limits, its configuration keys, and a worked example with real output are all in the class and method docstrings, readable with `help(...)` in Python and rendered as the [reference pages](/projects/financescenarios/docs/reference) on the website.
-- **These pages cover the infrastructure:** how a run is put together, how to configure it, the units everything is reported in, and how the output is checked.
+Interest rates, inflation, equities and unemployment are always simulated; the rest is switched on per factor set. [Coverage](/projects/financescenarios/docs/coverage) lists every model, calibration choice and known gap, and the [reference](/projects/financescenarios/docs/reference) documents each model's parameters.
 
-| Component | Class (`help(...)`) | Default | Shape |
-|:----------|:--------------------|:--------|:------|
-| Interest rates | [`InterestRates`](/projects/financescenarios/docs/reference/interest-rates) (`factors/interest_rates`) | On | One per country or region |
-| Inflation | [`Inflation`](/projects/financescenarios/docs/reference/inflation) (`factors/inflation`) | On | One per country or region |
-| Equities | [`Equities`](/projects/financescenarios/docs/reference/equities) (`factors/equities`) | On | One per index, sector, region or style |
-| Unemployment | [`Unemployment`](/projects/financescenarios/docs/reference/unemployment) (`factors/unemployment`) | On | One per country or region, paired with an inflation entry |
-| Yield curve | [`TermStructure`](/projects/financescenarios/docs/reference/term-structure) (`factors/term_structure`) | On in `default.yaml` and `broad.yaml` | Nelson-Siegel level, slope and curvature |
-| Forward curve (HJM) | [`Hjm`](/projects/financescenarios/docs/reference/hjm) (`factors/hjm`) | Opt-in | Two-factor Gaussian forward curve |
-| Real estate | [`RealEstate`](/projects/financescenarios/docs/reference/real-estate) (`factors/real_estate`) | Opt-in | House-price growth |
-| Credit spreads | [`Credit`](/projects/financescenarios/docs/reference/credit) (`factors/credit`) | Opt-in | One per US maturity or rating bucket (ICE BofA), Moody's Aaa/Baa from 1953, German or Australian corporate spreads, or the ECB's euro-area cost of borrowing |
-| Rating migration | [`CreditMigration`](/projects/financescenarios/docs/reference/credit-migration) (`factors/credit_migration`) | Opt-in | A credit cycle driving rating moves and defaults; `rating_migration` for a portfolio |
-| Credit curve | [`CreditTermStructure`](/projects/financescenarios/docs/reference/credit-term-structure) (`factors/credit_term_structure`) | Opt-in | Nelson-Siegel curve from the Treasury HQM spread curve (or a bond panel) |
-| Leading indicator | [`LeadingIndicator`](/projects/financescenarios/docs/reference/leading-indicator) (`factors/leading_indicator`) | Opt-in | OECD composite leading indicator |
-| FX | [`FX`](/projects/financescenarios/docs/reference/fx) (`factors/fx`) | Opt-in | One per currency against the US dollar |
-| Commodities | [`Commodities`](/projects/financescenarios/docs/reference/commodities) (`factors/commodities`) | Opt-in | One per commodity future |
-| Dividend yield and growth | [`DividendYield`](/projects/financescenarios/docs/reference/dividend-yield), [`DividendGrowth`](/projects/financescenarios/docs/reference/dividend-growth) (`factors/dividend_*`) | Opt-in | One per ticker |
-| Mortality | [`Mortality`](/projects/financescenarios/docs/reference/mortality) (`factors/mortality`) | Opt-in | Cairns-Blake-Dowd two-factor model; Eurostat life tables or a supplied table |
-| KNW model family | [`Knw`](/projects/financescenarios/docs/reference/knw), [`KnwSv`](/projects/financescenarios/docs/reference/knw-sv), [`KnwSvQ`](/projects/financescenarios/docs/reference/knw-sv-q) (`models/`) | Per entry (`method:`) | Interest rate and inflation fitted jointly |
-| Correlations | [`Dependence`](/projects/financescenarios/docs/reference/dependence) (`dependence/`) | Always | The correlation matrix that links every factor |
-| Portfolios | [`Portfolio`](/projects/financescenarios/docs/reference/portfolio) (`portfolio/`) | On demand | Allocations, cashflows, risk metrics, backtests |
-| Currency reporting | [`Reporting`](/projects/financescenarios/docs/reference/reporting) (`reporting/`) | On demand | Converts prices into one reporting currency |
-| Solvency II | [`Solvency`](/projects/financescenarios/docs/reference/solvency) (`solvency/`) | On demand | `Solvency(real_world, risk_neutral).report(cashflows, assets)` in one table; also the martingale test, EIOPA risk-free curves, best estimate, standard-formula interest rate and equity risk, one-year SCR and scenario files on their own |
-| Climate scenarios | `climate` section, `climate_controller` | Opt-in | NGFS pathways laid over a run, plus the carbon price |
-| Official stress tests | [`stress_test_regime`](/projects/financescenarios/docs/reference/regimes) (`stress_tests/`) | On demand | Federal Reserve and ESRB scenarios as regimes |
-| Calibration releases | [`publish_calibration`](/projects/financescenarios/docs/reference/runs-and-releases), [`load_release`](/projects/financescenarios/docs/reference/runs-and-releases) (`release/`) | On demand | Versioned calibrations with a validation report; published yearly as GitHub releases |
-| Long history | `history_source` on equities, rates and inflation (`long_history/`) | Per entry | Dynamics fitted on Shiller (1871), the Bank of England's millennium data (1209/1694) or JST (1870) |
+## How the Factors Are Linked
 
-The four default factors are not simulated in isolation. Following [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf), inflation feeds interest rates and unemployment, and both feed equity returns; every other factor is linked through the estimated correlation matrix (`Dependence`).
+When equities fall, spreads, rates and currencies should move the way they did in past sell-offs. Where theory says one variable drives another (inflation driving unemployment, a rate gap driving an exchange rate), the driver's simulated path feeds the next factor; everything else is tied together by one correlation matrix of the historical shocks. [How a run is built](/projects/financescenarios/docs/architecture#dependence) explains both.
 
-## How a run is put together
+## Real-World and Risk-Neutral Runs
 
-| Page | What it covers |
-|:-----|:---------------|
-| [architecture](/projects/financescenarios/docs/architecture) | The module layout (`_model`, `_controller`, `_view`) and the data flow from configuration to results. |
-| [configuration](/projects/financescenarios/docs/configuration) | Settings and factor-set profiles, every top-level field, multi-instance factors, beliefs and shocks, the published frameworks (Wilkie, Ahlgrim, Hibbert, KNW), real-world and risk-neutral measures, and API keys. |
-| [simulation-engine](/projects/financescenarios/docs/simulation-engine) | How the correlated shocks are drawn, how each factor steps forward, and the `ScenarioSet` result and its methods. |
-| [units](/projects/financescenarios/docs/units) | The one unit everything is reported in: rates as annualized decimals, prices as annualized returns since start. |
-| [regimes](/projects/financescenarios/docs/regimes) | Named stress narratives: belief overrides, post-simulation filters, or both. |
-| [plotting](/projects/financescenarios/docs/plotting) | The `.plot()` on every result and the chart functions behind it. |
-| [validation-and-testing](/projects/financescenarios/docs/validation) | How the output is checked: analytical tests, external benchmarks (NAIC GOES, a bond panel, option-implied densities) and the test suite. |
-| [coverage](/projects/financescenarios/docs/coverage) | What this project can and can't do, and why: every factor, every calibration method, every measure and every known gap, in one place. |
-| [interest-rates](/projects/financescenarios/docs/interest-rates) | The short-rate models and when to pick each, the zero lower bound, the Nelson-Siegel yield curve with its sources, the credit term structure and HJM. |
-| [knw](/projects/financescenarios/docs/knw) | The joint interest-rate and inflation models behind De Nederlandsche Bank's scenario set: plain, with stochastic volatility, and priced like the market. |
-| [economy](/projects/financescenarios/docs/economy) | Inflation, unemployment, the leading indicator and the business cycle, and mortality for longevity risk. |
-| [markets](/projects/financescenarios/docs/markets) | Equities, currencies, commodities, real estate, dividends, credit spreads and rating migration. |
-| [portfolio](/projects/financescenarios/docs/portfolio) | Turning a run into the value of an investment mix: rebalancing, cashflows, glidepaths, fees, risk metrics, backtests and factor exposure. |
-| [solvency](/projects/financescenarios/docs/solvency) | Best estimate, own funds and the SCR under Solvency II, the market-consistency check, and where it simplifies the rules. |
-| [reference](/projects/financescenarios/docs/reference) | Every public class, method and function, generated from the docstrings: `Scenarios`, `ScenarioSet`, `Portfolio`, `Solvency`, each factor and the functions around them. |
-
-## Data, measures and currency
-
-Finance Scenarios fetches no data itself: all history comes from a [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) `Toolkit`, which `build_toolkit()` constructs from the configuration, reading the optional FinancialModelingPrep and FRED keys from the environment or a local `.env` (see the Secrets section of [configuration](/projects/financescenarios/docs/configuration)). Most factors calibrate on free OECD and Yahoo Finance data without any key.
-
-Every factor calibrates under the **real-world** measure by default, a fit to how it has actually behaved. Equities, interest rates, FX, inflation, the KNW pair and two-factor commodities can each opt into a **risk-neutral** calibration that reproduces today's market prices instead; [configuration](/projects/financescenarios/docs/configuration)'s Real-world and risk-neutral measures section lists which, and why the others cannot. [Merton (1973)](https://doi.org/10.2307/3003143) gives the classic no-arbitrage argument and [the SOA (2022)](https://www.soa.org/resources/research-reports/2022/understanding-the-connection/) a practical treatment of when each measure is the right tool.
-
-Each factor is simulated in its own currency. `FX`'s `drift_mode: "irp"` ties an exchange rate's drift to two simulated interest rates and `drift_mode: "random_walk"` drops the historical trend so the median rate stays at today's level, and `Reporting` converts prices into one reporting currency after the simulation, without touching calibration or correlations.
-
-## Quick example
+A **real-world** run keeps each factor's historical drift and risk premia and answers "what could happen?" (ALM, allocation, capital). A **risk-neutral** run grows every asset at the risk-free rate so it reproduces today's prices, and answers "what is this worth?" (guarantees, the Solvency II best estimate). [Configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures) explains the difference and which factors have a risk-neutral form.
 
 ```python
 from financescenarios import Scenarios
 
-scenarios = Scenarios.from_profiles(settings="default", factor_set="us_only")   # settings/default.yaml + factor-sets/us_only.yaml
-result = scenarios.simulate()
+scenarios = Scenarios.from_profiles(settings="default", factor_set="us_only")
 
-result.describe()                                   # every factor in one unit, see units
-result.plot("us_broad")                             # a quick chart, see plotting
-help(type(scenarios.equities))                      # the Equities documentation itself
-
-scenarios.validate(result)                          # pass/warn/fail checks on the run, see validation-and-testing
-path = scenarios.save(result, "results/")           # the run, its config and calibration, in its own folder
-history = scenarios.history(portfolio="balanced_60_40")       # what actually happened, for a backtest
+real_world = scenarios.simulate()                         # ALM, allocation, risk
+risk_neutral = scenarios.simulate(measure="risk_neutral")  # valuation, best estimate
+real_world.describe()                                     # every factor at a glance
 ```
 
-`scenarios.save()` returns the run's folder, which `read_run(path)` reads back; `scenarios.history()` returns the realized history as a one-path run, so `Portfolio` and every chart work on it the same way (see the [README](/projects/financescenarios#backtesting-against-history)'s backtesting section). `from_profiles()` also takes `regime="oil_crisis"` for a named stress narrative (see [regimes](/projects/financescenarios/docs/regimes)); when a named profile directory does not exist locally, the copy bundled with the package is used, so this works from a plain install. `Scenarios.calibrate(config)` with `CalibrationResult.save()` and `.load()` replays a calibration without any data access, see [simulation-engine](/projects/financescenarios/docs/simulation-engine).
+All history comes from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit); most factors calibrate on free OECD and Yahoo Finance data without any API key. Each factor is simulated in its own currency and can be converted into one reporting currency afterwards.
+
+## Map of the Documentation
+
+- **Documentation**: how a run is [built](/projects/financescenarios/docs/architecture) and [simulated](/projects/financescenarios/docs/simulation-engine), how to [configure](/projects/financescenarios/docs/configuration) it and [read](/projects/financescenarios/docs/units) the results, plus [regimes](/projects/financescenarios/docs/regimes), [validation](/projects/financescenarios/docs/validation) and [coverage](/projects/financescenarios/docs/coverage).
+- **Guides**: the models per area, from [interest rates](/projects/financescenarios/docs/interest-rates) and [KNW](/projects/financescenarios/docs/knw) to the [economy](/projects/financescenarios/docs/economy) and [markets](/projects/financescenarios/docs/markets), and their use in a [portfolio](/projects/financescenarios/docs/portfolio) and for [Solvency II](/projects/financescenarios/docs/solvency).
+- **Reference**: every class and function, with its parameters and papers, in [the reference](/projects/financescenarios/docs/reference).

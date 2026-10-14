@@ -14,19 +14,16 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-House-price and commercial property growth. Generated from the docstrings of Finance Scenarios 0.1.0; `help(...)` in Python shows the same text.
+House-price and commercial property growth.
 
 ```python
 from financescenarios.factors.real_estate.real_estate_controller import RealEstate
 ```
 
-```python
-RealEstate(toolkit: Toolkit)
-```
-
 The Real Estate module simulates the growth rate of property prices: how fast house prices (or commercial property
 prices) rise or fall each year. Property booms and busts tend to fade back toward a normal growth rate over a few
-years, and that is the behavior this module captures.
+years, and that is the behavior this module captures. Growth can turn negative, so price slumps such as 2008 are
+in the scenario set, and because growth is persistent, a slump lasts several years rather than one bad quarter.
 
 Enable it and every simulated scenario gets a property-price growth path, linked to interest rates, inflation,
 equities and the rest through the correlation matrix, so a portfolio or liability that holds property can be put
@@ -50,11 +47,10 @@ does; the two cannot be combined.
 
 Two data sources (`source`), both through the Finance Toolkit and both as year-over-year growth (0.04 is 4% a year):
 
-- `house_price` (default): the OECD residential house-price index for `country`, quarterly or yearly, from
-  `economics.get_house_prices`, no API key.
+- `house_price` (default): the OECD residential house-price index for `country`, quarterly or yearly, no API
+  key.
 - `commercial`: FRED's US Commercial Real Estate Price Index (from the IMF), office, retail, industrial and
-  apartment prices, from `economics.get_commercial_real_estate_prices`. United States and quarterly only, and it
-  needs a FRED API key.
+  apartment prices. United States and quarterly only, and it needs a FRED API key.
 
 Neither is the appraisal-based NCREIF index the paper was calibrated on, which has no open equivalent.
 
@@ -76,18 +72,16 @@ Configuration (`real_estate` in a factor set):
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the Casualty Actuarial Society, 92. <https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf>
 - Uhlenbeck, G.E., Ornstein, L.S. (1930). "On the Theory of the Brownian Motion." Physical Review, 36(5), 823-841. <https://doi.org/10.1103/PhysRev.36.823>
 
-## calibrate
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
-calibrate(
-    country: str = 'United States',
-    period: str = 'quarterly',
-    volatility_model: str = 'constant',
-    source: str = 'house_price',
-    business_cycle_covariate: pl.Series | None = None,
-    business_cycle_covariate_dates: pl.Series | None = None,
-) -> OUParams | GARCHParams | OUCovariateParams
+RealEstate(toolkit: Toolkit)
 ```
+
+</details>
+
+## calibrate
 
 Calibrate the real estate growth process: fetch the house-price (or commercial property price) growth series, then
 fit how fast growth returns to its normal rate (`mean_reversion_speed`), what that rate is (`long_run_mean`) and
@@ -98,23 +92,6 @@ market has. A speed of 0.5 a year means a boom has faded by half after about 1.4
 are annualized decimals: a `long_run_mean` of 0.04 is 4% growth a year, and `initial_value` is the latest growth
 rate, where every simulated path starts. Give the Toolkit an early `start_date`: its default window is too short
 for a stable fit.
-
-**Args:**
-
-- <u>country (str):</u> the house-price country; "United States" for "commercial". Defaults to "United States".
-- <u>period (str):</u> "quarterly" or "yearly"; "commercial" needs "quarterly". Defaults to "quarterly".
-- <u>volatility_model (str):</u> "constant" or "garch". Defaults to "constant".
-- <u>source (str):</u> "house_price" (OECD) or "commercial" (FRED, key needed). Defaults to "house_price".
-- <u>business_cycle_covariate (pl.Series &#124; None):</u> leading indicator history to condition on. Defaults to None.
-- <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> its dates, needed with it. Defaults to None.
-
-**Returns:**
-
-<u>OUParams &#124; GARCHParams &#124; OUCovariateParams:</u> the fitted process; GARCHParams with "garch", OUCovariateParams with a covariate.
-
-**Raises:**
-
-- <u>ValueError:</u> if an option is not recognized or not allowed with "commercial", "garch" is combined with a covariate, or no data come back (an unsupported country, a missing FRED key or an OECD rate limit).
 
 **As an example:**
 
@@ -142,34 +119,80 @@ Which returns (calibrated on 2026-10-06):
 US house prices are 2.1% higher than a year ago and are pulled toward 3.4% a year, a slump fading by half in about
 5.7 years; commercial prices revert within about a year, with almost four times the volatility.
 
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+calibrate(
+    country: str = 'United States',
+    period: str = 'quarterly',
+    volatility_model: str = 'constant',
+    source: str = 'house_price',
+    business_cycle_covariate: pl.Series | None = None,
+    business_cycle_covariate_dates: pl.Series | None = None,
+) -> OUParams | GARCHParams | OUCovariateParams
+```
+
+**Args:**
+
+- <u>country (str):</u> the house-price country; "United States" for "commercial". Defaults to "United States".
+- <u>period (str):</u> "quarterly" or "yearly"; "commercial" needs "quarterly". Defaults to "quarterly".
+- <u>volatility_model (str):</u> "constant" or "garch". Defaults to "constant".
+- <u>source (str):</u> "house_price" (OECD) or "commercial" (FRED, key needed). Defaults to "house_price".
+- <u>business_cycle_covariate (pl.Series &#124; None):</u> leading indicator history to condition on. Defaults to None.
+- <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> its dates, needed with it. Defaults to None.
+
+**Returns:**
+
+<u>OUParams &#124; GARCHParams &#124; OUCovariateParams:</u> the fitted process; GARCHParams with "garch", OUCovariateParams with a covariate.
+
+**Raises:**
+
+- <u>ValueError:</u> if an option is not recognized or not allowed with "commercial", "garch" is combined with a covariate, or no data come back (an unsupported country, a missing FRED key or an OECD rate limit).
+
+</details>
+
 ## params
+
+The calibrated growth process: reversion speed, normal growth rate, volatility and today's growth rate.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 realestate.params  # property -> OUParams | GARCHParams | OUCovariateParams
 ```
 
-The last-calibrated process parameters.
-
 **Raises:**
 
 - <u>RuntimeError:</u> if `calibrate()` has not been called yet.
 
+</details>
+
 ## step_function
+
+The one-step update of the growth rate: an exact Ornstein-Uhlenbeck step.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 realestate.step_function  # property
 ```
 
-The function that moves the growth rate one time step (an exact Ornstein-Uhlenbeck step).
+</details>
 
 ## changes
+
+Dated period-over-period changes of the growth rate: the history its correlations with the other factors are
+estimated from.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 realestate.changes  # property -> pl.DataFrame
 ```
-
-Dated period-over-period changes of the growth rate, from the data `calibrate()` already fetched, used to estimate
-its correlation with the other factors without fetching the data again.
 
 **Returns:**
 
@@ -178,3 +201,5 @@ its correlation with the other factors without fetching the data again.
 **Raises:**
 
 - <u>RuntimeError:</u> if `calibrate()` has not been called yet.
+
+</details>

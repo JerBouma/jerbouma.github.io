@@ -14,7 +14,7 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-The reference pages are generated from the docstrings in the Finance Scenarios package, so they say exactly what `help(...)` says in Python. Each page covers one class or area: its constructor, then every public method and property with its signature, arguments, return value, errors and, where the docstring has one, a worked example with real output.
+The reference pages are generated from the docstrings in the Finance Scenarios package, so they say exactly what `help(...)` says in Python. Each page covers one class or area: what every public method models and why, a worked example with real output where the docstring has one, and its arguments and return value folded underneath.
 
 How a run is put together, the configuration keys and the units every result is reported in are on the [documentation](/projects/financescenarios/docs) pages.
 

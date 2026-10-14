@@ -14,12 +14,8 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-What Finance Scenarios can and can't do, and why. Pick a topic to see its features or search across all of them. Each card says in plain words what a feature does or what is still missing. **Technical details** shows where it lives in the configuration and code, with the precise notes for quants.
-
-When a run uses something that has a known, more capable alternative that isn't available yet, `Scenarios.calibrate(config)` says so in a notice (at INFO level, so `set_log_level("INFO")` shows it).
+Does Finance Scenarios cover the model, measure or Solvency II output you need, and if not, why not? Pick a topic or search across all of them: each card says in plain words what a feature does or what is still missing, and **Technical details** gives the precise notes for quants.
 
 {% include fs-coverage.html %}
 
-## References
-
-`KnwSvQ` has the full Q-measure math for `knw`/`knw_sv`; [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)'s Real-world and risk-neutral measures section has the risk-neutral scope of every factor that accepts `measure: "risk_neutral"` (interest_rates, inflation, equities, fx and commodities). Each factor's own class docstring (`help(InterestRates)`, `help(Equities)`, ...) is the most detailed source for that specific factor, including its Scope notes.
+Which factors have a risk-neutral form is set out under [real-world and risk-neutral](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures); each factor's settings are in the [reference](/projects/financescenarios/docs/reference/configuration).

@@ -1,8 +1,8 @@
 ---
 title: Regimes
 seo_title: Stress Regimes Documentation – Finance Scenarios
-excerpt: "A regime is a named story about the future, such as an oil crisis, saved once and reused. It changes an assumption before simulating, keeps only the scenarios that fit the story afterwards, or both."
-description: "Named stress regimes in Finance Scenarios: belief overrides, post-simulation filters, official Federal Reserve and ESRB stress tests and climate pathways."
+excerpt: "A regime is a named stress narrative, such as an oil crisis or a regulator's adverse scenario. It changes the economics before simulating, keeps only the scenarios that fit the story afterwards, or both."
+description: "Stress narratives in Finance Scenarios: belief overrides before simulating, conditioning on a story after, Fed and ESRB stress tests, reading the results."
 author_profile: false
 permalink: /projects/financescenarios/docs/regimes
 classes: wide-sidebar
@@ -14,134 +14,112 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-A regime is a named story about the future, such as an oil crisis or a financial crisis, saved once and reused. It can change an assumption before simulating (inflation jumps to 9%), keep only the scenarios that fit the story afterwards (high rates and falling stock markets), or both. `financescenarios.list_presets(kind=...)` lists the regimes that ship with the package.
+A regime is a named stress narrative, such as an oil crisis, a financial crisis or a regulator's adverse scenario, written down once and reused across runs. It does not value anything itself: it produces a set of scenarios that your own valuation, ALM or capital model then runs on.
 
-`Regime` and `RegimeLibrary` (`financescenarios/regimes/`) let a caller name a stress scenario ("Oil Crisis", "Financial Crisis", "Climate Collapse") once, and re-apply it across runs, instead of re-typing raw `filter_narrative()` targets or config belief overrides every time. A regime is a specification, not a controller: no calibration or simulation logic lives here, `RegimeLibrary` only builds a `ScenariosConfig` and/or narrows a `ScenarioSet` using the mechanisms [simulation-engine](/projects/financescenarios/docs/simulation-engine) and [configuration](/projects/financescenarios/docs/configuration) already document. Translating a named regime's scenario subset into portfolio- or instrument-level impact is out of scope for this project: a regime only produces a `ScenarioSet` (or a `ScenariosConfig` ready to simulate) a caller feeds into their own valuation logic.
+## Two Ways to Tell a Story
 
-## One file per regime
+**Change the economics before simulating (beliefs).** A belief overrides a calibrated parameter: the long-run level a rate or inflation reverts to, the speed of that reversion, the volatility, an equity's bull and bear means and volatilities, or a one-off shock at a given year. Every scenario is then simulated under the new assumption, with its own randomness and the calibrated correlations intact.
 
-Each regime lives in its own YAML file under a `regimes/` directory (see `financescenarios/presets/regimes/` for the shipped set): `regimes/oil_crisis.yaml`, `regimes/financial_crisis.yaml`, and so on. This is deliberate: a caller that wants to run one specific regime loads exactly that one file, never the whole directory; see `load_one()` below. Listing every available regime (`RegimeLibrary.load(<dir>)`) is the only operation that touches every file, since listing inherently requires knowing about all of them.
+**Condition on the outcome after simulating (targets).** A target keeps only the scenarios that land in a quantile range of one or more factors, such as the top 30% of short rates and the bottom 30% of equity returns. The model is unchanged: you look at the part of the baseline distribution where the story happens, and every other factor comes along on those same paths.
 
-A regime file's shape:
+This is the difference between a stress test (an imposed shock) and scenario analysis (a combination of internally consistent moves): beliefs reshape the distribution, targets select from it.
+
+| | Beliefs | Targets |
+|:--|:--|:--|
+| Acts on | the model's parameters | the simulated paths |
+| Probability of the story | assumed (you impose it) | inside the base run (you pick its tail) |
+| Other factors | move through the correlations | come along on the selected paths |
+| Best for | a view on levels, a regulator's path, a shock | "what else happens when X happens" |
+
+## Shipped Regimes
+
+| Regime | The story | How |
+|:-------|:----------|:----|
+| `financial_crisis` | Stocks fall, unemployment rises and rates are cut, all at once | Targets |
+| `credit_crunch` | Bank stocks collapse and the market follows (needs the `broad` set) | Both |
+| `oil_crisis` | Inflation pulled to 9% in year one and back to 2.5% by year eight, with high rates and weak stocks | Both |
+| `oil_shock` | A one-off three-point jump in US inflation in year two, then business as usual | Beliefs |
+| `soft_landing` | Inflation eases smoothly to 2% by year five and stays there | Beliefs |
+| `rate_cut_cycle` | Soft landing, then inflation drifts to 2.5% by year ten and back to its usual level; rates keep their own calibration, so the cuts are not imposed (add a rate belief for that) | Beliefs |
+| `yield_curve_inversion` | Short rates two points above long ones within six months, then the curve slowly rights itself | Both |
+| `real_estate_crash` | House-price growth falls to -8% within a year and recovers over four | Both |
+| `currency_crisis` | The Brazilian real devalues about 22% a year against the dollar (needs `us_only` or `broad`) | Both |
+| `tech_selloff` | Tech stocks fall while the wider market holds up (needs `broad`) | Both |
+| `commodity_supercycle` | A long oil boom: crude oil earns a top-quarter return | Targets |
+| `climate_collapse` | A rough stand-in for a climate shock: the highest US inflation with the weakest US stocks | Targets |
+
+## Beliefs as a Path
+
+A long-run level can follow a term structure instead of a single number: anchors at chosen horizons, interpolated in between, and an optional period over which it fades back to the calibrated level after the last anchor. Because the factor still mean-reverts, it is pulled towards the moving target rather than set to it: a fast-reverting factor tracks the path closely, a slow one lags it. Which factors accept beliefs is set out under [beliefs](/projects/financescenarios/docs/configuration#beliefs).
+
+Oil Crisis uses both mechanisms:
 
 ```yaml
-name: Oil Crisis                    # required
-description: >                      # optional, free text
-  Cost-push inflation spike...
-extends: some_other_regime.yaml      # optional, see below
-targets: {...}                      # optional, see "Two mechanisms" below
-beliefs: {...}                      # optional, see "Two mechanisms" below
-step_range: [0, 10]                 # optional
-target_mode: sequential             # optional: sequential (default) | joint
-```
-
-**`extends`** names another regime file in the same directory to inherit from. Fields are deep-merged: for any key present in both the parent and this file, if both values are dicts they're merged recursively (so a nested override only needs to state what's different, not repeat the rest); anything else (scalars, lists) is replaced by this file's value. `regimes/rate_cut_cycle.yaml` extends `regimes/soft_landing.yaml` this way: it inherits Soft Landing's year-5 inflation anchor and adds only the year-10 anchor and `converge_over_years`, rather than restating both anchors:
-
-```yaml
-# soft_landing.yaml
+name: Oil Crisis
 beliefs:
   inflation.united_states_inflation:
     long_run_mean:
-      anchors: {5.0: 0.02}
-
-# rate_cut_cycle.yaml
-extends: soft_landing.yaml
-beliefs:
-  inflation.united_states_inflation:
-    long_run_mean:
-      anchors: {10.0: 0.025}        # merges with the inherited 5.0 anchor
-      converge_over_years: 5.0       # added fresh
+      anchors: {1.0: 0.09, 3.0: 0.05, 8.0: 0.025}   # year: target inflation
+targets:
+  united_states_short_rate: [0.7, 1.0]   # top 30% by average short rate
+  us_broad: [0.0, 0.3]                   # bottom 30% by equity return
 ```
 
-An `extends` chain must be acyclic (`load_one()` raises `ValueError` on a cycle) and every file in it must eventually set `name`.
+Rates are annualized decimals (0.09 is 9% a year); see [units](/projects/financescenarios/docs/units). Check a factor's calibrated level before choosing anchors. A belief naming a factor that is not in the run is refused, so a regime written for one factor set fails loudly on another. A regime can extend another and state only what differs, as Rate Cut Cycle does with Soft Landing.
 
-## Two mechanisms, either or both
+## How Targets Rank Scenarios
 
-A `Regime` can carry:
+Each target ranks every scenario by one statistic over a window (the whole horizon by default): a rate by its average level, a price (equity, FX, commodity) by its annualized return from the window's first date to its last. Start-to-end is deliberate: a return annualized over a single month swings so widely that an average of since-start returns would really rank the first few months.
 
-- **`targets`**: a post-simulation selection spec, the same shape as `ScenarioSet.filter_narrative()`'s `targets` argument (factor name -> `(lower, upper)` quantile range). Narrows an already-simulated baseline run down to the paths consistent with the story. Applied via `RegimeLibrary.apply(scenario_set, name)`.
-- **`beliefs`**: a pre-simulation calibration override spec, the same shape as a `ScenariosConfig` factor's own `beliefs` section (see [configuration](/projects/financescenarios/docs/configuration)'s "Belief overrides"/"Belief paths" sections), including a `BeliefPath` term structure for `long_run_mean`. Reshapes what gets simulated in the first place. Applied via `RegimeLibrary.build_config(base_config, name)`.
+By default targets apply in sequence, each to what the previous one left, so a top-30% rate filter followed by a bottom-30% equity filter keeps about 9% of the run. Joint mode instead ranks each target against the full run and keeps the overlap, so the share kept depends on how the factors co-move and can be much smaller.
 
-At least one of the two is required: a regime with neither would do nothing. Use `targets` alone for a pure selection filter on top of a baseline run everyone shares; use `beliefs` alone to make one factor's calibration itself tell the crisis story; use both together (see `regimes/oil_crisis.yaml`) when the belief-shaped run should *also* be narrowed further. This mirrors the distinction Solvency II draws between a "stress test" (a single, prescribed shock; closer to `targets` alone) and "scenario analysis" (a combination of correlated, internally consistent shocks; closer to `beliefs`, or both together): a `Regime` can express either.
-
-**Multi-instance factors** (`equities`/`fx`/`credit` are lists in `ScenariosConfig`, see [configuration](/projects/financescenarios/docs/configuration)'s Multi-instance factors section): `targets` addresses one entry with its plain `name` (e.g. `"tech"`, the factor's actual name in the simulated `ScenarioSet`), while `beliefs` needs a dotted `"<container>.<name>"` key instead (e.g. `"equities.tech"`) to say which list entry's beliefs to shape; `regime.beliefs["equities"]` would otherwise be ambiguous between "the whole `equities` list" and "one entry in it". See `regimes/tech_selloff.yaml` for a worked example.
-
-**Units are one convention: an annualized decimal rate for every rate-type factor (`0.06` means 6% a year), a price level for equities/fx/commodities.** Sources that don't arrive that way are converted at the fetch. See [units](/projects/financescenarios/docs/units) for the full statement, including which conversion each source needs and how belief anchors follow from it. Check a factor's own calibrated level with `scenarios.calibrate().describe()` before choosing anchors.
-
-### How Belief Keys Are Matched
-
-A key under `beliefs` takes one of two forms:
-
-- **A plain factor name** for a factor that exists once per run: `real_estate`, `leading_indicator`, `yield_curve`, `credit_term_structure` and `mortality`.
-- **A dotted `<list>.<name>` key** for one entry of a factor that can appear several times: `interest_rates`, `inflation`, `unemployment`, `equities`, `fx`, `credit`, `commodities` and `dividend_yield`. The part after the dot is the entry's resolved name, such as `inflation.united_states_inflation` or `credit.ig_7_10y`.
-
-A plain key that names one of those lists is refused, even when the list has a single entry, and so is a dotted key whose entry is not in the configuration; the error lists the entries that do exist. This way a regime written for one factor set fails loudly on another instead of silently doing nothing.
-
-A belief is merged into the factor's existing beliefs, not swapped in whole. `{"yield_curve": {"level": {"long_run_mean": 0.05}}}` changes only the level factor's long-run mean and keeps anything already set on the slope, the curvature or the rest of the level.
+## Running a Regime {#driving-a-regime-from-the-library}
 
 ```python
-from financescenarios import Scenarios
+from financescenarios import Scenarios, list_presets
 
-scenarios = Scenarios.from_profiles(settings="default", factor_set="default", regime="oil_crisis")
-result = scenarios.simulate()   # beliefs already applied to scenarios.config; targets narrow the result
+list_presets(kind="regimes")   # the shipped regimes
 
-scenarios.regime.description    # what this regime represents
-scenarios.config                # the belief-shaped config that actually ran
+scenarios = Scenarios.from_profiles(settings="default", factor_set="default")
+baseline = scenarios.simulate(n_simulations=2000)
+oil_crisis = scenarios.simulate(regime="oil_crisis", n_simulations=2000)
 ```
 
-Naming the regime on the `Scenarios` instance is the normal path: its belief overrides shape the config once, at construction, and every `simulate()` call on that instance narrows its result by the regime's `targets` (if it has any). `Scenarios.from_config(config, regime=regime)` does the same for an already-loaded `Regime`/`ScenariosConfig`. Reach for `RegimeLibrary.build_config()`/`.apply()` directly when you want to inspect or reuse the intermediate config, or apply targets to a `ScenarioSet` you already have.
+A targeted regime keeps only part of each draw, about 9% for Oil Crisis, so the run draws batches until 2,000 scenarios fit (about 22,700 draws here). The stressed percentiles then rest on as many scenarios as the baseline's. Each batch ranks its own draws, so "the worst 30%" means the worst 30% of a batch, not of all draws pooled: each batch's cutoff carries its own sampling noise, most in the first batch of 2,000, so the stressed quantiles are close to, not exactly, those of one large ranked run.
 
-## `RegimeLibrary` and `load_one()`
+## Official Stress Tests as Regimes
 
-| Function | Does |
-|---|---|
-| `load_one(directory, filename)` | Load exactly one regime, resolving its `extends` chain; never touches any other file in `directory`. This is what `Scenarios.from_profiles(..., regime=...)` uses. |
-| `RegimeLibrary.load(directory)` | Load every `*.yaml` file in `directory` into a library, keyed by each regime's `name`, for listing. |
-| `RegimeLibrary.save(directory)` | Write every regime in the library to `directory`, one file per regime (named after a slugified `name`); round-trips with `load()`. Does not preserve any `extends` relationship; every regime is written fully resolved. |
+Instead of writing a recession by hand, a regime can follow a regulator's published scenario, fetched through the Finance Toolkit with no API key:
 
-`RegimeLibrary`'s in-memory API is otherwise the same as before file-per-regime storage:
+- **Federal Reserve**: the US supervisory scenarios, baseline and severely adverse (`scenario="adverse"`), 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market.
+- **ESRB**: the European Systemic Risk Board's scenario for the EBA's EU-wide bank stress test, three years of the long-term rate, inflation, unemployment and stock prices for every EU member and the main other economies.
 
-| Method | Does |
-|---|---|
-| `add(regime)` | Add or replace a regime, keyed by its own `name`. |
-| `get(name)` | Look up a regime by name; raises `KeyError` if unregistered. |
-| `names` | The names of every registered regime. |
-| `apply(scenario_set, name)` | `scenario_set.filter_narrative(regime.targets, step_range=regime.step_range, mode=regime.target_mode)`. Raises `ValueError` if the regime has no targets (it's beliefs-only). |
-| `build_config(base_config, name)` | `base_config` with each factor named in `regime.beliefs` having those belief fields overridden; unchanged fields (and the whole config, if the regime has no beliefs) pass through untouched. |
-| `simulate(scenarios, base_config, name)` | `build_config()` -> `scenarios.simulate(config)` -> `apply()`'s `filter_narrative()` step if the regime has targets. Equivalent to `Scenarios.from_config(base_config, regime=regime).simulate()`, kept for callers holding a library rather than building the instance themselves. |
+The published path becomes beliefs, not one deterministic path. Each interest rate, inflation and unemployment factor follows the scenario for its own country: by default it is set to the published value at each period end and its long-run level follows the scenario in between, so every scenario hits the published values, even for a slow-moving short rate. A gentler option steers only the long-run level. Afterwards each factor returns to its calibrated level over five years by default, and the usual randomness stays around the path, so you get a distribution around the regulator's story rather than one line.
 
-`RegimeLibrary` has no dependency on which factors are enabled in `base_config`: `build_config()` only touches the factor sections a given regime's `beliefs` actually names, so the same library works across configs with different opt-in factors turned on.
-
-A target's quantile range ranks each simulation by one statistic over `step_range` (the whole path by default): a rate by its average level across the window, and a price-level factor (equities, FX, commodities) by its annualized return from the window's first date to its last. `us_broad: [0.0, 0.3]` therefore keeps the 30% of scenarios with the weakest equity *return* over the window. It is deliberately start-to-end rather than an average of the since-start returns at every date, since a return annualized over a single month swings so widely that such an average would really rank the first few months.
-
-## Driving a regime from the library
-
-Every regime under `regimes/` is driven the same way underneath: `load_one()` to load exactly the requested regime, then `Scenarios.from_config(config, regime=regime)`: belief shaping at construction, then the `filter_narrative()` narrowing inside `simulate()` only when the regime has targets. A regime is addressed by its `id` (its filename, without directory or extension), not its display `name`, so exactly one file gets loaded rather than the directory being scanned for a name match; `RegimeLibrary.load("regimes").names` is the listing for a picker.
-
-A regime with targets keeps only part of the run, about 9% for Oil Crisis. `simulate(keep=2000)` draws as many scenarios as that takes, about 22,700 here, and returns exactly 2,000 that fit the story, so a stress result rests on as many scenarios as the baseline. `plot_runs({"baseline": result, "oil_crisis": shocked}, "united_states_inflation")` then draws them side by side on one scale.
-
-## Official stress tests as regimes
-
-`stress_test_regime(toolkit, config, authority, scenario)` builds a regime from a regulator's published stress-test scenario instead of a hand-written one, through the Finance Toolkit (no key):
-
-- `authority="federal_reserve"`: the Federal Reserve's supervisory scenario for the United States, 13 quarters of the 3-month Treasury rate, 10-year Treasury yield, CPI inflation and unemployment.
-- `authority="esrb"`: the European Systemic Risk Board's scenario for the EBA's EU-wide bank stress test, three years of the long-term rate, inflation and unemployment for every EU member and the main other economies.
-
-Each interest rate, inflation and unemployment entry follows the scenario for its own `country`. With `follow="path"` (the default) every factor is set to the published value at each period end and its long-run level follows the scenario in between, so even a slow-moving short rate really falls to the Federal Reserve's 0.1%; with `follow="target"` only the long-run level is steered, a gentler stress. Either way the target returns to the factor's own calibrated level over `converge_over_years` (five by default) after the scenario ends. The Federal Reserve's inflation is an annualized quarter-on-quarter rate while this project's is year over year: the same scale, but it reacts sooner.
-
-Not every entry can be steered. The scenario moves a factor through its long-run level, so only entries that have one follow it: interest rates using Hull-White or CIR, inflation using the plain mean-reverting (`ou`) method, and unemployment, all real-world. Other rate and inflation methods, and every risk-neutral entry, keep their calibration. The Federal Reserve covers only the United States, so under it only US entries move. A euro area entry matches the ESRB's "Euro Area" whether your configuration spells it "Eurozone", "Euro area" or "EA20". `year` picks a Federal Reserve vintage; the ESRB scenario is always the latest one.
-
-Real-world equities follow the scenario's stock market too, as one-off price jumps (`shocks`): the Federal Reserve's path is the Dow Jones Total Stock Market Index, used as the adverse level against its own baseline, so the shock is the stress and not the baseline's growth; the ESRB's is the stock-price fall from the starting point, per country. Every equity uses one region, `United States` for the Federal Reserve and `European Union` for the ESRB by default, which `equity_regions={"<equity name>": "<region>"}` changes per equity. Besides the European Union, the ESRB publishes stock paths for the United States, the United Kingdom, Japan, Canada, Switzerland, Norway, Australia and New Zealand (as one region) and the rest of the world. The stock path keeps the scenario's own spacing but starts at the run's start, so the fall always lands inside the run even though the ESRB's 2025 scenario was published for 2025 to 2027. Risk-neutral equities are left alone, since their drift is the simulated rate. On the `default` set, the median US broad-market price after a year is 0.50 times the start under the Federal Reserve's 2026 adverse scenario and 0.57 times under the ESRB's, against 1.14 unstressed.
+Equities follow the published stock market as one-off price jumps, after which the equity model carries on. For the Federal Reserve the shock is the adverse path relative to its own baseline, so normal growth is not counted as stress; for the ESRB it is the published fall from the starting point. Each equity follows one region, the United States or the European Union by default.
 
 ```python
-from financescenarios import Scenarios, stress_test_regime
+from financescenarios import Scenarios, build_toolkit, load_profiles, stress_test_regime
 
+config = load_profiles(settings_id="default", factor_set_id="default")
+toolkit = build_toolkit(config, api_key="FINANCIAL_MODELING_PREP_KEY")
+
+# "adverse" is the Fed's severely adverse scenario; authority="esrb" for the EBA test
 regime = stress_test_regime(toolkit, config, authority="federal_reserve", scenario="adverse")
 stressed = Scenarios.from_config(config, toolkit=toolkit, regime=regime).simulate()
 ```
 
-On the US factors of the `us_only` set, the 2026 severely adverse scenario puts the short rate at 0.1% within a year and unemployment at about 9.8% after two, against 3.7% and 5.5% in the unstressed run.
+Only factors with a long-run level can follow the scenario: real-world interest rates under Hull-White or CIR, inflation under the plain mean-reverting model, and unemployment. Other models and every risk-neutral factor keep their calibration. The Federal Reserve covers only the United States, so under it only US factors move. Its inflation is an annualized quarter-on-quarter rate, while this package's is year over year, and the published values are used as they are. Quarter-on-quarter inflation moves sooner and further than year over year, so the simulated inflation peaks earlier and higher than the scenario's own year-over-year path would.
 
-## Climate scenarios
+## Reading the Results Against the Base Run
 
-A climate pathway is not a regime but an overlay on any run: `climate.enabled: true` in a factor set adds an NGFS scenario's deviation from its baseline (Net Zero 2050, Delayed transition, Current Policies and others) to each interest rate, inflation, unemployment and equity factor after simulating, measured from the run's start, and `climate.carbon_price: true` adds the scenario's carbon price as a factor. It combines with a regime: the regime shapes the scenarios, the climate pathway shifts them. See `climate_controller.apply_climate_scenario`.
+Compare a stressed run with the baseline, factor by factor on the same scale. The size of the stress shows there: the Federal Reserve's 2026 severely adverse scenario, for example, takes US stocks about 50% below where they would otherwise be after a year.
+
+- **Belief-driven runs are conditional, not likely.** The percentiles describe uncertainty given the story, not the probability of the story. Don't read a stressed 99.5% quantile as a capital number.
+- **Targets select by rank, not by level.** Sequential targets keep a fixed share (30% of 30% is 9%) whatever the correlations, so the share says nothing about how likely the story is. In joint mode the share kept is the model's own estimate of how often the combination occurs; if it is tiny, the story is far in the tail of the calibration. Fewer than 30 scenarios left raises a warning, because their percentiles are noise.
+- **The other factors are the point.** The factors the regime did not touch move through the calibrated correlations (beliefs) or as they did on the selected paths (targets). That is where a narrative test adds information over a single-factor shock.
+- **Recovery is an assumption.** After a stress-test path ends, factors fade back to calibration over a chosen period; a longer period means a more persistent stress.
+
+## Climate Scenarios
+
+A climate pathway is an overlay rather than a regime. Enabled in a factor set, it adds an NGFS scenario's deviation from its baseline (Net Zero 2050, Delayed Transition, Current Policies and others) to each interest rate, inflation, unemployment and equity factor after simulating, and can add the scenario's carbon price as a factor. It combines with a regime: the regime shapes the scenarios, the climate pathway shifts them.

@@ -1,8 +1,8 @@
 ---
 title: Simulation Engine
 seo_title: Simulation Engine Documentation – Finance Scenarios
-excerpt: "How the correlated shocks are drawn, how each factor steps forward one time step at a time, and the ScenarioSet result with its methods to summarize, slice, filter and save a run."
-description: "How the Finance Scenarios Monte Carlo engine draws correlated shocks, steps every factor forward and returns a ScenarioSet to summarize and filter."
+excerpt: "The Monte Carlo engine behind every run: correlated and fat-tailed shocks, exact time stepping, antithetic variates, Monte Carlo error, and how correlations are estimated."
+description: "The Finance Scenarios Monte Carlo engine: correlated and fat-tailed shocks, exact time stepping, antithetic variates and Monte Carlo error."
 author_profile: false
 permalink: /projects/financescenarios/docs/simulation-engine
 classes: wide-sidebar
@@ -14,159 +14,104 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-{% include mermaid.html %}
+How are the scenarios drawn, and how far can you trust a percentile read from them? The engine draws random shocks that move together the way history says they should and steps every factor forward one period at a time; each repetition is one scenario, and thousands of them form a distribution of outcomes.
 
-The engine produces the scenarios. It draws random shocks that move together the way history says they should, then steps every variable forward one month (or week, or year) at a time, thousands of times over. Each run of that process is a path; together they form a distribution of outcomes rather than a single forecast. The result is a `ScenarioSet`, with methods to summarize, slice, filter and chart it.
+The guides on [interest rates](/projects/financescenarios/docs/interest-rates), [the economy](/projects/financescenarios/docs/economy) and [markets](/projects/financescenarios/docs/markets) cover each model; this page covers what they share.
 
-This page covers what every factor shares. How each area is modelled is in the guides on [interest rates](/projects/financescenarios/docs/interest-rates), [the KNW model](/projects/financescenarios/docs/knw), [the economy](/projects/financescenarios/docs/economy) and [markets](/projects/financescenarios/docs/markets); what to do with a finished run is in [portfolios](/projects/financescenarios/docs/portfolio) and [Solvency II](/projects/financescenarios/docs/solvency).
+## Correlated Shocks
 
-## Engine Settings
+Each factor receives one random shock per step and scenario. Drawn independently, the factors would move on their own. To give them their historical co-movement, independent standard normal draws $$Z_t$$ are multiplied by the Cholesky factor $$L$$ of the correlation matrix $$R$$:
 
-The `engine` section of a settings profile (see [configuration](/projects/financescenarios/docs/configuration)):
+$$
+\varepsilon_t = L\,Z_t, \qquad L L^\top = R
+$$
 
-| Field | Default | What it does |
-|---|---|---|
-| `n_simulations` | `1000` | Number of scenarios. |
-| `n_steps` | `52` | Number of steps after the start. `simulate(years=30)` sets it from a horizon instead. |
-| `frequency` | `weekly` | Length of a step: `daily`, `weekly`, `monthly`, `quarterly`, `semi-yearly` or `yearly`. |
-| `seed` | `null` | Fix it and the same inputs always give exactly the same output. |
-| `antithetic` | `false` | Pair every shock with its mirror image, which reduces Monte Carlo noise; `n_simulations` must be even. On the default factor set it cut the seed-to-seed spread of a 60/40 portfolio's five-year 5th percentile by about a quarter. |
-| `shock_distribution` | `gaussian` | `student_t` for fat tails, see below. |
-| `degrees_of_freedom` | `5.0` | Tail weight for `student_t`: lower means fatter tails. Must be above 2. |
-| `correlation_shrinkage` | `0.1` | How far correlations are pulled in to tame noise; `auto` picks the amount from the data ([Schäfer and Strimmer, 2005](https://doi.org/10.2202/1544-6115.1175)). The shipped settings use `auto`. |
-| `correlation_method` | `pairwise` | Which history each correlation is estimated from, see below. |
-| `shared_equity_regimes` | `false` | Let all equity markets enter and leave crises together. The shipped settings set it to `true`, which brings simulated equity correlations much closer to the fitted ones. |
+The shocks $$\varepsilon_t$$ have unit variance and exactly the correlations in $$R$$, so a scenario with falling equities tends to show the spread, rate and currency moves history saw alongside one.
 
-## How a Run Is Built
+## Fat Tails {#fat-tails-and-tail-dependence}
 
-{% raw %}
-<div class="mermaid">
-flowchart TD
-    start[Simulation start] --> timegrid[Build time grid and date grid]
-    timegrid --> shocks[Draw correlated shocks]
-    shocks --> order[Order the factors by their dependencies]
-    order --> loop[Step every factor forward one time step at a time]
-    loop --> loop
-    loop --> scenarioset[Wrap the result into a ScenarioSet]
-</div>
-{% endraw %}
+Normal shocks have thin tails and almost never produce extreme moves in several factors at once, yet "everything sells off together" is exactly what a stress test is about. Student-t shocks ([Demarta and McNeil, 2005](https://doi.org/10.1111/j.1751-5823.2005.tb00254.x)) scale every factor's shock at a step by the same random draw:
 
-1. **Time grid.** The steps from the start date, in years and as calendar dates.
-2. **Correlated shocks.** Independent random draws, one per factor, step and scenario, are made to move together with a Cholesky decomposition of the correlation matrix. That is what makes rates, inflation and equities move together realistically.
-3. **Equity regimes.** Which market regime (calm or crisis) each equity is in at every step is drawn upfront, from its own random stream.
-4. **Stepping.** Factors are ordered so each comes after the factors it depends on (unemployment after inflation, for example), then every factor moves one step at a time for all scenarios at once.
+$$
+T_t = \varepsilon_t \sqrt{\frac{\nu - 2}{W_t}}, \qquad W_t \sim \chi^2_\nu
+$$
 
-Most factors mean-revert (an Ornstein-Uhlenbeck process) and are stepped with the exact solution of that process, so the step length causes no error and long steps stay stable. The formula is as follows:
+where $$\nu$$ is the degrees of freedom. When $$W_t$$ is small, all factors take a large shock at once, so extreme moves cluster across factors (tail dependence). The $$\nu - 2$$ keeps the variance at one, so every fitted volatility keeps its meaning and only the tails change. Lower $$\nu$$ means fatter tails and must exceed 2; 5 is a common choice for financial returns, not a fitted value. Normal shocks are the default.
+
+The scale is drawn independently at every step. With monthly steps, twelve fat-tailed shocks partly average out over a year, so Student-t shocks add less to a one-year 99.5% figure than the monthly tails suggest.
+
+```yaml
+engine:
+  shock_distribution: student_t   # default: gaussian
+  degrees_of_freedom: 5.0
+```
+
+Equity crises cluster a second way: with shared equity regimes (on in the shipped settings), all markets enter and leave their crisis regime together, which brings simulated equity correlations much closer to the fitted ones.
+
+## Time Stepping
+
+The horizon is cut into steps of equal length $$\Delta t$$, from daily to yearly; the shipped settings use 2,000 scenarios, monthly steps and five years. Factors are stepped in cascade order, so a driver such as inflation is known before the factors that react to it.
+
+Mean-reverting factors (rates under Hull-White, inflation, spreads, log commodity prices, log dividend yields) are stepped with the exact solution of the Ornstein-Uhlenbeck process:
 
 $$
 x_{t+\Delta t} = \theta + (x_t - \theta)\, e^{-a \Delta t} + \sigma \sqrt{\frac{1 - e^{-2 a \Delta t}}{2a}}\; \varepsilon_t
 $$
 
-where $$\theta$$ is the long-run level, $$a$$ the speed of mean reversion, $$\sigma$$ the volatility and $$\varepsilon_t$$ the correlated shock. CIR rates, GARCH factors, equities, FX, commodities and dividend yields use the standard Euler step of their own equation.
+where $$\theta$$ is the long-run level, $$a$$ the speed of mean reversion, $$\sigma$$ the volatility and $$\varepsilon_t$$ the correlated shock. Each step closes a share $$1 - e^{-a\Delta t}$$ of the gap to $$\theta$$, and the long-run standard deviation settles at $$\sigma/\sqrt{2a}$$. Because the transition is exact, the step length adds no error: for a stand-alone factor, a yearly step gives the same year-end distribution as twelve monthly ones. Factors that react to another factor's path, regime switches and Student-t shocks do depend on the step. A rate stepped this way is Gaussian and can go negative; a factor modeled in logs stays positive.
 
-## Fat Tails {#fat-tails-and-tail-dependence}
+Prices (equities, currencies) are stepped exactly in log space, so they stay positive and their returns are lognormal:
 
-Normally distributed shocks rarely produce extreme moves in several factors at once, while "everything sells off together" is exactly what a stress test is for. `shock_distribution: student_t` uses a Student-t copula instead (Demarta and McNeil, 2005): at each step every factor's shock is divided by the same random scale, so extreme moves cluster across factors. Shocks keep unit variance, so every fitted volatility means the same thing either way; only the tails change.
+$$
+S_{t+\Delta t} = S_t \exp\!\left(m\,\Delta t + \sigma\sqrt{\Delta t}\,\varepsilon_t\right)
+$$
 
-```yaml
-engine:
-  shock_distribution: student_t
-  degrees_of_freedom: 5.0
-```
+where $$m$$ is the expected log return per year and $$\sigma$$ the volatility. For an equity both belong to the regime it is in at that step; for a currency $$m = \mu - \tfrac{1}{2}\sigma^2$$, with $$\mu$$ its drift.
 
-## How the Correlations Are Estimated
+CIR rates and factors with GARCH volatility use an Euler step instead, so for them a shorter step is more accurate. CIR uses the full-truncation scheme of [Lord, Koekkoek and van Dijk (2010)](https://doi.org/10.1080/14697680802392496): drift and volatility are computed from the rate floored at zero, but the rate itself is not floored, so a path can dip slightly below zero, more often than the exact CIR process would.
 
-Every factor gets a row and a column in the correlation matrix, estimated from the same historical changes the factor was fitted on (changes in a rate, log returns of a price), so nothing extra is downloaded.
+## How the Correlations Are Estimated {#how-the-correlations-are-estimated}
+
+The correlation matrix comes from the same historical changes each factor was fitted on (changes in a rate, log returns of a price), so it describes the shocks it drives.
 
 - **Mixed frequencies.** Changes are summed up to the coarser frequency and matched on calendar date, the way twelve monthly log returns add up to a yearly one.
-- **Pairwise or one window.** With `pairwise` (the default) each pair uses the dates those two factors share, so a short series only weakens its own pairs. Fewer than 5 shared observations sets the pair to 0 and lists it in `correlation_fallback_pairs`. `complete_case` cuts every factor to one common window instead.
-- **Shrinkage.** Correlations are pulled toward a simpler target to trade a little bias for much less noise ([Ledoit and Wolf, 2004](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}).
-- **Repair.** A matrix built from different windows can be inconsistent; it is moved to the nearest valid one ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}) and the size of the repair is recorded as `correlation_repair`.
-- **Warnings.** Pairs with fewer than 12 shared observations, or correlated above 0.98 (usually the same ticker configured twice), are flagged.
+- **Pairwise windows.** Each pair uses the dates those two factors share, so a short series only weakens its own pairs. A pair with fewer than 5 shared observations is set to zero; fewer than 12, or a correlation above 0.98 (usually the same series configured twice), is flagged.
+- **Shrinkage.** Sample correlations are noisy, more so with many factors, so they are pulled toward a simpler target, trading a little bias for much less noise: toward zero by a data-driven amount ([Schäfer and Strimmer, 2005](https://doi.org/10.2202/1544-6115.1175)) in the shipped settings, or toward the average correlation by a fixed share ([Ledoit and Wolf, 2004](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}).
+- **Repair.** A matrix built from different windows can be internally inconsistent (not positive definite) and then has no Cholesky factor. It is moved to the nearest valid correlation matrix ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}) and the size of the repair is reported.
 
-The matrix is linear and constant over the horizon.
+The matrix is linear and constant over the horizon: correlations do not rise in a crisis except through the Student-t shocks and shared equity regimes above.
 
-## The ScenarioSet {#scenarioset}
+## Monte Carlo Error
 
-`simulate()` returns a `ScenarioSet`. By default a rate reads as its annualized rate and a price (equities, FX, commodities, portfolios) as its annualized return since the start; every method takes `metric=` for another reading and `levels=True` for the raw simulated values. See [units](/projects/financescenarios/docs/units).
+A run of $$n$$ scenarios estimates a distribution with sampling error. For a mean, the standard error is
 
-```python
-result = scenarios.simulate()
+$$
+\text{se} = \frac{s}{\sqrt{n}}
+$$
 
-result.summary_statistics("inflation")          # mean, std, se and quantiles per date
-result.horizon_summary([1, 5, 10])              # where each factor is in 1, 5 and 10 years
-result.to_dataframe("us_broad")                 # one row per scenario, one column per date
-result.discount_factors("united_states_short_rate")
-```
+with $$s$$ the standard deviation across scenarios. Halving the error takes four times as many scenarios. Tail percentiles are less precise still, because they rest on few scenarios: the 1st percentile of 1,000 scenarios is set by about ten of them. A practical check is to rerun with several seeds and see how much the number you report moves.
 
-| Method | What it gives |
-|---|---|
-| `summary_statistics(factor)` | Mean, standard deviation, standard error and quantiles at every date. The standard error tells you whether `n_simulations` is enough. |
-| `horizon_summary(horizons)` | One row per factor and horizon. |
-| `to_dataframe(factor)`, `to_long()` | A scenario-by-date table, or every path in long format for databases. |
-| `discount_factors(factor)`, `cumulative_index(factor)` | A rate compounded into discount factors or an index. For a full deflator with a market price of risk, see `KnwSvQ.deflator()`. |
-| `result[factor]`, `step_at(years)` | The raw array, and the step nearest a horizon. |
-| `select(factors)`, `sample(n)` | A subset of factors, or `n` whole scenarios with their correlations intact. |
-| `simulated_correlation()` | The correlation of the simulated moves, to compare with the fitted one (`calibration.correlation_frame()`). |
-| `diagnose()` | Checks each mean-reverting factor's simulated end distribution against its theoretical long-run mean and spread. It also runs automatically when the horizon is long enough. |
-
-`compare_runs({"baseline": base, "oil_crisis": shocked})` puts several runs side by side on one end-of-run statistic, as in the [README](/projects/financescenarios#applying-stress-regimes)'s stress-regime table.
-
-## Filtering and Narratives
-
-`filter()` keeps the scenarios in a quantile band of one factor, for example the 30% with the highest average interest rate. Each kept scenario keeps all its other factors too, so the correlations survive:
+**Antithetic variates** reduce that error without more random draws. Every shock $$Z$$ is paired with its mirror image $$-Z$$ (under Student-t, a large common scale is also paired with a small one), so each pair's errors partly cancel; the standard error is then computed from the independent pair averages. On the default factor set it cut the seed-to-seed spread of a 60/40 portfolio's five-year 5th percentile by about a quarter. It is off in the shipped settings and needs an even number of scenarios.
 
 ```python
-high_rates = result.filter("interest_rate", quantile_range=(0.7, 1.0))
+result = scenarios.simulate(n_simulations=2000)
+result.summary_statistics("united_states_short_rate")   # mean, std, se and percentiles per date
+
+calibration = scenarios.calibrate()                      # fit once, then vary only the seed
+reruns = [scenarios.simulate(calibration=calibration, seed=seed) for seed in range(5)]
 ```
 
-`filter_narrative()` chains several of these into a story such as stagflation:
+## Working with a Run {#scenarioset}
+
+A run holds every factor's paths. A rate reads as an annualized rate and a price as its annualized return since the start (see [units](/projects/financescenarios/docs/units)). Filtering keeps whole scenarios, so a "high inflation, weak equities" subset still has consistent rates, spreads and currencies.
 
 ```python
-stagflation = result.filter_narrative(
-    {
-        "inflation": (0.8, 1.0),   # top 20% by average inflation
-        "equity": (0.0, 0.2),      # bottom 20% by equity return
-    }
-)
+result.horizon_summary([1, 3, 5])                        # percentiles of every factor at 1, 3 and 5 years
+
+# stagflation: top 20% of US inflation, then the bottom 20% of US equities among those
+stagflation = result.filter_narrative({"united_states_inflation": (0.8, 1.0), "us_broad": (0.0, 0.2)})
+
+result.simulated_correlation()                           # compare with the fitted matrix
 ```
 
-By default each range applies to what the previous one left; `mode="joint"` ranks every target against the full run instead. A warning appears below 30 remaining scenarios; [regimes](/projects/financescenarios/docs/regimes#driving-a-regime-from-the-library) show how to keep a fixed number.
-
-`rescale_scenario_cloud(factor, mean_shift=0.0, spread_multiplier=1.0)` reshapes one factor's simulated cloud afterwards: shift its mean or widen its spread at every date, without refitting.
-
-```python
-wider_equity = result.rescale_scenario_cloud("equity", spread_multiplier=1.3)
-```
-
-## Risk Metrics for a Factor
-
-- `compute_factor_metrics(result["united_states_short_rate"])` describes one factor across scenarios: Value-at-Risk, Conditional Value-at-Risk, percentiles, skewness and drawdowns.
-- `compute_price_performance_metrics(values, result.time_grid)` describes one value path over time, such as a portfolio or a percentile band: growth, volatility, Sharpe and Sortino ratios, drawdowns.
-
-The first function's Value-at-Risk is the tail across scenarios at the end; the second's is the tail of one path's own returns. Portfolio metrics are in [portfolios](/projects/financescenarios/docs/portfolio).
-
-## Saving and Replaying a Run
-
-`simulate()` fits and simulates in one call. Split the two to reproduce a run exactly, work offline or re-simulate cheaply:
-
-```python
-calibration = scenarios.calibrate()
-calibration.save("calibration.json")
-
-spread = [scenarios.simulate(calibration=calibration, seed=seed) for seed in range(5)]
-wider = scenarios.simulate(calibration=calibration, n_simulations=20_000)
-```
-
-A supplied calibration is used as is: nothing is downloaded, so it also works with `Scenarios(toolkit=None)` and no API key. `scenarios.last_calibration` holds the one the latest run used. A calibration refuses a configuration whose fixed beliefs differ from the ones it was fitted with; recalibrate for those.
-
-`scenarios.save(result, "results/")` writes the paths (Parquet), the configuration and the calibration to one folder, so the run reads back and replays without network access:
-
-```python
-from financescenarios import read_run, read_run_calibration
-
-same = read_run(path)
-calibration = read_run_calibration(path)
-```
-
-A factor that fails to fit (for example, no mean reversion in a short window) is left out together with the factors that depend on it, and the reason is recorded in `calibration_failures`, also in a saved run's manifest.
+A long enough run also checks itself: each mean-reverting factor's simulated mean and spread at the horizon are compared with their theoretical long-run values (see [validation](/projects/financescenarios/docs/validation)). [Regimes](/projects/financescenarios/docs/regimes) covers narratives in depth, and the [reference](/projects/financescenarios/docs/reference/scenario-set) lists everything a run offers.

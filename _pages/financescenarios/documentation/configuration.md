@@ -1,8 +1,8 @@
 ---
 title: Configuration
 seo_title: Configuration Documentation – Finance Scenarios
-excerpt: "A simulation run is driven by two named profiles, run settings and a factor set. This page covers every field, multi-instance factors, beliefs and shocks, the published frameworks, long history, real-world and risk-neutral measures, and API keys."
-description: "How to configure a Finance Scenarios run: settings and factor-set profiles, every field, beliefs and shocks, published frameworks, measures and API keys."
+excerpt: "The modeling choices behind a run: horizon and step, number of scenarios, calibration window, real-world or risk-neutral measure, expert beliefs and published frameworks."
+description: "The modeling choices behind a Finance Scenarios run: horizon, scenario count, calibration window, measure, expert beliefs and published frameworks."
 author_profile: false
 permalink: /projects/financescenarios/docs/configuration
 classes: wide-sidebar
@@ -14,295 +14,190 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-A run is described by two named profiles, each a YAML file:
+A scenario set is only as good as the choices behind it: how far ahead and in what steps, how many scenarios, which history the models learn from, which probability measure, and where expert judgement overrides the data. This page covers those choices. Every field is listed in the [reference](/projects/financescenarios/docs/reference/configuration-classes).
 
-- `settings/<id>.yaml` holds the run settings: the start date, the Monte Carlo `engine` and the data download settings (`toolkit`).
-- `factor-sets/<id>.yaml` holds the factors: which ones are simulated, which tickers and countries they use, and any beliefs that override the fitted values.
+## Settings Profiles and Factor Sets
 
-Keeping them apart lets you change one side while the other stays identical, for example the same run settings on a narrower factor set:
+A run combines two profiles. A **settings profile** says how the run executes: start date, horizon, step, number of scenarios and calibration window. A **factor set** says what is simulated (rates, inflation, markets, which countries) and any views that override the fit. Keeping them apart lets you rerun the same economy at another horizon, or another economy with the same mechanics.
+
+| Settings profile | What it is for |
+|:-----------------|:---------------|
+| `default` | 2,000 scenarios, monthly steps, five years ahead, fitted on history since 2000 |
+| `long_horizon` | 500 scenarios, so runs of several decades stay fast; the length is chosen per run |
+| `wilkie` | Fitted on 1995 to 2007 only, as the Wilkie model needs |
+| `goes` | Fitted on history since 2019, to match the NAIC's generator with the `goes` factor set |
+
+| Factor set | What it simulates |
+|:-----------|:------------------|
+| `default` | `core`, with rates anchored to EIOPA's forward rates and fitted on rates since 1950; the recommended start |
+| `core` | The US, the euro area and the UK: rates, inflation, unemployment, global equities, gold, oil and the major currencies |
+| `us_only` | US rates, inflation, unemployment and equities, plus the shared factors (currencies, commodities); quick to run |
+| `broad` | Everything the package can simulate, across many countries; the widest and slowest to fit |
+| `private_markets` | `us_only` plus listed stand-ins for private equity, infrastructure, hedge funds and private credit |
+| `goes` | `us_only` with the short rate's long-run level set to the NAIC generator's (about 3.67%) |
+| `ahlgrim`, `wilkie`, `hibbert` | A published model as its paper wrote it; see [published frameworks](#published-frameworks) |
 
 ```python
 from financescenarios import Scenarios
 
-scenarios = Scenarios.from_profiles(settings="default", factor_set="us_only")
-scenarios.simulate()
+scenarios = Scenarios.from_profiles(settings="default", factor_set="default")
+result = scenarios.simulate()
 ```
 
-Each directory ships a `default.yaml` and a few examples: `settings/long_horizon.yaml`, `factor-sets/us_only.yaml` (the United States only), `factor-sets/core.yaml` (the United States, the euro area and the United Kingdom) and `factor-sets/private_markets.yaml` (listed proxies for private equity, infrastructure, hedge funds and private credit). A profile can start from another with `extends:` and only state what is different, the same way as [regimes](/projects/financescenarios/docs/regimes). When there is no local `settings/` or `factor-sets/` folder, the copies bundled with the package are used, so a plain `pip install` works.
+## Horizon and Step
 
-Other ways in: `Scenarios.from_config(config)` for a configuration you already loaded with `load_profiles()`, and `Scenarios.from_config_file(path)` for explicit file paths. The configuration is checked when it loads, so a missing field or a wrong type fails straight away with a clear message.
+The horizon follows the question: one year for a Solvency II view, 15 to 60 years for an ALM study or a pension fund's continuity analysis. The step should match what the liabilities and the investment policy react to: monthly for rebalancing and hedging decisions, yearly for long projections where intra-year noise adds nothing.
 
-## Top-level Fields
+Over long horizons the long-run parameters (where rates and inflation revert to, and how fast) dominate, and today's starting point fades. Small biases also compound: a 0.5 percentage point difference in the long-run equity return is about 15% of terminal wealth after 30 years.
 
-| Key | Profile | Default | What it is |
-|---|---|---|---|
-| `start_date` | settings | required | The date the simulation starts from. |
-| `engine` | settings | defaults | Number of scenarios, steps, frequency and seed; see the [simulation engine](/projects/financescenarios/docs/simulation-engine). |
-| `toolkit` | settings | defaults | The data window and download settings, see below. |
-| `reporting` | settings | off | Convert results into one reporting currency. |
-| `interest_rates` | factor set | United States | One or more short or long rates, one per country. |
-| `inflation` | factor set | United States | One or more inflation rates, one per country. |
-| `unemployment` | factor set | United States | One or more unemployment rates, each linked to an inflation entry. |
-| `equities` | factor set | `SPY` | One or more equity markets: broad indices, sectors, regions or styles. |
-| `fx` | factor set | none | Currency pairs. |
-| `credit` | factor set | none | Credit spreads by maturity, rating or country. |
-| `commodities` | factor set | none | Commodity prices or futures. |
-| `dividend_yield`, `dividend_growth` | factor set | none | Dividend yields and growth, used by the Wilkie framework. |
-| `yield_curve` | factor set | off | A Nelson-Siegel yield curve (level, slope and curvature). |
-| `credit_term_structure` | factor set | off | A Nelson-Siegel curve of corporate credit spreads. |
-| `hjm` | factor set | off | A two-factor HJM forward curve. |
-| `credit_migration` | factor set | off | Rating migration and default, fitted on ESMA's CEREP data. |
-| `real_estate` | factor set | off | House or commercial property prices. |
-| `leading_indicator` | factor set | off | A business-cycle indicator other factors can follow. |
-| `mortality` | factor set | off | Mortality improvement, from Eurostat life tables or your own. |
-| `climate` | factor set | off | An NGFS climate scenario applied on top of the simulation. |
-| `external_scenario_source` | factor set | off | Replace chosen factors with a published scenario set (NAIC's GOES or DNB's). |
+## Number of Scenarios
 
-How each area behaves is covered in its own guide: [interest rates](/projects/financescenarios/docs/interest-rates), [the KNW model](/projects/financescenarios/docs/knw), [the economy](/projects/financescenarios/docs/economy), [markets](/projects/financescenarios/docs/markets), [portfolios](/projects/financescenarios/docs/portfolio) and [Solvency II](/projects/financescenarios/docs/solvency).
+Monte Carlo error falls with the square root of the number of scenarios, and a tail percentile converges far more slowly than the mean: with 2,000 scenarios a 1-in-200 outcome rests on about ten of them. If the figure you report moves more than you could act on when you rerun with another seed, add scenarios or use antithetic variates; the [simulation engine](/projects/financescenarios/docs/simulation-engine#monte-carlo-error) covers both.
 
-## Several Countries or Markets per Factor
-
-Interest rates, inflation, unemployment, equities, FX and credit can each hold several entries. Every entry becomes its own factor, fitted separately and linked to the others through the correlation matrix. That is how a run holds US, euro area and UK rates side by side, or a broad index next to sector and regional ETFs.
-
-Equities, FX and credit are a plain list:
+A profile of your own can start from a shipped one and state only what differs. It extends a file in its own folder, so copy the shipped profiles there first with `scaffold_project`.
 
 ```yaml
-equities:
-  - name: us_broad
-    ticker: SPY
-  - name: europe
-    ticker: VGK
-
-fx:
-  - name: eur
-    country: Germany
-```
-
-Interest rates, inflation and unemployment usually share their settings across countries, so they take `defaults` plus a list of `countries` that only state what differs:
-
-```yaml
-interest_rates:
-  defaults:
-    source: oecd
-    period: quarterly
-  countries:
-    - name: United States
-    - name: Eurozone
-      country: Germany        # the data country, when it differs from the name
-```
-
-The name becomes the factor's name in the results, with a suffix added for you: `Eurozone` becomes `eurozone_short_rate`, `eurozone_inflation` and `eurozone_unemployment`. Names must be unique across all factors. Each unemployment entry follows the inflation entry of the same country unless you set `inflation_name`.
-
-## Data Settings
-
-| Key | Default | What it does |
-|---|---|---|
-| `toolkit.start_date` | 5 years back | Start of the history used for fitting. |
-| `toolkit.extra_tickers` | `[]` | Extra tickers to download. |
-| `toolkit.benchmark_ticker` | `null` | Leave empty: a ticker equal to the benchmark would be dropped. |
-| `toolkit.progress_bar` | `false` | Show download progress. |
-
-Nothing is downloaded until a factor is fitted, and everything is served from the Finance Toolkit's local cache when it is already there. When the OECD's limit of 60 downloads an hour is reached, the latest cached copy is used. To see the data before simulating, `fetch_historical_data(config, build_toolkit(config))` returns the series each factor would be fitted on.
-
-## Beliefs
-
-A belief replaces one fitted parameter with your own view and keeps the rest of the fit. To set where rates head in the long run while keeping the fitted speed and volatility:
-
-```yaml
-interest_rates:
-  - name: interest_rate
-    beliefs:
-      long_run_mean: 0.035
-```
-
-A field left out or set to `null` keeps the fitted value. All rates are annualized decimals (`0.035` is 3.5%); see [units](/projects/financescenarios/docs/units).
-
-**A path instead of one number.** `long_run_mean` also takes target values at future years, interpolated in between. Rates heading to 6% in year 5 and back to 2% by year 10:
-
-```yaml
-long_run_mean:
-  anchors:
-    5.0: 0.06
-    10.0: 0.02
-  converge_over_years: 5.0   # optional: then move back to the fitted level over 5 years
-```
-
-The target moves; how fast the simulated rate follows it is still the fitted speed of mean reversion.
-
-**One-off shocks.** `shocks` makes a factor jump once at a given year, after which it moves on normally from the new level:
-
-```yaml
-inflation:
-  - name: inflation
-    beliefs:
-      shocks:
-        - year: 2.0
-          magnitude: 0.03    # +3 percentage points in year 2
-```
-
-`mode: absolute` sets the level instead of adding to it. For equities a shock is a log return: `-0.4` takes prices about 33% lower.
-
-Beliefs and belief paths only apply to constant-volatility factors that are not conditioned on the business cycle, and not to risk-neutral entries (see below); shocks apply to all.
-
-## Volatility That Clusters (GARCH)
-
-By default a factor's volatility is constant. `volatility_model: garch` lets it cluster instead, so calm periods stay calm and volatile periods stay volatile ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)):
-
-```yaml
-interest_rates:
-  - name: interest_rate
-    method: hull_white       # GARCH needs Hull-White for rates
-    volatility_model: garch
-```
-
-It is available for interest rates, inflation, real estate, credit, the leading indicator, single-factor commodities and dividend yields.
-
-## Following the Business Cycle {#business-cycle-conditioning}
-
-`condition_on_business_cycle: true` makes a factor's drift follow the leading indicator, the way unemployment follows inflation. It needs `leading_indicator.enabled: true`, and the factor is then fitted at the indicator's frequency:
-
-```yaml
-leading_indicator:
-  enabled: true
-  period: yearly
-
-inflation:
-  - name: inflation
-    condition_on_business_cycle: true
-```
-
-## Published Frameworks
-
-A framework is a published recipe for how the variables relate. Each ships as a ready-made factor set, so you can run a paper's model and compare frameworks on the same engine:
-
-| Factor set | Framework | How the variables are linked |
-|:-----------|:----------|:-----------------------------|
-| `ahlgrim.yaml` (and the default) | [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf) | Each variable is its own process; inflation feeds rates and unemployment, and a correlation matrix ties everything together. |
-| `wilkie.yaml` + `settings/wilkie.yaml` | [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) | A cascade: inflation first, then dividend yields, long bond yields, dividend growth and share prices, each a function of it. |
-| `hibbert.yaml` | [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf) | Rates and inflation revert to a slowly moving target; equities switch between two regimes. |
-| any set with `method: knw` / `knw_sv` | [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058) | Rates and inflation drive each other, optionally with shared stochastic volatility; see the [KNW guide](/projects/financescenarios/docs/knw). |
-
-Wilkie and KNW step in fixed time steps, so `engine.frequency` must match their `period`. `settings/wilkie.yaml` fits on 1995-2007: Wilkie's long bond model needs the long yield to stay above average inflation, which US yields did not from 2008 to 2017.
-
-## Long History
-
-Today tells the model where things are; history tells it how they move. Twenty-five years of data miss the inflation of the 1970s and the crashes of the 1930s, which matters for runs of 50 years or more. `history_source` fits an entry's dynamics on a long history while the run still starts from today's values:
-
-| Factor | `history_source` | Data | From |
-|:-------|:-----------------|:-----|-----:|
-| equities | `shiller` | [Shiller's](https://shillerdata.com/) US total return, monthly | 1871 |
-| equities | `jst` | [Jordà-Schularick-Taylor](https://doi.org/10.1093/qje/qjz012) yearly equity returns of `history_country` | 1870 |
-| interest rates | `oecd` | The OECD's short or long rate of `country`, yearly | 1950 |
-| interest rates | `millennium` | [Bank of England](https://www.bankofengland.co.uk/statistics/research-datasets) Bank Rate or consol yields, UK | 1694 |
-| interest rates | `jst` | Short-term bill returns of `country` | 1870 |
-| inflation | `millennium` | UK consumer price inflation | 1209 |
-| inflation | `shiller` | US inflation from Shiller's price index | 1872 |
-
-```yaml
-interest_rates:
-  - name: us_short_rate
-    history_source: oecd
-    history_start_year: 1950
-```
-
-`history_start_year` drops earlier years (medieval harvests and the 1923 hyperinflation are rarely what you want), `history_volatility: recent` keeps the volatility of the recent window, and JST data needs `accept_licence: true` (CC BY-NC-SA, non-commercial).
-
-The long window matters most for rates. Fitted on 2000-2026, the US short rate settles at 5.3% and the 10-year at 3.2%, an inverted curve forever. Fitted on the OECD's rates since 1950, every curve slopes upward again: US 4.5% short and 6.0% long.
-
-## Rates at or Above Zero
-
-`zero_lower_bound: true` keeps an interest rate at or above 0% the shadow-rate way ([Black, 1995](https://doi.org/10.1111/j.1540-6261.1995.tb05182.x)): the model moves on below zero unseen, and the rate you see is the larger of that shadow rate and 0%. Rates then linger at zero for a while, as policy rates did, instead of bouncing straight back. Real-world entries only.
-
-## Anchoring Long-run Rate Levels
-
-`long_run_anchor` replaces a rate's fitted long-run level with an official path:
-
-- `eiopa`: the forward rates of EIOPA's risk-free curve for the entry's `currency` (USD, EUR or GBP), ending at the [ultimate forward rate](https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en) every Solvency II insurer discounts with.
-- `dnb` (euro only): the median path of [De Nederlandsche Bank's](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/) scenario set, the reference for Dutch pension funds.
-
-Speed and volatility stay fitted, and an explicit `beliefs.long_run_mean` still wins. The default factor set uses `eiopa`: over 30 years its US 10-year median ends at 4.8%, against 4.5% in the NAIC's generator.
-
-## Real-world and Risk-neutral {#real-world-and-risk-neutral-measures}
-
-A real-world run follows how markets have behaved and answers "what could happen?". A risk-neutral run grows every investment at the risk-free rate on average, so it reproduces today's prices and answers "what is this worth today?". Every factor is real-world by default; an entry switches with `measure: risk_neutral`, or a whole run with `scenarios.simulate(measure="risk_neutral")`.
-
-| Factor | Risk-neutral version |
-|:-------|:---------------------|
-| Equities | Grows at the risk-free rate minus the dividend yield; volatility from option prices or, with `volatility_source: heston`, a Heston model fitted to the volatility smile |
-| Interest rates | Today's rate, or a Hull-White rate that follows today's forward curve |
-| FX | The interest-rate gap between the two countries |
-| Inflation | A forward curve from breakeven inflation (US, UK, Germany or the euro area) |
-| KNW with stochastic volatility | A market price of risk fitted to the yield curve |
-| Commodities (`schwartz_smith`) | Fitted to the futures curve |
-| Unemployment, real estate, leading indicator, mortality, credit | Not available: there is no traded price to match |
-
-Beliefs can't be combined with a risk-neutral entry, since it exists to match the market. The [Solvency II](/projects/financescenarios/docs/solvency) guide shows how real-world and risk-neutral runs work together.
-
-## Example Files
-
-`settings/default.yaml`:
-
-```yaml
-name: Default
-description: "2,000 scenarios, one step a month, five years ahead, fitted on history since 2000."
+# my-project/settings/my_alm.yaml
+name: ALM study
+extends: default.yaml   # the copy scaffold_project("my-project") wrote next to this file
 
 start_date: 2026-01-01
 
 engine:
-  n_simulations: 2000
-  n_steps: 60
-  frequency: monthly
-  seed: 42
+  n_simulations: 5000
+  n_steps: 30
+  frequency: yearly
+  antithetic: true      # paired +/- shocks, less Monte Carlo noise
+  seed: 42              # same inputs, same scenarios
 
 toolkit:
-  start_date: 2000-01-01
+  start_date: 1990-01-01   # the calibration window
 ```
 
-A small factor set, close to `factor-sets/ahlgrim.yaml`:
+```python
+scenarios = Scenarios.from_profiles(
+    settings="my_alm", settings_dir="my-project/settings", factor_set="default"
+)
+```
+
+## Calibration Window
+
+Today's data tells the model where things are; the history tells it how they move. The window decides which economic regimes the fitted parameters have seen. A window from 2000 has seen a decade of near-zero rates and low inflation. Rates drift so slowly against its length that the speed of mean reversion is barely pinned down, and the long-run level, estimated together with it, swings with small changes in the data. Fitted on it, the US short rate settles at 5.3% and the 10-year at 3.2%, an inverted curve forever. That is a weakly identified estimate, not a forecast. Fitted on the OECD's rates since 1950, every curve slopes upward again, with US rates at 4.5% short and 6.0% long.
+
+Short windows also understate tail events that did not happen in them. For runs of decades, the speed of mean reversion and the volatility should come from a history that includes the inflation of the 1970s and a few full rate cycles.
+
+### Long History {#long-history}
+
+A factor can be fitted on a long history while the run still starts from today's values; the default factor set fits its rates on the OECD's data since 1950. Older sources exist: [Shiller's](https://shillerdata.com/) US equity returns and inflation from the 1870s, the [Jordà-Schularick-Taylor](https://doi.org/10.1093/qje/qjz012) panel of returns and bill rates by country from 1870 (non-commercial licence), and the [Bank of England's](https://www.bankofengland.co.uk/statistics/research-datasets) UK series from 1694 for rates and 1209 for prices.
+
+Older is not always better: medieval harvests and the 1923 hyperinflation are rarely what you want. A start year cuts the history short, and the volatility can come from the recent window while the long history sets the mean reversion.
 
 ```yaml
-name: Ahlgrim-style
-description: One rate, inflation, equity market and unemployment rate for the United States.
-
 interest_rates:
-  - name: interest_rate
-    source: ticker          # ticker | oecd
-    method: hull_white      # hull_white | cir
-    ticker: "^IRX"          # 13-week T-bill
-    period: daily
-
-inflation:
-  - name: inflation
-    country: United States
-    period: yearly
-
-equities:
-  - name: equity
-    ticker: SPY
-    n_regimes: 2
-    period: monthly
-
-unemployment:
-  - name: unemployment
-    country: United States
-    inflation_name: inflation
-
-yield_curve:
-  enabled: false
-
-credit: []    # e.g. - {name: ig_7_10y, dimension: maturity, maturity_bucket: "7-10 Years"}
-fx: []        # e.g. - {name: eur, country: Germany}
+  defaults:                  # every country's rates
+    history_source: oecd
+    history_start_year: 1950
+    history_volatility: recent   # swings from the recent window, reversion from the long one
 ```
 
-`factor-sets/default.yaml` builds on `core.yaml` (the United States, the euro area and the United Kingdom, global equities, gold, oil and the major currencies) with long-run rate levels anchored to EIOPA, and passes every release check. `factor-sets/broad.yaml` switches on every factor.
+## Real-World and Risk-Neutral {#real-world-and-risk-neutral-measures}
+
+A **real-world** run follows how markets have behaved, risk premia included, and answers "what could happen?": ALM, solvency projections, strategic asset allocation. A **risk-neutral** run grows every asset at the risk-free rate on average, so it reproduces today's market prices and answers "what is this worth today?": guarantees, options and other embedded features. Mixing them up is a classic error: a risk-neutral run has no equity risk premium, so it says nothing about expected returns, and a real-world run does not price an option correctly. [Merton (1973)](https://doi.org/10.2307/3003143) gives the classic no-arbitrage argument and [the SOA (2022)](https://www.soa.org/resources/research-reports/2022/understanding-the-connection/) a practical treatment of when each measure fits.
+
+Every factor is real-world by default; a single factor or a whole run can switch to risk-neutral.
+
+| Factor | Risk-neutral version |
+|:-------|:---------------------|
+| Equities | Grows at the risk-free rate minus the dividend yield; volatility from option prices or a Heston model fitted to the volatility smile |
+| Interest rates | A Hull-White rate whose average path follows today's forward curve (the default when the whole run is risk-neutral); switched on one factor alone, a flat path at today's rate |
+| FX | The interest-rate gap between the two currencies |
+| Inflation | A forward curve from breakeven inflation (US, UK, Germany or the euro area) |
+| KNW with stochastic volatility | A market price of risk fitted to the yield curve |
+| Commodities (two-factor) | Fitted to the futures curve |
+| Unemployment, real estate, leading indicator, mortality, credit | Not available: there is no traded price to match |
+
+```python
+result = scenarios.simulate(measure="risk_neutral")   # or measure: risk_neutral on one factor
+```
+
+A flat rate at today's level is deterministic discounting: it has no rate volatility and ignores the shape of the curve, so it does not value options or guarantees on rates. Use the forward-curve version for those.
+
+The [Solvency II](/projects/financescenarios/docs/solvency) guide shows how the two measures work together in a nested valuation.
+
+## Beliefs: Expert Judgement over the Fit {#beliefs}
+
+A fitted parameter is an estimate from one stretch of history; a long-run view is a judgement. A belief replaces one fitted parameter with your own value and keeps the rest of the fit. The typical case is the long-run level of rates or inflation: you set where it heads, the data still sets how fast and how volatile. Values are annualized decimals (0.035 is 3.5%, see [units](/projects/financescenarios/docs/units)).
+
+The target can also be a path (inflation at 6% in year 5, back to 2% by year 10), and a factor can take a one-off shock at a given year, after which it moves on normally from the new level. That is how a stress narrative enters a real-world run; [regimes](/projects/financescenarios/docs/regimes) package such stories.
+
+```yaml
+inflation:
+  defaults:                 # every country's inflation; a regime can target one
+    beliefs:
+      long_run_mean:
+        anchors:            # year: target, interpolated in between
+          5.0: 0.06
+          10.0: 0.02
+      shocks:
+        - year: 2.0
+          magnitude: 0.03   # +3 percentage points in year 2
+```
+
+Beliefs don't apply to risk-neutral factors, which exist to match the market. A level path applies only to constant-volatility factors that do not follow the business cycle.
+
+### Anchoring Long-Run Rate Levels {#anchoring-long-run-rate-levels}
+
+Instead of your own view, a rate's long-run level can follow an official path. Anchored to EIOPA, it follows the forward rates of EIOPA's risk-free curve for its currency (USD, EUR or GBP), which converge to the [ultimate forward rate](https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en) Solvency II insurers discount with only beyond the last liquid maturity (50 years for the dollar). Over a few decades the anchor therefore still follows market forwards, not the UFR. Anchored to DNB (euro only), it follows the median of [De Nederlandsche Bank's](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/) pension scenario set. Speed and volatility stay fitted, and an explicit belief still wins. The default factor set uses EIOPA: over 30 years its US 10-year median ends at 4.8%, against 4.5% in the NAIC's generator.
+
+```yaml
+interest_rates:
+  defaults:
+    long_run_anchor: eiopa   # or dnb, for euro rates
+```
+
+### Keeping Rates at or Above Zero {#keeping-rates-at-or-above-zero}
+
+Gaussian rate models let rates go well below zero. No floor is the default, since negative rates did happen; a zero lower bound turns the model into a shadow rate floored at 0%, so rates linger at zero as policy rates did. [Interest rates](/projects/financescenarios/docs/interest-rates#keeping-rates-at-or-above-zero) explains the model. Real-world rates only.
+
+### Volatility That Clusters and the Business Cycle {#business-cycle-conditioning}
+
+By default volatility is constant. With GARCH it clusters, so calm periods stay calm and turbulent ones stay turbulent ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)). Alternatively a factor's drift can follow the leading indicator, so inflation or rates move with the business cycle ([conditioning on the cycle](/projects/financescenarios/docs/economy#conditioning-on-the-cycle)). The two don't combine on one factor.
+
+```yaml
+leading_indicator:
+  enabled: true
+
+inflation:
+  defaults:
+    condition_on_business_cycle: true   # or volatility_model: garch
+```
+
+## Published Frameworks {#published-frameworks}
+
+Economic scenario generators differ mostly in how they link the variables. Each framework ships as a factor set, so you can run a paper's model and compare frameworks on the same engine and data:
+
+| Factor set | Framework | How the variables are linked |
+|:-----------|:----------|:-----------------------------|
+| `ahlgrim` | [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf) | Each variable is its own process; inflation feeds rates and unemployment, and a correlation matrix ties everything together. |
+| `wilkie` | [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) | A cascade: inflation first, then dividend yields, long bond yields, dividend growth and share prices, each driven by it. |
+| `hibbert` | [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf) | Rates and inflation revert to a slowly moving target; equities switch between two regimes. |
+| any set with the KNW method | [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058) | Rates and inflation drive each other, optionally with shared stochastic volatility; see the [KNW guide](/projects/financescenarios/docs/knw). |
+
+Wilkie is a discrete-time model. KNW is continuous-time in the paper, but the package fits its discrete-time version, a VAR(1) of the short rate and expected inflation, as DNB's Commissie Parameters (2022) does. For both, the step must match the frequency they were fitted at. Wilkie's long bond model needs the long yield to stay above average inflation, which US yields did not from 2008 to 2017, so its settings profile fits on 1995 to 2007: the calibration window is a modeling choice, not a technicality.
+
+```python
+scenarios = Scenarios.from_profiles(settings="wilkie", factor_set="wilkie")
+```
 
 ## API Keys {#secrets}
 
-Profiles never hold API keys. Pass them when creating the scenarios, `Scenarios.from_profiles(..., api_key="...", fred_api_key="...")`, or set `FINANCIAL_MODELING_PREP_API_KEY` and `FRED_API_KEY` in the environment or a `.env` file. Most factors need neither:
+Profiles never hold API keys. Most factors need none: inflation, unemployment, FX, real estate and OECD rates come from the OECD, mortality from Eurostat. Equities, commodities and the yield curve use Financial Modeling Prep when a key is given and Yahoo Finance otherwise; credit spreads and commercial real estate need a FRED key. Pass the keys when creating the scenarios, or set `FINANCIAL_MODELING_PREP_API_KEY` and `FRED_API_KEY` in the environment.
 
-| Factor | Key |
-|---|---|
-| Inflation, unemployment, FX, leading indicator, real estate, OECD interest rates | None (OECD data) |
-| Equities, dividends, yield curve, HJM, commodities, ticker interest rates | FMP, optional (Yahoo Finance otherwise, US exchanges only) |
-| Credit, commercial real estate | FRED, required |
-| Mortality | None (Eurostat, or your own table) |
+```python
+scenarios = Scenarios.from_profiles(
+    settings="default",
+    factor_set="default",
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    fred_api_key="FRED_KEY",
+)
+```

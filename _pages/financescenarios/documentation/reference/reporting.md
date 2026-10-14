@@ -14,42 +14,37 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Convert simulated prices into one reporting currency after the simulation. Generated from the docstrings of Finance Scenarios 0.1.0; `help(...)` in Python shows the same text.
+Convert simulated prices into one reporting currency after the simulation.
 
 ```python
 from financescenarios.reporting.reporting_controller import Reporting
 ```
 
-```python
-Reporting(scenario_set: ScenarioSet, config: ScenariosConfig)
-```
-
-The Reporting module shows simulated prices in one reporting currency: it takes a factor simulated in its own
-currency, such as a Japanese equity in yen, and converts every simulated path into, say, US dollars using the
-simulated exchange rate of that same path.
+Show simulated prices in one reporting currency: take a factor simulated in its own currency, such as a Japanese
+equity in yen, and convert every scenario into, say, US dollars with that scenario's own simulated exchange rate.
 
 An investor who reports in dollars wants to see what a Japanese or European holding is worth in dollars in each
 scenario, including the currency gain or loss, not just its local price. Because the exchange rate is simulated
-together with the price, the converted result carries the currency risk and its correlation with the asset.
-`Reporting` is optional and read-only: it works on a finished simulation, never calibrates or simulates anything,
-and never changes the `ScenarioSet` or the config. A run with everything in `USD` behaves exactly as without it.
-`Portfolio` uses it to put every holding in the reporting currency before weighting.
+together with the price, the converted result carries the currency risk and its correlation with the asset: in
+a scenario where the yen weakens as Japanese equities rally, the dollar investor keeps less of the rally. An
+unhedged foreign holding is therefore usually riskier in the reporting currency than in its own, unless the
+currency tends to move against the asset. `Portfolio` uses it to put every holding in the reporting currency
+before weighting; the run itself is left unchanged.
 
 Only price-like factors are converted: `equities`, `commodities` and `real_estate`, whose growth rate is first
 compounded into a price index. Rates and ratios (`interest_rates`, `inflation`, `credit`, `unemployment`,
 `yield_curve`, `dividend_yield`, `leading_indicator`) have no currency to convert: a German short rate of 3% stays
 3%, so asking to convert one raises a `ValueError`.
 
-Exchange rates follow the Finance Toolkit's OECD convention (`economics.get_exchange_rates`): units of the national
-currency per US dollar. Going from a currency to dollars divides by its simulated rate, going from dollars to a
-currency multiplies by it, and two non-dollar currencies are bridged through the dollar in two steps, since every
-`fx` factor is quoted against the dollar. Each `fx` entry names its currency in `currency`; when that is unset, it
-is read from an `interest_rates` or `inflation` entry for the same `country`, or is `EUR` for the OECD's euro area
-codes.
+Exchange rates follow the OECD convention: units of the national currency per US dollar. Going from a currency to
+dollars divides by its simulated rate, going from dollars to a currency multiplies by it, and two non-dollar
+currencies are bridged through the dollar in two steps, since every `fx` factor is quoted against the dollar. Each
+`fx` entry names its currency in `currency`; when that is unset, it is read from an `interest_rates` or `inflation`
+entry for the same `country`, or is `EUR` for the OECD's euro area codes.
 
-This converts units only. With the default `fx[i].drift_mode: historical` the exchange rate moves independently of
-the simulated interest rates; `drift_mode: irp` or `measure: risk_neutral` ties it to the rate gap between the two
-currencies through interest rate parity
+With the default `fx[i].drift_mode: historical` the exchange rate follows its own history, independent of the
+simulated interest rates; `drift_mode: irp` or `measure: risk_neutral` ties its expected move to the rate gap
+between the two currencies through interest rate parity, as a market-consistent valuation needs
 ([Gorvett, 2001](https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf)).
 
 Configuration (`reporting` in a settings profile, beside `engine` and `toolkit`):
@@ -66,11 +61,16 @@ correlation matrix.
 
 - Gorvett, R.W. (2001). "Foreign Exchange Rate Risk: Institutional Issues and Stochastic Modeling." CAS Discussion Paper Program. <https://www.casact.org/sites/default/files/database/dpp_dpp01_01dpp19.pdf>
 
-## convert
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
-convert(factor_name: str) -> pl.DataFrame
+Reporting(scenario_set: ScenarioSet, config: ScenariosConfig)
 ```
+
+</details>
+
+## convert
 
 Convert one price-like factor's simulated paths into the run's reporting currency, using each path's own
 simulated exchange rate.
@@ -80,32 +80,24 @@ when the dollar buys 158.79 yen reads as 430 / 158.79 = 2.71 dollars, and every 
 path's exchange rate, so currency swings are part of the outcome. A factor already in the reporting currency
 comes back unchanged; `real_estate` is first compounded from a growth rate into a price index.
 
-**Args:**
+With P_N the price in its own currency and X_N and X_R the simulated units of the native and the reporting
+currency per US dollar (1 for the dollar itself), each path converts at its own exchange rates.
 
-- <u>factor_name (str):</u> the name of an `equities`, `commodities` or `real_estate` factor in this run.
-
-**Returns:**
-
-<u>pl.DataFrame:</u> a `scenario` column plus one column per date, one row per path, as `ScenarioSet.to_dataframe()`.
-
-**Raises:**
-
-- <u>ValueError:</u> if `factor_name` is not a configured factor with a currency, or is a rate or ratio factor.
-- <u>KeyError:</u> if the factor is configured but missing from this `ScenarioSet`.
-- <u>RuntimeError:</u> if this run lacks the `fx` entry the conversion needs; the message names its country.
+The formula is as follows:
+- P_R = P_N * X_R / X_N
 
 **As an example:**
 
 ```python
 from datetime import date
 
-from financescenarios import Scenarios
-from financescenarios.config.config_model import (
+from financescenarios import (
     EngineConfig,
     EquityConfig,
     FXConfig,
     InflationConfig,
     InterestRateConfig,
+    Scenarios,
     ScenariosConfig,
     ToolkitConfig,
 )
@@ -141,4 +133,82 @@ and yen per dollar:
 | 2027-10-01 | 483.0 | 162.17 | 2.02 | 2.98 | 3.70 |
 | 2031-10-01 | 661.8 | 174.18 | 1.79 | 3.78 | 7.12 |
 
-The yen price grows 54% in five years, but the yen weakens to 174 per dollar, so the dollar value grows less.
+The yen price grows 54% in five years, but the yen weakens to 174 per dollar, so the dollar value grows less,
+and the 5% to 95% range in dollars is wide: the dollar investor carries the currency risk on top of the
+equity risk.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+convert(factor_name: str) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>factor_name (str):</u> the name of an `equities`, `commodities` or `real_estate` factor in this run.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> a `scenario` column plus one column per date, one row per path, as `ScenarioSet.to_dataframe()`.
+
+**Raises:**
+
+- <u>ValueError:</u> if `factor_name` is not a configured factor with a currency, or is a rate or ratio factor.
+- <u>KeyError:</u> if the factor is configured but missing from this `ScenarioSet`.
+- <u>RuntimeError:</u> if this run lacks the `fx` entry the conversion needs; the message names its country.
+
+</details>
+
+## How It Is Calculated
+
+The model functions behind this page, each with the formula it implements.
+
+### convert_to_reporting_currency
+
+Convert a price simulated in its own currency into the reporting currency, scenario by scenario, with each
+scenario's own simulated exchange rate. The converted price carries the currency gain or loss, and its correlation
+with the asset, that an investor reporting in another currency actually experiences.
+
+Exchange rates are quoted as units of the national currency per US dollar (the OECD convention). Going from a
+currency to dollars divides by its rate, going from dollars to a currency multiplies by it, and two non-dollar
+currencies are bridged through the dollar in two steps. A price already in the reporting currency comes back
+unchanged.
+
+The formula is as follows:
+
+$$
+P_{rep}(t) = P_{nat}(t) / X_{nat}(t) \cdot X_{rep}(t)
+$$
+
+Where P_nat is the price in its own currency, X_nat and X_rep the units of the native and the reporting currency
+per US dollar, and X_USD = 1, so a USD price skips the division and a USD reporting currency the multiplication.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+convert_to_reporting_currency(
+    native_paths: np.ndarray,
+    fx_rate_paths: dict[str, np.ndarray],
+    native_currency: str,
+    reporting_currency: str,
+) -> np.ndarray
+```
+
+**Args:**
+
+- <u>native_paths (np.ndarray):</u> the simulated price per scenario and date, in its own currency.
+- <u>fx_rate_paths (dict[str, np.ndarray]):</u> currency code to its simulated exchange rate (units per US dollar) per scenario and date; only the currencies the conversion needs.
+- <u>native_currency (str):</u> the currency the price is in.
+- <u>reporting_currency (str):</u> the currency to convert into.
+
+**Returns:**
+
+<u>np.ndarray:</u> the price per scenario and date, in the reporting currency.
+
+**Raises:**
+
+- <u>KeyError:</u> if an exchange rate the conversion needs is missing.
+
+</details>

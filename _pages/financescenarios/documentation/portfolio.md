@@ -1,8 +1,8 @@
 ---
 title: Portfolio
 seo_title: Portfolio Documentation – Finance Scenarios
-excerpt: "Turn a finished run into the value of an actual portfolio: rebalancing, savings and withdrawals, bond durations, glidepaths, risk reads, benchmarks and backtests."
-description: "How Finance Scenarios turns simulated markets into a portfolio's value: rebalancing, cashflows, glidepaths, risk metrics, benchmarks and backtests."
+excerpt: "How simulated returns become the value of a real portfolio: rebalancing and the rebalancing premium, cashflows and sequence risk, glidepaths, fees, risk metrics, backtests and factor exposure."
+description: "From scenario returns to portfolio value: rebalancing, cashflows and sequence risk, glidepaths, fees, VaR and Expected Shortfall, backtests and factor exposure."
 author_profile: false
 permalink: /projects/financescenarios/docs/portfolio
 classes: wide-sidebar
@@ -14,9 +14,7 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-The scenario generator answers "what could markets do?". The `Portfolio` class answers the next question: "what would that mean for my money?". You pick a weight per asset, say 60% US equities and 40% US government bonds, and it returns how that portfolio's value develops in every simulated scenario, together with the value of each holding on its own. On top of that result it answers plain questions: how likely the money lasts, how likely a goal is reached, what the portfolio is worth after inflation, how deep the drawdowns go and how far the weights drift.
-
-A portfolio reads a finished run. It never calibrates or simulates anything and never changes the `ScenarioSet` it is given. None of its settings are part of the run's [configuration](/projects/financescenarios/docs/configuration): you build a portfolio after the fact, from a run you just simulated or one you saved and read back. The full list of arguments is in the [Portfolio reference](/projects/financescenarios/docs/reference/portfolio).
+The scenario generator answers "what could markets do?". A portfolio answers "what would that mean for this money?": given target weights, it follows the portfolio's value through every scenario, applying rebalancing, fees, deposits and withdrawals step by step. It never changes the run, so one set of scenarios can test many allocations.
 
 ```python
 from financescenarios import Portfolio, Scenarios
@@ -27,59 +25,64 @@ scenarios = Scenarios.from_profiles(
 scenario_set = scenarios.simulate(years=30)
 
 portfolio = Portfolio(scenario_set)
-result = portfolio.compute({"us_broad": 0.6, "united_states_long_rate": 0.4}, initial_value=100.0)
+result = portfolio.compute({"us_broad": 0.6, "united_states_short_rate": 0.4}, initial_value=100.0)
 ```
 
-
-The numbers on this page come from one example run: 1,000 scenarios over 30 yearly steps of US stocks (SPY), the US short rate and US inflation, starting 2026-10-01 and simulated on 2026-10-04. They show how the features compare; your own runs will give different numbers.
+The numbers on this page come from one example run: 1,000 scenarios over 30 yearly steps of US stocks (SPY), the US short rate and US inflation, starting 2026-10-01 and simulated on 2026-10-04. Its "60/40" is 60% equities and 40% cash (the short rate); the 60/40 preset [below](#glidepaths) holds Treasuries instead. They show how the choices compare; other runs give other numbers. Every option is listed in the [Portfolio reference](/projects/financescenarios/docs/reference/portfolio).
 
 ## What a Portfolio Can Hold
 
-You need to know which factors are investable, because a portfolio only accepts assets you could actually own.
+Only assets you could own can be held, and how a holding grows depends on what it is:
 
-Every factor in a run carries its asset class, stamped on by the simulation and kept when the run is saved, so the run is all a `Portfolio` needs. `portfolio.investable_factors` lists what you can hold. For a `ScenarioSet` you built by hand, pass the `config` that produced it or a `category_map` (factor name to category).
-
-The investable categories split in two:
-
-| Kind | Categories | How a holding grows |
+| Kind | Examples | How a holding grows |
 |---|---|---|
-| Price factors | `equities`, `commodities` | The simulated price path, rebased to 1.0 at the start. |
-| Rate factors | `interest_rates`, `credit`, `real_estate` | The rate is compounded, as the return of a rolled money-market or floating-rate holding. Real estate belongs here because its simulated path is a house-price growth rate. |
+| Price factors | Equities, commodities | Along the simulated price path. |
+| Rate factors | Interest rates, credit, real estate | The simulated rate is compounded, like a rolled money-market holding. That is a proxy: a credit holding earns only the spread (not the yield plus spread minus default losses), and real estate earns house-price growth without rental income. |
+| Not investable | Inflation, unemployment, dividend yields, FX | Cannot be held, only used as inputs (for example to index cashflows). |
 
-Everything else (inflation, unemployment, dividend yields, FX and so on) cannot be held. Allocating to it raises an error that lists the factors you can hold in this run. A strategic allocation and a sector portfolio (several equity factors such as `tech` and `energy`) are the same computation over a different selection.
+With holdings in several currencies, each equity, commodity and real-estate holding can be converted into the reporting currency first, so a euro equity in a dollar portfolio carries the currency return too. Rates are never converted (see [units](/projects/financescenarios/docs/units)).
 
-## Buy-and-Hold and Rebalancing
+## Buy-and-Hold Versus Rebalancing
 
-Rebalancing is the main lever on how a portfolio's risk changes over time, so you choose it explicitly.
+- **Buy-and-hold** sets the weights once. Each holding then grows with its own asset, so the mix drifts toward whatever performs best. Over a long horizon a 60/40 drifts into a mostly equity portfolio.
+- **Calendar rebalancing** resets the holdings to target every N steps: the constant-mix discipline of selling what rose and buying what fell ([Perold and Sharpe, 1988](https://doi.org/10.2469/faj.v44.n1.16){:target="_blank"}).
+- **Band rebalancing** trades only when a holding drifts more than a set distance from its target (say 5 percentage points). Each scenario triggers on its own, so trading happens when markets move, not when the calendar says.
 
-Each holding starts at `weight * initial_value`. From there:
+**The rebalancing premium and volatility drag.** This is standard portfolio theory rather than a separate calculation in the package; it explains why the simulated rebalanced and buy-and-hold paths differ. An asset's long-run (geometric) growth rate is lower than its average (arithmetic) return by roughly half its variance:
 
-- **Buy-and-hold** (`rebalance_every=None`, the default). Each holding grows with its own asset; the weights only hold at the start.
-- **Calendar rebalancing** (`rebalance_every=N`). Every N steps each holding is reset to `weight * portfolio value`: the constant-mix discipline of selling what rose and buying what fell ([Perold and Sharpe, 1988](https://doi.org/10.2469/faj.v44.n1.16){:target="_blank"}). `rebalance_every=1` rebalances every step.
-- **Band rebalancing** (`rebalance_band=X`). A scenario rebalances as soon as any holding's actual weight is more than X away from its target, in absolute terms (0.05 means 5 percentage points). Each scenario triggers on its own. Combined with a calendar, whichever fires first wins.
+$$
+g \approx \mu - \tfrac{1}{2}\sigma^2
+$$
 
-Two kinds of cost apply:
+where $$\mu$$ is the arithmetic return per year and $$\sigma$$ the volatility. A constant-mix portfolio suffers the same drag, but on its own variance $$\sigma_p^2$$, which diversification makes smaller than the weighted average of the assets' variances. Its growth rate therefore beats the weighted average of the assets' growth rates by approximately
 
-- **`fee_rate`** is an annual fee on assets, charged every step as `exp(-fee_rate * dt)`, where `dt` is that step's length in years. It can be one number for every holding or a dict with a rate per holding (unnamed holdings pay nothing).
-- **`transaction_cost_rate`** is charged only when a rebalance trades, on the one-way turnover `0.5 * sum(|target value - actual value|)`. Buying one holding and selling another counts as one trade, not two.
+$$
+\tfrac{1}{2}\left(\sum_i w_i \sigma_i^2 - \sigma_p^2\right) \geq 0
+$$
 
-Each step applies growth (net of the fee), then any rebalance (net of trading costs), then any cashflow.
+with $$w_i$$ the target weights (non-negative, summing to 1) and $$\sigma_i$$ each asset's volatility. That is the rebalancing (or diversification) premium: largest for volatile, weakly correlated assets, and zero only when the assets are perfectly correlated and equally volatile. Buy-and-hold forgoes it but lets winners run, so it keeps more upside when one asset steadily outgrows the others.
+
+The example run shows the trade-off. A mix of 60% US equities and 40% cash ended at almost the same 5th percentile (about 426 from 100) under both approaches, but buy-and-hold had a far higher 95th percentile (5,925 against 2,996), because it ends up holding mostly equities and takes the equity risk that comes with that.
+
+**Costs.** An annual fee is charged continuously, as $$e^{-f\,\Delta t}$$ per step for a fee rate $$f$$ and step length $$\Delta t$$ in years. It compounds: 1% a year removes about 26% of the final value over 30 years ($$1 - e^{-0.3}$$). Trading costs apply only when a rebalance trades, on the one-way turnover, so frequent rebalancing has to earn its premium net of costs.
 
 ```python
 weights = {"us_broad": 0.6, "united_states_short_rate": 0.4}
 
 buy_and_hold = portfolio.compute(weights, initial_value=100.0)
-rebalanced = portfolio.compute(weights, initial_value=100.0, rebalance_every=1, fee_rate=0.002)
+yearly = portfolio.compute(weights, initial_value=100.0, rebalance_every=1, fee_rate=0.002)
 banded = portfolio.compute(weights, initial_value=100.0, rebalance_band=0.05, transaction_cost_rate=0.001)
 ```
 
-On a run of 1,000 scenarios over 30 yearly steps, the first two portfolios ended at almost the same 5th percentile (about 426 from 100). The buy-and-hold one drifts toward equities as they outgrow the short rate, so its 95th percentile was far higher (5,925 against 2,996), at the cost of more risk.
+Each step applies growth net of fees, then any rebalance net of trading costs, then any cashflow.
 
-## Saving and Withdrawing
+## Cashflows and Sequence Risk
 
-Cashflows let you test a real plan, such as saving for 15 years and then living off the portfolio.
+Deposits and withdrawals turn a return distribution into a plan: save for 15 years, then live off the portfolio. Rules are stated in years, so they mean the same whether the run steps monthly or yearly. A deposit buys the target mix; a withdrawal is taken pro rata. A portfolio that hits zero stays at zero.
 
-A cashflow rule is a recurring deposit (positive amount) or withdrawal (negative amount). `portfolio.cashflow_rule()` builds one from a description in years, so a rule means the same thing whether the run steps monthly, quarterly or yearly. A life plan is several rules, one per phase:
+With withdrawals, the **order** of returns matters, not only their average. A crash early in the withdrawal phase forces selling at low prices, and the units sold never recover; the same crash late does far less damage. That is sequence-of-returns risk, and why a plan has to be tested on paths, not on an expected return.
+
+Withdrawals can be indexed to each scenario's own simulated inflation, so they keep their purchasing power. This matters a lot: in the example run (100,000 to start, 10,000 a year saved for 15 years, then 40,000 a year withdrawn), the money lasted 30 years in 91.7% of scenarios with a fixed nominal withdrawal, and in only 58% when the withdrawal rose with inflation.
 
 ```python
 rules = [
@@ -91,63 +94,33 @@ plan = portfolio.compute(
     initial_value=100_000.0,
     rebalance_every=1,
     cashflow_rules=rules,
-    inflation_factor="united_states_inflation",
+    inflation_factor="united_states_inflation",  # an annual rate (0.024 is 2.4%), not a price index
 )
 ```
 
-How the rules behave:
-
-- `every_years` is rounded to whole steps, never less than one. A cadence finer than the run (monthly cashflows on a yearly run) fires once per step without scaling the amount up; a warning tells you so.
-- `start_year` and `end_year` snap to the nearest step; a year outside the run raises an error.
-- A contribution buys the target mix; a withdrawal is taken from each holding in proportion to what it holds.
-- If the portfolio's value reaches zero or less, it is set to exactly 0.0 and stays there. A ruined portfolio receives no further contributions.
-
-**Inflation-indexed cashflows.** With `inflation_factor`, every amount is read in today's money: the schedule is multiplied by each scenario's own cumulative inflation, so a 40,000 withdrawal keeps its purchasing power in every scenario. The inflation factor need not be a holding, and it must be an annualized decimal rate (0.024 means 2.4%), not a price index. An average above 50% a year triggers a warning about a likely units mistake, but nothing is rescaled, since genuine hyperinflation looks the same.
-
-The indexing matters. In the example run (100,000 to start, 10,000 a year saved for 15 years, then 40,000 a year withdrawn), the money lasted 30 years in 91.7% of scenarios with a fixed nominal withdrawal, and in 58% when the withdrawal rose with inflation.
-
 ## Bonds: Cash Roll or Duration
 
-This setting decides whether a rate rise hurts your bond holding today or only helps it later, which changes short-term risk materially.
+By default a rate holding compounds its yield with no price effect, like a floating-rate note: a rate rise only raises future income. Giving it a duration prices it as a constant-duration bond fund instead, so a rate rise marks it down at once and it then earns the higher yield ([Redington, 1952](https://doi.org/10.1017/S0020268100052811){:target="_blank"}). Each step's return is
 
-By default an interest-rate or credit holding compounds its rate with no price effect, like a floating-rate note or a money-market fund. A rate spike only raises future growth.
+$$
+r_t = -D\,(y_t - y_{t-1}) + y_{t-1}\,\Delta t
+$$
 
-With `durations` (factor name to a duration in years, for interest-rate and credit holdings only), the holding is priced as a constant-duration bond fund. Each step's return is
+where $$D$$ is the modified duration and $$y$$ the simulated yield: the price effect of the yield change plus the interest earned. The fund rolls to keep its duration constant, like a long-Treasury ETF, rather than ageing like a single bond.
 
-```
-return(t) = -duration * (y(t) - y(t-1)) + y(t-1) * dt
-```
+Use a long rate for $$y$$, such as the 10-year yield in the default factor set. A duration on the short rate prices a constant-duration fund off three-month bill moves, which follow policy rates rather than long yields, so it is not a stand-in for a bond of that maturity. In the example run, which has only the short rate, the cash roll earned the starting 4.0% in year one in every scenario.
 
-the price effect of the yield change plus the interest earned. A rate rise marks the holding down by roughly `duration * rise` at once, after which it earns the higher yield ([Redington, 1952](https://doi.org/10.1017/S0020268100052811){:target="_blank"}). This is a rolling fund whose duration stays constant, like a long-Treasury ETF, not a single bond ageing towards maturity.
+This is first-order duration only: convexity is ignored, and compounding the return as a log return understates a very large one-step loss. On monthly or weekly steps both effects are small.
 
 ```python
-bonds = portfolio.compute({"united_states_short_rate": 1.0}, durations={"united_states_short_rate": 7.0})
+bonds = portfolio.compute({"united_states_long_rate": 1.0}, durations={"united_states_long_rate": 7.0})
 ```
-
-In the example run, the floating-rate roll earned the starting 4.0% in year one in every scenario. At duration 7, the same position ranged from 96.32 to 111.72 (5th to 95th percentile) after one year, with a median worst drawdown of 7.0% against none for the roll.
-
-Two approximations to keep in mind:
-
-- The return is compounded as if it were a log return, which understates a very large one-step loss. A 2-point rate spike at duration 17 gives `exp(-0.32) = 0.73` instead of `0.68`. For the small steps of a monthly or weekly run the difference is negligible.
-- Convexity is ignored: this is first-order duration only. Full curve-based bond pricing is not wired into the portfolio.
-
-## Several Currencies
-
-If you hold assets in more than one currency, pass the run's `config` so returns are measured in one currency.
-
-With `Portfolio(scenario_set, config=config)`, each equity, commodity and real-estate holding is converted into the run's reporting currency before it is weighted, so a euro equity in a dollar portfolio carries the euro/dollar return too. Rate factors are never converted, since a percentage has no currency. Without `config`, holdings are combined in their native units. See [units](/projects/financescenarios/docs/units).
-
-## What the Result Holds
-
-`compute()` returns a new `ScenarioSet` with the same dates, number of scenarios and seed as the run. It holds a `"portfolio"` path and one `"<factor>_value"` path per holding, so every `ScenarioSet` method (`describe()`, `to_dataframe()`, `summary_statistics()`, `plot()`) works on it. See the [ScenarioSet reference](/projects/financescenarios/docs/reference/scenario-set).
-
-A holding's path is the money in it, which rebalancing moves in and out. Its returns are read from the holding's own growth index instead, priced the same way (currency, duration, fee) but never traded, so they show what the holding itself earned.
 
 ## Glidepaths
 
-A glidepath lets you model a target-date or lifecycle plan, where the mix moves from growth to safety as the target date nears.
+A target-date or lifecycle plan moves from growth to safety as the target date nears. Target weights are set at a few checkpoints, move in a straight line between them, and the portfolio is rebalanced to the moving target.
 
-You give the target weights at a few years with `GlidepathCheckpoint(year, weights)`, each summing to 1.0. Between checkpoints the weights move in a straight line; before the first and after the last they stay flat.
+In the example run, gliding from 90% to 30% equities over 30 years ended at a median of 1,210, close to a yearly rebalanced 60/40 equity-cash mix's 1,183, with more of the risk taken early, when the amount at stake is smallest.
 
 ```python
 from financescenarios import GlidepathCheckpoint
@@ -161,168 +134,73 @@ glide = portfolio.compute_glidepath(
 )
 ```
 
-Rebalancing, cashflows, fees, trading costs and durations work exactly as in `compute()`. Two differences:
-
-- The portfolio must be rebalanced (`rebalance_every` cannot be `None`), or it would ignore the moving target. The default is every step.
-- Every checkpoint must name exactly the same factors.
-
-In the example run, gliding from 90% to 30% equities over 30 years ended at a median of 1,210, close to a yearly rebalanced 60/40's 1,183 on the same run, with more of the risk taken early.
-
-## Ready-Made Portfolios
-
-Presets let you start from a well-known allocation by name instead of typing weights.
-
-Fourteen presets ship with the package: `all_weather`, `balanced_60_40`, `barbell`, `bogleheads_three_fund`, `buffett_90_10`, `conservative_income`, `endowment_model` (which uses the `private_markets` factor set), `global_60_40`, `global_equity_growth`, `golden_butterfly`, `permanent_portfolio`, `small_cap_value_tilt`, `target_date_glidepath` (the one glidepath) and `us_equity_sectors`. `list_presets(kind="portfolios")` lists them.
+Well-known allocations ship as presets, such as a 60/40, the all-weather and permanent portfolios, a three-fund portfolio, an endowment model and a target-date glidepath. The 60/40 preset holds 60% US equities and 40% US Treasuries: the 10-year yield priced as a bond fund of duration 5.4 years, about that of a broad Treasury ETF.
 
 ```python
-portfolio = Portfolio.from_preset(scenario_set, preset="balanced_60_40")
-result = portfolio.compute()  # no weights needed: the preset's mix is the default
+result = Portfolio.from_preset(scenario_set, preset="balanced_60_40").compute()
 ```
 
-A glidepath preset runs through `compute_glidepath()`. The presets name factors from the broad factor set, such as `us_broad`, `united_states_long_rate` and `gold`; on a run without one of them, `compute()` names the missing factor.
+## Risk Metrics
 
-A preset is a small YAML file with a `name`, a `description` and either `sleeves` (a fixed mix) or `checkpoints` (a glidepath), plus optional `durations` for its bond holdings. The 60/40 preset holds 60% `us_broad` and 40% `united_states_long_rate` at a duration of 5.4 years. To make your own, copy one into a local `portfolios/` folder, which wins over the bundled copy; `extends:` works as for [regimes](/projects/financescenarios/docs/regimes).
+All metrics are counted over the simulated paths, not from a formula that assumes normal returns, so fat tails and regime shifts carry through.
 
-## Reading the Result
-
-Each read answers one question a client, trustee or board would ask.
-
-### Will the Money Last?
-
-`withdrawal_success()` tests a spending plan.
-
-| Field | Meaning |
+| Metric | Question it answers |
 |---|---|
-| `success_rate` | Share of scenarios with money left at the end. Since a depleted portfolio stays at 0.0, the final step tells whether a scenario ever ran out. |
-| `median_depletion_year` | Among scenarios that ran out, the median year they first hit zero. `None` if none did. |
-| `terminal_value_percentiles` | 5th to 95th percentile of the final value over the surviving scenarios only, so failures do not drag it down. |
+| Maximum drawdown | How far does the value fall from a peak? Reported as percentiles across scenarios of each scenario's worst fall. |
+| Value-at-Risk (95%) | What loss is exceeded in only 5% of scenarios? |
+| Expected Shortfall (95%) | How bad is the average loss in that worst 5%? A coherent risk measure, unlike VaR ([Artzner et al., 1999](https://doi.org/10.1111/1467-9965.00068){:target="_blank"}; [Acerbi and Tasche, 2002](https://doi.org/10.1016/S0378-4266(02)00283-2){:target="_blank"}). |
+| Annualized volatility | How bumpy is the ride, pooled over all scenarios and steps? |
+| CAGR percentiles | What growth rate does each scenario compound at? A scenario ending at or below zero counts as -100%. |
+| Probability of loss | How often does the portfolio end below its starting value? |
+| Probability of shortfall | How often does the money run out, or a target (say one million) not get reached? |
 
-Without withdrawals nothing runs out and `success_rate` is 1.0.
+VaR, Expected Shortfall and the probability of loss describe the total return over the whole horizon: on a 30-year run that is a 30-year outcome, not a one-year loss. With cashflows they mix returns with deposits and withdrawals. All values are nominal unless deflated by a scenario's own cumulative inflation, which gives the value in today's money; in the example run a saver's median portfolio was worth 1,064,686 after 20 years in nominal terms and 636,645 in today's money.
 
-### Will I Reach My Goal?
-
-`goal_probability(result, target_value, target_year=None)` answers "what are the chances I reach one million?".
-
-- Without `target_year`, `probability` is the share of scenarios that reach the target at any point, and `median_year_reached` is when they typically get there.
-- With `target_year`, it is the share at or above the target in the step nearest that year, and `median_year_reached` is `None`.
-
-Values are nominal.
-
-### What Is It Worth in Today's Money?
-
-`real_value(result, inflation_factor, year)` divides each scenario's portfolio value by that same scenario's cumulative inflation: `real_value(t) = nominal_value(t) / inflation_index(t)`. The result is a distribution: the `year` actually used (snapped to the nearest step), the `mean` and the 5th to 95th `percentiles`. In the example run a saver's median portfolio was worth 1,064,686 in nominal terms after 20 years and 636,645 in today's money.
-
-### How Bumpy Is the Ride?
-
-`risk_metrics()` counts everything over the simulated paths themselves, not from a formula that assumes returns follow a particular distribution.
-
-| Field | Meaning |
-|---|---|
-| `max_drawdown_percentiles` | Percentiles across scenarios of each scenario's worst peak-to-trough fall, as a negative fraction. |
-| `value_at_risk_95` | The total-return loss over the whole horizon that 95% of scenarios do not exceed. A negative number means even the worst 5% gained. |
-| `conditional_value_at_risk_95` | The average loss in the worst 5% of scenarios, the Expected Shortfall ([Artzner et al., 1999](https://doi.org/10.1111/1467-9965.00068){:target="_blank"}; [Acerbi and Tasche, 2002](https://doi.org/10.1016/S0378-4266(02)00283-2){:target="_blank"}). |
-| `annualized_volatility` | Standard deviation of per-step returns, pooled over all scenarios and steps and annualized. One figure for the whole horizon. |
-| `cagr_percentiles` | Percentiles of each scenario's compound annual growth rate, `(final / initial) ** (1 / years) - 1`. A scenario ending at or below zero counts as -1.0. |
-| `probability_of_loss` | Share of scenarios ending below their starting value, in nominal terms. |
-
-VaR, CVaR and the loss probability describe the total return over the whole horizon: on a 30-year run, a 30-year outcome, not a one-year loss. With cashflows, the figures mix returns with deposits and withdrawals.
-
-In the example run, rebalancing the 60/40 yearly with a 0.2% fee lowered the median worst drawdown from -23.84% to -17.25% and the annualized volatility from 13.21% to 10.45%, at the cost of a lower median CAGR (8.37% against 9.28%).
-
-### How Far Do the Weights Drift?
-
-`weight_drift()` returns actual minus target weight per holding, for every scenario and step, as raw arrays you summarize yourself. A ruined scenario has drift 0.0. For the buy-and-hold 60/40 in the example run, the equity holding's median drift grew to +0.29 after 30 years.
-
-### Everything at Once
-
-`summary()` returns a `PortfolioSummary` with `risk` and `withdrawal_success` always filled in. `goal_probability` needs a `goal_value`, and `real_value` needs both an `inflation_factor` and a `real_value_year`; otherwise they are `None`.
+In the example run, rebalancing the 60/40 equity-cash mix yearly with a 0.2% fee lowered the median worst drawdown from -23.84% to -17.25% and the annualized volatility from 13.21% to 10.45%, at the cost of a lower median CAGR (8.37% against 9.28%): the buy-and-hold portfolio earned more because it had drifted into more equity risk.
 
 ```python
+risk = portfolio.risk_metrics(yearly)
 summary = portfolio.summary(
     plan, goal_value=1_000_000.0, inflation_factor="united_states_inflation", real_value_year=20
 )
 ```
 
-## Comparing With a Benchmark
+## Benchmarks and Backtests
 
-Use `benchmark()` when the question is relative: does this mix track, beat or lag another one?
+A simulation says what could happen; a backtest says what did. The same rebalancing, cashflow and fee rules run on realized history, one path instead of thousands. Use it as a check on the simulation, not as a forecast.
 
-The benchmark is any other portfolio: a market index holding, a different mix on the same run, or the same mix over other dates. Over the dates both share, `benchmark(result, benchmark_result)` returns:
-
-| Field | Meaning |
-|---|---|
-| `tracking_error` | Annualized standard deviation of the return difference. |
-| `correlation`, `beta` | How much this portfolio moves with the benchmark (Beta is covariance over benchmark variance). |
-| `relative_cagr`, `relative_sharpe_ratio` | This portfolio's figure minus the benchmark's; positive means ahead ([Sharpe, 1966](https://doi.org/10.1086/294846){:target="_blank"}). |
-| `active_share` | Half the sum of the absolute weight differences per factor ([Cremers and Petajisto, 2009](https://doi.org/10.1093/rfs/hhp057){:target="_blank"}). `None` unless both sets of weights are known. |
-
-On a simulated run, both sides are first reduced to their mean path across scenarios, so tracking error and the Sharpe difference describe the two average paths, not the risk inside any one scenario. On a historical backtest they mean what they usually mean.
-
-Two backtests can cover different dates, since a holding with less history shortens its portfolio's window; the comparison uses the shared dates.
-
-## Backtesting Against History
-
-A backtest shows what an allocation actually would have done, using the same rebalancing, cashflow and fee rules as the simulation.
-
-`Scenarios.history()` puts realized history into a `ScenarioSet` with a single path. No calibration or simulation is involved.
+History is lined up on the dates every holding shares, so pick a frequency that matches the least frequently published series. With one path, statistics across scenarios (VaR, Expected Shortfall, success rates) collapse to a single number, while CAGR, volatility, drawdown and factor exposure stay fully meaningful.
 
 ```python
-history = scenarios.history(portfolio="balanced_60_40", period="monthly")
-backtest = Portfolio.from_preset(history, preset="balanced_60_40").compute(rebalance_every=12)
+backtest = Portfolio.backtest(scenarios, preset="balanced_60_40", period="monthly")
+values = backtest.compute(rebalance_every=12)
 ```
 
-How the series are lined up:
-
-- Each factor is resampled onto one common calendar (`period`: daily, weekly, monthly, quarterly or yearly) by taking the last observation in each period. Each date is labeled with the start of its period.
-- Only dates on which every factor has a value are kept. A factor published less often than `period` leaves gaps that drop out rather than being forward-filled, so pick `period` to match the least frequent holding.
-
-With one path, every statistic across scenarios (VaR, CVaR, percentiles, `success_rate`) collapses to one number, while path-based reads such as CAGR, volatility, drawdown and factor exposure stay fully meaningful. The [history and metrics reference](/projects/financescenarios/docs/reference/history-and-metrics) covers `fetch_historical_data()` and `build_synthetic_scenario_set()` if you want to build the backtest yourself.
+Against a benchmark (an index, another mix, or the same mix over other dates) the comparison covers tracking error, correlation, beta, the differences in CAGR and Sharpe ratio ([Sharpe, 1966](https://doi.org/10.1086/294846){:target="_blank"}) and active share, half the sum of the absolute weight differences ([Cremers and Petajisto, 2009](https://doi.org/10.1093/rfs/hhp057){:target="_blank"}). On a simulated run each side is first averaged into its mean path, which removes most of the scenario-level noise, so tracking error, correlation and beta there understate the active risk. Read them on a backtest.
 
 ## Factor Exposure
 
-Factor exposure tells you what kind of investments a backtested portfolio behaved like, which is useful for checking a mandate or explaining performance.
+Factor exposure shows what a portfolio actually behaved like over history: how you check a mandate or explain performance. The portfolio's excess return is regressed on the Fama-French factors by ordinary least squares:
 
-`factor_exposure()` regresses the portfolio's excess return (its return minus the risk-free rate) on the Fama-French factors with ordinary least squares:
+$$
+R_t - R_{f,t} = \alpha + \sum_i \beta_i F_{i,t} + \varepsilon_t
+$$
 
-```
-Excess Return = Intercept + sum(Beta_i * Factor_i) + Residual
-```
+where $$R_t - R_{f,t}$$ is the return above the risk-free rate, $$\alpha$$ the part the factors do not explain, and $$\beta_i$$ the loading on factor $$F_i$$: the market (Mkt-RF), small versus large companies (SMB), cheap versus expensive (HML), robust versus weak profitability (RMW) and companies that invest conservatively versus aggressively (CMA). The model is the three-factor one of [Fama and French (1993)](https://doi.org/10.1016/0304-405X(93)90023-5){:target="_blank"} or the five-factor one of [Fama and French (2015)](https://doi.org/10.1016/j.jfineco.2014.10.010){:target="_blank"} (the default), with factor data from Kenneth French's [Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html){:target="_blank"}.
 
-using the three-factor model of [Fama and French (1993)](https://doi.org/10.1016/0304-405X(93)90023-5){:target="_blank"} or the five-factor model of [Fama and French (2015)](https://doi.org/10.1016/j.jfineco.2014.10.010){:target="_blank"} (the default). The Betas measure co-movement with the market above the risk-free rate (Mkt-RF), small versus large companies (SMB), cheap versus expensive (HML), profitable versus unprofitable (RMW) and conservative versus aggressive investors (CMA). The regression is the Finance Toolkit's, with factor data from Kenneth French's [Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html){:target="_blank"}.
+On monthly history from 2004-01 to 2026-10, 100% SPY showed a market beta of 0.997 and an R-squared of 0.996, with a slight large-company tilt (SMB -0.12). 60% SPY and 40% cash (the US short rate), rebalanced yearly, showed a market beta of 0.594, close to its equity weight. A "balanced" portfolio with a beta near 1 would be an equity portfolio in disguise.
 
 ```python
-exposure = Portfolio.from_preset(history, preset="balanced_60_40").factor_exposure(model="five_factor")
+exposure = backtest.factor_exposure(model="five_factor")
 ```
 
-The result holds the `factors`, the `intercept` (the average excess return per period the factors do not explain), the `slopes` (one Beta per factor), `r_squared`, `mean_squared_error` and `n_observations`.
+Limits:
 
-The factor file is daily, so each portfolio return is matched against the factor returns compounded over the same window, on any backtest calendar.
+- Only realized returns can be regressed; a simulated scenario has no calendar to line up with real factor history.
+- The factors are US equity factors. A non-US portfolio's betas describe its co-movement with the US market, not its own market's style.
+- The three- and five-factor files build SMB differently, so the two models give slightly different size betas.
 
-On monthly history from 2004-01 to 2026-10, 100% SPY showed a market Beta of 0.997 and an R-squared of 0.996, with a slight large-company tilt (SMB -0.12). A 60/40 of SPY and the US short rate, rebalanced every 12 months, showed a market Beta of 0.594, close to its equity weight.
-
-Caveats:
-
-- Only meaningful for realized returns. A simulated scenario has no calendar to line up with real factor history.
-- The French data is not always fully up to date, so the latest dates can fall outside it. Too little overlap raises an error.
-- The factors are US equity factors. A non-US portfolio's Betas describe its co-movement with the US market, not its own market's style.
-- The three-factor and five-factor files build SMB differently, so the two models give slightly different size Betas.
-
-## Charts
-
-Two charts show what happens inside the portfolio; the [plotting page](/projects/financescenarios/docs/plotting) covers charts in general.
-
-- `plot_sleeve_values(result)`, or `result.plot(kind="sleeves")`, draws the median value of each holding as a stacked area. The median is taken per holding, so the stack shows a typical make-up rather than any single scenario, and the layers need not add up to the median portfolio value. Past eight holdings, the rest are grouped as "Other".
-- `plot_weight_drift(result, portfolio.weight_drift(result))` draws each holding's median drift from its target around a zero line, in the same colors.
-
-`result.plot()` draws the portfolio's fan chart.
-
-## Performance Metrics for One Path
-
-For a classic performance report on one value path, such as a percentile band or a backtest, `compute_price_performance_metrics(values, time_grid)` returns growth, volatility, Sharpe and Sortino ratios, drawdowns and Value-at-Risk.
-
-- The path must stay above zero. One that starts at or below zero (a holding with no weight at the start of a glidepath) or has fewer than two dates returns NaN for every field. A single ratio can also be NaN, such as the Calmar ratio of a path that never falls.
-- Ratios and volatility are annualized from the spacing of `time_grid`, assumed even.
-- Its Value-at-Risk is the tail of one path's own returns over time. `compute_factor_metrics()` instead measures the spread of end-of-run outcomes across scenarios, which suits factors like interest rates that can cross zero.
+Charts of the holdings' values and of weight drift are covered on the [plotting page](/projects/financescenarios/docs/plotting).
 
 ## References
 

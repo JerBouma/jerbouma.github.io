@@ -14,14 +14,10 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-The OECD composite leading indicator. Generated from the docstrings of Finance Scenarios 0.1.0; `help(...)` in Python shows the same text.
+The OECD composite leading indicator.
 
 ```python
 from financescenarios.factors.leading_indicator.leading_indicator_controller import LeadingIndicator
-```
-
-```python
-LeadingIndicator(toolkit: Toolkit)
 ```
 
 The Leading Indicator module simulates the OECD Composite Leading Indicator (CLI), an index built to signal turning
@@ -58,8 +54,8 @@ regime-switching probabilities depend on the indicator
 ([Filardo, 1994](https://doi.org/10.1080/07350015.1994.10524545)), and unemployment adds it as a second driver next to
 inflation.
 
-The data come from the Finance Toolkit's `economics.get_composite_leading_indicator`: the OECD's monthly index for
-about 22 countries and country groups, no API key needed. It models the index level only, not recession dates or the
+The data are the OECD's monthly Composite Leading Indicator for about 22 countries and country groups, no API key
+needed. It models the index level only, not recession dates or the
 probability of a recession.
 
 Configuration (`leading_indicator` in a factor set):
@@ -79,15 +75,16 @@ Configuration (`leading_indicator` in a factor set):
 - Bollerslev, T. (1986). "Generalized Autoregressive Conditional Heteroskedasticity." Journal of Econometrics, 31(3), 307-327. <https://doi.org/10.1016/0304-4076(86>)90063-1
 - Filardo, A.J. (1994). "Business-Cycle Phases and Their Transitional Dynamics." Journal of Business & Economic Statistics, 12(3), 299-308. <https://doi.org/10.1080/07350015.1994.10524545>
 
-## calibrate
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
-calibrate(
-    country: str = 'United States',
-    period: str = 'monthly',
-    volatility_model: str = 'constant',
-) -> OUParams | GARCHParams
+LeadingIndicator(toolkit: Toolkit)
 ```
+
+</details>
+
+## calibrate
 
 Calibrate the leading indicator from its history: fetch the OECD Composite Leading Indicator for `country`, then
 fit how fast it returns to its normal level (`mean_reversion_speed`), what that level is (`long_run_mean`) and how
@@ -101,20 +98,6 @@ where every simulated path starts (above 100 means above-trend activity ahead).
 
 The history starts at the Toolkit's `start_date`; the Finance Toolkit's default window is short, so pass an early
 `start_date` for a meaningful fit. A second call replaces the first, since a run has one leading indicator.
-
-**Args:**
-
-- <u>country (str):</u> the country to fetch the indicator for. Defaults to "United States".
-- <u>period (str):</u> "monthly", "quarterly" or "yearly"; a coarser period averages the monthly data. Defaults to "monthly".
-- <u>volatility_model (str):</u> "constant" or "garch". Defaults to "constant".
-
-**Returns:**
-
-<u>OUParams &#124; GARCHParams:</u> the fitted process, including `initial_value`; GARCHParams with "garch".
-
-**Raises:**
-
-- <u>ValueError:</u> if `period` or `volatility_model` is not recognized, or the OECD returns no data, for example when it rate-limits a burst of requests (wait a minute and retry).
 
 **As an example:**
 
@@ -144,60 +127,110 @@ The US indicator stands at about 100.9, slightly above trend, and is pulled towa
 
 - Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188. <https://doi.org/10.1016/0304-405x(77>)90016-2
 
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+calibrate(
+    country: str = 'United States',
+    period: str = 'monthly',
+    volatility_model: str = 'constant',
+) -> OUParams | GARCHParams
+```
+
+**Args:**
+
+- <u>country (str):</u> the country to fetch the indicator for. Defaults to "United States".
+- <u>period (str):</u> "monthly", "quarterly" or "yearly"; a coarser period averages the monthly data. Defaults to "monthly".
+- <u>volatility_model (str):</u> "constant" or "garch". Defaults to "constant".
+
+**Returns:**
+
+<u>OUParams &#124; GARCHParams:</u> the fitted process, including `initial_value`; GARCHParams with "garch".
+
+**Raises:**
+
+- <u>ValueError:</u> if `period` or `volatility_model` is not recognized, or the OECD returns no data, for example when it rate-limits a burst of requests (wait a minute and retry).
+
+</details>
+
 ## params
+
+The calibrated indicator process: reversion speed, long-run level, volatility and today's reading.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 leadingindicator.params  # property -> OUParams | GARCHParams
 ```
 
-The last-calibrated process parameters.
-
 **Raises:**
 
 - <u>RuntimeError:</u> if `calibrate()` has not been called yet.
 
+</details>
+
 ## step_function
+
+The one-step update of the indicator: the same exact Ornstein-Uhlenbeck step as the short rate.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 leadingindicator.step_function  # property
 ```
 
-The function that moves the indicator one time step (the same Ornstein-Uhlenbeck step interest rates use).
+</details>
 
 ## series
+
+The historical indicator levels `calibrate()` fetched. Factors with `condition_on_business_cycle` use them to fit
+how they respond to the indicator's change.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 leadingindicator.series  # property -> pl.Series
 ```
 
-The historical indicator levels `calibrate()` fetched. Factors with `condition_on_business_cycle` use them to fit
-how they respond to the indicator's change.
-
 **Raises:**
 
 - <u>RuntimeError:</u> if `calibrate()` has not been called yet.
 
+</details>
+
 ## dates
+
+The dates of `series`, in the same order, so a conditioned factor can match the indicator to its own history by
+date.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 leadingindicator.dates  # property -> pl.Series
 ```
 
-The dates of `series`, in the same order, so a conditioned factor can match the indicator to its own history by
-date.
-
 **Raises:**
 
 - <u>RuntimeError:</u> if `calibrate()` has not been called yet.
 
+</details>
+
 ## changes
+
+Dated period-over-period changes of the indicator: the history its correlations with the other factors are
+estimated from.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 leadingindicator.changes  # property -> pl.DataFrame
 ```
-
-Dated period-over-period changes of the indicator, from the data `calibrate()` already fetched, used to estimate
-its correlation with the other factors without fetching the data again.
 
 **Returns:**
 
@@ -206,3 +239,5 @@ its correlation with the other factors without fetching the data again.
 **Raises:**
 
 - <u>RuntimeError:</u> if `calibrate()` has not been called yet.
+
+</details>

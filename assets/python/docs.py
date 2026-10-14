@@ -116,6 +116,12 @@ def _format_word(word: str) -> str:
     if sep and base in _BIG_OPERATORS and "_" not in sub:
         # sum_i, prod_t: the operator with its index underneath
         return _BIG_OPERATORS[base] + "_{" + (_GREEK.get(sub) or _SUB_RESTORE.get(sub, sub)) + "}"
+    if sep and len(sub) > 2 and sub[0] == "{" and sub[-1] == "}":
+        # an explicit subscript: x_{t-1}
+        return f"{_format_word(base)}_{{{sub[1:-1]}}}"
+    if sep and re.fullmatch(r"\d+(\.\d+)?", sub):
+        # a numeric subscript: VaR_0.995, P_10
+        return f"{_format_word(base)}_{{{sub}}}"
     if sep:
         sub = _SUB_RESTORE.get(sub, sub)
         # Single-char suffixes are true subscripts. A short symbol (one letter, or a Greek
@@ -132,6 +138,9 @@ def _format_word(word: str) -> str:
         if short_base and (head in _GREEK or re.match(r"^[A-Za-z0-9]{1,3}$", head)):
             inner = _format_word(sub) if "_" in sub else (_GREEK.get(sub) or sub)
             return f"{_format_word(base)}_{{{inner}}}"
+        if re.match(r"^[A-Za-z]$", base) and re.match(r"^[A-Za-z]+$", sub):
+            # one letter with a word label: f_anchor, C_next
+            return f"{base}_{{\\text{{{sub}}}}}"
         return r"\text{" + _text_escape(word) + "}"
     match = re.match(r"^([A-Za-z])(\d+)$", word)
     if match:
@@ -258,7 +267,7 @@ def _render_tokens(tokens: list) -> str:
                 elif name in _FUNC_MAP:
                     parts.append(_FUNC_MAP[name] + "(" + group + ")")
                 elif name in _GREEK or re.match(r"^[A-Za-z]'*$", name) \
-                        or ("_" in name and not _format_word(name).startswith("\\text")):
+                        or ("_" in name and _format_word(name) != r"\text{" + _text_escape(name) + "}"):
                     parts.append(_format_word(name) + "(" + group + ")")
                 else:
                     parts.append(r"\operatorname{" + _text_escape(name) + "}(" + group + ")")

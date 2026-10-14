@@ -14,7 +14,7 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-A credit cycle driving rating migrations and defaults. Generated from the docstrings of Finance Scenarios 0.1.0; `help(...)` in Python shows the same text.
+A credit cycle driving rating migrations and defaults.
 
 ```python
 from financescenarios import rating_migration
@@ -22,10 +22,6 @@ from financescenarios.factors.credit_migration.credit_migration_controller impor
 ```
 
 ## CreditMigration
-
-```python
-CreditMigration(toolkit: Toolkit)
-```
 
 The Credit Migration module simulates how corporate credit ratings move and default over time, driven by a simulated
 credit cycle: the `credit_cycle` factor, an index that is high in good years (few downgrades and defaults) and low in
@@ -43,13 +39,16 @@ Forest 1998, as presented in
 [Kim, 1999](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984)), the structure behind
 the Basel internal-ratings formula. A share of every borrower's credit quality, the `asset_correlation`, moves with
 the shared cycle; the rest is its own luck. The cycle is fitted year by year from default rates and simulated as a
-mean-reverting process around 0 that joins the run's correlation matrix like any other factor.
+mean-reverting process around 0, so bad years cluster but the economy recovers, and it is correlated with the other
+factors, so a weak credit cycle can come with falling equities and wider spreads in the same scenario. A one-factor
+model is a sensible choice here: default history is short and sparse, and one shared driver captures the common
+year-to-year swing in default rates across ratings.
 
 The data come from CEREP, the European Securities and Markets Authority's central repository of credit rating
-statistics, through the Finance Toolkit (`fixedincome.get_rating_transition_matrix` and `get_default_rates`), no API
-key: every agency registered in the EU (S&P, Moody's, Fitch and others) in its own rating scale. On S&P's corporate
-ratings from 2000 to 2025 the worst years come out as 2009, 2001, 2020 and 2002, the asset correlation is about 0.10,
-and a shock to the cycle halves in about 8 months.
+statistics, through the Finance Toolkit, with no API key needed: every agency registered in the EU (S&P, Moody's,
+Fitch and others) in its own rating scale. On S&P's corporate ratings from 2000 to 2025 the worst years come out
+as 2009, 2001, 2020 and 2002, the asset correlation is about 0.10, and a shock to the cycle halves in about 8
+months.
 
 It does not derive spreads from the ratings (use `credit` for spreads by rating), recovery rates are a fixed input of
 `rating_migration`, and the cycle is one index for all sectors and regions.
@@ -71,7 +70,47 @@ Configuration (`credit_migration` in a factor set):
 - Kim, J. (1999). "A Way to Condition the Transition Matrix on Wind." RiskMetrics Group (MSCI). <https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984>
 - ESMA. "CEREP: Central Repository of credit rating activity." <https://registers.esma.europa.eu/cerep-publication/>
 
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+CreditMigration(toolkit: Toolkit)
+```
+
+</details>
+
 ## calibrate
+
+Calibrate the credit cycle from an agency's rating history: the average one-year transition matrix, the asset
+correlation and the yearly cycle, which is then fitted as a mean-reverting process.
+
+The transition matrix pools the agency's most recent years of rating changes, so it reflects how often each
+rating is upgraded, downgraded or defaults in an average year. The asset correlation and the historical cycle
+come from the default rates per rating
+([Vasicek, 2002](https://www.risk.net/risk-management/credit-risk/1500333/loan-portfolio-value);
+[Kim, 1999](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984)): they measure
+how strongly good and bad years move all ratings together. A higher correlation means more years like 2009 in
+the scenarios and a fatter tail of portfolio losses; a faster mean reversion means downturns pass sooner.
+
+The default-rate history spans the Toolkit's start and end dates (CEREP covers 1989 onward, S&P's own reporting
+starts in 2000); a long history matters, since it needs several recessions to pin down the correlation. CEREP
+answers slowly, so the first calibration takes a few minutes.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+from financescenarios.factors.credit_migration.credit_migration_controller import CreditMigration
+
+toolkit = Toolkit(["SPY"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2000-01-01")
+credit_migration = CreditMigration(toolkit)
+
+params = credit_migration.calibrate(agency="S&P", rating_type="corporate")
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 calibrate(
@@ -81,19 +120,6 @@ calibrate(
     matrix_years: int = 10,
 ) -> CreditCycleParams
 ```
-
-Calibrate the credit cycle: pool the agency's recent rating changes into an average one-year transition matrix,
-fit the yearly cycle index and the asset correlation from the default rates per rating, and fit the index as a
-mean-reverting process.
-
-This learns how often each rating has been upgraded, downgraded or defaulted in an average year, and how strongly
-good and bad years swing all of those together. The transition matrix has a row per starting rating and a column
-per rating a year later, ending in default; the asset correlation says how much of each borrower's credit quality
-moves with the cycle.
-
-CEREP answers slowly (up to half a minute per year), so the first calibration takes a few minutes; each year is
-cached afterwards. The default-rate history spans the Toolkit's start and end dates (CEREP covers 1989 onward,
-S&P's own reporting starts in 2000).
 
 **Args:**
 
@@ -110,66 +136,66 @@ S&P's own reporting starts in 2000).
 
 - <u>ValueError:</u> if `matrix_years` is below 1, or CEREP returns no transition counts or too few years of default rates.
 
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-from financescenarios.factors.credit_migration.credit_migration_controller import CreditMigration
-
-toolkit = Toolkit(["SPY"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2000-01-01")
-credit_migration = CreditMigration(toolkit)
-
-params = credit_migration.calibrate(agency="S&P", rating_type="corporate")
-```
+</details>
 
 ## params
+
+The calibrated credit cycle: its mean-reverting process, average transition matrix and asset correlation.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 creditmigration.params  # property -> CreditCycleParams
 ```
 
-The last-calibrated credit cycle: its mean-reverting process, transition matrix and asset correlation.
-
 **Raises:**
 
-- <u>RuntimeError:</u> if `calibrate()` has not been called yet.
+- <u>RuntimeError:</u> if the cycle has not been calibrated yet.
+
+</details>
 
 ## cycle
+
+The historical credit cycle, one value per year: strongly negative in years such as 2001 and 2009, when
+defaults spiked. Raises a `RuntimeError` before calibration.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 creditmigration.cycle  # property -> pl.DataFrame
 ```
 
-The fitted yearly credit-cycle index, with columns `year` and `cycle`; raises a `RuntimeError` before
-`calibrate()`.
+</details>
 
 ## changes
+
+The yearly changes of the historical cycle, the input for its correlation with the other factors.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 creditmigration.changes  # property -> pl.DataFrame
 ```
 
-Dated yearly changes of the cycle index, used to estimate its correlation with the other factors.
+</details>
 
 ## step_function
+
+The one-step move of the cycle: an exact mean-reverting (Ornstein-Uhlenbeck) step back toward 0.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 creditmigration.step_function  # property
 ```
 
-The function that moves the cycle index one time step (an exact Ornstein-Uhlenbeck step).
+</details>
 
 ## rating_migration
-
-```python
-rating_migration(
-    scenario_set: ScenarioSet,
-    holdings: Mapping[str, float],
-    recovery_rate: float = 0.4,
-    params: CreditCycleParams | None = None,
-) -> RatingMigrationResult
-```
 
 Roll a bond portfolio's rating mix forward through a run's simulated credit cycle, one year at a time: the share of
 the portfolio in each rating and in default, and the loss to default, in every simulation and year.
@@ -180,12 +206,34 @@ simulated year's cycle value picks that year's transition matrix, so a bad year 
 and default at once. Scenarios with a bad credit cycle therefore carry far more defaults than the average, and the gap
 between the mean and a high quantile in `summary()` shows how large that tail is.
 
+**As an example:**
+
+```python
+from financescenarios import rating_migration
+
+# result: the ScenarioSet of a run with credit_migration.enabled: true
+migration = rating_migration(result, {"A": 40, "BBB": 50, "BB": 10})
+migration.summary()
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+rating_migration(
+    scenario_set: ScenarioSet,
+    holdings: Mapping[str, float],
+    recovery_rate: float = 0.4,
+    params: CreditCycleParams | None = None,
+) -> RatingMigrationResult
+```
+
 **Args:**
 
 - <u>scenario_set (ScenarioSet):</u> a run with `credit_migration.enabled: true`, so it holds `credit_cycle`.
 - <u>holdings (Mapping[str, float]):</u> exposure per starting rating, e.g. {"A": 40, "BBB": 50, "BB": 10}.
 - <u>recovery_rate (float):</u> the share of a defaulted exposure recovered, in [0, 1). Defaults to 0.4, a common assumption for senior unsecured corporate bonds.
-- <u>params (CreditCycleParams &#124; None):</u> the calibrated cycle. Defaults to None, which reads it from the run itself; pass `calibration.calibrated_params["credit_cycle"]` for a run read back from disk.
+- <u>params (CreditCycleParams &#124; None):</u> the calibrated cycle. Defaults to None, which takes it from the run; pass `calibration.calibrated_params["credit_cycle"]` for a run read back from disk.
 
 **Returns:**
 
@@ -196,12 +244,197 @@ between the mean and a high quantile in `summary()` shows how large that tail is
 - <u>KeyError:</u> if the run has no `credit_cycle`.
 - <u>ValueError:</u> if the calibrated cycle is not available, a holding names an unknown rating or is negative, or the recovery rate is outside [0, 1).
 
-**As an example:**
+</details>
+
+## How It Is Calculated
+
+The model functions behind this page, each with the formula it implements.
+
+### conditional_default_rate
+
+The default rate of a rating in a year with credit-cycle value Z, from Vasicek's one-factor model: a high Z is a
+good year with fewer defaults, a low Z a recession with many.
+
+Every borrower's credit quality is a standard normal variable, part shared cycle and part its own luck, and it
+defaults when that quality falls below the threshold set by its long-run default rate PD. The asset correlation rho
+is the shared part: the higher it is, the more a bad year lifts every default rate at once, and the fatter the tail
+of portfolio losses. The long-run PD is still the average across years, so the model redistributes defaults over
+good and bad years rather than adding to them. This is the structure behind the Basel internal-ratings formula.
+
+The formula is as follows:
+
+$$
+\operatorname{PD}(Z) = \Phi((\Phi ^{-1} (\text{PD}) - \sqrt{\rho} \cdot Z) / \sqrt{1 - \rho})
+$$
+
+Where Phi is the standard normal CDF and rho the asset correlation
+([Vasicek, 2002](https://www.risk.net/risk-management/credit-risk/1500333/loan-portfolio-value)).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
-from financescenarios import rating_migration
-
-# result: the ScenarioSet of a run with credit_migration.enabled: true
-migration = rating_migration(result, {"A": 40, "BBB": 50, "BB": 10})
-migration.summary()
+conditional_default_rate(
+    probability: np.ndarray,
+    asset_correlation: float,
+    cycle: np.ndarray,
+) -> np.ndarray
 ```
+
+</details>
+
+### fit_credit_cycle
+
+Read the credit cycle off history: the asset correlation and one cycle value per year, from the default rates per
+rating (Belkin, Suchower and Forest 1998, as presented in
+[Kim, 1999](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984)).
+
+Each year's cycle value is the one that best explains that year's default rates across all ratings at once, so
+years such as 2009 and 2001 come out strongly negative and quiet years positive. The asset correlation is the one at
+which those yearly values have unit variance, as the model assumes: if defaults swing a lot from year to year, a
+higher correlation is needed to explain it. Rare defaults in the top ratings carry little information, so each
+rating is weighted by the binomial variance of its long-run rate.
+
+The formula is as follows:
+
+$$
+Z_{t} = \operatorname{argmin}(\operatorname{sum}(w_{k} \cdot (\text{DR}_{k} - \text{PD}_{k}(Z)) ^{2})),\;\; \text{over ratings k in year t}
+$$
+
+$$
+w_{k} = 1 / (\text{PD}_{k} \cdot (1 - \text{PD}_{k}))
+$$
+
+$$
+\operatorname{var}(Z_{t}) = 1,\;\; \text{solved for rho}
+$$
+
+Where DR_k is the observed default rate, PD_k the long-run rate, PD_k(Z) is `conditional_default_rate` and the
+weights are the binomial variance of each rating's long-run rate.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+fit_credit_cycle(
+    default_rates: pl.DataFrame,
+    default_probabilities: Mapping[str, float],
+) -> tuple[float, pl.DataFrame]
+```
+
+**Args:**
+
+- <u>default_rates (pl.DataFrame):</u> the observed default rate per rating and year, as decimals.
+- <u>default_probabilities (Mapping[str, float]):</u> the long-run default rate per rating.
+
+**Returns:**
+
+<u>tuple[float, pl.DataFrame]:</u> the asset correlation, and the cycle value per year.
+
+**Raises:**
+
+- <u>ValueError:</u> if fewer than five years are given, or no correlation gives the index unit variance.
+
+</details>
+
+{% raw %}
+### conditional_transition_matrix
+
+The one-year rating transition matrix in a year with credit-cycle value Z (Belkin, Suchower and Forest 1998; see
+[Kim, 1999](https://www.msci.com/www/research-report/a-way-to-condition-transition/018440984)).
+
+The average through-the-cycle matrix is what an agency reports; this conditions it on the state of the economy.
+Each row's cumulative probabilities, counted from default upward, become thresholds on a standard normal credit
+quality, as in CreditMetrics, and the cycle shifts that quality by sqrt(rho) * Z. A bad year (Z below 0) moves
+weight from upgrades toward downgrades and default for every rating at once; a good year does the reverse. Because
+the same Z drives every row, downgrades and defaults bunch in the same years, which is what makes a credit
+portfolio's loss distribution fat-tailed.
+
+The formula is as follows:
+
+$$
+C_{j} = \operatorname{sum}(M_{k} \;\text{for}\; k \;\text{from}\; j \;\text{down to default})
+$$
+
+$$
+C_{j}(Z) = \Phi((\Phi ^{-1} (C_{j}) - \sqrt{\rho} \cdot Z) / \sqrt{1 - \rho})
+$$
+
+$$
+M_{j}(Z) = C_{j}(Z) - C_{\text{next}}(Z)
+$$
+
+Where M is one row of the matrix, j a rating and C_next the cumulative probability of the next-worse state.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+conditional_transition_matrix(
+    matrix: np.ndarray,
+    asset_correlation: float,
+    cycle: np.ndarray,
+) -> np.ndarray
+```
+
+**Args:**
+
+- <u>matrix (np.ndarray):</u> the average through-the-cycle transition matrix, best rating first and default last.
+- <u>asset_correlation (float):</u> rho, the share of credit quality that moves with the cycle.
+- <u>cycle (np.ndarray):</u> the credit-cycle values Z to condition on.
+
+**Returns:**
+
+<u>np.ndarray:</u> one transition matrix per cycle value, every row summing to 1.
+
+</details>
+{% endraw %}
+
+### migrate_ratings
+
+Roll a portfolio's rating mix forward one year at a time along simulated credit cycles: each scenario's cycle
+value in a year picks that year's transition matrix, so downgrades and defaults bunch in the scenarios and years
+where the cycle turns bad, as they do in recessions. A portfolio downgraded in a bad year starts the next year
+from a weaker mix, so a run of bad years compounds. Losses apply a fixed recovery rate to the defaulted share.
+
+The formula is as follows:
+
+$$
+d_{t} = d_{t-1} \cdot M(Z_{t})
+$$
+
+$$
+\text{loss}_{t} = D_{t} \cdot \text{exposure} \cdot (1 - R)
+$$
+
+Where d_t is the row vector of rating shares, M(Z_t) is `conditional_transition_matrix`, D_t the share in default
+and R the recovery rate.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+migrate_ratings(
+    cycle_paths: np.ndarray,
+    params: CreditCycleParams,
+    holdings: Mapping[str, float],
+    recovery_rate: float = 0.4,
+) -> RatingMigrationResult
+```
+
+**Args:**
+
+- <u>cycle_paths (np.ndarray):</u> the simulated `credit_cycle` per scenario at each whole year; the value at the end of a year drives that year's transitions.
+- <u>params (CreditCycleParams):</u> the calibrated cycle, matrix and asset correlation.
+- <u>holdings (Mapping[str, float]):</u> exposure per starting rating, e.g. {"A": 40, "BBB": 50, "BB": 10}.
+- <u>recovery_rate (float):</u> the share of a defaulted exposure recovered, in [0, 1).
+
+**Returns:**
+
+<u>RatingMigrationResult:</u> the rating shares, cumulative default share and loss per scenario and year.
+
+**Raises:**
+
+- <u>ValueError:</u> if a holding names an unknown rating, is negative, or the recovery rate is outside [0, 1).
+
+</details>

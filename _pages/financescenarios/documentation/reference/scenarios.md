@@ -14,13 +14,59 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Calibrate every configured factor and simulate correlated scenarios; also the saved calibration and the Toolkit builder. Generated from the docstrings of Finance Scenarios 0.1.0; `help(...)` in Python shows the same text.
+Calibrate every configured factor and simulate correlated scenarios; also the saved calibration and the Toolkit builder.
 
 ```python
 from financescenarios import Scenarios, CalibrationResult, build_toolkit
 ```
 
 ## Scenarios
+
+An economic scenario generator: thousands of joint, internally consistent futures for interest rates, inflation,
+equities, currencies, commodities, credit and more, each fitted to its own history.
+
+Every factor follows a model suited to how it behaves. Rates, inflation and spreads revert to a long-run level at
+their own historical speed; equities switch between calm and turbulent regimes, so bad months cluster; currencies
+keep their historical volatility. The factors are linked in two ways. A correlation matrix estimated from their
+historical changes means a scenario with an equity sell-off also tends to see what history saw alongside one. A
+cascade lets one factor's path drive another's where theory says it should: inflation drives rates in the Wilkie
+and KNW models, and the rate gap drives a currency under interest-rate parity. Your own views (a long-run inflation
+target, a stress story) override the fit where you set them.
+
+The real-world run (`simulate()`) is for ALM, strategic asset allocation and risk: how the economy may plausibly
+evolve. The risk-neutral run (`measure="risk_neutral"`) is for valuation: it reproduces today's yield curve and
+prices, as Solvency II's best estimate requires.
+
+| Method | What it does |
+|:-------|:-------------|
+| `simulate()` | fits, then simulates; `regime=` runs a stress story, `measure="risk_neutral"` the market run |
+| `calibrate()` | only the fit, to save and replay later without downloading again |
+| `validate(result)` | checks a run in one table |
+| `history(...)` | what actually happened, in the same shape, for a backtest |
+| `save(result)` | stores a run with its config and calibration; `read_run(path)` reads it back |
+
+The design, a cascade of linked, correlated factors simulated over the full horizon, follows the actuarial models
+of Wilkie (1986), Ahlgrim, D'Arcy & Gorvett (2005) and Hibbert, Mowbray & Turnbull (2001).
+
+**As an example:**
+
+```python
+from financescenarios import Scenarios, list_presets
+
+list_presets()  # every name you can pass, and the argument it goes in
+scenarios = Scenarios.from_profiles(settings="default", factor_set="us_only")
+result = scenarios.simulate(n_simulations=100)
+result.describe()
+```
+
+**References:**
+
+- Wilkie, A.D. (1986). "A stochastic investment model for actuarial use." Transactions of the Faculty of Actuaries, 39, 341-403. <https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf>
+- Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the CAS, 92. <https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf>
+- Hibbert, J., Mowbray, P., Turnbull, C. (2001). "A Stochastic Asset Model & Calibration for Long-Term Financial Planning Purposes." Barrie & Hibbert. <https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 Scenarios(
@@ -38,44 +84,27 @@ Scenarios(
 )
 ```
 
-Fits every configured factor (interest rates, inflation, equities, currencies, commodities, credit and more) to
-live data and simulates correlated scenarios of them.
+</details>
 
-A `Scenarios` holds one configuration: a settings profile (how the run executes: the number of scenarios, the step
-size, the horizon) and a factor set (what is simulated). `simulate()` first fits each factor to its history (the
-calibration), then draws thousands of linked future paths and returns them as a `ScenarioSet`. Start with
-`from_profiles`, which reads the ready-made profiles; `list_presets()` lists them.
+## Scenarios.from_config
 
-| Method | What it does |
-|:-------|:-------------|
-| `simulate()` | calibrates, then simulates; `regime=` runs a stress story, `measure="risk_neutral"` the market run |
-| `calibrate()` | only the fit, to save and replay later without downloading again |
-| `validate(result)` | checks a run in one table |
-| `history(...)` | what actually happened, in the same shape, for a backtest |
-| `save(result)` | stores a run with its config and calibration; `read_run(path)` reads it back |
+Build a `Scenarios` from a loaded configuration. The config is kept on the instance, so `simulate()` needs no
+arguments.
 
-The design, a cascade of linked, correlated factors simulated over the full horizon, follows the actuarial models
-of Wilkie (1986), Ahlgrim, D'Arcy & Gorvett (2005) and Hibbert, Mowbray & Turnbull (2001). Building one directly
-(`Scenarios(toolkit, ...)`) is for code that assembles its own Toolkit and config.
+Use it when the configuration comes from your own files or code; `from_profiles` is the shortcut for named
+profiles. A Finance Toolkit covering every ticker the factors need is built for you (see `build_toolkit`).
 
 **As an example:**
 
 ```python
-from financescenarios import Scenarios, list_presets
+from financescenarios import Scenarios, load_config
 
-list_presets()  # every name you can pass, and the argument it goes in
-scenarios = Scenarios.from_profiles(settings="default", factor_set="us_only")
-result = scenarios.simulate(n_simulations=100)  # calibrates first, then simulates
-result.describe()
+scenarios = Scenarios.from_config(load_config("settings/default.yaml"))
+result = scenarios.simulate()
 ```
 
-**References:**
-
-- Wilkie, A.D. (1986). "A stochastic investment model for actuarial use." Transactions of the Faculty of Actuaries, 39, 341-403. <https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf>
-- Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the CAS, 92. <https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf>
-- Hibbert, J., Mowbray, P., Turnbull, C. (2001). "A Stochastic Asset Model & Calibration for Long-Term Financial Planning Purposes." Barrie & Hibbert. <https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf>
-
-## Scenarios.from_config
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 Scenarios.from_config(
@@ -87,12 +116,6 @@ Scenarios.from_config(
     fred_api_key: str | None = None,
 ) -> Scenarios
 ```
-
-Build a `Scenarios` from a loaded configuration. The config is kept on the instance, so `simulate()` needs no
-arguments.
-
-Use it when the configuration comes from your own files or code; `from_profiles` is the shortcut for named
-profiles. A Finance Toolkit covering every ticker the factors need is built for you (see `build_toolkit`).
 
 **Args:**
 
@@ -111,16 +134,28 @@ profiles. A Finance Toolkit covering every ticker the factors need is built for 
 
 - <u>ValueError:</u> if the regime targets a factor the config does not simulate.
 
+</details>
+
+## Scenarios.from_profiles
+
+The one-call way in: pick a settings profile, a factor set and optionally a stress regime, and get a ready-to-run
+`Scenarios`.
+
+A settings profile says how the run executes (scenarios, step size, horizon), a factor set what is simulated
+(factors, tickers, beliefs), and a regime is a named stress story. `list_presets()` lists every name. Folders of
+your own (from `scaffold_project()`) are read when they exist, the bundled profiles otherwise.
+
 **As an example:**
 
 ```python
-from financescenarios import Scenarios, load_config
-
-scenarios = Scenarios.from_config(load_config("settings/default.yaml"))
+scenarios = Scenarios.from_profiles(
+    settings="default", factor_set="us_only", regime="oil_crisis", api_key="FINANCIAL_MODELING_PREP_KEY"
+)
 result = scenarios.simulate()
 ```
 
-## Scenarios.from_profiles
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 Scenarios.from_profiles(
@@ -136,13 +171,6 @@ Scenarios.from_profiles(
     fred_api_key: str | None = None,
 ) -> Scenarios
 ```
-
-The one-call way in: pick a settings profile, a factor set and optionally a stress regime, and get a ready-to-run
-`Scenarios`.
-
-A settings profile says how the run executes (scenarios, step size, horizon), a factor set what is simulated
-(factors, tickers, beliefs), and a regime is a named stress story. `list_presets()` lists every name. Folders of
-your own (from `scaffold_project()`) are read when they exist, the bundled profiles otherwise.
 
 **Args:**
 
@@ -167,16 +195,16 @@ your own (from `scaffold_project()`) are read when they exist, the bundled profi
 - <u>pydantic.ValidationError:</u> if the profiles do not form a valid configuration.
 - <u>TypeError:</u> if `regime` is neither a name nor a `Regime`.
 
-**As an example:**
-
-```python
-scenarios = Scenarios.from_profiles(
-    settings="default", factor_set="us_only", regime="oil_crisis", api_key="FINANCIAL_MODELING_PREP_KEY"
-)
-result = scenarios.simulate()
-```
+</details>
 
 ## Scenarios.from_config_file
+
+Build a `Scenarios` from two YAML files: the run settings and the factor definitions.
+
+The two-file counterpart of `load_config()`; `from_profiles()` is the usual way in for named profiles.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 Scenarios.from_config_file(
@@ -184,10 +212,6 @@ Scenarios.from_config_file(
     factors_path: str | None = None,
 ) -> tuple[Scenarios, ScenariosConfig]
 ```
-
-Build a `Scenarios` from two YAML files: the run settings and the factor definitions.
-
-The two-file counterpart of `load_config()`; `from_profiles()` is the usual way in for named profiles.
 
 **Args:**
 
@@ -198,212 +222,362 @@ The two-file counterpart of `load_config()`; `from_profiles()` is the usual way 
 
 <u>tuple[Scenarios, ScenariosConfig]:</u> the instance and the loaded config, which the instance also keeps.
 
+</details>
+
 ## Scenarios.config
+
+The configuration this instance runs, with its regime's belief overrides already applied: what `calibrate()` and
+`simulate()` use when called without one. None when the instance was built directly without a config.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.config  # property -> ScenariosConfig | None
 ```
 
-The configuration this instance runs, with its regime's belief overrides already applied: what `calibrate()` and
-`simulate()` use when called without one. None when the instance was built directly without a config.
+</details>
 
 ## Scenarios.regime
+
+The regime applied to this instance, if any; see `from_profiles()`.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.regime  # property -> Regime | None
 ```
 
-The regime applied to this instance, if any; see `from_profiles()`.
+</details>
 
 ## Scenarios.calibration
+
+The object that fits each factor; the per-factor properties (`interest_rates`, `inflation`, ...) reach into it.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.calibration  # property -> Calibration
 ```
 
-The object that fits each factor; the per-factor properties (`interest_rates`, `inflation`, ...) reach into it.
+</details>
 
 ## Scenarios.correlation_fallback_pairs
+
+The "factor_a/factor_b" pairs the latest calibration set to zero correlation (assumed unrelated) because they
+shared too little history. Empty when every pair had enough.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.correlation_fallback_pairs  # property -> list[str]
 ```
 
-The "factor_a/factor_b" pairs the latest calibration set to zero correlation (assumed unrelated) because they
-shared too little history. Empty when every pair had enough.
+</details>
 
 ## Scenarios.last_calibration
-
-```python
-scenarios.last_calibration  # property -> CalibrationResult | None
-```
 
 The calibration the latest `simulate()` ran on, or None before the first. Save it (`CalibrationResult.save()`) to
 replay this fit later without downloading again, or pass it to `simulate(calibration=...)` for another seed or
 number of scenarios.
 
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+scenarios.last_calibration  # property -> CalibrationResult | None
+```
+
+</details>
+
 ## Scenarios.calibration_failures
+
+The factors the latest calibration could not fit, with the reason (e.g. no mean reversion over a short history).
+They are left out of the run rather than stopping it; empty when everything fit.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.calibration_failures  # property -> dict[str, str]
 ```
 
-The factors the latest calibration could not fit, with the reason (e.g. no mean reversion over a short history).
-They are left out of the run rather than stopping it; empty when everything fit.
+</details>
 
 ## Scenarios.interest_rates
+
+Fits the interest rate factors.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.interest_rates  # property
 ```
 
-Fits the interest rate factors.
+</details>
 
 ## Scenarios.inflation
+
+Fits the inflation factors.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.inflation  # property
 ```
 
-Fits the inflation factors.
+</details>
 
 ## Scenarios.knw
+
+Fits the joint interest rate and inflation model of `method: knw` (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.knw  # property
 ```
 
-Fits the joint interest rate and inflation model of `method: knw` (opt-in).
+</details>
 
 ## Scenarios.knw_sv
+
+Fits the stochastic-volatility version of that model, `method: knw_sv` (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.knw_sv  # property
 ```
 
-Fits the stochastic-volatility version of that model, `method: knw_sv` (opt-in).
+</details>
 
 ## Scenarios.equities
+
+Fits the equity factors.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.equities  # property
 ```
 
-Fits the equity factors.
+</details>
 
 ## Scenarios.unemployment
+
+Fits the unemployment factors.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.unemployment  # property
 ```
 
-Fits the unemployment factors.
+</details>
 
 ## Scenarios.term_structure
+
+Fits the Nelson-Siegel yield curve's level, slope and curvature (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.term_structure  # property
 ```
 
-Fits the Nelson-Siegel yield curve's level, slope and curvature (opt-in).
+</details>
 
 ## Scenarios.credit_term_structure
+
+Fits the Nelson-Siegel credit-spread curve's level, slope and curvature to a panel of real bonds (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.credit_term_structure  # property
 ```
 
-Fits the Nelson-Siegel credit-spread curve's level, slope and curvature to a panel of real bonds (opt-in).
+</details>
 
 ## Scenarios.hjm
+
+Fits the two-factor Gaussian HJM forward-rate curve (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.hjm  # property
 ```
 
-Fits the two-factor Gaussian HJM forward-rate curve (opt-in).
+</details>
 
 ## Scenarios.real_estate
+
+Fits the real estate factors (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.real_estate  # property
 ```
 
-Fits the real estate factors (opt-in).
+</details>
 
 ## Scenarios.credit
+
+Fits the credit spread factors (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.credit  # property
 ```
 
-Fits the credit spread factors (opt-in).
+</details>
 
 ## Scenarios.leading_indicator
+
+Fits the leading indicator factors (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.leading_indicator  # property
 ```
 
-Fits the leading indicator factors (opt-in).
+</details>
 
 ## Scenarios.credit_migration
+
+Fits the credit cycle behind rating migrations (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.credit_migration  # property
 ```
 
-Fits the credit cycle behind rating migrations (opt-in).
+</details>
 
 ## Scenarios.fx
+
+Fits the exchange rate factors (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.fx  # property
 ```
 
-Fits the exchange rate factors (opt-in).
+</details>
 
 ## Scenarios.commodities
+
+Fits the commodity factors (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.commodities  # property
 ```
 
-Fits the commodity factors (opt-in).
+</details>
 
 ## Scenarios.dividend_yield
+
+Fits the dividend yield factors (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.dividend_yield  # property
 ```
 
-Fits the dividend yield factors (opt-in).
+</details>
 
 ## Scenarios.dividend_growth
+
+Fits the dividend growth factors (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.dividend_growth  # property
 ```
 
-Fits the dividend growth factors (opt-in).
+</details>
 
 ## Scenarios.mortality
+
+Fits the mortality (longevity) factors (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.mortality  # property
 ```
 
-Fits the mortality (longevity) factors (opt-in).
+</details>
 
 ## Scenarios.dependence
+
+Builds the correlation matrix that links the factors; see `Dependence`.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 scenarios.dependence  # property -> Dependence
 ```
 
-Builds the correlation matrix that links the factors; see `Dependence`.
+</details>
 
 ## Scenarios.calibrate
+
+Fit every configured factor to its history and estimate how the factors move together, without simulating.
+
+The calibration is where the scenarios get their economics: each factor's long-run level, how fast it reverts
+to it after a shock, how volatile it is and how its changes correlate with every other factor's. Your beliefs
+then override the fitted values where you set them, and the fitted long-run levels are kept beside them so you
+can see how far a view departs from history.
+
+Keep a calibration to make a study reproducible: the same fit can be saved, audited, and simulated again with
+more scenarios or another seed without new data. A factor whose history cannot support its model (no visible
+mean reversion over a short window, say) is left out of the run and listed with the reason in
+`calibration_failures`, rather than stopping everything.
+
+**As an example:**
+
+```python
+calibration = scenarios.calibrate()
+calibration.save("calibration.json")
+result = scenarios.simulate(calibration=calibration, seed=7)
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 calibrate(
@@ -414,38 +588,53 @@ calibrate(
 ) -> CalibrationResult
 ```
 
-Fit every configured factor to its history and build the correlation matrix, without simulating.
-
-`simulate()` calls this for you. Call it yourself to keep the result: save it with `CalibrationResult.save()` and
-pass it to `simulate(calibration=...)` later, to run again at another seed or number of scenarios without
-downloading data. A factor that cannot be fitted is left out and listed in `calibration_failures` instead of
-stopping the run.
-
 **Args:**
 
 - <u>config (ScenariosConfig &#124; None):</u> the configuration to fit. Defaults to None, the one this instance holds.
-- <u>mortality_rates (pl.DataFrame &#124; None):</u> a historical mortality table (age x calendar year), needed only when mortality is enabled with `source: supplied`. Defaults to None.
-- <u>mortality_ages (list[float] &#124; None):</u> the ages of the table's columns, needed with it. Defaults to None.
-- <u>mortality_years (list[int] &#124; None):</u> the calendar years of the table's rows. Defaults to None, which takes the last row as the latest completed year.
+- <u>mortality_rates (pl.DataFrame &#124; None):</u> your own historical mortality rates (calendar year by age), for mortality with `source: supplied`. Defaults to None.
+- <u>mortality_ages (list[float] &#124; None):</u> the ages of that table. Defaults to None.
+- <u>mortality_years (list[int] &#124; None):</u> the calendar years of that table. Defaults to None, which treats the last row as the latest completed year.
 
 **Returns:**
 
-<u>CalibrationResult:</u> the fitted parameters, the correlation matrix and the order the factors are simulated in.
+<u>CalibrationResult:</u> every factor's fitted parameters and the correlation matrix.
 
 **Raises:**
 
 - <u>RuntimeError:</u> if this instance has no Finance Toolkit.
 - <u>ValueError:</u> if there is no config, or mortality is enabled with a supplied source but no rates or ages.
 
+</details>
+
+## Scenarios.simulate
+
+Simulate thousands of joint futures of every configured factor, each fitted to its own history and linked to the
+others through their historical correlations.
+
+The default real-world run answers "how might the economy evolve?", from history and your beliefs: the run for
+ALM, asset allocation and risk budgets. The risk-neutral run (`measure="risk_neutral"`) answers "what is it worth
+today?": the short rate follows today's forward curve and equities earn that rate less their dividend yield, so
+discounted prices stay at today's prices, as Solvency II's best estimate requires. Factors without a traded
+price, such as credit or real estate, are left out of it; inflation stays real-world for indexation.
+
+A `regime` such as "oil_crisis" tells a stress story. Its beliefs shift what the model expects (inflation pulled
+towards 9%); its targets keep the scenarios that play out the story (high rates, weak stocks). Targets are
+quantiles of what the model itself produces, so the kept paths stay plausible. You still get `n_simulations`
+scenarios back.
+
+A saved `calibration` skips the download and the fit; another `seed` shows how much of a result is Monte Carlo
+noise.
+
 **As an example:**
 
 ```python
-calibration = scenarios.calibrate()
-calibration.save("calibration.json")
-result = scenarios.simulate(calibration=calibration, seed=7)
+result = scenarios.simulate(n_simulations=2000)
+oil_crisis = scenarios.simulate(regime="oil_crisis", n_simulations=500)
+risk_neutral = scenarios.simulate(n_simulations=2000, measure="risk_neutral")
 ```
 
-## Scenarios.simulate
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 simulate(
@@ -463,33 +652,23 @@ simulate(
 ) -> ScenarioSet
 ```
 
-Simulate the configured factors: fit them to their history (unless a saved calibration is given), then draw
-correlated scenarios of every factor.
-
-A saved `calibration` skips the download and the fit: replay a run offline, or draw it again with another `seed`
-to see the Monte Carlo noise.
-
-A `regime` ("oil_crisis"), passed here or set by `from_profiles`, tells a stress story: its beliefs change what
-is simulated and its targets keep the scenarios that fit. You still get `n_simulations` scenarios, drawn in
-batches until enough fit; each batch ranks its own draws, so "the worst 30%" is the worst 30% of a batch.
-
 **Args:**
 
 - <u>config (ScenariosConfig &#124; None):</u> the configuration to run, engine settings included. Defaults to None, the instance's own.
-- <u>calibration (CalibrationResult &#124; None):</u> a saved calibration to simulate from, not with "risk_neutral". Defaults to None (calibrate).
-- <u>mortality_rates (pl.DataFrame &#124; None):</u> passed to `calibrate()` for mortality. Defaults to None.
-- <u>mortality_ages (list[float] &#124; None):</u> passed to `calibrate()` for mortality. Defaults to None.
-- <u>mortality_years (list[int] &#124; None):</u> passed to `calibrate()` for mortality. Defaults to None.
-- <u>seed (int &#124; None):</u> another random seed for this call. Defaults to None.
-- <u>n_simulations (int &#124; None):</u> the number of scenarios to return; even under antithetic sampling. Defaults to None, the profile's number.
-- <u>measure (str):</u> "real_world" (default), or "risk_neutral" for the market-consistent run that values liabilities.
+- <u>calibration (CalibrationResult &#124; None):</u> a saved calibration to simulate from (real-world runs only). Defaults to None, which fits the factors first.
+- <u>mortality_rates (pl.DataFrame &#124; None):</u> your own mortality table; see `calibrate()`. Defaults to None.
+- <u>mortality_ages (list[float] &#124; None):</u> the ages of that table; see `calibrate()`. Defaults to None.
+- <u>mortality_years (list[int] &#124; None):</u> the calendar years of that table; see `calibrate()`. Defaults to None.
+- <u>seed (int &#124; None):</u> a random seed for this call, for a repeatable run. Defaults to None, the profile's.
+- <u>n_simulations (int &#124; None):</u> the number of scenarios to return. Defaults to None, the profile's number.
+- <u>measure (str):</u> "real_world" (default) for planning and risk, or "risk_neutral" for market-consistent valuation.
 - <u>years (float &#124; None):</u> how many years to simulate, e.g. 30. Defaults to None, the profile's horizon.
-- <u>keep (int &#124; None):</u> the old name for `n_simulations`. Defaults to None.
+- <u>keep (int &#124; None):</u> an alias of `n_simulations`. Defaults to None.
 - <u>regime (str &#124; Regime &#124; None):</u> a stress regime for this call: id, name ("Oil Crisis") or `Regime`. Defaults to None.
 
 **Returns:**
 
-<u>ScenarioSet:</u> every factor's simulated paths, with their dates and fitted parameters.
+<u>ScenarioSet:</u> every factor's simulated paths, with their dates and the parameters they were fitted with.
 
 **Raises:**
 
@@ -497,15 +676,26 @@ batches until enough fit; each batch ranks its own draws, so "the worst 30%" is 
 - <u>TypeError:</u> if `calibration` or `regime` has the wrong type.
 - <u>FileNotFoundError:</u> if no regime has the id or name given.
 
+</details>
+
+## Scenarios.history
+
+What actually happened, in the same shape as a simulated run, so a portfolio or a risk measure can be backtested
+with exactly the code you use on the scenarios.
+
+The realized history is one scenario: every `ScenarioSet` and `Portfolio` method works on it, so you can set the
+simulated distribution of, say, a 60/40 portfolio's drawdown next to the one drawdown history delivered. The
+series are lined up on the dates they all share, so the window is as long as the shortest history you ask for.
+
 **As an example:**
 
 ```python
-result = scenarios.simulate(n_simulations=2000)
-oil_crisis = scenarios.simulate(regime="oil_crisis", n_simulations=500)
-risk_neutral = scenarios.simulate(n_simulations=2000, measure="risk_neutral")
+history = scenarios.history(portfolio="balanced_60_40")
+Portfolio.from_preset(history, preset="balanced_60_40").factor_exposure()
 ```
 
-## Scenarios.history
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 history(
@@ -516,49 +706,60 @@ history(
 ) -> ScenarioSet
 ```
 
-What actually happened, as a one-scenario `ScenarioSet`, so `Portfolio` and every `ScenarioSet` method run on
-history the same way they run on simulated scenarios (a backtest).
-
-Each factor's historical series is fetched, and the series are lined up on the dates they all share.
-
 **Args:**
 
 - <u>portfolio (str &#124; None):</u> a portfolio preset's name, e.g. "balanced_60_40", whose holdings are fetched; `list_presets(kind="portfolios")` lists them. Defaults to None.
-- <u>factors (list[str] &#124; None):</u> factor names to fetch instead. With neither, every factor with history is fetched; each one narrows the shared dates to its own window, so name only the ones you need. Defaults to None.
+- <u>factors (list[str] &#124; None):</u> the factors to fetch instead; name only the ones you need, since each shortens the shared window to its own history. Defaults to None, every factor with history.
 - <u>period (str):</u> the calendar to line the series up on: "daily", "weekly", "monthly" (default), "quarterly" or "yearly".
-- <u>portfolios_dir (str &#124; Path):</u> where a named portfolio preset is looked up; the bundled presets otherwise. Defaults to "portfolios".
+- <u>portfolios_dir (str &#124; Path):</u> a folder of your own portfolio presets; the bundled ones otherwise. Defaults to "portfolios".
 
 **Returns:**
 
-<u>ScenarioSet:</u> one path per factor, `n_simulations=1`, on the shared dates.
+<u>ScenarioSet:</u> one scenario holding each factor's realized path on the shared dates.
 
 **Raises:**
 
 - <u>ValueError:</u> if this instance has no Finance Toolkit, both `portfolio` and `factors` are given, or the series share too few dates.
 - <u>KeyError:</u> if a named factor has no history.
 
-**As an example:**
-
-```python
-history = scenarios.history(portfolio="balanced_60_40")
-Portfolio.from_preset(history, preset="balanced_60_40").factor_exposure()
-```
+</details>
 
 ## Scenarios.validate
+
+Is this run fit to use? One table of the checks a model validator would ask for, the same ones the yearly
+published calibration passes.
+
+It checks that every factor calibrated, the fitted parameters are economically plausible (rates settling
+between -5% and 25%, shocks halving in between a week and 50 years), the correlation matrix is a valid one, the
+scenarios move together as calibrated, each factor swings about as much as it did historically, and no path
+explodes. A "warn" is worth a look but not a reason to discard the run; a "fail" is.
+
+**As an example:**
+
+On the default profiles:
+
+```python
+result = scenarios.simulate(n_simulations=2000)
+scenarios.validate(result)
+```
+
+Which returns (2 of the checks, without "meaning"):
+
+| check                   | status | detail                  |
+|:------------------------|:-------|:------------------------|
+| Every factor calibrated | pass   | every factor calibrated |
+| Every path is finite    | pass   | 27 factors, all finite  |
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 validate(result: ScenarioSet) -> pl.DataFrame
 ```
 
-Check a run in one table, with the same checks the yearly published calibration passes.
-
-Is this run fit to use? It checks that every factor calibrated, the fitted parameters are plausible, the
-correlation matrix is valid, the scenarios move together as calibrated, each factor swings about as much as it did
-historically, and every path is finite. A "warn" is worth a look but not a reason to discard the run.
-
 **Args:**
 
-- <u>result (ScenarioSet):</u> a run simulated from this instance's latest calibration.
+- <u>result (ScenarioSet):</u> the run to check, simulated from this instance's latest calibration.
 
 **Returns:**
 
@@ -567,18 +768,25 @@ historically, and every path is finite. A "warn" is worth a look but not a reaso
 **Raises:**
 
 - <u>ValueError:</u> if nothing was calibrated yet, or this instance has no Finance Toolkit to fetch history with.
-- <u>As an example, on the default profiles:</u> 
-- ```python
-- result = scenarios.simulate(n_simulations=2000)
-- scenarios.validate(result)
-- ```
-- <u>Which returns (2 of the checks, without "meaning"):</u> 
-- | check                   | status | detail                  |
-- <u>&#124;:</u> ------------------------|:-------|:------------------------|
-- | Every factor calibrated | pass   | every factor calibrated |
-- | Every path is finite    | pass   | 27 factors, all finite  |
+
+</details>
 
 ## Scenarios.save
+
+Store a run with everything needed to read it back, audit it or replay it: the scenarios, the configuration and
+regime behind them, and the calibration they were drawn from.
+
+**As an example:**
+
+```python
+from financescenarios import read_run
+
+path = scenarios.save(result, "results/")
+result = read_run(path)
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 save(
@@ -587,9 +795,6 @@ save(
     output_format: str = 'parquet',
 ) -> Path
 ```
-
-Store a run with everything needed to read it back or replay it: the config, the regime, the calibration and one
-file per factor.
 
 **Args:**
 
@@ -601,16 +806,26 @@ file per factor.
 
 <u>Path:</u> the run's own folder.
 
+</details>
+
+## CalibrationResult
+
+A finished calibration: every factor's fitted parameters and the correlation matrix, all that `simulate()` needs
+without downloading data again.
+
+`Scenarios.calibrate()` returns it, and `Scenarios.last_calibration` holds the one the latest run used. Save it to
+reproduce a run later, or simulate from it again at another seed or number of scenarios without fitting again.
+
 **As an example:**
 
 ```python
-from financescenarios import read_run
-
-path = scenarios.save(result, "results/")
-result = read_run(path)
+calibration = scenarios.calibrate()
+calibration.describe()
+calibration.save("calibration.json")
 ```
 
-## CalibrationResult
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 class CalibrationResult(BaseModel):
@@ -619,19 +834,13 @@ class CalibrationResult(BaseModel):
     factor_names: list[str]
     dependencies: dict[str, list[str]]
     raw_long_run_means: dict[str, float] = Field(default_factory=dict, description='factor name -> its fitted long-run mean before any belief override. Only for mean-reverting factors (rates, inflation, unemployment and the like).')
-    correlation_fallback_pairs: list[str] = Field(default_factory=list, description="'factor_a/factor_b' pairs set to 0 correlation because their histories overlap too little to estimate one. Only with engine.correlation_method='pairwise' (the default).")
-    beliefs: dict[str, Any] | None = Field(default=None, description="the belief overrides this calibration applied, keyed '<category>.<name>'; simulate() refuses to replay it under a config with different beliefs. None for a calibration saved before this existed.")
-    correlation_shrinkage: float | None = Field(default=None, description="the shrinkage intensity applied to the sample correlation matrix (the computed one with engine.correlation_shrinkage='auto'); None for a calibration saved before this was recorded.")
-    correlation_repair: float | None = Field(default=None, description='how far the shrunk correlation matrix moved to become a valid one (Frobenius norm; 0 if it already was); large values mean the pairwise estimates disagreed. None for an older calibration.')
-    long_run_anchors: dict[str, dict[str, float]] = Field(default_factory=dict, description="interest-rate factor name -> {year: long-run level} from that entry's long_run_anchor (EIOPA's forward rates), applied as its long-run belief path when simulating unless the config sets one itself. Empty for a calibration without anchors or saved before they existed.")
+    correlation_fallback_pairs: list[str] = Field(default_factory=list, description="'factor_a/factor_b' pairs set to 0 correlation because their histories overlap too little to estimate one.")
+    beliefs: dict[str, Any] | None = Field(default=None, description="the belief overrides this calibration applied, keyed '<category>.<name>'; simulate() refuses to replay it under a config with different beliefs.")
+    correlation_shrinkage: float | None = Field(default=None, description='how far the historical correlations were pulled toward their average to tame estimation noise (0 is none, 1 is all the way).')
+    correlation_repair: float | None = Field(default=None, description='how far the correlation matrix moved to become a valid one (0 if it already was); large values mean the pairwise estimates disagreed.')
+    long_run_anchors: dict[str, dict[str, float]] = Field(default_factory=dict, description="interest-rate factor name -> {year: long-run level} from EIOPA's forward rates, the path the rate is pulled towards unless the config sets a long-run belief itself.")
     calibration_failures: dict[str, str] = Field(default_factory=dict, description='factor name -> why it could not be fitted (e.g. no mean reversion over a short history), or the factor it depends on that failed. Those factors are left out of the run instead of stopping it; empty when everything calibrated.')
 ```
-
-A finished calibration: every factor's fitted parameters and the correlation matrix, all that `simulate()` needs
-without downloading data again.
-
-`Scenarios.calibrate()` returns it, and `Scenarios.last_calibration` holds the one the latest run used. Save it to
-reproduce a run later, or simulate from it again at another seed or number of scenarios without fitting again.
 
 **Attributes:**
 
@@ -647,19 +856,9 @@ reproduce a run later, or simulate from it again at another seed or number of sc
 - <u>long_run_anchors (dict[str, dict[str, float]]):</u> interest rate -> {year: long-run level} from EIOPA's curve.
 - <u>calibration_failures (dict[str, str]):</u> factor name -> why it could not be fitted; it is left out of the run.
 
-**As an example:**
-
-```python
-calibration = scenarios.calibrate()
-calibration.describe()
-calibration.save("calibration.json")
-```
+</details>
 
 ## CalibrationResult.describe
-
-```python
-describe() -> pl.DataFrame
-```
 
 One row per calibrated factor: which model was fitted and the parameters most worth a look.
 
@@ -668,33 +867,50 @@ yearly decimals (0.024 is 2.4% a year), comparable down the column even for fact
 frequencies. `half_life_years` is how many years a shock takes to fade halfway back to the long-run mean,
 ln(2) / mean_reversion_speed.
 
-**Returns:**
-
-<u>pl.DataFrame:</u> "factor", "process" (the fitted model, e.g. "OUParams"), "initial_value", "long_run_mean", "volatility", "mean_reversion_speed" and "half_life_years"; the last four are empty for a model without them, such as an equity regime fit.
-
 **As an example:**
 
 ```python
 scenarios.calibrate().describe()
 ```
 
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+describe() -> pl.DataFrame
+```
+
+**Returns:**
+
+<u>pl.DataFrame:</u> "factor", "process" (the fitted model, e.g. "OUParams"), "initial_value", "long_run_mean", "volatility", "mean_reversion_speed" and "half_life_years"; the last four are empty for a model without them, such as an equity regime fit.
+
+</details>
+
 ## CalibrationResult.correlation_frame
+
+The calibrated correlation matrix as a labelled table: a "factor" column plus one column per factor. Set it next
+to `ScenarioSet.simulated_correlation()` to check that a run reproduces the correlations it was calibrated with.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
 
 ```python
 correlation_frame() -> pl.DataFrame
 ```
 
-The calibrated correlation matrix as a labelled table: a "factor" column plus one column per factor. Set it next
-to `ScenarioSet.simulated_correlation()` to check that a run reproduces the correlations it was calibrated with.
+</details>
 
 ## CalibrationResult.plot
+
+The quick chart of a calibration: its correlation matrix as a heatmap, the same as `plot_correlation_matrix()`.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 plot(annotate: bool | None = None)
 ```
 
-The quick chart of a calibration: its correlation matrix as a heatmap, the same as `plot_correlation_matrix()`.
-
 **Args:**
 
 - <u>annotate (bool &#124; None):</u> write each cell's value into it. Defaults to None, which does so up to 14 factors.
@@ -703,15 +919,20 @@ The quick chart of a calibration: its correlation matrix as a heatmap, the same 
 
 <u>matplotlib.figure.Figure:</u> the figure holding the heatmap.
 
+</details>
+
 ## CalibrationResult.plot_correlation_matrix
+
+This calibration's correlation matrix as a heatmap, blue for negative and red for positive. The same chart as
+`plot_correlation_matrix(calibration.correlation_matrix, calibration.factor_names)`.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 plot_correlation_matrix(annotate: bool | None = None)
 ```
 
-This calibration's correlation matrix as a heatmap, blue for negative and red for positive. The same chart as
-`plot_correlation_matrix(calibration.correlation_matrix, calibration.factor_names)`.
-
 **Args:**
 
 - <u>annotate (bool &#124; None):</u> write each cell's value into it. Defaults to None, which does so up to 14 factors.
@@ -720,17 +941,11 @@ This calibration's correlation matrix as a heatmap, blue for negative and red fo
 
 <u>matplotlib.figure.Figure:</u> the figure holding the heatmap.
 
+</details>
+
 ## CalibrationResult.save
 
-```python
-save(path: str | Path) -> None
-```
-
 Save this calibration to a JSON file, to simulate from it later without downloading data or fitting again.
-
-**Args:**
-
-- <u>path (str &#124; Path):</u> where to write the file.
 
 **As an example:**
 
@@ -738,13 +953,36 @@ Save this calibration to a JSON file, to simulate from it later without download
 scenarios.calibrate().save("calibration.json")
 ```
 
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+save(path: str | Path) -> None
+```
+
+**Args:**
+
+- <u>path (str &#124; Path):</u> where to write the file.
+
+</details>
+
 ## CalibrationResult.load
+
+Load a calibration written by `save()`, ready for `Scenarios.simulate(calibration=...)`.
+
+**As an example:**
+
+```python
+calibration = CalibrationResult.load("calibration.json")
+result = scenarios.simulate(calibration=calibration, seed=7)
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 CalibrationResult.load(path: str | Path) -> CalibrationResult
 ```
-
-Load a calibration written by `save()`, ready for `Scenarios.simulate(calibration=...)`.
 
 **Args:**
 
@@ -759,14 +997,27 @@ Load a calibration written by `save()`, ready for `Scenarios.simulate(calibratio
 - <u>FileNotFoundError:</u> if `path` does not exist.
 - <u>ValueError:</u> if the file is not a calibration written by `save()`.
 
+</details>
+
+## build_toolkit
+
+Build the Finance Toolkit a `Scenarios` run fetches its data with, covering every ticker the configured factors
+need.
+
+The start and end dates and the benchmark come from the config's `toolkit` section. Nothing is downloaded yet: data
+is fetched when a factor is fitted, and served from the Finance Toolkit's local cache whenever it already holds it.
+An API key left out is read from the environment, or from a `.env` file in the folder Python runs in.
+
 **As an example:**
 
 ```python
-calibration = CalibrationResult.load("calibration.json")
-result = scenarios.simulate(calibration=calibration, seed=7)
+from financescenarios import build_toolkit, load_profiles
+
+toolkit = build_toolkit(load_profiles(settings_id="default", factor_set_id="us_only"))
 ```
 
-## build_toolkit
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
 
 ```python
 build_toolkit(
@@ -775,13 +1026,6 @@ build_toolkit(
     fred_api_key: str | None = None,
 ) -> Toolkit
 ```
-
-Build the Finance Toolkit a `Scenarios` run fetches its data with, covering every ticker the configured factors
-need.
-
-The start and end dates and the benchmark come from the config's `toolkit` section. Nothing is downloaded yet: data
-is fetched when a factor is fitted, and served from the Finance Toolkit's local cache whenever it already holds it.
-An API key left out is read from the environment, or from a `.env` file in the folder Python runs in.
 
 **Args:**
 
@@ -793,10 +1037,4 @@ An API key left out is read from the environment, or from a `.env` file in the f
 
 <u>Toolkit:</u> a Finance Toolkit instance covering every ticker the configured factors need.
 
-**As an example:**
-
-```python
-from financescenarios import build_toolkit, load_profiles
-
-toolkit = build_toolkit(load_profiles(settings_id="default", factor_set_id="us_only"))
-```
+</details>
