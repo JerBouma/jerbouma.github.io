@@ -339,29 +339,47 @@ Each notebook covers a different part of Finance Scenarios. Click a card to open
 
 ## Questions & Answers
 
-> **Do I need an economic scenario generator?**
+<details class="ft-details" markdown="1">
+  <summary><h3>Do I need an economic scenario generator?</h3></summary>
 
-When the answer you need is a range rather than one number: Solvency II capital and technical provisions, pension funding projections, asset-liability matching, portfolio tail risk, stress testing, or whether retirement withdrawals last.
+  When the answer you need is a range rather than one number: Solvency II capital and technical provisions, pension funding projections, asset-liability matching, portfolio tail risk, stress testing, or whether retirement withdrawals last.
 
-> **How does this relate to the Finance Toolkit?**
+</details>
 
-The [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) looks backwards: it retrieves and calculates from historical data. Finance Scenarios looks forwards: it fits models to that history and simulates where things could go next.
+<details class="ft-details" markdown="1">
+  <summary><h3>How does this relate to the Finance Toolkit?</h3></summary>
 
-> **How do I know whether the method I need is supported?**
+  The [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit) looks backwards: it retrieves and calculates from historical data. Finance Scenarios looks forwards: it fits models to that history and simulates where things could go next.
 
-The [coverage overview](/projects/financescenarios/docs/coverage) lists every factor, model, measure, portfolio analytic and Solvency II output as available, partial or unavailable.
+</details>
 
-> **Are my results reproducible?**
+<details class="ft-details" markdown="1">
+  <summary><h3>How do I know whether the method I need is supported?</h3></summary>
 
-The random draws are fixed by a seed in the settings. The calibration follows live data, so save it and load it later to pin both.
+  The [coverage overview](/projects/financescenarios/docs/coverage) lists every factor, model, measure, portfolio analytic and Solvency II output as available, partial or unavailable.
 
-> **How long does a run take?**
+</details>
 
-Calibration takes a couple of minutes for the default factor set on a cold cache and seconds once the data is cached. Simulating is fast.
+<details class="ft-details" markdown="1">
+  <summary><h3>Are my results reproducible?</h3></summary>
 
-> **Can I add my own regime, portfolio or model?**
+  The random draws are fixed by a seed in the settings. The calibration follows live data, so save it and load it later to pin both.
 
-A regime or a portfolio is a YAML file: copy a shipped one and edit it. A new model or factor plugs into the same calibration and correlation steps as the shipped ones; the [reference](/projects/financescenarios/docs/reference) shows what each one provides.
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>How long does a run take?</h3></summary>
+
+  Calibration takes a couple of minutes for the default factor set on a cold cache and seconds once the data is cached. Simulating is fast.
+
+</details>
+
+<details class="ft-details" markdown="1">
+  <summary><h3>Can I add my own regime, portfolio or model?</h3></summary>
+
+  A regime or a portfolio is a YAML file: copy a shipped one and edit it. A new model or factor plugs into the same calibration and correlation steps as the shipped ones; the [reference](/projects/financescenarios/docs/reference) shows what each one provides.
+
+</details>
 
 ## Contact
 
