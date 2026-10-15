@@ -1062,37 +1062,23 @@ h1, h2, h3, h4, h5, h6 {
   display: none !important;
 }
 
-// ── Site title: a monogram tile and the name in the site's type ──
+// ── Site title — signature font ──────────────────────
 .masthead .site-title {
-  display: inline-flex !important;
-  align-items: center;
-  gap: 10px;
-  margin-right: 20px !important;
+  display: inline-block !important;
+  font-family: 'Mr Dafoe', cursive !important;
+  font-size: 1.5rem !important;
+  font-weight: 300 !important;
   color: var(--text-primary) !important;
+  letter-spacing: 0.03em !important;
   text-decoration: none !important;
+  margin-right: 20px !important;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
   line-height: 1 !important;
 
-  &::before {
-    display: none !important;
+  &:hover {
+    color: var(--accent-color) !important;
   }
-}
-
-// the JB mark, the same drawing as the favicon (_includes/brand-mark.svg, made by
-// assets/python/gen_favicon.py)
-.masthead .site-title__mark {
-  display: block;
-  flex-shrink: 0;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.masthead .site-title:hover .site-title__mark {
-  box-shadow: 0 0 18px rgba(129, 140, 248, 0.4);
-  transform: scale(1.04);
 }
 
 // Hide site title on homepage (redundant with hero heading)
@@ -2346,13 +2332,14 @@ body.wide-no-sidebar:not(.no-title) {
   }
 
   .masthead .site-title {
+    font-size: 1.5rem !important;
     border-right: none !important;
     padding-right: 6px !important;
   }
 
-  // Show the monogram on the homepage on mobile too (the hero heading is below the fold)
+  // Show the signature title on homepage on mobile (hero heading is below the fold)
   body.custom-splash .masthead .site-title {
-    display: inline-flex !important;
+    display: inline-block !important;
   }
 }
 
