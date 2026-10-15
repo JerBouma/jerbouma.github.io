@@ -1,14 +1,13 @@
-"""Draws the JB mark: the favicon, the home-screen icon and the logo in the masthead.
+"""Draws the JB mark: the site's favicon and home-screen icon.
 
-One drawing for all of them: a dark round badge with a thin ring in the homepage
+One drawing for both: a dark round badge with a thin ring in the homepage
 headline's gradient (#38bdf8 -> #818cf8 -> #c084fc) and "JB" in Inter ExtraBold, the
 site's typeface, as outlines in that same gradient. The letters are paths, not text,
 so the mark looks the same in every browser and at every size.
 
     python assets/python/gen_favicon.py
 
-Writes assets/images/default/favicon.svg, _includes/brand-mark.svg (the masthead
-copy, with its own gradient ids) and assets/images/default/apple-touch-icon.svg.
+Writes assets/images/default/favicon.svg and assets/images/default/apple-touch-icon.svg.
 The PNG sizes are rendered from favicon.svg with a headless browser (see the
 visual-check skill): favicon.png (64px) and apple-touch-icon.png (180px).
 """
@@ -95,9 +94,7 @@ def main() -> None:
     (ROOT / "assets/images/default/favicon.svg").write_text(badge(paths, ""))
     # rendered to apple-touch-icon.png (180px) and then not needed on the site
     (ROOT / "assets/images/default/apple-touch-icon.svg").write_text(badge(paths, "", full_bleed=True))
-    (ROOT / "_includes/brand-mark.svg").write_text(
-        badge(paths, "jbm-", ' width="38" height="38" class="site-title__mark" aria-hidden="true" focusable="false"'))
-    print("written: favicon.svg, apple-touch-icon.svg, _includes/brand-mark.svg")
+    print("written: favicon.svg, apple-touch-icon.svg")
 
 
 if __name__ == "__main__":
