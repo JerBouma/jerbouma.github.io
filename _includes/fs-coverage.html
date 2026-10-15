@@ -32,8 +32,18 @@
         <p class="fsc__summary">{{ i.summary }}</p>
         <details class="fsc__more">
           <summary>Technical details</summary>
-          <p class="fsc__where"><strong>Where:</strong> {{ i.location | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>
-          {{ i.details | markdownify }}
+          <p class="fsc__where"><strong>Configured in:</strong> {{ i.location | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>
+          {%- if i.setup %}
+          <div class="fsc__setup">
+            <p><strong>How to set it up:</strong> {{ i.setup | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>
+            {%- if i.setup_code %}
+            {% capture fence %}```{{ i.setup_lang | default: "yaml" }}
+{{ i.setup_code }}
+```{% endcapture %}{{ fence | markdownify }}
+            {%- endif %}
+          </div>
+          {%- endif %}
+          <div class="fsc__details">{{ i.details | markdownify }}</div>
         </details>
       </article>
       {%- endfor %}

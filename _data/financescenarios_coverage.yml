@@ -1,390 +1,1048 @@
 # Finance Scenarios coverage, shown by _includes/fs-coverage.html on /projects/financescenarios/docs/coverage.
-# summary is the plain-language explanation; location and details are the technical notes.
+# summary is the plain-language explanation; location (where it is configured), setup (how to switch it on, with
+# setup_code in setup_lang) and details are the technical notes.
 - topic: Interest rates
   intro: How short-term rates and bond yields can move in the simulated futures, from simple mean-reverting rates to models that keep yields and inflation consistent with each other.
   items:
   - name: Optional zero lower bound (shadow rate)
     status: available
     summary: You can keep simulated rates from going below zero. The model tracks an underlying rate that may go negative, and you see that rate floored at zero, so recoveries start from where the hidden rate really is. Off by default, real-world scenarios only.
-    location: "`interest_rates[i].zero_lower_bound: true`, `ShadowRateStepper`, [configuration](/projects/financescenarios/docs/configuration#keeping-rates-at-or-above-zero)'s Keeping rates at or above zero section"
+    location: 'Factor set, on an `interest_rates` entry: `zero_lower_bound`; see [keeping rates at or above zero](/projects/financescenarios/docs/configuration#keeping-rates-at-or-above-zero)'
     details: Off by default. The rate's own dynamics evolve an unfloored shadow rate and every consumer sees max(shadow, 0) (Black 1995), so recovery starts from the shadow; real-world entries only.
+    setup: 'In your factor set, set `zero_lower_bound: true` on each `interest_rates` entry you want floored, or under `defaults` for every rate. Real-world rates only.'
+    setup_lang: yaml
+    setup_code: |-
+      interest_rates:
+        countries:
+          - name: Eurozone
+            source: oecd
+            country: Germany
+            currency: EUR
+            zero_lower_bound: true   # floored at 0%; false (no floor) by default
   - name: Hull-White / Vasicek short rate
     status: available
     summary: 'The default model for the short-term rate: rates drift back toward a long-run average, with random shocks of a fixed size. It is fitted to historical rate levels and is a good starting point for most uses.'
-    location: '`method: "hull_white"`, `InterestRates`'
+    location: 'Factor set, on an `interest_rates` entry: `method: hull_white` (the default)'
     details: Ornstein-Uhlenbeck fit on the raw rate level, simulated with its exact transition; the default short-rate process.
+    setup: 'Nothing to switch on: every interest rate uses it unless you pick another `method`. To make it explicit in your factor set:'
+    setup_lang: yaml
+    setup_code: |-
+      interest_rates:
+        defaults:
+          method: hull_white   # or cir, wilkie_consols, knw, ...
   - name: CIR short rate
     status: available
     summary: Rates drift back toward a long-run average like in Hull-White, but shocks shrink as rates approach zero. Use it when simulated rates must never turn negative.
-    location: '`method: "cir"`, `InterestRates`'
+    location: 'Factor set, on an `interest_rates` entry: `method: cir`'
     details: Same OU drift as Hull-White but a level-scaled (`sigma*sqrt(r)`) diffusion, so simulated paths can't go negative.
+    setup: 'In your factor set, set `method: cir` under `interest_rates` `defaults` for every rate, or on one entry under `countries`.'
+    setup_lang: yaml
+    setup_code: |-
+      interest_rates:
+        defaults:
+          method: cir   # default: hull_white; cir keeps rates at or above zero
   - name: GARCH(1,1) volatility
     status: available
     summary: Lets rate volatility change over time, so calm periods and turbulent periods cluster as they do in real markets. Works with the Hull-White model only, not with CIR.
-    location: '`volatility_model: "garch"` (method `"hull_white"` only), `InterestRates`'
+    location: 'Factor set, on an `interest_rates` entry: `volatility_model: garch` (with `method: hull_white`)'
     details: 'Replaces the fixed-volatility diffusion with a Bollerslev (1986) conditional-variance process; incompatible with `method: "cir"` (a different, non-additive diffusion spec).'
+    setup: 'In your factor set, set `volatility_model: garch` on the rates. It needs a Hull-White rate without a long history or EIOPA anchor, which the default factor set switches on, so turn those off too.'
+    setup_lang: yaml
+    setup_code: |-
+      interest_rates:
+        defaults:
+          volatility_model: garch   # default: constant; hull_white only
+          history_source: null      # the default factor set's long history
+          history_start_year: null  # and EIOPA anchor need constant
+          long_run_anchor: null     # volatility, so switch them off
   - name: Business-cycle (Phillips-curve-style) conditioning
     status: available
     summary: Makes rates respond to where the economy is in its cycle, using the OECD leading indicator. When the indicator turns, rates get a push in that direction. Requires the leading indicator to be switched on.
-    location: "`condition_on_business_cycle: true`, `LeadingIndicator`"
+    location: 'Factor set, on an `interest_rates` entry: `condition_on_business_cycle: true`, plus `leading_indicator.enabled`'
     details: Adds an additive drift term on the leading indicator's step-to-step change; requires `leading_indicator.enabled`.
+    setup: 'In your factor set, switch on the leading indicator and set `condition_on_business_cycle: true` on the rates. It works on Hull-White and CIR rates with constant volatility, without a long history or EIOPA anchor.'
+    setup_lang: yaml
+    setup_code: |-
+      leading_indicator:
+        enabled: true                       # required: the OECD leading indicator
+      interest_rates:
+        defaults:
+          condition_on_business_cycle: true # not with volatility_model: garch
+          history_source: null              # switch off the default factor set's
+          history_start_year: null          # long history and EIOPA anchor
+          long_run_anchor: null
   - name: Wilkie's consols model
     status: available
     summary: The classic Wilkie (1986) actuarial model for long-term government bond yields, where the yield follows inflation plus a separately modeled real yield. Useful when you want a well-known actuarial benchmark.
-    location: '`method: "wilkie_consols"`, `InterestRates`'
+    location: 'Factor set, on an `interest_rates` entry: `method: wilkie_consols` with `inflation_name`; the `wilkie` profiles set it up'
     details: Wilkie's (1986) original latent real-yield plus inflation-linked nominal consols-yield recursion.
+    setup: 'Quickest: run the shipped `wilkie` settings and factor set (`Scenarios.from_profiles(settings="wilkie", factor_set="wilkie")`). By hand, give a long rate `method: wilkie_consols` and name the inflation entry it builds on; the engine''s step (`engine.frequency` in the settings) must equal the pair''s `period`, and the history should end before real yields turned negative (2007).'
+    setup_lang: yaml
+    setup_code: |-
+      interest_rates:
+        - name: consols_rate
+          source: oecd
+          country: United States
+          term: long
+          period: monthly            # engine.frequency must be monthly too
+          method: wilkie_consols
+          inflation_name: united_states_inflation  # the inflation entry below
+      inflation:
+        - name: united_states_inflation
+          country: United States
+          period: monthly
+          method: wilkie_ar1
   - name: Hibbert two-factor moving-target model
     status: available
     summary: Barrie & Hibbert's (2001) model, where the short rate is pulled toward a long-run target that itself moves randomly over time. Use it when you think the 'normal' rate level can shift.
-    location: '`method: "hibbert_two_factor"`, `InterestRates`, `Inflation`'
+    location: 'Factor set, on an `interest_rates` (or `inflation`) entry: `method: hibbert_two_factor` with a `target_source`'
     details: Barrie & Hibbert's (2001) two-factor short rate with a stochastic, moving long-run target.
+    setup: 'In your factor set, give a short rate `method: hibbert_two_factor` and say what its target is: by default a longer yield (`target_ticker`, or `target_term` for OECD rates), simulated as a second factor. Inflation takes the same method. Not for risk-neutral runs.'
+    setup_lang: yaml
+    setup_code: |-
+      interest_rates:
+        - name: short_rate
+          ticker: "^IRX"           # the rate: 13-week Treasury bill
+          period: monthly
+          method: hibbert_two_factor
+          target_source: long_term_rate   # or ewma: the rate's own average
+          target_ticker: "^TNX"    # the moving target: the 10-year yield
   - name: KNW-lite (constant-volatility)
     status: available
     summary: Simulates interest rates and inflation together so they stay consistent with each other, based on De Nederlandsche Bank's 2022 model without changing volatility. You set it up by hand, and the simulation step must match the model's data frequency.
-    location: '`method: "knw"`, `Knw`'
+    location: 'Factor set: an `interest_rates` and an `inflation` entry, both `method: knw` and naming each other; settings: `engine.frequency` equal to their `period`'
     details: Bivariate discrete-time VAR(1) coupling interest rate and inflation; De Nederlandsche Bank's CP2022 model at zero stochastic volatility. `engine.frequency` must equal the entry's own `period` (`ScenariosConfig` rejects a mismatch) because the fit is a discrete recursion with no dt to re-discretize at. Hand-configure a mutually-paired `interest_rates[]`/`inflation[]` entry, no built-in preset.
+    setup: 'In your factor set, add one rate and one inflation entry with `method: knw` that name each other, at the same `period`. In your settings profile set `engine.frequency` to that period (quarterly below); the configuration rejects a mismatch.'
+    setup_lang: yaml
+    setup_code: |-
+      engine:
+        frequency: quarterly        # settings profile: must equal the pair's period
+      interest_rates:
+        - name: united_states_short_rate
+          source: oecd
+          country: United States
+          period: quarterly
+          method: knw
+          inflation_name: united_states_inflation
+      inflation:
+        - name: united_states_inflation
+          country: United States
+          period: quarterly
+          method: knw
+          interest_rate_name: united_states_short_rate
   - name: KNW stochastic-volatility
     status: available
     summary: The full version of the DNB-style model, where a shared, randomly changing volatility affects both rates and inflation. You set it up by hand, and the simulation step must match the model's data frequency.
-    location: '`method: "knw_sv"`, `KnwSv`'
+    location: 'Factor set: an `interest_rates` and an `inflation` entry, both `method: knw_sv` and naming each other; settings: `engine.frequency` equal to their `period`'
     details: Adds a latent CIR/Heston variance factor `v` that scales both legs' drift and variance, simulated via Andersen's (2008) exact QE scheme. Same `engine.frequency`-must-match-`period` requirement as `"knw"` above. Hand-configure, no built-in preset.
+    setup: 'As for KNW-lite, with `method: knw_sv` on both entries. An equity can share the volatility factor with `method: knw_sv` and `nominal_rate_name` (see v-scaled equity). The [KNW guide](/projects/financescenarios/docs/knw) has the full file.'
+    setup_lang: yaml
+    setup_code: |-
+      engine:
+        frequency: quarterly        # settings profile: must equal the pair's period
+      interest_rates:
+        - name: united_states_short_rate
+          source: oecd
+          country: United States
+          period: quarterly
+          method: knw_sv
+          inflation_name: united_states_inflation
+      inflation:
+        - name: united_states_inflation
+          country: United States
+          period: quarterly
+          method: knw_sv
+          interest_rate_name: united_states_short_rate
   - name: 2-factor Gaussian HJM (Cheyette-reduction, PCA-calibrated)
     status: available
     summary: Simulates the whole forward-rate curve with two drivers. Its direction is set by a no-arbitrage rule rather than fitted to history, so prices stay consistent with today's curve. It runs in risk-neutral (pricing) mode by default.
-    location: "`hjm.enabled`, `Hjm`"
+    location: 'Factor set: the `hjm` section, `enabled: true`'
     details: Musiela-parametrized forward curve; drift derived from the no-arbitrage condition rather than historically fit. Q-measure by default (`market_price_of_risk=0`); see `Hjm`'s docstring for the `kappa_2` weak-identification and `kappa_1`-floor caveats.
+    setup: In your factor set, switch on the `hjm` section. It fits its own anchor curve on the four Treasury yields and adds the curve factors to the run.
+    setup_lang: yaml
+    setup_code: |-
+      hjm:
+        enabled: true
+        period: daily               # the history it is fitted on
+        kappa_bounds: [0.03, 6.0]   # volatility-decay search range; default
+                                    # [0.01, 6.0], a 0.03-0.10 floor tempers long horizons
   - name: 'Risk-neutral: deterministic snapshot at today''s level'
     status: available
     summary: For risk-neutral (pricing) scenarios, the rate stays flat at today's observed level in every path. There is no randomness yet, and it can't be combined with the Hibbert two-factor model.
-    location: '`measure: "risk_neutral"`, [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)''s Real-world and risk-neutral measures section'
+    location: 'Factor set, on an `interest_rates` entry: `measure: risk_neutral`; see [real-world and risk-neutral](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)'
     details: 'v1 scope: a flat path at today''s observed rate, not a fitted stochastic process; raises if paired with `method: "hibbert_two_factor"`.'
+    setup: 'In your factor set, set `measure: risk_neutral` on a Hull-White rate without `risk_neutral_forward_curve`. In a set based on `default`, switch off the long history and EIOPA anchor, which are for real-world rates.'
+    setup_lang: yaml
+    setup_code: |-
+      interest_rates:
+        defaults:
+          measure: risk_neutral     # a flat path at today's rate
+          history_source: null      # switch off the default factor set's
+          history_start_year: null  # long history and EIOPA anchor
+          long_run_anchor: null
   - name: 'Risk-neutral: stochastic short rate on EIOPA''s or the Treasury curve'
     status: partial
     summary: A random Hull-White short rate whose average discount factor reproduces today's curve at every maturity, as pricing work requires. For the euro, the pound and the US dollar that is EIOPA's risk-free curve, the default of a whole risk-neutral run, so the best estimate discounts at the Solvency II curve. Partial because the volatility comes from history, fitted to how much yields across the curve have moved, not from swaption prices as EIOPA's Guideline 57 asks, so the time value of guarantees is indicative.
-    location: '`measure: "risk_neutral"` + `risk_neutral_forward_curve: true` (`method="hull_white"` only), `risk_neutral_curve: eiopa` or `treasury`, `risk_neutral_volatility_fit`, `Scenarios.simulate(measure="risk_neutral")`, [interest rates](/projects/financescenarios/docs/interest-rates#real-world-and-risk-neutral-rates)'
+    location: 'Factor set, on an `interest_rates` entry: `measure: risk_neutral` with `risk_neutral_forward_curve: true` and `risk_neutral_curve`; or `Scenarios.simulate(measure="risk_neutral")`; see [interest rates](/projects/financescenarios/docs/interest-rates#real-world-and-risk-neutral-rates)'
     details: 'Brigo & Mercurio''s (2006) x-process Hull-White, theta(t) fitted to EIOPA''s published curve (USD, EUR, GBP; forwards flat between maturities) or a Nelson-Siegel fit to the four Treasury yields. The speed is the short rate''s historical speed; by default (`risk_neutral_volatility_fit: yield_curve`) sigma is fitted so the model''s yield volatilities match the historical volatility of the 13-week, 5, 10 and 30-year yields (0.90% on US data since 2005), or `short_rate` takes the short rate''s own. Not implied from swaptions: EIOPA Guideline 57 (paragraph 1.101) asks for calibration to deep, liquid and transparent market data, which the Finance Toolkit does not provide for rate options.'
+    setup: 'Quickest: `scenarios.simulate(measure="risk_neutral")` sets this up on EIOPA''s curve for the whole run. For one rate in your factor set, make it risk-neutral, switch on the forward curve and pick the curve; it must be a Hull-White rate without GARCH, business-cycle conditioning, long history or EIOPA anchor.'
+    setup_lang: yaml
+    setup_code: |-
+      interest_rates:
+        defaults:
+          history_source: null      # switch off the default factor set's
+          history_start_year: null  # long history and EIOPA anchor
+          long_run_anchor: null
+        countries:
+          - name: United States
+            measure: risk_neutral
+            risk_neutral_forward_curve: true   # hull_white only
+            risk_neutral_curve: eiopa          # USD, EUR or GBP; default: treasury
+            risk_neutral_volatility_fit: yield_curve   # or short_rate
   - name: knw/knw_sv Q-measure, an options/swaption-calibrated method
     status: partial
     summary: The model can't fit its own risk-neutral version to option or swaption prices, as there is no free data for that. Instead you can use DNB's market-consistent scenario set, built from market prices including swaptions, as your paths or as a benchmark to compare against.
-    location: "`KnwSvQ`, `external_scenario_source: {provider: dnb, measure: market_consistent}`, `validation/dnb/`"
-    details: 'Our own fit still has no free swaption or inflation-cap prices to calibrate to. DNB''s market-consistent Q-set, generated with the Commissie Parameters model and calibrated to market prices including swaptions, is available instead: as a run''s own rate, inflation and equity paths, or as the benchmark `Dnb.compare` holds a risk-neutral run against.'
+    location: 'Factor set: the `external_scenario_source` section with `provider: dnb` and `measure: market_consistent`'
+    details: 'Our own fit still has no free swaption or inflation-cap prices to calibrate to. DNB''s market-consistent Q-set, generated with the Commissie Parameters model and calibrated to market prices including swaptions, is available instead: as a run''s own rate, inflation and equity paths (`external_scenario_source`), or as the benchmark `Dnb.compare` holds a risk-neutral run against.'
+    setup: 'Use DNB''s market-consistent set for the paths: in your factor set, switch on `external_scenario_source`, pick the market-consistent set and name the factors it replaces. The run then follows DNB''s grid (20,000 yearly scenarios) instead of `engine`. To compare instead of replace, see DNB scenario sets under Validation benchmarks.'
+    setup_lang: yaml
+    setup_code: |-
+      external_scenario_source:
+        enabled: true
+        provider: dnb
+        measure: market_consistent              # or real_world, DNB's P-set
+        interest_rate_factors: [eurozone_short_rate]
+        inflation_factors: [eurozone_inflation]
+        equity_factors: [europe]
+        n_simulations: 2000                     # optional: first 2,000 of 20,000
   - name: knw_sv Q-measure, completely-affine alternative
     status: available
     summary: A risk-neutral (pricing) version of the stochastic-volatility rate and inflation model, fitted to today's yield curve instead of option prices. Rates and inflation must both be set to risk-neutral together. Equities stay in real-world mode.
-    location: '`measure: "risk_neutral"` (`method="knw_sv"` only), `KnwSvQ`'
+    location: 'Factor set: a `knw_sv` rate and inflation pair, both with `measure: risk_neutral`'
     details: Real closed-form Q-measure fit against the observed yield curve instead of options. Wired into `factors.yaml`/`calibration_controller.py`/the engine for the interest_rate/inflation pair (both legs must set `measure="risk_neutral"` together); the equity leg stays P-measure-only, no Q-measure equity formula built.
+    setup: 'Set up the KNW stochastic-volatility pair and add `measure: risk_neutral` to both entries. Leave out a `knw_sv` equity: it has no risk-neutral form.'
+    setup_lang: yaml
+    setup_code: |-
+      engine:
+        frequency: quarterly        # settings profile: must equal the pair's period
+      interest_rates:
+        - name: united_states_short_rate
+          source: oecd
+          country: United States
+          period: quarterly
+          method: knw_sv
+          inflation_name: united_states_inflation
+          measure: risk_neutral       # on both legs
+      inflation:
+        - name: united_states_inflation
+          country: United States
+          period: quarterly
+          method: knw_sv
+          interest_rate_name: united_states_short_rate
+          measure: risk_neutral       # on both legs
   - name: Stochastic deflator (Cheng & Planchet 2018)
     status: partial
-    summary: 'Builds a discount factor per path from a real-world run, so cash flows can be valued consistently with market prices. Accurate (within about 0.1-2% of the exact price) when the risk premium on the shared volatility factor is near zero. With a realistic premium it underprices by about 1% at 2 years, 8% at 5 years and 20% at 10 years, and the run warns when the premium exceeds 5% of that factor''s mean-reversion speed. For use from Python only: the volatility factor isn''t stored in the results.'
-    location: "`KnwSvQ.deflator()`, `KnwSvQ`"
-    details: Real Radon-Nikodym-derivative-based pricing kernel built from an already P-measure-simulated `knw_sv` run's own paths. Reweights `r`/`pi`'s own Gaussian shocks under the fitted market price of risk; `v`'s own CIR shock stays at its P-measure value (a documented simplification; the noncentral-chi-square transition-density ratio isn't built). `E^P[D(T)]` matches the Q-measure zero-coupon bond price to within ~0.1-2% only when `risk_premium_v` is near zero; live-tested at realistic calibration scale with a genuinely nonzero `risk_premium_v`, the un-reweighted `v` leg's bias grows with maturity and reaches double digits by a 10-year tenor. See `KnwSvQ`'s Stochastic deflator / Scope sections. Programmatic use only, not wired into `factors.yaml`/`ScenarioSet` yet.
+    summary: 'Builds a discount factor per path from a real-world run, so cash flows can be valued consistently with market prices. Accurate (within about 0.1-2% of the exact price) when the risk premium on the shared volatility factor is near zero. With the premium fitted on US data (2026-10-14) its average misses the model''s own bond prices by about 2% at one year (0.9827 against 0.9620) and 5% at five (0.7606 against 0.7996), and the run warns when the premium exceeds 5% of that factor''s mean-reversion speed. For use from Python only: the volatility factor isn''t stored in the results.'
+    location: 'Python only: `KnwSvQ.deflator` (not in the configuration)'
+    details: Real Radon-Nikodym-derivative-based pricing kernel built from an already P-measure-simulated `knw_sv` run's own paths. Reweights `r`/`pi`'s own Gaussian shocks under the fitted market price of risk; `v`'s own CIR shock stays at its P-measure value (a documented simplification; the noncentral-chi-square transition-density ratio isn't built). `E^P[D(T)]` matches the Q-measure zero-coupon bond price to within ~0.1-2% only when `risk_premium_v` is near zero; with the premium fitted on US data the average is about 2% above the bond price at one year and 5% below it at five. See `KnwSvQ`'s Stochastic deflator / Scope sections. Programmatic use only, not wired into `factors.yaml`/`ScenarioSet` yet.
+    setup: From Python, after fitting the KNW stochastic-volatility pair and its market price of risk. The run's results do not include the volatility factor `v`, so you simulate the rate, inflation and `v` paths yourself and pass them in.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios.models.knw_sv.knw_sv_controller import KnwSv
+      from financescenarios.models.knw_sv_q.knw_sv_q_controller import KnwSvQ
+
+      knw_sv = KnwSv(toolkit)
+      knw_sv.calibrate_triple("interest_rate", "inflation", period="quarterly")
+      knw_sv_q = KnwSvQ(toolkit)
+      knw_sv_q.calibrate_mpr(
+          knw_sv, "interest_rate", "inflation", period="quarterly"
+      )
+
+      rate = knw_sv.params("interest_rate")
+      inflation = knw_sv.params("inflation")
+      # v_path, rate_path, inflation_path: your own paths, scenarios x dates
+      deflator = knw_sv_q.deflator(
+          "interest_rate", v_path, rate_path, inflation_path, rate, inflation
+      )
   - name: Per-currency term structures
     status: partial
     summary: 'Official government curves for 8 markets: the US, euro area, Germany, UK, Japan, Canada, Sweden and Norway. Limits: one country per run, UK has only 5, 10 and 20-year maturities, Japan''s monthly rates don''t revert, and some pricing models still use US data.'
-    location: '`yield_curve.source: "government"` + `yield_curve.country`, `TermStructure`'
+    location: 'Factor set: the `yield_curve` section, `source: government` and `country`'
     details: 'Official government curves for the US, euro area, Germany, UK, Japan, Canada, Sweden and Norway via Finance Toolkit 2.2.2''s `get_government_bond_yield_curve` (keyless). Partial: one country per run (the factor names are not per-country yet), the UK has only 5/10/20-year maturities, Japan''s 2000-onward level shows no mean reversion at a monthly step, and `Hjm`, `risk_neutral_forward_curve` and `knw_sv_q` still anchor on the US Yahoo tickers.'
+    setup: 'In your factor set, switch on the yield curve with `source: government` and pick one country. No API key needed.'
+    setup_lang: yaml
+    setup_code: |-
+      yield_curve:
+        enabled: true
+        source: government   # default: yahoo (four US Treasury yields)
+        country: Germany     # or United States, Euro Area, United Kingdom,
+                             # Japan, Canada, Sweden, Norway
+        period: monthly      # daily, weekly or monthly
   - name: GMDB fallback for thin OECD country coverage
     status: available
     summary: Lets you use the Global Macro Database for countries outside the roughly 38 OECD members, with yearly data only. It also helps for Japan, where OECD rates barely revert to an average and fail the model fit.
-    location: '`source: "gmdb"` on `InterestRateConfig` / `InflationConfig` / `FXConfig` / `UnemploymentConfig`, `InterestRates` / `Inflation` / `FX` / `Unemployment`'
-    details: 'FinanceToolkit''s Global Macro Database (`gmdb_source=True`) is opt-in via `source: "gmdb"`, covering countries outside the OECD''s ~38-member roster; annual-only (`period: "yearly"` required, config-validated). Also fixes a real in-roster case: `factor-sets/default.yaml`''s Japan `interest_rates` entry uses `source: "gmdb"` because OECD''s short/long-term rate series both fail the Hull-White fit''s mean-reversion check (near-unit-root) over the full 2000-present window, while GMDB''s smoother annual series passes.'
+    location: 'Factor set: `source: gmdb` on an `interest_rates`, `inflation`, `unemployment` or `fx` entry, with `period: yearly`'
+    details: 'FinanceToolkit''s Global Macro Database (`gmdb_source=True`), opt-in with `source: gmdb`, covers countries outside the OECD''s ~38 members; yearly only (`period: yearly`, checked by the configuration). The `broad` factor set uses it for Japan, Brazil, Canada, Australia and India: for Japan because the OECD''s short and long rates both fail the Hull-White fit''s mean-reversion check (near-unit-root) over 2000 to today, while GMDB''s smoother yearly series passes.'
+    setup: 'In your factor set, set `source: gmdb` and `period: yearly` on the entry; it works the same way for rates, inflation, unemployment and exchange rates. In a set based on `default`, also switch off the OECD long history and EIOPA anchor for rates, which do not cover these currencies.'
+    setup_lang: yaml
+    setup_code: |-
+      interest_rates:
+        defaults:
+          history_source: null      # switch off the default factor set's
+          history_start_year: null  # long history and EIOPA anchor
+          long_run_anchor: null
+        countries:
+          - name: Brazil
+            source: gmdb      # Global Macro Database
+            period: yearly    # the only frequency it has
+            currency: BRL
   - name: Long-run levels anchored to EIOPA's curves (or DNB's for the euro)
     status: available
     summary: 'Sets the long-run level rates drift toward from EIOPA''s official risk-free curve (or DNB''s for euro pension work), while speed and volatility stay fitted. Example: the US 10-year median moves from 5.2% to 4.1% over 30 years.'
-    location: "`interest_rates[i].long_run_anchor: eiopa` or `dnb` (EUR only, DNB's P-set median 1Y/10Y path, for Dutch pension work), `CalibrationResult.long_run_anchors`, [configuration](/projects/financescenarios/docs/configuration#anchoring-long-run-rate-levels)'s Anchoring long-run rate levels section"
+    location: 'Factor set, on an `interest_rates` entry: `long_run_anchor: eiopa` or `dnb`; see [anchoring long-run rate levels](/projects/financescenarios/docs/configuration#anchoring-long-run-rate-levels)'
     details: 'Each rate''s long-run level follows the 1-year (short) or 10-year (long) forward rate off EIOPA''s latest risk-free curve for its currency (USD, EUR, GBP), ending at the ultimate forward rate; speed and volatility stay fitted. Live: US 10-year median 5.2% to 4.1% over 30 years (NAIC 5.3% to 4.5%); euro 10-year 3.4% at 30 years (DNB P-set 1.8%).'
+    setup: Already on in the `default` factor set. In a factor set of your own, set `long_run_anchor` on real-world Hull-White or CIR rates with constant volatility; `dnb` only on euro entries.
+    setup_lang: yaml
+    setup_code: |-
+      interest_rates:
+        defaults:
+          long_run_anchor: eiopa   # USD, EUR or GBP; dnb for euro entries only
 - topic: Yield curve
   intro: How the full curve of yields across maturities is built and simulated, so you see short and long rates move together, including curve inversions.
   items:
   - name: Nelson-Siegel dynamic curve
     status: available
     summary: Describes the yield curve by three factors, its level, slope and curvature, and lets each drift back toward its own average over time (Diebold & Li, 2006). You get whole curves per path, not just single rates.
-    location: "`yield_curve.enabled`, `TermStructure`"
+    location: 'Factor set: the `yield_curve` section, `enabled: true`'
     details: 'Diebold & Li (2006): per-date cross-sectional level/slope/curvature factors, each simulated as its own OU process.'
+    setup: In your factor set, switch on the `yield_curve` section. It adds three factors (`rate_level`, `rate_slope`, `rate_curvature`) from which every maturity is rebuilt.
+    setup_lang: yaml
+    setup_code: |-
+      yield_curve:
+        enabled: true
+        period: daily    # the history it is fitted on
+        decay: 0.7308    # Nelson-Siegel lambda, Diebold and Li's value (the default)
   - name: Official 12-tenor Treasury par curve as the fit's cross-section
     status: available
     summary: Fits the curve to the official US Treasury curve with 12 maturities, from 1 month to 30 years, giving a much better short end than the default four market tickers. It falls back to those tickers if the download fails.
-    location: '`yield_curve.source: "treasury"`, `TermStructure`'
+    location: 'Factor set: the `yield_curve` section, `source: treasury`'
     details: 'FinanceToolkit''s `fixedincome.get_treasury_rates()` (FMP key, daily): 1 Month through 30 Year instead of the four Yahoo tickers, with real short-end coverage. Yahoo fallback on any fetch failure. The anchor-curve machinery (`hjm`, `risk_neutral_forward_curve`, `knw_sv_q`) still fits the four-ticker set.'
+    setup: 'In your factor set, switch on the yield curve with `source: treasury` and a daily period, and pass an FMP API key when you create the scenarios.'
+    setup_lang: yaml
+    setup_code: |-
+      yield_curve:
+        enabled: true
+        source: treasury   # 1 month to 30 years; default: yahoo (four tickers)
+        period: daily      # required: the Treasury publishes daily
   - name: Curve inversion / negative-spread diagnostics
     status: available
     summary: Reports how often the simulated curves invert, with a short rate above a longer one, and how often a value turns negative. Useful for checking whether the scenarios look plausible.
-    location: "`term_structure_model.curve_inversion_frequency` / `negative_spread_frequency`"
+    location: 'Python: `curve_inversion_frequency` and `negative_spread_frequency` in `financescenarios.factors.term_structure.term_structure_model`'
     details: Fraction of simulated (path, step) cells where a short tenor exceeds a long one, or a reconstructed value is negative.
+    setup: 'From Python, on a run with the yield curve switched on: pass the simulated level, slope and curvature, the two maturities to compare and the curve''s decay.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios.factors.term_structure.term_structure_model import (
+          curve_inversion_frequency,
+          negative_spread_frequency,
+      )
+
+      factors = ("rate_level", "rate_slope", "rate_curvature")
+      level, slope, curvature = (result[name] for name in factors)
+      decay = scenarios.config.yield_curve.decay
+
+      curve_inversion_frequency(
+          level, slope, curvature, short_tenor=0.25, long_tenor=10.0, decay=decay
+      )
+      negative_spread_frequency(level, slope, curvature, tenor=0.25, decay=decay)
   - name: Non-US sovereign curves
     status: partial
     summary: 'Official government curves for 8 markets: the US, euro area, Germany, UK, Japan, Canada, Sweden and Norway, but only one country per run. By default the curve is built from four US Treasury tickers.'
-    location: '`yield_curve.source: "government"` + `yield_curve.country`, `TermStructure`'
+    location: 'Factor set: the `yield_curve` section, `source: government` and `country`'
     details: 'Official government curves for the US, euro area, Germany, UK, Japan, Canada, Sweden and Norway (see Per-currency term structures under Interest rates); one country per run. The default `source: "yahoo"` uses four US Treasury tickers.'
+    setup: 'In your factor set, switch on the yield curve with `source: government` and the country; one country per run.'
+    setup_lang: yaml
+    setup_code: |-
+      yield_curve:
+        enabled: true
+        source: government
+        country: United Kingdom   # only the 5, 10 and 20-year maturities
+        period: monthly
 - topic: Inflation
   intro: How inflation can evolve in the simulated futures, either on its own, tied to interest rates and the business cycle, or matched to what bond markets currently price in.
   items:
   - name: OU fit with target-rate anchoring
     status: available
     summary: Inflation drifts back toward a long-run average. You can tie that average to a separate target, such as a central bank's inflation target, instead of the historical mean.
-    location: "`Inflation`"
-    details: Ornstein-Uhlenbeck fit that can anchor its long-run mean to a separate target-rate series (e.g. a central bank's inflation target).
+    location: 'Factor set, on an `inflation` entry: the default `method: ou`; `beliefs.long_run_mean` sets the target'
+    details: Ornstein-Uhlenbeck fit on year-over-year CPI inflation. Its long-run mean is fitted, or set by `beliefs.long_run_mean` (a number such as a central bank's 2% target, or a path of anchors by year); it is not read from a separate target-rate series.
+    setup: 'Nothing to switch on: every inflation entry uses it. To anchor the long-run level to a target such as 2%, set it as a belief in your factor set; a path of targets by year works too.'
+    setup_lang: yaml
+    setup_code: |-
+      inflation:
+        defaults:
+          beliefs:
+            long_run_mean: 0.02   # 2% a year; leave out to use the fitted level
   - name: GARCH volatility, business-cycle conditioning
     status: available
     summary: 'The same options as for interest rates, applied to inflation: volatility that changes over time, and a push from where the economy is in its business cycle.'
-    location: '`volatility_model: "garch"`, `condition_on_business_cycle: true`, `Inflation`'
+    location: 'Factor set, on an `inflation` entry: `volatility_model: garch` or `condition_on_business_cycle: true` (plus `leading_indicator.enabled`)'
     details: Same mechanisms as interest rates, applied to inflation.
+    setup: In your factor set, set one of the two on the inflation entries, under `defaults` for all. Business-cycle conditioning needs the leading indicator; the two don't combine.
+    setup_lang: yaml
+    setup_code: |-
+      leading_indicator:
+        enabled: true                       # only for condition_on_business_cycle
+      inflation:
+        defaults:
+          condition_on_business_cycle: true # or volatility_model: garch, not both
   - name: Interest-rate conditioning
     status: available
     summary: Makes inflation respond to moves in the paired interest rate, in the spirit of the Phillips curve. When the rate changes, inflation gets a push linked to that change.
-    location: "`condition_on_interest_rate`, `Inflation`"
+    location: 'Factor set, on an `inflation` entry: `condition_on_interest_rate: true` with `interest_rate_name`'
     details: A Phillips-curve-style additive drift term on the paired interest rate's step-to-step change.
+    setup: 'In your factor set, set `condition_on_interest_rate: true` on the inflation entry and name the interest rate it follows. Not with GARCH or business-cycle conditioning.'
+    setup_lang: yaml
+    setup_code: |-
+      inflation:
+        countries:
+          - name: United States
+            condition_on_interest_rate: true
+            interest_rate_name: united_states_short_rate   # an interest_rates entry
   - name: Wilkie AR(1) inflation
     status: available
     summary: Wilkie's (1986) classic inflation model, where each period's inflation partly carries over from the last and drifts toward an average. It drives the rest of his actuarial model chain.
-    location: '`method: "wilkie_ar1"`, `Inflation`'
+    location: 'Factor set, on an `inflation` entry: `method: wilkie_ar1`'
     details: Wilkie's (1986) original AR(1) force-of-inflation process, the anchor the rest of his cascade is driven by.
+    setup: 'In your factor set, set `method: wilkie_ar1` on the inflation entry. Its step is fixed by the data, so `engine.frequency` in your settings must equal the entry''s `period`. Optionally fit it on long history, as Wilkie did.'
+    setup_lang: yaml
+    setup_code: |-
+      inflation:
+        countries:
+          - name: United States
+            method: wilkie_ar1
+            period: monthly            # engine.frequency must be monthly too
+            history_source: shiller    # optional: US inflation since 1872
+            history_start_year: 1919   # Wilkie's own start year
   - name: KNW / KNW-SV coupling
     status: available
     summary: Inflation simulated jointly with interest rates in the DNB-style model, so the two stay consistent. You pair it with an interest-rate entry using the same model.
-    location: '`method: "knw"` / `"knw_sv"`, `Knw` / `KnwSv`'
+    location: 'Factor set, on an `inflation` entry: `method: knw` or `knw_sv` with `interest_rate_name`, paired with a rate of the same method'
     details: Paired with an `interest_rates[]` entry of the same method; see the Interest rates rows above.
+    setup: Set the inflation entry's `method` to the pair's and name its rate with `interest_rate_name`; the rate names it back with `inflation_name`, at the same `period` as the engine.
+    setup_lang: yaml
+    setup_code: |-
+      engine:
+        frequency: quarterly        # settings profile: must equal the pair's period
+      interest_rates:
+        - name: united_states_short_rate
+          source: oecd
+          country: United States
+          period: quarterly
+          method: knw
+          inflation_name: united_states_inflation
+      inflation:
+        - name: united_states_inflation
+          country: United States
+          period: quarterly
+          method: knw
+          interest_rate_name: united_states_short_rate
   - name: Standalone risk-neutral / market-implied inflation
     status: available
     summary: 'The model: inflation moves randomly around the breakeven curve the bond market prices today, for the US (5-30 years), UK (3-40 years) or the euro area through Germany (5-15 years), so the expected price index matches the curve and caps and floors on indexation get a time value. Before the shortest quoted maturity the curve is held at its first quote. The volatility comes from inflation''s own history, not from inflation options. The stochastic-volatility model is the other market-consistent route.'
-    location: '`measure: "risk_neutral"` (`method="ou"`), [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)''s Real-world and risk-neutral measures section'
+    location: 'Factor set, on an `inflation` entry: `measure: risk_neutral` (with `method: ou`); see [real-world and risk-neutral](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)'
     details: 'A Nelson-Siegel instantaneous forward-rate curve fit against the breakeven term structure of the United States (TIPS, 5-30 years), the United Kingdom (Bank of England, RPI, 3-40 years) or the euro area through Germany (Bundesbank, HICP-indexed federal bonds, 5-15 years). Below the shortest quoted maturity the forward is held at the fitted yield there, EIOPA''s constant-forward rule before its first quoted maturity, instead of extrapolating the Nelson-Siegel forward (which on 2026-10-14 started Germany at 5.72% against a 2.28% five-year quote). Inflation is that forward plus a zero-mean Ornstein-Uhlenbeck part with the speed and volatility of its own history and a convexity correction, so E[index] equals the breakeven index (Jarrow-Yildirim style); `risk_neutral_volatility: none` follows the curve exactly. The volatility is historical, not implied from inflation caps and floors.'
+    setup: 'In your factor set, set `measure: risk_neutral` on a US, UK, German or euro area inflation entry; a whole risk-neutral run (`simulate(measure="risk_neutral")`) does this for you where a breakeven curve exists.'
+    setup_lang: yaml
+    setup_code: |-
+      inflation:
+        countries:
+          - name: United States              # or United Kingdom, Germany, Euro Area
+            measure: risk_neutral            # around today's breakeven curve
+            risk_neutral_volatility: history # or none: follow the curve exactly
   - name: TIPS/breakeven-based market-implied inflation
     status: available
     summary: 'The data: market-implied inflation (nominal minus inflation-linked bond yields) for the US, UK and euro area (through Germany), from the US Treasury, the Bank of England and the Bundesbank. No key needed. It does not yet feed the inflation risk premium of the stochastic-volatility pricing model.'
-    location: "`economics.get_breakeven_inflation_expectations(countries=...)` (US Treasury or FRED, Bank of England, Bundesbank), [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)'s Real-world and risk-neutral measures section, Inflation section"
-    details: Wired into `inflation_controller.Inflation.calibrate_risk_neutral()`; reuses `term_structure_model.fit_nelson_siegel_factors`. Not yet used to identify `knw_sv_q`'s own weakly-identified inflation risk premium (a separate, still-open idea).
+    location: Read automatically by a risk-neutral `inflation` entry; the data itself is the Finance Toolkit's `economics.get_breakeven_inflation_expectations`
+    details: Read by `Inflation.calibrate_risk_neutral()`, which fits it with `term_structure_model.fit_nelson_siegel_factors`. Not yet used to identify `knw_sv_q`'s weakly identified inflation risk premium (a separate, still-open idea).
+    setup: 'Nothing to set: a risk-neutral inflation entry fetches the curve. To look at the data itself, ask the Finance Toolkit for it; no key needed.'
+    setup_lang: python
+    setup_code: |-
+      from financetoolkit import Toolkit
+
+      toolkit = Toolkit(["SPY"])
+      toolkit.economics.get_breakeven_inflation_expectations(
+          countries=["United States", "United Kingdom", "Germany"]
+      )
 - topic: Equities
   intro: How stock prices can move in the simulated futures, from calm and crisis periods to market-implied volatility, plus listed stand-ins for private markets and checks against option prices.
   items:
   - name: Regime-switching lognormal
     status: available
     summary: Stocks switch between a calm state and a crisis state, each with its own return and volatility (Ahlgrim, D'Arcy and Gorvett, 2005). By default all markets enter a crisis together, which roughly halves the error in how closely markets move together.
-    location: Default `method`, `Equities`
+    location: 'Factor set, on an `equities` entry: the default `method: regime_switching`; settings: `engine.shared_equity_regimes`'
     details: 'Ahlgrim/D''Arcy/Gorvett''s (2005) two-regime (calm/crisis) lognormal mixture, Baum-Welch EM calibrated. With `engine.shared_equity_regimes: true` (the shipped default settings) every equity''s regime switches draw on one random stream, so markets enter crises together; separate streams halved the simulated cross-equity correlation''s accuracy (mean gap 0.094 against 0.044 shared, `core` set).'
+    setup: 'Nothing to switch on: every equity uses it. You can set the number of regimes per entry, and in your settings profile whether all markets share one calm/crisis switch (on in the shipped settings).'
+    setup_lang: yaml
+    setup_code: |-
+      engine:
+        shared_equity_regimes: true   # settings profile: markets enter crises together
+      equities:
+        - name: us_broad
+          ticker: SPY
+          period: monthly
+          n_regimes: 2                 # calm and crisis
   - name: Wilkie derived equity
     status: available
     summary: Builds total equity returns from simulated dividend yields and dividend growth, as in the Wilkie model, instead of fitting price returns directly. Use it when you want equity returns tied to dividends.
-    location: '`method: "wilkie_derived"`, `Equities`'
+    location: 'Factor set, on an `equities` entry: `method: wilkie_derived` with `dividend_yield_name` and `dividend_growth_name`'
     details: Equity total return derived from Wilkie's own dividend yield/growth processes rather than fit directly on price.
+    setup: In your factor set, add a dividend yield and a dividend growth entry on the same ticker and point the equity at both. The `wilkie` factor set has the full cascade.
+    setup_lang: yaml
+    setup_code: |-
+      equities:
+        - name: equity
+          method: wilkie_derived
+          dividend_yield_name: dividend_yield
+          dividend_growth_name: dividend_growth
+      dividend_yield:
+        - name: dividend_yield
+          ticker: SPY
+          period: monthly
+      dividend_growth:
+        - name: dividend_growth
+          ticker: SPY
+          inflation_name: united_states_inflation   # at that entry's period
   - name: Hibbert regime-switching equity
     status: available
     summary: The Barrie & Hibbert (2001) version of calm and crisis states, where stock returns are modeled on top of the simulated short-term interest rate, so equity returns move with rates.
-    location: '`method: "hibbert_regime_switching"`, `Equities`'
+    location: 'Factor set, on an `equities` entry: `method: hibbert_regime_switching` with `nominal_rate_name`'
     details: Barrie & Hibbert's (2001) own regime-switching equity specification.
+    setup: In your factor set, set the method and name the short rate the excess returns are measured over; both must have the same `period`. Real-world only.
+    setup_lang: yaml
+    setup_code: |-
+      equities:
+        - name: us_broad
+          ticker: SPY
+          period: monthly                              # same as the rate's period
+          method: hibbert_regime_switching
+          nominal_rate_name: united_states_short_rate  # an interest_rates entry
   - name: v-scaled equity (knw_sv)
     status: partial
     summary: Stock returns equal the short rate plus a fixed risk premium, with volatility tied to a shared economic factor. It is fit to history, not to option prices as in the Dutch central bank's model, and lands within 0.5 to 1.6 points a year of its outcomes. All knw_sv entries must use one period equal to the engine's step frequency; the configuration rejects a mismatch, which would otherwise overstate the equity median by 15-20 percentage points a year at monthly steps.
-    location: '`method: "knw_sv"`, `KnwSv`'
+    location: 'Factor set, on an `equities` entry: `method: knw_sv` with `nominal_rate_name` naming a `knw_sv` rate'
     details: 'P-measure, historical-fit-only: drift = paired short rate + constant risk premium, variance scaled by the shared latent factor `v`. Not De Nederlandsche Bank''s own options-calibrated risk premium/variance (eq. 25); this project has no such market data, the same blocker as the Q-measure gap. Live-verified against real DNB CP2022 p50 data: within +0.5 to +1.6pp/year once `engine.frequency` matches this entry''s own `period` (quarterly). A mismatched engine frequency was overshooting by +15-20pp/year (see the Interest rates `"knw_sv"` row above), now hard-rejected by `ScenariosConfig`.'
+    setup: 'Set up the KNW stochastic-volatility pair, then add an equity with `method: knw_sv` that names its rate, at the same `period` as the pair and the engine.'
+    setup_lang: yaml
+    setup_code: |-
+      engine:
+        frequency: quarterly        # settings profile: must equal the pair's period
+      interest_rates:
+        - name: united_states_short_rate
+          source: oecd
+          country: United States
+          period: quarterly
+          method: knw_sv
+          inflation_name: united_states_inflation
+      inflation:
+        - name: united_states_inflation
+          country: United States
+          period: quarterly
+          method: knw_sv
+          interest_rate_name: united_states_short_rate
+      equities:
+        - name: equity
+          ticker: SPY
+          period: quarterly
+          method: knw_sv
+          nominal_rate_name: united_states_short_rate
   - name: Private-market sleeves (listed proxies)
     status: partial
     summary: You can add private equity, infrastructure, hedge funds, private credit and similar assets using listed funds as stand-ins. These are more volatile and more tied to stocks than reported private fund returns, histories start 2006 to 2013, and no smoothing adjustment is applied.
-    location: "`equities[i].asset_class`, `factor-sets/private_markets.yaml`, `portfolios/endowment_model.yaml`"
+    location: 'Factor set, on an `equities` entry: `asset_class`; the `private_markets` factor set has four'
     details: "`asset_class` (Private Equity, Infrastructure, Hedge Funds, Merger Arbitrage, Private Credit, Real Estate, Investment Grade Credit, High Yield Credit) sets the ticker to the listed fund the Finance Toolkit's `get_asset_class_proxies` uses (PSP, IGF, QAI, MNA, BIZD, VNQ, LQD, HYG) and calibrates it like any equity. Partial: listed prices are marked to market daily, so they are more volatile and more correlated with equities than the appraisal-based returns private funds report (live 2026-10-07: private equity 26% volatility, 0.60 correlation with SPY), they are net of fees, and their histories start 2006-2013. No appraisal smoothing or de-smoothing is applied."
+    setup: In your factor set, add an equity entry with `asset_class` instead of a ticker; the listed proxy is filled in. Or run the shipped `private_markets` factor set.
+    setup_lang: yaml
+    setup_code: |-
+      equities:
+        - name: private_equity
+          asset_class: Private Equity   # also Infrastructure, Hedge Funds,
+          period: monthly               # Merger Arbitrage, Private Credit, Real Estate,
+                                        # Investment Grade Credit, High Yield Credit
   - name: Risk-neutral flat-vol GBM
     status: available
     summary: For pricing, stocks grow at the simulated risk-free rate minus the dividend yield, with one constant volatility taken from today's option prices or, if missing, from past price moves. Use it for market-consistent valuation.
-    location: '`measure: "risk_neutral"`, [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)''s Real-world and risk-neutral measures section'
+    location: 'Factor set, on an `equities` entry: `measure: risk_neutral` and `volatility_source`, plus a `dividend_yield` entry on the same ticker; see [real-world and risk-neutral](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)'
     details: 'drift = r - q, where r is `interest_rates[0]`''s simulated rate each step (so with a stochastic forward-curve rate the deflated price stays a martingale; with a flat rate path it is today''s r), volatility from live ATM implied vol (real, per-strike, confirmed against SPY) or realized-vol fallback; raises if paired with `method: "hibbert_regime_switching"`.'
+    setup: 'In your factor set, set `measure: risk_neutral` on the equity and add a dividend yield entry with the same ticker; the drift needs today''s dividend yield. The risk-free rate is the first interest rate''s.'
+    setup_lang: yaml
+    setup_code: |-
+      equities:
+        - name: us_broad
+          ticker: SPY
+          measure: risk_neutral
+          volatility_source: implied   # or svi, heston, realized (no options needed)
+      dividend_yield:
+        - name: spy_yield
+          ticker: SPY                  # required: same ticker
   - name: Business-cycle conditioning of regime-switching (TVTP)
     status: available
     summary: Lets the chance of switching between calm and crisis depend on a leading economic indicator, so crises become more likely when the cycle turns down (Filardo, 1994). It is estimated in two simpler steps rather than the paper's single joint fit.
-    location: '`condition_on_business_cycle: true` (`method: "regime_switching"` only), `Equities`'
+    location: 'Factor set, on an `equities` entry: `condition_on_business_cycle: true` (`method: regime_switching`), plus `leading_indicator.enabled`'
     details: 'Filardo''s (1994) time-varying-transition-probability extension: the Markov chain''s own transition matrix becomes a multinomial-logit function of the leading indicator''s level, not an additive drift term (structurally different from every other `condition_on_business_cycle` flag). Two-step estimation (baseline Baum-Welch EM, then a penalized multinomial-logit regression on the hard-assigned state path), not Filardo''s own joint MLE; a documented simplification.'
+    setup: 'In your factor set, switch on the leading indicator and set `condition_on_business_cycle: true` on a regime-switching equity. The indicator''s `period` must equal `engine.frequency` (both monthly in the shipped profiles).'
+    setup_lang: yaml
+    setup_code: |-
+      leading_indicator:
+        enabled: true
+        period: monthly                     # must equal engine.frequency
+      equities:
+        - name: us_broad
+          ticker: SPY
+          period: monthly
+          condition_on_business_cycle: true # regime_switching only
   - name: Local-vol / smile-consistent skew (Dupire)
     status: not_available
     summary: You cannot simulate stocks whose volatility depends on the price level to match the full option smile with a local-volatility model. Use the Heston option below for smile- and skew-consistent simulation instead.
-    location: "`Toolkit.options`"
+    location: Not in the package; the option data comes from the Finance Toolkit's `options` module
     details: Real per-strike smile data exists (28 expiries deep for SPY) but the smile-to-local-vol transform doesn't, here or in FinanceToolkit. The Heston row below covers smile- and skew-consistent simulation with a stochastic volatility instead.
   - name: Heston stochastic volatility fitted to the option surface
     status: available
     summary: Volatility itself moves randomly and tends to rise when stocks fall, fitted to today's option prices (Heston, 1993). For SPY it matches 545 quotes to within 0.5 volatility points. Without option data it falls back to a constant volatility.
-    location: '`equities[i].volatility_source: "heston"`, `Equities.calibrate_heston`, `heston_model`'
+    location: 'Factor set, on an `equities` entry: `measure: risk_neutral` with `volatility_source: heston`, plus a `dividend_yield` entry on the same ticker'
     details: 'Heston (1993) fitted by vega-weighted least squares to FinanceToolkit''s SVI surface at the expirations nearest 1-12 months (strikes within 20% of spot), priced with Lewis''s single-integral formula and simulated with full truncation (Lord et al. 2010). The variance''s shock is the engine''s equity shock mixed with an independent one to reach the fitted correlation. Live SPY 2026-10-07: 545 quotes, rms error 0.5 vol points, rho -0.51. Falls back to a flat realized-vol GBM without an options market. Rates volatility is not options-implied: the MOVE index is one number, which cannot identify both Hull-White parameters.'
+    setup: 'In your factor set, make the equity risk-neutral with `volatility_source: heston` and add its dividend yield. The ticker needs a listed options market; without one it falls back to a constant volatility.'
+    setup_lang: yaml
+    setup_code: |-
+      equities:
+        - name: us_broad
+          ticker: SPY
+          measure: risk_neutral
+          volatility_source: heston   # fitted to the option surface, 1-12 months
+      dividend_yield:
+        - name: spy_yield
+          ticker: SPY
   - name: SVI vol surface as the risk-neutral vol source
     status: available
     summary: Takes the single volatility used for pricing from a smoothed, consistency-checked fit of all option prices, instead of from one option. The simulation still uses one constant volatility; only the source of that number improves.
-    location: '`equities[i].volatility_source: "svi"`, [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)''s Real-world and risk-neutral measures section'
+    location: 'Factor set, on an `equities` entry: `measure: risk_neutral` with `volatility_source: svi`; see [real-world and risk-neutral](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)'
     details: Reads the ATM volatility off FinanceToolkit's SVI-fitted, calendar-arbitrage-checked surface (`Toolkit.options.get_volatility_surface`) at the longest fitted expiration, instead of one raw per-strike Black-Scholes inversion. The simulated process stays flat-vol (a full smile-consistent local/stochastic-vol simulation is the Dupire row above); the surface improves where that one number comes from.
+    setup: 'As for the risk-neutral equity, with `volatility_source: svi`.'
+    setup_lang: yaml
+    setup_code: |-
+      equities:
+        - name: us_broad
+          ticker: SPY
+          measure: risk_neutral
+          volatility_source: svi   # ATM volatility from the fitted surface
+      dividend_yield:
+        - name: spy_yield
+          ticker: SPY
   - name: Market-implied risk-neutral density (Breeden-Litzenberger) validation
     status: available
     summary: A check that compares the simulated spread of future stock prices for pricing with the spread implied by today's option prices at the same expiry. You run it directly to see how close the two are.
-    location: "`financescenarios/validation/equity_risk_neutral/`, [validation-and-testing](/projects/financescenarios/docs/validation)"
+    location: 'Python: `EquityRiskNeutralValidation` in `financescenarios.validation.equity_risk_neutral`; see [validation and testing](/projects/financescenarios/docs/validation)'
     details: Compares a risk-neutral flat-vol GBM's simulated terminal distribution against FinanceToolkit's real market-smile-implied density (Breeden-Litzenberger) at the same resolved expiration, via Wasserstein-1 distance + one-sample KS. Called directly, like the rest of `financescenarios/validation/`.
+    setup: 'From Python, with a Finance Toolkit that includes the ticker: give the risk-free rate and dividend yield as decimals and the horizon in years.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios.validation.equity_risk_neutral.equity_risk_neutral_controller import (
+          EquityRiskNeutralValidation,
+      )
+
+      table, stats = EquityRiskNeutralValidation(toolkit).compare(
+          "us_broad", "SPY", risk_free_rate=0.04, dividend_yield=0.013,
+          target_horizon_years=0.25, volatility_source="implied",
+      )
 - topic: Credit
   intro: How corporate credit spreads, the spread curve and rating changes can evolve, so scenarios capture the extra yield and default risk of company bonds.
   items:
   - name: Spread-level OU factor
     status: available
     summary: A credit spread drifts back toward its long-run average, using US spreads by rating or maturity, Moody's spreads from 1953, German or Australian corporate spreads, or euro-area borrowing costs. Euro and UK spreads by rating are not available because that data is licensed.
-    location: "`credit[]`, `Credit`"
+    location: 'Factor set: a `credit` entry with `dimension` and its bucket'
     details: 'One spread per entry, fit as a mean-reverting OU process: the ICE BofA option-adjusted spread by maturity or rating (FRED serves only the last three years), or Moody''s Aaa or Baa spread over the 10-year Treasury, or Baa minus Aaa (`dimension: moodys`, monthly from 1953). Outside the US: `dimension: corporate` for Germany''s all-ratings corporate spread (Bundesbank, from 1957) or Australia''s A/BBB spreads at 3-10 years (RBA, from 2005), and `dimension: borrowing_cost` for the ECB''s composite cost of borrowing for companies (euro area or a member, from 2003; a rate level, not a spread). No euro or UK spread by rating: iBoxx and ICE BofA euro indices are licensed. `historical_data` now reads each dimension''s own source (it read ICE BofA for every entry, so a `moodys` entry failed there).'
+    setup: In your factor set, add a `credit` entry and pick the spread with `dimension` and `rating_bucket` or `maturity_bucket`. Needs a FRED key for the US series.
+    setup_lang: yaml
+    setup_code: |-
+      credit:
+        - name: baa_aaa
+          dimension: moodys          # or maturity, rating, corporate,
+                                     # borrowing_cost
+          rating_bucket: Baa - Aaa   # moodys: Aaa, Baa or Baa - Aaa
+          period: monthly
   - name: Credit term structure
     status: available
-    summary: Simulates the whole US investment-grade spread curve across maturities, using monthly data from 1984 or your own bond data. Use it instead of a single spread when maturity matters.
-    location: "`credit_term_structure`, `Credit`"
-    details: Nelson-Siegel level/slope/curvature fit on the Treasury's HQM corporate spread curve (monthly from 1984, US investment grade) or, opt-in, a real bond panel, reusing `yield_curve`'s own machinery; a richer, opt-in alternative to the single-bucket `credit` factor.
+    summary: Simulates the whole US investment-grade spread curve across maturities, using the Treasury's monthly data from 1984 or a public panel of traded bonds. Use it instead of a single spread when maturity matters.
+    location: 'Factor set: the `credit_term_structure` section, `enabled: true`'
+    details: Nelson-Siegel level/slope/curvature fit on the Treasury's HQM corporate spread curve (monthly from 1984, US investment grade) or, opt-in, the Open Source Bond Asset Pricing TRACE panel (2002-2025), reusing `yield_curve`'s machinery; a richer alternative to the single-bucket `credit` factor.
+    setup: 'In your factor set, switch on the `credit_term_structure` section and pass a FRED key. `source: bond_panel` fits the public TRACE bond panel instead (a 1.8 GB download).'
+    setup_lang: yaml
+    setup_code: |-
+      credit_term_structure:
+        enabled: true
+        source: hqm      # Treasury HQM curve, 2-30 years; or bond_panel
+        period: monthly  # monthly, quarterly or yearly
   - name: GARCH volatility, business-cycle conditioning
     status: available
     summary: Lets spread volatility rise after large shocks and lets spreads respond to the business cycle, as for interest rates and real estate.
-    location: '`volatility_model: "garch"`, `condition_on_business_cycle: true`, `Credit`'
+    location: 'Factor set, on a `credit` entry: `volatility_model: garch` or `condition_on_business_cycle: true` (plus `leading_indicator.enabled`)'
     details: Same mechanism as interest rates/real estate.
+    setup: In your factor set, set one of the two on the `credit` entry; business-cycle conditioning needs the leading indicator switched on.
+    setup_lang: yaml
+    setup_code: |-
+      credit:
+        - name: baa_aaa
+          dimension: moodys
+          rating_bucket: Baa - Aaa
+          period: monthly
+          volatility_model: garch   # or condition_on_business_cycle: true, not both
   - name: Rating-migration modeling
     status: available
     summary: Simulates rating upgrades, downgrades, defaults and losses for a portfolio, driven by one credit cycle that makes bad years worse for everyone, using EU rating agency data. Spreads are not linked to ratings, recovery is fixed, and all sectors share one cycle.
-    location: "`credit_migration`, `CreditMigration`, `rating_migration`"
+    location: 'Factor set: the `credit_migration` section; then `rating_migration(result, holdings)` in Python'
     details: 'One-factor credit cycle (Vasicek 2002; Belkin, Suchower and Forest 1998): a through-the-cycle transition matrix and yearly default rates from ESMA''s CEREP (any EU-registered agency), a fitted asset correlation, and a simulated `credit_cycle` that tilts the matrix each year; `rating_migration` rolls a portfolio''s ratings, defaults and losses forward per simulation. Spreads are not derived from the ratings, recovery is a fixed input, and the cycle is one index for all sectors.'
+    setup: 'In your factor set, switch on `credit_migration` and pick the agency; this adds the `credit_cycle` factor. After the run, call `rating_migration(result, {"A": 40, "BBB": 50, "BB": 10}, recovery_rate=0.4)` with your holdings by rating.'
+    setup_lang: yaml
+    setup_code: |-
+      credit_migration:
+        enabled: true
+        agency: S&P             # as ESMA's CEREP names it, e.g. Moody's
+        rating_type: corporate  # or sovereign, structured_finance, covered_bonds
 - topic: FX
   intro: How exchange rates can move in the simulated futures, either from their own history or tied to the interest-rate gap between two currencies.
   items:
   - name: Real-world GBM
     status: available
     summary: Exchange rates move randomly with the volatility seen in their own history, by default without carrying the past trend forward (see Trend-free exchange rates below). The basic choice for currency exposure.
-    location: "`FX`"
+    location: 'Factor set: an `fx` entry'
     details: 'Geometric Brownian motion fit on historical exchange-rate returns, by default on end-of-period BIS rates (`end_of_period: true`), since changes of period averages keep only about two-thirds of a random walk''s variance (Working 1960); GMDB averages are scaled up by that factor.'
+    setup: In your factor set, add an `fx` entry per currency against the US dollar.
+    setup_lang: yaml
+    setup_code: |-
+      fx:
+        - name: jpy
+          country: Japan    # the euro is EA20
+          period: monthly
+          drift_mode: random_walk   # default; historical keeps the fitted trend
   - name: 'Risk-neutral: covered interest-rate parity drift'
     status: available
-    summary: For pricing, the exchange rate drifts by the gap between the two currencies' simulated interest rates, so currency forwards stay consistent with rates.
-    location: '`measure: "risk_neutral"`, [configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)''s Real-world and risk-neutral measures section'
-    details: drift = domestic rate - foreign rate, both sourced from already-calibrated `interest_rates[]` entries.
+    summary: For pricing, the exchange rate drifts by today's gap between the two currencies' interest rates, so currency forwards stay consistent with rates.
+    location: 'Factor set, on an `fx` entry: `measure: risk_neutral`, plus `interest_rates` entries for the United States and the same `country`; see [real-world and risk-neutral](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)'
+    details: 'Garman-Kohlhagen drift: the foreign minus the US short rate at today''s levels, fixed for the run, for a rate quoted in foreign currency per dollar; volatility from history. Both rates come from calibrated `interest_rates[]` entries, matched by `country`. To follow the simulated rate paths instead, use `drift_mode: irp`.'
+    setup: 'In your factor set, set `measure: risk_neutral` on the `fx` entry. The run needs an interest rate entry for the United States and one whose `country` matches the pair''s (United Kingdom here; the euro''s `EA20` has no rate entry in the shipped sets).'
+    setup_lang: yaml
+    setup_code: |-
+      fx:
+        - name: gbp
+          country: United Kingdom   # needs a United Kingdom interest rate entry
+          measure: risk_neutral
   - name: Interest-rate-parity-consistent drift under the real-world measure
     status: available
     summary: Applies the same interest-rate-gap drift in real-world scenarios too, so exchange rates move consistently with the simulated rate paths.
-    location: '`drift_mode: "irp"`, `FX`'
+    location: 'Factor set, on an `fx` entry: `drift_mode: irp` with `domestic_rate_name` and `foreign_rate_name`'
     details: Closes the "FX independent of correlated rate paths" gap for real-world runs too, not just risk-neutral ones.
+    setup: 'In your factor set, set `drift_mode: irp` on the `fx` entry and name the US dollar rate and the foreign rate it follows.'
+    setup_lang: yaml
+    setup_code: |-
+      fx:
+        - name: eur
+          country: EA20             # the euro area
+          drift_mode: irp
+          domestic_rate_name: united_states_short_rate   # required: the dollar leg
+          foreign_rate_name: eurozone_short_rate         # default: <country>_short_rate
   - name: Per-currency term structures for a worldwide multi-currency build
     status: not_available
     summary: You cannot yet simulate full yield curves for several currencies side by side. A non-US government curve can be fitted, but only one curve per run.
-    location: "`TermStructure`"
+    location: Not in the package; one government curve per run through the `yield_curve` section
     details: A non-US government curve can now be fitted (see Interest rates above), but only one curve per run, so several currencies' curves cannot yet be simulated side by side.
   - name: Trend-free exchange rates
     status: available
     summary: 'Keeps the historical volatility but drops the past trend, so the median exchange rate stays at today''s level (a random walk, Meese and Rogoff, 1983). It is the default; `drift_mode: historical` carries the fitted trend forward instead.'
-    location: '`drift_mode: "random_walk"`, `FX`'
+    location: 'Factor set, on an `fx` entry: `drift_mode: random_walk` (the default)'
     details: Keeps the historical volatility but not the sample's trend, so the median rate stays at today's level (random walk, Meese and Rogoff 1983); the default `drift_mode` since Hibbert, Mowbray and Turnbull (2001, section 9.3) have exchange rates respect purchasing power parity at long horizons.
+    setup: 'Nothing to switch on: it is the default. To carry the historical trend forward instead, set `drift_mode: historical`.'
+    setup_lang: yaml
+    setup_code: |-
+      fx:
+        - name: eur
+          country: EA20
+          drift_mode: random_walk   # default; or historical, irp
 - topic: Multi-currency
   intro: How far scenarios can handle several currencies at once, from tagging each factor with its currency to converting results into one reporting currency.
   items:
   - name: Per-factor currency metadata
     status: available
     summary: You can tag most factors with their currency. For now this tag is descriptive only and does not change the simulation.
-    location: "`currency` field, most factor configs"
+    location: 'Factor set: `currency` on rate, inflation, equity, FX, credit, commodity and real estate entries'
     details: Phase 1 of the multi-currency re-architecture; descriptive metadata in v1.
+    setup: In your factor set, set `currency` (a three-letter ISO code) on each entry; reporting and portfolios read it.
+    setup_lang: yaml
+    setup_code: |-
+      equities:
+        - name: europe
+          ticker: VGK
+          currency: USD    # the listing currency: VGK trades in dollars
   - name: Post-simulation currency conversion
     status: available
     summary: Converts simulated results into one reporting currency via US dollar exchange rates. It refuses to convert rates and ratios, which have no currency, rather than produce wrong numbers.
-    location: "`financescenarios/reporting/`, `Reporting`"
+    location: 'Settings: `reporting.reporting_currency`; then `Reporting(result, config).convert(factor)` in Python'
     details: 'Phase 2: triangulates through USD via configured `fx[]` legs; rejects rate/ratio factors outright rather than silently misconverting them.'
+    setup: 'Set the reporting currency in your settings profile (`reporting: {reporting_currency: EUR}`), make sure the run has the `fx` entries for each currency, then convert a factor after the run.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios.reporting.reporting_controller import Reporting
+
+      # settings profile: reporting: {reporting_currency: EUR}
+      in_euros = Reporting(result, scenarios.config).convert("us_broad")
   - name: No-arbitrage-consistent FX drift (real-world)
     status: available
     summary: Exchange rates drift by the interest-rate gap between currencies in real-world scenarios too, keeping currencies consistent with rates. See the FX section above.
-    location: '`drift_mode: "irp"`, `FX`'
+    location: 'Factor set, on an `fx` entry: `drift_mode: irp` with `domestic_rate_name` and `foreign_rate_name`'
     details: Phase 3; see FX rows above.
+    setup: 'The same switch as under FX: `drift_mode: irp` on the `fx` entry, naming both rates.'
+    setup_lang: yaml
+    setup_code: |-
+      fx:
+        - name: eur
+          country: EA20             # the euro area
+          drift_mode: irp
+          domestic_rate_name: united_states_short_rate   # required: the dollar leg
+          foreign_rate_name: eurozone_short_rate         # default: <country>_short_rate
   - name: Genuinely worldwide per-currency term structures
     status: partial
     summary: 'You can simulate the full government yield curve of one country per run: the US, euro area, Germany, UK, Japan, Canada, Sweden or Norway. Several countries'' curves side by side in the same run are not possible yet.'
-    location: "`term_structure_model.YIELD_CURVE_TENORS`"
+    location: 'Factor set: the `yield_curve` section, `source: government` and `country`'
     details: '`yield_curve.source: "government"` fits the official government curve of one country per run: the US, euro area, Germany, UK, Japan, Canada, Sweden or Norway (Finance Toolkit 2.2.2''s `get_government_bond_yield_curve`, keyless). Several currencies'' curves side by side in one run are not available yet.'
+    setup: 'One country''s curve per run: in your factor set, switch on the yield curve with `source: government`.'
+    setup_lang: yaml
+    setup_code: |-
+      yield_curve:
+        enabled: true
+        source: government
+        country: Japan     # one of 8 countries; one per run
+        period: monthly
 - topic: Commodities
   intro: How commodity prices can move in the simulated futures, with prices pulled back toward an equilibrium level and, optionally, a separate short-term and long-term component.
   items:
   - name: Single-factor Schwartz (1997)
     status: available
     summary: The commodity price drifts back toward a long-run average level, with random shocks around it. A simple choice when you need one commodity price path.
-    location: '`method: "single_factor"`, `Commodities`'
+    location: 'Factor set: a `commodities` entry, `method: single_factor` (the default)'
     details: Mean-reverting OU process on the log spot price.
+    setup: In your factor set, add a `commodities` entry with its futures ticker.
+    setup_lang: yaml
+    setup_code: |-
+      commodities:
+        - name: gold
+          ticker: GC=F     # e.g. CL=F (WTI), BZ=F (Brent), NG=F, HG=F
+          period: daily
   - name: Two-factor Schwartz & Smith (2000)
     status: available
     summary: Splits the commodity price into a short-term deviation that fades and a long-run level that moves slowly, calibrated to futures prices with a simplified method. The resulting price works in portfolios and currency conversion like any other commodity.
-    location: '`method: "schwartz_smith"`, `Commodities`'
+    location: 'Factor set, on a `commodities` entry: `method: schwartz_smith`'
     details: Short-term deviation plus long-run equilibrium decomposition; calibrated against real forward-curve data with a documented rolling-mean/term-structure-regression simplification (the paper's own Kalman-filter MLE needs a historical futures panel this project doesn't have). `simulate()` attaches the reconstructed spot price (`exp(chi + xi)`) under the entry's own name, so the entry is usable as a portfolio sleeve/reporting-currency conversion like any other commodity; the `<name>_chi`/`<name>_xi` components stay non-investable latent state. Simulated chi/xi shock correlation comes from the engine's dependence estimate over the decomposition-derived series, not the forward-curve-fit `rho` (which only feeds risk-neutral pricing), so the simulated futures-vol term structure need not match the forward-curve fit exactly.
+    setup: 'In your factor set, set `method: schwartz_smith` on a commodity with a futures curve in the Finance Toolkit, such as crude oil or natural gas.'
+    setup_lang: yaml
+    setup_code: |-
+      commodities:
+        - name: oil
+          ticker: CL=F
+          method: schwartz_smith
+          contracts: 12                # monthly futures used in the fit
+          long_term_window_years: 3.0  # trailing average for the long-run level
   - name: Risk-neutral Q-mode
     status: available
     summary: Simulates commodity prices for pricing, where they grow in line with market prices rather than expected real-world returns. It requires the two-factor model; the single-factor model has no pricing version.
-    location: '`measure: "risk_neutral"` (requires `method: "schwartz_smith"`), `Commodities`'
+    location: 'Factor set, on a `commodities` entry: `measure: risk_neutral` with `method: schwartz_smith`'
     details: Single-factor Schwartz has no defined risk-neutral leg.
+    setup: 'In your factor set, set `measure: risk_neutral` on a two-factor commodity.'
+    setup_lang: yaml
+    setup_code: |-
+      commodities:
+        - name: oil
+          ticker: CL=F
+          method: schwartz_smith   # required
+          measure: risk_neutral    # fitted to the futures curve
   - name: GARCH volatility, business-cycle conditioning
     status: available
     summary: Lets volatility rise after large shocks and lets the price respond to the business cycle, as for interest rates and real estate. Works with the single-factor model only.
-    location: '`volatility_model: "garch"` / `condition_on_business_cycle: true` (`method: "single_factor"` only), `Commodities`'
+    location: 'Factor set, on a `commodities` entry: `volatility_model: garch` or `condition_on_business_cycle: true` (`method: single_factor` only)'
     details: Same mechanism as interest rates/real estate/credit; doesn't apply to `schwartz_smith` (a different two-factor shape).
+    setup: In your factor set, set one of the two on a single-factor commodity; business-cycle conditioning needs the leading indicator switched on.
+    setup_lang: yaml
+    setup_code: |-
+      commodities:
+        - name: gold
+          ticker: GC=F
+          period: daily
+          volatility_model: garch   # or condition_on_business_cycle: true, not both
 - topic: Real estate
   intro: How property prices can move in the simulated futures, using residential house prices or a US commercial index, and what commercial data is missing.
   items:
   - name: Residential house-price-growth OU
     status: available
     summary: Simulates house-price growth from OECD data, drifting back toward its long-run average. Use it for residential property exposure.
-    location: "`real_estate.enabled`, `RealEstate`"
+    location: 'Factor set: the `real_estate` section, `enabled: true`'
     details: OECD residential house-price growth, fit as a mean-reverting OU process.
+    setup: In your factor set, switch on the `real_estate` section and pick the country.
+    setup_lang: yaml
+    setup_code: |-
+      real_estate:
+        enabled: true
+        country: United States   # any OECD country
+        period: quarterly
   - name: GARCH volatility, business-cycle conditioning
     status: available
     summary: Lets house-price volatility rise after large shocks and lets growth respond to the business cycle, as for interest rates and credit.
-    location: "`real_estate.volatility_model` / `condition_on_business_cycle`, `RealEstate`"
+    location: 'Factor set, in the `real_estate` section: `volatility_model: garch` or `condition_on_business_cycle: true` (plus `leading_indicator.enabled`)'
     details: Same mechanism as interest rates/credit.
+    setup: In your factor set, set one of the two in the `real_estate` section; business-cycle conditioning needs the leading indicator switched on.
+    setup_lang: yaml
+    setup_code: |-
+      real_estate:
+        enabled: true
+        volatility_model: garch   # or condition_on_business_cycle: true, not both
   - name: NCREIF-calibrated commercial appraisal-based process
     status: not_available
     summary: You cannot calibrate commercial property to appraisal-based returns as in the original paper, because no open equivalent of that data exists. The residential factor is a valid real-estate factor of its own but does not replace it.
-    location: "`RealEstate`"
+    location: Not in the package; the `real_estate` section has residential and transaction-based commercial data
     details: No open NCREIF equivalent exists; the residential factor is a legitimate real-world factor in its own right, not a substitute for the paper's original calibration.
   - name: Commercial real-estate data (FRED/IMF, not NCREIF)
     status: available
     summary: Simulates US commercial property prices from a quarterly transaction-based index, which needs a FRED API key. It reflects actual sales, not appraisals, so it still differs from the original paper's data.
-    location: '`real_estate.source: "commercial"`, `RealEstate`'
+    location: 'Factor set: the `real_estate` section, `source: commercial`'
     details: US-only, quarterly-only, requires a FRED API key; transaction-based index, not appraisal-based, so still not a substitute for the paper's original NCREIF calibration (see row above).
+    setup: 'In your factor set, switch on real estate with `source: commercial` (United States, quarterly) and pass a FRED key.'
+    setup_lang: yaml
+    setup_code: |-
+      real_estate:
+        enabled: true
+        source: commercial       # default: house_price
+        country: United States   # required
+        period: quarterly        # required
 - topic: Dividend yield / growth
   intro: How dividend yields and dividend growth can evolve, which matters for income-focused portfolios and for equity returns built from dividends.
   items:
   - name: Trailing-window mean-reverting log-yield
     status: available
     summary: Simulates a dividend yield that drifts back toward its long-run average, fit on yields computed from past prices and dividends (Ahlgrim, D'Arcy and Gorvett, 2005).
-    location: "`dividend_yield[]`, `DividendYield`"
+    location: 'Factor set: a `dividend_yield` entry'
     details: Ahlgrim/D'Arcy/Gorvett's (2005) eq. 3.17 process fit on a derived trailing dividend yield (raw `Close`/`Dividends`, not `Adj Close`).
+    setup: In your factor set, add a `dividend_yield` entry for a dividend-paying ticker.
+    setup_lang: yaml
+    setup_code: |-
+      dividend_yield:
+        - name: spy_yield
+          ticker: SPY
+          window: 252    # trading days of dividends in one yield
+          period: daily
   - name: Dividend growth
     status: available
     summary: Simulates dividend growth linked to inflation and the dividend yield. It feeds the Wilkie equity model, which builds stock returns from dividends.
-    location: "`dividend_growth[]`, `DividendGrowth`"
+    location: 'Factor set: a `dividend_growth` entry with `inflation_name` and `dividend_yield_name`'
     details: Feeds Wilkie's derived-equity process; carries forward inflation and the paired dividend yield's own residual.
+    setup: In your factor set, add a dividend growth entry that names an inflation entry and a plain dividend yield entry; the yield must be fitted at the inflation entry's period.
+    setup_lang: yaml
+    setup_code: |-
+      dividend_yield:
+        - name: spy_yield
+          ticker: SPY
+          period: monthly                           # the inflation entry's period
+      dividend_growth:
+        - name: spy_dividend_growth
+          ticker: SPY
+          inflation_name: united_states_inflation
+          dividend_yield_name: spy_yield
   - name: GARCH volatility, business-cycle conditioning
     status: available
     summary: Lets dividend-yield volatility rise after large shocks or respond to the business cycle. These cannot be combined with inflation conditioning, and a dividend growth entry cannot pair with a yield that uses them.
-    location: '`volatility_model: "garch"` / `condition_on_business_cycle: true`, `DividendYield`'
+    location: 'Factor set, on a `dividend_yield` entry: `volatility_model: garch` or `condition_on_business_cycle: true` (plus `leading_indicator.enabled`)'
     details: Same mechanism as commodities; each mutually exclusive with `condition_on_inflation` (a different, log-space covariate mechanism). A `dividend_growth[]` entry can't pair with a GARCH- or business-cycle-conditioned `dividend_yield[]` entry, because its residual reconstruction needs the plain log-space fit.
+    setup: In your factor set, set one of the two on the `dividend_yield` entry. Neither combines with `condition_on_inflation`, and a dividend growth entry can't use such a yield.
+    setup_lang: yaml
+    setup_code: |-
+      leading_indicator:
+        enabled: true                        # only for condition_on_business_cycle
+      dividend_yield:
+        - name: spy_yield
+          ticker: SPY
+          condition_on_business_cycle: true  # or volatility_model: garch, not both
   - name: Live calibration on an FMP Free-tier key
     status: partial
     summary: Works, but the free data plan returns only the last 5 dividend records, far short of the roughly 11 years needed. Running with no API key at all avoids this limit.
-    location: FinanceToolkit's `fmp_model.get_historical_data` (`dividend_url`)
+    location: 'Data access: the Finance Toolkit''s `fmp_model.get_historical_data` (`dividend_url`)'
     details: The Free-plan dividend endpoint caps history at the 5 most-recent records project-wide, short of the ~11-year trailing window needed. No API key at all works better (falls back to a path with no such cap); not a bug in this repo.
+    setup: Nothing to configure. If you have only a Free-plan key, leave it out (and leave `FINANCIAL_MODELING_PREP_API_KEY` unset) so dividends come from a source without the 5-record cap.
+    setup_lang: python
+    setup_code: |-
+      # no api_key, and FINANCIAL_MODELING_PREP_API_KEY unset
+      scenarios = Scenarios.from_profiles(settings="default", factor_set="broad")
 - topic: Unemployment / leading indicator
   intro: How unemployment and a business-cycle indicator evolve and link to inflation, so other factors can respond to where the economy is in the cycle.
   items:
   - name: OU fit, Phillips-curve coupling to inflation
     status: available
     summary: Unemployment drifts back toward its long-run average and is linked to inflation, as in the Phillips curve. It is part of every scenario run.
-    location: Always-on MVP factor, `Unemployment`
+    location: 'Factor set: the `unemployment` section (required, at least one entry)'
     details: Every scenario run calibrates this regardless of config.
+    setup: 'Always part of a run: every factor set has an `unemployment` section, each country paired with its own inflation entry. You can add your view of the natural rate.'
+    setup_lang: yaml
+    setup_code: |-
+      unemployment:
+        countries:
+          - name: United States     # pairs with united_states_inflation
+            beliefs:
+              long_run_mean: 0.045  # optional: 4.5%
   - name: Leading indicator (business-cycle) factor
     status: available
     summary: Simulates the OECD composite leading indicator, which signals turns in the economy. Other factors can use it to respond to the business cycle.
-    location: "`leading_indicator.enabled`, `LeadingIndicator`"
+    location: 'Factor set: the `leading_indicator` section, `enabled: true`'
     details: OECD composite leading indicator, correlation-linked and usable as a conditioning covariate for other factors.
+    setup: In your factor set, switch on the `leading_indicator` section (on in the shipped sets).
+    setup_lang: yaml
+    setup_code: |-
+      leading_indicator:
+        enabled: true
+        country: United States
+        period: monthly
   - name: Business-cycle conditioning of unemployment's own Phillips-curve term
     status: available
     summary: Lets unemployment respond to changes in the leading indicator in addition to inflation. The indicator and the inflation input must use the same data frequency.
-    location: "`condition_on_business_cycle: true`, `Unemployment`"
+    location: 'Factor set, on an `unemployment` entry: `condition_on_business_cycle: true`, plus `leading_indicator.enabled`'
     details: A genuine second covariate (the leading indicator's own change) stacked onto the existing inflation term, fit directly via `calibration_model._fit_ou_drift`'s multi-regressor support rather than the shared single-covariate `OUCovariateParams` mechanism other factors use. Requires `leading_indicator.period` to match the paired inflation entry's period.
+    setup: 'In your factor set, switch on the leading indicator and set `condition_on_business_cycle: true` on the unemployment entry. The indicator''s `period` must equal that of the paired inflation entry.'
+    setup_lang: yaml
+    setup_code: |-
+      leading_indicator:
+        enabled: true
+        period: monthly                       # the paired inflation entry's period
+      unemployment:
+        countries:
+          - name: United States               # its inflation is monthly too
+            condition_on_business_cycle: true
 - topic: Mortality
   intro: How death rates by age can change over time, which matters for pension and life insurance liabilities.
   items:
   - name: Cairns-Blake-Dowd two-factor (M1)
     status: available
     summary: 'Simulates death rates by age with two moving parts: the overall level and how fast mortality rises with age. Uses Eurostat life tables for any European Economic Area country, or a table you supply for any country.'
-    location: "`mortality.enabled`, `Mortality`"
+    location: 'Factor set: the `mortality` section, `enabled: true`'
     details: 'Level plus age-slope, each a random walk with drift; data from Eurostat''s life tables for any European Economic Area country (`mortality.source: eurostat`) or a table the caller supplies (any country, e.g. the Human Mortality Database).'
+    setup: 'In your factor set, switch on `mortality` with `source: eurostat` and a European Economic Area country, or keep `source: supplied` and pass your own table to `calibrate()`.'
+    setup_lang: yaml
+    setup_code: |-
+      mortality:
+        enabled: true
+        source: eurostat   # or supplied: your own table
+        country: Germany
+        sex: total         # or male, female
+        min_age: 60
+        max_age: 84
   - name: CBD cohort-effect extensions (M7/M8) or Lee-Carter
     status: not_available
     summary: You cannot use richer mortality models that capture effects by birth year, or the Lee-Carter model. The basic two-factor model was chosen as a reasonable first scope.
-    location: "`Mortality`"
+    location: Not in the package; the `mortality` section has the two-factor model only
     details: M1 was a reasonable v1 scope per Cairns/Blake/Dowd/Coughlan/Epstein/Ong/Balevich's (2009) own comparison; richer alternatives aren't built.
 - topic: Dependence / tail behavior
   intro: How the simulated markets move together, including whether they tend to crash at the same time, which drives diversification and tail risk in every scenario.
@@ -392,22 +1050,39 @@
   - name: Empirically-estimated correlation
     status: available
     summary: Correlations between factors are estimated from history and, by default, pulled toward zero by an amount the data set, larger when they rest on few observations, so noise in the data does not distort them. Out-of-sample tests showed this reduced correlation errors by 1.6% to 7.5%.
-    location: "`dependence_model.py`, `Dependence`"
+    location: 'Settings: `engine.correlation_shrinkage` and `engine.correlation_method`'
     details: 'By default (`engine.correlation_shrinkage: auto`) the data-driven Schäfer-Strimmer (2005) intensity toward no correlation (their target D), using each pair''s own overlap; a number in [0, 1] instead shrinks toward the constant average correlation at that fixed intensity (Ledoit-Wolf, whose target they say does not suit a mix of asset classes); projected to the nearest valid correlation matrix (Higham). Out of sample on the default factor set (train before 2012/2016, score after) `auto` lowered the correlation RMSE by 7.5%/1.6%; a common coarser estimation frequency and a statistical factor model were tested and did worse. The repair size and intensity are recorded per calibration and graded in release reports.'
+    setup: On by default. In your settings profile you can fix the shrinkage instead of the data-driven amount, or estimate on complete rows only.
+    setup_lang: yaml
+    setup_code: |-
+      engine:
+        correlation_shrinkage: auto      # or a number in [0, 1], e.g. 0.2
+        correlation_method: pairwise     # or complete_case
   - name: Gaussian-copula correlated shocks
     status: available
     summary: By default, the random shocks to each factor are linked through their correlations using a normal distribution. Markets move together on average, but extreme joint crashes are not given extra weight.
-    location: Default, [simulation-engine](/projects/financescenarios/docs/simulation-engine)
+    location: 'Settings: `engine.shock_distribution: gaussian` (the default); see [simulation engine](/projects/financescenarios/docs/simulation-engine)'
     details: The default cross-factor shock-correlation mechanism.
+    setup: 'Nothing to switch on: it is the default.'
+    setup_lang: yaml
+    setup_code: |-
+      engine:
+        shock_distribution: gaussian   # default; student_t for joint tail risk
   - name: Student-t copula
     status: available
     summary: An option that makes extreme moves more likely to happen together across all factors, so a crash in one market tends to coincide with crashes in others. Use it when joint tail risk matters, as in stress testing. The default of 12 degrees of freedom is the value fitted to stock, bond and real estate returns by Kole, Koedijk and Verbeek (2007).
-    location: '`engine.shock_distribution: "student_t"`, [simulation-engine](/projects/financescenarios/docs/simulation-engine)'
+    location: 'Settings: `engine.shock_distribution: student_t` and `engine.degrees_of_freedom`; see [simulation engine](/projects/financescenarios/docs/simulation-engine)'
     details: Shared chi-square mixing variable per (simulation, step) across every factor; genuine tail dependence, not just fatter individual marginals.
+    setup: In your settings profile, set the shock distribution to `student_t`; lower degrees of freedom give fatter joint tails.
+    setup_lang: yaml
+    setup_code: |-
+      engine:
+        shock_distribution: student_t   # default: gaussian
+        degrees_of_freedom: 12.0        # the default; must be above 2
   - name: Asymmetric / pairwise-varying tail dependence
     status: not_available
     summary: You cannot have crashes that are more tightly linked for some pairs of markets than others, or stronger in downturns than in rallies. One shared setting controls joint extremes for every factor.
-    location: "[`resources`](https://github.com/JerBouma/FinanceScenarios/tree/main/resources)"
+    location: Not in the package; see the papers in [`resources`](https://github.com/JerBouma/FinanceScenarios/tree/main/resources)
     details: A single shared t-copula parameter can't express this; richer per-pair constructions (patchwork copulas, dependent-CVaR extensions) remain unimplemented.
 - topic: Calibration
   intro: How the models learn their parameters from historical data, and how each yearly calibration is checked and published so you can trace and reproduce it.
@@ -415,219 +1090,574 @@
   - name: Published, versioned calibration with a validation report
     status: partial
     summary: You can publish a dated calibration yourself, with its data window, software versions and a report of seven checks, and replay it later to get the same scenarios. The automatic yearly release isn't running yet.
-    location: "`release_controller.publish_calibration`, `load_release`, `download_release`, `python -m financescenarios.release`, [validation-and-testing](/projects/financescenarios/docs/validation#published-calibrations)'s Published calibrations section"
+    location: 'Python: `publish_calibration`, `load_release`, `simulate_release`; command line: `python -m financescenarios.release`; see [published calibrations](/projects/financescenarios/docs/validation#published-calibrations)'
     details: The release pipeline and its replay are available (`python -m financescenarios.release`, `simulate_release()`); the scheduled 1 January workflow that publishes one every year has not been added yet. Calibrates from named profiles, saves `calibration.json` with a manifest (version, date, data window, package versions, configuration hash) and runs seven checks (failures, parameter ranges, correlation validity and reproduction, volatility against history, seeded reproducibility, finite paths) into `checks.json` and `report.md`. Meant to be published every 1 January as a GitHub release (`calibration-YYYY.MM.DD`, `default` and `broad` factor sets), not stored in the repository; the scheduled workflow that runs it still has to be added to `.github/workflows/` by the maintainer. On 2026-10-07 `default` (27 factors, the curated set) passed every check; `broad` (74) warned.
+    setup: 'From Python (or `python -m financescenarios.release --factor-set default`): publish once, then replay the saved calibration whenever you need the same scenarios.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import publish_calibration, simulate_release
+
+      release = publish_calibration(settings="default", factor_set="default")
+      release.manifest.status, release.directory   # checks passed? where it was saved
+
+      result = simulate_release(release.directory, n_simulations=2000)
   - name: Long-history calibration (Shiller, BoE millennium, JST)
     status: available
-    summary: 'You can estimate how rates, inflation and equities behave from very long histories: US data from 1871, UK data back to 1694 for Bank Rate and 1209 for inflation, or 18 countries from 1870. Starting levels still come from recent data.'
-    location: "`history_source`, `history_start_year`, `accept_licence` on equities/interest_rates/inflation, `LongHistory`, [configuration](/projects/financescenarios/docs/configuration#long-history)'s Long history section"
-    details: Dynamics (OU speed, volatility, long-run level; equity regimes) fitted on the OECD's short- and long-term rates from 1950 (by `term`), Shiller's US data from 1871, the Bank of England's millennium dataset (Bank Rate from 1694, UK CPI inflation from 1209) or the JST Macrohistory Database (equity and bill returns of 18 countries from 1870, CC BY-NC-SA, opt-in licence); today's starting value and the correlation series stay on the entry's recent source. Real-world, constant-volatility hull_white/cir/ou/regime_switching entries only.
+    summary: 'You can estimate how rates, inflation and equities behave from very long histories: US data from 1871, UK data back to 1694 for Bank Rate and 1210 for inflation, or 18 countries from 1870. Starting levels still come from recent data.'
+    location: 'Factor set: `history_source` and `history_start_year` on `equities`, `interest_rates` and `inflation` entries (`accept_licence` for JST); see [long history](/projects/financescenarios/docs/configuration#long-history)'
+    details: Dynamics (OU speed, volatility, long-run level; equity regimes) fitted on the OECD's short- and long-term rates from 1950 (by `term`), Shiller's US data from 1871, the Bank of England's millennium dataset (Bank Rate from 1694, UK CPI inflation from 1210, the first year-on-year change of a price index that starts in 1209) or the JST Macrohistory Database (equity and bill returns of 18 countries from 1870, CC BY-NC-SA, opt-in licence); today's starting value and the correlation series stay on the entry's recent source. Real-world, constant-volatility hull_white/cir/ou/regime_switching entries only.
+    setup: 'In your factor set, set `history_source` on the entry. Equities take `shiller` or `jst`, interest rates `oecd`, `millennium` or `jst`, inflation `shiller` or `millennium`; `jst` also needs `accept_licence: true` (non-commercial use).'
+    setup_lang: yaml
+    setup_code: |-
+      equities:
+        - name: us_broad
+          ticker: SPY
+          period: monthly
+          history_source: shiller     # S&P Composite from 1871; or jst
+          history_start_year: 1950    # optional: leave out earlier years
 - topic: Scenarios
   intro: Ready-made views of the future you can layer onto a run, such as climate pathways and regulators' stress tests, plus a quick check that a run looks sound.
   items:
   - name: NGFS climate pathways
     status: available
     summary: You can shift rates, inflation, unemployment and equities per country along the central banks' NGFS climate scenarios (2024 edition), and add the carbon price as a factor. This moves the center of outcomes but does not widen their range.
-    location: "`climate` section, `climate_controller.apply_climate_scenario`"
+    location: 'Factor set: the `climate` section, `enabled: true`'
     details: 'Phase 5 (2024) scenarios'' deviation from baseline for rates, inflation, unemployment and equities per country, measured from the run''s start, plus the carbon price as a factor. A deterministic shift: it moves the distribution''s centre, not its spread; no physical-damage channel beyond NiGEM''s own.'
+    setup: In your factor set, switch on `climate` and pick the NGFS scenario; the shift is laid over the run after simulating.
+    setup_lang: yaml
+    setup_code: |-
+      climate:
+        enabled: true
+        scenario: Delayed transition   # default: Net Zero 2050; also Below 2°C,
+                                       # Current Policies, Fragmented World, ...
+        risk: combined                 # or transition, physical
+        carbon_price: true             # adds a carbon_price factor
   - name: Regulators' stress tests as regimes
     status: available
     summary: You can steer rates, inflation and unemployment along the Federal Reserve's or the European (ESRB/EBA) stress scenarios, and equities follow the published stock-market falls, measured against each regulator's own baseline (the Federal Reserve's 2026 severely adverse scenario puts US stocks about 56% below its baseline after a year). House prices and credit spreads from these tests are not included.
-    location: "`stress_test_regime`, `stress_tests/`"
+    location: 'Python: `stress_test_regime(toolkit, config, authority, scenario)`, passed as the run''s regime'
     details: Federal Reserve (US, quarterly) and ESRB/EBA (EU members and more, yearly) paths for rates, inflation and unemployment, pinned at each period end or used as long-run targets; real-world equities follow the published stock-market path as one-off price jumps; house-price and credit-spread paths are not mapped.
+    setup: 'From Python: build the regime from the regulator''s published paths, then run with it.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import (
+          Scenarios, build_toolkit, load_profiles, stress_test_regime,
+      )
+
+      config = load_profiles(settings_id="default", factor_set_id="default")
+      toolkit = build_toolkit(config, api_key="FINANCIAL_MODELING_PREP_KEY")
+      regime = stress_test_regime(
+          toolkit, config, authority="federal_reserve", scenario="severely_adverse"
+      )  # authority="esrb" for the EBA test
+      scenarios = Scenarios.from_config(config, toolkit=toolkit, regime=regime)
+      stressed = scenarios.simulate()
   - name: One-call run validation
     status: available
     summary: One step checks a finished run against the same tests used for the yearly release, such as realistic volatility and valid correlations. You get a pass, warn or fail table with a plain explanation of each check.
-    location: "`Scenarios.validate(result)`"
+    location: 'Python: `Scenarios.validate(result)`'
     details: The yearly release's checks (calibration, parameter ranges, correlation validity and reproduction, volatility against history, finite paths) as one pass/warn/fail table with a plain-language meaning per check.
+    setup: From Python, on any finished run.
+    setup_lang: python
+    setup_code: |-
+      result = scenarios.simulate(n_simulations=2000)
+      scenarios.validate(result)   # one row per check: status, detail, meaning
 - topic: Portfolio
   intro: How to turn simulated markets into the value of an actual portfolio over time, with rebalancing, fees, contributions, withdrawals, goals, risk measures and historical backtests.
   items:
   - name: Multi-asset-class allocation (buy-and-hold or periodic rebalancing)
     status: available
     summary: You can combine simulated equities, rates, credit, commodities and real estate into one portfolio with set weights, either bought and held or rebalanced on a schedule. It works on an existing run without simulating again.
-    location: "`financescenarios/portfolio/`, `Portfolio`"
+    location: 'Python: `Portfolio(result).compute(weights, ...)`'
     details: Weights a run's own simulated factors (equities/interest_rates/credit/commodities/real_estate) into one portfolio value path, downstream of an already-simulated run; no recalibration or resimulation.
+    setup: 'From Python, on a finished run: give a weight per simulated factor. Without `rebalance_every` the mix is bought and held; `rebalance_every` counts steps.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio
+
+      portfolio = Portfolio(result)   # result: a finished run
+      weights = {"us_broad": 0.6, "united_states_short_rate": 0.4}
+      # rebalance_every counts steps: 12 is yearly on a monthly run
+      values = portfolio.compute(weights, initial_value=100.0, rebalance_every=12)
   - name: Built-in example portfolios
     status: available
     summary: Fourteen ready-made portfolios come with the library, covering equity sectors, regions and styles, bonds in several countries, and gold. You can use them as a starting point instead of writing your own.
-    location: "`portfolios/*.yaml`, `Portfolio.from_preset`, `Portfolio`"
+    location: 'Python: `Portfolio.from_preset(result, preset=...)`; the presets are listed by `list_presets(kind="portfolios")`'
     details: 14 shipped presets built against the broad factor set's factor names (`factor-sets/broad.yaml`) (equity sector/region/style names, multi-country rates, gold), mirroring the `regimes/`/`settings/`/`factor-sets/` built-in-preset pattern, not `ahlgrim.yaml`'s paper-faithful, narrower scope.
+    setup: 'From Python: pick a preset by name. The presets use the `broad` factor set''s factor names, so run that set (or one with the same names).'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio, list_presets
+
+      list_presets(kind="portfolios")   # the 14 shipped presets
+      portfolio = Portfolio.from_preset(
+          result, preset="balanced_60_40", config=scenarios.config
+      )
+      values = portfolio.compute()
   - name: Glidepath (lifecycle/target-date) allocation
     status: available
     summary: Weights can shift over time, as in a target-date fund that moves from equities to bonds. You set weights for chosen years and the portfolio moves smoothly between them, which requires periodic rebalancing.
-    location: "`financescenarios/portfolio/portfolio_model.py`'s `GlidepathCheckpoint`/`compute_glidepath_portfolio_paths`, `Portfolio`"
+    location: 'Python: `Portfolio.compute_glidepath(checkpoints)` with `GlidepathCheckpoint`'
     details: A target weight per factor that changes over the horizon, interpolated between year-anchored checkpoints (the same `np.interp` anchors convention `calibration_model.BeliefPath` already uses for a belief's own term structure). Requires periodic rebalancing; there is no "buy and hold" reading of a moving target.
+    setup: 'From Python: give the weights at a few years; the portfolio moves linearly between them and rebalances every `rebalance_every` steps.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import GlidepathCheckpoint, Portfolio
+
+      portfolio = Portfolio(result)   # result: a finished run
+      glide = portfolio.compute_glidepath(
+          [
+              GlidepathCheckpoint(
+                  year=0, weights={"us_broad": 0.9, "united_states_short_rate": 0.1}
+              ),
+              GlidepathCheckpoint(
+                  year=30, weights={"us_broad": 0.3, "united_states_short_rate": 0.7}
+              ),
+          ],
+          rebalance_every=1,
+      )
   - name: 'Multi-decade horizons (a glidepath reaching any number of years out: 5, 21, 37, 40, ...)'
     status: available
     summary: You can simulate any number of years ahead, such as 21 or 40, with up to 10,000 time steps. A long-horizon preset uses fewer simulations and larger time steps, and built-in views about the future stay valid at any length.
-    location: "`settings/long_horizon.yaml`, `EngineConfig.n_steps`/`frequency`"
+    location: 'Python: `simulate(years=...)`; settings: `engine.n_steps` and `engine.frequency`, or the `long_horizon` settings profile'
     details: 'No engine change needed: `EngineConfig.n_steps`/`frequency` already support any horizon (`n_steps` up to 10,000). `long_horizon.yaml` ships sensible long-run defaults (fewer simulations, a coarser step frequency); any year count converts into the right `n_steps` at whatever frequency is selected, not a fixed preset list. Built-in regimes need no change either: a `BeliefPath`''s anchors already hold flat past the last one by default (or converge to the calibrated mean via `converge_over_years`), so they stay valid at any horizon length.'
+    setup: Pick the `long_horizon` settings profile and ask for the number of years when you simulate.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Scenarios
+
+      scenarios = Scenarios.from_profiles(
+          settings="long_horizon", factor_set="default"
+      )
+      result = scenarios.simulate(years=40)   # any horizon, up to 10,000 steps
   - name: Recurring contributions & withdrawals (life-cycle cashflows)
     status: available
     summary: You can add regular deposits and withdrawals, for example saving for 30 years and then drawing down for 30. Withdrawals come out of each holding in proportion to its value, and a portfolio that runs out stays at zero.
-    location: "`financescenarios/portfolio/portfolio_model.py`'s `CashflowRule`/`build_cashflow_schedule`, `Portfolio`"
+    location: 'Python: `Portfolio.cashflow_rule(...)`, passed to `compute(cashflow_rules=...)`'
     details: 'Any number of recurring contribution/withdrawal rules (e.g. contribute for 30 years then withdraw for 30 years) compose into one per-step schedule: contributions invested at each step''s own target weights, withdrawals taken pro-rata from each sleeve''s own current value (so a drifted sleeve is never overdrawn below zero). A simulation depleted by a withdrawal is clamped to exactly 0.0 and excluded from further cashflows, fully vectorized across simulations with no per-simulation loop.'
+    setup: 'From Python: build the rules in years (negative amounts are withdrawals) and pass them to `compute`.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio
+
+      portfolio = Portfolio(result)   # result: a finished run
+      weights = {"us_broad": 0.6, "united_states_short_rate": 0.4}
+      rules = [
+          portfolio.cashflow_rule(10_000, every_years=1, end_year=29),  # save
+          portfolio.cashflow_rule(-40_000, every_years=1, start_year=30),  # spend
+      ]
+      plan = portfolio.compute(
+          weights, initial_value=100_000.0, rebalance_every=12, cashflow_rules=rules
+      )
   - name: Decumulation success probability
     status: available
     summary: When you set withdrawals, you see the share of scenarios where the money never runs out, the typical year it runs out when it does, and the range of ending values for portfolios that last.
-    location: "`financescenarios/portfolio/portfolio_model.py`'s `WithdrawalSuccessMetrics`/`compute_withdrawal_success_metrics`, `Portfolio`"
+    location: 'Python: `Portfolio.withdrawal_success(values)`, also in `Portfolio.summary(values)`'
     details: Success rate (fraction of simulations that never deplete), median depletion year for the ones that do, and terminal-value percentiles over survivors only. Populated in `PortfolioSummary.withdrawal_success` whenever `cashflow_rules` is set.
+    setup: From Python, on a portfolio computed with withdrawals (see the cashflow rules above).
+    setup_lang: python
+    setup_code: |-
+      success = portfolio.withdrawal_success(plan)   # plan: with cashflow_rules
+      success.success_rate, success.median_depletion_year
   - name: Fee / expense-ratio drag
     status: available
     summary: You can charge an annual fee, such as a fund's expense ratio, that reduces each holding's growth every period. Use one rate for the whole portfolio or a separate rate per holding.
-    location: "`financescenarios/portfolio/portfolio_model.py`'s `fee_rate`/`_normalize_fee_rate`, `Portfolio`"
+    location: 'Python: `fee_rate` in `Portfolio.compute`'
     details: An annualized fee charged against each sleeve's own growth every step, as continuous-compounding decay (`exp(-fee_rate * dt)`, `dt` per step), the same exact-transition convention `calibration_model`'s OU processes use. A flat rate applies to every sleeve, or a per-sleeve dict.
+    setup: 'From Python: pass a yearly fee as a decimal, flat or per holding.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio
+
+      portfolio = Portfolio(result)   # result: a finished run
+      weights = {"us_broad": 0.6, "united_states_short_rate": 0.4}
+      values = portfolio.compute(weights, fee_rate=0.002)   # 0.2% a year
+      fees = {"us_broad": 0.0003, "united_states_short_rate": 0.001}
+      values = portfolio.compute(weights, fee_rate=fees)   # per holding
   - name: Goal-based target probability
     status: available
     summary: You set a target amount and see the probability the portfolio reaches it, either by a given year or at any point, plus the typical year it gets there.
-    location: "`financescenarios/portfolio/portfolio_model.py`'s `GoalProbability`/`compute_goal_probability`, `Portfolio`"
+    location: 'Python: `Portfolio.goal_probability(values, target_value, target_year)`, also `summary(values, goal_value=...)`'
     details: Probability a computed portfolio value path reaches a target dollar value, either by a specific year or (the default) at any point across the whole horizon, plus the median year reached for simulations that do. A read over an already-computed path, no engine change. Populated in `PortfolioSummary.goal_probability` whenever `goal` is set.
+    setup: 'From Python, on computed portfolio values: give the target amount and, optionally, the year it must be reached by.'
+    setup_lang: python
+    setup_code: |-
+      goal = portfolio.goal_probability(
+          values, target_value=1_000_000.0, target_year=20
+      )  # target_year=None (default): at any point over the horizon
   - name: Government/Corporate Bonds sleeve pricing
     status: partial
     summary: By default, bond holdings grow like cash earning the short-term rate. You can instead give them a fixed duration, so rising rates lower their value. Full pricing from the whole yield curve, including convexity, is not built yet.
-    location: "`portfolio_model.duration_growth_factor`, `Portfolio`"
+    location: 'Python: `durations` in `Portfolio.compute`'
     details: Default is still `ScenarioSet.cumulative_index()`'s rolled money-market/floating-rate proxy. Opt-in `duration` (years) on an `interest_rates`/`credit` sleeve prices it as a constant-duration bond total-return index (first-order price-effect-plus-carry decomposition); a rate spike marks the sleeve down. Full curve-based (convexity-aware) bond pricing via `financescenarios/bond_pricing/bond_pricing_model.py` remains unbuilt.
+    setup: 'From Python: give a rate or credit holding a duration in years to price it as a constant-duration bond fund instead of cash.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio
+
+      portfolio = Portfolio(result)   # result: a finished run
+      bonds = portfolio.compute(
+          {"united_states_long_rate": 1.0},
+          durations={"united_states_long_rate": 7.0},   # years
+      )
   - name: Multi-currency portfolios
     status: available
     summary: Equity, commodity and real estate holdings in other currencies are converted into your reporting currency. Foreign bond and cash holdings grow at their local rate without currency conversion, so their exchange-rate gains and losses are left out.
-    location: "`Portfolio.__init__`'s `config` argument, `Portfolio`"
+    location: 'Python: `config` in `Portfolio(...)`; settings: `reporting.reporting_currency`'
     details: A sleeve's own currency is converted into `config.reporting.reporting_currency` before weighting, reusing `reporting_controller.Reporting` (equities/commodities/real_estate only). A foreign-currency `interest_rates`/`credit` sleeve compounds at its local rate with no FX conversion applied to the compounded index; a known simplification (the sleeve index is a monetary level, so this drops the FX return a real foreign money-market position would carry). Opt-in via `config`.
+    setup: Set the reporting currency in your settings profile, then pass the run's configuration when you build the portfolio.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio
+
+      # settings profile: reporting: {reporting_currency: EUR}
+      portfolio = Portfolio(result, config=scenarios.config)
+      values = portfolio.compute({"us_broad": 0.5, "europe": 0.5})
   - name: Tolerance-band rebalancing
     status: available
     summary: The portfolio can rebalance as soon as a holding drifts more than a set margin from its target weight, instead of or in addition to rebalancing on a fixed schedule.
-    location: "`portfolio_model.compute_portfolio_paths`'s `rebalance_band`, `Portfolio`"
+    location: 'Python: `rebalance_band` in `Portfolio.compute`'
     details: An additional, per-simulation drift trigger alongside/instead of `rebalance_every` (the "5/25 rule" discipline); rebalances the moment a sleeve's actual weight drifts more than the band from target.
+    setup: 'From Python: pass the band as a decimal weight gap, alone or with a schedule.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio
+
+      portfolio = Portfolio(result)   # result: a finished run
+      weights = {"us_broad": 0.6, "united_states_short_rate": 0.4}
+      # rebalance once a weight drifts 5 percentage points from target
+      values = portfolio.compute(weights, rebalance_band=0.05)
   - name: Transaction cost on rebalance
     status: available
     summary: You can charge a trading cost, as a share of the amount traded, each time the portfolio rebalances. This is separate from the ongoing annual fee.
-    location: "`portfolio_model.compute_portfolio_paths`'s `transaction_cost_rate`, `Portfolio`"
+    location: 'Python: `transaction_cost_rate` in `Portfolio.compute`'
     details: A one-way cost (fraction of dollar turnover) deducted whenever a rebalance actually fires, distinct from `fee_rate`'s AUM-based drag.
+    setup: 'From Python: pass the one-way cost as a share of the amount traded; it applies only when a rebalance happens.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio
+
+      portfolio = Portfolio(result)   # result: a finished run
+      weights = {"us_broad": 0.6, "united_states_short_rate": 0.4}
+      values = portfolio.compute(
+          weights, rebalance_every=12, transaction_cost_rate=0.001   # 0.1%
+      )
   - name: Inflation-indexed cashflows
     status: available
     summary: Contributions and withdrawals can grow with simulated inflation, so you enter them in today's money and each scenario adjusts them for its own inflation path.
-    location: "`Portfolio.compute()`'s `inflation_factor`, `portfolio_model.build_inflation_indexed_cashflow_schedule`, `Portfolio`"
+    location: 'Python: `inflation_factor` in `Portfolio.compute`'
     details: Scales every `cashflow_rules` amount by a simulated inflation factor's own cumulative path, per simulation, so a `CashflowRule.amount` is a real (today's-dollars) figure rather than a fixed nominal one.
+    setup: 'From Python: name a simulated inflation factor and the cashflow amounts are read in today''s money.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio
+
+      portfolio = Portfolio(result)   # result: a finished run
+      weights = {"us_broad": 0.6, "united_states_short_rate": 0.4}
+      rules = [
+          portfolio.cashflow_rule(10_000, every_years=1, end_year=29),  # save
+          portfolio.cashflow_rule(-40_000, every_years=1, start_year=30),  # spend
+      ]
+      plan = portfolio.compute(
+          weights, initial_value=100_000.0, rebalance_every=12,
+          cashflow_rules=rules, inflation_factor="united_states_inflation",
+      )
   - name: Portfolio risk metrics (drawdown/VaR/CVaR/volatility)
     status: available
     summary: 'Every portfolio comes with risk measures across the scenarios: the range of worst peak-to-trough falls, the 95% loss threshold and the average loss beyond it (VaR and CVaR), and annual volatility.'
-    location: "`portfolio_model.compute_portfolio_risk_metrics`, `Portfolio`"
+    location: 'Python: `Portfolio.risk_metrics(values)`'
     details: Simulation-based (empirical) max-drawdown percentiles, 95% VaR/CVaR on total return, and pooled annualized volatility; a general read over any computed portfolio, unlike `withdrawal_success`/`goal_probability` which are opt-in.
+    setup: From Python, on computed portfolio values.
+    setup_lang: python
+    setup_code: |-
+      # drawdown percentiles, 95% VaR and CVaR, annual volatility
+      risk = portfolio.risk_metrics(values)
   - name: Weight-drift diagnostics
     status: available
     summary: Shows how far each holding's actual weight moves from its target between rebalances over time, with ranges across scenarios. Use it to judge whether your rebalancing schedule or band is tight enough.
-    location: "`Portfolio.weight_drift`, `portfolio_model.compute_weight_drift`, `Portfolio`"
+    location: 'Python: `Portfolio.weight_drift(values)` and `weight_drift_summary(values)`'
     details: 'Actual-minus-target weight per sleeve over time: how far a portfolio has drifted from its own allocation between rebalances. Percentile bands, not routed through the generic FinanceToolkit metrics machinery since those assume a priced series.'
+    setup: From Python, on computed portfolio values.
+    setup_lang: python
+    setup_code: |-
+      portfolio.weight_drift_summary(values, threshold=0.05)
+      drift = portfolio.weight_drift(values)   # actual minus target weight
   - name: Real (inflation-adjusted) value at a target year
     status: available
     summary: Shows what the portfolio would be worth in a given year in today's money, adjusting each scenario for its own simulated inflation.
-    location: "`Portfolio.real_value`, `portfolio_model.compute_real_value`, `Portfolio`"
+    location: 'Python: `Portfolio.real_value(values, inflation_factor, year)`'
     details: Deflates the portfolio's own nominal value at a given year by a simulated inflation factor's cumulative path, per simulation; the mirror image of `inflation_factor`-indexed cashflows (which inflate contributions/withdrawals going in, where this deflates the value coming out).
+    setup: 'From Python: name the simulated inflation factor and the year.'
+    setup_lang: python
+    setup_code: |-
+      real = portfolio.real_value(
+          values, inflation_factor="united_states_inflation", year=20
+      )
   - name: Historical backtesting (realized prices, not simulated)
     status: available
     summary: You can run the same portfolio rules on actual past prices over the period all holdings have data. With one historical path, measures across scenarios are meaningless, so growth rate, Sharpe ratio and drawdown are the useful output.
-    location: "`Scenarios.history()` (a portfolio preset's holdings or a list of factors), `financescenarios/historical_data/backtest_model.py`'s `build_synthetic_scenario_set`, `Portfolio`"
+    location: 'Python: `Portfolio.backtest(scenarios, preset)` or `Scenarios.history(...)`'
     details: Runs the same rebalance/cashflow/fee engine against a single-path (`n_simulations=1`) `ScenarioSet` built directly from realized historical series (resampled onto one common calendar, truncated to every requested factor's overlapping window); no calibration, no simulation. Cross-simulation stats (`risk_metrics`, `withdrawal_success`, `goal_probability`, `real_value`) are degenerate at `n=1`; `compute_price_performance_metrics` (`metrics_controller`, CAGR/Sharpe/drawdown on the realized path) is the meaningful headline output.
+    setup: 'From Python: back-test a preset (or a list of factors through `scenarios.history`) on realized prices.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio
+
+      backtest = Portfolio.backtest(scenarios, preset="balanced_60_40", period="monthly")
+      values = backtest.compute(rebalance_every=12)
   - name: Factor exposure (Fama-French style/loading regression)
     status: available
     summary: For a historical backtest, you can see how much of the portfolio's return comes from broad drivers like the overall market, company size and value, using the Fama-French 3 or 5 factor data. Simulated runs cannot be analyzed this way.
-    location: "`Portfolio.factor_exposure()` (one row: Betas, alpha, R², observations, window), `financescenarios/portfolio/factor_exposure/factor_exposure_model.py`'s `compute_factor_exposure`, `factor_exposure_controller.py`"
+    location: 'Python: `Portfolio.factor_exposure(model=...)` on a backtest'
     details: Regresses a portfolio's own realized return series (from a historical backtest, not a simulated run; a simulated path has no calendar dates to regress against real Fama-French history) against Ken French's 3/5-factor daily dataset, reusing FinanceToolkit's `get_fama_and_french_model_multi` directly. Correctly accounts for FinanceToolkit's period-start-labeled/period-end-valued date convention on anything coarser than daily (see the module's own docstring); verified against a pure-SPY backtest's own Mkt-RF Beta (~1.0, R² ~0.99).
+    setup: From Python, on a historical backtest.
+    setup_lang: python
+    setup_code: |-
+      exposure = backtest.factor_exposure(model="five_factor")   # or three_factor
   - name: Benchmarking (portfolio vs. portfolio)
     status: available
     summary: You can compare two portfolios on tracking error, correlation, Beta, active share, and the difference in growth rate and Sharpe ratio. Their dates are matched even when the two cover different periods.
-    location: "`financescenarios/portfolio/benchmark_model.py`'s `compute_relative_metrics`, `Portfolio.benchmark`, `Portfolio`"
+    location: 'Python: `Portfolio.benchmark(values, benchmark_values)`'
     details: Tracking error, correlation, Beta, active share, relative CAGR/Sharpe between two already-computed portfolios' own dollar-value paths; pure NumPy, no new data source. Aligns on the intersection of each side's own dates rather than requiring identical arrays (two backtests can have genuinely different windows).
+    setup: 'From Python: compute both portfolios, then compare them.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio
+
+      portfolio = Portfolio(result)   # result: a finished run
+      mix = portfolio.compute({"us_broad": 0.6, "united_states_short_rate": 0.4})
+      index = portfolio.compute({"us_broad": 1.0})
+      # tracking error, Beta, active share, relative CAGR and Sharpe ratio
+      portfolio.benchmark(mix, index)
 - topic: Solvency II
   intro: Tools that turn simulated futures into Solvency II numbers, from checking that market-consistent scenarios price correctly to the best estimate of liabilities and the capital requirement.
   items:
   - name: Martingale (market-consistency) test
     status: available
     summary: Checks, at every date, that the discounted value of an investment today equals its price today on average across scenarios, within simulation noise. This is the standard test that market-consistent scenarios price assets correctly. The verdict allows for the few dates a correct run misses by chance when many dates are tested at once.
-    location: "`martingale_test`, `financescenarios.solvency`; part of `Solvency(...).report`"
+    location: 'Python: `martingale_test(...)`; also part of `Solvency(...).report`'
     details: '`E[D(t) S(t) e^{qt}] = S(0)` checked at every date against a Monte Carlo band (antithetic-aware standard error), with a per-date p-value; the run passes unless a Holm (1979) adjusted p-value falls below 1 - confidence (`criterion="every_date"` requires every band to hold); the pass rate is reported beside the expected 95%. Meaningful on a `measure: "risk_neutral"` run.'
+    setup: 'From Python, on a risk-neutral run: name the asset and the short rate that discounts it.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import martingale_test
+
+      risk_neutral = scenarios.simulate(n_simulations=2000, measure="risk_neutral")
+      test = martingale_test(
+          risk_neutral, "us_broad", "united_states_short_rate", dividend_yield=0.013
+      )
   - name: Monte Carlo zero-coupon curve
     status: available
     summary: Rebuilds today's yield curve from the simulated short rates by averaging the discount factors across scenarios. You can compare it with the curve you put in to check the rates price bonds correctly.
-    location: "`zero_coupon_curve`, `financescenarios.solvency`"
+    location: 'Python: `zero_coupon_curve(result, short_rate)`'
     details: "`P(0,t) = E[D(t)]` and its spot rate from a simulated short rate: the curve-side martingale check against the input term structure."
+    setup: From Python, on a risk-neutral run.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import zero_coupon_curve
+
+      risk_neutral = scenarios.simulate(n_simulations=2000, measure="risk_neutral")
+      curve = zero_coupon_curve(risk_neutral, "united_states_short_rate")
   - name: Best estimate of liabilities
     status: available
     summary: 'Computes the Solvency II best estimate (Article 77): the average present value of your liability cashflows across scenarios. Cashflows can be fixed or vary by scenario, and you get the simulation error and percentiles too.'
-    location: "`best_estimate`, `financescenarios.solvency`; part of `Solvency(...).report`"
+    location: 'Python: `best_estimate(result, cashflows, short_rate)`; also part of `Solvency(...).report`'
     details: Mean pathwise-discounted PV of a deterministic or scenario-dependent cashflow schedule, with Monte Carlo standard error and percentiles (Article 77).
+    setup: 'From Python, on a risk-neutral run: one cashflow per time step (or per scenario and step), discounted at the simulated short rate.'
+    setup_lang: python
+    setup_code: |-
+      import numpy as np
+
+      from financescenarios import best_estimate
+
+      risk_neutral = scenarios.simulate(n_simulations=2000, measure="risk_neutral")
+      annuity = np.zeros(len(risk_neutral.time_grid))
+      annuity[12::12] = 10_000.0   # 10,000 at every year end of a monthly run
+      be = best_estimate(risk_neutral, annuity, short_rate="united_states_short_rate")
   - name: One-year 99.5% VaR SCR
     status: partial
     summary: 'Computes the capital requirement as an internal model defines it: the loss in own funds over one year that only 1 scenario in 200 exceeds. The standard formula, tax and provision loss absorption, and full revaluation of liabilities inside each scenario are missing.'
-    location: "`solvency_capital_requirement`, `financescenarios.solvency`; part of `Solvency(...).report`"
+    location: 'Python: `solvency_capital_requirement(result, own_funds)`; also part of `Solvency(...).report`'
     details: 'The internal-model reading of Article 101 on one run''s own-funds path: no standard-formula aggregation, no loss-absorbing capacity of technical provisions or deferred taxes, no nested liability revaluation inside each scenario.'
+    setup: 'From Python, on a real-world run: give the own funds as a factor name or an array per scenario and step.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import solvency_capital_requirement
+
+      scr = solvency_capital_requirement(
+          result, own_funds=own_funds, horizon_years=1.0, confidence=0.995,
+          short_rate="united_states_short_rate",
+      )
   - name: One-table Solvency II report
     status: available
     summary: One table with the market-consistency check, best estimate, own funds, capital requirement and solvency ratio, from yearly payments and an asset path. Liabilities are revalued in each scenario at that scenario's short rate held flat, as a shortcut for full revaluation.
-    location: '`Solvency(real_world, risk_neutral).report(cashflows, assets)`, `Scenarios.simulate(measure="risk_neutral")`'
+    location: 'Python: `Solvency(real_world, risk_neutral).report(cashflows, assets)`, with the risk-neutral run from `Scenarios.simulate(measure="risk_neutral")`'
     details: 'Market-consistency check, best estimate, own funds, SCR and solvency ratio from yearly payments and an asset path; the risk-neutral run is derived from the same config (`risk_neutral_config`: the first rate a Hull-White rate on EIOPA''s curve, or the Treasury curve outside USD, EUR and GBP; equities at that rate; inflation around its breakeven curve where one exists). Liabilities are revalued on each real-world scenario at its own short rate held flat, not a full nested revaluation.'
+    setup: 'From Python: simulate the same configuration twice, real-world and risk-neutral, then give yearly payments and the asset portfolio.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Portfolio, Solvency
+
+      result = scenarios.simulate(n_simulations=2000)
+      risk_neutral = scenarios.simulate(n_simulations=2000, measure="risk_neutral")
+      assets = Portfolio.from_preset(result, preset="balanced_60_40").compute(
+          initial_value=60_000, rebalance_every=12
+      )
+      solvency = Solvency(real_world=result, risk_neutral=risk_neutral)
+      solvency.report(cashflows=[10_000] * 5, assets=assets)
   - name: Scenario-file export (trial x time per variable)
     status: available
     summary: Writes the scenarios to CSV files or one Excel workbook, with one row per scenario and one column per point in time. This is the layout insurance cashflow and ALM models usually read, with an option to keep only yearly points.
-    location: "`write_scenario_files`, `financescenarios.solvency`"
+    location: 'Python: `write_scenario_files(result, directory)`; also `Solvency.write_files`'
     details: CSV files or one streamed Excel workbook, 1-based trials, time-in-years columns, an index of labels/categories/units, optional annual thinning.
+    setup: From Python, on any finished run.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import write_scenario_files
+
+      # csv (default) or xlsx; step_stride=12 keeps yearly points of a monthly run
+      write_scenario_files(result, "esg_output", file_format="xlsx", step_stride=12)
   - name: EIOPA risk-free rate curves
     status: available
     summary: 'Downloads EIOPA''s monthly risk-free curves for every currency it publishes: the basic curve, the curve with volatility adjustment, and the standard-formula up and down shocks. No API key is needed.'
-    location: "`eiopa_risk_free_curve`, `financescenarios.solvency`"
+    location: 'Python: `eiopa_risk_free_curve(toolkit, country, curve)`'
     details: EIOPA's monthly curves (basic, with volatility adjustment, and the standard-formula up and down shocks) for every currency it publishes, fetched through the Finance Toolkit with no key, read as published (Smith-Wilson until 29 January 2027, the First Smoothing Point method from 30 January 2027). `eiopa_extrapolation` applies the 2027 method (constant forwards to the FSP, then LLFR blended into the UFR at alpha 11%, 40% for SEK) to an earlier curve, to measure the change in a best estimate. Volatility and matching adjustments and transitional measures are not modelled.
+    setup: From Python, with any Finance Toolkit; no key needed.
+    setup_lang: python
+    setup_code: |-
+      from financetoolkit import Toolkit
+
+      from financescenarios import eiopa_risk_free_curve
+
+      toolkit = Toolkit(["SPY"])
+      # curve: spot_no_va, spot_with_va, shock_up or shock_down
+      curve = eiopa_risk_free_curve(
+          toolkit, country="Euro Area", curve="spot_no_va", as_of="2026-09"
+      )
   - name: Best estimate discounted with EIOPA's curve
     status: available
     summary: Discounts your liability cashflows with EIOPA's risk-free curve, as Article 77(2) requires, instead of with the simulated rates. Cashflows can still differ by scenario.
-    location: "`best_estimate(..., discount_curve=...)`"
+    location: 'Python: `best_estimate(..., discount_curve=...)`'
     details: Article 77(2) discounting with the risk-free curve; cashflows may still vary by scenario.
+    setup: 'From Python: pass EIOPA''s curve as `discount_curve`; the cashflows can come from any run.'
+    setup_lang: python
+    setup_code: |-
+      import numpy as np
+
+      from financescenarios import best_estimate, eiopa_risk_free_curve
+
+      risk_neutral = scenarios.simulate(n_simulations=2000, measure="risk_neutral")
+      annuity = np.zeros(len(risk_neutral.time_grid))
+      annuity[12::12] = 10_000.0   # 10,000 at every year end of a monthly run
+      curve = eiopa_risk_free_curve(toolkit, country="United States")
+      be = best_estimate(risk_neutral, annuity, short_rate=None, discount_curve=curve)
   - name: Market-consistency check against EIOPA's curve
     status: available
     summary: Shows the zero rates implied by a market-consistent run next to EIOPA's curve at every whole year, with the simulation error. Use it to confirm your scenarios reproduce the regulatory curve.
-    location: "`market_consistency_check`"
+    location: 'Python: `market_consistency_check(result, short_rate, curve)`'
     details: A risk-neutral run's model zero rates beside the curve at every whole year, with Monte Carlo standard errors.
+    setup: From Python, on a risk-neutral run and EIOPA's curve for the same currency.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import eiopa_risk_free_curve, market_consistency_check
+
+      risk_neutral = scenarios.simulate(n_simulations=2000, measure="risk_neutral")
+      curve = eiopa_risk_free_curve(toolkit, country="United States")
+      market_consistency_check(risk_neutral, "united_states_short_rate", curve)
   - name: Standard-formula interest rate risk
     status: partial
     summary: Values your liabilities on EIOPA's base curve and on its shocked up and down curves. Assets are not revalued, so you get only the liability half of the interest rate risk charge.
-    location: "`interest_rate_scr`"
+    location: 'Python: `interest_rate_scr(result, cashflows, base, up, down)`'
     details: Liability side on EIOPA's base and shocked curves; assets are not revalued, so this is the liability half of the sub-module.
+    setup: 'From Python: fetch EIOPA''s base and shocked curves and pass your liability cashflows.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import eiopa_risk_free_curve, interest_rate_scr
+
+      names = ("spot_no_va", "shock_up", "shock_down")
+      base, up, down = (eiopa_risk_free_curve(toolkit, curve=name) for name in names)
+      # a risk-neutral run and one liability cashflow per step
+      interest_rate_scr(risk_neutral, annuity, base, up, down)
   - name: Standard-formula equity risk
     status: partial
     summary: Applies the standard-formula equity shocks, 39% for listed and 49% for other equity, adjusted by EIOPA's current symmetric adjustment (capped at 10 points, 13 from 30 January 2027) and combined with a 0.75 correlation. Strategic participations, the duration-based approach and transitional rules are not covered.
-    location: "`equity_scr`, `eiopa_symmetric_adjustment`"
+    location: 'Python: `equity_scr(type_1_value, type_2_value, symmetric_adjustment)` and `eiopa_symmetric_adjustment(toolkit)`'
     details: Type 1 (39%) and type 2 (49%) shocks plus EIOPA's live symmetric adjustment, combined with a 0.75 correlation; strategic participations, duration-based and transitional equity are not modelled.
+    setup: 'From Python: give the market value of type 1 and type 2 equity and EIOPA''s current symmetric adjustment.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import eiopa_symmetric_adjustment, equity_scr
+
+      adjustment = eiopa_symmetric_adjustment(toolkit)   # e.g. 0.0771
+      equity_scr(
+          type_1_value=1_000_000, type_2_value=250_000, symmetric_adjustment=adjustment
+      )
 - topic: Frameworks
   intro: Ready-made sets of models you can run as a whole, from the curated default to presets that follow published actuarial papers, so you can start from a known, documented setup.
   items:
   - name: "`default`"
     status: available
     summary: The curated core setup for the US, the euro area and the UK. Rates start from EIOPA's forward rates and move in ways fitted to OECD data since 1950. The US 10-year yield stays within 0.3 points of the NAIC/Conning median over 30 years.
-    location: "`factor-sets/default.yaml`"
+    location: 'Factor set: `default`'
     details: The curated core set (US, euro area, UK; monthly or quarterly data) with rates anchored to EIOPA's forward rates and dynamics fitted on the OECD since 1950; passes every release check, US 10-year within 0.3pt of the NAIC/Conning median over 30 years.
+    setup: Pick it by name when you create the scenarios; it is also what you get without naming one.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Scenarios
+
+      scenarios = Scenarios.from_profiles(settings="default", factor_set="default")
+      result = scenarios.simulate()
   - name: "`broad`"
     status: available
     summary: A showcase that turns on almost every optional factor and the widest set of countries and instruments. Credit spreads are left out because the public data covers only three years. Use the three paper-based presets when you need a setup that follows the literature.
-    location: "`factor-sets/broad.yaml`"
+    location: 'Factor set: `broad`'
     details: 'This project''s expansive showcase: every opt-in factor category turned on except `credit` (the ICE BofA spreads on FRED cover only the last three years, too short to correlate with this set''s yearly factors; see the Credit rows above), broadest country/instrument coverage. Not a literature-grounded "framework" the way the three below are; see those for paper-faithful presets instead.'
+    setup: Pick it by name when you create the scenarios.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Scenarios
+
+      scenarios = Scenarios.from_profiles(settings="default", factor_set="broad")
+      result = scenarios.simulate()
   - name: "`ahlgrim`"
     status: available
     summary: 'Follows Ahlgrim, D''Arcy & Gorvett (2005): six linked factors (short rate, inflation, equity, unemployment, real estate and dividend yield) for one country. Use it when you want the paper''s model as published, without extra factors.'
-    location: "`factor-sets/ahlgrim.yaml`"
+    location: 'Factor set: `ahlgrim`'
     details: Ahlgrim, D'Arcy & Gorvett (2005), the paper's own six-factor cascade (short rate, inflation, equity, unemployment, real estate, dividend yield); single-country, single-instrument, no opt-in factor categories beyond that six.
+    setup: Pick it by name when you create the scenarios.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Scenarios
+
+      scenarios = Scenarios.from_profiles(settings="default", factor_set="ahlgrim")
+      result = scenarios.simulate()
   - name: "`wilkie`"
     status: available
     summary: The original Wilkie (1986) actuarial model, where inflation drives dividends, a long-term bond yield and share prices. It has no unemployment, real estate, credit, currency or commodity factors, and not the 1995 extension. It runs at the same time step it was fitted on, monthly in the shipped preset.
-    location: "`factor-sets/wilkie.yaml`, `InterestRates`"
+    location: 'Factor set: `wilkie`, with the `wilkie` settings profile'
     details: 'Wilkie''s (1986) original cascade; doesn''t model unemployment/real_estate/credit/FX/leading_indicator/commodities. Only the 1986 original is implemented, not the 1995 Thomson short-rate extension. `wilkie_ar1`/`wilkie_consols` are dt-blind discrete recursions like `knw` above: `engine.frequency` must equal the entry''s own `period` (`ScenariosConfig` rejects a mismatch), so pair with `settings/wilkie.yaml`.'
+    setup: Pick it by name when you create the scenarios, together with the `wilkie` settings profile (fitted on 1995-2007, monthly steps).
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Scenarios
+
+      scenarios = Scenarios.from_profiles(settings="wilkie", factor_set="wilkie")
+      result = scenarios.simulate()
   - name: "`hibbert`"
     status: available
     summary: The Barrie & Hibbert (2001) two-factor model, where rates and inflation each pull toward a slower-moving target. It estimates correlations from data instead of using the paper's fixed values, has no closed-form bond pricing, and does not support market-consistent runs.
-    location: "`factor-sets/hibbert.yaml`, [configuration](/projects/financescenarios/docs/configuration#published-frameworks)'s Published frameworks section"
+    location: 'Factor set: `hibbert`'
     details: Barrie & Hibbert (2001) two-factor; doesn't replicate the paper's own fixed cross-factor correlations or closed-form analytic bond pricing. `measure="risk_neutral"` unsupported (raises).
+    setup: Pick it by name when you create the scenarios; see [published frameworks](/projects/financescenarios/docs/configuration#published-frameworks).
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Scenarios
+
+      scenarios = Scenarios.from_profiles(settings="default", factor_set="hibbert")
+      result = scenarios.simulate()
   - name: Commercial vendor methodologies (Conning, Milliman, Moody's/Barrie & Hibbert's actual product, Ortec)
     status: not_available
     summary: You cannot reproduce commercial scenario generators such as Conning, Milliman, Moody's or Ortec. The project only includes models from published academic papers that anyone can implement.
-    location: "`resources/README.md`"
+    location: Out of scope; see the sourcing policy in `resources/README.md`
     details: 'Out of scope by this project''s own sourcing policy: only publicly-implementable named academic papers are curated here.'
 - topic: Validation benchmarks
   intro: Outside reference scenario sets and data your simulated futures can be compared against, so you can see whether the ranges of outcomes look reasonable.
@@ -635,15 +1665,47 @@
   - name: NAIC GOES percentile bands
     status: available
     summary: Compares the spread of your simulated interest rates with the NAIC's statutory scenarios used for US life insurance reserves and capital (VM-20/21/22). It covers interest rates only.
-    location: "`financescenarios/validation/naic_goes/`, [validation-and-testing](/projects/financescenarios/docs/validation)"
+    location: 'Python: `NaicGoes` in `financescenarios.validation.naic_goes`; see [validation and testing](/projects/financescenarios/docs/validation)'
     details: VM-20/21/22 statutory scenario percentile comparison (interest_rates only).
+    setup: From Python, on a real-world run with US rates.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios.validation.naic_goes.naic_goes_controller import NaicGoes
+
+      goes = NaicGoes.latest()   # the latest published vintage
+      goes.compare_interest_rates(result, scenarios.config, "united_states_short_rate")
   - name: DNB scenario sets (P and Q)
     status: available
     summary: Puts your run's ranges of outcomes next to De Nederlandsche Bank's 20,000-scenario sets, year by year, for rates, inflation and equity returns. It works for both real-world and market-consistent scenarios.
-    location: "`financescenarios/validation/dnb/`, [validation-and-testing](/projects/financescenarios/docs/validation)"
+    location: 'Python: `Dnb` in `financescenarios.validation.dnb`; see [validation and testing](/projects/financescenarios/docs/validation)'
     details: 'A run''s quantiles beside De Nederlandsche Bank''s 20,000-scenario sets year by year: rates, inflation and equity returns, real world or market consistent.'
+    setup: 'From Python: name your factor and DNB''s matching variable (`Dnb(toolkit).distribution` lists them); `market_consistent` for a risk-neutral run.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios.validation.dnb.dnb_controller import Dnb
+
+      dnb = Dnb(toolkit)
+      # DNB variables: Nominal rate 1Y to 30Y, Real rate EU 10Y, Equity return,
+      # Inflation EU, Inflation NL
+      dnb.compare(result, "eurozone_short_rate", variable="Nominal rate 1Y")
   - name: Open Source Bond Asset Pricing
     status: available
     summary: A public panel of real corporate bond spreads you can check simulated credit spreads against. The public data has no credit ratings, so you cannot compare by rating.
-    location: "`financescenarios/validation/bond_panel/`, [validation-and-testing](/projects/financescenarios/docs/validation)"
+    location: 'Python: `BondPanel` and `compare_credit_calibration` in `financescenarios.validation.bond_panel`; see [validation and testing](/projects/financescenarios/docs/validation)'
     details: Real cross-sectional spread panel; no rating field in the public drop (see the Credit rows above).
+    setup: 'From Python: load the panel (a 1.8 GB download, cached), average it by maturity bucket and compare a calibrated spread.'
+    setup_lang: python
+    setup_code: |-
+      from financescenarios.validation.bond_panel.bond_panel_controller import (
+          BondPanel,
+      )
+      from financescenarios.validation.bond_panel.bond_panel_model import (
+          aggregate_spread_by_maturity_bucket,
+          compare_credit_calibration,
+      )
+
+      panel = BondPanel().scan()
+      aggregated = aggregate_spread_by_maturity_bucket(panel, bucket_edges=[1, 3, 5, 7, 10, 15])
+      calibration = scenarios.calibrate()   # a factor set with a credit entry "credit"
+      spread = calibration.calibrated_params["credit"]
+      compare_credit_calibration(aggregated, spread, maturity_bucket="7-10 Years")

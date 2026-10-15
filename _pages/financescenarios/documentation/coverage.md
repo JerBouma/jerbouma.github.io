@@ -15,7 +15,7 @@ sidebar:
     nav: "financescenarios-docs"
 ---
 
-Does Finance Scenarios cover the model, measure or Solvency II output you need, and if not, why not? Pick a topic or search across all of them: each card says in plain words what a feature does or what is still missing, and **Technical details** gives the precise notes for quants.
+Does Finance Scenarios cover the model, measure or Solvency II output you need, and if not, why not? Pick a topic or search across all of them: each card says in plain words what a feature does or what is still missing. **Technical details** says where a feature is configured (the [settings profile or the factor set](/projects/financescenarios/docs/configuration#settings-profiles-and-factor-sets)), how to switch it on with a minimal example, and the precise notes for quants. An example shows only the keys involved: a list you write (under `countries`, or a list of entries) replaces the list of the profile you extend, so keep the other entries you still need.
 
 {% include fs-coverage.html %}
 
