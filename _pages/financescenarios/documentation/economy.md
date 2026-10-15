@@ -38,6 +38,7 @@ Here $$\pi_t$$ is inflation, $$\theta$$ the long-run level, $$a$$ the speed of t
 A view on the anchor, such as a credible 2% target, goes in as a belief (beliefs apply to this constant-volatility fit only). The Federal Reserve's 2% is defined as the annual change in PCE prices, not the CPI modeled here ([FOMC, Statement on Longer-Run Goals and Monetary Policy Strategy, reaffirmed January 2026, p. 1](https://www.federalreserve.gov/monetarypolicy/files/FOMC_LongerRunGoals.pdf#page=1){:target="_blank"}).
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 inflation:
   - name: us_inflation
     country: United States
@@ -68,6 +69,7 @@ In the paper that level is a second, unobserved factor with its own reversion an
 Beyond the correlation matrix, inflation can respond directly to the same step's move in one other variable: a paired short rate, so rate moves pass through to prices, or the leading indicator (see below), so inflation picks up in booms and eases in slowdowns. The link runs one way. For rates and inflation that drive each other, fitted jointly, use the [KNW model](/projects/financescenarios/docs/knw).
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 inflation:
   - name: us_inflation
     country: United States
@@ -96,6 +98,7 @@ Here $$f_{BE}(t)$$ is today's breakeven forward at horizon $$t$$. The middle ter
 Nothing is quoted below five years (three in the UK). Before that maturity the curve holds the fitted breakeven there flat, the constant-forward rule EIOPA applies before the first quoted maturity of its risk-free curve ([RFR Technical Documentation, EIOPA-BoS-26/198, Annex D.8](https://www.eiopa.europa.eu/eiopa-publishes-rfr-technical-documentation-become-applicable-30-january-2027-2026-05-26_en){:target="_blank"}), rather than extrapolating the fitted curve back to today: on 2026-10-14 that extrapolation started the German curve at 5.72% against 2.28% at five years. From the shortest maturity on, every breakeven is still the fitted one. The UK curve prices RPI, which has run above CPI.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 inflation:
   - name: uk_breakeven
     country: United Kingdom
@@ -123,6 +126,7 @@ The optional $$\gamma$$ term links unemployment to the leading indicator $$L_t$$
 Calibrated on US data from 2000 onward, unemployment started at 4.27% and was pulled toward 5.67% with a half-life of about 1.3 years. The fitted inflation sensitivity was -0.34: a one-point rise in inflation went with roughly a third of a point fall in unemployment.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 unemployment:
   - name: us_unemployment
     country: United States
@@ -143,6 +147,7 @@ Full reference: [Unemployment](/projects/financescenarios/docs/reference/unemplo
 The leading indicator gives the model an explicit business cycle, so other factors move with booms and slowdowns, not only through average correlations. It is the OECD Composite Leading Indicator for about 22 countries and country groups, designed to turn ahead of the economy and published detrended around 100. Mean reversion holds largely by construction, so it uses the same Ornstein-Uhlenbeck process as default inflation.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 leading_indicator:
   enabled: true
   country: United States
@@ -189,6 +194,7 @@ A fit on 40 years (1985 to 2024) of German population death probabilities, at ev
 Mortality is opt-in. Life tables come from Eurostat (countries of the European Economic Area, yearly, from 1960 for most) or from your own table, for example from the [Human Mortality Database](https://www.mortality.org/){:target="_blank"} or a national statistics office. The default ages 60 to 84 are deliberate: the logit-linear shape is built for older ages, and many countries grouped "85 and over" until the 2010s.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 mortality:
   enabled: true
   source: eurostat

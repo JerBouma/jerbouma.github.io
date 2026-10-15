@@ -163,14 +163,21 @@ The weight leaves out turbulence's shock, so the deflator is only accurate when 
 
 A KNW pair is a rate entry and an inflation entry that name each other and use the same method. The fitted coefficients are a recursion applied once per period, with no time step to rescale, so the simulation frequency must equal the fitting period (monthly, quarterly or yearly); the configuration rejects a mismatch.
 
+The settings profile sets the step and the history the pair is fitted on:
+
 ```yaml
-# knw.yaml
+# my-project/settings/knw.yaml (a settings profile)
 start_date: 2026-10-01
 engine:
   frequency: quarterly          # must equal the pair's period
 toolkit:
   start_date: 1990-01-01        # history used for the fit
+```
 
+The factor set holds the pair and the optional equity leg:
+
+```yaml
+# my-project/factor-sets/knw.yaml (a factor set)
 interest_rates:
   - name: interest_rate
     source: oecd
@@ -199,7 +206,9 @@ equities:
 ```python
 from financescenarios import Scenarios, load_config
 
-result = Scenarios.from_config(load_config("knw.yaml")).simulate(years=30)
+result = Scenarios.from_config(
+    load_config("my-project/settings/knw.yaml", "my-project/factor-sets/knw.yaml")
+).simulate(years=30)
 ```
 
 Beliefs, GARCH and business-cycle conditioning are not available: the long-run level is a joint property of both legs, so there is no single long-run mean to override. The equity leg needs a real-world rate.

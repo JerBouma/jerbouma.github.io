@@ -1,6 +1,7 @@
 # Finance Scenarios coverage, shown by _includes/fs-coverage.html on /projects/financescenarios/docs/coverage.
 # summary is the plain-language explanation; location (where it is configured), setup (how to switch it on, with
-# setup_code in setup_lang) and details are the technical notes.
+# setup_code in setup_lang; setup_settings and setup_settings_code add the settings-profile part when a feature also
+# needs one) and details are the technical notes. Every YAML example starts with a comment naming its file.
 - topic: Interest rates
   intro: How short-term rates and bond yields can move in the simulated futures, from simple mean-reverting rates to models that keep yields and inflation consistent with each other.
   items:
@@ -12,6 +13,7 @@
     setup: 'In your factor set, set `zero_lower_bound: true` on each `interest_rates` entry you want floored, or under `defaults` for every rate. Real-world rates only.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       interest_rates:
         countries:
           - name: Eurozone
@@ -27,6 +29,7 @@
     setup: 'Nothing to switch on: every interest rate uses it unless you pick another `method`. To make it explicit in your factor set:'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       interest_rates:
         defaults:
           method: hull_white   # or cir, wilkie_consols, knw, ...
@@ -38,6 +41,7 @@
     setup: 'In your factor set, set `method: cir` under `interest_rates` `defaults` for every rate, or on one entry under `countries`.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       interest_rates:
         defaults:
           method: cir   # default: hull_white; cir keeps rates at or above zero
@@ -49,6 +53,7 @@
     setup: 'In your factor set, set `volatility_model: garch` on the rates. It needs a Hull-White rate without a long history or EIOPA anchor, which the default factor set switches on, so turn those off too.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       interest_rates:
         defaults:
           volatility_model: garch   # default: constant; hull_white only
@@ -63,6 +68,7 @@
     setup: 'In your factor set, switch on the leading indicator and set `condition_on_business_cycle: true` on the rates. It works on Hull-White and CIR rates with constant volatility, without a long history or EIOPA anchor.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       leading_indicator:
         enabled: true                       # required: the OECD leading indicator
       interest_rates:
@@ -79,6 +85,7 @@
     setup: 'Quickest: run the shipped `wilkie` settings and factor set (`Scenarios.from_profiles(settings="wilkie", factor_set="wilkie")`). By hand, give a long rate `method: wilkie_consols` and name the inflation entry it builds on; the engine''s step (`engine.frequency` in the settings) must equal the pair''s `period`, and the history should end before real yields turned negative (2007).'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       interest_rates:
         - name: consols_rate
           source: oecd
@@ -100,6 +107,7 @@
     setup: 'In your factor set, give a short rate `method: hibbert_two_factor` and say what its target is: by default a longer yield (`target_ticker`, or `target_term` for OECD rates), simulated as a second factor. Inflation takes the same method. Not for risk-neutral runs.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       interest_rates:
         - name: short_rate
           ticker: "^IRX"           # the rate: 13-week Treasury bill
@@ -115,8 +123,7 @@
     setup: 'In your factor set, add one rate and one inflation entry with `method: knw` that name each other, at the same `period`. In your settings profile set `engine.frequency` to that period (quarterly below); the configuration rejects a mismatch.'
     setup_lang: yaml
     setup_code: |-
-      engine:
-        frequency: quarterly        # settings profile: must equal the pair's period
+      # my-project/factor-sets/knw.yaml (a factor set)
       interest_rates:
         - name: united_states_short_rate
           source: oecd
@@ -130,6 +137,11 @@
           period: quarterly
           method: knw
           interest_rate_name: united_states_short_rate
+    setup_settings: 'And in your settings profile, the matching step:'
+    setup_settings_code: |-
+      # my-project/settings/knw.yaml (a settings profile)
+      engine:
+        frequency: quarterly        # must equal the pair's period
   - name: KNW stochastic-volatility
     status: available
     summary: The full version of the DNB-style model, where a shared, randomly changing volatility affects both rates and inflation. You set it up by hand, and the simulation step must match the model's data frequency.
@@ -138,8 +150,7 @@
     setup: 'As for KNW-lite, with `method: knw_sv` on both entries. An equity can share the volatility factor with `method: knw_sv` and `nominal_rate_name` (see v-scaled equity). The [KNW guide](/projects/financescenarios/docs/knw) has the full file.'
     setup_lang: yaml
     setup_code: |-
-      engine:
-        frequency: quarterly        # settings profile: must equal the pair's period
+      # my-project/factor-sets/knw.yaml (a factor set)
       interest_rates:
         - name: united_states_short_rate
           source: oecd
@@ -153,6 +164,11 @@
           period: quarterly
           method: knw_sv
           interest_rate_name: united_states_short_rate
+    setup_settings: 'And in your settings profile, the matching step:'
+    setup_settings_code: |-
+      # my-project/settings/knw.yaml (a settings profile)
+      engine:
+        frequency: quarterly        # must equal the pair's period
   - name: 2-factor Gaussian HJM (Cheyette-reduction, PCA-calibrated)
     status: available
     summary: Simulates the whole forward-rate curve with two drivers. Its direction is set by a no-arbitrage rule rather than fitted to history, so prices stay consistent with today's curve. It runs in risk-neutral (pricing) mode by default.
@@ -161,6 +177,7 @@
     setup: In your factor set, switch on the `hjm` section. It fits its own anchor curve on the four Treasury yields and adds the curve factors to the run.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       hjm:
         enabled: true
         period: daily               # the history it is fitted on
@@ -174,6 +191,7 @@
     setup: 'In your factor set, set `measure: risk_neutral` on a Hull-White rate without `risk_neutral_forward_curve`. In a set based on `default`, switch off the long history and EIOPA anchor, which are for real-world rates.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       interest_rates:
         defaults:
           measure: risk_neutral     # a flat path at today's rate
@@ -188,6 +206,7 @@
     setup: 'Quickest: `scenarios.simulate(measure="risk_neutral")` sets this up on EIOPA''s curve for the whole run. For one rate in your factor set, make it risk-neutral, switch on the forward curve and pick the curve; it must be a Hull-White rate without GARCH, business-cycle conditioning, long history or EIOPA anchor.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       interest_rates:
         defaults:
           history_source: null      # switch off the default factor set's
@@ -207,6 +226,7 @@
     setup: 'Use DNB''s market-consistent set for the paths: in your factor set, switch on `external_scenario_source`, pick the market-consistent set and name the factors it replaces. The run then follows DNB''s grid (20,000 yearly scenarios) instead of `engine`. To compare instead of replace, see DNB scenario sets under Validation benchmarks.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       external_scenario_source:
         enabled: true
         provider: dnb
@@ -223,8 +243,7 @@
     setup: 'Set up the KNW stochastic-volatility pair and add `measure: risk_neutral` to both entries. Leave out a `knw_sv` equity: it has no risk-neutral form.'
     setup_lang: yaml
     setup_code: |-
-      engine:
-        frequency: quarterly        # settings profile: must equal the pair's period
+      # my-project/factor-sets/knw.yaml (a factor set)
       interest_rates:
         - name: united_states_short_rate
           source: oecd
@@ -240,6 +259,11 @@
           method: knw_sv
           interest_rate_name: united_states_short_rate
           measure: risk_neutral       # on both legs
+    setup_settings: 'And in your settings profile, the matching step:'
+    setup_settings_code: |-
+      # my-project/settings/knw.yaml (a settings profile)
+      engine:
+        frequency: quarterly        # must equal the pair's period
   - name: Stochastic deflator (Cheng & Planchet 2018)
     status: partial
     summary: 'Builds a discount factor per path from a real-world run, so cash flows can be valued consistently with market prices. Accurate (within about 0.1-2% of the exact price) when the risk premium on the shared volatility factor is near zero. With the premium fitted on US data (2026-10-14) its average misses the model''s own bond prices by about 2% at one year (0.9827 against 0.9620) and 5% at five (0.7606 against 0.7996), and the run warns when the premium exceeds 5% of that factor''s mean-reversion speed. For use from Python only: the volatility factor isn''t stored in the results.'
@@ -272,6 +296,7 @@
     setup: 'In your factor set, switch on the yield curve with `source: government` and pick one country. No API key needed.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       yield_curve:
         enabled: true
         source: government   # default: yahoo (four US Treasury yields)
@@ -286,6 +311,7 @@
     setup: 'In your factor set, set `source: gmdb` and `period: yearly` on the entry; it works the same way for rates, inflation, unemployment and exchange rates. In a set based on `default`, also switch off the OECD long history and EIOPA anchor for rates, which do not cover these currencies.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       interest_rates:
         defaults:
           history_source: null      # switch off the default factor set's
@@ -304,6 +330,7 @@
     setup: Already on in the `default` factor set. In a factor set of your own, set `long_run_anchor` on real-world Hull-White or CIR rates with constant volatility; `dnb` only on euro entries.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       interest_rates:
         defaults:
           long_run_anchor: eiopa   # USD, EUR or GBP; dnb for euro entries only
@@ -318,6 +345,7 @@
     setup: In your factor set, switch on the `yield_curve` section. It adds three factors (`rate_level`, `rate_slope`, `rate_curvature`) from which every maturity is rebuilt.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       yield_curve:
         enabled: true
         period: daily    # the history it is fitted on
@@ -330,6 +358,7 @@
     setup: 'In your factor set, switch on the yield curve with `source: treasury` and a daily period, and pass an FMP API key when you create the scenarios.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       yield_curve:
         enabled: true
         source: treasury   # 1 month to 30 years; default: yahoo (four tickers)
@@ -363,6 +392,7 @@
     setup: 'In your factor set, switch on the yield curve with `source: government` and the country; one country per run.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       yield_curve:
         enabled: true
         source: government
@@ -379,6 +409,7 @@
     setup: 'Nothing to switch on: every inflation entry uses it. To anchor the long-run level to a target such as 2%, set it as a belief in your factor set; a path of targets by year works too.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       inflation:
         defaults:
           beliefs:
@@ -391,6 +422,7 @@
     setup: In your factor set, set one of the two on the inflation entries, under `defaults` for all. Business-cycle conditioning needs the leading indicator; the two don't combine.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       leading_indicator:
         enabled: true                       # only for condition_on_business_cycle
       inflation:
@@ -404,6 +436,7 @@
     setup: 'In your factor set, set `condition_on_interest_rate: true` on the inflation entry and name the interest rate it follows. Not with GARCH or business-cycle conditioning.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       inflation:
         countries:
           - name: United States
@@ -417,6 +450,7 @@
     setup: 'In your factor set, set `method: wilkie_ar1` on the inflation entry. Its step is fixed by the data, so `engine.frequency` in your settings must equal the entry''s `period`. Optionally fit it on long history, as Wilkie did.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       inflation:
         countries:
           - name: United States
@@ -432,8 +466,7 @@
     setup: Set the inflation entry's `method` to the pair's and name its rate with `interest_rate_name`; the rate names it back with `inflation_name`, at the same `period` as the engine.
     setup_lang: yaml
     setup_code: |-
-      engine:
-        frequency: quarterly        # settings profile: must equal the pair's period
+      # my-project/factor-sets/knw.yaml (a factor set)
       interest_rates:
         - name: united_states_short_rate
           source: oecd
@@ -447,6 +480,11 @@
           period: quarterly
           method: knw
           interest_rate_name: united_states_short_rate
+    setup_settings: 'And in your settings profile, the matching step:'
+    setup_settings_code: |-
+      # my-project/settings/knw.yaml (a settings profile)
+      engine:
+        frequency: quarterly        # must equal the pair's period
   - name: Standalone risk-neutral / market-implied inflation
     status: available
     summary: 'The model: inflation moves randomly around the breakeven curve the bond market prices today, for the US (5-30 years), UK (3-40 years) or the euro area through Germany (5-15 years), so the expected price index matches the curve and caps and floors on indexation get a time value. Before the shortest quoted maturity the curve is held at its first quote. The volatility comes from inflation''s own history, not from inflation options. The stochastic-volatility model is the other market-consistent route.'
@@ -455,6 +493,7 @@
     setup: 'In your factor set, set `measure: risk_neutral` on a US, UK, German or euro area inflation entry; a whole risk-neutral run (`simulate(measure="risk_neutral")`) does this for you where a breakeven curve exists.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       inflation:
         countries:
           - name: United States              # or United Kingdom, Germany, Euro Area
@@ -485,13 +524,17 @@
     setup: 'Nothing to switch on: every equity uses it. You can set the number of regimes per entry, and in your settings profile whether all markets share one calm/crisis switch (on in the shipped settings).'
     setup_lang: yaml
     setup_code: |-
-      engine:
-        shared_equity_regimes: true   # settings profile: markets enter crises together
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       equities:
         - name: us_broad
           ticker: SPY
           period: monthly
           n_regimes: 2                 # calm and crisis
+    setup_settings: 'And in your settings profile, the shared switch:'
+    setup_settings_code: |-
+      # my-project/settings/my_settings.yaml (a settings profile)
+      engine:
+        shared_equity_regimes: true   # markets enter crises together
   - name: Wilkie derived equity
     status: available
     summary: Builds total equity returns from simulated dividend yields and dividend growth, as in the Wilkie model, instead of fitting price returns directly. Use it when you want equity returns tied to dividends.
@@ -500,6 +543,7 @@
     setup: In your factor set, add a dividend yield and a dividend growth entry on the same ticker and point the equity at both. The `wilkie` factor set has the full cascade.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       equities:
         - name: equity
           method: wilkie_derived
@@ -521,6 +565,7 @@
     setup: In your factor set, set the method and name the short rate the excess returns are measured over; both must have the same `period`. Real-world only.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       equities:
         - name: us_broad
           ticker: SPY
@@ -535,8 +580,7 @@
     setup: 'Set up the KNW stochastic-volatility pair, then add an equity with `method: knw_sv` that names its rate, at the same `period` as the pair and the engine.'
     setup_lang: yaml
     setup_code: |-
-      engine:
-        frequency: quarterly        # settings profile: must equal the pair's period
+      # my-project/factor-sets/knw.yaml (a factor set)
       interest_rates:
         - name: united_states_short_rate
           source: oecd
@@ -556,6 +600,11 @@
           period: quarterly
           method: knw_sv
           nominal_rate_name: united_states_short_rate
+    setup_settings: 'And in your settings profile, the matching step:'
+    setup_settings_code: |-
+      # my-project/settings/knw.yaml (a settings profile)
+      engine:
+        frequency: quarterly        # must equal the pair's period
   - name: Private-market sleeves (listed proxies)
     status: partial
     summary: You can add private equity, infrastructure, hedge funds, private credit and similar assets using listed funds as stand-ins. These are more volatile and more tied to stocks than reported private fund returns, histories start 2006 to 2013, and no smoothing adjustment is applied.
@@ -564,6 +613,7 @@
     setup: In your factor set, add an equity entry with `asset_class` instead of a ticker; the listed proxy is filled in. Or run the shipped `private_markets` factor set.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       equities:
         - name: private_equity
           asset_class: Private Equity   # also Infrastructure, Hedge Funds,
@@ -577,6 +627,7 @@
     setup: 'In your factor set, set `measure: risk_neutral` on the equity and add a dividend yield entry with the same ticker; the drift needs today''s dividend yield. The risk-free rate is the first interest rate''s.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       equities:
         - name: us_broad
           ticker: SPY
@@ -593,6 +644,7 @@
     setup: 'In your factor set, switch on the leading indicator and set `condition_on_business_cycle: true` on a regime-switching equity. The indicator''s `period` must equal `engine.frequency` (both monthly in the shipped profiles).'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       leading_indicator:
         enabled: true
         period: monthly                     # must equal engine.frequency
@@ -614,6 +666,7 @@
     setup: 'In your factor set, make the equity risk-neutral with `volatility_source: heston` and add its dividend yield. The ticker needs a listed options market; without one it falls back to a constant volatility.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       equities:
         - name: us_broad
           ticker: SPY
@@ -630,6 +683,7 @@
     setup: 'As for the risk-neutral equity, with `volatility_source: svi`.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       equities:
         - name: us_broad
           ticker: SPY
@@ -665,6 +719,7 @@
     setup: In your factor set, add a `credit` entry and pick the spread with `dimension` and `rating_bucket` or `maturity_bucket`. Needs a FRED key for the US series.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       credit:
         - name: baa_aaa
           dimension: moodys          # or maturity, rating, corporate,
@@ -679,6 +734,7 @@
     setup: 'In your factor set, switch on the `credit_term_structure` section and pass a FRED key. `source: bond_panel` fits the public TRACE bond panel instead (a 1.8 GB download).'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       credit_term_structure:
         enabled: true
         source: hqm      # Treasury HQM curve, 2-30 years; or bond_panel
@@ -691,6 +747,7 @@
     setup: In your factor set, set one of the two on the `credit` entry; business-cycle conditioning needs the leading indicator switched on.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       credit:
         - name: baa_aaa
           dimension: moodys
@@ -705,6 +762,7 @@
     setup: 'In your factor set, switch on `credit_migration` and pick the agency; this adds the `credit_cycle` factor. After the run, call `rating_migration(result, {"A": 40, "BBB": 50, "BB": 10}, recovery_rate=0.4)` with your holdings by rating.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       credit_migration:
         enabled: true
         agency: S&P             # as ESMA's CEREP names it, e.g. Moody's
@@ -720,6 +778,7 @@
     setup: In your factor set, add an `fx` entry per currency against the US dollar.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       fx:
         - name: jpy
           country: Japan    # the euro is EA20
@@ -733,6 +792,7 @@
     setup: 'In your factor set, set `measure: risk_neutral` on the `fx` entry. The run needs an interest rate entry for the United States and one whose `country` matches the pair''s (United Kingdom here; the euro''s `EA20` has no rate entry in the shipped sets).'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       fx:
         - name: gbp
           country: United Kingdom   # needs a United Kingdom interest rate entry
@@ -745,6 +805,7 @@
     setup: 'In your factor set, set `drift_mode: irp` on the `fx` entry and name the US dollar rate and the foreign rate it follows.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       fx:
         - name: eur
           country: EA20             # the euro area
@@ -764,6 +825,7 @@
     setup: 'Nothing to switch on: it is the default. To carry the historical trend forward instead, set `drift_mode: historical`.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       fx:
         - name: eur
           country: EA20
@@ -779,6 +841,7 @@
     setup: In your factor set, set `currency` (a three-letter ISO code) on each entry; reporting and portfolios read it.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       equities:
         - name: europe
           ticker: VGK
@@ -803,6 +866,7 @@
     setup: 'The same switch as under FX: `drift_mode: irp` on the `fx` entry, naming both rates.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       fx:
         - name: eur
           country: EA20             # the euro area
@@ -817,6 +881,7 @@
     setup: 'One country''s curve per run: in your factor set, switch on the yield curve with `source: government`.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       yield_curve:
         enabled: true
         source: government
@@ -833,6 +898,7 @@
     setup: In your factor set, add a `commodities` entry with its futures ticker.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       commodities:
         - name: gold
           ticker: GC=F     # e.g. CL=F (WTI), BZ=F (Brent), NG=F, HG=F
@@ -845,6 +911,7 @@
     setup: 'In your factor set, set `method: schwartz_smith` on a commodity with a futures curve in the Finance Toolkit, such as crude oil or natural gas.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       commodities:
         - name: oil
           ticker: CL=F
@@ -859,6 +926,7 @@
     setup: 'In your factor set, set `measure: risk_neutral` on a two-factor commodity.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       commodities:
         - name: oil
           ticker: CL=F
@@ -872,6 +940,7 @@
     setup: In your factor set, set one of the two on a single-factor commodity; business-cycle conditioning needs the leading indicator switched on.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       commodities:
         - name: gold
           ticker: GC=F
@@ -888,6 +957,7 @@
     setup: In your factor set, switch on the `real_estate` section and pick the country.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       real_estate:
         enabled: true
         country: United States   # any OECD country
@@ -900,6 +970,7 @@
     setup: In your factor set, set one of the two in the `real_estate` section; business-cycle conditioning needs the leading indicator switched on.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       real_estate:
         enabled: true
         volatility_model: garch   # or condition_on_business_cycle: true, not both
@@ -916,6 +987,7 @@
     setup: 'In your factor set, switch on real estate with `source: commercial` (United States, quarterly) and pass a FRED key.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       real_estate:
         enabled: true
         source: commercial       # default: house_price
@@ -932,6 +1004,7 @@
     setup: In your factor set, add a `dividend_yield` entry for a dividend-paying ticker.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       dividend_yield:
         - name: spy_yield
           ticker: SPY
@@ -945,6 +1018,7 @@
     setup: In your factor set, add a dividend growth entry that names an inflation entry and a plain dividend yield entry; the yield must be fitted at the inflation entry's period.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       dividend_yield:
         - name: spy_yield
           ticker: SPY
@@ -962,6 +1036,7 @@
     setup: In your factor set, set one of the two on the `dividend_yield` entry. Neither combines with `condition_on_inflation`, and a dividend growth entry can't use such a yield.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       leading_indicator:
         enabled: true                        # only for condition_on_business_cycle
       dividend_yield:
@@ -989,6 +1064,7 @@
     setup: 'Always part of a run: every factor set has an `unemployment` section, each country paired with its own inflation entry. You can add your view of the natural rate.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       unemployment:
         countries:
           - name: United States     # pairs with united_states_inflation
@@ -1002,6 +1078,7 @@
     setup: In your factor set, switch on the `leading_indicator` section (on in the shipped sets).
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       leading_indicator:
         enabled: true
         country: United States
@@ -1014,6 +1091,7 @@
     setup: 'In your factor set, switch on the leading indicator and set `condition_on_business_cycle: true` on the unemployment entry. The indicator''s `period` must equal that of the paired inflation entry.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       leading_indicator:
         enabled: true
         period: monthly                       # the paired inflation entry's period
@@ -1032,6 +1110,7 @@
     setup: 'In your factor set, switch on `mortality` with `source: eurostat` and a European Economic Area country, or keep `source: supplied` and pass your own table to `calibrate()`.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       mortality:
         enabled: true
         source: eurostat   # or supplied: your own table
@@ -1055,6 +1134,7 @@
     setup: On by default. In your settings profile you can fix the shrinkage instead of the data-driven amount, or estimate on complete rows only.
     setup_lang: yaml
     setup_code: |-
+      # my-project/settings/my_settings.yaml (a settings profile)
       engine:
         correlation_shrinkage: auto      # or a number in [0, 1], e.g. 0.2
         correlation_method: pairwise     # or complete_case
@@ -1066,6 +1146,7 @@
     setup: 'Nothing to switch on: it is the default.'
     setup_lang: yaml
     setup_code: |-
+      # my-project/settings/my_settings.yaml (a settings profile)
       engine:
         shock_distribution: gaussian   # default; student_t for joint tail risk
   - name: Student-t copula
@@ -1076,6 +1157,7 @@
     setup: In your settings profile, set the shock distribution to `student_t`; lower degrees of freedom give fatter joint tails.
     setup_lang: yaml
     setup_code: |-
+      # my-project/settings/my_settings.yaml (a settings profile)
       engine:
         shock_distribution: student_t   # default: gaussian
         degrees_of_freedom: 12.0        # the default; must be above 2
@@ -1109,6 +1191,7 @@
     setup: 'In your factor set, set `history_source` on the entry. Equities take `shiller` or `jst`, interest rates `oecd`, `millennium` or `jst`, inflation `shiller` or `millennium`; `jst` also needs `accept_licence: true` (non-commercial use).'
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       equities:
         - name: us_broad
           ticker: SPY
@@ -1126,6 +1209,7 @@
     setup: In your factor set, switch on `climate` and pick the NGFS scenario; the shift is laid over the run after simulating.
     setup_lang: yaml
     setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
       climate:
         enabled: true
         scenario: Delayed transition   # default: Net Zero 2050; also Below 2°C,
