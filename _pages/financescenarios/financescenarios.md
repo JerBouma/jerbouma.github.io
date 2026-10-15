@@ -167,6 +167,8 @@ The chart below follows the US short rate, US inflation and US equities through 
 result.plot(["united_states_short_rate", "united_states_inflation", "us_broad"])
 ```
 
+Which draws the median of each variable with the bands that hold half and nine in ten of the scenarios:
+
 {% include ft-chart.html id="simulation" src="/assets/data/financescenarios-charts.json" label="Simulated short rate, inflation and US equities" %}
 
 ### Reading the Distribution
@@ -190,6 +192,8 @@ The chart below shows how widely the five-year US equity return spreads across t
 ```python
 result.plot("us_broad", kind="distribution")
 ```
+
+Which shows where the five-year return lands across all 2,000 scenarios:
 
 {% include ft-chart.html id="distribution" src="/assets/data/financescenarios-charts.json" label="Distribution of the five-year US equity return" %}
 
@@ -220,6 +224,8 @@ The 60/40 earns 8.35% a year on average, between the stocks' 9.83% and the Treas
 ```python
 values.plot(levels=True)
 ```
+
+Which shows the portfolio's value in money, with the same bands:
 
 {% include ft-chart.html id="portfolio" src="/assets/data/financescenarios-charts.json" label="Simulated value of a 60/40 portfolio" %}
 
@@ -256,6 +262,8 @@ for regime in ("oil_shock", "oil_crisis", "climate_collapse"):
 plot_runs(runs, "united_states_inflation")
 ```
 
+Which puts the four runs side by side:
+
 {% include ft-chart.html id="regimes" src="/assets/data/financescenarios-charts.json" label="US inflation in the baseline and under three stress regimes" %}
 
 ### Backtesting Against History
@@ -282,6 +290,8 @@ The chart below shows what each mix actually did since August 2000, rebalanced o
 ```python
 portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
 ```
+
+Which follows each mix month by month:
 
 {% include ft-chart.html id="backtest" src="/assets/data/financescenarios-charts.json" label="Historical value of the 60/40, All Weather and Permanent Portfolio mixes since 2000" %}
 
@@ -316,6 +326,8 @@ The chart below shows where own funds could be after one year, with today's leve
 ```python
 solvency.plot(cashflows=[10_000] * 5, assets=assets)
 ```
+
+Which marks today's own funds and the 1-in-200 outcome:
 
 {% include ft-chart.html id="solvency" src="/assets/data/financescenarios-charts.json" label="Distribution of own funds after one year" %}
 
