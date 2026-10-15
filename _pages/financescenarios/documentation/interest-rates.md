@@ -189,7 +189,7 @@ $$
 - **Slope** $$S$$ moves short maturities more than long ones. In this formula it is the short end minus the long end: the very short yield is $$L + S$$ and the long yield $$L$$. A normal, upward-sloping curve therefore has a negative $$S$$, and an inverted curve a positive one. It moves with monetary policy and the cycle.
 - **Curvature** $$C$$ moves medium maturities most: a hump or a trough in the belly of the curve.
 
-The decay $$\lambda$$ fixes where the curvature loading peaks. The default, 0.7308 with maturities in years, is Diebold and Li's 0.0609 with maturities in months, which puts the peak at 30 months, the average of the two- and three-year maturities usually taken as medium term ([their section 3.2, pp. 346-347](https://www.sas.upenn.edu/~fdiebold/papers/paper49/Diebold-Li.pdf){:target="_blank"}).
+The decay $$\lambda$$ fixes where the curvature loading peaks. The default, 0.7308 with maturities in years, is Diebold and Li's 0.0609 with maturities in months, which puts the peak at 30 months, the average of the two- and three-year maturities usually taken as medium term ([Diebold and Li, 2006, section 3.2](https://www.sas.upenn.edu/~fdiebold/papers/paper49/Diebold-Li.pdf){:target="_blank"}).
 
 The factors are fitted to observed yields on every historical date, then each is simulated as its own mean-reverting process, correlated with the rest of the model.
 

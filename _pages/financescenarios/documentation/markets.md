@@ -27,7 +27,7 @@ $$
 \ln\frac{S_{t+\Delta t}}{S_t} \,\Big|\, s_t = k \;\sim\; N\!\left(\mu_k \Delta t,\; \sigma_k^2 \Delta t\right)
 $$
 
-Hardy fitted it by maximum likelihood to monthly S&P 500 and TSX 300 returns ([abstract](https://www.casact.org/abstract/regime-switching-model-long-term-stock-returns){:target="_blank"}).
+[Hardy (2001)](https://doi.org/10.1080/10920277.2001.10595984){:target="_blank"} fitted it by maximum likelihood to monthly S&P 500 and TSX 300 returns.
 
 This suits long-horizon risk: a mix of a low- and a high-volatility normal has fatter tails than one normal of the same variance, regimes persist so turbulent months cluster (2008, 2020), and drawdowns run over several periods, which is what a guarantee or funding ratio feels.
 
@@ -136,7 +136,7 @@ A commodity price is pulled toward a level set by production cost: high prices b
 
 ### Single Factor (the Default)
 
-The log price reverts to one long-run level, as in the one-factor model of [Schwartz (1997, abstract, p. 923)](https://afajof.org/issue/volume-52-issue-3){:target="_blank"}, which keeps the price positive and its distribution lognormal:
+The log price reverts to one long-run level, as in the one-factor model of [Schwartz (1997)](https://doi.org/10.1111/j.1540-6261.1997.tb02721.x){:target="_blank"}, which keeps the price positive and its distribution lognormal:
 
 $$
 dX_t = a(\theta - X_t)\,dt + \sigma\,dW_t, \qquad X_t = \ln S_t
@@ -152,7 +152,7 @@ $$
 \ln S_t = \chi_t + \xi_t, \qquad d\chi_t = -a\,\chi_t\,dt + \sigma_\chi\,dW^\chi_t, \qquad d\xi_t = \mu_\xi\,dt + \sigma_\xi\,dW^\xi_t
 $$
 
-The two shocks are correlated. Long-dated futures reflect almost only $$\xi_t$$ and the gap between short and long contracts reflects $$\chi_t$$, so the futures curve separates the two ([Schwartz and Smith, 2000, abstract, p. 893](https://jimsmith.host.dartmouth.edu/wp-content/uploads/2022/04/Short-term_Long-term_Model.pdf#page=1){:target="_blank"}).
+The two shocks are correlated. Long-dated futures reflect almost only $$\xi_t$$ and the gap between short and long contracts reflects $$\chi_t$$, so the futures curve separates the two ([Schwartz and Smith, 2000](https://doi.org/10.1287/mnsc.46.7.893.12034){:target="_blank"}).
 
 The volatilities are fitted to the listed futures (crude oil, natural gas, gold, silver, copper, corn, wheat and soybeans). Fitted on spot prices alone, with a moving average standing in for the long-term level, the long-term volatility comes out far too low, because the averaging smooths it away.
 
@@ -183,7 +183,7 @@ Neither source matches the paper's appraisal-based NCREIF index; appraisals smoo
 
 ### Dividend Yield {#dividend-yield}
 
-When dividend income matters on its own, the yield is simulated separately from the equity's total return. Following eq. 3.17 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=20){:target="_blank"}, who follow Wilkie (1986) and Hibbert, Mowbray and Turnbull (2001), the log of the yield mean-reverts, so the yield stays positive:
+When dividend income matters on its own, the yield is simulated separately from the equity's total return. Following eq. 3.17 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=20){:target="_blank"}, who follow [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} and [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"}, the log of the yield mean-reverts, so the yield stays positive:
 
 $$
 d\ln y_t = a(\theta - \ln y_t)\,dt + \sigma\,dW_t
