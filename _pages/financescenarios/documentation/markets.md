@@ -62,7 +62,7 @@ A window from 2005 misses the 1930s, the wars and the 1970s. For runs of 50 to 1
 ### Alternative Equity Models
 
 - **Hibbert: returns above cash.** The same two regimes, fitted on returns in excess of a short rate, as in [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"}. The simulated short rate is added back, so equity returns move with rates. Against the 13-week bill, SPY's calm regime earned 16.5% a year above cash and its turbulent regime 1.5% below it.
-- **Wilkie: price from dividends.** The simulated dividend index divided by the simulated dividend yield, the last link of [Wilkie's (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} cascade (see [below](#dividend-yield-and-dividend-growth)).
+- **Wilkie: price from dividends.** The simulated dividend index divided by the simulated dividend yield, the last link of [Wilkie's (1986)](https://doi.org/10.1017/S0071368600009009){:target="_blank"} cascade (see [below](#dividend-yield-and-dividend-growth)).
 - **KNW: shared stochastic volatility.** The equity leg of the [KNW model](/projects/financescenarios/docs/knw), fitted together with its interest rate, with variance driven by a volatility factor shared with rates and inflation.
 
 ### Risk-Neutral Equities
@@ -183,7 +183,7 @@ Neither source matches the paper's appraisal-based NCREIF index; appraisals smoo
 
 ### Dividend Yield {#dividend-yield}
 
-When dividend income matters on its own, the yield is simulated separately from the equity's total return. Following eq. 3.17 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=20){:target="_blank"}, who follow [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} and [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"}, the log of the yield mean-reverts, so the yield stays positive:
+When dividend income matters on its own, the yield is simulated separately from the equity's total return. Following eq. 3.17 of [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=20){:target="_blank"}, who follow [Wilkie (1986)](https://doi.org/10.1017/S0071368600009009){:target="_blank"} and [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"}, the log of the yield mean-reverts, so the yield stays positive:
 
 $$
 d\ln y_t = a(\theta - \ln y_t)\,dt + \sigma\,dW_t
@@ -193,7 +193,7 @@ On 2026-10-04 SPY yielded 0.99% and was pulled toward 1.39% with a half-life of 
 
 ### Dividend Growth (Wilkie)
 
-[Wilkie's (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} model is a one-way cascade: inflation, then dividend yield, dividend growth and the share price (dividend index divided by yield). Dividend growth is his "Reduced Standard Basis" equation ([section 3.9](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4){:target="_blank"}), a slightly simpler form that he found gives very similar long-term results, with $$\Delta\ln Q_t$$ the force of inflation (the log change in the price index):
+[Wilkie's (1986)](https://doi.org/10.1017/S0071368600009009){:target="_blank"} model is a one-way cascade: inflation, then dividend yield, dividend growth and the share price (dividend index divided by yield). Dividend growth is his "Reduced Standard Basis" equation ([section 3.9](https://doi.org/10.1017/S0071368600009009){:target="_blank"}), a slightly simpler form that he found gives very similar long-term results, with $$\Delta\ln Q_t$$ the force of inflation (the log change in the price index):
 
 $$
 \Delta \ln D_t = \mu_D + w\,M_t + x\,\Delta\ln Q_t + y\,\varepsilon^Y_{t-1} + \sigma_D\,z_t, \qquad w + x = 1
@@ -207,7 +207,7 @@ $$
 | $$y\,\varepsilon^Y_{t-1}$$ | DY | Last period's dividend yield surprise: prices anticipate dividend changes, so the yield moves first |
 | $$\sigma_D\,z_t$$ | DSD | The dividend index's own shock |
 
-The two inflation weights add up to one, Wilkie's unit gain ([section 3.7](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4){:target="_blank"}): in the long run dividends, and so share prices, keep their real value. The fit imposes it, fixes the smoothing weight at Wilkie's 0.2 a year (converted to the data's step) and estimates the rest by one regression.
+The two inflation weights add up to one, Wilkie's unit gain ([section 3.7](https://doi.org/10.1017/S0071368600009009){:target="_blank"}): in the long run dividends, and so share prices, keep their real value. The fit imposes it, fixes the smoothing weight at Wilkie's 0.2 a year (converted to the data's step) and estimates the rest by one regression.
 
 
 Wilkie fitted 1919-1982 UK data; the shipped Wilkie factor set applies the same equations to US data.

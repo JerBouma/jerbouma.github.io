@@ -67,7 +67,7 @@ Negative historical observations are floored at zero before fitting, and the sim
 
 ### Wilkie Consols
 
-The long government bond yield from [Wilkie's (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} actuarial model splits the observed yield $$C_t$$ into expected inflation and a hidden real yield $$CN_t$$:
+The long government bond yield from [Wilkie's (1986)](https://doi.org/10.1017/S0071368600009009){:target="_blank"} actuarial model splits the observed yield $$C_t$$ into expected inflation and a hidden real yield $$CN_t$$:
 
 $$
 C_t = CW\,CM_t + CN_t, \qquad
@@ -75,7 +75,7 @@ CM_t = CD\,I_t + (1 - CD)\,CM_{t-1}, \qquad
 \ln CN_t = \ln CMU + CA1\,(\ln CN_{t-1} - \ln CMU) + CSD\,\varepsilon_t
 $$
 
-Here $$I_t$$ is the force of inflation (the log change in the price index) from the paired inflation factor and $$CM_t$$ an exponentially weighted average of it, a simple adaptive model of inflation expectations. $$CW = 1$$ and $$CD = 0.05$$ are fixed at Wilkie's published values, so all expected inflation passes into the yield. The real part $$CN_t$$ mean-reverts in logs toward $$CMU$$ with persistence $$CA1$$, so it is always positive. This is the reduced basis Wilkie gives in [section 3.15](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"}: he found that setting three parameters to zero gave very similar long-term forecasts, which leaves the real part a plain AR(1).
+Here $$I_t$$ is the force of inflation (the log change in the price index) from the paired inflation factor and $$CM_t$$ an exponentially weighted average of it, a simple adaptive model of inflation expectations. $$CW = 1$$ and $$CD = 0.05$$ are fixed at Wilkie's published values, so all expected inflation passes into the yield. The real part $$CN_t$$ mean-reverts in logs toward $$CMU$$ with persistence $$CA1$$, so it is always positive. This is the reduced basis Wilkie gives in [section 3.15](https://doi.org/10.1017/S0071368600009009){:target="_blank"}: he found that setting three parameters to zero gave very similar long-term forecasts, which leaves the real part a plain AR(1).
 
 That positivity is also its main limit: the yield must exceed average inflation over the whole fit window. US long yields sat at or below average inflation from 2008 to 2017, so the shipped Wilkie profile fits the yield on 1995-2007 only, while its inflation takes its dynamics from US history since 1919, the start of Wilkie's own window. Use it to reproduce the Wilkie framework.
 
