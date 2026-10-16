@@ -49,7 +49,7 @@ A fit is only as good as its data, so the fitted values are a starting point, no
 
 ## 3. Dependence {#dependence}
 
-Fitted one by one, the factors would move independently, and a scenario could combine an equity crash with tightening credit spreads. Two mechanisms link them, following [Wilkie (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf).
+Fitted one by one, the factors would move independently, and a scenario could combine an equity crash with tightening credit spreads. Two mechanisms link them, following [Wilkie (1986)](https://doi.org/10.1017/S0071368600009009) and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf).
 
 **The economic cascade.** Where economic theory says one variable drives another, the driver's simulated path enters the other's equation directly:
 
