@@ -333,3 +333,170 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
   body .page__content ol.ca-steps div.highlighter-rouge pre.highlight { padding: 14px 12px !important; }
   body .page__content ol.ca-steps div.highlighter-rouge pre.highlight code { font-size: 0.72rem !important; }
 }
+
+// Finance Scenarios guides: a model card per factor, a callout for limits
+// and good practice, and a link to the factor's reference page
+.page__content {
+  // model card: what is modeled, the data and the reference, as label and value
+  .fs-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 8px;
+    margin: 1.2em 0 1.6em;
+    > div { padding: 11px 14px; border: 1px solid var(--card-border); border-radius: 12px; background: var(--card-bg); }
+    span { display: block; margin-bottom: 3px; color: var(--text-muted); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    b, a { display: block; color: var(--text-primary); font-size: 0.9rem; font-weight: 600; line-height: 1.4; }
+    a { color: var(--accent-color) !important; text-decoration: none !important; }
+    a:hover { text-decoration: underline !important; }
+  }
+
+  // calibrated example: a lead-in sentence, then the fitted numbers as pills
+  .ca-nums.fs-nums { margin: -0.4em 0 1.4em; }
+
+  // callouts: tip (accent) and limits (amber)
+  .fs-callout {
+    margin: 1.4em 0 1.8em;
+    padding: 14px 18px 14px 50px;
+    position: relative;
+    border: 1px solid var(--card-border);
+    border-left: 3px solid var(--accent-color);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--accent-color) 6%, transparent);
+    &::before {
+      content: "\f0eb"; position: absolute; left: 18px; top: 15px;
+      font-family: "Font Awesome 6 Free"; font-weight: 900; color: var(--accent-color); font-size: 0.95rem;
+    }
+    .fs-callout__title { margin: 0 0 4px !important; color: var(--text-primary) !important; font-size: 0.95rem !important; font-weight: 700; }
+    p, li { color: var(--text-secondary); font-size: 0.93rem !important; line-height: 1.6; }
+    p { margin: 0 0 0.5em !important; }
+    p:last-child { margin-bottom: 0 !important; }
+    ul { margin: 0 !important; padding-left: 1.1em !important; }
+    li { margin: 0 0 4px !important; }
+    li:last-child { margin-bottom: 0 !important; }
+    strong { color: var(--text-primary); }
+    &--limits {
+      border-left-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.06);
+      &::before { content: "\f071"; color: #f59e0b; }
+    }
+    @media (max-width: 600px) { padding: 12px 14px 12px 40px; &::before { left: 14px; top: 13px; } }
+  }
+
+  // link to a factor's reference page
+  .fs-ref {
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 1em 0 2.4em;
+    a {
+      display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px;
+      border: 1px solid var(--card-border); border-radius: 999px; background: var(--card-bg);
+      color: var(--text-secondary) !important; font-size: 0.86rem; text-decoration: none !important;
+      transition: border-color 0.2s ease, color 0.2s ease;
+      i { color: var(--accent-color); }
+      &:hover { border-color: var(--card-hover-border); color: var(--text-primary) !important; }
+    }
+  }
+
+  // card links (documentation map): an icon, a title and a line of text
+  .ca-cards a.fs-card {
+    display: block; padding: 18px; border: 1px solid var(--card-border); border-radius: 14px; background: var(--card-bg);
+    text-decoration: none !important; transition: border-color 0.2s ease, transform 0.2s ease;
+    &:hover { border-color: var(--card-hover-border); transform: translateY(-2px); }
+    .ca-card-title { color: var(--text-primary) !important; }
+    @media (max-width: 600px) { padding: 14px 16px; }
+  }
+}
+
+@mixin fs-flow-down {
+  flex-direction: column; gap: 26px;
+  > li { flex: none;
+    &:not(:last-child)::after { content: "\f078"; top: auto; right: auto; bottom: -22px; left: 50%; transform: translateX(-50%); }
+  }
+}
+
+// Finance Scenarios diagrams, drawn in HTML so they share the site's cards:
+// .fs-flow is a sequence of steps, .fs-links a map of what drives what
+.page__content {
+  .fs-node {
+    position: relative;
+    padding: 10px 14px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: var(--card-bg);
+    line-height: 1.3;
+    b { display: block; color: var(--text-primary); font-size: 0.9rem; font-weight: 700; }
+    small { display: block; margin-top: 2px; color: var(--text-muted); font-size: 0.76rem; }
+    b a { color: inherit !important; text-decoration: none !important; &:hover { color: var(--accent-color) !important; } }
+    &.is-accent {
+      border-color: transparent;
+      background: linear-gradient(#13243a, #13243a) padding-box, $ca-gradient border-box;
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.08);
+      :root[data-theme="light"] & { background: linear-gradient(#f0f9ff, #f0f9ff) padding-box, $ca-gradient border-box; }
+    }
+  }
+
+  .fs-diagram {
+    margin: 1.4em 0 1.8em;
+    padding: 20px;
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    background: radial-gradient(ellipse 60% 50% at 0% 0%, rgba(56, 189, 248, 0.06), transparent 70%), rgba(128, 128, 128, 0.03);
+    @media (max-width: 600px) { padding: 14px 12px; }
+  }
+  .fs-diagram__note { margin: 14px 0 0 !important; color: var(--text-muted) !important; font-size: 0.82rem !important; }
+
+  // steps in order, left to right (top to bottom on phones); the arrow is a Font Awesome glyph
+  ol.fs-flow {
+    display: flex; align-items: stretch; gap: 28px;
+    margin: 0 !important; padding: 0 !important; list-style: none; counter-reset: fs-flow;
+    > li {
+      flex: 1 1 0; min-width: 0; margin: 0 !important;
+      counter-increment: fs-flow;
+      &::before {
+        content: counter(fs-flow); display: inline-grid; place-items: center;
+        width: 22px; height: 22px; margin-bottom: 6px; border-radius: 50%;
+        background: $ca-gradient; color: #0b1220; font-size: 0.72rem; font-weight: 800;
+      }
+      &:not(:last-child)::after {
+        content: "\f061"; position: absolute; top: 50%; right: -21px; transform: translateY(-50%);
+        font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 0.85rem; color: var(--accent-color);
+      }
+    }
+    &.fs-flow--plain > li::before { display: none; }
+    &.fs-flow--compact { gap: 20px; > li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding: 8px 14px; small { margin: 0; } &:not(:last-child)::after { bottom: -19px; font-size: 0.75rem; } } }
+    &.fs-flow--vertical { @include fs-flow-down; }
+    @media (max-width: 760px) { @include fs-flow-down; }
+  }
+  .fs-flow__side {
+    display: flex; align-items: center; gap: 10px; margin: 0 0 16px;
+    color: var(--text-muted); font-size: 0.82rem;
+    .fs-node { border-style: dashed; }
+  }
+  .fs-flow__loop { margin: 14px 0 0 !important; color: var(--text-muted) !important; font-size: 0.82rem !important; }
+
+  // what drives what: one row per driver, its followers to the right with the link named on the arrow
+  .fs-links {
+    display: grid; gap: 14px;
+    > .fs-links__row {
+      display: grid; grid-template-columns: minmax(150px, 210px) 1fr; gap: 14px 22px; align-items: center;
+      > .fs-node { align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
+    }
+    .fs-links__to { display: flex; flex-direction: column; gap: 8px; }
+    .fs-link {
+      display: flex; align-items: center; gap: 0; min-width: 0;
+      > em {
+        flex: none; position: relative; width: 130px; padding: 0 8px 6px 0; text-align: center;
+        color: var(--accent-color); font-size: 0.7rem; font-style: normal; font-weight: 600; line-height: 1.2;
+        &::after { content: ""; position: absolute; left: 0; right: 10px; bottom: 0; height: 2px; background: var(--accent-color); opacity: 0.7; }
+        &::before { content: ""; position: absolute; right: 2px; bottom: -4px; border-left: 8px solid var(--accent-color); border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+      }
+      > .fs-node { flex: 1 1 auto; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding: 8px 14px; small { margin: 0; } }
+      &.is-both > em::after { left: 8px; }
+      &.is-both > em > i { position: absolute; left: 0; bottom: -4px; border-right: 8px solid var(--accent-color); border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+      &.is-dashed > em::after { background: repeating-linear-gradient(90deg, var(--accent-color) 0 5px, transparent 5px 9px); }
+    }
+    @media (max-width: 760px) {
+      > .fs-links__row { grid-template-columns: 1fr; gap: 10px; }
+      .fs-links__to { padding-left: 14px; border-left: 2px solid var(--card-border); margin-left: 12px; }
+      .fs-link > em { width: 96px; }
+    }
+  }
+}

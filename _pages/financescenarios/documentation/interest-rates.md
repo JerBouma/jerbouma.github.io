@@ -19,9 +19,24 @@ Interest rates discount liabilities, drive bond returns and set the risk-free ra
 
 Every model is fitted to market or official data, so simulated rates start from today's level and move the way history says they move. Parameter lists are in the reference pages for [InterestRates](/projects/financescenarios/docs/reference/interest-rates), [TermStructure](/projects/financescenarios/docs/reference/term-structure), [CreditTermStructure](/projects/financescenarios/docs/reference/credit-term-structure) and [Hjm](/projects/financescenarios/docs/reference/hjm).
 
+<div class="ca-nav">
+  <a href="#short-rate-models"><i class="fas fa-percentage" aria-hidden="true"></i>Short-rate models</a>
+  <a href="#real-world-and-risk-neutral-rates"><i class="fas fa-scale-balanced" aria-hidden="true"></i>Risk-neutral rates</a>
+  <a href="#the-nelson-siegel-yield-curve"><i class="fas fa-chart-line" aria-hidden="true"></i>Nelson-Siegel curve</a>
+  <a href="#the-credit-spread-curve"><i class="fas fa-building" aria-hidden="true"></i>Credit spread curve</a>
+  <a href="#hjm-an-arbitrage-free-forward-curve"><i class="fas fa-layer-group" aria-hidden="true"></i>HJM</a>
+</div>
+
 ## Short-Rate Models
 
 A short-rate model is enough when you need one rate per country around a normal level, such as a 3-month bill rate. Each rate is its own factor, correlated with everything else in the run.
+
+<div class="fs-facts">
+  <div><span>Series</span><b>One rate per country, such as a 3-month bill</b></div>
+  <div><span>Data</span><b>Yahoo Finance, OECD, or the Global Macro Database</b></div>
+  <div><span>Default model</span><b>Hull-White (Vasicek)</b></div>
+  <div><span>Reference</span><a href="/projects/financescenarios/docs/reference/interest-rates">InterestRates</a></div>
+</div>
 
 The same models can also drive a single long yield, such as the 10-year Treasury, as its own mean-reverting factor. That is a model of one yield, not a short-rate model that implies a curve: a short and a long rate entered this way are linked only by correlation (Hibbert's model below is the exception), so their spread can invert at random rather than with the cycle. For a coherent curve across maturities, use the [Nelson-Siegel curve](#the-nelson-siegel-yield-curve).
 
@@ -50,7 +65,16 @@ $$
 
 Because the shock size does not depend on the rate's level, the distribution of future rates is normal and has a left tail below zero. That is a feature after the euro, Swiss franc and yen experience of the 2010s, and a drawback when negative rates are implausible.
 
-The speed is easiest to read as a half-life: a deviation from $$\theta$$ halves in $$\ln 2 / a$$ years. On the 13-week US Treasury bill (calibrated 2026-10-04), the rate started at 3.99% and was pulled toward 4.88% with a half-life of about eleven months, swinging by about 0.7 percentage points a year. Simulation uses the exact transition, so the step size adds no discretization error.
+The speed is easiest to read as a half-life: a deviation from $$\theta$$ halves in $$\ln 2 / a$$ years. On the 13-week US Treasury bill (calibrated 2026-10-04):
+
+<div class="ca-nums fs-nums">
+  <span><b>3.99%</b>starting level</span>
+  <span><b>4.88%</b>long-run level</span>
+  <span><b>11 months</b>half-life of a gap</span>
+  <span><b>0.7 pp</b>swing a year</span>
+</div>
+
+Simulation uses the exact transition, so the step size adds no discretization error.
 
 In a real-world run this is [Vasicek (1977)](https://doi.org/10.1016/0304-405x(77)90016-2){:target="_blank"} with one fixed level. The [Hull-White (1990)](https://doi.org/10.1093/rfs/3.4.573){:target="_blank"} extension, where $$\theta$$ becomes a time-dependent path that reproduces today's curve, is used in the risk-neutral mode. It is the general-purpose choice and the only short-rate model that supports every option on this page.
 
@@ -96,6 +120,8 @@ The KNW models simulate the nominal rate and inflation as one coupled system, ea
 
 ### Comparing the Short-Rate Models
 
+The five models side by side:
+
 | Model | Can go negative? | Reverts toward | Volatility | Best for |
 |:------|:-----------------|:---------------|:-----------|:---------|
 | Hull-White (Vasicek) | Yes | A fixed level, or an anchor path | Constant, or GARCH | General use; supports every option |
@@ -110,8 +136,10 @@ None of the short-rate sources needs an API key: Yahoo Finance Treasury yields (
 
 A recent five- or ten-year window says little about a rate's long-run level: the half-life is often years, so the sample holds only a handful of independent cycles. Two remedies apply to real-world Hull-White and CIR entries:
 
-- **Long history.** Fit speed, volatility and long-run level on decades or centuries of yearly data (OECD from 1950, UK rates from 1694, bill rates across countries from 1870), while today's level still comes from current data.
-- **Long-run anchor.** Replace the single fitted $$\theta$$ with a path of forward rates from EIOPA's risk-free curve for USD, EUR or GBP, ending at the ultimate forward rate (UFR), so simulated rates converge where the Solvency II curve says they should: beyond the last liquid maturity, that curve runs smoothly to the UFR ([Solvency II Directive, Article 77a](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009L0138-20250117#art_77a){:target="_blank"}). An alternative follows the median of De Nederlandsche Bank's scenario set for euro rates.
+<div class="ca-cards">
+  <div><i class="ca-icon fas fa-history" aria-hidden="true"></i><p class="ca-card-title">Long history</p><p>Fit speed, volatility and long-run level on decades or centuries of yearly data (OECD from 1950, UK rates from 1694, bill rates across countries from 1870), while today's level still comes from current data.</p></div>
+  <div><i class="ca-icon fas fa-compass" aria-hidden="true"></i><p class="ca-card-title">Long-run anchor</p><p>Replace the single fitted long-run level with a path of forward rates from EIOPA's risk-free curve for USD, EUR or GBP, ending at the ultimate forward rate (UFR), so simulated rates converge where the Solvency II curve says they should: beyond the last liquid maturity, that curve runs smoothly to the UFR (<a href="https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009L0138-20250117#art_77a" target="_blank">Solvency II Directive, Article 77a</a>). An alternative follows the median of De Nederlandsche Bank's scenario set for euro rates.</p></div>
+</div>
 
 The shipped default factor set uses both. See [Long history](/projects/financescenarios/docs/configuration#long-history) and [Anchoring long-run rate levels](/projects/financescenarios/docs/configuration#anchoring-long-run-rate-levels).
 
@@ -166,8 +194,10 @@ Market-consistent valuation needs rates whose expected discounting reproduces to
 
 Hull-White has two risk-neutral versions:
 
-- **Flat path (deterministic discounting).** Today's rate is held constant along every path, with no volatility. It discounts fixed cash flows, but gives interest rate options and guarantees no time value, so it is not for valuing them.
-- **Forward curve.** $$\theta$$ becomes a time-dependent path chosen so that the average discount factor across scenarios reproduces today's curve at every maturity, following [Brigo and Mercurio (2006, section 3.3)](https://doi.org/10.1007/978-3-540-34604-3){:target="_blank"}. The curve is a Nelson-Siegel fit to the four Treasury yields, or EIOPA's risk-free curve for the euro, the pound or the US dollar, the curve a Solvency II best estimate discounts with. A whole-run risk-neutral simulation uses EIOPA's curve where it covers the currency.
+<div class="ca-cards">
+  <div><i class="ca-icon fas fa-ruler" aria-hidden="true"></i><p class="ca-card-title">Flat path (deterministic discounting)</p><p>Today's rate is held constant along every path, with no volatility. It discounts fixed cash flows, but gives interest rate options and guarantees no time value, so it is not for valuing them.</p></div>
+  <div><i class="ca-icon fas fa-chart-line" aria-hidden="true"></i><p class="ca-card-title">Forward curve</p><p>The long-run level becomes a time-dependent path chosen so that the average discount factor across scenarios reproduces today's curve at every maturity, following <a href="https://doi.org/10.1007/978-3-540-34604-3" target="_blank">Brigo and Mercurio (2006, section 3.3)</a>. The curve is a Nelson-Siegel fit to the four Treasury yields, or EIOPA's risk-free curve for the euro, the pound or the US dollar, the curve a Solvency II best estimate discounts with. A whole-run risk-neutral simulation uses EIOPA's curve where it covers the currency.</p></div>
+</div>
 
 ```yaml
 # my-project/factor-sets/my_factors.yaml (a factor set)
@@ -179,11 +209,29 @@ interest_rates:
       risk_neutral_curve: eiopa         # default: treasury
 ```
 
-With no cap or swaption prices to fit, speed and volatility come from history. The speed is the short rate's own; the volatility is fitted so the model moves yields across the curve as much as they have moved, not to the 13-week bill alone, whose moves are damped by the policy rate. On US Treasuries since 2005 (calibrated 2026-10-14) that gives 0.90% a year: the model moves the 13-week, 5, 10 and 30-year yields by 89, 82, 75 and 55 basis points a year, against 69, 87, 85 and 79 in history. That ties the spread of long rates, which drives the time value of long guarantees, to how much long yields actually moved, but it is still not the market's price of options, so treat the cost of guarantees as indicative. See [Real-world and risk-neutral measures](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures).
+With no cap or swaption prices to fit, speed and volatility come from history. The speed is the short rate's own; the volatility is fitted so the model moves yields across the curve as much as they have moved, not to the 13-week bill alone, whose moves are damped by the policy rate. On US Treasuries since 2005 (calibrated 2026-10-14) that gives 0.90% a year. How much each yield moves, in basis points a year:
+
+| Yield | Model | History |
+|:------|------:|--------:|
+| 13-week | 89 | 69 |
+| 5-year | 82 | 87 |
+| 10-year | 75 | 85 |
+| 30-year | 55 | 79 |
+
+That ties the spread of long rates, which drives the time value of long guarantees, to how much long yields actually moved, but it is still not the market's price of options, so treat the cost of guarantees as indicative. See [Real-world and risk-neutral measures](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures).
 
 ## The Nelson-Siegel Yield Curve
 
-Repricing a bond portfolio or a liability profile along each scenario needs yields at every maturity that move together consistently. The dynamic Nelson-Siegel model of [Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}, built on [Nelson and Siegel (1987)](https://doi.org/10.1086/296409){:target="_blank"}, writes the yield at maturity $$\tau$$ as three factors:
+Repricing a bond portfolio or a liability profile along each scenario needs yields at every maturity that move together consistently. The dynamic Nelson-Siegel model of [Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}, built on [Nelson and Siegel (1987)](https://doi.org/10.1086/296409){:target="_blank"}, writes the yield at maturity $$\tau$$ as three factors.
+
+<div class="fs-facts">
+  <div><span>Factors</span><b>Level, slope and curvature</b></div>
+  <div><span>Data</span><b>Treasury yields, or an official government curve</b></div>
+  <div><span>Decay</span><b>0.7308, maturities in years</b></div>
+  <div><span>Reference</span><a href="/projects/financescenarios/docs/reference/term-structure">TermStructure</a></div>
+</div>
+
+As a formula:
 
 $$
 y(\tau) = L + S\,\frac{1 - e^{-\lambda\tau}}{\lambda\tau} + C\left(\frac{1 - e^{-\lambda\tau}}{\lambda\tau} - e^{-\lambda\tau}\right)
@@ -208,16 +256,27 @@ yield_curve:
 
 The curve can come from the four Yahoo Treasury yields, the official 12-maturity US Treasury par curve (which needs an FMP key), or the official government curve of the United States, the Euro Area (ECB), Germany, the United Kingdom, Japan, Canada, Sweden or Norway. The simulated factors convert to a yield at any maturity, and to statistics such as how often the curve inverts; the [TermStructure reference](/projects/financescenarios/docs/reference/term-structure) shows how.
 
-### Limits
+<div class="fs-callout fs-callout--limits" markdown="1">
+<p class="fs-callout__title">Limits</p>
 
 - Four Yahoo maturities capture level, slope and curvature, not precise pricing, and their daily slope is noisy (a half-life of about 1.5 months on 2021-2026 data, against about 1.5 years on the Treasury curve).
 - The Bank of England curve has only the 5, 10 and 20-year points, so the UK short end is an extrapolation. Japanese yields have risen steadily since 2000, so the level shows no mean reversion and the fit stops with an error.
 - The factors are statistical and real-world, with no guarantee against arbitrage between maturities; for that, use HJM.
 - Yields are used as quoted (semiannual, bond-equivalent), not converted to continuous compounding.
+</div>
+
+<div class="fs-ref"><a href="/projects/financescenarios/docs/reference/term-structure"><i class="fas fa-book" aria-hidden="true"></i>Full reference: TermStructure</a></div>
 
 ## The Credit Spread Curve
 
 A corporate bond is discounted at the government curve plus a spread for default and liquidity risk. The credit curve applies the same Nelson-Siegel model to corporate spreads, adding credit level, slope and curvature factors. With the same $$\lambda$$ on both curves, their sum is again a Nelson-Siegel curve: the discount curve for risky bonds.
+
+<div class="fs-facts">
+  <div><span>Factors</span><b>Credit level, slope and curvature</b></div>
+  <div><span>Data</span><b>US Treasury HQM curve, or a US corporate bond panel</b></div>
+  <div><span>Default frequency</span><b>Monthly</b></div>
+  <div><span>Reference</span><a href="/projects/financescenarios/docs/reference/credit-term-structure">CreditTermStructure</a></div>
+</div>
 
 ```yaml
 # my-project/factor-sets/my_factors.yaml (a factor set)
@@ -229,12 +288,22 @@ credit_term_structure:
 
 Two sources are available:
 
-- The US Treasury's [High Quality Market corporate bond curve](https://home.treasury.gov/data/treasury-coupon-issues-and-corporate-bond-yield-curves){:target="_blank"}: its par yields minus Treasury constant-maturity (par) yields at 2, 5, 10 and 30 years, monthly averages from 1984. It is an investment-grade (AAA to A) spread curve, the basis of the IRS segment rates for US pension minimum funding; accounting discount rates usually come from AA curves instead. It needs a free FRED key.
-- The [Open Source Bond Asset Pricing](https://openbondassetpricing.com/){:target="_blank"} panel of US corporate bond trades (TRACE), July 2002 to March 2025, with spreads over the government curve of [Liu and Wu (2021)](https://doi.org/10.1016/j.jfineco.2021.05.059){:target="_blank"}. The curve starts from the panel's last month, not today.
+<div class="ca-cards">
+  <div><i class="ca-icon fas fa-landmark" aria-hidden="true"></i><p class="ca-card-title">US Treasury HQM curve</p><p>The US Treasury's <a href="https://home.treasury.gov/data/treasury-coupon-issues-and-corporate-bond-yield-curves" target="_blank">High Quality Market corporate bond curve</a>: its par yields minus Treasury constant-maturity (par) yields at 2, 5, 10 and 30 years, monthly averages from 1984. It is an investment-grade (AAA to A) spread curve, the basis of the IRS segment rates for US pension minimum funding; accounting discount rates usually come from AA curves instead. It needs a free FRED key.</p></div>
+  <div><i class="ca-icon fas fa-database" aria-hidden="true"></i><p class="ca-card-title">Corporate bond trades</p><p>The <a href="https://openbondassetpricing.com/" target="_blank">Open Source Bond Asset Pricing</a> panel of US corporate bond trades (TRACE), July 2002 to March 2025, with spreads over the government curve of <a href="https://doi.org/10.1016/j.jfineco.2021.05.059" target="_blank">Liu and Wu (2021)</a>. The curve starts from the panel's last month, not today.</p></div>
+</div>
 
 Monthly data is the default: daily single-bond spreads carry bid/ask bounce that would fit an unrealistically fast mean reversion.
 
-Limits: the bond panel has no ratings, so its curve averages across all bonds (for rating migration see [CreditMigration](/projects/financescenarios/docs/reference/credit-migration)). The factors are not arbitrage-free; neither the arbitrage-free Nelson-Siegel model of [Christensen, Diebold and Rudebusch (2011)](https://doi.org/10.1016/j.jeconom.2011.02.011){:target="_blank"} nor the [Svensson (1994)](https://doi.org/10.3386/w4871){:target="_blank"} extension is implemented, and default intensities in the sense of [Duffie and Singleton (1999)](https://doi.org/10.1093/rfs/12.4.687){:target="_blank"} are not modeled.
+<div class="fs-callout fs-callout--limits" markdown="1">
+<p class="fs-callout__title">Limits</p>
+
+- The bond panel has no ratings, so its curve averages across all bonds (for rating migration see [CreditMigration](/projects/financescenarios/docs/reference/credit-migration)).
+- The factors are not arbitrage-free; neither the arbitrage-free Nelson-Siegel model of [Christensen, Diebold and Rudebusch (2011)](https://doi.org/10.1016/j.jeconom.2011.02.011){:target="_blank"} nor the [Svensson (1994)](https://doi.org/10.3386/w4871){:target="_blank"} extension is implemented.
+- Default intensities in the sense of [Duffie and Singleton (1999)](https://doi.org/10.1093/rfs/12.4.687){:target="_blank"} are not modeled.
+</div>
+
+<div class="fs-ref"><a href="/projects/financescenarios/docs/reference/credit-term-structure"><i class="fas fa-book" aria-hidden="true"></i>Full reference: CreditTermStructure</a></div>
 
 ## HJM: An Arbitrage-Free Forward Curve
 
@@ -244,7 +313,18 @@ $$
 df(t,T) = \alpha(t,T)\,dt + \sigma(t,T)\,dW_t, \qquad \alpha(t,T) = \sigma(t,T)\int_t^T \sigma(t,u)\,du
 $$
 
-The drift is the convexity adjustment that makes discounted bond prices martingales, not a free parameter. Use HJM when the simulated curve must be arbitrage-free by construction, as in market-consistent valuation; use the Nelson-Siegel curve when curves should behave like history.
+The drift is the convexity adjustment that makes discounted bond prices martingales, not a free parameter.
+
+<div class="fs-callout" markdown="1">
+Use HJM when the simulated curve must be arbitrage-free by construction, as in market-consistent valuation; use the Nelson-Siegel curve when curves should behave like history.
+</div>
+
+<div class="fs-facts">
+  <div><span>Model</span><b>Two-factor Hull-White (G2++)</b></div>
+  <div><span>Measure</span><b>Risk-neutral, zero term premium by default</b></div>
+  <div><span>Starting curve</span><b>Nelson-Siegel fit to the Treasury yields</b></div>
+  <div><span>Reference</span><a href="/projects/financescenarios/docs/reference/hjm">Hjm</a></div>
+</div>
 
 Finance Scenarios uses two correlated factors whose volatility fades with time to maturity $$x$$ as $$\sigma_i e^{-\kappa_i x}$$, which makes it the two-factor Hull-White (G2++) model ([Hull and White, 1994](https://doi.org/10.3905/jod.1994.407908){:target="_blank"}; [Brigo and Mercurio, 2006](https://doi.org/10.1007/978-3-540-34604-3){:target="_blank"}, chapters 3-4). Both factors start at zero on top of today's forward curve (a Nelson-Siegel fit to the Treasury yields), so the model reproduces today's curve exactly at every maturity.
 
@@ -256,10 +336,22 @@ hjm:
   kappa_bounds: [0.01, 6.0]   # search range for the volatility decays
 ```
 
-The volatilities, decays and correlation are chosen so that the model's forward-rate covariance best matches how historical forwards from 3 months to 30 years moved together, in the principal-component spirit of [Litterman and Scheinkman (1991)](https://doi.org/10.3905/jfi.1991.692347){:target="_blank"}. On daily data from October 2021 to October 2026, factor 1 was a slow, level-like movement (1.32% a year, fading little across 30 years) and factor 2 a fast short-end movement (5.18% a year, halved within five months of maturity). Ten years out, convexity added 0.56 to 1.44 percentage points to the expected forward rate, rising with maturity.
+The volatilities, decays and correlation are chosen so that the model's forward-rate covariance best matches how historical forwards from 3 months to 30 years moved together, in the principal-component spirit of [Litterman and Scheinkman (1991)](https://doi.org/10.3905/jfi.1991.692347){:target="_blank"}. On daily data from October 2021 to October 2026:
 
-### Assumptions and Limits
+<div class="ca-nums fs-nums">
+  <span><b>1.32%</b>a year, factor 1: slow and level-like</span>
+  <span><b>5.18%</b>a year, factor 2: fast, at the short end</span>
+  <span><b>0.56&ndash;1.44 pp</b>convexity ten years out</span>
+</div>
+
+Factor 1 fades little across 30 years of maturity; factor 2 halves within five months of maturity. The convexity added to the expected forward rate ten years out rises with maturity.
+
+<div class="fs-callout fs-callout--limits" markdown="1">
+<p class="fs-callout__title">Assumptions and limits</p>
 
 - **Zero term premium by default.** Future rates equal today's forwards plus convexity, with no extra yield for holding long bonds. All other rate factors are real-world, so adding HJM to a real-world run mixes two measures.
 - **Long horizons.** The slow factor often fits near its lowest allowed decay, which makes convexity and the spread of long rates grow for decades; a 50-year projection there is not credible. Raising the lower decay bound (for example to 0.03-0.10) is defensible.
 - **Limited shapes.** Volatility can only fall with maturity, while observed volatility curves are usually humped. Without cap or swaption prices, volatility is fitted to history, and the fast factor's decay is weakly identified.
+</div>
+
+<div class="fs-ref"><a href="/projects/financescenarios/docs/reference/hjm"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Hjm</a></div>
