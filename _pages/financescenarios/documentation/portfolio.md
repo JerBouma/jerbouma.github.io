@@ -31,6 +31,17 @@ result = portfolio.compute({"us_broad": 0.6, "united_states_short_rate": 0.4}, i
 
 The numbers on this page come from one example run: 1,000 scenarios over 30 yearly steps of US stocks (SPY), the US short rate and US inflation, starting 2026-10-01 and simulated on 2026-10-04. Its "60/40" is 60% equities and 40% cash (the short rate); the 60/40 preset [below](#glidepaths) holds Treasuries instead. They show how the choices compare; other runs give other numbers. Every option is listed in the [Portfolio reference](/projects/financescenarios/docs/reference/portfolio).
 
+<div class="ca-nav">
+  <a href="#what-a-portfolio-can-hold"><i class="fas fa-layer-group" aria-hidden="true"></i>Holdings</a>
+  <a href="#buy-and-hold-versus-rebalancing"><i class="fas fa-scale-balanced" aria-hidden="true"></i>Rebalancing</a>
+  <a href="#cashflows-and-sequence-risk"><i class="fas fa-coins" aria-hidden="true"></i>Cashflows</a>
+  <a href="#bonds-cash-roll-or-duration"><i class="fas fa-landmark" aria-hidden="true"></i>Bonds</a>
+  <a href="#glidepaths"><i class="fas fa-arrow-trend-down" aria-hidden="true"></i>Glidepaths</a>
+  <a href="#risk-metrics"><i class="fas fa-gauge-high" aria-hidden="true"></i>Risk metrics</a>
+  <a href="#benchmarks-and-backtests"><i class="fas fa-history" aria-hidden="true"></i>Backtests</a>
+  <a href="#factor-exposure"><i class="fas fa-magnifying-glass" aria-hidden="true"></i>Factor exposure</a>
+</div>
+
 ## What a Portfolio Can Hold
 
 Only assets you could own can be held, and how a holding grows depends on what it is:
@@ -51,9 +62,11 @@ With holdings in several currencies, each equity, commodity and real-estate hold
 
 ## Buy-and-Hold Versus Rebalancing
 
-- **Buy-and-hold** sets the weights once. Each holding then grows with its own asset, so the mix drifts toward whatever performs best. Over a long horizon a 60/40 drifts into a mostly equity portfolio.
-- **Calendar rebalancing** resets the holdings to target every N steps: the constant-mix discipline of selling what rose and buying what fell ([Perold and Sharpe, 1988](https://doi.org/10.2469/faj.v44.n1.16){:target="_blank"}).
-- **Band rebalancing** trades only when a holding drifts more than a set distance from its target (say 5 percentage points). Each scenario triggers on its own, so trading happens when markets move, not when the calendar says.
+<div class="ca-cards ca-cards--3">
+  <div><i class="ca-icon fas fa-arrow-trend-up" aria-hidden="true"></i><p class="ca-card-title">Buy-and-hold</p><p>Sets the weights once. Each holding then grows with its own asset, so the mix drifts toward whatever performs best. Over a long horizon a 60/40 drifts into a mostly equity portfolio.</p></div>
+  <div><i class="ca-icon fas fa-calendar-days" aria-hidden="true"></i><p class="ca-card-title">Calendar rebalancing</p><p>Resets the holdings to target every N steps: the constant-mix discipline of selling what rose and buying what fell (<a href="https://doi.org/10.2469/faj.v44.n1.16" target="_blank">Perold and Sharpe, 1988</a>).</p></div>
+  <div><i class="ca-icon fas fa-sliders-h" aria-hidden="true"></i><p class="ca-card-title">Band rebalancing</p><p>Trades only when a holding drifts more than a set distance from its target (say 5 percentage points). Each scenario triggers on its own, so trading happens when markets move, not when the calendar says.</p></div>
+</div>
 
 **The rebalancing premium and volatility drag.** This is standard portfolio theory rather than a separate calculation in the package; it explains why the simulated rebalanced and buy-and-hold paths differ. An asset's long-run (geometric) growth rate is lower than its average (arithmetic) return by roughly half its variance:
 
@@ -69,7 +82,15 @@ $$
 
 with $$w_i$$ the target weights (non-negative, summing to 1) and $$\sigma_i$$ each asset's volatility. That is the rebalancing (or diversification) premium: largest for volatile, weakly correlated assets, and zero only when the assets are perfectly correlated and equally volatile. Buy-and-hold forgoes it but lets winners run, so it keeps more upside when one asset steadily outgrows the others.
 
-The example run shows the trade-off. A mix of 60% US equities and 40% cash ended at almost the same 5th percentile (about 426 from 100) under both approaches, but buy-and-hold had a far higher 95th percentile (5,925 against 2,996), because it ends up holding mostly equities and takes the equity risk that comes with that.
+The example run shows the trade-off. A mix of 60% US equities and 40% cash, starting from 100:
+
+<div class="ca-nums fs-nums">
+  <span><b>about 426</b>5th percentile, under both approaches</span>
+  <span><b>5,925</b>95th percentile, buy-and-hold</span>
+  <span><b>2,996</b>95th percentile, rebalanced</span>
+</div>
+
+Buy-and-hold had the far higher 95th percentile because it ends up holding mostly equities and takes the equity risk that comes with that.
 
 **Costs.** An annual fee is charged continuously, as $$e^{-f\,\Delta t}$$ per step for a fee rate $$f$$ and step length $$\Delta t$$ in years. It compounds: 1% a year removes about 26% of the final value over 30 years ($$1 - e^{-0.3}$$). Trading costs apply only when a rebalance trades, on the one-way turnover, so frequent rebalancing has to earn its premium net of costs.
 
@@ -117,7 +138,14 @@ where $$D$$ is the modified duration and $$y$$ the simulated yield: the price ef
 
 A bond fund earns the yield at its own maturity, so $$y$$ should be a long rate, such as the 10-year yield in the default factor set. Three-month bills follow policy rates rather than long yields, so a short rate given a duration is priced off the US yield curve at that duration when the run has the curve, else off the same country's long rate; only a run with neither prices it off the bill rate itself, with a warning. In the example run, which has only the short rate, the cash roll earned the starting 4.0% in year one in every scenario.
 
-This is first-order duration only: convexity is ignored, and compounding the return as a log return understates a very large one-step loss. On monthly or weekly steps both effects are small.
+<div class="fs-callout fs-callout--limits" markdown="1">
+<p class="fs-callout__title">Limits</p>
+
+- This is first-order duration only: convexity is ignored.
+- Compounding the return as a log return understates a very large one-step loss.
+
+On monthly or weekly steps both effects are small.
+</div>
 
 ```python
 bonds = portfolio.compute({"united_states_long_rate": 1.0}, durations={"united_states_long_rate": 7.0})
@@ -127,7 +155,14 @@ bonds = portfolio.compute({"united_states_long_rate": 1.0}, durations={"united_s
 
 A target-date or lifecycle plan moves from growth to safety as the target date nears. Target weights are set at a few checkpoints, move in a straight line between them, and the portfolio is rebalanced to the moving target.
 
-In the example run, gliding from 90% to 30% equities over 30 years ended at a median of 1,210, close to a yearly rebalanced 60/40 equity-cash mix's 1,183, with more of the risk taken early, when the amount at stake is smallest.
+In the example run, gliding from 90% to 30% equities over 30 years:
+
+<div class="ca-nums fs-nums">
+  <span><b>1,210</b>median end value, the glidepath</span>
+  <span><b>1,183</b>yearly rebalanced 60/40 equity-cash mix</span>
+</div>
+
+The two end close together, with the glidepath taking more of the risk early, when the amount at stake is smallest.
 
 ```python
 from financescenarios import GlidepathCheckpoint
@@ -161,9 +196,23 @@ All metrics are counted over the simulated paths, not from a formula that assume
 | Probability of loss | How often does the portfolio end below its starting value? |
 | Probability of shortfall | How often does the money run out, or a target (say one million) not get reached? |
 
-VaR, Expected Shortfall and the probability of loss describe the total return over the whole horizon: on a 30-year run that is a 30-year outcome, not a one-year loss. With cashflows they mix returns with deposits and withdrawals. All values are nominal unless deflated by a scenario's own cumulative inflation, which gives the value in today's money; in the example run a saver's median portfolio was worth 1,064,686 after 20 years in nominal terms, and markedly less once deflated by its own inflation.
+<div class="fs-callout" markdown="1">
+<p class="fs-callout__title">Read them over the whole horizon</p>
 
-In the example run, rebalancing the 60/40 equity-cash mix yearly with a 0.2% fee lowered the median worst drawdown from -23.84% to -17.25% and the annualized volatility from 13.21% to 10.45%, at the cost of a lower median CAGR (8.37% against 9.28%): the buy-and-hold portfolio earned more because it had drifted into more equity risk.
+VaR, Expected Shortfall and the probability of loss describe the total return over the whole horizon: on a 30-year run that is a 30-year outcome, not a one-year loss. With cashflows they mix returns with deposits and withdrawals.
+</div>
+
+All values are nominal unless deflated by a scenario's own cumulative inflation, which gives the value in today's money; in the example run a saver's median portfolio was worth 1,064,686 after 20 years in nominal terms, and markedly less once deflated by its own inflation.
+
+In the example run, rebalancing the 60/40 equity-cash mix yearly with a 0.2% fee, against buy-and-hold:
+
+<div class="ca-nums fs-nums">
+  <span><b>&minus;23.84% &rarr; &minus;17.25%</b>median worst drawdown</span>
+  <span><b>13.21% &rarr; 10.45%</b>annualized volatility</span>
+  <span><b>9.28% &rarr; 8.37%</b>median CAGR</span>
+</div>
+
+The lower drawdown and volatility came at the cost of a lower median CAGR: the buy-and-hold portfolio earned more because it had drifted into more equity risk.
 
 ```python
 risk = portfolio.risk_metrics(yearly)
@@ -174,7 +223,11 @@ summary = portfolio.summary(
 
 ## Benchmarks and Backtests
 
-A simulation says what could happen; a backtest says what did. The same rebalancing, cashflow and fee rules run on realized history, one path instead of thousands. Use it as a check on the simulation, not as a forecast.
+A simulation says what could happen; a backtest says what did. The same rebalancing, cashflow and fee rules run on realized history, one path instead of thousands.
+
+<div class="fs-callout" markdown="1">
+Use a backtest as a check on the simulation, not as a forecast.
+</div>
 
 History is lined up on the dates every holding shares, so pick a frequency that matches the least frequently published series. With one path, statistics across scenarios (VaR, Expected Shortfall, success rates) collapse to a single number, while CAGR, volatility, drawdown and factor exposure stay fully meaningful.
 
@@ -196,7 +249,16 @@ Against a benchmark (an index, another mix, or the same mix over other dates) th
 
 ## Factor Exposure
 
-Factor exposure shows what a portfolio actually behaved like over history: how you check a mandate or explain performance. The portfolio's excess return is regressed on the Fama-French factors by ordinary least squares:
+Factor exposure shows what a portfolio actually behaved like over history: how you check a mandate or explain performance.
+
+<div class="fs-facts">
+  <div><span>Input</span><b>Realized returns (a backtest)</b></div>
+  <div><span>Method</span><b>Ordinary least squares on excess returns</b></div>
+  <div><span>Model</span><b>Fama-French five factors (default) or three</b></div>
+  <div><span>Data</span><b>Kenneth French's Data Library</b></div>
+</div>
+
+The portfolio's excess return is regressed on the Fama-French factors by ordinary least squares:
 
 $$
 R_t - R_{f,t} = \alpha + \sum_i \beta_i F_{i,t} + \varepsilon_t
@@ -204,21 +266,37 @@ $$
 
 where $$R_t - R_{f,t}$$ is the return above the risk-free rate, $$\alpha$$ the part the factors do not explain, and $$\beta_i$$ the loading on factor $$F_i$$: the market (Mkt-RF), small versus large companies (SMB), cheap versus expensive (HML), robust versus weak profitability (RMW) and companies that invest conservatively versus aggressively (CMA). The model is the three-factor one of [Fama and French (1993)](https://doi.org/10.1016/0304-405X(93)90023-5){:target="_blank"} or the five-factor one of [Fama and French (2015)](https://doi.org/10.1016/j.jfineco.2014.10.010){:target="_blank"} (the default), with factor data from Kenneth French's [Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html){:target="_blank"}, which defines each factor in its [description of the Fama/French 5 factors (2x3)](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_5_factors_2x3.html){:target="_blank"}.
 
-On monthly history from 2004-01 to 2026-10, 100% SPY showed a market beta of 0.997 and an R-squared of 0.996, with a slight large-company tilt (SMB -0.12). 60% SPY and 40% cash (the US short rate), rebalanced yearly, showed a market beta of 0.594, close to its equity weight. A "balanced" portfolio with a beta near 1 would be an equity portfolio in disguise.
+On monthly history from 2004-01 to 2026-10:
+
+<div class="ca-nums fs-nums">
+  <span><b>0.997</b>market beta, 100% SPY</span>
+  <span><b>0.996</b>R-squared, 100% SPY</span>
+  <span><b>&minus;0.12</b>SMB: a slight large-company tilt</span>
+  <span><b>0.594</b>market beta, 60% SPY and 40% cash</span>
+</div>
+
+The 60/40 mix (the US short rate as cash, rebalanced yearly) showed a market beta close to its equity weight. A "balanced" portfolio with a beta near 1 would be an equity portfolio in disguise.
 
 ```python
 exposure = backtest.factor_exposure(model="five_factor")
 ```
 
-Limits:
+<div class="fs-callout fs-callout--limits" markdown="1">
+<p class="fs-callout__title">Limits</p>
 
 - Only realized returns can be regressed; a simulated scenario has no calendar to line up with real factor history.
 - The factors are US equity factors. A non-US portfolio's betas describe its co-movement with the US market, not its own market's style.
 - The three- and five-factor files build SMB differently, so the two models give slightly different size betas.
+</div>
 
 Charts of the holdings' values and of weight drift are covered on the [plotting page](/projects/financescenarios/docs/plotting).
 
+<div class="fs-ref"><a href="/projects/financescenarios/docs/reference/portfolio"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Portfolio</a></div>
+
 ## References
+
+<details class="ft-details" markdown="1">
+<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">9</span></summary>
 
 - Acerbi, C., Tasche, D. (2002). "On the coherence of expected shortfall." Journal of Banking & Finance, 26(7), 1487-1503. [https://doi.org/10.1016/S0378-4266(02)00283-2](https://doi.org/10.1016/S0378-4266(02)00283-2){:target="_blank"}
 - Artzner, P., Delbaen, F., Eber, J-M., Heath, D. (1999). "Coherent Measures of Risk." Mathematical Finance, 9(3), 203-228. [https://doi.org/10.1111/1467-9965.00068](https://doi.org/10.1111/1467-9965.00068){:target="_blank"}
@@ -229,3 +307,5 @@ Charts of the holdings' values and of weight drift are covered on the [plotting 
 - Perold, A.F., Sharpe, W.F. (1988). "Dynamic Strategies for Asset Allocation." Financial Analysts Journal, 44(1), 16-27. [https://doi.org/10.2469/faj.v44.n1.16](https://doi.org/10.2469/faj.v44.n1.16){:target="_blank"}
 - Redington, F.M. (1952). "Review of the Principles of Life-Office Valuations." Journal of the Institute of Actuaries, 78(3), 286-340. [https://doi.org/10.1017/S0020268100052811](https://doi.org/10.1017/S0020268100052811){:target="_blank"}
 - Sharpe, W.F. (1966). "Mutual Fund Performance." The Journal of Business, 39(S1), 119-138. [https://doi.org/10.1086/294846](https://doi.org/10.1086/294846){:target="_blank"}
+
+</details>

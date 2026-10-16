@@ -19,7 +19,16 @@ How are the scenarios drawn, and how far can you trust a percentile read from th
 
 The guides on [interest rates](/projects/financescenarios/docs/interest-rates), [the economy](/projects/financescenarios/docs/economy) and [markets](/projects/financescenarios/docs/markets) cover each model; this page covers what they share.
 
-## Correlated Shocks
+<div class="ca-nav">
+  <a href="#correlated-shocks"><i class="fas fa-shuffle" aria-hidden="true"></i>Correlated shocks</a>
+  <a href="#fat-tails-and-tail-dependence"><i class="fas fa-bolt" aria-hidden="true"></i>Fat tails</a>
+  <a href="#time-stepping"><i class="fas fa-clock" aria-hidden="true"></i>Time stepping</a>
+  <a href="#how-the-correlations-are-estimated"><i class="fas fa-project-diagram" aria-hidden="true"></i>Correlations</a>
+  <a href="#monte-carlo-error"><i class="fas fa-calculator" aria-hidden="true"></i>Monte Carlo error</a>
+  <a href="#scenarioset"><i class="fas fa-layer-group" aria-hidden="true"></i>Working with a run</a>
+</div>
+
+## Correlated Shocks {#correlated-shocks}
 
 Each factor receives one random shock per step and scenario. Drawn independently, the factors would move on their own. To give them their historical co-movement, independent standard normal draws $$Z_t$$ are multiplied by the Cholesky factor $$L$$ of the correlation matrix $$R$$:
 
@@ -37,10 +46,15 @@ $$
 T_t = \varepsilon_t \sqrt{\frac{\nu - 2}{W_t}}, \qquad W_t \sim \chi^2_\nu
 $$
 
-where $$\nu$$ is the degrees of freedom. When $$W_t$$ is small, all factors take a large shock at once, so extreme moves cluster across factors (tail dependence). A Gaussian copula has no tail dependence for any correlation below one, while the t copula has it even at zero or negative correlation ([Demarta and McNeil, 2005, section 3.2](https://doi.org/10.1111/j.1751-5823.2005.tb00254.x){:target="_blank"}). The $$\nu - 2$$ keeps the variance at one, so every fitted volatility keeps its meaning and only the tails change. Lower $$\nu$$ means fatter tails and must exceed 2. The default of 12 is the value [Kole, Koedijk and Verbeek (2007)](https://doi.org/10.1016/j.jbankfin.2006.09.010){:target="_blank"} fit to daily stock, government bond and real estate returns (12.1 in their Table 2), a portfolio for which their tests favor the Student-t copula and reject both the Gaussian and the Gumbel copula. Values near 5, often quoted, belong to shorter horizons: [Breymann, Dias and Embrechts (2003)](https://doi.org/10.1080/713666155){:target="_blank"} find 4.3 to 5.7 for hourly to daily DEM/JPY returns. Normal shocks are the default.
+where $$\nu$$ is the degrees of freedom. When $$W_t$$ is small, all factors take a large shock at once, so extreme moves cluster across factors (tail dependence). A Gaussian copula has no tail dependence for any correlation below one, while the t copula has it even at zero or negative correlation ([Demarta and McNeil, 2005, section 3.2](https://doi.org/10.1111/j.1751-5823.2005.tb00254.x){:target="_blank"}). The $$\nu - 2$$ keeps the variance at one, so every fitted volatility keeps its meaning and only the tails change.
 
+<div class="fs-callout" markdown="1">
+<p class="fs-callout__title">Choosing the degrees of freedom</p>
 
-The scale is drawn independently at every step. With monthly steps, twelve fat-tailed shocks partly average out over a year, so Student-t shocks add less to a one-year 99.5% figure than the monthly tails suggest.
+Lower $$\nu$$ means fatter tails and must exceed 2. The default of 12 is the value [Kole, Koedijk and Verbeek (2007)](https://doi.org/10.1016/j.jbankfin.2006.09.010){:target="_blank"} fit to daily stock, government bond and real estate returns (12.1 in their Table 2), a portfolio for which their tests favor the Student-t copula and reject both the Gaussian and the Gumbel copula. Values near 5, often quoted, belong to shorter horizons: [Breymann, Dias and Embrechts (2003)](https://doi.org/10.1080/713666155){:target="_blank"} find 4.3 to 5.7 for hourly to daily DEM/JPY returns.
+</div>
+
+Normal shocks are the default. The scale is drawn independently at every step. With monthly steps, twelve fat-tailed shocks partly average out over a year, so Student-t shocks add less to a one-year 99.5% figure than the monthly tails suggest.
 
 ```yaml
 # my-project/settings/my_settings.yaml (a settings profile)
@@ -51,9 +65,23 @@ engine:
 
 Equity crises cluster a second way: with shared equity regimes (on in the shipped settings), all markets enter and leave their crisis regime together, which brings simulated equity correlations much closer to the fitted ones.
 
-## Time Stepping
+## Time Stepping {#time-stepping}
 
-The horizon is cut into steps of equal length $$\Delta t$$, from daily to yearly; the shipped settings use 2,000 scenarios, monthly steps and five years. Factors are stepped in cascade order, so a driver such as inflation is known before the factors that react to it.
+The horizon is cut into steps of equal length $$\Delta t$$, from daily to yearly. The shipped settings use:
+
+<div class="ca-nums fs-nums">
+  <span><b>2,000</b>scenarios</span>
+  <span><b>Monthly</b>steps</span>
+  <span><b>5 years</b>horizon</span>
+</div>
+
+Factors are stepped in cascade order, so a driver such as inflation is known before the factors that react to it. Each factor is stepped one of three ways:
+
+| Factors | Step |
+|:--------|:-----|
+| Mean-reverting: rates under Hull-White, inflation, spreads, log commodity prices, log dividend yields | The exact solution of the Ornstein-Uhlenbeck process |
+| Prices: equities, currencies | Exact, in log space |
+| CIR rates and factors with GARCH volatility | An Euler step, so a shorter step is more accurate |
 
 Mean-reverting factors (rates under Hull-White, inflation, spreads, log commodity prices, log dividend yields) are stepped with the exact solution of the Ornstein-Uhlenbeck process:
 
@@ -77,15 +105,20 @@ CIR rates and factors with GARCH volatility use an Euler step instead, so for th
 
 The correlation matrix comes from the same historical changes each factor was fitted on (changes in a rate, log returns of a price), so it describes the shocks it drives.
 
-- **Mixed frequencies.** Changes are summed up to the coarser frequency and matched on calendar date, the way twelve monthly log returns add up to a yearly one.
-- **Pairwise windows.** Each pair uses the dates those two factors share, so a short series only weakens its own pairs. A pair with fewer than 5 shared observations is set to zero; fewer than 12, or a correlation above 0.98 (usually the same series configured twice), is flagged.
-- **Shrinkage.** Sample correlations are noisy, more so with many factors, so they are pulled toward a simpler target, trading a little bias for much less noise: by default the correlations themselves, not the covariances, toward zero by a data-driven amount ([Schäfer and Strimmer, 2005, section 2, pp. 12-13](https://strimmerlab.github.io/publications/journals/shrinkcov2005.pdf#page=14){:target="_blank"}), larger when correlations rest on few observations; a fixed share instead pulls them toward their average correlation ([Ledoit and Wolf, 2004](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}), a target built for stocks that suits a mix of rates, inflation, equities and currencies less well.
+<ol class="ca-steps">
+  <li markdown="span">**Mixed frequencies.** Changes are summed up to the coarser frequency and matched on calendar date, the way twelve monthly log returns add up to a yearly one.</li>
+  <li markdown="span">**Pairwise windows.** Each pair uses the dates those two factors share, so a short series only weakens its own pairs. A pair with fewer than 5 shared observations is set to zero; fewer than 12, or a correlation above 0.98 (usually the same series configured twice), is flagged.</li>
+  <li markdown="span">**Shrinkage.** Sample correlations are noisy, more so with many factors, so they are pulled toward a simpler target, trading a little bias for much less noise: by default the correlations themselves, not the covariances, toward zero by a data-driven amount ([Schäfer and Strimmer, 2005, section 2, pp. 12-13](https://strimmerlab.github.io/publications/journals/shrinkcov2005.pdf#page=14){:target="_blank"}), larger when correlations rest on few observations; a fixed share instead pulls them toward their average correlation ([Ledoit and Wolf, 2004](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}), a target built for stocks that suits a mix of rates, inflation, equities and currencies less well.</li>
+  <li markdown="span">**Repair.** A matrix built from different windows can be internally inconsistent (not positive definite) and then has no Cholesky factor. It is moved to the nearest valid correlation matrix, the nearest symmetric positive semidefinite matrix with unit diagonal ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}), and the size of the repair is reported.</li>
+</ol>
 
-- **Repair.** A matrix built from different windows can be internally inconsistent (not positive definite) and then has no Cholesky factor. It is moved to the nearest valid correlation matrix, the nearest symmetric positive semidefinite matrix with unit diagonal ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}), and the size of the repair is reported.
+<div class="fs-callout fs-callout--limits" markdown="1">
+<p class="fs-callout__title">Limits</p>
 
 The matrix is linear and constant over the horizon: correlations do not rise in a crisis except through the Student-t shocks and shared equity regimes above.
+</div>
 
-## Monte Carlo Error
+## Monte Carlo Error {#monte-carlo-error}
 
 A run of $$n$$ scenarios estimates a distribution with sampling error. For a mean, the standard error is
 
@@ -93,9 +126,17 @@ $$
 \text{se} = \frac{s}{\sqrt{n}}
 $$
 
-with $$s$$ the standard deviation across scenarios. Halving the error takes four times as many scenarios. Tail percentiles are less precise still, because they rest on few scenarios: the 1st percentile of 1,000 scenarios is set by about ten of them. A practical check is to rerun with several seeds and see how much the number you report moves.
+with $$s$$ the standard deviation across scenarios. Halving the error takes four times as many scenarios. Tail percentiles are less precise still, because they rest on few scenarios: the 1st percentile of 1,000 scenarios is set by about ten of them.
+
+<div class="fs-callout" markdown="1">
+<p class="fs-callout__title">A practical check</p>
+
+Rerun with several seeds and see how much the number you report moves.
+</div>
 
 **Antithetic variates** reduce that error without more random draws. Every shock $$Z$$ is paired with its mirror image $$-Z$$ (under Student-t, a large common scale is also paired with a small one), so each pair's errors partly cancel; the standard error is then computed from the independent pair averages. On the default factor set it cut the seed-to-seed spread of a 60/40 portfolio's five-year 5th percentile by about a quarter. It is off in the shipped settings and needs an even number of scenarios.
+
+Reading the standard error and rerunning with other seeds:
 
 ```python
 result = scenarios.simulate(n_simulations=2000)
@@ -118,4 +159,6 @@ stagflation = result.filter_narrative({"united_states_inflation": (0.8, 1.0), "u
 result.simulated_correlation()                           # compare with the fitted matrix
 ```
 
-A long enough run also checks itself: each mean-reverting factor's simulated mean and spread at the horizon are compared with their theoretical long-run values (see [validation](/projects/financescenarios/docs/validation)). [Regimes](/projects/financescenarios/docs/regimes) covers narratives in depth, and the [reference](/projects/financescenarios/docs/reference/scenario-set) lists everything a run offers.
+A long enough run also checks itself: each mean-reverting factor's simulated mean and spread at the horizon are compared with their theoretical long-run values (see [validation](/projects/financescenarios/docs/validation)). [Regimes](/projects/financescenarios/docs/regimes) covers narratives in depth, and the reference lists everything a run offers.
+
+<div class="fs-ref"><a href="/projects/financescenarios/docs/reference/scenario-set"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Scenario set</a></div>

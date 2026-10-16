@@ -28,11 +28,26 @@ result.plot()   # one fan chart per factor, the whole run at a glance
 
 Every chart uses the readings described under [units](/projects/financescenarios/docs/units): a rate as its rate, a price as its annualized return since the start, both as percentages. Other readings, or the price itself, are available too.
 
+Each chart answers its own question:
+
+| Chart | Question it answers |
+|:------|:--------------------|
+| [Fan chart](#fan-chart-where-the-distribution-sits-over-time) | Where does the distribution sit over time? |
+| [Paths](#paths-what-a-single-future-looks-like) | What does a single future look like? |
+| [Distribution](#distribution-where-it-lands) | Where does it land at the horizon? |
+| [Correlation matrix](#correlation-matrix-what-moves-with-what) | What moves with what? |
+| [Comparing runs](#comparing-runs) | How does a stress run differ from the baseline? |
+| [Portfolios and Solvency](#portfolios-and-solvency) | How does a portfolio's value and allocation evolve, and where do own funds land? |
+
 ## Fan Chart: Where the Distribution Sits Over Time
 
 The dark line is the median scenario, the darker band holds the middle 50% of scenarios and the lighter band 90% (the 5th to 95th percentile). Read it for three things: where the median drifts (mean reversion toward a long-run level, or a trend), how fast the bands widen (volatility), and whether they widen evenly (skew: a band that stretches more on one side means the risk sits there).
 
+<div class="fs-callout" markdown="1">
+<p class="fs-callout__title">How a fan widens</p>
+
 A fan for a rate that mean-reverts stops widening after a few years, because shocks fade. A fan for a cumulative return keeps widening. On an annualized return the fan narrows with the horizon instead, as good and bad years average out; its first months are cut off the scale because a few weeks' move scaled up to a year swamps the rest.
+</div>
 
 ```python
 result.plot("us_broad")                             # annualized return since start
@@ -42,7 +57,11 @@ result.plot("united_states_inflation", metric="level")  # inflation as a price i
 
 ## Paths: What a Single Future Looks Like
 
-A fan chart smooths away how jagged any one scenario is. The paths view draws every scenario faintly with the median on top, so you see the texture: regime switches, crashes and recoveries, rates lingering at zero, a few extreme paths that drive the tail. Check it whenever a model produces something the fan can't show, such as jumps or a floor.
+A fan chart smooths away how jagged any one scenario is. The paths view draws every scenario faintly with the median on top, so you see the texture: regime switches, crashes and recoveries, rates lingering at zero, a few extreme paths that drive the tail.
+
+<div class="fs-callout" markdown="1">
+Check it whenever a model produces something the fan can't show, such as jumps or a floor.
+</div>
 
 ```python
 result.plot("us_broad", kind="paths")
@@ -59,7 +78,11 @@ result.plot("us_broad", kind="distribution")
 
 ## Correlation Matrix: What Moves with What
 
-A heatmap of the fitted correlations. Read it for the diversification the scenarios assume: whether equities and bonds hedge each other, whether currencies offset equity losses, which factors are near duplicates. The correlations are constant over the horizon; dependence that rises in a crisis comes from shared regimes and fat tails instead (see the [simulation engine](/projects/financescenarios/docs/simulation-engine)).
+A heatmap of the fitted correlations. Read it for the diversification the scenarios assume: whether equities and bonds hedge each other, whether currencies offset equity losses, which factors are near duplicates.
+
+<div class="fs-callout" markdown="1">
+The correlations are constant over the horizon; dependence that rises in a crisis comes from shared regimes and fat tails instead (see the [simulation engine](/projects/financescenarios/docs/simulation-engine)).
+</div>
 
 ```python
 scenarios.last_calibration.plot()
@@ -96,3 +119,5 @@ Several presets computed together share one chart instead, a line per portfolio 
 presets = Portfolio.from_preset(result, preset=["balanced_60_40", "all_weather"], config=scenarios.config)
 presets.compute().plot(levels=True)   # one line per preset, in money
 ```
+
+<div class="fs-ref"><a href="/projects/financescenarios/docs/reference/charts"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Charts</a></div>

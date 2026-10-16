@@ -44,11 +44,55 @@ Interest rates, inflation, equities and unemployment are always simulated; the r
 
 ## How the Factors Are Linked
 
-When equities fall, spreads, rates and currencies should move the way they did in past sell-offs. Where theory says one variable drives another (inflation driving unemployment, a rate gap driving an exchange rate), the driver's simulated path feeds the next factor; everything else is tied together by one correlation matrix of the historical shocks. [How a run is built](/projects/financescenarios/docs/architecture#dependence) explains both.
+When equities fall, spreads, rates and currencies should move the way they did in past sell-offs. Where theory says one variable drives another (inflation driving unemployment, a rate gap driving an exchange rate), the driver's simulated path feeds the next factor; everything else is tied together by one correlation matrix of the historical shocks. The direct links run one way, from driver to follower:
+
+<div class="fs-diagram">
+<div class="fs-links">
+  <div class="fs-links__row">
+    <div class="fs-node"><b>Leading indicator</b><small>business cycle, opt-in</small></div>
+    <div class="fs-links__to">
+      <div class="fs-link is-dashed"><em>drift</em><div class="fs-node"><b>Inflation</b></div></div>
+      <div class="fs-link is-dashed"><em>drift</em><div class="fs-node"><b>Interest rates</b></div></div>
+      <div class="fs-link is-dashed"><em>drift</em><div class="fs-node"><b>Credit spreads</b></div></div>
+      <div class="fs-link is-dashed"><em>crisis odds</em><div class="fs-node"><b>Equities</b></div></div>
+    </div>
+  </div>
+  <div class="fs-links__row">
+    <div class="fs-node is-accent"><b>Inflation</b><small>top of the cascade</small></div>
+    <div class="fs-links__to">
+      <div class="fs-link"><em>Phillips curve</em><div class="fs-node"><b>Unemployment</b></div></div>
+      <div class="fs-link"><em>Wilkie and KNW</em><div class="fs-node"><b>Interest rates</b></div></div>
+      <div class="fs-link"><em>Wilkie-style</em><div class="fs-node"><b>Dividends</b></div></div>
+    </div>
+  </div>
+  <div class="fs-links__row">
+    <div class="fs-node"><b>Dividends</b><small>Wilkie-style</small></div>
+    <div class="fs-links__to">
+      <div class="fs-link"><em>share prices</em><div class="fs-node"><b>Equities</b></div></div>
+    </div>
+  </div>
+  <div class="fs-links__row">
+    <div class="fs-node"><b>Interest rates</b></div>
+    <div class="fs-links__to">
+      <div class="fs-link"><em>rate gap</em><div class="fs-node"><b>Exchange rates</b><small>interest-rate parity</small></div></div>
+    </div>
+  </div>
+</div>
+<p class="fs-diagram__note">Dashed: only with business-cycle conditioning. Each arrow is a direct link in the model's equations.</p>
+</div>
+
+Everything else, the yield curve, real estate, commodities and mortality among it, is linked only through the correlation matrix. [How a run is built](/projects/financescenarios/docs/architecture#dependence) explains both mechanisms.
 
 ## Real-World and Risk-Neutral Runs
 
-A **real-world** run keeps each factor's historical drift and risk premia and answers "what could happen?" (ALM, allocation, capital). A **risk-neutral** run grows every asset at the risk-free rate so it reproduces today's prices, and answers "what is this worth?" (guarantees, the Solvency II best estimate). [Configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures) explains the difference and which factors have a risk-neutral form.
+Every run is simulated under one of two measures, each answering its own question:
+
+<div class="ca-cards">
+  <div><i class="ca-icon fas fa-globe" aria-hidden="true"></i><p class="ca-card-title">Real-world: what could happen?</p><p>Keeps each factor's historical drift and risk premia. For ALM studies, asset allocation and capital.</p></div>
+  <div><i class="ca-icon fas fa-scale-balanced" aria-hidden="true"></i><p class="ca-card-title">Risk-neutral: what is this worth?</p><p>Grows every asset at the risk-free rate, so it reproduces today's prices. For guarantees and the Solvency II best estimate.</p></div>
+</div>
+
+[Configuration](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures) explains the difference and which factors have a risk-neutral form. Both come from the same configuration:
 
 ```python
 from financescenarios import Scenarios
@@ -64,6 +108,8 @@ All history comes from the [Finance Toolkit](https://github.com/JerBouma/Finance
 
 ## Map of the Documentation
 
-- **Documentation**: how a run is [built](/projects/financescenarios/docs/architecture) and [simulated](/projects/financescenarios/docs/simulation-engine), how to [configure](/projects/financescenarios/docs/configuration) it and [read](/projects/financescenarios/docs/units) the results, plus [regimes](/projects/financescenarios/docs/regimes), [validation](/projects/financescenarios/docs/validation) and [coverage](/projects/financescenarios/docs/coverage).
-- **Guides**: the models per area, from [interest rates](/projects/financescenarios/docs/interest-rates) and [KNW](/projects/financescenarios/docs/knw) to the [economy](/projects/financescenarios/docs/economy) and [markets](/projects/financescenarios/docs/markets), and their use in a [portfolio](/projects/financescenarios/docs/portfolio) and for [Solvency II](/projects/financescenarios/docs/solvency).
-- **Reference**: every class and function, with its parameters and papers, in [the reference](/projects/financescenarios/docs/reference).
+<div class="ca-cards ca-cards--3">
+  <div><i class="ca-icon fas fa-toolbox" aria-hidden="true"></i><p class="ca-card-title">Documentation</p><p>How a run is <a href="/projects/financescenarios/docs/architecture">built</a> and <a href="/projects/financescenarios/docs/simulation-engine">simulated</a>, how to <a href="/projects/financescenarios/docs/configuration">configure</a> it and <a href="/projects/financescenarios/docs/units">read</a> the results, plus <a href="/projects/financescenarios/docs/regimes">regimes</a>, <a href="/projects/financescenarios/docs/validation">validation</a> and <a href="/projects/financescenarios/docs/coverage">coverage</a>.</p></div>
+  <div><i class="ca-icon fas fa-compass" aria-hidden="true"></i><p class="ca-card-title">Guides</p><p>The models per area, from <a href="/projects/financescenarios/docs/interest-rates">interest rates</a> and <a href="/projects/financescenarios/docs/knw">KNW</a> to the <a href="/projects/financescenarios/docs/economy">economy</a> and <a href="/projects/financescenarios/docs/markets">markets</a>, and their use in a <a href="/projects/financescenarios/docs/portfolio">portfolio</a> and for <a href="/projects/financescenarios/docs/solvency">Solvency II</a>.</p></div>
+  <div><i class="ca-icon fas fa-book" aria-hidden="true"></i><p class="ca-card-title">Reference</p><p>Every class and function, with its parameters and papers, in <a href="/projects/financescenarios/docs/reference">the reference</a>.</p></div>
+</div>
