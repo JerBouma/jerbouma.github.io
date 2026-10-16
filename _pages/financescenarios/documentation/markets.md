@@ -43,6 +43,7 @@ Transition probabilities are rescaled to the simulation step through the matrix'
 The limits: within a regime returns are lognormal, so the tails come only from the mixture, and a rarely visited regime is poorly estimated.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 equities:
   - name: us_broad
     ticker: SPY
@@ -85,6 +86,7 @@ Here $$r$$ is today's short rate, $$q$$ today's dividend yield of the same ticke
 For SPY on 2026-10-04 the bill rate was 3.99% and the dividend yield entry started at 0.99% (twelve months of dividends over the price, averaged over the last month, the same level used [below](#dividend-yield)), a drift of about 3.0%. The implied, SVI and realized volatilities came out between 13.5% and 14.9%. Beliefs don't apply here: the entry must match market prices.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 equities:
   - name: us_broad
     ticker: SPY
@@ -120,6 +122,7 @@ $$
 Here $$S_t$$ is foreign currency per dollar, $$r^f_t$$ the foreign and $$r^d_t$$ the US short rate, both read from the same simulated path. A higher foreign rate pushes the quote up (the foreign currency weakens); a higher US rate pushes it down. Uncovered parity often fails empirically (the carry trade profits from that), one more reason the random walk is the default.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 fx:
   - name: eur
     country: EA20  # keyed by currency area, so the euro is EA20
@@ -159,6 +162,7 @@ The volatilities are fitted to the listed futures (crude oil, natural gas, gold,
 The risk-neutral version keeps the same volatilities and fits only the two drift terms to today's futures prices: a backwardated curve gives a falling long-term level, a contango curve a rising one. The fit uses the first twelve monthly contracts, and the drift it finds is held for the whole horizon. On 2026-10-04 crude fell from 91.11 USD (November 2026) to 77.90 USD (September 2027), so the long-term level drifted down about 17.7% a year, against 2.5% a year in the real-world fit. A steep front-end backwardation is thus carried well past the last contract; for long horizons, read it as a pricing input, not as a path for the oil price.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 commodities:
   - name: oil
     ticker: CL=F
@@ -234,6 +238,7 @@ A series that has touched zero or below is fitted on its level instead. On 2026-
 Euro and UK spreads by rating are not available: those indices are licensed.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 credit:
   - name: baa_aaa
     dimension: moodys
@@ -260,6 +265,7 @@ The 0.03% floor remains available for a Basel II comparison. The transition matr
 On S&P corporate ratings from 2000 to 2025, the worst years came out as 2009, 2001, 2020 and 2002, the asset correlation was about 0.10, and a shock to the cycle halved in about eight months.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 credit_migration:
   enabled: true
   agency: S&P

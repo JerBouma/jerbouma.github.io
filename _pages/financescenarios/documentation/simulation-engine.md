@@ -43,6 +43,7 @@ where $$\nu$$ is the degrees of freedom. When $$W_t$$ is small, all factors take
 The scale is drawn independently at every step. With monthly steps, twelve fat-tailed shocks partly average out over a year, so Student-t shocks add less to a one-year 99.5% figure than the monthly tails suggest.
 
 ```yaml
+# my-project/settings/my_settings.yaml (a settings profile)
 engine:
   shock_distribution: student_t   # default: gaussian
   degrees_of_freedom: 12.0      # the default

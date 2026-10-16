@@ -41,6 +41,12 @@
 {{ i.setup_code }}
 ```{% endcapture %}{{ fence | markdownify }}
             {%- endif %}
+            {%- if i.setup_settings_code %}
+            <p>{{ i.setup_settings | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>
+            {% capture fence %}```{{ i.setup_lang | default: "yaml" }}
+{{ i.setup_settings_code }}
+```{% endcapture %}{{ fence | markdownify }}
+            {%- endif %}
           </div>
           {%- endif %}
           <div class="fsc__details">{{ i.details | markdownify }}</div>

@@ -58,7 +58,7 @@ Monte Carlo error falls with the square root of the number of scenarios, and a t
 A profile of your own can start from a shipped one and state only what differs. It extends a file in its own folder, so first copy the shipped profiles into that folder.
 
 ```yaml
-# my-project/settings/my_alm.yaml
+# my-project/settings/my_alm.yaml (a settings profile)
 name: ALM study
 extends: default.yaml   # the copy scaffold_project("my-project") wrote next to this file
 
@@ -94,6 +94,7 @@ A factor can be fitted on a long history while the run still starts from today's
 Older is not always better: medieval harvests and the 1923 hyperinflation are rarely what you want. A start year cuts the history short, and the volatility can come from the recent window while the long history sets the mean reversion.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 interest_rates:
   defaults:                  # every country's rates
     history_source: oecd
@@ -132,6 +133,7 @@ A fitted parameter is an estimate from one stretch of history; a long-run view i
 The target can also be a path (inflation at 6% in year 5, back to 2% by year 10), and a factor can take a one-off shock at a given year, after which it moves on normally from the new level. That is how a stress narrative enters a real-world run; [regimes](/projects/financescenarios/docs/regimes) package such stories.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 inflation:
   defaults:                 # every country's inflation; a regime can target one
     beliefs:
@@ -151,6 +153,7 @@ Beliefs don't apply to risk-neutral factors, which exist to match the market. A 
 Instead of your own view, a rate's long-run level can follow an official path. Anchored to EIOPA, it follows the forward rates of EIOPA's risk-free curve for its currency (USD, EUR or GBP), which converge to the [ultimate forward rate](https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en) Solvency II insurers discount with only beyond the last liquid point (30 years for the dollar, 20 for the euro and 50 for sterling, as set in [EIOPA's RFR technical documentation, EIOPA-BoS-25-599, section 9.2.2 and Tables 7-8](https://www.eiopa.europa.eu/document/download/f7fca58f-4d24-4441-ac60-de562bf26d77_en?filename=EIOPA-BoS-25-599%20-%20RFR%20Technical%20Documentation.pdf#page=44){:target="_blank"}; from 30 January 2027 the amended rules extrapolate from a first smoothing point instead). Over a few decades the anchor therefore still follows market forwards, not the UFR. Anchored to DNB (euro only), it follows the median of [De Nederlandsche Bank's](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/) pension scenario set. Speed and volatility stay fitted, and an explicit belief still wins. The default factor set uses EIOPA: over 30 years its US 10-year median ends at 4.8%, against 4.5% in the NAIC's generator.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 interest_rates:
   defaults:
     long_run_anchor: eiopa   # or dnb, for euro rates
@@ -165,6 +168,7 @@ Gaussian rate models let rates go well below zero. No floor is the default, sinc
 By default volatility is constant. With GARCH it clusters, so calm periods stay calm and turbulent ones stay turbulent ([Bollerslev, 1986](https://doi.org/10.1016/0304-4076(86)90063-1)). Alternatively a factor's drift can follow the leading indicator, so inflation or rates move with the business cycle ([conditioning on the cycle](/projects/financescenarios/docs/economy#conditioning-on-the-cycle)). The two don't combine on one factor.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 leading_indicator:
   enabled: true
 

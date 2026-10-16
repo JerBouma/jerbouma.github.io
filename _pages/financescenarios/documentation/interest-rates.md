@@ -26,6 +26,7 @@ A short-rate model is enough when you need one rate per country around a normal 
 The same models can also drive a single long yield, such as the 10-year Treasury, as its own mean-reverting factor. That is a model of one yield, not a short-rate model that implies a curve: a short and a long rate entered this way are linked only by correlation (Hibbert's model below is the exception), so their spread can invert at random rather than with the cycle. For a coherent curve across maturities, use the [Nelson-Siegel curve](#the-nelson-siegel-yield-curve).
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 interest_rates:
   defaults:
     method: hull_white
@@ -119,6 +120,7 @@ The shipped default factor set uses both. See [Long history](/projects/financesc
 A belief replaces one fitted parameter and keeps the rest, for example a house view on the long-run level:
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 interest_rates:
   countries:
     - name: United States
@@ -133,6 +135,7 @@ Beliefs apply to Hull-White and CIR with constant volatility. They are rejected 
 The zero lower bound follows the shadow-rate idea of [Black (1995)](https://doi.org/10.1111/j.1540-6261.1995.tb05182.x){:target="_blank"}: the model evolves an unconstrained shadow rate $$s_t$$, and the observed rate is $$r_t = \max(s_t, 0)$$. A rate at zero only climbs back once the shadow rate does, so it can stay at zero for a long spell, as policy rates did after 2008.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 interest_rates:
   countries:
     - name: Eurozone
@@ -167,6 +170,7 @@ Hull-White has two risk-neutral versions:
 - **Forward curve.** $$\theta$$ becomes a time-dependent path chosen so that the average discount factor across scenarios reproduces today's curve at every maturity, following [Brigo and Mercurio (2006, section 3.3)](https://doi.org/10.1007/978-3-540-34604-3){:target="_blank"}. The curve is a Nelson-Siegel fit to the four Treasury yields, or EIOPA's risk-free curve for the euro, the pound or the US dollar, the curve a Solvency II best estimate discounts with. A whole-run risk-neutral simulation uses EIOPA's curve where it covers the currency.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 interest_rates:
   countries:
     - name: United States
@@ -194,6 +198,7 @@ The decay $$\lambda$$ fixes where the curvature loading peaks. The default, 0.73
 The factors are fitted to observed yields on every historical date, then each is simulated as its own mean-reverting process, correlated with the rest of the model.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 yield_curve:
   enabled: true
   source: government
@@ -215,6 +220,7 @@ The curve can come from the four Yahoo Treasury yields, the official 12-maturity
 A corporate bond is discounted at the government curve plus a spread for default and liquidity risk. The credit curve applies the same Nelson-Siegel model to corporate spreads, adding credit level, slope and curvature factors. With the same $$\lambda$$ on both curves, their sum is again a Nelson-Siegel curve: the discount curve for risky bonds.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 credit_term_structure:
   enabled: true
   source: hqm
@@ -243,6 +249,7 @@ The drift is the convexity adjustment that makes discounted bond prices martinga
 Finance Scenarios uses two correlated factors whose volatility fades with time to maturity $$x$$ as $$\sigma_i e^{-\kappa_i x}$$, which makes it the two-factor Hull-White (G2++) model ([Hull and White, 1994](https://doi.org/10.3905/jod.1994.407908){:target="_blank"}; [Brigo and Mercurio, 2006](https://doi.org/10.1007/978-3-540-34604-3){:target="_blank"}, chapters 3-4). Both factors start at zero on top of today's forward curve (a Nelson-Siegel fit to the Treasury yields), so the model reproduces today's curve exactly at every maturity.
 
 ```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
 hjm:
   enabled: true
   period: daily

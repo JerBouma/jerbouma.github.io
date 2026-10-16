@@ -56,6 +56,7 @@ A long-run level can follow a term structure instead of a single number: anchors
 Oil Crisis uses both mechanisms. Its path follows US CPI inflation after the 1973 embargo, which peaked at 12.2% in November 1974 and was 5.5% by October 1976; 2.5% by year eight is a return to normal, a little above the 2.3% ten-year CPI forecast of the Philadelphia Fed's Survey of Professional Forecasters (Q3 2026).
 
 ```yaml
+# my-project/regimes/oil_crisis.yaml (a stress regime)
 name: Oil Crisis
 beliefs:
   inflation.united_states_inflation:
