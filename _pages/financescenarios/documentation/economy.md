@@ -21,7 +21,7 @@ Each factor is fitted to its own history and simulated with correlated shocks al
 
 ## Inflation
 
-Inflation sets the real value of every nominal cash flow, so it sits at the top of the model. As in [Wilkie (1986, section 2.5)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=2){:target="_blank"} and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}, inflation drives other variables (unemployment and, in Wilkie's setup, dividends), not the other way around.
+Inflation sets the real value of every nominal cash flow, so it sits at the top of the model. As in [Wilkie (1986, section 2.5)](https://doi.org/10.1017/S0071368600009009){:target="_blank"} and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}, inflation drives other variables (unemployment and, in Wilkie's setup, dividends), not the other way around.
 
 The series is headline CPI inflation, year over year, the convention most scenario generators calibrate on. Consecutive monthly readings share eleven of their twelve months, so a regression of each month on the month before reads that overlap as slow mean reversion: a spike looks as if it lingers for years. Every inflation fit therefore regresses each reading on the one a year earlier, as [Ahlgrim, D'Arcy and Gorvett (2005, section 3, p. 15)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf#page=15){:target="_blank"} did to get past the noise in monthly data, and steps the result at the run's frequency (`ou_fit: step` restores the month-to-month fit).
 
@@ -50,7 +50,7 @@ Two extensions address the weaknesses of a constant-volatility fit on a recent w
 
 ### Wilkie's AR(1)
 
-Wilkie's original model (1986, [section 3.4](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf#page=4){:target="_blank"}) is the discrete-time version of the same idea: each period keeps a fixed share $$\phi$$ of the previous period's gap to the long-run level $$\theta$$, plus a shock.
+Wilkie's original model (1986, [section 3.4](https://doi.org/10.1017/S0071368600009009){:target="_blank"}) is the discrete-time version of the same idea: each period keeps a fixed share $$\phi$$ of the previous period's gap to the long-run level $$\theta$$, plus a shock.
 
 $$
 I_t = \theta + \phi\,(I_{t-1} - \theta) + \sigma\,z_t
@@ -237,4 +237,4 @@ Full reference: [Mortality](/projects/financescenarios/docs/reference/mortality)
 - Nelson, C.R., Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." Journal of Business, 60(4), 473-489. [doi.org](https://doi.org/10.1086/296409){:target="_blank"}
 - Phillips, A.W. (1958). "The Relation Between Unemployment and the Rate of Change of Money Wage Rates in the United Kingdom, 1861-1957." Economica, 25(100), 283-299. [doi.org](https://doi.org/10.1111/j.1468-0335.1958.tb00003.x){:target="_blank"}
 - Uhlenbeck, G.E., Ornstein, L.S. (1930). "On the Theory of the Brownian Motion." Physical Review, 36(5), 823-841. [doi.org](https://doi.org/10.1103/PhysRev.36.823){:target="_blank"}
-- Wilkie, A.D. (1986). "A Stochastic Investment Model for Actuarial Use." Transactions of the Faculty of Actuaries, 39, 341-403. [soa.org](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"}
+- Wilkie, A.D. (1986). "A Stochastic Investment Model for Actuarial Use." Transactions of the Faculty of Actuaries, 39, 341-403. [soa.org](https://doi.org/10.1017/S0071368600009009){:target="_blank"}

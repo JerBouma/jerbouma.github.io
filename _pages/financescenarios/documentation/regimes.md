@@ -93,7 +93,7 @@ A targeted regime keeps only part of each draw, about 9% for Oil Crisis, so the 
 
 Instead of writing a recession by hand, a regime can follow a regulator's published scenario, fetched through the Finance Toolkit with no API key:
 
-- **Federal Reserve**: the US supervisory scenarios, baseline and severely adverse, 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market, from the first quarter of 2026 to the first quarter of 2029 ([2026 Supervisory Stress Test Scenarios, p. 7](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=13){:target="_blank"}).
+- **Federal Reserve**: the US supervisory scenarios, baseline and severely adverse, 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market, from the first quarter of 2026 to the first quarter of 2029 ([Federal Reserve, 2026 Supervisory Stress Test Scenarios, p. 7](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=13){:target="_blank"}).
 
 - **ESRB**: the European Systemic Risk Board's scenario for the [EBA's 2025 EU-wide bank stress test](https://www.eba.europa.eu/publications-and-media/press-releases/eba-launches-its-2025-eu-wide-stress-test){:target="_blank"}, three years (2025 to 2027) of the long-term rate, inflation, unemployment and stock prices for every EU member and the main other economies.
 
@@ -112,7 +112,7 @@ regime = stress_test_regime(toolkit, config, authority="federal_reserve", scenar
 stressed = Scenarios.from_config(config, toolkit=toolkit, regime=regime).simulate()
 ```
 
-Only factors with a long-run level can follow the scenario: real-world interest rates under Hull-White or CIR, inflation under the plain mean-reverting model, and unemployment. Other models and every risk-neutral factor keep their calibration. The Federal Reserve covers only the United States, so under it only US factors move. Its inflation is an annualized quarter-on-quarter rate ([2026 Supervisory Stress Test Scenarios, p. 8](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=14){:target="_blank"}), while this package's is year over year, and the published values are used as they are. Quarter-on-quarter inflation moves sooner and further than year over year, so the simulated inflation peaks earlier and higher than the scenario's own year-over-year path would.
+Only factors with a long-run level can follow the scenario: real-world interest rates under Hull-White or CIR, inflation under the plain mean-reverting model, and unemployment. Other models and every risk-neutral factor keep their calibration. The Federal Reserve covers only the United States, so under it only US factors move. Its inflation is an annualized quarter-on-quarter rate ([Federal Reserve, 2026 Supervisory Stress Test Scenarios, p. 8](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=14){:target="_blank"}), while this package's is year over year, and the published values are used as they are. Quarter-on-quarter inflation moves sooner and further than year over year, so the simulated inflation peaks earlier and higher than the scenario's own year-over-year path would.
 
 ## Reading the Results Against the Base Run
 

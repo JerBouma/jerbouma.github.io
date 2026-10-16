@@ -68,7 +68,7 @@ Negative historical observations are floored at zero before fitting, and the sim
 
 ### Wilkie Consols
 
-The long government bond yield from [Wilkie's (1986)](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"} actuarial model splits the observed yield $$C_t$$ into expected inflation and a hidden real yield $$CN_t$$:
+The long government bond yield from [Wilkie's (1986)](https://doi.org/10.1017/S0071368600009009){:target="_blank"} actuarial model splits the observed yield $$C_t$$ into expected inflation and a hidden real yield $$CN_t$$:
 
 $$
 C_t = CW\,CM_t + CN_t, \qquad
@@ -76,7 +76,7 @@ CM_t = CD\,I_t + (1 - CD)\,CM_{t-1}, \qquad
 \ln CN_t = \ln CMU + CA1\,(\ln CN_{t-1} - \ln CMU) + CSD\,\varepsilon_t
 $$
 
-Here $$I_t$$ is the force of inflation (the log change in the price index) from the paired inflation factor and $$CM_t$$ an exponentially weighted average of it, a simple adaptive model of inflation expectations. $$CW = 1$$ and $$CD = 0.05$$ are fixed at Wilkie's published values, so all expected inflation passes into the yield. The real part $$CN_t$$ mean-reverts in logs toward $$CMU$$ with persistence $$CA1$$, so it is always positive. This is the reduced basis Wilkie gives in [section 3.15](https://www.soa.org/globalassets/assets/library/monographs/50th-anniversary/investment-section/1999/january/m-as99-2-06.pdf){:target="_blank"}: he found that setting three parameters to zero gave very similar long-term forecasts, which leaves the real part a plain AR(1).
+Here $$I_t$$ is the force of inflation (the log change in the price index) from the paired inflation factor and $$CM_t$$ an exponentially weighted average of it, a simple adaptive model of inflation expectations. $$CW = 1$$ and $$CD = 0.05$$ are fixed at Wilkie's published values, so all expected inflation passes into the yield. The real part $$CN_t$$ mean-reverts in logs toward $$CMU$$ with persistence $$CA1$$, so it is always positive. This is the reduced basis Wilkie gives in [section 3.15](https://doi.org/10.1017/S0071368600009009){:target="_blank"}: he found that setting three parameters to zero gave very similar long-term forecasts, which leaves the real part a plain AR(1).
 
 That positivity is also its main limit: the yield must exceed average inflation over the whole fit window. US long yields sat at or below average inflation from 2008 to 2017, so the shipped Wilkie profile fits the yield on 1995-2007 only, while its inflation takes its dynamics from US history since 1919, the start of Wilkie's own window. Use it to reproduce the Wilkie framework.
 
@@ -193,7 +193,7 @@ $$
 - **Slope** $$S$$ moves short maturities more than long ones. In this formula it is the short end minus the long end: the very short yield is $$L + S$$ and the long yield $$L$$. A normal, upward-sloping curve therefore has a negative $$S$$, and an inverted curve a positive one. It moves with monetary policy and the cycle.
 - **Curvature** $$C$$ moves medium maturities most: a hump or a trough in the belly of the curve.
 
-The decay $$\lambda$$ fixes where the curvature loading peaks. The default, 0.7308 with maturities in years, is Diebold and Li's 0.0609 with maturities in months, which puts the peak at 30 months, the average of the two- and three-year maturities usually taken as medium term ([their section 3.2, pp. 346-347](https://www.sas.upenn.edu/~fdiebold/papers/paper49/Diebold-Li.pdf){:target="_blank"}).
+The decay $$\lambda$$ fixes where the curvature loading peaks. The default, 0.7308 with maturities in years, is Diebold and Li's 0.0609 with maturities in months, which puts the peak at 30 months, the average of the two- and three-year maturities usually taken as medium term ([Diebold and Li, 2006, section 3.2](https://www.sas.upenn.edu/~fdiebold/papers/paper49/Diebold-Li.pdf){:target="_blank"}).
 
 The factors are fitted to observed yields on every historical date, then each is simulated as its own mean-reverting process, correlated with the rest of the model.
 
