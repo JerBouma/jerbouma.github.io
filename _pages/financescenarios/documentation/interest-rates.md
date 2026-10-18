@@ -132,6 +132,8 @@ With inflation at target and unemployment at $$u^*$$, the rule settles at $$r^* 
   <span><b>3.0%</b>pound</span>
 </div>
 
+These are the values a run reads today. A calibration as of a past date, which is what every backtest on the validation page is, reads each of them as it had been published by that date: the neutral real rate from the New York Fed's real-time estimates ([Federal Reserve Bank of New York, r-star](https://www.newyorkfed.org/research/policy/rstar){:target="_blank"}), for the dollar until the FOMC first projected the longer-run federal funds rate in January 2012 and for the pound until the Bank of England published its range in 2018, the longer-run unemployment rate and the NAWRU from the projections and AMECO releases of the time, the target and the floor then in force, and each historical gap on the data up to that date. A rule fitted at the end of 2007 reads a US neutral real rate of 2.14%, the Laubach-Williams estimate published on 20 December 2007, where a run today reads 1.2%. The [dated values](/projects/financescenarios/docs/validation#dated-values) section of the validation page shows each of these histories with its sources.
+
 ## The Long Rate Is the Expected Short-Rate Path plus a Term Premium
 
 Two rates that each revert on their own, linked only by correlated shocks, let the gap between them wander: a simulated curve can invert at random and stay inverted for decades. Building the long rate on the short rate ties the curve together. The curve then inverts when the short rate jumps and steepens again as it falls back, as it has done historically.
@@ -271,22 +273,38 @@ The default is one choice among several; each of these is an option on an intere
 ## References
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">15</span></summary>
+<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">31</span></summary>
 
 - Adrian, T., Crump, R.K., Moench, E. (2013). "Pricing the Term Structure with Linear Regressions." Journal of Financial Economics, 110(1), 110-138. [doi.org](https://doi.org/10.1016/j.jfineco.2013.04.009){:target="_blank"}
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the Casualty Actuarial Society, 92. [casact.org](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}
 - Bank of England (2025). Monetary Policy Report, February 2025, Box A. [bankofengland.co.uk](https://www.bankofengland.co.uk/monetary-policy-report/2025/february-2025){:target="_blank"}
+- Bank of England. Bank Rate history and data. [bankofengland.co.uk](https://www.bankofengland.co.uk/boeapps/database/Bank-Rate.asp){:target="_blank"}
 - Black, F. (1995). "Interest Rates as Options." The Journal of Finance, 50(5), 1371-1376. [doi.org](https://doi.org/10.1111/j.1540-6261.1995.tb05182.x){:target="_blank"}
 - Board of Governors of the Federal Reserve System (2018). Policy Rules and How Policymakers Use Them. [federalreserve.gov](https://www.federalreserve.gov/monetarypolicy/policy-rules-and-how-policymakers-use-them.htm){:target="_blank"}
 - Board of Governors of the Federal Reserve System (2026). Monetary Policy Report, July 2026, Part 2, Box 4. [federalreserve.gov](https://www.federalreserve.gov/monetarypolicy/2026-07-mpr-part2.htm){:target="_blank"}
+- Board of Governors of the Federal Reserve System. Open Market Operations: federal funds target ranges. [federalreserve.gov](https://www.federalreserve.gov/monetarypolicy/openmarket.htm){:target="_blank"}
+- Bollerslev, T. (1986). "Generalized Autoregressive Conditional Heteroskedasticity." Journal of Econometrics, 31(3), 307-327. [doi.org](https://doi.org/10.1016/0304-4076(86)90063-1){:target="_blank"}
+- Brigo, D., Mercurio, F. (2006). Interest Rate Models: Theory and Practice (2nd ed.). Springer Finance. [doi.org](https://doi.org/10.1007/978-3-540-34604-3){:target="_blank"}
 - Campbell, J.Y., Shiller, R.J. (1991). "Yield Spreads and Interest Rate Movements: A Bird's Eye View." The Review of Economic Studies, 58(3), 495-514. [doi.org](https://doi.org/10.2307/2298008){:target="_blank"}
 - Congressional Budget Office (2026). Budget and Economic Data: noncyclical rate of unemployment. [cbo.gov](https://www.cbo.gov/data/budget-economic-data){:target="_blank"}; series NROU on [FRED](https://fred.stlouisfed.org/series/NROU){:target="_blank"}
+- Cox, J.C., Ingersoll, J.E., Ross, S.A. (1985). "A Theory of the Term Structure of Interest Rates." Econometrica, 53(2), 385-407. [doi.org](https://doi.org/10.2307/1911242){:target="_blank"}
+- Diebold, F.X., Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364. [doi.org](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}
+- European Central Bank (2021). The ECB's monetary policy strategy statement, 8 July 2021. [ecb.europa.eu](https://www.ecb.europa.eu/home/search/review/html/ecb.strategyreview_monpol_strategy_statement.en.html){:target="_blank"}
+- European Central Bank. Official interest rates: key ECB interest rates. [ecb.europa.eu](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.en.html){:target="_blank"}
 - European Commission (2026). AMECO, Spring 2026 forecast: ZUTN and ZNAWRU. [ec.europa.eu](https://ec.europa.eu/economy_finance/ameco/wq/series?fullVariable=1.0.0.0.ZUTN&countries=FRA,GBR,DEU&years=2025&lastYear=0&yearOrder=ASC){:target="_blank"}
+- European Parliament and Council (2009). "Directive 2009/138/EC (Solvency II)", consolidated text of 17 January 2025, Articles 77 and 77a. [eur-lex.europa.eu](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009L0138-20250117){:target="_blank"}
+- Federal Open Market Committee (2026). Statement on Longer-Run Goals and Monetary Policy Strategy. [federalreserve.gov](https://www.federalreserve.gov/monetarypolicy/files/fomc_longerrungoals.pdf){:target="_blank"}
 - Federal Open Market Committee (2026). Summary of Economic Projections, 16 September 2026, Table 1. [federalreserve.gov](https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260916.htm){:target="_blank"}
-- Federal Reserve Bank of New York (2026). Holston-Laubach-Williams estimates of the natural rate of interest. [newyorkfed.org](https://www.newyorkfed.org/research/policy/rstar){:target="_blank"}
+- Federal Reserve Bank of New York (2026). Measuring the natural rate of interest: Holston-Laubach-Williams and Laubach-Williams estimates, current and real-time. [newyorkfed.org](https://www.newyorkfed.org/research/policy/rstar){:target="_blank"}
 - Federal Reserve Bank of New York (2026). Treasury Term Premia (ACMTP10, ACMRNY10). [newyorkfed.org](https://www.newyorkfed.org/research/data_indicators/term-premia-tabs){:target="_blank"}
+- Heath, D., Jarrow, R., Morton, A. (1992). "Bond Pricing and the Term Structure of Interest Rates: A New Methodology for Contingent Claims Valuation." Econometrica, 60(1), 77-105. [doi.org](https://doi.org/10.2307/2951677){:target="_blank"}
+- Hibbert, J., Mowbray, P., Turnbull, C. (2001). "A Stochastic Asset Model & Calibration for Long-Term Financial Planning Purposes." Barrie & Hibbert Limited. [ressources-actuarielles.net](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"}
+- HM Treasury (2025). Monetary policy remit: Budget 2025, letter from the Chancellor of the Exchequer to the Governor of the Bank of England, 26 November 2025. [gov.uk](https://www.gov.uk/government/publications/monetary-policy-remit-budget-2025/letter-from-chancellor-of-the-exchequer-to-govenor-of-the-bank-of-england){:target="_blank"}
+- Hull, J., White, A. (1990). "Pricing Interest-Rate-Derivative Securities." The Review of Financial Studies, 3(4), 573-592. [doi.org](https://doi.org/10.1093/rfs/3.4.573){:target="_blank"}
+- Nelson, C.R., Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489. [doi.org](https://doi.org/10.1086/296409){:target="_blank"}
 - Taylor, J.B. (1993). "Discretion versus Policy Rules in Practice." Carnegie-Rochester Conference Series on Public Policy, 39, 195-214. [doi.org](https://doi.org/10.1016/0167-2231(93)90009-L){:target="_blank"}
 - U.S. Bureau of Labor Statistics. Unemployment rate, LNS14000000. [bls.gov](https://data.bls.gov/timeseries/LNS14000000){:target="_blank"}
 - Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188. [doi.org](https://doi.org/10.1016/0304-405x(77)90016-2){:target="_blank"}
+- Wilkie, A.D. (1986). "A Stochastic Investment Model for Actuarial Use." Transactions of the Faculty of Actuaries, 39, 341-403. [doi.org](https://doi.org/10.1017/S0071368600009009){:target="_blank"}
 
 </details>

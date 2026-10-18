@@ -3,7 +3,7 @@ title: Validation
 seo_title: "Validation Documentation | Finance Scenarios"
 seo_title_suffix: false
 excerpt: "How to trust a run: whether the scenarios reproduce the model's own mathematics, move together the way the economy does, stay within what history has seen, would have held what happened when fitted in the past, and land near outside benchmarks."
-description: "How to trust a Finance Scenarios run: long-run moments, macro relationships, realism against history, parameter guardrails, out-of-sample coverage, PIT and CRPS, external benchmarks and limits."
+description: "How to trust a Finance Scenarios run: long-run moments, macro relationships, realism against history, parameter guardrails, out-of-sample coverage, PIT and CRPS on the values known at each date, external benchmarks and limits."
 author_profile: false
 permalink: /projects/financescenarios/docs/validation
 classes: wide-sidebar
@@ -20,7 +20,7 @@ A scenario set is only useful if you can defend it to a model validator, an audi
 <div class="ca-cards">
   <div><i class="ca-icon fas fa-square-root-variable" aria-hidden="true"></i><p class="ca-card-title">The model</p><p>The simulation does what the model's mathematics says (<a href="#the-simulation-reproduces-the-model">the simulation reproduces the model</a>) and, for a valuation run, reproduces market prices (<a href="#market-consistency-the-martingale-test">the martingale test</a>).</p></div>
   <div><i class="ca-icon fas fa-earth-americas" aria-hidden="true"></i><p class="ca-card-title">The economy</p><p>The scenarios behave like the economy they describe: they fit their history (<a href="#checking-a-run-against-history">checks against history</a>), the factors move together the way the economy does (<a href="#do-the-factors-move-together-the-way-the-economy-does">relationships</a>), stay within how far history has gone (<a href="#does-each-factor-stay-within-what-history-has-seen">realism</a>) and come from plausible fitted parameters (<a href="#are-the-fitted-parameters-ones-the-real-world-could-produce">guardrails</a>).</p></div>
-  <div><i class="ca-icon fas fa-history" aria-hidden="true"></i><p class="ca-card-title">Out of sample</p><p>A model fitted in the past would have held what actually happened (<a href="#out-of-sample-would-a-past-calibration-have-held-what-happened">out of sample</a>).</p></div>
+  <div><i class="ca-icon fas fa-history" aria-hidden="true"></i><p class="ca-card-title">Out of sample</p><p>A model fitted in the past, on only what was known then, would have held what actually happened (<a href="#out-of-sample-would-a-past-calibration-have-held-what-happened">out of sample</a>, <a href="#dated-values">dated values</a>).</p></div>
   <div><i class="ca-icon fas fa-scale-balanced" aria-hidden="true"></i><p class="ca-card-title">Outside references</p><p>The scenarios land near independent outside references (<a href="#external-benchmarks">external benchmarks</a>).</p></div>
 </div>
 
@@ -34,6 +34,7 @@ This page covers each, the theory behind the measure, the numbers on the default
   <a href="#does-each-factor-stay-within-what-history-has-seen"><i class="fas fa-ruler" aria-hidden="true"></i>Realism against history</a>
   <a href="#are-the-fitted-parameters-ones-the-real-world-could-produce"><i class="fas fa-sliders-h" aria-hidden="true"></i>Parameter guardrails</a>
   <a href="#out-of-sample-would-a-past-calibration-have-held-what-happened"><i class="fas fa-history" aria-hidden="true"></i>Out of sample</a>
+  <a href="#dated-values"><i class="fas fa-calendar-days" aria-hidden="true"></i>Dated values</a>
   <a href="#run-it"><i class="fas fa-terminal" aria-hidden="true"></i>Run it</a>
   <a href="#external-benchmarks"><i class="fas fa-scale-balanced" aria-hidden="true"></i>External benchmarks</a>
   <a href="#published-calibrations"><i class="fas fa-tags" aria-hidden="true"></i>Published calibrations</a>
@@ -193,7 +194,7 @@ The bands are judgements: no published standard sets them. On the same run, four
 
 ## Out of Sample: Would a Past Calibration Have Held What Happened?
 
-The checks above compare a run with the history it was fitted on. The harder test goes back to a past date, fits the model on only the data known then, simulates from that day and sets the scenarios against what actually happened. Every series the fit reads ends on that date, and beliefs held today are reported; OECD and FRED series are still read as revised today.
+The checks above compare a run with the history it was fitted on. The harder test goes back to a past date, fits the model on only what was known then, simulates from that day and sets the scenarios against what actually happened. Every series the fit reads ends on that date, and the published values it reads besides the data, such as the neutral real rate of the policy rule, the natural rate of unemployment and long-run inflation expectations, are the ones known that day (see [Dated Values](#dated-values) below). Beliefs held today are reported; OECD and FRED series are still read as revised today.
 
 Each factor is scored at every whole year ahead:
 
@@ -203,53 +204,116 @@ Each factor is scored at every whole year ahead:
 
 From the end of 2007, the model fitted on the 26 years before it, 1,000 scenarios run five years ahead:
 
-<figure class="theme-image"><img src="/assets/images/projects/financescenarios/docs/validation/out-of-sample-2007-light.png" alt="Out-of-sample fan charts from the end of 2007 for US stocks, US unemployment, the US short and long rate and US and UK inflation, with the realised path" loading="lazy" style="display:block"></figure>
+{% include theme-image.html src="/assets/images/projects/financescenarios/docs/validation/out-of-sample-2007" alt="Out-of-sample fan charts from the end of 2007 for US stocks, US unemployment, the US short and long rate and US and UK inflation, with the realised path" %}
 
-The financial crisis falls largely outside the cloud, because of its speed. US unemployment reached 7.3% at the end of 2008 and 9.9% at the end of 2009, while 1 in 20 scenarios went above 6.69% and 7.39%; only by 2012, at 7.9%, was it back inside the 90% band. The short rate was cut to 0.11% within the year against a 5th percentile of 2.86%, and stayed below the band until 2012. US stocks were down 36.8% by the end of 2008 against a 5th percentile of -15.1%, and the 10-year rate fell to 2.24% against 3.75%. US inflation dipped below the band at the end of 2008 (0.09%) and came back inside it; UK inflation stayed inside throughout. In the scores, the 90% band held one of the five years for the short rate and for unemployment, two for the long rate and three for stocks, and on CRPS the scenarios lose to a no-change forecast for stocks, both rates and UK inflation.
+The financial crisis falls largely outside the cloud, because of its speed. US unemployment reached 7.3% at the end of 2008 and 9.9% at the end of 2009, while 1 in 20 scenarios went above 6.91% and 7.76%; only by 2011, at 8.5%, was it back inside the 90% band. The short rate was cut to 0.11% within the year against a 5th percentile of 3.79% and stayed below the band through 2012; the 10-year rate fell to 2.24% against 4.32% and stayed below it too. US stocks were down 36.8% by the end of 2008 against a 5th percentile of -14.55%. US inflation dipped below the band at the end of 2008 (0.09%) and came back inside it; UK inflation stayed inside throughout. In the scores, the 90% band held none of the five years for either rate, two for unemployment and three for stocks, and on CRPS the scenarios lose to a no-change forecast for stocks, both rates and UK inflation.
+
+Part of the rates' miss is what the fit could know. The policy rule settles at its neutral real rate plus the 2% target, and the fit read 2.14%, the New York Fed's Laubach-Williams estimate published on 20 December 2007, where a run today reads 1.2%. Its median short rate stayed between 5.4% and 6.0% for all five years while the Federal Reserve held its rate near zero. That was the view of the time: estimates of the neutral rate only came down over the following decade, and a backtest that read today's 1.2% would carry into 2007 a lesson learned only afterwards.
 
 From the end of 2019, through the pandemic and the inflation that followed:
 
-<figure class="theme-image"><img src="/assets/images/projects/financescenarios/docs/validation/out-of-sample-2019-light.png" alt="Out-of-sample fan charts from the end of 2019 with the realised path" loading="lazy" style="display:block"></figure>
+{% include theme-image.html src="/assets/images/projects/financescenarios/docs/validation/out-of-sample-2019" alt="Out-of-sample fan charts from the end of 2019 with the realised path" %}
 
-Here the cloud holds more. US stocks stay inside the 90% band in all five years, through the 2020 crash and the rally after it. The jump in US unemployment to 6.7% at the end of 2020 is above the band's 5.34%, and the cut to zero again lies below it: the short rate at 0.07% and 0.03% at the end of 2020 and 2021 against 5th percentiles of 1.99% and 2.01%, the 10-year rate at 0.92% and 1.51% against 2.22% and 2.58%. The inflation that followed sits at the edge: US inflation of 7.04% at the end of 2021 and 6.45% at the end of 2022 is above the 95th percentiles of 4.68% and 4.91%, and UK inflation of 4.84% in 2021 lands just inside its 4.88% before 9.24% in 2022 goes past 6.44%. From 2022 on, both rates are back inside the band.
+Here the cloud holds more. US stocks stay inside the 90% band in all five years, through the 2020 crash and the rally after it. The jump in US unemployment to 6.7% at the end of 2020 is above the band's 5.32%, and the cut to zero again lies below it: the short rate at 0.07% and 0.03% at the end of 2020 and 2021 against 5th percentiles of 1.59% and 1.38%, the 10-year rate at 0.92% and 1.51% against 1.99% and 2.17%. The inflation that followed sits at the edge: US inflation of 7.04% at the end of 2021 and 6.45% at the end of 2022 is above the 95th percentiles of 4.62% and 4.86%, and UK inflation of 4.84% in 2021 lands just inside its 4.88% before 9.24% in 2022 goes past 6.44%. From 2022 on, both rates are back inside the band. This fit read a US neutral real rate of 0.5%, the FOMC's December 2019 projection less its 2% goal, below today's 1.2%.
 
 One crisis is an anecdote. Five origins four years apart (the ends of 2003, 2007, 2011, 2015 and 2019), each run four years ahead, score every year from 2004 to 2023 once:
 
 | Factor | Coverage 50% | Coverage 90% | Bands | PIT mean | CRPS skill |
 |:--|--:|--:|:--|--:|--:|
-| US inflation | 0.45 | 0.85 | ok | 0.56 | 0.47 |
-| Euro-area inflation | 0.50 | 0.85 | ok | 0.48 | 0.43 |
+| US inflation | 0.40 | 0.85 | ok | 0.55 | 0.46 |
+| Euro-area inflation | 0.50 | 0.85 | ok | 0.49 | 0.41 |
 | UK inflation | 0.65 | 0.90 | ok | 0.64 | 0.41 |
-| US short rate | 0.30 | 0.70 | too narrow | 0.29 | 0.19 |
-| US long rate | 0.40 | 0.80 | ok | 0.27 | -0.35 |
-| Euro-area short rate | 0.35 | 0.70 | too narrow | 0.59 | 0.43 |
-| Euro-area long rate | 0.45 | 0.90 | ok | 0.34 | 0.37 |
-| UK short rate | 0.30 | 0.75 | ok | 0.23 | 0.15 |
-| UK long rate | 0.30 | 0.95 | ok | 0.22 | 0.02 |
-| US unemployment | 0.35 | 0.75 | ok | 0.44 | 0.36 |
-| Euro-area unemployment | 0.15 | 0.60 | too narrow | 0.66 | 0.34 |
-| UK unemployment | 0.30 | 0.65 | too narrow | 0.42 | 0.31 |
-| US stocks | 0.50 | 0.90 | ok | 0.56 | 0.53 |
-| Japanese stocks | 0.70 | 0.85 | ok | 0.42 | 0.25 |
-| Euro | 0.70 | 1.00 | too wide | 0.56 | 0.29 |
+| US short rate | 0.25 | 0.70 | too narrow | 0.22 | 0.06 |
+| US long rate | 0.40 | 0.70 | too narrow | 0.19 | -0.68 |
+| Euro-area short rate | 0.20 | 0.40 | too narrow | 0.20 | 0.19 |
+| Euro-area long rate | 0.15 | 0.65 | too narrow | 0.16 | -0.20 |
+| UK short rate | 0.25 | 0.35 | too narrow | 0.12 | -0.53 |
+| UK long rate | 0.10 | 0.55 | too narrow | 0.11 | -0.67 |
+| US unemployment | 0.20 | 0.50 | too narrow | 0.37 | 0.30 |
+| Euro-area unemployment | 0.25 | 0.65 | too narrow | 0.50 | 0.36 |
+| UK unemployment | 0.25 | 0.60 | too narrow | 0.34 | 0.10 |
+| US stocks | 0.50 | 0.90 | ok | 0.56 | 0.51 |
+| Japanese stocks | 0.70 | 0.85 | ok | 0.42 | 0.23 |
+| Euro | 0.70 | 1.00 | too wide | 0.57 | 0.29 |
 | Pound sterling | 0.35 | 0.90 | ok | 0.68 | 0.21 |
 | Yen | 0.50 | 0.70 | too narrow | 0.52 | 0.29 |
 | Yield-curve level | 0.45 | 0.95 | ok | 0.33 | 0.12 |
 | Yield-curve slope | 0.40 | 0.75 | ok | 0.57 | 0.44 |
 | Yield-curve curvature | 0.50 | 0.90 | ok | 0.40 | 0.24 |
-| US house prices | 0.25 | 0.50 | too narrow | 0.61 | 0.08 |
+| US house prices | 0.25 | 0.55 | too narrow | 0.61 | 0.09 |
 | Leading indicator | 0.40 | 0.80 | ok | 0.57 | 0.23 |
-| US small caps | 0.50 | 0.94 | ok | 0.52 | 0.38 |
-| Gold | 0.50 | 1.00 | ok | 0.62 | 0.43 |
+| US small caps | 0.50 | 0.94 | ok | 0.52 | 0.35 |
+| Gold | 0.50 | 1.00 | ok | 0.62 | 0.42 |
 | European stocks | 0.67 | 1.00 | ok | 0.48 | 0.29 |
-| Emerging-market stocks | 0.67 | 1.00 | ok | 0.53 | 0.16 |
+| Emerging-market stocks | 0.67 | 1.00 | ok | 0.53 | 0.18 |
 | Crude oil | 0.62 | 1.00 | ok | 0.63 | 0.53 |
 
-Inflation holds best: US, euro-area and UK inflation keep 85% to 90% of their years inside the 90% band, close to the 0.9 it should hold, and US stocks hold 0.90. Where it falls short, the bands are too narrow: the US and euro-area short rates (0.70), euro-area and UK unemployment (0.60 and 0.65), the yen (0.70) and US house prices (0.50). The US short and long rates also have low tails that are too thin, as the cuts to zero in 2008 and 2020 showed; with a PIT mean of 0.29 the US short rate ran below the scenarios' middle more often than above it, and on CRPS the US long rate loses to a no-change forecast. The euro's band is too wide (1.00).
+Inflation holds best: US, euro-area and UK inflation keep 85% to 90% of their years inside the 90% band, close to the 0.9 it should hold, and US stocks hold 0.90. The rates hold worst, and they lean one way: with PIT means of 0.11 to 0.22, the six short and long rates ended below the scenarios' middle in most years, and their 90% bands held between 0.35 (the UK short rate) and 0.70 (both US rates). On CRPS the UK rates and the US and euro-area 10-year rates lose to a no-change forecast. Unemployment's bands are too narrow as well (0.50 to 0.65), as are the yen's (0.70) and US house prices' (0.55); the euro's is too wide (1.00).
+
+That is the honest result of reading what was known at each origin. The same five backtests read with today's values scored the rates far better, because today's values quietly told each fit how low rates would stay:
+
+| Six rates, averaged | Today's values | Values known then |
+|:--|--:|--:|
+| Coverage 90% | 0.80 | 0.56 |
+| PIT mean | 0.32 | 0.17 |
+| CRPS skill | 0.13 | -0.30 |
+
+Across all 27 factors the 90% bands held 84% of the years with today's values and 78% with the values of the time, and the average CRPS skill fell from 0.28 to 0.17; factors the dated values do not reach, such as the yen, the curve factors and crude oil, score exactly the same either way. The values of the time pointed to higher rates than today's do. The neutral rate read was above today's at 11 of the 15 pairs of origin and currency, by up to 2.15 points (the euro area at the end of 2007: 2.24% against 0.09%), so each fit's policy rule expected rates to return to normal, as the FOMC's own projections did through the 2010s, while rates stayed near zero for much of the period. Other values point the same way, such as the euro area's floor of -0.30% at the end of 2015, before the ECB cut its deposit rate to -0.50%. A forecaster at the time would have made the same mistake; a backtest that hides it overstates how well the model would have done.
+
+## Dated Values: What a Backtest Could Have Known {#dated-values}
+
+A backtest is only honest if the model it fits could have been built on the day it starts from. Cutting every data series at that date is the obvious half. The other half is easy to miss: a calibration also reads values that are published rather than fitted, such as the neutral real rate of the policy rule, the natural rate of unemployment, long-run inflation expectations, the inflation target, the lowest policy rate and the long-run equity premium. Read as they stand today, they carry what happened afterwards into the past. A 2007 fit that reads today's neutral rate has already learned what the decade after 2007 taught.
+
+So a calibration as of a past date reads each of these values as it had been published by that date, from its official history. Every release becomes a row from the day it was published, and a run as of a date reads the latest row on or before it. The run's notes list each value it read with its source and release. A run of today reads today's values, as it always has. The eleven dated values, what a run reads today and how a past date reads each:
+
+| Value | Read today | How a past date reads it | Rows |
+|:--|:--|:--|--:|
+| Neutral real rate, US | 1.2% | From 25 January 2012: the FOMC's median longer-run federal funds rate less its 2% goal, from each [Summary of Economic Projections](https://fred.stlouisfed.org/series/FEDTARMDLR){:target="_blank"}. Before: the New York Fed's [real-time Laubach-Williams estimates](https://www.newyorkfed.org/research/policy/rstar){:target="_blank"}, the last quarter's one-sided estimate of each vintage from its publication date (8 July 2005 to 27 October 2011) | 263 |
+| Neutral real rate, euro area | 0.09% | The New York Fed's real-time Holston-Laubach-Williams estimates, each vintage from its publication date (3 March 2016 to 26 August 2026) | 210 |
+| Neutral real rate, UK | 1.0% | The Holston-Laubach-Williams real-time estimates from March 2016 to May 2018; then the midpoint of the Bank of England's range: 0.5% from 2 August 2018 ([Inflation Report August 2018, Box 6](https://www.bankofengland.co.uk/inflation-report/2018/august-2018){:target="_blank"}), 1.0% from 6 February 2025 ([Monetary Policy Report February 2025, Box A](https://www.bankofengland.co.uk/monetary-policy-report/2025/february-2025){:target="_blank"}) | 232 |
+| Longer-run unemployment, US | 4.2% | The FOMC's median from 17 June 2015 and the midpoint of its central tendency from 18 February 2009 ([FRED UNRATEMDLR and UNRATECTMLR](https://fred.stlouisfed.org/series/UNRATEMDLR){:target="_blank"}); before 2009, the Congressional Budget Office's noncyclical rate in its [earliest ALFRED vintage](https://alfred.stlouisfed.org/series?seid=NROU){:target="_blank"} (2 February 2011) | 311 |
+| NAWRU: France, UK, Germany | 7.16%, 4.21%, 3.48% | Each release in the European Commission's [AMECO archive](https://economy-finance.ec.europa.eu/economic-research-and-databases/economic-databases/ameco-database/ameco-archive_en){:target="_blank"}, Spring 2011 to Autumn 2025, the NAWRU for its last forecast year; Spring 2026 today | 220 |
+| Historical unemployment gap | US +0.29, France +0.51, UK +0.10, Germany +0.04 points | Unemployment less the natural rate of the vintage in force, on the data up to that date: the CBO's ALFRED vintages for the US, the AMECO releases elsewhere | 549 |
+| Long-run inflation expectations, US | 2.3% | The [Survey of Professional Forecasters'](https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/inflation-forecasts){:target="_blank"} median 10-year CPI inflation from each release date since 1991Q4; before, the Blue Chip Economic Indicators and the Livingston Survey from 1979Q4 | 166 |
+| Long-run inflation expectations, euro area | 2.0% | The [ECB Survey of Professional Forecasters'](https://data.ecb.europa.eu/data/datasets/SPF){:target="_blank"} longer-term HICP expectation, each round since 1999Q1 | 105 |
+| Inflation target and the UK's expectation | 2% | The target in force: the Federal Reserve's 2% from 25 January 2012 ([FOMC, Statement on Longer-Run Goals](https://www.federalreserve.gov/monetarypolicy/files/fomc_longerrungoals.pdf){:target="_blank"}) and [Taylor's (1993, p. 202)](https://doi.org/10.1016/0167-2231(93)90009-L){:target="_blank"} 2% before; the ECB's 2% (below 2% from 13 October 1998, below but close to 2% from 8 May 2003, a symmetric 2% from 8 July 2021); the UK's 2.5% RPIX until 10 December 2003, then 2% CPI ([Bank of England, Inflation Report February 2004](https://www.bankofengland.co.uk/inflation-report/2004/february-2004){:target="_blank"}) | 9 |
+| Lowest policy rate | US 0%, euro -0.50%, UK 0.10% | Zero until a central bank set a lower rate: the ECB's [deposit facility rate](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.en.html){:target="_blank"} at each cut from 0% on 11 July 2012 to -0.50% on 18 September 2019, [Bank Rate](https://www.bankofengland.co.uk/boeapps/database/Bank-Rate.asp){:target="_blank"} at 0.10% from 19 March 2020 | 11 |
+| Long-run equity premium | 3.77% | [Jordà, Knoll, Kuvshinov, Schularick and Taylor (2019, Table II)](https://doi.org/10.1093/qje/qjz012){:target="_blank"} from 2019; before, the same statistic on the [JST Macrohistory Database](https://www.macrohistory.net/database/){:target="_blank"} up to each year, from 1900 to 2018 | 120 |
+
+<div class="fs-callout" markdown="1">
+<p class="fs-callout__title">Before the first real-time release</p>
+
+Before a table's first real-time release (mid-2005 for the US neutral rate, 2016 for the euro area's, 2009 for US unemployment, mid-2011 for the NAWRU), the first release's estimate for that quarter or year stands in. It was made later, but on data only up to that quarter, the closest to real time there is; the run's notes name the release each value comes from.
+</div>
+
+The neutral rate matters most. At 11 of the 15 pairs of origin and currency, the backtests read a neutral rate above today's. At the end of 2007:
+
+<div class="ca-nums fs-nums">
+  <span><b>2.14%</b>US, known then</span>
+  <span><b>1.2%</b>US, today</span>
+  <span><b>2.24%</b>euro area, known then</span>
+  <span><b>0.09%</b>euro area, today</span>
+</div>
+
+For the US that is the Laubach-Williams estimate published on 20 December 2007; for the euro area, the first Holston-Laubach-Williams vintage. The FOMC's own projection of the longer-run funds rate stood at 4.3% in January 2012, 2.3% above its goal, and fell to 2.5% only in 2019. A rule given those numbers expects rates to return to normal, as the FOMC's projections did through the 2010s, while rates stayed near zero. The neutral real rate as known on each day since 2000, with the value each backtest origin reads:
+
+{% include theme-image.html src="/assets/images/projects/financescenarios/docs/validation/dated-neutral-rates" alt="The neutral real rate as known on each day since 2000 for the US, the euro area and the UK, with the value each backtest origin reads and today's value" %}
+
+Long-run inflation expectations moved far less once they had come down: US forecasters expected 6.9% a year over the next decade at the end of 1979, but since 1999 their expectation has stayed between 2.0% and 3.0% (2.3% today), and the euro area's between 1.6% and 2.2%. The expectations as published since 1979:
+
+{% include theme-image.html src="/assets/images/projects/financescenarios/docs/validation/dated-inflation-expectations" alt="Long-run inflation expectations as published since 1979: the US 10-year CPI expectation, the ECB survey's longer-term expectation and the UK target" %}
+
+The natural rate of unemployment was revised with what unemployment did: France's NAWRU read 8.8% at the end of 2007, 10.0% at the end of 2015 and 7.16% today; the UK's 6.0%, 5.8% and 4.21%. The US longer-run rate and the NAWRU as known on each day since 2000:
+
+{% include theme-image.html src="/assets/images/projects/financescenarios/docs/validation/dated-unemployment" alt="The US longer-run unemployment rate and the French and UK NAWRU as known on each day since 2000" %}
+
+The equity premium on the data up to each year ranges from 0.74% (up to 1932) to 4.10% (up to 1999); a backtest from the end of 2007 reads 3.96%, one from the end of 2019 the published 3.77%. The premium on the data up to each year:
+
+{% include theme-image.html src="/assets/images/projects/financescenarios/docs/validation/dated-equity-premium" alt="The long-run equity premium computed on the JST data up to each year from 1900 to 2018, and the published 3.77%" %}
 
 ## Run It
 
-The numbers above come from the [Model Validation notebook](/projects/financescenarios/model-validation-notebook): the README's calibration of the default profiles, a 30-year run of 1,000 scenarios with seed 42 for the checks against history, and 1,000 scenarios from each past origin.
+The numbers above come from the [Model Validation notebook](/projects/financescenarios/model-validation-notebook): the README's calibration of the default profiles, a 30-year run of 1,000 scenarios with seed 42 for the checks against history, and 1,000 scenarios from each past origin, each fitted on the data and the published values known that day.
 
 ```python
 from financescenarios import Scenarios
@@ -263,6 +327,7 @@ scenarios.check_parameters(result, flagged_only=True)  # the parameter guardrail
 
 crisis = scenarios.out_of_sample(as_of="2007-12-31", years=5, n_simulations=1000, seed=42)
 crisis.plot(["us_broad", "united_states_unemployment"])  # the fan from that date against what happened
+crisis.notes  # every published value the fit read as known on that date, with its source
 scenarios.out_of_sample_many(
     origins=["2003-12-31", "2007-12-31", "2011-12-31", "2015-12-31", "2019-12-31"], years=4, n_simulations=1000, seed=42
 ).scores  # coverage, PIT and CRPS per factor across the origins
@@ -302,7 +367,7 @@ Downloading and simulating a release is covered in the runs and releases referen
 - **Dependence is one linear correlation matrix**, constant over the horizon. A Student-t shock distribution adds joint tail risk through one shared t-copula (see [fat tails](/projects/financescenarios/docs/simulation-engine#fat-tails-and-tail-dependence)), but tail dependence that differs by pair or is asymmetric is not captured.
 - **Risk-neutral calibration is limited in scope.** Interest rates, inflation, equities, FX and commodities can be calibrated risk neutral, but without a full arbitrage-free volatility surface: rate and inflation volatilities come from history, not from swaption or inflation-option prices, so the time value of guarantees is indicative; see the [measures section of the configuration page](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures).
 - **Judgment calls are not checked for economic sense.** The number of equity regimes and every belief override are the user's choice; only their shape is checked, not whether they are reasonable.
-- **Out of sample is a handful of origins.** Five origins four years apart score twenty years once each; the years within one origin's run are not independent, so coverage and PIT rest on few independent observations, and OECD and FRED series are read as revised today, not as they were known at the time.
+- **Out of sample is a handful of origins.** Five origins four years apart score twenty years once each; the years within one origin's run are not independent, so coverage and PIT rest on few independent observations. The published values a fit reads are dated, but the data series are not: OECD and FRED series are read as revised today, not as they were known at the time, and before each dated table's first real-time release a later estimate for that quarter or year stands in.
 - **The relationship and realism bands are judgements.** Half to twice history's slope, and the margins around history's extremes, are not published standards; a warning is a reason to look, not a verdict.
 - **No scenario reduction or moment matching.** Every simulated path is returned as drawn; none are selected or reweighted to match target moments with fewer scenarios.
 </div>
