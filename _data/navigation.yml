@@ -1784,6 +1784,8 @@ financescenarios:
         url: /projects/financescenarios/portfolio-notebook
       - title: Portfolio Analysis Notebook
         url: /projects/financescenarios/portfolio-analysis-notebook
+      - title: Model Validation Notebook
+        url: /projects/financescenarios/model-validation-notebook
   - title: Questions & Answers
     url: /projects/financescenarios#questions--answers
 financescenarios-docs:

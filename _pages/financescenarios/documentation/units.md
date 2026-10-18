@@ -44,7 +44,7 @@ Each series is fitted in the form economists and actuaries normally use for it:
 | Leading indicator | Index points around 100 | It is built as a stationary cycle around 100 |
 | Mortality | Logit of death rates | [Cairns, Blake and Dowd's (2006, eq. 1, p. 691)](https://www.pensions-institute.org/wp-content/uploads/2019/workingpapers/wp0611.pdf#page=6) specification |
 
-A belief about inflation is stated the same way, as a year-over-year rate; [the inflation guide](/projects/financescenarios/docs/economy#inflation) explains what that basis implies for the fit.
+A belief about inflation is stated the same way, as a year-over-year rate; [the inflation guide](/projects/financescenarios/docs/economy#inflation-calm-and-high-inflation-regimes) explains what that basis implies for the fit.
 
 ## How Results Read {#how-results-read}
 

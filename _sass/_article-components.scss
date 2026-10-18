@@ -500,3 +500,16 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
     }
   }
 }
+
+// A chart drawn for each theme (_includes/theme-image.html): the site is dark
+// unless the masthead toggle sets data-theme="light".
+.page__content figure.theme-image {
+  display: block;
+  margin: 1.25em 0 1.5em;
+  img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  .theme-image__light { display: none; }
+  :root[data-theme="light"] & {
+    .theme-image__dark { display: none; }
+    .theme-image__light { display: block; }
+  }
+}

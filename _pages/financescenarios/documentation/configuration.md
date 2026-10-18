@@ -243,7 +243,7 @@ interest_rates:
 
 ### Keeping Rates at or Above Zero {#keeping-rates-at-or-above-zero}
 
-Gaussian rate models let rates go well below zero. No floor is the default, since negative rates did happen; a zero lower bound turns the model into a shadow rate floored at 0%, so rates linger at zero as policy rates did. [Interest rates](/projects/financescenarios/docs/interest-rates#keeping-rates-at-or-above-zero) explains the model. Real-world rates only.
+Gaussian rate models let rates go well below zero. No floor is the default, since negative rates did happen; a zero lower bound turns the model into a shadow rate floored at 0%, so rates linger at zero as policy rates did. [Interest rates](/projects/financescenarios/docs/interest-rates#other-rate-models) explains the model. Real-world rates only.
 
 ### Volatility That Clusters and the Business Cycle {#business-cycle-conditioning}
 
@@ -251,7 +251,7 @@ By default volatility is constant. Two alternatives, which don't combine on one 
 
 <div class="ca-cards">
   <div><i class="ca-icon fas fa-pulse" aria-hidden="true"></i><p class="ca-card-title">GARCH volatility</p><p>Volatility clusters, so calm periods stay calm and turbulent ones stay turbulent (<a href="https://doi.org/10.1016/0304-4076(86)90063-1">Bollerslev, 1986</a>).</p></div>
-  <div><i class="ca-icon fas fa-gauge" aria-hidden="true"></i><p class="ca-card-title">The business cycle</p><p>A factor's drift follows the leading indicator, so inflation or rates move with the business cycle (<a href="/projects/financescenarios/docs/economy#conditioning-on-the-cycle">conditioning on the cycle</a>).</p></div>
+  <div><i class="ca-icon fas fa-gauge" aria-hidden="true"></i><p class="ca-card-title">The business cycle</p><p>A factor's drift follows the leading indicator, so inflation or rates move with the business cycle (<a href="/projects/financescenarios/docs/economy#the-leading-indicator-and-the-business-cycle">conditioning on the cycle</a>).</p></div>
 </div>
 
 Switching on the cycle, or GARCH instead:
