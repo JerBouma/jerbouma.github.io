@@ -431,6 +431,8 @@ The `econometrics` module provides [regression](/projects/financetoolkit/docs/ec
 pip install "financetoolkit[econometrics]" -U
 ```
 
+Then regress the first ticker's weekly returns on the others:
+
 ```python
 # AAPL is the Toolkit's first ticker, so it's the default dependent ticker;
 # every other ticker becomes the default independent set

@@ -281,6 +281,8 @@ The leading indicator gives the model an explicit business cycle, so other facto
   <div><span>Reference</span><a href="/projects/financescenarios/docs/reference/leading-indicator">Leading indicator</a></div>
 </div>
 
+To add the US leading indicator to a factor set:
+
 ```yaml
 # my-project/factor-sets/my_factors.yaml (a factor set)
 leading_indicator:

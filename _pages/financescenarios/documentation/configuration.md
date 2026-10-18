@@ -148,6 +148,8 @@ A factor can be fitted on a long history while the run still starts from today's
 Medieval harvests and the 1923 hyperinflation are rarely what you want. A start year cuts the history short, and the volatility can come from the recent window while the long history sets the mean reversion.
 </div>
 
+To read every country's rates from the OECD since 1950, with the swings taken from the recent window:
+
 ```yaml
 # my-project/factor-sets/my_factors.yaml (a factor set)
 interest_rates:
@@ -183,6 +185,8 @@ Every factor is real-world by default; a single factor or a whole run can switch
 | KNW with stochastic volatility | A market price of risk fitted to the yield curve |
 | Commodities (two-factor) | Fitted to the futures curve |
 | Unemployment, real estate, leading indicator, mortality, credit | Not available: there is no traded price to match |
+
+A whole run switches to risk-neutral with one setting:
 
 ```python
 result = scenarios.simulate(measure="risk_neutral")   # or measure: risk_neutral on one factor
@@ -233,6 +237,8 @@ Anchored to DNB (euro only), it follows the median of [De Nederlandsche Bank's](
   <span><b>4.8%</b>default factor set, anchored to EIOPA</span>
   <span><b>4.5%</b>the NAIC's generator</span>
 </div>
+
+To anchor every country's long-run rate level to EIOPA's curve (or, for euro rates, to DNB's scenario set):
 
 ```yaml
 # my-project/factor-sets/my_factors.yaml (a factor set)

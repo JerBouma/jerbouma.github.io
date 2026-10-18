@@ -22,11 +22,13 @@ In this article I track five economies (the United States, United Kingdom, Germa
 
 ## Setting Things Up
 
-The Economics module works on its own, without a ticker or an API key:
+The Economics module works on its own, without a ticker or an API key. Install the Finance Toolkit:
 
 ```bash
 pip install financetoolkit
 ```
+
+Then start the module from 2019 onward:
 
 ```python
 from financetoolkit import Economics

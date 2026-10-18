@@ -82,6 +82,8 @@ The bands are wide on purpose: mean-reverting, regime-switching and GARCH factor
 | Reproducible under a seed | Two runs with the same seed differ (fail; published calibrations only). | Results cannot be replayed for audit. |
 | Every path is finite | Any path holds NaN or infinity (fail). | A numerical breakdown; the run should not be used. |
 
+All of these checks run in one call on a simulated run:
+
 ```python
 result = scenarios.simulate(n_simulations=2000)
 scenarios.validate(result)   # one row per check: status, detail, meaning
