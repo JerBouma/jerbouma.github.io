@@ -25,6 +25,7 @@ The guides on [interest rates](/projects/financescenarios/docs/interest-rates), 
   <a href="#time-stepping"><i class="fas fa-clock" aria-hidden="true"></i>Time stepping</a>
   <a href="#how-the-correlations-are-estimated"><i class="fas fa-project-diagram" aria-hidden="true"></i>Correlations</a>
   <a href="#monte-carlo-error"><i class="fas fa-calculator" aria-hidden="true"></i>Monte Carlo error</a>
+  <a href="#numerical-settings"><i class="fas fa-sliders-h" aria-hidden="true"></i>Numerical settings</a>
   <a href="#scenarioset"><i class="fas fa-layer-group" aria-hidden="true"></i>Working with a run</a>
 </div>
 
@@ -108,7 +109,7 @@ The correlation matrix comes from the same historical changes each factor was fi
 <ol class="ca-steps">
   <li markdown="span">**Mixed frequencies.** Changes are summed up to the coarser frequency and matched on calendar date, the way twelve monthly log returns add up to a yearly one.</li>
   <li markdown="span">**Pairwise windows.** Each pair uses the dates those two factors share, so a short series only weakens its own pairs. A pair with fewer than 5 shared observations is set to zero; fewer than 12, or a correlation above 0.98 (usually the same series configured twice), is flagged.</li>
-  <li markdown="span">**Shrinkage.** Sample correlations are noisy, more so with many factors, so they are pulled toward a simpler target, trading a little bias for much less noise: by default the correlations themselves, not the covariances, toward zero by a data-driven amount ([Schäfer and Strimmer, 2005, section 2, pp. 12-13](https://strimmerlab.github.io/publications/journals/shrinkcov2005.pdf#page=14){:target="_blank"}), larger when correlations rest on few observations; a fixed share instead pulls them toward their average correlation ([Ledoit and Wolf, 2004](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}), a target built for stocks that suits a mix of rates, inflation, equities and currencies less well.</li>
+  <li markdown="span">**Shrinkage.** Sample correlations are noisy, more so with many factors, so they are pulled toward a simpler target, trading a little bias for much less noise: by default the correlations themselves, not the covariances, toward zero by a data-driven amount ([Schäfer and Strimmer, 2005, section 2.4, eq. 10](https://doi.org/10.2202/1544-6115.1175){:target="_blank"}), larger when correlations rest on few observations; a fixed share instead pulls them toward their average correlation ([Ledoit and Wolf, 2004](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}), a target built for stocks that suits a mix of rates, inflation, equities and currencies less well.</li>
   <li markdown="span">**Repair.** A matrix built from different windows can be internally inconsistent (not positive definite) and then has no Cholesky factor. It is moved to the nearest valid correlation matrix, the nearest symmetric positive semidefinite matrix with unit diagonal ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}), and the size of the repair is reported.</li>
 </ol>
 
@@ -145,6 +146,52 @@ result.summary_statistics("united_states_short_rate")   # mean, std, se and perc
 calibration = scenarios.calibrate()                      # fit once, then vary only the seed
 reruns = [scenarios.simulate(calibration=calibration, seed=seed) for seed in range(5)]
 ```
+
+## Numerical Settings {#numerical-settings}
+
+Some numbers in a run have no economic meaning: they decide how precisely the engine and the fits do their work, not what the model says. They are settings, listed here so a run can be reproduced and defended, with the reason for each value.
+
+### The Run
+
+The settings of the run itself:
+
+| Setting | Default | Kind | Why |
+|:--|:--|:--|:--|
+| Scenarios | 2,000 | Sourced minimum, judgement above it | The NAIC Valuation Manual's VM-21, Section 8.F, notes that straight Monte Carlo typically uses at least 1,000 scenarios, as cited in the [NAIC GOES Subgroup's SERT exposure (16 October 2024)](https://content.naic.org/sites/default/files/inline-files/GOES%20SG%20SERT%20Scenario,%20DR,%20and%20Scenario%20Statistics%20Exposure%20101624%20(1).pdf){:target="_blank"}. 2,000 keeps 100 paths in a 5% tail; NAIC's own set has 10,000 and DNB's 20,000 |
+| Step | One month | Setting | Most of the data are monthly, and the regimes are fitted month by month |
+| Horizon | 60 steps (five years) | Judgement | A business-planning horizon; the horizon setting changes it |
+| Seed | 42 | Setting | Any fixed seed makes a run reproducible; each regime chain draws from its own stream, offset from the seed |
+| Start date | 2026-01-01 | Setting | A fixed, reproducible jump-off date |
+| Calibration window | Since 2000 | Judgement | Two full bear markets (2000-02 and 2008-09); longer records are read where a factor needs them, such as the term premium on OECD rates since 1950 |
+| Shock distribution | Normal | Setting | Student-t shocks are an option (above) |
+| Antithetic variates | Off | Setting | An option (above) |
+
+### Correlations
+
+The settings behind the correlation matrix:
+
+| Setting | Default | Kind | Why |
+|:--|:--|:--|:--|
+| Estimation | Pairwise, each pair on the dates both share | Judgement | A short series weakens only its own pairs |
+| Too few shared observations | Fewer than 5: the pair is set to 0; fewer than 12: flagged | Judgement | A correlation from a handful of points is noise |
+| Same series twice | A correlation above 0.98 is flagged | Judgement | Usually one driver configured twice |
+| Shrinkage | Toward zero, intensity from the data: 0.067 in the default calibration | Fitted | [Schäfer and Strimmer (2005, section 2.4, eq. 10)](https://doi.org/10.2202/1544-6115.1175){:target="_blank"}: their target D, with the intensity the summed variance of the correlations over their summed squares. Each correlation's variance uses the large-sample formula $$(1 - r_{ij}^2)^2/(n_{ij} - 1)$$ with the pair's own overlap, where they estimate it from the data (Appendix A) |
+| Repair | Nearest correlation matrix, at most 100 iterations, tolerance $$10^{-8}$$: a change of 1.0e-14 in the default calibration | Setting | [Higham (2002, Algorithm 3.3)](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"} with Dykstra's correction; the tolerance is that of his section 4 example, which converges in 19 iterations |
+| Cholesky safety net | Up to 20 tries, adding a diagonal term ten times larger each time, at most 0.9 | Setting | Only for a matrix that is still not positive definite after the repair |
+
+With $$\lambda$$ = 0.067, every correlation in the default calibration is 6.7% smaller than its sample value.
+
+### Optimiser Settings
+
+The fits use iterative optimisers. Their limits and starting points change how fast a fit converges, not what it converges to; where a likelihood has several maxima, the fit starts from several points and keeps the best. Each fit's method, limits and starting points:
+
+| Fit | Method | Limits | Start |
+|:--|:--|:--|:--|
+| Equity regimes | Baum-Welch ([Baum, Petrie, Soules and Weiss, 1970](https://doi.org/10.1214/aoms/1177697196){:target="_blank"}) | 2,000 iterations, tolerance $$10^{-6}$$; volatility floor $$10^{-6}$$ | Each regime on one quantile slice of the sorted returns, equal switching |
+| Inflation-driven switching | Expectation-maximisation ([Diebold, Lee and Weinbach, 1994](https://doi.org/10.1093/oso/9780198773917.003.0010){:target="_blank"}) | 500 iterations (the post-war fit converges in about 100), tolerance $$10^{-6}$$; a ridge penalty of 0.01 on the logit | A 90% chance of staying put |
+| Inflation regimes | Maximum likelihood, Powell's method | 4,000 evaluations; tolerances $$10^{-6}$$ (parameters) and $$10^{-9}$$ (likelihood) | Three starts (the high regime's level, the shock sizes and the stay chances), scaled to a one-regime fit |
+| Unemployment regimes | Maximum likelihood, L-BFGS-B | 2,000 iterations | Three splits of the months (by the residual's sign, its size, short recessions), two more with the equity link |
+| Inflation's long-run median | Stationary vector of a (bin, regime) chain | Bins an eighth of a month's shock wide, six long-run spreads either side, at most 2,000 bins; median tolerance $$10^{-7}$$ | Finer bins move the US median by 0.2 basis points |
 
 ## Working with a Run {#scenarioset}
 

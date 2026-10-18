@@ -401,6 +401,14 @@ Each notebook covers a different part of Finance Scenarios. Click a card to open
     </div>
   </a>
 
+  <a href="/projects/financescenarios/model-validation-notebook" class="bento-card">
+    <div class="bento-content">
+      <i class="fas fa-vial bento-icon"></i>
+      <h2>Model Validation</h2>
+      <p>Check the default model against history: do the factors move together the way the economy does, and would a past calibration have held what happened next?</p>
+    </div>
+  </a>
+
 </div>
 
 ## Questions & Answers

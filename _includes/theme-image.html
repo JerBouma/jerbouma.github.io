@@ -1,0 +1,11 @@
+{% comment %}
+  A chart drawn twice, for the dark and the light theme; the masthead toggle picks one.
+
+    {% include theme-image.html src="/assets/images/.../taylor-rule" alt="..." %}
+
+  src is the path without the -dark.png / -light.png ending.
+{% endcomment %}
+<figure class="theme-image">
+  <img class="theme-image__dark" src="{{ include.src }}-dark.png" alt="{{ include.alt }}" loading="lazy">
+  <img class="theme-image__light" src="{{ include.src }}-light.png" alt="{{ include.alt }}" loading="lazy">
+</figure>
