@@ -52,7 +52,7 @@ Every run combines two ready-made *profiles*: a **settings** profile, which says
 ```python
 from financescenarios import list_presets
 
-list_presets(kind="settings")  # or "factor-sets", "regimes", "portfolios"; leave it out for all 39
+list_presets(kind="settings")  # or "factor-sets", "regimes", "portfolios"; leave it out for all 67
 ```
 
 Each kind's output is below; open one to see its options.
@@ -72,37 +72,65 @@ Each kind's output is below; open one to see its options.
 <details class="ft-details" markdown="1">
 <summary><i class="fas fa-layer-group"></i> <b>Factor sets</b> <span class="ft-details__meta">9</span></summary>
 
-| id              | description                                                                                                                                           |
-|:----------------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ahlgrim         | The six factors of Ahlgrim, D'Arcy and Gorvett (2005): short rate, inflation, equities, unemployment, real estate and dividend yield.                 |
-| broad           | Everything this project can simulate, across many countries: the widest set, and the slowest to fit.                                                  |
-| core            | The US, the euro area and the UK, with global equities, gold, oil and the major currencies; a curated set that passes every release check.            |
-| default         | Core, with interest rates anchored to EIOPA's official forward rates and their swings fitted on rates since 1950; the recommended starting point.     |
-| goes            | US Only, with the short rate's long-run level set to the NAIC scenario generator's own (about 3.73%); pair it with the goes settings.                 |
-| hibbert         | The two-factor model of Hibbert, Mowbray and Turnbull (2001): short rate and inflation that chase moving targets, regime-switching equities.          |
-| private_markets | US Only plus listed stand-ins for private equity, infrastructure, hedge funds and private credit.                                                     |
-| us_only         | The United States only: its rates, inflation, unemployment and stock market, plus currencies, commodities and the other shared factors; quick to run. |
-| wilkie          | The original Wilkie (1986) actuarial model: inflation, dividends, a consols rate and share prices; pair it with the wilkie settings.                  |
+| id              | description                                                                                                                                                                                                                                      |
+|:----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ahlgrim         | The six factors of Ahlgrim, D'Arcy and Gorvett (2005): short rate, inflation, equities, unemployment, real estate and dividend yield.                                                                                                            |
+| broad           | Everything this project can simulate, across many countries: the widest set, and the slowest to fit.                                                                                                                                             |
+| core            | The US, the euro area and the UK, with global equities, gold, oil and the major currencies; a curated set that passes every release check.                                                                                                       |
+| default         | Core, with each factor fitted to its long history and linked the way the economy is: a policy-rule short rate on the market's expected path, inflation and unemployment regimes, equities on a long-run premium; the recommended starting point. |
+| goes            | US Only, with the short rate's long-run level set to the NAIC scenario generator's own (about 3.73%); pair it with the goes settings.                                                                                                            |
+| hibbert         | The two-factor model of Hibbert, Mowbray and Turnbull (2001): short rate and inflation that chase moving targets, regime-switching equities.                                                                                                     |
+| private_markets | US Only plus listed stand-ins for private equity, infrastructure, hedge funds and private credit.                                                                                                                                                |
+| us_only         | The United States only: its rates, inflation, unemployment and stock market, plus currencies, commodities and the other shared factors; quick to run.                                                                                            |
+| wilkie          | The original Wilkie (1986) actuarial model: inflation, dividends, a consols rate and share prices; pair it with the wilkie settings.                                                                                                             |
 
 </details>
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-bolt"></i> <b>Stress regimes</b> <span class="ft-details__meta">12</span></summary>
+<summary><i class="fas fa-bolt"></i> <b>Stress regimes</b> <span class="ft-details__meta">40</span></summary>
 
-| id                    | description                                                                                                                                             |
-|:----------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| climate_collapse      | Rough stand-in for a climate shock: keeps the scenarios with the highest US inflation and the weakest US stocks.                                        |
-| commodity_supercycle  | A long oil boom: keeps the scenarios where crude oil earns a top-quarter return.                                                                        |
-| credit_crunch         | Bank stocks collapse and the market follows: a harsher bear market for financials, then their worst scenarios. Needs the financials equity (broad set). |
-| currency_crisis       | The Brazilian real devalues sharply against the dollar, about 22% a year, then keeps its worst scenarios. Needs the us_only or broad set.               |
-| financial_crisis      | Stocks fall, unemployment rises and rates are cut, all at once: keeps the scenarios where that happens together.                                        |
-| oil_crisis            | Pulls inflation towards 12% in year one and back to 2.5% by year 8, then keeps the scenarios with high rates and weak stocks.                           |
-| oil_shock             | A one-off three-point jump in US inflation in year 2, after which everything behaves normally again.                                                    |
-| rate_cut_cycle        | Inflation eases to 2% by year 5 and 2.5% by year 10, then drifts back to its usual level.                                                               |
-| real_estate_crash     | House-price growth falls to -8% within a year and recovers over four, then keeps the worst housing scenarios.                                           |
-| soft_landing          | Inflation eases smoothly to 2% by year 5 and stays there; no scenarios are filtered out.                                                                |
-| tech_selloff          | Tech stocks fall while the wider market holds up; keeps the worst tech scenarios. Needs the broad set.                                                  |
-| yield_curve_inversion | Short rates rise two points above long ones within six months, then the curve slowly rights itself.                                                     |
+| id                        | description                                                                                                                                                                                                                    |
+|:--------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ai_tech_boom              | Keeps the scenarios where US stocks gain the most over two years, the top 15% where 2023-24's 53% rise sits.                                                                                                                   |
+| asian_crisis_1997         | Emerging-market stocks fall 56% over five quarters and the yen weakens 23% against the dollar, as in 1997-98. Needs the default, core or broad set.                                                                            |
+| black_monday_1987         | US stocks lose a third within a quarter, as in the 1987 crash, and short rates ease by three quarters of a point.                                                                                                              |
+| boe_stress_2025           | The Bank of England's 2025 stress test: UK inflation to 10%, short rates to 8% in the UK and the US, ten-year yields to 6.4%, US stocks down 57% and unemployment peaking in year three. Needs the default, core or broad set. |
+| bond_massacre_1994        | Short rates rise 2.8 points and long yields 2.6 points within a year, as in the 1994 bond market rout.                                                                                                                         |
+| climate_collapse          | Rough stand-in for a climate shock: keeps the scenarios with the highest US inflation and the weakest US stocks.                                                                                                               |
+| commodity_supercycle      | A long oil boom: keeps the scenarios where crude oil earns a top-quarter return.                                                                                                                                               |
+| covid_crash_2020          | US stocks fall a third in a month and recover by month six, unemployment jumps to 14.8%, rates go to zero for two years and oil collapses, as in 2020.                                                                         |
+| credit_crunch             | Bank stocks collapse and the market follows: a harsher bear market for financials, then their worst scenarios. Needs the financials equity (broad set).                                                                        |
+| currency_crisis           | The Brazilian real devalues sharply against the dollar, about 22% a year, then keeps its worst scenarios. Needs the us_only or broad set.                                                                                      |
+| dot_com_bust              | US stocks lose half over two and a half years, short rates fall to 1.6% and unemployment rises to 6.3%, as in 2000-2003.                                                                                                       |
+| early_1990s_recession     | Oil spikes, US stocks fall 20% within a quarter, unemployment rises to 7.8% over two years and short rates are cut to 2.9%.                                                                                                    |
+| energy_war_2022           | Oil jumps a quarter, euro-area inflation climbs to 9% and falls back, European stocks fall 17% and the euro 15%, as after February 2022. Needs the default, core or broad set.                                                 |
+| esrb_adverse_2025         | The ESRB's adverse scenario for the 2025 EU-wide bank stress test: stocks down by half, unemployment rising for three years in Europe, the UK and the US. Needs the default, core or broad set.                                |
+| euro_debt_crisis_2011     | European stocks fall 35%, the euro weakens 19%, Bund yields drop two points and euro-area unemployment climbs, as in 2011-12. Needs the default, core or broad set.                                                            |
+| fed_severely_adverse_2026 | The Federal Reserve's 2026 severely adverse stress test: unemployment to 10%, US stocks down almost 60%, house prices down 30%, short rates at 0.1%.                                                                           |
+| financial_crisis          | Stocks fall, unemployment rises and rates are cut, all at once: keeps the scenarios where that happens together.                                                                                                               |
+| gold_rally                | Gold nearly triples over two and a quarter years, as in 2023-26.                                                                                                                                                               |
+| goldilocks_1990s          | Inflation near 2.4% and unemployment averaging 4.9% for the whole run, with the strongest fifth of US stock outcomes, as in the late 1990s.                                                                                    |
+| housing_boom              | US house prices grow about 11% a year for two years, then cool, as in 2004-06.                                                                                                                                                 |
+| inflation_shock_2022      | Inflation climbs to 9% and falls back to 3% within a year, short rates rise to the 5.3% peak of 2023, long yields rise 3.7 points, US stocks fall 25% and the dollar strengthens, as in 2021-23.                               |
+| japan_lost_decade         | Mild deflation, zero short rates and long yields near 1.4% for fourteen years, and US stocks losing 63% over two and a half years, as in Japan after 1990.                                                                     |
+| ltcm_1998                 | US stocks fall 19% and recover within four months, Treasury yields drop about 1.4 points and the yen jumps 24%, as in 1998.                                                                                                    |
+| mild_recession            | Unemployment rises to 6.9% over 15 months, short rates are cut 1.5 points and US stocks fall 14% over a year: the mildest quarter of post-war recessions.                                                                      |
+| oil_collapse_2014         | Oil falls about 72% over a year and a half and US inflation dips below zero before recovering, as in 2014-16.                                                                                                                  |
+| oil_crisis                | Pulls inflation towards 12% in year one and back to 2.5% by year 8, then keeps the scenarios with high rates and weak stocks.                                                                                                  |
+| oil_shock                 | A one-off three-point jump in US inflation in year 2, after which everything behaves normally again.                                                                                                                           |
+| persistent_inflation      | US inflation settles near 6.6% for the whole run instead of returning to target, as over 1965-1982.                                                                                                                            |
+| rate_cut_cycle            | Inflation eases to 2% by year 5 and 2.5% by year 10, then drifts back to its usual level.                                                                                                                                      |
+| real_estate_crash         | House-price growth falls to -8% within a year and recovers over four, then keeps the worst housing scenarios.                                                                                                                  |
+| september_11              | US stocks drop 12% and recover within a month, short rates fall 1.5 points and oil 27%, as after 11 September 2001.                                                                                                            |
+| soft_landing              | Inflation eases smoothly to 2% by year 5 and stays there; no scenarios are filtered out.                                                                                                                                       |
+| stagflation_1970s         | Inflation near 9% and unemployment averaging 7.3% for years while US stocks fall 43% over two years, as in 1973-1982.                                                                                                          |
+| strong_dollar_2014        | The dollar strengthens fast: the euro falls 24%, the pound 15% and the yen 19% against it within a year, as in 2014-15.                                                                                                        |
+| taper_tantrum_2013        | Long US yields rise 1.3 points in four months while emerging-market stocks fall 18%, as in 2013. Needs the default, core or broad set.                                                                                         |
+| tech_selloff              | Tech stocks fall while the wider market holds up; keeps the worst tech scenarios. Needs the broad set.                                                                                                                         |
+| uk_gilt_crisis_2022       | UK long yields jump 1.8 points within two months and the pound falls 13% against the dollar before partly recovering, as in the 2022 gilt crisis. Needs the default, core or broad set.                                        |
+| volcker_shock             | Short rates replay 1979-82's climb to 16% while inflation rises and falls back, long yields rise about six points, unemployment climbs to 10.8% and US stocks fall 27%, as in 1979-1982.                                       |
+| weak_dollar_2002          | The dollar weakens for three years: the euro gains 58%, the pound 36% and the yen 31% against it, as in 2002-04.                                                                                                               |
+| yield_curve_inversion     | Short rates rise two points above long ones within six months, then the curve slowly rights itself.                                                                                                                            |
 
 </details>
 
@@ -150,22 +178,24 @@ result = scenarios.simulate(n_simulations=2000, seed=42)
 result.describe()
 ```
 
-For example, 6 of the 27 variables are shown below. Rates are yearly rates and anything with a price a yearly return, written as decimals (0.0442 is 4.42%).
+For example, 6 of the 27 variables are shown below. Rates are yearly rates and anything with a price a yearly return, written as decimals (0.0459 is 4.59%).
 
 | factor                     | category       | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:---------------------------|:---------------|--------:|--------------:|-------------:|-------------:|
-| united_states_inflation    | inflation      |  0.0340 |        0.0262 |      -0.0033 |       0.0549 |
-| united_states_short_rate   | interest_rates |  0.0406 |        0.0442 |       0.0049 |       0.0859 |
-| united_states_unemployment | unemployment   |  0.0410 |        0.0557 |       0.0210 |       0.0904 |
-| us_broad                   | equities       |         |        0.0983 |      -0.0465 |       0.2318 |
-| europe                     | equities       |         |        0.0765 |      -0.0927 |       0.2197 |
-| gold                       | commodities    |         |        0.0594 |      -0.0614 |       0.1926 |
+| united_states_inflation    | inflation      |  0.0374 |        0.0234 |      -0.0064 |       0.0770 |
+| united_states_short_rate   | interest_rates |  0.0408 |        0.0459 |       0.0000 |       0.1099 |
+| united_states_unemployment | unemployment   |  0.0420 |        0.0553 |       0.0337 |       0.0894 |
+| us_broad                   | equities       |         |        0.0849 |      -0.0569 |       0.2082 |
+| europe                     | equities       |         |        0.0933 |      -0.0753 |       0.2487 |
+| gold                       | commodities    |         |        0.0308 |      -0.0999 |       0.1716 |
 
 The chart below follows the US short rate, US inflation and US equities through all 2,000 scenarios. **Find [the Notebook](/projects/financescenarios/getting-started) and [the simulation documentation](/projects/financescenarios/docs/simulation-engine).**
 
 ```python
 result.plot(["united_states_short_rate", "united_states_inflation", "us_broad"])
 ```
+
+Which draws the median of each variable with the bands that hold half and nine in ten of the scenarios:
 
 Which draws the median of each variable with the bands that hold half and nine in ten of the scenarios:
 
@@ -183,15 +213,17 @@ For example, the last three months of the US short rate are shown below.
 
 | date       |   mean |    std |  q0.05 |  q0.25 |   q0.5 |  q0.75 |  q0.95 |
 |:-----------|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
-| 2030-11-01 | 0.0442 | 0.0244 | 0.0048 | 0.0277 | 0.0447 | 0.0600 | 0.0857 |
-| 2030-12-02 | 0.0441 | 0.0245 | 0.0043 | 0.0276 | 0.0439 | 0.0607 | 0.0856 |
-| 2031-01-01 | 0.0442 | 0.0245 | 0.0049 | 0.0276 | 0.0442 | 0.0604 | 0.0859 |
+| 2030-11-01 | 0.0459 | 0.0341 | 0.0000 | 0.0204 | 0.0437 | 0.0650 | 0.1095 |
+| 2030-12-02 | 0.0458 | 0.0343 | 0.0000 | 0.0198 | 0.0435 | 0.0651 | 0.1089 |
+| 2031-01-01 | 0.0459 | 0.0345 | 0.0000 | 0.0196 | 0.0439 | 0.0659 | 0.1099 |
 
 The chart below shows how widely the five-year US equity return spreads across the scenarios. **Find [the documentation](/projects/financescenarios/docs/units).**
 
 ```python
 result.plot("us_broad", kind="distribution")
 ```
+
+Which shows where the five-year return lands across all 2,000 scenarios:
 
 Which shows where the five-year return lands across all 2,000 scenarios:
 
@@ -215,11 +247,11 @@ This returns the portfolio's yearly return over the five years, and what each ho
 
 | factor                        | category  | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:------------------------------|:----------|--------:|--------------:|-------------:|-------------:|
-| portfolio                     | portfolio |         |        0.0835 |      -0.0004 |       0.1609 |
-| us_broad_value                | holding   |         |        0.0983 |      -0.0465 |       0.2318 |
-| united_states_long_rate_value | holding   |         |        0.0539 |       0.0328 |       0.0748 |
+| portfolio                     | portfolio |         |        0.0730 |      -0.0093 |       0.1465 |
+| us_broad_value                | holding   |         |        0.0849 |      -0.0569 |       0.2082 |
+| united_states_long_rate_value | holding   |         |        0.0487 |       0.0122 |       0.0784 |
 
-The 60/40 earns 8.35% a year on average, between the stocks' 9.83% and the Treasury fund's 5.39%, so 100,000 grows to 152,361. The same portfolio also reports its drawdowns and Value at Risk, and covers saving and withdrawal plans, glidepaths and fees. The chart below shows the portfolio's value in money across the scenarios. **Find [the Notebook](/projects/financescenarios/portfolio-notebook).**
+The 60/40 earns 7.30% a year on average, between the stocks' 8.49% and the Treasury fund's 4.87%, so 100,000 grows to 144,923 on average. The same portfolio also reports its drawdowns and Value at Risk, and covers saving and withdrawal plans, glidepaths and fees. The chart below shows the portfolio's value in money across the scenarios. **Find [the Notebook](/projects/financescenarios/portfolio-notebook).**
 
 ```python
 values.plot(levels=True)
@@ -227,11 +259,13 @@ values.plot(levels=True)
 
 Which shows the portfolio's value in money, with the same bands:
 
+Which shows the portfolio's value in money, with the same bands:
+
 {% include ft-chart.html id="portfolio" src="/assets/data/financescenarios-charts.json" label="Simulated value of a 60/40 portfolio" %}
 
 ### Applying Stress Regimes
 
-Run the same variables through one of 12 named stress stories, such as an oil crisis. A regime changes an assumption before simulating, keeps only the scenarios that fit the story, or both.
+Run the same variables through one of 40 named stress stories, such as an oil crisis. A regime changes an assumption before simulating, keeps only the scenarios that fit the story, or both.
 
 ```python
 from financescenarios import compare_runs
@@ -241,14 +275,14 @@ shocked = scenarios.simulate(regime="oil_crisis", n_simulations=2000, seed=42)
 compare_runs({"baseline": result, "oil_crisis": shocked})
 ```
 
-Oil Crisis pulls US inflation towards 12% and keeps the scenarios with high interest rates and weak stocks; it draws as many scenarios as it takes for 2,000 to fit the story. For example, four of the variables are shown below.
+Oil Crisis pulls US inflation towards 12% and keeps the scenarios with high interest rates and weak stocks; it draws as many scenarios as it takes for 2,000 to fit the story. The US short rate follows inflation the way a central bank's rate does, so after five years it averages 13.08% instead of 4.59%, and US stocks lose 1.89% a year. For example, four of the variables are shown below.
 
 | factor                   | baseline | oil_crisis |
 |:-------------------------|---------:|-----------:|
-| united_states_inflation  |   0.0262 |     0.0492 |
-| united_states_short_rate |   0.0442 |     0.0649 |
-| us_broad                 |   0.0983 |     0.0158 |
-| europe                   |   0.0765 |     0.0177 |
+| united_states_inflation  |   0.0234 |     0.0709 |
+| united_states_short_rate |   0.0459 |     0.1308 |
+| united_states_long_rate  |   0.0579 |     0.1354 |
+| us_broad                 |   0.0849 |    -0.0189 |
 
 The chart below sets US inflation in the baseline next to the Oil Shock, Oil Crisis and Climate Collapse regimes, 2,000 scenarios each. **Find [the Notebook](/projects/financescenarios/regimes-notebook) and [the regime documentation](/projects/financescenarios/docs/regimes).**
 
@@ -261,6 +295,8 @@ for regime in ("oil_shock", "oil_crisis", "climate_collapse"):
 
 plot_runs(runs, "united_states_inflation")
 ```
+
+Which puts the four runs side by side:
 
 Which puts the four runs side by side:
 
@@ -281,15 +317,17 @@ Which gives each mix's loading on each factor and how much they explain:
 
 | portfolio           | Mkt-RF |     SMB |     HML |    RMW |     CMA |  alpha | r_squared | observations | from       | to         |
 |:--------------------|-------:|--------:|--------:|-------:|--------:|-------:|----------:|-------------:|:-----------|:-----------|
-| 60/40 Balanced      | 0.5369 | -0.0687 | -0.0450 | 0.1216 | -0.0113 | 0.0007 |    0.8615 |          312 | 2000-08-01 | 2026-10-01 |
-| All Weather         | 0.2043 | -0.0621 | -0.1445 | 0.2166 |  0.0344 | 0.0029 |    0.1324 |          312 | 2000-08-01 | 2026-10-01 |
-| Permanent Portfolio | 0.2175 | -0.0615 | -0.1424 | 0.2019 |  0.0478 | 0.0033 |    0.1244 |          312 | 2000-08-01 | 2026-10-01 |
+| 60/40 Balanced      | 0.5369 | -0.0687 | -0.0447 | 0.1215 | -0.0116 | 0.0007 |    0.8615 |          312 | 2000-08-01 | 2026-10-01 |
+| All Weather         | 0.2039 | -0.0620 | -0.1435 | 0.2162 |  0.0335 | 0.0029 |    0.1318 |          312 | 2000-08-01 | 2026-10-01 |
+| Permanent Portfolio | 0.2173 | -0.0615 | -0.1418 | 0.2017 |  0.0473 | 0.0033 |    0.1240 |          312 | 2000-08-01 | 2026-10-01 |
 
-The chart below shows what each mix actually did since August 2000, rebalanced once a year: 100,000 grew to 550,744 in the 60/40, 541,653 in All Weather and 555,908 in the Permanent Portfolio by October 2026, with the 60/40 carrying more than twice the stock market risk of the other two. **Find [the Notebook](/projects/financescenarios/portfolio-analysis-notebook).**
+The chart below shows what each mix actually did since August 2000, rebalanced once a year: 100,000 grew to 545,709 in the 60/40, 542,561 in All Weather and 555,564 in the Permanent Portfolio by October 2026, with the 60/40 carrying more than twice the stock market risk of the other two. **Find [the Notebook](/projects/financescenarios/portfolio-analysis-notebook).**
 
 ```python
 portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
 ```
+
+Which follows each mix month by month:
 
 Which follows each mix month by month:
 
@@ -315,17 +353,19 @@ Which gives every number in one table:
 
 | item                | value                     | meaning                                                    |
 |:--------------------|:--------------------------|:-----------------------------------------------------------|
-| market consistent   | passed (largest gap 0.1%) | discounted back, us_broad stays within 2% of today's price |
+| market consistent   | passed (largest gap 1.0%) | discounted back, us_broad stays within 2% of today's price |
 | best estimate       | 43,514                    | what the payments are worth today                          |
-| own funds           | 15,661                    | assets minus what is owed, today                           |
-| SCR (1 in 200 year) | 12,487                    | the capital that survives a 1-in-200 bad year              |
-| solvency ratio      | 1.25                      | own funds / SCR; above 1 means enough capital              |
+| own funds           | 15,683                    | assets minus what is owed, today                           |
+| SCR (1 in 200 year) | 13,619                    | the capital that survives a 1-in-200 bad year              |
+| solvency ratio      | 1.15                      | own funds / SCR; above 1 means enough capital              |
 
 The chart below shows where own funds could be after one year, with today's level and the 1-in-200 outcome marked. **Find [the documentation](/projects/financescenarios/docs).**
 
 ```python
 solvency.plot(cashflows=[10_000] * 5, assets=assets)
 ```
+
+Which marks today's own funds and the 1-in-200 outcome:
 
 Which marks today's own funds and the 1-in-200 outcome:
 
@@ -341,11 +381,25 @@ scenarios.validate(result)
 
 For example, three of the checks are shown below.
 
-| check                                  | status | detail                                                                                                                                   |
-|:---------------------------------------|:-------|:-----------------------------------------------------------------------------------------------------------------------------------------|
-| Every factor calibrated                | pass   | every factor calibrated                                                                                                                  |
-| Simulation reproduces the correlations | pass   | largest gap 0.068 (us_broad/europe); pairs with a linked factor, not graded: largest gap 0.312 (eurozone_inflation/eurozone_unemployment) |
-| Every path is finite                   | pass   | 27 factors, all finite                                                                                                                   |
+| check                                  | status | detail                                                                                                                                                                        |
+|:---------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Every factor calibrated                | pass   | every factor calibrated                                                                                                                                                       |
+| Simulation reproduces the correlations | warn   | largest gap 0.103 (eurozone_inflation/united_kingdom_inflation); pairs with a linked factor, not graded: largest gap 0.715 (united_states_short_rate/united_states_long_rate) |
+| Every path is finite                   | pass   | 27 factors, all finite                                                                                                                                                        |
+
+Whether the variables also move together the way the economy does, measured the same way on decades of history and on every scenario, is a check of its own:
+
+```python
+scenarios.check_relationships(result)
+```
+
+On this five-year run 19 of the 26 relationships pass, 7 warn and none fails. For example, three of them are shown below.
+
+| relationship                        | region        | status | history | simulated_median |
+|:------------------------------------|:--------------|:-------|--------:|-----------------:|
+| Policy rate reacts to inflation     | United States | warn   |  0.4522 |           0.1781 |
+| Phillips curve                      | United States | pass   | -0.5923 |          -0.4273 |
+| Long rate moves with the short rate | United States | pass   |  0.3303 |           0.5136 |
 
 **Find [every model and its status](/projects/financescenarios/docs/coverage) and [the validation documentation](/projects/financescenarios/docs/validation).**
 
@@ -362,6 +416,27 @@ result = read_run(path)
 ```
 
 Run Python from inside `my-project` and every run reads its YAML files instead of the bundled ones, and the keys pasted into its .env file, so the API key can be left out. A saved run reads back without downloading or simulating anything again. **Find [the configuration documentation](/projects/financescenarios/docs/configuration).**
+
+# MCP Server
+
+The Finance Scenarios MCP Server lets any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io) (MCP) run the scenarios for you. Ask in plain English what could happen to stocks if inflation reached 8%, or how a single world equity fund could develop over ten years, and the assistant answers with the range of outcomes from this month's calibration, next to the historical episodes that tell the same story. No API key is needed. Find the tools, example questions and how to host the server yourself in the [MCP Server Documentation](/projects/financescenarios/mcp).
+
+### Local installation
+
+Add the following to your client's MCP config file (e.g. `claude_desktop_config.json` or `.cursor/mcp.json`; VS Code's `.vscode/mcp.json` uses `servers` instead of `mcpServers`):
+
+```json
+{
+  "mcpServers": {
+    "finance-scenarios": {
+      "command": "uvx",
+      "args": ["--from", "financescenarios[mcp]", "financescenarios-mcp"]
+    }
+  }
+}
+```
+
+The very first question calibrates the data, which takes about a minute; after that the server answers from it and recalibrates once a month in the background. To have it ready beforehand, run `uvx --from "financescenarios[mcp]" financescenarios-mcp-warm`.
 
 ## Notebooks
 
