@@ -274,6 +274,8 @@ equities:
     nominal_rate_name: interest_rate
 ```
 
+With both files in place, one call loads them and simulates 30 years:
+
 ```python
 from financescenarios import Scenarios, load_config
 

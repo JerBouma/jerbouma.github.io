@@ -147,6 +147,8 @@ A bond fund earns the yield at its own maturity, so $$y$$ should be a long rate,
 On monthly or weekly steps both effects are small.
 </div>
 
+To give a long rate a duration of seven years, so the portfolio holds it as a bond:
+
 ```python
 bonds = portfolio.compute({"united_states_long_rate": 1.0}, durations={"united_states_long_rate": 7.0})
 ```

@@ -431,6 +431,8 @@ credit_migration:
   agency: S&P
 ```
 
+With migration enabled, a portfolio's ratings, defaults and losses follow from each scenario:
+
 ```python
 from financescenarios import rating_migration
 
