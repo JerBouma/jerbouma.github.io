@@ -29,7 +29,7 @@ portfolio = Portfolio(scenario_set)
 result = portfolio.compute({"us_broad": 0.6, "united_states_short_rate": 0.4}, initial_value=100.0)
 ```
 
-The numbers on this page come from one example run: 1,000 scenarios over 30 yearly steps of US stocks (SPY), the US short rate and US inflation, starting 2026-10-01 and simulated on 2026-10-04. Its "60/40" is 60% equities and 40% cash (the short rate); the 60/40 preset [below](#glidepaths) holds Treasuries instead. They show how the choices compare; other runs give other numbers. Every option is listed in the [Portfolio reference](/projects/financescenarios/docs/reference/portfolio).
+The numbers on this page come from one example run: 1,000 scenarios over 30 yearly steps of US stocks (SPY), the US short rate, US inflation and US unemployment, fitted on history since 2000 with seed 42, starting 2026-10-01 and simulated on 2026-10-19. Its "60/40" is 60% equities and 40% cash (the short rate); the 60/40 preset [below](#glidepaths) holds Treasuries instead. They show how the choices compare; other runs give other numbers. Every option is listed in the [Portfolio reference](/projects/financescenarios/docs/reference/portfolio).
 
 <div class="ca-nav">
   <a href="#what-a-portfolio-can-hold"><i class="fas fa-layer-group" aria-hidden="true"></i>Holdings</a>
@@ -85,9 +85,9 @@ with $$w_i$$ the target weights (non-negative, summing to 1) and $$\sigma_i$$ ea
 The example run shows the trade-off. A mix of 60% US equities and 40% cash, starting from 100:
 
 <div class="ca-nums fs-nums">
-  <span><b>about 426</b>5th percentile, under both approaches</span>
-  <span><b>5,925</b>95th percentile, buy-and-hold</span>
-  <span><b>2,996</b>95th percentile, rebalanced</span>
+  <span><b>220 and 247</b>5th percentile, buy-and-hold and rebalanced</span>
+  <span><b>3,867</b>95th percentile, buy-and-hold</span>
+  <span><b>1,894</b>95th percentile, rebalanced</span>
 </div>
 
 Buy-and-hold had the far higher 95th percentile because it ends up holding mostly equities and takes the equity risk that comes with that.
@@ -110,7 +110,7 @@ Deposits and withdrawals turn a return distribution into a plan: save for 15 yea
 
 With withdrawals, the **order** of returns matters, not only their average. A crash early in the withdrawal phase forces selling at low prices, and the units sold never recover; the same crash late does far less damage. That is sequence-of-returns risk, and why a plan has to be tested on paths, not on an expected return.
 
-Withdrawals can be indexed to each scenario's own simulated inflation, so they keep their purchasing power. This matters a lot: in the example run (100,000 to start, 10,000 a year saved for 15 years, then 40,000 a year withdrawn), the money lasted 30 years in 91.7% of scenarios with a fixed nominal withdrawal, and far less often when the withdrawal rose with inflation.
+Withdrawals can be indexed to each scenario's own simulated inflation, so they keep their purchasing power. This matters a lot: in the example run (100,000 to start, 10,000 a year saved for 15 years, then 40,000 a year withdrawn), the money lasted 30 years in 72.1% of scenarios with a fixed nominal withdrawal, and far less often when the withdrawal rose with inflation.
 
 ```python
 rules = [
@@ -136,7 +136,7 @@ $$
 
 where $$D$$ is the modified duration and $$y$$ the simulated yield: the price effect of the yield change plus the interest earned. The fund rolls to keep its duration constant, like a long-Treasury ETF, rather than ageing like a single bond.
 
-A bond fund earns the yield at its own maturity, so $$y$$ should be a long rate, such as the 10-year yield in the default factor set. Three-month bills follow policy rates rather than long yields, so a short rate given a duration is priced off the US yield curve at that duration when the run has the curve, else off the same country's long rate; only a run with neither prices it off the bill rate itself, with a warning. In the example run, which has only the short rate, the cash roll earned the starting 4.0% in year one in every scenario.
+A bond fund earns the yield at its own maturity, so $$y$$ should be a long rate, such as the 10-year yield in the default factor set. Three-month bills follow policy rates rather than long yields, so a short rate given a duration is priced off the US yield curve at that duration when the run has the curve, else off the same country's long rate; only a run with neither prices it off the bill rate itself, with a warning. In the example run, which has only the short rate, the cash roll earned the starting 4.1% in year one in every scenario.
 
 <div class="fs-callout fs-callout--limits" markdown="1">
 <p class="fs-callout__title">Limits</p>
@@ -158,8 +158,8 @@ A target-date or lifecycle plan moves from growth to safety as the target date n
 In the example run, gliding from 90% to 30% equities over 30 years:
 
 <div class="ca-nums fs-nums">
-  <span><b>1,210</b>median end value, the glidepath</span>
-  <span><b>1,183</b>yearly rebalanced 60/40 equity-cash mix</span>
+  <span><b>657</b>median end value, the glidepath</span>
+  <span><b>682</b>yearly rebalanced 60/40 equity-cash mix</span>
 </div>
 
 The two end close together, with the glidepath taking more of the risk early, when the amount at stake is smallest.
@@ -202,14 +202,14 @@ All metrics are counted over the simulated paths, not from a formula that assume
 VaR, Expected Shortfall and the probability of loss describe the total return over the whole horizon: on a 30-year run that is a 30-year outcome, not a one-year loss. With cashflows they mix returns with deposits and withdrawals.
 </div>
 
-All values are nominal unless deflated by a scenario's own cumulative inflation, which gives the value in today's money; in the example run a saver's median portfolio was worth 1,064,686 after 20 years in nominal terms, and markedly less once deflated by its own inflation.
+All values are nominal unless deflated by a scenario's own cumulative inflation, which gives the value in today's money; in the example run a saver's median portfolio was worth 822,698 after 20 years in nominal terms, and markedly less once deflated by its own inflation.
 
 In the example run, rebalancing the 60/40 equity-cash mix yearly with a 0.2% fee, against buy-and-hold:
 
 <div class="ca-nums fs-nums">
-  <span><b>&minus;23.84% &rarr; &minus;17.25%</b>median worst drawdown</span>
-  <span><b>13.21% &rarr; 10.45%</b>annualized volatility</span>
-  <span><b>9.28% &rarr; 8.37%</b>median CAGR</span>
+  <span><b>&minus;28.71% &rarr; &minus;21.64%</b>median worst drawdown</span>
+  <span><b>13.61% &rarr; 10.83%</b>annualized volatility</span>
+  <span><b>7.33% &rarr; 6.40%</b>median CAGR</span>
 </div>
 
 The lower drawdown and volatility came at the cost of a lower median CAGR: the buy-and-hold portfolio earned more because it had drifted into more equity risk.
@@ -266,13 +266,13 @@ $$
 
 where $$R_t - R_{f,t}$$ is the return above the risk-free rate, $$\alpha$$ the part the factors do not explain, and $$\beta_i$$ the loading on factor $$F_i$$: the market (Mkt-RF), small versus large companies (SMB), cheap versus expensive (HML), robust versus weak profitability (RMW) and companies that invest conservatively versus aggressively (CMA). The model is the three-factor one of [Fama and French (1993)](https://doi.org/10.1016/0304-405X(93)90023-5){:target="_blank"} or the five-factor one of [Fama and French (2015)](https://doi.org/10.1016/j.jfineco.2014.10.010){:target="_blank"} (the default), with factor data from Kenneth French's [Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html){:target="_blank"}, which defines each factor in its [description of the Fama/French 5 factors (2x3)](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_5_factors_2x3.html){:target="_blank"}.
 
-On monthly history from 2004-01 to 2026-10:
+On monthly history from 2000-01 to 2026-10:
 
 <div class="ca-nums fs-nums">
-  <span><b>0.997</b>market beta, 100% SPY</span>
-  <span><b>0.996</b>R-squared, 100% SPY</span>
-  <span><b>&minus;0.12</b>SMB: a slight large-company tilt</span>
-  <span><b>0.594</b>market beta, 60% SPY and 40% cash</span>
+  <span><b>1.001</b>market beta, 100% SPY</span>
+  <span><b>0.993</b>R-squared, 100% SPY</span>
+  <span><b>&minus;0.15</b>SMB: a slight large-company tilt</span>
+  <span><b>0.593</b>market beta, 60% SPY and 40% cash</span>
 </div>
 
 The 60/40 mix (the US short rate as cash, rebalanced yearly) showed a market beta close to its equity weight. A "balanced" portfolio with a beta near 1 would be an equity portfolio in disguise.

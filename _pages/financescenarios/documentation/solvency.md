@@ -52,7 +52,7 @@ where $$r_s$$ is the simulated short rate and $$\Delta t$$ the step length in ye
 
 ## The Example Run {#martingale-test-example}
 
-The results on this page and in the [Solvency reference](/projects/financescenarios/docs/reference/solvency) come from one risk-neutral run: SPY and US rates, inflation and unemployment, 2,000 scenarios, monthly over ten years, seed 42, calibrated on 2026-10-14. SPY's dividend yield is its own entry so the martingale test can add it back.
+The results on this page and in the [Solvency reference](/projects/financescenarios/docs/reference/solvency) come from one risk-neutral run: SPY and US rates, inflation and unemployment, 2,000 scenarios, monthly over ten years, seed 42, calibrated on 2026-10-19. SPY's dividend yield is its own entry so the martingale test can add it back.
 
 ```python
 from datetime import date
@@ -91,7 +91,7 @@ index = result.cumulative_index("united_states_inflation", initial_index=1.0).dr
 indexed = best_estimate(result, annuity * index, short_rate="united_states_short_rate")
 ```
 
-The example switches the short rate to risk-neutral on its own, so it is today's 13-week Treasury yield, 4.06%, held flat, and bond prices carry no Monte Carlo error.
+The example switches the short rate to risk-neutral on its own, so it is today's 13-week Treasury yield, 4.08%, held flat, and bond prices carry no Monte Carlo error.
 
 ## Market Consistency: The Martingale Test
 
@@ -117,9 +117,9 @@ where $$S$$ is the asset price and $$q$$ its dividend yield. Each date gets a 95
 With 120 dates each tested at 95%, a correct run still misses about six of them by chance, so requiring every date to pass would fail a true martingale about half the time. The verdict therefore uses [Holm's (1979)](https://www.jstor.org/stable/4615733){:target="_blank"} step-down adjustment for testing many dates at once: the run fails only when the smallest adjusted p-value drops below 5%, which keeps the chance of wrongly failing a correct run at 5% however closely neighboring dates are related. The stricter rule, every date passing, remains available. The pass rate is reported beside the 95% a correct drift gives on average. The example run:
 
 <div class="ca-nums fs-nums">
-  <span><b>80%</b>of dates pass</span>
-  <span><b>0.94%</b>largest gap to today's price</span>
-  <span><b>24 of 120</b>dates just outside the band</span>
+  <span><b>82%</b>of dates pass</span>
+  <span><b>0.92%</b>largest gap to today's price</span>
+  <span><b>22 of 120</b>dates just outside the band</span>
 </div>
 
 Three of those dates:
@@ -127,10 +127,10 @@ Three of those dates:
 | date | ratio to today's price | within band |
 |:-----|-----:|:------------|
 | 2027-10-01 | 0.9990 | false |
-| 2031-10-01 | 0.9992 | true |
-| 2036-09-30 | 0.9918 | false |
+| 2031-10-01 | 0.9993 | true |
+| 2036-09-30 | 0.9921 | true |
 
-SPY stays within 0.94% of today's price for all ten years, yet 24 of 120 dates fall just outside a very tight band. Neighboring dates share their paths, so misses come in runs and the pass rate swings from seed to seed. That is Monte Carlo noise, not a wrong drift.
+SPY stays within 0.92% of today's price for all ten years, yet 22 of 120 dates fall just outside a very tight band. Neighboring dates share their paths, so misses come in runs and the pass rate swings from seed to seed. That is Monte Carlo noise, not a wrong drift.
 
 <div class="fs-callout" markdown="1">
 <p class="fs-callout__title">When the test really fails</p>
@@ -138,9 +138,9 @@ SPY stays within 0.94% of today's price for all ten years, yet 24 of 120 dates f
 Failing at most dates means the drift is wrong, typically a real-world run tested by mistake; leaving out the dividend yield makes every date fail.
 </div>
 
-The one-table Solvency II summary on the [overview page](/projects/financescenarios) uses a practical criterion instead: the run counts as market consistent when the largest gap stays within 2% of today's price. By that measure the example run, at 0.94%, passes.
+The one-table Solvency II summary on the [overview page](/projects/financescenarios) uses a practical criterion instead: the run counts as market consistent when the largest gap stays within 2% of today's price. By that measure the example run, at 0.92%, passes.
 
-The rates side has the same test: the bond prices the run implies, $$P(0,t) = \mathbb{E}[D(t)]$$, should match the published curve within about two standard errors. On the example run every maturity prices off the flat 4.06%, from 0.9602 at one year to 0.6663 at ten, so a comparison with EIOPA's curve mostly shows the gap between US Treasury and EIOPA rates.
+The rates side has the same test: the bond prices the run implies, $$P(0,t) = \mathbb{E}[D(t)]$$, should match the published curve within about two standard errors. On the example run every maturity prices off the flat 4.08%, from 0.9600 at one year to 0.6652 at ten, so a comparison with EIOPA's curve mostly shows the gap between US Treasury and EIOPA rates.
 
 ## EIOPA's Curve and the Ultimate Forward Rate
 
@@ -193,10 +193,10 @@ The example run's two annuities:
 
 | annuity | best estimate | standard error | 0.5th percentile | 99.5th percentile |
 |:--------|--------------:|---------------:|-----:|------:|
-| level | 80,532.45 | 0.00 | 80,532.45 | 80,532.45 |
-| inflation-indexed | 93,976.96 | 6.15 | 83,336.15 | 106,135.94 |
+| level | 80,461.77 | 0.00 | 80,461.77 | 80,461.77 |
+| inflation-indexed | 93,989.53 | 4.84 | 83,577.47 | 105,641.07 |
 
-Ten yearly payments of 10,000 are worth 80,532 at the flat 4.06%, with no spread across scenarios. Indexed to simulated inflation they are worth 93,977, about 17% more, ranging from about 83,000 to 106,000 across scenarios; a standard error of 6 shows 2,000 scenarios are plenty.
+Ten yearly payments of 10,000 are worth 80,462 at the flat 4.08%, with no spread across scenarios. Indexed to simulated inflation they are worth 93,990, about 17% more, ranging from about 84,000 to 106,000 across scenarios; a standard error of 5 shows 2,000 scenarios are plenty.
 
 For Solvency II, the discount curve matters. Passing EIOPA's curve to the best estimate discounts each scenario's cashflows on that curve, as Article 77(2) requires. Without it, discounting runs along the simulated short rate: on a whole-run risk-neutral simulation that rate reproduces EIOPA's curve on average, so cashflows that depend on the path of rates or equities (guarantees, profit sharing) are generated and discounted consistently with it. In the example, which holds today's Treasury bill rate flat, they are not.
 
@@ -205,7 +205,7 @@ The time value of those guarantees depends on how much rates and inflation move,
 <div class="fs-callout fs-callout--limits" markdown="1">
 <p class="fs-callout__title">Limits</p>
 
-Without swaption or inflation-option prices, the rate's volatility is fitted to how much yields across the curve have moved in history (fitted on US Treasuries since 2005, a short-rate volatility of 0.90% a year, which moves the 13-week, 5, 10 and 30-year yields by 89, 82, 75 and 55 basis points a year, against the 69, 87, 85 and 79 they actually moved), and inflation's to its own history. Treat the resulting cost of guarantees as indicative, and replace the volatility with a swaption-implied one for a reported best estimate.
+Without swaption or inflation-option prices, the rate's volatility is fitted to how much yields across the curve have moved in history (fitted on US Treasuries since 2005, a short-rate volatility of 0.90% a year, which moves the 13-week, 5, 10 and 30-year yields by 89, 82, 76 and 55 basis points a year, against the 69, 87, 85 and 80 they actually moved), and inflation's to its own history. Treat the resulting cost of guarantees as indicative, and replace the volatility with a swaption-implied one for a reported best estimate.
 </div>
 
 ## Solvency Capital Requirement
@@ -233,7 +233,7 @@ That is well below the standard formula's 46.71% type 1 shock [below](#standard-
 <div class="fs-callout" markdown="1">
 <p class="fs-callout__title">Check several seeds</p>
 
-Across four seeds the SCR ranged from 250,819 to 284,117, because only 10 of 2,000 scenarios lie beyond the 99.5% quantile. Check several seeds, or use more scenarios, before relying on it.
+Across four seeds the SCR ranged from 250,990 to 279,128, because only 10 of 2,000 scenarios lie beyond the 99.5% quantile. Check several seeds, or use more scenarios, before relying on it.
 </div>
 
 The own-funds path is yours to build: assets from a [portfolio](/projects/financescenarios/docs/portfolio), liabilities from your own projection.
