@@ -5230,11 +5230,38 @@ $content-img: 'img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="g
   }
 }
 
-// The launch video on the Finance Toolkit page: a modest, centred player
-// rather than one that fills the whole column
-.mcp-video-wrapper.ft-launch-video {
-  max-width: 640px;
-  margin: 8px auto 28px;
+// The launch video on the Finance Toolkit page, with the headline numbers
+// beside it so the row is filled rather than a lone centred player
+.page__content .ft-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 2.6fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+  margin: 8px 0 28px;
+
+  .ft-hero__video { margin: 0; }
+
+  .ft-hero__facts {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
+    margin: 0;
+
+    .mcp-fact { display: flex; flex-direction: column; justify-content: center; }
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+
+    .ft-hero__facts { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: auto; gap: 8px; }
+  }
+
+  @media (max-width: 600px) {
+    .ft-hero__facts {
+      .mcp-fact { padding: 12px 10px; text-align: center; }
+      strong { font-size: 1.05rem; white-space: nowrap; }
+      span { font-size: 0.78rem; line-height: 1.35; }
+    }
+  }
 }
 
 // ── Finance Toolkit MCP — custom expander (replaces native <details>) ────

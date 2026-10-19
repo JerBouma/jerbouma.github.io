@@ -19,12 +19,22 @@ image: assets/images/projects/FinanceToolkit.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-<div class="mcp-video-wrapper ft-launch-video">
-  <video class="mcp-demo-video" controls playsinline preload="metadata" width="1920" height="1080"
-         poster="/assets/images/projects/financetoolkit-launch.jpg"
-         aria-label="Same metric, same day, different answers across financial websites; the Finance Toolkit gives one consistent, verifiable formula for 500+ metrics.">
-    <source src="/assets/video/financetoolkit-launch.mp4" type="video/mp4">
-  </video>
+{%- assign ft = site.data.projects.maintained | where: "name", "Finance Toolkit" | first %}
+{%- assign ft_stars = ft.stats | where: "icon", "fa-star" | first %}
+{%- assign ft_dl = ft.stats | where: "icon", "fa-download" | first %}
+<div class="ft-hero">
+  <div class="mcp-video-wrapper ft-hero__video">
+    <video class="mcp-demo-video" autoplay muted playsinline controls preload="auto" width="1920" height="1080"
+           poster="/assets/images/projects/financetoolkit-launch.jpg"
+           aria-label="Same metric, same day, different answers across financial websites; the Finance Toolkit gives one consistent, verifiable formula for 500+ metrics.">
+      <source src="/assets/video/financetoolkit-launch.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="mcp-facts ft-hero__facts">
+    <div class="mcp-fact"><strong>500+</strong><span>metrics, every formula written out</span></div>
+    <div class="mcp-fact"><strong>{{ ft_stars.value }}</strong><span>GitHub stars</span></div>
+    <div class="mcp-fact"><strong>{{ ft_dl.value }}</strong><span>downloads</span></div>
+  </div>
 </div>
 
 While browsing a variety of websites, I kept finding that the same financial metric can vary a lot per source, and so do the reported financial statements, while little information is given on how the metric was calculated.
