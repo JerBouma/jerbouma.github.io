@@ -19,7 +19,7 @@ image: assets/images/projects/FinanceToolkit.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-<div class="mcp-video-wrapper">
+<div class="mcp-video-wrapper ft-launch-video">
   <video class="mcp-demo-video" controls playsinline preload="metadata" width="1920" height="1080"
          poster="/assets/images/projects/financetoolkit-launch.jpg"
          aria-label="Same metric, same day, different answers across financial websites; the Finance Toolkit gives one consistent, verifiable formula for 500+ metrics.">

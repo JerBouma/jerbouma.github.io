@@ -5230,6 +5230,13 @@ $content-img: 'img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="g
   }
 }
 
+// The launch video on the Finance Toolkit page: a modest, centred player
+// rather than one that fills the whole column
+.mcp-video-wrapper.ft-launch-video {
+  max-width: 640px;
+  margin: 8px auto 28px;
+}
+
 // ── Finance Toolkit MCP — custom expander (replaces native <details>) ────
 .ft-details {
   margin: 14px 0;
