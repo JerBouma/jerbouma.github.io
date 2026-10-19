@@ -2,7 +2,7 @@
 title: Simulation Engine
 seo_title: "Simulation Engine Documentation | Finance Scenarios"
 seo_title_suffix: false
-excerpt: "The Monte Carlo engine behind every run: correlated and fat-tailed shocks, exact time stepping, antithetic variates, Monte Carlo error, and how correlations are estimated."
+excerpt: "The Monte Carlo engine behind every run: correlated and fat-tailed shocks, exact time stepping, price indices that compound the way their sources model them, antithetic variates, Monte Carlo error, and how correlations are estimated."
 description: "The Finance Scenarios Monte Carlo engine: correlated and fat-tailed shocks, exact time stepping, antithetic variates and Monte Carlo error."
 author_profile: false
 permalink: /projects/financescenarios/docs/simulation-engine
@@ -76,12 +76,14 @@ The horizon is cut into steps of equal length $$\Delta t$$, from daily to yearly
   <span><b>5 years</b>horizon</span>
 </div>
 
-Factors are stepped in cascade order, so a driver such as inflation is known before the factors that react to it. Each factor is stepped one of three ways:
+Factors are stepped in cascade order, so a driver such as inflation is known before the factors that react to it. Each factor is stepped one of these ways:
 
 | Factors | Step |
 |:--------|:-----|
 | Mean-reverting: rates under Hull-White, inflation, spreads, log commodity prices, log dividend yields | The exact solution of the Ornstein-Uhlenbeck process |
 | Prices: equities, currencies | Exact, in log space |
+| Growth rates: inflation, house prices | Stepped as a rate; their index compounds by $$\ln(1 + \pi)$$ |
+| Heston equities (risk-neutral) | Andersen's quadratic-exponential scheme with its martingale correction |
 | CIR rates and factors with GARCH volatility | An Euler step, so a shorter step is more accurate |
 
 Mean-reverting factors (rates under Hull-White, inflation, spreads, log commodity prices, log dividend yields) are stepped with the exact solution of the Ornstein-Uhlenbeck process:
@@ -100,6 +102,35 @@ $$
 
 where $$m$$ is the expected log return per year and $$\sigma$$ the volatility. For an equity both belong to the regime it is in at that step; for a currency $$m = \mu - \tfrac{1}{2}\sigma^2$$, with $$\mu$$ its drift.
 
+### Price Indices Compound with ln(1 + π) {#price-indices}
+
+Inflation and house-price growth are year-over-year rates: the growth of an index over the past year. The index they build compounds by the log change of that rate, as [Ahlgrim, D'Arcy and Gorvett (2005, section 3, eq. 3.7)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"} and [Wilkie (1986)](https://doi.org/10.1017/S0071368600009009){:target="_blank"} model it:
+
+$$
+P_{t+\Delta t} = P_t \exp\!\big(\ln(1 + \pi_t)\,\Delta t\big)
+$$
+
+so inflation held at 4% gives $$1.04^T$$, the index a year-over-year rate of 4% describes. Compounding the rate itself, $$\exp(\sum \pi_t \Delta t)$$, treats a simple rate as a continuously compounded one and overstates the index: by about 1% over 30 years at 3% inflation. The same log change drives every factor that reads a price index: the price gap behind purchasing power parity for currencies, gold's real drift and house prices. The fits read the same simple year-over-year rates the simulation produces, so fit and simulation agree.
+
+Market-implied (risk-neutral) inflation steps the force of inflation, $$x_t = \ln(1 + \pi_t)$$, around the breakeven curve with the exact Ornstein-Uhlenbeck transition, so the expected index stays exactly on the market's breakeven curve at every maturity.
+
+### Which Rate a Step Reads {#rate-timing}
+
+A factor that earns a rate over a step reads the rate at the start of that step, the rate known when the step begins. The equity premium (stocks earn the short rate plus a premium) and the real-world exchange-rate step under interest-rate parity read the short rate this way, as discounting does (a discount factor sums the rate at the start of each step) and as the risk-neutral equity and exchange-rate steps do. Reading the end-of-step rate instead would let a stock earn a rate that was not yet known when its step began.
+
+### Heston's Variance: Andersen's QE Scheme {#heston-qe}
+
+A risk-neutral equity under Heston's stochastic volatility is stepped with the quadratic-exponential (QE) scheme of [Andersen (2008, section 3.2)](https://doi.org/10.21314/jcf.2008.189){:target="_blank"} with its martingale correction ([van Haastrecht and Pelsser, 2010, section 4.2, eq. 61](https://doi.org/10.1142/S0219024910005668){:target="_blank"}). A variance fitted to an option surface often reverts within a step or two at a monthly step, and an Euler step with full truncation then gets it badly wrong. QE draws the next variance from a distribution with the exact conditional mean and variance, moves the log price by the exact link between the two Brownian motions, and the correction makes the discounted price a martingale over each step. Against Heston's closed-form one-year call prices at monthly steps:
+
+| Strike (% of spot) | 80 | 90 | 100 | 110 | 120 |
+|:--|--:|--:|--:|--:|--:|
+| Euler, full truncation | +0.1% | +0.7% | +2.4% | +7.1% | +17.4% |
+| QE with martingale correction | &minus;0.1% | &minus;0.1% | &minus;0.1% | &minus;1.2% | &minus;3.6% |
+
+The errors are relative to the closed-form price. The KNW model with stochastic volatility steps its variance with the same scheme.
+
+### Euler Steps
+
 CIR rates and factors with GARCH volatility use an Euler step instead, so for them a shorter step is more accurate. CIR uses the full-truncation scheme of [Lord, Koekkoek and van Dijk (2010)](https://doi.org/10.1080/14697680802392496): drift and volatility are computed from the rate floored at zero, but the rate itself is not floored, so a path can dip slightly below zero, more often than the exact CIR process would.
 
 ## How the Correlations Are Estimated {#how-the-correlations-are-estimated}
@@ -109,7 +140,7 @@ The correlation matrix comes from the same historical changes each factor was fi
 <ol class="ca-steps">
   <li markdown="span">**Mixed frequencies.** Changes are summed up to the coarser frequency and matched on calendar date, the way twelve monthly log returns add up to a yearly one.</li>
   <li markdown="span">**Pairwise windows.** Each pair uses the dates those two factors share, so a short series only weakens its own pairs. A pair with fewer than 5 shared observations is set to zero; fewer than 12, or a correlation above 0.98 (usually the same series configured twice), is flagged.</li>
-  <li markdown="span">**Shrinkage.** Sample correlations are noisy, more so with many factors, so they are pulled toward a simpler target, trading a little bias for much less noise: by default the correlations themselves, not the covariances, toward zero by a data-driven amount ([Schäfer and Strimmer, 2005, section 2.4, eq. 10](https://doi.org/10.2202/1544-6115.1175){:target="_blank"}), larger when correlations rest on few observations; a fixed share instead pulls them toward their average correlation ([Ledoit and Wolf, 2004](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}), a target built for stocks that suits a mix of rates, inflation, equities and currencies less well.</li>
+  <li markdown="span">**Shrinkage.** Sample correlations are noisy, more so with many factors, so they are pulled toward a simpler target, trading a little bias for much less noise: by default the correlations themselves, not the covariances, toward zero by a data-driven amount ([Schäfer and Strimmer, 2005, section 2.4, eq. 10](https://doi.org/10.2202/1544-6115.1175){:target="_blank"}), larger when correlations rest on few observations or fat-tailed data; a fixed share instead pulls them toward their average correlation ([Ledoit and Wolf, 2004](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}), a target built for stocks that suits a mix of rates, inflation, equities and currencies less well.</li>
   <li markdown="span">**Repair.** A matrix built from different windows can be internally inconsistent (not positive definite) and then has no Cholesky factor. It is moved to the nearest valid correlation matrix, the nearest symmetric positive semidefinite matrix with unit diagonal ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}), and the size of the repair is reported.</li>
 </ol>
 
@@ -175,11 +206,19 @@ The settings behind the correlation matrix:
 | Estimation | Pairwise, each pair on the dates both share | Judgement | A short series weakens only its own pairs |
 | Too few shared observations | Fewer than 5: the pair is set to 0; fewer than 12: flagged | Judgement | A correlation from a handful of points is noise |
 | Same series twice | A correlation above 0.98 is flagged | Judgement | Usually one driver configured twice |
-| Shrinkage | Toward zero, intensity from the data: 0.067 in the default calibration | Fitted | [Schäfer and Strimmer (2005, section 2.4, eq. 10)](https://doi.org/10.2202/1544-6115.1175){:target="_blank"}: their target D, with the intensity the summed variance of the correlations over their summed squares. Each correlation's variance uses the large-sample formula $$(1 - r_{ij}^2)^2/(n_{ij} - 1)$$ with the pair's own overlap, where they estimate it from the data (Appendix A) |
-| Repair | Nearest correlation matrix, at most 100 iterations, tolerance $$10^{-8}$$: a change of 1.0e-14 in the default calibration | Setting | [Higham (2002, Algorithm 3.3)](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"} with Dykstra's correction; the tolerance is that of his section 4 example, which converges in 19 iterations |
+| Shrinkage | Toward zero, intensity from the data: 0.155 in the default calibration | Fitted | [Schäfer and Strimmer (2005, section 2.4, eq. 10; Appendix A)](https://doi.org/10.2202/1544-6115.1175){:target="_blank"}: their target D, with the intensity the summed variance of the correlations over their summed squares. Each correlation's variance is estimated from the pair's own data over its own overlap, as in their Appendix A |
+| Repair | Nearest correlation matrix, at most 100 iterations, tolerance $$10^{-8}$$: a change of 9.6e-15 in the default calibration | Setting | [Higham (2002, Algorithm 3.3)](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"} with Dykstra's correction; the tolerance is that of his section 4 example, which converges in 19 iterations |
 | Cholesky safety net | Up to 20 tries, adding a diagonal term ten times larger each time, at most 0.9 | Setting | Only for a matrix that is still not positive definite after the repair |
 
-With $$\lambda$$ = 0.067, every correlation in the default calibration is 6.7% smaller than its sample value.
+With $$\lambda$$ = 0.155, every correlation in the default calibration is 15.5% smaller than its sample value.
+
+The intensity is the share of the correlations' size that is estimation noise, $$\lambda = \sum \widehat{\operatorname{Var}}(r_{ij}) / \sum r_{ij}^2$$, so it is only as good as the variance estimate. The normal-theory variance of a correlation, $$(1 - r_{ij}^2)^2/(n_{ij} - 1)$$, assumes normal data. Monthly returns and rate changes have fat tails: a few large joint moves make a correlation less certain than a normal sample of the same size, and under Student-t tails with 5 degrees of freedom the normal formula reads about half the true variance. Schäfer and Strimmer's own estimator (Appendix A) reads the variance from the data: each pair is standardized over its overlap, and the variance of its correlation is the spread of the products of the standardized values,
+
+$$
+\widehat{\operatorname{Var}}(r_{ij}) = \frac{n}{(n-1)^3} \sum_{k} (w_k - \bar{w})^2, \qquad w_k = z_{i,k}\, z_{j,k}
+$$
+
+On the default factor set that moves the intensity from 0.067 (normal theory) to 0.155. For normal data it gives $$(1 + r^2)/n$$, a little above the true variance when $$r$$ is not zero, so any error is on the side of shrinking more.
 
 ### Optimiser Settings
 
@@ -188,10 +227,10 @@ The fits use iterative optimisers. Their limits and starting points change how f
 | Fit | Method | Limits | Start |
 |:--|:--|:--|:--|
 | Equity regimes | Baum-Welch ([Baum, Petrie, Soules and Weiss, 1970](https://doi.org/10.1214/aoms/1177697196){:target="_blank"}) | 2,000 iterations, tolerance $$10^{-6}$$; volatility floor $$10^{-6}$$ | Each regime on one quantile slice of the sorted returns, equal switching |
-| Inflation-driven switching | Expectation-maximisation ([Diebold, Lee and Weinbach, 1994](https://doi.org/10.1093/oso/9780198773917.003.0010){:target="_blank"}) | 500 iterations (the post-war fit converges in about 100), tolerance $$10^{-6}$$; a ridge penalty of 0.01 on the logit | A 90% chance of staying put |
+| Inflation-driven and business-cycle switching | Expectation-maximisation, regimes and switching fitted jointly ([Diebold, Lee and Weinbach, 1994](https://doi.org/10.1093/oso/9780198773917.003.0010){:target="_blank"}) | 500 iterations (the post-war fit converges in about 100), tolerance $$10^{-6}$$; a ridge penalty of 0.01 on the logit | A 90% chance of staying put |
 | Inflation regimes | Maximum likelihood, Powell's method | 4,000 evaluations; tolerances $$10^{-6}$$ (parameters) and $$10^{-9}$$ (likelihood) | Three starts (the high regime's level, the shock sizes and the stay chances), scaled to a one-regime fit |
 | Unemployment regimes | Maximum likelihood, L-BFGS-B | 2,000 iterations | Three splits of the months (by the residual's sign, its size, short recessions), two more with the equity link |
-| Inflation's long-run median | Stationary vector of a (bin, regime) chain | Bins an eighth of a month's shock wide, six long-run spreads either side, at most 2,000 bins; median tolerance $$10^{-7}$$ | Finer bins move the US median by 0.2 basis points |
+| Inflation's long-run median (a diagnostic; the anchor sets the mean, in closed form) | Stationary vector of a (bin, regime) chain | Bins an eighth of a month's shock wide, six long-run spreads either side, at most 2,000 bins; median tolerance $$10^{-7}$$ | Finer bins move the US median by 0.2 basis points |
 
 ## Working with a Run {#scenarioset}
 
@@ -204,6 +243,7 @@ result.horizon_summary([1, 3, 5])                        # percentiles of every 
 stagflation = result.filter_narrative({"united_states_inflation": (0.8, 1.0), "us_broad": (0.0, 0.2)})
 
 result.simulated_correlation()                           # compare with the fitted matrix
+result.cumulative_index("united_states_inflation")      # the price index, compounding ln(1 + inflation), from 100
 ```
 
 A long enough run also checks itself: each mean-reverting factor's simulated mean and spread at the horizon are compared with their theoretical long-run values (see [validation](/projects/financescenarios/docs/validation)). [Regimes](/projects/financescenarios/docs/regimes) covers narratives in depth, and the reference lists everything a run offers.
