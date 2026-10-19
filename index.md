@@ -77,7 +77,7 @@ classes: custom-splash home-v2
       {%- assign ft_stars = ft.stats | where: "icon", "fa-star" | first %}
       {%- assign ft_dl = ft.stats | where: "icon", "fa-download" | first %}
       <div><strong data-count>{{ ft_stars.value }}</strong><span>GitHub stars</span></div>
-      <div><strong data-count>500+</strong><span>financial methods</span></div>
+      <div><strong data-count>500+</strong><span>metrics</span></div>
       <div><strong data-count>{{ ft_dl.value }}</strong><span>downloads</span></div>
     </div>
     <div class="hp-actions">
