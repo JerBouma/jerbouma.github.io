@@ -102,6 +102,8 @@ Two targets can combine in two ways:
 
 ## Running a Regime {#driving-a-regime-from-the-library}
 
+List the shipped regimes, then simulate the baseline and a regime side by side:
+
 ```python
 from financescenarios import Scenarios, list_presets
 

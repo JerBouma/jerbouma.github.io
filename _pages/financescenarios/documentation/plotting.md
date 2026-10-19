@@ -49,6 +49,8 @@ The dark line is the median scenario, the darker band holds the middle 50% of sc
 A fan for a rate that mean-reverts stops widening after a few years, because shocks fade. A fan for a cumulative return keeps widening. On an annualized return the fan narrows with the horizon instead, as good and bad years average out; its first months are cut off the scale because a few weeks' move scaled up to a year swamps the rest.
 </div>
 
+One call draws the fan, as a return, as the price itself or as a price index:
+
 ```python
 result.plot("us_broad")                             # annualized return since start
 result.plot("us_broad", levels=True)                # the price itself
@@ -62,6 +64,8 @@ A fan chart smooths away how jagged any one scenario is. The paths view draws ev
 <div class="fs-callout" markdown="1">
 Check it whenever a model produces something the fan can't show, such as jumps or a floor.
 </div>
+
+To draw every path, or a sample of 50 to follow one by one:
 
 ```python
 result.plot("us_broad", kind="paths")
@@ -83,6 +87,8 @@ A heatmap of the fitted correlations. Read it for the diversification the scenar
 <div class="fs-callout" markdown="1">
 The correlations are constant over the horizon; dependence that rises in a crisis comes from shared regimes and fat tails instead (see the [simulation engine](/projects/financescenarios/docs/simulation-engine)).
 </div>
+
+The calibration draws its own correlation heatmap:
 
 ```python
 scenarios.last_calibration.plot()

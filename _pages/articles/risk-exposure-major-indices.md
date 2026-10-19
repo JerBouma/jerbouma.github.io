@@ -20,9 +20,13 @@ That is a good reason to look beyond plain volatility when measuring risk. The F
 
 ## Setting Things Up
 
+Install the Finance Toolkit:
+
 ```bash
 pip install financetoolkit
 ```
+
+Then load the six index ETFs from 2019 onward:
 
 ```python
 from financetoolkit import Toolkit
