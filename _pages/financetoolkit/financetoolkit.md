@@ -19,6 +19,14 @@ image: assets/images/projects/FinanceToolkit.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
+<div class="mcp-video-wrapper">
+  <video class="mcp-demo-video" controls playsinline preload="metadata" width="1920" height="1080"
+         poster="/assets/images/projects/financetoolkit-launch.jpg"
+         aria-label="Same metric, same day, different answers across financial websites; the Finance Toolkit gives one consistent, verifiable formula for 500+ metrics.">
+    <source src="/assets/video/financetoolkit-launch.mp4" type="video/mp4">
+  </video>
+</div>
+
 While browsing a variety of websites, I kept finding that the same financial metric can vary a lot per source, and so do the reported financial statements, while little information is given on how the metric was calculated.
 
 For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is reported to be 28.93 (Stockopedia), 32.05 (Morningstar), 32.66 (Macrotrends), 33.09 (Finance Charts), 33.66 (Y Charts), 33.67 (Wall Street Journal), 33.80 (Yahoo Finance) and 34.4 (Companies Market Cap). All of these calculations are correct, but each source applies a different method, which leads to different results. Collecting data from multiple sources can therefore lead to a wrong interpretation of the results, since one source could be using a different calculation method than another. That is, if the method is freely available at all; often it is hidden behind a paid subscription.
