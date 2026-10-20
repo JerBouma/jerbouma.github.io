@@ -38,6 +38,12 @@
     return v || fallback;
   }
 
+  // a palette colour (#rrggbb) at the given opacity
+  function fade(hex, alpha) {
+    var n = parseInt(hex.slice(1), 16);
+    return 'rgba(' + (n >> 16) + ', ' + ((n >> 8) & 255) + ', ' + (n & 255) + ', ' + alpha + ')';
+  }
+
   function formatter(fmt) {
     return function (v) {
       if (v === null || v === undefined || isNaN(v)) return '–';
@@ -103,11 +109,33 @@
         smooth: false,
         connectNulls: false,
         barMaxWidth: 34,
-        itemStyle: { color: isClose ? css('--text-primary', '#f8fafc') : PALETTE[i % PALETTE.length], borderRadius: isBar ? [4, 4, 0, 0] : 0 },
-        lineStyle: { width: isClose ? 2.2 : 1.8 },
-        emphasis: { focus: 'series' }
+        itemStyle: { color: isClose ? css('--text-primary', '#f8fafc') : (s.color || PALETTE[i % PALETTE.length]), borderRadius: isBar && !spec.stack ? [4, 4, 0, 0] : 0 },
+        lineStyle: { width: isClose ? 2.2 : 1.8, type: s.dashed ? 'dashed' : 'solid' },
+        emphasis: { focus: 'series' },
+        smooth: !!spec.smooth,
+        // area: fill under the line, fading out (drawdowns, cumulative values)
+        areaStyle: s.area ? { opacity: 1, color: new window.echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: fade(s.color || PALETTE[i % PALETTE.length], s.area === 'down' ? 0.02 : 0.35) },
+          { offset: 1, color: fade(s.color || PALETTE[i % PALETTE.length], s.area === 'down' ? 0.35 : 0.02) }]) } : undefined,
+        // stack: series add up (the parts of a total)
+        stack: spec.stack && !s.reference ? 'total' : undefined,
+        // axis: 1 puts a series on a second y axis on the right, with format2
+        yAxisIndex: s.axis === 1 ? 1 : 0,
+        tooltip: s.axis === 1 ? { valueFormatter: formatter(spec.format2) } : undefined
       };
     });
+    // bands: shaded periods such as recessions or crises, labelled at the top
+    if (spec.bands && series.length) {
+      series[0].markArea = { silent: true, itemStyle: { color: 'rgba(148, 163, 184, 0.12)' },
+        label: { color: muted, fontSize: 11, position: 'insideTop' },
+        data: spec.bands.map(function (b) { return [{ name: b.label || '', xAxis: b.from }, { xAxis: b.to }]; }) };
+    }
+    // markers: vertical lines at events, labelled
+    if (spec.markers && series.length) {
+      series[0].markLine = { silent: true, symbol: 'none', lineStyle: { color: muted, type: 'dashed', width: 1 },
+        label: { color: muted, fontSize: 11, formatter: '{b}' },
+        data: spec.markers.map(function (m) { return { name: m.label || '', xAxis: m.x }; }) };
+    }
     if (spec.cloud) series = cloudSeries(spec).concat(series);
     var legendNames = spec.series.map(function (s) { return s.name; });
     return {
@@ -137,12 +165,17 @@
         // many bars (the portfolio tickers): show every label, slanted
         axisLabel: isBar && (spec.x.length > 10 || Math.max.apply(null, spec.x.map(function (v) { return String(v).length; })) > 8) ? { color: muted, interval: 0, rotate: 45, fontSize: 11 } : { color: muted, hideOverlap: true, fontSize: 12.5 }
       },
-      yAxis: {
+      yAxis: [{
         type: 'value',
-        scale: !isBar,
+        scale: !isBar && !spec.stack && !spec.series.some(function (s) { return s.area; }),
         splitLine: { lineStyle: { color: grid } },
         axisLabel: { color: muted, formatter: fmt, fontSize: 12.5 }
-      },
+      }].concat(spec.series.some(function (s) { return s.axis === 1; }) ? [{
+        type: 'value',
+        scale: true,
+        splitLine: { show: false },
+        axisLabel: { color: muted, formatter: formatter(spec.format2), fontSize: 12.5 }
+      }] : []),
       dataZoom: many ? [{ type: 'inside' }, { type: 'slider', height: 18, bottom: 8, borderColor: grid, fillerColor: 'rgba(56, 189, 248, 0.15)', textStyle: { color: muted }, handleStyle: { color: muted } }] : [],
       series: series
     };

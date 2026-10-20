@@ -6,7 +6,7 @@ import * as echarts from 'echarts/core';
 import { LineChart, BarChart, ScatterChart, HeatmapChart, CustomChart } from 'echarts/charts';
 import {
   GridComponent, TooltipComponent, LegendComponent, DataZoomComponent,
-  VisualMapComponent, MarkLineComponent, AxisPointerComponent
+  VisualMapComponent, MarkLineComponent, MarkAreaComponent, AxisPointerComponent
 } from 'echarts/components';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -14,7 +14,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 echarts.use([
   LineChart, BarChart, ScatterChart, HeatmapChart, CustomChart,
   GridComponent, TooltipComponent, LegendComponent, DataZoomComponent,
-  VisualMapComponent, MarkLineComponent, AxisPointerComponent,
+  VisualMapComponent, MarkLineComponent, MarkAreaComponent, AxisPointerComponent,
   LabelLayout, CanvasRenderer
 ]);
 
