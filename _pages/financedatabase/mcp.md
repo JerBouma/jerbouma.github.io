@@ -15,18 +15,25 @@ image: /assets/images/projects/FinanceDatabaseMCP.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceDatabase#mcp-server" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
+<div class="ft-hero ft-hero--compact">
+  <div class="mcp-video-wrapper ft-hero__video">
+    <video class="mcp-demo-video" autoplay muted playsinline controls preload="auto" width="1920" height="1080"
+           poster="/assets/images/projects/financedatabase-mcp-launch.jpg"
+           aria-label="The Finance Database MCP server answering plain-language questions: which Japanese semiconductor companies are listed, where ASML trades and which Bitcoin pairs exist, from 300,000+ symbols. Works with Claude, Copilot, Cursor and any other MCP client.">
+      <source src="/assets/video/financedatabase-mcp-launch.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="mcp-facts ft-hero__facts">
+    <div class="mcp-fact"><strong>300,000+</strong><span>symbols across five asset classes</span></div>
+    <div class="mcp-fact"><strong>No API key</strong><span>no account, no sign-in</span></div>
+    <div class="mcp-fact"><strong>Free</strong><span>hosted, or run locally; MIT-licensed</span></div>
+    <div class="mcp-fact"><strong>Any client</strong><span>Claude, ChatGPT, Copilot, Cursor and more</span></div>
+  </div>
+</div>
+
 Ask an AI assistant for every large European semiconductor company and you will usually get a list. Whether it is complete depends on what the model remembers, and the tickers it gives may be the US over-the-counter lines rather than the shares on Euronext or Xetra. Ask for the bond ETFs of an issuer and you get the famous ones, not all of them.
 
 The Finance Database MCP server gives the assistant the database instead of its memory. It is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that connects Claude, ChatGPT, GitHub Copilot, Cursor, Gemini and other assistants to the [Finance Database](/projects/financedatabase): 300,000+ equities, ETFs, indices, currencies and cryptocurrencies, each categorized by sector, industry, country, exchange, market cap, issuer or category. Ask in plain English and the assistant filters the database on your behalf.
-
-<div class="mcp-facts">
-  <div class="mcp-fact"><strong>300,000+</strong><span>equities, ETFs, indices, currencies and cryptocurrencies</span></div>
-  <div class="mcp-fact"><strong>No API key</strong><span>no account, no sign-in: connect and start asking</span></div>
-  <div class="mcp-fact"><strong>Free</strong><span>hosted at one URL, or run locally; MIT-licensed source code</span></div>
-  <div class="mcp-fact"><strong>Any client</strong><span>Claude, ChatGPT, Copilot, Cursor, Windsurf, Gemini, Codex</span></div>
-</div>
-
-<img src="/assets/images/projects/FinanceDatabaseMCP.webp" alt="Finance Database MCP: a table of European semiconductor companies returned by the server" width="100%"/>
 
 ## Why the Finance Database MCP
 
