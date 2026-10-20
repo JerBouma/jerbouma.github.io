@@ -513,9 +513,9 @@ The questions that come up most often about the server and the data behind it. A
 </details>
 
 <details class="ft-details" markdown="1">
-  <summary><h3>Opening the URL in my browser shows "Not Acceptable". Is it down?</h3></summary>
+  <summary><h3>What happens when I open the URL in my browser?</h3></summary>
 
-  No. The URL is an endpoint for MCP clients, which talk to it with streaming requests a browser doesn't send, so a browser gets "Not Acceptable: Client must accept text/event-stream". Add the URL to your assistant as described under [Remote Server](#remote-server) instead. To check that the server is up, open [/health](https://financedatabase.jeroenbouma.com/health){:target="_blank"}.
+  You get a short setup page: the URL is an endpoint for MCP clients, which talk to it with streaming requests a browser doesn't send, so the page shows how to add it to your assistant in three steps, with the local `uvx` alternative. The same steps are under [Remote Server](#remote-server). To check that the server is up, open [/health](https://financedatabase.jeroenbouma.com/health){:target="_blank"}; [/stats](https://financedatabase.jeroenbouma.com/stats){:target="_blank"} shows the anonymous usage totals as a dashboard.
 
 </details>
 
@@ -605,10 +605,10 @@ The questions that come up most often about the server and the data behind it. A
     },
     {
       "@type": "Question",
-      "name": "Opening the URL in my browser shows \"Not Acceptable\". Is it down?",
+      "name": "What happens when I open the URL in my browser?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. The URL is an endpoint for MCP clients, which talk to it with streaming requests a browser doesn't send, so a browser gets \"Not Acceptable: Client must accept text/event-stream\". Add the URL to your assistant as described under Remote Server instead. To check that the server is up, open /health."
+        "text": "You get a short setup page: the URL is an endpoint for MCP clients, which talk to it with streaming requests a browser doesn't send, so the page shows how to add it to your assistant in three steps, with the local uvx alternative. To check that the server is up, open https://financedatabase.jeroenbouma.com/health; https://financedatabase.jeroenbouma.com/stats shows the anonymous usage totals as a dashboard."
       }
     },
     {
