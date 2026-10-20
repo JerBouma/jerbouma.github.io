@@ -117,7 +117,7 @@ Which gives the following for the first five transactions, where the `% Return` 
 | 2000-02-23 | FIX        |   6.99 |      8 |     0 |           55.88 |     11,176.72 |   199.00 |
 | 2000-02-28 | MSFT       |  28.35 |     13 |     0 |          368.60 |      6,914.31 |    17.76 |
 
-The realised PnL is booked on the sales, and by default the overview leaves positions that have been sold out, so the purchases above show no PnL while the cumulative PnL holds the total. To see the profit or loss of every sale:
+The realised PnL is booked on the sales, and by default the overview leaves out the sales, so the purchases above show no PnL while the cumulative PnL holds the total. To see the profit or loss of every sale:
 
 ```python
 transactions_overview = portfolio.get_transactions_overview(pnl_method="FIFO", exclude_sold_positions=False)
