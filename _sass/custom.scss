@@ -5637,6 +5637,23 @@ $docs-grey-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000
     }
   }
 
+  // a group that doesn't hold the current page shows only its first links
+  details.is-peek > ul > li:nth-child(n+4) { display: none; }
+
+  .nav__more {
+    display: block;
+    margin: 2px 0 6px 10px;
+    padding: 2px 0;
+    border: 0;
+    background: none;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+
+    &:hover { color: var(--accent-color, #38bdf8); }
+  }
+
   // group headings: sentence case, quiet, with a count
   .nav__group > details:not(.nav__module-switch) > summary.nav__collapsible-title {
     align-items: center;
