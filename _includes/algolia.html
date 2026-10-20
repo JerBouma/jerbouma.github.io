@@ -5,7 +5,8 @@
 
 <div id="search-searchbar"></div>
 
-{% assign ft_modules = site.data.navigation["financetoolkit-docs"][0].children %}
+{% assign ft_modules_group = site.data.navigation["financetoolkit-docs"] | where: "title", "Modules" | first %}
+{% assign ft_modules = ft_modules_group.children %}
 <div class="ft-module-switcher">
   <span class="ft-module-switcher__label">Modules:</span>
   {% for ft_module in ft_modules %}

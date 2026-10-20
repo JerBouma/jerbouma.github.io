@@ -80,7 +80,7 @@ Through the link you are able to subscribe for the free plan and also premium pl
 
 ## Functionality
 
-This section is an introduction to the Finance Toolkit. There is also full [code documentation](/projects/financetoolkit/docs) and, [Getting Started guides](/projects/financetoolkit/docs/getting-started) with many examples, from the basics to creating custom ratios and working with your own datasets.
+This section is an introduction to the Finance Toolkit. There is also full [code documentation](/projects/financetoolkit/docs) and [Getting Started](/projects/financetoolkit/docs#getting-started) sections that open every documentation page, with many examples, from the basics to creating custom ratios and working with your own datasets.
 
 A basic example of how to use the Finance Toolkit is shown below. Every code snippet in the sections that follow builds on this same `companies` instance.
 
@@ -99,7 +99,7 @@ Three capabilities cut across nearly the whole toolkit:
 - **`growth` and `lag`.** Pass `growth=True` on almost any `get_` or `collect_` function to return the period-over-period growth instead of the raw value. `lag` (an `int` or list of `int`s, default `1`) controls how many periods back that growth is measured against, e.g. `lag=4` for year-over-year growth on quarterly data. Combine with `trailing` (e.g. `trailing=4, growth=True`) to get TTM growth.
 - **`standardize` (Z-Score).** Most `get_*` methods across Economics, Ratios, Technicals, Risk, Performance, Models, Options and Fixed Income accept `standardize=True`, converting raw values into standard deviations from their own historical mean/std. This is useful for ranking, scoring, or spotting an unusual reading across metrics that otherwise live on incompatible scales.
 
-Every module below also has a Getting Started guide and full code documentation (formulas, parameters, worked examples), linked from its own section.
+Every module below also has its own documentation page, which opens with a Getting Started walkthrough followed by the full code reference (formulas, parameters, worked examples), linked from its own section.
 
 ### Discovering Instruments & News
 
@@ -410,7 +410,7 @@ The 40+ indicators are divided into five categories: [**Government**](/projects/
 
 Through a custom XLSX, XLS or CSV file you can load your own portfolio directly into the Finance Toolkit. This lets you view your positions and performance over time versus a benchmark and other positions, as well as how your PnL develops over time. The portfolio can also be loaded into the core functionality of the Finance Toolkit, which makes it possible to calculate all metrics and ratios for your portfolio (a time-weighted sum of all positions). The portfolio module is standalone and can be used on its own through `from financetoolkit import Portfolio`.
 
-**Note that it requires a specific Excel template to work. See the guide <a href="/projects/financetoolkit/docs/getting-started/portfolio" target="_blank">here</a> for further instructions.**
+**Note that it requires a specific Excel template to work. See the Getting Started walkthrough <a href="/projects/financetoolkit/docs/portfolio#getting-started" target="_blank">here</a> for further instructions.**
 
 ```python
 from financetoolkit import Portfolio
@@ -477,21 +477,21 @@ And below each coefficient is shown with its 95% confidence interval, with stars
 
 Only `QCOM`, `SWKS`, `MSFT`, `GOOGL` and `PG` come out statistically significant once every regressor is controlled for at once. The module covers 48 methods in total, including [unit root tests](/projects/financetoolkit/docs/econometrics#get_augmented_dickey_fuller) (ADF, KPSS, Phillips-Perron, Zivot-Andrews), [cointegration and Granger causality](/projects/financetoolkit/docs/econometrics#get_engle_granger_cointegration), [panel data estimators](/projects/financetoolkit/docs/econometrics#get_fixed_effects) (Fixed/Random Effects, Hausman), [causal inference](/projects/financetoolkit/docs/econometrics#get_propensity_score_matching) (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching, Synthetic Control), [time-series forecasting](/projects/financetoolkit/docs/econometrics#get_arima_forecast) (ARIMA, VAR, VECM, impulse response) and [event studies](/projects/financetoolkit/docs/econometrics#get_event_study). Find [the full econometrics documentation](/projects/financetoolkit/docs/econometrics).
 
-## Getting Started Guides {#how-to-guides-for-the-financetoolkit}
+## Getting Started {#how-to-guides-for-the-financetoolkit}
 
-Each guide below covers a different area of financial analysis, with the code to run it and interactive charts of the results. Click any card to open the guide.
+Every documentation page opens with a Getting Started section that covers its area of financial analysis, with the code to run it and interactive charts of the results. Click any card to open it.
 
 <div class="bento-grid">
 
-  <a href="/projects/financetoolkit/docs/getting-started" class="bento-card">
+  <a href="/projects/financetoolkit/docs#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-rocket bento-icon"></i>
       <h2>Getting Started</h2>
-      <p>If you are new to the Finance Toolkit, start here. This guide walks through every major feature with practical examples, from fetching historical prices and financial statements to running a complete financial analysis.</p>
+      <p>If you are new to the Finance Toolkit, start here. This walkthrough covers every major feature with practical examples, from fetching historical prices and financial statements to running a complete financial analysis.</p>
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/discovery" class="bento-card">
+  <a href="/projects/financetoolkit/docs/discovery#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-compass bento-icon"></i>
       <h2>Discovery</h2>
@@ -499,7 +499,7 @@ Each guide below covers a different area of financial analysis, with the code to
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/ratios" class="bento-card">
+  <a href="/projects/financetoolkit/docs/ratios#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-percentage bento-icon"></i>
       <h2>Ratios</h2>
@@ -507,7 +507,7 @@ Each guide below covers a different area of financial analysis, with the code to
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/models" class="bento-card">
+  <a href="/projects/financetoolkit/docs/models#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-project-diagram bento-icon"></i>
       <h2>Models</h2>
@@ -515,7 +515,7 @@ Each guide below covers a different area of financial analysis, with the code to
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/options" class="bento-card">
+  <a href="/projects/financetoolkit/docs/options#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-sliders-h bento-icon"></i>
       <h2>Options</h2>
@@ -523,7 +523,7 @@ Each guide below covers a different area of financial analysis, with the code to
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/technicals" class="bento-card">
+  <a href="/projects/financetoolkit/docs/technicals#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-chart-line bento-icon"></i>
       <h2>Technicals</h2>
@@ -531,7 +531,7 @@ Each guide below covers a different area of financial analysis, with the code to
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/risk" class="bento-card">
+  <a href="/projects/financetoolkit/docs/risk#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-shield-alt bento-icon"></i>
       <h2>Risk</h2>
@@ -539,7 +539,7 @@ Each guide below covers a different area of financial analysis, with the code to
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/performance" class="bento-card">
+  <a href="/projects/financetoolkit/docs/performance#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-trophy bento-icon"></i>
       <h2>Performance</h2>
@@ -547,7 +547,7 @@ Each guide below covers a different area of financial analysis, with the code to
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/econometrics" class="bento-card">
+  <a href="/projects/financetoolkit/docs/econometrics#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-square-root-variable bento-icon"></i>
       <h2>Econometrics</h2>
@@ -555,7 +555,7 @@ Each guide below covers a different area of financial analysis, with the code to
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/fixed-income" class="bento-card">
+  <a href="/projects/financetoolkit/docs/fixedincome#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-university bento-icon"></i>
       <h2>Fixed Income</h2>
@@ -563,7 +563,7 @@ Each guide below covers a different area of financial analysis, with the code to
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/economics" class="bento-card">
+  <a href="/projects/financetoolkit/docs/economics#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-globe bento-icon"></i>
       <h2>Economics</h2>
@@ -571,7 +571,7 @@ Each guide below covers a different area of financial analysis, with the code to
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/portfolio" class="bento-card">
+  <a href="/projects/financetoolkit/docs/portfolio#getting-started" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-briefcase bento-icon"></i>
       <h2>Portfolio</h2>
@@ -579,7 +579,7 @@ Each guide below covers a different area of financial analysis, with the code to
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs/getting-started/external-datasets" class="bento-card">
+  <a href="/projects/financetoolkit/docs#using-external-datasets" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-plug bento-icon"></i>
       <h2>External Datasets</h2>

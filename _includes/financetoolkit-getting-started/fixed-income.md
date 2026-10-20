@@ -1,24 +1,10 @@
----
-title: "Fixed Income"
-seo_title: "Fixed Income Guide | Finance Toolkit"
-seo_title_suffix: false
-excerpt: "How to value bonds and swaptions, and follow benchmark rates, government yields and corporate credit spreads with the Finance Toolkit's Fixed Income module."
-description: "Value bonds and swaptions and track Euribor, ECB and Fed rates, government bond yields and ICE BofA credit spreads in Python with the Finance Toolkit."
-author_profile: false
-permalink: /projects/financetoolkit/docs/getting-started/fixed-income
-classes: wide-sidebar
-layout: single
-redirect_from:
-  - /projects/financetoolkit/fixed-income-notebook
-sidebar:
-  nav: "financetoolkit-guides"
----
+## Getting Started
 
 The Fixed Income module covers two sides of the bond market. The first is valuation: present value, yields, duration and convexity for any bond you describe, and the Black and Bachelier models for interest rate derivatives such as swaptions. The second is market data: Euribor, the policy rates of the European Central Bank and the Federal Reserve, government bond yields for 40+ countries and the ICE BofA corporate bond indices by rating and maturity.
 
 The valuation functions work on the numbers you pass in, so they need no data at all. The market data comes from public sources and needs no API key either.
 
-## Loading the Module
+### Loading the Module
 
 The Fixed Income module can be imported on its own, or reached through `companies.fixedincome` after you initialise a `Toolkit`. Here it is imported directly. To set it up with market data from 2012 onwards:
 
@@ -30,7 +16,7 @@ fixedincome = FixedIncome(start_date="2012-01-01")
 
 The `start_date` only affects the market data functions; the valuation functions below ignore it.
 
-## Bond Statistics
+### Bond Statistics
 
 `collect_bond_statistics` returns the key figures of a single bond in one call. Take a bond with a par value of 1,000, a 5% coupon paid twice a year, five years to maturity and a yield to maturity of 8%. Because the yield is above the coupon rate, the bond has to trade below par to give the buyer that yield. To calculate its statistics:
 
@@ -60,7 +46,7 @@ Which gives a present value of 878.34, a discount of about 12% to par:
 
 The current yield is the annual coupon of 50 divided by the price, and the effective yield is the coupon rate compounded over the two payments in a year. The modified duration of 4.27 says the price falls by roughly 4.27% when the yield rises by one percentage point, and the DV01 puts that in currency: about 0.38 per bond for a one basis point move. Convexity measures how much that sensitivity itself changes as yields move, the correction you add for larger rate shocks.
 
-## Duration across Coupons and Maturities
+### Duration across Coupons and Maturities
 
 Without a coupon rate or maturity, `get_duration` calculates the duration for a grid of both: coupon rates from 0.5% to 15% against maturities of one to ten years, at a yield to maturity of 8% and annual coupons by default. That shows at a glance how the two drive interest rate risk. To calculate the modified duration for the whole grid:
 
@@ -74,7 +60,7 @@ Which shows duration rising with maturity and falling with the coupon rate, sinc
 
 Set `duration_type` to `"macaulay"`, `"effective"` or `"dollar"` for the other measures, or pass `coupon_rate` and `years_to_maturity` to calculate a single bond.
 
-## Pricing Swaptions with Black and Bachelier
+### Pricing Swaptions with Black and Bachelier
 
 A swaption gives the holder the right, but not the obligation, to enter an interest rate swap at a fixed strike rate. A receiver swaption, the default, pays off when rates fall below the strike, which makes it a hedge against falling rates. `get_derivative_price` values it with either the Black model, which assumes the swap rate is lognormally distributed, or the Bachelier model, which assumes normally distributed rates and therefore also works when rates are negative.
 
@@ -108,7 +94,7 @@ Which returns a price for each strike rate and maturity, with the swap's tenor e
 Passing a lognormal quote such as 0.20 to the Bachelier model without `volatility_type` treats it as 2,000 basis points of normal volatility and overprices the swaption many times over. A normal volatility quote of, say, 65 basis points is passed as `volatility=0.0065`.
 </div>
 
-## Euribor and Central Bank Rates
+### Euribor and Central Bank Rates
 
 Swaps reference a benchmark rate such as Euribor or SOFR, and those in turn follow the policy rates of the central banks. To get the Euribor rates for four maturities:
 
@@ -132,7 +118,7 @@ Which gives daily series, shown here as one observation per week, with the ECB d
 
 {% include ft-chart.html id="fixed-income-central-banks" src="/assets/data/financetoolkit-guides/fixed-income.json" label="Policy rates of the European Central Bank and the Federal Reserve" %}
 
-## Government Bond Yields
+### Government Bond Yields
 
 Government bond yields are the risk-free benchmark against which every other bond is priced. `get_government_bond_yield` returns the 10-year yield by default and the 3-month yield with `short_term=True`. To get the 10-year yields and select five large bond markets:
 
@@ -146,7 +132,7 @@ Which shows German and Japanese yields below zero around 2019 and 2020, and the 
 
 {% include ft-chart.html id="fixed-income-government" src="/assets/data/financetoolkit-guides/fixed-income.json" label="10-year government bond yields for the United States, Japan, Germany, China and the United Kingdom" %}
 
-## Corporate Bonds: ICE BofA Indices
+### Corporate Bonds: ICE BofA Indices
 
 The ICE BofA corporate bond indices are widely used benchmarks for valuing fixed income portfolios. The option-adjusted spread (OAS) is the spread of an index over the Treasury curve after removing the value of embedded options such as call features, in basis points. It is the cleanest measure of what the market charges for credit risk. To get the spreads per credit rating:
 
@@ -169,7 +155,5 @@ Which shows an upward-sloping corporate curve, with the 1-3 year bucket at about
 {% include ft-chart.html id="fixed-income-ytw" src="/assets/data/financetoolkit-guides/fixed-income.json" label="ICE BofA yield to worst by maturity" %}
 
 The same indices are available as effective yield (`get_ice_bofa_effective_yield`) and total return (`get_ice_bofa_total_return`), each by rating or by maturity.
-
-<div class="fs-ref"><a href="/projects/financetoolkit/docs/fixedincome"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Fixed Income</a></div>
 
 {% include ft-charts-script.html %}

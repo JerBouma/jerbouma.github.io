@@ -10,6 +10,7 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /technicals
+    - /projects/financetoolkit/technicals-notebook
 sidebar:
     nav: "financetoolkit-docs-technicals"
 ---
@@ -23,6 +24,8 @@ pip install financetoolkit -U
 ```
 
 {% include algolia.html %}
+
+{% include financetoolkit-getting-started/technicals.md %}
 
 ## collect_all_indicators
 Calculates all Technical Indicators based on the data provided.

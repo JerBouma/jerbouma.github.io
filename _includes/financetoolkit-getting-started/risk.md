@@ -1,24 +1,10 @@
----
-title: "Risk"
-seo_title: "Risk Guide | Finance Toolkit"
-seo_title_suffix: false
-excerpt: "How to measure tail risk, drawdowns and volatility of stocks and a benchmark with the Finance Toolkit's Risk module."
-description: "Measure Value at Risk, Conditional VaR, drawdowns, the Ulcer Index, EWMA volatility and the Hurst Exponent in Python with the Finance Toolkit."
-author_profile: false
-permalink: /projects/financetoolkit/docs/getting-started/risk
-classes: wide-sidebar
-layout: single
-redirect_from:
-  - /projects/financetoolkit/risk-notebook
-sidebar:
-  nav: "financetoolkit-guides"
----
+## Getting Started
 
 The Risk module answers the question that comes before any return figure: what could go wrong, and how badly? It calculates Value at Risk (VaR), Conditional Value at Risk (CVaR), drawdown measures, the Ulcer Index, EWMA and GARCH volatility, the Hurst Exponent and more, for every ticker you load and for the benchmark next to them. Every metric works on the same historical data, so you can look at it per week, month, quarter or year without preparing anything yourself.
 
-This guide uses Microsoft, Apple, Amazon and Meta from 2013 onwards, with the S&P 500 as the benchmark.
+This section uses Microsoft, Apple, Amazon and Meta from 2013 onwards, with the S&P 500 as the benchmark.
 
-## Loading the Data
+### Loading the Data
 
 The Risk module is part of the `Toolkit` class, so the only setup is choosing the tickers and the start date. To load the data for the four companies:
 
@@ -34,7 +20,7 @@ companies = Toolkit(
 
 The historical prices and the treasury rates are collected the first time you call a risk function and reused for every call after that.
 
-## Value at Risk and Conditional Value at Risk
+### Value at Risk and Conditional Value at Risk
 
 Value at Risk is the loss that is not exceeded with a given probability: with the default `alpha=0.05`, a monthly VaR of -8% means that in 95% of months the return was better than -8%. Conditional Value at Risk (also called Expected Shortfall) is the average loss in the months that were worse than the VaR. VaR tells you where the tail starts, CVaR tells you how heavy it is, which is why risk managers and regulators increasingly prefer the latter.
 
@@ -72,7 +58,7 @@ Which shows the spikes in tail risk around the COVID-19 crash of March 2020 and 
 
 VaR also accepts `distribution="gaussian"`, `"studentt"`, `"cornish-fisher"` or `"evt"` (a Peak-over-Threshold fit for the tail) when you'd rather not rely on the historical distribution alone.
 
-## The Ulcer Index and Growth
+### The Ulcer Index and Growth
 
 The Ulcer Index measures the depth and duration of declines from the most recent high, so it only punishes downside volatility. Each function accepts `growth=True` (and a `lag`) to show the change over time instead of the level, which makes it easy to see in which years the stress rose. To calculate the year-on-year change in the Ulcer Index:
 
@@ -84,7 +70,7 @@ Which shows 2022 standing out, when the Ulcer Index of the S&P 500 more than tri
 
 {% include ft-chart.html id="risk-ulcer" src="/assets/data/financetoolkit-guides/risk.json" label="Year-on-year change in the Ulcer Index" %}
 
-## Conditional Drawdown at Risk and the Tail Ratio
+### Conditional Drawdown at Risk and the Tail Ratio
 
 VaR and CVaR look at returns one period at a time. The Conditional Drawdown at Risk (CDaR) applies the same idea to the drawdown series: rather than asking how bad one period could be, it asks how deep the cumulative peak-to-trough loss could get. That is the measure that matters to an investor who holds through a bad stretch. The Tail Ratio compares the size of the best-case tail of returns (the 95th percentile) to the worst-case tail (the 5th percentile); above 1 means the gains outsize the losses.
 
@@ -102,7 +88,7 @@ Which gives the following, where the Tail Ratio dropped below 1 for every ticker
 
 {% include ft-chart.html id="risk-cdar-tail" src="/assets/data/financetoolkit-guides/risk.json" label="Quarterly Conditional Drawdown at Risk and yearly Tail Ratio" %}
 
-## Drawdown Duration and Recovery Time
+### Drawdown Duration and Recovery Time
 
 The size of a drawdown is only half the story; how long it lasts matters just as much to anyone who has to explain it. The Maximum Drawdown Duration is the number of trading days the worst decline in each period took, from the peak to the trough. The Maximum Drawdown Recovery Time is the number of trading days it then took to get back to the previous high, and is empty when the price had not recovered by the end of the period. To calculate both per year:
 
@@ -120,7 +106,7 @@ Which shows 2022 as the year in which the worst decline lasted for most of the y
 
 {% include ft-chart.html id="risk-drawdown-duration" src="/assets/data/financetoolkit-guides/risk.json" label="Maximum drawdown duration and recovery time per year in trading days" %}
 
-## EWMA Volatility and the Hurst Exponent
+### EWMA Volatility and the Hurst Exponent
 
 The EWMA volatility follows the RiskMetrics methodology: it weights recent returns more heavily than older ones (with a decay factor `lambda_` of 0.94 by default), so it reacts to a change in the volatility regime much faster than a fixed rolling window. The Hurst Exponent says something about the character of a return series: below 0.5 it tends to mean-revert, around 0.5 it behaves like a random walk and above 0.5 it tends to trend.
 
@@ -138,7 +124,7 @@ The EWMA volatility below is shown at the end of each week, and peaks in March 2
 
 The Hurst Exponent is one number per ticker, and for these five it ends up between about 0.46 and 0.49, just under 0.5. Daily returns of large, liquid stocks behave close to a random walk, with at most a slight tendency to mean-revert.
 
-## Returns against the Maximum Drawdown
+### Returns against the Maximum Drawdown
 
 Putting the returns next to the drawdowns shows how much pain came with the gains. To get the weekly returns and the maximum drawdown in each quarter:
 
@@ -156,7 +142,7 @@ The quarterly maximum drawdown makes those periods explicit. The S&P 500 lost ab
 
 {% include ft-chart.html id="risk-max-drawdown" src="/assets/data/financetoolkit-guides/risk.json" label="Maximum drawdown per quarter" %}
 
-## Using the Risk Models with Your Own Data
+### Using the Risk Models with Your Own Data
 
 Every metric in the module is a plain function underneath, which you can call on any pandas Series or DataFrame of returns. That is useful for a fund's own return history, a backtest or simulated returns that don't come from a ticker. The models live in `financetoolkit.risk`. To calculate a set of statistics for four series of random returns:
 
@@ -197,7 +183,5 @@ Which returns the statistics per series, with a negative (excess) kurtosis as yo
 | Entropic Value at Risk |   -0.2176 |   -0.2023 |   -0.1970 |   -0.2311 |
 
 The module covers many more metrics than shown here, among them [GARCH](/projects/financetoolkit/docs/risk#get_garch), [GJR-GARCH](/projects/financetoolkit/docs/risk#get_gjr_garch) and [EGARCH](/projects/financetoolkit/docs/risk#get_egarch) with forecasts, [copulas](/projects/financetoolkit/docs/risk#get_best_fitting_copula), [CoVaR](/projects/financetoolkit/docs/risk#get_covar), [marginal](/projects/financetoolkit/docs/risk#get_marginal_value_at_risk) and [component VaR](/projects/financetoolkit/docs/risk#get_component_value_at_risk) and [VaR backtests](/projects/financetoolkit/docs/risk#get_var_backtest).
-
-<div class="fs-ref"><a href="/projects/financetoolkit/docs/risk"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Risk</a></div>
 
 {% include ft-charts-script.html %}

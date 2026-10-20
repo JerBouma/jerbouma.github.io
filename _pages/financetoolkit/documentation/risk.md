@@ -10,6 +10,7 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /risk
+    - /projects/financetoolkit/risk-notebook
 sidebar:
     nav: "financetoolkit-docs-risk"
 ---
@@ -23,6 +24,8 @@ pip install financetoolkit -U
 ```
 
 {% include algolia.html %}
+
+{% include financetoolkit-getting-started/risk.md %}
 
 ## collect_all_metrics
 Calculates and collects all risk metrics.

@@ -1,4 +1,4 @@
-"""Charts for the Economics guide (/projects/financetoolkit/docs/getting-started/economics)."""
+"""Charts for the Economics guide (/projects/financetoolkit/docs/economics#getting-started)."""
 
 from financetoolkit import Economics
 from financetoolkit.economics import oecd_model

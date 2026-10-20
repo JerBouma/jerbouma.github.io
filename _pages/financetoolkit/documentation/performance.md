@@ -10,6 +10,7 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /performance
+    - /projects/financetoolkit/performance-notebook
 sidebar:
     nav: "financetoolkit-docs-performance"
 ---
@@ -23,6 +24,8 @@ pip install financetoolkit -U
 ```
 
 {% include algolia.html %}
+
+{% include financetoolkit-getting-started/performance.md %}
 
 ## collect_all_metrics
 Calculates and collects all performance metrics.

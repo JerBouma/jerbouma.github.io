@@ -1,6 +1,6 @@
 """Builds the data behind the interactive charts in the Finance Toolkit Getting Started guides.
 
-Each guide page under /projects/financetoolkit/docs/getting-started has a builder module in
+Each guide page under /projects/financetoolkit/docs#getting-started has a builder module in
 _scripts/financetoolkit_guides/ that runs the same Finance Toolkit calls as the code on that
 page and returns its charts. This script runs one, several or all of them and writes each to
 assets/data/financetoolkit-guides/<guide>.json, which the page draws with ECharts:

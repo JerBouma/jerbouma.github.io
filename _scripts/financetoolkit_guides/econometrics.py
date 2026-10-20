@@ -1,4 +1,4 @@
-"""Charts for the Econometrics guide (/projects/financetoolkit/docs/getting-started/econometrics)."""
+"""Charts for the Econometrics guide (/projects/financetoolkit/docs/econometrics#getting-started)."""
 
 from financetoolkit import Toolkit
 
@@ -42,7 +42,7 @@ def build() -> dict:
     effects.index = effects.index.str.replace("Entity Effect: ", "")
     effects = effects.sort_values(ascending=False)
     charts["econometrics-entity-effects"] = {
-        "type": "hbar",
+        "type": "bar",
         "title": "Entity effects: each stock's own average weekly return",
         "x": list(effects.index),
         "series": [{"name": "Entity effect", "data": [round(float(v), 4) for v in effects]}],

@@ -1,24 +1,10 @@
----
-title: "Technicals"
-seo_title: "Technicals Guide | Finance Toolkit"
-seo_title_suffix: false
-excerpt: "How to calculate momentum, overlap, volatility and breadth indicators such as the RSI, Bollinger Bands and the volatility cone with the Finance Toolkit's Technicals module."
-description: "Calculate 60+ technical indicators in Python with the Finance Toolkit: RSI, Bollinger Bands, ADX, Donchian Channels, VWAP, pivot points and breadth."
-author_profile: false
-permalink: /projects/financetoolkit/docs/getting-started/technicals
-classes: wide-sidebar
-layout: single
-redirect_from:
-  - /projects/financetoolkit/technicals-notebook
-sidebar:
-  nav: "financetoolkit-guides"
----
+## Getting Started
 
 The Technicals module calculates technical indicators from the historical prices and volumes the Toolkit collects. It covers four groups: breadth indicators (such as On-Balance Volume and the TRIN), momentum indicators (such as the RSI, the MACD and the Average Directional Index), overlap indicators (moving averages, Bollinger Bands, VWAP and pivot points) and volatility indicators (such as the Average True Range and the volatility cone). Every indicator is calculated for each ticker and for the benchmark, so you can compare a stock's signal with that of the market on the same day.
 
-This guide uses Microsoft, ASML, Micron and Amazon over 2023, with the S&P 500 as the benchmark.
+This section uses Microsoft, ASML, Micron and Amazon over 2023, with the S&P 500 as the benchmark.
 
-## Loading the Data
+### Loading the Data
 
 The Technicals module is part of the `Toolkit` class and works on daily data by default. A start and end date fix the period, which keeps the results the same each time you run them.
 
@@ -37,7 +23,7 @@ companies = Toolkit(
 )
 ```
 
-## All Indicators at Once
+### All Indicators at Once
 
 Each group has its own `collect_` function (`collect_breadth_indicators`, `collect_momentum_indicators`, `collect_overlap_indicators` and `collect_volatility_indicators`), and `collect_all_indicators` returns all of them in one DataFrame with a column per indicator and ticker. To calculate every indicator for every ticker:
 
@@ -58,7 +44,7 @@ Which gives about 70 indicators for each day. A selection of them on the last tr
 | Average True Range | 10.30 | 23.13 | 2.31 | 2.81 | 17.86 |
 | Money Flow Index | 76.89 | 77.07 | 72.33 | 62.13 | 69.22 |
 
-## Bollinger Bands
+### Bollinger Bands
 
 Every indicator also has its own function. Bollinger Bands place a band of two standard deviations around a moving average (14 days by default), so the bands widen when the price moves a lot and narrow when it is calm. A close above the upper band is often read as stretched, a squeeze of the bands as a sign that a larger move is coming.
 
@@ -74,7 +60,7 @@ Which gives:
 
 {% include ft-chart.html id="technicals-bollinger" src="/assets/data/financetoolkit-guides/technicals.json" label="Bollinger Bands for Microsoft over 2023" %}
 
-## Changing the Parameters
+### Changing the Parameters
 
 Each indicator takes its own parameters, such as the window, and the general `growth` and `lag` parameters that the whole Toolkit supports. The Average Directional Index (ADX) measures the strength of a trend, whatever its direction: a reading above 25 is usually taken as a trending market, below 20 as a market without direction.
 
@@ -92,7 +78,7 @@ Which gives, for Microsoft:
 
 The longer the lag, the larger the swings, since the change builds up over more days. Over the last ten trading days of 2023 Microsoft's ADX fell by about 11%, a trend that was losing strength into the end of the year.
 
-## Relative Strength Index
+### Relative Strength Index
 
 The Relative Strength Index (RSI) compares the size of recent gains with recent losses on a scale of 0 to 100. Above 70 a stock is usually considered overbought, below 30 oversold.
 
@@ -108,7 +94,7 @@ Which gives, with a tab per company and the S&P 500:
 
 In the strong market of 2023, the S&P 500 closed above 70 on 41 days, against 13 to 23 days for each of the four companies. ASML is the only one that also spent time below 30, on 10 days.
 
-## Donchian Channels and the Hull Moving Average
+### Donchian Channels and the Hull Moving Average
 
 Donchian Channels plot the highest high and the lowest low over a rolling window (20 days by default), with the middle line halfway between them. A close above the upper channel is a breakout to a new high for the window, which is the basis of many trend-following systems. The Hull Moving Average combines weighted moving averages of different lengths to follow the price closely with less lag than a simple moving average.
 
@@ -124,7 +110,7 @@ Which gives, for Microsoft with a tab per indicator:
 
 {% include ft-chart.html id="technicals-donchian-hull" src="/assets/data/financetoolkit-guides/technicals.json" label="Donchian Channels and Hull Moving Average for Microsoft over 2023" %}
 
-## VWAP, Parabolic SAR and Pivot Points
+### VWAP, Parabolic SAR and Pivot Points
 
 The Volume Weighted Average Price (VWAP) is the average price weighted by the volume traded, a common benchmark for whether a trade was executed at a good price. The Parabolic SAR (Stop and Reverse) is a trailing level below the price in an uptrend and above it in a downtrend; when the price crosses it, the trend is considered to have reversed. Pivot Points derive support and resistance levels from the previous day's high, low and close.
 
@@ -142,7 +128,7 @@ Which gives, for Microsoft with a tab per indicator (the Pivot Points tab shows 
 
 {% include ft-chart.html id="technicals-overlap" src="/assets/data/financetoolkit-guides/technicals.json" label="VWAP, Parabolic SAR and Pivot Points for Microsoft over 2023" %}
 
-## Volatility Cone
+### Volatility Cone
 
 The volatility cone shows the distribution of realized volatility (annualized) for several lookback windows, from 10 to 120 trading days: the minimum, maximum, median and percentiles of every rolling window in the period, next to the current value. It tells you whether volatility today is cheap or expensive compared to its own history, which is a starting point for judging whether options are priced high or low.
 
@@ -158,7 +144,7 @@ Which gives, with a line per percentile and the current value:
 
 At the end of 2023, Microsoft's volatility was below the 10th percentile for every window, and at the lowest level of the year for the 10-day window, at about 9%. The cone also narrows as the window grows: short windows swing between calm and turbulent weeks, long windows average them out.
 
-## Breadth Indicators
+### Breadth Indicators
 
 Breadth indicators are calculated across all tickers in the `Toolkit` at once, rather than per ticker over time, so they describe the basket (or the market, if you load enough tickers) as a whole. The value is therefore the same in every ticker's column. The TRIN (Arms Index) divides the ratio of advancing to declining stocks by the ratio of their volume: below 1, the volume is concentrated in rising stocks, which is a bullish sign, and above 1 in falling stocks. New Highs - New Lows counts the tickers that set a new high for the window minus those that set a new low.
 
@@ -178,7 +164,7 @@ Which gives, with a tab per indicator:
 
 With only five instruments the TRIN is erratic: on a day when nearly all the volume is in the one or two falling stocks it spikes far above 1, while its median over the year is about 0.76. Breadth indicators become meaningful with a broad set of tickers, for example every company in a sector or industry, which you can find with the [Finance Database](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}.
 
-## Using the Models Directly
+### Using the Models Directly
 
 The calculations behind the module are plain functions in `financetoolkit.technicals`, grouped by kind (`breadth_model`, `momentum_model`, `overlap_model` and `volatility_model`). They take a pandas Series or DataFrame, so you can run them on your own data or on a scenario without the `Toolkit` class.
 
@@ -217,7 +203,5 @@ And the Bollinger Bands:
 | 4 | 159.00 | 137.00 | 115.00 | 148 |
 
 In a steady uptrend the conversion line stays above the base line and Leading Span A above Leading Span B, which is the textbook bullish configuration of the Ichimoku Cloud.
-
-<div class="fs-ref"><a href="/projects/financetoolkit/docs/technicals"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Technicals</a></div>
 
 {% include ft-charts-script.html %}

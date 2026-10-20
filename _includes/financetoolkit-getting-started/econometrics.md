@@ -1,24 +1,10 @@
----
-title: "Econometrics"
-seo_title: "Econometrics Guide | Finance Toolkit"
-seo_title_suffix: false
-excerpt: "How to test whether stocks are really related with OLS, normality tests, Granger causality, cointegration and panel regressions in the Finance Toolkit."
-description: "Run OLS, Jarque-Bera, Granger causality, ADF, Engle-Granger cointegration and fixed effects panel regressions on stock returns with the Finance Toolkit."
-author_profile: false
-permalink: /projects/financetoolkit/docs/getting-started/econometrics
-classes: wide-sidebar
-layout: single
-redirect_from:
-  - /projects/financetoolkit/econometrics-notebook
-sidebar:
-  nav: "financetoolkit-guides"
----
+## Getting Started
 
 A correlation matrix is where most analyses of how stocks relate start, and too often where they end. The Econometrics module goes further with the methods you'd otherwise set up by hand in `statsmodels` or `linearmodels`: regressions with proper standard errors, normality and unit root tests, Granger causality, cointegration, panel estimators, causal inference and forecasting models, all run directly on the tickers of a `Toolkit`.
 
-This guide follows one question from start to finish: **is Apple's stock really tied to its chip suppliers and megacap peers, or does it only look that way from pairwise correlations?** The universe holds Apple's RF, modem and foundry suppliers (`QCOM`, `SWKS`, `TSM`), other megacap tech (`MSFT`, `GOOGL`, `AMZN`, `META`, `NVDA`) and two names from unrelated sectors as a contrast (`XOM`, `PG`). The benchmark is left out on purpose, so the results are not just the whole market moving together.
+This section follows one question from start to finish: **is Apple's stock really tied to its chip suppliers and megacap peers, or does it only look that way from pairwise correlations?** The universe holds Apple's RF, modem and foundry suppliers (`QCOM`, `SWKS`, `TSM`), other megacap tech (`MSFT`, `GOOGL`, `AMZN`, `META`, `NVDA`) and two names from unrelated sectors as a contrast (`XOM`, `PG`). The benchmark is left out on purpose, so the results are not just the whole market moving together.
 
-## Installation and Loading the Data
+### Installation and Loading the Data
 
 The module depends on `statsmodels` and `linearmodels`, so it ships as an optional extra. To install it:
 
@@ -39,7 +25,7 @@ companies = Toolkit(
 )
 ```
 
-## Does Anything Explain Apple's Returns?
+### Does Anything Explain Apple's Returns?
 
 An OLS regression of Apple's weekly returns on all the other tickers at once controls for every regressor at the same time, unlike a pairwise correlation, which can mislead when the regressors are correlated with each other. Without arguments, the first ticker of the `Toolkit` is the dependent variable and every other ticker an independent variable. To run the regression:
 
@@ -69,7 +55,7 @@ The same coefficients with their 95% confidence intervals, where the coloured on
 
 Only some of the plausible relationships survive. The chip suppliers `QCOM` and `SWKS` and the megacap peers `MSFT` and `GOOGL` are significant, while `AMZN`, `META`, `NVDA` and the unrelated `XOM` are not. Two results go against intuition: `PG`, a consumer staples company picked as an unrelated contrast, is significant, while Apple's own foundry `TSM` is not. That is a first hint of multicollinearity: when the regressors move together, a multiple regression can both hide and manufacture relationships. Use `dependent_ticker` and `independent_tickers` to choose the variables yourself, `include_benchmark=True` to add the market, and `cov_type="HC1"` or `"HAC"` for robust standard errors.
 
-## Can the P-Values Be Trusted?
+### Can the P-Values Be Trusted?
 
 The t-tests of OLS assume well-behaved residuals, and returns that are far from normal would undermine them. The Jarque-Bera test combines skewness and excess kurtosis into one statistic, with normality as the null hypothesis. To run it on the quarterly returns of Apple and its three chip suppliers:
 
@@ -90,7 +76,7 @@ Which gives the following:
 
 None of the four comes close to rejecting normality, with every p-value well above 0.05, so there is no red flag for the significance calls above. Keep in mind that four years of quarterly returns is a small sample, which makes the test lenient; on daily returns, normality is almost always rejected.
 
-## Is the Relationship Predictive?
+### Is the Relationship Predictive?
 
 `SWKS` has one of the strongest coefficients, but that only shows the two stocks moved together in the same week. Granger causality asks whether the past values of one ticker help predict the other beyond its own history, which would point to a lead-lag relationship. `get_granger_causality` tests every ordered pair of tickers in one go. To run it and select the Apple and Skyworks pairs:
 
@@ -109,7 +95,7 @@ Which gives the following:
 
 Neither direction is significant: the relationship between Skyworks and Apple is contemporaneous, the two move together in the same week, and neither helps forecast the other.
 
-## What about the Long Run?
+### What about the Long Run?
 
 `TSM` is Apple's foundry partner, yet its returns were not significant. Short-run returns and long-run price levels answer different questions, though: two price series can share a long-run equilibrium (cointegration) without any short-run relationship in their returns. Before testing for that, the Augmented Dickey-Fuller (ADF) test checks whether the price levels are non-stationary, which is its null hypothesis and what you would expect of a price. The Engle-Granger test then checks every ordered pair for cointegration. To run both on quarterly prices:
 
@@ -143,7 +129,7 @@ And the following Engle-Granger results:
 
 Apple's price does not reject the unit root, as expected of a price level. `TSM` does reject it at the 5% level, but with only 11 usable observations that is a result to treat with caution rather than at face value. Either way, the Engle-Granger test finds no cointegration between the two: over this window, even Apple's own foundry shows no detectable long-run price equilibrium with Apple, at least not with this few observations. Monthly or weekly prices give the tests far more observations to work with.
 
-## Does the Whole Panel Share a Common Factor?
+### Does the Whole Panel Share a Common Factor?
 
 Rather than one pair at a time, `get_fixed_effects` treats every remaining ticker as an entity in a panel and estimates one common sensitivity to `SWKS`, after removing each entity's own time-invariant average return (its entity effect). To fit the panel on weekly returns:
 
@@ -163,7 +149,7 @@ Which gives a coefficient on `SWKS` of 0.47, with a standard error of 0.02 and a
 
 The whole panel shares a highly significant sensitivity to `SWKS`, including `XOM` and `PG`, the two names picked for being unrelated. That is the giveaway: with the benchmark excluded, the return of `SWKS` stands in for market-wide comovement rather than a genuine semiconductor supply chain effect. A cleaner test adds the market factor explicitly, for example with `include_benchmark=True` in `get_ols`, and checks what is left.
 
-## Using the Models with Your Own Data
+### Using the Models with Your Own Data
 
 Every method is also available as a plain function in `financetoolkit.econometrics`, which works on any pandas Series or DataFrame, for example a factor you constructed yourself. To regress a simulated asset return on a simulated factor and test the asset return for normality:
 
@@ -189,7 +175,5 @@ print(diagnostics_model.get_jarque_bera_test(asset_return))
 Which recovers the true slope of 2.5 closely, with an estimate of 2.43 (standard error 0.05, p-value close to zero) and an intercept that is not significant (p-value 0.94). The Jarque-Bera test gives a statistic of 0.09 and a p-value of 0.95, so the normally distributed simulated returns pass as normal.
 
 The module holds 48 methods, including [KPSS](/projects/financetoolkit/docs/econometrics#get_kpss_test), [Phillips-Perron](/projects/financetoolkit/docs/econometrics#get_phillips_perron_test) and [Zivot-Andrews](/projects/financetoolkit/docs/econometrics#get_zivot_andrews_test) unit root tests, [Johansen cointegration](/projects/financetoolkit/docs/econometrics#get_johansen_cointegration), [random effects](/projects/financetoolkit/docs/econometrics#get_random_effects) and the [Hausman test](/projects/financetoolkit/docs/econometrics#get_hausman_test), causal inference with [Difference-in-Differences](/projects/financetoolkit/docs/econometrics#get_difference_in_differences) and [Synthetic Control](/projects/financetoolkit/docs/econometrics#get_synthetic_control), forecasting with [ARIMA](/projects/financetoolkit/docs/econometrics#get_arima_forecast) and [VAR](/projects/financetoolkit/docs/econometrics#get_var_forecast), and [event studies](/projects/financetoolkit/docs/econometrics#get_event_study).
-
-<div class="fs-ref"><a href="/projects/financetoolkit/docs/econometrics"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Econometrics</a></div>
 
 {% include ft-charts-script.html %}

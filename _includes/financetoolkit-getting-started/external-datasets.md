@@ -1,26 +1,12 @@
----
-title: "External Datasets"
-seo_title: "External Datasets Guide | Finance Toolkit"
-seo_title_suffix: false
-excerpt: "How to run the Finance Toolkit's ratios, models, performance and risk metrics on financial statements from your own data source."
-description: "Load financial statements from Yahoo Finance or any other source into the Finance Toolkit and calculate ratios, DuPont, beta and drawdowns in Python."
-author_profile: false
-permalink: /projects/financetoolkit/docs/getting-started/external-datasets
-classes: wide-sidebar
-layout: single
-redirect_from:
-  - /projects/financetoolkit/external-datasets
-sidebar:
-  nav: "financetoolkit-guides"
----
+## Using External Datasets
 
 The Finance Toolkit doesn't have to fetch its own financial statements. You can hand it statements from any source, whether that is a data vendor's API, a CSV export from a terminal, your own database or a library such as `yfinance`, and every ratio, model, performance and risk metric works on them exactly as it does on the default data. That makes it possible to keep your existing data provider, to work with companies or periods your provider doesn't cover, or to check a calculation on statements you have adjusted yourself.
 
-The only step in between is telling the Toolkit what each line item in your data is called. This guide walks through that with the income statements, balance sheets and cash flow statements of Tesla and Alphabet as reported on Yahoo Finance for the fiscal years 2021 to 2024.
+The only step in between is telling the Toolkit what each line item in your data is called. This section walks through that with the income statements, balance sheets and cash flow statements of Tesla and Alphabet as reported on Yahoo Finance for the fiscal years 2021 to 2024.
 
-## Reading the Statements
+### Reading the Statements
 
-All files used in this guide, the statements of both companies and the filled-in normalisation files, are in the [external_datasets folder](https://github.com/JerBouma/FinanceToolkit/tree/main/examples/external_datasets){:target="_blank"} of the Finance Toolkit repository. Download that folder, or clone the repository, and run the code from the directory that contains it. The statements were collected with `yfinance`, which is a separate library and not part of the Finance Toolkit. Each file has the line items as rows and the fiscal years as columns. To read the six statements:
+All files used in this section, the statements of both companies and the filled-in normalisation files, are in the [external_datasets folder](https://github.com/JerBouma/FinanceToolkit/tree/main/examples/external_datasets){:target="_blank"} of the Finance Toolkit repository. Download that folder, or clone the repository, and run the code from the directory that contains it. The statements were collected with `yfinance`, which is a separate library and not part of the Finance Toolkit. Each file has the line items as rows and the fiscal years as columns. To read the six statements:
 
 ```python
 import pandas as pd
@@ -42,7 +28,7 @@ googl_cash = pd.read_csv("external_datasets/GOOGL_cash.csv", index_col=0)
 
 The line items carry Yahoo Finance's own names, such as `TotalRevenue`, `CostOfRevenue` and `NetIncomeFromContinuingOperationNetMinorityInterest`, and the most recent year comes first.
 
-## Filling the Normalisation Files
+### Filling the Normalisation Files
 
 The Finance Toolkit maps every source onto one set of names through four normalisation files: `balance.csv`, `income.csv`, `cash.csv` and `statistics.csv`. To copy the default files to your Downloads folder (pass `path` to save them elsewhere):
 
@@ -69,7 +55,7 @@ Each file has two columns. Column B holds the generic names the Finance Toolkit 
 
 The complete files for Yahoo Finance are in the same folder on GitHub, so for this data source you can use them as they are. A line item that has no counterpart in your data can stay empty; only the ratios that need it are skipped.
 
-## Combining the Statements
+### Combining the Statements
 
 The Toolkit expects one DataFrame per statement type for all companies together, with the ticker as the first level of the index. `combine_dataframes` builds that from a dictionary of ticker and statement. To combine the statements of both companies:
 
@@ -89,7 +75,7 @@ cash_flow_statements = dataframe_model.combine_dataframes(
 
 The result is three DataFrames with a row for every combination of ticker and line item and a column per fiscal year.
 
-## Initialising the Toolkit with Your Own Data
+### Initialising the Toolkit with Your Own Data
 
 The statements go into the `balance`, `income` and `cash` parameters, and `format_location` points to the folder with the filled-in normalisation files. The dates must run from left to right, oldest first, because growth rates and any ratio that uses an average of two years (such as asset turnover) shift the columns to find the previous year. Yahoo Finance puts the latest year first, which `reverse_dates=True` corrects. To initialise the Toolkit and show the normalised balance sheet:
 
@@ -108,7 +94,7 @@ companies.get_balance_sheet_statement()
 
 Which returns the balance sheets with the generic names from the normalisation files, such as `Total Assets`, `Total Debt` and `Cash and Cash Equivalents`, and the years in order from 2021 to 2024.
 
-## Ratios and Models
+### Ratios and Models
 
 From here on, everything works as with the default data. The Extended DuPont Analysis splits the return on equity into five drivers: the interest burden, the tax burden, the operating margin, the asset turnover and the equity multiplier, which multiply into the ROE. To run it on the custom statements:
 
@@ -160,7 +146,7 @@ Which gives, for a selection of the items:
 | Alphabet: Total Equity     |   1.8% |  10.6% |  14.7% |
 | Alphabet: Total Debt       |   4.5% |  -8.6% |  -6.1% |
 
-## Performance and Risk
+### Performance and Risk
 
 Performance and risk metrics need prices rather than statements. Without an API key, the Toolkit collects the historical prices from Yahoo Finance, which covers about five years, and uses the S&P 500 (SPY) as the benchmark. To calculate the beta of both companies on monthly returns:
 
@@ -194,7 +180,7 @@ Which shows that Alphabet more than doubled over the five years, ahead of the S&
 
 {% include ft-chart.html id="external-datasets-returns" src="/assets/data/financetoolkit-guides/external-datasets.json" label="Cumulative return of Tesla, Alphabet and the S&P 500" %}
 
-## Combining Your Data with an API Key
+### Combining Your Data with an API Key
 
 Custom statements and an API key can be used together: the Toolkit then uses your statements for every calculation based on them, and the API for everything else, such as analyst estimates, company profiles and longer price histories. To add the key and collect the analyst estimates:
 
@@ -215,7 +201,3 @@ companies.get_analyst_estimates()
 Which returns the low, high and average estimates for revenue, EBITDA, EBIT, net income, SG&A and EPS, together with the number of analysts, for past years and the years ahead. The average revenue and EPS estimates for both companies:
 
 {% include ft-chart.html id="external-datasets-estimates" src="/assets/data/financetoolkit-guides/external-datasets.json" label="Average analyst estimates for revenue and EPS of Tesla and Alphabet" %}
-
-<div class="fs-ref"><a href="/projects/financetoolkit/docs"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Finance Toolkit</a></div>
-
-{% include ft-charts-script.html %}

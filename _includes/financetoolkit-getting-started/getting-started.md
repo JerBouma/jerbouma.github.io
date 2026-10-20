@@ -1,32 +1,12 @@
----
-title: "Getting Started"
-seo_title: "Getting Started Guide | Finance Toolkit"
-seo_title_suffix: false
-excerpt: "Load the Finance Toolkit, pull historical prices and financial statements, apply growth, trailing, rolling and Z-Score options, and take a tour of every module."
-description: "Get started with the Finance Toolkit: load companies, historical data and financial statements, then tour each module from ratios to portfolios."
-author_profile: false
-permalink: /projects/financetoolkit/docs/getting-started
-classes: wide-sidebar
-layout: single
-redirect_from:
-  - /projects/financetoolkit/getting-started
-sidebar:
-  nav: "financetoolkit-guides"
----
+## Getting Started
 
-The Finance Toolkit computes 500+ financial ratios, indicators and models from the underlying data with one transparent formula each, so a margin or a Sharpe ratio means the same thing for every company and every period. This guide covers the basics: loading a set of companies, retrieving their prices and financial statements, the options that work across nearly every function, and a short tour of each module. Each module has its own guide with the full depth, linked at the end of its section.
+The Finance Toolkit computes 500+ financial ratios, indicators and models from the underlying data with one transparent formula each, so a margin or a Sharpe ratio means the same thing for every company and every period. This section covers the basics: loading a set of companies, retrieving their prices and financial statements, the options that work across nearly every function, and a short tour of each module. Each module's own documentation page opens with a Getting Started section that goes into full depth, linked at the end of its section below.
 
-## Installation
-
-The Finance Toolkit is on PyPI. To install or upgrade it:
-
-```bash
-pip install financetoolkit -U
-```
+### Data and API Keys
 
 Most data comes from Financial Modeling Prep, which needs an API key. The free plan allows 250 requests a day, five years of history and companies listed on US exchanges; the paid plans give 30+ years of annual and quarterly statements. You can get a key [through this link](/fmp){:target="_blank"}, which also gives 15% off the paid plans and supports the project. Without a key, or when a request is outside your plan, the Toolkit falls back to Yahoo Finance; set `enforce_source="FinancialModelingPrep"` to switch that off.
 
-## Loading the Toolkit
+### Loading the Toolkit
 
 Everything starts with a `Toolkit` instance for one or more tickers. The data is retrieved once and kept, so every ratio, model and indicator afterwards is computed from the same statements and prices without asking the data provider again. Annual statements are the default; add `quarterly=True` for quarterly statements (a paid Financial Modeling Prep plan).
 
@@ -44,7 +24,7 @@ companies = Toolkit(
 
 Every example below uses this `companies` instance.
 
-## Historical Data
+### Historical Data
 
 `get_historical_data` returns open, high, low, close, adjusted close, volume, dividends, returns and cumulative returns for every ticker, plus the benchmark (the S&P 500 through SPY by default; change it with `benchmark_ticker`). The period can be `daily` (the default), `weekly`, `monthly`, `quarterly` or `yearly`.
 
@@ -82,7 +62,7 @@ Which shows, among other fields:
 | Instrument Type  | EQUITY     | EQUITY     | EQUITY     | EQUITY     |
 | First Trade Date | 1980-12-12 | 1986-03-13 | 2004-08-19 | 1997-05-15 |
 
-## Financial Statements
+### Financial Statements
 
 The balance sheet, income statement and cash flow statement come back in one standardized layout for every company: the rows are the ticker and the line item, the columns the fiscal years (or quarters with `quarterly=True`). Because the line items have the same names for every company, comparing Apple's equity with Amazon's is a matter of selecting a row.
 
@@ -106,7 +86,7 @@ The last line selects total shareholder equity for all four companies, which plo
 
 Apple stands out: its equity peaked in 2017 and has since fallen by almost half, because its buybacks and dividends return more than it earns, while Microsoft, Alphabet and Amazon each built up several hundred billion dollars.
 
-## Growth, Trailing, Rolling and Z-Scores
+### Growth, Trailing, Rolling and Z-Scores
 
 A handful of parameters work across nearly every function in the Toolkit, from the statements to the ratios, risk and performance metrics.
 
@@ -153,7 +133,7 @@ Which gives the three series, one per tab:
 
 The trailing margins show how far apart these businesses are: Microsoft keeps about 36 cents of every dollar of revenue, Amazon less than 7.
 
-## Analyst Estimates and ESG Scores
+### Analyst Estimates and ESG Scores
 
 Beyond the reported figures, the Toolkit also retrieves the analyst consensus for the coming years: the low, high and average estimates of revenue, EBITDA, EBIT, net income, SG&A and EPS, and the number of analysts behind each. The ESG scores give the environmental, social and governance scores per year.
 
@@ -167,11 +147,11 @@ companies.get_esg_scores()
 
 The earnings calendar, dividend calendar, company profiles, quotes, news and more are available in the same way; the [Toolkit reference](/projects/financetoolkit/docs) lists every function.
 
-## Explore the Modules
+### Explore the Modules
 
-The metrics are organized in modules. Most hang off the `Toolkit` (`companies.ratios`, `companies.risk` and so on) and reuse the data it already holds; `Discovery`, `Economics`, `FixedIncome` and `Portfolio` are classes of their own. Each section below gives a taste of one module and links to its guide.
+The metrics are organized in modules. Most hang off the `Toolkit` (`companies.ratios`, `companies.risk` and so on) and reuse the data it already holds; `Discovery`, `Economics`, `FixedIncome` and `Portfolio` are classes of their own. Each section below gives a taste of one module and links to its documentation.
 
-### Discovery
+#### Discovery
 
 The Discovery module finds instruments when you don't know the ticker yet: lists of stocks, ETFs, indices, cryptocurrencies, forex and commodities, a stock screener, sector performance, news, IPOs and more.
 
@@ -191,9 +171,9 @@ discovery.get_stock_screener(
 )
 ```
 
-Read the [Discovery guide](/projects/financetoolkit/docs/getting-started/discovery).
+The [Discovery documentation](/projects/financetoolkit/docs/discovery#getting-started) opens with a full walkthrough.
 
-### Ratios
+#### Ratios
 
 The Ratios module covers 80+ efficiency, liquidity, profitability, solvency and valuation ratios, calculated from the statements loaded above, plus custom ratios you define yourself.
 
@@ -207,9 +187,9 @@ companies.ratios.collect_all_ratios()
 companies.ratios.get_effective_tax_rate()
 ```
 
-Read the [Ratios guide](/projects/financetoolkit/docs/getting-started/ratios).
+The [Ratios documentation](/projects/financetoolkit/docs/ratios#getting-started) opens with a full walkthrough.
 
-### Models
+#### Models
 
 The Models module combines ratios and statements into complete models: the (Extended) DuPont analysis, the Weighted Average Cost of Capital, the Altman Z-Score, the Piotroski F-Score, intrinsic valuation and more.
 
@@ -225,9 +205,9 @@ companies.models.get_weighted_average_cost_of_capital()
 
 For Apple, the Extended DuPont analysis shows that an equity multiplier above 5 drives most of its return on equity of well over 100%.
 
-Read the [Models guide](/projects/financetoolkit/docs/getting-started/models).
+The [Models documentation](/projects/financetoolkit/docs/models#getting-started) opens with a full walkthrough.
 
-### Options
+#### Options
 
 The Options module prices options with the Black-Scholes and Binomial models and calculates the Greeks for every strike price and expiration.
 
@@ -241,9 +221,9 @@ companies.options.get_black_scholes_model()
 companies.options.get_binomial_model(american_option=True)
 ```
 
-Read the [Options guide](/projects/financetoolkit/docs/getting-started/options).
+The [Options documentation](/projects/financetoolkit/docs/options#getting-started) opens with a full walkthrough.
 
-### Technicals
+#### Technicals
 
 The Technicals module offers 40+ technical indicators in four groups: breadth, overlap, momentum and volatility.
 
@@ -257,9 +237,9 @@ companies.technicals.collect_all_indicators()
 companies.technicals.get_bollinger_bands()
 ```
 
-Read the [Technicals guide](/projects/financetoolkit/docs/getting-started/technicals).
+The [Technicals documentation](/projects/financetoolkit/docs/technicals#getting-started) opens with a full walkthrough.
 
-### Risk
+#### Risk
 
 The Risk module measures downside risk: Value at Risk and Conditional Value at Risk, drawdowns, the Ulcer Index, volatility, skewness, kurtosis and more.
 
@@ -273,9 +253,9 @@ companies.risk.get_conditional_value_at_risk(period="monthly")
 companies.risk.get_ulcer_index(period="yearly", growth=True)
 ```
 
-Read the [Risk guide](/projects/financetoolkit/docs/getting-started/risk).
+The [Risk documentation](/projects/financetoolkit/docs/risk#getting-started) opens with a full walkthrough.
 
-### Performance
+#### Performance
 
 The Performance module covers risk-adjusted returns: alpha, beta, the Sharpe, Sortino and Treynor ratios, the Capital Asset Pricing Model, the Fama-French factors and more.
 
@@ -289,9 +269,9 @@ companies.performance.get_jensens_alpha(period="quarterly")
 companies.performance.get_capital_asset_pricing_model(period="yearly")
 ```
 
-Read the [Performance guide](/projects/financetoolkit/docs/getting-started/performance).
+The [Performance documentation](/projects/financetoolkit/docs/performance#getting-started) opens with a full walkthrough.
 
-### Econometrics
+#### Econometrics
 
 The Econometrics module brings regressions, hypothesis tests, unit root and cointegration tests, panel data estimators, causal inference and forecasting to the same data. It relies on `statsmodels` and `linearmodels`, so it is installed as an extra with `pip install "financetoolkit[econometrics]" -U`.
 
@@ -305,9 +285,9 @@ companies.econometrics.get_ols(period="weekly")
 companies.econometrics.get_jarque_bera_test(period="weekly")
 ```
 
-Read the [Econometrics guide](/projects/financetoolkit/docs/getting-started/econometrics).
+The [Econometrics documentation](/projects/financetoolkit/docs/econometrics#getting-started) opens with a full walkthrough.
 
-### Fixed Income
+#### Fixed Income
 
 The Fixed Income module prices bonds and calculates their analytics, such as yields, duration and convexity, prices swaptions with the Black-76 and Bachelier models, and retrieves government bond and corporate bond yields.
 
@@ -338,9 +318,9 @@ Which gives, among others:
 | DV01                | 0.38   |
 | Convexity           | 21.70  |
 
-Read the [Fixed Income guide](/projects/financetoolkit/docs/getting-started/fixed-income).
+The [Fixed Income documentation](/projects/financetoolkit/docs/fixedincome#getting-started) opens with a full walkthrough.
 
-### Economics
+#### Economics
 
 The Economics module gives 50+ macroeconomic indicators for 60+ countries, from GDP and inflation to unemployment, interest rates and confidence indicators, independent of any ticker.
 
@@ -358,9 +338,9 @@ economics.get_consumer_confidence_index()[countries]
 economics.get_long_term_interest_rate(period="quarterly")[countries]
 ```
 
-Read the [Economics guide](/projects/financetoolkit/docs/getting-started/economics).
+The [Economics documentation](/projects/financetoolkit/docs/economics#getting-started) opens with a full walkthrough.
 
-### Portfolio
+#### Portfolio
 
 The Portfolio module analyzes your own transactions: the positions and their weights, profit and loss per transaction, performance against a benchmark and the portfolio-wide risk and performance metrics. Without a dataset it loads an example portfolio and writes the templates for your own to the working directory.
 
@@ -378,9 +358,9 @@ portfolio.get_portfolio_overview(include_portfolio=True)
 portfolio.get_transactions_overview(pnl_method="FIFO")
 ```
 
-Read the [Portfolio guide](/projects/financetoolkit/docs/getting-started/portfolio).
+The [Portfolio documentation](/projects/financetoolkit/docs/portfolio#getting-started) opens with a full walkthrough.
 
-### External Datasets
+#### External Datasets
 
 The Toolkit doesn't need Financial Modeling Prep: you can pass your own statements and prices from any source, map their line items to the Toolkit's names once with the normalization files, and every module works on them as usual.
 
@@ -398,8 +378,6 @@ companies = Toolkit(
 )
 ```
 
-Read the [External Datasets guide](/projects/financetoolkit/docs/getting-started/external-datasets).
-
-<div class="fs-ref"><a href="/projects/financetoolkit/docs"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Finance Toolkit</a></div>
+The [External Datasets documentation](/projects/financetoolkit/docs#using-external-datasets) opens with a full walkthrough.
 
 {% include ft-charts-script.html %}

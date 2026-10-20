@@ -1,4 +1,4 @@
-"""Charts for the Fixed Income guide (/projects/financetoolkit/docs/getting-started/fixed-income)."""
+"""Charts for the Fixed Income guide (/projects/financetoolkit/docs/fixedincome#getting-started)."""
 
 import pandas as pd
 from financetoolkit import FixedIncome

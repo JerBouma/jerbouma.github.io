@@ -1,4 +1,4 @@
-"""Charts for /projects/financetoolkit/docs/getting-started/discovery."""
+"""Charts for /projects/financetoolkit/docs/discovery#getting-started."""
 
 from financetoolkit import Discovery, Toolkit
 
@@ -19,11 +19,11 @@ SCREEN = dict(
 )
 
 
-def hbar(series, title: str, name: str, fmt: str) -> dict:
-    """Horizontal bars, largest first."""
+def bars(series, title: str, name: str, fmt: str) -> dict:
+    """Vertical bars, largest first."""
     series = series.dropna().sort_values(ascending=False)
     return {
-        "type": "hbar",
+        "type": "bar",
         "title": title,
         "x": [str(i) for i in series.index],
         "series": [{"name": name, "data": [round(float(v), 4) for v in series]}],
@@ -37,12 +37,12 @@ def build() -> dict:
 
     screener = discovery.get_stock_screener(**SCREEN)
     caps = screener["Market Cap (USD)"] if "Market Cap (USD)" in screener else screener["Market Cap"]
-    charts["discovery-screener"] = hbar(
+    charts["discovery-screener"] = bars(
         caps, "Stocks that pass the screen, by market cap (USD)", "Market cap", "usd"
     )
 
     sectors = discovery.get_sector_performance(date="2024-02-01")
-    charts["discovery-sector-performance"] = hbar(
+    charts["discovery-sector-performance"] = bars(
         sectors["Average Change"] / 100, "Average change per sector on 2024-02-01", "Average change", "percent"
     )
 
@@ -57,7 +57,7 @@ def build() -> dict:
     companies = Toolkit(tickers=tickers, api_key=API_KEY)
     cumulative = companies.get_historical_data()["Cumulative Return"]
     total = cumulative.drop(columns="Benchmark", errors="ignore").ffill().iloc[-1] - 1
-    chart = hbar(total, "Cumulative return of the screened stocks since " + str(cumulative.index[0])[:10],
+    chart = bars(total, "Cumulative return of the screened stocks since " + str(cumulative.index[0])[:10],
                  "Cumulative return", "percent")
     # the S&P 500 as a reference bar, in its own colour
     benchmark = float(cumulative["Benchmark"].ffill().iloc[-1] - 1)

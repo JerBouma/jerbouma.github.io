@@ -1,24 +1,10 @@
----
-title: "Portfolio"
-seo_title: "Portfolio Guide | Finance Toolkit"
-seo_title_suffix: false
-excerpt: "How to load your own transactions into the Finance Toolkit and analyse positions, returns, PnL and risk of your portfolio against a benchmark."
-description: "Load your own transactions into the Finance Toolkit to track positions, returns and PnL against a benchmark and run 500+ metrics on your portfolio."
-author_profile: false
-permalink: /projects/financetoolkit/docs/getting-started/portfolio
-classes: wide-sidebar
-layout: single
-redirect_from:
-  - /projects/financetoolkit/portfolio-notebook
-sidebar:
-  nav: "financetoolkit-guides"
----
+## Getting Started
 
 The Portfolio module analyses your own portfolio from a list of transactions: what you bought and sold, when, at what price and at what cost. From that list it builds the positions over time, the return and profit-and-loss of every asset and transaction, and the same transactions made in a benchmark, so you can see whether your decisions beat simply buying the index. The portfolio is also connected to the rest of the Finance Toolkit, which means any of the 500+ ratios, risk and performance metrics and technical indicators can be calculated for the assets you hold and for the portfolio as a whole, weighted by its positions over time.
 
-## The Portfolio Template
+### The Portfolio Template
 
-The module reads your transactions from an XLSX, XLS or CSV file in a fixed format. The template, which doubles as the example portfolio used in this guide, is in the Finance Toolkit repository on GitHub as [example_portfolio.xlsx](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/portfolio/example_datasets/example_portfolio.xlsx) and [example_portfolio.csv](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/portfolio/example_datasets/example_portfolio.csv). It has the following columns:
+The module reads your transactions from an XLSX, XLS or CSV file in a fixed format. The template, which doubles as the example portfolio used in this section, is in the Finance Toolkit repository on GitHub as [example_portfolio.xlsx](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/portfolio/example_datasets/example_portfolio.xlsx) and [example_portfolio.csv](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/portfolio/example_datasets/example_portfolio.csv). It has the following columns:
 
 | Column       | What it holds                                                    | Example      |
 |:-------------|:-----------------------------------------------------------------|:-------------|
@@ -53,9 +39,9 @@ portfolio = Portfolio(
 )
 ```
 
-## Loading the Example Portfolio
+### Loading the Example Portfolio
 
-The rest of this guide uses the example portfolio: about 300 transactions in 26 stocks and ETFs, from 2000 onwards. To load it:
+The rest of this section uses the example portfolio: about 300 transactions in 26 stocks and ETFs, from 2000 onwards. To load it:
 
 ```python
 from financetoolkit import Portfolio
@@ -65,7 +51,7 @@ portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY", bench
 
 The historical prices of every asset and of the benchmark are collected on the first call, and the currency of each asset is converted where needed.
 
-## The Portfolio Overview
+### The Portfolio Overview
 
 The portfolio overview aggregates all transactions into one row per asset: the volume held, the costs, the average purchase price, the amount invested, the latest value, the return, the volatility, alpha and beta against the benchmark, and the weight in the portfolio. With `include_portfolio=True` it adds a row for the portfolio as a whole. To get the overview:
 
@@ -92,7 +78,7 @@ The benchmark return is what the same amounts, invested on the same dates in the
 
 A handful of positions explain most of the result: Comfort Systems (`FIX`), Nvidia, ASML and Fair Isaac (`FICO`) all returned more than 18 times the amount invested, while Netflix (`NFLX`) and Kraft Heinz (`KHC`) are below what was paid for them.
 
-## Positions over Time
+### Positions over Time
 
 Where the portfolio overview gives one row per asset, the positions overview tracks every position day by day: the volume, the costs, the invested amount, the realised proceeds, the current value, the cumulative return and the invested and current weights. To get it and add up the invested amount and the current value of all positions:
 
@@ -113,7 +99,7 @@ Which shows how the value of the portfolio grew away from the amount put in, wit
 
 {% include ft-chart.html id="portfolio-value" src="/assets/data/financetoolkit-guides/portfolio.json" label="Invested amount and current value of the example portfolio" %}
 
-## Transactions and Profit and Loss
+### Transactions and Profit and Loss
 
 The transactions overview shows the same information for every single transaction, together with its profit and loss (PnL). The `pnl_method` sets how sales are matched to earlier purchases: `FIFO` (first in, first out, the default), `LIFO` (last in, first out) or `AVERAGE` (average cost). To get the overview with FIFO:
 
@@ -131,7 +117,7 @@ Which gives the following for the first five transactions, where the `% Return` 
 | 2000-02-23 | FIX        |   6.99 |      8 |     0 |           55.88 |     11,176.72 |   199.00 |
 | 2000-02-28 | MSFT       |  28.35 |     13 |     0 |          368.60 |      6,914.31 |    17.76 |
 
-## Performance per Period
+### Performance per Period
 
 Both overviews also exist per period, `yearly`, `quarterly`, `monthly`, `weekly` or `daily`, which shows how the portfolio and each transaction did within each period rather than since the start. The transactions performance adds the benchmark return and the alpha of every transaction in that period. To get the portfolio performance per year, the transactions performance per quarter, and the total invested amount and value of the portfolio at the end of each year:
 
@@ -147,7 +133,7 @@ Which gives the following year-end values, with the drawdowns of 2008 and 2022 c
 
 {% include ft-chart.html id="portfolio-yearly" src="/assets/data/financetoolkit-guides/portfolio.json" label="Invested amount and value of the example portfolio at the end of each year" %}
 
-## Connecting to the Finance Toolkit
+### Connecting to the Finance Toolkit
 
 What makes the module powerful is that the portfolio connects directly to the `Toolkit`. The `toolkit` property returns a `Toolkit` with every asset in the portfolio, the benchmark and the portfolio itself as a ticker called `Portfolio`, a weighted average of the positions over time. Assign it to a variable once, so the data is collected only once. To create it:
 
@@ -155,7 +141,7 @@ What makes the module powerful is that the portfolio connects directly to the `T
 toolkit = portfolio.toolkit
 ```
 
-### Financial Ratios
+#### Financial Ratios
 
 Any ratio can now be calculated for the holdings and for the portfolio. The example portfolio holds ETFs as well, which have no financial statements, so their ratios stay empty. To calculate the net profit margin:
 
@@ -171,7 +157,7 @@ Which shows the net profit margin of the portfolio rising from around 5% to 15% 
 
 The most recent year can jump, since it only holds the companies whose fiscal year has already ended.
 
-### Risk and Performance against the Benchmark
+#### Risk and Performance against the Benchmark
 
 The risk and performance metrics compare the portfolio to the benchmark again, which shows whether you run a higher or lower risk profile than the index. To calculate the beta and the Value at Risk per year:
 
@@ -188,7 +174,7 @@ Which shows a beta above 1 in almost every year, and a daily Value at Risk that 
 
 {% include ft-chart.html id="portfolio-beta-var" src="/assets/data/financetoolkit-guides/portfolio.json" label="Beta and Value at Risk of the example portfolio and the benchmark" %}
 
-### Technical Indicators
+#### Technical Indicators
 
 The technical indicators work the same way, for example to see whether the portfolio or its largest positions look overbought or oversold. To calculate the Relative Strength Index and select the portfolio and three of its largest positions over the last year of trading days:
 
@@ -201,7 +187,5 @@ rsi[["Portfolio", "ASML", "FIX", "MPWR"]].iloc[-252:]
 Which gives the following, with the dashed lines at 70 and 30 marking the levels that are usually read as overbought and oversold:
 
 {% include ft-chart.html id="portfolio-rsi" src="/assets/data/financetoolkit-guides/portfolio.json" label="Relative Strength Index of the example portfolio and three positions" %}
-
-<div class="fs-ref"><a href="/projects/financetoolkit/docs/portfolio"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Portfolio</a></div>
 
 {% include ft-charts-script.html %}

@@ -10,6 +10,7 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /econometrics
+    - /projects/financetoolkit/econometrics-notebook
 sidebar:
     nav: "financetoolkit-docs-econometrics"
 ---
@@ -23,6 +24,8 @@ pip install "financetoolkit[econometrics]" -U
 ```
 
 {% include algolia.html %}
+
+{% include financetoolkit-getting-started/econometrics.md %}
 
 ## get_arch_lm_test
 Calculate Engle's Lagrange Multiplier (LM) test for ARCH effects.

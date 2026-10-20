@@ -1,24 +1,10 @@
----
-title: "Performance"
-seo_title: "Performance Guide | Finance Toolkit"
-seo_title_suffix: false
-excerpt: "How to judge whether a stock's return was worth its risk with Jensen's Alpha, CAPM, the Sharpe, Sortino and Treynor Ratios and the Fama-French factors."
-description: "Calculate Jensen's Alpha, CAPM, Sharpe, Sortino and Treynor Ratios and Fama-French factor exposures for any stock in Python with the Finance Toolkit."
-author_profile: false
-permalink: /projects/financetoolkit/docs/getting-started/performance
-classes: wide-sidebar
-layout: single
-redirect_from:
-  - /projects/financetoolkit/performance-notebook
-sidebar:
-  nav: "financetoolkit-guides"
----
+## Getting Started
 
 A return on its own says little. Whether 15% a year is good depends on how much risk was taken to get it and on what the market did in the meantime. The Performance module answers that question with the risk-adjusted measures analysts use every day: Jensen's Alpha, the Capital Asset Pricing Model (CAPM), Beta, the Sharpe, Sortino and Treynor Ratios, the Information Ratio, capture ratios and factor models such as Fama-French. Each stock is compared to the benchmark of the `Toolkit` (the S&P 500 unless you set `benchmark_ticker`) and to the risk-free rate.
 
-This guide uses ASML, Microsoft, Apple and Walmart from 2005 onwards.
+This section uses ASML, Microsoft, Apple and Walmart from 2005 onwards.
 
-## Loading the Data
+### Loading the Data
 
 The Performance module is part of the `Toolkit` class. To load the data for the four companies:
 
@@ -34,7 +20,7 @@ companies = Toolkit(
 
 The prices of the four stocks, the benchmark and the 10-year treasury rate (the risk-free rate) are collected on the first call and reused afterwards.
 
-## Jensen's Alpha and the Capital Asset Pricing Model
+### Jensen's Alpha and the Capital Asset Pricing Model
 
 CAPM gives the return you would expect from a stock given its Beta, the market return and the risk-free rate: the risk-free rate plus Beta times the market risk premium. Jensen's Alpha is the difference between the actual return and that expected return. A positive alpha means the stock did better than its market exposure alone explains, a negative alpha means it did worse.
 
@@ -54,7 +40,7 @@ The CAPM expected return follows the market, scaled by Beta. ASML, with the high
 
 {% include ft-chart.html id="performance-capm" src="/assets/data/financetoolkit-guides/performance.json" label="Expected return per year according to CAPM" %}
 
-## The Sharpe Ratio over Time
+### The Sharpe Ratio over Time
 
 The Sharpe Ratio divides the excess return over the risk-free rate by the standard deviation of returns, which puts stocks with different volatility on the same footing. Because each period is calculated from the days within it, `rolling` gives a value that evolves through time instead of one number per period. To calculate the 12-month rolling Sharpe Ratio:
 
@@ -68,7 +54,7 @@ Which shows how the risk-adjusted return of each stock moved with the market cyc
 
 Set `annualize=True` to scale the ratio to a yearly figure, which is how Sharpe Ratios are usually quoted in fund documents.
 
-## The Sortino and Treynor Ratios
+### The Sortino and Treynor Ratios
 
 Two variations of the Sharpe Ratio change the risk in the denominator. The Sortino Ratio only counts downside volatility, so a stock is not penalised for large upward moves. The Treynor Ratio uses Beta, the systematic risk, instead of the standard deviation; that is the more relevant measure for a stock held within a diversified portfolio, where the stock-specific risk is diversified away. To calculate both per year:
 
@@ -87,7 +73,7 @@ Which gives the following, with the tabs switching between the two ratios:
 The Treynor Ratio divides by Beta, so it becomes unstable when a stock barely moves with the market. Walmart shows this in some recent years, with values far outside the range of the other three. Check the Beta with `get_beta` before reading much into an extreme Treynor Ratio.
 </div>
 
-## Fama-French Factor Exposures
+### Fama-French Factor Exposures
 
 CAPM explains returns with one factor, the market. The Fama-French five-factor model adds four more, each the return of a long-short portfolio:
 
@@ -125,7 +111,7 @@ Which shows a strong positive correlation with the market for all four, and for 
 
 {% include ft-chart.html id="performance-factor-correlations" src="/assets/data/financetoolkit-guides/performance.json" label="Quarterly correlation with the Fama-French factors" %}
 
-## Using the Fama-French Dataset Directly
+### Using the Fama-French Dataset Directly
 
 The functions behind the `Toolkit` can also be used on their own. For example, the daily Fama-French factor returns from [Kenneth French's data library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html), which go back to 1963. To download them:
 
@@ -146,7 +132,5 @@ Which returns the daily factor returns and the risk-free rate as decimal fractio
 | 1963-07-08 |  -0.0063 |  0.0004 | -0.0018 | -0.0029 |  0.0014 | 0.0001 |
 
 The module covers many more measures, among them the [Information Ratio](/projects/financetoolkit/docs/performance#get_information_ratio), [upside](/projects/financetoolkit/docs/performance#get_upside_capture_ratio) and [downside capture ratios](/projects/financetoolkit/docs/performance#get_downside_capture_ratio), the [Calmar](/projects/financetoolkit/docs/performance#get_calmar_ratio) and [Omega Ratios](/projects/financetoolkit/docs/performance#get_omega_ratio), the [Carhart four-factor model](/projects/financetoolkit/docs/performance#get_carhart_four_factor_model) and market-timing models such as [Treynor-Mazuy](/projects/financetoolkit/docs/performance#get_treynor_mazuy_model).
-
-<div class="fs-ref"><a href="/projects/financetoolkit/docs/performance"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Performance</a></div>
 
 {% include ft-charts-script.html %}

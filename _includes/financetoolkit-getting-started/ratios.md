@@ -1,25 +1,10 @@
----
-title: "Ratios"
-seo_title: "Ratios Guide | Finance Toolkit"
-seo_title_suffix: false
-excerpt: "Calculate 80+ efficiency, liquidity, profitability, solvency and valuation ratios, their growth and trailing values, forward multiples and your own custom ratios."
-description: "Calculate 80+ financial ratios with the Finance Toolkit: growth, lags, trailing values, forward P/E, shareholder yield and custom ratios from statements."
-author_profile: false
-permalink: /projects/financetoolkit/docs/getting-started/ratios
-classes: wide-sidebar
-layout: single
-redirect_from:
-  - /projects/financetoolkit/ratios-notebook
-  - /projects/financetoolkit/custom-ratios
-sidebar:
-  nav: "financetoolkit-guides"
----
+## Getting Started
 
 Ratios are where most company analysis starts: they turn the raw line items of the balance sheet, income statement and cash flow statement into numbers you can compare across companies and over time. The Ratios module calculates 80+ of them in five categories, efficiency, liquidity, profitability, solvency and valuation, each with one documented formula, so a margin or a coverage ratio means the same thing for every company. Where the built-in set falls short, you define your own.
 
-## Loading the Data
+### Loading the Data
 
-The Ratios module works on the statements of a `Toolkit` instance. This guide uses Apple, Amazon, Meta and Walmart from 2005 onwards, four companies with very different business models. Annual statements are the default; add `quarterly=True` for quarterly statements (a paid Financial Modeling Prep plan).
+The Ratios module works on the statements of a `Toolkit` instance. This section uses Apple, Amazon, Meta and Walmart from 2005 onwards, four companies with very different business models. Annual statements are the default; add `quarterly=True` for quarterly statements (a paid Financial Modeling Prep plan).
 
 To load the four companies:
 
@@ -35,7 +20,7 @@ companies = Toolkit(
 
 The statements and prices are retrieved the first time a ratio needs them and are reused for every ratio after that. Walmart's fiscal year ends in January, so the Toolkit maps its fiscal years to calendar years to line them up with the others.
 
-## Collecting All Ratios
+### Collecting All Ratios
 
 The module makes a distinction between `collect_` and `get_` functions. A `collect_` function returns a whole group at once, such as `collect_profitability_ratios` or `collect_all_ratios`, while a `get_` function returns one ratio.
 
@@ -58,7 +43,7 @@ This returns one table with the ticker and the ratio as rows and the years as co
 
 The cash conversion cycle shows the differences in business model at a glance: Apple, Amazon and Meta collect cash from their customers weeks before they pay their suppliers, while Walmart's cycle is close to zero. Apple's return on equity above 100% is the result of its small equity base after years of buybacks, not of exceptional margins.
 
-## Individual Ratios
+### Individual Ratios
 
 When you need only one ratio, call its `get_` function. The effective tax rate, the income tax expense divided by the income before tax, is a good example of a ratio that tells a story over time.
 
@@ -74,7 +59,7 @@ Which gives the effective tax rate per fiscal year, shown here from 2015:
 
 The returned table goes back to 2005, but Amazon's and Meta's income before tax was close to zero in their early years, which pushes the rate far outside the 0–100% range (Amazon's comes out at about -226% in 2014). Walmart's rate is the most stable, between about 23% and 37%, while Apple's fell from about 26% to around 15% after the 2017 US tax reform. Amazon's 54% in 2022 is not a high tax bill: it made a loss before tax that year, and the rate reflects the tax benefit on that loss.
 
-## Ratio Options
+### Ratio Options
 
 Several ratios accept options where more than one calculation method is common. `diluted`, for example, sets whether per-share ratios use the diluted or the basic number of shares. All ratios also accept `growth=True`, which returns the change from one period to the next instead of the ratio itself, so you can see whether a company's leverage or coverage is improving or deteriorating.
 
@@ -117,9 +102,9 @@ Which gives the three growth rates per company, one company per tab:
 
 Longer lags smooth out a single unusual year and show whether a trend persists: Apple's current ratio, for example, has been lower than three years earlier in most recent years.
 
-## Trailing Ratios
+### Trailing Ratios
 
-`trailing` calculates a ratio over the last N periods instead of one period. On quarterly data, `trailing=4` gives the trailing twelve months (TTM), the usual basis for earnings per share. On annual data, as in this guide, the same setting sums four years, which smooths the earnings of cyclical companies; set `quarterly=True` in the Toolkit for TTM figures.
+`trailing` calculates a ratio over the last N periods instead of one period. On quarterly data, `trailing=4` gives the trailing twelve months (TTM), the usual basis for earnings per share. On annual data, as in this section, the same setting sums four years, which smooths the earnings of cyclical companies; set `quarterly=True` in the Toolkit for TTM figures.
 
 To calculate the trailing earnings per share and its growth:
 
@@ -135,7 +120,7 @@ Which gives the earnings per share summed over four years and its growth, one pe
 
 Meta's four-year earnings per share has risen to about $72, more than eight times Walmart's, while Amazon's has more than doubled in the last three years.
 
-## Forward Valuation
+### Forward Valuation
 
 The forward P/E and forward PEG ratios use the analyst consensus estimate of earnings per share for a future year instead of the reported figure. They show what the market pays for expected rather than past earnings, which matters most for companies whose earnings are growing fast. The analyst estimates are retrieved automatically the first time either function is called, and require a paid Financial Modeling Prep plan.
 
@@ -158,7 +143,7 @@ The forward P/E for the next three fiscal years, based on the share price and th
 
 Measured on expected earnings, Amazon and Meta are the cheapest of the four and Walmart the most expensive. The forward PEG divides the forward P/E by the expected growth of earnings per share, so it swings widely when the expected growth is small and turns negative when the estimates expect earnings to fall.
 
-## Shareholder Yield and Debt-to-Capital
+### Shareholder Yield and Debt-to-Capital
 
 The dividend yield understates what companies that prefer buybacks return to their shareholders. The shareholder yield adds the buyback yield to the dividend yield, which makes Apple and Walmart comparable even though they split their payouts differently. The debt-to-capital ratio, debt divided by debt plus equity, stays between 0 and 1, unlike the debt-to-equity ratio, which makes capital structures easier to compare across companies with very different leverage.
 
@@ -176,7 +161,7 @@ Which gives the two ratios from 2013, one per tab:
 
 Amazon returns next to nothing to its shareholders and reinvests its cash, while Apple returned between about 2.5% and 11.5% of its market value a year, at the lower end in recent years. Apple's debt-to-capital ratio rose from about 12% to above 60% over the same period, as it borrowed to fund those buybacks.
 
-## Custom Ratios
+### Custom Ratios
 
 When a ratio you need isn't built in, define it yourself. A custom ratio is a name with a formula written in the Toolkit's own line item names, which are the same for every company. A formula can contain:
 
@@ -222,7 +207,7 @@ Which gives, for the latest fiscal year:
 
 The defensive interval is the number of days a company could pay its cash operating expenses from its quick assets alone. Meta could cover more than two years, Walmart less than two weeks, which is normal for a retailer whose inventory turns into cash quickly.
 
-## Using the Ratio Formulas Directly
+### Using the Ratio Formulas Directly
 
 The `Toolkit` retrieves the statements for you, but every ratio is also available as a plain function in the underlying models. These take pandas Series or DataFrames, so you can apply the same formulas to data from any source.
 
@@ -287,8 +272,6 @@ Which gives:
 | 3 | 0.65           | 1.13        | 0.08             | 0.81           | 9.1               |
 | 4 | 0.80           | 1.60        | 0.04             | 0.27           | 25.0              |
 
-To run the whole Toolkit, not only single formulas, on your own statements, see the [External Datasets guide](/projects/financetoolkit/docs/getting-started/external-datasets).
-
-<div class="fs-ref"><a href="/projects/financetoolkit/docs/ratios"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Ratios</a></div>
+To run the whole Toolkit, not only single formulas, on your own statements, see [Using External Datasets](/projects/financetoolkit/docs#using-external-datasets).
 
 {% include ft-charts-script.html %}

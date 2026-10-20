@@ -1,4 +1,4 @@
-"""Charts for the Risk guide (/projects/financetoolkit/docs/getting-started/risk)."""
+"""Charts for the Risk guide (/projects/financetoolkit/docs/risk#getting-started)."""
 
 from financetoolkit import Toolkit
 

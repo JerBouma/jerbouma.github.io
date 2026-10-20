@@ -1,4 +1,4 @@
-"""Charts for the Performance guide (/projects/financetoolkit/docs/getting-started/performance)."""
+"""Charts for the Performance guide (/projects/financetoolkit/docs/performance#getting-started)."""
 
 from financetoolkit import Toolkit
 from financetoolkit.performance import performance_model

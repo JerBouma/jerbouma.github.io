@@ -1,4 +1,4 @@
-"""Charts for /projects/financetoolkit/docs/getting-started (the overview guide)."""
+"""Charts for /projects/financetoolkit/docs#getting-started (the overview guide)."""
 
 from financetoolkit import Toolkit
 

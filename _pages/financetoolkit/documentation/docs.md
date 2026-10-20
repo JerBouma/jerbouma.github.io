@@ -9,11 +9,13 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /docs
+    - /projects/financetoolkit/getting-started
+    - /projects/financetoolkit/external-datasets
 sidebar:
     nav: "financetoolkit-docs"
 ---
 
-These pages document the Finance Toolkit, an open-source toolkit in which all relevant financial methods (500+) are written down in the most simplistic way allowing for complete transparency of the calculation method. Each class has an introduction page like this one, and the sidebar leads to a page for every function with an example of how to use it. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the [Getting Started guides](/projects/financetoolkit/docs/getting-started).
+These pages document the Finance Toolkit, an open-source toolkit in which all relevant financial methods (500+) are written down in the most simplistic way allowing for complete transparency of the calculation method. Each class has an introduction page like this one, and the sidebar leads to a page for every function with an example of how to use it. These examples are also directly embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the [Getting Started](#getting-started) section below and the one that opens every module page.
 
 The Toolkit Module is a collection of functions that collect and parse data, including historical data, fundamental data (balance, income and cash flow statements) and metrics from Financial Modeling Prep such as enterprise values, company profiles and more. From this module you can access all related sub-modules.
 
@@ -24,6 +26,10 @@ pip install financetoolkit -U
 ```
 
 {% include algolia.html %}
+
+{% include financetoolkit-getting-started/getting-started.md %}
+
+{% include financetoolkit-getting-started/external-datasets.md %}
 
 ## ratios
 The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
@@ -2336,7 +2342,7 @@ Which returns:
 ## get_normalization_files
 Copies the normalization files to a folder based on path. By default, this is the path of the 'Downloads' folder.
 
-This function is relevant if you want to supply your own datasets. See the [External Datasets guide](/projects/financetoolkit/docs/getting-started/external-datasets) for a worked example.
+This function is relevant if you want to supply your own datasets. See [Using External Datasets](#using-external-datasets) for a worked example.
 
 **Args:**
 

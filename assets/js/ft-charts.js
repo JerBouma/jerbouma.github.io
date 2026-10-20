@@ -94,7 +94,10 @@
       return {
         name: s.name,
         type: isBar ? 'bar' : 'line',
-        data: s.data,
+        // highlight: the index of one bar to set apart, e.g. a benchmark among the stocks
+        data: isBar && spec.highlight !== undefined && spec.series.length === 1
+          ? s.data.map(function (v, j) { return j === spec.highlight ? { value: v, itemStyle: { color: PALETTE[2] } } : v; })
+          : s.data,
         showSymbol: !many && !isBar,
         symbolSize: 6,
         smooth: false,

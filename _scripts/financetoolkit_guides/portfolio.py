@@ -1,4 +1,4 @@
-"""Charts for the Portfolio guide (/projects/financetoolkit/docs/getting-started/portfolio)."""
+"""Charts for the Portfolio guide (/projects/financetoolkit/docs/portfolio#getting-started)."""
 
 import pandas as pd
 from financetoolkit import Portfolio
