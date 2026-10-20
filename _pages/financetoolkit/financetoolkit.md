@@ -31,7 +31,7 @@ image: assets/images/projects/FinanceToolkit.jpg
     </video>
   </div>
   <div class="mcp-facts ft-hero__facts">
-    <div class="mcp-fact"><strong>500+</strong><span>metrics, every formula written out</span></div>
+    <div class="mcp-fact"><strong>500+</strong><span>metrics</span></div>
     <div class="mcp-fact"><strong>{{ ft_stars.value }}</strong><span>GitHub stars</span></div>
     <div class="mcp-fact"><strong>{{ ft_dl.value }}</strong><span>downloads</span></div>
   </div>
