@@ -197,40 +197,6 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs#getting-started
-    children:
-    - title: "Data and API Keys"
-      url: /projects/financetoolkit/docs#data-and-api-keys
-    - title: "Loading the Toolkit"
-      url: /projects/financetoolkit/docs#loading-the-toolkit
-    - title: "Historical Data"
-      url: /projects/financetoolkit/docs#historical-data
-    - title: "Financial Statements"
-      url: /projects/financetoolkit/docs#financial-statements
-    - title: "Growth, Trailing, Rolling and Z-Scores"
-      url: /projects/financetoolkit/docs#growth-trailing-rolling-and-z-scores
-    - title: "Analyst Estimates and ESG Scores"
-      url: /projects/financetoolkit/docs#analyst-estimates-and-esg-scores
-    - title: "Explore the Modules"
-      url: /projects/financetoolkit/docs#explore-the-modules
-  - title: Using External Datasets
-    url: /projects/financetoolkit/docs#using-external-datasets
-    children:
-    - title: "Reading the Statements"
-      url: /projects/financetoolkit/docs#reading-the-statements
-    - title: "Filling the Normalisation Files"
-      url: /projects/financetoolkit/docs#filling-the-normalisation-files
-    - title: "Combining the Statements"
-      url: /projects/financetoolkit/docs#combining-the-statements
-    - title: "Initialising the Toolkit with Your Own Data"
-      url: /projects/financetoolkit/docs#initialising-the-toolkit-with-your-own-data
-    - title: "Ratios and Models"
-      url: /projects/financetoolkit/docs#ratios-and-models
-    - title: "Performance and Risk"
-      url: /projects/financetoolkit/docs#performance-and-risk
-    - title: "Combining Your Data with an API Key"
-      url: /projects/financetoolkit/docs#combining-your-data-with-an-api-key
   - title: Company Information
     children:
       - title: "Company Profiles"
@@ -349,25 +315,6 @@ financetoolkit-docs-discovery:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs/discovery#getting-started
-    children:
-    - title: "Loading the Module"
-      url: /projects/financetoolkit/docs/discovery#loading-the-module
-    - title: "Lists of Instruments"
-      url: /projects/financetoolkit/docs/discovery#lists-of-instruments
-    - title: "Searching for Instruments"
-      url: /projects/financetoolkit/docs/discovery#searching-for-instruments
-    - title: "Screening Stocks"
-      url: /projects/financetoolkit/docs/discovery#screening-stocks
-    - title: "Gainers, Losers and Most Active Stocks"
-      url: /projects/financetoolkit/docs/discovery#gainers-losers-and-most-active-stocks
-    - title: "Sector Performance and Valuation"
-      url: /projects/financetoolkit/docs/discovery#sector-performance-and-valuation
-    - title: "From Discovery to the Toolkit"
-      url: /projects/financetoolkit/docs/discovery#from-discovery-to-the-toolkit
-    - title: "More in the Discovery Module"
-      url: /projects/financetoolkit/docs/discovery#more-in-the-discovery-module
   - title: Search Instruments
     url: /projects/financetoolkit/docs/discovery#search_instruments
   - title: Stock Screener
@@ -483,27 +430,6 @@ financetoolkit-docs-ratios:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs/ratios#getting-started
-    children:
-    - title: "Loading the Data"
-      url: /projects/financetoolkit/docs/ratios#loading-the-data
-    - title: "Collecting All Ratios"
-      url: /projects/financetoolkit/docs/ratios#collecting-all-ratios
-    - title: "Individual Ratios"
-      url: /projects/financetoolkit/docs/ratios#individual-ratios
-    - title: "Ratio Options"
-      url: /projects/financetoolkit/docs/ratios#ratio-options
-    - title: "Trailing Ratios"
-      url: /projects/financetoolkit/docs/ratios#trailing-ratios
-    - title: "Forward Valuation"
-      url: /projects/financetoolkit/docs/ratios#forward-valuation
-    - title: "Shareholder Yield and Debt-to-Capital"
-      url: /projects/financetoolkit/docs/ratios#shareholder-yield-and-debt-to-capital
-    - title: "Custom Ratios"
-      url: /projects/financetoolkit/docs/ratios#custom-ratios
-    - title: "Using the Ratio Formulas Directly"
-      url: /projects/financetoolkit/docs/ratios#using-the-ratio-formulas-directly
   - title: All Ratios
     url: /projects/financetoolkit/docs/ratios#collect_all_ratios
   - title: Custom Ratios
@@ -743,29 +669,6 @@ financetoolkit-docs-models:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs/models#getting-started
-    children:
-    - title: "Loading the Data"
-      url: /projects/financetoolkit/docs/models#loading-the-data
-    - title: "Extended DuPont Analysis"
-      url: /projects/financetoolkit/docs/models#extended-dupont-analysis
-    - title: "Weighted Average Cost of Capital"
-      url: /projects/financetoolkit/docs/models#weighted-average-cost-of-capital
-    - title: "Altman Z-Score and Piotroski F-Score"
-      url: /projects/financetoolkit/docs/models#altman-z-score-and-piotroski-f-score
-    - title: "Enterprise Value and Intrinsic Valuation"
-      url: /projects/financetoolkit/docs/models#enterprise-value-and-intrinsic-valuation
-    - title: "DuPont Analysis and Growth Opportunities"
-      url: /projects/financetoolkit/docs/models#dupont-analysis-and-growth-opportunities
-    - title: "Beneish M-Score"
-      url: /projects/financetoolkit/docs/models#beneish-m-score
-    - title: "Sustainable and Internal Growth Rate"
-      url: /projects/financetoolkit/docs/models#sustainable-and-internal-growth-rate
-    - title: "Graham Number"
-      url: /projects/financetoolkit/docs/models#graham-number
-    - title: "Using the Models Directly"
-      url: /projects/financetoolkit/docs/models#using-the-models-directly
   - title: Models
     children:
       - title: DuPont Analysis
@@ -845,25 +748,6 @@ financetoolkit-docs-options:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs/options#getting-started
-    children:
-    - title: "Loading the Data"
-      url: /projects/financetoolkit/docs/options#loading-the-data
-    - title: "Black-Scholes Model"
-      url: /projects/financetoolkit/docs/options#black-scholes-model
-    - title: "Binomial Model"
-      url: /projects/financetoolkit/docs/options#binomial-model
-    - title: "Option Chains and Implied Volatility"
-      url: /projects/financetoolkit/docs/options#option-chains-and-implied-volatility
-    - title: "Stock Price Simulation"
-      url: /projects/financetoolkit/docs/options#stock-price-simulation
-    - title: "Greeks"
-      url: /projects/financetoolkit/docs/options#greeks
-    - title: "All Greeks at Once"
-      url: /projects/financetoolkit/docs/options#all-greeks-at-once
-    - title: "Greeks Against the Stock Price"
-      url: /projects/financetoolkit/docs/options#greeks-against-the-stock-price
   - title: Option Pricing
     children:
       - title: Option Chains
@@ -972,29 +856,6 @@ financetoolkit-docs-technicals:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs/technicals#getting-started
-    children:
-    - title: "Loading the Data"
-      url: /projects/financetoolkit/docs/technicals#loading-the-data
-    - title: "All Indicators at Once"
-      url: /projects/financetoolkit/docs/technicals#all-indicators-at-once
-    - title: "Bollinger Bands"
-      url: /projects/financetoolkit/docs/technicals#bollinger-bands
-    - title: "Changing the Parameters"
-      url: /projects/financetoolkit/docs/technicals#changing-the-parameters
-    - title: "Relative Strength Index"
-      url: /projects/financetoolkit/docs/technicals#relative-strength-index
-    - title: "Donchian Channels and the Hull Moving Average"
-      url: /projects/financetoolkit/docs/technicals#donchian-channels-and-the-hull-moving-average
-    - title: "VWAP, Parabolic SAR and Pivot Points"
-      url: /projects/financetoolkit/docs/technicals#vwap-parabolic-sar-and-pivot-points
-    - title: "Volatility Cone"
-      url: /projects/financetoolkit/docs/technicals#volatility-cone
-    - title: "Breadth Indicators"
-      url: /projects/financetoolkit/docs/technicals#breadth-indicators
-    - title: "Using the Models Directly"
-      url: /projects/financetoolkit/docs/technicals#using-the-models-directly
   - title: All Indicators
     url: /projects/financetoolkit/docs/technicals#collect_all_indicators
   - title: Breadth Indicators
@@ -1146,25 +1007,6 @@ financetoolkit-docs-risk:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs/risk#getting-started
-    children:
-    - title: "Loading the Data"
-      url: /projects/financetoolkit/docs/risk#loading-the-data
-    - title: "Value at Risk and Conditional Value at Risk"
-      url: /projects/financetoolkit/docs/risk#value-at-risk-and-conditional-value-at-risk
-    - title: "The Ulcer Index and Growth"
-      url: /projects/financetoolkit/docs/risk#the-ulcer-index-and-growth
-    - title: "Conditional Drawdown at Risk and the Tail Ratio"
-      url: /projects/financetoolkit/docs/risk#conditional-drawdown-at-risk-and-the-tail-ratio
-    - title: "Drawdown Duration and Recovery Time"
-      url: /projects/financetoolkit/docs/risk#drawdown-duration-and-recovery-time
-    - title: "EWMA Volatility and the Hurst Exponent"
-      url: /projects/financetoolkit/docs/risk#ewma-volatility-and-the-hurst-exponent
-    - title: "Returns against the Maximum Drawdown"
-      url: /projects/financetoolkit/docs/risk#returns-against-the-maximum-drawdown
-    - title: "Using the Risk Models with Your Own Data"
-      url: /projects/financetoolkit/docs/risk#using-the-risk-models-with-your-own-data
   - title: All Risk Metrics
     url: /projects/financetoolkit/docs/risk#collect_all_metrics
   - title: Value at Risk and Tail Risk
@@ -1299,21 +1141,6 @@ financetoolkit-docs-performance:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs/performance#getting-started
-    children:
-    - title: "Loading the Data"
-      url: /projects/financetoolkit/docs/performance#loading-the-data
-    - title: "Jensen's Alpha and the Capital Asset Pricing Model"
-      url: /projects/financetoolkit/docs/performance#jensens-alpha-and-the-capital-asset-pricing-model
-    - title: "The Sharpe Ratio over Time"
-      url: /projects/financetoolkit/docs/performance#the-sharpe-ratio-over-time
-    - title: "The Sortino and Treynor Ratios"
-      url: /projects/financetoolkit/docs/performance#the-sortino-and-treynor-ratios
-    - title: "Fama-French Factor Exposures"
-      url: /projects/financetoolkit/docs/performance#fama-french-factor-exposures
-    - title: "Using the Fama-French Dataset Directly"
-      url: /projects/financetoolkit/docs/performance#using-the-fama-french-dataset-directly
   - title: All Performance Metrics
     url: /projects/financetoolkit/docs/performance#collect_all_metrics
   - title: Factors and Alpha
@@ -1430,23 +1257,6 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs/fixedincome#getting-started
-    children:
-    - title: "Loading the Module"
-      url: /projects/financetoolkit/docs/fixedincome#loading-the-module
-    - title: "Bond Statistics"
-      url: /projects/financetoolkit/docs/fixedincome#bond-statistics
-    - title: "Duration across Coupons and Maturities"
-      url: /projects/financetoolkit/docs/fixedincome#duration-across-coupons-and-maturities
-    - title: "Pricing Swaptions with Black and Bachelier"
-      url: /projects/financetoolkit/docs/fixedincome#pricing-swaptions-with-black-and-bachelier
-    - title: "Euribor and Central Bank Rates"
-      url: /projects/financetoolkit/docs/fixedincome#euribor-and-central-bank-rates
-    - title: "Government Bond Yields"
-      url: /projects/financetoolkit/docs/fixedincome#government-bond-yields
-    - title: "Corporate Bonds: ICE BofA Indices"
-      url: /projects/financetoolkit/docs/fixedincome#corporate-bonds-ice-bofa-indices
   - title: Bond Valuations
     children:
     - title: General Statistics
@@ -1574,23 +1384,6 @@ financetoolkit-docs-econometrics:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs/econometrics#getting-started
-    children:
-    - title: "Installation and Loading the Data"
-      url: /projects/financetoolkit/docs/econometrics#installation-and-loading-the-data
-    - title: "Does Anything Explain Apple's Returns?"
-      url: /projects/financetoolkit/docs/econometrics#does-anything-explain-apples-returns
-    - title: "Can the P-Values Be Trusted?"
-      url: /projects/financetoolkit/docs/econometrics#can-the-p-values-be-trusted
-    - title: "Is the Relationship Predictive?"
-      url: /projects/financetoolkit/docs/econometrics#is-the-relationship-predictive
-    - title: "What about the Long Run?"
-      url: /projects/financetoolkit/docs/econometrics#what-about-the-long-run
-    - title: "Does the Whole Panel Share a Common Factor?"
-      url: /projects/financetoolkit/docs/econometrics#does-the-whole-panel-share-a-common-factor
-    - title: "Using the Models with Your Own Data"
-      url: /projects/financetoolkit/docs/econometrics#using-the-models-with-your-own-data
   - title: Unit Root & Stationarity
     children:
       - title: Augmented Dickey-Fuller (ADF)
@@ -1736,23 +1529,6 @@ financetoolkit-docs-economics:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs/economics#getting-started
-    children:
-    - title: "Loading the Module"
-      url: /projects/financetoolkit/docs/economics#loading-the-module
-    - title: "Gross Domestic Product and Inflation"
-      url: /projects/financetoolkit/docs/economics#gross-domestic-product-and-inflation
-    - title: "Smoothing with Rolling and Trailing Windows"
-      url: /projects/financetoolkit/docs/economics#smoothing-with-rolling-and-trailing-windows
-    - title: "Consumer Confidence"
-      url: /projects/financetoolkit/docs/economics#consumer-confidence
-    - title: "Interest Rates"
-      url: /projects/financetoolkit/docs/economics#interest-rates
-    - title: "House Prices"
-      url: /projects/financetoolkit/docs/economics#house-prices
-    - title: "Calling the Data Models Directly"
-      url: /projects/financetoolkit/docs/economics#calling-the-data-models-directly
   - title: Government
     children:
     - title: Gross Domestic Product (GDP)
@@ -1969,23 +1745,6 @@ financetoolkit-docs-portfolio:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
-  - title: Getting Started
-    url: /projects/financetoolkit/docs/portfolio#getting-started
-    children:
-    - title: "The Portfolio Template"
-      url: /projects/financetoolkit/docs/portfolio#the-portfolio-template
-    - title: "Loading the Example Portfolio"
-      url: /projects/financetoolkit/docs/portfolio#loading-the-example-portfolio
-    - title: "The Portfolio Overview"
-      url: /projects/financetoolkit/docs/portfolio#the-portfolio-overview
-    - title: "Positions over Time"
-      url: /projects/financetoolkit/docs/portfolio#positions-over-time
-    - title: "Transactions and Profit and Loss"
-      url: /projects/financetoolkit/docs/portfolio#transactions-and-profit-and-loss
-    - title: "Performance per Period"
-      url: /projects/financetoolkit/docs/portfolio#performance-per-period
-    - title: "Connecting to the Finance Toolkit"
-      url: /projects/financetoolkit/docs/portfolio#connecting-to-the-finance-toolkit
   - title: Toolkit Integration
     url: /projects/financetoolkit/docs/portfolio#toolkit
   - title: Read Portfolio Dataset
