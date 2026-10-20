@@ -17,13 +17,29 @@ sidebar:
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceDatabase" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
+{%- assign fd = site.data.projects.maintained | where: "name", "Finance Database" | first %}
+{%- assign fd_stars = fd.stats | where: "icon", "fa-star" | first %}
+{%- assign fd_dl = fd.stats | where: "icon", "fa-download" | first %}
+<div class="ft-hero">
+  <div class="mcp-video-wrapper ft-hero__video">
+    <video class="mcp-demo-video" autoplay muted playsinline controls preload="auto" width="1920" height="1080"
+           poster="/assets/images/projects/financedatabase-launch.jpg"
+           aria-label="From the names everyone knows to every symbol in the Finance Database, sorted by asset class, sector, industry and country, down to Tokyo Electron's seven listings: 300,000+ symbols.">
+      <source src="/assets/video/financedatabase-launch.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="mcp-facts ft-hero__facts">
+    <div class="mcp-fact"><strong>300,000+</strong><span>symbols</span></div>
+    <div class="mcp-fact"><strong>{{ fd_stars.value }}</strong><span>GitHub stars</span></div>
+    <div class="mcp-fact"><strong>{{ fd_dl.value }}</strong><span>downloads</span></div>
+  </div>
+</div>
+
 As a private investor, the amount of information you can find on the internet is rather daunting. With millions of companies and derivatives on the market, it is hard to understand what types of companies or ETFs are available. The most traded companies and ETFs are easy to find because they are known to the public (for example, Microsoft, Tesla, S&P 500 ETF or an All-World ETF), but what else is out there is often unknown.
 
 **This is why I created the Finance Database**, a database featuring 300,000+ symbols containing Equities, ETFs, Indices, Currencies and Cryptocurrencies, plus the Funds and Money Markets it held until October 2026. It allows you to obtain a broad overview of sectors, industries, types of investments and much more, entirely for free. Everything is stored in CSV files that anyone can read and edit, so the database grows and improves through the community.
 
 The database is explicitly _not_ meant to provide up-to-date fundamentals or stock data, as those are easy to obtain (with the help of this database) through the [Finance Toolkit](/projects/financetoolkit). Instead, it shows which products exist in each country, industry and sector and gives the most essential information about each of them. With this information, you can analyze specific areas of the financial world or find a product that is otherwise hard to find. By using both, it is possible to do a fully-fledged competitive analysis with the tickers found in the Finance Database loaded into the Finance Toolkit.
-
-<img src="/assets/images/projects/FinanceDatabase.jpg" alt="Finance Database" width="100%"/>
 
 ## Installation
 
