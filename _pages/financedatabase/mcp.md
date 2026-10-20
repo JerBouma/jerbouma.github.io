@@ -19,7 +19,7 @@ image: /assets/images/projects/FinanceDatabaseMCP.jpg
   <div class="mcp-video-wrapper ft-hero__video">
     <video class="mcp-demo-video" autoplay muted playsinline controls preload="auto" width="1920" height="1080"
            poster="/assets/images/projects/financedatabase-mcp-launch.jpg"
-           aria-label="The Finance Database MCP server answering plain-language questions: which Japanese semiconductor companies are listed, where ASML trades and which Bitcoin pairs exist, from 300,000+ symbols. Works with Claude, Copilot, Cursor and any other MCP client.">
+           aria-label="The Finance Database MCP server answering plain-language questions: which Japanese semiconductor companies are listed, where ASML trades and which Bitcoin pairs exist. Works with Claude, Copilot, Cursor and any other MCP client.">
       <source src="/assets/video/financedatabase-mcp-launch.mp4" type="video/mp4">
     </video>
   </div>
