@@ -54,9 +54,11 @@ Without a coupon rate or maturity, `get_duration` calculates the duration for a 
 duration = fixedincome.get_duration()
 ```
 
-Which shows duration rising with maturity and falling with the coupon rate, since a higher coupon returns more of the cash earlier; at ten years, a 1% coupon bond has a duration of 8.7 against 6.6 for a 9% coupon:
+Which gives a duration for every combination, shown here for five coupon rates:
 
 {% include ft-chart.html id="fixed-income-duration" src="/assets/data/financetoolkit-guides/fixed-income.json" label="Modified duration by coupon rate and years to maturity" %}
+
+Duration rises with maturity and falls with the coupon rate, since a higher coupon returns more of the cash earlier. At one year every bond has a duration of 0.93, but at ten years a 1% coupon bond has a duration of 8.7 against 6.6 for a 9% coupon: the same move in yields hits the low-coupon bond about a third harder.
 
 Set `duration_type` to `"macaulay"`, `"effective"` or `"dollar"` for the other measures, or pass `coupon_rate` and `years_to_maturity` to calculate a single bond.
 
@@ -85,9 +87,11 @@ bachelier = fixedincome.get_derivative_price(
 )
 ```
 
-Which returns a price for each strike rate and maturity, with the swap's tenor equal to the maturity by default. The at-the-money swaption (strike 3.25%) with five years to maturity is worth about 246,000 under Black and 248,000 under Bachelier; the models only part ways for deep out-of-the-money strikes, where the normal distribution gives low rates more probability:
+Which returns a price for each strike rate and maturity, with the swap's tenor equal to the maturity by default. The first tab puts the two models side by side for five years to maturity and the strikes up to just above the money, where they differ most; the other tabs show each model across maturities:
 
 {% include ft-chart.html id="fixed-income-swaption" src="/assets/data/financetoolkit-guides/fixed-income.json" label="Receiver swaption prices by strike rate for the Black and Bachelier models" %}
+
+At the money (strike 3.25%) the five-year swaption is worth 246,000 under Black and 248,000 under Bachelier. Deep out of the money the models part ways: at a strike of 1.75% Bachelier gives 48,800 against 17,000 for Black, and at 0.75% about 10,800 against almost nothing, because the normal distribution gives low and even negative rates far more probability than the lognormal one. Above the money the two converge again, as the value becomes mostly intrinsic. Longer maturities are worth more at every strike, since the option covers more years of swap payments.
 
 <div class="fs-callout" markdown="1"><p class="fs-callout__title">Volatility quotes</p>
 
@@ -102,9 +106,11 @@ Swaps reference a benchmark rate such as Euribor or SOFR, and those in turn foll
 euribor = fixedincome.get_euribor_rates()
 ```
 
-Which shows the full cycle since 2012: Euribor dropped below zero from 2015, bottomed around -0.6% at the end of 2021 and rose to about 4% in late 2023 when the European Central Bank fought inflation:
+Which gives monthly rates since 2012, here with the European Central Bank's hiking cycle shaded:
 
 {% include ft-chart.html id="fixed-income-euribor" src="/assets/data/financetoolkit-guides/fixed-income.json" label="Euribor rates by maturity since 2012" %}
+
+The 3-month Euribor was below zero from May 2015 to June 2022, bottomed at -0.6% at the end of 2021, and then rose to 4% by October 2023 as the European Central Bank fought inflation. It came back to about 2% in 2025, and the 12-month rate climbing above the shorter maturities again shows the market expecting higher rates ahead.
 
 The policy rates themselves are available for the European Central Bank (refinancing, marginal lending and deposit facility rates) and the Federal Reserve (the effective federal funds rate, its percentiles and volume, and the target range). To get both:
 
@@ -114,9 +120,11 @@ ecb_rates = fixedincome.get_european_central_bank_rates()
 fed_rates = fixedincome.get_federal_reserve_rates()
 ```
 
-Which gives daily series, shown here as one observation per week, with the ECB deposit rate at -0.5% in 2019 and 4% at its 2023-2024 peak, and the Federal Reserve's target range peaking at 5.25%-5.50%:
+Which gives daily series, shown here as one observation per month. The first tab sets the ECB deposit rate against the effective federal funds rate, the other two show each central bank's rates in full, with the Federal Reserve's target range shaded:
 
 {% include ft-chart.html id="fixed-income-central-banks" src="/assets/data/financetoolkit-guides/fixed-income.json" label="Policy rates of the European Central Bank and the Federal Reserve" %}
+
+The two took very different paths into the same hiking cycle. The ECB kept its deposit rate below zero from 2014 to 2022, at -0.5% from 2019, while the Federal Reserve had already raised rates to 2.4% by 2019. Both then hiked hard in 2022 and 2023, the ECB to 4% and the Fed to a target range of 5.25%-5.50%, with the effective rate at 5.33%. Today the deposit rate is 2.5% and the effective federal funds rate 3.88%.
 
 ### Government Bond Yields
 
@@ -128,9 +136,11 @@ government_bond_yields = fixedincome.get_government_bond_yield(short_term=False)
 government_bond_yields[["United States", "Japan", "Germany", "China", "United Kingdom"]]
 ```
 
-Which shows German and Japanese yields below zero around 2019 and 2020, and the United States and United Kingdom now at close to 5%, while China moved the other way, from about 4.5% in 2014 to below 2%:
+Which gives quarterly yields for the five markets, and in the second tab the latest yield of every country, ranked:
 
-{% include ft-chart.html id="fixed-income-government" src="/assets/data/financetoolkit-guides/fixed-income.json" label="10-year government bond yields for the United States, Japan, Germany, China and the United Kingdom" %}
+{% include ft-chart.html id="fixed-income-government" src="/assets/data/financetoolkit-guides/fixed-income.json" label="10-year government bond yields for the United States, Japan, Germany, China and the United Kingdom, and the latest yield per country" %}
+
+German and Japanese yields went below zero around 2019 and 2020, with Germany at -0.6%, while the United States and the United Kingdom are now at about 4.8% and 5%. China moved the other way, from about 4.5% in 2014 to 1.7%. Across countries, the latest 10-year yields range from 12.3% in Colombia to 0.5% in Switzerland, with emerging markets such as Mexico, Brazil and South Africa near 9%.
 
 ### Corporate Bonds: ICE BofA Indices
 
@@ -140,9 +150,11 @@ The ICE BofA corporate bond indices are widely used benchmarks for valuing fixed
 fixedincome.get_ice_bofa_option_adjusted_spread(maturity=False)
 ```
 
-Which shows spreads from about 40 basis points for AAA to well over 1,000 for CCC, with investment grade spreads near the tight end of their range and the CCC bucket widening on its own:
+Which gives a daily spread per rating, shown here weekly and split into high yield and investment grade, with the April 2025 tariff shock shaded:
 
 {% include ft-chart.html id="fixed-income-oas" src="/assets/data/financetoolkit-guides/fixed-income.json" label="ICE BofA option-adjusted spread by credit rating" %}
+
+Spreads run from about 40 basis points for AAA to more than 1,000 for CCC, and every rating jumped in the tariff shock of April 2025 before coming back within weeks. Since then the CCC bucket has widened on its own, to 1,310 basis points, the widest in the three years shown, while BB and B at 200 and 336 and the investment grade ratings are still close to the tight end of their range.
 
 The yield to worst is the lowest yield an investor can receive on a bond without the issuer defaulting, taking into account that the issuer may call the bond early. That makes it the conservative yield measure for callable bonds. To get it per maturity bucket:
 
@@ -150,9 +162,11 @@ The yield to worst is the lowest yield an investor can receive on a bond without
 fixedincome.get_ice_bofa_yield_to_worst(maturity=True)
 ```
 
-Which shows an upward-sloping corporate curve, with the 1-3 year bucket at about 5.3% and the 15+ year bucket at about 6.5%, steeper than in 2023 when the buckets were almost level:
+Which gives a daily yield per maturity bucket. The first tab compares the curve at the start of the data with the latest one, the second shows it weekly over time:
 
 {% include ft-chart.html id="fixed-income-ytw" src="/assets/data/financetoolkit-guides/fixed-income.json" label="ICE BofA yield to worst by maturity" %}
+
+In October 2023 the corporate curve was almost flat, from 6.1% for 1-3 years to 6.5% for 15+ years. Short yields have since fallen to 5.3% with the policy rate, while the long end stayed at 6.5%, so the curve is now upward sloping by more than a percentage point.
 
 The same indices are available as effective yield (`get_ice_bofa_effective_yield`) and total return (`get_ice_bofa_total_return`), each by rating or by maturity.
 

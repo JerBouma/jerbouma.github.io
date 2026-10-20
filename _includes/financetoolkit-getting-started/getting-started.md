@@ -45,7 +45,7 @@ The columns hold two levels, the field and the ticker, so `daily["Close"]` gives
 
 {% include ft-chart.html id="getting-started-cumulative" src="/assets/data/financetoolkit-guides/getting-started.json" label="Cumulative quarterly returns of Apple, Microsoft, Alphabet, Amazon and the S&P 500 since 2005" %}
 
-Over this period Apple multiplied its starting value more than 250 times and Amazon about 150 times, against roughly ten times for the S&P 500.
+Over this period Apple multiplied its starting value about 270 times and Amazon about 150 times, against less than ten times for the S&P 500 (dashed). The shaded periods mark the financial crisis, Covid and the 2022 inflation shock, and the second tab ranks where each one ended.
 
 When tickers trade on different exchanges or in different currencies, it helps to check what each one is. To see the currency, exchange and listing details of every ticker:
 
@@ -84,7 +84,7 @@ The last line selects total shareholder equity for all four companies, which plo
 
 {% include ft-chart.html id="getting-started-equity" src="/assets/data/financetoolkit-guides/getting-started.json" label="Total shareholder equity of Apple, Microsoft, Alphabet and Amazon per fiscal year" %}
 
-Apple stands out: its equity peaked in 2017 and has since fallen by almost half, because its buybacks and dividends return more than it earns, while Microsoft, Alphabet and Amazon each built up several hundred billion dollars.
+Apple stands out: it started buying back shares in 2012, its equity peaked at $134 billion in 2017 and was $74 billion in fiscal 2025, because its buybacks and dividends return more than it earns. Microsoft, Alphabet and Amazon each built up between $340 billion and $415 billion.
 
 ### Growth, Trailing, Rolling and Z-Scores
 
@@ -98,9 +98,11 @@ income_statement_growth = companies.get_income_statement(growth=True)
 income_statement_growth.loc[:, "Revenue", :]
 ```
 
-Which gives the year-over-year revenue growth:
+Which gives the year-over-year revenue growth, one company per tab, from 2008:
 
-{% include ft-chart.html id="getting-started-revenue-growth" src="/assets/data/financetoolkit-guides/getting-started.json" label="Year-over-year revenue growth of Apple, Microsoft, Alphabet and Amazon" %}
+{% include ft-chart.html id="getting-started-revenue-growth" src="/assets/data/financetoolkit-guides/getting-started.json" label="Year-over-year revenue growth of Apple, Microsoft, Alphabet and Amazon since 2008" %}
+
+The Covid years stand out: Alphabet's revenue grew 41% and Apple's 33% in 2021, while Amazon's peak came a year earlier at 38%, as lockdowns moved shopping online. Since 2022 none of the four has grown faster than 18% a year. Alphabet's growth of 57% to 93% a year in 2005–2007 is left out of the chart so the later years stay readable.
 
 By default growth is measured against the previous period. `lag` changes that, and a list of lags returns each of them side by side, e.g. the growth over one, two and three years. To get the growth of every income statement item over three lags:
 
@@ -114,24 +116,36 @@ Three more parameters turn a single number per period into something more useful
 - **`standardize=True`** converts the values into a Z-Score: the number of standard deviations a value is from that company's own historical mean. It makes metrics on very different scales comparable and shows when a reading is unusual for that company.
 - **`rolling`** calculates a metric over a sliding window, which turns a metric into a time series of itself. It is available in the Risk, Performance and Economics modules.
 
-To calculate a trailing net profit margin, a standardized return on equity and a rolling 12-month beta:
+To calculate a trailing net profit margin, a standardized operating margin and a rolling 12-month beta:
 
 ```python
 # Trailing: the net profit margin over the last four periods
 companies.ratios.get_net_profit_margin(trailing=4)
 
-# Standardize: the return on equity as a Z-Score
-companies.ratios.get_return_on_equity(standardize=True)
+# Standardize: the operating margin as a Z-Score
+companies.ratios.get_operating_margin(standardize=True)
 
 # Rolling: the beta against the S&P 500 over the last 12 months
 companies.performance.get_beta(period="monthly", rolling=12)
 ```
 
-Which gives the three series, one per tab:
+The trailing net profit margin, with the latest value per company and its path since 2015:
 
-{% include ft-chart.html id="getting-started-parameters" src="/assets/data/financetoolkit-guides/getting-started.json" label="Trailing net profit margin, standardized return on equity and rolling 12-month beta" %}
+{% include ft-chart.html id="getting-started-trailing" src="/assets/data/financetoolkit-guides/getting-started.json" label="Trailing four-year net profit margin of Apple, Microsoft, Alphabet and Amazon since 2015" %}
 
-The trailing margins show how far apart these businesses are: Microsoft keeps about 36 cents of every dollar of revenue, Amazon less than 7.
+The trailing margins show how far apart these businesses are: Microsoft keeps about 36 cents of every dollar of revenue, up from 22 cents in 2015, while Amazon keeps less than 7.
+
+The operating margin as a Z-Score per company and year, blue above the company's own average and pink below:
+
+{% include ft-chart.html id="getting-started-standardized" src="/assets/data/financetoolkit-guides/getting-started.json" label="Operating margin Z-Scores of Apple, Microsoft, Alphabet and Amazon since 2015" %}
+
+Microsoft went from 2.5 standard deviations below its own average in 2015 to 1.5 above it, and Amazon's operating margin of 11% in 2025 is 2.4 standard deviations above its history. The operating margin works better here than the return on equity: Amazon's equity was close to zero in 2005, which gives a return on equity of more than 3,700% that year, an outlier that pulls its average up so far that every later year scores about the same.
+
+The rolling beta of Apple and Alphabet, with the market's beta of 1 dashed:
+
+{% include ft-chart.html id="getting-started-beta" src="/assets/data/financetoolkit-guides/getting-started.json" label="Rolling 12-month beta of Apple and Alphabet against the S&P 500 since 2015" %}
+
+With only twelve monthly returns in each window the beta moves a lot: Alphabet's went from -0.7 at the start of 2025 to 2.6 by mid-2026, while Apple's dipped to about 0.4 in 2025 and is back near 1.
 
 ### Analyst Estimates and ESG Scores
 
@@ -171,6 +185,12 @@ discovery.get_stock_screener(
 )
 ```
 
+The screen returns every listing of a company, so Nvidia also shows up on exchanges in Germany and Canada. Its primary US listings, ranked by market cap:
+
+{% include ft-chart.html id="getting-started-semiconductors" src="/assets/data/financetoolkit-guides/getting-started.json" label="US semiconductor companies worth more than $100 billion, ranked by market cap" %}
+
+Nvidia's $5.2 trillion is more than the next eight combined, from Broadcom at $1.6 trillion down to KLA at $211 billion.
+
 The [Discovery documentation](/projects/financetoolkit/docs/discovery#getting-started) opens with a full walkthrough.
 
 #### Ratios
@@ -203,7 +223,11 @@ companies.models.get_extended_dupont_analysis()
 companies.models.get_weighted_average_cost_of_capital()
 ```
 
-For Apple, the Extended DuPont analysis shows that an equity multiplier above 5 drives most of its return on equity of well over 100%.
+The five components of the Extended DuPont analysis and the return on equity they multiply into, one company per tab:
+
+{% include ft-chart.html id="getting-started-dupont" src="/assets/data/financetoolkit-guides/getting-started.json" label="Extended DuPont analysis of Apple, Microsoft, Alphabet and Amazon over the last five fiscal years" %}
+
+Apple's operating margin of 32% and asset turnover of 1.15x are strong but not unusual; the equity multiplier of 5.5x, the result of years of buybacks, is what lifts its return on equity to 171%.
 
 The [Models documentation](/projects/financetoolkit/docs/models#getting-started) opens with a full walkthrough.
 

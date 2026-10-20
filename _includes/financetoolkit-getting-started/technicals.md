@@ -56,27 +56,31 @@ bollinger_bands = companies.technicals.get_bollinger_bands()
 bollinger_bands.xs("MSFT", level=1, axis=1)
 ```
 
-Which gives:
+Which gives the bands for Microsoft, and in the second tab their width (the distance between the upper and the lower band as a share of the middle band):
 
-{% include ft-chart.html id="technicals-bollinger" src="/assets/data/financetoolkit-guides/technicals.json" label="Bollinger Bands for Microsoft over 2023" %}
+{% include ft-chart.html id="technicals-bollinger" src="/assets/data/financetoolkit-guides/technicals.json" label="Bollinger Bands and band width for Microsoft over 2023" %}
+
+Microsoft closed above its upper band on 20 days of 2023 and below the lower band on 4. The width separates the turbulent stretches from the calm ones: it peaked at 16.7% in March and fell to 2.5% in the last week of December, the tightest squeeze of the year.
 
 ### Changing the Parameters
 
 Each indicator takes its own parameters, such as the window, and the general `growth` and `lag` parameters that the whole Toolkit supports. The Average Directional Index (ADX) measures the strength of a trend, whatever its direction: a reading above 25 is usually taken as a trending market, below 20 as a market without direction.
 
-To calculate the ADX over 20 days instead of the default 14, and return its growth over 1, 3, 5 and 10 days:
+To calculate the ADX over 20 days instead of the default 14, and its growth over 1, 3, 5 and 10 days:
 
 ```python
+companies.technicals.get_average_directional_index(window=20)
+
 companies.technicals.get_average_directional_index(
     window=20, growth=True, lag=[1, 3, 5, 10]
 )
 ```
 
-Which gives, for Microsoft:
+Which gives, for Microsoft, the ADX with both thresholds, and in the second tab its growth over 1 and 10 days:
 
-{% include ft-chart.html id="technicals-adx-growth" src="/assets/data/financetoolkit-guides/technicals.json" label="Growth of Microsoft's Average Directional Index over 1, 3, 5 and 10 days" %}
+{% include ft-chart.html id="technicals-adx-growth" src="/assets/data/financetoolkit-guides/technicals.json" label="Microsoft's Average Directional Index over 20 days and its growth over 1 and 10 days" %}
 
-The longer the lag, the larger the swings, since the change builds up over more days. Over the last ten trading days of 2023 Microsoft's ADX fell by about 11%, a trend that was losing strength into the end of the year.
+Microsoft's ADX climbed above 25 in April and peaked at 41.9 in early June, a strong trend, then fell to 9.9 at the end of October, when the price moved sideways. The growth shows the turns sooner, and the longer the lag, the larger the swings: the 10-day change reached 110% in mid-November, as the year-end rally began. Over the last ten trading days of 2023 the ADX fell by about 11%, a trend that was losing strength into the end of the year.
 
 ### Relative Strength Index
 
@@ -86,13 +90,15 @@ To calculate the RSI for every ticker:
 
 ```python
 rsi = companies.technicals.get_relative_strength_index()
+
+(rsi > 70).sum(), (rsi < 30).sum()
 ```
 
-Which gives, with a tab per company and the S&P 500:
+Which gives the number of days each was overbought or oversold, and the RSI itself in a tab per company and the S&P 500:
 
-{% include ft-chart.html id="technicals-rsi" src="/assets/data/financetoolkit-guides/technicals.json" label="Relative Strength Index of Microsoft, ASML, Micron, Amazon and the S&P 500 over 2023" %}
+{% include ft-chart.html id="technicals-rsi" src="/assets/data/financetoolkit-guides/technicals.json" label="Days overbought and oversold, and the Relative Strength Index of Microsoft, ASML, Micron, Amazon and the S&P 500 over 2023" %}
 
-In the strong market of 2023, the S&P 500 closed above 70 on 41 days, against 13 to 23 days for each of the four companies. ASML is the only one that also spent time below 30, on 10 days.
+In the strong market of 2023, the S&P 500 closed above 70 on 41 days, against 13 to 23 days for each of the four companies. ASML spent the most time below 30, on 10 days, and the S&P 500 dipped below it on 2.
 
 ### Donchian Channels and the Hull Moving Average
 
@@ -110,6 +116,8 @@ Which gives, for Microsoft with a tab per indicator:
 
 {% include ft-chart.html id="technicals-donchian-hull" src="/assets/data/financetoolkit-guides/technicals.json" label="Donchian Channels and Hull Moving Average for Microsoft over 2023" %}
 
+Microsoft closed at a new 20-day high, on or above the upper channel, on 34 days of 2023, and at a new low on only 4. The flat stretches of the upper channel mark the periods without a breakout, most of all from August to October.
+
 ### VWAP, Parabolic SAR and Pivot Points
 
 The Volume Weighted Average Price (VWAP) is the average price weighted by the volume traded, a common benchmark for whether a trade was executed at a good price. The Parabolic SAR (Stop and Reverse) is a trailing level below the price in an uptrend and above it in a downtrend; when the price crosses it, the trend is considered to have reversed. Pivot Points derive support and resistance levels from the previous day's high, low and close.
@@ -124,9 +132,11 @@ parabolic_sar = companies.technicals.get_parabolic_sar()
 pivot_points = companies.technicals.get_pivot_points()
 ```
 
-Which gives, for Microsoft with a tab per indicator (the Pivot Points tab shows the pivot with the first resistance and support levels; the function also returns the second and third):
+Which gives, for Microsoft with a tab per indicator, the VWAP over the year and the Parabolic SAR and Pivot Points over the last three months (the Pivot Points tab shows the pivot with the first resistance and support levels; the function also returns the second and third):
 
 {% include ft-chart.html id="technicals-overlap" src="/assets/data/financetoolkit-guides/technicals.json" label="VWAP, Parabolic SAR and Pivot Points for Microsoft over 2023" %}
+
+Microsoft closed above its VWAP on 183 of the 237 days with a value, which fits a stock that rose by more than half over the year. The Parabolic SAR flipped 24 times in 2023, 5 of them in the fourth quarter; a jump of the dashed line from below the price to above it, as at the end of November, marks a reversal from an uptrend to a downtrend.
 
 ### Volatility Cone
 
@@ -138,11 +148,11 @@ To calculate the volatility cone and select Microsoft:
 companies.technicals.get_volatility_cone().xs("MSFT", level=1, axis=1)
 ```
 
-Which gives, with a line per percentile and the current value:
+Which gives the cone, with dashed lines for the maximum, the minimum and the 25th and 75th percentiles, a solid line for the median and the current value shaded:
 
 {% include ft-chart.html id="technicals-volatility-cone" src="/assets/data/financetoolkit-guides/technicals.json" label="Volatility cone for Microsoft over 2023" %}
 
-At the end of 2023, Microsoft's volatility was below the 10th percentile for every window, and at the lowest level of the year for the 10-day window, at about 9%. The cone also narrows as the window grows: short windows swing between calm and turbulent weeks, long windows average them out.
+At the end of 2023, Microsoft's volatility was below the 10th percentile for every window, and at the lowest level of the year for the 10, 90 and 120-day windows, with 8.6% for the 10-day window. The cone also narrows as the window grows: short windows swing between calm and turbulent weeks, long windows average them out.
 
 ### Breadth Indicators
 
@@ -158,11 +168,11 @@ trin = companies.technicals.get_trin()
 new_highs_new_lows = companies.technicals.get_new_highs_new_lows(window=60)
 ```
 
-Which gives, with a tab per indicator:
+Which gives the TRIN as a 10-day median, since single days spike far above 1, and in the second tab New Highs - New Lows summed per month:
 
 {% include ft-chart.html id="technicals-breadth" src="/assets/data/financetoolkit-guides/technicals.json" label="TRIN and New Highs - New Lows of Microsoft, ASML, Micron, Amazon and the S&P 500 over 2023" %}
 
-With only five instruments the TRIN is erratic: on a day when nearly all the volume is in the one or two falling stocks it spikes far above 1, while its median over the year is about 0.76. Breadth indicators become meaningful with a broad set of tickers, for example every company in a sector or industry, which you can find with the [Finance Database](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}.
+With only five instruments the TRIN is erratic: on a day when nearly all the volume is in the one or two falling stocks it spikes far above 1 (to 77 on 1 May), while its median over the year is about 0.76 and the 10-day median stayed below 1 on 69% of the days. New Highs - New Lows was negative only from August to October, the one stretch of 2023 in which the five set more 60-day lows than highs. Breadth indicators become meaningful with a broad set of tickers, for example every company in a sector or industry, which you can find with the [Finance Database](https://github.com/JerBouma/FinanceDatabase){:target="_blank"}.
 
 ### Using the Models Directly
 

@@ -43,6 +43,12 @@ This returns one table with the ticker and the ratio as rows and the years as co
 
 The cash conversion cycle shows the differences in business model at a glance: Apple, Amazon and Meta collect cash from their customers weeks before they pay their suppliers, while Walmart's cycle is close to zero. Apple's return on equity above 100% is the result of its small equity base after years of buybacks, not of exceptional margins.
 
+The gross margin from the same table, per company since 2015:
+
+{% include ft-chart.html id="ratios-gross-margin" src="/assets/data/financetoolkit-guides/ratios.json" label="Gross margin of Apple, Amazon, Meta and Walmart since 2015" %}
+
+Amazon's gross margin rose from 33% to 50% over the decade and Apple's from 40% to 47%, while Meta's stayed above 80% and Walmart's at about 25%, the margin of a retailer that mostly sells other companies' products.
+
 ### Individual Ratios
 
 When you need only one ratio, call its `get_` function. The effective tax rate, the income tax expense divided by the income before tax, is a good example of a ratio that tells a story over time.
@@ -53,11 +59,11 @@ To calculate the effective tax rate of each company:
 companies.ratios.get_effective_tax_rate()
 ```
 
-Which gives the effective tax rate per fiscal year, shown here from 2015:
+Which gives the effective tax rate per fiscal year, shown here from 2015, one company per tab, against the US federal corporate rate:
 
 {% include ft-chart.html id="ratios-effective-tax-rate" src="/assets/data/financetoolkit-guides/ratios.json" label="Effective tax rate of Apple, Amazon, Meta and Walmart since 2015" %}
 
-The returned table goes back to 2005, but Amazon's and Meta's income before tax was close to zero in their early years, which pushes the rate far outside the 0–100% range (Amazon's comes out at about -226% in 2014). Walmart's rate is the most stable, between about 23% and 37%, while Apple's fell from about 26% to around 15% after the 2017 US tax reform. Amazon's 54% in 2022 is not a high tax bill: it made a loss before tax that year, and the rate reflects the tax benefit on that loss.
+The returned table goes back to 2005, but Amazon's and Meta's income before tax was close to zero in their early years, which pushes the rate far outside the 0–100% range (Amazon's comes out at about -226% in 2014). Walmart's rate is the most stable, between about 23% and 37%, while Apple's fell from about 26% to around 15% after the 2017 US tax reform cut the federal rate from 35% to 21%. Its jump to 24% in 2024 is a one-off: the European Commission's state aid ruling added a tax charge of about $10 billion that year. Amazon's 54% in 2022 is not a high tax bill: it made a loss before tax that year, and the rate reflects the tax benefit on that loss.
 
 ### Ratio Options
 
@@ -84,7 +90,7 @@ Growth works the same for a single ratio. To get the growth of the price-to-book
 companies.ratios.get_price_to_book_ratio(growth=True)
 ```
 
-Which gives the year-over-year change of each company's price-to-book ratio, shown here from 2013, the first full year after Meta's listing:
+Which gives the year-over-year change of each company's price-to-book ratio over the last ten years, one cell per company and year:
 
 {% include ft-chart.html id="ratios-price-to-book-growth" src="/assets/data/financetoolkit-guides/ratios.json" label="Year-over-year growth of the price-to-book ratio since 2013" %}
 
@@ -96,7 +102,7 @@ By default growth is measured against the previous period. `lag` sets how many p
 companies.ratios.get_current_ratio(growth=True, lag=[1, 2, 3])
 ```
 
-Which gives the three growth rates per company, one company per tab:
+Which gives the three growth rates per company since 2015, one company per tab:
 
 {% include ft-chart.html id="ratios-current-ratio-lags" src="/assets/data/financetoolkit-guides/ratios.json" label="Growth of the current ratio over one, two and three years" %}
 
@@ -114,11 +120,11 @@ companies.ratios.get_earnings_per_share(trailing=4)
 companies.ratios.get_earnings_per_share(trailing=4, growth=True)
 ```
 
-Which gives the earnings per share summed over four years and its growth, one per tab:
+Which gives the earnings per share summed over four years and its growth, one per tab; the growth starts in 2019, as Amazon's jump of 401% in 2016 would dwarf every other year:
 
 {% include ft-chart.html id="ratios-trailing-eps" src="/assets/data/financetoolkit-guides/ratios.json" label="Earnings per share summed over four years, and its growth" %}
 
-Meta's four-year earnings per share has risen to about $72, more than eight times Walmart's, while Amazon's has more than doubled in the last three years.
+Meta's four-year earnings per share has risen to about $72, more than eight times Walmart's $8.54, while Amazon's has more than doubled in the last three years, from $6.24 to $15.21.
 
 ### Forward Valuation
 
@@ -155,11 +161,11 @@ companies.ratios.get_shareholder_yield()
 companies.ratios.get_debt_to_capital_ratio()
 ```
 
-Which gives the two ratios from 2013, one per tab:
+Which gives the two ratios from 2013, Apple against Walmart:
 
 {% include ft-chart.html id="ratios-shareholder-yield" src="/assets/data/financetoolkit-guides/ratios.json" label="Shareholder yield and debt-to-capital ratio since 2013" %}
 
-Amazon returns next to nothing to its shareholders and reinvests its cash, while Apple returned between about 2.5% and 11.5% of its market value a year, at the lower end in recent years. Apple's debt-to-capital ratio rose from about 12% to above 60% over the same period, as it borrowed to fund those buybacks.
+Apple returned between about 2.5% and 11.5% of its market value a year, at the lower end in recent years, and Walmart between 1.5% and 8%. Apple's debt-to-capital ratio rose from about 12% to above 60% over the same period, as it borrowed to fund those buybacks, while Walmart's stayed between 36% and 47%. Amazon is left out of the comparison: it returns next to nothing to its shareholders and reinvests its cash, so its shareholder yield is zero in most years.
 
 ### Custom Ratios
 

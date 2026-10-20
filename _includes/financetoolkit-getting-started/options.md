@@ -32,11 +32,11 @@ To calculate the value of a call option for every ticker, strike and expiration 
 companies.options.get_black_scholes_model()
 ```
 
-Which gives, with a tab per company and a line for three of the expiration dates:
+Which gives, for Apple with a day, two weeks and four weeks to expiration, the time value of a call by strike price: the part of its value above what the option would pay if it were exercised today (the stock price minus the strike, or zero). The second tab shows the full value of the call:
 
-{% include ft-chart.html id="options-black-scholes" src="/assets/data/financetoolkit-guides/options.json" label="Black-Scholes value of a call option by strike price for Apple, Microsoft, Alphabet and Amazon" %}
+{% include ft-chart.html id="options-black-scholes" src="/assets/data/financetoolkit-guides/options.json" label="Black-Scholes value and time value of an Apple call option by strike price" %}
 
-Deep in-the-money options are worth little more than the difference between the stock price and the strike, whatever the expiration date. Near the money the time value takes over: with Apple at about $340, a $340 call is worth around $10 with a month to go and less than $2 a day before it expires. Pass `put_option=True` for puts.
+Deep in-the-money options are worth little more than the difference between the stock price and the strike, whatever the expiration date, so their time value is close to zero. Near the money the time value takes over: with Apple at $339.50, the $340 call is worth $10.32 with 29 days to go, all of it time value, and $1.62 a day before it expires. Pass `put_option=True` for puts.
 
 ### Binomial Model
 
@@ -82,25 +82,29 @@ Which gives, for Apple's calls around the money with the stock at about $340:
 | 350 | 42.35 | 41.95 | 43.05 | 50 | 2,351 | 32.6% | No |
 | 360 | 38.70 | 36.95 | 38.55 | 3 | 1,860 | 32.2% | No |
 
-And the implied volatility for strikes from 60% to 150% of the current price, with a tab per company:
+And the implied volatility of all four by strike as a percentage of the stock price, from 60% to 150% (the median of the strikes in each 5% step), with Apple's open interest by strike in the second tab:
 
-{% include ft-chart.html id="options-implied-volatility" src="/assets/data/financetoolkit-guides/options.json" label="Implied volatility by strike price for Apple, Microsoft, Alphabet and Amazon" %}
+{% include ft-chart.html id="options-implied-volatility" src="/assets/data/financetoolkit-guides/options.json" label="Implied volatility skew of Apple, Microsoft, Alphabet and Amazon, and Apple's open interest by strike price" %}
 
-For most of them the implied volatility falls as the strike rises, the familiar volatility skew: the market pays more for protection against a large fall than the lognormal distribution of Black-Scholes assumes. The line is noisy because it is backed out from the last traded price of each contract, and contracts that rarely trade carry stale prices.
+All four lines slope down to the right, the familiar volatility skew: the market pays more for protection against a large fall than the lognormal distribution of Black-Scholes assumes. Alphabet's skew is the steepest, from 48% at 60% of the stock price to 36% at the money, and Microsoft's the flattest, from 34% to 31%. Open interest clusters at round strikes, with 8,551 contracts at $300 and 5,850 at $400 against 1,901 at the money. Where contracts rarely trade the lines get noisy, because each implied volatility is backed out from the last traded price, which can be stale.
 
 ### Stock Price Simulation
 
 Underneath the binomial model is the tree of stock prices itself. Each step multiplies the price by an up or a down factor, and because an up move followed by a down move ends at the same price as the reverse, the tree recombines: after ten steps there are only eleven possible prices.
 
-To simulate the stock prices of the binomial tree in ten steps:
+The function returns every path through the tree, one row per sequence of up and down moves, so ten steps give 1,024 paths (2 to the power of 10) per company. To simulate the stock prices in ten steps, and count how many of Apple's paths end at each price:
 
 ```python
 stock_price_simulations = companies.options.get_stock_price_simulation(timesteps=10)
+
+stock_price_simulations.loc["AAPL"].iloc[:, -1].round(2).value_counts().sort_index()
 ```
 
-Which gives the tree for each company, with a line for each number of down moves:
+Which gives Apple's tree, with a line for each number of down moves, and in the second tab the number of paths that end at each price:
 
-{% include ft-chart.html id="options-simulation" src="/assets/data/financetoolkit-guides/options.json" label="Binomial tree of simulated stock prices for Apple, Microsoft, Alphabet and Amazon" %}
+{% include ft-chart.html id="options-simulation" src="/assets/data/financetoolkit-guides/options.json" label="Binomial tree of simulated stock prices for Apple and the number of paths ending at each price" %}
+
+After a year the tree spans from $149 to $772, but the paths bunch up in the middle: 252 of them end back at today's $339.50 and only one at either extreme. That bell shape is the binomial distribution, which approaches the lognormal distribution behind Black-Scholes as the number of steps grows.
 
 ### Greeks
 
@@ -112,11 +116,11 @@ To calculate the Delta for every ticker, strike and expiration date:
 companies.options.get_delta()
 ```
 
-Which gives, with a tab per company:
+Which gives a grid of strikes and expiration dates for every company; for Apple, the strikes from $300 to $380 and expirations from 1 to 29 days:
 
-{% include ft-chart.html id="options-delta" src="/assets/data/financetoolkit-guides/options.json" label="Delta of a call option by strike price for Apple, Microsoft, Alphabet and Amazon" %}
+{% include ft-chart.html id="options-delta" src="/assets/data/financetoolkit-guides/options.json" label="Delta of Apple call options by strike price and days to expiration" %}
 
-The closer to expiration, the steeper the curve: a day before expiry, an option is close to either fully in or fully out of the money, while with a month to go there is still a real chance it ends up on the other side.
+With 29 days to go, Delta falls gradually from 0.96 at the $300 strike to 0.07 at $380. A day before expiry it drops from 0.98 at $330 to 0.01 at $350: the option is close to either fully in or fully out of the money, while with a month to go there is still a real chance it ends up on the other side.
 
 Every Greek accepts the same parameters to change the grid: `start_date` sets the date of the stock price, `strike_price_range` the range of strikes around it and `expiration_time_range` the number of days to expiration. With `show_input_info=True` the Toolkit logs the inputs it used: the stock price on that date, the annualized volatility, the dividend yield and the risk-free rate (1.88% at the start of 2020). To calculate the Dual Gamma, the second derivative of the option value to the strike price, from 2 January 2020 with strikes within 20% of the price and expirations up to 180 days:
 
@@ -129,11 +133,11 @@ companies.options.get_dual_gamma(
 )
 ```
 
-Which gives the Dual Gamma for expirations of about 30, 90 and 180 days, with a tab per company:
+Which gives the Dual Gamma for expirations of 30, 90 and 179 days, with a tab per company:
 
-{% include ft-chart.html id="options-dual-gamma" src="/assets/data/financetoolkit-guides/options.json" label="Dual Gamma by strike price for Apple, Microsoft, Alphabet and Amazon" %}
+{% include ft-chart.html id="options-dual-gamma" src="/assets/data/financetoolkit-guides/options.json" label="Dual Gamma by strike price for Microsoft, Amazon, Apple and Alphabet" %}
 
-Dual Gamma peaks at the money and flattens as the expiration date moves further away, because a longer time to expiration spreads the probability of where the stock ends up over a wider range of strikes.
+With Microsoft at $151.54 on 2 January 2020, its 30-day Dual Gamma peaks at the $150 strike, at 0.021. At 179 days the peak is less than half that and the curve is nearly flat, because a longer time to expiration spreads the probability of where the stock ends up over a wider range of strikes.
 
 ### All Greeks at Once
 
@@ -175,7 +179,7 @@ The at-the-money option has the highest Gamma, Vega and Theta: it is the most se
 
 The Toolkit calculates the Greeks over a range of strike prices, but every formula is also available as a plain function in `financetoolkit.options.greeks_model`. That makes it straightforward to vary any other input instead, such as the stock price.
 
-To calculate the Delta of a call and a put and the Gamma of a $100 strike option with six months to expiration, for stock prices from $50 to $149:
+To calculate the Delta of a call and a put and the Gamma of a $100 strike option with six months to expiration, for stock prices from $50 to $150 in steps of $2:
 
 ```python
 from financetoolkit.options import greeks_model
@@ -190,7 +194,7 @@ delta_values_call = {}
 delta_values_put = {}
 gamma_values = {}
 
-for stock_price in range(50, 150, 1):
+for stock_price in range(50, 152, 2):
     delta_values_call[stock_price] = greeks_model.get_delta(
         stock_price=stock_price,
         strike_price=STRIKE_PRICE,
@@ -220,10 +224,10 @@ for stock_price in range(50, 150, 1):
     )
 ```
 
-When plotted, with Delta and Gamma in separate tabs since they are on very different scales:
+When plotted, with Gamma on its own axis on the right since it is on a much smaller scale:
 
 {% include ft-chart.html id="options-delta-gamma" src="/assets/data/financetoolkit-guides/options.json" label="Delta and Gamma of a $100 strike option against the stock price" %}
 
-The call Delta rises from 0 to 1 as the stock moves from far below to far above the strike, and the put Delta mirrors it from -1 to 0. Gamma, the slope of that curve, peaks just below the strike: that is where Delta changes the fastest and where hedging an option position takes the most rebalancing.
+The call Delta rises from 0 to 1 as the stock moves from far below to far above the strike, and the put Delta mirrors it from -1 to 0. Gamma, the slope of that curve, peaks at $96, just below the strike: that is where Delta changes the fastest and where hedging an option position takes the most rebalancing.
 
 {% include ft-charts-script.html %}

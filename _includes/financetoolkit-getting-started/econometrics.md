@@ -55,6 +55,20 @@ The same coefficients with their 95% confidence intervals, where the coloured on
 
 Only some of the plausible relationships survive. The chip suppliers `QCOM` and `SWKS` and the megacap peers `MSFT` and `GOOGL` are significant, while `AMZN`, `META`, `NVDA` and the unrelated `XOM` are not. Two results go against intuition: `PG`, a consumer staples company picked as an unrelated contrast, is significant, while Apple's own foundry `TSM` is not. That is a first hint of multicollinearity: when the regressors move together, a multiple regression can both hide and manufacture relationships. Use `dependent_ticker` and `independent_tickers` to choose the variables yourself, `include_benchmark=True` to add the market, and `cov_type="HC1"` or `"HAC"` for robust standard errors.
 
+How much the regressors move together shows in the correlation matrix of the same weekly returns. To calculate it, leaving out the benchmark again:
+
+```python
+weekly_returns = companies.get_historical_data(period="weekly")["Return"]
+
+weekly_returns.drop(columns="Benchmark").corr()
+```
+
+Which gives the following, with the darker blue cells the most closely related pairs:
+
+{% include ft-chart.html id="econometrics-correlations" src="/assets/data/financetoolkit-guides/econometrics.json" label="Correlation matrix of the weekly returns of the eleven stocks" %}
+
+Apart from `XOM`, every pair correlates between about 0.25 and 0.75. Apple's own correlation with `TSM` is 0.51, not far below its 0.61 with `QCOM` and 0.66 with `SWKS`, but `TSM` is in turn correlated at 0.57 with both of them, so once they are in the regression there is little left for `TSM` to explain. `MSFT` correlates at 0.73 with both Apple and `GOOGL`, the strongest pairs in the matrix.
+
 ### Can the P-Values Be Trusted?
 
 The t-tests of OLS assume well-behaved residuals, and returns that are far from normal would undermine them. The Jarque-Bera test combines skewness and excess kurtosis into one statistic, with normality as the null hypothesis. To run it on the quarterly returns of Apple and its three chip suppliers:
@@ -95,11 +109,19 @@ Which gives the following:
 
 Neither direction is significant: the relationship between Skyworks and Apple is contemporaneous, the two move together in the same week, and neither helps forecast the other.
 
+The same result holds every ticker against Apple. The p-value of each test with Apple as the dependent variable, with the dashed line at 0.05:
+
+{% include ft-chart.html id="econometrics-granger" src="/assets/data/financetoolkit-guides/econometrics.json" label="Granger causality p-values of each ticker for Apple's weekly returns" %}
+
+Only `AMZN` falls below the line, with a p-value of 0.006, so Amazon's past weekly returns carried some information about Apple's next ones over this window. With ten tests at the 5% level, one false positive is not unusual, so treat it as a lead to check on another period rather than a trading signal.
+
 ### What about the Long Run?
 
-`TSM` is Apple's foundry partner, yet its returns were not significant. Short-run returns and long-run price levels answer different questions, though: two price series can share a long-run equilibrium (cointegration) without any short-run relationship in their returns. Before testing for that, the Augmented Dickey-Fuller (ADF) test checks whether the price levels are non-stationary, which is its null hypothesis and what you would expect of a price. The Engle-Granger test then checks every ordered pair for cointegration. To run both on quarterly prices:
+`TSM` is Apple's foundry partner, yet its returns were not significant. Short-run returns and long-run price levels answer different questions, though: two price series can share a long-run equilibrium (cointegration) without any short-run relationship in their returns. Before testing for that, the Augmented Dickey-Fuller (ADF) test checks whether the price levels are non-stationary, which is its null hypothesis and what you would expect of a price. The Engle-Granger test then checks every ordered pair for cointegration. To look at the two prices first, and then run both tests on quarterly prices:
 
 ```python
+prices = companies.get_historical_data(period="weekly")["Adj Close"][["AAPL", "TSM"]]
+
 adf = companies.econometrics.get_augmented_dickey_fuller(period="quarterly")
 
 print(adf[["AAPL", "TSM"]])
@@ -108,6 +130,12 @@ cointegration = companies.econometrics.get_engle_granger_cointegration(period="q
 
 print(cointegration.loc[[("AAPL", "TSM"), ("TSM", "AAPL")]])
 ```
+
+The weekly prices of the two, each on its own axis, Apple on the left and TSMC on the right:
+
+{% include ft-chart.html id="econometrics-prices" src="/assets/data/financetoolkit-guides/econometrics.json" label="Weekly adjusted close of Apple and TSMC" %}
+
+The two rose together until the turn of 2022, Apple from $35 to a high of $175 and TSMC from $31 to $132, but TSMC then fell by more than half at its low and ended 2022 down 46% from its high, while Apple gave up about a quarter. Neither price shows a level it is pulled back to, which is what the tests check formally.
 
 Which gives the following ADF results:
 
@@ -147,7 +175,7 @@ Which gives a coefficient on `SWKS` of 0.47, with a standard error of 0.02 and a
 
 {% include ft-chart.html id="econometrics-entity-effects" src="/assets/data/financetoolkit-guides/econometrics.json" label="Entity effects of the fixed effects panel regression" %}
 
-The whole panel shares a highly significant sensitivity to `SWKS`, including `XOM` and `PG`, the two names picked for being unrelated. That is the giveaway: with the benchmark excluded, the return of `SWKS` stands in for market-wide comovement rather than a genuine semiconductor supply chain effect. A cleaner test adds the market factor explicitly, for example with `include_benchmark=True` in `get_ols`, and checks what is left.
+Nvidia stands out with 0.75% a week on top of what `SWKS` explains, about twice `QCOM`, `TSM` and `MSFT` at 0.34% to 0.38%, while Amazon and Meta are slightly negative. The whole panel shares a highly significant sensitivity to `SWKS`, including `XOM` and `PG`, the two names picked for being unrelated. That is the giveaway: with the benchmark excluded, the return of `SWKS` stands in for market-wide comovement rather than a genuine semiconductor supply chain effect. A cleaner test adds the market factor explicitly, for example with `include_benchmark=True` in `get_ols`, and checks what is left.
 
 ### Using the Models with Your Own Data
 

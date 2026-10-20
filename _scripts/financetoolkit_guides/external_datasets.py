@@ -57,7 +57,13 @@ def build() -> dict:
             "components": [{"name": short, "format": fmt, "data": values(frame.loc[row])} for row, short, fmt in parts],
             "result": {"name": "Return on equity", "format": "percent", "data": values(frame.loc["Return on Equity"])},
         })
-    charts["external-datasets-dupont"] = {"type": "dupont", "title": "Extended DuPont Analysis from Yahoo Finance statements", "tabs": tabs}
+    roe = dupont.xs("Return on Equity", level=1)
+    LAST["roe"] = roe
+    charts["external-datasets-dupont"] = {
+        "type": "dupont",
+        "title": f"Tesla's return on equity fell to {roe.loc['TSLA'].iloc[-1]:.0%} as its margin shrank, Alphabet's rose to {roe.loc['GOOGL'].iloc[-1]:.0%}",
+        "tabs": tabs,
+    }
 
     efficiency = companies.ratios.collect_efficiency_ratios()
     LAST["efficiency"] = efficiency
@@ -65,7 +71,7 @@ def build() -> dict:
     years = [c for c in efficiency.columns if all(pd.notna(efficiency.loc[(t, m), c]) for t in ["TSLA", "GOOGL"] for m in metrics)]
     charts["external-datasets-efficiency"] = {
         "type": "compare",
-        "title": "Efficiency ratios of Tesla and Alphabet",
+        "title": "Alphabet spends on people and research, Tesla on building cars",
         "x": [label(y) for y in years],
         "format": "percent",
         "names": {"TSLA": "Tesla", "GOOGL": "Alphabet"},
@@ -82,24 +88,35 @@ def build() -> dict:
         {NAMES[t]: [efficiency.loc[(t, d), latest] for d in days] for t in ["TSLA", "GOOGL"]},
         fmt="number",
         kind="bar",
-        title=f"Working capital in days, {label(latest)}",
+        title=f"Tesla collects in {efficiency.loc[('TSLA', days[1]), latest]:.0f} days and pays in {efficiency.loc[('TSLA', days[2]), latest]:.0f} (working capital in days, {label(latest)})",
     )
 
     growth = companies.get_balance_sheet_statement(growth=True)
     LAST["growth"] = growth
 
-    beta = companies.performance.get_beta(period="monthly")
+    beta = companies.performance.get_beta(period="quarterly")
     LAST["beta"] = beta
-    charts["external-datasets-beta"] = frame_chart(beta.rename(columns=NAMES), fmt="ratio", title="Beta against the S&P 500, monthly")
+    chart = frame_chart(beta.rename(columns=NAMES), fmt="ratio", title="Tesla moves about twice as much as the market, Alphabet about 1.3 times")
+    chart["series"].append({"name": "Market (beta 1)", "data": [1] * len(chart["x"]), "reference": True})
+    charts["external-datasets-beta"] = chart
 
     drawdown = companies.risk.get_maximum_drawdown(period="quarterly", within_period=True)
     LAST["drawdown"] = drawdown
-    charts["external-datasets-drawdown"] = frame_chart(drawdown.rename(columns=NAMES), fmt="percent", kind="bar", title="Maximum drawdown within each quarter")
+    chart = frame_chart(drawdown.rename(columns=NAMES), fmt="percent",
+                        title=f"Tesla fell up to {-drawdown['TSLA'].min():.0%} within a quarter, the S&P 500 never more than {-drawdown['Benchmark'].min():.0%}")
+    chart["series"][0]["area"] = "down"
+    charts["external-datasets-drawdown"] = chart
 
     historical = companies.get_historical_data()
     cumulative = historical["Cumulative Return"]
     LAST["cumulative"] = cumulative
-    charts["external-datasets-returns"] = frame_chart(cumulative.rename(columns=NAMES), fmt="ratio", title="Cumulative return (1 = start)")
+    weekly = cumulative.copy()
+    weekly.index = weekly.index.to_timestamp() if isinstance(weekly.index, pd.PeriodIndex) else pd.to_datetime(weekly.index)
+    weekly = weekly.groupby(pd.Grouper(freq="W")).tail(1)
+    chart = frame_chart(weekly.rename(columns=NAMES), fmt="multiple",
+                        title=f"Alphabet turned 1 into {cumulative['GOOGL'].iloc[-1]:.2f} in five years, Tesla into {cumulative['TSLA'].iloc[-1]:.2f}")
+    chart["series"].append({"name": "Start (1x)", "data": [1] * len(chart["x"]), "reference": True})
+    charts["external-datasets-returns"] = chart
 
     if API_KEY:
         with_key = Toolkit(
@@ -113,12 +130,13 @@ def build() -> dict:
         )
         estimates = with_key.get_analyst_estimates()
         LAST["estimates"] = estimates
+        ahead = [{"x": label(c), "label": "Estimates ahead"} for c in estimates.columns if str(c) == str(pd.Timestamp.today().year)]
         charts["external-datasets-estimates"] = {
             "type": "tabs",
-            "title": "Analyst estimates (average)",
+            "title": "Analysts expect Alphabet's revenue and earnings to keep pulling away from Tesla's (average estimates)",
             "tabs": [
-                {"label": "Revenue", **line(estimates.columns, {NAMES[t]: estimates.loc[(t, "Estimated Revenue Average")] for t in ["TSLA", "GOOGL"]}, fmt="usd")},
-                {"label": "EPS", **line(estimates.columns, {NAMES[t]: estimates.loc[(t, "Estimated EPS Average")] for t in ["TSLA", "GOOGL"]}, fmt="price")},
+                {"label": "Revenue", **line(estimates.columns, {NAMES[t]: estimates.loc[(t, "Estimated Revenue Average")] for t in ["TSLA", "GOOGL"]}, fmt="usd", kind="bar", markers=ahead)},
+                {"label": "EPS", **line(estimates.columns, {NAMES[t]: estimates.loc[(t, "Estimated EPS Average")] for t in ["TSLA", "GOOGL"]}, fmt="price", kind="bar", markers=ahead)},
             ],
         }
 

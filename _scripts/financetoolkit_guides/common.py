@@ -43,3 +43,18 @@ def line(x, series: dict, fmt: str = "num", kind: str = "line", title: str = "",
 def frame_chart(df: pd.DataFrame, fmt: str = "num", kind: str = "line", title: str = "", **extra) -> dict:
     """A chart with one series per column of a DataFrame indexed by date or period."""
     return line(df.index, {col: df[col] for col in df.columns}, fmt=fmt, kind=kind, title=title, **extra)
+
+
+def heatmap(spec: dict, title: str = "", fmt: str = "", low=None, high=None) -> dict:
+    """A line or bar spec (x periods, one series per company) as a company-by-period heatmap.
+
+    low and high set the colour scale; by default it is symmetric around zero."""
+    rows = [s["data"] for s in spec["series"] if not s.get("reference")]
+    names = [s["name"] for s in spec["series"] if not s.get("reference")]
+    vals = [v for r in rows for v in r if v is not None]
+    edge = max(abs(min(vals)), abs(max(vals))) if vals else 1
+    out = {"type": "heatmap", "title": title or spec.get("title", ""), "x": spec["x"], "y": names, "values": rows,
+           "min": -edge if low is None else low, "max": edge if high is None else high}
+    if fmt:
+        out["format"] = fmt
+    return out

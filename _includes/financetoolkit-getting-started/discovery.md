@@ -67,9 +67,11 @@ screener = discovery.get_stock_screener(
 )
 ```
 
-The result holds each company's name, market cap, sector, industry, beta, price, dividend, volume, exchange, country and currency, plus the market cap converted to US dollars so that companies listed in other currencies compare directly. About two dozen stocks pass this screen, mostly mid-sized industrials and consumer companies, ranked by their market cap in US dollars below:
+The result holds each company's name, market cap, sector, industry, beta, price, dividend, volume, exchange, country and currency, plus the market cap converted to US dollars so that companies listed in other currencies compare directly. 23 stocks pass this screen, from Wheaton Precious Metals at about $60 billion down to Alamo Group at $1.8 billion. Counted per sector:
 
-{% include ft-chart.html id="discovery-screener" src="/assets/data/financetoolkit-guides/discovery.json" label="Stocks that pass the screen, ranked by market cap in US dollars" %}
+{% include ft-chart.html id="discovery-screener" src="/assets/data/financetoolkit-guides/discovery.json" label="Stocks that pass the screen, counted per sector" %}
+
+Industrials make up 10 of the 23, followed by five consumer cyclical and four basic materials companies, with a single technology stock among them.
 
 ### Gainers, Losers and Most Active Stocks
 
@@ -91,23 +93,29 @@ The gainers and losers lists are dominated by small companies with large percent
 
 Before you dive into individual stocks, it helps to know how their sector is doing. Pass a `date` to `get_sector_performance` for a snapshot of every sector on that day, or a `sector` or `industry` name to `get_sector_pe` for that sector's valuation over time. Together they tell you whether a move is sector-wide or specific to one company, and whether a sector trades rich or cheap compared to its own history. `get_industry_performance` and `get_industry_pe` do the same per industry.
 
-To get the performance of every sector on 1 February 2024 and the P/E ratio of the Technology sector:
+To get the performance of every sector on 1 February 2024, the P/E ratio of the Technology sector since 2019 and the P/E ratio of every sector on 16 October 2026:
 
 ```python
 discovery.get_sector_performance(date="2024-02-01")
 
-discovery.get_sector_pe(sector="Technology")
+discovery.get_sector_pe(sector="Technology", start_date="2019-01-01")
+
+discovery.get_sector_pe(date="2026-10-16")
 ```
+
+Without a `start_date`, the history of one sector covers the past year.
 
 The first gives the average change of the stocks in each sector on that day:
 
 {% include ft-chart.html id="discovery-sector-performance" src="/assets/data/financetoolkit-guides/discovery.json" label="Average change per sector on 1 February 2024" %}
 
-Utilities and consumer stocks rose about 2% that day while financial services fell by about the same amount, a split that a single index return would hide.
+Utilities and consumer stocks rose about 2% that day while financial services fell 2.5%, a split that a single index return would hide. The day before, New York Community Bancorp's surprise loss had revived worries about regional banks.
 
-The second gives the daily P/E ratio of the Technology sector over the past year:
+The second gives the daily P/E ratio of the Technology sector, shown here as a monthly average against its average over the period, and the third the P/E ratio of every sector on one day, one per tab:
 
-{% include ft-chart.html id="discovery-sector-pe" src="/assets/data/financetoolkit-guides/discovery.json" label="P/E ratio of the Technology sector over the past year" %}
+{% include ft-chart.html id="discovery-sector-pe" src="/assets/data/financetoolkit-guides/discovery.json" label="P/E ratio of the Technology sector since 2019, and of every sector on 16 October 2026" %}
+
+Technology's P/E went from about 27 at the start of 2019 to above 60 in early 2022, then fell below 30 by the end of that year as rising interest rates hit growth stocks. At about 47 it now trades close to its average of 46 since 2019. Across sectors, consumer cyclical (69) and technology (44) are the most expensive and energy (15) the cheapest.
 
 ### From Discovery to the Toolkit
 
@@ -137,11 +145,11 @@ companies = Toolkit(tickers=tickers, api_key=API_KEY)
 companies.get_historical_data()
 ```
 
-Without a `start_date` the Toolkit retrieves the last five years. The cumulative return of each screened stock over that period, with the S&P 500 in orange for reference:
+Without a `start_date` the Toolkit retrieves the last five years. The cumulative return of each screened stock over that period against its beta, with the stocks that beat the S&P 500 in orange:
 
-{% include ft-chart.html id="discovery-screener-returns" src="/assets/data/financetoolkit-guides/discovery.json" label="Cumulative return of the screened stocks over five years, with the S&P 500" %}
+{% include ft-chart.html id="discovery-screener-returns" src="/assets/data/financetoolkit-guides/discovery.json" label="Five-year cumulative return of the screened stocks against their beta, with the S&P 500" %}
 
-Stocks that look alike on beta, price and dividend still end up far apart: some gained more than 200% while others lost money. From here, every other module, from [ratios](/projects/financetoolkit/docs/ratios#getting-started) to [risk](/projects/financetoolkit/docs/risk#getting-started), works on the same `companies` instance.
+Stocks that look alike on beta, price and dividend still end up far apart: Wheaton Precious Metals gained 281% and Estée Lauder lost 64%, and only eight of the 22 stocks with five years of prices beat the S&P 500's 81%. Beta doesn't separate the winners from the losers. From here, every other module, from [ratios](/projects/financetoolkit/docs/ratios#getting-started) to [risk](/projects/financetoolkit/docs/risk#getting-started), works on the same `companies` instance.
 
 ### More in the Discovery Module
 

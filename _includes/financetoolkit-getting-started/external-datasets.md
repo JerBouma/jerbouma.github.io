@@ -102,9 +102,11 @@ From here on, everything works as with the default data. The Extended DuPont Ana
 companies.models.get_extended_dupont_analysis()
 ```
 
-Which shows why the two companies moved in opposite directions: Tesla's return on equity fell from about 32% in 2022 to about 10% in 2024 as its operating margin dropped from 17% to 8% and its assets turned over more slowly, while Alphabet's rose from about 24% to 33% on a wider operating margin:
+Which gives the five drivers and the return on equity per year, one tab per company:
 
 {% include ft-chart.html id="external-datasets-dupont" src="/assets/data/financetoolkit-guides/external-datasets.json" label="Extended DuPont Analysis of Tesla and Alphabet from Yahoo Finance statements" %}
+
+The two companies moved in opposite directions. Tesla's return on equity fell from 32.5% in 2022 to 10.4% in 2024 as its operating margin dropped from 17.0% to 7.9% and its asset turnover from 1.13x to 0.85x, while Alphabet's rose from 23.6% to 32.9% on an operating margin that widened from 26.5% to 32.1%.
 
 The tax burden of Tesla above 1 in 2023 is not an error: that year its net income exceeded its pre-tax income because of a large one-off deferred tax benefit. The interest burden above 1 for both means net interest income added to earnings rather than costing them.
 
@@ -114,15 +116,17 @@ The ratio functions work the same way. To collect all efficiency ratios:
 companies.ratios.collect_efficiency_ratios()
 ```
 
-Which gives the cost structure of a manufacturer next to that of a software and advertising business: Alphabet spends 12% of revenue on SG&A and 14% on R&D against about 5% for each at Tesla, while Tesla's operating costs absorb more than 90% of its revenue:
+Which gives the cost structure of a manufacturer next to that of a software and advertising business, here for four of the ratios with the gap between the two companies for the latest year:
 
 {% include ft-chart.html id="external-datasets-efficiency" src="/assets/data/financetoolkit-guides/external-datasets.json" label="Efficiency ratios of Tesla and Alphabet" %}
+
+Alphabet spends 12.0% of revenue on SG&A and 14.1% on R&D against about 5% for each at Tesla, yet Tesla's operating costs absorb 92.1% of its revenue against 67.9% at Alphabet: the cost of building cars sits in the cost of goods sold. Alphabet also turns 35.8% of its revenue into operating cash flow, more than twice Tesla's 15.3%.
 
 The working capital ratios from the same call show the other side of the business models. In days, for the latest year, they compare as follows:
 
 {% include ft-chart.html id="external-datasets-days" src="/assets/data/financetoolkit-guides/external-datasets.json" label="Days of inventory, receivables and payables and the cash conversion cycle for Tesla and Alphabet" %}
 
-Tesla collects from customers in about 15 days and pays its suppliers in about 61, which keeps its cash conversion cycle at around 12 days despite holding about two months of inventory. Alphabet carries hardly any inventory and reports none for 2023 and 2024, so its inventory days and cash conversion cycle are left empty for those years.
+Tesla collects from customers in about 15 days and pays its suppliers in about 61, which keeps its cash conversion cycle at around 12 days despite holding about two months of inventory. Alphabet works the other way round: its advertisers take about 52 days to pay, while it pays its own suppliers in about 19. Alphabet carries hardly any inventory and reports none for 2023 and 2024, so its inventory days and cash conversion cycle are left empty for those years.
 
 <div class="fs-callout" markdown="1"><p class="fs-callout__title">Missing line items</p>
 
@@ -148,15 +152,17 @@ Which gives, for a selection of the items:
 
 ### Performance and Risk
 
-Performance and risk metrics need prices rather than statements. Without an API key, the Toolkit collects the historical prices from Yahoo Finance, which covers about five years, and uses the S&P 500 (SPY) as the benchmark. To calculate the beta of both companies on monthly returns:
+Performance and risk metrics need prices rather than statements. Without an API key, the Toolkit collects the historical prices from Yahoo Finance, which covers about five years, and uses the S&P 500 (SPY) as the benchmark. To calculate the beta of both companies within each quarter, from the daily returns:
 
 ```python
-companies.performance.get_beta(period="monthly")
+companies.performance.get_beta(period="quarterly")
 ```
 
-Which shows Tesla's beta at around 2 for most of the period, twice the market's sensitivity, against about 1.3 for Alphabet:
+Which gives one beta per quarter, shown here against the market's beta of 1:
 
-{% include ft-chart.html id="external-datasets-beta" src="/assets/data/financetoolkit-guides/external-datasets.json" label="Monthly beta of Tesla and Alphabet against the S&P 500" %}
+{% include ft-chart.html id="external-datasets-beta" src="/assets/data/financetoolkit-guides/external-datasets.json" label="Quarterly beta of Tesla and Alphabet against the S&P 500" %}
+
+Tesla's beta has a median of 2.15, so it tends to move about twice as much as the market, and it swings widely, from 1.4 to 3.0 between quarters. Alphabet's is much steadier, between 0.9 and 1.5 with a median of 1.35.
 
 The maximum drawdown is the largest fall from a peak to a trough. With `within_period=True` it is calculated within each quarter from the daily prices. To calculate it for each quarter:
 
@@ -164,9 +170,11 @@ The maximum drawdown is the largest fall from a peak to a trough. With `within_p
 companies.risk.get_maximum_drawdown(period="quarterly", within_period=True)
 ```
 
-Which shows how much deeper Tesla's falls went, down 59% within the last quarter of 2022 and 48% in the first quarter of 2025, where the S&P 500 never lost more than 20% within a quarter:
+Which gives the deepest fall within each quarter, with Tesla's shaded:
 
 {% include ft-chart.html id="external-datasets-drawdown" src="/assets/data/financetoolkit-guides/external-datasets.json" label="Maximum drawdown within each quarter for Tesla, Alphabet and the S&P 500" %}
+
+Tesla's falls went much deeper: 59% within the last quarter of 2022 and 48% in the first quarter of 2025, and more than 20% in most quarters. The S&P 500 never lost more than 20% within a quarter, and Alphabet's worst was 26% in the second quarter of 2022.
 
 The historical data itself, with open, high, low and close prices, volume, dividends and (cumulative) returns, is available as well. To get it and select the cumulative returns:
 
@@ -176,9 +184,11 @@ historical_data = companies.get_historical_data()
 historical_data["Cumulative Return"]
 ```
 
-Which shows that Alphabet more than doubled over the five years, ahead of the S&P 500, while Tesla ended about 25% higher after a volatile ride:
+Which gives the growth of every dollar invested at the start, shown here weekly:
 
 {% include ft-chart.html id="external-datasets-returns" src="/assets/data/financetoolkit-guides/external-datasets.json" label="Cumulative return of Tesla, Alphabet and the S&P 500" %}
+
+Alphabet turned each dollar into 2.42 over the five years, ahead of the S&P 500 at 1.81, while Tesla ended at 1.25 after a ride that took it to below half its starting value at the end of 2022.
 
 ### Combining Your Data with an API Key
 
@@ -198,6 +208,8 @@ companies = Toolkit(
 companies.get_analyst_estimates()
 ```
 
-Which returns the low, high and average estimates for revenue, EBITDA, EBIT, net income, SG&A and EPS, together with the number of analysts, for past years and the years ahead. The average revenue and EPS estimates for both companies:
+Which returns the low, high and average estimates for revenue, EBITDA, EBIT, net income, SG&A and EPS, together with the number of analysts, for past years and the years ahead. The average revenue and EPS estimates for both companies, with the line marking where the estimates for the years ahead begin:
 
 {% include ft-chart.html id="external-datasets-estimates" src="/assets/data/financetoolkit-guides/external-datasets.json" label="Average analyst estimates for revenue and EPS of Tesla and Alphabet" %}
+
+Analysts expect Alphabet's revenue to grow from about $400 billion in 2025 to almost $1 trillion in 2030, and Tesla's from $95 billion to $234 billion, so the gap keeps widening. Tesla's EPS is expected to recover from $1.66 to $8.39 over the same years. Alphabet's 2026 EPS estimate of $20.58 is out of line with the years around it, which is a reason to look at the low and high estimates and the number of analysts before relying on an average.

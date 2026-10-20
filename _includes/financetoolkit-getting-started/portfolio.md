@@ -72,11 +72,11 @@ Which gives the following for the portfolio as a whole, where a return of 6.41 m
 | Alpha                |           4.70 |
 | Beta                 |           1.39 |
 
-The benchmark return is what the same amounts, invested on the same dates in the S&P 500, would have returned, so the alpha of 4.70 is the outperformance of the stock picks over the index. It came with a beta of about 1.4 and more than twice the volatility of the index. The same overview per asset, with the tabs switching between the return, the alpha and the weight of each position:
+The benchmark return is what the same amounts, invested on the same dates in the S&P 500, would have returned, so the alpha of 4.70 is the outperformance of the stock picks over the index. It came with a beta of about 1.4 and more than twice the volatility of the index. The same overview per asset also holds the `Return Value`, the profit in dollars of each position, which ranks the positions as follows:
 
-{% include ft-chart.html id="portfolio-overview" src="/assets/data/financetoolkit-guides/portfolio.json" label="Return, alpha and weight of each position in the example portfolio" %}
+{% include ft-chart.html id="portfolio-overview" src="/assets/data/financetoolkit-guides/portfolio.json" label="Profit in dollars of each position in the example portfolio" %}
 
-A handful of positions explain most of the result: Comfort Systems (`FIX`), Nvidia, ASML and Fair Isaac (`FICO`) all returned more than 18 times the amount invested, while Netflix (`NFLX`) and Kraft Heinz (`KHC`) are below what was paid for them.
+A handful of positions explain most of the result. ASML, Comfort Systems (`FIX`), Monolithic Power (`MPWR`) and Fair Isaac (`FICO`) made $578,000 of the $894,000 profit, almost two thirds of it. Measured by the return, Comfort Systems, Nvidia, ASML and Fair Isaac all returned more than 18 times the amount invested, but Nvidia's position was too small to matter much in dollars. Netflix (`NFLX`) and Kraft Heinz (`KHC`) are the only two below what was paid for them.
 
 ### Positions over Time
 
@@ -95,9 +95,11 @@ portfolio_value = pd.DataFrame(
 )
 ```
 
-Which shows how the value of the portfolio grew away from the amount put in, with the setbacks of 2008 and 2022 along the way (shown at the end of each week):
+Which gives the following, shown at the end of each month:
 
 {% include ft-chart.html id="portfolio-value" src="/assets/data/financetoolkit-guides/portfolio.json" label="Invested amount and current value of the example portfolio" %}
+
+The value grew away from the amount put in, slowly at first and steeply after 2016, as the winners compounded. The setbacks along the way were deep: the value fell from $16,900 in October 2007 to $8,000 in February 2009, roughly halving, and from $424,000 at the end of 2021 to $281,000 in September 2022, a third lower, even while more money was being added.
 
 ### Transactions and Profit and Loss
 
@@ -125,19 +127,23 @@ transactions_overview = portfolio.get_transactions_overview(pnl_method="FIFO", e
 
 ### Performance per Period
 
-Both overviews also exist per period, `yearly`, `quarterly`, `monthly`, `weekly` or `daily`, which shows how the portfolio and each transaction did within each period rather than since the start. The transactions performance adds the benchmark return and the alpha of every transaction in that period. To get the portfolio performance per year, the transactions performance per quarter, and the total invested amount and value of the portfolio at the end of each year:
+Both overviews also exist per period, `yearly`, `quarterly`, `monthly`, `weekly` or `daily`, which shows how the portfolio and each transaction did within each period rather than since the start. The transactions performance adds the benchmark return and the alpha of every transaction in that period. To get the portfolio performance per year, the transactions performance per quarter, and the value of each position and the total invested amount at the end of each year:
 
 ```python
 portfolio_performance = portfolio.get_portfolio_performance(period="yearly")
 
 transactions_performance = portfolio.get_transactions_performance(period="quarterly")
 
-yearly_value = portfolio_performance.groupby(level="Date")[["Invested Amount", "Current Value"]].sum()
+yearly_value = portfolio_performance["Current Value"].unstack("Identifier")
+
+yearly_invested = portfolio_performance.groupby(level="Date")["Invested Amount"].sum()
 ```
 
-Which gives the following year-end values, with the drawdowns of 2008 and 2022 clearly visible against a steadily growing invested amount:
+Which gives the following year-end values for the four largest positions today, with every other position grouped together and the dashed line showing the amount invested:
 
-{% include ft-chart.html id="portfolio-yearly" src="/assets/data/financetoolkit-guides/portfolio.json" label="Invested amount and value of the example portfolio at the end of each year" %}
+{% include ft-chart.html id="portfolio-yearly" src="/assets/data/financetoolkit-guides/portfolio.json" label="Year-end value of the four largest positions and the rest of the example portfolio" %}
+
+ASML, Comfort Systems, Monolithic Power and Fair Isaac made up about a quarter of the portfolio in 2000 and 60% of it now. The drawdowns of 2008 and 2022 are clearly visible against a steadily growing invested amount, and in 2022 the four held up better than the rest, rising from 45% to 55% of the portfolio.
 
 ### Connecting to the Finance Toolkit
 
@@ -157,11 +163,11 @@ net_profit_margin = toolkit.ratios.get_net_profit_margin()
 net_profit_margin.loc["Portfolio"]
 ```
 
-Which shows the net profit margin of the portfolio rising from around 5% to 15% in the 2000s to between about 20% and 30% in recent years, as highly profitable holdings such as ASML grew into a large part of the portfolio:
+Which gives one net profit margin per year for the portfolio, weighted by the positions it held at the time:
 
 {% include ft-chart.html id="portfolio-net-profit-margin" src="/assets/data/financetoolkit-guides/portfolio.json" label="Net profit margin of the example portfolio" %}
 
-The most recent year can jump, since it only holds the companies whose fiscal year has already ended.
+The margin rose from between 4% and 17% in the 2000s to between 23% and 30% since 2020, as highly profitable holdings such as ASML grew into a large part of the portfolio. The most recent year, in orange, jumps to 40% because it only holds the companies whose fiscal year has already ended.
 
 #### Risk and Performance against the Benchmark
 
@@ -176,9 +182,11 @@ beta["Benchmark"] = 1
 value_at_risk = toolkit.risk.get_value_at_risk(period="yearly", within_period=True)
 ```
 
-Which shows a beta above 1 in almost every year, and a daily Value at Risk that is consistently deeper than that of the S&P 500:
+Which gives the following, with the dashed line at the benchmark's beta of 1 and the tabs switching to the Value at Risk:
 
 {% include ft-chart.html id="portfolio-beta-var" src="/assets/data/financetoolkit-guides/portfolio.json" label="Beta and Value at Risk of the example portfolio and the benchmark" %}
+
+The beta was above 1 in 26 of the 27 years, 2002 being the exception, and has risen from about 1.2 in the 2000s to between 1.4 and 1.8 in recent years. The daily Value at Risk is deeper than that of the S&P 500 in every single year, typically about twice as deep, with the worst at -6.6% in 2008 against -4.4% for the index.
 
 #### Technical Indicators
 
@@ -190,8 +198,10 @@ rsi = toolkit.technicals.get_relative_strength_index()
 rsi[["Portfolio", "ASML", "FIX", "MPWR"]].iloc[-252:]
 ```
 
-Which gives the following, with the dashed lines at 70 and 30 marking the levels that are usually read as overbought and oversold:
+Which gives the following, one tab per series, with the dashed lines at 70 and 30 marking the levels that are usually read as overbought and oversold:
 
 {% include ft-chart.html id="portfolio-rsi" src="/assets/data/financetoolkit-guides/portfolio.json" label="Relative Strength Index of the example portfolio and three positions" %}
+
+The positions swing much further than the portfolio. Monolithic Power closed above 70 on 23 trading days in the last year, Comfort Systems on 19 and ASML on 15, while the portfolio as a whole stayed between 37 and 67, as the swings of its holdings partly cancel out.
 
 {% include ft-charts-script.html %}
