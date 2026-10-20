@@ -28,64 +28,8 @@ _SSL_CTX = _make_ssl_context()
 # ── Notebook definitions ──────────────────────────────────────────────────────
 # Each entry: (raw GitHub URL, local destination path)
 
-_FT_BASE = (
-    "https://raw.githubusercontent.com/JerBouma/FinanceToolkit/main/examples"
-)
 
 NOTEBOOKS = [
-    # ── Finance Toolkit ───────────────────────────────────────
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%201.%20Getting%20Started.ipynb",
-        "assets/notebooks/financetoolkit/getting-started.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%202.%20Discovery%20Module.ipynb",
-        "assets/notebooks/financetoolkit/discovery-module.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%203.%20Ratios%20Module.ipynb",
-        "assets/notebooks/financetoolkit/ratios-module.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%204.%20Models%20Module.ipynb",
-        "assets/notebooks/financetoolkit/models-module.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%205.%20Options%20Module.ipynb",
-        "assets/notebooks/financetoolkit/options-module.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%206.%20Technicals%20Module.ipynb",
-        "assets/notebooks/financetoolkit/technicals-module.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%207.%20Risk%20Module.ipynb",
-        "assets/notebooks/financetoolkit/risk-module.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%208.%20Performance%20Module.ipynb",
-        "assets/notebooks/financetoolkit/performance-module.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%209.%20Economics%20Module.ipynb",
-        "assets/notebooks/financetoolkit/economics-module.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%2010.%20Fixed%20Income%20Module.ipynb",
-        "assets/notebooks/financetoolkit/fixed-income-module.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%2011.%20Portfolio%20Module.ipynb",
-        "assets/notebooks/financetoolkit/portfolio-module.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%2012.%20Econometrics%20Module.ipynb",
-        "assets/notebooks/financetoolkit/econometrics-module.ipynb",
-    ),
-    (
-        f"{_FT_BASE}/Finance%20Toolkit%20-%20Using%20External%20Datasets.ipynb",
-        "assets/notebooks/financetoolkit/external-datasets.ipynb",
-    ),
     # ── Finance Database ──────────────────────────────────────
     (
         "https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/examples/FInance%20Database%20-%201.%20Getting%20Started.ipynb",
