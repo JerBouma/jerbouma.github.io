@@ -598,7 +598,7 @@ $hp-img: 'img:not([data-hp-a]):not([data-hp-b])';
     text-align: left;
   }
 
-  .hp-hero__visual { order: -1; width: min(240px, 70%); justify-self: start; }
+  .hp-hero__visual { order: -1; width: min(240px, 70%); justify-self: center; }
   // on phones the four pillars become compact rows: icon, title, arrow
   .hp-pillars { grid-template-columns: 1fr; gap: 10px; }
   .hp-pillar {
