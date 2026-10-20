@@ -5255,6 +5255,24 @@ $content-img: 'img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="g
     .ft-hero__facts { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: auto; gap: 8px; }
   }
 
+  // four cards beside the video: tighter, so the column is no taller than the player
+  &.ft-hero--compact {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+    gap: 12px;
+
+    .ft-hero__facts {
+      gap: 10px;
+      .mcp-fact { padding: 10px 14px; }
+      strong { font-size: 1.15rem; margin-bottom: 2px; }
+      span { font-size: 0.82rem; line-height: 1.4; }
+    }
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+      .ft-hero__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  }
+
   @media (max-width: 600px) {
     .ft-hero__facts {
       .mcp-fact { padding: 12px 10px; text-align: center; }
