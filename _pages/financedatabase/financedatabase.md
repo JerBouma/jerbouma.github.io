@@ -41,8 +41,6 @@ As a private investor, the amount of information you can find on the internet is
 
 The database is explicitly _not_ meant to provide up-to-date fundamentals or stock data, as those are easy to obtain (with the help of this database) through the [Finance Toolkit](/projects/financetoolkit). Instead, it shows which products exist in each country, industry and sector and gives the most essential information about each of them. With this information, you can analyze specific areas of the financial world or find a product that is otherwise hard to find. By using both, it is possible to do a fully-fledged competitive analysis with the tickers found in the Finance Database loaded into the Finance Toolkit.
 
-<img src="/assets/images/projects/FinanceDatabase.jpg" alt="Finance Database" width="100%"/>
-
 ## Installation
 
 Before installation, consider starring the project on GitHub which helps others find the project as well.
