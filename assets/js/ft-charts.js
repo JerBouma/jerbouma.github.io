@@ -628,6 +628,8 @@
   function fanOption(chart) {
     var fmt = formatter(chart.format);
     var single = chart.series.length === 1;
+    // the centre line and outer band are the median and 5–95% unless named, e.g. an estimate's average and low to high
+    var mid = chart.center || 'median', outer = chart.range || '5–95%';
     function band(low, high, name, color, opacity, stack) {
       return [
         { name: '_' + stack, type: 'line', data: low, stack: stack, symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
@@ -637,10 +639,10 @@
     var c = axisColors(), series = [], legend = [];
       chart.series.forEach(function (s, i) {
         var color = single ? PALETTE[0] : PALETTE[i % PALETTE.length];
-        series = series.concat(band(s.q05, s.q95, single ? '5–95%' : s.name + ' 5–95%', color, single ? 0.18 : 0.07, 'o' + i));
-        if (single) series = series.concat(band(s.q25, s.q75, '25–75%', color, 0.3, 'i' + i));
-        series.push({ name: single ? 'Median' : s.name, type: 'line', data: s.q5, showSymbol: false, lineStyle: { width: 2.2, color: color }, itemStyle: { color: color }, z: 5 });
-        legend.push(single ? 'Median' : s.name);
+        series = series.concat(band(s.q05, s.q95, single ? outer : s.name + ' ' + outer, color, single ? 0.18 : 0.07, 'o' + i));
+        if (single && s.q25) series = series.concat(band(s.q25, s.q75, '25–75%', color, 0.3, 'i' + i));
+        series.push({ name: single ? mid.charAt(0).toUpperCase() + mid.slice(1) : s.name, type: 'line', data: s.q5, showSymbol: false, lineStyle: { width: 2.2, color: color }, itemStyle: { color: color }, z: 5 });
+        legend.push(single ? mid.charAt(0).toUpperCase() + mid.slice(1) : s.name);
       });
       return {
         animationDuration: 600,
@@ -650,7 +652,7 @@
         tooltip: Object.assign({ trigger: 'axis', formatter: function (items) {
           var i = items[0].dataIndex, out = '<b>' + chart.x[i] + '</b>';
           chart.series.forEach(function (s) {
-            out += '<br>' + (single ? '' : s.name + ': ') + 'median ' + fmt(s.q5[i]) + (single ? '<br>25–75%: ' + fmt(s.q25[i]) + ' to ' + fmt(s.q75[i]) : '') + '<br>' + (single ? '' : '&nbsp;&nbsp;') + '5–95%: ' + fmt(s.q05[i]) + ' to ' + fmt(s.q95[i]);
+            out += '<br>' + (single ? '' : s.name + ': ') + mid + ' ' + fmt(s.q5[i]) + (single && s.q25 ? '<br>25–75%: ' + fmt(s.q25[i]) + ' to ' + fmt(s.q75[i]) : '') + '<br>' + (single ? '' : '&nbsp;&nbsp;') + outer + ': ' + fmt(s.q05[i]) + ' to ' + fmt(s.q95[i]);
           });
           return out;
         } }, tooltipStyle()),
