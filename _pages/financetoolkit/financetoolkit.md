@@ -579,7 +579,7 @@ Every documentation page opens with a Getting Started section that covers its ar
     </div>
   </a>
 
-  <a href="/projects/financetoolkit/docs#using-external-datasets" class="bento-card">
+  <a href="/projects/financetoolkit/docs/external-datasets" class="bento-card">
     <div class="bento-content">
       <i class="fas fa-plug bento-icon"></i>
       <h2>External Datasets</h2>

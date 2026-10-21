@@ -123,7 +123,7 @@ financetoolkit:
       - title: Portfolio
         url: /projects/financetoolkit/docs/portfolio#getting-started
       - title: External Datasets
-        url: /projects/financetoolkit/docs#using-external-datasets
+        url: /projects/financetoolkit/docs/external-datasets
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
 financetoolkit-mcp:
@@ -197,6 +197,8 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: Company Information
     children:
       - title: "Company Profiles"
@@ -315,6 +317,8 @@ financetoolkit-docs-discovery:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: Search Instruments
     url: /projects/financetoolkit/docs/discovery#search_instruments
   - title: Stock Screener
@@ -430,6 +434,8 @@ financetoolkit-docs-ratios:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: All Ratios
     url: /projects/financetoolkit/docs/ratios#collect_all_ratios
   - title: Custom Ratios
@@ -669,6 +675,8 @@ financetoolkit-docs-models:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: Models
     children:
       - title: DuPont Analysis
@@ -748,6 +756,8 @@ financetoolkit-docs-options:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: Option Pricing
     children:
       - title: Option Chains
@@ -856,6 +866,8 @@ financetoolkit-docs-technicals:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: All Indicators
     url: /projects/financetoolkit/docs/technicals#collect_all_indicators
   - title: Breadth Indicators
@@ -1007,6 +1019,8 @@ financetoolkit-docs-risk:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: All Risk Metrics
     url: /projects/financetoolkit/docs/risk#collect_all_metrics
   - title: Value at Risk and Tail Risk
@@ -1141,6 +1155,8 @@ financetoolkit-docs-performance:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: All Performance Metrics
     url: /projects/financetoolkit/docs/performance#collect_all_metrics
   - title: Factors and Alpha
@@ -1257,6 +1273,8 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: Bond Valuations
     children:
     - title: General Statistics
@@ -1384,6 +1402,8 @@ financetoolkit-docs-econometrics:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: Unit Root & Stationarity
     children:
       - title: Augmented Dickey-Fuller (ADF)
@@ -1529,6 +1549,8 @@ financetoolkit-docs-economics:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: Government
     children:
     - title: Gross Domestic Product (GDP)
@@ -1745,6 +1767,8 @@ financetoolkit-docs-portfolio:
       url: /projects/financetoolkit/docs/economics
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
   - title: Toolkit Integration
     url: /projects/financetoolkit/docs/portfolio#toolkit
   - title: Read Portfolio Dataset
@@ -1763,7 +1787,51 @@ financetoolkit-docs-portfolio:
     url: /projects/financetoolkit/docs/portfolio#get_transactions_overview
   - title: Transactions Performance
     url: /projects/financetoolkit/docs/portfolio#get_transactions_performance
-      
+
+financetoolkit-docs-external-datasets:
+  - title: Modules
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Econometrics"
+      url: /projects/financetoolkit/docs/econometrics
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
+  - title: Reading the Statements
+    url: /projects/financetoolkit/docs/external-datasets#reading-the-statements
+  - title: Filling the Normalisation Files
+    url: /projects/financetoolkit/docs/external-datasets#filling-the-normalisation-files
+  - title: Combining the Statements
+    url: /projects/financetoolkit/docs/external-datasets#combining-the-statements
+  - title: Initialising the Toolkit with Your Own Data
+    url: /projects/financetoolkit/docs/external-datasets#initialising-the-toolkit-with-your-own-data
+  - title: Ratios and Models
+    url: /projects/financetoolkit/docs/external-datasets#ratios-and-models
+  - title: Performance and Risk
+    url: /projects/financetoolkit/docs/external-datasets#performance-and-risk
+  - title: Combining Your Data with an API Key
+    url: /projects/financetoolkit/docs/external-datasets#combining-your-data-with-an-api-key
+
 financescenarios:
   - title: Introduction
     url: /projects/financescenarios#site-nav

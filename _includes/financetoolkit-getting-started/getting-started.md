@@ -190,6 +190,6 @@ The metrics are organized in modules. Most hang off the `Toolkit` (`companies.ra
 - [Economics](/projects/financetoolkit/docs/economics#getting-started): 50+ macroeconomic indicators for 60+ countries.
 - [Portfolio](/projects/financetoolkit/docs/portfolio#getting-started): positions, profit and loss, and risk and performance of your own transactions.
 
-To run all of this on statements from your own source instead, see [Using External Datasets](#using-external-datasets) below.
+To run all of this on statements from your own source instead, see [External Datasets](/projects/financetoolkit/docs/external-datasets).
 
 {% include ft-charts-script.html %}

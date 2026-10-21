@@ -479,6 +479,8 @@ module DocsMetricPages
       forward = urls.dup
       if key == "toolkit"
         CLASSES.each { |k, c| forward[k] = c[:url] if toolkit_sections.key?(k) }
+        # the External Datasets guide used to be a section of this page
+        forward["using-external-datasets"] = "#{DOCS_ROOT}/external-datasets"
       end
       started = started.rstrip + "\n\n" + getting_started_hint(key) + "\n" unless started.empty?
       # the hint goes under the intro text, just before the install instructions

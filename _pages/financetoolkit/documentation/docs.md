@@ -10,7 +10,6 @@ layout: single
 redirect_from:
     - /docs
     - /projects/financetoolkit/getting-started
-    - /projects/financetoolkit/external-datasets
 sidebar:
     nav: "financetoolkit-docs"
 ---
@@ -28,8 +27,6 @@ pip install financetoolkit -U
 {% include algolia.html %}
 
 {% include financetoolkit-getting-started/getting-started.md %}
-
-{% include financetoolkit-getting-started/external-datasets.md %}
 
 ## ratios
 The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
@@ -2342,7 +2339,7 @@ Which returns:
 ## get_normalization_files
 Copies the normalization files to a folder based on path. By default, this is the path of the 'Downloads' folder.
 
-This function is relevant if you want to supply your own datasets. See [Using External Datasets](#using-external-datasets) for a worked example.
+This function is relevant if you want to supply your own datasets. See [External Datasets](/projects/financetoolkit/docs/external-datasets) for a worked example.
 
 **Args:**
 
