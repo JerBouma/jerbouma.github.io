@@ -96,32 +96,16 @@ financetoolkit:
   - title: "Functionality"
     url: /projects/financetoolkit#functionality
     children:
-      - title: "Discovery"
-        url: /projects/financetoolkit#discovery
-      - title: "Historical Data"
-        url: /projects/financetoolkit#historical-data
-      - title: "Financial Statements"
-        url: /projects/financetoolkit#financial-statements
-      - title: "Ratios"
-        url: /projects/financetoolkit#ratios
-      - title: "Models"
-        url: /projects/financetoolkit#models
-      - title: "Options"
-        url: /projects/financetoolkit#options
-      - title: "Performance"
-        url: /projects/financetoolkit#performance
-      - title: "Risk"
-        url: /projects/financetoolkit#risk
-      - title: "Technicals"
-        url: /projects/financetoolkit#technicals
-      - title: "Fixed Income"
-        url: /projects/financetoolkit#fixed-income
-      - title: "Economics"
-        url: /projects/financetoolkit#economics
-      - title: "Portfolio"
-        url: /projects/financetoolkit#portfolio
-      - title: "Econometrics"
-        url: /projects/financetoolkit#econometrics
+      - title: "Finding Companies"
+        url: /projects/financetoolkit#finding-companies
+      - title: "Loading Prices and Financial Statements"
+        url: /projects/financetoolkit#loading-prices-and-financial-statements
+      - title: "Analysing the Fundamentals"
+        url: /projects/financetoolkit#analysing-the-fundamentals
+      - title: "Weighing Risk and Return"
+        url: /projects/financetoolkit#weighing-risk-and-return
+      - title: "Your Own Portfolio"
+        url: /projects/financetoolkit#your-own-portfolio
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
 financetoolkit-mcp:
