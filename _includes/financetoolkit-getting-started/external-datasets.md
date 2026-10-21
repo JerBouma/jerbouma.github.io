@@ -4,7 +4,7 @@ The only step in between is telling the Toolkit what each line item in your data
 
 ## Reading the Statements
 
-All files used on this page, the statements of both companies and the filled-in normalisation files, are in the [external_datasets folder](https://github.com/JerBouma/FinanceToolkit/tree/main/examples/external_datasets){:target="_blank"} of the Finance Toolkit repository. Download that folder, or clone the repository, and run the code from the directory that contains it. The statements were collected with `yfinance`, which is a separate library and not part of the Finance Toolkit. Each file has the line items as rows and the fiscal years as columns. To read the six statements:
+All files used on this page, the statements of both companies and the filled-in normalisation files, are in [external_datasets.zip](/assets/financetoolkit/external_datasets.zip). Unzip it and run the code from the directory that contains the `external_datasets` folder. The statements were collected with `yfinance`, which is a separate library and not part of the Finance Toolkit. Each file has the line items as rows and the fiscal years as columns. To read the six statements:
 
 ```python
 import pandas as pd
