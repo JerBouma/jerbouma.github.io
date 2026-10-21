@@ -36,7 +36,6 @@ def build() -> dict:
     sectors = screener["Sector"].value_counts()
     charts["discovery-screener"] = {
         "type": "bar",
-        "title": f"{sectors.iloc[0]} of the {len(screener)} stocks that pass the screen are {sectors.index[0].lower()}",
         "x": list(sectors.index),
         "series": [{"name": "Stocks", "data": [int(v) for v in sectors]}],
         "format": "amount",
@@ -48,8 +47,6 @@ def build() -> dict:
     charts["discovery-sector-performance"] = {
         "type": "bar",
         "stack": True,
-        "title": f"On 1 February 2024 {performance.index[0].lower()} rose {performance.iloc[0]:.1%} "
-                 f"while {performance.index[-1].lower()} fell {-performance.iloc[-1]:.1%}",
         "x": list(performance.index),
         "series": [
             {"name": "Rose", "color": "#34d399", "data": [round(float(v), 4) if v >= 0 else None for v in performance]},
@@ -67,7 +64,6 @@ def build() -> dict:
     snapshot = discovery.get_sector_pe(date=PE_DATE)["PE Ratio"].sort_values(ascending=False)
     charts["discovery-sector-pe"] = {
         "type": "tabs",
-        "title": "Technology's P/E fell from 60 to below 30 in 2022 and is back in the high 40s",
         "tabs": [
             {"label": "Technology since 2019", "type": "line", "x": x, "format": "ratio",
              "bands": [{"from": "2020-02", "to": "2020-04", "label": "Covid"},
@@ -95,7 +91,6 @@ def build() -> dict:
             p["pos"] = LABELS[p["name"]]
     charts["discovery-screener-returns"] = {
         "type": "scatter",
-        "title": f"Betas of 1.0 to 1.5, five-year returns from {total.min():.0%} to +{total.max():.0%}",
         "points": points,
         "xname": "Beta",
         "yname": "Return since " + label(cumulative.index[0]),

@@ -41,11 +41,9 @@ def build() -> dict:
     gdp_index = gdp.loc[:, ["United States", "China", "Germany", "Japan"]]
     gdp_index = gdp_index / gdp_index.iloc[0] * 100
     LAST["gdp"] = gdp_index
-    growth = (gdp_index.dropna().iloc[-1] - 100).round()
     charts["economics-gdp"] = frame_chart(
         gdp_index,
         fmt="number",
-        title=f"China's real GDP grew {growth['China']:.0f}% since 2015, Japan's and Germany's {growth['Japan']:.0f}-{growth['Germany']:.0f}%",
         markers=[{"x": "2020", "label": "Covid"}],
     )
 
@@ -56,7 +54,6 @@ def build() -> dict:
     shock = [{"from": "2021", "to": "2023", "label": "Inflation shock"}]
     charts["economics-inflation"] = {
         "type": "tabs",
-        "title": f"Turkey's inflation peaked at {selection['Turkey'].max():.0%}, the others below 10%",
         "tabs": [
             {"label": "All four", **frame_chart(selection, fmt="percent", bands=shock)},
             {"label": "Without Turkey", **frame_chart(selection.drop(columns="Turkey"), fmt="percent", bands=shock)},
@@ -71,7 +68,6 @@ def build() -> dict:
         {"US annual": selection["United States"], "US 3-year average": smoothed["United States"],
          "UK annual": selection["United Kingdom"], "UK 3-year average": smoothed["United Kingdom"]},
         fmt="percent",
-        title="A three-year window flattens the 2022 spike into a broad hump",
     )
     for s, color, dashed in zip(chart["series"], [BLUE, BLUE, INDIGO, INDIGO], [True, False, True, False]):
         s.update({"color": color, "dashed": dashed})
@@ -84,7 +80,6 @@ def build() -> dict:
     chart = frame_chart(
         selection,
         fmt="number",
-        title="Confidence broke in 2020 and 2022, and in the United States it is near its lowest yet",
         bands=[{"from": "2020-03", "to": "2020-12", "label": "Covid"},
                {"from": "2022-02", "to": "2022-12", "label": "Inflation shock"}],
     )
@@ -107,7 +102,6 @@ def build() -> dict:
         tabs.append(tab)
     charts["economics-rates"] = {
         "type": "tabs",
-        "title": "When the 3-month rate rose above the 10-year yield, the curve inverted",
         "tabs": tabs,
     }
 
@@ -122,7 +116,6 @@ def build() -> dict:
     picked = ["Australia", "United States", "United Kingdom", "Spain", "Brazil"]
     charts["economics-house-prices"] = {
         "type": "tabs",
-        "title": f"Portugal's house prices nearly tripled since 2015, China's barely moved ({label(house_prices.index[-1])}, 2015 = 100)",
         "tabs": [
             {"label": "Ranking", **line(list(ranking.index), {"House price index": ranking.values}, fmt="number", kind="bar",
                                         highlight=list(ranking.index).index("United States"))},
@@ -138,7 +131,6 @@ def build() -> dict:
     charts["economics-unemployment"] = frame_chart(
         selection,
         fmt="percent",
-        title="Spain's unemployment peaked above 26%, Japan's never passed 6%",
         bands=[{"from": "2008Q3", "to": "2009Q4", "label": "Financial crisis"},
                {"from": "2011Q3", "to": "2013Q4", "label": "Euro crisis"},
                {"from": "2020Q1", "to": "2020Q4", "label": "Covid"}],

@@ -50,7 +50,6 @@ def build() -> dict:
     width_chart["series"][0].update({"area": True, "color": BAND})
     charts["technicals-bollinger"] = {
         "type": "tabs",
-        "title": "Microsoft's Bollinger Bands squeezed to their narrowest of the year in December",
         "tabs": [{"label": "Bands", **bands_chart}, {"label": "Band width", **width_chart}],
     }
     above = int((msft["Close"] > msft["Upper Band"]).sum())
@@ -69,7 +68,6 @@ def build() -> dict:
     growth_chart["series"][0]["color"] = PRICE
     charts["technicals-adx-growth"] = {
         "type": "tabs",
-        "title": "Microsoft trended from April to July and again in December, and drifted in the autumn",
         "tabs": [{"label": "ADX", **level_chart}, {"label": "Growth over 1 and 10 days", **growth_chart}],
     }
     level = adx_level["MSFT"]
@@ -95,7 +93,6 @@ def build() -> dict:
         rsi_tabs.append({"label": NAMES[t], **spec})
     charts["technicals-rsi"] = {
         "type": "tabs",
-        "title": "The S&P 500 was overbought on 41 days of 2023, more than any of the four stocks",
         "tabs": rsi_tabs,
     }
     print("RSI days above 70:", overbought.to_dict(), "below 30:", oversold.to_dict())
@@ -117,7 +114,6 @@ def build() -> dict:
     breakdowns = int((msft_close <= donchian["Lower Channel"]).sum())
     charts["technicals-donchian-hull"] = {
         "type": "tabs",
-        "title": f"Microsoft closed at a new 20-day high on {breakouts} days of 2023, at a new low on {breakdowns}",
         "tabs": [{"label": "Donchian Channels", **donchian_chart}, {"label": "Hull Moving Average", **hull_chart}],
     }
     print("Donchian MSFT breakouts", breakouts, "breakdowns", breakdowns)
@@ -142,7 +138,6 @@ def build() -> dict:
                          "Pivot Point": {"color": MUTED, "dashed": True}, "Support 1": {"color": "#f472b6", "dashed": True}})
     charts["technicals-overlap"] = {
         "type": "tabs",
-        "title": f"Microsoft held above its VWAP for most of 2023; the Parabolic SAR flipped {recent_flips} times in the fourth quarter",
         "tabs": [
             {"label": "VWAP", **vwap_chart},
             {"label": "Parabolic SAR, Q4", **sar_chart},
@@ -164,7 +159,6 @@ def build() -> dict:
     cone_chart = style(line([str(w) for w in cone.index], {c: cone[c] for c in order_cone}, fmt="percent",
                             xname="Window (trading days)"), cone_styles)
     cone_chart["series"][-1]["area"] = True
-    cone_chart["title"] = "Microsoft ended 2023 at the bottom of its volatility cone for every window"
     charts["technicals-volatility-cone"] = cone_chart
     print(cone.round(4).to_string())
 
@@ -186,7 +180,6 @@ def build() -> dict:
     below_one = float((smooth_trin < 1).sum() / smooth_trin.notna().sum())
     charts["technicals-breadth"] = {
         "type": "tabs",
-        "title": "The TRIN of the five stayed mostly below 1, and new lows outnumbered new highs only from August to October",
         "tabs": [{"label": "TRIN", **trin_chart}, {"label": "New Highs - New Lows", **nhnl_chart}],
     }
     print("TRIN median", trin["MSFT"].median(), "max", trin["MSFT"].max(), trin["MSFT"].idxmax(), "days > 3", int((trin["MSFT"] > 3).sum()),
@@ -201,8 +194,7 @@ def build() -> dict:
         lead_span_b_window=40,
     )
     charts["technicals-ichimoku-direct"] = line([str(i) for i in ichimoku.index], {c: ichimoku[c] for c in ichimoku.columns},
-                                                fmt="number", xname="Period", cloud=["Leading Span A", "Leading Span B"],
-                                                title="In a steady uptrend every Ichimoku line points up and the cloud stays below")
+                                                fmt="number", xname="Period", cloud=["Leading Span A", "Leading Span B"])
     print(ichimoku.dropna().head(3).to_string())
 
     bands = volatility_model.get_bollinger_bands(prices=pd.Series([100, 105, 113, 126, 148]), window=2, num_std_dev=2)

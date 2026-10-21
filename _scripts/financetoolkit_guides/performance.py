@@ -41,10 +41,7 @@ def build() -> dict:
     LAST["cumulative_alpha"] = cumulative_alpha
     spec = frame_chart(cumulative_alpha, fmt="percent", bands=QUARTER_BANDS)
     spec["series"][2]["area"] = True
-    charts["performance-alpha"] = {
-        **spec,
-        "title": "Apple's quarterly alphas add up to 430 percentage points since 2005, more than twice ASML's",
-    }
+    charts["performance-alpha"] = spec
 
     tabs = []
     for ticker in TICKERS:
@@ -54,7 +51,6 @@ def build() -> dict:
         tabs.append({"label": ticker, **spec})
     charts["performance-capm"] = {
         "type": "tabs",
-        "title": "Actual return against the CAPM expected return: the gap each year is the alpha",
         "tabs": tabs,
     }
 
@@ -68,7 +64,6 @@ def build() -> dict:
         tabs.append({"label": label_, **spec})
     charts["performance-sharpe"] = {
         "type": "tabs",
-        "title": "Walmart's Sharpe Ratio peaked at 0.65 in September 2008, as ASML's fell to -0.52",
         "tabs": tabs,
     }
 
@@ -82,7 +77,6 @@ def build() -> dict:
     walmart["series"][1]["dashed"] = True
     charts["performance-sortino-treynor"] = {
         "type": "tabs",
-        "title": "Sortino and Treynor tell the same story, until Beta gets close to zero",
         "tabs": [
             {"label": "Sortino Ratio", **frame_chart(sortino, fmt="ratio", kind="bar")},
             {"label": "Treynor Ratio", **frame_chart(treynor[["ASML", "MSFT", "AAPL"]], fmt="ratio", kind="bar")},
@@ -99,7 +93,6 @@ def build() -> dict:
     LAST.update(market_r_squared=market, average_r_squared=average)
     charts["performance-fama-french"] = {
         "type": "tabs",
-        "title": "The market factor explains far more of the daily returns than size, value, profitability or investment",
         "tabs": [
             {"label": "Average per factor", **line(list(average.index),
                                                    {t: average[t] for t in TICKERS}, fmt="percent", kind="bar")},
@@ -113,7 +106,6 @@ def build() -> dict:
     LAST["mean_correlations"] = mean_correlations
     charts["performance-factor-correlations"] = {
         "type": "heatmap",
-        "title": "ASML, Microsoft and Apple correlate negatively with value and investment, the signature of growth stocks",
         "x": [FACTOR_NAMES[f] for f in FACTORS],
         "y": TICKERS,
         "values": [values(mean_correlations.loc[t, FACTORS], 2) for t in TICKERS],
