@@ -95,33 +95,6 @@ financetoolkit:
     url: /projects/financetoolkit/docs
   - title: "Functionality"
     url: /projects/financetoolkit#functionality
-    children:
-      - title: "Discovery"
-        url: /projects/financetoolkit#discovery
-      - title: "Historical Data"
-        url: /projects/financetoolkit#historical-data
-      - title: "Financial Statements"
-        url: /projects/financetoolkit#financial-statements
-      - title: "Ratios"
-        url: /projects/financetoolkit#ratios
-      - title: "Models"
-        url: /projects/financetoolkit#models
-      - title: "Options"
-        url: /projects/financetoolkit#options
-      - title: "Performance"
-        url: /projects/financetoolkit#performance
-      - title: "Risk"
-        url: /projects/financetoolkit#risk
-      - title: "Technicals"
-        url: /projects/financetoolkit#technicals
-      - title: "Fixed Income"
-        url: /projects/financetoolkit#fixed-income
-      - title: "Economics"
-        url: /projects/financetoolkit#economics
-      - title: "Portfolio"
-        url: /projects/financetoolkit#portfolio
-      - title: "Econometrics"
-        url: /projects/financetoolkit#econometrics
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
 financetoolkit-mcp:
