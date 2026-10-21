@@ -84,7 +84,7 @@ This section is an introduction to the Finance Toolkit. The documentation contai
 
 [Find the Documentation](/projects/financetoolkit/docs){: .btn .btn--warning .btn--large .align-center}
 
-The sections below follow one analysis from start to finish: finding companies, loading their prices and financial statements, analysing their fundamentals, weighing their risk and return, and finally doing the same for a portfolio of your own. That covers only part of the Finance Toolkit; [options and the Greeks](/projects/financetoolkit/docs/options), [technical indicators](/projects/financetoolkit/docs/technicals), [bonds and derivatives](/projects/financetoolkit/docs/fixedincome), [macroeconomic data for 60+ countries](/projects/financetoolkit/docs/economics) and [econometrics](/projects/financetoolkit/docs/econometrics) each have their own documentation page.
+The sections below follow one analysis from start to finish: finding companies, loading their prices and financial statements, analysing their fundamentals, weighing their risk and return, and finally looking at the economies they depend on. That covers only part of the Finance Toolkit; [options and the Greeks](/projects/financetoolkit/docs/options), [technical indicators](/projects/financetoolkit/docs/technicals), [bonds and derivatives](/projects/financetoolkit/docs/fixedincome), [econometrics](/projects/financetoolkit/docs/econometrics) and [your own portfolio](/projects/financetoolkit/docs/portfolio) each have their own documentation page.
 
 ### Finding Companies
 
@@ -264,38 +264,55 @@ And below both are plotted for each year, the maximum drawdown together with the
 
 Together the two modules cover 50+ metrics, such as [Value at Risk](/projects/financetoolkit/docs/risk#get_value_at_risk), [GARCH](/projects/financetoolkit/docs/risk#get_garch), [Jensen's Alpha](/projects/financetoolkit/docs/performance#get_jensens_alpha), the [Capital Asset Pricing Model](/projects/financetoolkit/docs/performance#get_capital_asset_pricing_model) and the [Fama-French factors](/projects/financetoolkit/docs/performance#get_fama_and_french_model). Most of them also accept `rolling=<n>` for a value that moves through time.
 
-### Your Own Portfolio
+### Understanding the Economic Environment
 
-The same analysis also works for your own investments. Through a custom XLSX, XLS or CSV file you can load your portfolio directly into the Finance Toolkit. This lets you view your positions and performance over time versus a benchmark and other positions, as well as how your PnL develops over time. The portfolio can also be loaded into the core functionality of the Finance Toolkit, which makes it possible to calculate all metrics and ratios for your portfolio (a time-weighted sum of all positions).
-
-**Note that it requires a specific Excel template to work. See the Getting Started walkthrough <a href="/projects/financetoolkit/docs/portfolio#getting-started" target="_blank">here</a> for further instructions.**
+Chip makers depend on the economies they sell into. The [revenue by region](/projects/financetoolkit/docs#get_revenue_geographic_segmentation) shows which economies those are:
 
 ```python
-from financetoolkit import Portfolio
+# Obtain the revenue per region for all tickers
+geographic_segmentation = companies.get_revenue_geographic_segmentation()
 
-# Initialize the Portfolio module with your own dataset
-portfolio = Portfolio(example=True, api_key="FINANCIAL_MODELING_PREP_KEY")
-
-# Get an overview of all positions
-portfolio.get_positions_overview()
+# Select the results for Nvidia
+geographic_segmentation.loc["NVDA"]
 ```
 
-The table below shows one of the functionalities of the Portfolio module but is purposely cut down given the >30 assets.
+For example, the largest regions of Nvidia are shown below.
 
-| Identifier   |   Volume |   Costs |    Price |   Invested |   Latest Price |   Latest Value |   Return |   Return Value |   Benchmark Return |   Volatility |   Benchmark Volatility |   Alpha |   Beta |   Weight |
-|:-------------|---------:|--------:|---------:|-----------:|---------------:|---------------:|---------:|---------------:|-------------------:|-------------:|-----------------------:|--------:|-------:|---------:|
-| AAPL         |      137 |     -28 |  38.9692 |   5310.78  |        241.84  |       33132.1  |   5.2386 |     27821.3    |             2.2258 |       0.3858 |                 0.1937 |  3.0128 | 1.2027 |   0.0405 |
-| ALGN         |       81 |     -34 | 117.365  |   9472.53  |        187.03  |       15149.4  |   0.5993 |      5676.9    |             2.1413 |       0.5985 |                 0.1937 | -1.542  | 1.5501 |   0.0185 |
-| AMD          |       78 |     -30 |  11.9075 |    898.784 |         99.86  |        7789.08 |   7.6662 |      6890.3    |             3.7945 |       0.6159 |                 0.1937 |  3.8718 | 1.6551 |   0.0095 |
-| AMZN         |      116 |     -28 |  41.5471 |   4791.46  |        212.28  |       24624.5  |   4.1392 |     19833      |             1.8274 |       0.4921 |                 0.1937 |  2.3118 | 1.1594 |   0.0301 |
-| ASML         |      129 |     -25 |  33.3184 |   4273.07  |        709.08  |       91471.3  |  20.4065 |     87198.3    |             3.8005 |       0.4524 |                 0.1937 | 16.606  | 1.4407 |   0.1119 |
-| VOO          |       77 |     -12 | 238.499  |  18352.5   |        546.33  |       42067.4  |   1.2922 |     23715      |             1.1179 |       0.1699 |                 0.1937 |  0.1743 | 0.9973 |   0.0515 |
-| WMT          |       92 |     -18 |  17.8645 |   1625.53  |         98.61  |        9072.12 |   4.581  |      7446.59   |             2.4787 |       0.2334 |                 0.1937 |  2.1024 | 0.4948 |   0.0111 |
-| Portfolio    |     2142 |    -532 |  59.8406 | 128710     |        381.689 |      817577    |   5.3521 |    688867      |             2.0773 |       0.4193 |                 0.1937 |  3.2747 | 1.2909 |   1      |
+|                |       2022 |       2023 |       2024 |       2025 |
+|:---------------|-----------:|-----------:|-----------:|-----------:|
+| United States  | 4.349e+09  | 8.292e+09  | 2.6966e+10 | 6.1257e+10 |
+| Taiwan         | 8.544e+09  | 6.986e+09  | 1.3405e+10 | 2.0573e+10 |
+| Singapore      | 0          | 0          | 0          | 2.3684e+10 |
+| China          | 7.111e+09  | 5.785e+09  | 1.0306e+10 | 1.7108e+10 |
+| Other Americas | 6.91e+09   | 5.911e+09  | 1.0245e+10 | 7.875e+09  |
 
-In which the weights and returns can be depicted as follows:
+The [economics](/projects/financetoolkit/docs/economics) module covers 60+ countries with 50+ indicators, from GDP and inflation to unemployment, money supply and interest rates. It is reached through the same Toolkit instance, or on its own with `from financetoolkit import Economics`. The growth of the economy drives the demand for chips, and long-term interest rates weigh on how much investors pay for future earnings:
 
-{% include ft-chart.html id="portfolio" label="Example portfolio weights and returns" %}
+```python
+countries = ["United States", "China", "Japan", "South Korea", "Germany"]
+
+# Real GDP growth on the same quarter a year earlier
+gdp_growth = companies.economics.get_gross_domestic_product_growth(countries, year_over_year=True)
+
+# The yield on 10-year government bonds
+long_term_interest_rate = companies.economics.get_long_term_interest_rate(countries)
+```
+
+For example, the long-term interest rates are shown below.
+
+|      |   United States |   China |   Japan |   South Korea |   Germany |
+|:-----|----------------:|--------:|--------:|--------------:|----------:|
+| 2021 |          0.0144 |  0.0301 |  0.0006 |        0.0206 |   -0.0037 |
+| 2022 |          0.0294 |  0.0276 |  0.0023 |        0.0336 |    0.0114 |
+| 2023 |          0.0396 |  0.0271 |  0.0056 |        0.0364 |    0.0243 |
+| 2024 |          0.0421 |  0.0218 |  0.0090 |        0.0322 |    0.0232 |
+| 2025 |          0.0432 |  0.0175 |  0.0153 |        0.0289 |    0.0259 |
+
+And below both are plotted over time, the GDP growth per quarter.
+
+{% include ft-chart.html id="economics" label="GDP growth and long-term interest rates" %}
+
+Interest rates, bond yields and central bank rates are also covered by the [fixed income](/projects/financetoolkit/docs/fixedincome) module, including [Euribor](/projects/financetoolkit/docs/fixedincome#get_euribor_rates), [ECB](/projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates) and [Federal Reserve](/projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates) rates.
 
 ## Questions & Answers
 {: .heading-as-h1}

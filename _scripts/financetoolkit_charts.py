@@ -23,7 +23,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from financetoolkit import Discovery, Portfolio, Toolkit
+from financetoolkit import Discovery, Toolkit
 
 warnings.filterwarnings("ignore")
 logging.disable(logging.CRITICAL)
@@ -156,19 +156,19 @@ def main() -> None:
         ],
     }
 
-    # the latest weight and return of every position in the example portfolio
-    portfolio = Portfolio(example=True, api_key=API_KEY)
-    overview = portfolio.get_positions_overview()
-    TABLES["portfolio"] = overview
-    last = overview.iloc[-1]
-    weights = last["Current Weight"].sort_values(ascending=False)
-    returns = (last["Cumulative Return"] - 1).reindex(weights.index)
-    charts["portfolio"] = {
+    # where the chips are sold, and the economies of those markets
+    TABLES["segments"] = companies.get_revenue_geographic_segmentation().loc["NVDA"]
+    countries = ["United States", "China", "Japan", "South Korea", "Germany"]
+    gdp_growth = companies.economics.get_gross_domestic_product_growth(countries, year_over_year=True)
+    long_term_rate = companies.economics.get_long_term_interest_rate(countries)
+    TABLES["economics"] = gdp_growth
+    TABLES["rates"] = long_term_rate
+    charts["economics"] = {
         "type": "tabs",
-        "title": "Example Portfolio",
+        "title": "GDP Growth and Long-Term Interest Rates",
         "tabs": [
-            {"label": "Weights", **line(weights.index, {"Current weight": weights}, fmt="percent", kind="bar")},
-            {"label": "Returns", **line(returns.index, {"Cumulative return": returns}, fmt="percent", kind="bar")},
+            {"label": "GDP growth", **line(gdp_growth.index, {c: gdp_growth[c] for c in countries}, fmt="percent")},
+            {"label": "Long-term interest rate", **line(long_term_rate.index, {c: long_term_rate[c] for c in countries}, fmt="percent")},
         ],
     }
 
