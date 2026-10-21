@@ -79,8 +79,10 @@ Through the link you are able to subscribe for the free plan and also premium pl
 **By default, the Finance Toolkit prioritizes Financial Modeling Prep for data retrieval. If data acquisition from Financial Modeling Prep is unsuccessful (e.g., due to plan restrictions or API key issues), the toolkit automatically switches to Yahoo Finance as a secondary source.** To disable this fallback behavior and exclusively use Financial Modeling Prep, set `enforce_source="FinancialModelingPrep"` during Toolkit initialization.
 
 ## Functionality
+{: .heading-as-h1}
+This section is an introduction to the Finance Toolkit. The documentation contains many more examples: every module page opens with a Getting Started section, from the basics to creating custom ratios and working with your own datasets.
 
-This section is an introduction to the Finance Toolkit. There is also full [code documentation](/projects/financetoolkit/docs) and [Getting Started](/projects/financetoolkit/docs#getting-started) sections that open every documentation page, with many examples, from the basics to creating custom ratios and working with your own datasets.
+[Find the Documentation](/projects/financetoolkit/docs){: .btn .btn--warning .btn--large .align-center}
 
 A basic example of how to use the Finance Toolkit is shown below. Every code snippet in the sections that follow builds on this same `companies` instance.
 
