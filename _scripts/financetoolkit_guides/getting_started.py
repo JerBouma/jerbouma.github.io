@@ -1,6 +1,6 @@
 """Charts for /projects/financetoolkit/docs#getting-started (the overview guide)."""
 
-from financetoolkit import Discovery, Toolkit
+from financetoolkit import Toolkit
 
 from .common import API_KEY, frame_chart, label, line, values
 
@@ -104,44 +104,55 @@ def build() -> dict:
     beta["series"].append({"name": "Market (beta 1)", "data": [1] * len(beta["x"]), "reference": True})
     charts["getting-started-beta"] = beta
 
-    # Explore the Modules, Discovery: the semiconductor screen, primary listings only
-    discovery = Discovery(api_key=API_KEY)
-    semis = discovery.get_stock_screener(
-        industry="Semiconductors", country="US", market_cap_higher=100_000_000_000, is_etf=False
-    )
-    caps = semis.loc[~semis.index.str.contains(r"\.", regex=True)]
-    caps = caps.loc[caps["Exchange"].str.contains("NASDAQ|New York", regex=True)]
-    caps = caps["Market Cap (USD)"].sort_values(ascending=False)
-    # how many of the next chipmakers together are still worth less than Nvidia
-    behind = int((caps.iloc[1:].cumsum() < caps.iloc[0]).sum())
-    charts["getting-started-semiconductors"] = {
-        "type": "bar",
-        "title": f"Nvidia is worth more than the next {behind} US chipmakers combined",
-        "x": list(caps.index),
-        "series": [{"name": "Market cap", "data": [round(float(v)) for v in caps]}],
-        "format": "usd",
-        "highlight": 0,
+    # Analyst estimates: the EPS consensus, average with the low-high range, years with five analysts or more
+    estimates = companies.get_analyst_estimates()
+    years = sorted({int(str(c)[:4]) for c in estimates.columns if int(str(c)[:4]) >= 2026})
+    fan = []
+    for ticker in TICKERS:
+        frame = estimates.loc[ticker]
+        frame = frame.loc[:, [int(str(c)[:4]) in years for c in frame.columns]]
+        covered = frame.loc["Number of Analysts"] >= 5
+        pick = lambda row: values(frame.loc[row].where(covered), 2)
+        fan.append({"name": NAMES[ticker], "q05": pick("Estimated EPS Low"), "q5": pick("Estimated EPS Average"),
+                    "q95": pick("Estimated EPS High")})
+    keep = [i for i in range(len(years)) if any(f["q5"][i] is not None for f in fan)]
+    for f in fan:
+        for key in ("q05", "q5", "q95"):
+            f[key] = [f[key][i] for i in keep]
+    charts["getting-started-estimates"] = {
+        "type": "fan", "title": "Analysts expect Microsoft's earnings per share to reach $45 by 2031, from $17 in 2026",
+        "x": [str(years[i]) for i in keep], "series": fan, "format": "price",
+        "center": "average", "range": "low to high",
     }
 
-    # Explore the Modules, Models: the Extended DuPont analysis over the last five years
-    dupont = companies.models.get_extended_dupont_analysis()
-    parts = [("Interest Burden Ratio", "Interest burden", "percent"),
-             ("Tax Burden Ratio", "Tax burden", "percent"),
-             ("Operating Profit Margin", "Operating margin", "percent"),
-             ("Asset Turnover", "Asset turnover", "multiple"),
-             ("Equity Multiplier", "Equity multiplier", "multiple")]
-    tabs = []
-    for ticker in TICKERS:
-        frame = dupont.loc[ticker].dropna(axis=1, how="any").iloc[:, -5:]
-        tabs.append({
-            "label": NAMES[ticker],
-            "years": [label(c) for c in frame.columns],
-            "components": [{"name": short, "format": fmt, "data": values(frame.loc[row])} for row, short, fmt in parts],
-            "result": {"name": "Return on equity", "format": "percent", "data": values(frame.loc["Return on Equity"])},
-        })
-    charts["getting-started-dupont"] = {
-        "type": "dupont",
-        "title": "Apple's equity multiplier of 5.5x turns a 32% operating margin into a 171% return on equity",
-        "tabs": tabs,
+    # ESG scores: the combined score per company and year
+    esg = companies.get_esg_scores()["ESG Score"][TICKERS]
+    esg = esg[[2015 <= int(str(p)[:4]) for p in esg.index]].rename(columns=NAMES)
+    charts["getting-started-esg"] = {
+        "type": "heatmap", "title": "Amazon has the lowest ESG score of the four every year; Apple's fell from 64.6 in 2023 to 54.9 in 2025",
+        "x": [label(p) for p in esg.index], "y": list(esg.columns),
+        "values": [values(esg[name], 1) for name in esg.columns],
+        "min": 50, "max": 70, "digits": 1, "scale": "sequential",
+    }
+
+    # Revenue segmentation: Apple's revenue by product (complete from 2019) and by region
+    products = companies.get_revenue_product_segmentation().loc["AAPL"]
+    products = products.loc[:, [2019 <= int(str(c)[:4]) <= 2025 for c in products.columns]]
+    products = products.loc[(products > 0).any(axis=1)].T / 1e9
+    products = products[products.iloc[-1].sort_values(ascending=False).index]
+    products = products.rename(columns={"Iphone": "iPhone", "Ipad": "iPad", "Service": "Services",
+                                           "Wearables, Home And Accessories": "Wearables and Home"})
+    regions = companies.get_revenue_geographic_segmentation().loc["AAPL"]
+    regions = regions.loc[:, [2015 <= int(str(c)[:4]) <= 2025 for c in regions.columns]]
+    regions = regions.loc[(regions > 0).any(axis=1)].T / 1e9
+    regions = regions[regions.iloc[-1].sort_values(ascending=False).index]
+    share = products["Services"].iloc[-1] / products.iloc[-1].sum()
+    charts["getting-started-segments"] = {
+        "type": "tabs",
+        "title": f"Services is now {share:.0%} of Apple's revenue, up from {products['Services'].iloc[0] / products.iloc[0].sum():.0%} in 2019",
+        "tabs": [
+            {"label": "By product", **frame_chart(products, fmt="billions", kind="bar", stack=True)},
+            {"label": "By region", **frame_chart(regions, fmt="billions", kind="bar", stack=True)},
+        ],
     }
     return charts

@@ -467,7 +467,10 @@ module DocsMetricPages
         name = Regexp.last_match(1).downcase
         urls[name] || collector?(key, name) || (key == "toolkit" && CLASSES.key?(name)) ? "" : Regexp.last_match(0)
       end
-      started = if toolkit_sections.key?(key) then getting_started_from_toolkit(key, toolkit_sections[key])
+      # pages that include their own walkthrough (_includes/financetoolkit-getting-started)
+      # already have a Getting Started section, so they don't get a generated one
+      started = if intro.include?("financetoolkit-getting-started/") then ""
+                elsif toolkit_sections.key?(key) then getting_started_from_toolkit(key, toolkit_sections[key])
                 elsif key == "toolkit" then TOOLKIT_GETTING_STARTED.dup
                 elsif CONSTRUCTORS.key?(key) then getting_started_from_constructor(key, sections)
                 else ""
