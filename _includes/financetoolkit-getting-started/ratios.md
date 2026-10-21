@@ -278,6 +278,6 @@ Which gives:
 | 3 | 0.65           | 1.13        | 0.08             | 0.81           | 9.1               |
 | 4 | 0.80           | 1.60        | 0.04             | 0.27           | 25.0              |
 
-To run the whole Toolkit, not only single formulas, on your own statements, see [Using External Datasets](/projects/financetoolkit/docs#using-external-datasets).
+To run the whole Toolkit, not only single formulas, on your own statements, see [External Datasets](/projects/financetoolkit/docs/external-datasets).
 
 {% include ft-charts-script.html %}

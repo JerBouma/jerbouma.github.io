@@ -1,4 +1,4 @@
-"""Charts for the External Datasets guide (/projects/financetoolkit/docs#using-external-datasets).
+"""Charts for the External Datasets guide (/projects/financetoolkit/docs/external-datasets).
 
 The statements and normalisation files are the ones in examples/external_datasets of the
 Finance Toolkit repository, read here from the local mirror of that repository.
