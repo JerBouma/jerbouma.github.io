@@ -82,7 +82,7 @@ Through the link you are able to subscribe for the free plan and also premium pl
 
 This section is an introduction to the Finance Toolkit. There is also full [code documentation](/projects/financetoolkit/docs) and [Getting Started](/projects/financetoolkit/docs#getting-started) sections that open every documentation page, with many examples, from the basics to creating custom ratios and working with your own datasets.
 
-A basic example of how to use the Finance Toolkit is shown below. Every code snippet in the sections that follow builds on this same `companies` instance.
+A basic example of how to use the Finance Toolkit is shown below. Every code snippet in the tabs below builds on this same `companies` instance.
 
 ````python
 from financetoolkit import Toolkit
@@ -99,9 +99,12 @@ Three capabilities cut across nearly the whole toolkit:
 - **`growth` and `lag`.** Pass `growth=True` on almost any `get_` or `collect_` function to return the period-over-period growth instead of the raw value. `lag` (an `int` or list of `int`s, default `1`) controls how many periods back that growth is measured against, e.g. `lag=4` for year-over-year growth on quarterly data. Combine with `trailing` (e.g. `trailing=4, growth=True`) to get TTM growth.
 - **`standardize` (Z-Score).** Most `get_*` methods across Economics, Ratios, Technicals, Risk, Performance, Models, Options and Fixed Income accept `standardize=True`, converting raw values into standard deviations from their own historical mean/std. This is useful for ranking, scoring, or spotting an unusual reading across metrics that otherwise live on incompatible scales.
 
-Every module below also has its own documentation page, which opens with a Getting Started walkthrough followed by the full code reference (formulas, parameters, worked examples), linked from its own section.
+Pick a module below to see what it does. Each one also has its own documentation page, which opens with a Getting Started walkthrough followed by the full code reference (formulas, parameters, worked examples), linked from its tab.
 
-### Discovery
+<div class="ft-tabs" markdown="1">
+
+<details class="ft-details" id="discovery" markdown="1">
+  <summary><i class="fas fa-compass"></i> <h3>Discovery</h3></summary>
 
 Before analyzing a ticker you often need to find it. The Discovery module is standalone and covers among other things lists of companies, cryptocurrencies, forex, commodities, ETFs and indices.
 
@@ -137,7 +140,10 @@ And below all twelve are ranked by market cap.
 
 This module also includes [stock screeners](/projects/financetoolkit/docs/discovery#get_stock_screener), [sector/industry performance](/projects/financetoolkit/docs/discovery#get_sectors_performance), [news feeds](/projects/financetoolkit/docs/discovery#get_stock_news) and more. Find [the full instrument discovery documentation](/projects/financetoolkit/docs/discovery).
 
-### Historical Data
+</details>
+
+<details class="ft-details" id="historical-data" markdown="1">
+  <summary><i class="fas fa-history"></i> <h3>Historical Data</h3></summary>
 
 Obtain [historical data](/projects/financetoolkit/docs#get_historical_data) on a daily, weekly, monthly or yearly basis. This includes OHLC, volumes, dividends, returns and cumulative returns for each corresponding period.
 
@@ -165,7 +171,10 @@ And below the cumulative returns are plotted which include the S&P 500 as benchm
 
 Metrics such as `Volatility`, `Excess Return` and `Excess Volatility` are calculated as dedicated [Risk](/projects/financetoolkit/docs/risk#get_volatility) and [Performance](/projects/financetoolkit/docs/performance#get_excess_return) methods rather than columns on this table to create more efficient and flexible functionalities.
 
-### Financial Statements
+</details>
+
+<details class="ft-details" id="financial-statements" markdown="1">
+  <summary><i class="fas fa-file-alt"></i> <h3>Financial Statements</h3></summary>
 
 Obtain an [Income Statement](/projects/financetoolkit/docs#get_income_statement) on an annual or quarterly basis. This can also be a [balance statement](/projects/financetoolkit/docs#get_balance_sheet_statement) or [cash flow statement](/projects/financetoolkit/docs#get_cash_flow_statement).
 
@@ -191,7 +200,10 @@ And below the Earnings Before Interest, Taxes, Depreciation and Amortization (EB
 
 {% include ft-chart.html id="statements" label="EBITDA of Apple and Alphabet" %}
 
-### Ratios
+</details>
+
+<details class="ft-details" id="ratios" markdown="1">
+  <summary><i class="fas fa-percentage"></i> <h3>Ratios</h3></summary>
 
 Get [Profitability Ratios](/projects/financetoolkit/docs/ratios) based on the inputted balance sheet, income and cash flow statements. This can be any of the 80+ ratios within the `ratios` module.
 
@@ -219,7 +231,10 @@ And below a few of the profitability ratios of Microsoft, each with its latest v
 
 The 80+ ratios are divided into five categories: [**Efficiency**](/projects/financetoolkit/docs/ratios) (asset/inventory/receivables turnover, cash conversion cycle, R&D/SG&A/SBC-to-revenue), [**Liquidity**](/projects/financetoolkit/docs/ratios) (current, quick and cash ratios, working capital), [**Profitability**](/projects/financetoolkit/docs/ratios) (margins, ROE/ROA/ROIC, cash vs. effective tax rate), [**Solvency**](/projects/financetoolkit/docs/ratios) (debt-to-equity, debt-to-capital, interest and dividend coverage) and [**Valuation**](/projects/financetoolkit/docs/ratios) (P/E, PEG, Forward P/E, EV multiples, buyback and shareholder yield). It's also possible to define fully [custom ratios](/projects/financetoolkit/docs/ratios) calculated automatically from the balance sheet, income and cash flow statements.
 
-### Models
+</details>
+
+<details class="ft-details" id="models" markdown="1">
+  <summary><i class="fas fa-project-diagram"></i> <h3>Models</h3></summary>
 
 Get an [Extended DuPont Analysis](/projects/financetoolkit/docs/models#get_extended_dupont_analysis) based on the inputted balance sheet, income and cash flow statements.
 
@@ -248,7 +263,10 @@ The five components of the Extended DuPont Analysis multiply into the Return on 
 
 The `models` module covers 10+ models in total, for example [DuPont Analysis](/projects/financetoolkit/docs/models#get_dupont_analysis), [WACC](/projects/financetoolkit/docs/models#get_weighted_average_cost_of_capital), [Economic Value Added (EVA)](/projects/financetoolkit/docs/models#get_economic_value_added), [Altman Z-Score](/projects/financetoolkit/docs/models#get_altman_z_score), [Beneish M-Score](/projects/financetoolkit/docs/models#get_beneish_m_score) and the [Graham Number](/projects/financetoolkit/docs/models#get_graham_number).
 
-### Options
+</details>
+
+<details class="ft-details" id="options" markdown="1">
+  <summary><i class="fas fa-sliders-h"></i> <h3>Options</h3></summary>
 
 Get the [Black Scholes Model](/projects/financetoolkit/docs/options#get_black_scholes_model) for both call and put options including the relevant Greeks, in this case [Delta](/projects/financetoolkit/docs/options#get_delta), [Gamma](/projects/financetoolkit/docs/options#get_gamma), [Theta](/projects/financetoolkit/docs/options#get_theta) and [Vega](/projects/financetoolkit/docs/options#get_vega). This can be any of the First, Second or Third Order Greeks.
 
@@ -276,7 +294,10 @@ Which can also be plotted together with Gamma, Theta and Vega as follows:
 
 The `options` module is divided into four categories: [**Option Pricing**](/projects/financetoolkit/docs/options#get_black_scholes_model) (Black-Scholes, Binomial Model, Implied Volatility), [**First-Order Greeks**](/projects/financetoolkit/docs/options) (Delta, Vega, Theta, Rho), [**Second-Order Greeks**](/projects/financetoolkit/docs/options) (Gamma, Vanna, Charm, Vomma) and [**Third-Order Greeks**](/projects/financetoolkit/docs/options) (Speed, Zomma, Color, Ultima).
 
-### Performance
+</details>
+
+<details class="ft-details" id="performance" markdown="1">
+  <summary><i class="fas fa-trophy"></i> <h3>Performance</h3></summary>
 
 Get the correlations with the [factors as defined by Fama-and-French](/projects/financetoolkit/docs/performance#get_factor_asset_correlations). These include market, size, value, operating profitability and investment. All functionality here can be based on any period, as the functions accept the periods `intraday`, `weekly`, `monthly`, `quarterly` and `yearly`.
 
@@ -304,7 +325,10 @@ And below the correlations with each factor are plotted over time for both Apple
 
 Beyond Beta, CAPM and the Fama-French factors, the `performance` module covers around 20+ metrics in total, for example [Sharpe Ratio](/projects/financetoolkit/docs/performance#get_sharpe_ratio), [Sortino Ratio](/projects/financetoolkit/docs/performance#get_sortino_ratio), [Calmar Ratio](/projects/financetoolkit/docs/performance#get_calmar_ratio), [Omega Ratio](/projects/financetoolkit/docs/performance#get_omega_ratio) and the [Correlation Matrix](/projects/financetoolkit/docs/performance#get_correlation_matrix). Most of these also support `rolling=<n>` for a value that evolves through time instead of one number per period.
 
-### Risk
+</details>
+
+<details class="ft-details" id="risk" markdown="1">
+  <summary><i class="fas fa-shield-alt"></i> <h3>Risk</h3></summary>
 
 Get the [Value at Risk](/projects/financetoolkit/docs/risk#get_value_at_risk) for each week. Here, the days within each week are used to calculate the Value at Risk, so you can see the expected Value at Risk (VaR) within each period. The period can again be anything, and the VaR can be based on distributions such as Historical, Gaussian, Student-t, Cornish-Fisher, or a Peak-over-Threshold Extreme Value Theory (`distribution="evt"`) fit for the tail.
 
@@ -327,7 +351,10 @@ And below the Value at Risk (VaR) for Apple, Microsoft and the benchmark (S&P 50
 
 Beyond VaR/CVaR/Entropic VaR, the `risk` module covers around 20+ metrics in total, for example [Conditional Drawdown at Risk](/projects/financetoolkit/docs/risk#get_conditional_drawdown_at_risk), [Maximum Drawdown Duration](/projects/financetoolkit/docs/risk#get_maximum_drawdown_duration), [EWMA Volatility](/projects/financetoolkit/docs/risk#get_ewma_volatility) and the [Hurst Exponent](/projects/financetoolkit/docs/risk#get_hurst_exponent). Most of these support `rolling=<n>` for a value that evolves through time instead of one number per period.
 
-### Technicals
+</details>
+
+<details class="ft-details" id="technicals" markdown="1">
+  <summary><i class="fas fa-chart-line"></i> <h3>Technicals</h3></summary>
 
 Get the [Ichimoku Cloud](/projects/financetoolkit/docs/technicals#get_ichimoku_cloud) parameters based on the historical market data. This can be any of the 40+ technical indicators within the `technicals` module.
 
@@ -355,7 +382,10 @@ And below the Ichimoku Cloud of the last twelve months is plotted for Apple and 
 
 The 50+ indicators are divided into four categories: [**Breadth**](/projects/financetoolkit/docs/technicals) (McClellan Oscillator, Advancers/Decliners, OBV, ADL, Chaikin Oscillator, TRIN, New Highs - New Lows), [**Momentum**](/projects/financetoolkit/docs/technicals) (RSI, MACD, Stochastic, Williams %R, Aroon, CCI, ADX and more), [**Overlap**](/projects/financetoolkit/docs/technicals) (SMA, EMA, DEMA, TRIX, WMA, Hull MA, VWAP, Parabolic SAR, Pivot Points, Support/Resistance) and [**Volatility**](/projects/financetoolkit/docs/technicals) (ATR, Keltner Channels, Bollinger Bands, Donchian Channels, Volatility Cone).
 
-### Fixed Income
+</details>
+
+<details class="ft-details" id="fixed-income" markdown="1">
+  <summary><i class="fas fa-university"></i> <h3>Fixed Income</h3></summary>
 
 Get access to the [ICE BofA Corporate Bond](/projects/financetoolkit/docs/fixedincome#get_ice_bofa_effective_yield) benchmark indices and a variety of other bond and derivative related valuations within the `fixedincome` module.
 
@@ -380,7 +410,10 @@ And below the effective yield for each credit rating is plotted over time.
 
 Beyond ICE BofA benchmarks, the `fixedincome` module covers [**Bond Valuations**](/projects/financetoolkit/docs/fixedincome) (Present Value, Macaulay/Modified Duration, Convexity, Yield to Maturity), [**Derivative Valuations**](/projects/financetoolkit/docs/fixedincome#get_derivative_price) (Black and Bachelier models for Swaptions), [**Government Bonds**](/projects/financetoolkit/docs/fixedincome#get_government_bond_yield) (3-month and 10-year yields) and **Central Bank rates** ([Euribor](/projects/financetoolkit/docs/fixedincome#get_euribor_rates), [ECB](/projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates) and [Federal Reserve rates](/projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates) incl. SOFR). It can be called via `companies.fixedincome` or standalone through `from financetoolkit import FixedIncome`.
 
-### Economics
+</details>
+
+<details class="ft-details" id="economics" markdown="1">
+  <summary><i class="fas fa-globe"></i> <h3>Economics</h3></summary>
 
 Get insights for 60+ countries into key economic indicators such as the [Consumer Price Index (CPI)](/projects/financetoolkit/docs/economics#get_consumer_price_index), [Gross Domestic Product (GDP)](/projects/financetoolkit/docs/economics#get_gross_domestic_product), [Unemployment Rates](/projects/financetoolkit/docs/economics#get_unemployment_rate) and [3-month](/projects/financetoolkit/docs/economics#get_short_term_interest_rate) and [10-year](/projects/financetoolkit/docs/economics#get_long_term_interest_rate) Government Interest Rates. This is done through the `economics` module and can be used as a standalone module as well by using `from financetoolkit import Economics`.
 
@@ -406,7 +439,10 @@ And below these Unemployment Rates are plotted over time:
 
 The 40+ indicators are divided into five categories: [**Government**](/projects/financetoolkit/docs/economics#get_government_debt) (GDP, government debt/revenue/expenditure/deficit, trust in government), [**Economy**](/projects/financetoolkit/docs/economics#get_consumer_price_index) (CPI, inflation, consumer/business confidence, house/rent/share prices), [**Finance**](/projects/financetoolkit/docs/economics#get_money_supply) (money supply, central bank policy rate, short/long-term interest rates), [**Environment**](/projects/financetoolkit/docs/economics#get_renewable_energy) (renewable energy, carbon footprint) and [**Jobs & Society**](/projects/financetoolkit/docs/economics#get_unemployment_rate) (unemployment, labor productivity, income inequality, population, poverty rate).
 
-### Portfolio
+</details>
+
+<details class="ft-details" id="portfolio" markdown="1">
+  <summary><i class="fas fa-briefcase"></i> <h3>Portfolio</h3></summary>
 
 Through a custom XLSX, XLS or CSV file you can load your own portfolio directly into the Finance Toolkit. This lets you view your positions and performance over time versus a benchmark and other positions, as well as how your PnL develops over time. The portfolio can also be loaded into the core functionality of the Finance Toolkit, which makes it possible to calculate all metrics and ratios for your portfolio (a time-weighted sum of all positions). The portfolio module is standalone and can be used on its own through `from financetoolkit import Portfolio`.
 
@@ -439,7 +475,10 @@ In which the weights and returns can be depicted as follows:
 
 {% include ft-chart.html id="portfolio" label="Example portfolio weights and returns" %}
 
-### Econometrics
+</details>
+
+<details class="ft-details" id="econometrics" markdown="1">
+  <summary><i class="fas fa-square-root-variable"></i> <h3>Econometrics</h3></summary>
 
 The `econometrics` module provides [regression](/projects/financetoolkit/docs/econometrics#get_ols), [hypothesis testing](/projects/financetoolkit/docs/econometrics#get_jarque_bera_test), [unit root and cointegration](/projects/financetoolkit/docs/econometrics#get_augmented_dickey_fuller), [Granger causality](/projects/financetoolkit/docs/econometrics#get_granger_causality) and [panel data](/projects/financetoolkit/docs/econometrics#get_fixed_effects) methods built on `statsmodels` and `linearmodels`. Unlike the other modules it depends on those two packages, so it ships as an optional extra:
 
@@ -476,6 +515,10 @@ And below each coefficient is shown with its 95% confidence interval, with stars
 {% include ft-chart.html id="econometrics" label="OLS coefficients with 95% confidence intervals" %}
 
 Only `QCOM`, `SWKS`, `MSFT`, `GOOGL` and `PG` come out statistically significant once every regressor is controlled for at once. The module covers 48 methods in total, including [unit root tests](/projects/financetoolkit/docs/econometrics#get_augmented_dickey_fuller) (ADF, KPSS, Phillips-Perron, Zivot-Andrews), [cointegration and Granger causality](/projects/financetoolkit/docs/econometrics#get_engle_granger_cointegration), [panel data estimators](/projects/financetoolkit/docs/econometrics#get_fixed_effects) (Fixed/Random Effects, Hausman), [causal inference](/projects/financetoolkit/docs/econometrics#get_propensity_score_matching) (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching, Synthetic Control), [time-series forecasting](/projects/financetoolkit/docs/econometrics#get_arima_forecast) (ARIMA, VAR, VECM, impulse response) and [event studies](/projects/financetoolkit/docs/econometrics#get_event_study). Find [the full econometrics documentation](/projects/financetoolkit/docs/econometrics).
+
+</details>
+
+</div>
 
 ## Questions & Answers
 {: .heading-as-h1}
@@ -546,3 +589,4 @@ Generally, it should take less than 15 seconds to retrieve the historical data o
 *No, I am not*. I've merely picked them as the primary data provider given that they have a generous free tier and fair pricing compared to other providers. Therefore, any questions related to the data should go through [their contact form](https://site.financialmodelingprep.com/contact){:target="_blank"}. When it comes to any type of ratios, performance metrics, risk metrics, technical indicators or economic indicators, feel free to reach out to me as this is my own work.
 
 {% include ft-charts-script.html %}
+{% include ft-tabs-script.html %}
