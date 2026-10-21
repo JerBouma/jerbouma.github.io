@@ -31,7 +31,9 @@ The line items carry Yahoo Finance's own names, such as `TotalRevenue`, `CostOfR
 The Finance Toolkit maps every source onto one set of names through four normalisation files: `balance.csv`, `income.csv`, `cash.csv` and `statistics.csv`. To copy the default files to your Downloads folder (pass `path` to save them elsewhere):
 
 ```python
-Toolkit("TSLA").get_normalization_files()
+from financetoolkit import get_normalization_files
+
+get_normalization_files()
 ```
 
 Each file has two columns. Column B holds the generic names the Finance Toolkit depends on, so never change those. Column A holds the names as they appear in your source: for every row, put the name of the matching line item from your data in column A. The `TotalRevenue` row of Yahoo Finance, for instance, goes next to `Revenue`. For the income statement, the first rows of the filled-in `income.csv` look like this:
