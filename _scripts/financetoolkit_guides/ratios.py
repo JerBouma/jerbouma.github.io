@@ -29,7 +29,6 @@ def build() -> dict:
     gross_margin = years(all_ratios.xs("Gross Margin", level=1).loc[TICKERS], 2015).rename(index=NAMES)
     charts["ratios-gross-margin"] = {
         "type": "kpis",
-        "title": "Amazon's gross margin rose 17 points to 50%, Walmart's stayed at 25%",
         "x": list(gross_margin.index),
         "series": [{"name": str(year), "data": values(gross_margin[year])} for year in gross_margin.columns],
         "format": "percent",
@@ -47,7 +46,6 @@ def build() -> dict:
         tabs.append({"label": name, **tab})
     charts["ratios-effective-tax-rate"] = {
         "type": "tabs",
-        "title": "Apple's tax rate fell from about 26% to 15% after the 2017 US tax reform",
         "tabs": tabs,
     }
 
@@ -56,14 +54,12 @@ def build() -> dict:
     # company by year, with the colour scale capped at a doubling either way
     charts["ratios-price-to-book-growth"] = heatmap(
         frame_chart(price_to_book_growth), fmt="percent", low=-1, high=1,
-        title="2022 cut Meta's price-to-book ratio by two thirds; 2023 more than doubled it",
     )
 
     # the growth of the current ratio over one, two and three years, one company per tab
     current_ratio_growth = companies.ratios.get_current_ratio(growth=True, lag=[1, 2, 3])
     charts["ratios-current-ratio-lags"] = {
         "type": "tabs",
-        "title": "Apple's current ratio was below its level of three years earlier in four of the last five years",
         "tabs": [
             {"label": NAMES[ticker],
              **frame_chart(years(current_ratio_growth.loc[ticker], 2015).T.rename(columns=LAGS),
@@ -77,7 +73,6 @@ def build() -> dict:
     eps_growth = by_year(companies.ratios.get_earnings_per_share(trailing=4, growth=True), 2019)
     charts["ratios-trailing-eps"] = {
         "type": "tabs",
-        "title": "Meta's four-year earnings per share reached $72, more than eight times Walmart's",
         "tabs": [
             {"label": "Trailing EPS", **frame_chart(eps, fmt="price")},
             {"label": "Growth", **frame_chart(eps_growth, fmt="percent", kind="bar")},
@@ -90,7 +85,6 @@ def build() -> dict:
     pair = ["AAPL", "WMT"]
     charts["ratios-shareholder-yield"] = {
         "type": "compare",
-        "title": "Apple's debt-to-capital went from 12% to 60%; Walmart's held near 40%",
         "x": [str(c) for c in shareholder_yield.columns],
         "names": {NAMES[t]: NAMES[t] for t in pair},
         "format": "percent",

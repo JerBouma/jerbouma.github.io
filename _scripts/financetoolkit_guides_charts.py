@@ -24,6 +24,8 @@ HERE = Path(__file__).resolve().parent
 OUTPUT = HERE.parent / "assets" / "data" / "financetoolkit-guides"
 sys.path.insert(0, str(HERE))
 
+from financetoolkit_guides.titles import TITLES  # noqa: E402
+
 GUIDES = [
     "getting-started", "discovery", "ratios", "models", "options", "technicals", "risk",
     "performance", "econometrics", "fixed-income", "economics", "portfolio", "external-datasets",
@@ -35,6 +37,12 @@ def main(names):
     for name in names or GUIDES:
         module = importlib.import_module("financetoolkit_guides." + name.replace("-", "_"))
         charts = module.build()
+        # every chart takes its title from titles.py: what is plotted
+        for chart_id, chart in charts.items():
+            chart["title"] = TITLES[chart_id]
+            chart["period"] = False  # card charts would add their years to the title otherwise
+            for tab in chart.get("tabs", []):
+                tab.pop("title", None)
         (OUTPUT / f"{name}.json").write_text(json.dumps({"charts": charts}, separators=(",", ":")))
         print(name, len(charts), "charts")
 

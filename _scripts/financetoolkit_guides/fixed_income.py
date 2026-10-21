@@ -44,13 +44,10 @@ def build() -> dict:
     duration = fixedincome.get_duration()
     LAST["duration"] = duration
     coupons = [rate for rate in [0.01, 0.03, 0.05, 0.07, 0.09] if rate in duration.index]
-    last = duration.columns[-1]
     charts["fixed-income-duration"] = line(
         [str(i + 1) for i in range(len(duration.columns))],
         {f"{rate:.0%} coupon": duration.loc[rate] for rate in coupons},
         fmt="ratio",
-        title=f"Lower coupons mean more rate risk: {duration.loc[0.01, last]:.1f} against "
-              f"{duration.loc[0.09, last]:.1f} years at a ten-year maturity",
         xname="Years to maturity",
         smooth=True,
     )
@@ -79,7 +76,6 @@ def build() -> dict:
                      **line(strikes, {k: prices[model][c] for k, c in pick.items()}, fmt="amount", xname="Strike rate", markers=atm)})
     charts["fixed-income-swaption"] = {
         "type": "tabs",
-        "title": "Black and Bachelier agree at the money and part ways deep out of it",
         "tabs": tabs,
     }
 
@@ -89,7 +85,6 @@ def build() -> dict:
     charts["fixed-income-euribor"] = zero(frame_chart(
         euribor,
         fmt="percent",
-        title="Euribor spent seven years below zero, then reached 4% in little over a year",
         bands=[{"from": "2022-07", "to": "2023-09", "label": "ECB hikes"}],
     ))
 
@@ -109,7 +104,6 @@ def build() -> dict:
         s.update({"dashed": True, "color": INDIGO})
     charts["fixed-income-central-banks"] = {
         "type": "tabs",
-        "title": "The ECB went from -0.5% to 4%, the Fed from near zero to 5.33%",
         "tabs": [
             {"label": "Fed and ECB", **zero(together)},
             {"label": "European Central Bank", **zero(frame_chart(ecb, fmt="percent"))},
@@ -125,7 +119,6 @@ def build() -> dict:
     LAST["latest"] = latest
     charts["fixed-income-government"] = {
         "type": "tabs",
-        "title": "Germany and Japan yielded below zero in 2020, the United States and the United Kingdom close to 5% now",
         "tabs": [
             {"label": "Five markets", **zero(frame_chart(government[countries], fmt="percent",
                                                          bands=[{"from": "2020Q1", "to": "2021Q4", "label": "Covid"}]))},
@@ -145,7 +138,6 @@ def build() -> dict:
     junk = [c for c in ["BB", "B", "CCC"] if c in spread.columns]
     charts["fixed-income-oas"] = {
         "type": "tabs",
-        "title": f"CCC spreads widened to {spread['CCC'].iloc[-1]:,.0f} basis points while the rest stayed tight",
         "tabs": [
             {"label": "High yield", **frame_chart(spread[junk], fmt="number", bands=tariffs)},
             {"label": "Investment grade", **frame_chart(spread[grades], fmt="number", bands=tariffs)},
@@ -164,7 +156,6 @@ def build() -> dict:
     curve_chart["series"][1]["color"] = BLUE
     charts["fixed-income-ytw"] = {
         "type": "tabs",
-        "title": "Short corporate yields fell, long ones did not: the curve steepened (yield to worst)",
         "tabs": [
             {"label": "Curve then and now", **curve_chart},
             {"label": "Over time", **frame_chart(weekly_ytw, fmt="percent")},

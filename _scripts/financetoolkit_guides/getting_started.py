@@ -45,7 +45,6 @@ def build() -> dict:
                    highlight=list(final.index).index("S&P 500"))
     charts["getting-started-cumulative"] = {
         "type": "tabs",
-        "title": f"$1 in Apple in 2005 is worth ${final['Apple']:.0f} now; in the S&P 500, ${final['S&P 500']:.0f}",
         "tabs": [
             {"label": "Growth since 2005", **growth},
             {"label": "Where each ended", **ranking},
@@ -58,7 +57,6 @@ def build() -> dict:
     equity = equity[[int(str(p)[:4]) <= 2025 for p in equity.index]]  # fiscal 2026 is Microsoft's alone
     charts["getting-started-equity"] = frame_chart(
         equity, fmt="billions",
-        title="Apple's equity peaked in 2017 and has since fallen by half, while the others kept building",
         markers=[{"x": "2012", "label": "Apple starts buybacks"}, {"x": "2017", "label": "Apple's peak"}],
     )
 
@@ -68,7 +66,6 @@ def build() -> dict:
     revenue_growth = revenue_growth[[2008 <= int(str(p)[:4]) <= 2025 for p in revenue_growth.index]]
     charts["getting-started-revenue-growth"] = {
         "type": "tabs",
-        "title": "Alphabet's revenue grew 41% in 2021 and Amazon's 38% in 2020; since 2022 none has topped 18%",
         "tabs": [
             {"label": name, **frame_chart(revenue_growth[[name]], fmt="percent", kind="bar", bands=YEAR_BANDS)}
             for name in revenue_growth.columns
@@ -79,7 +76,6 @@ def build() -> dict:
     trailing = since(companies.ratios.get_net_profit_margin(trailing=4), 2015).loc[TICKERS].rename(index=NAMES)
     charts["getting-started-trailing"] = {
         "type": "kpis",
-        "title": "Trailing net margin: Microsoft keeps 36 cents per dollar of revenue, Amazon 7",
         "x": list(trailing.index),
         "series": [{"name": str(year), "data": values(trailing[year])} for year in trailing.columns],
         "format": "percent",
@@ -90,7 +86,6 @@ def build() -> dict:
     standardized = since(standardized, 2015).loc[TICKERS].rename(index=NAMES)
     charts["getting-started-standardized"] = {
         "type": "heatmap",
-        "title": "Operating margin Z-Scores: all four above their own average, Amazon by 2.4",
         "x": [str(c) for c in standardized.columns],
         "y": list(standardized.index),
         "values": [values(standardized.loc[name], 2) for name in standardized.index],
@@ -99,8 +94,7 @@ def build() -> dict:
     # rolling: the 12-month beta of Apple and Alphabet, with the market's beta of 1
     rolling = companies.performance.get_beta(period="monthly", rolling=12)
     rolling = rolling[[str(p) >= "2015-01" for p in rolling.index]]
-    beta = frame_chart(renamed(rolling[["AAPL", "GOOGL"]]), fmt="ratio", smooth=True,
-                       title="Alphabet's rolling beta swung from -0.7 at the start of 2025 to 2.6 by mid-2026")
+    beta = frame_chart(renamed(rolling[["AAPL", "GOOGL"]]), fmt="ratio", smooth=True)
     beta["series"].append({"name": "Market (beta 1)", "data": [1] * len(beta["x"]), "reference": True})
     charts["getting-started-beta"] = beta
 
@@ -120,8 +114,7 @@ def build() -> dict:
         for key in ("q05", "q5", "q95"):
             f[key] = [f[key][i] for i in keep]
     charts["getting-started-estimates"] = {
-        "type": "fan", "title": "Analysts expect Microsoft's earnings per share to reach $45 by 2031, from $17 in 2026",
-        "x": [str(years[i]) for i in keep], "series": fan, "format": "price",
+        "type": "fan", "x": [str(years[i]) for i in keep], "series": fan, "format": "price",
         "center": "average", "range": "low to high",
     }
 
@@ -129,8 +122,7 @@ def build() -> dict:
     esg = companies.get_esg_scores()["ESG Score"][TICKERS]
     esg = esg[[2015 <= int(str(p)[:4]) for p in esg.index]].rename(columns=NAMES)
     charts["getting-started-esg"] = {
-        "type": "heatmap", "title": "Amazon has the lowest ESG score of the four every year; Apple's fell from 64.6 in 2023 to 54.9 in 2025",
-        "x": [label(p) for p in esg.index], "y": list(esg.columns),
+        "type": "heatmap", "x": [label(p) for p in esg.index], "y": list(esg.columns),
         "values": [values(esg[name], 1) for name in esg.columns],
         "min": 50, "max": 70, "digits": 1, "scale": "sequential",
     }
@@ -146,10 +138,8 @@ def build() -> dict:
     regions = regions.loc[:, [2015 <= int(str(c)[:4]) <= 2025 for c in regions.columns]]
     regions = regions.loc[(regions > 0).any(axis=1)].T / 1e9
     regions = regions[regions.iloc[-1].sort_values(ascending=False).index]
-    share = products["Services"].iloc[-1] / products.iloc[-1].sum()
     charts["getting-started-segments"] = {
         "type": "tabs",
-        "title": f"Services is now {share:.0%} of Apple's revenue, up from {products['Services'].iloc[0] / products.iloc[0].sum():.0%} in 2019",
         "tabs": [
             {"label": "By product", **frame_chart(products, fmt="billions", kind="bar", stack=True)},
             {"label": "By region", **frame_chart(regions, fmt="billions", kind="bar", stack=True)},

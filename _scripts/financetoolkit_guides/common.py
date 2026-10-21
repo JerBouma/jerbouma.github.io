@@ -25,14 +25,13 @@ def values(series, digits: int = 4) -> list:
     return [None if pd.isna(v) or np.isinf(v) else round(float(v), digits) for v in series]
 
 
-def line(x, series: dict, fmt: str = "num", kind: str = "line", title: str = "", **extra) -> dict:
+def line(x, series: dict, fmt: str = "num", kind: str = "line", **extra) -> dict:
     """A line or bar chart; periods where every series is empty are left out."""
     x = [label(v) for v in x]
     data = {name: values(s) for name, s in series.items()}
     keep = [i for i in range(len(x)) if any(d[i] is not None for d in data.values())]
     return {
         "type": kind,
-        "title": title,
         "x": [x[i] for i in keep],
         "series": [{"name": str(name), "data": [d[i] for i in keep]} for name, d in data.items()],
         "format": fmt,
@@ -40,12 +39,12 @@ def line(x, series: dict, fmt: str = "num", kind: str = "line", title: str = "",
     }
 
 
-def frame_chart(df: pd.DataFrame, fmt: str = "num", kind: str = "line", title: str = "", **extra) -> dict:
+def frame_chart(df: pd.DataFrame, fmt: str = "num", kind: str = "line", **extra) -> dict:
     """A chart with one series per column of a DataFrame indexed by date or period."""
-    return line(df.index, {col: df[col] for col in df.columns}, fmt=fmt, kind=kind, title=title, **extra)
+    return line(df.index, {col: df[col] for col in df.columns}, fmt=fmt, kind=kind, **extra)
 
 
-def heatmap(spec: dict, title: str = "", fmt: str = "", low=None, high=None) -> dict:
+def heatmap(spec: dict, fmt: str = "", low=None, high=None) -> dict:
     """A line or bar spec (x periods, one series per company) as a company-by-period heatmap.
 
     low and high set the colour scale; by default it is symmetric around zero."""
@@ -53,7 +52,7 @@ def heatmap(spec: dict, title: str = "", fmt: str = "", low=None, high=None) -> 
     names = [s["name"] for s in spec["series"] if not s.get("reference")]
     vals = [v for r in rows for v in r if v is not None]
     edge = max(abs(min(vals)), abs(max(vals))) if vals else 1
-    out = {"type": "heatmap", "title": title or spec.get("title", ""), "x": spec["x"], "y": names, "values": rows,
+    out = {"type": "heatmap", "x": spec["x"], "y": names, "values": rows,
            "min": -edge if low is None else low, "max": edge if high is None else high}
     if fmt:
         out["format"] = fmt

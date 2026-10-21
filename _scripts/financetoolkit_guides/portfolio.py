@@ -29,7 +29,6 @@ def build() -> dict:
     LAST["profit"] = profit
     charts["portfolio-overview"] = {
         "type": "bar",
-        "title": "Four positions made almost two thirds of the profit: ASML, Comfort Systems, Monolithic Power and Fair Isaac",
         "x": list(profit.index),
         "series": [{"name": "Return Value", "data": [round(float(v), 0) for v in profit]}],
         "format": "amount",
@@ -52,7 +51,7 @@ def build() -> dict:
     spec["series"][0]["area"] = True
     spec["series"][1]["dashed"] = True
     spec["series"][1]["color"] = "#94a3b8"
-    charts["portfolio-value"] = {**spec, "title": "About $140,000 put in became about $1 million, with the setbacks of 2008 and 2022 along the way"}
+    charts["portfolio-value"] = spec
 
     transactions = portfolio.get_transactions_overview(pnl_method="FIFO")
     LAST["transactions"] = transactions
@@ -67,7 +66,7 @@ def build() -> dict:
     LAST.update(yearly_value=yearly_value, invested=invested, stacked=stacked)
     spec = frame_chart(stacked, fmt="amount", kind="bar", stack=True)
     spec["series"].append({"name": "Invested Amount", "data": [round(float(v), 0) for v in invested.reindex(stacked.index)], "reference": True})
-    charts["portfolio-yearly"] = {**spec, "title": "The four largest positions today grew from a quarter of the portfolio to 60% of it"}
+    charts["portfolio-yearly"] = spec
     LAST["transactions_performance"] = portfolio.get_transactions_performance(period="quarterly")
 
     toolkit = portfolio.toolkit
@@ -77,7 +76,6 @@ def build() -> dict:
     margin = net_profit_margin.loc["Portfolio"]
     charts["portfolio-net-profit-margin"] = line(
         margin.index, {"Portfolio": margin}, fmt="percent", kind="bar", highlight=len(margin.dropna()) - 1,
-        title="The portfolio's net profit margin rose from 4% to 17% in the 2000s to 23% to 30% since 2020",
     )
 
     beta = toolkit.performance.get_beta(period="yearly")
@@ -91,7 +89,6 @@ def build() -> dict:
     var_spec["series"][1]["color"] = "#94a3b8"
     charts["portfolio-beta-var"] = {
         "type": "tabs",
-        "title": "The portfolio runs more market risk than the S&P 500: a higher beta and a deeper daily VaR",
         "tabs": [{"label": "Beta", **beta_spec}, {"label": "Value at Risk", **var_spec}],
     }
 
@@ -108,7 +105,6 @@ def build() -> dict:
         tabs.append({"label": name, **spec})
     charts["portfolio-rsi"] = {
         "type": "tabs",
-        "title": "Over the last year Monolithic Power spent 23 days overbought, the portfolio as a whole none",
         "tabs": tabs,
     }
 

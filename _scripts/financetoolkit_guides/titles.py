@@ -1,0 +1,110 @@
+"""The title of every chart in the Getting Started guides, by chart id.
+
+A title names what is plotted, never a conclusion drawn from the data, so it stays true
+when the charts are rebuilt with newer data.
+"""
+
+TITLES = {
+    # Discovery
+    "discovery-screener": "Stocks Passing the Screen per Sector",
+    "discovery-sector-performance": "Sector Performance",
+    "discovery-sector-pe": "Sector P/E Ratios",
+    "discovery-screener-returns": "Beta and Five-Year Return of the Screened Stocks",
+    # Ratios
+    "ratios-gross-margin": "Gross Margins",
+    "ratios-effective-tax-rate": "Effective Tax Rates",
+    "ratios-price-to-book-growth": "Price-to-Book Ratio Growth",
+    "ratios-current-ratio-lags": "Current Ratio Growth over One, Two and Three Years",
+    "ratios-trailing-eps": "Trailing Earnings per Share",
+    "ratios-shareholder-yield": "Shareholder Yield and Debt-to-Capital",
+    # Models
+    "models-dupont-extended": "Extended DuPont Analysis",
+    "models-wacc": "Weighted Average Cost of Capital",
+    "models-altman": "Altman Z-Score",
+    "models-piotroski": "Piotroski F-Score",
+    "models-dupont-standardized": "Apple's DuPont Components as Z-Scores",
+    "models-pvgo": "Present Value of Growth Opportunities",
+    "models-beneish": "Beneish M-Score",
+    "models-growth-rates": "Internal and Sustainable Growth Rates",
+    "models-graham": "Share Price to Graham Number",
+    # Options
+    "options-black-scholes": "Black-Scholes Call Values for Apple",
+    "options-implied-volatility": "Implied Volatility per Strike",
+    "options-simulation": "Binomial Tree Stock Price Simulation for Apple",
+    "options-delta": "Apple's Call Delta per Strike and Days to Expiration",
+    "options-dual-gamma": "Dual Gamma per Strike and Expiration",
+    "options-delta-gamma": "Delta and Gamma per Strike",
+    # Technicals
+    "technicals-bollinger": "Bollinger Bands for Microsoft",
+    "technicals-adx-growth": "Average Directional Index for Microsoft",
+    "technicals-rsi": "Relative Strength Index",
+    "technicals-donchian-hull": "Donchian Channels and Hull Moving Average for Microsoft",
+    "technicals-overlap": "VWAP, Parabolic SAR and Pivot Points for Microsoft",
+    "technicals-volatility-cone": "Volatility Cone for Microsoft",
+    "technicals-breadth": "Breadth Indicators",
+    "technicals-ichimoku-direct": "Ichimoku Cloud on a Sample Price Series",
+    # Risk
+    "risk-var-sample": "Monthly Value at Risk and Conditional Value at Risk",
+    "risk-var": "Value at Risk and Conditional Value at Risk",
+    "risk-ulcer": "Ulcer Index Growth",
+    "risk-cdar": "Conditional Drawdown at Risk",
+    "risk-tail": "Tail Ratios",
+    "risk-drawdown-duration": "Drawdown Duration and Recovery Time",
+    "risk-ewma": "EWMA Volatility",
+    "risk-returns": "Distribution of Meta's Weekly Returns",
+    "risk-max-drawdown": "Annual Return and Worst Quarterly Drawdown",
+    # Performance
+    "performance-alpha": "Cumulative Quarterly Jensen's Alpha",
+    "performance-capm": "Actual and CAPM Expected Returns",
+    "performance-sharpe": "Rolling Sharpe Ratios",
+    "performance-sortino-treynor": "Sortino and Treynor Ratios",
+    "performance-fama-french": "Fama-French Factor Exposures",
+    "performance-factor-correlations": "Correlations with the Fama-French Factors",
+    # Econometrics
+    "econometrics-ols": "OLS Coefficients for Apple's Weekly Returns",
+    "econometrics-correlations": "Correlations between the Regressors",
+    "econometrics-granger": "Granger Causality Test P-Values for Apple's Returns",
+    "econometrics-prices": "Apple and TSMC Weekly Prices",
+    "econometrics-entity-effects": "Entity Effects per Stock",
+    # Fixed Income
+    "fixed-income-duration": "Duration per Coupon and Years to Maturity",
+    "fixed-income-swaption": "Swaption Prices with the Black and Bachelier Models",
+    "fixed-income-euribor": "Euribor Rates",
+    "fixed-income-central-banks": "Central Bank Policy Rates",
+    "fixed-income-government": "Government Bond Yields",
+    "fixed-income-oas": "Corporate Bond Option-Adjusted Spreads",
+    "fixed-income-ytw": "Corporate Bond Yield to Worst",
+    # Economics
+    "economics-gdp": "Real GDP",
+    "economics-inflation": "Inflation",
+    "economics-inflation-rolling": "Three-Year Rolling Inflation",
+    "economics-cci": "Consumer Confidence Index",
+    "economics-rates": "Short-Term and Long-Term Interest Rates",
+    "economics-house-prices": "House Prices",
+    "economics-unemployment": "Unemployment Rates",
+    # Portfolio
+    "portfolio-overview": "Return per Position",
+    "portfolio-value": "Portfolio Value and Invested Amount",
+    "portfolio-yearly": "Value of the Largest Positions",
+    "portfolio-net-profit-margin": "Portfolio Net Profit Margin",
+    "portfolio-beta-var": "Portfolio Beta and Value at Risk",
+    "portfolio-rsi": "Relative Strength Index",
+    # External Datasets
+    "external-datasets-dupont": "Extended DuPont Analysis",
+    "external-datasets-efficiency": "Efficiency Ratios",
+    "external-datasets-days": "Working Capital in Days",
+    "external-datasets-beta": "Quarterly Beta",
+    "external-datasets-drawdown": "Maximum Drawdown per Quarter",
+    "external-datasets-returns": "Cumulative Returns",
+    "external-datasets-estimates": "Average Analyst Estimates",
+    # Toolkit
+    "getting-started-cumulative": "Cumulative Returns",
+    "getting-started-equity": "Total Shareholder Equity",
+    "getting-started-revenue-growth": "Revenue Growth",
+    "getting-started-trailing": "Trailing Net Profit Margins",
+    "getting-started-standardized": "Operating Margin Z-Scores",
+    "getting-started-beta": "Rolling 12-Month Beta",
+    "getting-started-estimates": "Earnings per Share Estimates",
+    "getting-started-esg": "ESG Scores",
+    "getting-started-segments": "Apple's Revenue per Product and Region",
+}

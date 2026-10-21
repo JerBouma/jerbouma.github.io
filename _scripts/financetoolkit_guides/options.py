@@ -49,7 +49,7 @@ def lattice(paths: pd.DataFrame) -> dict:
         series.append({"name": f"{downs} down",
                        "data": [round(nodes[i][downs], 2) if downs < len(nodes[i]) else None for i in range(len(columns))],
                        "color": color})
-    return {"type": "line", "title": "", "x": [label(c) for c in columns], "series": series, "format": "price"}
+    return {"type": "line", "x": [label(c) for c in columns], "series": series, "format": "price"}
 
 
 def build() -> dict:
@@ -67,10 +67,8 @@ def build() -> dict:
     value_chart = by_strike(apple_bs, fmt="price", markers=marker)
     time_chart = by_strike(time_value, fmt="price", markers=marker)
     time_chart["series"][-1]["area"] = True
-    last = apple_bs.columns[-1]
     charts["options-black-scholes"] = {
         "type": "tabs",
-        "title": f"Time value peaks at the money: ${time_value.loc[atm, last]:.2f} of Apple's ${atm:g} call with {days_out(apple_bs, last)} days to go",
         "tabs": [{"label": "Time value", **time_chart}, {"label": "Call value", **value_chart}],
     }
     print("Apple price", price["AAPL"], "ATM strike", atm)
@@ -104,7 +102,6 @@ def build() -> dict:
     oi_chart["highlight"] = int(np.argmin(np.abs(window.index.values - price["AAPL"])))
     charts["options-implied-volatility"] = {
         "type": "tabs",
-        "title": "All four price more volatility into low strikes; Alphabet's skew is the steepest",
         "tabs": [
             {"label": "Volatility skew", **skew_chart},
             {"label": "Apple's open interest", **oi_chart},
@@ -122,7 +119,6 @@ def build() -> dict:
     end_chart["highlight"] = int(np.argmin(np.abs(ends.index.values - price["AAPL"])))
     charts["options-simulation"] = {
         "type": "tabs",
-        "title": f"After ten steps, {ends.max()} of Apple's {int(ends.sum()):,} paths end back at today's price",
         "tabs": [
             {"label": "The tree", **lattice(apple_paths)},
             {"label": "Where the paths end", **end_chart},
@@ -137,7 +133,6 @@ def build() -> dict:
     grid_days = [apple_delta.columns[i] for i in (0, 6, 13, 20, 28)]
     charts["options-delta"] = {
         "type": "heatmap",
-        "title": "Close to expiry, Apple's Delta jumps from 1 to 0 within a few strikes",
         "x": [days_label(apple_delta, c) for c in grid_days],
         "y": [f"${k:g} strike" for k in grid_strikes],
         "values": [[round(float(apple_delta.loc[k, c]), 2) for c in grid_days] for k in grid_strikes],
@@ -157,7 +152,6 @@ def build() -> dict:
         dg_tabs.append({"label": NAMES[ticker], **spec})
     charts["options-dual-gamma"] = {
         "type": "tabs",
-        "title": "Dual Gamma is highest near the money with a month to go, and flattens as expiration moves out",
         "tabs": dg_tabs,
     }
     msft_dg = dual_gamma.loc["MSFT"]
@@ -181,7 +175,6 @@ def build() -> dict:
     dg_chart = line([f"{s}" for s in prices], {"Call Delta": call, "Put Delta": put, "Gamma (right axis)": gamma},
                     fmt="ratio", xname="Stock price", smooth=True, format2="num")
     dg_chart["series"][2].update({"axis": 1, "area": True, "color": "#f97316"})
-    dg_chart["title"] = f"Gamma peaks at ${gamma.idxmax()}, where Delta climbs the fastest"
     charts["options-delta-gamma"] = dg_chart
     print("gamma peak at", gamma.idxmax(), gamma.max(), "call delta at 100", call[100], "put", put[100],
           "call delta 80/120", call[80], call[120])

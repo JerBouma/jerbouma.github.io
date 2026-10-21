@@ -75,7 +75,6 @@ def build() -> dict:
         })
     charts["models-dupont-extended"] = {
         "type": "dupont",
-        "title": "Apple's ROE runs on leverage, Meta's on margins",
         "tabs": tabs,
     }
 
@@ -97,7 +96,6 @@ def build() -> dict:
     amazon_chart["series"][2]["color"] = "#34d399"
     charts["models-wacc"] = {
         "type": "tabs",
-        "title": "The WACC follows the market: below zero for all four in 2018 and 2022",
         "tabs": [
             {"label": "WACC", **level_chart},
             {"label": "Amazon, standardized", **amazon_chart},
@@ -118,7 +116,6 @@ def build() -> dict:
     parts_chart = reference(parts_chart, "Safe (2.99)", 2.99)
     charts["models-altman"] = {
         "type": "tabs",
-        "title": "Tesla left the distress zone in 2020; Amazon dipped just below the safe line in 2022",
         "tabs": [
             {"label": "Z-Score", **z_chart},
             {"label": "Amazon, the five parts", **parts_chart},
@@ -133,7 +130,6 @@ def build() -> dict:
     groups = {group: [piotroski.loc[t].loc[rows, latest].sum() for t in TICKERS] for group, rows in PIOTROSKI_GROUPS.items()}
     charts["models-piotroski"] = {
         "type": "tabs",
-        "title": "Tesla's F-Score fell from 8 to 3 in 2023 while Apple and Amazon held 7 to 8",
         "tabs": [
             {"label": "Score per year", **line(score.columns, per_company(score), kind="bar", fmt="number")},
             {"label": f"Where the points come from, {label(latest)}",
@@ -152,7 +148,6 @@ def build() -> dict:
     }, fmt="ratio", bands=[{"from": "2021", "to": "2025", "label": "All above average"}])
     dupont_chart["series"][3].update({"color": "#c084fc", "dashed": True})
     dupont_chart = reference(dupont_chart, "Average", 0)
-    dupont_chart["title"] = "Since 2021 every driver of Apple's ROE is above its own 20-year average"
     charts["models-dupont-standardized"] = dupont_chart
 
     # PVGO: the year-end share price split into current earnings and growth
@@ -164,7 +159,6 @@ def build() -> dict:
     pvgo_recent = pvgo.iloc[-RECENT_YEARS:]
     charts["models-pvgo"] = {
         "type": "tabs",
-        "title": f"Growth the market expects makes up 84% to 99% of each share price at the end of {label(year)}",
         "tabs": [
             {"label": f"Share price, {label(year)}",
              **line([NAMES[t] for t in TICKERS], {"Value of current earnings": price_end - growth_part,
@@ -187,7 +181,6 @@ def build() -> dict:
     contribution = dict(sorted(contribution.items(), key=lambda kv: -kv[1]))
     charts["models-beneish"] = {
         "type": "tabs",
-        "title": "Only Tesla crossed the -1.78 line, in 2016 and again in 2023",
         "tabs": [
             {"label": "M-Score", **m_chart},
             {"label": "Tesla 2023, what moved the score",
@@ -203,7 +196,6 @@ def build() -> dict:
     pair = ["AAPL", "META"]
     charts["models-growth-rates"] = {
         "type": "compare",
-        "title": "Leverage lifts Apple's sustainable growth rate far above its internal one",
         "x": [label(c) for c in sgr.columns],
         "format": "percent",
         "names": {t: NAMES[t] for t in pair},
@@ -219,7 +211,6 @@ def build() -> dict:
     multiple = (current_price / graham_number).reindex(TICKERS).sort_values(ascending=False)
     charts["models-graham"] = {
         "type": "bar",
-        "title": "Tesla trades at 16x its Graham Number, Meta and Amazon at about 3x",
         "x": [NAMES[t] for t in multiple.index],
         "series": [{"name": "Price / Graham Number", "data": values(multiple)}],
         "format": "multiple",

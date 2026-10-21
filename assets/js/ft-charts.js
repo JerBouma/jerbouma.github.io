@@ -294,7 +294,8 @@
     head.className = 'ft-chart__head';
     var title = document.createElement('p');
     title.className = 'ft-chart__title';
-    title.textContent = chart.title + ', ' + chart.series[0].name + '–' + chart.series[chart.series.length - 1].name;
+    // the years follow the title, unless the spec says period: false
+    title.textContent = chart.title + (chart.period === false ? '' : ', ' + chart.series[0].name + '–' + chart.series[chart.series.length - 1].name);
     head.appendChild(title);
     var grid = document.createElement('div');
     grid.className = 'ft-kpis';
@@ -353,7 +354,7 @@
     head.className = 'ft-chart__head';
     var title = document.createElement('p');
     title.className = 'ft-chart__title';
-    title.textContent = chart.title + ', fiscal ' + chart.x[0] + '–' + chart.x[chart.x.length - 1];
+    title.textContent = chart.title + (chart.period === false ? '' : ', fiscal ' + chart.x[0] + '–' + chart.x[chart.x.length - 1]);
     head.appendChild(title);
     var grid = document.createElement('div');
     grid.className = 'ft-compare';

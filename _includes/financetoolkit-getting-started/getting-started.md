@@ -1,6 +1,6 @@
 ## Getting Started
 
-The Finance Toolkit computes 500+ financial ratios, indicators and models from the underlying data with one transparent formula each, so a margin or a Sharpe ratio means the same thing for every company and every period. This section covers the basics: loading a set of companies, retrieving their prices and financial statements, the options that work across nearly every function, and the company data beyond the statements. Each module's own documentation page opens with a Getting Started section of its own, listed at the end.
+The Finance Toolkit computes 500+ financial ratios, indicators and models from the underlying data with one transparent formula each, so a margin or a Sharpe ratio means the same thing for every company and every period. This section covers the basics: loading a set of companies, retrieving their prices and financial statements, the options that work across nearly every function, and the company data beyond the statements. Each module's own documentation page opens with a Getting Started section of its own.
 
 ### Data and API Keys
 
@@ -172,24 +172,6 @@ When plotted, Apple's revenue per product line since 2019, the first year it rep
 
 {% include ft-chart.html id="getting-started-segments" src="/assets/data/financetoolkit-guides/getting-started.json" label="Apple's revenue by product line since 2019 and by region since 2015" %}
 
-The earnings calendar, dividend calendar, company profiles, quotes, news and more are available in the same way; the [Toolkit reference](/projects/financetoolkit/docs) lists every function.
-
-### Explore the Modules
-
-The metrics are organized in modules. Most hang off the `Toolkit` (`companies.ratios`, `companies.risk` and so on) and reuse the data it already holds; `Discovery`, `Economics`, `FixedIncome` and `Portfolio` are classes of their own. Each module's documentation opens with its own Getting Started section:
-
-- [Discovery](/projects/financetoolkit/docs/discovery#getting-started): find stocks, ETFs, indices and other instruments, screen them and follow sector performance.
-- [Ratios](/projects/financetoolkit/docs/ratios#getting-started): 80+ efficiency, liquidity, profitability, solvency and valuation ratios, plus custom ratios.
-- [Models](/projects/financetoolkit/docs/models#getting-started): DuPont analysis, WACC, the Altman Z-Score, the Piotroski F-Score, intrinsic valuation and more.
-- [Options](/projects/financetoolkit/docs/options#getting-started): Black-Scholes and Binomial pricing and the Greeks for every strike and expiration.
-- [Technicals](/projects/financetoolkit/docs/technicals#getting-started): 40+ breadth, overlap, momentum and volatility indicators.
-- [Risk](/projects/financetoolkit/docs/risk#getting-started): Value at Risk, drawdowns, the Ulcer Index, skewness, kurtosis and more.
-- [Performance](/projects/financetoolkit/docs/performance#getting-started): alpha, beta, the Sharpe, Sortino and Treynor ratios, CAPM and the Fama-French factors.
-- [Econometrics](/projects/financetoolkit/docs/econometrics#getting-started): regressions, hypothesis and cointegration tests, panel data, causal inference and forecasting.
-- [Fixed Income](/projects/financetoolkit/docs/fixedincome#getting-started): bond pricing and analytics, swaptions, and government and corporate bond yields.
-- [Economics](/projects/financetoolkit/docs/economics#getting-started): 50+ macroeconomic indicators for 60+ countries.
-- [Portfolio](/projects/financetoolkit/docs/portfolio#getting-started): positions, profit and loss, and risk and performance of your own transactions.
-
-To run all of this on statements from your own source instead, see [External Datasets](/projects/financetoolkit/docs/external-datasets).
+The earnings calendar, dividend calendar, company profiles, quotes, news and more are available in the same way; the sidebar lists every function.
 
 {% include ft-charts-script.html %}

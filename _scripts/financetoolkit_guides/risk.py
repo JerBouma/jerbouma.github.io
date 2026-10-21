@@ -54,7 +54,6 @@ def build() -> dict:
         [NAMES.get(t, t) for t in var_sample.index],
         {"VaR (95%)": var_sample.values, "CVaR (95%)": cvar_sample.values},
         fmt="percent", kind="bar",
-        title="Meta's worst months cost 17.9% on average, more than twice the S&P 500's 8.3%",
     )
 
     # one value per quarter, from the daily returns within that quarter
@@ -75,7 +74,6 @@ def build() -> dict:
     tabs.append({"label": "Rolling 12-month VaR", **frame_chart(_named(rolling_var[["META", "AMZN", "Benchmark"]]), fmt="percent", bands=MONTH_BANDS)})
     charts["risk-var"] = {
         "type": "tabs",
-        "title": "Daily tail risk peaked in the Covid crash of early 2020 and again in the 2022 sell-off",
         "tabs": tabs,
     }
 
@@ -83,7 +81,6 @@ def build() -> dict:
     LAST["ulcer"] = ulcer
     charts["risk-ulcer"] = heatmap(
         frame_chart(_named(ulcer)), fmt="percent", low=-1, high=1,
-        title="Stress comes in waves: the Ulcer Index jumped in 2018, 2020 and 2022 and fell back the year after",
     )
     charts["risk-ulcer"]["reverse"] = True  # more stress in pink
 
@@ -93,17 +90,15 @@ def build() -> dict:
     spec = frame_chart(_named(cdar[["META", "MSFT", "Benchmark"]]), fmt="percent", bands=QUARTER_BANDS)
     spec["series"][0]["area"] = "down"
     spec["series"][2]["color"] = "#94a3b8"
-    charts["risk-cdar"] = {**spec, "title": "Meta's CDaR hit -44.5% in early 2022; the S&P 500's worst was -31% in the Covid crash"}
+    charts["risk-cdar"] = spec
     # centred on 1, balanced tails: pink where the left tail is the heavier one
-    charts["risk-tail"] = heatmap(frame_chart(_named(tail)), fmt="ratio", low=0.5, high=1.5,
-                                  title="Every Tail Ratio fell below 1 in 2022 and rose above it in 2023")
+    charts["risk-tail"] = heatmap(frame_chart(_named(tail)), fmt="ratio", low=0.5, high=1.5)
 
     duration = companies.risk.get_maximum_drawdown_duration(period="yearly", within_period=True)
     recovery = companies.risk.get_maximum_drawdown_recovery_time(period="yearly", within_period=True)
     LAST.update(duration=duration, recovery=recovery)
     charts["risk-drawdown-duration"] = {
         "type": "tabs",
-        "title": "In 2022 the worst decline lasted 195 to 248 trading days, with no recovery before year-end",
         "tabs": [
             {"label": "Duration", **frame_chart(_named(duration), fmt="amount", kind="bar")},
             {"label": "Recovery time", **frame_chart(_named(recovery), fmt="amount", kind="bar")},
@@ -122,7 +117,6 @@ def build() -> dict:
         tabs.append({"label": ticker, **spec})
     charts["risk-ewma"] = {
         "type": "tabs",
-        "title": "EWMA volatility jumps with each shock and decays within months",
         "tabs": tabs,
     }
 
@@ -136,7 +130,6 @@ def build() -> dict:
                 benchmark_var=float(returns["Benchmark"].dropna().quantile(0.05)))
     charts["risk-returns"] = {
         "type": "hist",
-        "title": "Three in four of Meta's weeks stay within ±5%, but the left tail reaches -23.7%",
         "bins": bins,
         "counts": counts,
         "width": 0.01,
@@ -154,7 +147,6 @@ def build() -> dict:
     LAST.update(annual_return=annual_return, worst_quarter=worst_quarter)
     charts["risk-max-drawdown"] = {
         "type": "scatter",
-        "title": "Microsoft matched Meta's 26% a year with a worst quarter of -28% instead of -45%",
         "xname": "Worst quarterly drawdown",
         "yname": "Annual return",
         "xformat": "percent",
