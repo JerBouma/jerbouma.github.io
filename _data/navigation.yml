@@ -96,32 +96,32 @@ financetoolkit:
   - title: "Functionality"
     url: /projects/financetoolkit#functionality
     children:
-      - title: "Discovering Instruments & News"
-        url: /projects/financetoolkit#discovering-instruments--news
-      - title: "Obtaining Historical Data"
-        url: /projects/financetoolkit#obtaining-historical-data
-      - title: "Obtaining Financial Statements"
-        url: /projects/financetoolkit#obtaining-financial-statements
-      - title: "Obtaining Financial Ratios"
-        url: /projects/financetoolkit#obtaining-financial-ratios
-      - title: "Obtaining Financial Models"
-        url: /projects/financetoolkit#obtaining-financial-models
-      - title: "Obtaining Options and Greeks"
-        url: /projects/financetoolkit#obtaining-options-and-greeks
-      - title: "Obtaining Performance Metrics"
-        url: /projects/financetoolkit#obtaining-performance-metrics
-      - title: "Obtaining Risk Metrics"
-        url: /projects/financetoolkit#obtaining-risk-metrics
-      - title: "Obtaining Technical Indicators"
-        url: /projects/financetoolkit#obtaining-technical-indicators
-      - title: "Obtaining Fixed Income Metrics"
-        url: /projects/financetoolkit#obtaining-fixed-income-metrics
-      - title: "Understanding Key Economic Indicators"
-        url: /projects/financetoolkit#understanding-key-economic-indicators
-      - title: "Explore your own Portfolio"
-        url: /projects/financetoolkit#explore-your-own-portfolio
-      - title: "Applying Econometric Techniques"
-        url: /projects/financetoolkit#applying-econometric-techniques
+      - title: "Discovery"
+        url: /projects/financetoolkit#discovery
+      - title: "Historical Data"
+        url: /projects/financetoolkit#historical-data
+      - title: "Financial Statements"
+        url: /projects/financetoolkit#financial-statements
+      - title: "Ratios"
+        url: /projects/financetoolkit#ratios
+      - title: "Models"
+        url: /projects/financetoolkit#models
+      - title: "Options"
+        url: /projects/financetoolkit#options
+      - title: "Performance"
+        url: /projects/financetoolkit#performance
+      - title: "Risk"
+        url: /projects/financetoolkit#risk
+      - title: "Technicals"
+        url: /projects/financetoolkit#technicals
+      - title: "Fixed Income"
+        url: /projects/financetoolkit#fixed-income
+      - title: "Economics"
+        url: /projects/financetoolkit#economics
+      - title: "Portfolio"
+        url: /projects/financetoolkit#portfolio
+      - title: "Econometrics"
+        url: /projects/financetoolkit#econometrics
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
 financetoolkit-mcp:
