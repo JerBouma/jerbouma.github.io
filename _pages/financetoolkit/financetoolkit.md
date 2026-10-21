@@ -84,7 +84,7 @@ This section is an introduction to the Finance Toolkit. The documentation contai
 
 [Find the Documentation](/projects/financetoolkit/docs){: .btn .btn--warning .btn--large .align-center}
 
-The sections below follow one analysis from start to finish: finding companies, loading their prices and financial statements, analysing their fundamentals, weighing their risk and return, and finally looking at the economies they depend on. That covers only part of the Finance Toolkit; [options and the Greeks](/projects/financetoolkit/docs/options), [technical indicators](/projects/financetoolkit/docs/technicals), [bonds and derivatives](/projects/financetoolkit/docs/fixedincome), [econometrics](/projects/financetoolkit/docs/econometrics) and [your own portfolio](/projects/financetoolkit/docs/portfolio) each have their own documentation page.
+The sections below follow one analysis from start to finish: finding companies, loading their prices and financial statements, analysing their fundamentals, weighing their risk and return, and finally looking at the economy around them. That covers only part of the Finance Toolkit; [options and the Greeks](/projects/financetoolkit/docs/options), [technical indicators](/projects/financetoolkit/docs/technicals), [bonds and derivatives](/projects/financetoolkit/docs/fixedincome), [econometrics](/projects/financetoolkit/docs/econometrics) and [your own portfolio](/projects/financetoolkit/docs/portfolio) each have their own documentation page.
 
 ### Finding Companies
 
@@ -266,51 +266,35 @@ Together the two modules cover 50+ metrics, such as [Value at Risk](/projects/fi
 
 ### Understanding the Economic Environment
 
-Chip makers depend on the economies they sell into. The [revenue by region](/projects/financetoolkit/docs#get_revenue_geographic_segmentation) shows which economies those are:
+All three are listed in the United States and valued on earnings that lie years ahead, which makes US inflation and interest rates the backdrop to their share prices. In 2022, the year the maximum drawdown above shows each of them falling by more than half, the Federal Reserve raised its policy rate from 0.12% to 4.38%.
+
+The [economics](/projects/financetoolkit/docs/economics) module covers 60+ countries with 50+ indicators, from GDP and unemployment to money supply and interest rates. It is reached through the same Toolkit instance, or on its own with `from financetoolkit import Economics`. The monthly figures for the United States are obtained as follows:
 
 ```python
-# Obtain the revenue per region for all tickers
-geographic_segmentation = companies.get_revenue_geographic_segmentation()
+# Inflation on the same month a year earlier
+inflation_rate = companies.economics.get_inflation_rate("United States", period="monthly")
 
-# Select the results for Nvidia
-geographic_segmentation.loc["NVDA"]
-```
-
-For example, the largest regions of Nvidia are shown below.
-
-|                |       2022 |       2023 |       2024 |       2025 |
-|:---------------|-----------:|-----------:|-----------:|-----------:|
-| United States  | 4.349e+09  | 8.292e+09  | 2.6966e+10 | 6.1257e+10 |
-| Taiwan         | 8.544e+09  | 6.986e+09  | 1.3405e+10 | 2.0573e+10 |
-| Singapore      | 0          | 0          | 0          | 2.3684e+10 |
-| China          | 7.111e+09  | 5.785e+09  | 1.0306e+10 | 1.7108e+10 |
-| Other Americas | 6.91e+09   | 5.911e+09  | 1.0245e+10 | 7.875e+09  |
-
-The [economics](/projects/financetoolkit/docs/economics) module covers 60+ countries with 50+ indicators, from GDP and inflation to unemployment, money supply and interest rates. It is reached through the same Toolkit instance, or on its own with `from financetoolkit import Economics`. The growth of the economy drives the demand for chips, and long-term interest rates weigh on how much investors pay for future earnings:
-
-```python
-countries = ["United States", "China", "Japan", "South Korea", "Germany"]
-
-# Real GDP growth on the same quarter a year earlier
-gdp_growth = companies.economics.get_gross_domestic_product_growth(countries, year_over_year=True)
+# The Federal Reserve's policy rate
+policy_rate = companies.economics.get_central_bank_policy_rate("United States", period="monthly")
 
 # The yield on 10-year government bonds
-long_term_interest_rate = companies.economics.get_long_term_interest_rate(countries)
+long_term_interest_rate = companies.economics.get_long_term_interest_rate("United States", period="monthly")
 ```
 
-For example, the long-term interest rates are shown below.
+For example, the figures for each December are shown below.
 
-|      |   United States |   China |   Japan |   South Korea |   Germany |
-|:-----|----------------:|--------:|--------:|--------------:|----------:|
-| 2021 |          0.0144 |  0.0301 |  0.0006 |        0.0206 |   -0.0037 |
-| 2022 |          0.0294 |  0.0276 |  0.0023 |        0.0336 |    0.0114 |
-| 2023 |          0.0396 |  0.0271 |  0.0056 |        0.0364 |    0.0243 |
-| 2024 |          0.0421 |  0.0218 |  0.0090 |        0.0322 |    0.0232 |
-| 2025 |          0.0432 |  0.0175 |  0.0153 |        0.0289 |    0.0259 |
+|         |   Inflation |   Policy rate |   10-year yield |
+|:--------|------------:|--------------:|----------------:|
+| 2020-12 |      0.0136 |        0.0012 |          0.0093 |
+| 2021-12 |      0.0704 |        0.0012 |          0.0147 |
+| 2022-12 |      0.0645 |        0.0438 |          0.0362 |
+| 2023-12 |      0.0335 |        0.0538 |          0.0402 |
+| 2024-12 |      0.0289 |        0.0438 |          0.0439 |
+| 2025-12 |      0.0268 |        0.0362 |          0.0414 |
 
-And below both are plotted over time, the GDP growth per quarter.
+And below all three are plotted for each month.
 
-{% include ft-chart.html id="economics" label="GDP growth and long-term interest rates" %}
+{% include ft-chart.html id="economics" label="US inflation and interest rates" %}
 
 Interest rates, bond yields and central bank rates are also covered by the [fixed income](/projects/financetoolkit/docs/fixedincome) module, including [Euribor](/projects/financetoolkit/docs/fixedincome#get_euribor_rates), [ECB](/projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates) and [Federal Reserve](/projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates) rates.
 

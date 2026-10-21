@@ -156,21 +156,16 @@ def main() -> None:
         ],
     }
 
-    # where the chips are sold, and the economies of those markets
-    TABLES["segments"] = companies.get_revenue_geographic_segmentation().loc["NVDA"]
-    countries = ["United States", "China", "Japan", "South Korea", "Germany"]
-    gdp_growth = companies.economics.get_gross_domestic_product_growth(countries, year_over_year=True)
-    long_term_rate = companies.economics.get_long_term_interest_rate(countries)
-    TABLES["economics"] = gdp_growth
-    TABLES["rates"] = long_term_rate
-    charts["economics"] = {
-        "type": "tabs",
-        "title": "GDP Growth and Long-Term Interest Rates",
-        "tabs": [
-            {"label": "GDP growth", **line(gdp_growth.index, {c: gdp_growth[c] for c in countries}, fmt="percent")},
-            {"label": "Long-term interest rate", **line(long_term_rate.index, {c: long_term_rate[c] for c in countries}, fmt="percent")},
-        ],
-    }
+    # the US backdrop: inflation and the short and long end of the interest rates
+    country = "United States"
+    us = pd.DataFrame({
+        "Inflation": companies.economics.get_inflation_rate(country, period="monthly")[country],
+        "Policy rate": companies.economics.get_central_bank_policy_rate(country, period="monthly")[country],
+        "10-year yield": companies.economics.get_long_term_interest_rate(country, period="monthly")[country],
+    })
+    TABLES["economics"] = us
+    charts["economics"] = line(us.index, {c: us[c] for c in us.columns}, fmt="percent",
+                               title="US Inflation and Interest Rates")
 
     payload = {"generated": date.today().isoformat(), "charts": charts}
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
