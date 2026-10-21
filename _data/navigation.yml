@@ -95,6 +95,17 @@ financetoolkit:
     url: /projects/financetoolkit/docs
   - title: "Functionality"
     url: /projects/financetoolkit#functionality
+    children:
+      - title: "Finding Companies"
+        url: /projects/financetoolkit#finding-companies
+      - title: "Loading Prices and Financial Statements"
+        url: /projects/financetoolkit#loading-prices-and-financial-statements
+      - title: "Analysing the Fundamentals"
+        url: /projects/financetoolkit#analysing-the-fundamentals
+      - title: "Weighing Risk and Return"
+        url: /projects/financetoolkit#weighing-risk-and-return
+      - title: "Understanding the Economic Environment"
+        url: /projects/financetoolkit#understanding-the-economic-environment
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
 financetoolkit-mcp:

@@ -5795,7 +5795,7 @@ body.ft-overview .page__content {
   @media (max-width: 760px) { grid-template-columns: 1fr; }
 }
 
-// ── Tabs (MCP clients, Finance Toolkit modules) ─────────────────────────────
+// ── Client tabs on the MCP page ─────────────────────────────────────────────
 // .ft-tabs groups the client cards; the page script adds a tab bar and the
 // is-tabbed class, after which only the selected client's steps are shown.
 .ft-tabs.is-tabbed {
@@ -5808,10 +5808,8 @@ body.ft-overview .page__content {
   > details { display: none; margin: 0; border: none; border-radius: 0; background: none; box-shadow: none !important; backdrop-filter: none; }
   > details.is-active { display: block; }
   > details > summary { display: none; }
-  // the panel is padded rather than its children given side margins, since code
-  // blocks, tables and charts take the full width of whatever holds them
-  > details > :not(summary) { margin-left: 0; margin-right: 0; }
-  > details.is-active { padding: 6px 22px 10px; }
+  > details > :not(summary) { margin-left: 22px; margin-right: 22px; }
+  > details.is-active { padding: 6px 0 10px; }
 }
 
 .ft-tabs__bar {
