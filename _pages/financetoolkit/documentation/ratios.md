@@ -10,6 +10,8 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /ratios
+    - /projects/financetoolkit/ratios-notebook
+    - /projects/financetoolkit/custom-ratios
 sidebar:
     nav: "financetoolkit-docs-ratios"
 ---
@@ -23,6 +25,8 @@ pip install financetoolkit -U
 ```
 
 {% include algolia.html %}
+
+{% include financetoolkit-getting-started/ratios.md %}
 
 ## collect_all_ratios
 Calculates and collects all ratios based on the provided data.

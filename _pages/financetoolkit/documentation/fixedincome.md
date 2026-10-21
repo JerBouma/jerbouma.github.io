@@ -10,6 +10,7 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /fixedincome
+    - /projects/financetoolkit/fixed-income-notebook
 sidebar:
     nav: "financetoolkit-docs-fixedincome"
 ---
@@ -23,6 +24,8 @@ pip install financetoolkit -U
 ```
 
 {% include algolia.html %}
+
+{% include financetoolkit-getting-started/fixed-income.md %}
 
 ## collect_bond_statistics
 Collect the bond statistics for a given bond which includes the following fields:

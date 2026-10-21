@@ -222,9 +222,9 @@ Other popular documentation generators include [MkDocs](https://www.mkdocs.org/)
 
 [![Alt text](/assets/images/modelling/build-your-model/image-2.png)](/projects/financetoolkit/docs){: target="_blank"}
 
-Good documentation contains more than API references (descriptions of individual functions). It should also include tutorials, conceptual explanations, and practical examples, often using Jupyter Notebooks to demonstrate use cases. These examples help users understand the model's logic and applications. Store such examples in a dedicated `examples` directory, as suggested in [Structure your Model](/modelling/structure-your-model). See a snippet from the [Finance Toolkit's Getting Started Notebook](/projects/financetoolkit/getting-started){: target="_blank"} below:
+Good documentation contains more than API references (descriptions of individual functions). It should also include tutorials, conceptual explanations, and practical examples, often using Jupyter Notebooks to demonstrate use cases. These examples help users understand the model's logic and applications. Store such examples in a dedicated `examples` directory, as suggested in [Structure your Model](/modelling/structure-your-model). See a snippet from the [Finance Toolkit's Getting Started Notebook](/projects/financetoolkit/docs#getting-started){: target="_blank"} below:
 
-[![Alt text](/assets/images/modelling/build-your-model/image.png)](/projects/financetoolkit/getting-started){: target="_blank"}
+[![Alt text](/assets/images/modelling/build-your-model/image.png)](/projects/financetoolkit/docs#getting-started){: target="_blank"}
 
 In corporate environments, internal wikis (like those in [Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/project/wiki/wiki-create-repo?view=azure-devops&tabs=browser){: target="_blank"} or Confluence) are useful for sharing higher-level project information, architectural decisions, and team processes, often using Markdown and benefiting from version control.
 

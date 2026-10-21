@@ -10,6 +10,7 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /discovery
+    - /projects/financetoolkit/discovery-notebook
 sidebar:
     nav: "financetoolkit-docs-discovery"
 ---
@@ -23,6 +24,8 @@ pip install financetoolkit -U
 ```
 
 {% include algolia.html %}
+
+{% include financetoolkit-getting-started/discovery.md %}
 
 ## search_instruments
 The search instruments function allows you to search for a company or financial instrument by name. It returns a dataframe with all the symbols that match the query.

@@ -10,6 +10,7 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /models
+    - /projects/financetoolkit/models-notebook
 sidebar:
     nav: "financetoolkit-docs-models"
 ---
@@ -23,6 +24,8 @@ pip install financetoolkit -U
 ```
 
 {% include algolia.html %}
+
+{% include financetoolkit-getting-started/models.md %}
 
 ## get_dupont_analysis
 Perform a Dupont analysis to breakdown the return on equity (ROE) into its components.

@@ -95,35 +95,35 @@ financetoolkit:
     url: /projects/financetoolkit/docs
   - title: "Functionality"
     url: /projects/financetoolkit#functionality
-  - title: "How to Guides"
-    url: /projects/financetoolkit#how-to-guides-for-the-financetoolkit
+  - title: "Getting Started"
+    url: /projects/financetoolkit/docs#getting-started
     children:
-      - title: Getting Started
-        url: /projects/financetoolkit/getting-started
-      - title: Discovery Notebook
-        url: /projects/financetoolkit/discovery-notebook
-      - title: Ratios Notebook
-        url: /projects/financetoolkit/ratios-notebook
-      - title: Models Notebook
-        url: /projects/financetoolkit/models-notebook
-      - title: Options Notebook
-        url: /projects/financetoolkit/options-notebook
-      - title: Technicals Notebook
-        url: /projects/financetoolkit/technicals-notebook
-      - title: Risk Notebook
-        url: /projects/financetoolkit/risk-notebook
-      - title: Performance Notebook
-        url: /projects/financetoolkit/performance-notebook
-      - title: Econometrics Notebook
-        url: /projects/financetoolkit/econometrics-notebook
-      - title: Fixed Income Notebook
-        url: /projects/financetoolkit/fixed-income-notebook
-      - title: Economics Notebook
-        url: /projects/financetoolkit/economics-notebook
-      - title: Portfolio Notebook
-        url: /projects/financetoolkit/portfolio-notebook
+      - title: Overview
+        url: /projects/financetoolkit/docs#getting-started
+      - title: Discovery
+        url: /projects/financetoolkit/docs/discovery#getting-started
+      - title: Ratios
+        url: /projects/financetoolkit/docs/ratios#getting-started
+      - title: Models
+        url: /projects/financetoolkit/docs/models#getting-started
+      - title: Options
+        url: /projects/financetoolkit/docs/options#getting-started
+      - title: Technicals
+        url: /projects/financetoolkit/docs/technicals#getting-started
+      - title: Risk
+        url: /projects/financetoolkit/docs/risk#getting-started
+      - title: Performance
+        url: /projects/financetoolkit/docs/performance#getting-started
+      - title: Econometrics
+        url: /projects/financetoolkit/docs/econometrics#getting-started
+      - title: Fixed Income
+        url: /projects/financetoolkit/docs/fixedincome#getting-started
+      - title: Economics
+        url: /projects/financetoolkit/docs/economics#getting-started
+      - title: Portfolio
+        url: /projects/financetoolkit/docs/portfolio#getting-started
       - title: External Datasets
-        url: /projects/financetoolkit/external-datasets
+        url: /projects/financetoolkit/docs#using-external-datasets
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
 financetoolkit-mcp:

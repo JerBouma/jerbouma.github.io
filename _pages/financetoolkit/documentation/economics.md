@@ -10,6 +10,7 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /economics
+    - /projects/financetoolkit/economics-notebook
 sidebar:
     nav: "financetoolkit-docs-economics"
 ---
@@ -23,6 +24,8 @@ pip install financetoolkit -U
 ```
 
 {% include algolia.html %}
+
+{% include financetoolkit-getting-started/economics.md %}
 
 ## get_gross_domestic_product
 Get the Gross Domestic Product for a variety of countries over time from the OECD. The Gross Domestic Product is the total value of goods produced and services provided in a country during one year.

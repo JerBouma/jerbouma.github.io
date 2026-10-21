@@ -2,7 +2,7 @@
 {%- comment -%}
   The Finance Toolkit docs sidebars get their own treatment (nav__list--docs):
   a module switcher that names the current module, groups with a count that
-  only open when they hold the current page (or when there is a single group),
+  show their first few links (all of them when they hold the current page),
   and plain links. Other sidebars keep the original behaviour.
 {%- endcomment -%}
 {% assign docs_nav = false %}
@@ -50,7 +50,12 @@
             {% unless group_has_active or page_has_active == false and group_count <= 1 %}{% assign group_open = false %}{% endunless %}
           {% endif %}
           {% if nav.title == "Modules" %}{% assign group_open = false %}{% endif %}
-          <details class="nav__collapsible{% if nav.title == "Modules" %} nav__collapsible--modules{% endif %}"{% if group_open %} open{% endif %}>
+          {% assign peek = false %}
+          {% if docs_nav and group_open == false %}
+            {% assign group_open = true %}
+            {% if nav.children.size > 4 %}{% assign peek = true %}{% endif %}
+          {% endif %}
+          <details class="nav__collapsible{% if nav.title == "Modules" %} nav__collapsible--modules{% endif %}{% if peek %} is-peek{% endif %}"{% if group_open %} open{% endif %}>
             {% if nav.url and docs_nav == false %}
               <summary class="nav__sub-title nav__collapsible-title"><a href="{{ nav.url | relative_url }}">{{ nav.title }}</a></summary>
             {% else %}
@@ -61,6 +66,7 @@
                 <li><a href="{{ child.url | relative_url }}"{% if child.url == page.url %} class="active"{% endif %}>{{ child.title }}</a></li>
               {% endfor %}
             </ul>
+            {% if peek %}<button type="button" class="nav__more" aria-expanded="false">Show all {{ nav.children | size }}</button>{% endif %}
           </details>
         {% endif %}
         {% else %}
@@ -86,5 +92,21 @@
     var box = nav.closest('.sidebar') || nav;
     var linkTop = link.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop;
     if (box.scrollHeight > box.clientHeight) box.scrollTop = Math.max(0, linkTop - box.clientHeight / 3);
+  })();
+
+
+  // Docs sidebars: every group shows its first few functions, and the group
+  // of the current page shows them all. "Show all" opens the rest in place.
+  (function () {
+    var nav = document.currentScript.previousElementSibling;
+    if (!nav || !nav.classList.contains('nav__list--docs')) return;
+    nav.querySelectorAll('.nav__more').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var group = button.closest('details');
+        var showing = group.classList.toggle('is-peek') === false;
+        button.setAttribute('aria-expanded', showing);
+        button.textContent = showing ? 'Show fewer' : 'Show all ' + group.querySelectorAll('li').length;
+      });
+    });
   })();
 </script>

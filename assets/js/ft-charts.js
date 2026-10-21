@@ -38,6 +38,12 @@
     return v || fallback;
   }
 
+  // a palette colour (#rrggbb) at the given opacity
+  function fade(hex, alpha) {
+    var n = parseInt(hex.slice(1), 16);
+    return 'rgba(' + (n >> 16) + ', ' + ((n >> 8) & 255) + ', ' + (n & 255) + ', ' + alpha + ')';
+  }
+
   function formatter(fmt) {
     return function (v) {
       if (v === null || v === undefined || isNaN(v)) return '–';
@@ -94,17 +100,42 @@
       return {
         name: s.name,
         type: isBar ? 'bar' : 'line',
-        data: s.data,
+        // highlight: the index of one bar to set apart, e.g. a benchmark among the stocks
+        data: isBar && spec.highlight !== undefined && spec.series.length === 1
+          ? s.data.map(function (v, j) { return j === spec.highlight ? { value: v, itemStyle: { color: PALETTE[2] } } : v; })
+          : s.data,
         showSymbol: !many && !isBar,
         symbolSize: 6,
         smooth: false,
         connectNulls: false,
         barMaxWidth: 34,
-        itemStyle: { color: isClose ? css('--text-primary', '#f8fafc') : PALETTE[i % PALETTE.length], borderRadius: isBar ? [4, 4, 0, 0] : 0 },
-        lineStyle: { width: isClose ? 2.2 : 1.8 },
-        emphasis: { focus: 'series' }
+        itemStyle: { color: isClose ? css('--text-primary', '#f8fafc') : (s.color || PALETTE[i % PALETTE.length]), borderRadius: isBar && !spec.stack ? [4, 4, 0, 0] : 0 },
+        lineStyle: { width: isClose ? 2.2 : 1.8, type: s.dashed ? 'dashed' : 'solid' },
+        emphasis: { focus: 'series' },
+        smooth: !!spec.smooth,
+        // area: fill under the line, fading out (drawdowns, cumulative values)
+        areaStyle: s.area ? { opacity: 1, color: new window.echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: fade(s.color || PALETTE[i % PALETTE.length], s.area === 'down' ? 0.02 : 0.35) },
+          { offset: 1, color: fade(s.color || PALETTE[i % PALETTE.length], s.area === 'down' ? 0.35 : 0.02) }]) } : undefined,
+        // stack: series add up (the parts of a total)
+        stack: spec.stack && !s.reference ? 'total' : undefined,
+        // axis: 1 puts a series on a second y axis on the right, with format2
+        yAxisIndex: s.axis === 1 ? 1 : 0,
+        tooltip: s.axis === 1 ? { valueFormatter: formatter(spec.format2) } : undefined
       };
     });
+    // bands: shaded periods such as recessions or crises, labelled at the top
+    if (spec.bands && series.length) {
+      series[0].markArea = { silent: true, itemStyle: { color: 'rgba(148, 163, 184, 0.12)' },
+        label: { color: muted, fontSize: 11, position: 'insideTop' },
+        data: spec.bands.map(function (b) { return [{ name: b.label || '', xAxis: b.from }, { xAxis: b.to }]; }) };
+    }
+    // markers: vertical lines at events, labelled
+    if (spec.markers && series.length) {
+      series[0].markLine = { silent: true, symbol: 'none', lineStyle: { color: muted, type: 'dashed', width: 1 },
+        label: { color: muted, fontSize: 11, formatter: '{b}' },
+        data: spec.markers.map(function (m) { return { name: m.label || '', xAxis: m.x }; }) };
+    }
     if (spec.cloud) series = cloudSeries(spec).concat(series);
     var legendNames = spec.series.map(function (s) { return s.name; });
     return {
@@ -134,12 +165,17 @@
         // many bars (the portfolio tickers): show every label, slanted
         axisLabel: isBar && (spec.x.length > 10 || Math.max.apply(null, spec.x.map(function (v) { return String(v).length; })) > 8) ? { color: muted, interval: 0, rotate: 45, fontSize: 11 } : { color: muted, hideOverlap: true, fontSize: 12.5 }
       },
-      yAxis: {
+      yAxis: [{
         type: 'value',
-        scale: !isBar,
+        scale: !isBar && !spec.stack && !spec.series.some(function (s) { return s.area; }),
         splitLine: { lineStyle: { color: grid } },
         axisLabel: { color: muted, formatter: fmt, fontSize: 12.5 }
-      },
+      }].concat(spec.series.some(function (s) { return s.axis === 1; }) ? [{
+        type: 'value',
+        scale: true,
+        splitLine: { show: false },
+        axisLabel: { color: muted, formatter: formatter(spec.format2), fontSize: 12.5 }
+      }] : []),
       dataZoom: many ? [{ type: 'inside' }, { type: 'slider', height: 18, bottom: 8, borderColor: grid, fillerColor: 'rgba(56, 189, 248, 0.15)', textStyle: { color: muted }, handleStyle: { color: muted } }] : [],
       series: series
     };
@@ -244,6 +280,14 @@
 
   // one card per ratio: the latest value, the change since the first year and
   // a small trend line over the years
+  // the change between two values: percentage points for a percent metric,
+  // otherwise in the metric's own format (a ratio, a multiple, a score)
+  function change(a, b, fmt) {
+    var d = b - a;
+    if (fmt === 'percent' || !fmt) return (d >= 0 ? '+' : '') + (d * 100).toFixed(1) + ' pp';
+    return (d >= 0 ? '+' : '–') + formatter(fmt)(Math.abs(d));
+  }
+
   function renderKpis(box, chart) {
     box.innerHTML = '';
     var head = document.createElement('div');
@@ -261,12 +305,12 @@
     var cards = chart.x.map(function (name, r) {
       var data = chart.series.map(function (s) { return s.data[r]; });
       var first = data[0], last = data[data.length - 1];
-      var diff = (last - first) * 100;
+      var diff = last - first;
       var card = document.createElement('div');
       card.className = 'ft-kpis__card';
       card.innerHTML = '<p class="ft-kpis__name">' + name + '</p>' +
         '<p class="ft-kpis__value">' + fmt(last) + '</p>' +
-        '<p class="ft-kpis__delta ' + (diff >= 0 ? 'is-up' : 'is-down') + '">' + (diff >= 0 ? '<i class="fas fa-arrow-trend-up" aria-hidden="true"></i> +' : '<i class="fas fa-arrow-trend-down" aria-hidden="true"></i> ') + diff.toFixed(1) + ' pp since ' + years[0] + '</p>';
+        '<p class="ft-kpis__delta ' + (diff >= 0 ? 'is-up' : 'is-down') + '">' + (diff >= 0 ? '<i class="fas fa-arrow-trend-up" aria-hidden="true"></i> ' : '<i class="fas fa-arrow-trend-down" aria-hidden="true"></i> ') + change(first, last, chart.format) + ' since ' + years[0] + '</p>';
       var canvas = document.createElement('div');
       canvas.className = 'ft-kpis__canvas';
       card.appendChild(canvas);
@@ -321,19 +365,20 @@
     var last = chart.x.length - 1;
     var cards = chart.metrics.map(function (m) {
       var a = m.series[0], b = m.series[1];
-      var gap = (b.data[last] - a.data[last]) * 100;
+      var gap = b.data[last] - a.data[last];
+      var gapText = chart.format === 'percent' || !chart.format ? (Math.abs(gap) * 100).toFixed(1) + ' pp' : formatter(chart.format)(Math.abs(gap));
       var leader = gap >= 0 ? b : a;
       var sides = m.series.map(function (s, i) {
-        var diff = (s.data[last] - s.data[0]) * 100;
+        var diff = s.data[last] - s.data[0];
         return '<div class="ft-compare__side">' +
           '<p class="ft-compare__who"><span style="background:' + colors[i] + '"></span>' + (names[s.name] || s.name) + '</p>' +
           '<p class="ft-compare__value">' + fmt(s.data[last]) + '</p>' +
-          '<p class="ft-kpis__delta ' + (diff >= 0 ? 'is-up' : 'is-down') + '">' + (diff >= 0 ? '+' : '') + diff.toFixed(1) + ' pp since ' + chart.x[0] + '</p></div>';
+          '<p class="ft-kpis__delta ' + (diff >= 0 ? 'is-up' : 'is-down') + '">' + change(s.data[0], s.data[last], chart.format) + ' since ' + chart.x[0] + '</p></div>';
       }).join('');
       var card = document.createElement('div');
       card.className = 'ft-compare__card';
       card.innerHTML = '<div class="ft-compare__top"><p class="ft-kpis__name">' + m.name + '</p>' +
-        '<span class="ft-compare__gap" style="--c:' + colors[m.series.indexOf(leader)] + '" title="' + (names[leader.name] || leader.name) + ' leads by ' + Math.abs(gap).toFixed(1) + ' percentage points">' + leader.name + ' +' + Math.abs(gap).toFixed(1) + ' pp</span></div>' +
+        '<span class="ft-compare__gap" style="--c:' + colors[m.series.indexOf(leader)] + '" title="' + (names[leader.name] || leader.name) + ' leads by ' + gapText + '">' + leader.name + ' +' + gapText + '</span></div>' +
         '<div class="ft-compare__sides">' + sides + '</div>';
       var canvas = document.createElement('div');
       canvas.className = 'ft-compare__canvas';
@@ -549,20 +594,22 @@
   // A correlation matrix as a heatmap, blue for positive, pink for negative
   function renderHeatmap(box, chart) {
     var n = chart.x.length;
-    var inst = chrome(chart)(box, Math.max(300, n * 46 + 70));
+    var inst = chrome(chart)(box, Math.max(260, chart.y.length * 46 + 110));
     var data = [];
-    chart.values.forEach(function (row, i) { row.forEach(function (v, j) { data.push([j, i, v]); }); });
+    chart.values.forEach(function (row, i) { row.forEach(function (v, j) { if (v !== null) data.push([j, i, v]); }); });
+    // cell labels: in the chart's format (e.g. percent), else two decimals
+    var cell = chart.format ? formatter(chart.format) : function (v) { return v.toFixed(chart.digits !== undefined ? chart.digits : 2); };
     function draw() {
       var c = axisColors();
       inst.setOption({
         animationDuration: 500,
         textStyle: { fontFamily: 'inherit' },
         grid: { left: 8, right: 8, top: 8, bottom: 40, containLabel: true },
-        tooltip: Object.assign({ formatter: function (p) { return chart.x[p.data[0]] + ' · ' + chart.y[p.data[1]] + ': <b>' + p.data[2].toFixed(2) + '</b>'; } }, tooltipStyle()),
+        tooltip: Object.assign({ formatter: function (p) { return chart.x[p.data[0]] + ' · ' + chart.y[p.data[1]] + ': <b>' + cell(p.data[2]) + '</b>'; } }, tooltipStyle()),
         xAxis: { type: 'category', data: chart.x, splitArea: { show: false }, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 12, interval: 0, rotate: n > 6 ? 40 : 0 } },
         yAxis: { type: 'category', data: chart.y, inverse: true, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 12, interval: 0 } },
-        visualMap: { min: -1, max: 1, calculable: false, orient: 'horizontal', left: 'center', bottom: 0, itemWidth: 10, itemHeight: 120, textStyle: { color: c.muted }, inRange: { color: ['#f472b6', 'rgba(148,163,184,0.15)', '#38bdf8'] } },
-        series: [{ type: 'heatmap', data: data, label: { show: true, color: css('--text-primary', '#f8fafc'), fontSize: 12, formatter: function (p) { return p.data[2].toFixed(2); } }, itemStyle: { borderColor: css('--card-bg', '#1e293b'), borderWidth: 2, borderRadius: 4 } }]
+        visualMap: { min: chart.min !== undefined ? chart.min : -1, max: chart.max !== undefined ? chart.max : 1, calculable: false, orient: 'horizontal', left: 'center', bottom: 0, itemWidth: 10, itemHeight: 120, textStyle: { color: c.muted }, inRange: { color: (function (c) { return chart.reverse ? c.slice().reverse() : c; })(chart.scale === 'sequential' ? ['rgba(148,163,184,0.15)', '#38bdf8'] : ['#f472b6', 'rgba(148,163,184,0.15)', '#38bdf8']) } },
+        series: [{ type: 'heatmap', data: data, label: { show: true, color: css('--text-primary', '#f8fafc'), fontSize: 12, formatter: function (p) { return cell(p.data[2]); } }, itemStyle: { borderColor: css('--card-bg', '#1e293b'), borderWidth: 2, borderRadius: 4 } }]
       }, true);
     }
     draw();

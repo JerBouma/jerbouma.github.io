@@ -10,6 +10,7 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /portfolio
+    - /projects/financetoolkit/portfolio-notebook
 sidebar:
     nav: "financetoolkit-docs-portfolio"
 ---
@@ -23,6 +24,8 @@ pip install financetoolkit -U
 ```
 
 {% include algolia.html %}
+
+{% include financetoolkit-getting-started/portfolio.md %}
 
 ## toolkit
 Converts the Portfolio to a Finance Toolkit object.
