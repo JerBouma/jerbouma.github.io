@@ -104,7 +104,7 @@ TITLES = {
     "getting-started-trailing": "Trailing Net Profit Margins",
     "getting-started-standardized": "Operating Margin Z-Scores",
     "getting-started-beta": "Rolling 12-Month Beta",
-    "getting-started-estimates": "Earnings per Share Estimates",
+    "getting-started-surprise": "Revenue Surprise",
     "getting-started-esg": "ESG Scores",
     "getting-started-segments": "Apple's Revenue per Product and Region",
 }
