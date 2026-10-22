@@ -1,8 +1,7 @@
 """Charts for the Technicals guide: the same calls as the code on that page."""
 
-import pandas as pd
 from financetoolkit import Toolkit
-from financetoolkit.technicals import momentum_model, volatility_model
+from financetoolkit.technicals import momentum_model
 
 from .common import API_KEY, line
 
@@ -186,17 +185,21 @@ def build() -> dict:
           "smoothed below 1 share", round(below_one, 3), "NHNL range", highs_lows["MSFT"].min(), highs_lows["MSFT"].max(),
           "NHNL monthly", monthly.to_dict())
 
-    ichimoku = momentum_model.get_ichimoku_cloud(
-        prices_low=pd.Series(range(70, 140, 1)),
-        prices_high=pd.Series(range(90, 160, 1)),
-        conversion_window=9,
-        base_window=20,
-        lead_span_b_window=40,
+    # the models directly: the MACD of an equal-weighted basket of the four, which is no ticker
+    basket = 100 * (1 + close[TICKERS].pct_change().mean(axis=1).fillna(0)).cumprod()
+    macd = momentum_model.get_moving_average_convergence_divergence(
+        prices=basket, short_window=12, long_window=26, signal_window=9
     )
-    charts["technicals-ichimoku-direct"] = line([str(i) for i in ichimoku.index], {c: ichimoku[c] for c in ichimoku.columns},
-                                                fmt="number", xname="Period", cloud=["Leading Span A", "Leading Span B"])
-    print(ichimoku.dropna().head(3).to_string())
-
-    bands = volatility_model.get_bollinger_bands(prices=pd.Series([100, 105, 113, 126, 148]), window=2, num_std_dev=2)
-    print(bands.round(2).to_string())
+    macd_chart = style(line(macd.index, {"MACD Line": macd["MACD Line"], "Signal Line": macd["Signal Line"]}, fmt="number"),
+                       {"MACD Line": {"color": PRICE}, "Signal Line": {"color": ACCENT, "dashed": True}})
+    zero = with_reference(macd_chart, {"Zero": 0})
+    basket_chart = line(basket.index, {"Equal-weighted basket": basket}, fmt="number")
+    basket_chart["series"][0].update({"color": PRICE, "area": True})
+    charts["technicals-macd-direct"] = {
+        "type": "tabs",
+        "tabs": [{"label": "MACD", **zero}, {"label": "Basket", **basket_chart}],
+    }
+    above = macd["MACD Line"] > macd["Signal Line"]
+    print("Basket last", round(basket.iloc[-1], 2), "MACD crossovers", int((above != above.shift()).iloc[1:].sum()))
+    print(macd.iloc[-5:].round(2).to_string())
     return charts
