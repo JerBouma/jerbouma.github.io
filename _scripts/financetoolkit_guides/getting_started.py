@@ -98,7 +98,7 @@ def build() -> dict:
     beta["series"].append({"name": "Market (beta 1)", "data": [1] * len(beta["x"]), "reference": True})
     charts["getting-started-beta"] = beta
 
-    # Analyst estimates: the EPS consensus, average with the low-high range, years with five analysts or more
+    # Analyst estimates: the EPS consensus, average with the low-high range, years where every company has five analysts or more
     estimates = companies.get_analyst_estimates()
     years = sorted({int(str(c)[:4]) for c in estimates.columns if int(str(c)[:4]) >= 2026})
     fan = []
@@ -109,7 +109,7 @@ def build() -> dict:
         pick = lambda row: values(frame.loc[row].where(covered), 2)
         fan.append({"name": NAMES[ticker], "q05": pick("Estimated EPS Low"), "q5": pick("Estimated EPS Average"),
                     "q95": pick("Estimated EPS High")})
-    keep = [i for i in range(len(years)) if any(f["q5"][i] is not None for f in fan)]
+    keep = [i for i in range(len(years)) if all(f["q5"][i] is not None for f in fan)]
     for f in fan:
         for key in ("q05", "q5", "q95"):
             f[key] = [f[key][i] for i in keep]

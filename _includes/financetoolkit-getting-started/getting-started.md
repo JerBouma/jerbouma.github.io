@@ -147,7 +147,7 @@ analyst_estimates = companies.get_analyst_estimates()
 esg_scores = companies.get_esg_scores()
 ```
 
-When plotted, the earnings per share estimates for the years that at least five analysts cover, with the average as a line and the range from the lowest to the highest estimate shaded:
+When plotted, the earnings per share estimates for the years that at least five analysts cover for every company, with the average as a line and the range from the lowest to the highest estimate shaded:
 
 {% include ft-chart.html id="getting-started-estimates" src="/assets/data/financetoolkit-guides/getting-started.json" label="Average, low and high analyst estimates of earnings per share for Apple, Microsoft, Alphabet and Amazon" %}
 
