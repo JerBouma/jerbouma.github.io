@@ -42,7 +42,7 @@ TITLES = {
     "technicals-overlap": "VWAP, Parabolic SAR and Pivot Points for Microsoft",
     "technicals-volatility-cone": "Volatility Cone for Microsoft",
     "technicals-breadth": "Breadth Indicators",
-    "technicals-ichimoku-direct": "Ichimoku Cloud on a Sample Price Series",
+    "technicals-macd-direct": "MACD of an Equal-Weighted Basket",
     # Risk
     "risk-var-sample": "Monthly Value at Risk and Conditional Value at Risk",
     "risk-var": "Value at Risk and Conditional Value at Risk",

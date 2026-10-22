@@ -178,40 +178,25 @@ With only five instruments the TRIN is erratic: on a day when nearly all the vol
 
 The calculations behind the module are plain functions in `financetoolkit.technicals`, grouped by kind (`breadth_model`, `momentum_model`, `overlap_model` and `volatility_model`). They take a pandas Series or DataFrame, so you can run them on your own data or on a scenario without the `Toolkit` class.
 
-To calculate the Ichimoku Cloud on a steadily rising price series, and Bollinger Bands on five closing prices:
+Running a model directly is useful for a series that is not a ticker, such as an equal-weighted basket of the four companies. To build that basket from the daily returns and calculate its MACD with the usual 12, 26 and 9 day windows:
 
 ```python
-from financetoolkit.technicals import momentum_model, volatility_model
+from financetoolkit.technicals import momentum_model
 
-ichimoku_cloud = momentum_model.get_ichimoku_cloud(
-    prices_low=pd.Series(range(70, 140, 1)),
-    prices_high=pd.Series(range(90, 160, 1)),
-    conversion_window=9,
-    base_window=20,
-    lead_span_b_window=40,
-)
+close = companies.get_historical_data()["Close"]
+returns = close[["MSFT", "ASML", "MU", "AMZN"]].pct_change().mean(axis=1).fillna(0)
+basket = 100 * (1 + returns).cumprod()
 
-bollinger_bands = volatility_model.get_bollinger_bands(
-    prices=pd.Series([100, 105, 113, 126, 148]),
-    window=2,
-    num_std_dev=2,
+macd = momentum_model.get_moving_average_convergence_divergence(
+    prices=basket,
+    short_window=12,
+    long_window=26,
+    signal_window=9,
 )
 ```
 
-Which gives the Ichimoku Cloud, with the cloud shaded between the two leading spans:
+When plotted, with the basket itself in the second tab:
 
-{% include ft-chart.html id="technicals-ichimoku-direct" src="/assets/data/financetoolkit-guides/technicals.json" label="Ichimoku Cloud on a steadily rising price series" %}
-
-And the Bollinger Bands:
-
-| | Upper Band | Middle Band | Lower Band | Close |
-|--:|--:|--:|--:|--:|
-| 0 | | | | 100 |
-| 1 | 107.50 | 102.50 | 97.50 | 105 |
-| 2 | 117.00 | 109.00 | 101.00 | 113 |
-| 3 | 132.50 | 119.50 | 106.50 | 126 |
-| 4 | 159.00 | 137.00 | 115.00 | 148 |
-
-In a steady uptrend the conversion line stays above the base line and Leading Span A above Leading Span B, which is the textbook bullish configuration of the Ichimoku Cloud.
+{% include ft-chart.html id="technicals-macd-direct" src="/assets/data/financetoolkit-guides/technicals.json" label="MACD line and signal line of an equal-weighted basket of Microsoft, ASML, Micron and Amazon over 2023" %}
 
 {% include ft-charts-script.html %}
