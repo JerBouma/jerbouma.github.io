@@ -1,5 +1,6 @@
 """Charts for /projects/financetoolkit/docs#getting-started (the overview guide)."""
 
+import pandas as pd
 from financetoolkit import Toolkit
 
 from .common import API_KEY, frame_chart, label, line, values
@@ -98,25 +99,16 @@ def build() -> dict:
     beta["series"].append({"name": "Market (beta 1)", "data": [1] * len(beta["x"]), "reference": True})
     charts["getting-started-beta"] = beta
 
-    # Analyst estimates: the EPS consensus, average with the low-high range, years where every company has five analysts or more
-    estimates = companies.get_analyst_estimates()
-    years = sorted({int(str(c)[:4]) for c in estimates.columns if int(str(c)[:4]) >= 2026})
-    fan = []
+    # Earnings calendar: revenue against the analyst consensus, per reported quarter
+    calendar = companies.get_earnings_calendar()
+    surprise = {}
     for ticker in TICKERS:
-        frame = estimates.loc[ticker]
-        frame = frame.loc[:, [int(str(c)[:4]) in years for c in frame.columns]]
-        covered = frame.loc["Number of Analysts"] >= 5
-        pick = lambda row: values(frame.loc[row].where(covered), 2)
-        fan.append({"name": NAMES[ticker], "q05": pick("Estimated EPS Low"), "q5": pick("Estimated EPS Average"),
-                    "q95": pick("Estimated EPS High")})
-    keep = [i for i in range(len(years)) if all(f["q5"][i] is not None for f in fan)]
-    for f in fan:
-        for key in ("q05", "q5", "q95"):
-            f[key] = [f[key][i] for i in keep]
-    charts["getting-started-estimates"] = {
-        "type": "fan", "x": [str(years[i]) for i in keep], "series": fan, "format": "price",
-        "center": "average", "range": "low to high",
-    }
+        frame = calendar.loc[ticker].dropna(subset=["Revenue", "Estimated Revenue"])
+        # a report in the first weeks of a quarter covers the quarter before it
+        quarters = [pd.Period(d, "Q") - 1 for d in frame.index]
+        surprise[NAMES[ticker]] = pd.Series((frame["Revenue"] / frame["Estimated Revenue"] - 1).values, index=quarters)
+    surprise = pd.DataFrame(surprise).sort_index().dropna().iloc[-8:]
+    charts["getting-started-surprise"] = frame_chart(surprise, fmt="percent", kind="bar")
 
     # ESG scores: the combined score per company and year
     esg = companies.get_esg_scores()["ESG Score"][TICKERS]

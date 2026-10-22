@@ -135,21 +135,21 @@ The rolling beta of Apple and Alphabet, with the market's beta of 1 dashed:
 
 {% include ft-chart.html id="getting-started-beta" src="/assets/data/financetoolkit-guides/getting-started.json" label="Rolling 12-month beta of Apple and Alphabet against the S&P 500 since 2015" %}
 
-### Analyst Estimates and ESG Scores
+### Earnings and ESG Scores
 
-Beyond the reported figures, the Toolkit also retrieves the analyst consensus for the coming years: the low, high and average estimates of revenue, EBITDA, EBIT, net income, SG&A and EPS, and the number of analysts behind each. The ESG scores give the environmental, social and governance scores per year, and a combined ESG score.
+Beyond the reported figures, the Toolkit also retrieves the earnings calendar: for every quarterly report, the earnings per share and revenue next to the analyst consensus beforehand. The ESG scores give the environmental, social and governance scores per year, and a combined ESG score.
 
 To retrieve both:
 
 ```python
-analyst_estimates = companies.get_analyst_estimates()
+earnings_calendar = companies.get_earnings_calendar()
 
 esg_scores = companies.get_esg_scores()
 ```
 
-When plotted, the earnings per share estimates for the years that at least five analysts cover for every company, with the average as a line and the range from the lowest to the highest estimate shaded:
+When plotted, the revenue surprise over the last eight quarters, the reported revenue against the consensus estimate:
 
-{% include ft-chart.html id="getting-started-estimates" src="/assets/data/financetoolkit-guides/getting-started.json" label="Average, low and high analyst estimates of earnings per share for Apple, Microsoft, Alphabet and Amazon" %}
+{% include ft-chart.html id="getting-started-surprise" src="/assets/data/financetoolkit-guides/getting-started.json" label="Reported revenue against the consensus estimate for Apple, Microsoft, Alphabet and Amazon over the last eight quarters" %}
 
 The combined ESG score per company and year, on a scale from 0 to 100:
 
