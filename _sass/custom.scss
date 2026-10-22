@@ -5239,7 +5239,8 @@ $content-img: 'img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="g
   align-items: stretch;
   margin: 8px 0 28px;
 
-  .ft-hero__video { margin: 0; }
+  // the 960px cap of a lone MCP video would leave a gap beside the cards on wide screens
+  .ft-hero__video { margin: 0; max-width: none; }
 
   .ft-hero__facts {
     grid-template-columns: 1fr;
