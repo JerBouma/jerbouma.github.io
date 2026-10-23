@@ -1,0 +1,1 @@
+Finance Scenarios is an economic scenario generator (ESG). It simulates thousands of joint scenarios for interest rates, inflation, equities, currencies, credit and other economic variables, each fitted to its own history and linked to the others the way they have moved together.

@@ -12,7 +12,7 @@ sitemap: false
 noindex: true
 search: false
 sidebar:
-    nav: "financescenarios-docs"
+    nav: "financescenarios-docs-units"
 ---
 
 Every number is on one scale: an **annualized decimal**.

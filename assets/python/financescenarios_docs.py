@@ -1,16 +1,19 @@
 """
-Generates the Finance Scenarios API reference pages from the package's own docstrings.
+Generates the reference at the bottom of every Finance Scenarios docs page from the package's
+own docstrings, and the sidebar of those pages.
 
-It imports `financescenarios`, walks the public API (the classes and functions in its
-`__all__`, plus every factor and model class), and writes one Markdown page per class or
-area to `_pages/financescenarios/documentation/reference/`, together with an index page.
+It imports `financescenarios`, walks the public API (every name in its `__all__`, plus the
+factor and model classes reached through `Scenarios`) and writes one include per page to
+`_includes/financescenarios-reference/<page>.md`. Each docs page in
+`_pages/financescenarios/documentation/` includes its reference at the end. It then rebuilds
+the `financescenarios-docs*` entries of `_data/navigation.yml` from the headings each page
+ends up with: the module list, the Under the Hood list and the page's own sections.
 
 Run it with a Python environment that has `financescenarios` installed, from anywhere:
 
     python assets/python/financescenarios_docs.py
 
-The pages are plain Jekyll Markdown. They are hidden like the rest of the Finance Scenarios
-documentation (`sitemap: false`, `noindex: true`, `search: false`).
+It stops when a public name has no page or sits on two.
 """
 
 import ast
@@ -19,6 +22,7 @@ import inspect
 import re
 import sys
 import textwrap
+from collections import Counter
 from pathlib import Path
 
 # The formula → LaTeX conversion of the Finance Toolkit docs generator, next to this file.
@@ -27,8 +31,10 @@ from docs import _RE_FORMULA_INTRO, _formula_to_latex, _looks_like_formula  # no
 
 import financescenarios as fs
 from financescenarios.config.config_model import (
+    CorrelationsConfig,
     CreditMigrationConfig,
     CreditTermStructureConfig,
+    FixedCorrelation,
     HjmConfig,
     LeadingIndicatorConfig,
     MortalityConfig,
@@ -50,94 +56,89 @@ from financescenarios.factors.mortality.mortality_controller import Mortality
 from financescenarios.factors.real_estate.real_estate_controller import RealEstate
 from financescenarios.factors.term_structure.term_structure_controller import TermStructure
 from financescenarios.factors.unemployment.unemployment_controller import Unemployment
+from financescenarios.models.cp2022.cp2022_controller import Cp2022
+from financescenarios.models.cp2022.cp2022_model import Cp2022Params, Cp2022Vintage
 from financescenarios.models.knw.knw_controller import Knw
 from financescenarios.models.knw_sv.knw_sv_controller import KnwSv
 from financescenarios.models.knw_sv_q.knw_sv_q_controller import KnwSvQ
 from financescenarios.reporting.reporting_controller import Reporting
+from financescenarios.validation.dnb.dnb_controller import Dnb
+from financescenarios.validation.naic_goes.naic_goes_controller import NaicGoes
+from financescenarios.validation.published_frameworks.published_frameworks_controller import compare_published, held_up
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "_pages" / "financescenarios" / "documentation" / "reference"
-BASE_URL = "/projects/financescenarios/docs/reference"
+PAGES_DIR = ROOT / "_pages" / "financescenarios" / "documentation"
+INCLUDES = ROOT / "_includes"
+OUT = INCLUDES / "financescenarios-reference"
+NAVIGATION = ROOT / "_data" / "navigation.yml"
+DOCS = "/projects/financescenarios/docs"
 
 # ── The pages ──────────────────────────────────────────────────────────────────
-# (slug, title, one-line summary, members). The first group is the core API, the
-# second the factors and the third the joint models, matching the sidebar.
-CORE = [
-    ("scenarios", "Scenarios",
-     "Calibrate every configured factor and simulate correlated scenarios; also the saved calibration and the Toolkit builder.",
-     ["Scenarios", "CalibrationResult", "build_toolkit"]),
-    ("scenario-set", "ScenarioSet",
-     "The result of a run: describe, filter, plot, diagnose and compare simulated scenarios.",
-     ["ScenarioSet", "FactorLabel", "compare_runs"]),
-    ("portfolio", "Portfolio",
-     "Read a finished run through an investment portfolio: allocations, cashflows, glidepaths, risk metrics and factor exposure.",
-     ["Portfolio", "CashflowRule", "GlidepathCheckpoint", "PortfolioSummary", "PortfolioPreset",
-      "load_portfolio_library", "load_portfolio_preset", "compute_portfolio_factor_exposure"]),
-    ("solvency", "Solvency",
-     "Solvency II on a real-world and a risk-neutral run: the martingale test, best estimate, SCR and EIOPA curves.",
-     ["Solvency", "best_estimate", "solvency_capital_requirement", "interest_rate_scr", "equity_scr",
-      "symmetric_adjustment_cap", "eiopa_extrapolation", "martingale_test", "market_consistency_check", "eiopa_risk_free_curve", "eiopa_symmetric_adjustment",
-      "zero_coupon_curve", "curve_discount_factors", "write_scenario_files"]),
-    ("configuration", "Configuration and Presets",
-     "Load settings, factor sets and presets, list every named preset and scaffold a project.",
-     ["ScenariosConfig", "Profile", "list_presets", "load_profiles", "load_config", "load_profile_library",
-      "scaffold_project", "set_log_level", "set_display"]),
-    ("configuration-classes", "Configuration Classes",
-     "The typed settings behind each factor block, the engine and the data download, plus beliefs, belief paths and shocks.",
-     ["EngineConfig", "ToolkitConfig", "InterestRateConfig", "InflationConfig", "UnemploymentConfig", "EquityConfig",
-      "FXConfig", "CreditConfig", "CommodityConfig", "DividendYieldConfig", "DividendGrowthConfig", "RealEstateConfig",
-      "YieldCurveConfig", CreditTermStructureConfig, HjmConfig, CreditMigrationConfig, LeadingIndicatorConfig,
-      MortalityConfig, "OUBeliefs", "EquityBeliefs", "BeliefPath", "Shock"]),
-    ("regimes", "Regimes and Stress Tests",
-     "Named stress narratives and the official Federal Reserve and ESRB stress scenarios as regimes.",
-     ["Regime", "RegimeLibrary", "load_regime", "stress_test_regime"]),
-    ("runs-and-releases", "Run Files and Releases",
-     "Write and read saved runs, and publish, load and simulate versioned calibration releases.",
-     ["write_run", "read_run", "read_run_calibration", "publish_calibration", "load_release",
-      "simulate_release"]),
-    ("history-and-metrics", "History and Metrics",
-     "Fetch the realized history behind a run, turn it into a backtest and compute factor and price metrics.",
-     ["fetch_historical_data", "build_synthetic_scenario_set", "compute_factor_metrics",
-      "compute_price_performance_metrics"]),
-    ("charts", "Charts",
-     "The chart functions behind every `.plot()`: fan charts, paths, terminal distributions, runs and portfolios.",
-     ["plot_factors", "plot_fan_chart", "plot_paths", "plot_terminal_distribution", "plot_runs", "plot_portfolios",
-      "plot_correlation_matrix", "plot_sleeve_values", "plot_weight_drift"]),
-    ("dependence", "Dependence",
-     "The correlation matrix that links every factor: estimation, shrinkage and repair.",
-     [Dependence]),
-    ("reporting", "Reporting",
-     "Convert simulated prices into one reporting currency after the simulation.",
-     [Reporting]),
+# (page, sidebar title, url path, members). A member is a name or class, or a
+# (heading, [members]) group that puts several under one heading. The first list
+# is the sidebar's Modules, the second its Under the Hood; a page without members
+# has no reference.
+MODULES = [
+    ("docs", "Scenarios", "", [
+        "Scenarios", "ScenarioSet", "CalibrationResult", "FactorLabel", "compare_runs", "build_toolkit",
+        "set_display", "set_log_level"]),
+    ("configuration", "Configuration", "/configuration", [
+        "ScenariosConfig",
+        ("Configuration Classes", [
+            "EngineConfig", "ToolkitConfig", "InterestRateConfig", "InflationConfig", "UnemploymentConfig",
+            "EquityConfig", "FXConfig", "CreditConfig", "CommodityConfig", "DividendYieldConfig",
+            "DividendGrowthConfig", "RealEstateConfig", "YieldCurveConfig", CreditTermStructureConfig, HjmConfig,
+            CreditMigrationConfig, LeadingIndicatorConfig, MortalityConfig, CorrelationsConfig, FixedCorrelation]),
+        ("Beliefs", ["OUBeliefs", "InterestRateBeliefs", "EquityBeliefs", "BeliefPath"]),
+        ("Presets and Profiles", [
+            "Profile", "list_presets", "load_profiles", "load_config", "load_profile_library", "scaffold_project"]),
+    ]),
+    ("interest-rates", "Interest Rates", "/interest-rates", [
+        InterestRates, TermStructure, Hjm, Knw, KnwSv, KnwSvQ, Cp2022, Cp2022Vintage, Cp2022Params]),
+    ("economy", "Economy", "/economy", [Inflation, Unemployment, Mortality, LeadingIndicator]),
+    ("markets", "Markets", "/markets", [
+        Equities, FX, Commodities, RealEstate, DividendYield, DividendGrowth, Credit, CreditTermStructure,
+        CreditMigration, "rating_migration"]),
+    ("regimes", "Regimes", "/regimes", [
+        "Regime", "RegimeLibrary", "Shock", "load_regime", "search_regimes", "shock_regime", "stress_test_regime"]),
+    ("portfolio", "Portfolio", "/portfolio", [
+        "Portfolio", "PortfolioSummary",
+        ("Cashflows and Glidepaths", ["CashflowRule", "GlidepathCheckpoint"]),
+        ("Portfolio Presets", ["PortfolioPreset", "load_portfolio_preset", "load_portfolio_library"]),
+        ("Ticker Mapping", [
+            "TickerMapping", "StyleFactor", "TickerNotFoundError", "map_ticker", "add_holdings", "add_ticker_history",
+            "compute_portfolio_factor_exposure"]),
+        ("History and Metrics", [
+            "fetch_historical_data", "build_synthetic_scenario_set", "compute_factor_metrics",
+            "compute_price_performance_metrics"]),
+    ]),
+    ("solvency", "Solvency", "/solvency", [
+        "Solvency",
+        ("Solvency II Functions", [
+            "best_estimate", "solvency_capital_requirement", "interest_rate_scr", "equity_scr",
+            "symmetric_adjustment_cap", "eiopa_extrapolation", "eiopa_risk_free_curve", "eiopa_symmetric_adjustment",
+            "zero_coupon_curve", "curve_discount_factors", "martingale_test", "market_consistency_check",
+            "write_scenario_files"]),
+    ]),
+    ("validation", "Validation", "/validation", [
+        "Relationships", "RelationshipRegion", "Realism", "RealismFactor", "OutOfSample", "OutOfSampleEvaluation",
+        NaicGoes, Dnb, compare_published, held_up]),
 ]
-
-FACTORS = [
-    ("interest-rates", "InterestRates", "Short and long interest rates, one per country or region.", [InterestRates]),
-    ("inflation", "Inflation", "Consumer price inflation, one per country or region.", [Inflation]),
-    ("equities", "Equities", "Equity indices, sectors, regions and styles with regime switching.", [Equities]),
-    ("unemployment", "Unemployment", "Unemployment rates, each paired with an inflation entry.", [Unemployment]),
-    ("term-structure", "TermStructure", "The yield curve as Nelson-Siegel level, slope and curvature.", [TermStructure]),
-    ("hjm", "Hjm", "A two-factor Gaussian HJM forward curve.", [Hjm]),
-    ("real-estate", "RealEstate", "House-price and commercial property growth.", [RealEstate]),
-    ("credit", "Credit", "Credit spreads by maturity, rating bucket or country.", [Credit]),
-    ("credit-migration", "CreditMigration", "A credit cycle driving rating migrations and defaults.",
-     [CreditMigration, "rating_migration"]),
-    ("credit-term-structure", "CreditTermStructure", "A Nelson-Siegel credit spread curve.", [CreditTermStructure]),
-    ("leading-indicator", "LeadingIndicator", "The OECD composite leading indicator.", [LeadingIndicator]),
-    ("fx", "FX", "Exchange rates, one per currency against the US dollar.", [FX]),
-    ("commodities", "Commodities", "Commodity futures, one per commodity.", [Commodities]),
-    ("dividend-yield", "DividendYield", "Dividend yields, one per ticker.", [DividendYield]),
-    ("dividend-growth", "DividendGrowth", "Dividend growth, one per ticker.", [DividendGrowth]),
-    ("mortality", "Mortality", "Mortality improvement with the Cairns-Blake-Dowd model.", [Mortality]),
+UNDER_THE_HOOD = [
+    ("architecture", "How a Run Is Built", "/architecture", []),
+    ("simulation-engine", "Simulation Engine", "/simulation-engine", []),
+    ("units", "Units", "/units", []),
+    ("dependence", "Dependence", "/dependence", [Dependence]),
+    ("plotting", "Charts and Plotting", "/plotting", [
+        "plot_factors", "plot_fan_chart", "plot_paths", "plot_terminal_distribution", "plot_runs", "plot_portfolios",
+        "plot_correlation_matrix", "plot_sleeve_values", "plot_weight_drift"]),
+    ("run-files", "Run Files and Releases", "/run-files", [
+        ("Run Files", ["write_run", "read_run", "read_run_calibration"]),
+        ("Releases", ["publish_calibration", "load_release", "simulate_release"]),
+        "Snapshot", "ResultCache", "ScenarioSummary", Reporting]),
+    ("coverage", "Coverage", "/coverage", []),
 ]
-
-MODELS = [
-    ("knw", "Knw", "The KNW model: interest rate and inflation fitted jointly.", [Knw]),
-    ("knw-sv", "KnwSv", "The KNW model with stochastic volatility.", [KnwSv]),
-    ("knw-sv-q", "KnwSvQ", "The risk-neutral (Q-measure) side of the KNW models.", [KnwSvQ]),
-]
-
-GROUPS = [("Core", CORE), ("Factors", FACTORS), ("Joint models", MODELS)]
+PAGES = MODULES + UNDER_THE_HOOD
 
 # ── Docstring parsing ──────────────────────────────────────────────────────────
 SECTION_NAMES = {
@@ -418,7 +419,7 @@ def public_members(cls) -> list[tuple[str, object, str]]:
     return members
 
 
-# ── Pages ──────────────────────────────────────────────────────────────────────
+# ── Reference ──────────────────────────────────────────────────────────────────
 def code_block(text: str) -> str:
     return f"```python\n{text}\n```"
 
@@ -432,8 +433,8 @@ def raw(text: str) -> str:
     return text
 
 
-def render_class(cls, own_page: bool, qualify: bool) -> tuple[list[str], int]:
-    """The class's own section (unless it is the page's subject) and one h2 per public member."""
+def render_class(cls, level: int, qualify: bool) -> tuple[list[str], int]:
+    """The class's own section and one heading a level below it per public member."""
     blocks, count = [], 0
     where = cls.__name__
     if is_model(cls):
@@ -442,8 +443,7 @@ def render_class(cls, own_page: bool, qualify: bool) -> tuple[list[str], int]:
         intro = format_signature(cls.__name__, cls.__init__, drop_first=True).removesuffix(" -> None")
     else:
         intro = f"{cls.__name__}()"
-    head = render_doc(cls, where, intro)
-    blocks.append(raw(head if own_page else f"## {cls.__name__}\n\n{head}"))
+    blocks.append(raw(f"{'#' * level} {cls.__name__}\n\n{render_doc(cls, where, intro)}"))
     for name, func, kind in public_members(cls):
         title = f"{cls.__name__}.{name}" if qualify else name
         if kind == "property":
@@ -457,14 +457,14 @@ def render_class(cls, own_page: bool, qualify: bool) -> tuple[list[str], int]:
             sig = format_signature(f"{cls.__name__}.{name}", func, drop_first=kind == "classmethod")
         else:
             sig = format_signature(name, func, drop_first=True)
-        blocks.append(raw(f"## {title}\n\n{render_doc(func, f'{where}.{name}', sig)}"))
+        blocks.append(raw(f"{'#' * (level + 1)} {title}\n\n{render_doc(func, f'{where}.{name}', sig)}"))
         count += 1
     return blocks, count
 
 
-def render_function(func, name: str, level: str = "##") -> str:
+def render_function(func, name: str, level: int) -> str:
     sig = format_signature(name, func, drop_first=False)
-    return raw(f"{level} {name}\n\n{render_doc(func, name, sig)}")
+    return raw(f"{'#' * level} {name}\n\n{render_doc(func, name, sig)}")
 
 
 def model_functions(cls) -> list[tuple[str, object]]:
@@ -490,26 +490,6 @@ def yaml_quote(text: str) -> str:
     return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
-def front_matter(title: str, permalink: str, excerpt: str, seo_title: str) -> str:
-    return f"""---
-title: {yaml_quote(title)}
-seo_title: {yaml_quote(seo_title)}
-seo_title_suffix: false
-excerpt: {yaml_quote(excerpt)}
-description: {yaml_quote(excerpt)}
-author_profile: false
-permalink: {permalink}
-classes: wide-sidebar
-layout: single
-sitemap: false
-noindex: true
-search: false
-sidebar:
-    nav: "financescenarios-docs"
----
-"""
-
-
 def resolve(member) -> tuple[str, object]:
     """A page member is a name exported by `financescenarios` or a class imported above."""
     if isinstance(member, str):
@@ -517,81 +497,197 @@ def resolve(member) -> tuple[str, object]:
     return member.__name__, member
 
 
-def build_page(slug: str, title: str, summary: str, members: list) -> tuple[str, int]:
-    resolved = [resolve(m) for m in members]
-    with_methods = [obj for _, obj in resolved if inspect.isclass(obj) and public_members(obj)]
-    own_page = len(resolved) == 1 and inspect.isclass(resolved[0][1])
-    qualify = len(with_methods) > 1
-    blocks, count = [], 0
+def flatten(members: list) -> list[tuple[str, object]]:
+    out = []
+    for member in members:
+        out += [resolve(m) for m in member[1]] if isinstance(member, tuple) else [resolve(member)]
+    return out
+
+
+def scenarios_attribute(name: str) -> str | None:
+    """The `Scenarios` property that holds a factor or model class (`InterestRates` is `scenarios.interest_rates`)."""
+    attribute = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", name).lower()
+    return attribute if isinstance(getattr(fs.Scenarios, attribute, None), property) else None
+
+
+def imports(resolved: list[tuple[str, object]]) -> list[str]:
+    """How to reach the page's names: imported from the package, or through a `Scenarios` object."""
     top = [name for name, _ in resolved if name in fs.__all__]
-    imports = []
-    if top:
-        imports.append(f"from financescenarios import {', '.join(top)}")
-    for name, obj in resolved:
-        if name not in fs.__all__:
-            imports.append(f"from {obj.__module__} import {name}")
-    intro = (
-        f"{summary.rstrip('.')}.\n\n"
-        f"```python\n{chr(10).join(imports)}\n```"
-    )
-    blocks.append(intro)
-    for name, member in resolved:
-        if inspect.isclass(member):
-            more, n = render_class(member, own_page, qualify)
+    reached = [(scenarios_attribute(name), name) for name, _ in resolved if name not in fs.__all__]
+    reached = [(attribute, name) for attribute, name in reached if attribute]
+    other = [(obj.__module__, name) for name, obj in resolved
+             if name not in fs.__all__ and scenarios_attribute(name) is None]
+    blocks = []
+    if top or other:
+        lines = ([f"from financescenarios import {', '.join(top)}"] if top else [])
+        lines += [f"from {module} import {name}" for module, name in other]
+        rest = top + [name for _, name in other]
+        which = (f"{', '.join(f'`{name}`' for name in rest)} import{'s' if len(rest) == 1 else ''}" if reached
+                 else "Everything on this page imports")
+        blocks += [f"{which} as follows:", code_block("\n".join(lines))]
+    if reached:
+        width = max(len(attribute) for attribute, _ in reached) + len("scenarios.")
+        lines = [f"{('scenarios.' + attribute).ljust(width)}  # {name}" for attribute, name in reached]
+        many = len(reached) > 1
+        lead = (f"The {'factor and model classes are' if many else f'`{reached[0][1]}` class is'} reached through "
+                "a `Scenarios` object, after `scenarios = Scenarios.from_profiles(...)`:")
+        blocks = [lead, code_block("\n".join(lines))] + blocks
+    return blocks
+
+
+def build_reference(members: list) -> tuple[str, int]:
+    resolved = flatten(members)
+    with_methods = [obj for _, obj in resolved if inspect.isclass(obj) and public_members(obj)]
+    qualify = len(with_methods) > 1
+    blocks = [
+        "## Reference",
+        "The reference is generated from the docstrings in the package, so it says what `help(...)` says in Python: "
+        "what each class and function does, a worked example with real output where the docstring has one, and the "
+        "arguments and return value folded underneath.",
+        *imports(resolved),
+    ]
+    count = 0
+
+    def add(member, level):
+        nonlocal count
+        name, obj = resolve(member)
+        if inspect.isclass(obj):
+            more, n = render_class(obj, level, qualify)
             blocks.extend(more)
             count += n
         else:
-            blocks.append(render_function(member, name))
+            blocks.append(render_function(obj, name, level))
             count += 1
+
+    for member in members:
+        if isinstance(member, tuple):
+            blocks.append(f"### {member[0]}")
+            for inner in member[1]:
+                add(inner, 4)
+        else:
+            add(member, 3)
     formulas, seen = [], set()
-    for _, member in resolved:
-        if inspect.isclass(member):
-            for name, func in model_functions(member):
+    for _, obj in resolved:
+        if inspect.isclass(obj):
+            for name, func in model_functions(obj):
                 if name not in seen:
                     seen.add(name)
-                    formulas.append(render_function(func, name, "###"))
+                    formulas.append(render_function(func, name, 4))
     if formulas:
-        blocks.append("## How It Is Calculated\n\nThe model functions behind this page, each with the formula it implements.")
+        blocks.append("### How It Is Calculated\n\nThe model functions behind this page, each with the formula it implements.")
         blocks.extend(formulas)
         count += len(formulas)
-    seo = f"{title} Reference | Finance Scenarios"
-    page = front_matter(title, f"{BASE_URL}/{slug}", summary.replace("`", ""), seo) + "\n" + "\n\n".join(blocks) + "\n"
-    return page, count
+    return "\n\n".join(blocks) + "\n", count
 
 
-def build_index(counts: dict[str, int]) -> str:
-    lines = [
-        "The reference pages are generated from the docstrings in the Finance Scenarios package, so they say exactly "
-        "what `help(...)` says in Python. Each page covers one class or area: what every public method models and "
-        "why, a worked example with real output where the docstring has one, and its arguments and return value "
-        "folded underneath.",
-        "",
-        "How a run is put together, the configuration keys and the units every result is reported in are on the "
-        "[documentation](/projects/financescenarios/docs) pages.",
-    ]
-    for group, pages in GROUPS:
-        lines += ["", f"## {group}", "", "| Page | What it covers |", "|:-----|:---------------|"]
-        for slug, title, summary, _ in pages:
-            lines.append(f"| [{title}]({BASE_URL}/{slug}) | {summary} |")
-    excerpt = "Reference for the Finance Scenarios Python package, generated from its docstrings: every public class, method and function."
-    return front_matter("Reference", BASE_URL, excerpt, "Reference | Finance Scenarios") + "\n" + "\n".join(lines) + "\n"
+# ── Navigation ─────────────────────────────────────────────────────────────────
+RE_INCLUDE = re.compile(r"\{%-?\s*include\s+(financescenarios-[\w-]+/[\w.-]+)\s*-?%\}")
+RE_HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
+RE_EXPLICIT_ID = re.compile(r"\s*\{#([^}]+)\}\s*$")
+
+
+def page_body(page: str) -> str:
+    """The page's Markdown with its Finance Scenarios includes filled in, as Jekyll renders it."""
+    text = (PAGES_DIR / f"{page}.md").read_text().split("\n---\n", 1)[1]
+    for _ in range(3):
+        text = RE_INCLUDE.sub(lambda m: (INCLUDES / m.group(1)).read_text(), text)
+    return text
+
+
+def headings(text: str) -> list[tuple[int, str, str]]:
+    """(level, title, id) of every heading outside code, with the ids kramdown's GFM parser gives them."""
+    out, fence, seen = [], False, Counter()
+    for line in text.split("\n"):
+        if line.lstrip().startswith(("```", "~~~")):
+            fence = not fence
+            continue
+        match = None if fence else RE_HEADING.match(line)
+        if not match:
+            continue
+        title = match.group(2)
+        explicit = RE_EXPLICIT_ID.search(title)
+        title = RE_EXPLICIT_ID.sub("", title)
+        plain = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", title).replace("`", "").replace("**", "")
+        if explicit:
+            anchor = explicit.group(1)
+        else:
+            anchor = re.sub(r"[^\w\- ]", "", plain.lower()).replace(" ", "-")
+            seen[anchor] += 1
+            if seen[anchor] > 1:
+                anchor += f"-{seen[anchor] - 1}"
+        out.append((len(match.group(1)), plain, anchor))
+    return out
+
+
+def sections(page: str, title: str) -> list[tuple[str, list[tuple[str, str]]]]:
+    """The sidebar groups of a page: a module page lists the h3s under each h2 (Getting Started, How It Works,
+    Reference); another page lists its h2s under its title, then the h3s of its Reference."""
+    found = headings(page_body(page))
+    groups: list[tuple[str, list[tuple[str, str]]]] = []
+    if any(level == 2 and text == "Getting Started" for level, text, _ in found):
+        for level, text, anchor in found:
+            if level == 2:
+                groups.append((text, []))
+            elif level == 3 and groups:
+                groups[-1][1].append((text, anchor))
+        return [group for group in groups if group[1]]
+    own = [(text, anchor) for level, text, anchor in found if level == 2 and text != "Reference"]
+    groups = [(title, own)] if own else []
+    in_reference, reference = False, []
+    for level, text, anchor in found:
+        if level == 2:
+            in_reference = text == "Reference"
+        elif level == 3 and in_reference:
+            reference.append((text, anchor))
+    return groups + ([("Reference", reference)] if reference else [])
+
+
+def navigation_entry(page: str, title: str, path: str) -> list[str]:
+    key = "financescenarios-docs" if page == "docs" else f"financescenarios-docs-{page}"
+    lines = [f"{key}:"]
+    for group, pages in (("Modules", MODULES), ("Under the Hood", UNDER_THE_HOOD)):
+        lines += [f"  - title: {group}", "    children:"]
+        for _, other, other_path, _ in pages:
+            lines += [f"    - title: {yaml_quote(other)}", f"      url: {DOCS}{other_path}"]
+    for group, children in sections(page, title):
+        lines += [f"  - title: {yaml_quote(group)}", "    children:"]
+        for text, anchor in children:
+            lines += [f"      - title: {yaml_quote(text)}", f"        url: {DOCS}{path}#{anchor}"]
+    return lines
+
+
+def write_navigation() -> None:
+    """Replace the financescenarios-docs* entries of _data/navigation.yml, keeping their place in the file."""
+    lines = NAVIGATION.read_text().split("\n")
+    keys = [i for i, line in enumerate(lines) if re.match(r"^[A-Za-z][\w-]*:\s*$", line)]
+    ours = [i for i in keys if lines[i].startswith("financescenarios-docs")]
+    if not ours:
+        sys.exit("_data/navigation.yml has no financescenarios-docs entry")
+    start = ours[0]
+    end = next((i for i in keys if i > start and not lines[i].startswith("financescenarios-docs")), len(lines))
+    entries = []
+    for page, title, path, _ in PAGES:
+        entries += navigation_entry(page, title, path) + [""]
+    NAVIGATION.write_text("\n".join(lines[:start] + entries + lines[end:]))
 
 
 def main() -> None:
-    covered = {resolve(m)[0] for _, pages in GROUPS for *_, members in pages for m in members}
-    missing = sorted(set(fs.__all__) - covered - {"__version__"})
-    if missing:
-        sys.exit(f"public names without a reference page: {missing}")
+    placed = Counter(name for *_, members in PAGES for name, _ in flatten(members))
+    public = set(fs.__all__) - {"__version__"}
+    missing = sorted(public - set(placed))
+    twice = sorted(name for name, n in placed.items() if n > 1)
+    if missing or twice:
+        sys.exit(f"public names without a page: {missing}; on two pages: {twice}")
     OUT.mkdir(parents=True, exist_ok=True)
     for old in OUT.glob("*.md"):
         old.unlink()
     counts = {}
-    for _, pages in GROUPS:
-        for slug, title, summary, members in pages:
-            page, counts[slug] = build_page(slug, title, summary, members)
-            (OUT / f"{slug}.md").write_text(page)
-    (OUT / "reference.md").write_text(build_index(counts))
-    print(f"{len(counts) + 1} pages, {sum(counts.values())} methods and functions documented")
+    for page, _, _, members in PAGES:
+        if members:
+            text, counts[page] = build_reference(members)
+            (OUT / f"{page}.md").write_text(text)
+    write_navigation()
+    print(f"{len(counts)} references, {sum(counts.values())} methods and functions documented; navigation written")
     for warning in warnings:
         print("warning:", warning)
 

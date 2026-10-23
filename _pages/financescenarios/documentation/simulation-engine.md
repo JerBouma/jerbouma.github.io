@@ -12,7 +12,7 @@ sitemap: false
 noindex: true
 search: false
 sidebar:
-    nav: "financescenarios-docs"
+    nav: "financescenarios-docs-simulation-engine"
 ---
 
 How are the scenarios drawn, and how far can you trust a percentile read from them? The engine draws random shocks that move together the way history says they should and steps every factor forward one period at a time; each repetition is one scenario, and thousands of them form a distribution of outcomes.
@@ -248,4 +248,4 @@ result.cumulative_index("united_states_inflation")      # the price index, compo
 
 A long enough run also checks itself: each mean-reverting factor's simulated mean and spread at the horizon are compared with their theoretical long-run values (see [validation](/projects/financescenarios/docs/validation)). [Regimes](/projects/financescenarios/docs/regimes) covers narratives in depth, and the reference lists everything a run offers.
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/reference/scenario-set"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Scenario set</a></div>
+<div class="fs-ref"><a href="/projects/financescenarios/docs#scenarioset"><i class="fas fa-book" aria-hidden="true"></i>Full reference: ScenarioSet</a></div>

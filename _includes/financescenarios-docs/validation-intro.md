@@ -1,0 +1,1 @@
+A scenario set is only useful if you can defend it to a model validator, an auditor or a regulator. This page checks a run against its own model, against history, out of sample and against the generators regulators prescribe, NAIC's GOES and DNB's scenario sets, and checks the published models against their papers and against what happened since they were written.

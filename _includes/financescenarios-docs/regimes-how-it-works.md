@@ -1,0 +1,156 @@
+## How It Works
+
+### Two Ways to Tell a Story
+
+<div class="ca-cards">
+  <div><i class="ca-icon fas fa-sliders-h" aria-hidden="true"></i><p class="ca-card-title">Beliefs: change the economics before simulating</p><p>A belief overrides a calibrated parameter: the long-run level a rate or inflation reverts to, the speed of that reversion, the volatility, an equity's bull and bear means and volatilities, or a one-off shock at a given year. Every scenario is then simulated under the new assumption, with its own randomness and the calibrated correlations intact.</p></div>
+  <div><i class="ca-icon fas fa-shuffle" aria-hidden="true"></i><p class="ca-card-title">Targets: condition on the outcome after simulating</p><p>A target keeps only the scenarios that land in a quantile range of one or more factors, such as the top 30% of short rates and the bottom 30% of equity returns. The model is unchanged: you look at the part of the baseline distribution where the story happens, and every other factor comes along on those same paths.</p></div>
+</div>
+
+This is the difference between a stress test (an imposed shock) and scenario analysis (a combination of internally consistent moves): beliefs reshape the distribution, targets select from it. Side by side:
+
+| | Beliefs | Targets |
+|:--|:--|:--|
+| Acts on | the model's parameters | the simulated paths |
+| Probability of the story | assumed (you impose it) | inside the base run (you pick its tail) |
+| Other factors | move through the correlations | come along on the selected paths |
+| Best for | a view on levels, a regulator's path, a shock | "what else happens when X happens" |
+
+### Shipped Regimes
+
+Forty regimes ship with the package; `list_presets(kind="regimes")` lists them all. Twelve of the stylized ones:
+
+| Regime | The story | How |
+|:-------|:----------|:----|
+| `financial_crisis` | Stocks fall, unemployment rises and rates are cut, all at once | Targets |
+| `credit_crunch` | Bank stocks collapse and the market follows (needs the `broad` set) | Both |
+| `oil_crisis` | US inflation climbs to 12% within a year and eases to 5.5% by year three, as after the 1973 embargo, then back to 2.5% by year eight, with high rates and weak stocks | Both |
+| `oil_shock` | A one-off three-point jump in US inflation in year two, then business as usual | Beliefs |
+| `soft_landing` | Inflation eases smoothly to 2% by year five and stays there | Beliefs |
+| `rate_cut_cycle` | Soft landing, then inflation drifts to 2.5% by year ten and back to its usual level; rates keep their own calibration, so the cuts are not imposed (add a rate belief for that) | Beliefs |
+| `yield_curve_inversion` | The curve inverts within six months, short yields about one and a half points above the ten-year, then slowly rights itself | Both |
+| `real_estate_crash` | House-price growth falls to -8% within a year and recovers over four, then the worst housing scenarios are kept | Both |
+| `currency_crisis` | The Indian rupee devalues about 17% a year against the dollar, as in 2011-13 (needs `broad`) | Both |
+| `tech_selloff` | Tech stocks fall while the wider market holds up (needs `broad`) | Both |
+| `commodity_supercycle` | A long oil boom: crude oil earns a top-quarter return | Targets |
+| `climate_collapse` | A rough stand-in for a climate shock: the highest US inflation with the weakest US stocks | Targets |
+
+### Beliefs as a Path
+
+A long-run level can follow a term structure instead of a single number: anchors at chosen horizons, interpolated in between, and an optional period over which it fades back to the calibrated level after the last anchor. Because the factor still mean-reverts, it is pulled towards the moving target rather than set to it: a fast-reverting factor tracks the path closely, a slow one lags it. Which factors accept beliefs is set out under [beliefs](/projects/financescenarios/docs/configuration#expert-judgement).
+
+Because the factor is pulled towards the level rather than set to it, a level path alone reaches its number late or not at all: on the default calibration, a long-run level of 12% took US inflation only to 8.2% after a year. A regime that names a number therefore does two things. It steers the long-run level so that the factor's expected path runs in a straight line to each number, the steering `shock_regime` uses: with $$m$$ the path, $$b$$ its slope a year, $$\Delta t$$ the step and $$a$$ the factor's speed of reversion,
+
+$$
+\theta_t = m_t + \frac{b\,\Delta t}{1 - e^{-a\,\Delta t}}
+$$
+
+And it moves the scenarios' median to the number on the date it names, with a shock in `median` mode: every scenario shifts by the same amount, the gap between the number and the median on that date, so the number holds whatever the calibrated speed while each scenario keeps its distance from it and the spread stays as the model drew it. This is the first-moment matching of [Boyle, Broadie and Glasserman (1997, section 2.4)](https://doi.org/10.1016/S0165-1889(97)00028-6){:target="_blank"}, with the median in place of the mean so that a skewed factor's middle scenario is the one on the number. Between those dates each scenario moves with its own randomness. A shock in `absolute` mode sets every scenario to the number instead, which closes the spread on that date; only the supervisors' published paths use it, as each is a single deterministic scenario.
+
+Oil Crisis uses both, and targets as well. Its path follows US CPI inflation after the 1973 embargo, which peaked at 12.2% in November 1974 and was 5.5% by October 1976; 2.5% by year eight is a return to normal, a little above the 2.3% ten-year CPI forecast of the Philadelphia Fed's Survey of Professional Forecasters (Q3 2026). The anchors are the steered long-run levels for inflation's speed on the 19 October 2026 calibration:
+
+```yaml
+# my-project/regimes/oil_crisis.yaml (a stress regime)
+name: Oil Crisis
+beliefs:
+  inflation.united_states_inflation:
+    long_run_mean:   # year: the level that steers the expected path along straight legs
+      anchors: {0.0: 0.1667, 0.9167: 0.24, 1.0: 0.0685, 2.9167: 0.0062, 3.0: 0.0455, 7.9167: 0.016, 8.0: 0.025}
+    shocks:          # the median at 12% after a year and 5.5% after three
+      - {year: 1.0, magnitude: 0.12, mode: median}
+      - {year: 3.0, magnitude: 0.055, mode: median}
+targets:
+  united_states_short_rate: [0.7, 1.0]   # top 30% by average short rate
+  us_broad: [0.0, 0.3]                   # bottom 30% by equity return
+```
+
+Because the targets select scenarios after the shocks, the median of the scenarios a regime keeps can sit away from its number: the high-rate, weak-stock scenarios Oil Crisis keeps have a median US inflation of 12.98% after a year and 7.42% after three. Real Estate Crash moves the median of house-price growth to -8% after a year the same way, and Yield Curve Inversion moves the median of its slope to the path at each of its two quarters. Regimes that set only a level, such as Persistent Inflation, 1970s Stagflation, Soft Landing and Goldilocks, describe where a factor settles rather than when it gets there, and leave the pace to the calibration.
+
+Rates are annualized decimals (0.12 is 12% a year); see [units](/projects/financescenarios/docs/units).
+
+<div class="fs-callout" markdown="1">
+Check a factor's calibrated level before choosing anchors.
+</div>
+
+A belief naming a factor that is not in the run is refused, so a regime written for one factor set fails loudly on another. A regime can extend another and state only what differs, as Rate Cut Cycle does with Soft Landing.
+
+### How Targets Rank Scenarios
+
+Each target ranks every scenario by one statistic over a window (the whole horizon by default): a rate by its average level, a price (equity, FX, commodity) by its annualized return from the window's first date to its last. Start-to-end is deliberate: a return annualized over a single month swings so widely that an average of since-start returns would really rank the first few months.
+
+Two targets can combine in two ways:
+
+<div class="ca-cards">
+  <div><i class="ca-icon fas fa-arrow-right" aria-hidden="true"></i><p class="ca-card-title">In sequence (the default)</p><p>Each target applies to what the previous one left, so a top-30% rate filter followed by a bottom-30% equity filter keeps about 9% of the run.</p></div>
+  <div><i class="ca-icon fas fa-layer-group" aria-hidden="true"></i><p class="ca-card-title">Joint</p><p>Ranks each target against the full run and keeps the overlap, so the share kept depends on how the factors co-move and can be much smaller.</p></div>
+</div>
+
+### Running a Regime {#driving-a-regime-from-the-library}
+
+```python
+from financescenarios import Scenarios, list_presets
+
+list_presets(kind="regimes")   # the shipped regimes
+
+scenarios = Scenarios.from_profiles(settings="default", factor_set="default")
+baseline = scenarios.simulate(n_simulations=2000)
+oil_crisis = scenarios.simulate(regime="oil_crisis", n_simulations=2000)
+```
+
+A targeted regime keeps only part of each draw, about 9% for Oil Crisis, so the run draws batches until 2,000 scenarios fit (24,000 draws in three batches on the 19 October 2026 calibration). The stressed percentiles then rest on as many scenarios as the baseline's. Each batch ranks its own draws, so "the worst 30%" means the worst 30% of a batch, not of all draws pooled: each batch's cutoff carries its own sampling noise, most in the first batch, so the stressed quantiles are close to, not exactly, those of one large ranked run.
+
+### Official Stress Tests as Regimes
+
+Instead of writing a recession by hand, a regime can follow a regulator's published scenario, fetched through the Finance Toolkit with no API key:
+
+<div class="ca-cards">
+  <div><i class="ca-icon fas fa-landmark" aria-hidden="true"></i><p class="ca-card-title">Federal Reserve</p><p>The US supervisory scenarios, baseline and severely adverse, 13 quarters of the 3-month and 10-year Treasury rates, CPI inflation, unemployment and the stock market, from the first quarter of 2026 to the first quarter of 2029 (<a href="https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=13" target="_blank">Federal Reserve, 2026 Supervisory Stress Test Scenarios, p. 7</a>).</p></div>
+  <div><i class="ca-icon fas fa-earth-europe" aria-hidden="true"></i><p class="ca-card-title">ESRB</p><p>The European Systemic Risk Board's scenario for the <a href="https://www.eba.europa.eu/publications-and-media/press-releases/eba-launches-its-2025-eu-wide-stress-test" target="_blank">EBA's 2025 EU-wide bank stress test</a>, three years (2025 to 2027) of the long-term rate, inflation, unemployment and stock prices for every EU member and the main other economies.</p></div>
+</div>
+
+The published path becomes beliefs, not one deterministic path. Each interest rate, inflation and unemployment factor follows the scenario for its own country: by default it is set to the published value at each period end and its long-run level follows the scenario in between, so every scenario hits the published values, even for a slow-moving short rate. A gentler option steers only the long-run level. Afterwards each factor returns to its calibrated level over five years by default, and the usual randomness stays around the path, so you get a distribution around the regulator's story rather than one line.
+
+Equities follow the published stock market as one-off price jumps, after which the equity model carries on. For the Federal Reserve the shock is the adverse path relative to its own baseline, so normal growth is not counted as stress; for the ESRB it is the published fall from the starting point. Each equity follows one region, the United States or the European Union by default.
+
+```python
+from financescenarios import Scenarios, build_toolkit, load_profiles, stress_test_regime
+
+config = load_profiles(settings_id="default", factor_set_id="default")
+toolkit = build_toolkit(config, api_key="FINANCIAL_MODELING_PREP_KEY")
+
+# authority="esrb" with scenario="adverse" for the EBA test
+regime = stress_test_regime(toolkit, config, authority="federal_reserve", scenario="severely_adverse")
+stressed = Scenarios.from_config(config, toolkit=toolkit, regime=regime).simulate()
+```
+
+<div class="fs-callout fs-callout--limits" markdown="1">
+<p class="fs-callout__title">Limits</p>
+
+- Only factors with a long-run level can follow the scenario: real-world interest rates under Hull-White or CIR, inflation under the plain mean-reverting model, and unemployment. Other models and every risk-neutral factor keep their calibration.
+- The Federal Reserve covers only the United States, so under it only US factors move.
+- Its inflation is an annualized quarter-on-quarter rate ([Federal Reserve, 2026 Supervisory Stress Test Scenarios, p. 8](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=14){:target="_blank"}), while this package's is year over year, and the published values are used as they are. Quarter-on-quarter inflation moves sooner and further than year over year, so the simulated inflation peaks earlier and higher than the scenario's own year-over-year path would.
+</div>
+
+### Reading the Results Against the Base Run
+
+Compare a stressed run with the baseline, factor by factor on the same scale. The size of the stress shows there. The Federal Reserve's 2026 severely adverse scenario, for example, for the Dow Jones Total Stock Market Index ([Federal Reserve, 2026 Supervisory Stress Test Scenarios, p. 4](https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf#page=10){:target="_blank"}):
+
+<div class="ca-nums fs-nums">
+  <span><b>31,161</b>at the end of 2026, severely adverse</span>
+  <span><b>70,592</b>at the end of 2026, baseline</span>
+  <span><b>56%</b>lower than the baseline</span>
+  <span><b>about 58%</b>fall in the first three quarters</span>
+</div>
+
+Four points to keep in mind when reading a stressed run:
+
+- **Belief-driven runs are conditional, not likely.** The percentiles describe uncertainty given the story, not the probability of the story. Don't read a stressed 99.5% quantile as a capital number.
+- **Targets select by rank, not by level.** Sequential targets keep a fixed share (30% of 30% is 9%) whatever the correlations, so the share says nothing about how likely the story is. In joint mode the share kept is the model's own estimate of how often the combination occurs; if it is tiny, the story is far in the tail of the calibration. Fewer than 30 scenarios left raises a warning, because their percentiles are noise.
+- **The other factors are the point.** The factors the regime did not touch move through the calibrated correlations (beliefs) or as they did on the selected paths (targets). That is where a narrative test adds information over a single-factor shock.
+- **Recovery is an assumption.** After a stress-test path ends, factors fade back to calibration over a chosen period; a longer period means a more persistent stress.
+
+### Climate Scenarios
+
+A climate pathway is an overlay rather than a regime. Enabled in a factor set, it adds an NGFS scenario's deviation from its baseline (Net Zero 2050, Delayed Transition, Current Policies and others) to each interest rate, inflation, unemployment and equity factor after simulating, and can add the scenario's carbon price as a factor. It combines with a regime: the regime shapes the scenarios, the climate pathway shifts them.
+
+<div class="fs-ref"><a href="#reference"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Regimes</a></div>

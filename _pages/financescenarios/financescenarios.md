@@ -58,101 +58,101 @@ list_presets(kind="settings")  # or "factor-sets", "regimes", "portfolios"; leav
 Each kind's output is below; open one to see its options.
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-sliders-h"></i> <b>Settings profiles</b> <span class="ft-details__meta">4</span></summary>
+<summary><i class="fas fa-sliders-h"></i> <b>Settings profiles</b> <span class="ft-details__meta">7</span></summary>
 
-| id           | description                                                                                                              |
-|:-------------|:-------------------------------------------------------------------------------------------------------------------------|
-| default      | 2,000 scenarios, one step a month, five years ahead, fitted on history since 2000.                                       |
-| goes         | Default, but fitted on history since 2019 only; pair it with the goes factor set to match the NAIC's scenario generator. |
-| long_horizon | Default with 500 scenarios instead of 2,000, so multi-decade runs stay fast; pick the length with simulate(years=30).    |
-| wilkie       | Default, fitted on 1995 to 2007 only, as the wilkie set needs.                                                           |
+| id           | description                                                                                                                                         |
+|:-------------|:----------------------------------------------------------------------------------------------------------------------------------------------------|
+| ahlgrim      | The run of Ahlgrim, D'Arcy and Gorvett (2005): from June 2004, 5,000 scenarios, 50 years, one step a month; pair it with the ahlgrim factor set.    |
+| default      | 2,000 scenarios, one step a month, five years ahead, fitted on history since 2000.                                                                  |
+| dnb          | Monthly steps over 100 years, DNB's horizon, with 2,000 scenarios; pair it with the dnb factor set.                                                 |
+| goes         | Default, but fitted on history since 2019 only; pair it with the goes factor set to match the NAIC's scenario generator.                            |
+| hibbert      | The run of Hibbert, Mowbray and Turnbull (2001): from March 2001, 1,000 scenarios, 30 years, one step a month; pair it with the hibbert factor set. |
+| long_horizon | Default with 500 scenarios instead of 2,000, so multi-decade runs stay fast; pick the length with simulate(years=30).                               |
+| wilkie       | The run of Wilkie (1986): 1,000 simulations of 100 years in yearly steps, dated 1986; pair it with the wilkie factor set.                           |
 
 </details>
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-layer-group"></i> <b>Factor sets</b> <span class="ft-details__meta">9</span></summary>
+<summary><i class="fas fa-layer-group"></i> <b>Factor sets</b> <span class="ft-details__meta">7</span></summary>
 
-| id              | description                                                                                                                                                                                                                                      |
-|:----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ahlgrim         | The six factors of Ahlgrim, D'Arcy and Gorvett (2005): short rate, inflation, equities, unemployment, real estate and dividend yield.                                                                                                            |
-| broad           | Everything this project can simulate, across many countries: the widest set, and the slowest to fit.                                                                                                                                             |
-| core            | The US, the euro area and the UK, with global equities, gold, oil and the major currencies; a curated set that passes every release check.                                                                                                       |
-| default         | Core, with each factor fitted to its long history and linked the way the economy is: a policy-rule short rate on the market's expected path, inflation and unemployment regimes, equities on a long-run premium; the recommended starting point. |
-| goes            | US Only, with the short rate's long-run level set to the NAIC scenario generator's own (about 3.73%); pair it with the goes settings.                                                                                                            |
-| hibbert         | The two-factor model of Hibbert, Mowbray and Turnbull (2001): short rate and inflation that chase moving targets, regime-switching equities.                                                                                                     |
-| private_markets | US Only plus listed stand-ins for private equity, infrastructure, hedge funds and private credit.                                                                                                                                                |
-| us_only         | The United States only: its rates, inflation, unemployment and stock market, plus currencies, commodities and the other shared factors; quick to run.                                                                                            |
-| wilkie          | The original Wilkie (1986) actuarial model: inflation, dividends, a consols rate and share prices; pair it with the wilkie settings.                                                                                                             |
+| id      | description                                                                                                                                                                                                                                                                                                                       |
+|:--------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ahlgrim | Reproduces Ahlgrim, D'Arcy and Gorvett (2005) from its June 2004 start with the published parameters and no data; pair it with the ahlgrim settings. For current data, build your own set with the same options.                                                                                                                  |
+| broad   | Default plus Japan, Canada, Australia and India, US sectors and styles, more countries' equities, silver, copper, natural gas, five more currencies and SPY's dividend yield.                                                                                                                                                     |
+| default | The US, the euro area and the UK, with global equities, gold, oil and the major currencies, each factor fitted to its long history and linked the way the economy is: a policy-rule short rate on the market's expected path, inflation and unemployment regimes, equities on a long-run premium; the recommended starting point. |
+| dnb     | De Nederlandsche Bank's real-world scenarios rebuilt with its CP2022 model and its quarterly parameters: euro nominal and real rates, euro and Dutch inflation and world equity.                                                                                                                                                  |
+| goes    | The United States as the NAIC's scenario generator (GOES) describes it: four Treasury yields on CIR set to its published bands, stocks on post-war history earning its long-run cash rate plus a premium, inflation, unemployment, commodities, currencies and SPY's dividend yield; pair it with the goes settings.              |
+| hibbert | Reproduces Hibbert, Mowbray and Turnbull (2001), calibration A from its March 2001 start, with the published parameters and no data; pair it with the hibbert settings. For current data, build your own set with the same options.                                                                                               |
+| wilkie  | Reproduces Wilkie (1986) on its Reduced Standard Basis from his neutral start, with the published parameters and no data; pair it with the wilkie settings. For current data, build your own set with the same options.                                                                                                           |
 
 </details>
 
 <details class="ft-details" markdown="1">
 <summary><i class="fas fa-bolt"></i> <b>Stress regimes</b> <span class="ft-details__meta">40</span></summary>
 
-| id                        | description                                                                                                                                                                                                                    |
-|:--------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ai_tech_boom              | Keeps the scenarios where US stocks gain the most over two years, the top 15% where 2023-24's 53% rise sits.                                                                                                                   |
-| asian_crisis_1997         | Emerging-market stocks fall 56% over five quarters and the yen weakens 23% against the dollar, as in 1997-98. Needs the default, core or broad set.                                                                            |
-| black_monday_1987         | US stocks lose a third within a quarter, as in the 1987 crash, and short rates ease by three quarters of a point.                                                                                                              |
-| boe_stress_2025           | The Bank of England's 2025 stress test: UK inflation to 10%, short rates to 8% in the UK and the US, ten-year yields to 6.4%, US stocks down 57% and unemployment peaking in year three. Needs the default, core or broad set. |
-| bond_massacre_1994        | Short rates rise 2.8 points and long yields 2.6 points within a year, as in the 1994 bond market rout.                                                                                                                         |
-| climate_collapse          | Rough stand-in for a climate shock: keeps the scenarios with the highest US inflation and the weakest US stocks.                                                                                                               |
-| commodity_supercycle      | A long oil boom: keeps the scenarios where crude oil earns a top-quarter return.                                                                                                                                               |
-| covid_crash_2020          | US stocks fall a third in a month and recover by month six, unemployment jumps to 14.8%, rates go to zero for two years and oil collapses, as in 2020.                                                                         |
-| credit_crunch             | Bank stocks collapse and the market follows: a harsher bear market for financials, then their worst scenarios. Needs the financials equity (broad set).                                                                        |
-| currency_crisis           | The Brazilian real devalues sharply against the dollar, about 22% a year, then keeps its worst scenarios. Needs the us_only or broad set.                                                                                      |
-| dot_com_bust              | US stocks lose half over two and a half years, short rates fall to 1.6% and unemployment rises to 6.3%, as in 2000-2003.                                                                                                       |
-| early_1990s_recession     | Oil spikes, US stocks fall 20% within a quarter, unemployment rises to 7.8% over two years and short rates are cut to 2.9%.                                                                                                    |
-| energy_war_2022           | Oil jumps a quarter, euro-area inflation climbs to 9% and falls back, European stocks fall 17% and the euro 15%, as after February 2022. Needs the default, core or broad set.                                                 |
-| esrb_adverse_2025         | The ESRB's adverse scenario for the 2025 EU-wide bank stress test: stocks down by half, unemployment rising for three years in Europe, the UK and the US. Needs the default, core or broad set.                                |
-| euro_debt_crisis_2011     | European stocks fall 35%, the euro weakens 19%, Bund yields drop two points and euro-area unemployment climbs, as in 2011-12. Needs the default, core or broad set.                                                            |
-| fed_severely_adverse_2026 | The Federal Reserve's 2026 severely adverse stress test: unemployment to 10%, US stocks down almost 60%, house prices down 30%, short rates at 0.1%.                                                                           |
-| financial_crisis          | Stocks fall, unemployment rises and rates are cut, all at once: keeps the scenarios where that happens together.                                                                                                               |
-| gold_rally                | Gold nearly triples over two and a quarter years, as in 2023-26.                                                                                                                                                               |
-| goldilocks_1990s          | Inflation near 2.4% and unemployment averaging 4.9% for the whole run, with the strongest fifth of US stock outcomes, as in the late 1990s.                                                                                    |
-| housing_boom              | US house prices grow about 11% a year for two years, then cool, as in 2004-06.                                                                                                                                                 |
-| inflation_shock_2022      | Inflation climbs to 9% and falls back to 3% within a year, short rates rise to the 5.3% peak of 2023, long yields rise 3.7 points, US stocks fall 25% and the dollar strengthens, as in 2021-23.                               |
-| japan_lost_decade         | Mild deflation, zero short rates and long yields near 1.4% for fourteen years, and US stocks losing 63% over two and a half years, as in Japan after 1990.                                                                     |
-| ltcm_1998                 | US stocks fall 19% and recover within four months, Treasury yields drop about 1.4 points and the yen jumps 24%, as in 1998.                                                                                                    |
-| mild_recession            | Unemployment rises to 6.9% over 15 months, short rates are cut 1.5 points and US stocks fall 14% over a year: the mildest quarter of post-war recessions.                                                                      |
-| oil_collapse_2014         | Oil falls about 72% over a year and a half and US inflation dips below zero before recovering, as in 2014-16.                                                                                                                  |
-| oil_crisis                | Pulls inflation towards 12% in year one and back to 2.5% by year 8, then keeps the scenarios with high rates and weak stocks.                                                                                                  |
-| oil_shock                 | A one-off three-point jump in US inflation in year 2, after which everything behaves normally again.                                                                                                                           |
-| persistent_inflation      | US inflation settles near 6.6% for the whole run instead of returning to target, as over 1965-1982.                                                                                                                            |
-| rate_cut_cycle            | Inflation eases to 2% by year 5 and 2.5% by year 10, then drifts back to its usual level.                                                                                                                                      |
-| real_estate_crash         | House-price growth falls to -8% within a year and recovers over four, then keeps the worst housing scenarios.                                                                                                                  |
-| september_11              | US stocks drop 12% and recover within a month, short rates fall 1.5 points and oil 27%, as after 11 September 2001.                                                                                                            |
-| soft_landing              | Inflation eases smoothly to 2% by year 5 and stays there; no scenarios are filtered out.                                                                                                                                       |
-| stagflation_1970s         | Inflation near 9% and unemployment averaging 7.3% for years while US stocks fall 43% over two years, as in 1973-1982.                                                                                                          |
-| strong_dollar_2014        | The dollar strengthens fast: the euro falls 24%, the pound 15% and the yen 19% against it within a year, as in 2014-15.                                                                                                        |
-| taper_tantrum_2013        | Long US yields rise 1.3 points in four months while emerging-market stocks fall 18%, as in 2013. Needs the default, core or broad set.                                                                                         |
-| tech_selloff              | Tech stocks fall while the wider market holds up; keeps the worst tech scenarios. Needs the broad set.                                                                                                                         |
-| uk_gilt_crisis_2022       | UK long yields jump 1.8 points within two months and the pound falls 13% against the dollar before partly recovering, as in the 2022 gilt crisis. Needs the default, core or broad set.                                        |
-| volcker_shock             | Short rates replay 1979-82's climb to 16% while inflation rises and falls back, long yields rise about six points, unemployment climbs to 10.8% and US stocks fall 27%, as in 1979-1982.                                       |
-| weak_dollar_2002          | The dollar weakens for three years: the euro gains 58%, the pound 36% and the yen 31% against it, as in 2002-04.                                                                                                               |
-| yield_curve_inversion     | Short rates rise two points above long ones within six months, then the curve slowly rights itself.                                                                                                                            |
+| id                        | description                                                                                                                                                                                                              |
+|:--------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ai_tech_boom              | Keeps the scenarios where US stocks gain the most over two years, the top 15% where 2023-24's 53% rise sits.                                                                                                             |
+| asian_crisis_1997         | Emerging-market stocks fall 56% over five quarters and the yen weakens 23% against the dollar, as in 1997-98. Needs the default or broad set.                                                                            |
+| black_monday_1987         | US stocks lose a third within a quarter, as in the 1987 crash, and short rates ease by three quarters of a point.                                                                                                        |
+| boe_stress_2025           | The Bank of England's 2025 stress test: UK inflation to 10%, short rates to 8% in the UK and the US, ten-year yields to 6.4%, US stocks down 57% and unemployment peaking in year three. Needs the default or broad set. |
+| bond_massacre_1994        | Short rates rise 2.8 points and long yields 2.6 points within a year, as in the 1994 bond market rout.                                                                                                                   |
+| climate_collapse          | Rough stand-in for a climate shock: keeps the scenarios with the highest US inflation and the weakest US stocks.                                                                                                         |
+| commodity_supercycle      | A long oil boom: keeps the scenarios where crude oil earns a top-quarter return.                                                                                                                                         |
+| covid_crash_2020          | US stocks fall a third in a month and recover by month six, unemployment jumps to 14.8%, rates go to zero for two years and oil collapses, as in 2020.                                                                   |
+| credit_crunch             | Bank stocks collapse and the market follows: a harsher bear market for financials, then their worst scenarios. Needs the financials equity (broad set).                                                                  |
+| currency_crisis           | The Indian rupee devalues sharply against the dollar, about 17% a year, as in 2011-13, then keeps its worst scenarios. Needs the broad set.                                                                              |
+| dot_com_bust              | US stocks lose half over two and a half years, short rates fall to 1.6% and unemployment rises to 6.3%, as in 2000-2003.                                                                                                 |
+| early_1990s_recession     | Oil spikes, US stocks fall 20% within a quarter, unemployment rises to 7.8% over two years and short rates are cut to 2.9%.                                                                                              |
+| energy_war_2022           | Oil jumps a quarter, euro-area inflation climbs to 9% and falls back, European stocks fall 17% and the euro 15%, as after February 2022. Needs the default or broad set.                                                 |
+| esrb_adverse_2025         | The ESRB's adverse scenario for the 2025 EU-wide bank stress test: stocks down by half, unemployment rising for three years in Europe, the UK and the US. Needs the default or broad set.                                |
+| euro_debt_crisis_2011     | European stocks fall 35%, the euro weakens 19%, Bund yields drop two points and euro-area unemployment climbs, as in 2011-12. Needs the default or broad set.                                                            |
+| fed_severely_adverse_2026 | The Federal Reserve's 2026 severely adverse stress test: unemployment to 10%, US stocks down almost 60%, house prices down 30%, short rates at 0.1%.                                                                     |
+| financial_crisis          | Stocks fall, unemployment rises and rates are cut, all at once: keeps the scenarios where that happens together.                                                                                                         |
+| gold_rally                | Gold nearly triples over two and a quarter years, as in 2023-26.                                                                                                                                                         |
+| goldilocks_1990s          | Inflation near 2.4% and unemployment averaging 4.9% for the whole run, with the strongest fifth of US stock outcomes, as in the late 1990s.                                                                              |
+| housing_boom              | US house prices grow about 11% a year for two years, then cool, as in 2004-06.                                                                                                                                           |
+| inflation_shock_2022      | Inflation climbs to 9% and falls back to 3% within a year, short rates rise to the 5.3% peak of 2023, long yields rise 3.7 points, US stocks fall 25% and the dollar strengthens, as in 2021-23.                         |
+| japan_lost_decade         | Mild deflation, zero short rates and long yields near 1.4% for fourteen years, and US stocks losing 63% over two and a half years, as in Japan after 1990.                                                               |
+| ltcm_1998                 | US stocks fall 19% and recover within four months, Treasury yields drop about 1.4 points and the yen jumps 24%, as in 1998.                                                                                              |
+| mild_recession            | Unemployment rises to 6.9% over 15 months, short rates are cut 1.5 points and US stocks fall 14% over a year: the mildest quarter of post-war recessions.                                                                |
+| oil_collapse_2014         | Oil falls about 72% over a year and a half and US inflation dips below zero before recovering, as in 2014-16.                                                                                                            |
+| oil_crisis                | US inflation climbs to 12% within a year and eases to 5.5% by year three, as after the 1973 oil embargo, then keeps the scenarios with high rates and weak stocks.                                                       |
+| oil_shock                 | A one-off three-point jump in US inflation in year 2, after which everything behaves normally again.                                                                                                                     |
+| persistent_inflation      | US inflation settles near 6.6% for the whole run instead of returning to target, as over 1965-1982.                                                                                                                      |
+| rate_cut_cycle            | Inflation eases to 2% by year 5 and 2.5% by year 10, then drifts back to its usual level.                                                                                                                                |
+| real_estate_crash         | House-price growth falls to -8% within a year and recovers over four, then keeps the worst housing scenarios.                                                                                                            |
+| september_11              | US stocks drop 12% and recover within a month, short rates fall 1.5 points and oil 27%, as after 11 September 2001.                                                                                                      |
+| soft_landing              | Inflation eases smoothly to 2% by year 5 and stays there; no scenarios are filtered out.                                                                                                                                 |
+| stagflation_1970s         | Inflation near 9% and unemployment averaging 7.3% for years while US stocks fall 43% over two years, as in 1973-1982.                                                                                                    |
+| strong_dollar_2014        | The dollar strengthens fast: the euro falls 24%, the pound 15% and the yen 19% against it within a year, as in 2014-15.                                                                                                  |
+| taper_tantrum_2013        | Long US yields rise 1.3 points in four months while emerging-market stocks fall 18%, as in 2013. Needs the default or broad set.                                                                                         |
+| tech_selloff              | Tech stocks fall while the wider market holds up; keeps the worst tech scenarios. Needs the broad set.                                                                                                                   |
+| uk_gilt_crisis_2022       | UK long yields jump 1.8 points within two months and the pound falls 13% against the dollar before partly recovering, as in the 2022 gilt crisis. Needs the default or broad set.                                        |
+| volcker_shock             | Short rates replay 1979-82's climb to 16% while inflation rises and falls back, long yields rise about six points, unemployment climbs to 10.8% and US stocks fall 27%, as in 1979-1982.                                 |
+| weak_dollar_2002          | The dollar weakens for three years: the euro gains 58%, the pound 36% and the yen 31% against it, as in 2002-04.                                                                                                         |
+| yield_curve_inversion     | The yield curve inverts within six months, short yields about one and a half points above the ten-year, then slowly rights itself.                                                                                       |
 
 </details>
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-chart-pie"></i> <b>Portfolios</b> <span class="ft-details__meta">14</span></summary>
+<summary><i class="fas fa-chart-pie"></i> <b>Portfolios</b> <span class="ft-details__meta">13</span></summary>
 
-| id                    | description                                                                                                                                   |
-|:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------|
-| all_weather           | Ray Dalio's mix: 30% US stocks, 55% Treasuries for his 40% long and 15% intermediate bonds, 15% gold for his 7.5% gold and 7.5% commodities.  |
-| balanced_60_40        | The textbook mix: 60% US stocks and 40% US Treasury bonds.                                                                                    |
-| barbell               | Nassim Taleb's barbell: 85% Treasury bills, 15% small-cap and growth stocks, nothing in between. Needs the broad set.                         |
-| bogleheads_three_fund | The Bogleheads' three funds: 40% US stocks, 20% international stocks and 40% US Treasury bonds. Needs the default, core or broad set.         |
-| buffett_90_10         | Warren Buffett's advice for his estate: 90% in an S&P 500 fund and 10% in Treasury bills.                                                     |
-| conservative_income   | Mostly US, euro-area and UK government bonds, with 10% in US stocks for growth. Needs the default, core or broad set.                         |
-| endowment_model       | A university-endowment mix with 40% in listed stand-ins for private markets. Needs the private_markets set.                                   |
-| global_60_40          | The 60/40 spread across countries: US, European and emerging-market stocks; US, euro-area and UK bonds. Needs the default, core or broad set. |
-| global_equity_growth  | All stocks, spread across the US, Europe, Japan, emerging markets and China, tilted to growth. Needs the broad set.                           |
-| golden_butterfly      | Equal fifths of stocks, small-cap and value stocks, long bonds, Treasury bills and gold. Needs the broad set.                                 |
-| permanent_portfolio   | Harry Browne's four quarters: US stocks, long US Treasuries, Treasury bills and gold.                                                         |
-| small_cap_value_tilt  | 80% in small-cap and value stocks, the Fama-French premia, with 20% US Treasury bonds. Needs the broad set.                                   |
-| target_date_glidepath | A target-date fund on Vanguard's glide path: 90% stocks until 25 years out, 50% at the target date and 30% seven years after.                 |
-| us_equity_sectors     | All stocks, split evenly across nine US sectors. Needs the broad set.                                                                         |
+| id                    | description                                                                                                                                  |
+|:----------------------|:---------------------------------------------------------------------------------------------------------------------------------------------|
+| all_weather           | Ray Dalio's mix: 30% US stocks, 55% Treasuries for his 40% long and 15% intermediate bonds, 15% gold for his 7.5% gold and 7.5% commodities. |
+| balanced_60_40        | The textbook mix: 60% US stocks and 40% US Treasury bonds.                                                                                   |
+| barbell               | Nassim Taleb's barbell: 85% Treasury bills, 15% small-cap and growth stocks, nothing in between. Needs the broad set.                        |
+| bogleheads_three_fund | The Bogleheads' three funds: 40% US stocks, 20% international stocks and 40% US Treasury bonds. Needs the default or broad set.              |
+| buffett_90_10         | Warren Buffett's advice for his estate: 90% in an S&P 500 fund and 10% in Treasury bills.                                                    |
+| conservative_income   | Mostly US, euro-area and UK government bonds, with 10% in US stocks for growth. Needs the default or broad set.                              |
+| global_60_40          | The 60/40 spread across countries: US, European and emerging-market stocks; US, euro-area and UK bonds. Needs the default or broad set.      |
+| global_equity_growth  | All stocks, spread across the US, Europe, Japan, emerging markets and China, tilted to growth. Needs the broad set.                          |
+| golden_butterfly      | Equal fifths of stocks, small-cap and value stocks, long bonds, Treasury bills and gold. Needs the broad set.                                |
+| permanent_portfolio   | Harry Browne's four quarters: US stocks, long US Treasuries, Treasury bills and gold.                                                        |
+| small_cap_value_tilt  | 80% in small-cap and value stocks, the Fama-French premia, with 20% US Treasury bonds. Needs the broad set.                                  |
+| target_date_glidepath | A target-date fund on Vanguard's glide path: 90% stocks until 25 years out, 50% at the target date and 30% seven years after.                |
+| us_equity_sectors     | All stocks, split evenly across nine US sectors. Needs the broad set.                                                                        |
 
 </details>
 
@@ -189,7 +189,7 @@ For example, 6 of the 27 variables are shown below. Rates are yearly rates and a
 | europe                     | equities       |         |        0.0933 |      -0.0753 |       0.2487 |
 | gold                       | commodities    |         |        0.0308 |      -0.0999 |       0.1716 |
 
-The chart below follows the US short rate, US inflation and US equities through all 2,000 scenarios. **Find [the Notebook](/projects/financescenarios/getting-started) and [the simulation documentation](/projects/financescenarios/docs/simulation-engine).**
+The chart below follows the US short rate, US inflation and US equities through all 2,000 scenarios. **Find [the Scenarios documentation](/projects/financescenarios/docs) and [the simulation engine](/projects/financescenarios/docs/simulation-engine).**
 
 ```python
 result.plot(["united_states_short_rate", "united_states_inflation", "us_broad"])
@@ -217,7 +217,7 @@ For example, the last three months of the US short rate are shown below.
 | 2030-12-02 | 0.0458 | 0.0343 | 0.0000 | 0.0198 | 0.0435 | 0.0651 | 0.1089 |
 | 2031-01-01 | 0.0459 | 0.0345 | 0.0000 | 0.0196 | 0.0439 | 0.0659 | 0.1099 |
 
-The chart below shows how widely the five-year US equity return spreads across the scenarios. **Find [the documentation](/projects/financescenarios/docs/units).**
+The chart below shows how widely the five-year US equity return spreads across the scenarios. **Find [the Scenarios documentation](/projects/financescenarios/docs#reading-the-distribution) and [how results read](/projects/financescenarios/docs/units).**
 
 ```python
 result.plot("us_broad", kind="distribution")
@@ -231,7 +231,7 @@ Which shows where the five-year return lands across all 2,000 scenarios:
 
 ### Building a Portfolio
 
-Put an investment mix through the same scenarios, here the 60/40 (60% US stocks, 40% US government bonds) from the 14 ready-made mixes, rebalanced once a year.
+Put an investment mix through the same scenarios, here the 60/40 (60% US stocks, 40% US government bonds) from the 13 ready-made mixes, rebalanced once a year.
 
 ```python
 from financescenarios import Portfolio
@@ -251,7 +251,7 @@ This returns the portfolio's yearly return over the five years, and what each ho
 | us_broad_value                | holding   |         |        0.0849 |      -0.0569 |       0.2082 |
 | united_states_long_rate_value | holding   |         |        0.0487 |       0.0122 |       0.0784 |
 
-The 60/40 earns 7.30% a year on average, between the stocks' 8.49% and the Treasury fund's 4.87%, so 100,000 grows to 144,923 on average. The same portfolio also reports its drawdowns and Value at Risk, and covers saving and withdrawal plans, glidepaths and fees. The chart below shows the portfolio's value in money across the scenarios. **Find [the Notebook](/projects/financescenarios/portfolio-notebook).**
+The 60/40 earns 7.30% a year on average, between the stocks' 8.49% and the Treasury fund's 4.87%, so 100,000 grows to 144,923 on average. The same portfolio also reports its drawdowns and Value at Risk, and covers saving and withdrawal plans, glidepaths and fees. The chart below shows the portfolio's value in money across the scenarios. **Find [the Portfolio documentation](/projects/financescenarios/docs/portfolio).**
 
 ```python
 values.plot(levels=True)
@@ -275,16 +275,16 @@ shocked = scenarios.simulate(regime="oil_crisis", n_simulations=2000, seed=42)
 compare_runs({"baseline": result, "oil_crisis": shocked})
 ```
 
-Oil Crisis pulls US inflation towards 12% and keeps the scenarios with high interest rates and weak stocks; it draws as many scenarios as it takes for 2,000 to fit the story. The US short rate follows inflation the way a central bank's rate does, so after five years it averages 13.08% instead of 4.59%, and US stocks lose 1.89% a year. For example, four of the variables are shown below.
+Oil Crisis moves the middle of US inflation to 12% within a year and back to 5.5% by year three, as after the 1973 oil embargo, with every scenario keeping its own distance from that path, and keeps the scenarios with high interest rates and weak stocks, which run hotter still; it draws as many scenarios as it takes for 2,000 to fit the story. The US short rate follows inflation the way a central bank's rate does, so after five years it averages 11.53% instead of 4.59%, and US stocks lose 1.26% a year. For example, four of the variables are shown below.
 
 | factor                   | baseline | oil_crisis |
 |:-------------------------|---------:|-----------:|
-| united_states_inflation  |   0.0234 |     0.0709 |
-| united_states_short_rate |   0.0459 |     0.1308 |
-| united_states_long_rate  |   0.0579 |     0.1354 |
-| us_broad                 |   0.0849 |    -0.0189 |
+| united_states_inflation  |   0.0234 |     0.0592 |
+| united_states_short_rate |   0.0459 |     0.1153 |
+| united_states_long_rate  |   0.0579 |     0.1275 |
+| us_broad                 |   0.0849 |    -0.0126 |
 
-The chart below sets US inflation in the baseline next to the Oil Shock, Oil Crisis and Climate Collapse regimes, 2,000 scenarios each. **Find [the Notebook](/projects/financescenarios/regimes-notebook) and [the regime documentation](/projects/financescenarios/docs/regimes).**
+The chart below sets US inflation in the baseline next to the Oil Shock, Oil Crisis and Climate Collapse regimes, 2,000 scenarios each. **Find [the Regimes documentation](/projects/financescenarios/docs/regimes).**
 
 ```python
 from financescenarios import plot_runs
@@ -321,7 +321,7 @@ Which gives each mix's loading on each factor and how much they explain:
 | All Weather         | 0.2039 | -0.0620 | -0.1435 | 0.2162 |  0.0335 | 0.0029 |    0.1318 |          312 | 2000-08-01 | 2026-10-01 |
 | Permanent Portfolio | 0.2173 | -0.0615 | -0.1418 | 0.2017 |  0.0473 | 0.0033 |    0.1240 |          312 | 2000-08-01 | 2026-10-01 |
 
-The chart below shows what each mix actually did since August 2000, rebalanced once a year: 100,000 grew to 545,709 in the 60/40, 542,561 in All Weather and 555,564 in the Permanent Portfolio by October 2026, with the 60/40 carrying more than twice the stock market risk of the other two. **Find [the Notebook](/projects/financescenarios/portfolio-analysis-notebook).**
+The chart below shows what each mix actually did since August 2000, rebalanced once a year: 100,000 grew to 545,709 in the 60/40, 542,561 in All Weather and 555,564 in the Permanent Portfolio by October 2026, with the 60/40 carrying more than twice the stock market risk of the other two. **Find [the Portfolio documentation](/projects/financescenarios/docs/portfolio#backtesting-against-history).**
 
 ```python
 portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
@@ -359,7 +359,7 @@ Which gives every number in one table:
 | SCR (1 in 200 year) | 13,619                    | the capital that survives a 1-in-200 bad year              |
 | solvency ratio      | 1.15                      | own funds / SCR; above 1 means enough capital              |
 
-The chart below shows where own funds could be after one year, with today's level and the 1-in-200 outcome marked. **Find [the documentation](/projects/financescenarios/docs).**
+The chart below shows where own funds could be after one year, with today's level and the 1-in-200 outcome marked. **Find [the Solvency documentation](/projects/financescenarios/docs/solvency).**
 
 ```python
 solvency.plot(cashflows=[10_000] * 5, assets=assets)
@@ -373,7 +373,7 @@ Which marks today's own funds and the 1-in-200 outcome:
 
 ### Validating the Output
 
-Check a run against what its own models promise. Most variables can also be simulated with other published models through a single setting, such as [Hull-White](https://doi.org/10.1093/rfs/3.4.573), [CIR](https://doi.org/10.2307/1911242) and [regime-switching](https://doi.org/10.1080/10920277.2001.10595984) equities, and the published Wilkie, Ahlgrim, Hibbert and GOES specifications ship as whole factor sets.
+Check a run against what its own models promise. Most variables can also be simulated with other published models through a single setting, such as [Hull-White](https://doi.org/10.1093/rfs/3.4.573), [CIR](https://doi.org/10.2307/1911242) and [regime-switching](https://doi.org/10.1080/10920277.2001.10595984) equities, and the published Wilkie, Ahlgrim, Hibbert and GOES specifications ship as whole factor sets, as does De Nederlandsche Bank's CP2022 model with the parameters DNB publishes every quarter. The first three reproduce their papers as published, from the papers' own start dates and with no data, matching the tables those papers report.
 
 ```python
 scenarios.validate(result)
@@ -401,7 +401,7 @@ On this five-year run 19 of the 26 relationships pass, 7 warn and none fails. Fo
 | Phillips curve                      | United States | pass   | -0.5923 |          -0.4273 |
 | Long rate moves with the short rate | United States | pass   |  0.3303 |           0.5136 |
 
-**Find [every model and its status](/projects/financescenarios/docs/coverage) and [the validation documentation](/projects/financescenarios/docs/validation).**
+**Find [the Validation documentation](/projects/financescenarios/docs/validation) and [every model and its status](/projects/financescenarios/docs/coverage).**
 
 ### Starting Your Own Project
 
@@ -415,7 +415,7 @@ path = scenarios.save(result, "results/")   # the run, its settings and its cali
 result = read_run(path)
 ```
 
-Run Python from inside `my-project` and every run reads its YAML files instead of the bundled ones, and the keys pasted into its .env file, so the API key can be left out. A saved run reads back without downloading or simulating anything again. **Find [the configuration documentation](/projects/financescenarios/docs/configuration).**
+Run Python from inside `my-project` and every run reads its YAML files instead of the bundled ones, and the keys pasted into its .env file, so the API key can be left out. A saved run reads back without downloading or simulating anything again. **Find [the Configuration documentation](/projects/financescenarios/docs/configuration).**
 
 # MCP Server
 
@@ -437,54 +437,6 @@ Add the following to your client's MCP config file (e.g. `claude_desktop_config.
 ```
 
 The very first question calibrates the data, which takes about a minute; after that the server answers from it and recalibrates once a month in the background. To have it ready beforehand, run `uvx --from "financescenarios[mcp]" financescenarios-mcp-warm`.
-
-## Notebooks
-
-Each notebook covers a different part of Finance Scenarios. Click a card to open it.
-
-<div class="bento-grid">
-
-  <a href="/projects/financescenarios/getting-started" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-rocket bento-icon"></i>
-      <h2>Getting Started</h2>
-      <p>If you are new to Finance Scenarios, start here: pick the profiles, simulate, read the overview and the spread of every variable, and chart it.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financescenarios/regimes-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-bolt bento-icon"></i>
-      <h2>Regimes</h2>
-      <p>Run the scenarios through named stress stories such as an oil crisis, a financial crisis or a tech selloff, and compare them with the baseline.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financescenarios/portfolio-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-briefcase bento-icon"></i>
-      <h2>Portfolio</h2>
-      <p>Put an investment mix through every scenario: its value, rebalancing, risk, saving and withdrawal plans, glidepaths and fees.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financescenarios/portfolio-analysis-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-history bento-icon"></i>
-      <h2>Portfolio Analysis</h2>
-      <p>Backtest a mix against what prices actually did, measure its exposure to the Fama-French factors and compare two portfolios head to head.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financescenarios/model-validation-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-vial bento-icon"></i>
-      <h2>Model Validation</h2>
-      <p>Check the default model against history: do the factors move together the way the economy does, and would a past calibration have held what happened next?</p>
-    </div>
-  </a>
-
-</div>
 
 ## Questions & Answers
 
@@ -540,7 +492,7 @@ Each notebook covers a different part of Finance Scenarios. Click a card to open
 
   Yes. Regimes, portfolios and profiles are plain YAML files, so the easiest start is to copy a shipped one into your own project folder and edit it. A regime can shift an assumption before simulating (inflation pulled toward a level by a given year), keep only the scenarios that fit its story (high rates and weak stocks), or both. A portfolio sets the weights of its holdings, the duration of its bond funds and how often it rebalances. A profile of your own can extend a shipped one and state only what differs.
 
-  Your own views on long-run levels, such as a central bank's inflation target or an equity risk premium, go in as beliefs that override the fitted values. A new model or factor plugs into the same calibration and correlation steps as the shipped ones, so it is linked to everything else automatically; the [reference](/projects/financescenarios/docs/reference) shows what each one provides.
+  Your own views on long-run levels, such as a central bank's inflation target or an equity risk premium, go in as beliefs that override the fitted values. A new model or factor plugs into the same calibration and correlation steps as the shipped ones, so it is linked to everything else automatically; the reference at the end of every [documentation page](/projects/financescenarios/docs) shows what each one provides.
 
 </details>
 
