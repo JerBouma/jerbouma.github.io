@@ -45,7 +45,7 @@ $$
 \theta_t = m_t + \frac{b\,\Delta t}{1 - e^{-a\,\Delta t}}
 $$
 
-And it sets every scenario to the number on the date it names, with a shock in `absolute` mode, so the number holds whatever the calibrated speed. Between those dates each scenario moves with its own randomness.
+And it moves the scenarios' median to the number on the date it names, with a shock in `median` mode: every scenario shifts by the same amount, the gap between the number and the median on that date, so the number holds whatever the calibrated speed while each scenario keeps its distance from it and the spread stays as the model drew it. This is the first-moment matching of [Boyle, Broadie and Glasserman (1997, section 2.4)](https://doi.org/10.1016/S0165-1889(97)00028-6){:target="_blank"}, with the median in place of the mean so that a skewed factor's middle scenario is the one on the number. Between those dates each scenario moves with its own randomness. A shock in `absolute` mode sets every scenario to the number instead, which closes the spread on that date; only the supervisors' published paths use it, as each is a single deterministic scenario.
 
 Oil Crisis uses both, and targets as well. Its path follows US CPI inflation after the 1973 embargo, which peaked at 12.2% in November 1974 and was 5.5% by October 1976; 2.5% by year eight is a return to normal, a little above the 2.3% ten-year CPI forecast of the Philadelphia Fed's Survey of Professional Forecasters (Q3 2026). The anchors are the steered long-run levels for inflation's speed on the 19 October 2026 calibration:
 
@@ -56,15 +56,15 @@ beliefs:
   inflation.united_states_inflation:
     long_run_mean:   # year: the level that steers the expected path along straight legs
       anchors: {0.0: 0.1667, 0.9167: 0.24, 1.0: 0.0685, 2.9167: 0.0062, 3.0: 0.0455, 7.9167: 0.016, 8.0: 0.025}
-    shocks:          # every scenario at 12% after a year and 5.5% after three
-      - {year: 1.0, magnitude: 0.12, mode: absolute}
-      - {year: 3.0, magnitude: 0.055, mode: absolute}
+    shocks:          # the median at 12% after a year and 5.5% after three
+      - {year: 1.0, magnitude: 0.12, mode: median}
+      - {year: 3.0, magnitude: 0.055, mode: median}
 targets:
   united_states_short_rate: [0.7, 1.0]   # top 30% by average short rate
   us_broad: [0.0, 0.3]                   # bottom 30% by equity return
 ```
 
-Real Estate Crash pins house-price growth at -8% after a year the same way, and Yield Curve Inversion pins its slope at each of its two quarters. Regimes that set only a level, such as Persistent Inflation, 1970s Stagflation, Soft Landing and Goldilocks, describe where a factor settles rather than when it gets there, and leave the pace to the calibration.
+Because the targets select scenarios after the shocks, the median of the scenarios a regime keeps can sit away from its number: the high-rate, weak-stock scenarios Oil Crisis keeps have a median US inflation of 12.98% after a year and 7.42% after three. Real Estate Crash moves the median of house-price growth to -8% after a year the same way, and Yield Curve Inversion moves the median of its slope to the path at each of its two quarters. Regimes that set only a level, such as Persistent Inflation, 1970s Stagflation, Soft Landing and Goldilocks, describe where a factor settles rather than when it gets there, and leave the pace to the calibration.
 
 Rates are annualized decimals (0.12 is 12% a year); see [units](/projects/financescenarios/docs/units).
 

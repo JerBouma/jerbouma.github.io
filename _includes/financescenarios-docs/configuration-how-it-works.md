@@ -173,7 +173,7 @@ The [Solvency II](/projects/financescenarios/docs/solvency) guide shows how the 
 
 A fitted parameter is an estimate from one stretch of history; a long-run view is a judgement. A belief replaces one fitted parameter with your own value and keeps the rest of the fit. The typical case is the long-run level of rates or inflation: you set where it heads, the data still sets how fast and how volatile. Values are annualized decimals (0.035 is 3.5%, see [units](/projects/financescenarios/docs/units)).
 
-The target can also be a path (inflation at 6% in year 5, back to 2% by year 10), and a factor can take a one-off shock at a given year, after which it moves on normally from the new level. That is how a stress narrative enters a real-world run; [regimes](/projects/financescenarios/docs/regimes) package such stories.
+The target can also be a path (inflation at 6% in year 5, back to 2% by year 10), and a factor can take a one-off shock at a given year, after which it moves on normally from the new level. A shock adds its magnitude to every scenario by default; with `mode: median` it moves every scenario by one amount so that their median lands on the magnitude, and with `mode: absolute` it sets every scenario to it. That is how a stress narrative enters a real-world run; [regimes](/projects/financescenarios/docs/regimes) package such stories.
 
 ```yaml
 # my-project/factor-sets/my_factors.yaml (a factor set)

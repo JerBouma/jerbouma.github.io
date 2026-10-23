@@ -275,14 +275,14 @@ shocked = scenarios.simulate(regime="oil_crisis", n_simulations=2000, seed=42)
 compare_runs({"baseline": result, "oil_crisis": shocked})
 ```
 
-Oil Crisis takes US inflation to 12% within a year and back to 5.5% by year three, as after the 1973 oil embargo, and keeps the scenarios with high interest rates and weak stocks; it draws as many scenarios as it takes for 2,000 to fit the story. The US short rate follows inflation the way a central bank's rate does, so after five years it averages 10.51% instead of 4.59%, and US stocks lose 0.55% a year. For example, four of the variables are shown below.
+Oil Crisis moves the middle of US inflation to 12% within a year and back to 5.5% by year three, as after the 1973 oil embargo, with every scenario keeping its own distance from that path, and keeps the scenarios with high interest rates and weak stocks, which run hotter still; it draws as many scenarios as it takes for 2,000 to fit the story. The US short rate follows inflation the way a central bank's rate does, so after five years it averages 11.53% instead of 4.59%, and US stocks lose 1.26% a year. For example, four of the variables are shown below.
 
 | factor                   | baseline | oil_crisis |
 |:-------------------------|---------:|-----------:|
-| united_states_inflation  |   0.0234 |     0.0527 |
-| united_states_short_rate |   0.0459 |     0.1051 |
-| united_states_long_rate  |   0.0579 |     0.1186 |
-| us_broad                 |   0.0849 |    -0.0055 |
+| united_states_inflation  |   0.0234 |     0.0592 |
+| united_states_short_rate |   0.0459 |     0.1153 |
+| united_states_long_rate  |   0.0579 |     0.1275 |
+| us_broad                 |   0.0849 |    -0.0126 |
 
 The chart below sets US inflation in the baseline next to the Oil Shock, Oil Crisis and Climate Collapse regimes, 2,000 scenarios each. **Find [the Regimes documentation](/projects/financescenarios/docs/regimes).**
 

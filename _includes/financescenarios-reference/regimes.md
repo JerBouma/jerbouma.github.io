@@ -486,21 +486,47 @@ A one-off jump in a factor's level at a given year, such as "+2% on the short ra
 Unlike a `BeliefPath`, which moves where the factor is heading, a shock moves where it is: the factor jumps once,
 then its own dynamics take over, so a mean-reverting factor drifts back from the shocked level at its fitted speed.
 
+A stress story that quotes history ("US inflation at 12% a year on, as in 1974") states where the middle of the
+scenarios should be, not that every scenario sits there. Mode "median" does that: every scenario moves by the same
+amount, the gap between `magnitude` and the scenarios' median on that date, so the median lands on the stated level
+while each scenario keeps its distance from it and the spread stays as the model drew it. It is the first-moment
+matching of Boyle, Broadie and Glasserman (1997, section 2.4), which shifts simulated values by the gap between the
+known and the sample mean, with the median in place of the mean so that a skewed factor's middle scenario is the
+one on the stated level. Mode "absolute" sets every scenario to `magnitude`, so the spread on that date is zero:
+meant for a published path a supervisor sets as one deterministic scenario, such as a stress test's. A regime's
+`targets` select scenarios afterwards, so the median of the scenarios they keep can sit away from the stated level.
+
+**References:**
+
+- Boyle, P., Broadie, M., Glasserman, P. (1997). "Monte Carlo Methods for Security Pricing." Journal of Economic Dynamics and Control, 21(8-9), 1267-1321. Section 2.4, moment matching. <https://doi.org/10.1016/S0165-1889(97>)00028-6
+
+**As an example:**
+
+The Oil Crisis regime puts US inflation's median at 12% a year on, as after the 1973 embargo, and every scenario
+keeps its own distance from it:
+
+```yaml
+beliefs:
+  inflation.united_states_inflation:
+    shocks:
+      - {year: 1.0, magnitude: 0.12, mode: median}
+```
+
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>
 
 ```python
 class Shock(BaseModel):
     year: float = Field(ge=0, description='Simulated year the shock lands on.')
-    magnitude: float = Field(allow_inf_nan=False, description='Shock size: added (additive) or set (absolute).')
-    mode: Literal['additive', 'absolute'] = Field(default='additive', description="'additive' adds magnitude to the step's value; 'absolute' replaces it.")
+    magnitude: float = Field(allow_inf_nan=False, description="Shock size: added (additive), the scenarios' median (median) or set (absolute).")
+    mode: Literal['additive', 'median', 'absolute'] = Field(default='additive', description="'additive' adds magnitude to the step's value; 'median' moves every scenario by one amount so their median is magnitude; 'absolute' replaces it.")
 ```
 
 **Attributes:**
 
 - <u>year (float):</u> the year the shock lands, at the nearest simulated date.
-- <u>magnitude (float):</u> the size of the jump, or the level to jump to with mode "absolute".
-- <u>mode (str):</u> "additive" (default) adds `magnitude` to the simulated value; "absolute" sets the value to it.
+- <u>magnitude (float):</u> the size of the jump, or the level to jump to with mode "absolute" or "median".
+- <u>mode (str):</u> "additive" (default) adds `magnitude` to the simulated value; "median" moves every scenario by one amount so their median is `magnitude`; "absolute" sets the value to it.
 
 </details>
 

@@ -2509,10 +2509,10 @@ Which returns, for the first call (4 of the factors):
 
 | factor                   | baseline | oil_crisis |
 |:-------------------------|---------:|-----------:|
-| united_states_inflation  |   0.0234 |     0.0709 |
-| united_states_short_rate |   0.0459 |     0.1308 |
-| united_states_long_rate  |   0.0579 |     0.1354 |
-| us_broad                 |   0.0849 |    -0.0189 |
+| united_states_inflation  |   0.0234 |     0.0592 |
+| united_states_short_rate |   0.0459 |     0.1153 |
+| united_states_long_rate  |   0.0579 |     0.1275 |
+| us_broad                 |   0.0849 |    -0.0126 |
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>

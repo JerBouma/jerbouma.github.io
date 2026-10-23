@@ -85,7 +85,7 @@ US stocks lose 3.94% a year instead of gaining 8.49%, unemployment averages 8.30
 
 ### Both at Once: Oil Shock, Oil Crisis and Climate Collapse
 
-Most stories use both levers. Oil Shock adds a one-off jump of three points to US inflation in year two; Oil Crisis takes US inflation to 12% after a year and 5.5% after three, as after the 1973 embargo, then back towards 2.5% by year eight, and keeps the scenarios with high short rates and weak stocks; Climate Collapse keeps the scenarios with the highest inflation and the weakest stocks. To run all three:
+Most stories use both levers. Oil Shock adds a one-off jump of three points to US inflation in year two; Oil Crisis moves the median of US inflation to 12% after a year and 5.5% after three, as after the 1973 embargo, then back towards 2.5% by year eight, and keeps the scenarios with high short rates and weak stocks; Climate Collapse keeps the scenarios with the highest inflation and the weakest stocks. To run all three:
 
 ```python
 runs = {"baseline": result}
@@ -99,11 +99,11 @@ Which returns:
 
 | factor | baseline | oil_shock | oil_crisis | climate_collapse |
 |:-------|---------:|----------:|-----------:|-----------------:|
-| united_states_inflation | 0.0234 | 0.0279 | 0.0527 | 0.0475 |
-| united_states_short_rate | 0.0459 | 0.0570 | 0.1051 | 0.0671 |
-| us_broad | 0.0849 | 0.0798 | -0.0055 | -0.0341 |
+| united_states_inflation | 0.0234 | 0.0279 | 0.0592 | 0.0475 |
+| united_states_short_rate | 0.0459 | 0.0570 | 0.1153 | 0.0671 |
+| us_broad | 0.0849 | 0.0798 | -0.0126 | -0.0341 |
 
-Under Oil Crisis every scenario is at 12% after one year and 5.5% after three: the regime steers inflation's long-run level so its expected path runs straight to each number, and pins the number on the day. After that each scenario moves on with its own randomness, to an average of 5.27% after five years. The short rate answers through the policy rule, to a median of 8.24% after one year and 13.60% after three and an average of 10.51% after five, and US stocks lose 0.55% a year. When plotted, US inflation in the four runs:
+Oil Crisis steers inflation's long-run level so its expected path runs straight to 12% after one year and 5.5% after three, and on those dates moves every scenario by the same amount so that their median lands on the number while each keeps its distance from it. The scenarios it then keeps, those with high short rates and weak stocks, run hotter: a median of 12.98% after one year and 7.42% after three, and an average of 5.92% after five years. The short rate answers through the policy rule, to a median of 8.33% after one year and 14.18% after three and an average of 11.53% after five, and US stocks lose 1.26% a year. When plotted, US inflation in the four runs:
 
 {% include ft-chart.html id="regimes-inflation" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of US inflation in the baseline and under Oil Shock, Oil Crisis and Climate Collapse over five years" %}
 
