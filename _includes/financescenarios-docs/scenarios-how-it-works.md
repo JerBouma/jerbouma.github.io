@@ -8,12 +8,12 @@ Each factor follows a model suited to how it behaves: rates, inflation and sprea
 
 | Area | What is simulated | Model | Guide |
 |:-----|:------------------|:------|:------|
-| Short and long rates | One rate per country, short or long end | Vasicek (default, can go negative; Hull-White when fitted to today's curve, EIOPA's in a risk-neutral run), CIR (rates kept near or above zero), Wilkie, Hibbert two-factor | [Interest rates](/projects/financescenarios/docs/interest-rates) |
+| Short and long rates | One rate per country, short or long end | A short rate that follows a policy rule from the market's expected path, and a long rate that is its expected path plus a term premium (default); Hull-White (EIOPA's curve in a risk-neutral run), CIR (rates kept near or above zero), Wilkie, Hibbert two-factor | [Interest rates](/projects/financescenarios/docs/interest-rates) |
 | Yield curve | Level, slope and curvature of the whole curve | Dynamic Nelson-Siegel | [Interest rates](/projects/financescenarios/docs/interest-rates) |
 | Forward curve | The full forward curve, arbitrage-free | Two-factor Gaussian HJM | [Interest rates](/projects/financescenarios/docs/interest-rates) |
-| Rates and inflation jointly | Nominal and real rates, inflation, optionally equities | KNW, with stochastic volatility or priced like the market | [KNW](/projects/financescenarios/docs/interest-rates#knw) |
-| Inflation | Year-over-year inflation per country | Mean-reverting (Ornstein-Uhlenbeck) or Wilkie AR(1); risk-neutral, random around the breakeven curve | [Economy](/projects/financescenarios/docs/economy) |
-| Unemployment | Unemployment rate per country | Mean-reverting with a Phillips-curve link to inflation | [Economy](/projects/financescenarios/docs/economy) |
+| Rates and inflation jointly | Nominal and real rates, inflation, optionally equities | KNW, fitted on history, with stochastic volatility or priced like the market; DNB's CP2022 with its quarterly parameters | [KNW](/projects/financescenarios/docs/interest-rates#knw-models), [CP2022](/projects/financescenarios/docs/interest-rates#cp2022-model) |
+| Inflation | Year-over-year inflation per country | Calm and high-inflation regimes (default), mean-reverting (Ornstein-Uhlenbeck) or Wilkie AR(1); risk-neutral, random around the breakeven curve | [Economy](/projects/financescenarios/docs/economy) |
+| Unemployment | Unemployment rate per country | Expansions and recessions (default), or mean-reverting with a Phillips-curve link to inflation | [Economy](/projects/financescenarios/docs/economy) |
 | Business cycle | OECD composite leading indicator | Mean-reverting | [Economy](/projects/financescenarios/docs/economy) |
 | Longevity | Mortality improvement by age | Cairns-Blake-Dowd | [Economy](/projects/financescenarios/docs/economy) |
 | Equities | Indices, sectors, regions, styles | Regime-switching lognormal | [Markets](/projects/financescenarios/docs/markets) |
@@ -22,9 +22,9 @@ Each factor follows a model suited to how it behaves: rates, inflation and sprea
 | Real estate | House-price growth | Mean-reverting | [Markets](/projects/financescenarios/docs/markets) |
 | Dividends | Dividend yield and dividend growth | Mean-reverting log yield, Wilkie-style growth | [Markets](/projects/financescenarios/docs/markets) |
 | Credit | Spreads by maturity or rating, the credit curve, rating migration and default | Mean-reverting spreads, Nelson-Siegel credit curve, a credit cycle driving migration | [Markets](/projects/financescenarios/docs/markets) |
-| Stress and climate | Fed and ESRB stress tests, NGFS climate pathways, your own narratives | Overlays on a run | [Regimes](/projects/financescenarios/docs/regimes) |
+| Stress and climate | Fed, ESRB and Bank of England stress tests, historical episodes, NGFS climate pathways, your own narratives | Overlays on a run | [Regimes](/projects/financescenarios/docs/regimes) |
 
-Interest rates, inflation, equities and unemployment are always simulated; the rest is switched on per factor set. [Coverage](/projects/financescenarios/docs/coverage) lists every model, calibration choice and known gap, and the [reference](/projects/financescenarios/docs) documents each model's parameters.
+Interest rates, inflation, equities and unemployment are always simulated; the rest is switched on per factor set. [Coverage](/projects/financescenarios/docs/coverage) lists every model, calibration choice and known gap, and the [reference](#reference) documents each model's parameters.
 
 ### How the Factors Are Linked
 

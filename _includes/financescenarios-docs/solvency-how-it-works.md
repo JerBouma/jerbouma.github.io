@@ -27,7 +27,7 @@ where $$r_s$$ is the simulated short rate and $$\Delta t$$ the step length in ye
 
 ### The Example Run {#martingale-test-example}
 
-The results on this page and in the [Solvency reference](/projects/financescenarios/docs/solvency) come from one risk-neutral run: SPY and US rates, inflation and unemployment, 2,000 scenarios, monthly over ten years, seed 42, calibrated on 2026-10-14. SPY's dividend yield is its own entry so the martingale test can add it back.
+The results on this page and in the [Solvency reference](#solvency) come from one risk-neutral run: SPY and US rates, inflation and unemployment, 2,000 scenarios, monthly over ten years, seed 42, calibrated on 2026-10-14. SPY's dividend yield is its own entry so the martingale test can add it back.
 
 ```python
 from datetime import date
@@ -255,7 +255,7 @@ The charge is less than the sum of the two losses.
 
 ### Scenario Files and Currencies
 
-Runs export in the shape liability and ALM systems load: one file per variable, one row per scenario, one column per period, plus each variable's [unit](/projects/financescenarios/docs/units). Export the risk-neutral run for valuation and the real-world run for projections. The valuation does not convert currencies, so assets, liabilities and the discount rate must share one; convert prices to the reporting currency first. The [Solvency reference](/projects/financescenarios/docs/solvency) shows how to summarize such a pair of runs in one table.
+Runs export in the shape liability and ALM systems load: one file per variable, one row per scenario, one column per period, plus each variable's [unit](/projects/financescenarios/docs/units). Export the risk-neutral run for valuation and the real-world run for projections. The valuation does not convert currencies, so assets, liabilities and the discount rate must share one; convert prices to the reporting currency first. The [Solvency reference](#solvency) shows how to summarize such a pair of runs in one table.
 
 ### What Is Simplified
 
@@ -271,7 +271,7 @@ What the package covers, and what it leaves to you:
 | Market consistency | The drift: rates and equities grow at the risk-free rate, inflation around its breakeven curve | Option prices across strikes, except for an equity with Heston volatility; rate and inflation volatilities come from history, not swaption or inflation-option prices |
 | Risk-free curve | Fetches EIOPA's curves, fits the simulated short rate to them, and applies the 2027 extrapolation to a current curve | The volatility adjustment, matching adjustment and transitional measures |
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/solvency"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Solvency</a></div>
+<div class="fs-ref"><a href="#solvency"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Solvency</a></div>
 
 ### References
 

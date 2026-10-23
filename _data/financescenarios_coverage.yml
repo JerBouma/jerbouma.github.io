@@ -147,7 +147,7 @@
     summary: The full version of the DNB-style model, where a shared, randomly changing volatility affects both rates and inflation. You set it up by hand, and the simulation step must match the model's data frequency.
     location: 'Factor set: an `interest_rates` and an `inflation` entry, both `method: knw_sv` and naming each other; settings: `engine.frequency` equal to their `period`'
     details: Adds a latent CIR/Heston variance factor `v` that scales both legs' drift and variance, simulated via Andersen's (2008) exact QE scheme. Same `engine.frequency`-must-match-`period` requirement as `"knw"` above. Hand-configure, no built-in preset.
-    setup: 'As for KNW-lite, with `method: knw_sv` on both entries. An equity can share the volatility factor with `method: knw_sv` and `nominal_rate_name` (see v-scaled equity). The [KNW guide](/projects/financescenarios/docs/knw) has the full file.'
+    setup: 'As for KNW-lite, with `method: knw_sv` on both entries. An equity can share the volatility factor with `method: knw_sv` and `nominal_rate_name` (see v-scaled equity). The [KNW guide](/projects/financescenarios/docs/interest-rates#knw-models) has the full file.'
     setup_lang: yaml
     setup_code: |-
       # my-project/factor-sets/knw.yaml (a factor set)
@@ -169,6 +169,27 @@
       # my-project/settings/knw.yaml (a settings profile)
       engine:
         frequency: quarterly        # must equal the pair's period
+  - name: DNB's CP2022 model with its quarterly parameters
+    status: available
+    summary: Runs the model behind De Nederlandsche Bank's scenario sets for Dutch pension funds, with the parameters DNB publishes every quarter, so you can rebuild DNB's real-world set or put its euro economy next to factors of your own. Rates of any maturity, real rates, euro-area and Dutch inflation and one equity come out of the one model. Real-world only.
+    location: 'Factor set, on `interest_rates`, `inflation` and one `equities` entry: `method: cp2022`; the `dnb` settings and factor set; see [CP2022](/projects/financescenarios/docs/interest-rates#cp2022-model)'
+    details: 'The Commissie Parameters (2022) Technical Appendix as written: the affine state (v, r, pi) with its mean-reversion matrix K and v-scaled shocks (eqs. 1-6), nominal and real zero rates from the Riccati equations of sec. 10 (eqs. 14-19, 76-79), the monthly scheme of sec. 9.1 (eqs. 51-53) with Andersen''s QE step, Dutch CPI as the HICP plus the CPB-based spread (sec. 8), the long-run constraints of eqs. 41-42 and 46-47. The parameters are read from the quarterly P-set workbook DNB had published by the calibration date (stored as vintages; 2026Q4 ships); `estimate_cp2022` backs them out of a set''s 20,000 paths within about two standard errors of DNB''s. The 2,000-scenario `dnb` set lands within two or three Monte Carlo standard errors of DNB''s 2026Q4 means, standard deviations and percentiles. Not covered: DNB''s market-consistent Q-set (eq. 25), which needs paid option, swaption and inflation-cap data; monthly steps only.'
+    setup: 'Run the shipped `dnb` settings and factor set, or give your own euro entries `method: cp2022` with a `maturity` and `curve` (rates) or an `index` (inflation).'
+    setup_lang: yaml
+    setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
+      interest_rates:
+        - name: euro_10y
+          method: cp2022
+          curve: nominal       # or real, the euro-area HICP-linked curve
+          maturity: 10         # 1 to 100 years
+          currency: EUR
+      inflation:
+        - name: euro_inflation
+          method: cp2022
+          index: hicp          # or dutch_cpi
+          country: Germany
+          currency: EUR
   - name: 2-factor Gaussian HJM (Cheyette-reduction, PCA-calibrated)
     status: available
     summary: Simulates the whole forward-rate curve with two drivers. Its direction is set by a no-arbitrage rule rather than fitted to history, so prices stay consistent with today's curve. It runs in risk-neutral (pricing) mode by default.
@@ -608,9 +629,9 @@
   - name: Private-market sleeves (listed proxies)
     status: partial
     summary: You can add private equity, infrastructure, hedge funds, private credit and similar assets using listed funds as stand-ins. These are more volatile and more tied to stocks than reported private fund returns, histories start 2006 to 2013, and no smoothing adjustment is applied.
-    location: 'Factor set, on an `equities` entry: `asset_class`; the `private_markets` factor set has four'
+    location: 'Factor set, on an `equities` entry: `asset_class`'
     details: "`asset_class` (Private Equity, Infrastructure, Hedge Funds, Merger Arbitrage, Private Credit, Real Estate, Investment Grade Credit, High Yield Credit) sets the ticker to the listed fund the Finance Toolkit's `get_asset_class_proxies` uses (PSP, IGF, QAI, MNA, BIZD, VNQ, LQD, HYG) and calibrates it like any equity. Partial: listed prices are marked to market daily, so they are more volatile and more correlated with equities than the appraisal-based returns private funds report (live 2026-10-07: private equity 26% volatility, 0.60 correlation with SPY), they are net of fees, and their histories start 2006-2013. No appraisal smoothing or de-smoothing is applied."
-    setup: In your factor set, add an equity entry with `asset_class` instead of a ticker; the listed proxy is filled in. Or run the shipped `private_markets` factor set.
+    setup: In your factor set, add an equity entry with `asset_class` instead of a ticker; the listed proxy is filled in.
     setup_lang: yaml
     setup_code: |-
       # my-project/factor-sets/my_factors.yaml (a factor set)
@@ -623,7 +644,7 @@
     status: available
     summary: For pricing, stocks grow at the simulated risk-free rate minus the dividend yield, with one constant volatility taken from today's option prices or, if missing, from past price moves. Use it for market-consistent valuation.
     location: 'Factor set, on an `equities` entry: `measure: risk_neutral` and `volatility_source`, plus a `dividend_yield` entry on the same ticker; see [real-world and risk-neutral](/projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures)'
-    details: 'drift = r - q, where r is `interest_rates[0]`''s simulated rate each step (so with a stochastic forward-curve rate the deflated price stays a martingale; with a flat rate path it is today''s r), volatility from live ATM implied vol (real, per-strike, confirmed against SPY) or realized-vol fallback; raises if paired with `method: "hibbert_regime_switching"`.'
+    details: 'drift = r - q, where r is `interest_rates[0]`''s simulated rate each step (so with a stochastic forward-curve rate the deflated price stays a martingale; with a flat rate path it is today''s r), volatility from the live at-the-money implied vol, the average of the out-of-the-money call and put either side of the price at the first expiry at least a week out (a stale in-the-money quote nearest the price inverted EEM to 66.8% against 32.0%), with a warning when it is more than twice or less than half the realized vol, or the realized-vol fallback; raises if paired with `method: "hibbert_regime_switching"`.'
     setup: 'In your factor set, set `measure: risk_neutral` on the equity and add a dividend yield entry with the same ticker; the drift needs today''s dividend yield. The risk-free rate is the first interest rate''s.'
     setup_lang: yaml
     setup_code: |-
@@ -1138,6 +1159,20 @@
       engine:
         correlation_shrinkage: auto      # or a number in [0, 1], e.g. 0.2
         correlation_method: pairwise     # or complete_case
+  - name: Correlations stated as values
+    status: available
+    summary: You can fix the correlation of any pair of factors instead of estimating it, and set every pair you do not list to zero, the way a published model states its own correlations. The reference sets of Ahlgrim, Hibbert and Wilkie use it.
+    location: 'Factor set: the `correlations` section, `fixed` pairs and `unlisted: history` or `zero`; see [published frameworks](/projects/financescenarios/docs/configuration#correlations-stated-as-values)'
+    details: 'The stated pairs are laid over the estimated matrix (or a zero one with `unlisted: zero`) before the nearest-correlation repair (Higham, 2002), so a set of pairs that cannot hold together is moved as little as possible.'
+    setup: In your factor set, list the pairs and their values.
+    setup_lang: yaml
+    setup_code: |-
+      # my-project/factor-sets/my_factors.yaml (a factor set)
+      correlations:
+        fixed:
+          - factors: [united_states_short_rate, united_states_inflation]
+            value: 0.5
+        unlisted: history   # or zero
   - name: Gaussian-copula correlated shocks
     status: available
     summary: By default, the random shocks to each factor are linked through their correlations using a normal distribution. Markets move together on average, but extreme joint crashes are not given extra weight.
@@ -1264,15 +1299,15 @@
       values = portfolio.compute(weights, initial_value=100.0, rebalance_every=12)
   - name: Built-in example portfolios
     status: available
-    summary: Fourteen ready-made portfolios come with the library, covering equity sectors, regions and styles, bonds in several countries, and gold. You can use them as a starting point instead of writing your own.
+    summary: Thirteen ready-made portfolios come with the library, from the 60/40, All Weather and Permanent Portfolio to equity sectors, regions and styles, bonds in several countries, and gold. You can use them as a starting point instead of writing your own.
     location: 'Python: `Portfolio.from_preset(result, preset=...)`; the presets are listed by `list_presets(kind="portfolios")`'
-    details: 14 shipped presets built against the broad factor set's factor names (`factor-sets/broad.yaml`) (equity sector/region/style names, multi-country rates, gold), mirroring the `regimes/`/`settings/`/`factor-sets/` built-in-preset pattern, not `ahlgrim.yaml`'s paper-faithful, narrower scope.
-    setup: 'From Python: pick a preset by name. The presets use the `broad` factor set''s factor names, so run that set (or one with the same names).'
+    details: 13 shipped presets on the default factor set's names, five of them (sectors, styles, more regions) on the broad set's; each description says which set it needs.
+    setup: 'From Python: pick a preset by name. Most run on the `default` factor set; a preset whose description says "Needs the broad set" needs that set (or one with the same names).'
     setup_lang: python
     setup_code: |-
       from financescenarios import Portfolio, list_presets
 
-      list_presets(kind="portfolios")   # the 14 shipped presets
+      list_presets(kind="portfolios")   # the 13 shipped presets
       portfolio = Portfolio.from_preset(
           result, preset="balanced_60_40", config=scenarios.config
       )
@@ -1680,9 +1715,9 @@
   items:
   - name: "`default`"
     status: available
-    summary: The curated core setup for the US, the euro area and the UK. Rates start from EIOPA's forward rates and move in ways fitted to OECD data since 1950. The US 10-year yield stays within 0.3 points of the NAIC/Conning median over 30 years.
+    summary: The recommended setup for the US, the euro area and the UK, with global equities, gold, oil and the major currencies, each factor fitted to its long history and linked the way the economy is. Rates start from EIOPA's forward rates and move in ways fitted to OECD data since 1950. The US 10-year yield stays within 0.3 points of the NAIC/Conning median over 30 years.
     location: 'Factor set: `default`'
-    details: The curated core set (US, euro area, UK; monthly or quarterly data) with rates anchored to EIOPA's forward rates and dynamics fitted on the OECD since 1950; passes every release check, US 10-year within 0.3pt of the NAIC/Conning median over 30 years.
+    details: 'US, euro area, UK (monthly or quarterly data): a policy-rule short rate on the market''s expected path, long rates as that path plus a term premium, inflation and unemployment regimes, equities on a long-run premium; rates anchored to EIOPA''s forward rates and dynamics fitted on the OECD since 1950; passes every release check, US 10-year within 0.3pt of the NAIC/Conning median over 30 years.'
     setup: Pick it by name when you create the scenarios; it is also what you get without naming one.
     setup_lang: python
     setup_code: |-
@@ -1704,22 +1739,22 @@
       result = scenarios.simulate()
   - name: "`ahlgrim`"
     status: available
-    summary: 'Follows Ahlgrim, D''Arcy & Gorvett (2005): six linked factors (short rate, inflation, equity, unemployment, real estate and dividend yield) for one country. Use it when you want the paper''s model as published, without extra factors.'
-    location: 'Factor set: `ahlgrim`'
-    details: Ahlgrim, D'Arcy & Gorvett (2005), the paper's own six-factor cascade (short rate, inflation, equity, unemployment, real estate, dividend yield); single-country, single-instrument, no opt-in factor categories beyond that six.
-    setup: Pick it by name when you create the scenarios.
+    summary: 'Reproduces Ahlgrim, D''Arcy & Gorvett (2005) from its June 2004 start: the paper''s six linked factors (short rate, inflation, equity, unemployment, real estate and dividend yield) with its own parameters, correlations and starting values, and no data or API key. It reproduces all 26 numbers of the paper''s Tables 1 and 2 the package checks. For today''s data, write your own set with the same options.'
+    location: 'Factor set: `ahlgrim`, with the `ahlgrim` settings profile'
+    details: 'Every parameter is a belief with its pinpoint in the YAML, never refitted; `published_model: ahlgrim` builds the calibration from the beliefs and the workbook''s base case, starting equity regimes drawn from the stationary shares (StochProcs!F4). The nominal rate is the real rate plus inflation (`real_rate`). Not simulated: small stocks, the closed-form 1- and 10-year yields and the first-period 1-month yields; equity regimes are lognormal with the workbook''s moments. `compare_published("ahlgrim")` runs the check; see [validation](/projects/financescenarios/docs/validation#published-parameter-mode).'
+    setup: Pick it by name with its settings profile (June 2004, 5,000 scenarios, 50 years, monthly).
     setup_lang: python
     setup_code: |-
       from financescenarios import Scenarios
 
-      scenarios = Scenarios.from_profiles(settings="default", factor_set="ahlgrim")
+      scenarios = Scenarios.from_profiles(settings="ahlgrim", factor_set="ahlgrim")
       result = scenarios.simulate()
   - name: "`wilkie`"
     status: available
-    summary: The original Wilkie (1986) actuarial model, where inflation drives dividends, a long-term bond yield and share prices. It has no unemployment, real estate, credit, currency or commodity factors, and not the 1995 extension. It runs at the same time step it was fitted on, monthly in the shipped preset.
+    summary: Reproduces Wilkie (1986) on his Reduced Standard Basis from his neutral start, where inflation drives dividends, the Consols yield and share prices, with his own parameters and no data or API key. It reproduces all 91 cells of his Table 3 on his yearly step. It has no unemployment, real estate, credit, currency or commodity factors, and not the 1995 extension. For today's data, write your own set with the same options.
     location: 'Factor set: `wilkie`, with the `wilkie` settings profile'
-    details: 'Wilkie''s (1986) original cascade; doesn''t model unemployment/real_estate/credit/FX/leading_indicator/commodities. Only the 1986 original is implemented, not the 1995 Thomson short-rate extension. `wilkie_ar1`/`wilkie_consols` are dt-blind discrete recursions like `knw` above: `engine.frequency` must equal the entry''s own `period` (`ScenariosConfig` rejects a mismatch), so pair with `settings/wilkie.yaml`.'
-    setup: Pick it by name when you create the scenarios, together with the `wilkie` settings profile (fitted on 1995-2007, monthly steps).
+    details: 'Every parameter is a belief with its section in the YAML, never refitted; `published_model: wilkie` starts from his neutral values, `correlations: unlisted: zero` keeps his four white-noise series independent and `lower_bound` is his CMIN of 0.5%. Only the 1986 original, not the 1995 Thomson short-rate extension. `wilkie_ar1`/`wilkie_consols` are dt-blind discrete recursions like `knw` above: `engine.frequency` must equal the entry''s own `period`, so pair with `settings/wilkie.yaml`; on a monthly step four 1- and 5-year cells of Table 3 fall outside Monte Carlo error. `compare_published("wilkie")` runs the check; see [validation](/projects/financescenarios/docs/validation#published-parameter-mode).'
+    setup: Pick it by name together with the `wilkie` settings profile (1,000 scenarios of 100 years in yearly steps, dated 1986).
     setup_lang: python
     setup_code: |-
       from financescenarios import Scenarios
@@ -1728,15 +1763,39 @@
       result = scenarios.simulate()
   - name: "`hibbert`"
     status: available
-    summary: The Barrie & Hibbert (2001) two-factor model, where rates and inflation each pull toward a slower-moving target. It estimates correlations from data instead of using the paper's fixed values, has no closed-form bond pricing, and does not support market-consistent runs.
-    location: 'Factor set: `hibbert`'
-    details: Barrie & Hibbert (2001) two-factor; doesn't replicate the paper's own fixed cross-factor correlations or closed-form analytic bond pricing. `measure="risk_neutral"` unsupported (raises).
-    setup: Pick it by name when you create the scenarios; see [published frameworks](/projects/financescenarios/docs/configuration#published-frameworks).
+    summary: Reproduces Hibbert, Mowbray and Turnbull (2001), calibration A, from its March 2001 start, where rates and inflation each pull toward a slower-moving target and equities earn a premium over cash in two regimes, with the paper's own parameters and correlations and no data or API key. It reproduces all 11 rows of Exhibit 7.2A the package checks. No closed-form bond pricing and no market-consistent runs. For today's data, write your own set with the same options.
+    location: 'Factor set: `hibbert`, with the `hibbert` settings profile'
+    details: 'Calibration A only: calibration B''s risk premia exist to price bonds, which the package does not do, so its floors and reflection and the bond rows of Exhibit 7.2A are left out. Every parameter is a belief with its pinpoint in the YAML; `published_model: hibbert` starts from calibration A''s equilibrium; the dividend yield''s volatility follows the equity regime (`volatility_follows_equity`). No unemployment. `measure="risk_neutral"` unsupported (raises). `compare_published("hibbert")` runs the check; see [validation](/projects/financescenarios/docs/validation#published-parameter-mode).'
+    setup: Pick it by name with its settings profile (March 2001, 1,000 scenarios, 30 years, monthly); see [published frameworks](/projects/financescenarios/docs/configuration#published-frameworks).
     setup_lang: python
     setup_code: |-
       from financescenarios import Scenarios
 
-      scenarios = Scenarios.from_profiles(settings="default", factor_set="hibbert")
+      scenarios = Scenarios.from_profiles(settings="hibbert", factor_set="hibbert")
+      result = scenarios.simulate()
+  - name: "`goes`"
+    status: partial
+    summary: The United States as the NAIC's scenario generator (GOES) describes it, for US principle-based reserves. Four Treasury yields follow GOES's published bands and stocks earn its long-run return. It passes GOES's acceptance criteria for the upper tail, negative rates, mean reversion and the S&P 500's wealth factors, and misses low-for-long, as GOES does, and the share of scenarios above the rate cap.
+    location: 'Factor set: `goes`, with the `goes` settings profile; see [GOES acceptance criteria](/projects/financescenarios/docs/validation#goes-acceptance-criteria)'
+    details: 'The 3-month, 5-year, 10-year and 30-year yields are each a one-factor CIR (GOES is multi-factor): kappa = ln 2 / 15, the half-life behind T6; theta = GOES''s mean over years 20-30; sigma puts the exact year-30 median on GOES''s. Equity regimes on Shiller''s S&P total return since 1946, shifted to E1''s 7.41% median, earning the premium over the long-run level (no equity-rate link, as the GOES Subgroup decided). Against the 30 Sep 2026 release with 10,000 scenarios: T1 99.5th percentiles, T2, T6 and E1 (40 of 40 within 10%) pass; T4 fails (as GOES does), T1''s share above the cap is 1.6% against 0.5% (GOES 3.06%) and T5''s upper bound is 0.1-0.2 points short; the first ten years are narrower than GOES''s. Corporate bond funds (C1) are not modelled.'
+    setup: Pick it by name with its settings profile, and check it with `NaicGoes.check_acceptance`.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Scenarios
+
+      scenarios = Scenarios.from_profiles(settings="goes", factor_set="goes")
+      result = scenarios.simulate(years=30, n_simulations=10_000)
+  - name: "`dnb`"
+    status: available
+    summary: 'De Nederlandsche Bank''s real-world scenarios rebuilt with its CP2022 model and its quarterly parameters, for Dutch pension work: euro nominal rates from 1 to 30 years, the real 10-year rate, euro-area and Dutch inflation and world equity, over 100 years. It lands within Monte Carlo error of DNB''s own 20,000 scenarios.'
+    location: 'Factor set: `dnb`, with the `dnb` settings profile; see [CP2022](/projects/financescenarios/docs/interest-rates#cp2022-model)'
+    details: 'Every `method: cp2022` entry is an output of one model with DNB''s parameters for the quarter published by the calibration date. Germany''s unemployment rate is added because the package requires one. With 2,000 scenarios the 2026Q4 rate means are within 0.05 points of DNB''s and the correlations within 0.05; 20,000 scenarios run at about ten times the memory. Real world only (DNB''s Q-set needs paid market data).'
+    setup: Pick it by name with its settings profile (monthly over 100 years, 2,000 scenarios).
+    setup_lang: python
+    setup_code: |-
+      from financescenarios import Scenarios
+
+      scenarios = Scenarios.from_profiles(settings="dnb", factor_set="dnb")
       result = scenarios.simulate()
   - name: Commercial vendor methodologies (Conning, Milliman, Moody's/Barrie & Hibbert's actual product, Ortec)
     status: not_available
@@ -1748,21 +1807,22 @@
   items:
   - name: NAIC GOES percentile bands
     status: available
-    summary: Compares the spread of your simulated interest rates with the NAIC's statutory scenarios used for US life insurance reserves and capital (VM-20/21/22). It covers interest rates only.
-    location: 'Python: `NaicGoes` in `financescenarios.validation.naic_goes`; see [validation and testing](/projects/financescenarios/docs/validation)'
-    details: VM-20/21/22 statutory scenario percentile comparison (interest_rates only).
-    setup: From Python, on a real-world run with US rates.
+    summary: Compares the spread of your simulated interest rates with the NAIC's statutory scenarios used for US life insurance reserves and capital (VM-20/21/22), and holds a run to the acceptance criteria NAIC sets GOES itself, with a pass or fail per criterion.
+    location: 'Python: `NaicGoes` in `financescenarios.validation.naic_goes`: `compare_interest_rates` and `check_acceptance`; see [GOES acceptance criteria](/projects/financescenarios/docs/validation#goes-acceptance-criteria)'
+    details: 'VM-20/21/22 statutory scenario percentile comparison (interest rates), and `check_acceptance`: T1 (upper tail), T2 (negative rates), T4 (low for long), T5 (spread of 20-year averages), T6 (mean-reversion medians) on the 1- and 20-year yields (read off neighbouring tenors when not simulated) and E1 (S&P 500 gross wealth factors, each percentile within 10% of its target, a judgement since NAIC publishes no tolerance). Thresholds are read from each release''s Acceptance Criteria_Dashboard sheet.'
+    setup: From Python, on a real-world run with US rates (and an equity for E1).
     setup_lang: python
     setup_code: |-
       from financescenarios.validation.naic_goes.naic_goes_controller import NaicGoes
 
       goes = NaicGoes.latest()   # the latest published vintage
       goes.compare_interest_rates(result, scenarios.config, "united_states_short_rate")
+      goes.check_acceptance(result, scenarios.config, equity_name="us_broad")
   - name: DNB scenario sets (P and Q)
     status: available
     summary: Puts your run's ranges of outcomes next to De Nederlandsche Bank's 20,000-scenario sets, year by year, for rates, inflation and equity returns. It works for both real-world and market-consistent scenarios.
     location: 'Python: `Dnb` in `financescenarios.validation.dnb`; see [validation and testing](/projects/financescenarios/docs/validation)'
-    details: 'A run''s quantiles beside De Nederlandsche Bank''s 20,000-scenario sets year by year: rates, inflation and equity returns, real world or market consistent.'
+    details: 'A run''s quantiles beside De Nederlandsche Bank''s 20,000-scenario sets year by year: rates, inflation and equity returns, real world or market consistent. `compare_moments` and `compare_correlations` set a run''s means, standard deviations, percentiles and correlations beside the set''s; the `dnb` factor set, DNB''s own CP2022 model, lands within Monte Carlo error of it.'
     setup: 'From Python: name your factor and DNB''s matching variable (`Dnb(toolkit).distribution` lists them); `market_consistent` for a risk-neutral run.'
     setup_lang: python
     setup_code: |-
@@ -1772,6 +1832,30 @@
       # DNB variables: Nominal rate 1Y to 30Y, Real rate EU 10Y, Equity return,
       # Inflation EU, Inflation NL
       dnb.compare(result, "eurozone_short_rate", variable="Nominal rate 1Y")
+  - name: Published models against their papers
+    status: available
+    summary: Checks the `ahlgrim`, `hibbert` and `wilkie` sets against the tables their papers report for their own models, number by number, with a Monte Carlo tolerance. All 128 numbers checked are within it.
+    location: 'Python: `compare_published` in `financescenarios.validation.published_frameworks`; see [published models](/projects/financescenarios/docs/validation#published-parameter-mode)'
+    details: 'Ahlgrim, D''Arcy and Gorvett (2005) Tables 1 and 2 (26 checks), Hibbert, Mowbray and Turnbull (2001) Exhibit 7.2A (11), Wilkie (1986) Table 3 (91). A difference is within Monte Carlo error inside four standard errors of the gap (batch means, scaled to the paper''s number of scenarios) plus half the paper''s last printed digit. Runs offline.'
+    setup: From Python, by the set's name.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios.validation.published_frameworks.published_frameworks_controller import (
+          compare_published,
+      )
+
+      compare_published("wilkie")
+  - name: How the published models held up
+    status: available
+    summary: Runs each published model from its paper's start date and scores every year since against what happened, so you can see how a forecast made in 1986, 2001 or 2004 fared. Inflation held up well; none of the three allowed for a decade of near-zero rates.
+    location: 'Python: `held_up` in `financescenarios.validation.published_frameworks`; see [how the published models held up](/projects/financescenarios/docs/validation#published-models-held-up)'
+    details: 'Share of years inside the 50% and 90% bands, the PITs and the CRPS against a no-change forecast, on keyless OECD history (US for Ahlgrim, UK for Hibbert and Wilkie). The years share one path of history, so they describe what happened rather than test calibration; the series are OECD stand-ins for the papers'' own (3-month for 1-month rates, the 10-year gilt for Consols, price indices for total-return indices, house prices for NCREIF).'
+    setup: From Python, by the set's name.
+    setup_lang: python
+    setup_code: |-
+      from financescenarios.validation.published_frameworks.published_frameworks_controller import held_up
+
+      rows, scores = held_up("wilkie")
   - name: Open Source Bond Asset Pricing
     status: available
     summary: A public panel of real corporate bond spreads you can check simulated credit spreads against. The public data has no credit ratings, so you cannot compare by rating.

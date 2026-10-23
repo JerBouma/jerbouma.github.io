@@ -1,8 +1,8 @@
 ## How It Works
 
-This page explains the theory of each, then derives every number: what it is, whether it comes from a published source, a fit on data or a judgement, and the chart that shows it. The numbers come from one calibration of the default settings and factor set, made on 19 October 2026. [Interest rates](/projects/financescenarios/docs/interest-rates) and [the economy](/projects/financescenarios/docs/economy) have their own pages, and every option is in the [API reference](/projects/financescenarios/docs).
+This page explains the theory of each, then derives every number: what it is, whether it comes from a published source, a fit on data or a judgement, and the chart that shows it. The numbers come from one calibration of the default settings and factor set, made on 19 October 2026. [Interest rates](/projects/financescenarios/docs/interest-rates) and [the economy](/projects/financescenarios/docs/economy) have their own pages, and every option is in the [reference](#reference) at the end of this page.
 
-### Equities
+### Equities {#equity-markets}
 
 #### Calm and Turbulent Regimes
 
@@ -129,13 +129,25 @@ Four other equity models are options:
 |:--|:--|
 | Returns above cash ([Hibbert, Mowbray and Turnbull, 2001](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"}) | The regimes fitted on returns in excess of a short rate, with the simulated short rate added back. |
 | Price from dividends ([Wilkie, 1986](https://doi.org/10.1017/S0071368600009009){:target="_blank"}) | The dividend index over the dividend yield, the last link of Wilkie's cascade. |
-| KNW | The equity leg of the [KNW model](/projects/financescenarios/docs/interest-rates#knw), with stochastic volatility shared with rates and inflation. |
-| Risk-neutral | For valuing options and guarantees, a geometric Brownian motion drifting at the short rate less the dividend yield, with an implied, SVI, realised or Heston volatility (below); the [Equities reference](/projects/financescenarios/docs/markets) has the sources. |
+| KNW | The equity leg of the [KNW model](/projects/financescenarios/docs/interest-rates#knw-models), with stochastic volatility shared with rates and inflation. |
+| Risk-neutral | For valuing options and guarantees, a geometric Brownian motion drifting at the short rate less the dividend yield, with an implied, SVI, realised or Heston volatility (below); the [Equities reference](#equities) has the sources. |
 | Switching with the business cycle | Instead of inflation, the switching chances follow the OECD's US leading indicator ([Filardo, 1994](https://doi.org/10.1080/07350015.1994.10524545){:target="_blank"}), fitted together with the regimes by the same joint expectation-maximisation of Diebold, Lee and Weinbach. On SPY since 2005, a calm month turns turbulent with a chance of 5.4% at an indicator of 105 and 27.7% at 95. The earlier two-step fit, which first labelled each month by its likelier regime and then fitted a logit, gave 5.8% and 8.8%: labelling throws away how unsure each month's regime is, and flattens the link. |
+
+#### The Implied Volatility
+
+`volatility_source: implied` reads each equity's volatility from its option chain at the first expiration at least a week out. The at-the-money volatility is the average of the out-of-the-money call and put on either side of the price. The quote nearest the price is not used on its own: for a thinly traded fund it is often an in-the-money call whose last trade is stale, and it inverts to a number far from the market's. A warning names any implied volatility more than twice or less than half the realized one. On the option chains of late October 2026:
+
+| Fund | Nearest quote | Out-of-the-money average | Realized |
+|:--|--:|--:|--:|
+| SPY | 17.8% | 17.6% | 15.2% |
+| IWM | 23.2% | 23.5% | 20.1% |
+| VGK | 23.0% | 18.9% | 18.6% |
+| EWJ | 27.9% | 23.7% | 16.2% |
+| EEM | 66.8% | 32.0% | 20.9% |
 
 #### Heston Paths at a Monthly Step
 
-Heston's (1993) stochastic volatility, fitted to option prices, often has a fast variance: in the [Equities reference](/projects/financescenarios/docs/markets) example it reverts at a speed of 14.6 a year, so at a monthly step the speed times the step is above one. A full-truncation Euler step, which sets a negative variance to zero, then overshoots, and the paths no longer reproduce the prices they were fitted to. The paths therefore step with the quadratic-exponential scheme of [Andersen (2008)](https://doi.org/10.21314/jcf.2008.189){:target="_blank"}, which draws the next variance from a distribution matched to its exact mean and variance and never goes negative, with the martingale correction that keeps the discounted price a martingale ([van Haastrecht and Pelsser, 2010, section 4.2](https://doi.org/10.1142/S0219024910005668){:target="_blank"}). On that example's fit, one-year calls priced from 200,000 monthly paths against [Heston's (1993)](https://doi.org/10.1093/rfs/6.2.327){:target="_blank"} closed form:
+Heston's (1993) stochastic volatility, fitted to option prices, often has a fast variance: in the [Equities reference](#equities) example it reverts at a speed of 14.6 a year, so at a monthly step the speed times the step is above one. A full-truncation Euler step, which sets a negative variance to zero, then overshoots, and the paths no longer reproduce the prices they were fitted to. The paths therefore step with the quadratic-exponential scheme of [Andersen (2008)](https://doi.org/10.21314/jcf.2008.189){:target="_blank"}, which draws the next variance from a distribution matched to its exact mean and variance and never goes negative, with the martingale correction that keeps the discounted price a martingale ([van Haastrecht and Pelsser, 2010, section 4.2](https://doi.org/10.1142/S0219024910005668){:target="_blank"}). On that example's fit, one-year calls priced from 200,000 monthly paths against [Heston's (1993)](https://doi.org/10.1093/rfs/6.2.327){:target="_blank"} closed form:
 
 | Strike | 80 | 90 | 100 | 110 | 120 |
 |:--|--:|--:|--:|--:|--:|
@@ -144,9 +156,9 @@ Heston's (1993) stochastic volatility, fitted to option prices, often has a fast
 
 The errors are relative to the closed-form price; the remaining error of the QE scheme sits in the far out-of-the-money calls, whose prices are small.
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/markets"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Equities API</a></div>
+<div class="fs-ref"><a href="#equities"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Equities API</a></div>
 
-### FX
+### FX {#currencies}
 
 #### Purchasing Power Parity for the Euro and the Pound
 
@@ -209,9 +221,9 @@ $$
 
 with both rates the simulated ones at the start of each step. Leaving out the $$\sigma^2$$, as a drift of $$r^f - r^{us}$$ does, is risk-neutral for an investor who counts in euros, not in dollars, and overstates the dollar value of foreign holdings by $$e^{\sigma^2 T}$$: about 9% at 10 years at the euro's 9.3% volatility. The known answer: a 10-year euro deposit, converted to dollars and discounted at the simulated US rate, has a mean of 1.
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/markets"><i class="fas fa-book" aria-hidden="true"></i>Full reference: FX API</a></div>
+<div class="fs-ref"><a href="#fx"><i class="fas fa-book" aria-hidden="true"></i>Full reference: FX API</a></div>
 
-### Commodities
+### Commodities {#commodity-prices}
 
 #### Gold: A Random Walk in Real Terms
 
@@ -272,7 +284,7 @@ How each commodity number is set:
 
 The two-factor model of [Schwartz and Smith (2000)](https://doi.org/10.1287/mnsc.46.7.893.12034){:target="_blank"}, a short-term deviation that fades plus a long-term level that drifts, fitted to the futures curve, is an option, also risk-neutral.
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/markets"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Commodities API</a></div>
+<div class="fs-ref"><a href="#commodities"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Commodities API</a></div>
 
 ### Real Estate
 
@@ -334,7 +346,7 @@ The two regimes raise the log-likelihood by 61.3 over one constant volatility. A
 
 The default keeps one constant volatility, read a year apart with the rate link above; the regimes are an option for a run that should hold housing busts as long quiet stretches and short wild ones.
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/markets"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Real estate API</a></div>
+<div class="fs-ref"><a href="#realestate"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Real estate API</a></div>
 
 ### Dividend Yield and Dividend Growth
 
@@ -405,8 +417,8 @@ The whole cascade runs one way, from inflation to the share price:
 
 Wilkie fitted 1919-1982 UK data; the shipped Wilkie factor set applies the same equations to US data.
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/markets"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Dividend yield API</a></div>
-<div class="fs-ref"><a href="/projects/financescenarios/docs/markets"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Dividend growth API</a></div>
+<div class="fs-ref"><a href="#dividendyield"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Dividend yield API</a></div>
+<div class="fs-ref"><a href="#dividendgrowth"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Dividend growth API</a></div>
 
 ### Credit Spreads
 
@@ -451,9 +463,9 @@ credit:
     period: monthly
 ```
 
-For a whole spread curve rather than buckets, see the [credit term structure API](/projects/financescenarios/docs/markets).
+For a whole spread curve rather than buckets, see the [credit term structure API](#credittermstructure).
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/markets"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Credit API</a></div>
+<div class="fs-ref"><a href="#credit"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Credit API</a></div>
 
 ### Credit Migration and Default
 
@@ -508,7 +520,7 @@ migration.summary()
 - One cycle drives all sectors and regions.
 </div>
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/markets"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Credit migration API</a></div>
+<div class="fs-ref"><a href="#creditmigration"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Credit migration API</a></div>
 
 ### References
 

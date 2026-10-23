@@ -1823,8 +1823,61 @@ financescenarios:
     url: /projects/financescenarios/docs
   - title: "Functionality"
     url: /projects/financescenarios#functionality
+  - title: "MCP Server"
+    url: /projects/financescenarios/mcp
   - title: Questions & Answers
     url: /projects/financescenarios#questions--answers
+financescenarios-mcp:
+  - title: Introduction
+    url: /projects/financescenarios/mcp#site-nav
+  - title: "Why this MCP"
+    url: /projects/financescenarios/mcp#why-the-finance-scenarios-mcp
+  - title: "What You Can Ask"
+    url: /projects/financescenarios/mcp#what-you-can-ask
+  - title: "Installation"
+    url: /projects/financescenarios/mcp#installation
+    children:
+      - title: Remote Server
+        url: /projects/financescenarios/mcp#remote-server
+      - title: Local Clients
+        url: /projects/financescenarios/mcp#local-clients
+      - title: Self-Hosting
+        url: /projects/financescenarios/mcp#self-hosting
+  - title: "Example Conversations"
+    url: /projects/financescenarios/mcp#example-conversations
+    children:
+      - title: 1970s Stagflation
+        url: /projects/financescenarios/mcp#ex-stagflation
+      - title: Inflation Shock
+        url: /projects/financescenarios/mcp#ex-inflation-shock
+      - title: 60/40 and a Goal
+        url: /projects/financescenarios/mcp#ex-60-40
+      - title: Backtest Since 2010
+        url: /projects/financescenarios/mcp#ex-backtest
+  - title: "FAQ"
+    url: /projects/financescenarios/mcp#faq
+  - title: "Under the Hood"
+    url: /projects/financescenarios/mcp/architecture
+    children:
+      - title: Modules
+        url: /projects/financescenarios/mcp/architecture#module-overview
+      - title: Startup
+        url: /projects/financescenarios/mcp/architecture#startup-sequence
+      - title: Four Tools
+        url: /projects/financescenarios/mcp/architecture#four-tools
+      - title: Snapshots and Caching
+        url: /projects/financescenarios/mcp/architecture#requests-snapshots-and-the-result-cache
+      - title: Regimes and Shocks
+        url: /projects/financescenarios/mcp/architecture#regimes-shocks-and-anchors
+      - title: Limits
+        url: /projects/financescenarios/mcp/architecture#limits
+      - title: Concurrency and Timeouts
+        url: /projects/financescenarios/mcp/architecture#concurrency-and-timeouts
+      - title: Stdout Guard
+        url: /projects/financescenarios/mcp/architecture#the-stdout-guard
+      - title: Self-Hosting
+        url: /projects/financescenarios/mcp/architecture#transports-and-self-hosting
+
 financescenarios-docs:
   - title: Modules
     children:
@@ -1965,7 +2018,7 @@ financescenarios-docs-configuration:
       - title: "Real-World and Risk-Neutral"
         url: /projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures
       - title: "Beliefs: Expert Judgement over the Fit"
-        url: /projects/financescenarios/docs/configuration#beliefs
+        url: /projects/financescenarios/docs/configuration#expert-judgement
       - title: "Published Frameworks"
         url: /projects/financescenarios/docs/configuration#published-frameworks
       - title: "API Keys"
@@ -2041,7 +2094,9 @@ financescenarios-docs-interest-rates:
       - title: "Other Rate Models"
         url: /projects/financescenarios/docs/interest-rates#other-rate-models
       - title: "The KNW Models: Rates and Inflation Together"
-        url: /projects/financescenarios/docs/interest-rates#knw
+        url: /projects/financescenarios/docs/interest-rates#knw-models
+      - title: "DNB's CP2022 Model"
+        url: /projects/financescenarios/docs/interest-rates#cp2022-model
       - title: "References"
         url: /projects/financescenarios/docs/interest-rates#references-1
   - title: "Reference"
@@ -2058,6 +2113,12 @@ financescenarios-docs-interest-rates:
         url: /projects/financescenarios/docs/interest-rates#knwsv
       - title: "KnwSvQ"
         url: /projects/financescenarios/docs/interest-rates#knwsvq
+      - title: "Cp2022"
+        url: /projects/financescenarios/docs/interest-rates#cp2022
+      - title: "Cp2022Vintage"
+        url: /projects/financescenarios/docs/interest-rates#cp2022vintage-1
+      - title: "Cp2022Params"
+        url: /projects/financescenarios/docs/interest-rates#cp2022params
       - title: "How It Is Calculated"
         url: /projects/financescenarios/docs/interest-rates#how-it-is-calculated
 
@@ -2105,7 +2166,7 @@ financescenarios-docs-economy:
       - title: "The Regimes Behind It"
         url: /projects/financescenarios/docs/economy#the-regimes-behind-it
       - title: "Unemployment"
-        url: /projects/financescenarios/docs/economy#unemployment
+        url: /projects/financescenarios/docs/economy#unemployment-rate
       - title: "The Leading Indicator"
         url: /projects/financescenarios/docs/economy#the-leading-indicator
   - title: "How It Works"
@@ -2127,7 +2188,7 @@ financescenarios-docs-economy:
       - title: "Inflation"
         url: /projects/financescenarios/docs/economy#inflation
       - title: "Unemployment"
-        url: /projects/financescenarios/docs/economy#unemployment-1
+        url: /projects/financescenarios/docs/economy#unemployment
       - title: "Mortality"
         url: /projects/financescenarios/docs/economy#mortality
       - title: "LeadingIndicator"
@@ -2189,11 +2250,11 @@ financescenarios-docs-markets:
   - title: "How It Works"
     children:
       - title: "Equities"
-        url: /projects/financescenarios/docs/markets#equities
+        url: /projects/financescenarios/docs/markets#equity-markets
       - title: "FX"
-        url: /projects/financescenarios/docs/markets#fx
+        url: /projects/financescenarios/docs/markets#currencies
       - title: "Commodities"
-        url: /projects/financescenarios/docs/markets#commodities
+        url: /projects/financescenarios/docs/markets#commodity-prices
       - title: "Real Estate"
         url: /projects/financescenarios/docs/markets#real-estate
       - title: "Dividend Yield and Dividend Growth"
@@ -2207,11 +2268,11 @@ financescenarios-docs-markets:
   - title: "Reference"
     children:
       - title: "Equities"
-        url: /projects/financescenarios/docs/markets#equities-1
+        url: /projects/financescenarios/docs/markets#equities
       - title: "FX"
-        url: /projects/financescenarios/docs/markets#fx-1
+        url: /projects/financescenarios/docs/markets#fx
       - title: "Commodities"
-        url: /projects/financescenarios/docs/markets#commodities-1
+        url: /projects/financescenarios/docs/markets#commodities
       - title: "RealEstate"
         url: /projects/financescenarios/docs/markets#realestate
       - title: "DividendYield"
@@ -2554,6 +2615,10 @@ financescenarios-docs-validation:
         url: /projects/financescenarios/docs/validation#dated-values
       - title: "External Benchmarks"
         url: /projects/financescenarios/docs/validation#external-benchmarks
+      - title: "Published Models: Reproducing Their Papers"
+        url: /projects/financescenarios/docs/validation#published-parameter-mode
+      - title: "How the Published Models Held Up"
+        url: /projects/financescenarios/docs/validation#published-models-held-up
       - title: "Published Calibrations"
         url: /projects/financescenarios/docs/validation#published-calibrations
       - title: "What Is Not Validated"
@@ -2572,6 +2637,14 @@ financescenarios-docs-validation:
         url: /projects/financescenarios/docs/validation#outofsample
       - title: "OutOfSampleEvaluation"
         url: /projects/financescenarios/docs/validation#outofsampleevaluation
+      - title: "NaicGoes"
+        url: /projects/financescenarios/docs/validation#naicgoes
+      - title: "Dnb"
+        url: /projects/financescenarios/docs/validation#dnb
+      - title: "compare_published"
+        url: /projects/financescenarios/docs/validation#compare_published
+      - title: "held_up"
+        url: /projects/financescenarios/docs/validation#held_up
       - title: "How It Is Calculated"
         url: /projects/financescenarios/docs/validation#how-it-is-calculated
 

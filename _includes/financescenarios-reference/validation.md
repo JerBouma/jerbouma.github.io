@@ -6,6 +6,10 @@ Everything on this page imports as follows:
 
 ```python
 from financescenarios import Relationships, RelationshipRegion, Realism, RealismFactor, OutOfSample, OutOfSampleEvaluation
+from financescenarios.validation.naic_goes.naic_goes_controller import NaicGoes
+from financescenarios.validation.dnb.dnb_controller import Dnb
+from financescenarios.validation.published_frameworks.published_frameworks_controller import compare_published
+from financescenarios.validation.published_frameworks.published_frameworks_controller import held_up
 ```
 
 ### Relationships
@@ -809,6 +813,503 @@ plot(factor: str, ax: Axes | None = None) -> Figure
 
 </details>
 
+### NaicGoes
+
+The NAIC's Generator of Economic Scenarios (GOES), the prescribed generator of the Valuation Manual for US
+principle-based reserves (VM-20 for life, VM-21 for variable annuities), but companies may use their own, as a
+benchmark for this run's US interest rates. Conning publishes it monthly at
+[naic.conning.com/scenariofiles](https://naic.conning.com/scenariofiles): 10,000 scenarios in the base set (the
+"# Total Scenarios" of its statistics workbook) and the 16 deterministic SERT scenarios.
+
+NAIC (2026, VM-20, Appendix 1, section E, p. 20-88) lets a company generate its interest-rate and equity or bond fund
+return scenarios, in part or in full, with its own generator instead of the prescribed one, provided their use
+satisfies section 2.G. That generator must meet the requirements of Appendix 1 (NAIC (2026, VM-20, section 7.G.3)),
+and for variable annuities its scenarios must not give a materially lower total asset requirement (TAR) than the
+prescribed ones (NAIC (2026, VM-21, section 8.E), the Valuation Manual's 1 January 2026 edition). Holding a run's US
+Treasury rates up against the regulator's own percentile bands shows whether it lets rates go as high and as low as
+the prescribed set does. A run with much narrower bands understates interest-rate risk in anything valued on it; much
+wider bands overstate it. `compare_interest_rates` reports the differences; `check_acceptance` holds the run to the
+acceptance criteria NAIC sets GOES itself (the workbook's Acceptance Criteria_Dashboard sheet: the 1-year yield's
+99.5th percentile at or below 18%, no 1-year below -1%, the S&P 500's gross wealth factors and more), with a pass or
+fail per criterion. The NAIC files carry Conning's terms of use: they
+are downloaded to a local cache for your own use, not redistributed.
+
+**References:**
+
+- NAIC (2026). "Valuation Manual", 1 January 2026 edition: VM-20 Section 7.G and Appendix 1; VM-21 Section 8. <https://content.naic.org/sites/default/files/pbr_data_valuation_manual_current_edition.pdf>
+- NAIC / Conning. "NAIC Economic Scenario Files." <https://naic.conning.com/scenariofiles>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+NaicGoes(vintage: str, cache_dir: Path | None = None)
+```
+
+</details>
+
+#### NaicGoes.vintage
+
+The release this benchmark reads, e.g. to report which one `latest()` picked.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+naicgoes.vintage  # property -> str
+```
+
+</details>
+
+#### NaicGoes.latest
+
+The benchmark for the most recent release the NAIC publishes.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+NaicGoes.latest(cache_dir: Path | None = None) -> 'NaicGoes'
+```
+
+</details>
+
+#### NaicGoes.fetch_treasury_percentiles
+
+The NAIC's percentile bands of US Treasury yields per maturity and projection month, the distribution the
+prescribed scenario set implies.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+fetch_treasury_percentiles() -> pl.DataFrame
+```
+
+**Returns:**
+
+<u>pl.DataFrame:</u> `tenor` (e.g. "10yr"), `statistic` (e.g. "p5", "p50", "mean"), `projection_month` and `value`.
+
+</details>
+
+#### NaicGoes.fetch_sert_scenarios
+
+The NAIC's SERT scenarios: a small set of named, prescribed paths for Treasury yields and fund returns, used for
+stress testing rather than as a distribution.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+fetch_sert_scenarios() -> pl.DataFrame
+```
+
+**Returns:**
+
+<u>pl.DataFrame:</u> `scenario`, `time_step` (months from the start), `variable` and `value`.
+
+</details>
+
+#### NaicGoes.compare_interest_rates
+
+Compare a simulated US interest rate's percentile bands with the NAIC's for the same maturity, month by month.
+
+The maturity is worked out from the rate's configuration (the 10-year Treasury yield is compared with the NAIC's
+10-year band), or given as `tenor`. Read the result in two ways: the median shows whether the run's central path
+drifts where the NAIC's does, and the outer percentiles whether the run allows rates as extreme as the prescribed
+set. A gap that widens with the horizon points at the long-run level or the volatility; a gap in the first months
+points at the starting point.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+compare_interest_rates(
+    scenario_set: ScenarioSet,
+    config: ScenariosConfig,
+    factor_name: str,
+    tenor: str | None = None,
+    month_offset: int = 0,
+) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> a monthly run; the NAIC's bands are monthly.
+- <u>config (ScenariosConfig):</u> the configuration that produced the run.
+- <u>factor_name (str):</u> the interest rate to compare.
+- <u>tenor (str &#124; None):</u> the NAIC maturity, e.g. "10yr". Defaults to None, read from the rate's configuration.
+- <u>month_offset (int):</u> how many months into the run the NAIC's first projection month sits; 0 by default.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> per projection month and percentile, the simulated value, the NAIC's and the difference.
+
+**Raises:**
+
+- <u>ValueError:</u> if the factor is not a configured interest rate, its maturity has no NAIC match, or the run is not monthly.
+
+</details>
+
+#### NaicGoes.fetch_acceptance_criteria
+
+The thresholds of the GOES acceptance criteria as this release states them, read from its statistics workbook's
+`Acceptance Criteria_Dashboard` sheet, so a check follows NAIC's revisions.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+fetch_acceptance_criteria() -> naic_goes_model.AcceptanceThresholds
+```
+
+**Returns:**
+
+<u>AcceptanceThresholds:</u> the thresholds of T1, T2, T4, T5, T6 and the E1 gross wealth factor targets.
+
+</details>
+
+#### NaicGoes.check_acceptance
+
+Hold a run up against the GOES acceptance criteria, the pass marks NAIC sets its own generator: the upper tail
+(T1), negative rates (T2), low-for-long (T4), the spread of long averages (T5) and the mean-reversion benchmark
+(T6) on the 1-year and 20-year Treasury yields, and the S&P 500's gross wealth factors (E1).
+
+A company may use its own generator if it meets the Valuation Manual's requirements (VM-20, Appendix 1), so a
+check against the bar GOES itself is held to shows how close a run is. The 1-year and 20-year yields are the
+run's own when it simulates them, and otherwise read off its neighbouring Treasury yields in a straight line
+(the 1-year from the 3-month and 5-year, the 20-year from the 10-year and 30-year). The thresholds are the
+release's own; GOES failed T4 and one part of T5 on the 30 September 2026 release.
+
+**As an example:**
+
+```python
+from financescenarios import Scenarios
+from financescenarios.validation.naic_goes.naic_goes_controller import NaicGoes
+
+scenarios = Scenarios.from_profiles(settings="goes", factor_set="goes")
+result = scenarios.simulate(years=30, n_simulations=10_000)
+NaicGoes(vintage="20260930").check_acceptance(result, scenarios.config, equity_name="us_broad")
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+check_acceptance(
+    scenario_set: ScenarioSet,
+    config: ScenariosConfig,
+    equity_name: str | None = None,
+    tolerance: float = naic_goes_model.E1_DEFAULT_TOLERANCE,
+) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> a monthly run of at least 30 years.
+- <u>config (ScenariosConfig):</u> the configuration that produced it, to find each Treasury yield's maturity.
+- <u>equity_name (str &#124; None):</u> the equity whose total return is checked against E1, e.g. "us_broad". Defaults to None, no E1.
+- <u>tolerance (float):</u> E1's relative tolerance, by default 0.10; NAIC gives the targets without one.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> `criterion`, `statistic`, `value`, `lower`, `upper` and `passed` (null where NAIC only reviews the statistic).
+
+**Raises:**
+
+- <u>ValueError:</u> if the run is not monthly, or its Treasury yields do not span the 1-year and 20-year.
+
+</details>
+
+### Dnb
+
+De Nederlandsche Bank's scenario sets as a benchmark: the 20,000 scenarios over 100 years Dutch pension funds
+must use, real world (the P-set) or market consistent (the Q-set, calibrated to market prices including
+swaptions), generated with the model the Commissie Parameters specified in 2022. DNB publishes the 20,000
+scenarios as Excel workbooks every quarter; each workbook holds one yearly column per
+horizon year, 1 to 100 (checked on the 2026Q3 sets).
+
+An independent, regulator-reviewed set of scenarios to hold a run up against. For a euro run it answers whether
+the spread of interest rates, inflation and equity returns looks like the one the Dutch regulator prescribes;
+for a market-consistent run, the Q-set is a reference calibrated to swaption prices, which free market data
+cannot otherwise provide. A run that differs from DNB's is not wrong, but the difference should be one you can
+explain, such as a different view on long-run rates. To use DNB's paths in a run instead of comparing, see
+`external_scenario_source: {provider: dnb}`.
+
+The data come through the Finance Toolkit, with no API key. DNB's workbook is
+about 180 MB, so the first read takes a minute or two and much memory; it is cached afterwards.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+from financescenarios.validation.dnb.dnb_controller import Dnb
+
+dnb = Dnb(Toolkit(["SPY"]))
+dnb.compare(result, "eurozone_long_rate", "Nominal rate 10Y")
+```
+
+**References:**
+
+- De Nederlandsche Bank. "DNB publiceert definitieve scenariosets bij Wet toekomst pensioenen." <https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/dnb-publiceert-definitieve-scenariosets-bij-wet-toekomst-pensioenen/>
+- Commissie Parameters (2022). "Technical Appendix: Specification of the CP2022 Model." <https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+Dnb(toolkit: Toolkit)
+```
+
+</details>
+
+#### Dnb.distribution
+
+DNB's distribution of one variable per year of the horizon.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+distribution(
+    variable: str,
+    measure: str = 'real_world',
+    quantiles: Sequence[float] = _DEFAULT_QUANTILES,
+) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>variable (str):</u> "Nominal rate 1Y", "5Y", "10Y", "20Y" or "30Y", "Real rate EU 10Y", "Equity return", "Inflation EU" or "Inflation NL".
+- <u>measure (str):</u> "real_world" (the P-set) or "market_consistent" (the Q-set).
+- <u>quantiles (Sequence[float]):</u> the quantiles, each in [0, 1].
+
+**Returns:**
+
+<u>pl.DataFrame:</u> a "year" column and one column per quantile, named as the quantile ("0.05").
+
+**Raises:**
+
+- <u>ValueError:</u> if nothing comes back for the variable.
+
+</details>
+
+#### Dnb.compare
+
+Set a run's factor beside DNB's matching variable, quantile by quantile, at every whole year both cover. The
+columns and the reading are those of `compare_with_scenario_set`: equity is compared as yearly returns, rates and
+inflation as levels.
+
+A run whose quantiles track DNB's tells a story about the future similar to the one the Dutch regulator
+prescribes; a gap that widens with the years shows where the run's long-term behaviour (mean reversion, long-run
+levels, volatility) differs from DNB's. Neither set is "right", but a gap is something to be able to explain.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+compare(
+    scenario_set: ScenarioSet,
+    factor: str,
+    variable: str,
+    measure: str = 'real_world',
+    quantiles: Sequence[float] = _DEFAULT_QUANTILES,
+) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> the run.
+- <u>factor (str):</u> the factor to compare.
+- <u>variable (str):</u> DNB's matching variable, see `distribution`.
+- <u>measure (str):</u> "real_world" for a real-world run, "market_consistent" for a risk-neutral one.
+- <u>quantiles (Sequence[float]):</u> the quantiles to compare.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> per year, this run's and DNB's quantiles and their difference.
+
+</details>
+
+#### Dnb.compare_moments
+
+Set a run's mean, spread and percentiles beside DNB's at each of `years`, for every factor named in
+`factors`, and for equity also the return it compounds to from the start (`dnb_model.compare_moments`).
+
+Where `compare` lines up quantiles, this answers the questions a reproduction is judged on: does the run's
+1-year rate average what DNB's does in ten years, is its spread as wide, and does equity compound to the same
+return over a century? DNB's set is read in a separate process (`dnb_moments`), as its workbook is large.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+from financescenarios import Scenarios
+from financescenarios.validation.dnb.dnb_controller import Dnb
+
+result = Scenarios.from_profiles("dnb", "dnb").simulate()
+Dnb(Toolkit(["SPY"])).compare_moments(result, {"Nominal rate 10Y": "euro_10y", "Equity return": "world_equity"})
+```
+
+Which returns, for DNB's 2026Q4 set and 2,000 scenarios, the 10-year rate's mean of 2.31% in year 10 against
+DNB's 2.31%, with a standard deviation of 1.29% against 1.29%, and equity compounding to a median of 5.65% a
+year over 100 years against DNB's 5.61%.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+compare_moments(
+    scenario_set: ScenarioSet,
+    factors: dict[str, str],
+    years: Sequence[int] = dnb_model.DNB_YEARS,
+    measure: str = 'real_world',
+) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> the run.
+- <u>factors (dict[str, str]):</u> DNB's variable to the run's factor, e.g. {"Nominal rate 10Y": "euro_10y", "Equity return": "world_equity"}.
+- <u>years (Sequence[int]):</u> the horizon years; 1, 5, 10, 30 and 100 by default.
+- <u>measure (str):</u> "real_world" (the P-set) or "market_consistent" (the Q-set).
+
+**Returns:**
+
+<u>pl.DataFrame:</u> per variable and year the run's and DNB's mean, sd, p5, p50 and p95, their differences and the ratio of the sds.
+
+</details>
+
+#### Dnb.compare_correlations
+
+Set a run's correlations across scenarios beside DNB's, pair by pair at each of `years`
+(`dnb_model.compare_correlations`): for one, whether equity falls in the scenarios where the 1-year rate
+rises, as strongly as in DNB's set (-0.49 in year 1 of the 2026Q4 set).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+compare_correlations(
+    scenario_set: ScenarioSet,
+    factors: dict[str, str],
+    pairs: Sequence[tuple[str, str]] = dnb_model.DNB_CORRELATION_PAIRS,
+    years: Sequence[int] = dnb_model.DNB_CORRELATION_YEARS,
+    measure: str = 'real_world',
+) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> the run.
+- <u>factors (dict[str, str]):</u> DNB's variable to the run's factor.
+- <u>pairs (Sequence[tuple[str, str]]):</u> pairs of DNB's variables; pairs naming a variable missing from `factors` are left out.
+- <u>years (Sequence[int]):</u> the horizon years; 1, 10 and 30 by default.
+- <u>measure (str):</u> "real_world" (the P-set) or "market_consistent" (the Q-set).
+
+**Returns:**
+
+<u>pl.DataFrame:</u> "first", "second", "year", "run", "dnb" and "difference".
+
+</details>
+
+### compare_published
+
+Check a reference factor set against the numbers its paper reports for its own model.
+
+The `ahlgrim`, `hibbert` and `wilkie` factor sets state their papers' published parameters and starting values, so
+run as the sets run, from the papers' own start dates and over their horizons, they should reproduce the tables
+of Ahlgrim, D'Arcy and Gorvett (2005, Tables 1 and 2), Hibbert, Mowbray and Turnbull (2001, Exhibit 7.2A) and
+Wilkie (1986, Table 3). This runs the set without data (`simulate_published`) and compares every reported mean,
+standard deviation, percentile and correlation the package can recompute. A difference counts as Monte Carlo
+error when it is within four standard errors of the difference between the two estimates (batch means for this
+run's, scaled to the paper's number of scenarios for the paper's) plus half the paper's last printed digit.
+
+**As an example:**
+
+```python
+from financescenarios.validation.published_frameworks.published_frameworks_controller import compare_published
+
+compare_published("wilkie")
+```
+
+Which returns (the first 3 of 91 rows, all within):
+
+| source | variable | statistic | horizon | published | simulated | tolerance | within |
+|:-------|:---------|:----------|--------:|----------:|----------:|----------:|:-------|
+| Table 3 | GQ | mean | 1.0 | 0.0537 | 0.0538 | 0.0076 | true |
+| Table 3 | GQ | mean | 5.0 | 0.0537 | 0.0531 | 0.0055 | true |
+| Table 3 | GQ | mean | 10.0 | 0.0514 | 0.0526 | 0.0043 | true |
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+compare_published(framework: str, n_simulations: int = 10000, seed: int = 2001) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>framework (str):</u> "ahlgrim", "hibbert" or "wilkie".
+- <u>n_simulations (int):</u> the number of scenarios. Defaults to 10,000.
+- <u>seed (int):</u> the random seed. Defaults to 2001.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> one row per published number: source, variable, statistic, horizon (years; 0 for a statistic pooled over the horizon), published, simulated, tolerance and within.
+
+</details>
+
+### held_up
+
+How a published model held up: its fan, run from its paper's start date as the reference factor set runs it,
+laid over what actually happened since, year by year.
+
+A model published with its parameters makes a forecast one can check years later. Ahlgrim, D'Arcy and Gorvett
+(2005) start from the US market of June 2004, Hibbert, Mowbray and Turnbull (2001) from end-March 2001 and Wilkie
+(1986) from his neutral start, dated 1986; their papers set them on US, UK and UK data. Each anniversary's
+realized value (the OECD's short and long rates, year-on-year CPI inflation, unemployment, share prices and US
+house-price growth, all keyless) is placed in the fan: the share of years inside the 50% and 90% bands, the PITs
+and the CRPS against a forecast of no change. The years share one path of history, so these describe what
+happened rather than test calibration, and the OECD series are stand-ins for the papers' own (the 3-month rate for
+a 1-month one, a 10-year gilt for Consols, a share price index for Wilkie's and Hibbert's indices, house prices for
+NCREIF's commercial property).
+
+**As an example:**
+
+```python
+from financescenarios.validation.published_frameworks.published_frameworks_controller import held_up
+
+rows, scores = held_up("wilkie")
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+held_up(
+    framework: str,
+    n_simulations: int | None = None,
+    seed: int = 2001,
+    toolkit: Any = None,
+) -> tuple[pl.DataFrame, pl.DataFrame]
+```
+
+**Args:**
+
+- <u>framework (str):</u> "ahlgrim", "hibbert" or "wilkie".
+- <u>n_simulations (int &#124; None):</u> the number of scenarios. Defaults to None, the paper's own.
+- <u>seed (int):</u> the random seed. Defaults to 2001.
+- <u>toolkit (Toolkit &#124; None):</u> the Finance Toolkit to read the OECD data with. Defaults to None, a keyless one.
+
+**Returns:**
+
+<u>tuple[pl.DataFrame, pl.DataFrame]:</u> the rows of `held_up_rows` (the fan's percentiles and the realized value per factor and year, the chart data) and the scores of `held_up_scores` per factor.
+
+</details>
+
 ### How It Is Calculated
 
 The model functions behind this page, each with the formula it implements.
@@ -1196,3 +1697,57 @@ with_real_exchange_rate(
 
 </details>
 {% endraw %}
+
+#### compare_with_scenario_set
+
+The quantiles of one simulated factor beside DNB's at every whole year both cover.
+
+How the spread of this run's scenarios for, say, a long interest rate compares with the spread in
+the scenarios the Dutch regulator prescribes, year by year. Similar quantiles mean the run tells a similar
+story about how high or low the variable can go; a steady gap shows where this run's calibration differs.
+
+The formula is as follows:
+
+$$
+r_{t} = P_{t} / P_{t-1} - 1
+$$
+
+$$
+D(q,\; t) = Q_{q}(x_{t}) - B(q,\; t)
+$$
+
+Where P_t is an equity factor's simulated price at whole year t (no return exists at year 0), x_t the compared
+value across simulations (r_t for an equity, the level otherwise), Q_q its q-quantile, B(q, t) DNB's and
+D(q, t) the "difference_q" column.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+compare_with_scenario_set(
+    scenario_set: ScenarioSet,
+    factor: str,
+    variable: str,
+    benchmark: pl.DataFrame,
+    quantiles: Sequence[float],
+) -> pl.DataFrame
+```
+
+**Args:**
+
+- <u>scenario_set (ScenarioSet):</u> the run.
+- <u>factor (str):</u> its factor to compare.
+- <u>variable (str):</u> DNB's variable, e.g. "Nominal rate 10Y", "Inflation EU" or "Equity return". An equity factor is compared as its year-on-year return, the others as their level.
+- <u>benchmark (pl.DataFrame):</u> DNB's distribution: a "year" column and one column per quantile, named as the quantile (e.g. "0.05").
+- <u>quantiles (Sequence[float]):</u> the quantiles to compare; each must be a column of `benchmark`.
+
+**Returns:**
+
+<u>pl.DataFrame:</u> "year", and per quantile q the columns "run_q", "dnb_q" and "difference_q" (run minus DNB).
+
+**Raises:**
+
+- <u>KeyError:</u> if `factor` is not in the run.
+- <u>ValueError:</u> if a quantile is missing from `benchmark` or the two share no year.
+
+</details>

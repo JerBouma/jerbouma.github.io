@@ -10,12 +10,15 @@ scenarios.term_structure  # TermStructure
 scenarios.hjm             # Hjm
 scenarios.knw             # Knw
 scenarios.knw_sv          # KnwSv
+scenarios.cp2022          # Cp2022
 ```
 
-`KnwSvQ` imports as follows:
+`KnwSvQ`, `Cp2022Vintage`, `Cp2022Params` import as follows:
 
 ```python
 from financescenarios.models.knw_sv_q.knw_sv_q_controller import KnwSvQ
+from financescenarios.models.cp2022.cp2022_model import Cp2022Vintage
+from financescenarios.models.cp2022.cp2022_model import Cp2022Params
 ```
 
 ### InterestRates
@@ -27,11 +30,11 @@ curve, add the `yield_curve` or `hjm` factor.
 
 The core assumption is mean reversion: central banks raise rates when the economy runs hot and cut them when it
 slows, so a short rate is pulled back toward a long-run level. That keeps 30-year projections realistic while
-still allowing rate cycles. The default model is the Ornstein-Uhlenbeck process of [Vasicek (1977)](https://doi.org/10.1016/0304-405x(77)90016-2),
-`dr = a(theta - r)dt + sigma*dW`: `theta` is the long-run level, `a` the speed of the pull (a gap halves in
-ln 2 / `a` years) and `sigma` the size of the random swings `dW`. Shocks are normal, so the rate can go
-negative, as euro and yen rates did after 2014, and swing sizes do not depend on the level. `method` picks the
-process:
+still allowing rate cycles. The default method, `hull_white`, is the Ornstein-Uhlenbeck process of
+[Vasicek (1977)](https://doi.org/10.1016/0304-405x(77)90016-2), `dr = a(theta - r)dt + sigma*dW`: `theta` is the
+long-run level, `a` the speed of the pull (a gap halves in ln 2 / `a` years) and `sigma` the size of the random
+swings `dW`. Shocks are normal, so the rate can go negative, as euro and yen rates did after 2014, and swing sizes
+do not depend on the level. `method` picks the process:
 
 | Method | What it is |
 |:-------|:-----------|
@@ -41,6 +44,7 @@ process:
 | `hibbert_two_factor` | Toward a moving long rate: [Hibbert, Mowbray and Turnbull (2001)][hibbert-2001]. |
 | `knw` | Linked both ways with a paired inflation entry; fitted by `Knw`. |
 | `knw_sv` | `knw` with a shared, randomly changing volatility; fitted by `KnwSv`. |
+| `cp2022` | De Nederlandsche Bank's CP2022 model with its quarterly parameters; read by `Cp2022`. |
 
 [hull-white-1990]: https://doi.org/10.1093/rfs/3.4.573
 [cir-1985]: https://doi.org/10.2307/1911242
@@ -56,7 +60,9 @@ scenarios with an inflation spike are also scenarios with high rates, and a rece
 the short rate expected over its maturity plus a mean-reverting term premium, as in
 [Campbell and Shiller (1991, section 2, eq. 1)](https://doi.org/10.2307/2298008), so the curve inverts when the
 short rate jumps and steepens again as it falls back, rather than the two rates drifting apart for decades (see
-`calibrate_expectations`).
+`calibrate_expectations`). The default factor set uses both: each short rate follows the balanced-approach rule
+from the market's expected path (`policy_rule: balanced`, `expected_path: market`), so `theta` is that path
+rather than one fitted level, and each ten-year rate is its short rate's expected path plus a term premium.
 
 Real rate volatility comes in bursts (2008, 2022), so `volatility_model: garch` lets the size of the swings change
 over time, as in [Bollerslev (1986)](https://doi.org/10.1016/0304-4076(86)90063-1), with `hull_white` only, giving
@@ -146,6 +152,8 @@ calibrate(
     target_term: str = 'long',
     target_ticker: str = '^TNX',
     target_smoothing: float = 0.05,
+    real_rate_inflation: tuple[pl.Series, pl.Series, float] | None = None,
+    fit_dynamics: bool = True,
 ) -> OUParams | GARCHParams | OUCovariateParams | WilkieConsolsParams | MovingTargetOUParams
 ```
 
@@ -168,6 +176,8 @@ calibrate(
 - <u>target_term (str):</u> the target's term for "oecd" or "gmdb", default "long"; not equal to `term`.
 - <u>target_ticker (str):</u> the target's ticker for "ticker", default "^TNX", the 10-year yield, which Ahlgrim, D'Arcy and Gorvett (2005, section 3) use as their long-rate proxy; not equal to `ticker`.
 - <u>target_smoothing (float):</u> the "ewma" weight on each new observation, between 0 and 1, default 0.05, a judgement (an average with a memory of about 20 observations; the paper's target is unobserved).
+- <u>real_rate_inflation (tuple[pl.Series, pl.Series, float] &#124; None):</u> the paired inflation's dates, history and latest value, to fit the real rate instead: the rate (and a "long_term_rate" target) less inflation (`ex_post_real_rate`), starting at today's rate less today's inflation. Default None, the nominal rate.
+- <u>fit_dynamics (bool):</u> fit the process (default). False reads only today's state, for a run whose beliefs state every parameter, as a published model's do: a "hull_white" or "hibbert_two_factor" rate (and its target) starts at its latest value with placeholder dynamics, a "wilkie_consols" one at today's expected inflation and real yield (`fit_wilkie_consols_process`). The fit is then neither needed nor able to fail on a history it does not suit.
 
 **Returns:**
 
@@ -592,8 +602,9 @@ calibrate_risk_neutral_forward(
 
 #### InterestRates.market_path
 
-The short rate the market expected on the start date, year by year for ten years, with the term premium
-taken out: the path a policy-rule rate with `expected_path: market` follows (`market_expected_short_rates`).
+The short rate the market expected on the calibration date (`as_of`), year by year for ten years, with the
+term premium taken out: the path a policy-rule rate with `expected_path: market` follows
+(`market_expected_short_rates`).
 
 For the dollar the curve is the New York Fed's fit of the Treasury zero-coupon curve (`acm_term_structure`), so
 the term premium comes out of the yields it was estimated on; without it the US Treasury's daily par curve
@@ -2134,6 +2145,205 @@ deflator(
 
 </details>
 
+### Cp2022
+
+The Cp2022 module simulates the euro economy with the model De Nederlandsche Bank (DNB) prescribes for Dutch pension
+funds: the CP2022 model of the Commissie Parameters (2022), with the parameters DNB publishes every quarter.
+
+Dutch pension funds must test their plans on DNB's scenario sets, and an insurer or fund comparing its own scenarios
+with the regulator's wants the same model. CP2022 moves the nominal short rate, expected euro-area inflation and a
+market-wide variance together, so rates, inflation and equity fall and rise as one economy: equity drops when
+turbulence rises and rates jump, and inflation's spread grows in turbulent years. Real and nominal yields of every
+maturity follow from the same three state variables.
+
+The model is the affine stochastic-volatility model of the [Technical Appendix](
+https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix) (eqs. 1-6), an
+extension of [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058) with the variance of
+[Heston (1993)](https://doi.org/10.1093/rfs/6.2.327). It steps monthly with the scheme of its section 9.1 (the QE
+scheme of [Andersen (2008)](https://doi.org/10.21314/jcf.2008.189) for the variance), its yields come from the
+Riccati equations of its section 10, and Dutch CPI inflation is the HICP's plus the spread of its section 8.
+
+Every quarter DNB publishes 20,000 real-world scenarios together with the model's parameters, the term-structure
+functions phi and psi and the paths of the three state variables. `read_scenario_set` stores a quarter as a vintage;
+a run reads the vintage DNB had published by its calibration date. Alongside DNB's parameters each vintage holds the
+parameters `estimate_cp2022` backs out of the 20,000 paths, with bootstrap standard errors, a check that the
+published parameters made the published paths.
+
+Only the real-world (P) set is covered. DNB's market-consistent set is calibrated to equity options, swaptions and
+inflation caps and floors (Technical Appendix, sec. 5, eq. 25), market data that needs paid sources.
+
+**As an example:**
+
+```python
+from financescenarios.models.cp2022.cp2022_controller import Cp2022
+
+cp2022 = Cp2022()
+vintage = cp2022.vintage()
+vintage.quarter, vintage.params.mean_reversion[0][0]
+```
+
+Which returns ("2026Q4", 2.7889): the variance halves in about three months.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+Cp2022(toolkit: Toolkit | None = None)
+```
+
+</details>
+
+#### Cp2022.vintage
+
+The quarter of DNB's set in force on `as_of` (the newest when None), with a warning when `as_of` precedes the
+first stored quarter.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+vintage(as_of: date | None = None) -> Cp2022Vintage
+```
+
+**Args:**
+
+- <u>as_of (date &#124; None):</u> the calibration date.
+
+**Returns:**
+
+<u>Cp2022Vintage:</u> the vintage.
+
+</details>
+
+#### Cp2022.fetch_history
+
+The history an entry's correlation with the run's other factors is estimated on: its rate's changes, its
+inflation's changes or its equity's log returns. None, with a warning, when there is no toolkit or the fetch
+fails, and the entry is then simulated uncorrelated with the other factors.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+fetch_history(name: str, kind: str, period: str, **source: str) -> pl.DataFrame | None
+```
+
+**Args:**
+
+- <u>name (str):</u> the entry's name.
+- <u>kind (str):</u> "rate", "inflation" or "equity".
+- <u>period (str):</u> the frequency of the history.
+- <u>source (str):</u> the entry's data source: `source`, `ticker`, `country` and `term` for a rate, `country` for inflation, `ticker` for equity.
+
+**Returns:**
+
+<u>pl.DataFrame &#124; None:</u> dated changes, a `date` and a `value` column.
+
+</details>
+
+#### Cp2022.changes
+
+The dated changes `fetch_history` read for an entry, for the correlation with other factors.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+changes(name: str) -> pl.DataFrame
+```
+
+**Raises:**
+
+- <u>RuntimeError:</u> if no history was read for the entry.
+
+</details>
+
+#### Cp2022.has_history
+
+Whether `fetch_history` read a history for the entry.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+has_history(name: str) -> bool
+```
+
+</details>
+
+### Cp2022Vintage
+
+One quarter of DNB's real-world scenario set as the package stores it: the parameters, the term-structure
+functions and the Dutch inflation forecasts, with the parameters estimated from the set's own paths beside them.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+class Cp2022Vintage(BaseModel):
+    quarter: str
+    published: date
+    params: Cp2022Params
+    curves: Cp2022Curves
+    dutch_inflation: list[float]
+    estimate: Cp2022Estimate | None = None
+    source: str = ''
+```
+
+**Attributes:**
+
+- <u>quarter (str):</u> the quarter the set is for, e.g. "2026Q4".
+- <u>published (date):</u> the day DNB published it; a calibration as of a later day reads it.
+- <u>params (Cp2022Params):</u> the parameters DNB publishes in the set (its sheet "0_Parameters").
+- <u>curves (Cp2022Curves):</u> phi and psi of the nominal and euro-area real curves.
+- <u>dutch_inflation (list[float]):</u> per horizon year 1, 2, ..., the expected Dutch CPI inflation the set's spread follows (eq. 49): CPB's forecasts, then 2%; read back from the set as exp(mean ln(1 + inflation)) - 1.
+- <u>estimate (Cp2022Estimate &#124; None):</u> the parameters `estimate_cp2022` backs out of the set's paths.
+- <u>source (str):</u> where the vintage comes from, the set's file name.
+
+</details>
+
+### Cp2022Params
+
+The real-world parameters of the CP2022 model (Technical Appendix, eqs. 2-6), and the risk-neutral ones its term
+structures need (eqs. 10-11).
+
+The state X^s = (v, r, pi) holds a Heston variance v, the nominal short rate r and expected euro-area inflation pi.
+It reverts to `long_run_mean` through the matrix K, and its five shocks are scaled by v: shock 1 by sqrt(v) and
+shock i > 1 by sqrt(1 + gamma_i * v). The log equity index and the log HICP drift at r + eta_S and pi + eta_Pi
+less half their variance, and load on the same five shocks.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+class Cp2022Params(BaseModel):
+    long_run_mean: list[float] = Field(min_length=3, max_length=3)
+    mean_reversion: list[list[float]]
+    state_loadings: list[list[float]]
+    index_loadings: list[list[float]]
+    gamma: list[float] = Field(min_length=5, max_length=5)
+    equity_premium: float
+    inflation_premium: float
+    initial_state: list[float] = Field(min_length=3, max_length=3)
+    risk_neutral_long_run_mean: list[float] | None = None
+    risk_neutral_mean_reversion: list[list[float]] | None = None
+```
+
+**Attributes:**
+
+- <u>long_run_mean (list[float]):</u> E^P[X^s_inf] = (E v, E r, E pi), eq. 2.
+- <u>mean_reversion (list[list[float]]):</u> K, 3 x 3 with K[0][1] = K[0][2] = 0, eq. 3.
+- <u>state_loadings (list[list[float]]):</u> Sigma_rpi, 3 x 5: [[omega, 0, 0, 0, 0], [s_vr, s_r1, s_r2, 0, 0], [s_vpi, s_pi1, s_pi2, 0, 0]], eq. 3.
+- <u>index_loadings (list[list[float]]):</u> Sigma_SPi, 2 x 5: sigma_S' and sigma_Pi', with sigma_Pi[3] = 0, eq. 5.
+- <u>gamma (list[float]):</u> the diagonal of Gamma, 5 values with gamma[0] = 1 and the rest >= 0, eq. 3.
+- <u>equity_premium (float):</u> eta_S, eq. 4.
+- <u>inflation_premium (float):</u> eta_Pi, eq. 4.
+- <u>initial_state (list[float]):</u> X^s at the valuation date, (v0, r0, pi0).
+- <u>risk_neutral_long_run_mean (list[float] &#124; None):</u> E^Q[X^s_inf], eq. 11; needed for the term structures only.
+- <u>risk_neutral_mean_reversion (list[list[float]] &#124; None):</u> M, eq. 10; needed for the term structures only.
+
+</details>
+
 ### How It Is Calculated
 
 The model functions behind this page, each with the formula it implements.
@@ -2490,6 +2700,51 @@ step_hull_white_forward(
 
 </details>
 
+{% raw %}
+#### ex_post_real_rate
+
+The ex-post real rate: a nominal rate less the inflation known on each date, the real rate Ahlgrim, D'Arcy and
+Gorvett (2005, section 3) fit their real-rate process to, since real rates are not observed directly.
+
+Each rate observation is paired with the latest inflation reading on or before its date (an as-of join), so a
+monthly inflation series serves a daily or monthly rate; dates before the first inflation reading are dropped.
+
+The formula is as follows:
+
+$$
+r_{\text{real}}(t) = r(t) - \pi(t)
+$$
+
+**References:**
+
+- Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the Casualty Actuarial Society, 92. Section 3, "Real Interest rates". <https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+ex_post_real_rate(
+    dates: pl.Series,
+    rate: pl.Series,
+    inflation_dates: pl.Series,
+    inflation: pl.Series,
+) -> tuple[pl.Series, pl.Series]
+```
+
+**Args:**
+
+- <u>dates (pl.Series):</u> the rate's observation dates.
+- <u>rate (pl.Series):</u> the nominal rate, as a decimal.
+- <u>inflation_dates (pl.Series):</u> the inflation series' dates.
+- <u>inflation (pl.Series):</u> the yearly inflation rate, as a decimal.
+
+**Returns:**
+
+<u>tuple[pl.Series, pl.Series]:</u> the dates kept and the real rate on them.
+
+</details>
+{% endraw %}
+
 #### inflation_expectation
 
 Wilkie's (1986) expected inflation: an exponentially weighted average of past inflation (eq. 3.12-3.13), the
@@ -2576,6 +2831,7 @@ fit_wilkie_consols_process(
     inflation_weight: float = 1.0,
     inflation_decay: float = 0.05,
     time_step: float = 1.0,
+    fit_dynamics: bool = True,
 ) -> WilkieConsolsParams
 ```
 
@@ -2586,6 +2842,7 @@ fit_wilkie_consols_process(
 - <u>inflation_weight (float):</u> CW, how much of expected inflation passes into the yield, default 1.0 (Wilkie, section 3.15, CW = 1.0).
 - <u>inflation_decay (float):</u> CD, the yearly weight of new inflation in expected inflation, default 0.05 (Wilkie, section 3.15, Reduced Standard Basis, CD = 0.05; his full basis has 0.045).
 - <u>time_step (float):</u> the time between observations in years, default 1.0; 1/12 for monthly data keeps Wilkie's roughly 20-year memory.
+- <u>fit_dynamics (bool):</u> fit CMU, CA1 and CSD (default). False reads only today's state, C(0), CM(0) and CN(0), for a run that states all three as beliefs (Wilkie's published values); the real yield then needs to be positive today only, and CMU, CA1 and CSD hold placeholders (0.035, 0.91 and 0.165 a step) until the beliefs replace them.
 
 **Returns:**
 
@@ -2593,7 +2850,7 @@ fit_wilkie_consols_process(
 
 **Raises:**
 
-- <u>ValueError:</u> if the two histories differ in length, or the long yield falls to or below expected inflation anywhere in the window (a negative real yield, which the model cannot hold; on US data, end the window before 2008).
+- <u>ValueError:</u> if the two histories differ in length, or the long yield falls to or below expected inflation anywhere in the window (a negative real yield, which the model cannot hold; on US data, end the window before 2008), or today only with `fit_dynamics=False`.
 
 </details>
 {% endraw %}
@@ -2919,7 +3176,7 @@ year, Board of Governors of the Federal Reserve System (2026, p. 14)): the rate 
 while the path hands the rate back to the rule.
 
 With an `anchor` the expected path is the market's instead of the rule's (`market_expected_short_rates`): the
-rate follows the path m(t) the forward curve implied on the start date, and the rule acts on the gap between
+rate follows the path m(t) the forward curve implied on the calibration date, and the rule acts on the gap between
 this scenario's inflation and unemployment and their expected paths, the calibrated model's median paths without
 regimes, beliefs or shocks (`MacroBaseline`). The rule's weights, speed and floor are unchanged, but what the
 market already priced in is not counted again: a scenario whose inflation and unemployment stay on their expected
@@ -5245,3 +5502,48 @@ calibrate_completely_affine_mpr(
 
 </details>
 {% endraw %}
+
+#### step_cp2022
+
+One step of the CP2022 simulation scheme under P (Technical Appendix, sec. 9.1, eqs. 51-53): v by Andersen's (2008)
+QE scheme, then the short rate, expected inflation and the two log indices by an Euler step whose v-shock is the
+increment eta that v's own move implies.
+
+The formula is as follows:
+
+- v' = QE(v; K_vv, E v_inf, omega, dt)
+- omega sqrt(v dt) eta = v' - v - K_vv (E v_inf - v) dt                                         (eq. 51)
+- (dr, dpi, d ln S, d ln Pi) = [K (E X - X); mu_o + K_o X] dt + rows 2-5 of
+  [Sigma_rpi; Sigma_SPi] (Gamma_0 + v Gamma)^(1/2) sqrt(dt) (eta, xi)                          (eqs. 52-53)
+
+Where xi holds four independent standard normals. The first normal of `normals` drives v: the quadratic branch
+reads it, the exponential branch its uniform transform.
+
+**References:**
+
+- Andersen, L. (2008). "Simple and Efficient Simulation of the Heston Stochastic Volatility Model." Journal of Computational Finance, 11(3), 1-42. <https://doi.org/10.21314/jcf.2008.189>
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Arguments and returns</b></summary>
+
+```python
+step_cp2022(
+    state: np.ndarray,
+    normals: np.ndarray,
+    time_step: float,
+    params: Cp2022Params,
+) -> tuple[np.ndarray, np.ndarray]
+```
+
+**Args:**
+
+- <u>state (np.ndarray):</u> X^s = (v, r, pi) per scenario, shape (3, n).
+- <u>normals (np.ndarray):</u> five independent standard normals per scenario, shape (5, n).
+- <u>time_step (float):</u> dt in years (1/12 in DNB's sets).
+- <u>params (Cp2022Params):</u> the parameters.
+
+**Returns:**
+
+<u>tuple[np.ndarray, np.ndarray]:</u> the next state (3, n) and the log increments of S and Pi (2, n).
+
+</details>

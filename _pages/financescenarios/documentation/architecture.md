@@ -126,7 +126,7 @@ A real-world calibration can be saved and replayed, so the same fitted model can
 ```python
 from financescenarios import Scenarios
 
-scenarios = Scenarios.from_profiles(settings="default", factor_set="us_only")
+scenarios = Scenarios.from_profiles(settings="default", factor_set="default")
 
 calibration = scenarios.calibrate()            # steps 1-3: data, fit, dependence
 calibration.save("calibration.json")          # replay later without downloading

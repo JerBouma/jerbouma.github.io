@@ -63,7 +63,7 @@ After five years 12.1% of the US scenarios, 7.0% of the euro-area scenarios and 
 
 {% include ft-chart.html id="economy-high-inflation" src="/assets/data/financescenarios-guides/economy.json" label="Share of the 2,000 scenarios with inflation above 5% in the US, the euro area and the UK" %}
 
-### Unemployment
+### Unemployment {#unemployment-rate}
 
 Unemployment reverts to its longer-run rate and, in the US and the UK, switches between expansions and recessions; in the US a fall in the stock market makes a recession likelier. To read it off after one, three and five years:
 

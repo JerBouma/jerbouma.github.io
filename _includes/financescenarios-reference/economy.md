@@ -38,6 +38,7 @@ the process:
 | `regime_switching` | A calm and a high, volatile regime: [Hamilton (1989)](https://doi.org/10.2307/1912559). |
 | `knw` | Linked both ways with a paired interest rate; fitted by `Knw`. |
 | `knw_sv` | `knw` with a shared, randomly changing volatility; fitted by `KnwSv`. |
+| `cp2022` | De Nederlandsche Bank's CP2022 model with its quarterly parameters; read by `Cp2022`. |
 
 [wilkie-1986]: https://doi.org/10.1017/S0071368600009009
 [hibbert-2001]: https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf

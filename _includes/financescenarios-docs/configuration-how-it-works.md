@@ -13,20 +13,25 @@ Keeping them apart lets you rerun the same economy at another horizon, or anothe
 
 | Settings profile | What it is for |
 |:-----------------|:---------------|
-| `default` | 2,000 scenarios, monthly steps, five years ahead, fitted on history since 2000 |
-| `long_horizon` | 500 scenarios, so runs of several decades stay fast; the length is chosen per run |
-| `wilkie` | Fitted on 1995 to 2007 only, as Wilkie's long-yield equation needs (inflation's own dynamics come from US history since 1919) |
-| `goes` | Fitted on history since 2019, to match the NAIC's generator with the `goes` factor set |
+| `default` | 2,000 scenarios, one step a month, five years ahead, fitted on history since 2000 |
+| `long_horizon` | Default with 500 scenarios instead of 2,000, so multi-decade runs stay fast; the length is chosen per run with `simulate(years=30)` |
+| `goes` | Default, but fitted on history since 2019 only; pairs with the `goes` factor set to match the NAIC's scenario generator |
+| `dnb` | Monthly steps over 100 years, DNB's horizon, with 2,000 scenarios; pairs with the `dnb` factor set |
+| `ahlgrim` | The run of Ahlgrim, D'Arcy and Gorvett (2005): from June 2004, 5,000 scenarios, 50 years, one step a month |
+| `hibbert` | The run of Hibbert, Mowbray and Turnbull (2001): from March 2001, 1,000 scenarios, 30 years, one step a month |
+| `wilkie` | The run of Wilkie (1986): 1,000 scenarios of 100 years in yearly steps, dated 1986 |
 
 And the shipped factor sets:
 
 | Factor set | What it simulates |
 |:-----------|:------------------|
-| `default` | The US, the euro area and the UK: rates, inflation, unemployment, global equities, gold, oil and the major currencies, each factor fitted to its long history and linked the way the economy is; the recommended start |
+| `default` | The US, the euro area and the UK, with global equities, gold, oil and the major currencies, each factor fitted to its long history and linked the way the economy is: a policy-rule short rate on the market's expected path, inflation and unemployment regimes, equities on a long-run premium; the recommended starting point |
 | `broad` | Default plus Japan, Canada, Australia and India, US sectors and styles, more countries' equities, silver, copper, natural gas, five more currencies and SPY's dividend yield; the widest and slowest to fit |
-| `goes` | The United States, with the short rate's long-run level set to the NAIC generator's (about 3.73%) |
-| `dnb` | <!-- TODO one line from the dnb factor set's description once it ships --> |
-| `ahlgrim`, `wilkie`, `hibbert` | A published model as its paper wrote it; see [published frameworks](#published-frameworks) |
+| `goes` | The United States as the NAIC's scenario generator (GOES) describes it: four Treasury yields on CIR set to its published bands, stocks on post-war history earning its long-run cash rate plus a premium, inflation, unemployment, commodities, currencies and SPY's dividend yield; see [the GOES acceptance criteria](/projects/financescenarios/docs/validation#goes-acceptance-criteria) |
+| `dnb` | De Nederlandsche Bank's real-world scenarios rebuilt with its CP2022 model and its quarterly parameters: euro nominal and real rates, euro and Dutch inflation and world equity; see [CP2022](/projects/financescenarios/docs/interest-rates#cp2022-model) |
+| `ahlgrim`, `hibbert`, `wilkie` | A published model reproduced from its paper's start with the paper's own parameters and no data; see [published frameworks](#published-frameworks) |
+
+Each set with a settings profile of the same name is meant to run with it.
 
 A run picks one of each:
 
@@ -164,7 +169,7 @@ A flat rate at today's level is deterministic discounting: it has no rate volati
 
 The [Solvency II](/projects/financescenarios/docs/solvency) guide shows how the two measures work together in a nested valuation.
 
-### Beliefs: Expert Judgement over the Fit {#beliefs}
+### Beliefs: Expert Judgement over the Fit {#expert-judgement}
 
 A fitted parameter is an estimate from one stretch of history; a long-run view is a judgement. A belief replaces one fitted parameter with your own value and keeps the rest of the fit. The typical case is the long-run level of rates or inflation: you set where it heads, the data still sets how fast and how volatile. Values are annualized decimals (0.035 is 3.5%, see [units](/projects/financescenarios/docs/units)).
 
@@ -238,28 +243,54 @@ inflation:
 
 ### Published Frameworks {#published-frameworks}
 
-Economic scenario generators differ mostly in how they link the variables. Each framework ships as a factor set, so you can run a paper's model and compare frameworks on the same engine and data:
+Economic scenario generators differ mostly in how they link the variables. Three published models ship as factor sets that reproduce their papers, each with a settings profile of the same name for the paper's own start date, number of scenarios and horizon:
 
 | Factor set | Framework | How the variables are linked |
 |:-----------|:----------|:-----------------------------|
-| `ahlgrim` | [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf) | Each variable is its own process; inflation feeds rates and unemployment, and a correlation matrix ties everything together. |
-| `wilkie` | [Wilkie (1986)](https://doi.org/10.1017/S0071368600009009) | A cascade: inflation first, then dividend yields, long bond yields, dividend growth and share prices, each driven by it. |
-| `hibbert` | [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf) | Rates and inflation revert to a slowly moving target; equities switch between two regimes. |
-| any set with the KNW method | [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058) | Rates and inflation drive each other, optionally with shared stochastic volatility; see the [KNW guide](/projects/financescenarios/docs/interest-rates#knw). |
+| `ahlgrim` | [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"} | Each variable is its own process; inflation feeds the nominal rate (the real rate plus inflation) and unemployment, and the paper's correlations tie the shocks together. |
+| `hibbert` | [Hibbert, Mowbray and Turnbull (2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"} | Rates and inflation revert to a slowly moving target; equities earn a premium over cash and switch between two regimes. Calibration A. |
+| `wilkie` | [Wilkie (1986)](https://doi.org/10.1017/S0071368600009009){:target="_blank"} | A cascade: inflation first, then dividend yields, dividend growth, the Consols yield and share prices, each driven by it, on four independent white-noise series. |
 
-Wilkie is a discrete-time model. KNW is continuous-time in the paper, but the package fits its discrete-time version, a VAR(1) of the short rate and expected inflation, as DNB's [Commissie Parameters (2022)](https://open.overheid.nl/repository/ronl-f2685a42fd0bf01d5821446bcda34e719fdf7ef1/1/pdf/bijlage-2-technische-appendix.pdf){:target="_blank"} does. For both, the step must match the frequency they were fitted at.
-
-<div class="fs-callout" markdown="1">
-<p class="fs-callout__title">The window is a modeling choice</p>
-
-Wilkie's long bond model, a real yield plus an allowance for expected inflation ([Wilkie, 1986, section 3.12](https://doi.org/10.1017/S0071368600009009){:target="_blank"}), needs the long yield to stay above average inflation, which US yields did not from 2008 to 2017, so its settings profile fits on 1995 to 2007: the calibration window is a modeling choice, not a technicality.
-</div>
-
-Running Wilkie's model with its own settings:
+Each set states every parameter of its paper as a belief, with its section or table, and never refits it. The correlations are the paper's own (`correlations` with `unlisted: zero`), and so are the starting values: Ahlgrim's workbook base case of June 2004, Hibbert's calibration A start of March 2001 and Wilkie's neutral start. With `published_model` the calibration is built from these alone, so the sets read no data, need no API key and run the same offline:
 
 ```python
+from financescenarios import Scenarios
+
 scenarios = Scenarios.from_profiles(settings="wilkie", factor_set="wilkie")
+result = scenarios.simulate()   # 1,000 scenarios of 100 years in yearly steps, as in the paper
 ```
+
+`compare_published` holds a set to the tables its paper reports for its own model, and [Validation](/projects/financescenarios/docs/validation#published-parameter-mode) shows how close each comes and how each forecast has held up since.
+
+<div class="fs-callout" markdown="1">
+<p class="fs-callout__title">Reproduction, not projection</p>
+
+These sets answer "what does the paper's model say?", from the paper's own starting point. To use a method on today's data, write a factor set with the same options (`method: wilkie_consols`, `hibbert_two_factor`, `real_rate` and so on), leave out `published_model` and keep only the beliefs you want fixed; the rest is fitted. Each set's description says so.
+</div>
+
+Two models of the joint behavior of rates and inflation sit on the interest rates page:
+
+| Method | Framework | How the variables are linked |
+|:-------|:----------|:-----------------------------|
+| `cp2022` | [Commissie Parameters (2022)](https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix){:target="_blank"}, the model of De Nederlandsche Bank's scenario sets | A stochastic variance, the nominal short rate and expected inflation move as one affine system, with DNB's quarterly parameters; the `dnb` factor set runs it. See [CP2022](/projects/financescenarios/docs/interest-rates#cp2022-model). |
+| `knw`, `knw_sv` | [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058){:target="_blank"} | Rates and inflation drive each other, optionally with shared stochastic volatility, fitted on history; see [the KNW models](/projects/financescenarios/docs/interest-rates#knw-models). |
+
+Wilkie's is a yearly model, and the `wilkie` settings run it in yearly steps: on a monthly step a few of his correlations at one and five years no longer reproduce, because a monthly run's inflation is a year-on-year rate read every month. KNW is continuous-time in the paper, but the package fits its discrete-time version, a VAR(1) of the short rate and expected inflation, as the Commissie Parameters (2022) does; its step must match the frequency it was fitted at.
+
+#### Correlations Stated as Values {#correlations-stated-as-values}
+
+By default every pair of factors gets the correlation of its historical changes. A factor set can state pairs instead, the way a published model does, and set every pair it does not list to zero:
+
+```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
+correlations:
+  fixed:
+    - factors: [united_states_short_rate, united_states_inflation]
+      value: 0.5
+  unlisted: history   # or zero: every pair not listed is uncorrelated
+```
+
+The stated matrix is still repaired to the nearest valid correlation matrix ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}), so a set of pairs that cannot hold together is moved as little as possible.
 
 ### API Keys {#secrets}
 

@@ -260,11 +260,11 @@ The convexity term keeps the expected price index on the breakeven curve, so a p
 | United Kingdom | Bank of England implied inflation curve | 3 to 40 years | RPI |
 | Germany / euro area | Bundesbank, nominal minus inflation-linked | 5 to 15 years | Euro area HICP ex tobacco |
 
-**Links.** Inflation can respond to the same step's move in a paired short rate or in the leading indicator; for rates and inflation that drive each other, fitted jointly, use the [KNW model](/projects/financescenarios/docs/interest-rates#knw).
+**Links.** Inflation can respond to the same step's move in a paired short rate or in the leading indicator; for rates and inflation that drive each other, fitted jointly, use the [KNW model](/projects/financescenarios/docs/interest-rates#knw-models).
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/economy"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Inflation</a></div>
+<div class="fs-ref"><a href="#inflation"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Inflation</a></div>
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/economy"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Unemployment</a></div>
+<div class="fs-ref"><a href="#unemployment"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Unemployment</a></div>
 
 ### The Leading Indicator and the Business Cycle
 
@@ -292,7 +292,7 @@ Unemployment without regimes can also react to a stock-market fall or a flat yie
 The default factor set leaves these links off: its rates, unemployment and equities are tied together through the Taylor rule, the equity link and inflation instead.
 </div>
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/economy"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Leading indicator</a></div>
+<div class="fs-ref"><a href="#leadingindicator"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Leading indicator</a></div>
 
 ### Mortality and Longevity
 
@@ -338,7 +338,7 @@ Life tables come from Eurostat (from 1960 for most countries of the European Eco
 - The straight-line shape holds only near the fitted ages.
 </div>
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/economy"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Mortality</a></div>
+<div class="fs-ref"><a href="#mortality"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Mortality</a></div>
 
 ### References
 

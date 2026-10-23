@@ -6,7 +6,7 @@ Defending a scenario set takes four kinds of evidence:
   <div><i class="ca-icon fas fa-square-root-variable" aria-hidden="true"></i><p class="ca-card-title">The model</p><p>The simulation does what the model's mathematics says (<a href="#the-simulation-reproduces-the-model">the simulation reproduces the model</a>) and, for a valuation run, reproduces market prices (<a href="#market-consistency-the-martingale-test">the martingale test</a>).</p></div>
   <div><i class="ca-icon fas fa-earth-americas" aria-hidden="true"></i><p class="ca-card-title">The economy</p><p>The scenarios behave like the economy they describe: they fit their history (<a href="#checking-a-run-against-history">checks against history</a>), the factors move together the way the economy does (<a href="#do-the-factors-move-together-the-way-the-economy-does">relationships</a>), stay within how far history has gone (<a href="#does-each-factor-stay-within-what-history-has-seen">realism</a>) and come from plausible fitted parameters (<a href="#are-the-fitted-parameters-ones-the-real-world-could-produce">guardrails</a>).</p></div>
   <div><i class="ca-icon fas fa-history" aria-hidden="true"></i><p class="ca-card-title">Out of sample</p><p>A model fitted in the past, on only what was known then, would have held what actually happened (<a href="#out-of-sample-would-a-past-calibration-have-held-what-happened">out of sample</a>), and a bundled regime reaches the crises the baseline misses (<a href="#crises-against-the-bundled-regimes">crises and regimes</a>).</p></div>
-  <div><i class="ca-icon fas fa-scale-balanced" aria-hidden="true"></i><p class="ca-card-title">Outside references</p><p>The scenarios land near independent outside references (<a href="#external-benchmarks">external benchmarks</a>).</p></div>
+  <div><i class="ca-icon fas fa-scale-balanced" aria-hidden="true"></i><p class="ca-card-title">Outside references</p><p>The scenarios land near independent outside references (<a href="#external-benchmarks">external benchmarks</a>), meet the acceptance criteria of NAIC's generator (<a href="#goes-acceptance-criteria">GOES</a>), and the published models reproduce their papers (<a href="#published-parameter-mode">published models</a>) and are scored against what happened since (<a href="#published-models-held-up">how they held up</a>).</p></div>
 </div>
 
 This page covers each, the theory behind the measure, the numbers on the default model and what is not validated. Every number below comes from the calibration of 19 October 2026, the one the README uses.
@@ -359,17 +359,167 @@ The checks above compare the model with itself and its own data. The benchmarks 
 
 | Benchmark | What is compared | Note |
 |:----------|:-----------------|:-----|
-| NAIC GOES | A US Treasury rate's simulated percentile bands | A set of differences, not a pass or fail |
+| NAIC GOES | A US Treasury rate's simulated percentile bands, and a run against GOES's own acceptance criteria | Differences by percentile, and a pass or fail per criterion |
 | DNB scenario set | A run's interest rate, inflation or equity, quantile by quantile at every whole year | A regulator-reviewed reference for a euro run |
 | Corporate bond panel | Credit spread levels and their dispersion across individual bonds | Validates spread levels, not rating migration |
 | Option-implied densities | A risk-neutral equity's terminal-price distribution | Tests the flat-volatility lognormal assumption |
 
 - **NAIC GOES.** The Generator of Economic Scenarios, the prescribed generator of the NAIC Valuation Manual for US principle-based reserves (VM-20 for life, VM-21 for variable annuities), run by Conning for the NAIC. Prescribed is not mandatory: a company may use its own generator if the result meets the Valuation Manual's standard in section 2.G ([NAIC Valuation Manual, 2026 edition, VM-20 Appendix 1, Section E](https://content.naic.org/sites/default/files/pbr_data_valuation_manual_current_edition.pdf#page=132){:target="_blank"}).
 
-  A US Treasury rate's simulated percentile bands are compared with the percentile grid of NAIC's 10,000-scenario set for the matching tenor; the result is a set of differences, not a pass or fail. A large gap usually means the long-run level or the volatility differs from what US regulators consider a reasonable real-world spread of rates.
-- **DNB scenario set.** De Nederlandsche Bank publishes a scenario set every quarter: 20,000 scenarios over 100 years from the Commissie Parameters 2022 model, both real world (the P-set) and market consistent (the Q-set, calibrated to market prices including swaptions). A run's interest rate, inflation or equity is compared with it at every whole year, quantile by quantile: rates and inflation by level, equities by yearly return. It is a regulator-reviewed reference for a euro run and the only free swaption-consistent one. The same sets, and NAIC's 16 deterministic stress scenarios for US rates (the set of the Valuation Manual's Stochastic Exclusion Ratio Test, SERT), can also replace factors in a run (see the [configuration reference](/projects/financescenarios/docs/configuration)).
+  A US Treasury rate's simulated percentile bands are compared with the percentile grid of NAIC's 10,000-scenario set for the matching tenor; the result is a set of differences, not a pass or fail. `check_acceptance` adds the pass or fail: it holds the run to the criteria NAIC sets GOES itself ([below](#goes-acceptance-criteria)). A large gap usually means the long-run level or the volatility differs from what US regulators consider a reasonable real-world spread of rates.
+- **DNB scenario set.** De Nederlandsche Bank publishes a scenario set every quarter: 20,000 scenarios over 100 years from the Commissie Parameters 2022 model, both real world (the P-set) and market consistent (the Q-set, calibrated to market prices including swaptions). A run's interest rate, inflation or equity is compared with it at every whole year, quantile by quantile: rates and inflation by level, equities by yearly return. It is a regulator-reviewed reference for a euro run and the only free swaption-consistent one. `Dnb.compare_moments` and `Dnb.compare_correlations` set a run's means, standard deviations, percentiles and correlations beside the set's, year by year; the `dnb` factor set, which runs DNB's own model ([CP2022](/projects/financescenarios/docs/interest-rates#cp2022-model)), lands within Monte Carlo error of it. The same sets, and NAIC's 16 deterministic stress scenarios for US rates (the set of the Valuation Manual's Stochastic Exclusion Ratio Test, SERT), can also replace factors in a run (see the [configuration reference](/projects/financescenarios/docs/configuration)).
 - **Corporate bond panel.** Credit spreads are fitted to one aggregate index per maturity bucket. The Open Source Bond Asset Pricing panel (Dickerson, Robotti and Rossetti; built on TRACE trades from 2002 to 2025, tens of millions of bond-date rows) shows the spread distribution of the individual bonds underneath. The comparison shows whether the aggregate's fitted level and volatility represent the real dispersion or smooth over fatter tails and idiosyncratic widening. The public data has no credit ratings, so it validates spread levels, not rating migration.
 - **Option-implied densities.** A risk-neutral equity's simulated terminal-price distribution is compared with the market's own risk-neutral density at the nearest listed expiration, extracted from option prices with the [Breeden-Litzenberger (1978)](https://doi.org/10.1086/296025) result. Both sides come from the same market, so this tests the flat-volatility lognormal assumption rather than providing an outside view. The headline number is the Wasserstein distance (how far apart the two terminal-price views are, on average, in price units); a Kolmogorov-Smirnov statistic flags a sharp local tail mismatch the average could hide. Expect a gap: the market's density is skewed and fat-tailed, the model's is not.
+
+#### GOES Acceptance Criteria {#goes-acceptance-criteria}
+
+NAIC holds GOES itself to a set of acceptance criteria, published with each release on its workbook's `Acceptance Criteria_Dashboard` sheet. A company that uses its own generator must meet the Valuation Manual's requirements ([VM-20, Appendix 1](https://content.naic.org/sites/default/files/pbr_data_valuation_manual_current_edition.pdf#page=132){:target="_blank"}), so holding a run to the bar GOES clears shows how close it comes. `NaicGoes.check_acceptance` reads the thresholds from the release, so they follow NAIC's revisions, and checks:
+
+| Criterion | What it checks |
+|:--|:--|
+| T1 | The upper tail: the 99.5th percentile of the 1-year and 20-year yields, and the share of scenarios that ever cross the cap |
+| T2 | Negative rates: the lowest 1-year and 20-year yields |
+| T4 | Low for long: the share of scenarios whose 20-year yield averages below a floor for ten and thirty years |
+| T5 | The spread of the 20-year yield's 20-year geometric averages |
+| T6 | Mean reversion: the 1-year and 20-year medians in year 30 |
+| E1 | The S&P 500's gross wealth factors, percentile by percentile |
+
+The criteria are written on the 1-year and 20-year yields, which no index quotes; a run that does not simulate them has them read off its neighbouring tenors in a straight line (3-month and 5-year, 10-year and 30-year). E1 publishes targets but no tolerance, so each percentile passes within 10% of its target (`tolerance`), a judgement: GOES's own factors sit within 7.2% of the targets from the 1st to the 99th percentile.
+
+```python
+from financescenarios import Scenarios
+from financescenarios.validation.naic_goes.naic_goes_controller import NaicGoes
+
+scenarios = Scenarios.from_profiles(settings="goes", factor_set="goes")
+result = scenarios.simulate(years=30, n_simulations=10_000)
+NaicGoes(vintage="20260930").check_acceptance(result, scenarios.config, equity_name="us_broad")
+```
+
+The `goes` factor set is built on what NAIC and the American Academy of Actuaries publish. Its 3-month, 5-year, 10-year and 30-year yields are each a one-factor CIR: the speed is ln 2 / 15, the 15-year half-life behind T6; the long-run level is GOES's mean over years 20 to 30; and the volatility puts the exact year-30 median on GOES's. Its stocks are fitted on Shiller's S&P total return since 1946, shifted so the long-run return is E1's own median of 7.41% a year (GOES's 3.73% cash plus 3.68%), and earn their premium over that long-run level rather than over the simulated rate, as the GOES Subgroup decided when it removed the old generator's equity-rate link. Against the release of 30 September 2026, with 10,000 scenarios, GOES's own count:
+
+| Check | GOES | `goes` set |
+|:--|--:|--:|
+| 3-month yield, 50th / 95th / 99th percentile in year 30 | 2.80 / 10.88 / 15.42% | 2.76 / 11.03 / 16.55% |
+| 3-month yield, 50th / 95th / 99th percentile in year 10 | 3.21 / 10.61 / 14.13% | 3.29 / 9.56 / 13.21% |
+| 10-year yield, 50th / 99th percentile in year 30 | 4.50 / 14.83% | 4.44 / 14.33% |
+| T1: 1-year 99.5th percentile, highest (at most 18%) | 17.65% | 16.87%, pass |
+| T1: 20-year 99.5th percentile, highest (at most 17%) | 16.41% | 15.84%, pass |
+| T1: share ever above the cap, 1-year / 20-year (at most 0.5%) | 3.06 / 2.57% | 1.60 / 1.06%, fail |
+| T2: lowest 1-year (at least -1%) | pass | -0.04%, pass |
+| T2: lowest 20-year (at least 0%) | pass | 0.03%, pass |
+| T4: low for long over 10 / 30 years (at least 7.5 / 3.75%) | 3.44 / 2.87%, fail | 0.00 / 0.59%, fail |
+| T5: 99th percentile of the 20-year averages, 10 / 30 years | 10.01 / 10.61% | 8.88 / 10.38%, fail (bounds 9.00 / 10.54%) |
+| T6: 1-year median in year 30 (1.31 to 3.35%) | 3.09% | 3.05%, pass |
+| T6: 20-year median in year 30 (3.35 to 4.89%) | 4.83% | 4.66%, pass |
+| E1: median gross wealth factor in year 30 (9.23) | 9.26 | 9.49 |
+| E1: percentiles within 10% of their targets | 40 of 40 | 40 of 40 |
+
+<div class="fs-callout fs-callout--limits" markdown="1">
+<p class="fs-callout__title">Where the goes set still misses GOES</p>
+
+- **T4, low for long.** GOES fails it too. A CIR 20-year rate almost never averages below 1.45% for ten years; GOES gets closer with its flooring mechanisms.
+- **T1's share of scenarios ever above the cap.** It is 1.6% against a limit of 0.5%, though GOES's own share is 3.06% and the dashboard does not judge it.
+- **T5's upper tail** is about 0.1 to 0.2 points short. The bounds are interpolated at the run's own starting 20-year yield, about 5.1%, not GOES's 5.68%.
+- **The first ten years** are narrower than GOES's: the 3-month 99th percentile is 13.2% against 14.1% in year 10. One CIR factor per tenor cannot widen the early years without overshooting year 30, and NAIC publishes neither a two-factor specification nor its parameters.
+- **Corporate bond funds** (C1) are not modelled.
+</div>
+
+### Published Models: Reproducing Their Papers {#published-parameter-mode}
+
+The `ahlgrim`, `hibbert` and `wilkie` factor sets run their papers' models with the papers' own parameters, correlations and starting values, and read no data (see [published frameworks](/projects/financescenarios/docs/configuration#published-frameworks)). That makes them checkable: run as the paper ran, from its start date and over its horizon, each should reproduce the tables its paper reports for its own model. `compare_published` runs the check:
+
+```python
+from financescenarios.validation.published_frameworks.published_frameworks_controller import compare_published
+
+compare_published("wilkie")
+```
+
+Which returns every reported mean, standard deviation, percentile and correlation next to the simulated one (the first 3 of 91 rows):
+
+| source | variable | statistic | horizon | published | simulated | tolerance | within |
+|:-------|:---------|:----------|--------:|----------:|----------:|----------:|:-------|
+| Table 3 | GQ | mean | 1.0 | 0.0537 | 0.0538 | 0.0076 | true |
+| Table 3 | GQ | mean | 5.0 | 0.0537 | 0.0531 | 0.0055 | true |
+| Table 3 | GQ | mean | 10.0 | 0.0514 | 0.0526 | 0.0043 | true |
+
+A difference counts as Monte Carlo error when it is within four standard errors of the gap between the paper's estimate and the run's (batch means, scaled to the paper's number of scenarios), plus half the paper's last printed digit. Four standard errors keeps the chance of a false alarm across a table of a few dozen checks near 1%. With 10,000 scenarios:
+
+| Paper | Table | Checked | Within Monte Carlo error |
+|:------|:------|--------:|-------------------------:|
+| Ahlgrim, D'Arcy and Gorvett (2005) | Table 1 (year-1 and year-50 means, year-10 1st and 99th percentiles) and Table 2's inflation-rate correlation | 26 | 26 |
+| Hibbert, Mowbray and Turnbull (2001) | Exhibit 7.2A (equities, cash, inflation) | 11 | 11 |
+| Wilkie (1986) | Table 3, every cell, on his yearly step | 91 | 91 |
+
+A few of those numbers, paper against run:
+
+| | Paper | Run |
+|:--|--:|--:|
+| Ahlgrim: inflation against the nominal short rate, year 1 | 0.906 | 0.907 |
+| Ahlgrim: nominal short rate, mean in year 50 | 7.8% | 7.8% |
+| Ahlgrim: unemployment, 1st to 99th percentile in year 10 | 3.5% to 8.7% | 3.5% to 8.8% |
+| Hibbert: equity log return over cash | 2.5% | 2.4% |
+| Hibbert: cash, mean and standard deviation | 5.0% / 3.5% | 5.0% / 3.4% |
+| Wilkie: one-year share return against inflation, correlation | -0.24 | -0.23 |
+| Wilkie: real share return at 50 years | 4.45% | 4.39% |
+
+<div class="fs-callout fs-callout--limits" markdown="1">
+<p class="fs-callout__title">What still differs from the papers</p>
+
+- **Ahlgrim:** small stocks, the 1-year and 10-year yields of the closed-form bond prices and the first-period 1-month yields are not simulated; the equity regimes are lognormal with the moments of the workbook's normal simple returns, and equities earn the floored nominal rate.
+- **Hibbert:** calibration A only. Calibration B adds risk premia that exist to price bonds, which the package does not do, so its floors and reflection are left out, as are the bond rows of Exhibit 7.2A.
+- **Wilkie:** the set runs his yearly step. On a monthly step four cells at one and five years fall outside Monte Carlo error (the Consols-inflation correlation at one year is -0.22 against -0.42), because a monthly run's inflation is a year-on-year rate read every month.
+- **Data:** Wilkie's UK series (1919-1982), NCREIF and Hibbert's UK calibration data are not available here, so the parameters are used as published and nothing is refitted. Hibbert's and Wilkie's models have no unemployment, so their sets simulate none.
+</div>
+
+### How the Published Models Held Up {#published-models-held-up}
+
+Because each reference set starts from its paper's own date, each is a forecast made years ago, which can now be checked against what happened. `held_up` runs a set from its paper's start and places every year since in its fan:
+
+- Ahlgrim, D'Arcy and Gorvett from June 2004, on US data;
+- Hibbert, Mowbray and Turnbull from end-March 2001, on UK data;
+- Wilkie from his neutral start, dated 1986, on UK data.
+
+All of the history is the OECD's and needs no key: the short and long rates, year-on-year CPI inflation, unemployment, share prices and US house prices.
+
+```python
+from financescenarios.validation.published_frameworks.published_frameworks_controller import held_up
+
+rows, scores = held_up("wilkie")  # the fan and the realized value per year, and the scores per factor
+```
+
+| Model | Factor | Years | Inside 50% band | Inside 90% band | Mean PIT | CRPS skill vs no change |
+|:--|:--|--:|--:|--:|--:|--:|
+| Ahlgrim (US, 2004) | Short rate | 22 | 36% | 100% | 0.24 | -0.67 |
+| | Inflation | 22 | 59% | 100% | 0.36 | -0.02 |
+| | Unemployment | 22 | 14% | 45% | 0.37 | +0.19 |
+| | Share prices (growth since start) | 22 | 23% | 100% | 0.26 | -1.20 |
+| | Real estate (vs house prices) | 22 | 36% | 82% | 0.27 | +0.29 |
+| Hibbert (UK, 2001) | Short rate | 24 | 33% | 100% | 0.24 | +0.40 |
+| | Inflation | 25 | 72% | 96% | 0.47 | +0.41 |
+| | Share prices (growth since start) | 25 | 44% | 96% | 0.23 | -1.62 |
+| Wilkie (UK, 1986) | Inflation | 40 | 93% | 100% | 0.37 | +0.33 |
+| | Long yield (vs the 10-year gilt) | 40 | 13% | 28% | 0.19 | +0.48 |
+| | Share prices (growth since start) | 40 | 70% | 100% | 0.64 | +0.66 |
+
+A calibrated fan holds about half the years in its 50% band and nine in ten in its 90% band, with a mean PIT near 0.5. A skill above zero means the fan's CRPS beat a forecast that the value stays where it started (zero growth for share prices).
+
+{% include ft-chart.html id="validation-held-up-ahlgrim" src="/assets/data/financescenarios-guides/validation-held-up.json" label="5th percentile, median and 95th percentile of Ahlgrim, D'Arcy and Gorvett's model from June 2004 and what happened in the US, year by year" %}
+
+**Rates.** None of the three models allowed for a decade of rates near zero. Ahlgrim's median US short rate rises toward 7.6% (a 2.8% real rate plus 4.8% inflation). Hibbert's UK median holds at 5% for 30 years. The realized rates sat near zero from 2009 to 2021, in the lower tail of both fans, though still inside their 90% bands; that gives mean PITs of 0.24. Wilkie's long yield fared worst. His model reverts the real yield to 3.5% on top of about 5% expected inflation, so its median stays near 8.5%. The 10-year gilt fell from about 10% in 1986 to below his 5th percentile in 27 of the 40 years from 1999 on, and was 4.4% in 2026 against a median of 8.7%. Wilkie's CRPS still beats "no change" only because no change means staying at 1986's 10%.
+
+{% include ft-chart.html id="validation-held-up-wilkie" src="/assets/data/financescenarios-guides/validation-held-up.json" label="5th percentile, median and 95th percentile of Wilkie's model from his neutral start, dated 1986, and what happened in the UK, year by year" %}
+
+**Inflation.** The fans held inflation well. Wilkie's 5% mean with wide bands kept 93% of UK years inside its 50% band; that is too many, which means the bands were wider than needed. Hibbert's 2.5% target matched the Bank of England's era (72% inside the 50% band); only 2023's 10% spike went above the 95th percentile. Ahlgrim's 4.8% mean sits above the 2.5% the US averaged, so realized years fell below the median (mean PIT 0.36).
+
+**Unemployment.** Ahlgrim's band was far too narrow: about 4.3% to 8.0% at every horizon. That band comes from the workbook's monthly unemployment step, which Table 1 shows. US unemployment went above the 95th percentile in 2009 to 2012 and in 2020, and below the 5th in 2018, 2019 and every year from 2022 to 2026. Only 45% of years fell inside the 90% band.
+
+**Share prices.** The fans are wide, so the 90% bands held almost every year. The medians differ. Ahlgrim's and Hibbert's equity premia, taken from long histories, put their medians well above what the OECD's US and UK share price indices did; the UK index was up 79% in 25 years against Hibbert's median of 194%. Their CRPS skill is negative. Wilkie's median for UK share prices sits close to the realized growth (626% against 634% by 2026).
+
+{% include ft-chart.html id="validation-held-up-hibbert" src="/assets/data/financescenarios-guides/validation-held-up.json" label="5th percentile, median and 95th percentile of Hibbert, Mowbray and Turnbull's model from March 2001 and what happened in the UK, year by year" %}
+
+**Real estate.** Ahlgrim models NCREIF's commercial property returns; the nearest keyless history is US house prices. The 2008 to 2011 fall went below the 5th percentile in all four years.
+
+What these numbers are not: one path of history scored year by year. The years overlap in what they test, so the shares describe what happened rather than test calibration. The comparisons also use OECD stand-ins for the papers' own series: a 3-month rate for a 1-month one, a 10-year gilt for Consols, share price indices for total-return indices, and house prices for NCREIF. Wilkie's run starts from his neutral values (5% inflation, an 8.5% long yield), not from 1986's actual market.
 
 ### Published Calibrations {#published-calibrations}
 
@@ -377,7 +527,7 @@ A published calibration is fixed under a version tag, passes the checks above be
 
 Downloading and simulating a release is covered in the runs and releases reference.
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/run-files"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Runs and releases</a></div>
+<div class="fs-ref"><a href="/projects/financescenarios/docs/run-files#reference"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Runs and releases</a></div>
 
 ### What Is Not Validated {#what-is-not-validated}
 

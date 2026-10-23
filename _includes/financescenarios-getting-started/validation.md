@@ -107,7 +107,7 @@ pandemic = scenarios.out_of_sample(as_of="2019-12-31", years=5, n_simulations=10
 pandemic.scores.select("factor", "coverage_50", "coverage_90", "pit_mean", "crps_skill")
 ```
 
-Here the scenarios hold more. US stocks stay inside the 90% band in all five years, through the 2020 crash and the rally after it. The jump in US unemployment to 6.7% at the end of 2020 is above the band's 5.34%, and the cut to zero lies below it at first (0.07% against a 5th percentile of 0.39%); from 2021 both are inside. The inflation that followed does not fit: US inflation of 7.04% at the end of 2021 is above the 95th percentile of 4.07%, and UK inflation, fitted on its calm years since 1993, is above its narrow band from 2021 to 2024, at 9.24% in 2022 against 3.30%. When plotted:
+Here the scenarios hold more. US stocks stay inside the 90% band in all five years, through the 2020 crash and the rally after it. The jump in US unemployment to 6.7% at the end of 2020 is above the band's 5.34%, and the cut to zero lies below it at first (0.07% against a 5th percentile of 0.38%); from 2021 both are inside. The inflation that followed does not fit: US inflation of 7.04% at the end of 2021 is above the 95th percentile of 4.07%, and UK inflation, fitted on its calm years since 1993, is above its narrow band from 2021 to 2024, at 9.24% in 2022 against 3.30%. When plotted:
 
 {% include ft-chart.html id="validation-pandemic" src="/assets/data/financescenarios-guides/validation.json" label="5th percentile, median and 95th percentile of six US and UK variables at each year end from 2020 to 2024, fitted on what was known at the end of 2019, against what happened" %}
 
@@ -125,7 +125,7 @@ evaluation = scenarios.out_of_sample_many(
 evaluation.scores.select("factor", "origins", "coverage_50", "coverage_90", "pit_mean", "crps_skill")
 ```
 
-A 90% band should hold 90% of the years. US and euro-area inflation hold 85% and UK inflation 60%; the US short and long rates hold 90% and the UK short rate 85%, while the euro-area rates hold 50% and 65% and ended below the middle of the scenarios in most years, with PIT means of 0.27 and 0.33. Unemployment's bands are too narrow in the US and the euro area (50%), as are US house prices' (50%); US stocks hold 85%. On CRPS every variable beats a no-change forecast except UK unemployment. Small caps, gold, European and emerging-market stocks and oil have shorter histories and enter from later origins. When plotted:
+A 90% band should hold 90% of the years. US and euro-area inflation hold 85% and UK inflation 60%; the US short and long rates hold 90% and the UK short rate 85%, while the euro-area rates hold 50% and 70% and ended below the middle of the scenarios in most years, with PIT means of 0.33 and 0.39. Unemployment's bands are too narrow in the US and the euro area (50%), as are US house prices' (50%); US stocks hold 85%. On CRPS every variable beats a no-change forecast except UK unemployment. Small caps, gold, European and emerging-market stocks and oil have shorter histories and enter from later origins. When plotted:
 
 {% include ft-chart.html id="validation-coverage" src="/assets/data/financescenarios-guides/validation.json" label="Share of the years from 2004 to 2023 inside the 90% band per variable, five origins four years apart, against the 90% it should hold" %}
 

@@ -39,6 +39,10 @@ Building the matrix takes three steps:
    of factors has a negative variance. It is moved to the nearest valid one with
    [Higham's (2002)](https://doi.org/10.1093/imanum/22.3.329) method; a valid matrix comes back unchanged.
 
+A factor set can also state correlations as values (`correlations` in the factor set), as a published model fixes
+them: those pairs replace the estimate after shrinking and before the repair, and `unlisted: zero` sets every other
+pair to zero, so the matrix is the paper's own.
+
 The matrix describes average co-movement only. Whether extreme moves tend to arrive together is set by
 `engine.shock_distribution`: `gaussian` (default) or `student_t`, a t-copula
 as in [Demarta and McNeil (2005)](https://doi.org/10.1111/j.1751-5823.2005.tb00254.x), that makes joint extremes more
@@ -50,6 +54,8 @@ likely. Correlations stay constant over the horizon.
 | `engine.shock_distribution` | `gaussian` | `gaussian` or `student_t`: which distribution the matrix correlates. |
 | `engine.degrees_of_freedom` | `12.0` | Student-t degrees of freedom; lower means fatter, more joint tails. |
 | `engine.correlation_shrinkage` | `auto` | `auto` (data-driven, toward zero) or a share in [0, 1] toward the mean. |
+| `correlations.fixed` (factor set) | none | Pairs stated as values, e.g. `{factors: [a, b], value: 0.5}`. |
+| `correlations.unlisted` (factor set) | `history` | `history` estimates every other pair; `zero` sets it to 0. |
 
 **References:**
 
@@ -61,7 +67,11 @@ likely. Correlations stay constant over the horizon.
 <summary><b>Signature</b></summary>
 
 ```python
-Dependence(shrinkage: float | str = 'auto')
+Dependence(
+    shrinkage: float | str = 'auto',
+    fixed: dict[tuple[str, str], float] | None = None,
+    unlisted: str = 'history',
+)
 ```
 
 </details>
@@ -158,7 +168,7 @@ calibrate(factor_series: dict[str, pl.Series]) -> pl.DataFrame
 
 **Raises:**
 
-- <u>ValueError:</u> if fewer than two factors are given, the series differ in length, a series never changes, or the matrix cannot be repaired.
+- <u>ValueError:</u> if no factor is given, the series differ in length, a series never changes, or the matrix cannot be repaired. One factor gives the 1 x 1 matrix [[1]].
 
 </details>
 
@@ -228,7 +238,7 @@ calibrate_pairwise(
 
 **Raises:**
 
-- <u>ValueError:</u> if fewer than two factors are given, a factor's whole history never changes, or the matrix cannot be repaired.
+- <u>ValueError:</u> if no factor is given, a factor's whole history never changes, or the matrix cannot be repaired. One factor gives the 1 x 1 matrix [[1]].
 
 </details>
 

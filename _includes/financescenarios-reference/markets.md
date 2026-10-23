@@ -42,7 +42,8 @@ The options:
   [(2001)](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf));
   `wilkie_derived`, the price as dividends divided by the dividend yield (see
   [Wilkie (1986)](https://doi.org/10.1017/S0071368600009009));
-  or `knw_sv`, the equity leg of the Koijen, Nijman and Werker model, fitted together with its interest rate.
+  `knw_sv`, the equity leg of the Koijen, Nijman and Werker model, fitted together with its interest rate;
+  or `cp2022`, the equity index of De Nederlandsche Bank's CP2022 model, read by `Cp2022`.
 - `condition_on_business_cycle`: turbulence becomes more likely when the leading indicator signals a downturn
   as in [Filardo (1994)](https://doi.org/10.1080/07350015.1994.10524545).
 - `condition_on_inflation`: turbulence becomes far more likely when inflation runs high, the ticker keeping its
@@ -484,7 +485,8 @@ Solvency II best estimate or an IFRS 17 fulfillment value requires. The price fo
 
 `volatility_source` picks `sigma`:
 
-- `"implied"`: the options market's volatility at the strike nearest today's price, at one expiration.
+- `"implied"`: the options market's at-the-money volatility at one expiration, the average of the
+  out-of-the-money call and put nearest today's price.
 - `"svi"`: the at-the-money point of the Finance Toolkit's smoothed volatility surface
   at the longest expiration; [Gatheral and Jacquier (2014, section 5)](https://doi.org/10.1080/14697688.2013.819986)
   calibrate the widely used SVI parameterization of the implied volatility smile so that it is free of static
@@ -2025,6 +2027,7 @@ calibrate(
     volatility_model: str = 'constant',
     business_cycle_covariate: pl.Series | None = None,
     business_cycle_covariate_dates: pl.Series | None = None,
+    inflation_level: bool = False,
 ) -> DividendYieldParams | GARCHParams | OUCovariateParams
 ```
 
@@ -2038,6 +2041,7 @@ calibrate(
 - <u>volatility_model (str):</u> "constant", or "garch" for swings whose size varies. Defaults to "constant".
 - <u>business_cycle_covariate (pl.Series &#124; None):</u> a leading indicator's history (`LeadingIndicator.series`) for the yield to follow. Defaults to None.
 - <u>business_cycle_covariate_dates (pl.Series &#124; None):</u> the dates of `business_cycle_covariate`, required with it. Defaults to None.
+- <u>inflation_level (bool):</u> with `inflation_covariate`, Wilkie's own form, in which the pull acts on the log yield less its inflation term (`fit_dividend_yield_process`). Defaults to False.
 
 **Returns:**
 
@@ -2299,6 +2303,7 @@ calibrate(
     period: str = 'daily',
     carried_forward_weight: float = 0.2,
     unit_gain: bool = True,
+    residual_lag: str = 'step',
 ) -> DividendGrowthParams
 ```
 
@@ -2312,6 +2317,7 @@ calibrate(
 - <u>period (str):</u> the fit's time step, "daily" to "yearly", matching both inputs. Defaults to "daily".
 - <u>carried_forward_weight (float):</u> `DD`, the yearly weight of current inflation in the carried-forward average, strictly between 0 and 1. Defaults to 0.2, Wilkie's value (section 3.9).
 - <u>unit_gain (bool):</u> impose Wilkie's DW + DX = 1. Defaults to True; False gives the earlier free fit.
+- <u>residual_lag (str):</u> "step" (default) reads the yield's surprise one observation back, "year" one year back, Wilkie's YE(t-1) in his yearly model.
 
 **Returns:**
 
@@ -3626,7 +3632,8 @@ path; Ahlgrim, D'Arcy and Gorvett (2005, section 3) note that the regime switche
 correlated, so small stocks are more likely to be in the low-volatility regime when large stocks are, which
 the engine setting `shared_equity_regimes` (on in the default settings) reproduces by
 drawing every equity's switches from one random stream. Each scenario starts in the regime most likely at the
-last date (a judgement; the alternative, drawing it from the filtered probabilities, adds no data).
+last date (a judgement; the alternative, drawing it from the filtered probabilities, adds no data), or, with
+`initial_regime_shares`, spread over the regimes in those shares (`starting_regimes`).
 
 The formula is as follows:
 
@@ -4974,6 +4981,10 @@ $$
 Where pi is the inflation rate (the w term only when `inflation` is given) and std(e) the residual standard
 deviation, with one degree of freedom per fitted coefficient.
 
+With `inflation_level`, Wilkie's (1986, section 3.5) form lnY(t) = YW.I(t) + YN(t), w is first read from a
+regression of ln y(t) on [1, pi(t), ln y(t-1), pi(t-1)] (its pi(t) coefficient), and the OU fit above then runs
+on YN(t) = ln y(t) - w * pi(t) without the w term; a judgement, as Wilkie fits the two together.
+
 **References:**
 
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the Casualty Actuarial Society, 92, eq. 3.17. <https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf>
@@ -4988,6 +4999,7 @@ fit_dividend_yield_process(
     yields: pl.Series,
     time_step: float,
     inflation: pl.Series | None = None,
+    inflation_level: bool = False,
 ) -> DividendYieldParams
 ```
 
@@ -4996,6 +5008,7 @@ fit_dividend_yield_process(
 - <u>yields (pl.Series):</u> historical trailing dividend-yield observations, evenly spaced in time, all > 0.
 - <u>time_step (float):</u> time increment between observations, in years.
 - <u>inflation (pl.Series &#124; None):</u> historical inflation-rate observations, the same length and time index as `yields`. When supplied, adds Wilkie's inflation-sensitivity term to the fit.
+- <u>inflation_level (bool):</u> fit Wilkie's level form, the pull on ln y - w * inflation; needs `inflation`. Defaults to False, the pull on ln y.
 
 **Returns:**
 
@@ -5077,7 +5090,9 @@ s = \sigma \cdot \sqrt{(1 - \exp(- 2 \cdot \kappa \cdot \text{dt})) / (2 \cdot \
 $$
 
 Where kappa is `mean_reversion_speed`, mu `long_run_mean` (a log yield), sigma `volatility`, w
-`inflation_sensitivity` and z the yield's correlated standard normal shock.
+`inflation_sensitivity` and z the yield's correlated standard normal shock. With `inflation_level` (Wilkie's own
+form) the pull acts on ln y(t) - w * inflation(t) instead of ln y(t). A `volatility` per scenario replaces sigma,
+as when the yield's volatility follows the equity regime (Hibbert, Mowbray and Turnbull (2001, section 5.2.2)).
 
 **References:**
 
@@ -5093,6 +5108,8 @@ step_dividend_yield_process(
     time_step: float,
     params: DividendYieldParams,
     inflation_change: np.ndarray | float = 0.0,
+    inflation_now: np.ndarray | float = 0.0,
+    volatility: np.ndarray | float | None = None,
 ) -> np.ndarray
 ```
 
@@ -5103,6 +5120,8 @@ step_dividend_yield_process(
 - <u>time_step (float):</u> the step length, in years.
 - <u>params (DividendYieldParams):</u> the calibrated reversion speed, normal log yield, volatility and, with the Wilkie term, the inflation sensitivity.
 - <u>inflation_change (np.ndarray &#124; float):</u> the change in simulated inflation over the step; only used with the Wilkie term.
+- <u>inflation_now (np.ndarray &#124; float):</u> simulated inflation at the start of the step; only used with `inflation_level`.
+- <u>volatility (np.ndarray &#124; float &#124; None):</u> sigma for this step in each scenario; None (default) uses the parameters' own.
 
 **Returns:**
 
@@ -5166,6 +5185,7 @@ fit_dividend_growth_process(
     carried_forward_weight: float = 0.2,
     time_step: float = 1.0,
     unit_gain: bool = True,
+    residual_lag: int = 1,
 ) -> DividendGrowthParams
 ```
 
@@ -5177,6 +5197,7 @@ fit_dividend_growth_process(
 - <u>carried_forward_weight (float):</u> DD, Wilkie's yearly weight of current inflation in DM(t); default 0.2, his value in both bases (Table 1).
 - <u>time_step (float):</u> the time between observations, in years; default 1.0, Wilkie's yearly step.
 - <u>unit_gain (bool):</u> impose Wilkie's DW + DX = 1 (default); False gives the free fit.
+- <u>residual_lag (int):</u> how many observations back YE is read; 1 (default) is the previous one, the number of observations in a year is Wilkie's YE(t-1) of a year earlier on monthly or quarterly data.
 
 **Returns:**
 

@@ -1,6 +1,6 @@
 ## How It Works
 
-This page explains the theory behind both, then derives every number they use: what it is, whether it comes from a published source, from a fit on data or from a judgement, and the chart that shows it. The other rate models (Hull-White, CIR, Wilkie, Hibbert, Nelson-Siegel curves, HJM) are summarised at the end. Argument lists are in the reference pages for [InterestRates](/projects/financescenarios/docs/interest-rates) and the [configuration classes](/projects/financescenarios/docs/configuration).
+This page explains the theory behind both, then derives every number they use: what it is, whether it comes from a published source, from a fit on data or from a judgement, and the chart that shows it. The other rate models (Hull-White, CIR, Wilkie, Hibbert, Nelson-Siegel curves, HJM) are summarised after that, followed by the two models of rates and inflation together: KNW, fitted on history, and DNB's CP2022, with DNB's own parameters. Argument lists are in the reference pages for [InterestRates](#interestrates) and the [configuration classes](/projects/financescenarios/docs/configuration#configuration-classes).
 
 The numbers below come from one calibration of the default settings and factor set, made on 19 October 2026, the same one the README and the Getting Started section above use.
 
@@ -271,19 +271,21 @@ The default is one choice among several; each of these is an option on an intere
 
 **Hibbert two-factor.** The short rate reverts to a slower-moving rate rather than a fixed level ([Hibbert, Mowbray and Turnbull, 2001, section 5.1.1, p. 15](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf#page=15){:target="_blank"}).
 
-**KNW.** The nominal rate and inflation as one coupled system, with optional shared stochastic volatility; see [KNW models](/projects/financescenarios/docs/interest-rates#knw).
+**KNW.** The nominal rate and inflation as one coupled system, with optional shared stochastic volatility; see [the KNW models](#knw-models).
 
-**Nelson-Siegel curves.** A whole government curve as level, slope and curvature factors ([Nelson and Siegel, 1987](https://doi.org/10.1086/296409){:target="_blank"}; [Diebold and Li, 2006, section 3.2](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}), each simulated as its own mean-reverting factor, with a corporate spread curve on top; see [TermStructure](/projects/financescenarios/docs/interest-rates) and [CreditTermStructure](/projects/financescenarios/docs/markets).
+**CP2022.** De Nederlandsche Bank's model of the same system with DNB's quarterly parameters; see [CP2022](#cp2022-model).
 
-**HJM.** An arbitrage-free forward curve whose drift follows from its volatility ([Heath, Jarrow and Morton, 1992, section 4, Proposition 3, p. 86](https://doi.org/10.2307/2951677){:target="_blank"}), with two Hull-White factors (G2++) fitted to how historical forwards moved together; see [Hjm](/projects/financescenarios/docs/interest-rates).
+**Nelson-Siegel curves.** A whole government curve as level, slope and curvature factors ([Nelson and Siegel, 1987](https://doi.org/10.1086/296409){:target="_blank"}; [Diebold and Li, 2006, section 3.2](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}), each simulated as its own mean-reverting factor, with a corporate spread curve on top; see [TermStructure](#termstructure) and [CreditTermStructure](/projects/financescenarios/docs/markets#credittermstructure).
 
-### The KNW Models: Rates and Inflation Together {#knw}
+**HJM.** An arbitrage-free forward curve whose drift follows from its volatility ([Heath, Jarrow and Morton, 1992, section 4, Proposition 3, p. 86](https://doi.org/10.2307/2951677){:target="_blank"}), with two Hull-White factors (G2++) fitted to how historical forwards moved together; see [Hjm](#hjm).
+
+### The KNW Models: Rates and Inflation Together {#knw-models}
 
 A pension fund with inflation-indexed benefits, discounted at nominal rates, is exposed to the joint behavior of rates and inflation more than to either one alone. The KNW models simulate the two as one system: today's inflation shapes where rates go next, and today's rate shapes where inflation goes next.
 
 They follow the term-structure model of [Koijen, Nijman and Werker (2010)](https://doi.org/10.1093/rfs/hhp058){:target="_blank"}, which the Dutch Commissie Parameters extends in its CP2022 model ([Commissie Parameters, 2022, Technical Appendix, p. 1](https://open.overheid.nl/repository/ronl-f2685a42fd0bf01d5821446bcda34e719fdf7ef1/1/pdf/bijlage-2-technische-appendix.pdf#page=1){:target="_blank"}), the model behind the scenario sets De Nederlandsche Bank (DNB) publishes for Dutch pension funds.
 
-Finance Scenarios implements a discrete, reduced-form approximation inspired by both: a VAR on the observed short rate and inflation, fitted by least squares, not the latent-factor model those papers filter from the yield curve. For the single-factor short-rate models and the Nelson-Siegel curve, see [interest rates](/projects/financescenarios/docs/interest-rates).
+Finance Scenarios implements a discrete, reduced-form approximation inspired by both: a VAR on the observed short rate and inflation, fitted by least squares, not the latent-factor model those papers filter from the yield curve. For the single-factor short-rate models and the Nelson-Siegel curve, see [other rate models](#other-rate-models).
 
 #### Why Model Rates and Inflation Together
 
@@ -307,7 +309,7 @@ Each variant adds one layer to the one before:
 | KNW with stochastic volatility (`knw_sv`) | A shared hidden turbulence factor $$v$$ that scales volatility and shifts the drift; optional equity leg | Calm and stressed regimes that hit rates, inflation and equity at once |
 | Risk-neutral KNW (`knw_sv` with `measure: risk_neutral`) | A market price of risk fitted to the Treasury curve, closed-form bond prices, a stochastic deflator | Valuation, and a model yield curve at any maturity |
 
-Each builds on the previous one: with the turbulence terms at zero, KNW with stochastic volatility is plain KNW exactly. Parameter details are in the reference pages for [Knw](/projects/financescenarios/docs/interest-rates), [KnwSv](/projects/financescenarios/docs/interest-rates) and [KnwSvQ](/projects/financescenarios/docs/interest-rates).
+Each builds on the previous one: with the turbulence terms at zero, KNW with stochastic volatility is plain KNW exactly. Parameter details are in the reference pages for [Knw](#knw), [KnwSv](#knwsv) and [KnwSvQ](#knwsvq).
 
 <div class="fs-diagram">
 <div class="fs-links">
@@ -373,7 +375,7 @@ That real rate is below the 1.0% in the Federal Reserve's longer-run projections
 A belief cannot override the long-run levels, since they are a joint property of both legs; the history window the pair is fitted on is the lever.
 </div>
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/interest-rates"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Knw</a></div>
+<div class="fs-ref"><a href="#knw"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Knw</a></div>
 
 #### Stochastic Volatility
 
@@ -428,7 +430,7 @@ $$\Delta t$$ is the period length in years and $$\mu$$ the premium per period, c
 
 The equity leg runs under the real-world measure only.
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/interest-rates"><i class="fas fa-book" aria-hidden="true"></i>Full reference: KnwSv</a></div>
+<div class="fs-ref"><a href="#knwsv"><i class="fas fa-book" aria-hidden="true"></i>Full reference: KnwSv</a></div>
 
 #### The Risk-Neutral Version
 
@@ -481,9 +483,9 @@ In one fit (calibrated on 2026-10-14) the curve started at the 3.75% short rate,
 
 A deflator values a liability straight off a real-world run, so you don't need a second, risk-neutral simulation. Following [Cheng and Planchet (2018)](https://hal.science/hal-01730072){:target="_blank"}, $$D(T)$$ combines discounting at the simulated short rate with a path weight that turns real-world paths into risk-neutral ones; the value of a cash flow $$X_T$$ is the path average of $$D(T)\,X_T$$.
 
-The weight leaves out turbulence's shock, so the deflator is only accurate when the turbulence premium is small. On the live US fit that premium is large (38.5% of turbulence's speed), and the deflator's average misses the model's own bond prices by about 2% at one year and 5% at five (0.9827 against 0.9620, and 0.7606 against 0.7996); the fit warns when the premium is this large. The deflator is available in Python only; the [KnwSvQ reference](/projects/financescenarios/docs/interest-rates) has a worked example.
+The weight leaves out turbulence's shock, so the deflator is only accurate when the turbulence premium is small. On the live US fit that premium is large (38.5% of turbulence's speed), and the deflator's average misses the model's own bond prices by about 2% at one year and 5% at five (0.9827 against 0.9620, and 0.7606 against 0.7996); the fit warns when the premium is this large. The deflator is available in Python only; the [KnwSvQ reference](#knwsvq) has a worked example.
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/interest-rates"><i class="fas fa-book" aria-hidden="true"></i>Full reference: KnwSvQ</a></div>
+<div class="fs-ref"><a href="#knwsvq"><i class="fas fa-book" aria-hidden="true"></i>Full reference: KnwSvQ</a></div>
 
 #### Configuring a KNW Run
 
@@ -546,7 +548,7 @@ result = Scenarios.from_config(
 
 #### How It Compares with DNB's CP2022
 
-The [CP2022 Technical Appendix](https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix){:target="_blank"} specifies DNB's full model. How the two compare:
+The [CP2022 Technical Appendix](https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix){:target="_blank"} specifies DNB's full model, which the package also runs as written, with DNB's own parameters ([CP2022](#cp2022-model) below). KNW is the version fitted on a pair's own history, for any country. How the two compare:
 
 | Aspect | DNB CP2022 | Finance Scenarios |
 |:--|:--|:--|
@@ -578,13 +580,100 @@ Without real yields or rate and inflation derivatives data, the risk-neutral ver
 
 </details>
 
+### DNB's CP2022 Model {#cp2022-model}
+
+Dutch pension funds test their plans on the scenario sets De Nederlandsche Bank (DNB) publishes every quarter: 20,000 scenarios over 100 years from the CP2022 model of the [Commissie Parameters (2022)](https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix){:target="_blank"}. `method: cp2022` runs that model as its Technical Appendix writes it, with the parameters DNB publishes, so a run can rebuild DNB's real-world set or put DNB's economy next to factors of its own.
+
+#### The Model
+
+Three state variables move together: a Heston variance $$v$$, the nominal short rate $$r$$ and expected euro-area inflation $$\pi$$. They revert to their long-run levels through a 3 x 3 matrix $$K$$, so each one's level pulls on the others, and their five shocks are scaled by the variance (Technical Appendix, eqs. 1-6):
+
+$$
+dX_t = K\,(\mathbb{E}[X_\infty] - X_t)\,dt + \Sigma(v_t)\,dW_t, \qquad X_t = (v_t, r_t, \pi_t)
+$$
+
+The log equity index and the log HICP drift at $$r + \eta_S$$ and $$\pi + \eta_\Pi$$ less half their variance and load on the same shocks, so equity falls when turbulence rises. Nominal and real zero rates of every maturity are exponential-affine in the state, from the Riccati equations of section 10 (eqs. 14-19 and 76-79); they give back DNB's published tables to within 2e-6. Dutch CPI inflation is the HICP's plus a spread that follows CPB's forecasts and then 2% (section 8, eqs. 48-55). The run steps the model monthly with the appendix's own scheme (section 9.1, eqs. 51-53), with [Andersen's (2008)](https://doi.org/10.21314/jcf.2008.189){:target="_blank"} quadratic-exponential step for the variance.
+
+#### The Parameters
+
+Each quarterly workbook DNB publishes carries the model's parameters on its `0_Parameters` sheet, next to the term-structure functions of the nominal and real curves and the paths of the three state variables. The package stores each quarter as a vintage, and a run reads the one DNB had published by its calibration date; `python -m financescenarios.anchors update` checks DNB's page and stores a new quarter. The 2026Q4 set ships with the package.
+
+The parameters can also be backed out of a set's own 20,000 paths: `estimate_cp2022` matches the exact yearly moments of the monthly scheme to regressions of the yearly moves on the starting state, by minimum distance, with the Commissie's constraints imposed. On the 2026Q4 set every well-identified parameter comes back within about two standard errors of DNB's:
+
+| Parameter | DNB | Estimated (standard error) |
+|:--|--:|--:|
+| $$K_{vv}$$ | 2.7889 | 2.7892 (0.018) |
+| $$K_{rr}$$ | 0.4827 | 0.4847 (0.0011) |
+| $$K_{\pi r}$$ | -0.9213 | -0.9242 (0.0027) |
+| $$K_{\pi\pi}$$ | 0.5955 | 0.5949 (0.0017) |
+| $$\mathbb{E}[v]$$ | 0.05407 | 0.05408 (0.00005) |
+| Equity volatility at $$\mathbb{E}[v]$$ | 15.53% | 15.53% (0.01) |
+
+A variance reverting at a speed of 2.79 a year halves its distance to the long-run level in about three months.
+
+#### In a Run
+
+Rates (`maturity` 1 to 100 years, `curve: nominal` or the euro-area `real` curve), inflation (`index: hicp` or `dutch_cpi`) and one equity take `method: cp2022`, and every such entry is an output of the same model. Its equity, HICP and shortest rate carry the run's correlated draws, and the model turns those into its five independent shocks, so the model's own correlations hold exactly while any other factor in the set correlates with it through the usual estimate on history. The `dnb` factor set holds the euro 1-, 5-, 10-, 20- and 30-year nominal rates, the real 10-year rate, euro-area and Dutch inflation and world equity; the `dnb` settings run it monthly over 100 years with 2,000 scenarios.
+
+```python
+from financescenarios import Scenarios
+
+scenarios = Scenarios.from_profiles(settings="dnb", factor_set="dnb")
+result = scenarios.simulate()
+```
+
+A rate entry of your own:
+
+```yaml
+# my-project/factor-sets/my_factors.yaml (a factor set)
+interest_rates:
+  - name: euro_10y
+    method: cp2022
+    curve: nominal
+    maturity: 10
+    currency: EUR
+```
+
+#### Against DNB's 2026Q4 Set
+
+The `dnb` set with 2,000 scenarios against DNB's 20,000, in percent, run / DNB:
+
+| Variable | Year | Mean | Standard deviation | 5th percentile | Median | 95th percentile |
+|:--|--:|--:|--:|--:|--:|--:|
+| Nominal 1-year rate | 1 | 2.73 / 2.77 | 0.90 / 0.91 | 1.44 / 1.43 | 2.63 / 2.68 | 4.34 / 4.37 |
+| | 10 | 1.54 / 1.54 | 1.45 / 1.45 | -0.63 / -0.73 | 1.50 / 1.49 | 3.95 / 4.01 |
+| | 100 | 1.02 / 1.01 | 1.54 / 1.52 | -1.44 / -1.40 | 1.01 / 0.97 | 3.59 / 3.58 |
+| Nominal 10-year rate | 1 | 3.21 / 3.22 | 0.69 / 0.69 | 2.15 / 2.14 | 3.18 / 3.20 | 4.41 / 4.38 |
+| | 10 | 2.31 / 2.31 | 1.29 / 1.29 | 0.27 / 0.22 | 2.30 / 2.29 | 4.47 / 4.48 |
+| | 100 | 2.01 / 2.01 | 1.39 / 1.37 | -0.28 / -0.22 | 2.01 / 1.98 | 4.27 / 4.30 |
+| Real 10-year rate | 1 | 1.02 / 1.03 | 0.67 / 0.67 | 0.03 / 0.01 | 0.97 / 0.98 | 2.21 / 2.20 |
+| | 30 | 0.04 / 0.00 | 1.07 / 1.08 | -1.68 / -1.70 | 0.03 / -0.03 | 1.84 / 1.84 |
+| Euro-area inflation | 1 | 2.44 / 2.48 | 0.93 / 0.96 | 1.06 / 1.05 | 2.40 / 2.41 | 4.02 / 4.14 |
+| | 100 | 1.97 / 2.02 | 1.17 / 1.18 | 0.22 / 0.25 | 1.91 / 1.95 | 3.96 / 4.06 |
+| Dutch inflation | 1 | 2.85 / 2.85 | 0.93 / 0.96 | 1.46 / 1.42 | 2.81 / 2.78 | 4.44 / 4.53 |
+| Equity, return that year | 1 | 9.13 / 8.45 | 13.65 / 14.21 | -15.70 / -17.34 | 10.47 / 10.03 | 29.60 / 28.94 |
+| | 100 | 6.29 / 6.54 | 15.16 / 15.32 | -20.92 / -21.02 | 8.02 / 8.08 | 27.04 / 28.70 |
+| Equity, annualized over 100 years | 100 | 5.62 / 5.57 | 1.63 / 1.63 | 2.79 / 2.84 | 5.65 / 5.61 | 8.19 / 8.22 |
+
+The correlations match as well: equity against the 1-year rate is -0.47 against DNB's -0.49 in year 1, inflation against the 10-year rate 0.28 against 0.25, and the real against the nominal 10-year rate 0.93 against 0.93. The gaps that remain are within two or three Monte Carlo standard errors of 2,000 scenarios; with 20,000, year 1 gives an equity return of 8.49% against DNB's 8.45%. `Dnb.compare_moments` and `Dnb.compare_correlations` (see [external benchmarks](/projects/financescenarios/docs/validation#external-benchmarks)) set any run beside DNB's set this way.
+
+<div class="fs-callout fs-callout--limits" markdown="1">
+<p class="fs-callout__title">Limits</p>
+
+- Real world only. DNB's market-consistent set is calibrated to equity options, swaptions and inflation caps and floors (eq. 25), which needs paid market data. `external_scenario_source` with `provider: dnb` still reads DNB's own paths, either set.
+- DNB's sets carry a long-run equity return of ln(1.054), the advice's 5.4% before costs, where eq. 41 states 5.2% after them; DNB's page says to take the 20 basis points of costs off for net returns.
+- The term-structure functions carry the fit to DNB's valuation-date curves, whose monthly inputs are not published. Between whole years they are interpolated linearly, so rates are exact at every whole year and close in between.
+- The model's scheme is monthly, so a run with `cp2022` entries steps monthly.
+</div>
+
 ### References
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">37</span></summary>
+<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">41</span></summary>
 
 - Adrian, T., Crump, R.K., Moench, E. (2013). "Pricing the Term Structure with Linear Regressions." Journal of Financial Economics, 110(1), 110-138. [doi.org](https://doi.org/10.1016/j.jfineco.2013.04.009){:target="_blank"}
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the Casualty Actuarial Society, 92. [casact.org](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}
+- Andersen, L. (2008). "Simple and Efficient Simulation of the Heston Stochastic Volatility Model." Journal of Computational Finance, 11(3), 1-42. [doi.org](https://doi.org/10.21314/jcf.2008.189){:target="_blank"}
 - Bank of England. Bank Rate history and data. [bankofengland.co.uk](https://www.bankofengland.co.uk/boeapps/database/Bank-Rate.asp){:target="_blank"}
 - Bank of England. Yield curves: nominal spot curve of gilts, daily and month-end. [bankofengland.co.uk](https://www.bankofengland.co.uk/statistics/yield-curves){:target="_blank"}
 - Bank of England (2025). Monetary Policy Report, February 2025, Box A. [bankofengland.co.uk](https://www.bankofengland.co.uk/monetary-policy-report/2025/february-2025){:target="_blank"}
@@ -596,6 +685,7 @@ Without real yields or rate and inflation derivatives data, the risk-neutral ver
 - Brigo, D., Mercurio, F. (2001). "A Deterministic-Shift Extension of Analytically-Tractable and Time-Homogeneous Short-Rate Models." Finance and Stochastics, 5(3), 369-387. [doi.org](https://doi.org/10.1007/pl00013541){:target="_blank"}
 - Brigo, D., Mercurio, F. (2006). Interest Rate Models: Theory and Practice (2nd ed.). Springer Finance. [doi.org](https://doi.org/10.1007/978-3-540-34604-3){:target="_blank"}
 - Campbell, J.Y., Shiller, R.J. (1991). "Yield Spreads and Interest Rate Movements: A Bird's Eye View." The Review of Economic Studies, 58(3), 495-514. [doi.org](https://doi.org/10.2307/2298008){:target="_blank"}
+- Commissie Parameters (2022). "Technical Appendix: Specification of the CP2022 Model." [rijksoverheid.nl](https://www.rijksoverheid.nl/documenten/rapporten/2022/11/29/bijlage-2-technische-appendix){:target="_blank"}
 - Cox, J.C., Ingersoll, J.E., Ross, S.A. (1985). "A Theory of the Term Structure of Interest Rates." Econometrica, 53(2), 385-407. [doi.org](https://doi.org/10.2307/1911242){:target="_blank"}
 - Deutsche Bundesbank. Term structure of interest rates on listed Federal securities (method by Svensson), daily and monthly. [bundesbank.de](https://www.bundesbank.de/en/statistics/money-and-capital-markets/interest-rates-and-yields/term-structure-of-interest-rates){:target="_blank"}
 - Diebold, F.X., Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364. [doi.org](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}

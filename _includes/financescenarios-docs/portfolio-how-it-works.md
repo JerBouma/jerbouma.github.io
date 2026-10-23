@@ -12,7 +12,7 @@ portfolio = Portfolio(scenario_set)
 result = portfolio.compute({"us_broad": 0.6, "united_states_short_rate": 0.4}, initial_value=100.0)
 ```
 
-The numbers on this page come from one example run: 1,000 scenarios over 30 yearly steps of US stocks (SPY), the US short rate and US inflation, starting 2026-10-01 and simulated on 2026-10-04. Its "60/40" is 60% equities and 40% cash (the short rate); the 60/40 preset [below](#glidepaths) holds Treasuries instead. They show how the choices compare; other runs give other numbers. Every option is listed in the [Portfolio reference](/projects/financescenarios/docs/portfolio).
+The numbers on this page come from one example run: 1,000 scenarios over 30 yearly steps of US stocks (SPY), the US short rate and US inflation, starting 2026-10-01 and simulated on 2026-10-04. Its "60/40" is 60% equities and 40% cash (the short rate); the 60/40 preset [below](#glidepaths) holds Treasuries instead. They show how the choices compare; other runs give other numbers. Every option is listed in the [Portfolio reference](#portfolio).
 
 ### What a Portfolio Can Hold
 
@@ -148,7 +148,7 @@ glide = portfolio.compute_glidepath(
 )
 ```
 
-Well-known allocations ship as presets, such as a 60/40, the all-weather and permanent portfolios, a three-fund portfolio, an endowment model, Taleb's barbell (85% Treasury bills, 15% small-cap and growth stocks) and a target-date glidepath. The glidepath follows Vanguard's Target Retirement funds: 90% equities until 25 years before the target date, 50% at it and 30% seven years after. The 60/40 preset holds 60% US equities and 40% US Treasuries: the 10-year yield priced as a bond fund of duration 5.4 years, about that of a broad Treasury ETF.
+Well-known allocations ship as presets, such as a 60/40, the all-weather and permanent portfolios, a three-fund portfolio, Taleb's barbell (85% Treasury bills, 15% small-cap and growth stocks) and a target-date glidepath. The glidepath follows Vanguard's Target Retirement funds: 90% equities until 25 years before the target date, 50% at it and 30% seven years after. The 60/40 preset holds 60% US equities and 40% US Treasuries: the 10-year yield priced as a bond fund of duration 5.4 years, about that of a broad Treasury ETF.
 
 ```python
 result = Portfolio.from_preset(scenario_set, preset="balanced_60_40").compute()
@@ -263,7 +263,7 @@ exposure = backtest.factor_exposure(model="five_factor")
 
 Charts of the holdings' values and of weight drift are covered on the [plotting page](/projects/financescenarios/docs/plotting).
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/portfolio"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Portfolio</a></div>
+<div class="fs-ref"><a href="#portfolio"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Portfolio</a></div>
 
 ### References
 

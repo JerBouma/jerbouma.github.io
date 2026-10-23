@@ -22,7 +22,7 @@ Which chart answers which question about a run: where the distribution sits over
 ```python
 from financescenarios import Scenarios
 
-scenarios = Scenarios.from_profiles(settings="default", factor_set="us_only")
+scenarios = Scenarios.from_profiles(settings="default", factor_set="default")
 result = scenarios.simulate()
 
 result.plot()   # one fan chart per factor, the whole run at a glance

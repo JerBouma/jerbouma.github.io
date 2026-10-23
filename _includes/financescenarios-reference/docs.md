@@ -13,13 +13,16 @@ from financescenarios import Scenarios, ScenarioSet, CalibrationResult, FactorLa
 An economic scenario generator: thousands of joint, internally consistent futures for interest rates, inflation,
 equities, currencies, commodities, credit and more, each fitted to its own history.
 
-Every factor follows a model suited to how it behaves. Rates, inflation and spreads revert to a long-run level at
-their own historical speed; equities switch between calm and turbulent regimes, so bad months cluster; currencies
-keep their historical volatility. The factors are linked in two ways. A correlation matrix estimated from their
-historical changes means a scenario with an equity sell-off also tends to see what history saw alongside one. A
-cascade lets one factor's path drive another's where theory says it should: inflation drives rates in the Wilkie
-and KNW models, and with `drift_mode: irp` the rate gap drives a currency under uncovered interest rate parity
-(the risk-neutral run uses covered parity instead). Your own views (a long-run inflation target, a stress story)
+Every factor follows a model suited to how it behaves. In the default factor set a short rate follows a central
+bank's policy rule from the market's expected path, a long rate is its short rate's expected path plus a term
+premium, inflation and unemployment switch between calm and high regimes, and equities between calm and turbulent
+ones, so bad months cluster; credit spreads, when added, revert to a long-run level at their own speed. The
+factors are linked in two ways. A correlation matrix estimated from their historical changes means a scenario with
+an equity sell-off also tends to see what history saw alongside one. A cascade lets one factor's path drive
+another's where theory says it should: simulated inflation and unemployment set the short rate through the policy
+rule and the short rate sets the long rate, inflation drives rates in the Wilkie and KNW models, and with
+`drift_mode: irp` the rate gap drives a currency under uncovered interest rate parity (the risk-neutral run uses
+covered parity instead). Your own views (a long-run inflation target, a stress story)
 override the fit where you set them.
 
 The real-world run (`simulate()`) is for ALM, strategic asset allocation and risk: how the economy may plausibly
@@ -345,6 +348,19 @@ Fits the stochastic-volatility version of that model, `method: knw_sv` (opt-in).
 
 ```python
 scenarios.knw_sv  # property
+```
+
+</details>
+
+#### Scenarios.cp2022
+
+Reads DNB's CP2022 model and its quarterly parameters, `method: cp2022` (opt-in).
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+scenarios.cp2022  # property
 ```
 
 </details>
@@ -2269,7 +2285,7 @@ calibration.save("calibration.json")
 
 ```python
 class CalibrationResult(BaseModel):
-    calibrated_params: dict[str, CreditCycleParams | OUParams | RegimeParams | UnemploymentParams | YieldCurveParams | FXPPPParams | FXParams | CommodityParams | CommodityRandomWalkParams | DividendYieldParams | DividendGrowthParams | WilkieConsolsParams | EquityDerivedParams | RandomWalkParams | GARCHParams | OUCovariateParams | DeterministicParams | BreakevenInflationParams | InflationRegimeParams | DeterministicPathParams | HullWhiteForwardParams | AR1Params | MovingTargetOUParams | KnwParams | KnwSvLegParams | KnwSvEquityParams | HjmFactorParams | HestonParams | PolicyRuleParams | TermPremiumParams | RateLinkedOUParams | RegimeOUParams]
+    calibrated_params: dict[str, CreditCycleParams | OUParams | RegimeParams | UnemploymentParams | YieldCurveParams | FXPPPParams | FXParams | CommodityParams | CommodityRandomWalkParams | DividendYieldParams | DividendGrowthParams | WilkieConsolsParams | EquityDerivedParams | RandomWalkParams | GARCHParams | OUCovariateParams | DeterministicParams | BreakevenInflationParams | InflationRegimeParams | DeterministicPathParams | HullWhiteForwardParams | AR1Params | MovingTargetOUParams | KnwParams | KnwSvLegParams | KnwSvEquityParams | Cp2022EntryParams | HjmFactorParams | HestonParams | PolicyRuleParams | TermPremiumParams | RateLinkedOUParams | RegimeOUParams]
     correlation_matrix: np.ndarray
     factor_names: list[str]
     dependencies: dict[str, list[str]]

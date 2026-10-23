@@ -31,8 +31,10 @@ from docs import _RE_FORMULA_INTRO, _formula_to_latex, _looks_like_formula  # no
 
 import financescenarios as fs
 from financescenarios.config.config_model import (
+    CorrelationsConfig,
     CreditMigrationConfig,
     CreditTermStructureConfig,
+    FixedCorrelation,
     HjmConfig,
     LeadingIndicatorConfig,
     MortalityConfig,
@@ -54,10 +56,15 @@ from financescenarios.factors.mortality.mortality_controller import Mortality
 from financescenarios.factors.real_estate.real_estate_controller import RealEstate
 from financescenarios.factors.term_structure.term_structure_controller import TermStructure
 from financescenarios.factors.unemployment.unemployment_controller import Unemployment
+from financescenarios.models.cp2022.cp2022_controller import Cp2022
+from financescenarios.models.cp2022.cp2022_model import Cp2022Params, Cp2022Vintage
 from financescenarios.models.knw.knw_controller import Knw
 from financescenarios.models.knw_sv.knw_sv_controller import KnwSv
 from financescenarios.models.knw_sv_q.knw_sv_q_controller import KnwSvQ
 from financescenarios.reporting.reporting_controller import Reporting
+from financescenarios.validation.dnb.dnb_controller import Dnb
+from financescenarios.validation.naic_goes.naic_goes_controller import NaicGoes
+from financescenarios.validation.published_frameworks.published_frameworks_controller import compare_published, held_up
 
 ROOT = Path(__file__).resolve().parents[2]
 PAGES_DIR = ROOT / "_pages" / "financescenarios" / "documentation"
@@ -81,12 +88,13 @@ MODULES = [
             "EngineConfig", "ToolkitConfig", "InterestRateConfig", "InflationConfig", "UnemploymentConfig",
             "EquityConfig", "FXConfig", "CreditConfig", "CommodityConfig", "DividendYieldConfig",
             "DividendGrowthConfig", "RealEstateConfig", "YieldCurveConfig", CreditTermStructureConfig, HjmConfig,
-            CreditMigrationConfig, LeadingIndicatorConfig, MortalityConfig]),
+            CreditMigrationConfig, LeadingIndicatorConfig, MortalityConfig, CorrelationsConfig, FixedCorrelation]),
         ("Beliefs", ["OUBeliefs", "InterestRateBeliefs", "EquityBeliefs", "BeliefPath"]),
         ("Presets and Profiles", [
             "Profile", "list_presets", "load_profiles", "load_config", "load_profile_library", "scaffold_project"]),
     ]),
-    ("interest-rates", "Interest Rates", "/interest-rates", [InterestRates, TermStructure, Hjm, Knw, KnwSv, KnwSvQ]),
+    ("interest-rates", "Interest Rates", "/interest-rates", [
+        InterestRates, TermStructure, Hjm, Knw, KnwSv, KnwSvQ, Cp2022, Cp2022Vintage, Cp2022Params]),
     ("economy", "Economy", "/economy", [Inflation, Unemployment, Mortality, LeadingIndicator]),
     ("markets", "Markets", "/markets", [
         Equities, FX, Commodities, RealEstate, DividendYield, DividendGrowth, Credit, CreditTermStructure,
@@ -113,7 +121,8 @@ MODULES = [
             "write_scenario_files"]),
     ]),
     ("validation", "Validation", "/validation", [
-        "Relationships", "RelationshipRegion", "Realism", "RealismFactor", "OutOfSample", "OutOfSampleEvaluation"]),
+        "Relationships", "RelationshipRegion", "Realism", "RealismFactor", "OutOfSample", "OutOfSampleEvaluation",
+        NaicGoes, Dnb, compare_published, held_up]),
 ]
 UNDER_THE_HOOD = [
     ("architecture", "How a Run Is Built", "/architecture", []),

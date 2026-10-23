@@ -150,9 +150,9 @@ A configuration of your own calibrates on the day it runs, so its numbers are fr
 | factor | category | metric | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:-------|:---------|:-------|--------:|--------------:|-------------:|-------------:|
 | inflation | inflation | rate | 0.0374 | 0.0260 | 0.0001 | 0.0486 |
-| us_short_rate | interest_rates | rate | 0.0402 | 0.0403 | 0.0041 | 0.0785 |
+| us_short_rate | interest_rates | rate | 0.0402 | 0.0284 | -0.0104 | 0.0694 |
 | unemployment | unemployment | rate | 0.0420 | 0.0541 | 0.0261 | 0.0812 |
-| us_broad | equities | annualized |  | 0.1132 | 0.0160 | 0.1929 |
+| us_broad | equities | annualized |  | 0.1132 | 0.0157 | 0.1930 |
 
 Over ten years SPY returns 11.32% a year on average with these three variables alone against 8.49% over five years in the default factor set; runs compare only when they share their setup.
 

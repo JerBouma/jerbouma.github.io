@@ -646,9 +646,11 @@ regime = shock_regime("inflation", 0.08, calibration=calibration)
 shocked = scenarios.simulate(regime=regime, calibration=calibration, n_simulations=2000, seed=42)
 ```
 
-On the October 2026 calibration of the default set, the median US inflation is 8.1% one year in against 2.9% in
-the baseline, 5.4% after three years and back on the baseline's 2.6% after five; US unemployment's median after one
-year drops from 4.9% to 3.9% along its Phillips curve.
+On the calibration of 2026-10-19 of the default set, the median US inflation is 7.6% one year in (the mean 7.9%)
+against 2.7% in the baseline, 4.7% after three years against 2.0%, and back on the baseline's 1.8% after five. The
+US short rate follows through its policy rule, to a median of 6.2% after one year and 8.6% after two against the
+baseline's 4.3% and 4.4%, while US unemployment barely moves in the first year (4.2% against 4.3%) and ends higher
+(5.7% against 5.2% after five years).
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Arguments and returns</b></summary>

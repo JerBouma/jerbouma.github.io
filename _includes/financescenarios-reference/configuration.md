@@ -11,6 +11,8 @@ from financescenarios.config.config_model import HjmConfig
 from financescenarios.config.config_model import CreditMigrationConfig
 from financescenarios.config.config_model import LeadingIndicatorConfig
 from financescenarios.config.config_model import MortalityConfig
+from financescenarios.config.config_model import CorrelationsConfig
+from financescenarios.config.config_model import FixedCorrelation
 ```
 
 ### ScenariosConfig
@@ -36,6 +38,8 @@ set, and `load_config` from two YAML files. It can also be built straight from a
 | `yield_curve`, `credit_term_structure`, `hjm`, `real_estate` | Optional factors, switched on with `enabled: true`. |
 | `leading_indicator`, `credit_migration`, `climate`, `mortality` | The same. |
 | `external_scenario_source` | A published scenario set (GOES or DNB) used for some factors instead. |
+| `correlations` | Correlations stated as values, as a published model fixes them, instead of estimated. |
+| `published_model` | Reproduce a published model (`ahlgrim`, `hibbert`, `wilkie`) as its paper ran it, no data. |
 
 How shocks are drawn matters for the tails. With `shock_distribution: student_t` the joint shocks have fat tails and
 tail dependence: extreme moves are more frequent and tend to arrive in several factors at once, as in 2008 or 2020,
@@ -106,6 +110,8 @@ class ScenariosConfig(_StrictModel):
     dividend_yield: list[DividendYieldConfig] = Field(default_factory=list, description="Dividend yields, each mean-reverting in its log, as in Ahlgrim, D'Arcy and Gorvett (2005); none by default.")
     dividend_growth: list[DividendGrowthConfig] = Field(default_factory=list, description='Dividend growth as in Wilkie (1986), each tied to an inflation and a dividend_yield entry; none by default.')
     mortality: MortalityConfig = Field(default_factory=MortalityConfig)
+    correlations: CorrelationsConfig = Field(default_factory=CorrelationsConfig, description='Correlations stated as values instead of estimated from history; none by default.')
+    published_model: Literal['ahlgrim', 'hibbert', 'wilkie'] | None = Field(default=None, description="Reproduce this published model as its paper ran it, with no data: every parameter comes from the factor set's beliefs and every starting value from the paper (Ahlgrim, D'Arcy and Gorvett's workbook, Hibbert, Mowbray and Turnbull's calibration A, Wilkie's neutral start), so calibration needs no Finance Toolkit and the run is the same offline. The factor set must state every parameter of the model; unemployment may then be left out, as Hibbert's and Wilkie's models have none. None (the default) fits every factor on its history.")
     toolkit: ToolkitConfig = Field(default_factory=ToolkitConfig)
     external_scenario_source: ExternalScenarioSourceConfig = Field(default_factory=ExternalScenarioSourceConfig)
 ```
@@ -317,7 +323,9 @@ By default the rate is mean-reverting (Hull-White): pulled toward a long-run lev
 shocks of its historical size, and free to go negative, as euro, yen and Swiss franc rates did. The data comes
 from a Treasury-yield ticker (`source: ticker`, US), the OECD's short and long rates (`source: oecd`, worldwide) or
 the Global Macro Database (`source: gmdb`, more countries, yearly only); `history_source` can fit the speed and
-level on more than a century of data instead.
+level on more than a century of data instead. The default factor set goes further: its short rates follow the
+balanced-approach rule from the market's expected path (`policy_rule: balanced`, `expected_path: market`) and its
+long rates are their short rate's expected path plus a term premium (`expectations_hypothesis: true`).
 
 The model can be changed with `method`:
 
@@ -330,11 +338,16 @@ The model can be changed with `method`:
   on top; here the structure is applied to the nominal rate, an approximation.
 - `knw` and `knw_sv`: the rate and a paired inflation entry are fitted jointly, as in De Nederlandsche Bank's
   scenario set; `knw_sv` adds a stochastic volatility the two share, which an equity can join.
+- `cp2022`: a zero rate of De Nederlandsche Bank's own model, CP2022, with the parameters DNB publishes every
+  quarter (`Cp2022`); `maturity` (1 to 100 years) and `curve` (`nominal` or the euro-area `real` curve) pick it.
+  Every `cp2022` entry of a run, inflation and equity included, is one output of the same model.
 
 Other options shape the economics further. `volatility_model: garch` lets calm and turbulent periods alternate.
 `condition_on_business_cycle` tilts the rate with the leading indicator. `long_run_anchor` pulls the rate toward
 EIOPA's forward rates (the Solvency II reference) or the median of DNB's scenario set instead of its own fitted
-level. `zero_lower_bound` floors it at 0%. `beliefs` overrides the fit with your own view (see
+level. `real_rate` models the real rate instead and adds simulated inflation to it, the Fisher construction of
+Ahlgrim, D'Arcy and Gorvett (2005) and Hibbert, Mowbray and Turnbull (2001). `zero_lower_bound` floors it at 0%.
+`beliefs` overrides the fit with your own view (see
 `InterestRateBeliefs`). Only `hull_white` and `cir` take `condition_on_business_cycle`, a `history_source` or a
 `long_run_anchor`, only `hull_white` takes `volatility_model: garch`, and beliefs apply to constant-volatility,
 real-world `hull_white` and `cir` entries. `knw` and `knw_sv` pair one rate with one inflation entry: both set the
@@ -383,8 +396,8 @@ and no `condition_on_business_cycle`; no inflation entry may condition on it.
 prescription. A rule pulls the rate toward the neutral real rate plus the target within a year or two, as that
 target was estimated at the time, while markets can expect something else for years, as they priced rates near
 zero for years ahead from 2009 on. The expected path is then the one the government curve's forward rates
-implied on the start date, less the term premium of Adrian, Crump and Moench (2013, section 2.4), as the New York
-Fed estimates it for each maturity: for the dollar the curve is the New York Fed's own fit of the Treasury
+implied on the calibration date, less the term premium of Adrian, Crump and Moench (2013, section 2.4), as the
+New York Fed estimates it for each maturity: for the dollar the curve is the New York Fed's own fit of the Treasury
 zero-coupon curve, the yields that premium is estimated on (the Treasury par curve, bootstrapped, with no premium
 taken out when it cannot be read); for the euro the Bundesbank's zero-coupon curve of Federal securities and for
 the pound the Bank of England's gilt spot curve. No official premium is published for the euro or the pound, so
@@ -524,7 +537,7 @@ class InterestRateConfig(_StrictModel):
     source: Literal['ticker', 'oecd', 'gmdb'] = Field(default='ticker', description="'ticker' (a Yahoo Finance Treasury-yield ticker, US only), 'oecd' (the OECD short- or long-term rate of country, monthly, quarterly or yearly) or 'gmdb' (the Global Macro Database, which covers countries outside the OECD, yearly only).")
     currency: str = Field(default='USD', description="The currency this rate belongs to, a three-letter ISO code such as 'EUR'. Used to convert results into the reporting currency and to pick long_run_anchor's curve.")
     measure: Literal['real_world', 'risk_neutral'] = Field(default='real_world', description="'real_world' (fitted on history, the default) or 'risk_neutral' (matched to today's market: a flat path at today's rate, or today's forward curve with risk_neutral_forward_curve). A risk_neutral entry takes no beliefs.")
-    method: Literal['hull_white', 'cir', 'wilkie_consols', 'hibbert_two_factor', 'knw', 'knw_sv'] = 'hull_white'
+    method: Literal['hull_white', 'cir', 'wilkie_consols', 'hibbert_two_factor', 'knw', 'knw_sv', 'cp2022'] = 'hull_white'
     ticker: str = Field(default='^IRX', description="With source='ticker': the Treasury-yield ticker, e.g. ^IRX (13-week), ^FVX (5-year), ^TNX (10-year) or ^TYX (30-year).")
     country: str = Field(default='United States', description="With source 'oecd' or 'gmdb' (or a history_source): the country.")
     term: Literal['short', 'long'] = Field(default='short', description="With source 'oecd' or 'gmdb': the short-term or the long-term rate.")
@@ -545,6 +558,8 @@ class InterestRateConfig(_StrictModel):
     history_start_year: int | None = Field(default=None, description='With history_source: leave out years before this one, e.g. 1900.')
     history_period: Literal['yearly', 'monthly'] = Field(default='yearly', description="With history_source on an expectations_hypothesis long rate: how often its long history is sampled for the term premium's fit. 'yearly' (default) reads one value a year (the OECD's yearly average, a ticker's year-end close); 'monthly' reads one a month (the OECD's monthly rates, a ticker's month-end closes), the step a monthly run simulates, since a yearly average smooths away part of the premium's month-to-month moves and of its same-step response to the short rate. 'oecd' or 'ticker' only.")
     accept_licence: bool = Field(default=False, description="Confirms non-commercial use, which history_source 'jst' requires (CC BY-NC-SA 4.0).")
+    real_rate: bool = Field(default=False, description="Model the real rate and add inflation to it: the process (hull_white or hibbert_two_factor) is fitted on the rate minus the paired inflation entry (`inflation_name`), the ex-post real rate of Ahlgrim, D'Arcy and Gorvett (2005, section 3), and a hibbert_two_factor target likewise on the long rate minus inflation; the simulated rate is that real rate plus the scenario's simulated inflation each step, so nominal rates and inflation move together, as their nominal rate is real rate plus inflation (eq. 3.15) and as in Hibbert, Mowbray and Turnbull (2001, section 5.1.4). Beliefs then state the real rate's process, and the fitted parameters are the real rate's. Off by default: the nominal rate is fitted and simulated itself.")
+    lower_bound: float | None = Field(default=None, description="The lowest rate recorded, as zero_lower_bound records 0: the process evolves underneath and the rate every path and linked factor sees is max(rate, lower_bound), such as Wilkie's (1986, section 4.5) minimum Consols yield CMIN of 0.5%. None (the default) leaves the rate unfloored. Real-world entries only.")
     zero_lower_bound: bool = Field(default=False, description='Keep this rate at or above 0%, as some scenario generators do. The model still evolves underneath as a shadow rate that may go negative, with every negative rate replaced by zero, as in Black (1995); the rate every path, discount factor and linked factor sees is max(shadow, 0), so a rate that touched zero climbs back from where the shadow went rather than from 0. Off by default: negative rates did happen (euro, yen, Swiss franc). Real-world entries only.')
     history_volatility: Literal['history', 'recent'] = Field(default='history', description="With history_source: 'history' (default) takes the volatility from the long history along with the speed and level; 'recent' keeps the volatility fitted on the recent window, so a calm or volatile recent era sets how much the rate swings while the long history sets how fast it reverts.")
     long_run_anchor: Literal['eiopa', 'dnb'] | None = Field(default=None, description="Pull the rate toward an official curve's forward rates instead of one fitted long-run level: 'eiopa' uses EIOPA's risk-free curve for this entry's currency (USD, EUR or GBP), the 1-year forward rate for term short and the 10-year forward for term long, starting at every scenario date, ending at EIOPA's ultimate forward rate (Solvency II's reference). 'dnb' (EUR only) follows the median of De Nederlandsche Bank's real-world scenario set instead, its 1-year or 10-year nominal rate, the reference for Dutch pension funds. Speed and volatility stay fitted. An explicit beliefs.long_run_mean takes precedence. hull_white or cir, real_world, constant volatility only.")
@@ -556,10 +571,12 @@ class InterestRateConfig(_StrictModel):
     neutral_real_rate: float | None = Field(default=None, description="With policy_rule: the real rate that neither stimulates nor restrains the economy. Left unset, the central bank's own estimate for currency: USD 1.2%, EUR 0.09%, GBP 1.0%.")
     longer_run_unemployment: float | None = Field(default=None, description="With policy_rule: the official natural rate of unemployment; the paired unemployment entry settles at it in a calm stretch (or averages it over the cycle, with that entry's natural_rate_anchor: average). Left unset, the official estimate for that entry's country (United States 4.2%, the FOMC's longer-run median; France 7.16%, United Kingdom 4.21%, Germany 3.48%, the European Commission's NAWRU), otherwise the entry's fitted calm level. With expected_path: market the rule's gap is measured from unemployment's expected path instead, so this only sets where unemployment settles.")
     effective_lower_bound: float | None = Field(default=None, description="With policy_rule: the floor under the simulated rate, while its shadow rate keeps following the rule. Left unset, the lowest policy rate the currency's central bank has set: USD 0%, EUR -0.50% (the ECB's deposit facility rate), GBP 0.10% (Bank Rate); 0% for other currencies.")
-    expected_path: Literal['rule', 'market'] = Field(default='rule', description="With policy_rule: where the rate's expected path comes from. 'rule' (default) is the rule's own prescription; 'market' is the path the government curve's forward rates implied on the start date (the New York Fed's fit of the Treasury curve for USD, the Bundesbank's curve for EUR, the Bank of England's gilt curve for GBP), less an ACM term premium (the New York Fed's for USD; for EUR and GBP one fitted on that same curve, with the US premium only as a fallback), converging to the rule's steady state after ten years, with the rule acting on the gaps of the simulated inflation and unemployment to their expected paths: the calibrated model's medians without regimes, beliefs or shocks, stored at calibration. longer_run_unemployment then only sets where unemployment settles, as the level slack is measured from cancels out. USD, EUR or GBP.")
+    expected_path: Literal['rule', 'market'] = Field(default='rule', description="With policy_rule: where the rate's expected path comes from. 'rule' (default) is the rule's own prescription; 'market' is the path the government curve's forward rates implied on the calibration date (the New York Fed's fit of the Treasury curve for USD, the Bundesbank's curve for EUR, the Bank of England's gilt curve for GBP), less an ACM term premium (the New York Fed's for USD; for EUR and GBP one fitted on that same curve, with the US premium only as a fallback), converging to the rule's steady state after ten years, with the rule acting on the gaps of the simulated inflation and unemployment to their expected paths: the calibrated model's medians without regimes, beliefs or shocks, stored at calibration. longer_run_unemployment then only sets where unemployment settles, as the level slack is measured from cancels out. USD, EUR or GBP.")
     expectations_hypothesis: bool = Field(default=False, description="With term='long': make this long rate the short rate expected over its maturity plus a mean-reverting term premium fitted on history, so the gap between the two reverts as it has historically instead of wandering. The expected path follows short_rate_name's own model, its long-run anchor or policy rule included (a policy rule's path reverts at the short rate's own speed on the premium's history, not the rule's, and its premium also reads the short rate's same-step change), and takes precedence over this entry's own long_run_anchor. A real-world hull_white rate with constant volatility, without condition_on_business_cycle. A beliefs.long_run_mean path prescribes the long rate up to its last anchor, after which its short rate's expected path and the premium set it again; shocks move the term premium, or with beliefs.total_move are the yield's whole move from its start.")
     short_rate_name: str = Field(default='interest_rate', description="With expectations_hypothesis: the short-rate entry whose expected path the long rate follows; a country entry defaults to its own country's, e.g. 'eurozone_short_rate'.")
     term_premium: float | None = Field(default=None, description="With expectations_hypothesis: the term premium's long-run level as a decimal, in place of the fitted one; 0 makes the long rate settle where the short rate's expected path averages.")
+    maturity: int = Field(default=1, ge=1, le=100, description="With method='cp2022': the maturity of the zero rate in years, 1 to 100.")
+    curve: Literal['nominal', 'real'] = Field(default='nominal', description="With method='cp2022': the nominal euro curve or the euro-area real (HICP-linked) curve.")
     beliefs: InterestRateBeliefs = Field(default_factory=InterestRateBeliefs)
 ```
 
@@ -591,6 +608,9 @@ The model can be changed with `method`:
   as [Benati (2008, section 2.1.1 and Appendix B.3)](https://www.ecb.europa.eu/pub/pdf/scpwps/ecbwp851.pdf) reads
   inflation's persistence regime by regime (the UK's inflation targeting from 8 October 1992).
 - `knw` and `knw_sv`: fitted jointly with a paired interest rate, as in De Nederlandsche Bank's scenario set.
+- `cp2022`: the inflation of De Nederlandsche Bank's CP2022 model with its quarterly parameters (`Cp2022`):
+  `index: hicp` for the euro area's, `index: dutch_cpi` for the Dutch CPI, the HICP's plus a spread that
+  follows CPB's forecasts.
 
 `volatility_model: garch` lets calm and turbulent periods alternate, `condition_on_business_cycle` tilts inflation
 with the leading indicator, `condition_on_interest_rate` lets it respond to changes in a paired rate, and `beliefs`
@@ -618,7 +638,7 @@ class InflationConfig(_StrictModel):
     currency: str = Field(default='USD', description='The currency of this inflation series, a three-letter ISO code; used when converting results.')
     measure: Literal['real_world', 'risk_neutral'] = Field(default='real_world', description="'real_world' (fitted on history, the default) or 'risk_neutral', with method 'knw_sv' (the market-consistent fit of the pair) or 'ou' (today's breakeven inflation curve of the United States, the United Kingdom, Germany or the euro area). A risk_neutral entry takes no beliefs.")
     period: str = Field(default='monthly', description='The frequency of the history inflation is fitted on: monthly, quarterly or yearly.')
-    method: Literal['ou', 'wilkie_ar1', 'hibbert_two_factor', 'regime_switching', 'knw', 'knw_sv'] = Field(default='ou', description="'ou' (mean-reverting, the default), 'wilkie_ar1' (the AR(1) of Wilkie (1986)), 'hibbert_two_factor' (reverts to a moving target, see target_source), 'regime_switching' (a calm and a high, volatile regime, Hamilton (1989); fit it on a long history with history_source), 'knw' (jointly fitted with interest_rate_name's rate) or 'knw_sv' (knw with stochastic volatility). Only 'ou' takes GARCH, conditioning or beliefs.")
+    method: Literal['ou', 'wilkie_ar1', 'hibbert_two_factor', 'regime_switching', 'knw', 'knw_sv', 'cp2022'] = Field(default='ou', description="'ou' (mean-reverting, the default), 'wilkie_ar1' (the AR(1) of Wilkie (1986)), 'hibbert_two_factor' (reverts to a moving target, see target_source), 'regime_switching' (a calm and a high, volatile regime, Hamilton (1989); fit it on a long history with history_source), 'knw' (jointly fitted with interest_rate_name's rate) or 'knw_sv' (knw with stochastic volatility). Only 'ou' takes GARCH, conditioning or beliefs.")
     target_source: Literal['coarser_period', 'ewma'] = Field(default='coarser_period', description="With method='hibbert_two_factor': what inflation reverts toward. 'coarser_period' (the default) fetches the same country's inflation at target_period and simulates it as a second factor, '<name>_target'; 'ewma' uses a moving average of this entry's own path (target_smoothing) instead.")
     target_period: Literal['quarterly', 'yearly'] = Field(default='yearly', description="With target_source='coarser_period': the target's frequency, coarser than period (monthly allows quarterly or yearly, quarterly only yearly). Growth over a longer window is larger, so the fitted reversion speed has no direct years-to-close-the-gap reading.")
     target_smoothing: float = Field(default=0.05, gt=0, lt=1, description="With target_source='ewma': the weight of each new observation in the moving average; smaller is a slower target. Fixed, not fitted.")
@@ -632,6 +652,7 @@ class InflationConfig(_StrictModel):
     history_source: Literal['millennium', 'shiller', 'oecd'] | None = Field(default=None, description="Fit the dynamics (speed, volatility, long-run level) on centuries of history instead of the recent window; today's level and the correlation series still come from source. 'millennium': UK consumer price inflation from 1210 (country 'United Kingdom'); 'shiller': US December-to-December inflation from 1872 (country 'United States'); 'oecd': the OECD's inflation of country at this entry's period, from 1956 for the major economies, read a year apart. Real-world ou with constant volatility, wilkie_ar1, whose yearly AR(1) is then fitted on that history as Wilkie (1986) fitted his on UK data from 1919, or regime_switching, whose regimes are fitted on it.")
     history_start_year: int | None = Field(default=None, description='With history_source: leave out years before this one, e.g. 1900.')
     long_run_anchor: Literal['expectations', 'fitted'] | None = Field(default=None, description="With method='regime_switching': 'expectations' (the default) moves both regimes' levels so the long-run mean is today's sourced long-run expectation for the country (US 2.30%, the Philadelphia Fed's Survey of Professional Forecasters; euro area 2.0%, the ECB's; UK 2%, the Bank of England's target), keeping the gap between them, and reads today's regime off the recent data again with the moved levels; 'fitted' keeps the history's own levels. A beliefs.long_run_mean (one level or a path) then moves both levels from there, so the long-run mean follows it.")
+    index: Literal['hicp', 'dutch_cpi'] = Field(default='hicp', description="With method='cp2022': the euro-area HICP or the Dutch CPI, which follows the HICP plus a spread set by CPB's forecasts (Technical Appendix, sec. 8).")
     beliefs: OUBeliefs = Field(default_factory=OUBeliefs)
 ```
 
@@ -748,7 +769,8 @@ premium (`equity_premium`, by default the 3.77% a year stocks earned above bills
 
 Other methods tie equities to the rest of the economy: `wilkie_derived` builds the price from a dividend index and a
 dividend yield as in Wilkie (1986), `hibbert_regime_switching` fits the regimes to returns in excess of a short rate,
-so equities earn a premium over cash, and `knw_sv` shares stochastic volatility with rates and inflation. Under
+so equities earn a premium over cash, `knw_sv` shares stochastic volatility with rates and inflation, and `cp2022`
+is the equity index of De Nederlandsche Bank's CP2022 model, with the parameters DNB publishes (`Cp2022`). Under
 `measure: risk_neutral` the market earns the risk-free rate less its dividend yield, with a volatility from option
 prices. `asset_class` stands in a listed fund for an asset class without a public index, such as private equity or
 infrastructure. `beliefs` overrides the fit with your own view (see `EquityBeliefs`).
@@ -763,10 +785,10 @@ class EquityConfig(_StrictModel):
     asset_class: str | None = Field(default=None, description="An asset class without a public return index, e.g. 'Private Equity', 'Infrastructure', 'Hedge Funds' or 'Private Credit' (a key of ASSET_CLASS_PROXIES): sets ticker to the listed fund the Finance Toolkit's economics.get_asset_class_proxies uses for it. Listed prices are marked to market daily, so they swing more and move more with equities than the appraisal-based returns private funds report, and they are net of the fund's fees.")
     currency: str = Field(default='USD', description='The currency the ticker is listed in, which is not always the market it tracks (VGK and EWJ are USD-listed); used when converting results.')
     measure: Literal['real_world', 'risk_neutral'] = Field(default='real_world', description="'real_world' (fitted on history, the default) or 'risk_neutral' (geometric Brownian motion growing at the risk-free rate minus the dividend yield, with the volatility from volatility_source). A risk_neutral entry takes no beliefs.")
-    volatility_source: Literal['implied', 'svi', 'realized', 'heston'] = Field(default='implied', description="Only used when measure='risk_neutral': where the flat GBM volatility comes from. 'implied' (default) reads the at-the-money strike from one raw per-strike Black-Scholes inversion at FinanceToolkit's nearest expiration. 'svi' reads the ATM value off FinanceToolkit's SVI-fitted, calendar-arbitrage-checked volatility surface (options.get_volatility_surface) at the longest fitted expiration: smoothed across the whole smile instead of passing one quote's noise straight through, and a longer expiry is the better match for a GBM simulated over years. 'realized' skips options data entirely and uses the annualized standard deviation of historical log-returns (the right choice for tickers without a liquid options market, e.g. most sector/regional/style ETFs). 'heston' fits the Heston (1993) stochastic-volatility model to the SVI surface at six expirations from one to twelve months, so the simulated paths carry the market's smile and volatility term structure instead of one flat volatility. 'implied', 'svi' and 'heston' fall back to realized volatility (flat GBM) with a logged warning when options data is unavailable.")
+    volatility_source: Literal['implied', 'svi', 'realized', 'heston'] = Field(default='implied', description="Only used when measure='risk_neutral': where the flat GBM volatility comes from. 'implied' (default) averages the Black-Scholes implied volatilities of the out-of-the-money call and put nearest today's price, at the first expiration at least a week away. 'svi' reads the ATM value off FinanceToolkit's SVI-fitted, calendar-arbitrage-checked volatility surface (options.get_volatility_surface) at the longest fitted expiration: smoothed across the whole smile instead of passing one quote's noise straight through, and a longer expiry is the better match for a GBM simulated over years. 'realized' skips options data entirely and uses the annualized standard deviation of historical log-returns (the right choice for tickers without a liquid options market, e.g. most sector/regional/style ETFs). 'heston' fits the Heston (1993) stochastic-volatility model to the SVI surface at six expirations from one to twelve months, so the simulated paths carry the market's smile and volatility term structure instead of one flat volatility. 'implied', 'svi' and 'heston' fall back to realized volatility (flat GBM) with a logged warning when options data is unavailable.")
     n_regimes: int = Field(gt=1, default=2)
     period: str = 'monthly'
-    method: Literal['regime_switching', 'wilkie_derived', 'hibbert_regime_switching', 'knw_sv'] = Field(default='regime_switching', description="'regime_switching' (a Markov regime-switching fit, the default), 'wilkie_derived' (Wilkie (1986): the price is dividend_growth_name's dividend index over dividend_yield_name's yield, with no fit of its own), 'hibbert_regime_switching' (Hibbert, Mowbray and Turnbull (2001): regimes fitted to returns in excess of nominal_rate_name's rate) or 'knw_sv' (DNB's KNW model: returns earn nominal_rate_name's rate plus a fitted premium, with the rate's stochastic volatility). All but 'regime_switching' are real-world only.")
+    method: Literal['regime_switching', 'wilkie_derived', 'hibbert_regime_switching', 'knw_sv', 'cp2022'] = Field(default='regime_switching', description="'regime_switching' (a Markov regime-switching fit, the default), 'wilkie_derived' (Wilkie (1986): the price is dividend_growth_name's dividend index over dividend_yield_name's yield, with no fit of its own), 'hibbert_regime_switching' (Hibbert, Mowbray and Turnbull (2001): regimes fitted to returns in excess of nominal_rate_name's rate) or 'knw_sv' (DNB's KNW model: returns earn nominal_rate_name's rate plus a fitted premium, with the rate's stochastic volatility). All but 'regime_switching' are real-world only.")
     dividend_growth_name: str | None = Field(default=None, description="Required when method='wilkie_derived'. Which configured dividend_growth[i].name this entry's price numerator reads.")
     dividend_yield_name: str | None = Field(default=None, description="Required when method='wilkie_derived'. Which configured dividend_yield[i].name this entry's price denominator reads.")
     nominal_rate_name: str | None = Field(default=None, description="Required with method 'hibbert_regime_switching' or 'knw_sv': the name of the interest_rates entry whose rate the returns are measured over, at the same period. For 'knw_sv' that entry must use method='knw_sv' too. With expected_return 'risk_free_plus_premium' it names the short rate the premium is earned over (any period), defaulting to the run's short rate in this entry's currency.")
@@ -888,7 +910,10 @@ class CommodityConfig(_StrictModel):
 Dividend yield factor settings: opt-in, one entry per ticker (an empty `dividend_yield` list simulates none). Each
 entry is an Ahlgrim, D'Arcy and Gorvett (2005) mean-reverting process on the log of the ticker's trailing dividend
 yield, correlated with the rest of the model. `condition_on_inflation` adds Wilkie's (1986) inflation term, fitted
-at the period of the `inflation_name` entry.
+at the period of the `inflation_name` entry; `inflation_term: level` takes it in Wilkie's own form (section 3.5), in
+which the yield's normal level moves with inflation. `volatility_follows_equity` gives the log yield the volatility
+of an equity entry's current regime, as Hibbert, Mowbray and Turnbull (2001, section 5.2.2) do. Beliefs can state a
+published parameter set, including a speed of 0, the random walk of Ahlgrim, D'Arcy and Gorvett (2005, section 3).
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Signature</b></summary>
@@ -904,6 +929,8 @@ class DividendYieldConfig(_StrictModel):
     inflation_name: str = Field(default='inflation', description="Used when condition_on_inflation=true. Which configured inflation[i].name this entry's inflation-sensitivity term reads its step-to-step change from.")
     volatility_model: Literal['constant', 'garch'] = Field(default='constant', description="'constant' (Ahlgrim/D'Arcy/Gorvett's own log-yield OU fit) or 'garch' (GARCH(1,1) time-varying volatility of Bollerslev (1986)). Incompatible with condition_on_inflation=true.")
     condition_on_business_cycle: bool = Field(default=False, description="Add an additive drift term on the leading indicator's step-to-step change (business-cycle conditioning). Requires leading_indicator.enabled=true; incompatible with volatility_model='garch' and with condition_on_inflation=true.")
+    inflation_term: Literal['change', 'level'] = Field(default='change', description="With condition_on_inflation, how inflation enters. 'change' (the default) adds w times the change in inflation and pulls ln y itself toward its normal level; 'level' is Wilkie's (1986, section 3.5) own form, lnY(t) = YW * inflation(t) + YN(t), in which the pull acts on YN(t), the log yield less its inflation term, so the yield's normal level rises with inflation.")
+    volatility_follows_equity: str | None = Field(default=None, description="The name of a regime-switching equity entry whose current regime's volatility the log yield takes each step, as in Hibbert, Mowbray and Turnbull (2001, section 5.2.2): the yield swings more when the market is in its volatile regime. None (the default) keeps one fitted volatility.")
     beliefs: DividendYieldBeliefs = Field(default_factory=DividendYieldBeliefs)
 ```
 
@@ -913,7 +940,9 @@ class DividendYieldConfig(_StrictModel):
 
 Dividend growth factor settings: opt-in, one entry per ticker, following Wilkie (1986). Each entry is driven by an
 inflation entry (`inflation_name`) and a dividend yield entry (`dividend_yield_name`). It has no `period` of its
-own: it is fitted at the inflation entry's period, which the dividend yield entry must share.
+own: it is fitted at the inflation entry's period, which the dividend yield entry must share. `yield_residual_lag:
+year` reads the yield's surprise a year back, Wilkie's yearly lag, on any step; beliefs can state his parameters in
+his yearly terms (see `DividendGrowthBeliefs`).
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Signature</b></summary>
@@ -927,6 +956,7 @@ class DividendGrowthConfig(_StrictModel):
     inflation_name: str = Field(default='inflation', description="Which configured inflation[i].name this entry's dlnQ(t) term reads. Also forces this entry's calibration period to that inflation entry's period.")
     dividend_yield_name: str = Field(default='dividend_yield', description="Which configured dividend_yield[i].name this entry's YE(t-1) term reads its own shock from. Must resolve to the same period as inflation_name's entry.")
     carried_forward_weight: float = Field(default=0.2, gt=0, lt=1, description="DD, the yearly weight of current inflation in the carried-forward inflation average, converted to the fit's period. Wilkie (1986, section 3.9) sets DW = 0.8, DD = 0.2 and DX = 0.2 in both his bases; section 3.8 feeds DD times the current inflation rate into the dividend model each year.")
+    yield_residual_lag: Literal['step', 'year'] = Field(default='step', description="How far back the dividend yield's surprise YE is read. 'step' (the default) is the previous step; 'year' is a year back, Wilkie's (1986, section 3.7) YE(t-1) in his yearly model, so a monthly run spreads last year's yield surprise over this year's dividends as his yearly step does.")
     beliefs: DividendGrowthBeliefs = Field(default_factory=DividendGrowthBeliefs)
 ```
 
@@ -1106,6 +1136,69 @@ class MortalityConfig(_StrictModel):
 
 </details>
 
+#### CorrelationsConfig
+
+Correlations stated as values instead of estimated, the way a published model states its own.
+
+By default every pair of factors gets the correlation of its historical changes, shrunk and repaired (see
+`EngineConfig`). A published scenario generator fixes them as parameters instead: Ahlgrim, D'Arcy and Gorvett
+(2005) set the real short rate and inflation shocks at -0.3 in their model's input sheet, and Hibbert, Mowbray and
+Turnbull (2001, Exhibit 7.1B) the equity and dividend yield shocks at -0.95, every pair they do not list at zero.
+`fixed` lists such pairs; `unlisted: zero` sets every other pair to zero, so the matrix is the paper's own. The
+stated matrix is still repaired to the nearest valid one if its values contradict each other, and a pair naming a
+factor the run does not simulate (one that failed to calibrate) is skipped with a warning. A two-factor entry's
+slow leg is its own factor, `<name>_target`.
+
+As an example, the shocks of a real short rate, its moving target and inflation as in Ahlgrim, D'Arcy and Gorvett
+(2005):
+
+```yaml
+correlations:
+  unlisted: zero
+  fixed:
+    - {factors: [interest_rate, interest_rate_target], value: 0.5}
+    - {factors: [interest_rate, inflation], value: -0.3}
+```
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+class CorrelationsConfig(_StrictModel):
+    fixed: list[FixedCorrelation] = Field(default_factory=list, description='Pairs whose correlation is stated rather than estimated.')
+    unlisted: Literal['history', 'zero'] = Field(default='history', description="'history' (the default) estimates every pair not in `fixed`; 'zero' sets it to zero, as a published model that lists its correlations does.")
+```
+
+</details>
+
+##### CorrelationsConfig.as_pairs
+
+The fixed pairs as (factor, factor) -> correlation, for `Dependence`.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+as_pairs() -> dict[tuple[str, str], float]
+```
+
+</details>
+
+#### FixedCorrelation
+
+One correlation stated as a value: the two factors' shocks and how strongly they move together.
+
+<details class="ft-details fs-api" markdown="1">
+<summary><b>Signature</b></summary>
+
+```python
+class FixedCorrelation(_StrictModel):
+    factors: tuple[str, str] = Field(description='The two factors, by name, e.g. [interest_rate, inflation].')
+    value: float = Field(ge=-1, le=1, description="Their shocks' correlation, between -1 and 1.")
+```
+
+</details>
+
 ### Beliefs
 
 #### OUBeliefs
@@ -1123,6 +1216,14 @@ regime-switching inflation `long_run_mean` moves the long-run mean, by moving bo
 policy-rule short rate and an expectations-hypothesis long rate a path prescribes the rate up to its last anchor,
 after which the model sets it again (see `InflationConfig` and `InterestRateConfig`).
 
+Two more models read them in their own terms, so a published parameter set can be stated directly. On a
+`wilkie_ar1` inflation and a `wilkie_consols` rate, whose models are yearly AR(1)s, the speed is the yearly
+persistence as a rate, -ln(QA), and the volatility is the yearly shock size as an Ornstein-Uhlenbeck volatility,
+QSD * sqrt(2 * speed / (1 - QA^2)), so the yearly AR(1) is Wilkie's exactly; on `wilkie_consols` the long-run mean
+is the real yield's level, CMU. On a `hibbert_two_factor` entry the speed and volatility are the fast leg's, and
+`target_mean_reversion_speed`, `target_long_run_mean` and `target_volatility` set its moving target's own
+Ornstein-Uhlenbeck process (the `<name>_target` factor); the fast leg has no long-run mean of its own.
+
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Signature</b></summary>
 
@@ -1131,6 +1232,9 @@ class OUBeliefs(_StrictModel):
     mean_reversion_speed: float | None = Field(default=None, gt=0)
     long_run_mean: float | BeliefPath | None = None
     volatility: float | None = Field(default=None, gt=0)
+    target_mean_reversion_speed: float | None = Field(default=None, gt=0, description="hibbert_two_factor only: the speed of the moving target's own reversion.")
+    target_long_run_mean: float | None = Field(default=None, description='hibbert_two_factor only: the level the moving target reverts to.')
+    target_volatility: float | None = Field(default=None, gt=0, description="hibbert_two_factor only: the moving target's volatility.")
     shocks: list[Shock] = Field(default_factory=list, description='One-off jumps applied at specific simulated years.')
 ```
 
@@ -1157,6 +1261,22 @@ move the short rate's expected path does not explain. Every other rate adds the 
 do not change. The shocks must then be additive, and a `long_run_mean` path, which already prescribes the rate,
 cannot be combined with it.
 
+**As an example:**
+
+The 1994 Bond Massacre regime raises the short rate by 2.79 points and states the 10-year yield's 2.63-point rise
+from October 1993 to November 1994 (FRED GS10) as the yield's whole move:
+
+```yaml
+beliefs:
+  interest_rates.united_states_long_rate:
+    total_move: true
+    shocks:
+      - {year: 0.25, magnitude: 0.00658}
+      - {year: 0.5, magnitude: 0.00658}
+      - {year: 0.75, magnitude: 0.00658}
+      - {year: 1.0, magnitude: 0.00658}
+```
+
 **References:**
 
 - Campbell, J.Y., Shiller, R.J. (1991). "Yield Spreads and Interest Rate Movements: A Bird's Eye View." The Review of Economic Studies, 58(3), 495-514. Section 2, eq. (1). <https://doi.org/10.2307/2298008>
@@ -1173,11 +1293,6 @@ class InterestRateBeliefs(OUBeliefs):
 **Attributes:**
 
 - <u>total_move (bool):</u> read the shocks as the rate's whole move from its starting level, including what its short rate brings; False (the default) adds them to wherever each scenario stands.
-- As an example, the 1994 Bond Massacre regime raises the short rate by 2.79 points and states the 10-year yield's
-- 2.63-point rise from October 1993 to November 1994 (FRED GS10) as the yield's whole move:
-- ```yaml
-- <u>beliefs:</u> interest_rates.united_states_long_rate: total_move: true shocks: - {year: 0.25, magnitude: 0.00658} - {year: 0.5, magnitude: 0.00658} - {year: 0.75, magnitude: 0.00658} - {year: 1.0, magnitude: 0.00658}
-- ```
 
 </details>
 
@@ -1187,8 +1302,11 @@ Your views on an equity market, laid over its regime-switching fit. A field left
 
 `regime_means` and `regime_volatilities` set each regime's yearly log-return and volatility, one value per regime
 from the weakest to the strongest, so you can lower the calm regime's return (a lower equity premium) or deepen the
-turbulent one. `shocks`
-add one-off falls or jumps at chosen years, such as a regulator's stress path.
+turbulent one. `transition_matrix` sets the chances of moving between the regimes per period of the entry
+(`period`, monthly by default), in the same order: row i holds the chances of each regime next period given
+regime i now, as a published model states them (Hibbert, Mowbray and Turnbull (2001, Exhibit 7.1A) stay in their
+calm regime with 0.929 a month and in their volatile one with 0.879). The long-run share of time in each regime
+follows from it. `shocks` add one-off falls or jumps at chosen years, such as a regulator's stress path.
 
 <details class="ft-details fs-api" markdown="1">
 <summary><b>Signature</b></summary>
@@ -1197,6 +1315,7 @@ add one-off falls or jumps at chosen years, such as a regulator's stress path.
 class EquityBeliefs(_StrictModel):
     regime_means: list[float] | None = None
     regime_volatilities: list[float] | None = None
+    transition_matrix: list[list[float]] | None = Field(default=None, description='Chances of moving between regimes per period of the entry, row i the regime now and column j the regime next period, ordered from the weakest regime to the strongest; each row sums to 1.')
     shocks: list[Shock] = Field(default_factory=list, description="One-off jumps in the price: each multiplies the price at its year by exp(magnitude), a log-return (-0.3 is about a 26% fall), after which the regimes continue from the shocked price. Additive only; stress_test_regime fills these from a regulator's stock-market path.")
 ```
 
@@ -1290,8 +1409,10 @@ Which returns (without the 'description' column):
 
 | kind | id | use_with | name |
 |:-----|:---|:---------|:-----|
+| settings | ahlgrim | Scenarios.from_profiles(settings="ahlgrim") | Ahlgrim 2005 |
 | settings | default | Scenarios.from_profiles(settings="default") | Default |
 | settings | goes | Scenarios.from_profiles(settings="goes") | NAIC GOES |
+| settings | hibbert | Scenarios.from_profiles(settings="hibbert") | Hibbert 2001 |
 | settings | long_horizon | Scenarios.from_profiles(settings="long_horizon") | Long Horizon |
 | settings | wilkie | Scenarios.from_profiles(settings="wilkie") | Wilkie 1986 |
 
@@ -1435,7 +1556,8 @@ profiles = load_profile_library("settings")
 Which returns:
 
 ```
-{'default': 'Default', 'goes': 'NAIC GOES', 'long_horizon': 'Long Horizon', 'wilkie': 'Wilkie 1986'}
+{'ahlgrim': 'Ahlgrim 2005', 'default': 'Default', 'goes': 'NAIC GOES', 'hibbert': 'Hibbert 2001',
+ 'long_horizon': 'Long Horizon', 'wilkie': 'Wilkie 1986'}
 ```
 
 <details class="ft-details fs-api" markdown="1">

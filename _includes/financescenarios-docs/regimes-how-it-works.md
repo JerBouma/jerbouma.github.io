@@ -18,18 +18,18 @@ This is the difference between a stress test (an imposed shock) and scenario ana
 
 ### Shipped Regimes
 
-Twelve regimes ship with the package:
+Forty regimes ship with the package; `list_presets(kind="regimes")` lists them all. Twelve of the stylized ones:
 
 | Regime | The story | How |
 |:-------|:----------|:----|
 | `financial_crisis` | Stocks fall, unemployment rises and rates are cut, all at once | Targets |
 | `credit_crunch` | Bank stocks collapse and the market follows (needs the `broad` set) | Both |
-| `oil_crisis` | Inflation pulled to 12% in year one, 5.5% by year three and 2.5% by year eight, the path of the 1973 embargo, with high rates and weak stocks | Both |
+| `oil_crisis` | US inflation climbs to 12% within a year and eases to 5.5% by year three, as after the 1973 embargo, then back to 2.5% by year eight, with high rates and weak stocks | Both |
 | `oil_shock` | A one-off three-point jump in US inflation in year two, then business as usual | Beliefs |
 | `soft_landing` | Inflation eases smoothly to 2% by year five and stays there | Beliefs |
 | `rate_cut_cycle` | Soft landing, then inflation drifts to 2.5% by year ten and back to its usual level; rates keep their own calibration, so the cuts are not imposed (add a rate belief for that) | Beliefs |
-| `yield_curve_inversion` | Short rates two points above long ones within six months, then the curve slowly rights itself | Both |
-| `real_estate_crash` | House-price growth falls to -8% within a year and recovers over four | Both |
+| `yield_curve_inversion` | The curve inverts within six months, short yields about one and a half points above the ten-year, then slowly rights itself | Both |
+| `real_estate_crash` | House-price growth falls to -8% within a year and recovers over four, then the worst housing scenarios are kept | Both |
 | `currency_crisis` | The Indian rupee devalues about 17% a year against the dollar, as in 2011-13 (needs `broad`) | Both |
 | `tech_selloff` | Tech stocks fall while the wider market holds up (needs `broad`) | Both |
 | `commodity_supercycle` | A long oil boom: crude oil earns a top-quarter return | Targets |
@@ -37,21 +37,34 @@ Twelve regimes ship with the package:
 
 ### Beliefs as a Path
 
-A long-run level can follow a term structure instead of a single number: anchors at chosen horizons, interpolated in between, and an optional period over which it fades back to the calibrated level after the last anchor. Because the factor still mean-reverts, it is pulled towards the moving target rather than set to it: a fast-reverting factor tracks the path closely, a slow one lags it. Which factors accept beliefs is set out under [beliefs](/projects/financescenarios/docs/configuration#beliefs).
+A long-run level can follow a term structure instead of a single number: anchors at chosen horizons, interpolated in between, and an optional period over which it fades back to the calibrated level after the last anchor. Because the factor still mean-reverts, it is pulled towards the moving target rather than set to it: a fast-reverting factor tracks the path closely, a slow one lags it. Which factors accept beliefs is set out under [beliefs](/projects/financescenarios/docs/configuration#expert-judgement).
 
-Oil Crisis uses both mechanisms. Its path follows US CPI inflation after the 1973 embargo, which peaked at 12.2% in November 1974 and was 5.5% by October 1976; 2.5% by year eight is a return to normal, a little above the 2.3% ten-year CPI forecast of the Philadelphia Fed's Survey of Professional Forecasters (Q3 2026).
+Because the factor is pulled towards the level rather than set to it, a level path alone reaches its number late or not at all: on the default calibration, a long-run level of 12% took US inflation only to 8.2% after a year. A regime that names a number therefore does two things. It steers the long-run level so that the factor's expected path runs in a straight line to each number, the steering `shock_regime` uses: with $$m$$ the path, $$b$$ its slope a year, $$\Delta t$$ the step and $$a$$ the factor's speed of reversion,
+
+$$
+\theta_t = m_t + \frac{b\,\Delta t}{1 - e^{-a\,\Delta t}}
+$$
+
+And it sets every scenario to the number on the date it names, with a shock in `absolute` mode, so the number holds whatever the calibrated speed. Between those dates each scenario moves with its own randomness.
+
+Oil Crisis uses both, and targets as well. Its path follows US CPI inflation after the 1973 embargo, which peaked at 12.2% in November 1974 and was 5.5% by October 1976; 2.5% by year eight is a return to normal, a little above the 2.3% ten-year CPI forecast of the Philadelphia Fed's Survey of Professional Forecasters (Q3 2026). The anchors are the steered long-run levels for inflation's speed on the 19 October 2026 calibration:
 
 ```yaml
 # my-project/regimes/oil_crisis.yaml (a stress regime)
 name: Oil Crisis
 beliefs:
   inflation.united_states_inflation:
-    long_run_mean:
-      anchors: {1.0: 0.12, 3.0: 0.055, 8.0: 0.025}   # year: target inflation
+    long_run_mean:   # year: the level that steers the expected path along straight legs
+      anchors: {0.0: 0.1667, 0.9167: 0.24, 1.0: 0.0685, 2.9167: 0.0062, 3.0: 0.0455, 7.9167: 0.016, 8.0: 0.025}
+    shocks:          # every scenario at 12% after a year and 5.5% after three
+      - {year: 1.0, magnitude: 0.12, mode: absolute}
+      - {year: 3.0, magnitude: 0.055, mode: absolute}
 targets:
   united_states_short_rate: [0.7, 1.0]   # top 30% by average short rate
   us_broad: [0.0, 0.3]                   # bottom 30% by equity return
 ```
+
+Real Estate Crash pins house-price growth at -8% after a year the same way, and Yield Curve Inversion pins its slope at each of its two quarters. Regimes that set only a level, such as Persistent Inflation, 1970s Stagflation, Soft Landing and Goldilocks, describe where a factor settles rather than when it gets there, and leave the pace to the calibration.
 
 Rates are annualized decimals (0.12 is 12% a year); see [units](/projects/financescenarios/docs/units).
 
@@ -84,7 +97,7 @@ baseline = scenarios.simulate(n_simulations=2000)
 oil_crisis = scenarios.simulate(regime="oil_crisis", n_simulations=2000)
 ```
 
-A targeted regime keeps only part of each draw, about 9% for Oil Crisis, so the run draws batches until 2,000 scenarios fit (about 22,700 draws here). The stressed percentiles then rest on as many scenarios as the baseline's. Each batch ranks its own draws, so "the worst 30%" means the worst 30% of a batch, not of all draws pooled: each batch's cutoff carries its own sampling noise, most in the first batch of 2,000, so the stressed quantiles are close to, not exactly, those of one large ranked run.
+A targeted regime keeps only part of each draw, about 9% for Oil Crisis, so the run draws batches until 2,000 scenarios fit (24,000 draws in three batches on the 19 October 2026 calibration). The stressed percentiles then rest on as many scenarios as the baseline's. Each batch ranks its own draws, so "the worst 30%" means the worst 30% of a batch, not of all draws pooled: each batch's cutoff carries its own sampling noise, most in the first batch, so the stressed quantiles are close to, not exactly, those of one large ranked run.
 
 ### Official Stress Tests as Regimes
 
@@ -140,4 +153,4 @@ Four points to keep in mind when reading a stressed run:
 
 A climate pathway is an overlay rather than a regime. Enabled in a factor set, it adds an NGFS scenario's deviation from its baseline (Net Zero 2050, Delayed Transition, Current Policies and others) to each interest rate, inflation, unemployment and equity factor after simulating, and can add the scenario's carbon price as a factor. It combines with a regime: the regime shapes the scenarios, the climate pathway shifts them.
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/regimes"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Regimes</a></div>
+<div class="fs-ref"><a href="#reference"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Regimes</a></div>

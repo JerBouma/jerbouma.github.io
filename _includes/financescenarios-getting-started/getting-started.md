@@ -22,12 +22,15 @@ Which returns each profile with what it is for:
 
 | id | description |
 |:---|:------------|
+| ahlgrim | The run of Ahlgrim, D'Arcy and Gorvett (2005): from June 200… |
 | default | 2,000 scenarios, one step a month, five years ahead, fitted … |
+| dnb | Monthly steps over 100 years, DNB's horizon, with 2,000 scen… |
 | goes | Default, but fitted on history since 2019 only; pair it with… |
+| hibbert | The run of Hibbert, Mowbray and Turnbull (2001): from March … |
 | long_horizon | Default with 500 scenarios instead of 2,000, so multi-decade… |
-| wilkie | Default, fitted on 1995 to 2007 only, as the wilkie set need… |
+| wilkie | The run of Wilkie (1986): 1,000 simulations of 100 years in … |
 
-The factor sets range from `default` (the US, the euro area and the UK, each factor fitted to its long history and linked the way the economy is) to `broad` (more countries, US sectors and styles, more commodities and currencies), with `goes`, `ahlgrim`, `hibbert`, `wilkie` and `dnb` as published generators and models written the way their authors did. The [Configuration](/projects/financescenarios/docs/configuration) page describes each.
+The factor sets range from `default` (the US, the euro area and the UK, each factor fitted to its long history and linked the way the economy is) to `broad` (more countries, US sectors and styles, more commodities and currencies), with `goes` and `dnb` as the generators NAIC and De Nederlandsche Bank prescribe, and `ahlgrim`, `hibbert` and `wilkie` as published models reproduced from their papers, each with a settings profile of the same name. The [Configuration](/projects/financescenarios/docs/configuration) page describes each.
 
 ### Simulating Scenarios
 

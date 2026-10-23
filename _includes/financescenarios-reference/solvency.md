@@ -856,25 +856,24 @@ zero-coupon bond price and R the continuously compounded spot rate, as in Wüthr
 **As an example:**
 
 ```python
-from financescenarios import zero_coupon_curve
+from financescenarios import Scenarios, zero_coupon_curve
 
-# `result`: the risk-neutral run set up in full in the Solvency II guide,
-# https://www.jeroenbouma.com/projects/financescenarios/docs/solvency#martingale-test-example
-curve = zero_coupon_curve(result, "united_states_short_rate")
-curve.filter(curve["maturity"].is_in([1.0, 2.0, 5.0, 10.0]))
+scenarios = Scenarios.from_profiles(api_key="FINANCIAL_MODELING_PREP_KEY")
+result = scenarios.simulate(n_simulations=2000, seed=42, measure="risk_neutral", years=10)
+zero_coupon_curve(result, "united_states_short_rate")
 ```
 
-Which returns (calibrated on 2026-10-19):
+Which returns, at the 1, 2, 5 and 10-year maturities (calibrated on 2026-10-19):
 
 | date | maturity | price | standard_error | spot_rate |
 |:-----|---------:|------:|---------------:|----------:|
-| 2027-10-01 | 1 | 0.9600 | 0.0000 | 0.04077 |
-| 2028-09-30 | 2 | 0.9217 | 0.0000 | 0.04077 |
-| 2031-10-01 | 5 | 0.8156 | 0.0000 | 0.04077 |
-| 2036-09-30 | 10 | 0.6652 | 0.0000 | 0.04077 |
+| 2027-01-01 | 1 | 0.9566 | 0.0001 | 0.04437 |
+| 2028-01-01 | 2 | 0.9113 | 0.0003 | 0.04645 |
+| 2031-01-01 | 5 | 0.7901 | 0.0009 | 0.04712 |
+| 2036-01-01 | 10 | 0.6170 | 0.0018 | 0.04829 |
 
-By default the risk-neutral short rate stays at today's 13-week Treasury yield, 4.08%, so every maturity prices
-off exactly that rate with no Monte Carlo error.
+The risk-neutral short rate is a Hull-White rate fitted to EIOPA's US dollar risk-free curve, so the spot rates
+rise from 4.44% at one year to 4.83% at ten, each within a few hundredths of a point of Monte Carlo error.
 
 **References:**
 
@@ -1322,25 +1321,24 @@ zero-coupon bond price and R the continuously compounded spot rate, as in Wüthr
 **As an example:**
 
 ```python
-from financescenarios import zero_coupon_curve
+from financescenarios import Scenarios, zero_coupon_curve
 
-# `result`: the risk-neutral run set up in full in the Solvency II guide,
-# https://www.jeroenbouma.com/projects/financescenarios/docs/solvency#martingale-test-example
-curve = zero_coupon_curve(result, "united_states_short_rate")
-curve.filter(curve["maturity"].is_in([1.0, 2.0, 5.0, 10.0]))
+scenarios = Scenarios.from_profiles(api_key="FINANCIAL_MODELING_PREP_KEY")
+result = scenarios.simulate(n_simulations=2000, seed=42, measure="risk_neutral", years=10)
+zero_coupon_curve(result, "united_states_short_rate")
 ```
 
-Which returns (calibrated on 2026-10-19):
+Which returns, at the 1, 2, 5 and 10-year maturities (calibrated on 2026-10-19):
 
 | date | maturity | price | standard_error | spot_rate |
 |:-----|---------:|------:|---------------:|----------:|
-| 2027-10-01 | 1 | 0.9600 | 0.0000 | 0.04077 |
-| 2028-09-30 | 2 | 0.9217 | 0.0000 | 0.04077 |
-| 2031-10-01 | 5 | 0.8156 | 0.0000 | 0.04077 |
-| 2036-09-30 | 10 | 0.6652 | 0.0000 | 0.04077 |
+| 2027-01-01 | 1 | 0.9566 | 0.0001 | 0.04437 |
+| 2028-01-01 | 2 | 0.9113 | 0.0003 | 0.04645 |
+| 2031-01-01 | 5 | 0.7901 | 0.0009 | 0.04712 |
+| 2036-01-01 | 10 | 0.6170 | 0.0018 | 0.04829 |
 
-By default the risk-neutral short rate stays at today's 13-week Treasury yield, 4.08%, so every maturity prices
-off exactly that rate with no Monte Carlo error.
+The risk-neutral short rate is a Hull-White rate fitted to EIOPA's US dollar risk-free curve, so the spot rates
+rise from 4.44% at one year to 4.83% at ten, each within a few hundredths of a point of Monte Carlo error.
 
 **References:**
 
