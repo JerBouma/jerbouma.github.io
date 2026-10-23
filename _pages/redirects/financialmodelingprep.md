@@ -22,6 +22,8 @@ author_profile: false
   var dest = 'https://site.financialmodelingprep.com/pricing-plans?couponCode=jeroen';
   function go() { window.location.href = dest; }
   if (typeof plausible === 'function') {
+    // a redirect page gets no interaction, so its pageview is sent on load
+    if (window.plausiblePageview) window.plausiblePageview();
     plausible('FMP Affiliate Visit', { callback: go });
     setTimeout(go, 1500);
   } else {
