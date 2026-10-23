@@ -54,8 +54,8 @@ prices are 3.4% higher than a year ago. `source: oecd` covers the roughly 38 OEC
 (the Global Macro Database) adds countries such as Brazil and India, yearly only. Only headline inflation is
 modeled.
 
-The `inflation[i]` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `inflation[i]` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 Beliefs are annual decimals (`long_run_mean: 0.09` is 9% a
 year) and apply to the constant-volatility `ou` fit, every belief, and to `regime_switching`, whose mean follows
@@ -412,8 +412,8 @@ The data are the Finance Toolkit's unemployment rate and year-over-year Consumer
 Database) adds countries such as Brazil and India, yearly only. An entry has no `period` of its own: it uses the
 paired inflation entry's, so the two series share one frequency.
 
-The `unemployment[i]` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `unemployment[i]` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 A belief left `null` keeps the fitted value; a regime file addresses one entry as `"unemployment.<name>"`. This
 models the unemployment rate itself, not wages or employment by sector, and the Phillips curve is a statistical link
@@ -945,8 +945,8 @@ result = scenarios.simulate(
 )
 ```
 
-The `mortality` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `mortality` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 **References:**
 
@@ -1177,8 +1177,8 @@ The data are the OECD's monthly Composite Leading Indicator for about 22 countri
 needed. It models the index level only, not recession dates or the
 probability of a recession.
 
-The `leading_indicator` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `leading_indicator` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 **References:**
 

@@ -80,8 +80,8 @@ pound OECD short rate printed last more than a month before then starts from tha
 change in the three-month point between SONIA or the euro short-term rate and the month-end government curve
 (`fresh_short_rate_start`); the fit stays on the rates as printed.
 
-The `interest_rates[i]` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `interest_rates[i]` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 Beliefs apply to `hull_white` and `cir` with constant
 volatility, not with `risk_neutral`; a regime file addresses one entry as `"interest_rates.<name>"`.
@@ -897,8 +897,8 @@ ten_year_paths = nelson_siegel_yield(
 )
 ```
 
-The `yield_curve` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `yield_curve` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 **References:**
 
@@ -1091,8 +1091,8 @@ ten_year_paths = hjm_forward_rate(
 )
 ```
 
-The `hjm` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `hjm` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 **References:**
 
@@ -1272,8 +1272,8 @@ and CP2022 backs it out of a real bond yield; here year-over-year CPI growth sta
 judgement that keeps the model on keyless data. Averaging twelve months of price changes damps much of that noise;
 what is left ends up in the fitted inflation volatility.
 
-A pair is an `interest_rates[i]` and an `inflation[j]` entry; their keys and defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+A pair is an `interest_rates[i]` and an `inflation[j]` entry; their keys and defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 Both entries set `method: knw` and name each other, and both use one `period` equal to `engine.frequency`. The
 config is rejected otherwise: the fitted coefficients hold per period, so another frequency would compound them
@@ -1531,8 +1531,8 @@ DNB's eq. 3 also lets the rate and inflation load on `v`'s own shock (sigma_vr, 
 independent of theirs, a simplification that leaves out any leverage-type link between turbulence and rates.
 
 A pair is an `interest_rates[i]` and an `inflation[j]` entry, plus an optional `equities[k]` leg; their keys and
-defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 Data sources and pairing rules are as for `Knw`, and a `knw_sv` entry's partner must also be `knw_sv`. Every
 entry sharing a `v`, the equity leg included, must use one `period` equal to `engine.frequency`, which the config
@@ -1854,8 +1854,8 @@ Configuration: set `measure: risk_neutral` on both entries of a `method: knw_sv`
 `KnwSv`, including `period` equal to `engine.frequency`. The four Treasury tickers (`^IRX`, `^FVX`, `^TNX`,
 `^TYX`) are added to the run automatically.
 
-The keys and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The keys and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 **References:**
 
