@@ -4,7 +4,27 @@
 <script async src="https://plausible.jeroenbouma.com/js/pa-Kfgiu_bgeinx34i5zIf3J.js"></script>
 <script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init()
+  plausible.init({ autoCapturePageviews: false });
+
+  // The pageview is sent on the first interaction (the mouse, a touch, the wheel or a key), not on load: scrapers
+  // that run JavaScript open a page and leave without any. No timer fallback, as headless browsers fast-forward
+  // timers, and no scroll event, as the docs sidebar, #anchor links and scroll restoration scroll without a reader.
+  // A page with no interaction by design (the /fmp redirect) calls plausiblePageview() itself.
+  (function () {
+    var events = ['pointermove', 'pointerdown', 'touchstart', 'wheel', 'keydown'];
+    var options = { passive: true, capture: true };
+    var sent = false;
+    function pageview(e) {
+      if (sent || (e && !e.isTrusted)) return;
+      // the browser sends a pointermove without movement itself when a page loads under the cursor
+      if (e && e.type === 'pointermove' && !e.movementX && !e.movementY) return;
+      sent = true;
+      events.forEach(function (name) { window.removeEventListener(name, pageview, options); });
+      plausible('pageview');
+    }
+    events.forEach(function (name) { window.addEventListener(name, pageview, options); });
+    window.plausiblePageview = pageview;
+  })();
 </script>
 
 {% include seo.html %}
