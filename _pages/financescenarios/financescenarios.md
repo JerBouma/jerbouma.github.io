@@ -189,7 +189,7 @@ For example, 6 of the 27 variables are shown below. Rates are yearly rates and a
 | europe                     | equities       |         |        0.0933 |      -0.0753 |       0.2487 |
 | gold                       | commodities    |         |        0.0308 |      -0.0999 |       0.1716 |
 
-The chart below follows the US short rate, US inflation and US equities through all 2,000 scenarios. **Find [the Notebook](/projects/financescenarios/getting-started) and [the simulation documentation](/projects/financescenarios/docs/simulation-engine).**
+The chart below follows the US short rate, US inflation and US equities through all 2,000 scenarios. **Find [the Scenarios documentation](/projects/financescenarios/docs) and [the simulation engine](/projects/financescenarios/docs/simulation-engine).**
 
 ```python
 result.plot(["united_states_short_rate", "united_states_inflation", "us_broad"])
@@ -217,7 +217,7 @@ For example, the last three months of the US short rate are shown below.
 | 2030-12-02 | 0.0458 | 0.0343 | 0.0000 | 0.0198 | 0.0435 | 0.0651 | 0.1089 |
 | 2031-01-01 | 0.0459 | 0.0345 | 0.0000 | 0.0196 | 0.0439 | 0.0659 | 0.1099 |
 
-The chart below shows how widely the five-year US equity return spreads across the scenarios. **Find [the documentation](/projects/financescenarios/docs/units).**
+The chart below shows how widely the five-year US equity return spreads across the scenarios. **Find [the Scenarios documentation](/projects/financescenarios/docs#reading-the-distribution) and [how results read](/projects/financescenarios/docs/units).**
 
 ```python
 result.plot("us_broad", kind="distribution")
@@ -251,7 +251,7 @@ This returns the portfolio's yearly return over the five years, and what each ho
 | us_broad_value                | holding   |         |        0.0849 |      -0.0569 |       0.2082 |
 | united_states_long_rate_value | holding   |         |        0.0487 |       0.0122 |       0.0784 |
 
-The 60/40 earns 7.30% a year on average, between the stocks' 8.49% and the Treasury fund's 4.87%, so 100,000 grows to 144,923 on average. The same portfolio also reports its drawdowns and Value at Risk, and covers saving and withdrawal plans, glidepaths and fees. The chart below shows the portfolio's value in money across the scenarios. **Find [the Notebook](/projects/financescenarios/portfolio-notebook).**
+The 60/40 earns 7.30% a year on average, between the stocks' 8.49% and the Treasury fund's 4.87%, so 100,000 grows to 144,923 on average. The same portfolio also reports its drawdowns and Value at Risk, and covers saving and withdrawal plans, glidepaths and fees. The chart below shows the portfolio's value in money across the scenarios. **Find [the Portfolio documentation](/projects/financescenarios/docs/portfolio).**
 
 ```python
 values.plot(levels=True)
@@ -284,7 +284,7 @@ Oil Crisis pulls US inflation towards 12% and keeps the scenarios with high inte
 | united_states_long_rate  |   0.0579 |     0.1354 |
 | us_broad                 |   0.0849 |    -0.0189 |
 
-The chart below sets US inflation in the baseline next to the Oil Shock, Oil Crisis and Climate Collapse regimes, 2,000 scenarios each. **Find [the Notebook](/projects/financescenarios/regimes-notebook) and [the regime documentation](/projects/financescenarios/docs/regimes).**
+The chart below sets US inflation in the baseline next to the Oil Shock, Oil Crisis and Climate Collapse regimes, 2,000 scenarios each. **Find [the Regimes documentation](/projects/financescenarios/docs/regimes).**
 
 ```python
 from financescenarios import plot_runs
@@ -321,7 +321,7 @@ Which gives each mix's loading on each factor and how much they explain:
 | All Weather         | 0.2039 | -0.0620 | -0.1435 | 0.2162 |  0.0335 | 0.0029 |    0.1318 |          312 | 2000-08-01 | 2026-10-01 |
 | Permanent Portfolio | 0.2173 | -0.0615 | -0.1418 | 0.2017 |  0.0473 | 0.0033 |    0.1240 |          312 | 2000-08-01 | 2026-10-01 |
 
-The chart below shows what each mix actually did since August 2000, rebalanced once a year: 100,000 grew to 545,709 in the 60/40, 542,561 in All Weather and 555,564 in the Permanent Portfolio by October 2026, with the 60/40 carrying more than twice the stock market risk of the other two. **Find [the Notebook](/projects/financescenarios/portfolio-analysis-notebook).**
+The chart below shows what each mix actually did since August 2000, rebalanced once a year: 100,000 grew to 545,709 in the 60/40, 542,561 in All Weather and 555,564 in the Permanent Portfolio by October 2026, with the 60/40 carrying more than twice the stock market risk of the other two. **Find [the Portfolio documentation](/projects/financescenarios/docs/portfolio#backtesting-against-history).**
 
 ```python
 portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
@@ -359,7 +359,7 @@ Which gives every number in one table:
 | SCR (1 in 200 year) | 13,619                    | the capital that survives a 1-in-200 bad year              |
 | solvency ratio      | 1.15                      | own funds / SCR; above 1 means enough capital              |
 
-The chart below shows where own funds could be after one year, with today's level and the 1-in-200 outcome marked. **Find [the documentation](/projects/financescenarios/docs).**
+The chart below shows where own funds could be after one year, with today's level and the 1-in-200 outcome marked. **Find [the Solvency documentation](/projects/financescenarios/docs/solvency).**
 
 ```python
 solvency.plot(cashflows=[10_000] * 5, assets=assets)
@@ -401,7 +401,7 @@ On this five-year run 19 of the 26 relationships pass, 7 warn and none fails. Fo
 | Phillips curve                      | United States | pass   | -0.5923 |          -0.4273 |
 | Long rate moves with the short rate | United States | pass   |  0.3303 |           0.5136 |
 
-**Find [every model and its status](/projects/financescenarios/docs/coverage) and [the validation documentation](/projects/financescenarios/docs/validation).**
+**Find [the Validation documentation](/projects/financescenarios/docs/validation) and [every model and its status](/projects/financescenarios/docs/coverage).**
 
 ### Starting Your Own Project
 
@@ -415,7 +415,7 @@ path = scenarios.save(result, "results/")   # the run, its settings and its cali
 result = read_run(path)
 ```
 
-Run Python from inside `my-project` and every run reads its YAML files instead of the bundled ones, and the keys pasted into its .env file, so the API key can be left out. A saved run reads back without downloading or simulating anything again. **Find [the configuration documentation](/projects/financescenarios/docs/configuration).**
+Run Python from inside `my-project` and every run reads its YAML files instead of the bundled ones, and the keys pasted into its .env file, so the API key can be left out. A saved run reads back without downloading or simulating anything again. **Find [the Configuration documentation](/projects/financescenarios/docs/configuration).**
 
 # MCP Server
 
@@ -437,54 +437,6 @@ Add the following to your client's MCP config file (e.g. `claude_desktop_config.
 ```
 
 The very first question calibrates the data, which takes about a minute; after that the server answers from it and recalibrates once a month in the background. To have it ready beforehand, run `uvx --from "financescenarios[mcp]" financescenarios-mcp-warm`.
-
-## Notebooks
-
-Each notebook covers a different part of Finance Scenarios. Click a card to open it.
-
-<div class="bento-grid">
-
-  <a href="/projects/financescenarios/getting-started" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-rocket bento-icon"></i>
-      <h2>Getting Started</h2>
-      <p>If you are new to Finance Scenarios, start here: pick the profiles, simulate, read the overview and the spread of every variable, and chart it.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financescenarios/regimes-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-bolt bento-icon"></i>
-      <h2>Regimes</h2>
-      <p>Run the scenarios through named stress stories such as an oil crisis, a financial crisis or a tech selloff, and compare them with the baseline.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financescenarios/portfolio-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-briefcase bento-icon"></i>
-      <h2>Portfolio</h2>
-      <p>Put an investment mix through every scenario: its value, rebalancing, risk, saving and withdrawal plans, glidepaths and fees.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financescenarios/portfolio-analysis-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-history bento-icon"></i>
-      <h2>Portfolio Analysis</h2>
-      <p>Backtest a mix against what prices actually did, measure its exposure to the Fama-French factors and compare two portfolios head to head.</p>
-    </div>
-  </a>
-
-  <a href="/projects/financescenarios/model-validation-notebook" class="bento-card">
-    <div class="bento-content">
-      <i class="fas fa-vial bento-icon"></i>
-      <h2>Model Validation</h2>
-      <p>Check the default model against history: do the factors move together the way the economy does, and would a past calibration have held what happened next?</p>
-    </div>
-  </a>
-
-</div>
 
 ## Questions & Answers
 
@@ -540,7 +492,7 @@ Each notebook covers a different part of Finance Scenarios. Click a card to open
 
   Yes. Regimes, portfolios and profiles are plain YAML files, so the easiest start is to copy a shipped one into your own project folder and edit it. A regime can shift an assumption before simulating (inflation pulled toward a level by a given year), keep only the scenarios that fit its story (high rates and weak stocks), or both. A portfolio sets the weights of its holdings, the duration of its bond funds and how often it rebalances. A profile of your own can extend a shipped one and state only what differs.
 
-  Your own views on long-run levels, such as a central bank's inflation target or an equity risk premium, go in as beliefs that override the fitted values. A new model or factor plugs into the same calibration and correlation steps as the shipped ones, so it is linked to everything else automatically; the [reference](/projects/financescenarios/docs/reference) shows what each one provides.
+  Your own views on long-run levels, such as a central bank's inflation target or an equity risk premium, go in as beliefs that override the fitted values. A new model or factor plugs into the same calibration and correlation steps as the shipped ones, so it is linked to everything else automatically; the reference at the end of every [documentation page](/projects/financescenarios/docs) shows what each one provides.
 
 </details>
 

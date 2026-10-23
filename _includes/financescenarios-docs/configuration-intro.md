@@ -1,0 +1,1 @@
+A scenario set is only as good as the choices behind it: how far ahead and in what steps, how many scenarios, which history the models learn from, which probability measure, and where expert judgement overrides the data. This page covers those choices. Every field is listed in the reference at the end of this page.

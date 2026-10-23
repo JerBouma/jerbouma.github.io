@@ -12,7 +12,7 @@ sitemap: false
 noindex: true
 search: false
 sidebar:
-    nav: "financescenarios-docs"
+    nav: "financescenarios-docs-architecture"
 ---
 
 Where does each number in a run come from? A scenario set is built in five steps: collect history, calibrate each factor on its own, estimate how the factors depend on each other, simulate them jointly, and read the result. Each step can be inspected or overridden, so every number can be traced back to its source.

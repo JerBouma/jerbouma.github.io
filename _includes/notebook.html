@@ -3,13 +3,11 @@
 
   Usage:
     {% include notebook.html
-       src="/assets/notebooks/financescenarios/getting-started.ipynb"
-       title="Getting Started with the Finance Toolkit"
+       src="/assets/notebooks/financedatabase/getting-started.ipynb"
+       title="Getting Started with the Finance Database"
        github="https://github.com/JerBouma/FinanceToolkit/blob/main/examples/..."
     %}
 {% endcomment %}
-
-{% assign fs_notebooks = "Getting Started,/projects/financescenarios/getting-started|Regimes,/projects/financescenarios/regimes-notebook|Portfolio,/projects/financescenarios/portfolio-notebook|Portfolio Analysis,/projects/financescenarios/portfolio-analysis-notebook|Model Validation,/projects/financescenarios/model-validation-notebook" | split: "|" %}
 
 <div class="notebook-viewer-wrapper">
   {% if include.title or include.github %}
@@ -31,21 +29,6 @@
       {% endif %}
     </div>
   </div>
-  {% endif %}
-
-  {% if include.src contains "financescenarios" %}
-  <nav class="notebook-nav" aria-label="Finance Scenarios notebooks">
-    {% for item in fs_notebooks %}
-      {% assign parts = item | split: "," %}
-      {% assign nb_label = parts[0] %}
-      {% assign nb_url   = parts[1] %}
-      {% if page.permalink == nb_url %}
-        <a href="{{ nb_url }}" class="notebook-nav__link notebook-nav__link--active" aria-current="page">{{ nb_label }}</a>
-      {% else %}
-        <a href="{{ nb_url }}" class="notebook-nav__link">{{ nb_label }}</a>
-      {% endif %}
-    {% endfor %}
-  </nav>
   {% endif %}
 
   <div class="nb-container" data-notebook-src="{{ include.src | relative_url }}"></div>

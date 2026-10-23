@@ -1,12 +1,12 @@
 {% assign navigation = site.data.navigation[include.nav] %}
 {%- comment -%}
-  The Finance Toolkit docs sidebars get their own treatment (nav__list--docs):
+  The Finance Toolkit and Finance Scenarios docs sidebars get their own treatment (nav__list--docs):
   a module switcher that names the current module, groups with a count that
   show their first few links (all of them when they hold the current page),
   and plain links. Other sidebars keep the original behaviour.
 {%- endcomment -%}
 {% assign docs_nav = false %}
-{% if include.nav contains "financetoolkit-docs" %}{% assign docs_nav = true %}{% endif %}
+{% if include.nav contains "financetoolkit-docs" or include.nav contains "financescenarios-docs" %}{% assign docs_nav = true %}{% endif %}
 {% if docs_nav %}
   {% assign page_has_active = false %}
   {% assign group_count = 0 %}

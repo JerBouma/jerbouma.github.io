@@ -1,21 +1,23 @@
 ---
-title: Plotting
-seo_title: "Plotting Documentation | Finance Scenarios"
+title: Charts and Plotting
+seo_title: "Charts and Plotting | Finance Scenarios"
 seo_title_suffix: false
 excerpt: "What each chart tells you and how to read it: fan charts, individual paths, the distribution at the horizon, the correlation matrix and stress runs side by side."
 description: "How to read Finance Scenarios charts: fan charts, individual paths, the distribution at the horizon, the correlation matrix and stress runs side by side."
 author_profile: false
 permalink: /projects/financescenarios/docs/plotting
+redirect_from:
+    - /projects/financescenarios/docs/reference/charts
 classes: wide-sidebar
 layout: single
 sitemap: false
 noindex: true
 search: false
 sidebar:
-    nav: "financescenarios-docs"
+    nav: "financescenarios-docs-plotting"
 ---
 
-Which chart answers which question about a run: where the distribution sits over time, what a single future looks like, where it lands and what moves with what. The charts are for a quick read, not a reporting tool. Options such as bands and bin counts are in the [reference](/projects/financescenarios/docs/reference/charts).
+Which chart answers which question about a run: where the distribution sits over time, what a single future looks like, where it lands and what moves with what. The charts are for a quick read, not a reporting tool. Options such as bands and bin counts are in the [reference](#reference).
 
 ```python
 from financescenarios import Scenarios
@@ -126,4 +128,4 @@ presets = Portfolio.from_preset(result, preset=["balanced_60_40", "all_weather"]
 presets.compute().plot(levels=True)   # one line per preset, in money
 ```
 
-<div class="fs-ref"><a href="/projects/financescenarios/docs/reference/charts"><i class="fas fa-book" aria-hidden="true"></i>Full reference: Charts</a></div>
+{% include financescenarios-reference/plotting.md %}
