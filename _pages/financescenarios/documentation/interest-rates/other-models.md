@@ -86,7 +86,7 @@ $$
 dr_t = a\,(m_t - r_t)\,dt + \sigma\,dW_t
 $$
 
-By default the target $$m_t$$ is an observed long rate (^TNX, or an OECD long rate), simulated as a mean-reverting (Ornstein-Uhlenbeck) factor of its own; an exponentially weighted average of the rate's own path, $$m_t = 0.05\,r_t + 0.95\,m_{t-1}$$, is the alternative. The short rate's pull toward the target, the fast leg, is fitted by a regression through the origin of each change on the gap to the target, $$\Delta r_t = k\,(m_{t-1} - r_{t-1}) + e_t$$, with $$a = k/\Delta t$$, and simulated with an Euler step. The paper applies the structure to the real rate and adds inflation; a rate entry can do the same (`real_rate: true`), and the `hibbert` and `ahlgrim` factor sets run it that way.
+By default the target $$m_t$$ is an observed long rate (^TNX, or an OECD long rate), simulated as a mean-reverting (Ornstein-Uhlenbeck) factor of its own; an exponentially weighted average of the rate's own path, $$m_t = 0.05\,r_t + 0.95\,m_{t-1}$$, is the alternative. The short rate's pull toward the target, the fast leg, is fitted by a regression through the origin of each change on the gap to the target, $$\Delta r_t = k\,(m_{t-1} - r_{t-1}) + e_t$$, with $$a = k/\Delta t$$, and simulated with an Euler step on the target at the start of the step, $$m_t$$, the value the fit regresses on and the paper's increment conditions on (Appendix A). The paper applies the structure to the real rate and adds inflation; a rate entry can do the same (`real_rate: true`), and the `hibbert` and `ahlgrim` factor sets run it that way.
 
 ## Example
 
@@ -109,12 +109,12 @@ Which gives, among other columns:
 
 | factor | horizon | q0.05 | q0.5 | q0.95 |
 |:-------|--------:|------:|-----:|------:|
-| short_rate (Hibbert) | 1 | 0.0338 | 0.0502 | 0.0668 |
-| short_rate (Hibbert) | 10 | -0.0031 | 0.0493 | 0.1021 |
-| short_rate (Hibbert) | 30 | -0.0182 | 0.0499 | 0.1254 |
-| interest_rate (Ahlgrim) | 1 | 0.0000 | 0.0280 | 0.0836 |
-| interest_rate (Ahlgrim) | 10 | 0.0000 | 0.0670 | 0.1553 |
-| interest_rate (Ahlgrim) | 30 | 0.0000 | 0.0762 | 0.1713 |
+| short_rate (Hibbert) | 1 | 0.0342 | 0.0501 | 0.0666 |
+| short_rate (Hibbert) | 10 | -0.0027 | 0.0495 | 0.1011 |
+| short_rate (Hibbert) | 30 | -0.0185 | 0.0499 | 0.1252 |
+| interest_rate (Ahlgrim) | 1 | 0.0000 | 0.0278 | 0.0826 |
+| interest_rate (Ahlgrim) | 10 | 0.0000 | 0.0667 | 0.1545 |
+| interest_rate (Ahlgrim) | 30 | 0.0000 | 0.0761 | 0.1713 |
 | consols_rate (Wilkie) | 1 | 0.0758 | 0.0856 | 0.0965 |
 | consols_rate (Wilkie) | 10 | 0.0568 | 0.0858 | 0.1217 |
 | consols_rate (Wilkie) | 30 | 0.0497 | 0.0850 | 0.1260 |

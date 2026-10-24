@@ -34,7 +34,7 @@ $$
 x^{(i)}_k \leftarrow x^{(i)}_k + m \quad (\text{additive, the default}), \qquad x^{(i)}_k \leftarrow x^{(i)}_k + \big(m - \operatorname{median}_j x^{(j)}_k\big) \quad (\texttt{median}), \qquad x^{(i)}_k \leftarrow m \quad (\texttt{absolute})
 $$
 
-across the scenarios $$i$$: a fixed jump, a move of every scenario by one amount so their median lands on $$m$$, or every scenario set to $$m$$. For an equity, a currency or a commodity the shock is a log return, applied as $$S^{(i)}_k \leftarrow S^{(i)}_k\,e^{m}$$, and only additive. That is how a stress narrative enters a real-world run; [regimes](/projects/financescenarios/docs/regimes) package such stories. A path and a shock together, in a factor set:
+across the scenarios $$i$$: a fixed jump, a move of every scenario by one amount so their median lands on $$m$$, or every scenario set to $$m$$. For an equity, a currency or a commodity the shock is a log return: an additive one applies as $$S^{(i)}_k \leftarrow S^{(i)}_k\,e^{m}$$, and in `median` mode $$m$$ is the median's log return from the start; `absolute` does not apply to a price. With `steer_from`, a `median` or `absolute` shock walks the median in a straight line to $$m$$ from that year instead of landing in one step, and `relative: true` reads $$m$$ as a change from the starting median rather than a level ([Regimes](/projects/financescenarios/docs/regimes#beliefs-as-a-path)). That is how a stress narrative enters a real-world run; [regimes](/projects/financescenarios/docs/regimes) package such stories. A path and a shock together, in a factor set:
 
 ```yaml
 # my-project/factor-sets/my_factors.yaml (a factor set)

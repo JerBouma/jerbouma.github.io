@@ -93,7 +93,7 @@ Every call runs through `ScenarioTools._respond()` in four steps, each off the e
 
 **The result cache.** `ResultCache` keeps each answer as a JSON file named by the SHA-256 of the canonical request (keys sorted), the snapshot id and the package version, filed under the snapshot's month. The same question on the same snapshot always gets the same answer, so it is computed once. An answer larger than 512 kB is returned but not kept. An answer for a ticker fetched with a caller's own Financial Modeling Prep key is not kept either; its ticker mapping is.
 
-**Warm-up.** `precompute()` answers the month's most likely questions ahead of time: the baseline and every one of the 40 named regimes that runs on the factor set, at the default settings (1,000 scenarios, seed 42, ten years). Asking for one of them, or for a shock's historical anchors, is then a cache read. `financescenarios-mcp-warm` does the build and the precompute for every factor set from the command line, and `--factor-set` limits it to one:
+**Warm-up.** `precompute()` answers the month's most likely questions ahead of time: the baseline and every one of the 39 named regimes that runs on the factor set, at the default settings (1,000 scenarios, seed 42, ten years). Asking for one of them, or for a shock's historical anchors, is then a cache read. `financescenarios-mcp-warm` does the build and the precompute for every factor set from the command line, and `--factor-set` limits it to one:
 
 ```bash
 financescenarios-mcp-warm                      # every factor set served
@@ -140,7 +140,7 @@ When an answer is longer than 40,000 characters, `fit_to_size()` thins each seri
 
 Simulations are CPU and memory heavy, so the provider lets only two run at once (`max_concurrent`, or `FINANCESCENARIOS_MCP_CONCURRENCY`). Planning, cache lookups and searches take no slot and are never held up by a running simulation.
 
-A run of a regime that keeps only part of its scenarios takes the single narrowing slot and then every heavy slot, so it runs alone. On the broad factor set `financial_crisis` at the default 1,000 scenarios is the heaviest request; it peaked near 4.8 GB before each batch it draws was freed before the next, and is estimated at about 3.1 GB since. The warm-up precomputes it, so a request rarely needs one.
+A run of a regime that keeps only part of its scenarios takes the single narrowing slot and then every heavy slot, so it runs alone. The limits are sized for a regime that keeps 1 scenario in 83, which on the broad factor set at the default 1,000 scenarios needs about 3.1 GB, with each batch it draws freed before the next. The most selective shipped story, `credit_crunch`, keeps about 1 in 17. The warm-up precomputes it, so a request rarely needs one.
 
 Each step of a request has 120 seconds (`timeout_seconds`, or `FINANCESCENARIOS_MCP_TIMEOUT`), including any wait for a slot. When that passes, the client gets a message rather than an error:
 

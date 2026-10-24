@@ -1255,7 +1255,7 @@
     status: available
     summary: You can steer rates, inflation and unemployment along the Federal Reserve's or the European (ESRB/EBA) stress scenarios, and equities follow the published stock-market falls, measured against each regulator's own baseline (the Federal Reserve's 2026 severely adverse scenario puts US stocks about 56% below its baseline after a year). House prices and credit spreads from these tests are not included.
     location: 'Python: `stress_test_regime(toolkit, config, authority, scenario)`, passed as the run''s regime'
-    details: Federal Reserve (US, quarterly) and ESRB/EBA (EU members and more, yearly) paths for rates, inflation and unemployment, pinned at each period end or used as long-run targets; real-world equities follow the published stock-market path as one-off price jumps; house-price and credit-spread paths are not mapped.
+    details: Federal Reserve (US, quarterly) and ESRB/EBA (EU members and more, yearly) paths for rates, inflation (on an OU or a regime-switching fit) and unemployment, pinned on each published date (a quarter's end for the Federal Reserve, mid-year for the ESRB's annual averages) with the median walking in a straight line between them, or used as long-run targets; real-world equities follow the published stock-market path as one-off price jumps; house-price and credit-spread paths are not mapped.
     setup: 'From Python: build the regime from the regulator''s published paths, then run with it.'
     setup_lang: python
     setup_code: |-

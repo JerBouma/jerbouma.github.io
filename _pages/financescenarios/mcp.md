@@ -39,7 +39,7 @@ Language models are good at explaining how the economy works and poor at quantif
 <tbody>
 <tr><th scope="row">Where the outlook comes from</th><td data-label="The model's memory">Whatever the model remembers</td><td data-label="Finance Scenarios MCP">Thousands of scenarios calibrated this month on market data</td></tr>
 <tr><th scope="row">Uncertainty</th><td data-label="The model's memory">One number, or a vague range</td><td data-label="Finance Scenarios MCP">The median and p5 to p95 for every year</td></tr>
-<tr><th scope="row">Stress stories</th><td data-label="The model's memory">A description of the past</td><td data-label="Finance Scenarios MCP">40 regimes replayed from today's starting point</td></tr>
+<tr><th scope="row">Stress stories</th><td data-label="The model's memory">A description of the past</td><td data-label="Finance Scenarios MCP">39 regimes replayed from today's starting point</td></tr>
 <tr><th scope="row">Links between factors</th><td data-label="The model's memory">Implied, if at all</td><td data-label="Finance Scenarios MCP">Inflation moves the policy rate and the long rate through the model</td></tr>
 <tr><th scope="row">Same question, two chats</th><td data-label="The model's memory">Two different answers</td><td data-label="Finance Scenarios MCP">The same answer</td></tr>
 </tbody>
@@ -56,7 +56,7 @@ You never have to name a tool, a regime or a factor: ask in plain English and th
 
 <div class="mcp-uses">
   <div class="mcp-use"><i class="fas fa-chart-line" aria-hidden="true"></i><h3>Today's outlook</h3><p>"Where could US inflation, the Fed's rate and the 10-year yield be over the next five years?"</p><span>simulate: percentiles per factor and year</span></div>
-  <div class="mcp-use"><i class="fas fa-fire" aria-hidden="true"></i><h3>Stress stories</h3><p>"What would a return of the 1970s stagflation do to US inflation and the 10-year?"</p><span>40 regimes, from Volcker to the 2008 crisis and 2022</span></div>
+  <div class="mcp-use"><i class="fas fa-fire" aria-hidden="true"></i><h3>Stress stories</h3><p>"What would a return of the 1970s stagflation do to US inflation and the 10-year?"</p><span>39 regimes, from Volcker to the 2008 crisis and 2022</span></div>
   <div class="mcp-use"><i class="fas fa-bolt" aria-hidden="true"></i><h3>One-factor shocks</h3><p>"What happens to rates and stocks if inflation reaches 8% within a year?"</p><span>a shock with its spillover and historical anchors</span></div>
   <div class="mcp-use"><i class="fas fa-chart-pie" aria-hidden="true"></i><h3>Portfolios and goals</h3><p>"How likely is a 60/40 portfolio to grow from 10,000 to 15,000 in ten years?"</p><span>value per year, drawdown, Value at Risk, chance of a goal</span></div>
   <div class="mcp-use"><i class="fas fa-clock-rotate-left" aria-hidden="true"></i><h3>Backtests</h3><p>"How did 80% VWCE.DE and 20% AGG do, year by year?"</p><span>tickers, factors or presets on monthly history</span></div>
