@@ -1,0 +1,1 @@
+{"charts":{"get_tobins_q_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"INTC","data":[1.5935,1.0099,1.5163,0.9022,1.2499]},{"name":"QCOM","data":[5.3439,2.9782,3.5907,3.5548,4.2883]},{"name":"TXN","data":[6.7021,5.5134,4.9478,5.1463,5.0336]}],"format":"ratio","title":"Tobin's Q Ratio","period":false}}}

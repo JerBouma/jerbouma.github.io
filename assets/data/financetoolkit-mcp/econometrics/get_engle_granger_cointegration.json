@@ -1,0 +1,1 @@
+{"charts":{"get_engle_granger_cointegration":{"type":"bar","x":["KO","PEP"],"series":[{"name":"Engle-Granger Statistic","data":[-1.0266,-2.0565]},{"name":"Critical Value 5%","data":[-3.341,-3.341]}],"format":"ratio","title":"Engle-Granger Statistic and 5% Critical Value","period":false,"xname":"Dependent ticker"}}}

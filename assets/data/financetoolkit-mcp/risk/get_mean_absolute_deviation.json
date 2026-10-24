@@ -1,0 +1,1 @@
+{"charts":{"get_mean_absolute_deviation":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"KO","data":[0.007,0.0091,0.0063,0.0061,0.0083]},{"name":"PEP","data":[0.0069,0.009,0.007,0.0076,0.0104]},{"name":"MDLZ","data":[0.0073,0.0098,0.008,0.0082,0.0104]}],"format":"percent","title":"Mean Absolute Deviation (MAD)","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_operating_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CSX","data":[0.588,0.5991,0.627,0.6309,0.6792]},{"name":"NSC","data":[0.6082,0.6286,0.769,0.6895,0.6709]},{"name":"UNP","data":[0.5717,0.6013,0.6235,0.5995,0.5986]}],"format":"percent","title":"Operating Ratio","period":false}}}

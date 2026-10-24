@@ -1,0 +1,1 @@
+{"charts":{"get_upside_capture_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"QQQ","data":[1.1855,1.2862,1.3267,1.3389,1.2071]},{"name":"SCHD","data":[0.8335,0.7134,0.766,0.5258,0.5041]},{"name":"USMV","data":[0.6965,0.7052,0.6081,0.5329,0.4677]}],"format":"ratio","title":"Upside Capture Ratio","period":false}}}

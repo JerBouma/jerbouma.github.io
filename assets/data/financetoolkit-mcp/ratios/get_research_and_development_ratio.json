@@ -1,0 +1,1 @@
+{"charts":{"get_research_and_development_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AMD","data":[0.1731,0.2121,0.2589,0.2504,0.2336]},{"name":"INTC","data":[0.1922,0.278,0.2959,0.3116,0.2606]},{"name":"NVDA","data":[0.1957,0.2721,0.1424,0.099,0.0857]}],"format":"percent","title":"Research and Development Ratio","period":false}}}

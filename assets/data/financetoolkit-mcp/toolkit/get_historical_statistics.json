@@ -1,0 +1,1 @@
+{"charts":{"get_historical_statistics":{"type":"table","columns":["","ASML.AS","ASML"],"rows":[["Currency","EUR","USD"],["Exchange Name","AMS","NMS"],["Instrument Type","EQUITY","EQUITY"],["First Trade Date","1998-07-20","1995-03-15"],["Exchange Timezone Name","Europe/Amsterdam","America/New_York"]],"title":"Historical Statistics"}}}

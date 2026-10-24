@@ -1,0 +1,1 @@
+{"charts":{"get_debt_to_capital_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AMGN","data":[0.8325,0.9141,0.912,0.9109,0.8631]},{"name":"BMY","data":[0.5588,0.5668,0.5844,0.7575,0.7181]},{"name":"GILD","data":[0.559,0.5433,0.5234,0.5812,0.5244]}],"format":"percent","title":"Debt to Capital Ratio","period":false}}}

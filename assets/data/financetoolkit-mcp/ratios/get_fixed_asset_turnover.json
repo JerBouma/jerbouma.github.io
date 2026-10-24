@@ -1,0 +1,1 @@
+{"charts":{"get_fixed_asset_turnover":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"DAL","data":[0.5382,0.8736,0.9465,0.9564,0.9336]},{"name":"LUV","data":[0.8377,1.2261,1.2109,1.2212,1.223]},{"name":"UAL","data":[0.5409,0.9602,1.0752,1.0585,1.0292]}],"format":"ratio","title":"Fixed Asset Turnover","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_phillips_perron_test":{"type":"bar","x":["Phillips-Perron Statistic","Critical Value 5%"],"series":[{"name":"XOM","data":[-1.9532,-2.86]},{"name":"CVX","data":[-2.4807,-2.86]},{"name":"COP","data":[-2.5198,-2.86]}],"format":"ratio","title":"Phillips-Perron Statistic and 5% Critical Value","period":false}}}

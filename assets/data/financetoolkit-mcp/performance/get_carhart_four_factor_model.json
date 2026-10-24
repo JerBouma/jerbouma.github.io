@@ -1,0 +1,1 @@
+{"charts":{"get_carhart_four_factor_model":{"type":"bar","x":["XOM","HD","ADBE"],"series":[{"name":"Mkt-RF Slope","data":[0.7307,0.6572,0.8288]},{"name":"SMB Slope","data":[-0.3352,0.3582,0.2056]},{"name":"HML Slope","data":[0.6807,0.4534,0.0554]},{"name":"MOM Slope","data":[-0.3912,-0.3155,-0.3601]}],"format":"ratio","title":"Carhart Factor Loadings","period":false}}}

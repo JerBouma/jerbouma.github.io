@@ -17,7 +17,7 @@ sidebar:
 
 The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, ETFs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit.
 
-To install the FinanceToolkit it simply requires the following:
+Use it in Claude, ChatGPT or another AI assistant through the [Finance Toolkit MCP](/projects/financetoolkit/mcp), or install the Python package:
 
 ```python
 pip install financetoolkit -U

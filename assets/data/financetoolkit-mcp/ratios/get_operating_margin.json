@@ -1,0 +1,1 @@
+{"charts":{"get_operating_margin":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ABNB","data":[0.0716,0.2145,0.1531,0.23,0.212]},{"name":"BKNG","data":[0.2278,0.2985,0.2731,0.3183,0.3448]},{"name":"EXPE","data":[0.0216,0.093,0.0805,0.0963,0.127]}],"format":"percent","title":"Operating Margin","period":false}}}

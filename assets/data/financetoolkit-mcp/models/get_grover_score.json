@@ -1,0 +1,1 @@
+{"charts":{"get_grover_score":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"F","data":[0.4329,0.1625,0.243,0.258,-0.0182]},{"name":"GM","data":[0.2968,0.2665,0.2431,0.2579,0.1987]},{"name":"STLA","data":[0.4823,0.5904,0.5951,0.1942,-0.3685]}],"format":"ratio","title":"Grover Score","period":false}}}

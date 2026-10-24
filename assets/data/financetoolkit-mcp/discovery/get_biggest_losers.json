@@ -1,0 +1,1 @@
+{"charts":{"get_biggest_losers":{"type":"bar","x":["AARD","SHFS","KCAI","DAVI","POM","NCPL","ADVGX","NANO","MGNX","LNAI"],"series":[{"name":"Change %","data":[-64.8101,-61.3882,-53.2054,-48.4978,-42.3645,-40.3587,-39.8265,-39.3069,-38.0165,-37.3192]}],"format":"number","title":"Change (%)","period":false}}}

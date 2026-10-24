@@ -1,0 +1,1 @@
+{"charts":{"get_short_term_coverage_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AEP","data":[0.8054,0.8014,0.942,1.1614,1.4332]},{"name":"D","data":[1.2796,0.5473,0.5977,1.1877,1.1017]},{"name":"EXC","data":[0.8856,1.1098,1.1979,1.6815,2.2742]}],"format":"ratio","title":"Short Term Coverage Ratio","period":false}}}

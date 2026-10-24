@@ -1,0 +1,1 @@
+{"charts":{"get_operating_cash_flow_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CI","data":[0.165,0.21,0.2425,0.1787,0.1704]},{"name":"CVS","data":[0.2694,0.233,0.1695,0.1076,0.12]},{"name":"UNH","data":[0.2854,0.2937,0.2935,0.2332,0.1714]}],"format":"ratio","title":"Operating Cash Flow Ratio","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_omega_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"BLK","data":[1.2446,0.9272,1.1525,1.2732,1.0728]},{"name":"SCHW","data":[1.3257,1.0318,0.9625,1.094,1.2867]},{"name":"BX","data":[1.5958,0.8945,1.3792,1.2109,0.9944]}],"format":"ratio","title":"Omega Ratio","period":false}}}

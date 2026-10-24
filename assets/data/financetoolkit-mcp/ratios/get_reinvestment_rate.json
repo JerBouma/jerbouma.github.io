@@ -1,0 +1,1 @@
+{"charts":{"get_reinvestment_rate":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"COST","data":[-0.148,0.7437,0.8012,-0.2272,0.7305]},{"name":"NKE","data":[0.6962,0.6032,0.6195,0.2855,0.2255]},{"name":"V","data":[0.7727,0.7859,0.7828,0.7864,0.7666]}],"format":"percent","title":"Reinvestment Rate","period":false}}}

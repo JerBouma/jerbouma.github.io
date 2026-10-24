@@ -1,0 +1,1 @@
+{"charts":{"get_best_fitting_copula":{"type":"bar","x":["Student-T","Gaussian","Gumbel","Frank","Clayton"],"series":[{"name":"AIC","data":[-1889.717,-1822.4163,-1782.2681,-1651.6055,-1512.9444]}],"format":"number","title":"Copula AIC","period":false}}}

@@ -17,7 +17,7 @@ sidebar:
 
 The Economics module provides insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and government interest rates. It can also be used as a standalone module.
 
-To install the FinanceToolkit it simply requires the following:
+Use it in Claude, ChatGPT or another AI assistant through the [Finance Toolkit MCP](/projects/financetoolkit/mcp), or install the Python package:
 
 ```python
 pip install financetoolkit -U

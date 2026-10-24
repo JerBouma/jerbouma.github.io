@@ -1,0 +1,1 @@
+{"charts":{"get_marginal_value_at_risk":{"type":"bar","x":["AAPL","JNJ","XOM"],"series":[{"name":"Marginal VaR","data":[-0.0251,-0.0067,-0.0117]}],"format":"percent","title":"Marginal Value at Risk (mVaR)","period":false}}}

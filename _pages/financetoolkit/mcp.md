@@ -15,7 +15,7 @@ sidebar:
 image: /assets/images/projects/FinanceToolkitMCP.jpg
 ---
 
-<div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit#mcp-server" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
+<div class="page-header-action notebook-viewer-actions"><a href="/projects/financetoolkit/docs"><i class="fas fa-book"></i> Documentation</a><a href="https://github.com/JerBouma/FinanceToolkit#mcp-server" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
 <div class="ft-hero ft-hero--compact">
   <div class="mcp-video-wrapper ft-hero__video">
@@ -71,7 +71,7 @@ You never have to name a tool or an indicator: ask in plain English and the assi
   <div class="mcp-use"><i class="fas fa-square-root-variable" aria-hidden="true"></i><h3>Econometrics</h3><p>"Regress Apple's weekly returns on its suppliers and peers. Which coefficients are significant?"</p><span>econometrics</span></div>
 </div>
 
-The [example conversations](#example-conversations) below show what that looks like for four larger questions, from an investment case to the economic cycle.
+The [example conversations](#example-conversations) below show what that looks like for four larger questions, from an investment case to the economic cycle. For a single metric, its page in the [documentation](/projects/financetoolkit/docs) gives a question to ask, the call the assistant makes and the answer, next to the formula behind it.
 
 
 
@@ -644,7 +644,7 @@ The questions that come up most often about the server, its data sources and how
 
   Looking up a ticker by company name or ISIN is left to the [Finance Database MCP server](/projects/financedatabase/mcp), which searches 300,000+ instruments and pairs naturally with this one.
 
-  Each tool wraps dozens of underlying Finance Toolkit functions; the [Finance Toolkit documentation](/projects/financetoolkit/docs) describes every metric, model and parameter that can be reached through them. To explore interactively, run `uvx --from "financetoolkit[mcp]" financetoolkit-mcp-inspector`.
+  Each tool wraps dozens of underlying Finance Toolkit functions; the [Finance Toolkit documentation](/projects/financetoolkit/docs) describes every metric, model and parameter that can be reached through them, each with an example question and the tool call that answers it. To explore interactively, run `uvx --from "financetoolkit[mcp]" financetoolkit-mcp-inspector`.
 
 </details>
 

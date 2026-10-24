@@ -1,0 +1,1 @@
+{"charts":{"get_accounts_payables_turnover_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CL","data":[4.9638,5.1597,5.0514,4.5647,4.1762]},{"name":"KMB","data":[3.7492,3.6472,3.5893,3.4957,3.1215]},{"name":"PG","data":[2.8776,2.9478,2.9009,2.7267,2.6912]}],"format":"ratio","title":"Accounts Payables Turnover Ratio","period":false}}}

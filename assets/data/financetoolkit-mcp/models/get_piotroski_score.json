@@ -1,0 +1,1 @@
+{"charts":{"get_piotroski_score":{"type":"bar","x":["2022","2023","2024","2025"],"series":[{"name":"F","data":[5.0,6.0,6.0,3.0]},{"name":"GM","data":[6.0,6.0,7.0,5.0]},{"name":"TSLA","data":[8.0,3.0,4.0,5.0]}],"format":"amount","title":"Piotroski Score","period":false}}}

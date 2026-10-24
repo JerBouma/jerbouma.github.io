@@ -1,0 +1,735 @@
+# Example values for the parameter tables on the Finance Toolkit function pages (_plugins/docs_metric_pages.rb).
+# names gives the example for every parameter of that name; functions overrides it where one function needs its own.
+# A parameter without an example here (a DataFrame or Series input, for instance) shows its documented default.
+names:
+  accept_licence: true
+  actual_dates: false
+  add_constant: false
+  adjust_duplicates: false
+  adjustment: 0.05
+  af_increment: 0.01
+  af_max: 0.1
+  af_start: 0.01
+  agency: "Moody's"
+  alpha: 0.01
+  american_option: true
+  annualize: true
+  asset_class: "housing"
+  asset_classes: ["Private Equity", "Hedge Funds"]
+  asset_tickers: ["AAPL", "MSFT", "GOOGL"]
+  atr_multiplier: 3
+  atr_window: 10
+  bandwidth: 0.02
+  barrier_direction: "up"
+  barrier_percentage: 1.2
+  base_window: 30
+  benchmark_sharpe_ratio: 0.5
+  benchmark_ticker: "QQQ"
+  beta_higher: 1
+  beta_lower: 2
+  bond_price: 950.0
+  break_date: "2022-01-03"
+  calculate_daily: true
+  caliper: 0.05
+  cash_flow_type: "Operating Cash Flow"
+  cash_payout: 10.0
+  close_column: "Close"
+  column: "Return"
+  commodity: "Gold"
+  component: "household"
+  conditioning_ticker: "Benchmark"
+  confirm: true
+  constant: 0.02
+  contracts: 6
+  control_tickers: "MSFT"
+  conversion_window: 10
+  copula: "clayton"
+  costs_columns: ["Commission"]
+  countries: ["United States", "Germany"]
+  country: "US"
+  coupon_rate: 0.04
+  cov_type: "HC3"
+  covariate_tickers: "Benchmark"
+  cumulative: true
+  currencies: ["USD", "EUR"]
+  currency_columns: ["Trade Currency"]
+  cutoff: 0.01
+  d: 1
+  dataset: "historical"
+  date: "2025-03-31"
+  date_column: ["Trade Date"]
+  date_format_options: ["%d/%m/%Y"]
+  days: 360
+  days_to_maturity: [91, 182]
+  dependent_ticker: "AAPL"
+  dependent_tickers: ["AAPL", "MSFT", "GOOGL"]
+  det_order: 1
+  deviation: true
+  diluted: false
+  discount_yield: 0.045
+  distribution: "studentt"
+  divide_ohlc_by: 1
+  dividend_adjusted: false
+  dividend_higher: 1
+  dividend_lower: 5
+  dividend_yield: 0.02
+  dof: 6.0
+  donor_tickers: ["MSFT", "GOOGL", "AMZN"]
+  duration_type: "macaulay"
+  empirical_margins: false
+  end_date: "2025-12-31"
+  end_of_period: true
+  endogenous_ticker: "MSFT"
+  enforce_source: "YahooFinance"
+  entity_effects: false
+  equal_variance: true
+  estimation_window: 120
+  estimator: "parkinson"
+  event_date: "2024-06-10"
+  events: ["CPI", "Unemployment"]
+  exchange: "NASDAQ"
+  exclude_risk_free: false
+  exclude_sold_positions: false
+  exogenous_tickers: "GOOGL"
+  expiration_date: "2028-01-21"
+  expiration_dates: ["2027-12-17", "2028-01-21"]
+  expiration_time_range: 90
+  factor_tickers: "Benchmark"
+  factors_to_calculate: ["Mkt-RF", "SMB", "HML"]
+  far_maturity: 5.0
+  fast_window: 3
+  fill_nan: false
+  fiscal_period: "2025Q4"
+  fisher: true
+  forecast_steps: 10
+  foreign_risk_free_rate: 0.03
+  forward_rate: 0.04
+  frequency: 2
+  gap_days: 10
+  gmdb_forecasts: true
+  gmdb_source: false
+  growth: true
+  growth_rate: 0.03
+  high_growth_periods: 10
+  high_growth_rate: 0.1
+  horizon: 5
+  impact: "High"
+  include_benchmark: true
+  include_constant: false
+  include_daily_residuals: true
+  include_dividends: true
+  include_payoff: true
+  include_portfolio: false
+  include_withdrawals: true
+  independent_column: "Volume"
+  independent_tickers: ["MSFT", "Benchmark"]
+  industry: "Semiconductors"
+  inflation_adjusted: true
+  instrument_tickers: "Benchmark"
+  is_etf: false
+  is_receiver: false
+  k: 0.05
+  k_ar_diff: 2
+  kernel: "triangular"
+  key_rate_maturity: [2, 5, 10]
+  knock_type: "in"
+  lag: 4
+  lags: 2
+  lambda_: 0.97
+  latest: false
+  lead_span_b_window: 60
+  legs: [{"strike_price": 250, "premium": 8}, {"strike_price": 250, "put_option": true, "premium": 6}]
+  level: "general"
+  levels: [0.236, 0.382, 0.5, 0.618]
+  limit: 20
+  long_ema_window: 30
+  long_maturity: 10.0
+  loss: "absolute"
+  market_cap_higher: 10000000000
+  market_cap_lower: 200000000000
+  markets: ["US Equity", "Euro Area Equity"]
+  maturities: ["3M", "6M"]
+  maturity: false
+  maturity_years: [1, 5, 10, 30]
+  max_iterations: 200
+  maxlags: 5
+  method_a: "ewma"
+  method_b: "rolling"
+  minimum_acceptable_return: 0.001
+  monthly_window: 21
+  multiplier: 2.0
+  n_simulations: 5000
+  n_trials: 20
+  name_columns: ["Description"]
+  near_maturity: 2.0
+  nominal: false
+  notional: 5000000.0
+  num_std_dev: 3
+  number_of_expirations: 4
+  number_of_strikes: 100
+  oecd_source: true
+  optimization_t: 252
+  option_type: "asset-or-nothing"
+  order: 2
+  orthogonalized: false
+  other_independent_tickers: "GOOGL"
+  other_tickers: ["MSFT", "GOOGL"]
+  outlier_threshold: 3.0
+  overwrite: true
+  p: 2
+  page: 1
+  pages: 3
+  par_value: 1000.0
+  path: "normalization"
+  payment_frequency: 4
+  period: "weekly"
+  perpetual_growth_rate: 0.02
+  pnl_method: "LIFO"
+  post_event_days: 5
+  power: 2
+  pre_event_days: 5
+  price_columns: ["Trade Price"]
+  price_higher: 10
+  price_lower: 500
+  primary_only: true
+  probabilities: false
+  project_periods: 10
+  put_option: true
+  quantiles: [0.05, 0.5, 0.95]
+  quarterly: true
+  query: "META"
+  random_state: 1
+  rate_of_return: 0.08
+  rate_type: "short_term"
+  rating_type: "sovereign"
+  real: true
+  rebate: 1.0
+  region: "Europe"
+  regression: "ct"
+  restricted_independent_tickers: "MSFT"
+  return_column: "Close"
+  returns: false
+  risk: "transition"
+  risk_free_rate: 0.04
+  roc_windows: [9, 12, 18, 24]
+  rolling: 4
+  rounding: 2
+  running_variable_ticker: "MSFT"
+  scale: 1000000000.0
+  scenarios: true
+  search_method: "symbol"
+  sector: "Technology"
+  seed: 42
+  sensitivity: 0.1
+  series: ["Bank Rate", "consols"]
+  sex: "female"
+  short_ema_window: 10
+  short_maturity: 2.0
+  short_term: true
+  show_daily: true
+  show_errors: true
+  show_expiration_dates: true
+  show_full_results: true
+  show_input_info: true
+  show_standard_error: true
+  show_ticker_seperation: false
+  show_unique_combinations: true
+  significance: 0.01
+  simulations: 1000
+  slow_window: 20
+  sma_windows: [6, 6, 6, 9]
+  smooth_window: 5
+  source: "YahooFinance"
+  spread: true
+  stable_growth_rate: 0.03
+  standardize: true
+  start_date: "2021-01-01"
+  start_value: 100.0
+  stock_price_range: 0.25
+  stock_price_step_size: 5
+  strike_price_range: 0.1
+  strike_rate: 0.035
+  strike_step_size: 1
+  suspect_ticker: "MSFT"
+  tail: "right"
+  tau: 0.1
+  tenor: 5.0
+  test: "kupiec"
+  threshold_percentile: 0.9
+  ticker: "AAPL"
+  ticker_a: "AAPL"
+  ticker_b: "MSFT"
+  ticker_columns: ["Symbol"]
+  time_effects: true
+  time_to_expiration: 2
+  timesteps: 100
+  tolerance: 1.0e-06
+  trailing: 4
+  train_fraction: 0.7
+  treated_ticker: "AAPL"
+  treated_tickers: "AAPL"
+  treatment_date: "2024-06-10"
+  treatment_period: "2024-06-10"
+  treatment_threshold: 0.01
+  treatment_ticker: "MSFT"
+  trend: "downtrend"
+  trials_window: 8
+  trim: 0.1
+  unrestricted_independent_tickers: ["MSFT", "Benchmark"]
+  usd: true
+  use_ebitda_growth_rate: true
+  variable: "gdp"
+  variables: ["Nominal rate 10Y", "Equity return"]
+  volatility: 0.008
+  volatility_type: "normal"
+  volume_columns: ["Shares"]
+  volume_divisor: 1000000.0
+  volume_higher: 1000000
+  volume_lower: 100000000
+  weekly_window: 5
+  weighted_average_cost_of_capital: 0.08
+  window: 20
+  window_1: 5
+  window_2: 10
+  window_3: 20
+  windows: [21, 63, 126, 252]
+  within_period: true
+  year: 2020
+  year_over_year: true
+  years_to_maturity: 10.0
+  yield_to_maturity: 0.05
+functions:
+  get_acerbi_szekely_test:
+    n_bootstrap: 5000
+    window_size: 52
+  get_alpha:
+    period: "quarterly"
+  get_altman_z_score:
+    show_columns: ["Working Capital to Total Assets", "Altman Z-Score"]
+  get_analyst_estimates:
+    show_columns: ["Estimated Revenue Average", "Estimated EPS Average"]
+  get_appraisal_ratio:
+    period: "quarterly"
+  get_arch_lm_test:
+    lags: 10
+  get_arima_forecast:
+    column: "Close"
+    q: 2
+  get_augmented_dickey_fuller:
+    max_lag: 12
+  get_autocorrelation:
+    lags: 20
+  get_awesome_oscillator:
+    long_window: 21
+    short_window: 3
+  get_balance_sheet_statement:
+    show_columns: ["Cash and Cash Equivalents", "Total Assets"]
+  get_bank_of_england_yield_curve:
+    curve: "ois"
+  get_beneish_m_score:
+    show_columns: ["Days Sales in Receivables Index", "Beneish M-Score"]
+  get_beta:
+    period: "quarterly"
+  get_bond_equivalent_yield:
+    show_input_info: false
+  get_breakeven_inflation_expectations:
+    rolling: 20
+  get_breakeven_inflation_rate:
+    maturity: [5, 10]
+    show_input_info: false
+  get_burke_ratio:
+    period: "quarterly"
+    within_period: false
+  get_calmar_ratio:
+    period: "quarterly"
+    within_period: false
+  get_capital_asset_pricing_model:
+    period: "quarterly"
+  get_carbon_price:
+    rolling: 20
+  get_carhart_four_factor_model:
+    period: "monthly"
+    show_columns: ["Intercept", "R Squared"]
+  get_cash_flow_statement:
+    show_columns: ["Cash Flow from Operations", "Cash Flow from Investing"]
+  get_central_bank_policy_rate:
+    countries: ["United States", "Euro Area"]
+    period: "monthly"
+  get_chaikin_money_flow:
+    window: 10
+  get_chaikin_oscillator:
+    long_window: 20
+    short_window: 5
+  get_climate_scenario:
+    model: "GCAM"
+    scenario: "Delayed transition"
+  get_coefficient_of_variation:
+    period: "quarterly"
+  get_company_notes:
+    show_columns: ["Exchange", "CIK"]
+  get_component_value_at_risk:
+    weights: {"AAPL": 0.6, "MSFT": 0.4}
+  get_conditional_drawdown_at_risk:
+    rolling: 20
+  get_conditional_value_at_risk:
+    rolling: 20
+  get_consumer_price_index:
+    period: "monthly"
+  get_corporate_borrowing_cost:
+    countries: ["Euro Area", "Germany"]
+  get_correlation_matrix:
+    period: "quarterly"
+  get_covariance_matrix:
+    period: "quarterly"
+  get_derivative_price:
+    model: "bachelier"
+    show_input_info: false
+    years_to_maturity: [1, 2, 5]
+  get_diebold_mariano_test:
+    window_size: 26
+  get_dividend_calendar:
+    show_columns: ["Dividend", "Payment Date"]
+  get_donchian_channels:
+    window: 55
+  get_downside_capture_ratio:
+    period: "quarterly"
+  get_downside_deviation:
+    rolling: 20
+  get_dupont_analysis:
+    show_columns: ["Net Profit Margin", "Return on Equity"]
+  get_duration:
+    show_input_info: false
+  get_earnings_calendar:
+    show_columns: ["EPS", "Estimated EPS"]
+    start_date: "2025-01-01"
+  get_economic_calendar:
+    start_date: "2025-01-01"
+  get_economic_value_added:
+    show_columns: ["Invested Capital", "Economic Value Added"]
+  get_egarch:
+    time_steps: 252
+  get_egarch_forecast:
+    time_steps: 20
+  get_eiopa_risk_free_rate:
+    countries: ["Euro Area", "United Kingdom"]
+    curve: "spot_with_va"
+  get_engle_granger_cointegration:
+    column: "Close"
+    max_lag: 12
+  get_enterprise_value_breakdown:
+    show_columns: ["Market Capitalization", "Enterprise Value"]
+  get_esg_scores:
+    show_columns: ["Environmental Score", "ESG Score"]
+  get_etf_holdings:
+    limit: 10
+    show_columns: ["Name", "Weight"]
+  get_european_central_bank_rates:
+    rate: "deposit"
+  get_excess_return:
+    period: "quarterly"
+  get_excess_volatility:
+    period: "quarterly"
+  get_executive_compensation:
+    show_columns: ["Salary", "Total"]
+  get_executives:
+    show_columns: ["Title", "Pay"]
+  get_extended_dupont_analysis:
+    show_columns: ["Operating Profit Margin", "Return on Equity"]
+  get_factor_asset_correlations:
+    period: "quarterly"
+    show_columns: ["Mkt-RF", "HML"]
+  get_factor_correlations:
+    period: "quarterly"
+  get_fama_and_french_model:
+    method: "simple"
+    period: "monthly"
+    show_columns: ["Intercept", "R Squared"]
+  get_fama_decomposition:
+    period: "quarterly"
+  get_federal_reserve_rates:
+    rate: "SOFR"
+  get_financial_stress_index:
+    countries: ["Euro Area", "United States"]
+  get_fixed_effects:
+    independent_tickers: "Benchmark"
+  get_forward_rate:
+    show_input_info: false
+  get_free_cash_flow_to_equity:
+    show_columns: ["Net Borrowing", "Free Cash Flow to Equity"]
+  get_free_cash_flow_to_firm:
+    show_columns: ["Capital Expenditure", "Free Cash Flow to Firm"]
+  get_fulmer_h_score:
+    show_columns: ["Debt to Total Assets", "Fulmer H-Score"]
+  get_gain_to_pain_ratio:
+    period: "quarterly"
+    within_period: false
+  get_garch:
+    time_steps: 252
+  get_garch_forecast:
+    time_steps: 20
+  get_gjr_garch:
+    time_steps: 252
+  get_gjr_garch_forecast:
+    time_steps: 20
+  get_government_bond_yield:
+    period: "quarterly"
+  get_granger_causality:
+    max_lag: 10
+  get_grover_score:
+    show_columns: ["Return on Assets", "Grover Score"]
+  get_hausman_test:
+    independent_tickers: "Benchmark"
+  get_henriksson_merton_model:
+    period: "quarterly"
+  get_historical_data:
+    include_dividends: false
+    show_columns: ["Close", "Return"]
+  get_hqm_corporate_bond_yield_curve:
+    rate: "par"
+  get_hurst_exponent:
+    max_lag: 50
+  get_implied_volatility:
+    rolling: 20
+  get_impulse_response_function:
+    periods: 20
+  get_income_statement:
+    show_columns: ["Revenue", "Operating Income"]
+  get_industry_pe:
+    start_date: "2025-01-01"
+  get_industry_performance:
+    start_date: "2025-01-01"
+  get_inflation_expectations:
+    countries: ["Euro Area", "Germany"]
+    period: "quarterly"
+  get_inflation_rate:
+    period: "monthly"
+  get_information_ratio:
+    period: "quarterly"
+  get_insider_trade_statistics:
+    show_columns: ["Total Purchases", "Total Sales"]
+  get_intraday_data:
+    period: "5min"
+    show_columns: ["Close", "Volume"]
+  get_intrinsic_valuation:
+    periods: 10
+  get_ipo_calendar:
+    start_date: "2025-01-01"
+  get_ipo_disclosures:
+    start_date: "2025-01-01"
+  get_ipo_prospectuses:
+    start_date: "2025-01-01"
+  get_jensens_alpha:
+    period: "quarterly"
+  get_johansen_cointegration:
+    column: "Close"
+  get_kappa_ratio:
+    period: "quarterly"
+  get_key_rate_duration:
+    show_input_info: false
+    yield_change: 0.001
+  get_know_sure_thing:
+    signal_window: 6
+    weights: [1, 2, 3, 4]
+  get_kpss_test:
+    lags: 8
+  get_kurtosis:
+    rolling: 20
+  get_life_table:
+    countries: ["Germany", "France"]
+    measure: "life_expectancy"
+  get_ljung_box_test:
+    lags: 20
+  get_long_term_interest_rate:
+    period: "monthly"
+  get_m2_ratio:
+    period: "quarterly"
+  get_marginal_value_at_risk:
+    weights: {"AAPL": 0.6, "MSFT": 0.4}
+  get_market_value_added:
+    show_columns: ["Invested Capital", "Market Value Added"]
+  get_mean_absolute_deviation:
+    period: "quarterly"
+  get_mergers_acquisitions:
+    show_columns: ["Target Symbol", "Target Name"]
+  get_money_supply:
+    measure: "M2"
+  get_monte_carlo_option_price:
+    time_steps: 252
+  get_moving_average_convergence_divergence:
+    long_window: 35
+    short_window: 5
+    signal_window: 5
+  get_new_highs_new_lows:
+    window: 126
+  get_ohlson_o_score:
+    show_columns: ["Ohlson O-Score", "Ohlson Bankruptcy Probability"]
+  get_omega_ratio:
+    period: "quarterly"
+    within_period: false
+  get_out_of_sample_validation:
+    column: "Close"
+    model: "var"
+    q: 2
+  get_overnight_rate:
+    countries: ["United States", "Euro Area"]
+    rolling: 20
+  get_par_yield:
+    show_input_info: false
+    years_to_maturity: [2, 5, 10]
+  get_percentage_price_oscillator:
+    long_window: 26
+    short_window: 12
+  get_phillips_perron_test:
+    lags: 8
+  get_piotroski_score:
+    show_columns: ["Accruals Criteria", "Piotroski Score"]
+  get_portfolio_performance:
+    period: "quarterly"
+  get_present_value:
+    show_input_info: false
+  get_press_releases:
+    show_columns: ["Publisher", "Title"]
+    start_date: "2025-01-01"
+  get_producer_price_index:
+    period: "quarterly"
+  get_quantile_regression:
+    n_bootstrap: 500
+  get_rachev_ratio:
+    period: "quarterly"
+    within_period: false
+  get_random_effects:
+    independent_tickers: "Benchmark"
+  get_real_yield_curve:
+    rolling: 20
+  get_residual_income:
+    show_columns: ["Cost of Equity", "Residual Income"]
+  get_returns:
+    period: "quarterly"
+  get_revenue_geographic_segmentation:
+    show_columns: ["Americas", "Europe"]
+  get_revenue_product_segmentation:
+    show_columns: ["Gaming", "Windows"]
+  get_risk_neutral_density:
+    strike_price_range: 0.3
+  get_scenario_set:
+    authority: "dnb"
+    measure: "market_consistent"
+  get_sec_filings_8k:
+    start_date: "2025-01-01"
+  get_sector_pe:
+    start_date: "2025-01-01"
+  get_sector_performance:
+    start_date: "2025-01-01"
+  get_sectors_performance:
+    start_date: "2025-01-01"
+  get_share_prices:
+    period: "quarterly"
+  get_sharpe_ratio:
+    method: "probabilistic"
+    period: "quarterly"
+  get_short_term_interest_rate:
+    period: "quarterly"
+  get_skewness:
+    rolling: 20
+  get_sortino_ratio:
+    period: "quarterly"
+  get_springate_score:
+    show_columns: ["EBIT to Total Assets", "Springate Score"]
+  get_starr_ratio:
+    period: "quarterly"
+    within_period: false
+  get_statistics_statement:
+    show_columns: ["Reported Currency", "Calendar Year"]
+  get_sterling_ratio:
+    period: "quarterly"
+    within_period: false
+  get_stock_grades:
+    show_columns: ["New Grade", "Action"]
+  get_stock_news:
+    show_columns: ["Publisher", "Title"]
+    start_date: "2025-01-01"
+  get_stock_screener:
+    limit: 100
+  get_stock_splits_calendar:
+    start_date: "2025-01-01"
+  get_stress_test_scenario:
+    authority: "esrb"
+    countries: ["United States", "Euro Area"]
+    scenario: "baseline"
+    year: 2025
+  get_tail_dependence_coefficient:
+    method: "student-t"
+    q: 0.9
+  get_tail_ratio:
+    rolling: 20
+  get_taylor_price_change:
+    show_input_info: false
+    yield_change: 0.005
+  get_tobins_q_ratio:
+    show_columns: ["Market Value of Equity", "Tobin's Q Ratio"]
+  get_tracking_error:
+    period: "quarterly"
+  get_transactions_performance:
+    period: "quarterly"
+  get_treasury_data:
+    risk_free_rate: "5y"
+  get_treynor_mazuy_model:
+    period: "quarterly"
+  get_treynor_ratio:
+    period: "quarterly"
+  get_ulcer_index:
+    period: "quarterly"
+    rolling: 20
+  get_ulcer_performance_index:
+    period: "quarterly"
+    rolling: 20
+  get_unemployment_rate:
+    period: "quarterly"
+  get_upside_capture_ratio:
+    period: "quarterly"
+  get_value_at_risk:
+    rolling: 20
+  get_var_backtest:
+    window_size: 52
+  get_variance:
+    period: "quarterly"
+  get_variance_decomposition:
+    periods: 20
+  get_variance_ratio_test:
+    q: 4
+  get_vecm_forecast:
+    column: "Close"
+  get_volatility:
+    method: "yang_zhang"
+    period: "quarterly"
+  get_weighted_average_cost_of_capital:
+    show_columns: ["Cost of Equity", "Weighted Average Cost of Capital"]
+    show_full_results: false
+  get_win_rate:
+    period: "quarterly"
+  get_yield_curve_slope:
+    period: "quarterly"
+  get_yield_curve_spread:
+    show_input_info: false
+  get_yield_to_maturity:
+    guess: 0.04
+    show_input_info: false
+  get_z_spread:
+    guess: 0.02
+    show_input_info: false
+  get_zivot_andrews_test:
+    max_lag: 12
+  get_zmijewski_score:
+    show_columns: ["Zmijewski Score", "Zmijewski Bankruptcy Probability"]
+  search_crypto_news:
+    start_date: "2025-01-01"
+    symbols: ["BTCUSD", "ETHUSD"]
+  search_forex_news:
+    start_date: "2025-01-01"
+    symbols: ["EURUSD", "GBPUSD"]
+  search_press_releases:
+    start_date: "2025-01-01"
+    symbols: ["AAPL", "MSFT"]
+  search_stock_news:
+    start_date: "2025-01-01"
+    symbols: ["AAPL", "MSFT"]

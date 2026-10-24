@@ -65,6 +65,8 @@
         case 'multiple': return v.toFixed(2) + 'x';
         case 'price': return '$' + v.toFixed(2);
         case 'ratio': return v.toFixed(2);
+        // small values such as daily variances or option Greeks: three significant digits
+        case 'decimal': return v === 0 ? '0' : Math.abs(v) >= 1 ? v.toFixed(2) : String(Number(v.toPrecision(3)));
         default: return Math.abs(v) >= 100 ? v.toFixed(0) : v.toFixed(3);
       }
     };
@@ -421,6 +423,75 @@
     instances.push({ draw: draw });
   }
 
+  // A bar chart with only a few bars across named categories (three tickers, a
+  // statistic and its critical value) leaves thin bars stranded in a wide
+  // plot. It reads better as cards: one per category, its value large with a
+  // slim track against the largest, or with several series a row per series
+  // on the card's own scale (so a statistic and a critical value each get
+  // theirs). Years and other ordered axes keep their bars; `cards: false` in
+  // the spec opts out and `cards: true` opts in.
+  var ORDERED = /^(-?[\d.]+|\d{4}(-\d{2}(-\d{2})?)?|\d{4}-?Q[1-4])$/;
+
+  function asCards(chart) {
+    if (chart.cards !== undefined) return !!chart.cards;
+    if (chart.type !== 'bar' || chart.stack || !chart.series || !chart.x) return false;
+    var series = chart.series.filter(function (s) { return !s.reference; });
+    if (!series.length || series.some(function (s) { return s.axis === 1; })) return false;
+    if (chart.x.length * series.length > 6) return false;
+    return !chart.x.some(function (x) { return ORDERED.test(String(x).trim()); });
+  }
+
+  function renderCards(box, chart) {
+    box.innerHTML = '';
+    var head = document.createElement('div');
+    head.className = 'ft-chart__head';
+    var title = document.createElement('p');
+    title.className = 'ft-chart__title';
+    title.textContent = chart.title;
+    head.appendChild(title);
+    box.appendChild(head);
+    var fmt = formatter(chart.format);
+    var series = chart.series.filter(function (s) { return !s.reference; });
+    var grid = document.createElement('div');
+    grid.className = 'ft-cards' + (series.length > 1 ? ' ft-cards--rows' : '');
+    var columns = series.length > 1 ? Math.min(chart.x.length, 3) : (chart.x.length > 5 ? 3 : chart.x.length);
+    grid.style.setProperty('--n', columns);
+    // on a phone three cards still fit side by side; four or more go two by two
+    var narrow = series.length > 1 ? 1 : (columns === 3 && chart.x.length === 3 ? 3 : Math.min(columns, 2));
+    grid.style.setProperty('--n-narrow', narrow);
+    if (narrow === 2 && chart.x.length % 2) grid.classList.add('ft-cards--odd');
+    function track(value, max, color) {
+      var width = value === null || value === undefined || !max ? 0 : Math.max(2, Math.abs(value) / max * 100);
+      return '<span class="ft-cards__track"><span style="width:' + width + '%;background:' + color + '"></span></span>';
+    }
+    function abs(values) { return Math.max.apply(null, values.filter(function (v) { return v !== null && v !== undefined; }).map(Math.abs).concat([0])); }
+    if (series.length === 1) {
+      var data = series[0].data, max = abs(data);
+      chart.x.forEach(function (name, i) {
+        var v = data[i];
+        var color = v !== null && v < 0 ? PALETTE[4] : PALETTE[0];
+        var card = document.createElement('div');
+        card.className = 'ft-cards__card';
+        card.innerHTML = '<p class="ft-cards__name">' + name + '</p><p class="ft-cards__value">' + fmt(v) + '</p>' + track(v, max, color);
+        grid.appendChild(card);
+      });
+    } else {
+      chart.x.forEach(function (name, i) {
+        var values = series.map(function (s) { return s.data[i]; }), max = abs(values);
+        var rows = series.map(function (s, j) {
+          var color = s.color || PALETTE[j % PALETTE.length];
+          return '<li><span class="ft-cards__who"><i style="background:' + color + '"></i>' + s.name + '</span>' +
+            track(values[j], max, color) + '<b>' + fmt(values[j]) + '</b></li>';
+        }).join('');
+        var card = document.createElement('div');
+        card.className = 'ft-cards__card';
+        card.innerHTML = '<p class="ft-cards__name">' + name + '</p><ul class="ft-cards__rows">' + rows + '</ul>';
+        grid.appendChild(card);
+      });
+    }
+    box.appendChild(grid);
+  }
+
   function chrome(spec) {
     // the shared title row, returns the canvas to draw in
     return function (box, height) {
@@ -727,6 +798,7 @@
   }
 
   function render(box, chart) {
+    if (asCards(chart)) return renderCards(box, chart);
     if (chart.type === 'dupont') return renderDupont(box, chart);
     if (chart.type === 'kpis') return renderKpis(box, chart);
     if (chart.type === 'compare') return renderCompare(box, chart);

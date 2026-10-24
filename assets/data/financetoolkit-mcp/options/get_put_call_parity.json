@@ -1,0 +1,1 @@
+{"charts":{"get_put_call_parity":{"type":"table","columns":["Strike Price","7 days","14 days","28 days"],"rows":[[185,0,0,0],[190,0,0,0],[195,0,0,0],[200,0,0,0],[205,0,0,0],[210,0,0,0],[215,0,0,0],[220,0,0,0]],"title":"Put-Call Parity"}}}

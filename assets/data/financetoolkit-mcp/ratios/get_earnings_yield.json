@@ -1,0 +1,1 @@
+{"charts":{"get_earnings_yield":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"F","data":[0.2899,-0.0557,0.1047,0.1639,-0.162]},{"name":"GM","data":[0.1193,0.1894,0.2094,0.1216,0.0405]},{"name":"TM","data":[0.1114,0.1126,0.1552,0.1278,0.0945]}],"format":"percent","title":"Earnings Yield","period":false}}}

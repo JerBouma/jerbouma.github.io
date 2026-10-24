@@ -1,0 +1,1 @@
+{"charts":{"get_forward_price_earnings_growth_ratio":{"type":"bar","x":["AXP","JPM","MA"],"series":[{"name":"2026","data":[1.2296,0.5698,1.5004]}],"format":"multiple","title":"Forward Price to Earnings Growth Ratio (Forward PEG)","period":false}}}

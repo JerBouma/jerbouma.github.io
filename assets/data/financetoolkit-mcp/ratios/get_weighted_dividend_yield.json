@@ -1,0 +1,1 @@
+{"charts":{"get_weighted_dividend_yield":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ADI","data":[0.017,0.0191,0.0174,0.0174,0.0144]},{"name":"QCOM","data":[0.0159,0.0279,0.0225,0.0221,0.0204]},{"name":"TXN","data":[0.0252,0.0313,0.0315,0.0292,0.0321]}],"format":"percent","title":"Weighted Dividend Yield","period":false}}}

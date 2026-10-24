@@ -1,0 +1,1 @@
+{"charts":{"get_iv_2sls":{"type":"coef","x":["Intercept","NVDA"],"coef":[-0.0008,1.252],"low":[-0.006092,1.037576],"high":[0.004492,1.466424],"p":[0.7693,0.0],"format":"ratio","title":"Instrumental Variables (2SLS)","period":false}}}

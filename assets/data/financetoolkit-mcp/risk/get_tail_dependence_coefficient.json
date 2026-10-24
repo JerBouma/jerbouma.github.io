@@ -1,0 +1,1 @@
+{"charts":{"get_tail_dependence_coefficient":{"type":"bar","x":["Lower Tail Dependence","Upper Tail Dependence"],"series":[{"name":"Goldman Sachs and Morgan Stanley","data":[0.6508,0.619]}],"format":"ratio","title":"Tail Dependence Coefficient","period":false}}}

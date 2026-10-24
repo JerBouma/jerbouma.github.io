@@ -1,0 +1,1 @@
+{"charts":{"get_return_on_tangible_assets":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"NUE","data":[0.5648,0.5094,0.2557,0.1087,0.0929]},{"name":"RS","data":[0.3075,0.3318,0.2083,0.1349,0.1188]},{"name":"STLD","data":[0.6397,0.5577,0.2987,0.1777,0.1369]}],"format":"percent","title":"Return on Tangible Assets (RoTA)","period":false}}}

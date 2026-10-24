@@ -1,0 +1,1 @@
+{"charts":{"get_copula_parameters":{"type":"bar","x":["Rho","Lower Tail Dependence","Upper Tail Dependence"],"series":[{"name":"Chevron and ExxonMobil","data":[0.8535,0.4842,0.4842]}],"format":"ratio","title":"Copula Parameters","period":false}}}

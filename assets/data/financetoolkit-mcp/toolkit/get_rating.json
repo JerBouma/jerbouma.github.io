@@ -1,0 +1,1 @@
+{"charts":{"get_rating":{"type":"bar","x":["DCF Score","ROE Score","ROA Score","DE Score","PE Score","PB Score"],"series":[{"name":"V","data":[3.0,5.0,5.0,3.0,1.0,1.0]}],"format":"amount","title":"Rating Scores","period":false}}}
