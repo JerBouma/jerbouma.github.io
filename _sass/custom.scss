@@ -6114,6 +6114,70 @@ body.ft-overview .page__content {
   @media (max-width: 600px) { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 }
 
+// a few values across named categories as cards instead of thin bars
+// (renderCards in ft-charts.js): one value per card with a slim track against
+// the largest, or a row per series on the card's own scale
+.ft-cards {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr));
+  gap: 12px;
+  margin: 6px 0 8px;
+
+  &__card {
+    padding: 14px 14px 16px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: rgba(128, 128, 128, 0.04);
+  }
+
+  .page__content &__name { margin: 0 !important; color: var(--text-secondary) !important; font-size: 13px !important; font-weight: 600; }
+  .page__content &__value { margin: 4px 0 10px !important; color: var(--text-primary) !important; font-size: 26px !important; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+
+  &__track {
+    display: block;
+    flex: 1 1 auto;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(128, 128, 128, 0.14);
+    overflow: hidden;
+    > span { display: block; height: 100%; border-radius: 999px; }
+  }
+
+  // several series: a row each, name, track and value
+  .page__content &__rows {
+    margin: 10px 0 0 !important;
+    padding: 0 !important;
+    list-style: none;
+    > li {
+      display: grid;
+      grid-template-columns: minmax(64px, auto) 1fr auto;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 8px !important;
+      font-size: 13px !important;
+      b { color: var(--text-primary); font-weight: 700; font-variant-numeric: tabular-nums; }
+    }
+  }
+
+  &__who {
+    display: flex; align-items: center; gap: 6px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    i { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+  }
+
+  &--rows { gap: 14px; }
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(var(--n-narrow, 2), minmax(0, 1fr));
+    gap: 8px;
+    &__card { padding: 12px 11px 14px; }
+    // two columns and an odd number of cards: the last one takes the full row
+    &--odd > &__card:last-child { grid-column: 1 / -1; }
+    .page__content &__value { font-size: 20px !important; }
+  }
+}
+
 // two companies compared per metric (renderCompare in ft-charts.js)
 .ft-compare {
   display: grid;
