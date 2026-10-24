@@ -1,0 +1,1 @@
+{"charts":{"get_out_of_sample_validation":{"type":"bar","x":["RMSE","MAE"],"series":[{"name":"UNH","data":[170.2114,146.8682]},{"name":"CVS","data":[28.238,26.4925]}],"format":"price","title":"Out-of-Sample Forecast Errors","period":false}}}

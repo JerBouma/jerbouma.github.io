@@ -1,0 +1,1 @@
+{"charts":{"get_two_sample_t_test":{"type":"bar","x":["ORCL","SAP"],"series":[{"name":"P-Value","data":[0.5982,0.8886]}],"format":"ratio","title":"Two-Sample t-Test P-Value","period":false,"xname":"Compared with Microsoft"}}}

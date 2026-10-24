@@ -1,0 +1,1 @@
+{"charts":{"get_johansen_cointegration":{"type":"bar","x":["r <= 0","r <= 1"],"series":[{"name":"Trace Statistic","data":[13.9015,0.3612]},{"name":"Trace Critical Value 95%","data":[15.4943,3.8415]}],"format":"ratio","title":"Trace Statistic and 95% Critical Value","period":false,"xname":"Cointegration rank"}}}

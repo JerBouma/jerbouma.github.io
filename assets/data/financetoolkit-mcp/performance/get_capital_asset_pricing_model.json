@@ -1,0 +1,1 @@
+{"charts":{"get_capital_asset_pricing_model":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"JPM","data":[0.2427,-0.1556,0.2333,0.2084,0.1701]},{"name":"GS","data":[0.2808,-0.1726,0.276,0.2795,0.2214]},{"name":"MS","data":[0.3176,-0.1919,0.3057,0.2629,0.2178]}],"format":"percent","title":"Capital Asset Pricing Model (CAPM)","period":false}}}

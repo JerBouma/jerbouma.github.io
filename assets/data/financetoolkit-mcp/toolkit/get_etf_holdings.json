@@ -1,0 +1,1 @@
+{"charts":{"get_etf_holdings":{"type":"bar","x":["NVDA","AAPL","MSFT","AMZN","MU","AMD","TSLA","META","GOOGL","GOOG"],"series":[{"name":"Weight","data":[0.081437,0.080923,0.061611,0.043001,0.04252,0.036448,0.031331,0.03072,0.030293,0.028228]}],"format":"percent","title":"Weight","period":false}}}

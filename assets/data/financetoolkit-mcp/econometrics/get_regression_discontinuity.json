@@ -1,0 +1,1 @@
+{"charts":{"get_regression_discontinuity":{"type":"bar","x":["Discontinuity","Std. Error"],"series":[{"name":"Coinbase","data":[0.0031,0.0027]}],"format":"percent","title":"Discontinuity and Standard Error","period":false}}}

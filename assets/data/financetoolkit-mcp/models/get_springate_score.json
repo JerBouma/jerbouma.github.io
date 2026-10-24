@@ -1,0 +1,1 @@
+{"charts":{"get_springate_score":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"GAP","data":[0.7805,0.6298,0.9585,1.2231,1.1956]},{"name":"KSS","data":[1.1817,0.5896,0.809,0.6201,0.7852]},{"name":"M","data":[1.2544,1.163,0.7262,0.9595,0.9991]}],"format":"ratio","title":"Springate Score","period":false}}}

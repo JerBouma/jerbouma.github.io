@@ -1,0 +1,1 @@
+{"charts":{"get_two_stage_dividend_discount_model":{"type":"bar","x":["JNJ","PEP","PG"],"series":[{"name":"Intrinsic Value","data":[120.7434,132.0777,98.1193]}],"format":"price","title":"Intrinsic Value per Share","period":false}}}

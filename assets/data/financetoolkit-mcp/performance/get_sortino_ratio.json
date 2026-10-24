@@ -1,0 +1,1 @@
+{"charts":{"get_sortino_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"V","data":[0.0058,-0.0049,0.129,0.0911,0.038]},{"name":"MA","data":[0.0163,-0.001,0.1007,0.1064,0.0273]},{"name":"AXP","data":[0.1221,-0.0138,0.0922,0.1909,0.0726]}],"format":"ratio","title":"Sortino Ratio","period":false}}}

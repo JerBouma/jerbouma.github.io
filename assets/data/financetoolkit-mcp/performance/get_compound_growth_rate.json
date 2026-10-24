@@ -1,0 +1,1 @@
+{"charts":{"get_compound_growth_rate":{"type":"bar","x":["JPM","BAC","C","S&P 500 (SPY)"],"series":[{"name":"Compound Annual Growth Rate (CAGR)","data":[0.2362,0.1542,0.1773,0.1433]}],"format":"percent","title":"Compound Annual Growth Rate (CAGR)","period":false}}}

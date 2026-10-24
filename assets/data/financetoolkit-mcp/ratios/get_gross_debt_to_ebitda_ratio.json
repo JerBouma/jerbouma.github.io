@@ -1,0 +1,1 @@
+{"charts":{"get_gross_debt_to_ebitda_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AVGO","data":[2.766,2.0812,1.9782,2.8785,1.9013]},{"name":"IBM","data":[4.1515,4.1625,4.2157,3.9615,3.8345]},{"name":"ORCL","data":[5.4,4.7123,4.3955,4.3646,5.1938]}],"format":"ratio","title":"Gross Debt to EBITDA Ratio","period":false}}}

@@ -133,6 +133,8 @@ financetoolkit-mcp:
         url: /projects/financetoolkit/mcp#ex-us-cycle
       - title: Diversification
         url: /projects/financetoolkit/mcp#ex-diversification
+  - title: "Documentation"
+    url: /projects/financetoolkit/docs
   - title: "FAQ"
     url: /projects/financetoolkit/mcp#faq
   - title: "Under the Hood"

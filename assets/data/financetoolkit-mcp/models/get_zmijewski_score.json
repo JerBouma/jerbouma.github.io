@@ -1,0 +1,1 @@
+{"charts":{"get_zmijewski_score":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AAL","data":[2.1607,1.8991,1.8091,1.7031,1.7338]},{"name":"DAL","data":[1.0729,0.7979,0.2573,0.0356,-0.3361]},{"name":"UAL","data":[1.1044,0.7632,0.4835,0.2303,0.0607]}],"format":"ratio","title":"Zmijewski Score","period":false}}}

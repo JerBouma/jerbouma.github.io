@@ -1,5 +1,6 @@
 require "cgi"
 require "json"
+require "kramdown"
 
 # Structures the Finance Toolkit documentation as one introduction page per
 # class plus one page per function.
@@ -145,7 +146,7 @@ module DocsMetricPages
     end
     text = paragraphs.shift.to_s
     text = "#{text} #{paragraphs.shift}" while text.length < 110 && !paragraphs.empty?
-    text = "#{text} Parameters and a Python example with the Finance Toolkit." if text.length < 110
+    text = "#{text} Parameters and examples with the Finance Toolkit." if text.length < 110
     text = text.sub(/:\z/, ".")
     return text if text.length <= 158
     cut = text[0, 155]
@@ -179,22 +180,114 @@ module DocsMetricPages
     DATA_CLASSES.include?(key) ? "Related #{name} Functions" : "Related #{name} Metrics"
   end
 
-  def content_for(name, key, fn_name, parts, related)
+  # "- <u>lag (int &#124; list[int], optional):</u> The lag ... Defaults to 1." bullets,
+  # continuation lines included, as [name, type, description]
+  ARGUMENT = %r{\A- <u>(\w+) \(([^)]*)\):</u>\s*(.*)\z}m
+
+  def parameters_for(block)
+    arguments_for(block).split(/\n(?=- <u>)/).filter_map do |item|
+      match = ARGUMENT.match(item.strip)
+      next unless match
+      type = match[2].gsub("&#124;", "|").sub(/,\s*optional\z/, "").strip
+      [match[1], type, match[3].gsub(/\s*\n\s*/, " ").strip]
+    end
+  end
+
+  # A YAML value as the Python literal it stands for: true -> True, "weekly" -> "weekly"
+  def python_literal(value)
+    case value
+    when true then "True"
+    when false then "False"
+    when nil then "None"
+    when String then value.inspect
+    when Array then "[#{value.map { |v| python_literal(v) }.join(', ')}]"
+    when Hash then "{#{value.map { |k, v| "#{k.to_s.inspect}: #{python_literal(v)}" }.join(', ')}}"
+    else value.to_s
+    end
+  end
+
+  # an example value: the function's own, else the one for every parameter of
+  # that name (_data/financetoolkit_parameters.yml), else the documented default
+  def parameter_example(site, fn_name, name, description)
+    examples = site.data["financetoolkit_parameters"] || {}
+    own = examples.dig("functions", fn_name)
+    return python_literal(own[name]) if own&.key?(name)
+    return python_literal(examples["names"][name]) if examples["names"]&.key?(name)
+    description[/Defaults to ([^.]+(?:\.\d+)?)\.?\s*\z/, 1].to_s.strip.delete("`")
+  end
+
+  def inline_markdown(text)
+    Kramdown::Document.new(text).to_html.strip.sub(%r{\A<p>(.*)</p>\z}m, '\1')
+  end
+
+  # The parameters as a collapsed table under the Python example: name, the
+  # types it accepts, what it does and a value to pass
+  def parameters_table(site, fn_name, rows)
+    body = rows.map do |name, type, description|
+      example = parameter_example(site, fn_name, name, description)
+      "<tr><td><code>#{name}</code></td><td><code>#{CGI.escapeHTML(type)}</code></td>" \
+        "<td>#{inline_markdown(description)}</td><td>#{example.empty? ? '' : "<code>#{CGI.escapeHTML(example)}</code>"}</td></tr>"
+    end
+    <<~HTML
+      <details class="ft-details docs-params">
+      <summary><i class="fas fa-sliders" aria-hidden="true"></i> <b>Parameters</b> <span class="ft-details__meta">#{rows.size}</span></summary>
+      <div class="docs-params__table"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+      <tbody>
+      #{body.join("\n")}
+      </tbody>
+      </table></div>
+      </details>
+    HTML
+  end
+
+  # The function through the Finance Toolkit MCP: a question an analyst might
+  # ask, the tool call an assistant makes to answer it and the answer as a
+  # chart. The specs are in _data/financetoolkit_mcp/<module>.yml and the chart
+  # data comes from _scripts/financetoolkit_mcp_examples.py.
+  def mcp_section(site, name, key, fn_name)
+    spec = site.data.dig("financetoolkit_mcp", key, fn_name)
+    chart = "/assets/data/financetoolkit-mcp/#{key}/#{fn_name}.json"
+    return "" unless spec && File.exist?(File.join(site.source, chart))
+    arguments = { "indicator" => fn_name }.merge(spec["arguments"] || {})
+    out = +"## #{name} with the Finance Toolkit MCP\n\n"
+    out << "Add the [Finance Toolkit MCP](/projects/financetoolkit/mcp) to Claude, ChatGPT or another AI assistant as a connector ([steps per client](/projects/financetoolkit/mcp#installation)); on first use it asks for your [FMP API key](/fmp){:target=\"_blank\"}. The connector URL is:\n{: .docs-boilerplate}\n\n"
+    out << "```\nhttps://financetoolkit.jeroenbouma.com/mcp\n```\n\n"
+    out << "Then ask in plain English, for example:\n{: .docs-boilerplate}\n\n"
+    out << %(<div class="ca-q docs-mcp-question"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>#{CGI.escapeHTML(spec['question'].to_s.strip)}</p></div>\n\n)
+    out << "The assistant answers it with one call of the `#{spec['tool']}` tool:\n\n"
+    out << "```json\n#{JSON.pretty_generate(arguments)}\n```\n\n"
+    answer = JSON.parse(File.read(File.join(site.source, chart)))["charts"].values.first
+    if answer["type"] == "table"
+      # text rather than numbers (a profile, a transcript): the answer as a table
+      out << "Which returns:\n\n"
+      cells = ->(row, tag) { row.map { |v| "<#{tag}>#{CGI.escapeHTML(v.to_s)}</#{tag}>" }.join }
+      out << %(<div class="docs-params__table"><table>\n<thead><tr>#{cells.call(answer['columns'], 'th')}</tr></thead>\n<tbody>\n)
+      out << answer["rows"].map { |row| "<tr>#{cells.call(row, 'td')}</tr>" }.join("\n")
+      out << "\n</tbody>\n</table></div>\n\n"
+    else
+      out << "Which returns, when plotted:\n\n"
+      label = CGI.escapeHTML(spec.dig("chart", "title") || name).gsub('"', "&quot;")
+      out << %({% include ft-chart.html id="#{fn_name}" src="#{chart}" label="#{label} from the Finance Toolkit MCP" %}\n\n)
+    end
+    out
+  end
+
+  def content_for(site, name, key, fn_name, parts, related)
     cls = CLASSES[key]
     out = +""
     out << parts[:description] << "\n\n"
-    unless parts[:example].empty?
+    # the MCP first, for readers who do not program; then Python
+    mcp = mcp_section(site, name, key, fn_name)
+    out << mcp
+    parameters = parameters_for(parts[:arguments])
+    unless parts[:example].empty? && parameters.empty?
       out << "## #{name} in Python\n\n"
       out << "Install the [Finance Toolkit](/projects/financetoolkit) with:\n{: .docs-boilerplate}\n\n"
       out << "```python\npip install financetoolkit -U\n```\n\n"
-      out << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n"
-      out << parts[:example] << "\n\n"
-    end
-    arguments = arguments_for(parts[:arguments])
-    unless arguments.empty?
-      out << "## Parameters\n\n"
-      out << "The function accepts the following parameters:\n{: .docs-boilerplate}\n\n"
-      out << arguments << "\n\n"
+      out << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n" unless parts[:example].empty?
+      out << parts[:example] << "\n\n" unless parts[:example].empty?
+      out << parameters_table(site, fn_name, parameters) << "\n" unless parameters.empty?
     end
     unless related.empty?
       # same pill buttons as the module switcher on the docs pages
@@ -204,6 +297,7 @@ module DocsMetricPages
       out << "## #{related_heading(key, related.first[:group])}\n\n"
       out << %(<div class="ft-module-switcher docs-related">\n  #{pills.join("\n  ")}\n</div>\n\n)
     end
+    out << "{% include ft-charts-script.html %}\n" if mcp.include?("ft-chart.html")
     out
   end
 
@@ -228,8 +322,13 @@ module DocsMetricPages
     HTML
   end
 
+  # the Portfolio class (transactions in, positions out) is not in the MCP
+  def examples_phrase(key)
+    key == "portfolio" ? "with an example and its parameters" : "showing how to use it with the MCP and in Python"
+  end
+
   def intro_hint(key)
-    browse_hint("Every function of the #{CLASSES[key][:name]} module has its own page with an example and its parameters.",
+    browse_hint("Every function of the #{CLASSES[key][:name]} module has its own page #{examples_phrase(key)}.",
                 "Pick one from the sidebar on the left.", "Pick one from the %menu%.")
   end
 
@@ -237,7 +336,7 @@ module DocsMetricPages
   # data classes, every function) of the class
   def getting_started_hint(key)
     kind = DATA_CLASSES.include?(key) ? "function" : "metric"
-    browse_hint("The sidebar gives access to every #{kind} in the #{CLASSES[key][:name]} module, each on its own page with a description, an example and its parameters.",
+    browse_hint("The sidebar gives access to every #{kind} in the #{CLASSES[key][:name]} module, each on its own page #{examples_phrase(key)}.",
                 "Pick one there to open it.", "On a phone, open the %menu% to pick one.")
   end
 
@@ -431,7 +530,7 @@ module DocsMetricPages
 
         description = unique_description(info[:title], description_for(parts[:description]), seen_descriptions)
         page = Page.new(site, site.source, url.delete_prefix("/").sub(%r{/[^/]+\z}, ""), "#{url.split('/').last}.md")
-        page.content = content_for(info[:title], key, fn_name, parts, related)
+        page.content = content_for(site, info[:title], key, fn_name, parts, related)
         page.data.merge!(
           "layout"               => "single",
           "title"                => info[:title],
@@ -442,7 +541,7 @@ module DocsMetricPages
           "permalink"            => url,
           "classes"              => "wide-sidebar",
           "author_profile"       => false,
-          "sidebar"              => sidebar_data(cls[:nav], "Every function has its own page with an example and its parameters. Pick one below."),
+          "sidebar"              => sidebar_data(cls[:nav], "Every function has its own page #{examples_phrase(key)}. Pick one below."),
           "redirect_from"        => ["#{url}/"],
           "docs_module"          => cls[:name],
           "docs_module_url"      => cls[:url],
@@ -485,13 +584,13 @@ module DocsMetricPages
       started = started.rstrip + "\n\n" + getting_started_hint(key) + "\n" unless started.empty?
       # the hint goes under the intro text, just before the install instructions
       hint = intro_hint(key) + "\n\n"
-      install = intro.index(/^(To install the FinanceToolkit|Unlike the other modules)/)
+      install = intro.index(/^(Use it in Claude|To install the FinanceToolkit|Unlike the other modules)/)
       intro = if install then intro.dup.insert(install, hint)
               else
                 paragraphs = intro.strip.split(/\n\s*\n/, 2)
                 ([paragraphs.first, hint.strip] + paragraphs.drop(1)).join("\n\n")
               end
-      class_page.data["sidebar"] = sidebar_data(cls[:nav], "Every function has its own page with an example and its parameters. Pick one below.")
+      class_page.data["sidebar"] = sidebar_data(cls[:nav], "Every function has its own page #{examples_phrase(key)}. Pick one below.")
       class_page.content = intro.rstrip + "\n\n" + started + "\n" + remaining + <<~HTML
 
         <script>

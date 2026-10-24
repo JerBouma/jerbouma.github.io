@@ -1,0 +1,1 @@
+{"charts":{"get_cusum_test":{"type":"bar","x":["CUSUM Statistic","Critical Value 5%"],"series":[{"name":"BA","data":[0.685425,1.36]},{"name":"AIR.PA","data":[0.441916,1.36]}],"format":"ratio","title":"CUSUM Statistic and 5% Critical Value","period":false}}}

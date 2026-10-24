@@ -1,0 +1,1 @@
+{"charts":{"get_sterling_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"NEE","data":[1.2842,-0.3726,-0.8979,1.307,0.9868]},{"name":"DUK","data":[1.4182,0.1186,-0.0838,1.1541,0.9407]},{"name":"SO","data":[1.2009,0.4819,0.1342,1.5685,0.6777]}],"format":"ratio","title":"Sterling Ratio","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_z_spread":{"type":"bar","x":["96.0","98.0","100.0","102.0","104.0"],"series":[{"name":"5 years","data":[0.0223,0.0175,0.0129,0.0083,0.0038]},{"name":"10 years","data":[0.0142,0.0115,0.0089,0.0063,0.0038]},{"name":"20 years","data":[0.0076,0.0059,0.0042,0.0026,0.0011]}],"format":"percent","title":"Z-Spread","period":false,"xname":"Bond price"}}}

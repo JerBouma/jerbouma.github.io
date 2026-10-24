@@ -1,0 +1,1 @@
+{"charts":{"get_mergers_acquisitions":{"type":"table","columns":["Transaction Date","Role","Acquirer Name","Target Name"],"rows":[["2021-03-22","Acquirer","CHEVRON CORP","NBLX"],["2023-06-20","Acquirer","CHEVRON CORP","PDC Energy, Inc."],["2023-08-03","Acquirer","CHEVRON CORP","PDC"],["2024-02-26","Acquirer","CHEVRON CORP","Hess"]],"title":"Mergers & Acquisitions"}}}

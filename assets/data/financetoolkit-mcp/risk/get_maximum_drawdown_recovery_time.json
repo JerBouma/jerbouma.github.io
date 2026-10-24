@@ -1,0 +1,1 @@
+{"charts":{"get_maximum_drawdown_recovery_time":{"type":"bar","x":["MSFT","GOOGL","NVDA"],"series":[{"name":"Maximum Drawdown Recovery Time","data":[153.0,306.0,153.0]}],"format":"amount","title":"Maximum Drawdown Recovery Time","period":false}}}

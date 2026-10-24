@@ -1,0 +1,1 @@
+{"charts":{"get_residual_income":{"type":"bar","x":["2023","2024","2025"],"series":[{"name":"AXP","data":[136823788.395,2731112754.87,3684252117.83]},{"name":"MA","data":[9635477081.72,11685971531.2,13945380861.5]},{"name":"V","data":[9927415372.47,13429902698.5,14455823759.5]}],"format":"usd","title":"Residual Income","period":false}}}

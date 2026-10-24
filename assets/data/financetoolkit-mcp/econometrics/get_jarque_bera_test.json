@@ -1,0 +1,1 @@
+{"charts":{"get_jarque_bera_test":{"type":"bar","x":["MRK","PFE","LLY"],"series":[{"name":"P-Value","data":[0.0431,0.0132,0.7842]}],"format":"ratio","title":"Jarque-Bera Test P-Value","period":false}}}

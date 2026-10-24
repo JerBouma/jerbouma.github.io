@@ -1,0 +1,1 @@
+{"charts":{"get_ulcer_performance_index":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"VZ","data":[-3.7032,-4.4478,-0.2952,2.5014,1.5051]},{"name":"T","data":[-2.0585,0.5139,-1.364,16.02,2.6787]},{"name":"TMUS","data":[-3.7475,4.2777,3.5124,13.1117,-2.2636]}],"format":"ratio","title":"Ulcer Performance Index (UPI)","period":false}}}

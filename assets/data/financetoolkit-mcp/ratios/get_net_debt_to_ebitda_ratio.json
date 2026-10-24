@@ -1,0 +1,1 @@
+{"charts":{"get_net_debt_to_ebitda_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CHTR","data":[4.5163,4.5991,4.5983,4.3482,4.3822]},{"name":"TMUS","data":[4.3904,5.3127,4.0131,3.524,3.6175]},{"name":"VZ","data":[3.6331,3.6523,3.7214,3.3851,3.8134]}],"format":"ratio","title":"Net Debt to EBITDA Ratio","period":false}}}

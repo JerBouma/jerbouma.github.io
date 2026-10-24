@@ -1,0 +1,255 @@
+get_dupont_analysis:
+  question: What drove Alphabet's return on equity from 2021 to 2025, according to a DuPont analysis?
+  tool: models
+  arguments:
+    tickers: GOOGL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: ratio
+get_extended_dupont_analysis:
+  question: What drove Microsoft's return on equity from 2021 to 2025, according to an extended DuPont analysis?
+  tool: models
+  arguments:
+    tickers: MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: ratio
+get_enterprise_value_breakdown:
+  question: How did Ford's enterprise value break down into market capitalization, debt and cash from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: F
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: usd
+    keep: {metric: [Market Capitalization, Total Debt, Cash and Cash Equivalents, Enterprise Value]}
+get_weighted_average_cost_of_capital:
+  question: What was the weighted average cost of capital of Verizon, AT&T and T-Mobile US from 2023 to 2025?
+  tool: models
+  arguments:
+    tickers: VZ,T,TMUS
+    start_date: "2022-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: percent
+    keep: {metric: Weighted Average Cost of Capital}
+get_economic_value_added:
+  question: How much economic value did Visa, Mastercard and Home Depot add from 2023 to 2025?
+  tool: models
+  arguments:
+    tickers: V,MA,HD
+    start_date: "2022-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: usd
+    keep: {metric: Economic Value Added}
+get_intrinsic_valuation:
+  question: What are Adobe, Salesforce and Intuit worth per share in a discounted cash flow model with 8% free cash flow growth for five years, 2.5% perpetual growth and a 9% WACC, starting from their 2025 free cash flow?
+  tool: models
+  arguments:
+    tickers: ADBE,CRM,INTU
+    growth_rate: 0.08
+    perpetual_growth_rate: 0.025
+    weighted_average_cost_of_capital: 0.09
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: price
+    keep: {metric: Intrinsic Value}
+    rename: {Periods = 5: Intrinsic Value}
+    title: Intrinsic Value per Share
+get_gorden_growth_model:
+  question: What is Coca-Cola worth per share in the Gordon growth model with an 8% required return and 4% dividend growth, from 2021 to 2025 and projected five years ahead?
+  tool: models
+  arguments:
+    tickers: KO
+    rate_of_return: 0.08
+    growth_rate: 0.04
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: price
+get_altman_z_score:
+  question: What were the Altman Z-Scores of Boeing, Lockheed Martin and General Dynamics from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: BA,LMT,GD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: ratio
+    keep: {metric: Altman Z-Score}
+get_piotroski_score:
+  question: What were the Piotroski F-Scores of Ford, General Motors and Tesla from 2022 to 2025?
+  tool: models
+  arguments:
+    tickers: F,GM,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: amount
+    keep: {metric: Piotroski Score}
+get_beneish_m_score:
+  question: What were the Beneish M-Scores of Netflix, Disney and Comcast from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: NFLX,DIS,CMCSA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: ratio
+    keep: {metric: Beneish M-Score}
+get_present_value_of_growth_opportunities:
+  question: How much of the share prices of Nvidia, Texas Instruments and Analog Devices reflected the present value of growth opportunities from 2023 to 2025?
+  tool: models
+  arguments:
+    tickers: NVDA,TXN,ADI
+    start_date: "2022-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: price
+get_sustainable_growth_rate:
+  question: What were the sustainable growth rates of Nike, Lululemon and Deckers from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: NKE,LULU,DECK
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: percent
+get_internal_growth_rate:
+  question: How fast could Adobe, Intuit and Autodesk have grown without outside financing from 2021 to 2025, measured by the internal growth rate?
+  tool: models
+  arguments:
+    tickers: ADBE,INTU,ADSK
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: percent
+get_graham_number:
+  question: What was the Graham number of Bank of America, Citigroup and Wells Fargo from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: BAC,C,WFC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: price
+get_free_cash_flow_to_firm:
+  question: How much free cash flow to the firm did ExxonMobil and Chevron generate from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: XOM,CVX
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: usd
+    keep: {metric: Free Cash Flow to Firm}
+get_free_cash_flow_to_equity:
+  question: How much free cash flow to equity did Comcast, Charter Communications and Verizon generate from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: CMCSA,CHTR,VZ
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: usd
+    keep: {metric: Free Cash Flow to Equity}
+get_two_stage_dividend_discount_model:
+  question: What are Johnson & Johnson, Procter & Gamble and PepsiCo worth per share in a two-stage dividend discount model with 6% dividend growth for five years, 3% growth afterwards and an 8% required return?
+  tool: models
+  arguments:
+    tickers: JNJ,PG,PEP
+    rate_of_return: 0.08
+    high_growth_rate: 0.06
+    stable_growth_rate: 0.03
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: price
+    keep: {metric: Intrinsic Value}
+    rename: {High-Growth Periods = 5: Intrinsic Value}
+    title: Intrinsic Value per Share
+get_residual_income:
+  question: How much residual income above their cost of equity did Visa, Mastercard and American Express earn from 2023 to 2025?
+  tool: models
+  arguments:
+    tickers: V,MA,AXP
+    start_date: "2022-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: usd
+    keep: {metric: Residual Income}
+get_market_value_added:
+  question: How much market value did Eli Lilly, Johnson & Johnson and Merck add above their invested capital from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: LLY,JNJ,MRK
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: usd
+    keep: {metric: Market Value Added}
+get_tobins_q_ratio:
+  question: What was Tobin's Q of Intel, Qualcomm and Texas Instruments from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: INTC,QCOM,TXN
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: ratio
+    keep: {metric: "Tobin's Q Ratio"}
+get_ohlson_o_score:
+  question: What were the Ohlson O-Scores of Carnival, Royal Caribbean and Norwegian Cruise Line from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: CCL,RCL,NCLH
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: ratio
+    keep: {metric: Ohlson O-Score}
+get_zmijewski_score:
+  question: What were the Zmijewski scores of Delta Air Lines, United Airlines and American Airlines from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: DAL,UAL,AAL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: ratio
+    keep: {metric: Zmijewski Score}
+get_springate_score:
+  question: What were the Springate scores of Macy's, Kohl's and Gap from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: M,KSS,GAP
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: ratio
+    keep: {metric: Springate Score}
+get_grover_score:
+  question: What were the Grover scores of Ford, General Motors and Stellantis from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: F,GM,STLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: ratio
+    keep: {metric: Grover Score}
+get_fulmer_h_score:
+  question: What were the Fulmer H-Scores of Disney, Fox and Comcast from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: DIS,FOXA,CMCSA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: ratio
+    keep: {metric: Fulmer H-Score}

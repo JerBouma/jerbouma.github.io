@@ -1,0 +1,1 @@
+{"charts":{"get_breusch_pagan_test":{"type":"table","columns":["Result","Value"],"rows":[["Breusch-Pagan Statistic",0.0129],["P-Value",0.9096],["Reject Homoskedasticity (5%)",0]],"title":"Breusch-Pagan Test"}}}

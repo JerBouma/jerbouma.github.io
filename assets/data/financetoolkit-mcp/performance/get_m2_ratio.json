@@ -1,0 +1,1 @@
+{"charts":{"get_m2_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"HD","data":[0.3903,-0.1613,0.0929,0.1097,-0.072]},{"name":"LOW","data":[0.3484,-0.1456,0.0951,0.0937,0.0053]}],"format":"percent","title":"M2 Ratio","period":false}}}

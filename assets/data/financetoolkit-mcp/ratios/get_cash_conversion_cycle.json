@@ -1,0 +1,1 @@
+{"charts":{"get_cash_conversion_cycle":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AMZN","data":[-41.1953,-30.918,-27.9651,-31.7282,-42.2411]},{"name":"COST","data":[-1.1462,1.4176,2.7455,2.2723,2.071]},{"name":"WMT","data":[3.463,6.4477,5.0509,3.5502,3.216]}],"format":"number","title":"Cash Conversion Cycle","period":false}}}

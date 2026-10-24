@@ -1,0 +1,1 @@
+{"charts":{"get_deferred_revenue_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ADBE","data":[0.2998,0.3009,0.3007,0.2851,0.2905]},{"name":"ORCL","data":[0.1969,0.1796,0.1758,0.1635,0.1472]},{"name":"WDAY","data":[0.6054,0.5726,0.5589,0.5289,0.5245]}],"format":"percent","title":"Deferred Revenue Ratio","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_capex_dividend_coverage_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"COP","data":[2.2122,1.7824,1.1862,1.2766,1.1963]},{"name":"CVX","data":[1.5968,2.1621,1.3108,1.1148,1.1276]},{"name":"XOM","data":[1.7826,2.303,1.5021,1.3417,1.14]}],"format":"ratio","title":"CAPEX Dividend Coverage Ratio","period":false}}}

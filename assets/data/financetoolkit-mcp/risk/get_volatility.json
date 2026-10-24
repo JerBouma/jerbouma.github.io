@@ -1,0 +1,1 @@
+{"charts":{"get_volatility":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"PFE","data":[0.2612,0.2696,0.2298,0.2334,0.2609]},{"name":"MRK","data":[0.2354,0.1993,0.1882,0.2117,0.3034]},{"name":"LLY","data":[0.3165,0.2726,0.2884,0.3027,0.4037]}],"format":"percent","title":"Volatility","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_covar":{"type":"bar","x":["CoVaR","Delta-CoVaR"],"series":[{"name":"Goldman Sachs","data":[-0.0353,-0.0206]}],"format":"percent","title":"CoVaR","period":false}}}

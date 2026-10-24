@@ -65,6 +65,8 @@
         case 'multiple': return v.toFixed(2) + 'x';
         case 'price': return '$' + v.toFixed(2);
         case 'ratio': return v.toFixed(2);
+        // small values such as daily variances or option Greeks: three significant digits
+        case 'decimal': return v === 0 ? '0' : Math.abs(v) >= 1 ? v.toFixed(2) : String(Number(v.toPrecision(3)));
         default: return Math.abs(v) >= 100 ? v.toFixed(0) : v.toFixed(3);
       }
     };

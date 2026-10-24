@@ -1,0 +1,1 @@
+{"charts":{"get_tracking_error":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"VOO","data":[0.0002,0.0003,0.0002,0.0003,0.001]},{"name":"RSP","data":[0.0038,0.0034,0.0038,0.0046,0.0051]},{"name":"QQQ","data":[0.0059,0.0067,0.005,0.0047,0.0041]}],"format":"percent","title":"Tracking Error","period":false}}}

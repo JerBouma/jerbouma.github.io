@@ -1,0 +1,1 @@
+{"charts":{"get_ols":{"type":"coef","x":["Intercept","USO","Benchmark"],"coef":[0.0005,0.4878,0.366],"low":[-0.000284,0.454088,0.300732],"high":[0.001284,0.521512,0.431268],"p":[0.1327,0.0,0.0],"format":"ratio","title":"Ordinary Least Squares (OLS)","period":false}}}

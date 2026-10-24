@@ -1,0 +1,1 @@
+{"charts":{"get_sharpe_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"XOM","data":[1.6226,1.8917,-0.2911,0.4342,0.5776]},{"name":"CVX","data":[1.6106,1.4812,-0.6949,-0.0542,0.3477]},{"name":"COP","data":[1.9268,1.4218,0.0788,-0.6442,-0.0249]}],"format":"ratio","title":"Sharpe Ratio","period":false}}}

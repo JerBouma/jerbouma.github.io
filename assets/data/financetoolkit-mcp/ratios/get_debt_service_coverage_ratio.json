@@ -1,0 +1,1 @@
+{"charts":{"get_debt_service_coverage_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"RSG","data":[0.8666,0.712,0.6725,0.781,0.8457]},{"name":"WCN","data":[0.8433,0.8212,0.7324,0.5683,0.8124]},{"name":"WM","data":[0.7369,0.7824,0.9046,0.663,0.834]}],"format":"ratio","title":"Debt Service Coverage Ratio","period":false}}}

@@ -5449,6 +5449,32 @@ $content-img: 'img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="g
   margin: 0 0 28px;
 }
 
+// The parameters of a metric page, folded under its Python example: name,
+// types, description and an example value. The table scrolls sideways on
+// phones instead of squeezing the description.
+.ft-details.docs-params {
+  margin: 18px 0 28px;
+
+  .docs-params__table {
+    margin-bottom: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table:not(.highlight) {
+    min-width: 640px;
+    font-size: 0.85rem !important;
+    box-shadow: none !important;
+  }
+
+  td { vertical-align: top; }
+  td:nth-child(1), td:nth-child(2), td:nth-child(4) { white-space: nowrap; }
+  td:nth-child(3) { min-width: 260px; }
+}
+
+// The question on a metric page's MCP example
+.page__content .ca-q.docs-mcp-question { margin: 0.6em 0 1.2em; }
+
 // The theme sets list items to 0.8em, which compounds in a nested list (a
 // bullet under a numbered item ends up at 0.64em). Nested items keep the size
 // of the item they belong to.

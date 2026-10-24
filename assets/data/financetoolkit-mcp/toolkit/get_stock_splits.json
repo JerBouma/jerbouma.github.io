@@ -1,0 +1,1 @@
+{"charts":{"get_stock_splits":{"type":"table","columns":["ticker","Date","Numerator","Denominator"],"rows":[["NVDA","2021-07-20",4,1],["NVDA","2024-06-10",10,1],["AAPL","2020-08-31",4,1],["TSLA","2020-08-31",5,1],["TSLA","2022-08-25",3,1],["GOOGL","2022-07-18",20,1],["AMZN","2022-06-06",20,1]],"title":"Stock Splits"}}}

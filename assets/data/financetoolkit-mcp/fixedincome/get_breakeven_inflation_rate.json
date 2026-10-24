@@ -1,0 +1,1 @@
+{"charts":{"get_breakeven_inflation_rate":{"type":"bar","x":["5.0","7.0","10.0","20.0","30.0"],"series":[{"name":"Breakeven Inflation Rate","data":[0.0226,0.0225,0.0225,0.024,0.0222]}],"format":"percent","title":"Breakeven Inflation Rate","period":false,"xname":"Maturity (years)"}}}

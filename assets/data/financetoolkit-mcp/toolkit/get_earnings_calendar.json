@@ -1,0 +1,1 @@
+{"charts":{"get_earnings_calendar":{"type":"bar","x":["2024-03-07","2024-05-30","2024-09-26","2024-12-12","2025-03-06","2025-05-29","2025-09-25","2025-12-11"],"series":[{"name":"EPS","data":[3.92,3.78,5.29,4.04,4.02,4.28,5.87,4.5]},{"name":"Estimated EPS","data":[3.62,3.7,5.08,3.79,4.09,4.24,5.8,4.27]}],"format":"price","title":"Reported and Estimated EPS","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_tax_rate_divergence":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AAPL","data":[0.0994,0.0023,0.017,-0.0295,0.1706]},{"name":"HD","data":[0.0092,0.0028,0.0121,-0.0488,0.0216]},{"name":"V","data":[-0.0461,0.031,-0.0157,0.067,0.0167]}],"format":"percent","title":"Tax Rate Divergence","period":false}}}

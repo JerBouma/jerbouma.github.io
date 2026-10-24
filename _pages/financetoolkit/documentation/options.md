@@ -17,7 +17,7 @@ sidebar:
 
 The Options module calculates important options metrics including First, Second and Third Order Greeks, the Black-Scholes Model, Option Chains, Implied Volatilities, Breeden–Litzenberger and more.
 
-To install the FinanceToolkit it simply requires the following:
+Use it in Claude, ChatGPT or another AI assistant through the [Finance Toolkit MCP](/projects/financetoolkit/mcp), or install the Python package:
 
 ```python
 pip install financetoolkit -U

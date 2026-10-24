@@ -1,0 +1,1 @@
+{"charts":{"get_price_to_cash_flow_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"BP","data":[3.0046,2.2259,2.8181,2.762,3.6253]},{"name":"SHEL","data":[3.1259,2.6608,3.7054,3.406,4.9621]},{"name":"TTE","data":[3.2839,2.7624,3.4736,3.7797,4.9157]}],"format":"multiple","title":"Price to Cash Flow Ratio (P/CF)","period":false}}}
