@@ -52,7 +52,7 @@ Every run combines two ready-made *profiles*: a **settings** profile, which says
 ```python
 from financescenarios import list_presets
 
-list_presets(kind="settings")  # or "factor-sets", "regimes", "portfolios"; leave it out for all 67
+list_presets(kind="settings")  # or "factor-sets", "regimes", "portfolios"; leave it out for all 66
 ```
 
 Each kind's output is below; open one to see its options.
@@ -88,50 +88,49 @@ Each kind's output is below; open one to see its options.
 </details>
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-bolt"></i> <b>Stress regimes</b> <span class="ft-details__meta">40</span></summary>
+<summary><i class="fas fa-bolt"></i> <b>Stress regimes</b> <span class="ft-details__meta">39</span></summary>
 
-| id                        | description                                                                                                                                                                                                              |
-|:--------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ai_tech_boom              | Keeps the scenarios where US stocks gain the most over two years, the top 15% where 2023-24's 53% rise sits.                                                                                                             |
-| asian_crisis_1997         | Emerging-market stocks fall 56% over five quarters and the yen weakens 23% against the dollar, as in 1997-98. Needs the default or broad set.                                                                            |
-| black_monday_1987         | US stocks lose a third within a quarter, as in the 1987 crash, and short rates ease by three quarters of a point.                                                                                                        |
-| boe_stress_2025           | The Bank of England's 2025 stress test: UK inflation to 10%, short rates to 8% in the UK and the US, ten-year yields to 6.4%, US stocks down 57% and unemployment peaking in year three. Needs the default or broad set. |
-| bond_massacre_1994        | Short rates rise 2.8 points and long yields 2.6 points within a year, as in the 1994 bond market rout.                                                                                                                   |
-| climate_collapse          | Rough stand-in for a climate shock: keeps the scenarios with the highest US inflation and the weakest US stocks.                                                                                                         |
-| commodity_supercycle      | A long oil boom: keeps the scenarios where crude oil earns a top-quarter return.                                                                                                                                         |
-| covid_crash_2020          | US stocks fall a third in a month and recover by month six, unemployment jumps to 14.8%, rates go to zero for two years and oil collapses, as in 2020.                                                                   |
-| credit_crunch             | Bank stocks collapse and the market follows: a harsher bear market for financials, then their worst scenarios. Needs the financials equity (broad set).                                                                  |
-| currency_crisis           | The Indian rupee devalues sharply against the dollar, about 17% a year, as in 2011-13, then keeps its worst scenarios. Needs the broad set.                                                                              |
-| dot_com_bust              | US stocks lose half over two and a half years, short rates fall to 1.6% and unemployment rises to 6.3%, as in 2000-2003.                                                                                                 |
-| early_1990s_recession     | Oil spikes, US stocks fall 20% within a quarter, unemployment rises to 7.8% over two years and short rates are cut to 2.9%.                                                                                              |
-| energy_war_2022           | Oil jumps a quarter, euro-area inflation climbs to 9% and falls back, European stocks fall 17% and the euro 15%, as after February 2022. Needs the default or broad set.                                                 |
-| esrb_adverse_2025         | The ESRB's adverse scenario for the 2025 EU-wide bank stress test: stocks down by half, unemployment rising for three years in Europe, the UK and the US. Needs the default or broad set.                                |
-| euro_debt_crisis_2011     | European stocks fall 35%, the euro weakens 19%, Bund yields drop two points and euro-area unemployment climbs, as in 2011-12. Needs the default or broad set.                                                            |
-| fed_severely_adverse_2026 | The Federal Reserve's 2026 severely adverse stress test: unemployment to 10%, US stocks down almost 60%, house prices down 30%, short rates at 0.1%.                                                                     |
-| financial_crisis          | Stocks fall, unemployment rises and rates are cut, all at once: keeps the scenarios where that happens together.                                                                                                         |
-| gold_rally                | Gold nearly triples over two and a quarter years, as in 2023-26.                                                                                                                                                         |
-| goldilocks_1990s          | Inflation near 2.4% and unemployment averaging 4.9% for the whole run, with the strongest fifth of US stock outcomes, as in the late 1990s.                                                                              |
-| housing_boom              | US house prices grow about 11% a year for two years, then cool, as in 2004-06.                                                                                                                                           |
-| inflation_shock_2022      | Inflation climbs to 9% and falls back to 3% within a year, short rates rise to the 5.3% peak of 2023, long yields rise 3.7 points, US stocks fall 25% and the dollar strengthens, as in 2021-23.                         |
-| japan_lost_decade         | Mild deflation, zero short rates and long yields near 1.4% for fourteen years, and US stocks losing 63% over two and a half years, as in Japan after 1990.                                                               |
-| ltcm_1998                 | US stocks fall 19% and recover within four months, Treasury yields drop about 1.4 points and the yen jumps 24%, as in 1998.                                                                                              |
-| mild_recession            | Unemployment rises to 6.9% over 15 months, short rates are cut 1.5 points and US stocks fall 14% over a year: the mildest quarter of post-war recessions.                                                                |
-| oil_collapse_2014         | Oil falls about 72% over a year and a half and US inflation dips below zero before recovering, as in 2014-16.                                                                                                            |
-| oil_crisis                | US inflation climbs to 12% within a year and eases to 5.5% by year three, as after the 1973 oil embargo, then keeps the scenarios with high rates and weak stocks.                                                       |
-| oil_shock                 | A one-off three-point jump in US inflation in year 2, after which everything behaves normally again.                                                                                                                     |
-| persistent_inflation      | US inflation settles near 6.6% for the whole run instead of returning to target, as over 1965-1982.                                                                                                                      |
-| rate_cut_cycle            | Inflation eases to 2% by year 5 and 2.5% by year 10, then drifts back to its usual level.                                                                                                                                |
-| real_estate_crash         | House-price growth falls to -8% within a year and recovers over four, then keeps the worst housing scenarios.                                                                                                            |
-| september_11              | US stocks drop 12% and recover within a month, short rates fall 1.5 points and oil 27%, as after 11 September 2001.                                                                                                      |
-| soft_landing              | Inflation eases smoothly to 2% by year 5 and stays there; no scenarios are filtered out.                                                                                                                                 |
-| stagflation_1970s         | Inflation near 9% and unemployment averaging 7.3% for years while US stocks fall 43% over two years, as in 1973-1982.                                                                                                    |
-| strong_dollar_2014        | The dollar strengthens fast: the euro falls 24%, the pound 15% and the yen 19% against it within a year, as in 2014-15.                                                                                                  |
-| taper_tantrum_2013        | Long US yields rise 1.3 points in four months while emerging-market stocks fall 18%, as in 2013. Needs the default or broad set.                                                                                         |
-| tech_selloff              | Tech stocks fall while the wider market holds up; keeps the worst tech scenarios. Needs the broad set.                                                                                                                   |
-| uk_gilt_crisis_2022       | UK long yields jump 1.8 points within two months and the pound falls 13% against the dollar before partly recovering, as in the 2022 gilt crisis. Needs the default or broad set.                                        |
-| volcker_shock             | Short rates replay 1979-82's climb to 16% while inflation rises and falls back, long yields rise about six points, unemployment climbs to 10.8% and US stocks fall 27%, as in 1979-1982.                                 |
-| weak_dollar_2002          | The dollar weakens for three years: the euro gains 58%, the pound 36% and the yen 31% against it, as in 2002-04.                                                                                                         |
-| yield_curve_inversion     | The yield curve inverts within six months, short yields about one and a half points above the ten-year, then slowly rights itself.                                                                                       |
+| id                        | description                                                                                                                                                                                                                                  |
+|:--------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ai_tech_boom              | Keeps the scenarios where US stocks gain the most over two years, the top 9% where 2023-24's 53% rise sits.                                                                                                                                  |
+| asian_crisis_1997         | Emerging-market stocks fall 56% over five quarters and the yen weakens 23% against the dollar, as in 1997-98. Needs the default or broad set.                                                                                                |
+| black_monday_1987         | US stocks lose a third within a quarter and are back by month 23, as in the 1987 crash, other markets follow through their correlations, short rates ease by three quarters of a point and unemployment keeps falling.                       |
+| boe_stress_2025           | The Bank of England's 2025 stress test: UK inflation to 10%, short rates to 8% in the UK and the US, ten-year yields to 6.4%, US stocks down 57% and unemployment peaking in year three. Needs the default or broad set.                     |
+| bond_massacre_1994        | Short rates rise 2.8 points and long yields 2.6 points within a year, as in the 1994 bond market rout.                                                                                                                                       |
+| commodity_supercycle      | Oil rises sevenfold over six and a half years, year after year, as Brent did from 2002 to its 2008 record, then falls back.                                                                                                                  |
+| covid_crash_2020          | Stocks everywhere fall a fifth to two fifths in a month and recover by month six, unemployment jumps to 14.8%, rates go to zero for two years and oil collapses, as in 2020.                                                                 |
+| credit_crunch             | Bank stocks collapse and the market follows: a harsher bear market for financials, then their worst scenarios. Needs the financials equity (broad set).                                                                                      |
+| currency_crisis           | The Indian rupee devalues sharply against the dollar, about 17% a year for two and a third years, as in 2011-13. Needs the broad set.                                                                                                        |
+| dot_com_bust              | US stocks lose half over two and a half years, Japanese stocks 56% and emerging markets 47%, short rates fall to 1.6% and unemployment rises to 6.3%, as in 2000-2003.                                                                       |
+| early_1990s_recession     | Oil spikes, US stocks fall 20% within a quarter, unemployment rises to 7.8% over two years and short rates are cut to 2.9%.                                                                                                                  |
+| energy_war_2022           | Oil jumps a quarter, euro-area inflation climbs to 9% and falls back, euro-area short rates rise to 4%, European stocks fall 17% and the euro 15%, as after February 2022. Needs the default or broad set.                                   |
+| esrb_adverse_2025         | The ESRB's adverse scenario for the 2025 EU-wide bank stress test: stocks down by half, unemployment rising for three years in Europe and the UK, and to 10% by year two in the US. Needs the default or broad set.                          |
+| euro_debt_crisis_2011     | European stocks fall 35%, the euro weakens 19%, Bund yields drop two points and euro-area unemployment climbs, as in 2011-12. Needs the default or broad set.                                                                                |
+| fed_severely_adverse_2026 | The Federal Reserve's 2026 severely adverse stress test: unemployment to 10%, US stocks down almost 60%, house prices down 30%, short rates at 0.1%.                                                                                         |
+| financial_crisis          | Stocks everywhere lose more than half in seventeen months, unemployment doubles to 10%, short rates go to zero for seven years and house prices fall 7% a year, as in 2007-09.                                                               |
+| gold_rally                | Gold nearly triples over two and a quarter years, as in 2023-26.                                                                                                                                                                             |
+| goldilocks_1990s          | Inflation near 2.4% and unemployment near 4% for the whole run, with the strongest fifth of US stock outcomes, as in the late 1990s.                                                                                                         |
+| housing_boom              | US house prices grow about 11% a year for two years, then cool, as in 2004-06.                                                                                                                                                               |
+| inflation_shock_2022      | Inflation climbs to 9% and falls back to 3% within a year, short rates rise to the 5.3% peak of 2023 and long yields to 4.8%, unemployment stays near 3.7%, US stocks rise 30% and then fall 25%, and the dollar strengthens, as in 2021-23. |
+| japan_lost_decade         | Mild deflation, zero short rates, long yields near 1.4% and house prices falling 3% a year for fourteen years, and US stocks losing 63% over two and a half years, as in Japan after 1990.                                                   |
+| ltcm_1998                 | US stocks fall 19% and recover within four months, Treasury yields drop about 1.4 points and the yen jumps 24%, as in 1998.                                                                                                                  |
+| mild_recession            | Unemployment rises to 6.9% over 15 months, the policy rule cuts short rates as it climbs and US stocks fall 14% over a year: the mildest quarter of post-war recessions.                                                                     |
+| oil_collapse_2014         | Oil falls about 72% over a year and a half and US inflation dips below zero before recovering, as in 2014-16.                                                                                                                                |
+| oil_crisis                | US inflation climbs to 12% within a year and eases to 5.5% by year three, short rates rise to 9% and fall back, unemployment rises to 9% and stocks fall 43%, as after the 1973 oil embargo.                                                 |
+| oil_shock                 | A one-off rise of about three points in US inflation over the half year to year 2, after which everything behaves normally again.                                                                                                            |
+| persistent_inflation      | US inflation climbs towards 6.6% and stays high instead of returning to target, as over 1965-1982.                                                                                                                                           |
+| rate_cut_cycle            | Short rates are cut 5 points over two and a half years, the median of the Fed's six easing cycles from 1984 to 2020, then follow the policy rule again.                                                                                      |
+| real_estate_crash         | House-price growth falls to -8% within a year and recovers to zero over the four years after, as US house prices did after 2008.                                                                                                             |
+| september_11              | US stocks drop 12% and recover within a month, short rates fall 1.5 points and oil 27%, as after 11 September 2001.                                                                                                                          |
+| soft_landing              | No recession after the Fed's tightening: unemployment holds at today's level for three years and short rates are cut 0.7 points within a year, as after the soft landings of 1966, 1984 and 1995, then follow the policy rule again; inflation eases as in the baseline. |
+| stagflation_1970s         | Inflation climbs towards 9% and unemployment towards 7.3% while US stocks fall 43% over two years, as in 1973-1982.                                                                                                                          |
+| strong_dollar_2014        | The dollar strengthens fast: the euro falls 24%, the pound 15% and the yen 19% against it within a year, as in 2014-15.                                                                                                                      |
+| taper_tantrum_2013        | Long US yields rise 1.3 points in four months while emerging-market stocks fall 18%, as in 2013. Needs the default or broad set.                                                                                                             |
+| tech_selloff              | Tech stocks fall about a fifth in a year and stay down while the wider market holds up, as in 2022. Needs the broad set.                                                                                                                     |
+| uk_gilt_crisis_2022       | UK long yields jump 1.8 points within two months and the pound falls 13% against the dollar before partly recovering, as in the 2022 gilt crisis. Needs the default or broad set.                                                            |
+| volcker_shock             | Short rates rise about seven points from today's level, to near 11%, month by month as the 3-month bill did in 1979-81, while inflation rises and falls back, long yields rise about five points in two years, unemployment climbs to 10.8%, US stocks fall 27%, gold spikes and falls back and the dollar strengthens, as in 1979-1982. |
+| weak_dollar_2002          | The dollar weakens for three years: the euro gains 58%, the pound 36% and the yen 31% against it, as in 2002-04.                                                                                                                             |
+| yield_curve_inversion     | The yield curve inverts within six months, short yields about one and a half points above the ten-year, then slowly rights itself.                                                                                                           |
 
 </details>
 
@@ -265,7 +264,7 @@ Which shows the portfolio's value in money, with the same bands:
 
 ### Applying Stress Regimes
 
-Run the same variables through one of 40 named stress stories, such as an oil crisis. A regime changes an assumption before simulating, keeps only the scenarios that fit the story, or both.
+Run the same variables through one of 39 named stress stories, such as an oil crisis. A regime changes an assumption before simulating, keeps only the scenarios that fit the story, or both.
 
 ```python
 from financescenarios import compare_runs
@@ -275,28 +274,26 @@ shocked = scenarios.simulate(regime="oil_crisis", n_simulations=2000, seed=42)
 compare_runs({"baseline": result, "oil_crisis": shocked})
 ```
 
-Oil Crisis moves the middle of US inflation to 12% within a year and back to 5.5% by year three, as after the 1973 oil embargo, with every scenario keeping its own distance from that path, and keeps the scenarios with high interest rates and weak stocks, which run hotter still; it draws as many scenarios as it takes for 2,000 to fit the story. The US short rate follows inflation the way a central bank's rate does, so after five years it averages 11.53% instead of 4.59%, and US stocks lose 1.26% a year. For example, four of the variables are shown below.
+Oil Crisis replays 1973-74 from today: the middle of US inflation climbs to 12% within a year and eases to 5.5% by year three, the short rate to the 3-month bill's 9% and back, unemployment to 9%, and US stocks fall 43% before recovering, with every scenario keeping its own distance from that path and the world's other stock markets following through their correlations. After five years the short rate averages 4.27% instead of 4.59% and US stocks earn 0.86% a year instead of 8.49%. For example, four of the variables are shown below.
 
 | factor                   | baseline | oil_crisis |
 |:-------------------------|---------:|-----------:|
-| united_states_inflation  |   0.0234 |     0.0592 |
-| united_states_short_rate |   0.0459 |     0.1153 |
-| united_states_long_rate  |   0.0579 |     0.1275 |
-| us_broad                 |   0.0849 |    -0.0126 |
+| united_states_inflation  |   0.0234 |     0.0483 |
+| united_states_short_rate |   0.0459 |     0.0427 |
+| united_states_long_rate  |   0.0579 |     0.0630 |
+| us_broad                 |   0.0849 |     0.0086 |
 
-The chart below sets US inflation in the baseline next to the Oil Shock, Oil Crisis and Climate Collapse regimes, 2,000 scenarios each. **Find [the Regimes documentation](/projects/financescenarios/docs/regimes).**
+The chart below sets US inflation in the baseline next to the Oil Shock, Oil Crisis and 2022 Inflation and Rate Hikes regimes, 2,000 scenarios each. **Find [the Regimes documentation](/projects/financescenarios/docs/regimes).**
 
 ```python
 from financescenarios import plot_runs
 
 runs = {"baseline": result}
-for regime in ("oil_shock", "oil_crisis", "climate_collapse"):
+for regime in ("oil_shock", "oil_crisis", "inflation_shock_2022"):
     runs[regime] = scenarios.simulate(regime=regime, n_simulations=2000, seed=42)
 
 plot_runs(runs, "united_states_inflation")
 ```
-
-Which puts the four runs side by side:
 
 Which puts the four runs side by side:
 
@@ -379,13 +376,13 @@ Check a run against what its own models promise. Most variables can also be simu
 scenarios.validate(result)
 ```
 
-For example, three of the checks are shown below.
+On this run four of the six checks pass and two warn, one on the correlations and one on the volatilities. For example, three of the checks are shown below.
 
-| check                                  | status | detail                                                                                                                                                                        |
-|:---------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Every factor calibrated                | pass   | every factor calibrated                                                                                                                                                       |
-| Simulation reproduces the correlations | warn   | largest gap 0.103 (eurozone_inflation/united_kingdom_inflation); pairs with a linked factor, not graded: largest gap 0.715 (united_states_short_rate/united_states_long_rate) |
-| Every path is finite                   | pass   | 27 factors, all finite                                                                                                                                                        |
+| check                                  | status | detail                                                                                                                                                                                                                                                |
+|:---------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Every factor calibrated                | pass   | every factor calibrated                                                                                                                                                                                                                               |
+| Simulation reproduces the correlations | warn   | largest gap 0.103 (eurozone_inflation/united_kingdom_inflation); pairs with a linked factor, not graded: largest gap 0.715 (united_states_short_rate/united_states_long_rate); rate_level and rate_slope read off the short and long rate, not graded |
+| Every path is finite                   | pass   | 27 factors, all finite                                                                                                                                                                                                                                |
 
 Whether the variables also move together the way the economy does, measured the same way on decades of history and on every scenario, is a check of its own:
 

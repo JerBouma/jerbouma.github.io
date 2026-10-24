@@ -2,8 +2,8 @@
 title: Regimes
 seo_title: "Regimes | Finance Scenarios"
 seo_title_suffix: false
-excerpt: "How a stress story enters Finance Scenarios: beliefs change an assumption before simulating, targets keep the scenarios that fit the story afterwards, and forty regimes ship ready to run."
-description: "Regimes in Finance Scenarios: beliefs and targets, steering a long-run level along a path, median shocks after Boyle, Broadie and Glasserman, how targets rank and keep scenarios, and runs of shipped regimes."
+excerpt: "How a stress story enters Finance Scenarios: beliefs change an assumption before simulating, targets keep the scenarios that fit the story afterwards, and 39 regimes ship ready to run."
+description: "Regimes in Finance Scenarios: beliefs and targets, steered paths after Brigo and Mercurio and Boyle, Broadie and Glasserman, how a crash reaches other markets after Kupiec, how targets rank and keep scenarios, and runs of shipped regimes."
 author_profile: false
 permalink: /projects/financescenarios/docs/regimes
 classes: wide-sidebar
@@ -38,22 +38,22 @@ This is the difference between a stress test (an imposed shock) and scenario ana
 
 ## Shipped Regimes
 
-Forty regimes ship with the package: historical episodes such as Black Monday, the 2008 crisis and the 2022 inflation surge, the stress tests of the Federal Reserve, the European Systemic Risk Board (ESRB) and the Bank of England ([Stress Tests](/projects/financescenarios/docs/regimes/stress-tests)), and stylized stories. Twelve of the stylized ones:
+Thirty-nine regimes ship with the package: historical episodes such as Black Monday, the 2008 crisis and the 2022 inflation surge, the stress tests of the Federal Reserve, the European Systemic Risk Board (ESRB) and the Bank of England ([Stress Tests](/projects/financescenarios/docs/regimes/stress-tests)), and stylized stories. Twelve of them:
 
 | Regime | The story | How |
 |:-------|:----------|:----|
-| `financial_crisis` | The weakest 20% of stock returns, then the highest 20% of unemployment among those, then the lowest 30% of short rates among those | Targets |
+| `financial_crisis` | 2007-09 replayed: stocks everywhere down more than half in seventeen months, unemployment to 10%, the bill at zero for seven years, house prices falling 7% a year | Beliefs |
 | `credit_crunch` | Bank stocks collapse and the market follows (needs the `broad` set) | Both |
-| `oil_crisis` | US inflation climbs to 12% within a year and eases to 5.5% by year three, as after the 1973 embargo, then back to 2.5% by year eight, with high rates and weak stocks | Both |
-| `oil_shock` | A one-off three-point jump in US inflation in year two, then business as usual | Beliefs |
-| `soft_landing` | Inflation's long-run level at 2% throughout, so inflation eases toward it at its own speed | Beliefs |
-| `rate_cut_cycle` | Soft landing, then inflation drifts to 2.5% by year ten and back to its usual level; rates keep their own calibration, so the cuts are not imposed (add a rate belief for that) | Beliefs |
-| `yield_curve_inversion` | The curve inverts within six months, short yields about one and a half points above the ten-year, then slowly rights itself | Both |
-| `real_estate_crash` | House-price growth falls to -8% within a year and recovers over four, then the worst housing scenarios are kept | Both |
-| `currency_crisis` | The Indian rupee devalues about 17% a year against the dollar, as in 2011-13 (needs `broad`) | Both |
-| `tech_selloff` | The weakest quarter of tech stock returns (needs `broad`) | Both |
-| `commodity_supercycle` | A long oil boom: crude oil earns a top-quarter return | Targets |
-| `climate_collapse` | A rough stand-in for a climate shock: the highest US inflation with the weakest US stocks | Targets |
+| `oil_crisis` | The 1973 embargo replayed: inflation to 12% in a year and 5.5% by year three, the bill to 9% and back, unemployment to 9%, US stocks down 43% and the world's markets following | Beliefs |
+| `oil_shock` | A rise of about three points in US inflation over the half year to year two, then business as usual | Beliefs |
+| `soft_landing` | No recession after a Fed tightening, as in 1966, 1984 and 1995 ([Blinder 2023](https://doi.org/10.1257/jep.37.1.101){:target="_blank"}): unemployment holds at today's level for three years and short rates are cut 0.7 points within a year, then the policy rule takes over; inflation eases as in the baseline | Beliefs |
+| `rate_cut_cycle` | Short rates cut 5 points over two and a half years, the median of the Fed's six easing cycles from 1984 to 2020, then the policy rule again | Beliefs |
+| `yield_curve_inversion` | The curve inverts within six months, short yields about one and a half points above the ten-year, then slowly rights itself | Beliefs |
+| `real_estate_crash` | House-price growth falls to -8% within a year and back to zero over the four years after | Beliefs |
+| `currency_crisis` | The Indian rupee devalues about 17% a year against the dollar for two and a third years, as in 2011-13 (needs `broad`) | Beliefs |
+| `tech_selloff` | Tech stocks fall about a fifth in a year while the wider market holds up (needs `broad`) | Beliefs |
+| `commodity_supercycle` | Oil rises sevenfold over six and a half years, as Brent did from 2002 to its 2008 record | Beliefs |
+| `ai_tech_boom` | The scenarios where US stocks gain the most over two years, the top 9% where 2023-24's 53% rise sits | Targets |
 
 `list_presets(kind="regimes")` lists them all and `search_regimes` finds them from a few words. To list them and search for high inflation:
 
@@ -69,11 +69,11 @@ The search returns the best matches first:
 
 | id | name | category | description |
 |:---|:-----|:---------|:------------|
-| persistent_inflation | Persistent High Inflation | inflation | US inflation settles near 6.6% for the whole run instead … |
+| persistent_inflation | Persistent High Inflation | inflation | US inflation climbs towards 6.6% and stays high instead of r… |
 | oil_crisis | Oil Crisis | inflation | US inflation climbs to 12% within a year and eases to 5.5% b… |
-| stagflation_1970s | 1970s Stagflation | inflation | Inflation near 9% and unemployment averaging 7.3% for … |
-| volcker_shock | Volcker Shock | rates | Short rates replay 1979-82's climb to 16% while inflation … |
-| inflation_shock_2022 | 2022 Inflation and Rate Hikes | inflation | Inflation climbs to 9% and falls back to 3% within a year, … |
+| stagflation_1970s | 1970s Stagflation | inflation | Inflation climbs towards 9% and unemployment towards 7.3% wh… |
+| volcker_shock | Volcker Shock | rates | Short rates rise about seven points from today's level, to n… |
+| inflation_shock_2022 | 2022 Inflation and Rate Hikes | inflation | Inflation climbs to 9% and falls back to 3% within a year, s… |
 
 ## Beliefs as a Path
 
@@ -81,42 +81,53 @@ A long-run level can follow a term structure instead of a single number: anchors
 
 Because the factor still mean-reverts, it is pulled toward the moving level rather than set to it: a fast-reverting factor tracks the path closely, a slow one lags it, and a level path alone reaches its number late or not at all. On the default calibration, a long-run level of 12% took US inflation only to 8.2% after a year. A regime that names a number therefore does two things.
 
-First, it steers the long-run level so that the factor's expected path runs in a straight line to each number. With $$m_t$$ the expected path, $$b$$ its slope per year, $$\Delta t$$ the step and $$a$$ the factor's speed of reversion, the level held over each step is
+First, it moves the scenarios' median to the number on the date it names, with a shock in `median` mode. Every scenario shifts by the same amount, the gap between the number and the median on that date, so the number holds whatever the calibrated speed, while each scenario keeps its distance from it and the spread stays as the model drew it. This is the first-moment matching of [Boyle, Broadie and Glasserman (1997, section 2.4)](https://doi.org/10.1016/S0165-1889(97)00028-6){:target="_blank"}, with the median in place of the mean so that a skewed factor's middle scenario is the one on the number.
+
+Second, it walks there instead of landing in one month (`steer_from`). A level reached in one step is a cliff that history does not show: US unemployment's largest one-month rise outside 2020 is 1.3 points, and no shipped regime moves a median further in one month than its own series has. From the year a leg starts, every scenario moves by one amount each month, the gap between a straight line to the number and the scenarios' median, so the median follows the line and lands on the number on its date. Adding the same function of time to every scenario is the deterministic shift of [Brigo and Mercurio (2001, section 2, eq. 3)](https://doi.org/10.1007/pl00013541){:target="_blank"}; on a mean-reverting factor it is the moving long-run level whose expected path $$m_t$$ is the line. With $$b$$ the line's slope per year, $$\Delta t$$ the step and $$a$$ the factor's speed of reversion, the level held over each step is
 
 $$
 \theta_t = m_t + \frac{b\,\Delta t}{1 - e^{-a\,\Delta t}}
 $$
 
-which inverts the exact step $$m_{t+\Delta t} = \theta_t + (m_t - \theta_t)\,e^{-a\Delta t}$$ for $$m_{t+\Delta t} = m_t + b\,\Delta t$$.
+which inverts the exact step $$m_{t+\Delta t} = \theta_t + (m_t - \theta_t)\,e^{-a\Delta t}$$ for $$m_{t+\Delta t} = m_t + b\,\Delta t$$. Each scenario keeps its own distance from the median, so the spread stays as the model drew it, and after the last leg the factor follows its own dynamics again.
 
-Second, it moves the scenarios' median to the number on the date it names, with a shock in `median` mode. Every scenario shifts by the same amount, the gap between the number and the median on that date, so the number holds whatever the calibrated speed, while each scenario keeps its distance from it and the spread stays as the model drew it. This is the first-moment matching of [Boyle, Broadie and Glasserman (1997, section 2.4)](https://doi.org/10.1016/S0165-1889(97)00028-6){:target="_blank"}, with the median in place of the mean so that a skewed factor's middle scenario is the one on the number. Between those dates each scenario moves with its own randomness.
+A shock in `absolute` mode sets every scenario to the number instead, which closes the spread on that date. The supervisors' published paths use it, as each is a single deterministic scenario, with the median walking in a straight line between two published values. `shock_regime` steers the long-run level of a mean-reverting factor as above and adds no shock; for a factor it cannot steer, such as the default factor set's policy-rule rates, it walks the median to the level and back.
 
-A shock in `absolute` mode sets every scenario to the number instead, which closes the spread on that date. The supervisors' published paths use it, as each is a single deterministic scenario, and so does `shock_regime` for a factor it cannot steer, such as the default factor set's policy-rule rates; for a mean-reverting factor it steers the level and adds no shock.
-
-Oil Crisis uses both steps, and targets as well. Its path follows US CPI inflation after the 1973 embargo, which peaked at 12.2% in November 1974 and was 5.5% by October 1976; 2.5% by year eight is a return to normal, a little above the 2.3% ten-year CPI forecast of the Philadelphia Fed's Survey of Professional Forecasters (Q3 2026). The anchors are the long-run levels that steer the expected path, worked out for inflation's speed of reversion on the 19 October 2026 calibration:
+Oil Crisis walks inflation's median along the 1973 embargo's path: 12% at year one (US CPI inflation peaked at 12.2% in November 1974) and 5.5% at year three (October 1976), every scenario keeping its distance from the median, then 2.5% by year eight, a return to normal a little above the 2.3% ten-year CPI forecast of the Philadelphia Fed's Survey of Professional Forecasters (Q3 2026). The long-run level holds each number, so the factor stays near it once the median has arrived:
 
 ```yaml
 # my-project/regimes/oil_crisis.yaml (a stress regime)
 name: Oil Crisis
+conditional_equities: true   # the other stock markets follow US stocks (below)
 beliefs:
   inflation.united_states_inflation:
-    long_run_mean:   # year: the level that steers the expected path along straight legs
-      anchors: {0.0: 0.1667, 0.9167: 0.24, 1.0: 0.0685, 2.9167: 0.0062, 3.0: 0.0455, 7.9167: 0.016, 8.0: 0.025}
-    shocks:          # the median at 12% after a year and 5.5% after three
-      - {year: 1.0, magnitude: 0.12, mode: median}
-      - {year: 3.0, magnitude: 0.055, mode: median}
-targets:
-  united_states_short_rate: [0.7, 1.0]   # top 30% by average short rate
-  us_broad: [0.0, 0.3]                   # bottom 30% by equity return
+    long_run_mean:
+      anchors: {1.0: 0.12, 3.0: 0.055, 8.0: 0.025}
+    shocks:   # the median walks in straight lines: to 12% at year one, 5.5% at three, 2.5% at eight
+      - {year: 1.0, magnitude: 0.12, mode: median, steer_from: 0.0}
+      - {year: 3.0, magnitude: 0.055, mode: median, steer_from: 1.0}
+      - {year: 8.0, magnitude: 0.025, mode: median, steer_from: 3.0}
 ```
 
-Because the targets select scenarios after the shocks, the median of the scenarios a regime keeps can sit away from its number: the high-rate, weak-stock scenarios Oil Crisis keeps have a median US inflation of 12.98% after a year and 7.42% after three. Real Estate Crash moves the median of house-price growth to -8% after a year the same way, and Yield Curve Inversion moves the median of the curve's slope to its path at each of its two quarters. Regimes that set only a level, such as Persistent Inflation, Soft Landing and Goldilocks, describe where a factor settles rather than when it gets there, and leave the pace to the calibration.
+The shipped regime walks the 3-month bill (9.0% at month ten, 5.6% at month eighteen, 4.4% at month thirty-eight) and unemployment (9.0% at month nineteen) the same way, from FRED, and takes the S&P 500's 43% fall over four quarters, from its daily closes. `relative: true` states a recorded change from the start instead of a level, as Rate Cut Cycle cuts the short rate by 5.03 points; on a stock, currency or commodity a median shock is the median's log return from the start.
 
-Rates in a regime are annualized decimals (0.12 is 12% a year; see [units](/projects/financescenarios/docs/units)). A belief or target naming a factor that is not in the run is refused, so a regime written for one factor set fails loudly on another. A regime can also extend another and state only what differs, as Rate Cut Cycle does with Soft Landing.
+Targets select scenarios after the shocks, so the median of the scenarios a regime keeps can sit away from its number; the replays therefore carry no targets. Real Estate Crash walks the median of house-price growth to -8% after a year and back to zero by year five the same way, and Yield Curve Inversion the curve's slope to its path at each of its two quarters. A regime that sets only a level, such as Persistent Inflation, describes where a factor settles rather than when it gets there, and leaves the pace to the calibration.
+
+Rates in a regime are annualized decimals (0.12 is 12% a year; see [units](/projects/financescenarios/docs/units)). A belief or target naming a factor that is not in the run is refused, so a regime written for one factor set fails loudly on another. A regime can also extend another and state only what differs, as a regime of your own can.
 
 <div class="fs-callout" markdown="1">
 Check a factor's calibrated level before choosing anchors.
 </div>
+
+## Other Markets in a Crash
+
+A crash rarely stays in one market, but a replay can only state the moves history recorded, and most of the dollar-priced funds the default set holds did not trade in 1973 or 1987. With `conditional_equities: true`, every equity a regime gives no shocks of its own moves by its expected move given the shocked ones, under the run's own correlations: the conditional stress of [Kupiec (1998)](https://doi.org/10.3905/jod.1998.408008){:target="_blank"}, in the form [Packham and Woebbeking (2019, section 2.2)](https://doi.org/10.1016/j.jbankfin.2019.01.020){:target="_blank"} state it:
+
+$$
+\mathbb{E}[r_p \mid r_c = s] = \Sigma_{pc}\,\Sigma_{cc}^{-1}\,s
+$$
+
+with $$s$$ the shocked ("core") equities' moves on a date and $$\Sigma$$ the run's covariance of the equities' returns. With one shocked market the move is its beta times the shock, $$\rho\,\sigma_p/\sigma_c$$ per unit, so a market that has moved closely with US stocks falls almost as far and a loosely tied one only part of the way. Only the mean moves: each scenario keeps the model's own randomness around it. Black Monday, Oil Crisis and the Fed, Bank of England and ESRB stress tests use it; the dot-com bust and Financial Crisis carry the recorded falls of the funds that traded then and use it for the rest, and COVID carries recorded moves for every market. Under Oil Crisis, where 100 in US stocks is worth 59.1 in the median scenario after a year, 100 in European stocks is worth 65.1, in Japanese stocks 78.5 and in emerging markets 64.1, against 109.4 to 112.3 in the baseline.
 
 ## How Targets Rank Scenarios
 
@@ -143,7 +154,7 @@ oil_crisis = scenarios.simulate(regime="oil_crisis", n_simulations=2000)
 
 A one-variable question, such as "what if inflation hit 8% within a year?", does not need a regime file: `shock_regime` builds one from the variable, the level and the timing, as the [Short Rate](/projects/financescenarios/docs/interest-rates#an-inflation-shock) page shows. `load_regime` returns a shipped regime as an object to inspect or change, `RegimeLibrary` holds your own, and `stress_test_regime` builds a regime from a regulator's published scenario of another year.
 
-A targeted regime keeps only part of each draw, about 9% for Oil Crisis, so the run draws batches until 2,000 scenarios fit (24,000 draws in three batches on the 19 October 2026 calibration). The stressed percentiles then rest on as many scenarios as the baseline's. Each batch ranks its own draws, so "the worst 30%" means the worst 30% of a batch, not of all draws pooled: each batch's cutoff carries its own sampling noise, most in the first batch, so the stressed quantiles are close to, not exactly, those of one large ranked run.
+A targeted regime keeps only part of each draw, about 9% for AI and Tech Boom, so the run draws batches until 2,000 scenarios fit (24,000 draws in three batches on the 19 October 2026 calibration). The stressed percentiles then rest on as many scenarios as the baseline's. Each batch ranks its own draws, so "the worst 30%" means the worst 30% of a batch, not of all draws pooled: each batch's cutoff carries its own sampling noise, most in the first batch, so the stressed quantiles are close to, not exactly, those of one large ranked run.
 
 ## Reading a Stressed Run
 
@@ -152,7 +163,7 @@ A stressed run is read against the baseline, factor by factor on the same scale,
 - **Belief-driven runs are conditional, not likely.** The percentiles describe uncertainty given the story, not the probability of the story. Don't read a stressed 99.5% quantile as a capital number.
 - **Targets select by rank, not by level.** Sequential targets keep a fixed share (30% of 30% is 9%) whatever the correlations, so the share says nothing about how likely the story is. In joint mode the share kept is the model's own estimate of how often the combination occurs; if it is tiny, the story is far in the tail of the calibration. When a run is filtered directly (`filter`, `filter_narrative`), fewer than 30 scenarios left raises a warning, because their percentiles are noise; a regime run draws until it has as many as asked for.
 - **The other factors are the point.** The factors the regime did not touch move through the calibrated correlations (beliefs) or as they did on the selected paths (targets). That is where a narrative test adds information over a single-factor shock.
-- **Recovery is an assumption.** After a stress-test path ends, factors fade back to calibration over a chosen period; a longer period means a more persistent stress.
+- **Recovery is an assumption.** After a stress-test path ends, factors fade back to calibration over a chosen period, and a prescribed policy rate converges onto its usual path before its rule takes over; a longer period means a more persistent stress.
 
 ## Examples
 
@@ -160,7 +171,7 @@ Every run below uses the calibration of the [overview](/projects/financescenario
 
 ### Beliefs Only: A Soft Landing
 
-Soft Landing sets US inflation's long-run level to 2%, so inflation eases toward 2% at its own calibrated speed, and filters nothing out. To run it next to the baseline and compare the averages after five years:
+Soft Landing is a Federal Reserve tightening that ends without a recession, the way [Blinder (2023, p. 101)](https://doi.org/10.1257/jep.37.1.101){:target="_blank"} defines a soft landing: inflation held or brought down with no recession, or a negligible one. Of the Fed's eleven tightening cycles since 1965, his Table 1 (p. 119) finds three followed by no recession at all, after the peaks of November 1966, August 1984 and April 1995. Unemployment did not rise after any of them, and the 3-month bill was cut a little: by a median 0.70 points after one year, 0.49 after two and 0.70 after three. The regime replays those moves from today's levels: unemployment's median holds at its starting level for three years, the short rate's walks to the episodes' cuts, and after year three the policy rule takes over. Inflation and stocks are left to the model, and nothing is filtered out. To run it next to the baseline over its three years and compare the averages at the end:
 
 ```python
 from financescenarios import Scenarios, compare_runs
@@ -168,12 +179,14 @@ from financescenarios import Scenarios, compare_runs
 scenarios = Scenarios.from_profiles(
     settings="default", factor_set="default", api_key="FINANCIAL_MODELING_PREP_KEY"
 )
-result = scenarios.simulate(n_simulations=2000, seed=42)
-soft_landing = scenarios.simulate(regime="soft_landing", n_simulations=2000, seed=42)
+result = scenarios.simulate(n_simulations=2000, seed=42)  # the five-year run of the examples below
+
+baseline = scenarios.simulate(n_simulations=2000, seed=42, years=3)
+soft_landing = scenarios.simulate(regime="soft_landing", n_simulations=2000, seed=42, years=3)
 
 compare_runs(
-    {"baseline": result, "soft_landing": soft_landing},
-    factors=["united_states_inflation", "united_states_short_rate", "us_broad"],
+    {"baseline": baseline, "soft_landing": soft_landing},
+    factors=["united_states_inflation", "united_states_unemployment", "united_states_short_rate", "us_broad"],
 )
 ```
 
@@ -181,17 +194,18 @@ Which returns:
 
 | factor | baseline | soft_landing |
 |:-------|---------:|-------------:|
-| united_states_inflation | 0.0234 | 0.0205 |
-| united_states_short_rate | 0.0459 | 0.0428 |
-| us_broad | 0.0849 | 0.0854 |
+| united_states_inflation | 0.0243 | 0.0243 |
+| united_states_unemployment | 0.0508 | 0.0456 |
+| united_states_short_rate | 0.0453 | 0.0367 |
+| us_broad | 0.0874 | 0.0792 |
 
-Inflation averages 2.05% after five years instead of 2.34%, and the short rate follows it down through the policy rule, from 4.59% to 4.28%. A belief moves the center of the range rather than its width. When plotted:
+Inflation is the baseline's, 2.43% on average after three years. Unemployment's median stays at 4.20% to year three, against the baseline's 4.72%, which averages in the recessions this story leaves out, and unemployment averages 4.56% instead of 5.08%. The short rate's median is 3.38% after one year and after three, against 4.31% at both in the baseline, and it averages 3.67% instead of 4.53%. US stocks return 7.92% a year instead of 8.74%: expected stock returns are the short rate plus a premium, so lower rates give a smaller gain, not a crash. Run for five years, as in the chart, the policy rule is back in charge after year three and sets the rate above the baseline's, a median of 4.73% against 4.39% after five years, while unemployment is still lower, 4.82% against 5.15%. When plotted over five years, one variable per tab:
 
-{% include ft-chart.html id="regimes-soft-landing" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of US inflation in the baseline and under Soft Landing over five years" %}
+{% include ft-chart.html id="regimes-soft-landing" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of the US short rate and US unemployment in the baseline and under Soft Landing over five years" %}
 
-### Targets Only: A Financial Crisis
+### A Replay: The Financial Crisis
 
-Financial Crisis changes no assumption. It keeps the 20% of scenarios with the weakest US stocks, then the 20% of those with the highest US unemployment, then the 30% of those with the lowest short rate: 1.2% of each batch, so the run draws as many as it takes for 2,000 to fit. To run it:
+Financial Crisis replays 2007-09 from today: US stocks and the default set's dollar-priced funds fall as far as they did from October 2007 to March 2009, in six steps over seventeen months, unemployment's median walks to 10% by year two, the short rate's to zero within fourteen months, where it stays to year eight, and house-price growth to -7.2% after a year. It keeps every scenario. To run it:
 
 ```python
 financial_crisis = scenarios.simulate(regime="financial_crisis", n_simulations=2000, seed=42)
@@ -206,22 +220,22 @@ Which returns:
 
 | factor | baseline | financial_crisis |
 |:-------|---------:|-----------------:|
-| us_broad | 0.0849 | -0.0394 |
-| united_states_unemployment | 0.0553 | 0.0830 |
-| united_states_short_rate | 0.0459 | 0.0020 |
-| united_states_inflation | 0.0234 | 0.0168 |
+| us_broad | 0.0849 | -0.1158 |
+| united_states_unemployment | 0.0553 | 0.0813 |
+| united_states_short_rate | 0.0459 | 0.0032 |
+| united_states_inflation | 0.0234 | 0.0234 |
 
-US stocks lose 3.94% a year instead of gaining 8.49%, unemployment averages 8.30% instead of 5.53% and the short rate is cut to 0.20%, while inflation, which no target names, comes out lower as well, at 1.68%: the kept scenarios carry the model's links between factors with them. When plotted, one variable per tab:
+In the median scenario 100 in US stocks is worth 47.6 after seventeen months and 54.7 after five years, a loss of 11.58% a year on average instead of a gain of 8.49%, and 100 in European stocks 37.5 at the low. Unemployment reaches 10.0% after two years and averages 8.13% after five instead of 5.53%, and the short rate stays near zero, at 0.32%. Inflation, which the regime does not name, averages 2.34% as in the baseline. When plotted, one variable per tab, US stocks as the value of 100:
 
-{% include ft-chart.html id="regimes-financial-crisis" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of the US stock market return, US unemployment and the US short rate in the baseline and under Financial Crisis over five years" %}
+{% include ft-chart.html id="regimes-financial-crisis" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of the value of 100 in US stocks, US unemployment and the US short rate in the baseline and under Financial Crisis over five years" %}
 
-### Both at Once: Oil Crisis
+### Steered Paths: Oil Crisis
 
-Oil Crisis uses both levers: it moves the median of US inflation to 12% after a year and 5.5% after three, as after the 1973 embargo, then back toward 2.5% by year eight, and keeps the scenarios with high short rates and weak stocks. Two simpler inflation stories run beside it: Oil Shock, a belief that adds a one-off jump of three points to US inflation in year two, and Climate Collapse, a target that keeps the scenarios with the highest inflation and the weakest stocks. To run all three:
+Oil Crisis walks the median of US inflation to 12% after a year and 5.5% after three, as after the 1973 embargo, then toward 2.5% by year eight, and walks the 3-month bill and unemployment along their 1973-76 paths while US stocks fall 43% and the other markets follow. Two other inflation stories run beside it: Oil Shock, which adds about three points to US inflation over the half year to year two, and 2022 Inflation and Rate Hikes, which replays the 2021-23 surge to 9% and back. To run all three:
 
 ```python
 runs = {"baseline": result}
-for regime in ("oil_shock", "oil_crisis", "climate_collapse"):
+for regime in ("oil_shock", "oil_crisis", "inflation_shock_2022"):
     runs[regime] = scenarios.simulate(regime=regime, n_simulations=2000, seed=42)
 
 compare_runs(runs, factors=["united_states_inflation", "united_states_short_rate", "us_broad"])
@@ -229,22 +243,26 @@ compare_runs(runs, factors=["united_states_inflation", "united_states_short_rate
 
 Which returns:
 
-| factor | baseline | oil_shock | oil_crisis | climate_collapse |
-|:-------|---------:|----------:|-----------:|-----------------:|
-| united_states_inflation | 0.0234 | 0.0279 | 0.0592 | 0.0475 |
-| united_states_short_rate | 0.0459 | 0.0570 | 0.1153 | 0.0671 |
-| us_broad | 0.0849 | 0.0798 | -0.0126 | -0.0341 |
+| factor | baseline | oil_shock | oil_crisis | inflation_shock_2022 |
+|:-------|---------:|----------:|-----------:|---------------------:|
+| united_states_inflation | 0.0234 | 0.0274 | 0.0483 | 0.0295 |
+| united_states_short_rate | 0.0459 | 0.0560 | 0.0427 | 0.0449 |
+| us_broad | 0.0849 | 0.0803 | 0.0086 | 0.0829 |
 
-Oil Crisis puts the median of US inflation at 12% after one year and 5.5% after three, but the scenarios it then keeps, those with high short rates and weak stocks, run hotter: a median of 12.98% after one year and 7.42% after three, and an average of 5.92% after five years. The short rate answers through the policy rule, to a median of 8.33% after one year and 14.18% after three and an average of 11.53% after five, and US stocks lose 1.26% a year. When plotted, US inflation in the four runs:
+Oil Crisis puts the median of US inflation at 12.00% after one year and 5.50% after three, and inflation averages 4.83% after five years. The short rate follows the bill rather than the rule, a negative real rate as in 1974: a median of 8.12% after a year, 5.61% after eighteen months and 4.25% after five years, an average of 4.27% against the baseline's 4.59%. Unemployment's median reaches 8.75% after eighteen months, and 100 in US stocks is worth 59.1 after a year and 102.7 after five, a return of 0.86% a year. When plotted, US inflation in the four runs:
 
-{% include ft-chart.html id="regimes-inflation" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of US inflation in the baseline and under Oil Shock, Oil Crisis and Climate Collapse over five years" %}
+{% include ft-chart.html id="regimes-inflation" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of US inflation in the baseline and under Oil Shock, Oil Crisis and 2022 Inflation and Rate Hikes over five years" %}
 
 ## References
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-book"></i> <b>Papers and source cited on this page</b> <span class="ft-details__meta">1</span></summary>
+<summary><i class="fas fa-book"></i> <b>Papers cited on this page</b> <span class="ft-details__meta">5</span></summary>
 
+- Blinder, A.S. (2023). "Landings, Soft and Hard: The Federal Reserve, 1965-2022." Journal of Economic Perspectives, 37(1), 101-120. [doi.org](https://doi.org/10.1257/jep.37.1.101){:target="_blank"}
 - Boyle, P., Broadie, M., Glasserman, P. (1997). "Monte Carlo Methods for Security Pricing." Journal of Economic Dynamics and Control, 21(8-9), 1267-1321. [doi.org](https://doi.org/10.1016/S0165-1889(97)00028-6){:target="_blank"}
+- Brigo, D., Mercurio, F. (2001). "A Deterministic-Shift Extension of Analytically-Tractable and Time-Homogeneous Short-Rate Models." Finance and Stochastics, 5(3), 369-387. [doi.org](https://doi.org/10.1007/pl00013541){:target="_blank"}
+- Kupiec, P.H. (1998). "Stress Testing in a Value at Risk Framework." The Journal of Derivatives, 6(1), 7-24. [doi.org](https://doi.org/10.3905/jod.1998.408008){:target="_blank"}
+- Packham, N., Woebbeking, F. (2019). "A Factor-Model Approach for Correlation Scenarios and Correlation Stress Testing." Journal of Banking & Finance, 101, 92-103. [doi.org](https://doi.org/10.1016/j.jbankfin.2019.01.020){:target="_blank"}
 
 </details>
 

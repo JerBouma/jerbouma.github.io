@@ -91,7 +91,7 @@ def main() -> None:
                            "x": dates, "format": "amount", "series": [band]}
 
     runs = {"Baseline": result}
-    for regime, name in [("oil_shock", "Oil Shock"), ("oil_crisis", "Oil Crisis"), ("climate_collapse", "Climate Collapse")]:
+    for regime, name in [("oil_shock", "Oil Shock"), ("oil_crisis", "Oil Crisis"), ("inflation_shock_2022", "2022 Inflation and Rate Hikes")]:
         runs[name] = simulate(regime=regime)
     fans = []
     for name, run in runs.items():

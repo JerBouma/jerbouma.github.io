@@ -132,19 +132,19 @@ A single crisis is an anecdote. Every year end from 2000 to 2022 serves as an or
 | Gold | 18 | 0.41 | 0.86 | ok | 0.65 | 0.38 |
 | Crude oil | 11 | 0.67 | 0.93 | ok | 0.46 | 0.33 |
 | US house prices | 23 | 0.38 | 0.63 | too narrow | 0.56 | 0.24 |
-| Yield-curve level | 23 | 0.58 | 0.90 | ok | 0.42 | 0.19 |
-| Yield-curve slope | 23 | 0.43 | 0.91 | ok | 0.56 | 0.44 |
+| Yield-curve level | 23 | 0.57 | 0.86 | ok | 0.42 | 0.23 |
+| Yield-curve slope | 23 | 0.32 | 0.75 | ok | 0.45 | 0.47 |
 | Yield-curve curvature | 23 | 0.49 | 0.84 | ok | 0.38 | 0.29 |
 | Leading indicator | 22 | 0.39 | 0.79 | too narrow | 0.51 | 0.30 |
 
-Every factor beats a no-change forecast on CRPS except UK unemployment, which ties it. Inflation and the US rates hold their bands best: US inflation and the US short rate keep 90% and 93% of their years inside the 90% band. Where the model falls short, the bands are too narrow, and clearly so for unemployment in all three economies (58% to 63%), the euro-area short rate (66%), US house prices (63%) and the leading indicator (79%). UK inflation's band holds only 67%, the cost of its 1993 sample, though the test, with its few independent outcomes, does not call it. The rates lean low: PIT means of 0.37 to 0.43 for five of the six rates say they ended below the scenarios' middle more often than above it, as they did through the long years near zero.
+Every factor beats a no-change forecast on CRPS except UK unemployment, which ties it. Inflation and the US rates hold their bands best: US inflation and the US short rate keep 90% and 93% of their years inside the 90% band. Where the model falls short, the bands are too narrow, and clearly so for unemployment in all three economies (58% to 63%), the euro-area short rate (66%), US house prices (63%) and the leading indicator (79%). The yield curve's slope holds 75%, which the test does not flag: drawn through the simulated short and long rate, it moves with their spread, which swings less than the slope did on its own process (91%), though it scores better ([Yield Curve](/projects/financescenarios/docs/interest-rates/yield-curve#through-the-short-and-the-long-rate)). UK inflation's band holds only 67%, the cost of its 1993 sample, though the test, with its few independent outcomes, does not call it. The rates lean low: PIT means of 0.37 to 0.43 for five of the six rates say they ended below the scenarios' middle more often than above it, as they did through the long years near zero.
 
 The model's choices were tested on the five origins four years apart (2003, 2007, 2011, 2015 and 2019). The other eighteen are a holdout, though four of them informed a later choice, so fourteen were never used for any choice. The scores barely move between these groups, a sign that the choices were not overfitted to the origins used to make them:
 
 | Origins | All 27 factors, 90% coverage | All 27 factors, CRPS skill | Six rates, 90% coverage | Six rates, CRPS skill |
 |:--|--:|--:|--:|--:|
-| The five used for choices | 0.81 | 0.31 | 0.78 | 0.29 |
-| The eighteen others | 0.83 | 0.29 | 0.82 | 0.27 |
+| The five used for choices | 0.80 | 0.31 | 0.78 | 0.29 |
+| The eighteen others | 0.82 | 0.29 | 0.82 | 0.27 |
 | The fourteen never used | 0.83 | 0.29 | 0.81 | 0.27 |
 
 ### Example
@@ -167,9 +167,9 @@ A 90% band should hold 90% of the years. US and euro-area inflation hold 85% and
 
 ## Crises against the Bundled Regimes {#crises-against-the-bundled-regimes}
 
-The baseline is a model of ordinary times, fitted on a few decades, and the fans above show the crises it does not reach in their first year. That is what the [regimes](/projects/financescenarios/docs/regimes) are for. Each chart below starts from the same past origin and the same calibration as the fan, and runs it twice: without a regime, and with the bundled regime written for that crisis. The test is whether the regime library covers the event, not whether the model foresaw it: the COVID and 2022 regimes are written from those very episodes' published paths, so reaching them shows only that they are calibrated to what happened, and, timed from the origin, they run a month or two early. The financial-crisis regime is the fairer test, since it sets no levels and only keeps the scenarios where stocks fall, unemployment rises and rates are cut together.
+The baseline is a model of ordinary times, fitted on a few decades, and the fans above show the crises it does not reach in their first year. That is what the [regimes](/projects/financescenarios/docs/regimes) are for. Each chart below starts from the same past origin and the same calibration as the fan, and runs it twice: without a regime, and with the bundled regime written for that crisis. The test is whether the regime library covers the event, not whether the model foresaw it: each regime below is written from its episode's published paths, so reaching them shows only that they are calibrated to what happened, and, timed from the origin, they can run a month or two early.
 
-**2008: the financial-crisis regime does not reach it.** It moves the cloud the right way, but not far enough. US stocks fell 48.2% to their low of February 2009; by then 1 in 20 scenarios had fallen 16.4% without the regime and 26.1% with it, and the regime's lowest 5th percentile over the five years is -37.4%. US unemployment peaked at 10.0% in October 2009; by then 1 in 20 scenarios had reached 7.5% without the regime and 9.4% with it, so the peak lies just outside, and the regime's 95th percentile reaches 10.9% only later. The short rate's fall to zero is inside both, and with the regime it is the median path. The chart shows all three from the end of 2007, without and with the regime:
+**2008: the Financial Crisis regime reaches it.** US stocks fell 48.2% to their low of February 2009; by then 1 in 20 scenarios had fallen 16.4% without the regime and 51.3% with it, and the regime's median was down 38.6%. US unemployment peaked at 10.0% in October 2009; by then 1 in 20 scenarios had reached 7.5% without the regime and 11.4% with it, and the regime's median, at 9.6%, was on its way to 10.0%. The short rate's fall to zero is inside both, and with the regime it is the median path. The chart shows all three from the end of 2007, without and with the regime:
 
 {% include theme-image.html src="/assets/images/projects/financescenarios/docs/validation/crisis-2008" alt="From the end of 2007, US stocks, US unemployment and the US short rate without a regime and with the Financial Crisis regime, against what happened" %}
 
@@ -177,7 +177,7 @@ The baseline is a model of ordinary times, fitted on a few decades, and the fans
 
 {% include theme-image.html src="/assets/images/projects/financescenarios/docs/validation/crisis-2020" alt="From the end of 2019, US unemployment, US stocks and the US short rate without a regime and with the COVID Crash and Rebound 2020 regime, against what happened" %}
 
-**2022: both inflation regimes reach it, each from its own start.** German inflation, which the euro-area inflation of the default set follows, peaked at 8.6% at the end of 2022; from the end of 2021, 1 in 20 scenarios had reached 6.3% without a regime and 9.9% with the energy-war regime. US inflation peaked at 9.1% in June 2022; by then, 1 in 20 scenarios had reached 4.1% without the 2022 inflation regime and 9.7% with it. That regime replays the surge from January 2021, so its panel starts at the end of 2020. The UK has no regime of its own for 2022: its 9.2% at the end of 2022, far above the fan from the end of 2021, is left to a user's own regime or to the broader inflation regimes. The chart shows both inflation panels, without and with their regimes:
+**2022: both inflation regimes reach it, each from its own start.** German inflation, which the euro-area inflation of the default set follows, peaked at 8.6% at the end of 2022; from the end of 2021, 1 in 20 scenarios had reached 6.3% without a regime and 10.4% with the energy-war regime. US inflation peaked at 9.1% in June 2022; by then, 1 in 20 scenarios had reached 4.1% without the 2022 inflation regime and 11.3% with it. That regime replays the surge from January 2021, so its panel starts at the end of 2020. The UK has no regime of its own for 2022: its 9.2% at the end of 2022, far above the fan from the end of 2021, is left to a user's own regime or to the broader inflation regimes. The chart shows both inflation panels, without and with their regimes:
 
 {% include theme-image.html src="/assets/images/projects/financescenarios/docs/validation/crisis-2022" alt="German inflation from the end of 2021 with and without the Energy War Shock 2022 regime, and US inflation from the end of 2020 with and without the 2022 Inflation and Rate Hikes regime, against what happened" %}
 

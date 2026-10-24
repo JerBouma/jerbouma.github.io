@@ -171,11 +171,11 @@ Which returns, for the checks:
 | Every factor calibrated | pass | every factor calibrated |
 | Parameters in a plausible range | pass | every long-run level and half-life in range |
 | Valid correlation matrix | pass | 27 factors, smallest eigenvalue 1.14e-01, symmetric True, unit diagonal True; shrinkage 0.15; repair 0.00 |
-| Simulation reproduces the correlations | warn | largest gap 0.103 (eurozone_inflation/united_kingdom_inflation) |
+| Simulation reproduces the correlations | warn | largest gap 0.103 (eurozone_inflation/united_kingdom_inflation); rate_level and rate_slope read off the short and long rate, not graded |
 | Simulated volatility matches history | warn | 16 factors compared, median ratio 0.99; outside 0.67-1.50x: eurozone_short_rate 1.72x |
 | Every path is finite | pass | 27 factors, all finite |
 
-Four checks pass and two warn: the euro-area and UK inflation correlation comes out 0.103 away from the one it was given, and the euro-area short rate moves 1.72 times as much as in its history. `diagnose` returns a row for each of the nine variables whose model implies a long-run mean and spread. Three of them, US and UK unemployment and the yield curve's slope, are flagged because they settle slowly, with half-lives (the time to close half the gap to the long-run level) of 2.9, 5.1 and 7.3 years against a five-year run, so a gap is expected.
+Four checks pass and two warn: the euro-area and UK inflation correlation comes out 0.103 away from the one it was given, and the euro-area short rate moves 1.72 times as much as in its history. `diagnose` returns a row for each of the seven variables whose model implies a long-run mean and spread; the yield curve's level and slope have none, as they are read off the short and the long rate. Two of them, US and UK unemployment, are flagged because they settle slowly, with half-lives (the time to close half the gap to the long-run level) of 2.9 and 5.1 years against a five-year run, so a gap is expected.
 
 The [Validation](/projects/financescenarios/docs/validation) page goes much further: whether the factors move together the way the economy does, whether they stay within what history has seen, and whether a model fitted in the past would have held what happened next.
 
@@ -207,7 +207,7 @@ Each variable follows a model suited to how it behaves, and each model has a pag
 | Short rate | The 3-month rate per currency | The Federal Reserve's inertial balanced-approach rule on each scenario's inflation and unemployment, with each central bank's floor | [Short Rate](/projects/financescenarios/docs/interest-rates) |
 | | Where the short rate starts from | Forward rates less the term premium, read off each government curve | [Expected Path](/projects/financescenarios/docs/interest-rates/expected-path) |
 | Long rate | The 10-year rate per currency | The expected short-rate path plus a mean-reverting term premium | [Long Rate](/projects/financescenarios/docs/interest-rates/long-rate) |
-| Yield curve | Level, slope and curvature of the curve, or the whole forward curve | Dynamic Nelson-Siegel; a two-factor Gaussian HJM | [Yield Curve](/projects/financescenarios/docs/interest-rates/yield-curve) |
+| Yield curve | Level, slope and curvature of the curve, or the whole forward curve | Dynamic Nelson-Siegel through the simulated short and long rate; a two-factor Gaussian HJM | [Yield Curve](/projects/financescenarios/docs/interest-rates/yield-curve) |
 | Rates and inflation together | Nominal and real rates, inflation, optionally an equity | KNW, fitted on history; DNB's CP2022, with DNB's own parameters | [KNW Models](/projects/financescenarios/docs/interest-rates/knw), [CP2022](/projects/financescenarios/docs/interest-rates/cp2022) |
 | Other rate models | One rate per entry | Hull-White, Cox-Ingersoll-Ross, Wilkie's consols, Hibbert's two-factor model | [Other Rate Models](/projects/financescenarios/docs/interest-rates/other-models) |
 | Inflation | Year-over-year consumer price inflation per country | Calm and high-inflation regimes, anchored to long-run expectations | [Inflation](/projects/financescenarios/docs/economy) |
@@ -225,7 +225,9 @@ Interest rates, inflation, equities and unemployment are always simulated; the r
 
 ## How the Factors Are Linked
 
-When equities fall, spreads, rates and currencies should move the way they did in past sell-offs. Where theory says one variable drives another (inflation and unemployment setting the policy rate, a stock-market fall making a recession likelier), the driver's simulated path feeds the next factor; everything else is tied together by one correlation matrix of the historical shocks. The direct links in the <div class="fs-diagram">
+When equities fall, spreads, rates and currencies should move the way they did in past sell-offs. Where theory says one variable drives another (inflation and unemployment setting the policy rate, a stock-market fall making a recession likelier), the driver's simulated path feeds the next factor; everything else is tied together by one correlation matrix of the historical shocks. Each arrow in the diagram is a direct link in the model's equations:
+
+<div class="fs-diagram">
 <div class="fs-links">
   <div class="fs-links__row">
     <div class="fs-node is-accent"><b>Inflation</b><small>top of the cascade</small></div>
@@ -247,6 +249,7 @@ When equities fall, spreads, rates and currencies should move the way they did i
     <div class="fs-node"><b>Short rates</b></div>
     <div class="fs-links__to">
       <div class="fs-link"><em>expected path</em><div class="fs-node"><b>Long rates</b><small>plus a term premium</small></div></div>
+      <div class="fs-link"><em>short end</em><div class="fs-node"><b>Yield curve</b></div></div>
       <div class="fs-link"><em>rate plus premium</em><div class="fs-node"><b>Equities</b></div></div>
     </div>
   </div>
@@ -259,6 +262,7 @@ When equities fall, spreads, rates and currencies should move the way they did i
   <div class="fs-links__row">
     <div class="fs-node"><b>Long rates</b></div>
     <div class="fs-links__to">
+      <div class="fs-link"><em>long end</em><div class="fs-node"><b>Yield curve</b></div></div>
       <div class="fs-link"><em>a year later</em><div class="fs-node"><b>House prices</b></div></div>
     </div>
   </div>
@@ -273,10 +277,7 @@ When equities fall, spreads, rates and currencies should move the way they did i
 <p class="fs-diagram__note">Dashed: only with business-cycle conditioning. Wilkie's and the KNW models' links from inflation, and interest-rate parity for exchange rates, are further options.</p>
 </div>
 
-ow is a direct link in the model's equations.</p>
-</div>
-
-Factors with no theoretical driver, such as the yield curve, oil and mortality, are linked only through the correlation matrix. [How a Run Is Built](/projects/financescenarios/docs/architecture#dependence) explains both mechanisms, and [Dependence](/projects/financescenarios/docs/dependence) how the correlations are estimated.
+Factors with no theoretical driver, such as oil, mortality and the yield curve's curvature, are linked only through the correlation matrix; the curve's level and slope are read off the simulated short and long rate. [How a Run Is Built](/projects/financescenarios/docs/architecture#dependence) explains both mechanisms, and [Dependence](/projects/financescenarios/docs/dependence) how the correlations are estimated.
 
 ## Real-World and Risk-Neutral Runs
 
