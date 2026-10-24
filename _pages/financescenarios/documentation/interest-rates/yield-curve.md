@@ -86,7 +86,7 @@ The volatilities are fitted to how history's forward curves moved. Each date's T
 <div class="fs-callout fs-callout--limits" markdown="1">
 <p class="fs-callout__title">Limits</p>
 
-- In a run the two factors correlate through the run's correlation matrix, estimated on their own history like every other pair, not through the fitted $$\rho$$ inside $$\Phi$$, so the curve is arbitrage-free only approximately.
+- The two factors' shocks over a step are drawn with the correlation that gives the states the fitted $$\rho$$, from the exact covariance of the G2++ states ([Brigo and Mercurio, 2006, section 4.2](https://doi.org/10.1007/978-3-540-34604-3){:target="_blank"}), so the simulated states and the convexity term $$\Phi$$ share one $$\rho$$; when the run's correlation matrix is repaired that pair is held and the others move around it. A belief on `factor_correlation` changes both.
 - The factors are Gaussian, so forward rates can go negative.
 - The slow first factor settles only over decades, so the spread of long rates keeps widening for a long time: suited to valuation, less so to a long real-world projection.
 - It is switched off in the shipped factor sets (`hjm.enabled`).

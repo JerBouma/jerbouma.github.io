@@ -117,10 +117,10 @@ Run for all three sets, the scores per factor:
 | Ahlgrim (US, 2004) | Short rate | 22 | 36% | 100% | 0.24 | -0.67 |
 | | Inflation | 22 | 59% | 100% | 0.36 | -0.02 |
 | | Unemployment | 22 | 14% | 45% | 0.37 | +0.19 |
-| | Share prices (growth since start) | 22 | 23% | 100% | 0.26 | -1.20 |
+| | Share prices (growth since start) | 22 | 23% | 100% | 0.26 | -1.19 |
 | | Real estate (vs house prices) | 22 | 36% | 82% | 0.27 | +0.29 |
 | Hibbert (UK, 2001) | Short rate | 24 | 33% | 100% | 0.24 | +0.40 |
-| | Inflation | 25 | 72% | 96% | 0.47 | +0.41 |
+| | Inflation | 25 | 72% | 96% | 0.46 | +0.41 |
 | | Share prices (growth since start) | 25 | 44% | 96% | 0.23 | -1.62 |
 | Wilkie (UK, 1986) | Inflation | 40 | 93% | 100% | 0.37 | +0.33 |
 | | Long yield (vs the 10-year gilt) | 40 | 13% | 28% | 0.19 | +0.48 |
