@@ -1899,64 +1899,10 @@ financescenarios-docs:
       url: /projects/financescenarios/docs/solvency
     - title: "Validation"
       url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
+    - title: "Under the Hood"
       url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Getting Started"
-    children:
-      - title: "Data and API Keys"
-        url: /projects/financescenarios/docs#data-and-api-keys
-      - title: "Choosing a Run"
-        url: /projects/financescenarios/docs#choosing-a-run
-      - title: "Simulating Scenarios"
-        url: /projects/financescenarios/docs#simulating-scenarios
-      - title: "Reading the Distribution"
-        url: /projects/financescenarios/docs#reading-the-distribution
-      - title: "Individual Scenarios"
-        url: /projects/financescenarios/docs#individual-scenarios
-      - title: "Checking the Run"
-        url: /projects/financescenarios/docs#checking-the-run
-      - title: "Keeping a Run"
-        url: /projects/financescenarios/docs#keeping-a-run
-  - title: "How It Works"
-    children:
-      - title: "What Is Modeled"
-        url: /projects/financescenarios/docs#what-is-modeled
-      - title: "How the Factors Are Linked"
-        url: /projects/financescenarios/docs#how-the-factors-are-linked
-      - title: "Real-World and Risk-Neutral Runs"
-        url: /projects/financescenarios/docs#real-world-and-risk-neutral-runs
-  - title: "Reference"
-    children:
-      - title: "Scenarios"
-        url: /projects/financescenarios/docs#scenarios
-      - title: "ScenarioSet"
-        url: /projects/financescenarios/docs#scenarioset
-      - title: "CalibrationResult"
-        url: /projects/financescenarios/docs#calibrationresult
-      - title: "FactorLabel"
-        url: /projects/financescenarios/docs#factorlabel
-      - title: "compare_runs"
-        url: /projects/financescenarios/docs#compare_runs
-      - title: "build_toolkit"
-        url: /projects/financescenarios/docs#build_toolkit
-      - title: "set_display"
-        url: /projects/financescenarios/docs#set_display
-      - title: "set_log_level"
-        url: /projects/financescenarios/docs#set_log_level
+  - title: "On This Page"
+    toc: true
 
 financescenarios-docs-configuration:
   - title: Modules
@@ -1979,60 +1925,16 @@ financescenarios-docs-configuration:
       url: /projects/financescenarios/docs/solvency
     - title: "Validation"
       url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
+    - title: "Under the Hood"
       url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Getting Started"
+  - title: "Configuration"
     children:
-      - title: "Loading a Configuration"
-        url: /projects/financescenarios/docs/configuration#loading-a-configuration
-      - title: "Horizon, Steps and the Number of Scenarios"
-        url: /projects/financescenarios/docs/configuration#horizon-steps-and-the-number-of-scenarios
-      - title: "Beliefs: Your View over the Fit"
-        url: /projects/financescenarios/docs/configuration#beliefs-your-view-over-the-fit
-      - title: "A Configuration in Code"
-        url: /projects/financescenarios/docs/configuration#a-configuration-in-code
-  - title: "How It Works"
-    children:
-      - title: "Settings Profiles and Factor Sets"
-        url: /projects/financescenarios/docs/configuration#settings-profiles-and-factor-sets
-      - title: "Horizon and Step"
-        url: /projects/financescenarios/docs/configuration#horizon-and-step
-      - title: "Number of Scenarios"
-        url: /projects/financescenarios/docs/configuration#number-of-scenarios
-      - title: "Calibration Window"
-        url: /projects/financescenarios/docs/configuration#calibration-window
-      - title: "Real-World and Risk-Neutral"
-        url: /projects/financescenarios/docs/configuration#real-world-and-risk-neutral-measures
-      - title: "Beliefs: Expert Judgement over the Fit"
-        url: /projects/financescenarios/docs/configuration#expert-judgement
-      - title: "Published Frameworks"
-        url: /projects/financescenarios/docs/configuration#published-frameworks
-      - title: "API Keys"
-        url: /projects/financescenarios/docs/configuration#secrets
-  - title: "Reference"
-    children:
-      - title: "ScenariosConfig"
-        url: /projects/financescenarios/docs/configuration#scenariosconfig
-      - title: "Configuration Classes"
-        url: /projects/financescenarios/docs/configuration#configuration-classes
-      - title: "Beliefs"
-        url: /projects/financescenarios/docs/configuration#beliefs
-      - title: "Presets and Profiles"
-        url: /projects/financescenarios/docs/configuration#presets-and-profiles
+    - title: "Configuration"
+      url: /projects/financescenarios/docs/configuration
+    - title: "Beliefs"
+      url: /projects/financescenarios/docs/configuration/beliefs
+  - title: "On This Page"
+    toc: true
 
 financescenarios-docs-interest-rates:
   - title: Modules
@@ -2055,72 +1957,26 @@ financescenarios-docs-interest-rates:
       url: /projects/financescenarios/docs/solvency
     - title: "Validation"
       url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
+    - title: "Under the Hood"
       url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Getting Started"
+  - title: "Interest Rates"
     children:
-      - title: "The Short and Long Rates"
-        url: /projects/financescenarios/docs/interest-rates#the-short-and-long-rates
-      - title: "What the Policy Rule Reads"
-        url: /projects/financescenarios/docs/interest-rates#what-the-policy-rule-reads
-      - title: "The Slope of the Curve"
-        url: /projects/financescenarios/docs/interest-rates#the-slope-of-the-curve
-      - title: "The Rule at Work: An Inflation Shock"
-        url: /projects/financescenarios/docs/interest-rates#the-rule-at-work-an-inflation-shock
-  - title: "How It Works"
-    children:
-      - title: "The Short Rate Follows a Policy Rule"
-        url: /projects/financescenarios/docs/interest-rates#the-short-rate-follows-a-policy-rule
-      - title: "The Rule Starts from the Market's Expected Path"
-        url: /projects/financescenarios/docs/interest-rates#the-rule-starts-from-the-markets-expected-path
-      - title: "The Long Rate Is the Expected Short-Rate Path plus a Term Premium"
-        url: /projects/financescenarios/docs/interest-rates#the-long-rate-is-the-expected-short-rate-path-plus-a-term-premium
-      - title: "Data Choices"
-        url: /projects/financescenarios/docs/interest-rates#data-choices
-      - title: "Other Rate Models"
-        url: /projects/financescenarios/docs/interest-rates#other-rate-models
-      - title: "The KNW Models: Rates and Inflation Together"
-        url: /projects/financescenarios/docs/interest-rates#knw-models
-      - title: "DNB's CP2022 Model"
-        url: /projects/financescenarios/docs/interest-rates#cp2022-model
-      - title: "References"
-        url: /projects/financescenarios/docs/interest-rates#references-1
-  - title: "Reference"
-    children:
-      - title: "InterestRates"
-        url: /projects/financescenarios/docs/interest-rates#interestrates
-      - title: "TermStructure"
-        url: /projects/financescenarios/docs/interest-rates#termstructure
-      - title: "Hjm"
-        url: /projects/financescenarios/docs/interest-rates#hjm
-      - title: "Knw"
-        url: /projects/financescenarios/docs/interest-rates#knw
-      - title: "KnwSv"
-        url: /projects/financescenarios/docs/interest-rates#knwsv
-      - title: "KnwSvQ"
-        url: /projects/financescenarios/docs/interest-rates#knwsvq
-      - title: "Cp2022"
-        url: /projects/financescenarios/docs/interest-rates#cp2022
-      - title: "Cp2022Vintage"
-        url: /projects/financescenarios/docs/interest-rates#cp2022vintage-1
-      - title: "Cp2022Params"
-        url: /projects/financescenarios/docs/interest-rates#cp2022params
-      - title: "How It Is Calculated"
-        url: /projects/financescenarios/docs/interest-rates#how-it-is-calculated
+    - title: "Short Rate"
+      url: /projects/financescenarios/docs/interest-rates
+    - title: "Expected Path"
+      url: /projects/financescenarios/docs/interest-rates/expected-path
+    - title: "Long Rate"
+      url: /projects/financescenarios/docs/interest-rates/long-rate
+    - title: "Yield Curve"
+      url: /projects/financescenarios/docs/interest-rates/yield-curve
+    - title: "KNW Models"
+      url: /projects/financescenarios/docs/interest-rates/knw
+    - title: "CP2022"
+      url: /projects/financescenarios/docs/interest-rates/cp2022
+    - title: "Other Rate Models"
+      url: /projects/financescenarios/docs/interest-rates/other-models
+  - title: "On This Page"
+    toc: true
 
 financescenarios-docs-economy:
   - title: Modules
@@ -2143,58 +1999,20 @@ financescenarios-docs-economy:
       url: /projects/financescenarios/docs/solvency
     - title: "Validation"
       url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
+    - title: "Under the Hood"
       url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Getting Started"
+  - title: "Economy"
     children:
-      - title: "Inflation in Three Economies"
-        url: /projects/financescenarios/docs/economy#inflation-in-three-economies
-      - title: "The Regimes Behind It"
-        url: /projects/financescenarios/docs/economy#the-regimes-behind-it
-      - title: "Unemployment"
-        url: /projects/financescenarios/docs/economy#unemployment-rate
-      - title: "The Leading Indicator"
-        url: /projects/financescenarios/docs/economy#the-leading-indicator
-  - title: "How It Works"
-    children:
-      - title: "Inflation: Calm and High-Inflation Regimes"
-        url: /projects/financescenarios/docs/economy#inflation-calm-and-high-inflation-regimes
-      - title: "Unemployment: Expansions and Recessions"
-        url: /projects/financescenarios/docs/economy#unemployment-expansions-and-recessions
-      - title: "Other Inflation Models"
-        url: /projects/financescenarios/docs/economy#other-inflation-models
-      - title: "The Leading Indicator and the Business Cycle"
-        url: /projects/financescenarios/docs/economy#the-leading-indicator-and-the-business-cycle
-      - title: "Mortality and Longevity"
-        url: /projects/financescenarios/docs/economy#mortality-and-longevity
-      - title: "References"
-        url: /projects/financescenarios/docs/economy#references
-  - title: "Reference"
-    children:
-      - title: "Inflation"
-        url: /projects/financescenarios/docs/economy#inflation
-      - title: "Unemployment"
-        url: /projects/financescenarios/docs/economy#unemployment
-      - title: "Mortality"
-        url: /projects/financescenarios/docs/economy#mortality
-      - title: "LeadingIndicator"
-        url: /projects/financescenarios/docs/economy#leadingindicator
-      - title: "How It Is Calculated"
-        url: /projects/financescenarios/docs/economy#how-it-is-calculated
+    - title: "Inflation"
+      url: /projects/financescenarios/docs/economy
+    - title: "Unemployment"
+      url: /projects/financescenarios/docs/economy/unemployment
+    - title: "Business Cycle"
+      url: /projects/financescenarios/docs/economy/business-cycle
+    - title: "Mortality"
+      url: /projects/financescenarios/docs/economy/mortality
+  - title: "On This Page"
+    toc: true
 
 financescenarios-docs-markets:
   - title: Modules
@@ -2217,78 +2035,24 @@ financescenarios-docs-markets:
       url: /projects/financescenarios/docs/solvency
     - title: "Validation"
       url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
+    - title: "Under the Hood"
       url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Getting Started"
+  - title: "Markets"
     children:
-      - title: "Stock Markets"
-        url: /projects/financescenarios/docs/markets#stock-markets
-      - title: "Currencies"
-        url: /projects/financescenarios/docs/markets#currencies
-      - title: "Gold and Oil"
-        url: /projects/financescenarios/docs/markets#gold-and-oil
-      - title: "House Prices"
-        url: /projects/financescenarios/docs/markets#house-prices
-      - title: "How the Markets Move Together"
-        url: /projects/financescenarios/docs/markets#how-the-markets-move-together
-      - title: "Wider Coverage"
-        url: /projects/financescenarios/docs/markets#wider-coverage
-  - title: "How It Works"
-    children:
-      - title: "Equities"
-        url: /projects/financescenarios/docs/markets#equity-markets
-      - title: "FX"
-        url: /projects/financescenarios/docs/markets#currencies
-      - title: "Commodities"
-        url: /projects/financescenarios/docs/markets#commodity-prices
-      - title: "Real Estate"
-        url: /projects/financescenarios/docs/markets#real-estate
-      - title: "Dividend Yield and Dividend Growth"
-        url: /projects/financescenarios/docs/markets#dividend-yield-and-dividend-growth
-      - title: "Credit Spreads"
-        url: /projects/financescenarios/docs/markets#credit-spreads
-      - title: "Credit Migration and Default"
-        url: /projects/financescenarios/docs/markets#credit-migration-and-default
-      - title: "References"
-        url: /projects/financescenarios/docs/markets#references
-  - title: "Reference"
-    children:
-      - title: "Equities"
-        url: /projects/financescenarios/docs/markets#equities
-      - title: "FX"
-        url: /projects/financescenarios/docs/markets#fx
-      - title: "Commodities"
-        url: /projects/financescenarios/docs/markets#commodities
-      - title: "RealEstate"
-        url: /projects/financescenarios/docs/markets#realestate
-      - title: "DividendYield"
-        url: /projects/financescenarios/docs/markets#dividendyield
-      - title: "DividendGrowth"
-        url: /projects/financescenarios/docs/markets#dividendgrowth
-      - title: "Credit"
-        url: /projects/financescenarios/docs/markets#credit
-      - title: "CreditTermStructure"
-        url: /projects/financescenarios/docs/markets#credittermstructure
-      - title: "CreditMigration"
-        url: /projects/financescenarios/docs/markets#creditmigration
-      - title: "rating_migration"
-        url: /projects/financescenarios/docs/markets#rating_migration
-      - title: "How It Is Calculated"
-        url: /projects/financescenarios/docs/markets#how-it-is-calculated
+    - title: "Equities"
+      url: /projects/financescenarios/docs/markets
+    - title: "Currencies"
+      url: /projects/financescenarios/docs/markets/currencies
+    - title: "Commodities"
+      url: /projects/financescenarios/docs/markets/commodities
+    - title: "Real Estate"
+      url: /projects/financescenarios/docs/markets/real-estate
+    - title: "Dividends"
+      url: /projects/financescenarios/docs/markets/dividends
+    - title: "Credit"
+      url: /projects/financescenarios/docs/markets/credit
+  - title: "On This Page"
+    toc: true
 
 financescenarios-docs-regimes:
   - title: Modules
@@ -2311,70 +2075,16 @@ financescenarios-docs-regimes:
       url: /projects/financescenarios/docs/solvency
     - title: "Validation"
       url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
+    - title: "Under the Hood"
       url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Getting Started"
+  - title: "Regimes"
     children:
-      - title: "The Shipped Regimes"
-        url: /projects/financescenarios/docs/regimes#the-shipped-regimes
-      - title: "Beliefs Only: A Soft Landing"
-        url: /projects/financescenarios/docs/regimes#beliefs-only-a-soft-landing
-      - title: "Targets Only: A Financial Crisis"
-        url: /projects/financescenarios/docs/regimes#targets-only-a-financial-crisis
-      - title: "Both at Once: Oil Shock, Oil Crisis and Climate Collapse"
-        url: /projects/financescenarios/docs/regimes#both-at-once-oil-shock-oil-crisis-and-climate-collapse
-      - title: "A Regulator's Stress Test"
-        url: /projects/financescenarios/docs/regimes#a-regulators-stress-test
-      - title: "A What-If of Your Own"
-        url: /projects/financescenarios/docs/regimes#a-what-if-of-your-own
-  - title: "How It Works"
-    children:
-      - title: "Two Ways to Tell a Story"
-        url: /projects/financescenarios/docs/regimes#two-ways-to-tell-a-story
-      - title: "Shipped Regimes"
-        url: /projects/financescenarios/docs/regimes#shipped-regimes
-      - title: "Beliefs as a Path"
-        url: /projects/financescenarios/docs/regimes#beliefs-as-a-path
-      - title: "How Targets Rank Scenarios"
-        url: /projects/financescenarios/docs/regimes#how-targets-rank-scenarios
-      - title: "Running a Regime"
-        url: /projects/financescenarios/docs/regimes#driving-a-regime-from-the-library
-      - title: "Official Stress Tests as Regimes"
-        url: /projects/financescenarios/docs/regimes#official-stress-tests-as-regimes
-      - title: "Reading the Results Against the Base Run"
-        url: /projects/financescenarios/docs/regimes#reading-the-results-against-the-base-run
-      - title: "Climate Scenarios"
-        url: /projects/financescenarios/docs/regimes#climate-scenarios
-  - title: "Reference"
-    children:
-      - title: "Regime"
-        url: /projects/financescenarios/docs/regimes#regime
-      - title: "RegimeLibrary"
-        url: /projects/financescenarios/docs/regimes#regimelibrary
-      - title: "Shock"
-        url: /projects/financescenarios/docs/regimes#shock
-      - title: "load_regime"
-        url: /projects/financescenarios/docs/regimes#load_regime
-      - title: "search_regimes"
-        url: /projects/financescenarios/docs/regimes#search_regimes
-      - title: "shock_regime"
-        url: /projects/financescenarios/docs/regimes#shock_regime
-      - title: "stress_test_regime"
-        url: /projects/financescenarios/docs/regimes#stress_test_regime
+    - title: "Regimes"
+      url: /projects/financescenarios/docs/regimes
+    - title: "Stress Tests"
+      url: /projects/financescenarios/docs/regimes/stress-tests
+  - title: "On This Page"
+    toc: true
 
 financescenarios-docs-portfolio:
   - title: Modules
@@ -2397,74 +2107,18 @@ financescenarios-docs-portfolio:
       url: /projects/financescenarios/docs/solvency
     - title: "Validation"
       url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
+    - title: "Under the Hood"
       url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Getting Started"
+  - title: "Portfolio"
     children:
-      - title: "A 60/40 Portfolio"
-        url: /projects/financescenarios/docs/portfolio#a-6040-portfolio
-      - title: "Risk along the Way"
-        url: /projects/financescenarios/docs/portfolio#risk-along-the-way
-      - title: "Reaching a Goal"
-        url: /projects/financescenarios/docs/portfolio#reaching-a-goal
-      - title: "A Mix of Your Own"
-        url: /projects/financescenarios/docs/portfolio#a-mix-of-your-own
-      - title: "Saving and Withdrawing"
-        url: /projects/financescenarios/docs/portfolio#saving-and-withdrawing
-      - title: "A Glidepath"
-        url: /projects/financescenarios/docs/portfolio#a-glidepath
-      - title: "Backtesting against History"
-        url: /projects/financescenarios/docs/portfolio#backtesting-against-history
-  - title: "How It Works"
-    children:
-      - title: "What a Portfolio Can Hold"
-        url: /projects/financescenarios/docs/portfolio#what-a-portfolio-can-hold
-      - title: "Buy-and-Hold Versus Rebalancing"
-        url: /projects/financescenarios/docs/portfolio#buy-and-hold-versus-rebalancing
-      - title: "Cashflows and Sequence Risk"
-        url: /projects/financescenarios/docs/portfolio#cashflows-and-sequence-risk
-      - title: "Bonds: Cash Roll or Duration"
-        url: /projects/financescenarios/docs/portfolio#bonds-cash-roll-or-duration
-      - title: "Glidepaths"
-        url: /projects/financescenarios/docs/portfolio#glidepaths
-      - title: "Risk Metrics"
-        url: /projects/financescenarios/docs/portfolio#risk-metrics
-      - title: "Benchmarks and Backtests"
-        url: /projects/financescenarios/docs/portfolio#benchmarks-and-backtests
-      - title: "Factor Exposure"
-        url: /projects/financescenarios/docs/portfolio#factor-exposure
-      - title: "References"
-        url: /projects/financescenarios/docs/portfolio#references
-  - title: "Reference"
-    children:
-      - title: "Portfolio"
-        url: /projects/financescenarios/docs/portfolio#portfolio
-      - title: "PortfolioSummary"
-        url: /projects/financescenarios/docs/portfolio#portfoliosummary-1
-      - title: "Cashflows and Glidepaths"
-        url: /projects/financescenarios/docs/portfolio#cashflows-and-glidepaths
-      - title: "Portfolio Presets"
-        url: /projects/financescenarios/docs/portfolio#portfolio-presets
-      - title: "Ticker Mapping"
-        url: /projects/financescenarios/docs/portfolio#ticker-mapping
-      - title: "History and Metrics"
-        url: /projects/financescenarios/docs/portfolio#history-and-metrics
-      - title: "How It Is Calculated"
-        url: /projects/financescenarios/docs/portfolio#how-it-is-calculated
+    - title: "Portfolio"
+      url: /projects/financescenarios/docs/portfolio
+    - title: "Risk Metrics"
+      url: /projects/financescenarios/docs/portfolio/risk
+    - title: "Backtests"
+      url: /projects/financescenarios/docs/portfolio/backtests
+  - title: "On This Page"
+    toc: true
 
 financescenarios-docs-solvency:
   - title: Modules
@@ -2487,60 +2141,16 @@ financescenarios-docs-solvency:
       url: /projects/financescenarios/docs/solvency
     - title: "Validation"
       url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
+    - title: "Under the Hood"
       url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Getting Started"
+  - title: "Solvency"
     children:
-      - title: "A Risk-Neutral Run"
-        url: /projects/financescenarios/docs/solvency#a-risk-neutral-run
-      - title: "The Martingale Test"
-        url: /projects/financescenarios/docs/solvency#the-martingale-test
-      - title: "Best Estimate, Own Funds and the SCR"
-        url: /projects/financescenarios/docs/solvency#best-estimate-own-funds-and-the-scr
-      - title: "The Standard Formula"
-        url: /projects/financescenarios/docs/solvency#the-standard-formula
-  - title: "How It Works"
-    children:
-      - title: "The Example Run"
-        url: /projects/financescenarios/docs/solvency#martingale-test-example
-      - title: "Market Consistency: The Martingale Test"
-        url: /projects/financescenarios/docs/solvency#market-consistency-the-martingale-test
-      - title: "EIOPA's Curve and the Ultimate Forward Rate"
-        url: /projects/financescenarios/docs/solvency#eiopas-curve-and-the-ultimate-forward-rate
-      - title: "Best Estimate"
-        url: /projects/financescenarios/docs/solvency#best-estimate
-      - title: "Solvency Capital Requirement"
-        url: /projects/financescenarios/docs/solvency#solvency-capital-requirement
-      - title: "Standard Formula: Interest Rate and Equity Risk"
-        url: /projects/financescenarios/docs/solvency#standard-formula-interest-rate-and-equity-risk
-      - title: "Scenario Files and Currencies"
-        url: /projects/financescenarios/docs/solvency#scenario-files-and-currencies
-      - title: "What Is Simplified"
-        url: /projects/financescenarios/docs/solvency#what-is-simplified
-      - title: "References"
-        url: /projects/financescenarios/docs/solvency#references
-  - title: "Reference"
-    children:
-      - title: "Solvency"
-        url: /projects/financescenarios/docs/solvency#solvency
-      - title: "Solvency II Functions"
-        url: /projects/financescenarios/docs/solvency#solvency-ii-functions
-      - title: "How It Is Calculated"
-        url: /projects/financescenarios/docs/solvency#how-it-is-calculated
+    - title: "Market Consistency"
+      url: /projects/financescenarios/docs/solvency
+    - title: "Best Estimate and SCR"
+      url: /projects/financescenarios/docs/solvency/capital
+  - title: "On This Page"
+    toc: true
 
 financescenarios-docs-validation:
   - title: Modules
@@ -2563,90 +2173,22 @@ financescenarios-docs-validation:
       url: /projects/financescenarios/docs/solvency
     - title: "Validation"
       url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
+    - title: "Under the Hood"
       url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Getting Started"
+  - title: "Validation"
     children:
-      - title: "A Run over Thirty Years"
-        url: /projects/financescenarios/docs/validation#a-run-over-thirty-years
-      - title: "Macro Relationships"
-        url: /projects/financescenarios/docs/validation#macro-relationships
-      - title: "History's Extremes and Parameter Guardrails"
-        url: /projects/financescenarios/docs/validation#historys-extremes-and-parameter-guardrails
-      - title: "Back to the End of 2007"
-        url: /projects/financescenarios/docs/validation#back-to-the-end-of-2007
-      - title: "Back to the End of 2019"
-        url: /projects/financescenarios/docs/validation#back-to-the-end-of-2019
-      - title: "Every Four Years since 2003"
-        url: /projects/financescenarios/docs/validation#every-four-years-since-2003
-  - title: "How It Works"
-    children:
-      - title: "The Simulation Reproduces the Model"
-        url: /projects/financescenarios/docs/validation#the-simulation-reproduces-the-model
-      - title: "Market Consistency: The Martingale Test"
-        url: /projects/financescenarios/docs/validation#market-consistency-the-martingale-test
-      - title: "Checking a Run Against History"
-        url: /projects/financescenarios/docs/validation#checking-a-run-against-history
-      - title: "Do the Factors Move Together the Way the Economy Does?"
-        url: /projects/financescenarios/docs/validation#do-the-factors-move-together-the-way-the-economy-does
-      - title: "Does Each Factor Stay within What History Has Seen?"
-        url: /projects/financescenarios/docs/validation#does-each-factor-stay-within-what-history-has-seen
-      - title: "Are the Fitted Parameters Ones the Real World Could Produce?"
-        url: /projects/financescenarios/docs/validation#are-the-fitted-parameters-ones-the-real-world-could-produce
-      - title: "Out of Sample: Would a Past Calibration Have Held What Happened?"
-        url: /projects/financescenarios/docs/validation#out-of-sample-would-a-past-calibration-have-held-what-happened
-      - title: "Crises against the Bundled Regimes"
-        url: /projects/financescenarios/docs/validation#crises-against-the-bundled-regimes
-      - title: "Dated Values: What a Backtest Could Have Known"
-        url: /projects/financescenarios/docs/validation#dated-values
-      - title: "External Benchmarks"
-        url: /projects/financescenarios/docs/validation#external-benchmarks
-      - title: "Published Models: Reproducing Their Papers"
-        url: /projects/financescenarios/docs/validation#published-parameter-mode
-      - title: "How the Published Models Held Up"
-        url: /projects/financescenarios/docs/validation#published-models-held-up
-      - title: "Published Calibrations"
-        url: /projects/financescenarios/docs/validation#published-calibrations
-      - title: "What Is Not Validated"
-        url: /projects/financescenarios/docs/validation#what-is-not-validated
-  - title: "Reference"
-    children:
-      - title: "Relationships"
-        url: /projects/financescenarios/docs/validation#relationships
-      - title: "RelationshipRegion"
-        url: /projects/financescenarios/docs/validation#relationshipregion
-      - title: "Realism"
-        url: /projects/financescenarios/docs/validation#realism
-      - title: "RealismFactor"
-        url: /projects/financescenarios/docs/validation#realismfactor
-      - title: "OutOfSample"
-        url: /projects/financescenarios/docs/validation#outofsample
-      - title: "OutOfSampleEvaluation"
-        url: /projects/financescenarios/docs/validation#outofsampleevaluation
-      - title: "NaicGoes"
-        url: /projects/financescenarios/docs/validation#naicgoes
-      - title: "Dnb"
-        url: /projects/financescenarios/docs/validation#dnb
-      - title: "compare_published"
-        url: /projects/financescenarios/docs/validation#compare_published
-      - title: "held_up"
-        url: /projects/financescenarios/docs/validation#held_up
-      - title: "How It Is Calculated"
-        url: /projects/financescenarios/docs/validation#how-it-is-calculated
+    - title: "Against History"
+      url: /projects/financescenarios/docs/validation
+    - title: "Out of Sample"
+      url: /projects/financescenarios/docs/validation/out-of-sample
+    - title: "Dated Values"
+      url: /projects/financescenarios/docs/validation/dated-values
+    - title: "Benchmarks"
+      url: /projects/financescenarios/docs/validation/benchmarks
+    - title: "Published Models"
+      url: /projects/financescenarios/docs/validation/published-models
+  - title: "On This Page"
+    toc: true
 
 financescenarios-docs-architecture:
   - title: Modules
@@ -2669,342 +2211,22 @@ financescenarios-docs-architecture:
       url: /projects/financescenarios/docs/solvency
     - title: "Validation"
       url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
+    - title: "Under the Hood"
+      url: /projects/financescenarios/docs/architecture
+  - title: "Under the Hood"
     children:
     - title: "How a Run Is Built"
       url: /projects/financescenarios/docs/architecture
+    - title: "Dependence"
+      url: /projects/financescenarios/docs/dependence
     - title: "Simulation Engine"
       url: /projects/financescenarios/docs/simulation-engine
     - title: "Units"
       url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
     - title: "Coverage"
       url: /projects/financescenarios/docs/coverage
-  - title: "How a Run Is Built"
-    children:
-      - title: "1. Data"
-        url: /projects/financescenarios/docs/architecture#data
-      - title: "2. Calibration"
-        url: /projects/financescenarios/docs/architecture#calibration
-      - title: "3. Dependence"
-        url: /projects/financescenarios/docs/architecture#dependence
-      - title: "4. Correlated Simulation"
-        url: /projects/financescenarios/docs/architecture#correlated-simulation
-      - title: "5. Outputs"
-        url: /projects/financescenarios/docs/architecture#outputs
-
-financescenarios-docs-simulation-engine:
-  - title: Modules
-    children:
-    - title: "Scenarios"
-      url: /projects/financescenarios/docs
-    - title: "Configuration"
-      url: /projects/financescenarios/docs/configuration
-    - title: "Interest Rates"
-      url: /projects/financescenarios/docs/interest-rates
-    - title: "Economy"
-      url: /projects/financescenarios/docs/economy
-    - title: "Markets"
-      url: /projects/financescenarios/docs/markets
-    - title: "Regimes"
-      url: /projects/financescenarios/docs/regimes
-    - title: "Portfolio"
-      url: /projects/financescenarios/docs/portfolio
-    - title: "Solvency"
-      url: /projects/financescenarios/docs/solvency
-    - title: "Validation"
-      url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
-      url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Simulation Engine"
-    children:
-      - title: "Correlated Shocks"
-        url: /projects/financescenarios/docs/simulation-engine#correlated-shocks
-      - title: "Fat Tails"
-        url: /projects/financescenarios/docs/simulation-engine#fat-tails-and-tail-dependence
-      - title: "Time Stepping"
-        url: /projects/financescenarios/docs/simulation-engine#time-stepping
-      - title: "How the Correlations Are Estimated"
-        url: /projects/financescenarios/docs/simulation-engine#how-the-correlations-are-estimated
-      - title: "Monte Carlo Error"
-        url: /projects/financescenarios/docs/simulation-engine#monte-carlo-error
-      - title: "Numerical Settings"
-        url: /projects/financescenarios/docs/simulation-engine#numerical-settings
-      - title: "Working with a Run"
-        url: /projects/financescenarios/docs/simulation-engine#scenarioset
-
-financescenarios-docs-units:
-  - title: Modules
-    children:
-    - title: "Scenarios"
-      url: /projects/financescenarios/docs
-    - title: "Configuration"
-      url: /projects/financescenarios/docs/configuration
-    - title: "Interest Rates"
-      url: /projects/financescenarios/docs/interest-rates
-    - title: "Economy"
-      url: /projects/financescenarios/docs/economy
-    - title: "Markets"
-      url: /projects/financescenarios/docs/markets
-    - title: "Regimes"
-      url: /projects/financescenarios/docs/regimes
-    - title: "Portfolio"
-      url: /projects/financescenarios/docs/portfolio
-    - title: "Solvency"
-      url: /projects/financescenarios/docs/solvency
-    - title: "Validation"
-      url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
-      url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Units"
-    children:
-      - title: "How Each Series Is Fitted"
-        url: /projects/financescenarios/docs/units#how-each-series-is-fitted
-      - title: "How Results Read"
-        url: /projects/financescenarios/docs/units#how-results-read
-      - title: "Converting"
-        url: /projects/financescenarios/docs/units#converting
-
-financescenarios-docs-dependence:
-  - title: Modules
-    children:
-    - title: "Scenarios"
-      url: /projects/financescenarios/docs
-    - title: "Configuration"
-      url: /projects/financescenarios/docs/configuration
-    - title: "Interest Rates"
-      url: /projects/financescenarios/docs/interest-rates
-    - title: "Economy"
-      url: /projects/financescenarios/docs/economy
-    - title: "Markets"
-      url: /projects/financescenarios/docs/markets
-    - title: "Regimes"
-      url: /projects/financescenarios/docs/regimes
-    - title: "Portfolio"
-      url: /projects/financescenarios/docs/portfolio
-    - title: "Solvency"
-      url: /projects/financescenarios/docs/solvency
-    - title: "Validation"
-      url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
-      url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Reference"
-    children:
-      - title: "Dependence"
-        url: /projects/financescenarios/docs/dependence#dependence
-      - title: "How It Is Calculated"
-        url: /projects/financescenarios/docs/dependence#how-it-is-calculated
-
-financescenarios-docs-plotting:
-  - title: Modules
-    children:
-    - title: "Scenarios"
-      url: /projects/financescenarios/docs
-    - title: "Configuration"
-      url: /projects/financescenarios/docs/configuration
-    - title: "Interest Rates"
-      url: /projects/financescenarios/docs/interest-rates
-    - title: "Economy"
-      url: /projects/financescenarios/docs/economy
-    - title: "Markets"
-      url: /projects/financescenarios/docs/markets
-    - title: "Regimes"
-      url: /projects/financescenarios/docs/regimes
-    - title: "Portfolio"
-      url: /projects/financescenarios/docs/portfolio
-    - title: "Solvency"
-      url: /projects/financescenarios/docs/solvency
-    - title: "Validation"
-      url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
-      url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Charts and Plotting"
-    children:
-      - title: "Fan Chart: Where the Distribution Sits Over Time"
-        url: /projects/financescenarios/docs/plotting#fan-chart-where-the-distribution-sits-over-time
-      - title: "Paths: What a Single Future Looks Like"
-        url: /projects/financescenarios/docs/plotting#paths-what-a-single-future-looks-like
-      - title: "Distribution: Where It Lands"
-        url: /projects/financescenarios/docs/plotting#distribution-where-it-lands
-      - title: "Correlation Matrix: What Moves with What"
-        url: /projects/financescenarios/docs/plotting#correlation-matrix-what-moves-with-what
-      - title: "Comparing Runs"
-        url: /projects/financescenarios/docs/plotting#comparing-runs
-      - title: "Portfolios and Solvency"
-        url: /projects/financescenarios/docs/plotting#portfolios-and-solvency
-  - title: "Reference"
-    children:
-      - title: "plot_factors"
-        url: /projects/financescenarios/docs/plotting#plot_factors
-      - title: "plot_fan_chart"
-        url: /projects/financescenarios/docs/plotting#plot_fan_chart
-      - title: "plot_paths"
-        url: /projects/financescenarios/docs/plotting#plot_paths
-      - title: "plot_terminal_distribution"
-        url: /projects/financescenarios/docs/plotting#plot_terminal_distribution
-      - title: "plot_runs"
-        url: /projects/financescenarios/docs/plotting#plot_runs
-      - title: "plot_portfolios"
-        url: /projects/financescenarios/docs/plotting#plot_portfolios
-      - title: "plot_correlation_matrix"
-        url: /projects/financescenarios/docs/plotting#plot_correlation_matrix
-      - title: "plot_sleeve_values"
-        url: /projects/financescenarios/docs/plotting#plot_sleeve_values
-      - title: "plot_weight_drift"
-        url: /projects/financescenarios/docs/plotting#plot_weight_drift
-
-financescenarios-docs-run-files:
-  - title: Modules
-    children:
-    - title: "Scenarios"
-      url: /projects/financescenarios/docs
-    - title: "Configuration"
-      url: /projects/financescenarios/docs/configuration
-    - title: "Interest Rates"
-      url: /projects/financescenarios/docs/interest-rates
-    - title: "Economy"
-      url: /projects/financescenarios/docs/economy
-    - title: "Markets"
-      url: /projects/financescenarios/docs/markets
-    - title: "Regimes"
-      url: /projects/financescenarios/docs/regimes
-    - title: "Portfolio"
-      url: /projects/financescenarios/docs/portfolio
-    - title: "Solvency"
-      url: /projects/financescenarios/docs/solvency
-    - title: "Validation"
-      url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
-      url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
-  - title: "Reference"
-    children:
-      - title: "Run Files"
-        url: /projects/financescenarios/docs/run-files#run-files
-      - title: "Releases"
-        url: /projects/financescenarios/docs/run-files#releases
-      - title: "Snapshot"
-        url: /projects/financescenarios/docs/run-files#snapshot
-      - title: "ResultCache"
-        url: /projects/financescenarios/docs/run-files#resultcache
-      - title: "ScenarioSummary"
-        url: /projects/financescenarios/docs/run-files#scenariosummary
-      - title: "Reporting"
-        url: /projects/financescenarios/docs/run-files#reporting
-      - title: "How It Is Calculated"
-        url: /projects/financescenarios/docs/run-files#how-it-is-calculated
-
-financescenarios-docs-coverage:
-  - title: Modules
-    children:
-    - title: "Scenarios"
-      url: /projects/financescenarios/docs
-    - title: "Configuration"
-      url: /projects/financescenarios/docs/configuration
-    - title: "Interest Rates"
-      url: /projects/financescenarios/docs/interest-rates
-    - title: "Economy"
-      url: /projects/financescenarios/docs/economy
-    - title: "Markets"
-      url: /projects/financescenarios/docs/markets
-    - title: "Regimes"
-      url: /projects/financescenarios/docs/regimes
-    - title: "Portfolio"
-      url: /projects/financescenarios/docs/portfolio
-    - title: "Solvency"
-      url: /projects/financescenarios/docs/solvency
-    - title: "Validation"
-      url: /projects/financescenarios/docs/validation
-  - title: Under the Hood
-    children:
-    - title: "How a Run Is Built"
-      url: /projects/financescenarios/docs/architecture
-    - title: "Simulation Engine"
-      url: /projects/financescenarios/docs/simulation-engine
-    - title: "Units"
-      url: /projects/financescenarios/docs/units
-    - title: "Dependence"
-      url: /projects/financescenarios/docs/dependence
-    - title: "Charts and Plotting"
-      url: /projects/financescenarios/docs/plotting
-    - title: "Run Files and Releases"
-      url: /projects/financescenarios/docs/run-files
-    - title: "Coverage"
-      url: /projects/financescenarios/docs/coverage
+  - title: "On This Page"
+    toc: true
 
 modelling:
   - title: "Introduction"

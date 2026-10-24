@@ -1,4 +1,5 @@
-"""Charts and outputs of the Markets Getting Started (markets.md)."""
+"""Charts and outputs of the Equities, Currencies, Commodities and Real Estate pages (markets/) and the
+Dependence page (under-the-hood/dependence.md)."""
 
 import numpy as np
 

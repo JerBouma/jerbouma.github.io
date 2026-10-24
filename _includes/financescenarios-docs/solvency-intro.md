@@ -1,1 +1,0 @@
-Solvency II asks two questions. What is owed, valued at today's market prices (the best estimate, Article 77)? And is there enough capital to keep paying after a 1-in-200 bad year (the Solvency Capital Requirement or SCR, Article 101)?

@@ -1,4 +1,4 @@
-"""Charts and outputs of the Scenarios Getting Started (getting-started.md)."""
+"""Charts and outputs of the documentation overview (docs.md)."""
 
 import tempfile
 

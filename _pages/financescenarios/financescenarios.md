@@ -321,7 +321,7 @@ Which gives each mix's loading on each factor and how much they explain:
 | All Weather         | 0.2039 | -0.0620 | -0.1435 | 0.2162 |  0.0335 | 0.0029 |    0.1318 |          312 | 2000-08-01 | 2026-10-01 |
 | Permanent Portfolio | 0.2173 | -0.0615 | -0.1418 | 0.2017 |  0.0473 | 0.0033 |    0.1240 |          312 | 2000-08-01 | 2026-10-01 |
 
-The chart below shows what each mix actually did since August 2000, rebalanced once a year: 100,000 grew to 545,709 in the 60/40, 542,561 in All Weather and 555,564 in the Permanent Portfolio by October 2026, with the 60/40 carrying more than twice the stock market risk of the other two. **Find [the Portfolio documentation](/projects/financescenarios/docs/portfolio#backtesting-against-history).**
+The chart below shows what each mix actually did since August 2000, rebalanced once a year: 100,000 grew to 545,709 in the 60/40, 542,561 in All Weather and 555,564 in the Permanent Portfolio by October 2026, with the 60/40 carrying more than twice the stock market risk of the other two. **Find [the Portfolio documentation](/projects/financescenarios/docs/portfolio/backtests#backtesting-against-history).**
 
 ```python
 portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)

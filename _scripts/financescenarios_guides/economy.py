@@ -1,4 +1,4 @@
-"""Charts and outputs of the Economy Getting Started (economy.md)."""
+"""Charts and outputs of the Inflation, Unemployment and Business Cycle pages (economy/)."""
 
 import numpy as np
 

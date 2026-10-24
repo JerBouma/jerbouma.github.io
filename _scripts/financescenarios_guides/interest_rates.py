@@ -1,4 +1,5 @@
-"""Charts and outputs of the Interest Rates Getting Started (interest-rates.md)."""
+"""Charts and outputs of the Short Rate, Expected Path and Long Rate pages (interest-rates/short-rate.md,
+expected-path.md and long-rate.md)."""
 
 import numpy as np
 

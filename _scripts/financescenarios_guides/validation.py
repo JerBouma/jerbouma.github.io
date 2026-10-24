@@ -1,5 +1,5 @@
-"""Charts and outputs of the Validation Getting Started (validation.md). Downloads history and refits the model as of
-past dates: run it under the heavy-job lock."""
+"""Charts and outputs of the History and Out-of-Sample pages (validation/history.md and out-of-sample.md).
+Downloads history and refits the model as of past dates: run it under the heavy-job lock."""
 
 import time
 

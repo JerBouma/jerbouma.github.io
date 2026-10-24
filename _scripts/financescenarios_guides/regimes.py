@@ -1,5 +1,5 @@
-"""Charts and outputs of the Regimes Getting Started (regimes.md). Regimes with targets draw extra scenarios: run it
-under the heavy-job lock."""
+"""Charts and outputs of the Regimes and Stress Tests pages (regimes/regimes.md and stress-tests.md). Regimes with
+targets draw extra scenarios: run it under the heavy-job lock."""
 
 import resource
 

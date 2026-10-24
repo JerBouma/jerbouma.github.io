@@ -1,4 +1,4 @@
-"""Shared helpers for the charts of the Finance Scenarios Getting Started sections.
+"""Shared helpers for the charts of the Finance Scenarios documentation pages.
 
 Every page uses one run: the default settings and factor set, calibrated on 2026-10-19 (the README's saved calibration,
 docs/assets/readme/calibration.json in the finance-scenarios repository), simulated with seed 42 and 2,000 scenarios.
