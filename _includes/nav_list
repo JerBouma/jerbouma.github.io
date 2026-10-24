@@ -26,8 +26,17 @@
   <label for="ac-toc">{{ page.sidebar.menu_label | default: "Sections" }}</label>
   <ul class="nav__items">
     {% for nav in navigation %}
-      <li{% if docs_nav %} class="{% if nav.children != null %}nav__group{% else %}nav__single{% endif %}"{% endif %}>
-        {% if nav.children != null %}
+      <li{% if docs_nav %} class="{% if nav.children != null or nav.toc %}nav__group{% else %}nav__single{% endif %}"{% endif %}>
+        {% if nav.toc %}
+          {%- comment -%} The current page's own sections, read from its h2 headings. {%- endcomment -%}
+          {% assign toc_count = content | split: "<h2 " | size | minus: 1 %}
+          {% if toc_count > 0 %}
+          <details class="nav__collapsible nav__toc" open>
+            <summary class="nav__sub-title nav__collapsible-title">{{ nav.title }}<span class="nav__count">{{ toc_count }}</span></summary>
+            {% include toc.html html=content sanitize=true h_min=2 h_max=2 skip_no_ids=true %}
+          </details>
+          {% endif %}
+        {% elsif nav.children != null %}
         {% if docs_nav and nav.title == "Modules" %}
           {% assign module_url = page.docs_module_url | default: page.url %}
           {% assign current_module = nav.children | where: "url", module_url | first %}

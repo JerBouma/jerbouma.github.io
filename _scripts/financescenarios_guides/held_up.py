@@ -1,4 +1,4 @@
-"""Chart data of "How the Published Models Held Up" (validation-how-it-works.md): each reference factor set's fan
+"""Chart data of the Published Models page (validation/published-models.md): each reference factor set's fan
 from its paper's start against what happened since, on keyless OECD data."""
 
 import json

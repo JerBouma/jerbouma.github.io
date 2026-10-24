@@ -1,4 +1,4 @@
-"""Charts and outputs of the Configuration Getting Started (configuration.md)."""
+"""Charts and outputs of the Configuration and Beliefs pages (configuration/configuration.md and beliefs.md)."""
 
 import sys
 

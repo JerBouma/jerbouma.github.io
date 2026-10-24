@@ -1,1 +1,0 @@
-The scenario generator answers "what could markets do?". A portfolio answers "what would that mean for this money?": given target weights, it follows the portfolio's value through every scenario, applying rebalancing, fees, deposits and withdrawals step by step. It never changes the run, so one set of scenarios can test many allocations.

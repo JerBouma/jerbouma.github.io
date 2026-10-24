@@ -1,18 +1,18 @@
-"""Charts and outputs of the Portfolio Getting Started (portfolio.md). With --live the backtest downloads the history;
-without it, it replays the README's saved history (docs/assets/readme/backtest_history), which gives the same values."""
+"""Charts and outputs of the Portfolio pages (portfolio/portfolio.md, risk.md and backtests.md). With --live the
+backtest downloads the history; without it, it replays the README's saved history
+(docs/assets/readme/backtest_history), which gives the same values."""
 
 import sys
 
 import numpy as np
 
-from common import NUMBERS, REPO, bar, default_run, fan, hist, labels, runs_fan, write
+from common import NUMBERS, REPO, bar, default_run, fan, hist, labels, write
 from financescenarios import GlidepathCheckpoint, Portfolio, list_presets, read_run
 
 TITLES = {
     "portfolio-value": "Value of 100,000 in a 60/40 Portfolio",
     "portfolio-end-values": "Value of the 60/40 Portfolio after Five Years",
     "portfolio-drawdown": "Deepest Fall from a Peak of the 60/40 Portfolio within Five Years",
-    "portfolio-withdrawals": "Portfolio Value with Withdrawals Fixed and Indexed to Inflation",
     "portfolio-glidepath": "Median Value per Holding along the Glidepath",
     "portfolio-backtest": "Value of 100,000 in Three Mixes since 2000",
     "portfolio-exposure": "Fama-French Factor Loadings of Three Mixes",
@@ -68,8 +68,6 @@ indexed = portfolio.compute(initial_value=100_000, rebalance_every=12, cashflow_
 success_indexed = portfolio.withdrawal_success()
 print("indexed lasts", success_indexed.success_rate, "median end", success_indexed.terminal_value_percentiles["50"],
       "depletion", success_indexed.median_depletion_year)
-charts["portfolio-withdrawals"] = runs_fan({"Fixed withdrawals": funded, "Indexed to inflation": indexed},
-                                           "portfolio", fmt="amount", levels=True)
 
 checkpoints = [
     GlidepathCheckpoint(year=0, weights={"us_broad": 0.9, "united_states_long_rate": 0.1}),
@@ -79,11 +77,12 @@ glidepath = portfolio.compute_glidepath(
     checkpoints, initial_value=100_000, rebalance_every=1, durations={"united_states_long_rate": 5.4}
 )
 print(glidepath.describe(levels=True))
+yearly = [result.step_at(float(year)) for year in range(6)]  # stacked bars once a year: the mix shifting
 charts["portfolio-glidepath"] = bar(
-    labels(glidepath.dates),
-    {"US stocks": np.median(glidepath.paths["us_broad_value"], axis=0),
-     "US Treasuries": np.median(glidepath.paths["united_states_long_rate_value"], axis=0)},
-    fmt="amount", kind="line", stack=True,
+    range(6),
+    {"US stocks": np.median(glidepath.paths["us_broad_value"][:, yearly], axis=0),
+     "US Treasuries": np.median(glidepath.paths["united_states_long_rate_value"][:, yearly], axis=0)},
+    fmt="amount", stack=True, xname="Years ahead",
 )
 
 mixes = ["balanced_60_40", "all_weather", "permanent_portfolio"]

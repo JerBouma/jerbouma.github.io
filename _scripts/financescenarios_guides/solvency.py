@@ -1,4 +1,4 @@
-"""Charts and outputs of the Solvency Getting Started (solvency.md).
+"""Charts and outputs of the Solvency pages (solvency/market-consistency.md and capital.md).
 
 The page's risk-neutral run is scenarios.simulate(n_simulations=2000, seed=42, measure="risk_neutral"); it is
 reproduced here from the README's saved risk-neutral calibration of 2026-10-19, as the README does."""

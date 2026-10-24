@@ -8,7 +8,7 @@
   - name: Optional zero lower bound (shadow rate)
     status: available
     summary: You can keep simulated rates from going below zero. The model tracks an underlying rate that may go negative, and you see that rate floored at zero, so recoveries start from where the hidden rate really is. Off by default, real-world scenarios only.
-    location: 'Factor set, on an `interest_rates` entry: `zero_lower_bound`; see [keeping rates at or above zero](/projects/financescenarios/docs/configuration#keeping-rates-at-or-above-zero)'
+    location: 'Factor set, on an `interest_rates` entry: `zero_lower_bound`; see [keeping rates at or above zero](/projects/financescenarios/docs/configuration/beliefs#keeping-rates-at-or-above-zero)'
     details: Off by default. The rate's own dynamics evolve an unfloored shadow rate and every consumer sees max(shadow, 0) (Black 1995), so recovery starts from the shadow; real-world entries only.
     setup: 'In your factor set, set `zero_lower_bound: true` on each `interest_rates` entry you want floored, or under `defaults` for every rate. Real-world rates only.'
     setup_lang: yaml
@@ -147,7 +147,7 @@
     summary: The full version of the DNB-style model, where a shared, randomly changing volatility affects both rates and inflation. You set it up by hand, and the simulation step must match the model's data frequency.
     location: 'Factor set: an `interest_rates` and an `inflation` entry, both `method: knw_sv` and naming each other; settings: `engine.frequency` equal to their `period`'
     details: Adds a latent CIR/Heston variance factor `v` that scales both legs' drift and variance, simulated via Andersen's (2008) exact QE scheme. Same `engine.frequency`-must-match-`period` requirement as `"knw"` above. Hand-configure, no built-in preset.
-    setup: 'As for KNW-lite, with `method: knw_sv` on both entries. An equity can share the volatility factor with `method: knw_sv` and `nominal_rate_name` (see v-scaled equity). The [KNW guide](/projects/financescenarios/docs/interest-rates#knw-models) has the full file.'
+    setup: 'As for KNW-lite, with `method: knw_sv` on both entries. An equity can share the volatility factor with `method: knw_sv` and `nominal_rate_name` (see v-scaled equity). The [KNW guide](/projects/financescenarios/docs/interest-rates/knw) has the full file.'
     setup_lang: yaml
     setup_code: |-
       # my-project/factor-sets/knw.yaml (a factor set)
@@ -172,7 +172,7 @@
   - name: DNB's CP2022 model with its quarterly parameters
     status: available
     summary: Runs the model behind De Nederlandsche Bank's scenario sets for Dutch pension funds, with the parameters DNB publishes every quarter, so you can rebuild DNB's real-world set or put its euro economy next to factors of your own. Rates of any maturity, real rates, euro-area and Dutch inflation and one equity come out of the one model. Real-world only.
-    location: 'Factor set, on `interest_rates`, `inflation` and one `equities` entry: `method: cp2022`; the `dnb` settings and factor set; see [CP2022](/projects/financescenarios/docs/interest-rates#cp2022-model)'
+    location: 'Factor set, on `interest_rates`, `inflation` and one `equities` entry: `method: cp2022`; the `dnb` settings and factor set; see [CP2022](/projects/financescenarios/docs/interest-rates/cp2022)'
     details: 'The Commissie Parameters (2022) Technical Appendix as written: the affine state (v, r, pi) with its mean-reversion matrix K and v-scaled shocks (eqs. 1-6), nominal and real zero rates from the Riccati equations of sec. 10 (eqs. 14-19, 76-79), the monthly scheme of sec. 9.1 (eqs. 51-53) with Andersen''s QE step, Dutch CPI as the HICP plus the CPB-based spread (sec. 8), the long-run constraints of eqs. 41-42 and 46-47. The parameters are read from the quarterly P-set workbook DNB had published by the calibration date (stored as vintages; 2026Q4 ships); `estimate_cp2022` backs them out of a set''s 20,000 paths within about two standard errors of DNB''s. The 2,000-scenario `dnb` set lands within two or three Monte Carlo standard errors of DNB''s 2026Q4 means, standard deviations and percentiles. Not covered: DNB''s market-consistent Q-set (eq. 25), which needs paid option, swaption and inflation-cap data; monthly steps only.'
     setup: 'Run the shipped `dnb` settings and factor set, or give your own euro entries `method: cp2022` with a `maturity` and `curve` (rates) or an `index` (inflation).'
     setup_lang: yaml
@@ -222,7 +222,7 @@
   - name: 'Risk-neutral: stochastic short rate on EIOPA''s or the Treasury curve'
     status: partial
     summary: A random Hull-White short rate whose average discount factor reproduces today's curve at every maturity, as pricing work requires. For the euro, the pound and the US dollar that is EIOPA's risk-free curve, the default of a whole risk-neutral run, so the best estimate discounts at the Solvency II curve. Partial because the volatility comes from history, fitted to how much yields across the curve have moved, not from swaption prices as EIOPA's Guideline 57 asks, so the time value of guarantees is indicative.
-    location: 'Factor set, on an `interest_rates` entry: `measure: risk_neutral` with `risk_neutral_forward_curve: true` and `risk_neutral_curve`; or `Scenarios.simulate(measure="risk_neutral")`; see [interest rates](/projects/financescenarios/docs/interest-rates#other-rate-models)'
+    location: 'Factor set, on an `interest_rates` entry: `measure: risk_neutral` with `risk_neutral_forward_curve: true` and `risk_neutral_curve`; or `Scenarios.simulate(measure="risk_neutral")`; see [interest rates](/projects/financescenarios/docs/interest-rates/other-models)'
     details: 'Brigo & Mercurio''s (2006) x-process Hull-White, theta(t) fitted to EIOPA''s published curve (USD, EUR, GBP; forwards flat between maturities) or a Nelson-Siegel fit to the four Treasury yields. The speed is the short rate''s historical speed; by default (`risk_neutral_volatility_fit: yield_curve`) sigma is fitted so the model''s yield volatilities match the historical volatility of the 13-week, 5, 10 and 30-year yields (0.90% on US data since 2005), or `short_rate` takes the short rate''s own. Not implied from swaptions: EIOPA Guideline 57 (paragraph 1.101) asks for calibration to deep, liquid and transparent market data, which the Finance Toolkit does not provide for rate options.'
     setup: 'Quickest: `scenarios.simulate(measure="risk_neutral")` sets this up on EIOPA''s curve for the whole run. For one rate in your factor set, make it risk-neutral, switch on the forward curve and pick the curve; it must be a Hull-White rate without GARCH, business-cycle conditioning, long history or EIOPA anchor.'
     setup_lang: yaml
@@ -346,7 +346,7 @@
   - name: Long-run levels anchored to EIOPA's curves (or DNB's for the euro)
     status: available
     summary: 'Sets the long-run level rates drift toward from EIOPA''s official risk-free curve (or DNB''s for euro pension work), while speed and volatility stay fitted. Example: the US 10-year median moves from 5.2% to 4.1% over 30 years.'
-    location: 'Factor set, on an `interest_rates` entry: `long_run_anchor: eiopa` or `dnb`; see [anchoring long-run rate levels](/projects/financescenarios/docs/configuration#anchoring-long-run-rate-levels)'
+    location: 'Factor set, on an `interest_rates` entry: `long_run_anchor: eiopa` or `dnb`; see [anchoring long-run rate levels](/projects/financescenarios/docs/configuration/beliefs#anchoring-long-run-rate-levels)'
     details: 'Each rate''s long-run level follows the 1-year (short) or 10-year (long) forward rate off EIOPA''s latest risk-free curve for its currency (USD, EUR, GBP), ending at the ultimate forward rate; speed and volatility stay fitted. Live: US 10-year median 5.2% to 4.1% over 30 years (NAIC 5.3% to 4.5%); euro 10-year 3.4% at 30 years (DNB P-set 1.8%).'
     setup: Already on in the `default` factor set. In a factor set of your own, set `long_run_anchor` on real-world Hull-White or CIR rates with constant volatility; `dnb` only on euro entries.
     setup_lang: yaml
@@ -1162,7 +1162,7 @@
   - name: Correlations stated as values
     status: available
     summary: You can fix the correlation of any pair of factors instead of estimating it, and set every pair you do not list to zero, the way a published model states its own correlations. The reference sets of Ahlgrim, Hibbert and Wilkie use it.
-    location: 'Factor set: the `correlations` section, `fixed` pairs and `unlisted: history` or `zero`; see [published frameworks](/projects/financescenarios/docs/configuration#correlations-stated-as-values)'
+    location: 'Factor set: the `correlations` section, `fixed` pairs and `unlisted: history` or `zero`; see [published frameworks](/projects/financescenarios/docs/configuration/beliefs#correlations-stated-as-values)'
     details: 'The stated pairs are laid over the estimated matrix (or a zero one with `unlisted: zero`) before the nearest-correlation repair (Higham, 2002), so a set of pairs that cannot hold together is moved as little as possible.'
     setup: In your factor set, list the pairs and their values.
     setup_lang: yaml
@@ -1741,7 +1741,7 @@
     status: available
     summary: 'Reproduces Ahlgrim, D''Arcy & Gorvett (2005) from its June 2004 start: the paper''s six linked factors (short rate, inflation, equity, unemployment, real estate and dividend yield) with its own parameters, correlations and starting values, and no data or API key. It reproduces all 26 numbers of the paper''s Tables 1 and 2 the package checks. For today''s data, write your own set with the same options.'
     location: 'Factor set: `ahlgrim`, with the `ahlgrim` settings profile'
-    details: 'Every parameter is a belief with its pinpoint in the YAML, never refitted; `published_model: ahlgrim` builds the calibration from the beliefs and the workbook''s base case, starting equity regimes drawn from the stationary shares (StochProcs!F4). The nominal rate is the real rate plus inflation (`real_rate`). Not simulated: small stocks, the closed-form 1- and 10-year yields and the first-period 1-month yields; equity regimes are lognormal with the workbook''s moments. `compare_published("ahlgrim")` runs the check; see [validation](/projects/financescenarios/docs/validation#published-parameter-mode).'
+    details: 'Every parameter is a belief with its pinpoint in the YAML, never refitted; `published_model: ahlgrim` builds the calibration from the beliefs and the workbook''s base case, starting equity regimes drawn from the stationary shares (StochProcs!F4). The nominal rate is the real rate plus inflation (`real_rate`). Not simulated: small stocks, the closed-form 1- and 10-year yields and the first-period 1-month yields; equity regimes are lognormal with the workbook''s moments. `compare_published("ahlgrim")` runs the check; see [validation](/projects/financescenarios/docs/validation/published-models#published-parameter-mode).'
     setup: Pick it by name with its settings profile (June 2004, 5,000 scenarios, 50 years, monthly).
     setup_lang: python
     setup_code: |-
@@ -1753,7 +1753,7 @@
     status: available
     summary: Reproduces Wilkie (1986) on his Reduced Standard Basis from his neutral start, where inflation drives dividends, the Consols yield and share prices, with his own parameters and no data or API key. It reproduces all 91 cells of his Table 3 on his yearly step. It has no unemployment, real estate, credit, currency or commodity factors, and not the 1995 extension. For today's data, write your own set with the same options.
     location: 'Factor set: `wilkie`, with the `wilkie` settings profile'
-    details: 'Every parameter is a belief with its section in the YAML, never refitted; `published_model: wilkie` starts from his neutral values, `correlations: unlisted: zero` keeps his four white-noise series independent and `lower_bound` is his CMIN of 0.5%. Only the 1986 original, not the 1995 Thomson short-rate extension. `wilkie_ar1`/`wilkie_consols` are dt-blind discrete recursions like `knw` above: `engine.frequency` must equal the entry''s own `period`, so pair with `settings/wilkie.yaml`; on a monthly step four 1- and 5-year cells of Table 3 fall outside Monte Carlo error. `compare_published("wilkie")` runs the check; see [validation](/projects/financescenarios/docs/validation#published-parameter-mode).'
+    details: 'Every parameter is a belief with its section in the YAML, never refitted; `published_model: wilkie` starts from his neutral values, `correlations: unlisted: zero` keeps his four white-noise series independent and `lower_bound` is his CMIN of 0.5%. Only the 1986 original, not the 1995 Thomson short-rate extension. `wilkie_ar1`/`wilkie_consols` are dt-blind discrete recursions like `knw` above: `engine.frequency` must equal the entry''s own `period`, so pair with `settings/wilkie.yaml`; on a monthly step four 1- and 5-year cells of Table 3 fall outside Monte Carlo error. `compare_published("wilkie")` runs the check; see [validation](/projects/financescenarios/docs/validation/published-models#published-parameter-mode).'
     setup: Pick it by name together with the `wilkie` settings profile (1,000 scenarios of 100 years in yearly steps, dated 1986).
     setup_lang: python
     setup_code: |-
@@ -1765,8 +1765,8 @@
     status: available
     summary: Reproduces Hibbert, Mowbray and Turnbull (2001), calibration A, from its March 2001 start, where rates and inflation each pull toward a slower-moving target and equities earn a premium over cash in two regimes, with the paper's own parameters and correlations and no data or API key. It reproduces all 11 rows of Exhibit 7.2A the package checks. No closed-form bond pricing and no market-consistent runs. For today's data, write your own set with the same options.
     location: 'Factor set: `hibbert`, with the `hibbert` settings profile'
-    details: 'Calibration A only: calibration B''s risk premia exist to price bonds, which the package does not do, so its floors and reflection and the bond rows of Exhibit 7.2A are left out. Every parameter is a belief with its pinpoint in the YAML; `published_model: hibbert` starts from calibration A''s equilibrium; the dividend yield''s volatility follows the equity regime (`volatility_follows_equity`). No unemployment. `measure="risk_neutral"` unsupported (raises). `compare_published("hibbert")` runs the check; see [validation](/projects/financescenarios/docs/validation#published-parameter-mode).'
-    setup: Pick it by name with its settings profile (March 2001, 1,000 scenarios, 30 years, monthly); see [published frameworks](/projects/financescenarios/docs/configuration#published-frameworks).
+    details: 'Calibration A only: calibration B''s risk premia exist to price bonds, which the package does not do, so its floors and reflection and the bond rows of Exhibit 7.2A are left out. Every parameter is a belief with its pinpoint in the YAML; `published_model: hibbert` starts from calibration A''s equilibrium; the dividend yield''s volatility follows the equity regime (`volatility_follows_equity`). No unemployment. `measure="risk_neutral"` unsupported (raises). `compare_published("hibbert")` runs the check; see [validation](/projects/financescenarios/docs/validation/published-models#published-parameter-mode).'
+    setup: Pick it by name with its settings profile (March 2001, 1,000 scenarios, 30 years, monthly); see [published frameworks](/projects/financescenarios/docs/validation/published-models#published-frameworks).
     setup_lang: python
     setup_code: |-
       from financescenarios import Scenarios
@@ -1776,7 +1776,7 @@
   - name: "`goes`"
     status: partial
     summary: The United States as the NAIC's scenario generator (GOES) describes it, for US principle-based reserves. Four Treasury yields follow GOES's published bands and stocks earn its long-run return. It passes GOES's acceptance criteria for the upper tail, negative rates, mean reversion and the S&P 500's wealth factors, and misses low-for-long, as GOES does, and the share of scenarios above the rate cap.
-    location: 'Factor set: `goes`, with the `goes` settings profile; see [GOES acceptance criteria](/projects/financescenarios/docs/validation#goes-acceptance-criteria)'
+    location: 'Factor set: `goes`, with the `goes` settings profile; see [GOES acceptance criteria](/projects/financescenarios/docs/validation/benchmarks#goes-acceptance-criteria)'
     details: 'The 3-month, 5-year, 10-year and 30-year yields are each a one-factor CIR (GOES is multi-factor): kappa = ln 2 / 15, the half-life behind T6; theta = GOES''s mean over years 20-30; sigma puts the exact year-30 median on GOES''s. Equity regimes on Shiller''s S&P total return since 1946, shifted to E1''s 7.41% median, earning the premium over the long-run level (no equity-rate link, as the GOES Subgroup decided). Against the 30 Sep 2026 release with 10,000 scenarios: T1 99.5th percentiles, T2, T6 and E1 (40 of 40 within 10%) pass; T4 fails (as GOES does), T1''s share above the cap is 1.6% against 0.5% (GOES 3.06%) and T5''s upper bound is 0.1-0.2 points short; the first ten years are narrower than GOES''s. Corporate bond funds (C1) are not modelled.'
     setup: Pick it by name with its settings profile, and check it with `NaicGoes.check_acceptance`.
     setup_lang: python
@@ -1788,7 +1788,7 @@
   - name: "`dnb`"
     status: available
     summary: 'De Nederlandsche Bank''s real-world scenarios rebuilt with its CP2022 model and its quarterly parameters, for Dutch pension work: euro nominal rates from 1 to 30 years, the real 10-year rate, euro-area and Dutch inflation and world equity, over 100 years. It lands within Monte Carlo error of DNB''s own 20,000 scenarios.'
-    location: 'Factor set: `dnb`, with the `dnb` settings profile; see [CP2022](/projects/financescenarios/docs/interest-rates#cp2022-model)'
+    location: 'Factor set: `dnb`, with the `dnb` settings profile; see [CP2022](/projects/financescenarios/docs/interest-rates/cp2022)'
     details: 'Every `method: cp2022` entry is an output of one model with DNB''s parameters for the quarter published by the calibration date. Germany''s unemployment rate is added because the package requires one. With 2,000 scenarios the 2026Q4 rate means are within 0.05 points of DNB''s and the correlations within 0.05; 20,000 scenarios run at about ten times the memory. Real world only (DNB''s Q-set needs paid market data).'
     setup: Pick it by name with its settings profile (monthly over 100 years, 2,000 scenarios).
     setup_lang: python
@@ -1808,7 +1808,7 @@
   - name: NAIC GOES percentile bands
     status: available
     summary: Compares the spread of your simulated interest rates with the NAIC's statutory scenarios used for US life insurance reserves and capital (VM-20/21/22), and holds a run to the acceptance criteria NAIC sets GOES itself, with a pass or fail per criterion.
-    location: 'Python: `NaicGoes` in `financescenarios.validation.naic_goes`: `compare_interest_rates` and `check_acceptance`; see [GOES acceptance criteria](/projects/financescenarios/docs/validation#goes-acceptance-criteria)'
+    location: 'Python: `NaicGoes` in `financescenarios.validation.naic_goes`: `compare_interest_rates` and `check_acceptance`; see [GOES acceptance criteria](/projects/financescenarios/docs/validation/benchmarks#goes-acceptance-criteria)'
     details: 'VM-20/21/22 statutory scenario percentile comparison (interest rates), and `check_acceptance`: T1 (upper tail), T2 (negative rates), T4 (low for long), T5 (spread of 20-year averages), T6 (mean-reversion medians) on the 1- and 20-year yields (read off neighbouring tenors when not simulated) and E1 (S&P 500 gross wealth factors, each percentile within 10% of its target, a judgement since NAIC publishes no tolerance). Thresholds are read from each release''s Acceptance Criteria_Dashboard sheet.'
     setup: From Python, on a real-world run with US rates (and an equity for E1).
     setup_lang: python
@@ -1835,7 +1835,7 @@
   - name: Published models against their papers
     status: available
     summary: Checks the `ahlgrim`, `hibbert` and `wilkie` sets against the tables their papers report for their own models, number by number, with a Monte Carlo tolerance. All 128 numbers checked are within it.
-    location: 'Python: `compare_published` in `financescenarios.validation.published_frameworks`; see [published models](/projects/financescenarios/docs/validation#published-parameter-mode)'
+    location: 'Python: `compare_published` in `financescenarios.validation.published_frameworks`; see [published models](/projects/financescenarios/docs/validation/published-models#published-parameter-mode)'
     details: 'Ahlgrim, D''Arcy and Gorvett (2005) Tables 1 and 2 (26 checks), Hibbert, Mowbray and Turnbull (2001) Exhibit 7.2A (11), Wilkie (1986) Table 3 (91). A difference is within Monte Carlo error inside four standard errors of the gap (batch means, scaled to the paper''s number of scenarios) plus half the paper''s last printed digit. Runs offline.'
     setup: From Python, by the set's name.
     setup_lang: python
@@ -1848,7 +1848,7 @@
   - name: How the published models held up
     status: available
     summary: Runs each published model from its paper's start date and scores every year since against what happened, so you can see how a forecast made in 1986, 2001 or 2004 fared. Inflation held up well; none of the three allowed for a decade of near-zero rates.
-    location: 'Python: `held_up` in `financescenarios.validation.published_frameworks`; see [how the published models held up](/projects/financescenarios/docs/validation#published-models-held-up)'
+    location: 'Python: `held_up` in `financescenarios.validation.published_frameworks`; see [how the published models held up](/projects/financescenarios/docs/validation/published-models#published-models-held-up)'
     details: 'Share of years inside the 50% and 90% bands, the PITs and the CRPS against a no-change forecast, on keyless OECD history (US for Ahlgrim, UK for Hibbert and Wilkie). The years share one path of history, so they describe what happened rather than test calibration; the series are OECD stand-ins for the papers'' own (3-month for 1-month rates, the 10-year gilt for Consols, price indices for total-return indices, house prices for NCREIF).'
     setup: From Python, by the set's name.
     setup_lang: python
