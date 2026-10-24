@@ -9,14 +9,14 @@ get_quote:
   arguments:
     tickers: TSLA,AAPL
 get_rating:
-  question: What were Amazon's overall rating and its scores for discounted cash flow, return on equity, return on assets, debt to equity, P/E and P/B, on a scale of 1 to 5, on each trading day from 1 to 7 October 2026?
+  question: How did Amazon's overall rating and its underlying scores develop in the first week of October 2026?
   tool: market_data
   arguments:
     tickers: AMZN
     start_date: "2026-10-01"
     end_date: "2026-10-07"
 get_analyst_estimates:
-  question: What are analysts' low, high and average estimates of Apple's revenue, EBITDA, EBIT, net income, SG&A expenses and EPS for fiscal 2024 to 2028, and how many analysts made them?
+  question: What do analysts expect for Apple's revenue, earnings and EPS for fiscal 2024 to 2028?
   tool: market_data
   arguments:
     tickers: AAPL
@@ -73,7 +73,7 @@ get_revenue_geographic_segmentation:
     start_date: "2021-05-01"
     end_date: "2025-12-31"
 get_revenue_product_segmentation:
-  question: How was Microsoft's revenue split across its products and services, such as Windows, Office, server products, gaming, LinkedIn and search advertising, from fiscal 2021 to 2025?
+  question: How was Microsoft's revenue split across its products and services from fiscal 2021 to 2025?
   tool: market_data
   arguments:
     tickers: MSFT
@@ -105,7 +105,7 @@ get_executives:
     tickers: AAPL
     limit: 5
 get_executive_compensation:
-  question: How was the 2025 pay of Apple's named executive officers split between salary, bonus, stock and option awards, incentive plan compensation and other compensation?
+  question: How was the 2025 pay of Apple's named executive officers split between salary, stock awards and other compensation?
   tool: market_data
   arguments:
     tickers: AAPL
@@ -113,7 +113,7 @@ get_executive_compensation:
     end_date: "2025-12-31"
     limit: 5
 get_insider_trade_statistics:
-  question: How many insider acquisitions and disposals of Apple shares were reported in each quarter of 2025, how many shares did they cover and how many were purchases and sales?
+  question: How much insider buying and selling of Apple shares was reported in each quarter of 2025?
   tool: market_data
   arguments:
     tickers: AAPL
@@ -170,7 +170,7 @@ get_historical_data:
     period: yearly
     show_columns: Open,High,Low
 get_intraday_data:
-  question: How did the open, high and low prices of Microsoft and the SPDR S&P 500 ETF move minute by minute in the last ten minutes of trading on 31 December 2025?
+  question: How did Microsoft and the SPDR S&P 500 ETF trade minute by minute in the last ten minutes of 2025?
   tool: market_data
   arguments:
     tickers: MSFT
@@ -180,7 +180,7 @@ get_intraday_data:
     show_columns: Open,High,Low
     limit: -10
 get_historical_statistics:
-  question: What are the currency, exchange, instrument type, first trade date and time zone of Amazon, the Hang Seng Index, the iShares Core MSCI World ETF in Amsterdam and the GAM Star Japan Leaders fund in Tokyo?
+  question: What are the currency, exchange and first trade date of Amazon, the Hang Seng Index, the iShares Core MSCI World ETF and the GAM Star Japan Leaders fund?
   tool: market_data
   arguments:
     tickers: AMZN,^HSI,IWDA.AS,0P0000Z8RO.T
@@ -197,7 +197,7 @@ get_market_risk_premium:
   arguments:
     show_columns: United States,Germany,Brazil
 get_commitment_of_traders:
-  question: What were the open interest and the long and short positions of non-commercial and commercial traders in natural gas futures in each weekly report from 30 January to 27 February 2024?
+  question: How did open interest and trader positioning in natural gas futures change in the weekly reports from 30 January to 27 February 2024?
   tool: market_data
   arguments:
     tickers: NG
@@ -205,7 +205,7 @@ get_commitment_of_traders:
     end_date: "2024-02-27"
     show_columns: Open Interest,Non-Commercial Long,Non-Commercial Short,Commercial Long,Commercial Short
 get_etf_information:
-  question: What are the key facts of the Invesco QQQ Trust and the Vanguard Total Stock Market ETF, from ISIN, issuer, inception date and expense ratio to assets under management, NAV and number of holdings?
+  question: What are the key facts of the Invesco QQQ Trust and the Vanguard Total Stock Market ETF, such as their expense ratio and assets under management?
   tool: market_data
   arguments:
     tickers: QQQ,VTI

@@ -23,7 +23,7 @@ get_on_balance_volume:
     end_date: "2025-12-31"
     limit: -10
 get_accumulation_distribution_line:
-  question: Were Apple and Microsoft under accumulation or distribution from 17 to 31 December 2025, according to their accumulation/distribution lines counted from the start of 2021?
+  question: Were Apple and Microsoft under accumulation or distribution in the second half of December 2025?
   tool: breadth
   arguments:
     tickers: AAPL,MSFT
@@ -59,7 +59,7 @@ get_chaikin_money_flow:
   arguments:
     tickers: AAPL,MSFT
 get_ease_of_movement:
-  question: How easily did the share prices of Apple and Microsoft move relative to their trading volume over the last five years, measured by the Ease of Movement indicator?
+  question: How easily did the share prices of Apple and Microsoft move relative to their volume over the last five years?
   tool: breadth
   arguments:
     tickers: AAPL,MSFT
@@ -74,7 +74,7 @@ get_negative_volume_index:
   arguments:
     tickers: AAPL,MSFT
 get_money_flow_index:
-  question: How did the 14-day Money Flow Index of Apple and Microsoft, which weights price moves by volume, move between overbought and oversold from 17 to 31 December 2025?
+  question: How did the Money Flow Index of Apple and Microsoft move in the second half of December 2025?
   tool: momentum
   arguments:
     tickers: AAPL,MSFT
@@ -99,7 +99,7 @@ get_aroon_indicator:
     show_columns: AAPL
     limit: -10
 get_commodity_channel_index:
-  question: How far did the share prices of Apple and Microsoft stray from their typical level from 17 to 31 December 2025, measured by the Commodity Channel Index?
+  question: How did the Commodity Channel Index of Apple and Microsoft move in the second half of December 2025?
   tool: momentum
   arguments:
     tickers: AAPL,MSFT
@@ -107,7 +107,7 @@ get_commodity_channel_index:
     end_date: "2025-12-31"
     limit: -10
 get_relative_vigor_index:
-  question: What share of the open-to-close price movement of Apple and Microsoft was upward from 17 to 31 December 2025, measured by their 14-day Relative Vigor Index?
+  question: How did the Relative Vigor Index of Apple and Microsoft move in the second half of December 2025?
   tool: momentum
   arguments:
     tickers: AAPL,MSFT
@@ -272,7 +272,7 @@ get_double_exponential_moving_average:
     end_date: "2025-12-31"
     limit: -10
 get_trix:
-  question: How did the TRIX of the Apple and Microsoft share prices, the daily rate of change of a triple-smoothed moving average, move from 17 to 31 December 2025?
+  question: How did the TRIX of Apple and Microsoft move in the second half of December 2025?
   tool: overlap
   arguments:
     tickers: AAPL,MSFT

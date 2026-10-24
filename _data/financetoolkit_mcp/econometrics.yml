@@ -73,7 +73,7 @@ get_ols:
     end_date: "2025-12-31"
     period: quarterly
 get_logistic_regression:
-  question: How did the weekly returns of Microsoft and the S&P 500 change the odds of Apple closing a week higher from 2021 to 2025, according to a logistic regression?
+  question: How did the weekly returns of Microsoft and the S&P 500 change the odds of Apple rising in a week from 2021 to 2025, according to a logit model?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -82,7 +82,7 @@ get_logistic_regression:
     period: weekly
     include_benchmark: true
 get_probit_regression:
-  question: How strongly did the weekly returns of Microsoft and the S&P 500 predict whether Apple closed a week higher from 2021 to 2025, according to a probit regression?
+  question: How well did the weekly returns of Microsoft and the S&P 500 predict whether Apple rose in a week from 2021 to 2025, according to a probit model?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -101,7 +101,7 @@ get_quantile_regression:
     period: weekly
     include_benchmark: true
 get_fama_macbeth_regression:
-  question: Was exposure to the S&P 500 rewarded across Apple and Microsoft from 2021 to 2025, according to a Fama-MacBeth regression on weekly returns without an intercept?
+  question: Was exposure to the S&P 500 rewarded across Apple and Microsoft from 2021 to 2025, according to a Fama-MacBeth regression?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -128,7 +128,7 @@ get_random_effects:
     independent_column: Volume
     period: weekly
 get_hausman_test:
-  question: Does a weekly panel of the returns of Apple, Microsoft and Amazon on their trading volume from 2021 to 2025 call for fixed or random effects, according to the Hausman test?
+  question: Should a weekly panel of Apple, Microsoft and Amazon returns on trading volume use fixed or random effects, according to the Hausman test?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT,AMZN
@@ -148,7 +148,7 @@ get_iv_2sls:
     instrument_tickers: Benchmark
     period: weekly
 get_hausman_wu_test:
-  question: Were Microsoft's weekly returns endogenous in a regression of Apple's weekly returns on them from 2021 to 2025, with the S&P 500's returns as the instrument?
+  question: Were Microsoft's weekly returns endogenous in a regression of Apple's returns from 2021 to 2025, with the S&P 500 as the instrument?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -236,7 +236,7 @@ get_cusum_test:
     period: quarterly
     within_period: false
 get_breusch_pagan_test:
-  question: Were the residuals of a regression of Apple's weekly returns on those of Microsoft and the S&P 500 heteroskedastic from 2021 to 2025, according to the Breusch-Pagan test?
+  question: Was a regression of Apple's weekly returns on Microsoft and the S&P 500 heteroskedastic from 2021 to 2025, according to the Breusch-Pagan test?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -245,7 +245,7 @@ get_breusch_pagan_test:
     period: weekly
     include_benchmark: true
 get_white_test:
-  question: Were the residuals of a regression of Apple's weekly returns on those of Microsoft and the S&P 500 heteroskedastic from 2021 to 2025, according to White's test?
+  question: Was a regression of Apple's weekly returns on Microsoft and the S&P 500 heteroskedastic from 2021 to 2025, according to White's test?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -254,7 +254,7 @@ get_white_test:
     period: weekly
     include_benchmark: true
 get_durbin_watson_test:
-  question: Were the residuals of a regression of Apple's weekly returns on those of Microsoft and the S&P 500 autocorrelated from 2021 to 2025, according to the Durbin-Watson test?
+  question: Did a regression of Apple's weekly returns on Microsoft and the S&P 500 have autocorrelated residuals from 2021 to 2025, according to Durbin-Watson?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -271,7 +271,7 @@ get_vif:
     end_date: "2025-12-31"
     period: weekly
 get_ramsey_reset_test:
-  question: Was a linear regression of Apple's weekly returns on those of Microsoft and the S&P 500 well specified from 2021 to 2025, according to the Ramsey RESET test?
+  question: Was a regression of Apple's weekly returns on Microsoft and the S&P 500 well specified from 2021 to 2025, according to the Ramsey RESET test?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -323,7 +323,7 @@ get_vecm_forecast:
     period: quarterly
     include_benchmark: true
 get_impulse_response_function:
-  question: How did the quarterly returns of Apple and Microsoft respond over the following five quarters to a one-standard-deviation shock in either of them, estimated from 2021 to 2025?
+  question: How did Apple's and Microsoft's quarterly returns respond to a shock in either of them, estimated from 2021 to 2025?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -332,7 +332,7 @@ get_impulse_response_function:
     period: quarterly
     periods: 5
 get_variance_decomposition:
-  question: How much of the forecast error variance of the quarterly returns of Apple and Microsoft came from shocks to each of them at horizons of one to five quarters, estimated from 2021 to 2025?
+  question: How much of the forecast error variance of Apple's and Microsoft's quarterly returns came from shocks to each of them, estimated from 2021 to 2025?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -357,7 +357,7 @@ get_mae:
     end_date: "2025-12-31"
     period: quarterly
 get_out_of_sample_validation:
-  question: How far off was an ARIMA(1,1,1) forecast of the weekly share prices of Apple and Microsoft for the last fifth of 2021 to 2025, fitted on the first four fifths?
+  question: How accurate was an ARIMA forecast of the weekly share prices of Apple and Microsoft over the last part of 2021 to 2025?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -369,7 +369,7 @@ get_out_of_sample_validation:
     d: 1
     q: 1
 get_diebold_mariano_test:
-  question: Did an EWMA volatility forecast beat a 22-day rolling-window forecast for Apple and Microsoft from 2021 to 2025, according to the Diebold-Mariano test?
+  question: Did an EWMA volatility forecast beat a rolling-window forecast for Apple and Microsoft from 2021 to 2025, according to the Diebold-Mariano test?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
@@ -378,7 +378,7 @@ get_diebold_mariano_test:
     method_a: ewma
     method_b: rolling
 get_event_study:
-  question: What was Apple's cumulative abnormal return from ten trading days before to ten trading days after 4 May 2023, measured against the S&P 500 with a market model?
+  question: What was Apple's cumulative abnormal return around 4 May 2023?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT

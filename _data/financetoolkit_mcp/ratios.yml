@@ -179,7 +179,7 @@ get_short_term_coverage_ratio:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_defensive_interval_ratio:
-  question: For how many days could Apple and Tesla have covered their operating expenses with their cash, short-term investments and receivables over the last five years?
+  question: For how many days could Apple and Tesla cover their operating expenses from their liquid assets over the last five years?
   tool: liquidity
   arguments:
     tickers: AAPL,TSLA
@@ -461,7 +461,7 @@ get_price_to_earnings_growth_ratio:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_forward_price_earnings_ratio:
-  question: At their share prices at the end of 2025, what forward price-to-earnings ratios do the analyst EPS estimates for 2021 to 2031 imply for Apple and Microsoft?
+  question: What forward P/E ratios do analyst EPS estimates imply for Apple and Microsoft at their share prices at the end of 2025?
   tool: valuation
   arguments:
     tickers: AAPL,MSFT

@@ -39,7 +39,7 @@ get_yield_to_maturity:
     - 10
     - 15
 get_par_yield:
-  question: What par yields does a spot curve of 3% at 1 year, 3.2% at 2, 3.4% at 3, 3.8% at 5, 4.1% at 7 and 4.4% at 10 years imply for maturities of 1, 2, 3, 5 and 10 years, with annual coupons?
+  question: What par yields does a spot curve rising from 3% at 1 year to 4.4% at 10 years imply for maturities of 1 to 10 years?
   tool: fixed_income
   arguments:
     spot_rates:
@@ -57,7 +57,7 @@ get_par_yield:
     - 10
     frequency: 1
 get_forward_rate:
-  question: Using spot rates of 3% at 1 year, 3.2% at 2, 3.4% at 3, 3.8% at 5 and 4.4% at 10 years, which forward rates are implied from 1, 2 and 3 years ahead out to 5 and 10 years?
+  question: Which forward rates does a spot curve rising from 3% at 1 year to 4.4% at 10 years imply?
   tool: fixed_income
   arguments:
     spot_rates:
@@ -74,7 +74,7 @@ get_forward_rate:
     - 5
     - 10
 get_key_rate_duration:
-  question: On a spot curve of 3% at 1 year, 3.2% at 2, 3.4% at 3, 3.8% at 5, 4.1% at 7 and 4.4% at 10 years, what are the 2, 5 and 10-year key rate durations of 5% annual coupon bonds of 5 and 10 years?
+  question: On a spot curve rising from 3% at 1 year to 4.4% at 10 years, what are the key rate durations of 5 and 10-year bonds with a 5% coupon?
   tool: fixed_income
   arguments:
     coupon_rate: 0.05
@@ -93,7 +93,7 @@ get_key_rate_duration:
       "7": 0.041
       "10": 0.044
 get_yield_curve_spread:
-  question: On a curve with yields of 3% at 1 year, 3.2% at 2, 4.4% at 10 and 5% at 30 years, what are the spreads of the 10 and 30-year yields over the 1 and 2-year yields?
+  question: On a yield curve rising from 3% at 1 year to 5% at 30 years, how wide are the spreads between its short and long end?
   tool: fixed_income
   arguments:
     spot_rates:
@@ -108,7 +108,7 @@ get_yield_curve_spread:
     - 1
     - 2
 get_z_spread:
-  question: On a spot curve of 3% at 1 year, 3.2% at 2, 3.4% at 3, 3.8% at 5, 4.1% at 7, 4.4% at 10 and 4.8% at 20 years, what Z-spread does a 5% annual coupon bond priced at 95, 100 and 105 have for maturities of 5, 10 and 15 years?
+  question: On a spot curve rising from 3% to 4.8%, what Z-spread does a 5% coupon bond have at prices of 95, 100 and 105, for maturities of 5, 10 and 15 years?
   tool: fixed_income
   arguments:
     coupon_rate: 0.05
@@ -160,7 +160,7 @@ get_bond_equivalent_yield:
     - 180
     - 360
 get_taylor_price_change:
-  question: If yields rise by 100 basis points from 8%, how much would bonds with 3%, 5% and 7% annual coupons lose for maturities of 5, 10 and 15 years, estimated with duration and convexity?
+  question: If yields rise by 100 basis points from 8%, how much would bonds with 3% to 7% coupons and maturities of 5 to 15 years lose?
   tool: fixed_income
   arguments:
     coupon_rate:
@@ -174,7 +174,7 @@ get_taylor_price_change:
     yield_to_maturity: 0.08
     yield_change: 0.01
 get_derivative_price:
-  question: Under the Black model, what is a receiver swaption on $10 million worth at strikes of 2.75%, 3.25%, 3.75% and 4.25% and expiries of 1, 2, 5 and 10 years, each into a swap as long as its expiry, with a 3.25% forward swap rate and a 1% volatility, valued from 31 December 2025?
+  question: What is a receiver swaption on $10 million worth under the Black model, across strikes from 2.75% to 4.25% and expiries of 1 to 10 years?
   tool: fixed_income
   arguments:
     model: black
@@ -254,7 +254,7 @@ get_ice_bofa_yield_to_worst:
     start_date: "2024-01-01"
     end_date: "2024-01-15"
 get_corporate_bond_yields:
-  question: How did corporate bond spreads over government bonds move in each month from March to August 2026, for Germany across all ratings and for Australia at A 5-year, BBB 5-year and BBB 10-year?
+  question: How did corporate bond spreads over government bonds in Germany and Australia move from March to August 2026?
   tool: rates
   arguments:
     countries: Germany,Australia
@@ -263,7 +263,7 @@ get_corporate_bond_yields:
     end_date: "2026-08-31"
     show_columns: All ratings,A 5Y,BBB 5Y,BBB 10Y
 get_moodys_corporate_bond_yields:
-  question: How did the spreads of Moody's Aaa and Baa US corporate bond yields over the 10-year Treasury, and of Baa over Aaa, move in each month from March to August 2026?
+  question: How did the spreads of Moody's Aaa and Baa US corporate bonds over the 10-year Treasury move from March to August 2026?
   tool: rates
   arguments:
     period: monthly
@@ -271,7 +271,7 @@ get_moodys_corporate_bond_yields:
     start_date: "2026-03-01"
     end_date: "2026-08-31"
 get_hqm_corporate_bond_yield_curve:
-  question: How did the yields on the US Treasury's high quality market corporate bond spot curve at 1, 5, 10, 30 and 100 years move in each month from March to August 2026?
+  question: How did the US Treasury's high quality market corporate bond yield curve move from March to August 2026?
   tool: rates
   arguments:
     rate: spot
@@ -311,13 +311,13 @@ get_default_rates:
     end_date: "2025-12-31"
     show_columns: BBB,BB,B,CCC
 get_excess_bond_premium:
-  question: How did the Gilchrist-Zakrajšek credit spread, the excess bond premium and the implied recession probability move in each month from February to July 2026?
+  question: How did the Gilchrist-Zakrajšek credit spread and the excess bond premium move from February to July 2026?
   tool: rates
   arguments:
     start_date: "2026-02-01"
     end_date: "2026-07-31"
 get_financial_stress_index:
-  question: How did systemic financial stress in the euro area, the United States, the United Kingdom and China compare in each month from April to September 2026, measured by the ECB's CISS?
+  question: How did financial stress in the euro area, the United States, the United Kingdom and China compare from April to September 2026?
   tool: rates
   arguments:
     countries: Euro Area,United States,United Kingdom,China

@@ -34,7 +34,7 @@ get_economic_value_added:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_intrinsic_valuation:
-  question: What is Apple worth per share in a discounted cash flow model with 5% free cash flow growth for five years, 2.5% perpetual growth and a 9.4% WACC, starting from its 2025 free cash flow?
+  question: What is Apple worth per share in a discounted cash flow model with 5% growth, 2.5% perpetual growth and a 9.4% WACC?
   tool: models
   arguments:
     tickers: AAPL
@@ -44,7 +44,7 @@ get_intrinsic_valuation:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_gorden_growth_model:
-  question: What are Apple and Microsoft worth per share in the Gordon growth model with a 20% required return and 5% dividend growth, from 2021 to 2025 and projected five years ahead?
+  question: What are Apple and Microsoft worth per share in the Gordon growth model with a 20% required return and 5% dividend growth?
   tool: models
   arguments:
     tickers: AAPL,MSFT
@@ -116,7 +116,7 @@ get_free_cash_flow_to_equity:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_two_stage_dividend_discount_model:
-  question: What is Apple worth per share in a two-stage dividend discount model with 12% dividend growth for five years, 3% growth afterwards and a 10% required return?
+  question: What is Apple worth per share in a two-stage dividend discount model with 12% growth for five years, then 3%, at a 10% required return?
   tool: models
   arguments:
     tickers: AAPL

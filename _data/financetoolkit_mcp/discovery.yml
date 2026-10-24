@@ -1,5 +1,5 @@
 get_stock_screener:
-  question: Which stocks, excluding ETFs, have a market cap between $1 million and $200 billion, a price between $100 and $200, a beta between 1 and 2, a daily volume between 100,000 and 2 million shares and a dividend between $1 and $2 per share?
+  question: Which stocks priced between $100 and $200 with a beta between 1 and 2 pay a dividend of $1 to $2 per share?
   tool: discovery
   arguments:
     market_cap_higher: 1000000
@@ -133,14 +133,14 @@ get_stock_splits_calendar:
     end_date: "2024-06-01"
     limit: 5
 get_earnings_calendar:
-  question: Which were the first five companies on the earnings calendar from 1 to 3 October 2026, with their reported and estimated earnings per share and revenue?
+  question: Which companies reported earnings from 1 to 3 October 2026, and how did they compare with the estimates?
   tool: discovery
   arguments:
     start_date: "2026-10-01"
     end_date: "2026-10-03"
     limit: 5
 get_sec_filings_8k:
-  question: Which were the five latest 8-K filings with the SEC from 1 to 2 October 2026, with the time each was accepted, whether it included financial statements and its link?
+  question: Which 8-K filings were the latest to reach the SEC on 1 and 2 October 2026?
   tool: discovery
   arguments:
     start_date: "2026-10-01"

@@ -35,7 +35,7 @@ get_conditional_drawdown_at_risk:
     period: yearly
     within_period: true
 get_marginal_value_at_risk:
-  question: What is the marginal Value at Risk of each holding in a portfolio of 50% Amazon, 30% Tesla and 20% Microsoft, based on daily returns from 2021 to 2025?
+  question: What is the marginal Value at Risk of each holding in a portfolio of 50% Amazon, 30% Tesla and 20% Microsoft?
   tool: risk
   arguments:
     tickers: AMZN,TSLA,MSFT
@@ -46,7 +46,7 @@ get_marginal_value_at_risk:
       TSLA: 0.3
       MSFT: 0.2
 get_component_value_at_risk:
-  question: How much does each holding contribute to the daily 95% Value at Risk of a portfolio of 50% Amazon, 30% Tesla and 20% Microsoft, based on returns from 2021 to 2025?
+  question: How much does each holding contribute to the Value at Risk of a portfolio of 50% Amazon, 30% Tesla and 20% Microsoft?
   tool: risk
   arguments:
     tickers: AMZN,TSLA,MSFT
@@ -92,7 +92,7 @@ get_tail_ratio:
     period: yearly
     within_period: true
 get_hill_estimator:
-  question: How heavy was the loss tail of the weekly returns of Amazon, Tesla and the S&P 500 from 2021 to 2025, measured by the Hill tail index over the largest tenth of their weekly losses?
+  question: How heavy was the loss tail of the weekly returns of Amazon, Tesla and the S&P 500 from 2021 to 2025, according to the Hill estimator?
   tool: risk
   arguments:
     tickers: AMZN,TSLA
@@ -168,7 +168,7 @@ get_downside_deviation:
     period: yearly
     within_period: true
 get_ewma_volatility:
-  question: How did the daily EWMA (RiskMetrics) volatility of Amazon, Tesla and the S&P 500 move from 17 to 31 December 2025, estimated on their daily returns since 2021?
+  question: How did the EWMA volatility of Amazon, Tesla and the S&P 500 move in the second half of December 2025?
   tool: risk
   arguments:
     tickers: AMZN,TSLA
@@ -184,7 +184,7 @@ get_garch:
     end_date: "2025-12-31"
     period: quarterly
 get_garch_forecast:
-  question: What variance does a GARCH(1,1) model fitted to the quarterly returns of Amazon, Tesla and the S&P 500 from 2021 to 2025 forecast for each of the next ten quarters?
+  question: What variance does a GARCH(1,1) model of Amazon, Tesla and the S&P 500 forecast for the next ten quarters?
   tool: risk
   arguments:
     tickers: AMZN,TSLA
@@ -208,7 +208,7 @@ get_gjr_garch:
     end_date: "2025-12-31"
     period: quarterly
 get_gjr_garch_forecast:
-  question: What variance does a GJR-GARCH model fitted to the quarterly returns of Amazon, Tesla and the S&P 500 from 2021 to 2025 forecast for each of the next ten quarters?
+  question: What variance does a GJR-GARCH model of Amazon, Tesla and the S&P 500 forecast for the next ten quarters?
   tool: risk
   arguments:
     tickers: AMZN,TSLA
@@ -216,7 +216,7 @@ get_gjr_garch_forecast:
     end_date: "2025-12-31"
     period: quarterly
 get_gjr_garch_parameters:
-  question: How strongly did negative returns raise the volatility of Amazon, Tesla and the S&P 500 from 2021 to 2025, judging by GJR-GARCH parameters fitted to their quarterly returns?
+  question: How strongly did negative returns raise the volatility of Amazon, Tesla and the S&P 500 from 2021 to 2025, according to a GJR-GARCH model?
   tool: risk
   arguments:
     tickers: AMZN,TSLA
@@ -224,7 +224,7 @@ get_gjr_garch_parameters:
     end_date: "2025-12-31"
     period: quarterly
 get_har_rv_forecast:
-  question: What was the HAR-RV forecast of the next-day realized variance of Amazon, Tesla and the S&P 500 from 24 to 31 December 2025, fitted on their daily returns since 2021?
+  question: What did the HAR-RV model forecast for the next-day variance of Amazon, Tesla and the S&P 500 in the last week of 2025?
   tool: risk
   arguments:
     tickers: AMZN,TSLA
@@ -259,7 +259,7 @@ get_mean_absolute_deviation:
     end_date: "2025-12-31"
     period: yearly
 get_coefficient_of_variation:
-  question: How much volatility did Amazon, Tesla and the S&P 500 carry per unit of average daily return in each year from 2021 to 2025, measured by the coefficient of variation?
+  question: How much volatility did Amazon, Tesla and the S&P 500 carry per unit of return in each year from 2021 to 2025?
   tool: risk
   arguments:
     tickers: AMZN,TSLA
@@ -324,7 +324,7 @@ get_tail_dependence_coefficient:
     ticker_b: MSFT
     period: weekly
 get_amihud_illiquidity:
-  question: How far did a trillion dollars of trading move the share prices of Amazon, Tesla and the S&P 500 on average from 2021 to 2025, measured by Amihud illiquidity on quarterly data?
+  question: How illiquid were Amazon, Tesla and the S&P 500 from 2021 to 2025, according to the Amihud measure?
   tool: risk
   arguments:
     tickers: AMZN,TSLA
@@ -333,7 +333,7 @@ get_amihud_illiquidity:
     period: quarterly
     scale: 1000000000000.0
 get_roll_spread:
-  question: What effective bid-ask spread, in dollars and as a percentage of the price, does the Roll measure imply for Amazon, Tesla and the S&P 500 from 2021 to 2025?
+  question: What bid-ask spread does the Roll measure imply for Amazon, Tesla and the S&P 500 from 2021 to 2025?
   tool: risk
   arguments:
     tickers: AMZN,TSLA

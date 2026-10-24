@@ -7,7 +7,7 @@ get_gross_domestic_product:
     start_date: "2015-01-01"
     end_date: "2025-12-31"
 get_gross_domestic_product_growth:
-  question: How did quarter-on-quarter real GDP growth develop in the euro area, Germany, the United Kingdom, the United States and Japan from the first quarter of 2025 to the second quarter of 2026?
+  question: How did quarterly real GDP growth develop in the euro area, Germany, the United Kingdom, the United States and Japan from early 2025 to mid-2026?
   tool: macroeconomics
   arguments:
     countries: Euro Area,Germany,United Kingdom,United States,Japan
@@ -369,7 +369,7 @@ get_recession_indicator:
     end_date: "2025-12-31"
     limit: -5
 get_economic_calendar:
-  question: What were the first five high-impact economic releases for the United States and the euro area in September 2026, with their previous, estimated and actual figures?
+  question: Which high-impact economic releases were due for the United States and the euro area in early September 2026?
   tool: macroeconomics
   arguments:
     start_date: "2026-09-01"
@@ -395,7 +395,7 @@ get_central_bank_policy_rate:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_overnight_rate:
-  question: How did the overnight rates of the euro area, Japan, the United Kingdom and the United States (€STR, TONA, SONIA and SOFR) move each month from April to September 2026?
+  question: How did €STR, TONA, SONIA and SOFR move each month from April to September 2026?
   tool: rates
   arguments:
     countries: Euro Area,Japan,United Kingdom,United States
@@ -403,7 +403,7 @@ get_overnight_rate:
     start_date: "2026-04-01"
     end_date: "2026-09-30"
 get_short_term_interest_rate:
-  question: How did 3-month interbank rates in Japan, the United States and China move in each quarter from the second quarter of 2023 to the end of 2025, according to OECD data?
+  question: How did 3-month interbank rates in Japan, the United States and China move each quarter from mid-2023 to the end of 2025?
   tool: rates
   arguments:
     countries: Japan,United States,China
@@ -436,7 +436,7 @@ get_yield_curve_slope:
     start_date: "2021-01-01"
     end_date: "2023-12-31"
 get_real_yield_curve:
-  question: How did 10-year real yields on inflation-linked government bonds in the United States, the United Kingdom and Germany move each month from April to September 2026?
+  question: How did 10-year real yields in the United States, the United Kingdom and Germany move from April to September 2026?
   tool: rates
   arguments:
     countries: United States,United Kingdom,Germany
@@ -510,7 +510,7 @@ get_carbon_price:
     start_date: "2026-04-01"
     end_date: "2026-09-30"
 get_climate_scenario:
-  question: What long-term interest rates does the NGFS Net Zero 2050 scenario project for the United States, Germany, the United Kingdom and Japan in 2025, 2030, 2035, 2040, 2045 and 2050?
+  question: What long-term interest rates does the NGFS Net Zero 2050 scenario project for the United States, Germany, the United Kingdom and Japan up to 2050?
   tool: environment
   arguments:
     variable: long_term_interest_rate
@@ -518,7 +518,7 @@ get_climate_scenario:
     countries: United States,Germany,United Kingdom,Japan
     show_columns: 2025,2030,2035,2040,2045,2050
 get_unemployment_rate:
-  question: How did the unemployment rate in Germany, the United States and Japan develop in each quarter from the first quarter of 2021 to the first quarter of 2023, according to OECD data?
+  question: How did the unemployment rate in Germany, the United States and Japan develop each quarter from 2021 to early 2023?
   tool: jobs
   arguments:
     countries: Germany,United States,Japan
@@ -612,7 +612,7 @@ get_millennium_of_macroeconomic_data:
     start_date: "1700-01-01"
     end_date: "2016-12-31"
 get_stress_test_scenario:
-  question: What real GDP growth, unemployment rate, 10-year Treasury yield and BBB corporate yield does the severely adverse scenario of the Federal Reserve's 2026 stress test assume for the United States in its first five quarters?
+  question: What does the severely adverse scenario of the Federal Reserve's 2026 stress test assume for US growth, unemployment and yields in its first five quarters?
   tool: macroeconomics
   arguments:
     scenario: adverse
@@ -622,7 +622,7 @@ get_stress_test_scenario:
     show_columns: Real GDP growth,Unemployment rate,10-year Treasury yield,BBB corporate yield
     limit: 5
 get_scenario_set:
-  question: What 5th percentile, median, 95th percentile and mean 10-year nominal interest rate does De Nederlandsche Bank's real-world scenario set give now and 1, 5, 10, 30 and 100 years ahead?
+  question: Where does De Nederlandsche Bank's real-world scenario set see the 10-year nominal interest rate in 1, 5, 10, 30 and 100 years?
   tool: macroeconomics
   arguments:
     authority: dnb
