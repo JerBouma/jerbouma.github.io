@@ -376,13 +376,13 @@ Check a run against what its own models promise. Most variables can also be simu
 scenarios.validate(result)
 ```
 
-For example, three of the checks are shown below.
+On this run four of the six checks pass and two warn, one on the correlations and one on the volatilities. For example, three of the checks are shown below.
 
-| check                                  | status | detail                                                                                                                                                                        |
-|:---------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Every factor calibrated                | pass   | every factor calibrated                                                                                                                                                       |
-| Simulation reproduces the correlations | warn   | largest gap 0.103 (eurozone_inflation/united_kingdom_inflation); pairs with a linked factor, not graded: largest gap 0.715 (united_states_short_rate/united_states_long_rate) |
-| Every path is finite                   | pass   | 27 factors, all finite                                                                                                                                                        |
+| check                                  | status | detail                                                                                                                                                                                                                                                |
+|:---------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Every factor calibrated                | pass   | every factor calibrated                                                                                                                                                                                                                               |
+| Simulation reproduces the correlations | warn   | largest gap 0.103 (eurozone_inflation/united_kingdom_inflation); pairs with a linked factor, not graded: largest gap 0.715 (united_states_short_rate/united_states_long_rate); rate_level and rate_slope read off the short and long rate, not graded |
+| Every path is finite                   | pass   | 27 factors, all finite                                                                                                                                                                                                                                |
 
 Whether the variables also move together the way the economy does, measured the same way on decades of history and on every scenario, is a check of its own:
 

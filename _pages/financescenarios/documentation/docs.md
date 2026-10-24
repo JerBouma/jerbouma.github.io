@@ -171,7 +171,7 @@ Which returns, for the checks:
 | Every factor calibrated | pass | every factor calibrated |
 | Parameters in a plausible range | pass | every long-run level and half-life in range |
 | Valid correlation matrix | pass | 27 factors, smallest eigenvalue 1.14e-01, symmetric True, unit diagonal True; shrinkage 0.15; repair 0.00 |
-| Simulation reproduces the correlations | warn | largest gap 0.103 (eurozone_inflation/united_kingdom_inflation) |
+| Simulation reproduces the correlations | warn | largest gap 0.103 (eurozone_inflation/united_kingdom_inflation); rate_level and rate_slope read off the short and long rate, not graded |
 | Simulated volatility matches history | warn | 16 factors compared, median ratio 0.99; outside 0.67-1.50x: eurozone_short_rate 1.72x |
 | Every path is finite | pass | 27 factors, all finite |
 
