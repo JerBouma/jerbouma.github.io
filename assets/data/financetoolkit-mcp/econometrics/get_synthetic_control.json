@@ -1,0 +1,1 @@
+{"charts":{"get_synthetic_control":{"type":"bar","x":["Average Treatment Effect","Pre-Treatment RMSPE","Post-Treatment RMSPE"],"series":[{"name":"Synthetic Control","data":[-0.0017,0.0156,0.0204]}],"format":"percent","title":"Treatment Effect and Prediction Errors","period":false}}}

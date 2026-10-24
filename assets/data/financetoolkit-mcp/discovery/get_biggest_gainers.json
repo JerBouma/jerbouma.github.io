@@ -1,0 +1,1 @@
+{"charts":{"get_biggest_gainers":{"type":"bar","x":["AIOK","CLRO","LYCA","BOLT","MYND","ESLA","GPUS","JYD","HTCO","IMC"],"series":[{"name":"Change %","data":[182.8235,69.2708,66.6667,49.642,47.4201,35.5256,34.0476,32.6087,30.7692,28.4286]}],"format":"number","title":"Change (%)","period":false}}}

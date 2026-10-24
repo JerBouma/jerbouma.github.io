@@ -1,0 +1,1 @@
+{"charts":{"get_acerbi_szekely_test":{"type":"bar","x":["Acerbi-Szekely Statistic","P-Value"],"series":[{"name":"BA","data":[0.1548,0.352]},{"name":"DAL","data":[0.2473,0.1524]},{"name":"CCL","data":[0.1402,0.3926]}],"format":"ratio","title":"Acerbi-Szekely Test","period":false}}}

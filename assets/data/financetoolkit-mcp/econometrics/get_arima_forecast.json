@@ -1,0 +1,1 @@
+{"charts":{"get_arima_forecast":{"type":"line","x":["1","2","3","4","5","6","7","8","9","10"],"series":[{"name":"BRK-B","data":[502.8743,503.098,503.3209,503.5434,503.7653,503.9868,504.2079,504.4287,504.6492,504.8694]}],"format":"price","title":"ARIMA Forecast","period":false,"xname":"Trading days ahead"}}}

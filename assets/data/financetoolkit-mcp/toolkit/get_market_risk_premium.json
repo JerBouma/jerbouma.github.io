@@ -1,0 +1,1 @@
+{"charts":{"get_market_risk_premium":{"type":"bar","x":["Brazil","Germany","India","Japan","South Africa","United States"],"series":[{"name":"Country Risk Premium","data":[0.0324,0.0,0.0285,0.0091,0.039,0.0023]},{"name":"Total Equity Risk Premium","data":[0.0747,0.0423,0.0708,0.0514,0.0813,0.0446]}],"format":"percent","title":"Market Risk Premium","period":false}}}

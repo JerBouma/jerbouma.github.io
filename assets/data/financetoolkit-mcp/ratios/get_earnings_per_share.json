@@ -1,0 +1,1 @@
+{"charts":{"get_earnings_per_share":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AXP","data":[10.0215,9.8404,11.212,14.0182,15.375]},{"name":"MA","data":[8.7571,10.2266,11.834,13.8878,16.6682]},{"name":"V","data":[5.6266,7.0023,8.2844,9.7304,10.0982]}],"format":"price","title":"Earnings per Share (EPS)","period":false}}}

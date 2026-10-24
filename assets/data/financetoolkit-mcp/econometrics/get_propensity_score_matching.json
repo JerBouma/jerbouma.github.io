@@ -1,0 +1,1 @@
+{"charts":{"get_propensity_score_matching":{"type":"bar","x":["ATT","Std. Error"],"series":[{"name":"Propensity Score Matching","data":[0.0164,0.0016]}],"format":"percent","title":"Average Treatment Effect on the Treated and Standard Error","period":false}}}

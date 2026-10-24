@@ -1,0 +1,1 @@
+{"charts":{"get_present_value_of_growth_opportunities":{"type":"bar","x":["2023","2024","2025"],"series":[{"name":"ADI","data":[168.3817,197.8708,249.9764]},{"name":"NVDA","data":[46.9237,128.9079,169.4613]},{"name":"TXN","data":[133.8581,160.9929,143.8409]}],"format":"price","title":"Present Value of Growth Opportunities (PVGO)","period":false}}}

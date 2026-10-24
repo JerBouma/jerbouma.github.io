@@ -1,0 +1,352 @@
+get_profile:
+  question: What are the industry, listing exchange, trading currency, ISIN and beta of ASML, SAP and LVMH?
+  tool: market_data
+  arguments:
+    tickers: ASML.AS,SAP.DE,MC.PA
+    show_columns: Company Name,Industry,Exchange,Currency,ISIN,Beta
+  chart:
+    type: table
+    rename: {metric: ""}
+get_quote:
+  question: Where do the share prices of Visa, Mastercard and American Express currently stand against their 52-week highs and lows?
+  tool: market_data
+  arguments:
+    tickers: V,MA,AXP
+    show_columns: Price,Year High,Year Low
+  chart:
+    transpose: true
+    format: price
+    title: Price, Year High and Year Low
+get_rating:
+  question: How does Visa currently score on discounted cash flow, return on equity, return on assets, debt to equity, P/E and P/B, on a scale of 1 to 5?
+  tool: market_data
+  arguments:
+    tickers: V
+    limit: -1
+  chart:
+    transpose: true
+    x: ticker
+    values: [DCF Score, ROE Score, ROA Score, DE Score, PE Score, PB Score]
+    format: amount
+    title: Rating Scores
+get_analyst_estimates:
+  question: What revenue do analysts expect for Nvidia, AMD and Broadcom in fiscal 2026, 2027 and 2028?
+  tool: market_data
+  arguments:
+    tickers: NVDA,AMD,AVGO
+    start_date: "2026-01-01"
+    end_date: "2028-12-31"
+    show_columns: Estimated Revenue Average
+  chart:
+    values: ["2026", "2027", "2028"]
+    format: usd
+    title: Estimated Revenue (Average)
+get_stock_grades:
+  question: Which analysts upgraded, downgraded or maintained their rating on Nike from October to December 2025?
+  tool: market_data
+  arguments:
+    tickers: NKE
+    start_date: "2025-10-01"
+    end_date: "2025-12-31"
+  chart:
+    type: table
+get_earnings_calendar:
+  question: How did Costco's reported earnings per share compare with analysts' estimates in each quarter of 2024 and 2025?
+  tool: market_data
+  arguments:
+    tickers: COST
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: EPS,Estimated EPS
+  chart:
+    format: price
+    title: Reported and Estimated EPS
+get_earnings_call_transcripts:
+  question: What did Nvidia's management say on the earnings call for the fourth quarter of fiscal 2025?
+  tool: market_data
+  arguments:
+    tickers: NVDA
+    fiscal_period: 2025Q4
+  chart:
+    type: table
+get_dividend_calendar:
+  question: How did Johnson & Johnson's quarterly dividend per share develop from 2021 to 2025?
+  tool: market_data
+  arguments:
+    tickers: JNJ
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Dividend
+  chart:
+    format: price
+    title: Dividend per Share
+get_stock_splits:
+  question: When did Nvidia, Apple, Tesla, Alphabet and Amazon split their shares from 2020 to 2025, and at what ratio?
+  tool: market_data
+  arguments:
+    tickers: NVDA,AAPL,TSLA,GOOGL,AMZN
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+  chart:
+    type: table
+    values: [ticker, Date, Numerator, Denominator]
+    rename: {ticker: Ticker}
+get_mergers_acquisitions:
+  question: Which mergers and acquisitions did Chevron take part in from 2021 to 2025, according to its merger filings with the SEC?
+  tool: market_data
+  arguments:
+    tickers: CVX
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    type: table
+    values: [Transaction Date, Role, Acquirer Name, Target Name]
+get_revenue_geographic_segmentation:
+  question: How was Apple's revenue split across the Americas, Europe, Greater China, Japan and the rest of Asia Pacific from fiscal 2021 to 2025?
+  tool: market_data
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: usd
+    stack: true
+get_revenue_product_segmentation:
+  question: How did Nvidia's revenue from data centers, gaming, professional visualization and automotive develop from fiscal 2021 to 2025?
+  tool: market_data
+  arguments:
+    tickers: NVDA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    format: usd
+    stack: true
+get_esg_scores:
+  question: How did the ESG scores of ExxonMobil, Shell and BP develop from 2021 to 2025?
+  tool: environment
+  arguments:
+    tickers: XOM,SHEL,BP
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: ESG Score
+  chart:
+    format: number
+    title: ESG Score
+get_employee_count:
+  question: How many employees did Walmart and Amazon have each year from 2021 to 2025?
+  tool: market_data
+  arguments:
+    tickers: WMT,AMZN
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+  chart:
+    x: Period
+    format: amount
+get_company_notes:
+  question: Which notes has Coca-Cola listed on the New York Stock Exchange?
+  tool: market_data
+  arguments:
+    tickers: KO
+  chart:
+    type: table
+    values: [Title, Exchange]
+get_executives:
+  question: Who are JPMorgan Chase's key executives?
+  tool: market_data
+  arguments:
+    tickers: JPM
+    show_columns: Name,Title,Year Born
+  chart:
+    type: table
+    values: [Name, Title, Year Born]
+get_executive_compensation:
+  question: How was the 2025 pay of JPMorgan Chase's named executive officers split between salary and incentive compensation?
+  tool: market_data
+  arguments:
+    tickers: JPM
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: Name and Position,Salary,Incentive Plan Compensation
+  chart:
+    x: Name and Position
+    values: [Salary, Incentive Plan Compensation]
+    rename:
+      "Douglas Petno Co-CEO, Commercial & Investment Bank": Douglas Petno
+      James Dimon Chairman and CEO: James Dimon
+      Jeremy Barnum CFO: Jeremy Barnum
+      "Mary Callahan Erdoes CEO, Asset & Wealth Management": Mary Callahan Erdoes
+      "Troy Rohrbaugh Co-CEO, Commercial & Investment Bank": Troy Rohrbaugh
+    stack: true
+    format: usd
+    title: Executive Compensation
+get_insider_trade_statistics:
+  question: How many insider acquisitions and disposals of Meta shares were reported in each quarter of 2024 and 2025?
+  tool: market_data
+  arguments:
+    tickers: META
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: Acquired Transactions,Disposed Transactions
+  chart:
+    x: Period
+    format: amount
+    title: Insider Transactions
+get_shares_float:
+  question: What share of Meta's, Alphabet's and Berkshire Hathaway's outstanding shares is currently free float?
+  tool: market_data
+  arguments:
+    tickers: META,GOOGL,BRK-B
+    show_columns: Free Float
+  chart:
+    format: percent
+    title: Free Float
+get_balance_sheet_statement:
+  question: How did the total debt of NextEra Energy, Duke Energy and Southern Company develop from 2021 to 2025?
+  tool: market_data
+  arguments:
+    tickers: NEE,DUK,SO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Total Debt
+  chart:
+    format: usd
+    title: Total Debt
+get_income_statement:
+  question: How did Nike's revenue and net income develop from 2021 to 2025?
+  tool: market_data
+  arguments:
+    tickers: NKE
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Revenue,Net Income
+  chart:
+    format: usd
+    title: Revenue and Net Income
+get_cash_flow_statement:
+  question: How did Chevron's operating cash flow, capital expenditure, free cash flow and dividends paid develop from 2021 to 2025?
+  tool: market_data
+  arguments:
+    tickers: CVX
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Operating Cash Flow,Capital Expenditure,Free Cash Flow,Dividends Paid
+  chart:
+    format: usd
+get_statistics_statement:
+  question: When were Coca-Cola's and PepsiCo's annual reports for 2021 to 2025 accepted by the SEC?
+  tool: market_data
+  arguments:
+    tickers: KO,PEP
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Accepted Date
+  chart:
+    type: table
+    values: [ticker, "2021", "2022", "2023", "2024", "2025"]
+    rename: {ticker: Ticker}
+get_historical_data:
+  question: How did the share prices of Caterpillar, Deere and United Rentals move in 2025?
+  tool: market_data
+  arguments:
+    tickers: CAT,DE,URI
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: Close
+  chart:
+    format: price
+    title: Closing Price
+get_intraday_data:
+  question: How did Nvidia's share price move hour by hour from 29 to 31 December 2025?
+  tool: market_data
+  arguments:
+    tickers: NVDA
+    period: 1hour
+    start_date: "2025-12-29"
+    end_date: "2025-12-31"
+    show_columns: Close
+  chart:
+    type: line
+    format: price
+    title: Hourly Close
+get_historical_statistics:
+  question: In which currency, on which exchange and since when have ASML's Amsterdam and Nasdaq listings traded?
+  tool: market_data
+  arguments:
+    tickers: ASML.AS,ASML
+  chart:
+    type: table
+    keep:
+      metric: [Currency, Exchange Name, Instrument Type, First Trade Date, Exchange Timezone Name]
+    rename: {metric: ""}
+get_treasury_data:
+  question: How did US Treasury yields from three months to thirty years move month by month in 2025?
+  tool: market_data
+  arguments:
+    period: monthly
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: Close
+  chart:
+    type: line
+    format: percent
+    title: Treasury Yields
+get_market_risk_premium:
+  question: What are the current equity risk premiums of the United States, Germany, Japan, Brazil, India and South Africa?
+  tool: market_data
+  arguments: {}
+  chart:
+    x: Country
+    keep:
+      Country: [United States, Germany, Japan, Brazil, India, South Africa]
+    values: [Country Risk Premium, Total Equity Risk Premium]
+    format: percent
+get_commitment_of_traders:
+  question: How did the long and short positions of speculators (non-commercial traders) in gold futures change in 2025?
+  tool: market_data
+  arguments:
+    tickers: GC
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: Non-Commercial Long,Non-Commercial Short
+  chart:
+    format: amount
+    title: Non-Commercial Positions (Contracts)
+get_etf_information:
+  question: Who manages VOO, QQQ and VTI, when did they launch, what do they cost and how many holdings do they have?
+  tool: market_data
+  arguments:
+    tickers: VOO,QQQ,VTI
+    show_columns: Name,ETF Company,Inception Date,Expense Ratio,Holdings Count
+  chart:
+    type: table
+    rename: {metric: ""}
+get_etf_holdings:
+  question: What are the ten largest holdings of the Invesco QQQ Trust and their current weights?
+  tool: market_data
+  arguments:
+    tickers: QQQ
+    limit: 10
+  chart:
+    x: Asset
+    values: [Weight]
+    format: percent
+    title: Holding Weight
+get_etf_country_weightings:
+  question: Which ten countries currently weigh most in the Vanguard FTSE Developed Markets ETF (VEA)?
+  tool: market_data
+  arguments:
+    tickers: VEA
+    limit: 10
+  chart:
+    x: Country
+    format: percent
+    title: Country Weight
+get_etf_sector_weightings:
+  question: How do the current sector weights of the Vanguard Total Stock Market ETF (VTI) and the Invesco QQQ Trust compare?
+  tool: market_data
+  arguments:
+    tickers: VTI,QQQ
+  chart:
+    x: Sector
+    format: percent
+    title: Sector Weight

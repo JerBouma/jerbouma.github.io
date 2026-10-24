@@ -1,0 +1,1 @@
+{"charts":{"get_capex_per_share":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CSX","data":[-0.7942,-0.9963,-1.1212,-1.3016,-1.5569]},{"name":"NSC","data":[-5.925,-8.2683,-10.3298,-10.5168,-9.8043]},{"name":"UNP","data":[-4.4797,-5.8013,-5.9095,-5.672,-6.3875]}],"format":"price","title":"CAPEX per Share","period":false}}}

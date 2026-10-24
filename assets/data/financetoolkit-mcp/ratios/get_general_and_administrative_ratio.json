@@ -1,0 +1,1 @@
+{"charts":{"get_general_and_administrative_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"INTU","data":[0.1019,0.1147,0.0905,0.0871,0.085]},{"name":"SNOW","data":[0.2174,0.1432,0.1151,0.1137,0.1174]},{"name":"WDAY","data":[0.0946,0.0964,0.0967,0.0971,0.1401]}],"format":"percent","title":"General and Administrative Ratio","period":false}}}

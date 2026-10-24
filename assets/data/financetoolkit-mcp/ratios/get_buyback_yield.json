@@ -1,0 +1,1 @@
+{"charts":{"get_buyback_yield":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AAPL","data":[0.029,0.0429,0.0258,0.0248,0.0223]},{"name":"AZO","data":[0.0668,0.083,0.0712,0.052,0.024]},{"name":"ORLY","data":[0.0511,0.0613,0.0554,0.028,0.0258]}],"format":"percent","title":"Buyback Yield","period":false}}}

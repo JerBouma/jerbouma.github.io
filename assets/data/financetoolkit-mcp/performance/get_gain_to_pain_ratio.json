@@ -1,0 +1,1 @@
+{"charts":{"get_gain_to_pain_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"GS","data":[0.3004,-0.0211,0.1332,0.389,0.3367]},{"name":"MS","data":[0.2961,-0.0283,0.116,0.3075,0.2929]},{"name":"SCHW","data":[0.3257,0.0318,-0.0375,0.094,0.2867]}],"format":"ratio","title":"Gain-to-Pain Ratio","period":false}}}

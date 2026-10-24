@@ -1,0 +1,1 @@
+{"charts":{"get_fulmer_h_score":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CMCSA","data":[11.7476,11.1715,11.7598,11.8036,12.2913]},{"name":"DIS","data":[10.8715,11.4775,11.5194,12.0773,12.6399]},{"name":"FOXA","data":[11.0418,10.7195,10.6269,10.8972,11.8009]}],"format":"ratio","title":"Fulmer H-Score","period":false}}}

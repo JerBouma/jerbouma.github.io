@@ -1,0 +1,1 @@
+{"charts":{"get_weighted_average_cost_of_capital":{"type":"bar","x":["2023","2024","2025"],"series":[{"name":"T","data":[0.0783,0.0271,0.0455]},{"name":"TMUS","data":[0.0843,0.0769,0.0555]},{"name":"VZ","data":[0.0743,0.0358,0.039]}],"format":"percent","title":"Weighted Average Cost of Capital (WACC)","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_hill_estimator":{"type":"bar","x":["TSLA","NVDA","JNJ"],"series":[{"name":"Hill Tail Index","data":[3.5543,3.2859,3.1796]}],"format":"ratio","title":"Hill Tail Index","period":false}}}

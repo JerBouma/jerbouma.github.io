@@ -1,0 +1,1 @@
+{"charts":{"get_free_cash_flow_yield":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"BTI","data":[0.2086,0.1759,0.2431,0.1642,0.0656]},{"name":"MO","data":[0.1358,0.13,0.1547,0.1077,0.0984]},{"name":"PM","data":[0.0941,0.0729,0.0602,0.0611,0.0438]}],"format":"percent","title":"Free Cash Flow Yield","period":false}}}

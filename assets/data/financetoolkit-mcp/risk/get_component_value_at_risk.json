@@ -1,0 +1,1 @@
+{"charts":{"get_component_value_at_risk":{"type":"bar","x":["MSFT","PG","CAT","Portfolio"],"series":[{"name":"Component VaR","data":[-0.0071,-0.0016,-0.0072,-0.0159]}],"format":"percent","title":"Component Value at Risk (cVaR)","period":false}}}

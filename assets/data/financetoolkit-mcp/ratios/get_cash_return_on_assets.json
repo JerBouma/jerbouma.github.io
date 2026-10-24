@@ -1,0 +1,1 @@
+{"charts":{"get_cash_return_on_assets":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"FDX","data":[0.1165,0.1018,0.0955,0.0806,0.0957]},{"name":"UPS","data":[0.2277,0.2007,0.1442,0.1436,0.118]}],"format":"percent","title":"Cash Return on Assets (CRoA)","period":false}}}

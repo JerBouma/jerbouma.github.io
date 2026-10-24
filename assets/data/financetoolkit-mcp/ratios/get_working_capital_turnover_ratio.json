@@ -1,0 +1,1 @@
+{"charts":{"get_working_capital_turnover_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"FAST","data":[2.9601,3.096,3.1299,3.0898,3.1055]},{"name":"GWW","data":[5.2497,5.5883,5.1413,4.9943,5.1439]},{"name":"MSM","data":[4.1018,4.7031,5.397,6.1099,6.9814]}],"format":"ratio","title":"Working Capital Turnover Ratio","period":false}}}

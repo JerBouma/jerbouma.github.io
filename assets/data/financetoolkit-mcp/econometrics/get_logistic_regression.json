@@ -1,0 +1,1 @@
+{"charts":{"get_logistic_regression":{"type":"coef","x":["Intercept","S&P 500"],"coef":[-0.0275,164.8456],"low":[-0.3215,115.036708],"high":[0.2665,214.654492],"p":[0.8543,0.0],"format":"ratio","title":"Logistic Regression","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_win_rate":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AAPL","data":[0.4921,0.4781,0.58,0.5,0.472]},{"name":"MSFT","data":[0.5119,0.4582,0.508,0.4881,0.484]},{"name":"GOOGL","data":[0.5278,0.4502,0.524,0.5357,0.56]}],"format":"percent","title":"Win Rate","period":false}}}

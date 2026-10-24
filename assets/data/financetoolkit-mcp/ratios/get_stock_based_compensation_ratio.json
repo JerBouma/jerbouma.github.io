@@ -1,0 +1,1 @@
+{"charts":{"get_stock_based_compensation_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"DASH","data":[0.0994,0.135,0.126,0.1025,0.0766]},{"name":"LYFT","data":[0.2258,0.1833,0.11,0.0572,0.051]},{"name":"UBER","data":[0.0669,0.0562,0.0519,0.0408,0.0351]}],"format":"percent","title":"Stock-Based Compensation Ratio","period":false}}}

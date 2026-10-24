@@ -1,0 +1,1 @@
+{"charts":{"get_cash_conversion_efficiency":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ADBE","data":[0.458,0.4452,0.3762,0.3746,0.422]},{"name":"CRM","data":[0.2265,0.2268,0.2936,0.3455,0.3611]},{"name":"NOW","data":[0.3716,0.3758,0.3788,0.3885,0.41]}],"format":"percent","title":"Cash Conversion Efficiency","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_interest_coverage_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CPB","data":[7.781,8.0212,9.0372,6.3936,4.6696]},{"name":"HSY","data":[18.1655,18.8425,18.455,19.2379,9.2591]},{"name":"MKC","data":[8.795,7.1375,5.5826,6.0606,6.6366]}],"format":"ratio","title":"Interest Coverage Ratio","period":false}}}

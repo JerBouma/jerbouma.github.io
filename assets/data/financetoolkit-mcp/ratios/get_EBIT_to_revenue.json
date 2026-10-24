@@ -1,0 +1,1 @@
+{"charts":{"get_EBIT_to_revenue":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"GD","data":[0.1119,0.1123,0.1037,0.1034,0.1031]},{"name":"LMT","data":[0.1211,0.1107,0.1334,0.1021,0.0938]},{"name":"NOC","data":[0.2662,0.1733,0.0736,0.1374,0.1366]}],"format":"percent","title":"EBIT to Revenue","period":false}}}

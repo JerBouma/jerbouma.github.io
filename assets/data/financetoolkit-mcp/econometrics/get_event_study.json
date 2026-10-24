@@ -1,0 +1,1 @@
+{"charts":{"get_event_study":{"type":"table","columns":["Result","Value"],"rows":[["Cumulative Abnormal Return",0.2042],["CAR t-statistic",1.9462],["CAR p-value",0.0528],["Alpha",0.0018],["Beta",2.0759],["Estimation Window Observations",250]],"title":"Event Study"}}}

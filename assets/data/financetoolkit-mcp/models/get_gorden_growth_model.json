@@ -1,0 +1,1 @@
+{"charts":{"get_gorden_growth_model":{"type":"bar","x":["2021","2022","2023","2024","2025","2026","2027","2028","2029","2030"],"series":[{"name":"KO","data":[43.68,45.76,47.84,50.44,53.04,55.1616,57.3681,59.6628,62.0493,64.5313]}],"format":"price","title":"Gordon Growth Model (GGM)","period":false}}}

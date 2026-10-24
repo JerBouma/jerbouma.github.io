@@ -1,0 +1,1 @@
+{"charts":{"get_appraisal_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ADBE","data":[-1.1698,-0.4501,1.5733,-1.6872,-1.4143]},{"name":"CRM","data":[-0.8082,-0.6199,2.7149,-0.1894,-1.4876]},{"name":"ORCL","data":[0.5268,0.5151,0.1364,0.9998,-0.1043]}],"format":"ratio","title":"Appraisal Ratio","period":false}}}

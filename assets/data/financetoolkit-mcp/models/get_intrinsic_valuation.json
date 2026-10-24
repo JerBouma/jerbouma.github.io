@@ -1,0 +1,1 @@
+{"charts":{"get_intrinsic_valuation":{"type":"bar","x":["ADBE","CRM","INTU"],"series":[{"name":"Intrinsic Value","data":[456.8271,289.836,414.9721]}],"format":"price","title":"Intrinsic Value per Share","period":false}}}

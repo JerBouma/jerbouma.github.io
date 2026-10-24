@@ -1,0 +1,1 @@
+{"charts":{"get_excess_return":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"MCD","data":[0.2894,-0.0347,0.1121,-0.0441,0.0372]},{"name":"SBUX","data":[0.1392,-0.1696,-0.0502,-0.0705,-0.0943]},{"name":"CMG","data":[0.3092,-0.2451,0.6102,0.2736,-0.4279]}],"format":"percent","title":"Excess Return","period":false}}}

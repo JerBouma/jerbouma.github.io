@@ -1,0 +1,1 @@
+{"charts":{"get_gross_margin":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CFR.SW","data":[0.627,0.6874,0.6808,0.6691,0.644]},{"name":"MC.PA","data":[0.6829,0.6844,0.688,0.6703,0.6624]},{"name":"RMS.PA","data":[0.6558,0.6603,0.7229,0.7026,0.7111]}],"format":"percent","title":"Gross Margin","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_internal_growth_rate":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ADBE","data":[0.2303,0.2119,0.2355,0.2275,0.3136]},{"name":"ADSK","data":[0.0667,0.1004,0.1033,0.1201,0.1068]},{"name":"INTU","data":[0.1199,0.0635,0.0569,0.0688,0.0841]}],"format":"percent","title":"Internal Growth Rate (IGR)","period":false}}}

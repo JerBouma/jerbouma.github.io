@@ -1,0 +1,1 @@
+{"charts":{"get_free_cash_flow_margin":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"MCO","data":[0.3001,0.2178,0.3178,0.3557,0.3336]},{"name":"MSCI","data":[0.4322,0.4547,0.4528,0.5139,0.4942]},{"name":"SPGI","data":[0.4294,0.2248,0.2854,0.3917,0.3558]}],"format":"percent","title":"Free Cash Flow Margin","period":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_rmse":{"type":"bar","x":["IVV","VOO"],"series":[{"name":"RMSE","data":[0.0009,0.001]}],"format":"percent","title":"Root Mean Squared Error (RMSE)","period":false}}}

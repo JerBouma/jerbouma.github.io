@@ -1,0 +1,1 @@
+{"charts":{"get_etf_country_weightings":{"type":"bar","x":["Japan","United Kingdom","Canada","Korea","Switzerland","France","Germany","Australia","Netherlands","Spain"],"series":[{"name":"VEA","data":[0.2191,0.1108,0.1077,0.0919,0.0659,0.0657,0.0622,0.0562,0.04,0.0291]}],"format":"percent","title":"Country Weight","period":false}}}
