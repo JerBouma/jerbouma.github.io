@@ -1,45 +1,51 @@
 get_stock_screener:
-  question: Which US technology companies currently have a market capitalization above $500 billion?
+  question: Which stocks, excluding ETFs, have a market cap between $1 million and $200 billion, a price between $100 and $200, a beta between 1 and 2, a daily volume between 100,000 and 2 million shares and a dividend between $1 and $2 per share?
   tool: discovery
   arguments:
-    country: US
-    sector: Technology
-    market_cap_higher: 500000000000
-    primary_only: true
-    limit: 10
+    market_cap_higher: 1000000
+    market_cap_lower: 200000000000
+    price_higher: 100
+    price_lower: 200
+    beta_higher: 1
+    beta_lower: 2
+    volume_higher: 100000
+    volume_lower: 2000000
+    dividend_higher: 1
+    dividend_lower: 2
+    is_etf: false
 get_stock_list:
-  question: Show the first ten companies in the Finance Toolkit's list of stocks.
+  question: Show the ten companies from DS-PD to DSAQ-UN in the Finance Toolkit's list of stocks.
   tool: discovery
   arguments:
-    limit: 10
+    show_columns: DS-PD,DS.TO,DS2P.L,DSAC,DSACU,DSACW,DSAI.CN,DSAIF,DSAQ,DSAQ-UN
 get_stock_shares_float:
-  question: What is the free float of the first ten companies in the Finance Toolkit's list of floating shares?
+  question: What is the free float of the ten companies from INDI to INDIAMART.NS in the Finance Toolkit's list of floating shares?
   tool: discovery
   arguments:
-    limit: 10
+    show_columns: INDI,INDI.L,INDIACEM.BO,INDIACEM.NS,INDIAGLYCO.BO,INDIAGLYCO.NS,INDIAHOME.BO,INDIAHOMES.BO,INDIAMART.BO,INDIAMART.NS
 get_sectors_performance:
-  question: How did NASDAQ-listed technology, energy, healthcare and utilities stocks move each day in the first two weeks of April 2025?
+  question: How did each sector of NASDAQ-listed stocks move on each trading day from 26 February to 1 March 2024?
   tool: discovery
   arguments:
-    start_date: "2025-04-01"
-    end_date: "2025-04-14"
+    start_date: "2024-02-26"
+    end_date: "2024-03-01"
 get_biggest_gainers:
-  question: Which stocks are currently the biggest gainers of the day?
+  question: Which ten stocks are the biggest gainers of the day?
   tool: discovery
   arguments:
     limit: 10
 get_biggest_losers:
-  question: Which stocks are currently the biggest losers of the day?
+  question: Which ten stocks are the biggest losers of the day?
   tool: discovery
   arguments:
     limit: 10
 get_most_active_stocks:
-  question: Which stocks are currently the most actively traded, and how far have their prices moved?
+  question: Which ten stocks are the most actively traded today, and how far have their prices moved?
   tool: discovery
   arguments:
     limit: 10
 get_delisted_stocks:
-  question: Which companies were delisted most recently?
+  question: Which ten companies were delisted most recently?
   tool: discovery
   arguments:
     limit: 10
@@ -54,10 +60,10 @@ get_forex_list:
   arguments:
     limit: 10
 get_commodity_list:
-  question: Which commodities can I get prices for with the Finance Toolkit? Show the first twelve.
+  question: Which commodities can I get prices for with the Finance Toolkit? Show the first ten.
   tool: discovery
   arguments:
-    limit: 12
+    limit: 10
 get_etf_list:
   question: Show the first ten ETFs in the Finance Toolkit's list of ETFs.
   tool: discovery
@@ -69,103 +75,115 @@ get_index_list:
   arguments:
     limit: 10
 get_stock_news:
-  question: Which stock market headlines were published on 1 December 2025?
+  question: What are the five latest stock market headlines, with the symbol and publisher of each?
   tool: discovery
   arguments:
-    start_date: "2025-12-01"
-    end_date: "2025-12-01"
-    limit: 10
+    limit: 5
+    show_columns: Symbol,Publisher,Title
 get_general_news:
-  question: What are the latest general market headlines?
+  question: What are the five latest general market headlines, and who published them?
   tool: discovery
   arguments:
-    limit: 10
+    limit: 5
+    show_columns: Publisher,Title
 get_press_releases:
-  question: Which press releases did companies publish on 1 December 2025?
+  question: What are the five latest company press releases, with the symbol and publisher of each?
   tool: discovery
   arguments:
-    start_date: "2025-12-01"
-    end_date: "2025-12-01"
-    limit: 10
+    limit: 5
+    show_columns: Symbol,Publisher,Title
 get_crypto_news:
-  question: What are the latest cryptocurrency headlines?
+  question: What are the five latest cryptocurrency headlines, with the symbol and publisher of each?
   tool: discovery
   arguments:
-    limit: 10
+    limit: 5
+    show_columns: Symbol,Publisher,Title
 get_forex_news:
-  question: What are the latest forex headlines?
+  question: What are the five latest forex headlines, with the currency pair and publisher of each?
   tool: discovery
   arguments:
-    limit: 10
+    limit: 5
+    show_columns: Symbol,Publisher,Title
 get_ipo_calendar:
-  question: Which IPOs were scheduled from 15 to 19 December 2025?
+  question: Which were the first five IPOs on the calendar, by symbol, from 1 January to 1 June 2024?
   tool: discovery
   arguments:
-    start_date: "2025-12-15"
-    end_date: "2025-12-19"
+    start_date: "2024-01-01"
+    end_date: "2024-06-01"
+    limit: 5
 get_ipo_disclosures:
-  question: Which IPO disclosure filings were made on 15 December 2025?
+  question: Which were the first five IPO disclosure filings, by symbol, from 1 January to 1 June 2024?
   tool: discovery
   arguments:
-    start_date: "2025-12-15"
-    end_date: "2025-12-15"
+    start_date: "2024-01-01"
+    end_date: "2024-06-01"
+    limit: 5
 get_ipo_prospectuses:
-  question: How much did the IPOs that filed their final prospectus from 15 to 19 December 2025 raise?
+  question: How much did the first five IPOs by symbol that filed their final prospectus from 1 January to 1 June 2024 raise?
   tool: discovery
   arguments:
-    start_date: "2025-12-15"
-    end_date: "2025-12-19"
+    start_date: "2024-01-01"
+    end_date: "2024-06-01"
+    limit: 5
 get_stock_splits_calendar:
-  question: Which share splits did Netflix and the ProShares ETFs TQQQ, SQQQ, SSO and SDS carry out from 17 to 21 November 2025?
+  question: Which were the first five stock splits on the calendar, by symbol, from 1 January to 1 June 2024?
   tool: discovery
   arguments:
-    start_date: "2025-11-17"
-    end_date: "2025-11-21"
+    start_date: "2024-01-01"
+    end_date: "2024-06-01"
+    limit: 5
 get_earnings_calendar:
-  question: What earnings per share did Nike, FedEx, Accenture and Cintas report on 18 December 2025, compared with the estimates?
+  question: Which were the first five companies on the earnings calendar from 1 to 3 October 2026, with their reported and estimated earnings per share and revenue?
   tool: discovery
   arguments:
-    start_date: "2025-12-18"
-    end_date: "2025-12-18"
-    show_columns: Symbol,EPS,Estimated EPS
+    start_date: "2026-10-01"
+    end_date: "2026-10-03"
+    limit: 5
 get_sec_filings_8k:
-  question: Which companies filed an 8-K with the SEC on 1 December 2025?
+  question: Which were the five latest 8-K filings with the SEC from 1 to 2 October 2026, with the time each was accepted, whether it included financial statements and its link?
   tool: discovery
   arguments:
-    start_date: "2025-12-01"
-    end_date: "2025-12-01"
-    limit: 10
+    start_date: "2026-10-01"
+    end_date: "2026-10-02"
+    limit: 5
+    show_columns: Accepted Date,Has Financials,Final Link
 get_insider_trading_latest:
-  question: Which insider trades were reported most recently?
+  question: What were the five most recently reported insider trades, with the insider's name, the type of transaction, the number of shares and the price?
   tool: discovery
   arguments:
-    limit: 10
+    limit: 5
+    show_columns: Reporting Name,Transaction Type,Securities Transacted,Price
 get_sector_performance:
-  question: How did each sector of NASDAQ-listed stocks perform on 9 April 2025?
+  question: How did NASDAQ-listed energy stocks perform on each trading day from 26 February to 1 March 2024?
   tool: discovery
   arguments:
-    date: "2025-04-09"
+    sector: Energy
+    start_date: "2024-02-26"
+    end_date: "2024-03-01"
 get_industry_performance:
-  question: How did NASDAQ-listed semiconductor stocks perform each day in the first two weeks of April 2025?
+  question: How did NASDAQ-listed biotechnology stocks perform on each trading day from 26 February to 1 March 2024?
   tool: discovery
   arguments:
-    industry: Semiconductors
-    start_date: "2025-04-01"
-    end_date: "2025-04-14"
+    industry: Biotechnology
+    start_date: "2024-02-26"
+    end_date: "2024-03-01"
 get_sector_pe:
-  question: What was the P/E ratio of each sector of NASDAQ-listed stocks on 31 December 2025?
+  question: What was the P/E ratio of NASDAQ-listed energy stocks on each trading day from 26 February to 1 March 2024?
   tool: discovery
   arguments:
-    date: "2025-12-31"
+    sector: Energy
+    start_date: "2024-02-26"
+    end_date: "2024-03-01"
 get_industry_pe:
-  question: How did the P/E ratio of NASDAQ-listed semiconductor stocks change through 2025?
+  question: How did the P/E ratio of NASDAQ-listed biotechnology stocks change on each trading day from 26 February to 1 March 2024?
   tool: discovery
   arguments:
-    industry: Semiconductors
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
+    industry: Biotechnology
+    start_date: "2024-02-26"
+    end_date: "2024-03-01"
 get_mergers_acquisitions_latest:
-  question: Which mergers and acquisitions were announced most recently?
+  question: Which five mergers and acquisitions were announced most recently, with the acquirer, the target and the transaction date?
   tool: discovery
   arguments:
-    limit: 10
+    limit: 5
+    show_columns: Company Name,Targeted Company Name,Transaction Date

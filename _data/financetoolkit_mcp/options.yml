@@ -1,317 +1,345 @@
 get_option_chains:
-  question: What are the bid and ask prices of Microsoft's call options at the nearest expiration, for strikes within 5% of the current share price?
+  question: Which of Apple's call options at the nearest expiration are in the money, and what are their last price, bid, ask, volume, open interest and implied volatility?
   tool: options
   arguments:
-    tickers: MSFT
-    strike_price_range: 0.05
+    tickers: AAPL
 get_black_scholes_model:
-  question: What is a call option on Nvidia worth under the Black-Scholes model, across strikes within 15% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
+  question: What is a call option on Amazon worth under the Black-Scholes model, across strikes within 25% of the share price in steps of $5 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
   tool: options
   arguments:
-    tickers: NVDA
-    start_date: "2025-01-01"
+    tickers: AMZN
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.15
+    strike_price_range: 0.25
     strike_step_size: 5
-    expiration_time_range: 91
+    expiration_time_range: 10
 get_implied_volatility:
-  question: What is the implied volatility of Apple's call options across strike prices for the nearest expiration currently?
+  question: What is the implied volatility of Apple's call options at each strike for the nearest expiration?
   tool: options
   arguments:
     tickers: AAPL
 get_binomial_model:
-  question: What does the binomial tree of a one-year European call on Coca-Cola struck at the money look like with five time steps, priced at the close of 31 December 2025?
+  question: What does the binomial tree of a one-year European call on Apple with a $140 strike look like with ten time steps, priced at the close of 2 February 2024?
   tool: options
   arguments:
-    tickers: KO
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2024-02-02"
     strike_price_range: 0
-    strike_step_size: 1
-    timesteps: 5
+    strike_step_size: 140
+    time_to_expiration: 1
+    timesteps: 10
 get_stock_price_simulation:
-  question: Which share prices can AMD reach over one year in a binomial tree with five steps, starting from the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: AMD
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    timesteps: 5
-get_garman_kohlhagen:
-  question: What is a call on the dollar against the yen (USD/JPY) worth under the Garman-Kohlhagen model, across strikes within 5% of the exchange rate and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025 with a yen interest rate of 0.75% and a dollar interest rate of 3.75%?
-  tool: options
-  arguments:
-    tickers: USDJPY
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.05
-    strike_step_size: 2
-    expiration_time_range: 91
-    risk_free_rate: 0.0075
-    foreign_risk_free_rate: 0.0375
-get_bjerksund_stensland:
-  question: What is an American call on Verizon worth under the Bjerksund-Stensland model, across strikes within 15% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: VZ
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
-    strike_step_size: 1
-    expiration_time_range: 91
-get_monte_carlo_option_price:
-  question: What is a call option on Costco worth in a Monte Carlo simulation of 10,000 price paths, across strikes within 10% of the share price and with 7, 14 and 30 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: COST
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.1
-    strike_step_size: 10
-    expiration_time_range: 31
-    seed: 42
-get_binary_option:
-  question: What is a cash-or-nothing call on Alphabet paying $1 worth, across strikes within 10% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: GOOGL
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.1
-    strike_step_size: 5
-    expiration_time_range: 91
-get_barrier_option:
-  question: What is a down-and-out call on Meta worth, with the barrier at 90% of the share price, across strikes within 10% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: META
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.1
-    strike_step_size: 10
-    expiration_time_range: 91
-get_asian_option:
-  question: What is a geometric-average Asian call on ExxonMobil worth across strikes within 10% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: XOM
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.1
-    strike_step_size: 2
-    expiration_time_range: 91
-get_put_call_parity:
-  question: Do Black-Scholes call and put prices on Johnson & Johnson satisfy put-call parity across strikes within 10% of the share price, with 7, 14 and 28 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: JNJ
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.1
-    strike_step_size: 5
-get_volatility_surface:
-  question: What does the implied volatility surface of JPMorgan Chase's call options look like around the money for its next four expirations currently?
-  tool: options
-  arguments:
-    tickers: JPM
-    number_of_expirations: 4
-get_risk_neutral_density:
-  question: What probability distribution for the price of the S&P 500 ETF (SPY) at its nearest expiration do current option prices imply?
-  tool: options
-  arguments:
-    tickers: SPY
-    strike_price_range: 0.1
-    number_of_strikes: 81
-get_strategy_payoff:
-  question: What is the profit or loss at expiry of a long straddle on Tesla at the $450 strike, paying $30 for the call and $28 for the put, for share prices from 25% below to 25% above the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: TSLA
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    legs:
-      - {strike_price: 450, put_option: false, position: long, premium: 30}
-      - {strike_price: 450, put_option: true, position: long, premium: 28}
-    stock_price_range: 0.25
-    stock_price_step_size: 5
-get_delta:
-  question: What is the delta of a call option on Amazon across strikes within 15% of the share price, with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
+  question: Which share prices can Amazon reach along every path of a one-year binomial tree with four steps, starting from the close of 20 June 2025?
   tool: options
   arguments:
     tickers: AMZN
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
+    start_date: "2021-01-01"
+    end_date: "2025-06-20"
+    time_to_expiration: 1
+    timesteps: 4
+    show_unique_combinations: false
+get_garman_kohlhagen:
+  question: What is a call on Amazon worth under the Garman-Kohlhagen model with a 2% foreign interest rate, across strikes within 25% of the share price in steps of $5 and with 1 to 29 days to expiry, priced at the latest close?
+  tool: options
+  arguments:
+    tickers: AMZN
+    foreign_risk_free_rate: 0.02
+    strike_price_range: 0.25
     strike_step_size: 5
-    expiration_time_range: 91
-get_dual_delta:
-  question: How much value does a call option on JPMorgan Chase lose per $1 increase in the strike price (its dual delta), across strikes within 15% of the share price, with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
+    expiration_time_range: 30
+get_bjerksund_stensland:
+  question: What is an American call on Amazon worth under the Bjerksund-Stensland model, across strikes within 25% of the share price in steps of $5 and with 1 to 29 days to expiry, priced at the latest close?
   tool: options
   arguments:
-    tickers: JPM
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
+    tickers: AMZN
+    strike_price_range: 0.25
     strike_step_size: 5
-    expiration_time_range: 91
-get_vega:
-  question: How much does the price of a call option on Netflix change per percentage point of volatility (its vega), across strikes within 15% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
+    expiration_time_range: 30
+get_monte_carlo_option_price:
+  question: What is a call option on Amazon worth in a Monte Carlo simulation of 10,000 price paths of 100 steps with random seed 42, across strikes within 25% of the share price in steps of $5 and with 1 to 29 days to expiry, priced at the latest close?
   tool: options
   arguments:
-    tickers: NFLX
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
-    strike_step_size: 2
-    expiration_time_range: 91
-get_theta:
-  question: How much value does a call option on Broadcom lose per day (its theta), across strikes within 15% of the share price and with 7, 14 and 28 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: AVGO
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
-    strike_step_size: 10
-get_rho:
-  question: How sensitive is a call option on Procter & Gamble to interest rates (its rho), across strikes within 15% of the share price and with 30, 90 and 180 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: PG
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
+    tickers: AMZN
+    strike_price_range: 0.25
     strike_step_size: 5
-    expiration_time_range: 181
-get_epsilon:
-  question: How sensitive is a call option on Coca-Cola to the dividend yield (its epsilon), across strikes within 15% of the share price and with 30, 90 and 180 days to expiry, priced at the close of 31 December 2025?
+    expiration_time_range: 30
+    simulations: 10000
+    time_steps: 100
+    seed: 42
+get_binary_option:
+  question: What is a cash-or-nothing call on Amazon paying $1 worth, across strikes within 25% of the share price in steps of $5 and with 1 to 29 days to expiry, priced at the latest close?
   tool: options
   arguments:
-    tickers: KO
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
-    strike_step_size: 2
-    expiration_time_range: 181
-get_lambda:
-  question: How much leverage does a call option on Visa give, as the percentage change in its price per 1% move in the share price (its lambda), across strikes within 10% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: V
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.1
+    tickers: AMZN
+    option_type: cash-or-nothing
+    cash_payout: 1.0
+    strike_price_range: 0.25
     strike_step_size: 5
-    expiration_time_range: 91
-get_gamma:
-  question: How fast does the delta of an option on Pfizer change as the share price moves (its gamma), across strikes within 20% of the share price and with 7, 14 and 28 days to expiry, priced at the close of 31 December 2025?
+    expiration_time_range: 30
+get_barrier_option:
+  question: What is a down-and-out call on Amazon worth, with the barrier at 90% of the share price and no rebate, across strikes within 25% of the share price in steps of $5 and with 1 to 29 days to expiry, priced at the latest close?
   tool: options
   arguments:
-    tickers: PFE
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.2
-    strike_step_size: 1
-get_dual_gamma:
-  question: How fast does the dual delta of an option on AT&T change with the strike price (its dual gamma), across strikes within 20% of the share price and with 7, 14 and 28 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: T
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.2
-    strike_step_size: 1
-get_vanna:
-  question: How much does the delta of a call option on Disney change when volatility rises (its vanna), across strikes within 15% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: DIS
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
-    strike_step_size: 2
-    expiration_time_range: 91
-get_charm:
-  question: How fast does the delta of a call option on Home Depot change as time passes (its charm), across strikes within 15% of the share price and with 7, 14 and 28 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: HD
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
+    tickers: AMZN
+    barrier_percentage: 0.9
+    barrier_direction: down
+    knock_type: out
+    rebate: 0.0
+    strike_price_range: 0.25
     strike_step_size: 5
-get_vomma:
-  question: How much does the vega of an option on UnitedHealth change when volatility rises (its vomma), across strikes within 15% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
+    expiration_time_range: 30
+get_asian_option:
+  question: What is a geometric-average Asian call on Amazon worth across strikes within 25% of the share price in steps of $5 and with 1 to 29 days to expiry, priced at the latest close?
   tool: options
   arguments:
-    tickers: UNH
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
+    tickers: AMZN
+    strike_price_range: 0.25
     strike_step_size: 5
-    expiration_time_range: 91
-get_vera:
-  question: How much does the rho of an option on Eli Lilly change when volatility rises (its vera), across strikes within 15% of the share price and with 30, 90 and 180 days to expiry, priced at the close of 31 December 2025?
+    expiration_time_range: 30
+get_put_call_parity:
+  question: Do Black-Scholes call and put prices on Amazon satisfy put-call parity across strikes within 25% of the share price in steps of $5 and with 1 to 29 days to expiry, priced at the latest close?
   tool: options
   arguments:
-    tickers: LLY
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
-    strike_step_size: 20
-    expiration_time_range: 181
-get_veta:
-  question: How fast does the vega of an option on AutoZone change as time passes (its veta), across strikes within 10% of the share price and with 7, 14 and 28 days to expiry, priced at the close of 31 December 2025?
+    tickers: AMZN
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 30
+get_volatility_surface:
+  question: What does the implied volatility surface of Apple's call options look like across strikes for its next three expirations?
   tool: options
   arguments:
-    tickers: AZO
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.1
-    strike_step_size: 50
-get_partial_derivative:
-  question: What is the second partial derivative of the call price on Bank of America with respect to the strike price, across strikes within 20% of the share price and with 7, 14 and 28 days to expiry, priced at the close of 31 December 2025?
+    tickers: AAPL
+    number_of_expirations: 3
+get_risk_neutral_density:
+  question: What probability distribution for Apple's share price at its nearest option expiration do current call prices imply, over 200 strikes from 50% below to 50% above the share price?
   tool: options
   arguments:
-    tickers: BAC
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.2
-    strike_step_size: 1
-get_speed:
-  question: How fast does the gamma of an option on Ford change as the share price moves (its speed), across strikes within 25% of the share price and with 7, 14 and 28 days to expiry, priced at the close of 31 December 2025?
+    tickers: AAPL
+    strike_price_range: 0.5
+    number_of_strikes: 200
+get_strategy_payoff:
+  question: What is the profit or loss at expiry of a long straddle on Amazon at the $150 strike, paying $8 for the call and $6 for the put, for share prices from 50% below to 50% above the latest close in steps of $1?
   tool: options
   arguments:
-    tickers: F
-    start_date: "2025-01-01"
+    tickers: AMZN
+    legs:
+    - strike_price: 150
+      put_option: false
+      position: long
+      premium: 8
+    - strike_price: 150
+      put_option: true
+      position: long
+      premium: 6
+    stock_price_range: 0.5
+    stock_price_step_size: 1
+get_delta:
+  question: What is the delta of a call option on Apple at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
     strike_price_range: 0.25
-    strike_step_size: 1
-get_zomma:
-  question: How much does the gamma of an option on Cisco change when volatility rises (its zomma), across strikes within 15% of the share price and with 7, 14 and 28 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: CSCO
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
-    strike_step_size: 2
-get_color:
-  question: How fast does the gamma of an option on PepsiCo change as time passes (its color), across strikes within 15% of the share price and with 7, 14 and 28 days to expiry, priced at the close of 31 December 2025?
-  tool: options
-  arguments:
-    tickers: PEP
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
     strike_step_size: 5
-get_ultima:
-  question: How much does the vomma of an option on Nike change when volatility rises (its ultima), across strikes within 15% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_dual_delta:
+  question: How much value does a call option on Apple lose per $1 increase in the strike price (its dual delta), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
   tool: options
   arguments:
-    tickers: NKE
-    start_date: "2025-01-01"
+    tickers: AAPL
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.15
-    strike_step_size: 2
-    expiration_time_range: 91
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_vega:
+  question: How much does the price of a call option on Apple change per percentage point of volatility (its vega), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_theta:
+  question: How much value does a call option on Apple lose per day (its theta), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_rho:
+  question: How sensitive is a call option on Apple to interest rates (its rho), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_epsilon:
+  question: How sensitive is a call option on Apple to the dividend yield (its epsilon), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_lambda:
+  question: How much leverage does a call option on Apple give, as the percentage change in its price per 1% move in the share price (its lambda), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_gamma:
+  question: How fast does the delta of an option on Apple change as the share price moves (its gamma), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_dual_gamma:
+  question: How fast does the dual delta of an option on Apple change with the strike price (its dual gamma), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_vanna:
+  question: How much does the delta of a call option on Apple change when volatility rises (its vanna), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_charm:
+  question: How fast does the delta of a call option on Apple change as time passes (its charm), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_vomma:
+  question: How much does the vega of an option on Apple change when volatility rises (its vomma), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_vera:
+  question: How much does the rho of an option on Apple change when volatility rises (its vera), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_veta:
+  question: How fast does the vega of an option on Apple change as time passes (its veta), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_partial_derivative:
+  question: What is the second partial derivative of the call price on Apple with respect to the strike price, at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_speed:
+  question: How fast does the gamma of an option on Apple change as the share price moves (its speed), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_zomma:
+  question: How much does the gamma of an option on Apple change when volatility rises (its zomma), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_color:
+  question: How fast does the gamma of an option on Apple change as time passes (its color), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335
+get_ultima:
+  question: How much does the vomma of an option on Apple change when volatility rises (its ultima), at strikes from $290 to $335 and with 1 to 9 days to expiry, priced at the close of 31 December 2025?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.25
+    strike_step_size: 5
+    expiration_time_range: 10
+    show_columns: 290,295,300,305,310,315,320,325,330,335

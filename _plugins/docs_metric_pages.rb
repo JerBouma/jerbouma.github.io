@@ -255,7 +255,9 @@ module DocsMetricPages
     cls = CLASSES[key]
     out = +""
     out << parts[:description] << "\n\n"
-    # Python, or the same question through the Finance Toolkit MCP
+    # Python, or the same question through the Finance Toolkit MCP: the
+    # question asks for exactly what the example's first table shows, so it
+    # sits between the code and "Which returns:"
     mcp = mcp_question(site, key, fn_name)
     parameters = parameters_for(parts[:arguments])
     unless parts[:example].empty? && parameters.empty? && mcp.empty?
@@ -263,9 +265,11 @@ module DocsMetricPages
       out << "Install the [Finance Toolkit](/projects/financetoolkit) with:\n{: .docs-boilerplate}\n\n"
       out << "```python\npip install financetoolkit -U\n```\n\n"
       out << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n" unless parts[:example].empty?
-      out << parts[:example] << "\n\n" unless parts[:example].empty?
-      out << parameters_table(site, fn_name, parameters) << "\n" unless parameters.empty?
+      code, returns, rest = parts[:example].partition(/^Which returns:/)
+      out << code.rstrip << "\n\n" unless code.strip.empty?
       out << mcp
+      out << returns << rest << "\n\n" unless returns.empty?
+      out << parameters_table(site, fn_name, parameters) << "\n" unless parameters.empty?
     end
     unless related.empty?
       # same pill buttons as the module switcher on the docs pages

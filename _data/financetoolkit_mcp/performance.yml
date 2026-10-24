@@ -1,248 +1,250 @@
 get_beta:
-  question: How did the beta of Nvidia, Tesla and JPMorgan Chase against the S&P 500 change each year from 2021 to 2025?
+  question: How did the beta of Apple and Amazon against the S&P 500 change each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: NVDA,TSLA,JPM
+    tickers: AAPL,AMZN
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_capital_asset_pricing_model:
-  question: What return did the CAPM require of JPMorgan Chase, Goldman Sachs and Morgan Stanley in each year from 2021 to 2025?
+  question: What return did the CAPM require of Apple and Tesla in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: JPM,GS,MS
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_fama_and_french_model:
-  question: What were the Fama and French five-factor loadings of Berkshire Hathaway, Visa and Netflix in 2025?
+  question: What were the Fama and French five-factor loadings of Apple in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: BRK-B,V,NFLX
-    start_date: "2025-01-01"
+    tickers: AAPL
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_carhart_four_factor_model:
-  question: What were the Carhart four-factor loadings of ExxonMobil, Home Depot and Adobe in 2025?
+  question: What were the Carhart four-factor loadings of Amazon in each quarter from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: XOM,HD,ADBE
-    start_date: "2025-01-01"
+    tickers: AMZN
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
+    period: quarterly
 get_factor_asset_correlations:
-  question: How strongly did the daily returns of Caterpillar, Pfizer and Oracle correlate with each of the Fama and French factors in 2025?
+  question: How strongly did the daily returns of Apple correlate with each of the five Fama and French factors in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: CAT,PFE,ORCL
-    start_date: "2025-01-01"
+    tickers: AAPL
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_factor_correlations:
-  question: How did the daily returns of the five Fama and French factors correlate with each other in 2025?
+  question: How did the daily returns of the five Fama and French factors correlate with each other in each year from 2023 to 2025?
   tool: performance
   arguments:
-    tickers: SPY
-    start_date: "2025-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2023-01-01"
     end_date: "2025-12-31"
 get_alpha:
-  question: By how much did Costco, Walmart and Target beat or trail the S&P 500 in each year from 2021 to 2025?
+  question: By how much did Apple and Tesla beat or trail the S&P 500 in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: COST,WMT,TGT
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_jensens_alpha:
-  question: What was Jensen's alpha of UnitedHealth, Johnson & Johnson and Pfizer in each year from 2021 to 2025?
+  question: What was Jensen's alpha of Apple and Tesla in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: UNH,JNJ,PFE
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_treynor_mazuy_model:
-  question: What was the market timing coefficient (gamma) of the ARK Innovation ETF and the JPMorgan Chase Equity Premium Income ETF in the Treynor-Mazuy model in each year from 2021 to 2025?
+  question: What were Apple's alpha, beta, market timing coefficient (gamma) and R-squared in the Treynor-Mazuy model in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: ARKK,JEPI
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_henriksson_merton_model:
-  question: What was the up-market beta, the market timing coefficient of the Henriksson-Merton model, of Berkshire Hathaway and the Fidelity Blue Chip Growth ETF in each year from 2021 to 2025?
+  question: What were Apple's alpha, beta, up-market beta and R-squared in the Henriksson-Merton market timing model in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: BRK-B,FBCG
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_fama_decomposition:
-  question: How much of the excess return of the Invesco QQQ Trust, the iShares Russell 2000 ETF and the Energy Select Sector SPDR came from selectivity and how much from diversification in each year from 2021 to 2025?
+  question: How much of Apple's excess return came from selectivity and how much from diversification in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: QQQ,IWM,XLE
-    start_date: "2020-01-01"
-    end_date: "2025-12-31"
-get_sharpe_ratio:
-  question: What was the annualized Sharpe ratio of ExxonMobil, Chevron and ConocoPhillips in each year from 2021 to 2025?
-  tool: performance
-  arguments:
-    tickers: XOM,CVX,COP
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    annualize: true
-get_sortino_ratio:
-  question: What was the Sortino ratio of Visa, Mastercard and American Express, measured on daily returns, in each year from 2021 to 2025?
+get_sharpe_ratio:
+  question: What was the Sharpe ratio of Apple and Tesla, measured on daily returns and not annualized, in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: V,MA,AXP
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_sortino_ratio:
+  question: What was the Sortino ratio of Apple and Tesla, measured on daily returns, in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_treynor_ratio:
-  question: What was the Treynor ratio of Union Pacific, UPS and FedEx in each year from 2021 to 2025?
+  question: What was the Treynor ratio of Apple and Tesla in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: UNP,UPS,FDX
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_m2_ratio:
-  question: What was the M2 measure, the return at the S&P 500's volatility, of Home Depot and Lowe's in each year from 2021 to 2025?
+  question: What was the M2 measure, the return at the S&P 500's volatility, of Apple and Tesla in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: HD,LOW
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_appraisal_ratio:
-  question: What was the appraisal ratio of Adobe, Salesforce and Oracle in each year from 2021 to 2025?
+  question: What was the appraisal ratio of Apple and Tesla in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: ADBE,CRM,ORCL
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_kappa_ratio:
-  question: What was the Kappa 3 ratio of Eli Lilly, Merck and AbbVie, measured on daily returns, in each year from 2021 to 2025?
+  question: What was the Kappa 3 ratio of Apple and Tesla, measured on daily returns, in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: LLY,MRK,ABBV
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_omega_ratio:
-  question: What was the Omega ratio of BlackRock, Charles Schwab and Blackstone in each year from 2021 to 2025?
+  question: What was the Omega ratio of Apple and Tesla in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: BLK,SCHW,BX
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_rachev_ratio:
-  question: What was the Rachev ratio of Tesla, AMD and Palantir in each year from 2021 to 2025?
+  question: What was the Rachev ratio of Apple and Tesla in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: TSLA,AMD,PLTR
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_starr_ratio:
-  question: What was the STARR ratio, the excess return per unit of tail risk, of Caterpillar, Deere and Honeywell in each year from 2021 to 2025?
+  question: What was the STARR ratio, the excess return per unit of tail risk, of Apple and Tesla in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: CAT,DE,HON
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_calmar_ratio:
-  question: What was the Calmar ratio of the Vanguard Total Stock Market, FTSE Developed Markets and FTSE Emerging Markets ETFs in each year from 2021 to 2025?
+  question: What was the Calmar ratio of Apple and Tesla in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: VTI,VEA,VWO
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_sterling_ratio:
-  question: What was the Sterling ratio of NextEra Energy, Duke Energy and Southern Company in each year from 2021 to 2025?
+  question: What was the Sterling ratio of Apple and Tesla in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: NEE,DUK,SO
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_burke_ratio:
-  question: What was the Burke ratio of Boeing, Lockheed Martin and RTX in each year from 2021 to 2025?
+  question: What was the Burke ratio of Apple and Tesla in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: BA,LMT,RTX
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_ulcer_performance_index:
-  question: What was the Ulcer Performance Index of Verizon, AT&T and T-Mobile in each year from 2021 to 2025?
+  question: What was the Ulcer Performance Index of Apple and Tesla in each year from 2022 to 2025?
   tool: performance
   arguments:
-    tickers: VZ,T,TMUS
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_gain_to_pain_ratio:
-  question: What was the gain-to-pain ratio of Goldman Sachs, Morgan Stanley and Charles Schwab in each year from 2021 to 2025?
+  question: What was the gain-to-pain ratio of Apple and Tesla in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: GS,MS,SCHW
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_tracking_error:
-  question: How large was the daily tracking error against SPY of the Vanguard S&P 500 ETF, the Invesco S&P 500 Equal Weight ETF and the Invesco QQQ Trust in each year from 2021 to 2025?
+  question: How large was the daily tracking error of Apple and Tesla against the S&P 500 in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: VOO,RSP,QQQ
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_information_ratio:
-  question: What was the information ratio against the S&P 500 of the technology, energy and health care sector ETFs (XLK, XLE and XLV), measured on daily returns, in each year from 2021 to 2025?
+  question: What was the information ratio of Apple and Tesla against the S&P 500, measured on daily returns, in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: XLK,XLE,XLV
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_upside_capture_ratio:
-  question: How much of the S&P 500's gains on its up days did the Invesco QQQ Trust, the Schwab US Dividend Equity ETF and the iShares MSCI USA Min Vol Factor ETF capture in each year from 2021 to 2025?
+  question: How much of the S&P 500's gains on its up days did Apple and Tesla capture in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: QQQ,SCHD,USMV
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_downside_capture_ratio:
-  question: How much of the S&P 500's losses on its down days did the Utilities Select Sector SPDR, the Invesco S&P 500 Low Volatility ETF and the ARK Innovation ETF capture in each year from 2021 to 2025?
+  question: How much of the S&P 500's losses on its down days did Apple and Tesla capture in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: XLU,SPLV,ARKK
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_win_rate:
-  question: On what share of trading days did Apple, Microsoft and Alphabet beat the S&P 500 in each year from 2021 to 2025?
+  question: On what share of trading days did Apple and Tesla beat the S&P 500 in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: AAPL,MSFT,GOOGL
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_returns:
-  question: What were the yearly returns of ASML, SAP and LVMH in euros from 2021 to 2025?
+  question: What were the yearly returns of Amazon, Tesla and the S&P 500 from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: ASML.AS,SAP.DE,MC.PA
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    period: yearly
 get_excess_return:
-  question: How much did McDonald's, Starbucks and Chipotle return above the risk-free rate in each year from 2021 to 2025?
+  question: How much did Amazon, Tesla and the S&P 500 return above the risk-free rate in each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: MCD,SBUX,CMG
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    period: yearly
 get_compound_growth_rate:
-  question: What was the compound annual growth rate of JPMorgan Chase, Bank of America and Citigroup compared with the S&P 500 over the five years to the end of 2025?
+  question: What were the compound annual, quarterly, monthly, weekly and daily growth rates of Apple, Tesla and the S&P 500 from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: JPM,BAC,C
-    start_date: "2020-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_correlation_matrix:
-  question: How did the monthly returns of US long-term Treasuries, gold, developed-market equities and US real estate correlate with each other and with the S&P 500 from 2021 to 2025?
+  question: How did the yearly returns of Amazon, Tesla and the S&P 500 correlate with each other from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: TLT,GLD,EFA,VNQ
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: monthly
+    period: yearly
 get_covariance_matrix:
-  question: What is the covariance matrix of the monthly returns of US long-term Treasuries, gold, emerging-market equities, US real estate and the S&P 500 from 2021 to 2025?
+  question: What is the covariance matrix of the yearly returns of Amazon, Tesla and the S&P 500 from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: TLT,GLD,EEM,VNQ
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: monthly
+    period: yearly

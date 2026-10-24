@@ -1,183 +1,183 @@
 get_dupont_analysis:
-  question: What drove Alphabet's return on equity from 2021 to 2025, according to a DuPont analysis?
+  question: What drove Apple's return on equity from 2021 to 2025, according to a DuPont analysis?
   tool: models
   arguments:
-    tickers: GOOGL
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_extended_dupont_analysis:
-  question: What drove Microsoft's return on equity from 2021 to 2025, according to an extended DuPont analysis?
+  question: What drove Apple's return on equity from 2021 to 2025, according to an extended DuPont analysis?
   tool: models
   arguments:
-    tickers: MSFT
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_enterprise_value_breakdown:
-  question: How did Ford's enterprise value break down into market capitalization, debt and cash from 2021 to 2025?
+  question: How did Apple's enterprise value break down into market capitalization, debt and cash from 2021 to 2025?
   tool: models
   arguments:
-    tickers: F
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_weighted_average_cost_of_capital:
-  question: What was the weighted average cost of capital of Verizon, AT&T and T-Mobile from 2023 to 2025?
+  question: What was Apple's weighted average cost of capital from 2021 to 2025?
   tool: models
   arguments:
-    tickers: VZ,T,TMUS
-    start_date: "2022-01-01"
+    tickers: AAPL
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_economic_value_added:
-  question: How much economic value did Visa, Mastercard and Home Depot add from 2023 to 2025?
+  question: How much economic value did Apple add from 2021 to 2025?
   tool: models
   arguments:
-    tickers: V,MA,HD
-    start_date: "2022-01-01"
+    tickers: AAPL
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_intrinsic_valuation:
-  question: What are Adobe, Salesforce and Intuit worth per share in a discounted cash flow model with 8% free cash flow growth for five years, 2.5% perpetual growth and a 9% WACC, starting from their 2025 free cash flow?
+  question: What is Apple worth per share in a discounted cash flow model with 5% free cash flow growth for five years, 2.5% perpetual growth and a 9.4% WACC, starting from its 2025 free cash flow?
   tool: models
   arguments:
-    tickers: ADBE,CRM,INTU
-    growth_rate: 0.08
+    tickers: AAPL
+    growth_rate: 0.05
     perpetual_growth_rate: 0.025
-    weighted_average_cost_of_capital: 0.09
+    weighted_average_cost_of_capital: 0.094
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_gorden_growth_model:
-  question: What is Coca-Cola worth per share in the Gordon growth model with an 8% required return and 4% dividend growth, from 2021 to 2025 and projected five years ahead?
+  question: What are Apple and Microsoft worth per share in the Gordon growth model with a 20% required return and 5% dividend growth, from 2021 to 2025 and projected five years ahead?
   tool: models
   arguments:
-    tickers: KO
-    rate_of_return: 0.08
-    growth_rate: 0.04
+    tickers: AAPL,MSFT
+    rate_of_return: 0.2
+    growth_rate: 0.05
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_altman_z_score:
-  question: What were the Altman Z-Scores of Boeing, Lockheed Martin and General Dynamics from 2021 to 2025?
+  question: What was the Altman Z-Score of Apple from 2021 to 2025?
   tool: models
   arguments:
-    tickers: BA,LMT,GD
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_piotroski_score:
-  question: What were the Piotroski F-Scores of Ford, General Motors and Tesla from 2022 to 2025?
+  question: What was the Piotroski F-Score of Apple from 2022 to 2025?
   tool: models
   arguments:
-    tickers: F,GM,TSLA
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_beneish_m_score:
-  question: What were the Beneish M-Scores of Netflix, Disney and Comcast from 2021 to 2025?
+  question: What was the Beneish M-Score of Apple from 2021 to 2025?
   tool: models
   arguments:
-    tickers: NFLX,DIS,CMCSA
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_present_value_of_growth_opportunities:
-  question: How much of the share prices of Nvidia, Texas Instruments and Analog Devices reflected the present value of growth opportunities from 2023 to 2025?
+  question: How much of the share prices of Apple and Tesla reflected the present value of growth opportunities from 2022 to 2025?
   tool: models
   arguments:
-    tickers: NVDA,TXN,ADI
-    start_date: "2022-01-01"
+    tickers: AAPL,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_sustainable_growth_rate:
-  question: What were the sustainable growth rates of Nike, Lululemon and Deckers from 2021 to 2025?
+  question: What were the sustainable growth rates of Apple and Microsoft from 2021 to 2025?
   tool: models
   arguments:
-    tickers: NKE,LULU,DECK
+    tickers: AAPL,MSFT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_internal_growth_rate:
-  question: How fast could Adobe, Intuit and Autodesk have grown without outside financing from 2021 to 2025, measured by the internal growth rate?
+  question: How fast could Apple and Microsoft have grown without outside financing from 2021 to 2025, measured by the internal growth rate?
   tool: models
   arguments:
-    tickers: ADBE,INTU,ADSK
+    tickers: AAPL,MSFT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_graham_number:
-  question: What was the Graham number of Bank of America, Citigroup and Wells Fargo from 2021 to 2025?
+  question: What was the Graham number of Apple and Tesla from 2021 to 2025?
   tool: models
   arguments:
-    tickers: BAC,C,WFC
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_free_cash_flow_to_firm:
-  question: How much free cash flow to the firm did ExxonMobil and Chevron generate from 2021 to 2025?
+  question: How much free cash flow to the firm did Apple generate from 2021 to 2025?
   tool: models
   arguments:
-    tickers: XOM,CVX
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_free_cash_flow_to_equity:
-  question: How much free cash flow to equity did Comcast, Charter Communications and Verizon generate from 2021 to 2025?
+  question: How much free cash flow to equity did Apple generate from 2021 to 2025?
   tool: models
   arguments:
-    tickers: CMCSA,CHTR,VZ
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_two_stage_dividend_discount_model:
-  question: What are Johnson & Johnson, Procter & Gamble and PepsiCo worth per share in a two-stage dividend discount model with 6% dividend growth for five years, 3% growth afterwards and an 8% required return?
+  question: What is Apple worth per share in a two-stage dividend discount model with 12% dividend growth for five years, 3% growth afterwards and a 10% required return?
   tool: models
   arguments:
-    tickers: JNJ,PG,PEP
-    rate_of_return: 0.08
-    high_growth_rate: 0.06
+    tickers: AAPL
+    rate_of_return: 0.1
+    high_growth_rate: 0.12
     stable_growth_rate: 0.03
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_residual_income:
-  question: How much residual income above their cost of equity did Visa, Mastercard and American Express earn from 2023 to 2025?
+  question: How much residual income above its cost of equity did Apple earn from 2021 to 2025?
   tool: models
   arguments:
-    tickers: V,MA,AXP
-    start_date: "2022-01-01"
+    tickers: AAPL
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_market_value_added:
-  question: How much market value did Eli Lilly, Johnson & Johnson and Merck add above their invested capital from 2021 to 2025?
+  question: How much market value did Apple add above its invested capital from 2021 to 2025?
   tool: models
   arguments:
-    tickers: LLY,JNJ,MRK
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_tobins_q_ratio:
-  question: What was Tobin's Q of Intel, Qualcomm and Texas Instruments from 2021 to 2025?
+  question: What was Apple's Tobin's Q from 2021 to 2025?
   tool: models
   arguments:
-    tickers: INTC,QCOM,TXN
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_ohlson_o_score:
-  question: What were the Ohlson O-Scores of Carnival, Royal Caribbean and Norwegian Cruise Line from 2021 to 2025?
+  question: What was the Ohlson O-Score of Apple from 2021 to 2025?
   tool: models
   arguments:
-    tickers: CCL,RCL,NCLH
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_zmijewski_score:
-  question: What were the Zmijewski scores of Delta Air Lines, United Airlines and American Airlines from 2021 to 2025?
+  question: What was the Zmijewski score of Apple from 2021 to 2025?
   tool: models
   arguments:
-    tickers: DAL,UAL,AAL
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_springate_score:
-  question: What were the Springate scores of Macy's, Kohl's and Gap from 2021 to 2025?
+  question: What was the Springate score of Apple from 2021 to 2025?
   tool: models
   arguments:
-    tickers: M,KSS,GAP
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_grover_score:
-  question: What were the Grover scores of Ford, General Motors and Stellantis from 2021 to 2025?
+  question: What was the Grover score of Apple from 2021 to 2025?
   tool: models
   arguments:
-    tickers: F,GM,STLA
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_fulmer_h_score:
-  question: What were the Fulmer H-Scores of Disney, Fox and Comcast from 2021 to 2025?
+  question: What was the Fulmer H-Score of Apple from 2021 to 2025?
   tool: models
   arguments:
-    tickers: DIS,FOXA,CMCSA
+    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"

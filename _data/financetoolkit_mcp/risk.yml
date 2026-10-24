@@ -1,294 +1,341 @@
 get_value_at_risk:
-  question: What was the daily 95% Value at Risk of JPMorgan Chase, Bank of America and Wells Fargo in 2025?
+  question: What was the daily 95% Value at Risk of Amazon, Tesla and the S&P 500 in each year from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: JPM,BAC,WFC
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_conditional_value_at_risk:
-  question: What was the daily 95% conditional Value at Risk (expected shortfall) of ExxonMobil, Chevron and ConocoPhillips in 2025?
-  tool: risk
-  arguments:
-    tickers: XOM,CVX,COP
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_entropic_value_at_risk:
-  question: What was the daily 95% entropic Value at Risk of Nvidia, AMD and Intel in 2025?
-  tool: risk
-  arguments:
-    tickers: NVDA,AMD,INTC
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_conditional_drawdown_at_risk:
-  question: What was the 95% conditional drawdown at risk of Tesla, Ford and General Motors in 2025?
-  tool: risk
-  arguments:
-    tickers: TSLA,F,GM
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_marginal_value_at_risk:
-  question: What is the marginal Value at Risk of each holding in a portfolio of 50% Apple, 30% Johnson & Johnson and 20% ExxonMobil, based on daily returns in 2025?
-  tool: risk
-  arguments:
-    tickers: AAPL,JNJ,XOM
-    weights: {AAPL: 0.5, JNJ: 0.3, XOM: 0.2}
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_component_value_at_risk:
-  question: How much does each holding contribute to the daily 95% Value at Risk of a portfolio of 40% Microsoft, 30% Procter & Gamble and 30% Caterpillar, based on 2025 returns?
-  tool: risk
-  arguments:
-    tickers: MSFT,PG,CAT
-    weights: {MSFT: 0.4, PG: 0.3, CAT: 0.3}
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_covar:
-  question: What is the daily 95% CoVaR and Delta-CoVaR of Goldman Sachs when JPMorgan Chase is in distress, based on returns from 2021 to 2025?
-  tool: risk
-  arguments:
-    tickers: GS,JPM
-    ticker: GS
-    conditioning_ticker: JPM
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_var_backtest:
-  question: Does a rolling one-year 95% historical Value at Risk pass Kupiec's proportion of failures test for Amazon, Coca-Cola and ExxonMobil from 2021 to 2025?
-  tool: risk
-  arguments:
-    tickers: AMZN,KO,XOM
-    test: kupiec
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-get_acerbi_szekely_test:
-  question: Does a rolling one-year 95% historical expected shortfall pass the Acerbi-Szekely test for Boeing, Delta Air Lines and Carnival from 2021 to 2025?
-  tool: risk
-  arguments:
-    tickers: BA,DAL,CCL
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-get_tail_ratio:
-  question: How did the right tail of daily returns compare with the left tail for Visa, Mastercard and American Express in 2025?
-  tool: risk
-  arguments:
-    tickers: V,MA,AXP
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_hill_estimator:
-  question: How heavy was the loss tail of Tesla, Nvidia and Johnson & Johnson from 2021 to 2025, measured by the Hill tail index over their 60 largest daily losses?
-  tool: risk
-  arguments:
-    tickers: TSLA,NVDA,JNJ
-    k: 60
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-get_maximum_drawdown:
-  question: What was the maximum drawdown of Meta, Netflix and Amazon in each year from 2021 to 2025?
-  tool: risk
-  arguments:
-    tickers: META,NFLX,AMZN
     period: yearly
     within_period: true
+get_conditional_value_at_risk:
+  question: What was the daily 95% conditional Value at Risk (expected shortfall) of Amazon, Tesla and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_entropic_value_at_risk:
+  question: What was the daily 95% entropic Value at Risk of Amazon, Tesla and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_conditional_drawdown_at_risk:
+  question: What was the 95% conditional drawdown at risk of Amazon, Tesla and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_marginal_value_at_risk:
+  question: What is the marginal Value at Risk of each holding in a portfolio of 50% Amazon, 30% Tesla and 20% Microsoft, based on daily returns from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    weights:
+      AMZN: 0.5
+      TSLA: 0.3
+      MSFT: 0.2
+get_component_value_at_risk:
+  question: How much does each holding contribute to the daily 95% Value at Risk of a portfolio of 50% Amazon, 30% Tesla and 20% Microsoft, based on returns from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    weights:
+      AMZN: 0.5
+      TSLA: 0.3
+      MSFT: 0.2
+get_covar:
+  question: What is the weekly 95% CoVaR and Delta-CoVaR of Apple when Microsoft is in distress, based on returns from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    ticker: AAPL
+    conditioning_ticker: MSFT
+    period: weekly
+get_var_backtest:
+  question: Does a rolling one-year 95% historical Value at Risk pass Kupiec's and Christoffersen's backtests for Amazon, Tesla and the S&P 500 from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    window_size: 252
+get_acerbi_szekely_test:
+  question: Does a rolling 100-day 95% historical expected shortfall pass the Acerbi-Szekely test for Amazon, Tesla and the S&P 500 from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    window_size: 100
+get_tail_ratio:
+  question: How did the right tail of daily returns compare with the left tail for Amazon, Tesla and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_hill_estimator:
+  question: How heavy was the loss tail of the weekly returns of Amazon, Tesla and the S&P 500 from 2021 to 2025, measured by the Hill tail index over the largest tenth of their weekly losses?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: weekly
+    within_period: false
+get_maximum_drawdown:
+  question: What was the maximum drawdown of Amazon, Tesla and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
 get_maximum_drawdown_duration:
-  question: How many trading days did the maximum drawdowns of Disney, Nike and Starbucks take from peak to trough between 2021 and 2025?
+  question: How many trading days did the maximum drawdown of Amazon, Tesla and the S&P 500 take from peak to trough in each year from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: DIS,NKE,SBUX
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    period: yearly
+    within_period: true
 get_maximum_drawdown_recovery_time:
-  question: How many trading days did Microsoft, Alphabet and Nvidia take to recover from the trough of their maximum drawdowns between 2021 and 2025?
+  question: How many trading days did Amazon, Tesla and the S&P 500 take to recover from the trough of their maximum drawdown in each year from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: MSFT,GOOGL,NVDA
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    period: yearly
+    within_period: true
 get_ulcer_index:
-  question: What was the Ulcer Index of Boeing and Airbus in each year from 2021 to 2025?
+  question: What was the Ulcer Index of Amazon, Tesla and the S&P 500 in each year from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: BA,AIR.PA
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_variance:
-  question: What was the annualized variance of returns of Walmart, Target and Costco in each year from 2021 to 2025?
+  question: What was the annualized variance of the returns of Amazon, Tesla and the S&P 500 in each year from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: WMT,TGT,COST
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    period: yearly
 get_volatility:
-  question: What was the annualized volatility of Pfizer, Merck and Eli Lilly in each year from 2021 to 2025?
+  question: What was the annualized volatility of Amazon, Tesla and the S&P 500 in each year from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: PFE,MRK,LLY
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    period: yearly
 get_excess_volatility:
-  question: What was the annualized volatility of the returns of Adobe, Salesforce and Oracle in excess of the risk-free rate in each year from 2021 to 2025?
+  question: What was the annualized volatility of the returns of Amazon, Tesla and the S&P 500 in excess of the risk-free rate in each year from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: ADBE,CRM,ORCL
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    period: yearly
 get_downside_deviation:
-  question: What was the downside deviation of daily returns of NextEra Energy, Duke Energy and Southern Company in 2025?
+  question: What was the downside deviation of the daily returns of Amazon, Tesla and the S&P 500 in each year from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: NEE,DUK,SO
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_ewma_volatility:
-  question: How did the daily EWMA (RiskMetrics) volatility of UnitedHealth and CVS Health evolve through 2025?
-  tool: risk
-  arguments:
-    tickers: UNH,CVS
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_garch:
-  question: How did the GARCH(1,1) conditional variance of AMD's daily returns move through 2025?
-  tool: risk
-  arguments:
-    tickers: AMD
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_garch_forecast:
-  question: What daily variance does a GARCH(1,1) model fitted to Netflix's daily returns from 2021 to 2025 forecast for the next 10 trading days?
-  tool: risk
-  arguments:
-    tickers: NFLX
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_garch_parameters:
-  question: What are the GARCH(1,1) parameters of the daily returns of Lowe's, Starbucks and Tesla in 2025?
-  tool: risk
-  arguments:
-    tickers: LOW,SBUX,TSLA
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_gjr_garch:
-  question: How did the GJR-GARCH conditional variance of Nvidia's daily returns move through 2025?
-  tool: risk
-  arguments:
-    tickers: NVDA
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_gjr_garch_forecast:
-  question: What daily variance does a GJR-GARCH model fitted to Tesla's daily returns in 2025 forecast for the next 10 trading days?
-  tool: risk
-  arguments:
-    tickers: TSLA
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_gjr_garch_parameters:
-  question: How strongly did negative returns raise the volatility of JPMorgan Chase, Charles Schwab and the S&P 500 in 2025, judging by GJR-GARCH parameters fitted to their daily returns?
-  tool: risk
-  arguments:
-    tickers: JPM,SCHW
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_har_rv_forecast:
-  question: How did the HAR-RV forecast of the next-day realized variance of Tesla and Palantir move through 2025?
-  tool: risk
-  arguments:
-    tickers: TSLA,PLTR
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_skewness:
-  question: How skewed were the daily returns of Netflix, Disney and Warner Bros. Discovery in each year from 2021 to 2025?
-  tool: risk
-  arguments:
-    tickers: NFLX,DIS,WBD
     period: yearly
     within_period: true
+get_ewma_volatility:
+  question: How did the daily EWMA (RiskMetrics) volatility of Amazon, Tesla and the S&P 500 move from 17 to 31 December 2025, estimated on their daily returns since 2021?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    limit: -10
+get_garch:
+  question: How did the GARCH(1,1) conditional variance of the quarterly returns of Amazon, Tesla and the S&P 500 move from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: quarterly
+get_garch_forecast:
+  question: What variance does a GARCH(1,1) model fitted to the quarterly returns of Amazon, Tesla and the S&P 500 from 2021 to 2025 forecast for each of the next ten quarters?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: quarterly
+get_garch_parameters:
+  question: What are the GARCH(1,1) parameters of the quarterly returns of Amazon, Tesla and the S&P 500 from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: quarterly
+get_gjr_garch:
+  question: How did the GJR-GARCH conditional variance of the quarterly returns of Amazon, Tesla and the S&P 500 move from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: quarterly
+get_gjr_garch_forecast:
+  question: What variance does a GJR-GARCH model fitted to the quarterly returns of Amazon, Tesla and the S&P 500 from 2021 to 2025 forecast for each of the next ten quarters?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: quarterly
+get_gjr_garch_parameters:
+  question: How strongly did negative returns raise the volatility of Amazon, Tesla and the S&P 500 from 2021 to 2025, judging by GJR-GARCH parameters fitted to their quarterly returns?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: quarterly
+get_har_rv_forecast:
+  question: What was the HAR-RV forecast of the next-day realized variance of Amazon, Tesla and the S&P 500 from 24 to 31 December 2025, fitted on their daily returns since 2021?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    estimator: squared_return
+    limit: -5
+get_skewness:
+  question: How skewed were the daily returns of Microsoft, Apple, Tesla and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: MSFT,AAPL,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
 get_kurtosis:
-  question: How fat-tailed were the daily returns of UnitedHealth, Humana and Cigna in 2025, measured by their excess kurtosis?
+  question: How fat-tailed were the daily returns of Microsoft, Apple, Tesla and the S&P 500 in each year from 2021 to 2025, measured by their kurtosis?
   tool: risk
   arguments:
-    tickers: UNH,HUM,CI
-    fisher: true
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_mean_absolute_deviation:
-  question: What was the mean absolute deviation of the daily returns of Coca-Cola, PepsiCo and Mondelez in each year from 2021 to 2025?
-  tool: risk
-  arguments:
-    tickers: KO,PEP,MDLZ
+    tickers: MSFT,AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_coefficient_of_variation:
-  question: How much volatility did Microsoft, Oracle and IBM carry per unit of average daily return in each year from 2023 to 2025, measured by the coefficient of variation?
+    period: yearly
+    within_period: true
+get_mean_absolute_deviation:
+  question: What was the mean absolute deviation of the daily returns of Amazon, Tesla and the S&P 500 in each year from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: MSFT,ORCL,IBM
-    start_date: "2023-01-01"
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_autocorrelation:
-  question: Were the daily returns of the SPDR S&P 500 ETF, the Invesco QQQ Trust and the iShares Russell 2000 ETF autocorrelated over the first ten lags from 2021 to 2025?
+    period: yearly
+get_coefficient_of_variation:
+  question: How much volatility did Amazon, Tesla and the S&P 500 carry per unit of average daily return in each year from 2021 to 2025, measured by the coefficient of variation?
   tool: risk
   arguments:
-    tickers: SPY,QQQ,IWM
+    tickers: AMZN,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+get_autocorrelation:
+  question: Were the daily returns of Amazon, Tesla and the S&P 500 autocorrelated over the first ten lags from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_hurst_exponent:
-  question: Did the share prices of ExxonMobil, Newmont and Freeport-McMoRan trend or mean-revert from 2021 to 2025, judging by their Hurst exponent?
+  question: Did the share prices of Amazon, Tesla and the S&P 500 trend or mean-revert from 2021 to 2025, judging by their Hurst exponent?
   tool: risk
   arguments:
-    tickers: XOM,NEM,FCX
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_best_fitting_copula:
-  question: Which copula best describes the dependence between the daily returns of Visa and Mastercard from 2021 to 2025, judging by the AIC?
+  question: Which copula best describes the dependence between the weekly returns of Apple and Microsoft from 2021 to 2025, judging by the AIC?
   tool: risk
   arguments:
-    tickers: V,MA
-    ticker_a: V
-    ticker_b: MA
+    tickers: AAPL,MSFT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    ticker_a: AAPL
+    ticker_b: MSFT
+    period: weekly
 get_copula_parameters:
-  question: What correlation and tail dependence does a Student-t copula fitted to the daily returns of Chevron and ExxonMobil from 2021 to 2025 imply?
+  question: What dependence parameter and tail dependence does a Clayton copula fitted to the weekly returns of Apple and Microsoft from 2021 to 2025 imply?
   tool: risk
   arguments:
-    tickers: CVX,XOM
-    ticker_a: CVX
-    ticker_b: XOM
-    copula: student-t
+    tickers: AAPL,MSFT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    ticker_a: AAPL
+    ticker_b: MSFT
+    copula: clayton
+    period: weekly
 get_copula_simulation:
-  question: Simulate 30 joint daily returns of Home Depot and Lowe's from a Gaussian copula fitted to their returns from 2021 to 2025.
+  question: Summarise 5,000 joint weekly returns of Apple and Microsoft simulated from a Clayton copula fitted to their weekly returns from 2021 to 2025.
   tool: risk
   arguments:
-    tickers: HD,LOW
-    ticker_a: HD
-    ticker_b: LOW
-    n_simulations: 30
+    tickers: AAPL,MSFT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    ticker_a: AAPL
+    ticker_b: MSFT
+    copula: clayton
+    period: weekly
+    n_simulations: 5000
 get_tail_dependence_coefficient:
-  question: How likely were Goldman Sachs and Morgan Stanley to suffer extreme daily losses, or post extreme gains, together from 2021 to 2025?
+  question: How likely were Apple and Microsoft to suffer extreme weekly losses, or post extreme gains, together from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: GS,MS
-    ticker_a: GS
-    ticker_b: MS
+    tickers: AAPL,MSFT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    ticker_a: AAPL
+    ticker_b: MSFT
+    period: weekly
 get_amihud_illiquidity:
-  question: How far did a billion dollars of trading move the share prices of Snap, Etsy and Lyft on average from 2021 to 2025, measured by Amihud illiquidity?
+  question: How far did a trillion dollars of trading move the share prices of Amazon, Tesla and the S&P 500 on average from 2021 to 2025, measured by Amihud illiquidity on quarterly data?
   tool: risk
   arguments:
-    tickers: SNAP,ETSY,LYFT
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    period: quarterly
+    scale: 1000000000000.0
 get_roll_spread:
-  question: What effective bid-ask spread in dollars does the Roll measure imply for Coca-Cola, PepsiCo and Procter & Gamble from 2021 to 2025?
+  question: What effective bid-ask spread, in dollars and as a percentage of the price, does the Roll measure imply for Amazon, Tesla and the S&P 500 from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: KO,PEP,PG
+    tickers: AMZN,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
