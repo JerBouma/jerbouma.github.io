@@ -249,9 +249,7 @@ module DocsMetricPages
     chart = "/assets/data/financetoolkit-mcp/#{key}/#{fn_name}.json"
     return "" unless spec && File.exist?(File.join(site.source, chart))
     out = +"## #{name} via the MCP\n\n"
-    out << "Add the [Finance Toolkit MCP](/projects/financetoolkit/mcp) to Claude, ChatGPT or another AI assistant via:\n{: .docs-boilerplate}\n\n"
-    out << "```\nhttps://financetoolkit.jeroenbouma.com/mcp\n```\n\n"
-    out << "Then ask in plain English, for example:\n{: .docs-boilerplate}\n\n"
+    out << "After setting up the [Finance Toolkit MCP](/projects/financetoolkit/mcp), you can ask:\n{: .docs-boilerplate}\n\n"
     out << %(<div class="ca-q docs-mcp-question"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>#{CGI.escapeHTML(spec['question'].to_s.strip)}</p></div>\n\n)
     answer = JSON.parse(File.read(File.join(site.source, chart)))["charts"].values.first
     if answer["type"] == "table"
