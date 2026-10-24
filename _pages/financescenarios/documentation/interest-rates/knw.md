@@ -51,7 +51,7 @@ Each variant adds one layer to the one before:
 | KNW with stochastic volatility (`knw_sv`) | A shared hidden turbulence factor $$v$$ that scales volatility and shifts the drift; optional equity leg | Calm and stressed regimes that hit rates, inflation and equity at once |
 | Risk-neutral KNW (`knw_sv` with `measure: risk_neutral`) | A market price of risk fitted to the Treasury curve, closed-form bond prices, and a stochastic deflator for a real-world run | Valuation, and a model yield curve at any maturity |
 
-With the turbulence terms at zero, the equations of KNW with stochastic volatility are plain KNW's. The fits differ, though: plain KNW is fitted on deviations from the history's averages, the stochastic-volatility variant with a free intercept in each equation.
+With the turbulence terms at zero, the equations of KNW with stochastic volatility are plain KNW's, and both are fitted on deviations from the history's averages, so the pair settles at those averages. `mean_estimate: regression` fits a free intercept in each equation instead, which leans the long-run levels toward where the sample ends.
 
 The diagram shows which variable drives which:
 
@@ -308,17 +308,17 @@ Which gives, calibrated on 24 October 2026, among other columns:
 
 | factor | horizon | q0.05 | q0.5 | q0.95 |
 |:-------|--------:|------:|-----:|------:|
-| interest_rate | 1 | 0.0260 | 0.0384 | 0.0521 |
-| interest_rate | 10 | -0.0016 | 0.0271 | 0.0517 |
-| interest_rate | 30 | -0.0029 | 0.0254 | 0.0528 |
-| inflation | 1 | 0.0144 | 0.0301 | 0.0466 |
-| inflation | 10 | 0.0035 | 0.0252 | 0.0494 |
-| inflation | 30 | 0.0033 | 0.0259 | 0.0496 |
-| equity | 1 | -0.1314 | 0.0933 | 0.3908 |
-| equity | 10 | -0.0004 | 0.0890 | 0.1777 |
-| equity | 30 | 0.0298 | 0.0832 | 0.1362 |
+| interest_rate | 1 | 0.0269 | 0.0394 | 0.0530 |
+| interest_rate | 10 | 0.0029 | 0.0318 | 0.0567 |
+| interest_rate | 30 | 0.0015 | 0.0302 | 0.0578 |
+| inflation | 1 | 0.0157 | 0.0311 | 0.0471 |
+| inflation | 10 | 0.0045 | 0.0262 | 0.0507 |
+| inflation | 30 | 0.0041 | 0.0269 | 0.0506 |
+| equity | 1 | -0.1296 | 0.0937 | 0.3893 |
+| equity | 10 | 0.0031 | 0.0926 | 0.1815 |
+| equity | 30 | 0.0343 | 0.0877 | 0.1412 |
 
-The pair starts at a 3.86% rate and 3.50% inflation and settles at about 2.5% for both, the level $$(I - \Phi)^{-1}(c + \lambda\theta_v)$$ where the coupled drift puts it. Stocks earn the short rate plus their premium, about 8.3% a year over 30 years in the median scenario. When plotted, one variable per tab:
+The pair starts at a 3.86% rate and 3.50% inflation and settles at about 3.0% and 2.7%, the history's averages: the fit on deviations from those averages makes them the long-run level $$(I - \Phi)^{-1}(c + \lambda\theta_v)$$. Stocks earn the short rate plus their premium, about 8.8% a year over 30 years in the median scenario. When plotted, one variable per tab:
 
 {% include ft-chart.html id="knw-run" src="/assets/data/financescenarios-guides/knw.json" label="Median, 25-75% and 5-95% band of the US short rate, US inflation and the annualized S&P 500 return in a KNW run with stochastic volatility over thirty years" %}
 
