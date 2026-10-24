@@ -8,7 +8,7 @@ from common import NUMBERS, bar, default_run, fan, hist, labels, tabs, write
 from financescenarios import list_presets, read_run
 
 TITLES = {
-    "scenarios-overview": "US Short Rate, Inflation and Stock Market Return",
+    "scenarios-overview": "US Short Rate, Inflation and the Value of 100 in US Stocks",
     "scenarios-equity-distribution": "Five-Year Annualized Return of US Stocks",
     "scenarios-paths": "US Short Rate in Five Scenarios",
     "scenarios-horizons": "Percentiles of the US Stock Market Return after One, Three and Five Years",
@@ -25,7 +25,7 @@ charts = {}
 charts["scenarios-overview"] = tabs({
     "Short rate": fan(result, {"US short rate": "united_states_short_rate"}, inner=True),
     "Inflation": fan(result, {"US inflation": "united_states_inflation"}, inner=True),
-    "US stocks": fan(result, {"US stocks, annualized return": "us_broad"}, inner=True),
+    "US stocks": fan(result, {"US stocks, growth of 100": "us_broad"}, fmt="number", inner=True, index100=True),
 })
 
 summary = result.summary_statistics("united_states_short_rate")
