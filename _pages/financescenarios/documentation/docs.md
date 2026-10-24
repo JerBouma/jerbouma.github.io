@@ -89,9 +89,9 @@ Which returns where each of the 27 variables starts and where it ends up after f
 | europe | equities | annualized |  | 0.0933 | -0.0753 | 0.2487 |
 | gold | commodities | annualized |  | 0.0308 | -0.0999 | 0.1716 |
 
-US inflation starts at 3.74% and averages 2.34% after five years, the US short rate starts at 4.08% and averages 4.59%, and US stocks return 8.49% a year on average, with one scenario in twenty below -5.69% a year. When plotted, the median of three of them with the bands that hold the middle half and nine in ten of the scenarios, one variable per tab:
+US inflation starts at 3.74% and averages 2.34% after five years, the US short rate starts at 4.08% and averages 4.59%, and US stocks return 8.49% a year on average, with one scenario in twenty below -5.69% a year. When plotted, the median of three of them, with US stocks as what 100 invested today is worth, and the bands that hold the middle half and nine in ten of the scenarios, one variable per tab:
 
-{% include ft-chart.html id="scenarios-overview" src="/assets/data/financescenarios-guides/getting-started.json" label="Median, 25-75% and 5-95% bands of the US short rate, US inflation and the annualized US stock market return over five years" %}
+{% include ft-chart.html id="scenarios-overview" src="/assets/data/financescenarios-guides/getting-started.json" label="Median, 25-75% and 5-95% bands of the US short rate, US inflation and what 100 in US stocks is worth over five years" %}
 
 ## Reading the Distribution
 
