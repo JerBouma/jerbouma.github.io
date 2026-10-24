@@ -5449,11 +5449,11 @@ $content-img: 'img:not([src*="shields.io"]):not([src*="pepy.tech"]):not([src*="g
   margin: 0 0 28px;
 }
 
-// The parameters of a metric page, folded under its Python example: name,
-// types, description and an example value. The table scrolls sideways on
-// phones instead of squeezing the description.
-.ft-details.docs-params {
-  margin: 18px 0 28px;
+// The parameters section of a metric page: name, types, description and an
+// example value. The table scrolls sideways on phones instead of squeezing
+// the description.
+.docs-params {
+  margin: 0 0 28px;
 
   .docs-params__table {
     margin-bottom: 16px;

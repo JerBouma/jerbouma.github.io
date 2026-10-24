@@ -220,8 +220,8 @@ module DocsMetricPages
     Kramdown::Document.new(text).to_html.strip.sub(%r{\A<p>(.*)</p>\z}m, '\1')
   end
 
-  # The parameters as a collapsed table under the Python example: name, the
-  # types it accepts, what it does and a value to pass
+  # The parameters as their own section: name, the types it accepts, what it
+  # does and a value to pass
   def parameters_table(site, fn_name, rows)
     body = rows.map do |name, type, description|
       example = parameter_example(site, fn_name, name, description)
@@ -229,15 +229,12 @@ module DocsMetricPages
         "<td>#{inline_markdown(description)}</td><td>#{example.empty? ? '' : "<code>#{CGI.escapeHTML(example)}</code>"}</td></tr>"
     end
     <<~HTML
-      <details class="ft-details docs-params">
-      <summary><i class="fas fa-sliders" aria-hidden="true"></i> <b>Parameters</b> <span class="ft-details__meta">#{rows.size}</span></summary>
-      <div class="docs-params__table"><table>
+      <div class="docs-params"><div class="docs-params__table"><table>
       <thead><tr><th>Parameter</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
       <tbody>
       #{body.join("\n")}
       </tbody>
-      </table></div>
-      </details>
+      </table></div></div>
     HTML
   end
 
@@ -269,7 +266,11 @@ module DocsMetricPages
       out << code.rstrip << "\n\n" unless code.strip.empty?
       out << mcp
       out << returns << rest << "\n\n" unless returns.empty?
-      out << parameters_table(site, fn_name, parameters) << "\n" unless parameters.empty?
+    end
+    unless parameters.empty?
+      out << "## Parameters\n\n"
+      out << "`#{fn_name}` accepts the following parameters.\n{: .docs-boilerplate}\n\n"
+      out << parameters_table(site, fn_name, parameters) << "\n"
     end
     unless related.empty?
       # same pill buttons as the module switcher on the docs pages
