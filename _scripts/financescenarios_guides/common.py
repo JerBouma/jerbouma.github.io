@@ -56,19 +56,34 @@ def quantiles(paths: np.ndarray, inner: bool = False) -> dict:
     return out
 
 
-def fan(result, factors: dict, fmt: str = "percent", levels: bool = False, inner: bool = False, **extra) -> dict:
-    """A fan chart: one band per factor, {display name: factor}, from the run's metric paths."""
+def growth_of_100(run, factor: str) -> np.ndarray:
+    """What 100 put in the factor at the start is worth at each date, per scenario."""
+    prices = run.metric_paths(factor, levels=True)
+    return 100 * prices / prices[:, :1]
+
+
+def fan(result, factors: dict, fmt: str = "percent", levels: bool = False, inner: bool = False, index100: bool = False,
+        **extra) -> dict:
+    """A fan chart: one band per factor, {display name: factor}, from the run's metric paths (as growth of 100 with
+    index100)."""
     series = []
     for name, factor in factors.items():
-        paths = factor if isinstance(factor, np.ndarray) else result.metric_paths(factor, levels=levels)
+        if isinstance(factor, np.ndarray):
+            paths = factor
+        else:
+            paths = growth_of_100(result, factor) if index100 else result.metric_paths(factor, levels=levels)
         series.append({"name": name, **quantiles(paths, inner=inner and len(factors) == 1)})
     return {"type": "fan", "x": labels(result.dates), "series": series, "format": fmt, **extra}
 
 
-def runs_fan(runs: dict, factor: str, fmt: str = "percent", levels: bool = False, **extra) -> dict:
-    """One band per run of the same factor, {display name: ScenarioSet}."""
+def runs_fan(runs: dict, factor: str, fmt: str = "percent", levels: bool = False, index100: bool = False,
+             **extra) -> dict:
+    """One band per run of the same factor, {display name: ScenarioSet} (as growth of 100 with index100)."""
     first = next(iter(runs.values()))
-    series = [{"name": name, **quantiles(run.metric_paths(factor, levels=levels))} for name, run in runs.items()]
+    series = [
+        {"name": name, **quantiles(growth_of_100(run, factor) if index100 else run.metric_paths(factor, levels=levels))}
+        for name, run in runs.items()
+    ]
     return {"type": "fan", "x": labels(first.dates), "series": series, "format": fmt, **extra}
 
 
