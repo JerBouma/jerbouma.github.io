@@ -6,9 +6,6 @@ get_mcclellan_oscillator:
     tickers: JPM
     start_date: "2024-10-01"
     end_date: "2025-12-31"
-  chart:
-    last: 250
-    format: ratio
 get_advancers_decliners:
   question: On which trading days from 1 to 12 December 2025 did Tesla and Ford close higher or lower than the day before?
   tool: breadth
@@ -16,10 +13,6 @@ get_advancers_decliners:
     tickers: TSLA,F
     start_date: "2025-11-28"
     end_date: "2025-12-12"
-  chart:
-    format: number
-    last: 10
-    title: Daily advance/decline signal
 get_on_balance_volume:
   question: How did AMD's on-balance volume build up over 2025?
   tool: breadth
@@ -27,8 +20,6 @@ get_on_balance_volume:
     tickers: AMD
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
 get_accumulation_distribution_line:
   question: Was Amazon's stock under accumulation or distribution during 2025, according to its accumulation/distribution line?
   tool: breadth
@@ -36,8 +27,6 @@ get_accumulation_distribution_line:
     tickers: AMZN
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
 get_chaikin_oscillator:
   question: How did the Chaikin Oscillator for Airbnb swing between buying and selling pressure in 2025?
   tool: breadth
@@ -45,9 +34,6 @@ get_chaikin_oscillator:
     tickers: ABNB
     start_date: "2024-10-01"
     end_date: "2025-12-31"
-  chart:
-    last: 250
-    format: amount
 get_trin:
   question: Measured across the eleven S&P 500 sector ETFs, how did the Arms Index (TRIN) move day by day in 2025?
   tool: breadth
@@ -55,10 +41,6 @@ get_trin:
     tickers: XLK,XLF,XLE,XLV,XLY,XLP,XLI,XLB,XLU,XLRE,XLC
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    values: [XLK]
-    rename: {XLK: TRIN}
 get_new_highs_new_lows:
   question: On each trading day of 2025, how many of the eleven S&P 500 sector ETFs closed at a 20-day high, net of those at a 20-day low?
   tool: breadth
@@ -67,11 +49,6 @@ get_new_highs_new_lows:
     start_date: "2024-10-01"
     end_date: "2025-12-31"
     window: 20
-  chart:
-    last: 250
-    format: number
-    values: [XLK]
-    rename: {XLK: New highs minus new lows}
 get_chaikin_money_flow:
   question: How did the Chaikin Money Flow of Palantir and CrowdStrike compare through 2025?
   tool: breadth
@@ -79,8 +56,6 @@ get_chaikin_money_flow:
     tickers: PLTR,CRWD
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_ease_of_movement:
   question: How easily did Netflix's share price move relative to its trading volume in 2025, measured by the Ease of Movement indicator?
   tool: breadth
@@ -88,8 +63,6 @@ get_ease_of_movement:
     tickers: NFLX
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_positive_volume_index:
   question: How did the Positive Volume Index of Walmart and Costco develop over 2025, starting from 1,000?
   tool: breadth
@@ -97,8 +70,6 @@ get_positive_volume_index:
     tickers: WMT,COST
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_negative_volume_index:
   question: How did the Negative Volume Index of Walmart and Costco, which only moves on days when volume falls, develop over 2025?
   tool: breadth
@@ -106,8 +77,6 @@ get_negative_volume_index:
     tickers: WMT,COST
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 
 # Momentum indicators
 get_money_flow_index:
@@ -117,8 +86,6 @@ get_money_flow_index:
     tickers: ADBE
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_williams_percent_r:
   question: How did Netflix's Williams %R move between overbought and oversold in 2025?
   tool: momentum
@@ -126,8 +93,6 @@ get_williams_percent_r:
     tickers: NFLX
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_aroon_indicator:
   question: How did Amazon's Aroon Up and Aroon Down lines evolve during 2025?
   tool: momentum
@@ -135,10 +100,6 @@ get_aroon_indicator:
     tickers: AMZN
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
-    keep: {ticker: AMZN}
-    values: [Aroon Up, Aroon Down]
 get_commodity_channel_index:
   question: How far did Boeing's price stray from its typical level in 2025, measured by the Commodity Channel Index?
   tool: momentum
@@ -146,8 +107,6 @@ get_commodity_channel_index:
     tickers: BA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_relative_vigor_index:
   question: What share of Intel's open-to-close price movement was upward in 2025, measured by its 14-day Relative Vigor Index?
   tool: momentum
@@ -155,8 +114,6 @@ get_relative_vigor_index:
     tickers: INTC
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_force_index:
   question: How did the Force Index of Caterpillar, its price change times volume, move through 2025?
   tool: momentum
@@ -164,8 +121,6 @@ get_force_index:
     tickers: CAT
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
 get_ultimate_oscillator:
   question: What did the Ultimate Oscillator of Arista Networks, which combines 7, 14 and 28-day buying pressure, show over 2025?
   tool: momentum
@@ -173,9 +128,6 @@ get_ultimate_oscillator:
     tickers: ANET
     start_date: "2024-10-01"
     end_date: "2025-12-31"
-  chart:
-    last: 250
-    format: number
 get_percentage_price_oscillator:
   question: How did the Percentage Price Oscillator of Nvidia compare with AMD's in 2025?
   tool: momentum
@@ -183,9 +135,6 @@ get_percentage_price_oscillator:
     tickers: NVDA,AMD
     start_date: "2024-10-01"
     end_date: "2025-12-31"
-  chart:
-    last: 250
-    format: number
 get_detrended_price_oscillator:
   question: How did Home Depot's share price cycle around its trend in 2025, measured by the Detrended Price Oscillator?
   tool: momentum
@@ -193,8 +142,6 @@ get_detrended_price_oscillator:
     tickers: HD
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_average_directional_index:
   question: How strong was Tesla's price trend through 2025, measured by the Average Directional Index?
   tool: momentum
@@ -202,9 +149,6 @@ get_average_directional_index:
     tickers: TSLA
     start_date: "2024-10-01"
     end_date: "2025-12-31"
-  chart:
-    last: 250
-    format: number
 get_chande_momentum_oscillator:
   question: How did Oracle's momentum swing in 2025, measured by the Chande Momentum Oscillator?
   tool: momentum
@@ -212,8 +156,6 @@ get_chande_momentum_oscillator:
     tickers: ORCL
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_ichimoku_cloud:
   question: What did Visa's Ichimoku cloud look like from August to December 2025?
   tool: momentum
@@ -221,11 +163,6 @@ get_ichimoku_cloud:
     tickers: V
     start_date: "2025-04-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
-    last: 106
-    keep: {ticker: V}
-    values: [Conversion Line, Base Line, Leading Span A, Leading Span B]
 get_stochastic_oscillator:
   question: How did the stochastic oscillator %K and %D lines of Palo Alto Networks move in 2025?
   tool: momentum
@@ -233,10 +170,6 @@ get_stochastic_oscillator:
     tickers: PANW
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
-    keep: {ticker: PANW}
-    values: [Stochastic %K, Stochastic %D]
 get_moving_average_convergence_divergence:
   question: How did Microsoft's MACD line move against its signal line in 2025?
   tool: momentum
@@ -244,11 +177,6 @@ get_moving_average_convergence_divergence:
     tickers: MSFT
     start_date: "2024-10-01"
     end_date: "2025-12-31"
-  chart:
-    last: 250
-    format: ratio
-    keep: {ticker: MSFT}
-    values: [MACD Line, Signal Line]
 get_relative_strength_index:
   question: Was Nvidia overbought or oversold at any point in 2025, judging by its 14-day relative strength index?
   tool: momentum
@@ -256,8 +184,6 @@ get_relative_strength_index:
     tickers: NVDA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_balance_of_power:
   question: Did buyers or sellers control AMD's trading days in 2025, measured by the Balance of Power?
   tool: momentum
@@ -265,8 +191,6 @@ get_balance_of_power:
     tickers: AMD
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_awesome_oscillator:
   question: How did Eli Lilly's momentum shift during 2025, measured by the Awesome Oscillator?
   tool: momentum
@@ -274,9 +198,6 @@ get_awesome_oscillator:
     tickers: LLY
     start_date: "2024-10-01"
     end_date: "2025-12-31"
-  chart:
-    last: 250
-    format: ratio
 get_rate_of_change:
   question: How did the 12-day rate of change of ExxonMobil and Chevron shares compare in 2025?
   tool: momentum
@@ -284,8 +205,6 @@ get_rate_of_change:
     tickers: XOM,CVX
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_know_sure_thing:
   question: How did UnitedHealth's Know Sure Thing indicator and its signal line move in 2025?
   tool: momentum
@@ -293,11 +212,6 @@ get_know_sure_thing:
     tickers: UNH
     start_date: "2024-10-01"
     end_date: "2025-12-31"
-  chart:
-    last: 250
-    format: number
-    keep: {ticker: UNH}
-    values: [KST, Signal Line]
 get_elder_ray_index:
   question: How did bull power and bear power develop for Berkshire Hathaway in 2025, measured by the Elder Ray Index?
   tool: momentum
@@ -305,10 +219,6 @@ get_elder_ray_index:
     tickers: BRK-B
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    keep: {ticker: BRK-B}
-    values: [Bull Power, Bear Power]
 get_vortex_indicator:
   question: How did CrowdStrike's positive and negative Vortex Indicator lines cross during 2025?
   tool: momentum
@@ -316,10 +226,6 @@ get_vortex_indicator:
     tickers: CRWD
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    keep: {ticker: CRWD}
-    values: [VI+, VI-]
 get_choppiness_index:
   question: Was Uber's share price trending or moving sideways in 2025, according to the Choppiness Index?
   tool: momentum
@@ -327,8 +233,6 @@ get_choppiness_index:
     tickers: UBER
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 
 # Overlap indicators
 get_moving_average:
@@ -339,9 +243,6 @@ get_moving_average:
     start_date: "2024-10-01"
     end_date: "2025-12-31"
     window: 50
-  chart:
-    format: price
-    last: 250
 get_exponential_moving_average:
   question: How did Alphabet's 20-day exponential moving average move through 2025?
   tool: overlap
@@ -350,8 +251,6 @@ get_exponential_moving_average:
     start_date: "2025-01-01"
     end_date: "2025-12-31"
     window: 20
-  chart:
-    format: price
 get_double_exponential_moving_average:
   question: How did Nvidia's 14-day double exponential moving average move in 2025?
   tool: overlap
@@ -359,8 +258,6 @@ get_double_exponential_moving_average:
     tickers: NVDA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_trix:
   question: How did the TRIX of Amazon's share price, the daily rate of change of a triple-smoothed moving average, move in 2025?
   tool: overlap
@@ -368,9 +265,6 @@ get_trix:
     tickers: AMZN
     start_date: "2024-10-01"
     end_date: "2025-12-31"
-  chart:
-    last: 250
-    format: ratio
 get_triangular_moving_average:
   question: How did JPMorgan Chase's 14-day triangular moving average move through 2025?
   tool: overlap
@@ -378,8 +272,6 @@ get_triangular_moving_average:
     tickers: JPM
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_weighted_moving_average:
   question: How did Coca-Cola's 14-day weighted moving average move during 2025?
   tool: overlap
@@ -387,8 +279,6 @@ get_weighted_moving_average:
     tickers: KO
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_hull_moving_average:
   question: How did Meta's 14-day Hull moving average move during 2025?
   tool: overlap
@@ -396,8 +286,6 @@ get_hull_moving_average:
     tickers: META
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_volume_weighted_average_price:
   question: What was Palantir's rolling 14-day volume weighted average price through 2025?
   tool: overlap
@@ -405,8 +293,6 @@ get_volume_weighted_average_price:
     tickers: PLTR
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_parabolic_sar:
   question: Where did the Parabolic SAR place its trailing stop for AMD during 2025?
   tool: overlap
@@ -414,8 +300,6 @@ get_parabolic_sar:
     tickers: AMD
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_pivot_points:
   question: What were Netflix's daily floor-trader pivot point, support and resistance levels in December 2025?
   tool: overlap
@@ -423,10 +307,6 @@ get_pivot_points:
     tickers: NFLX
     start_date: "2025-11-28"
     end_date: "2025-12-31"
-  chart:
-    format: price
-    keep: {ticker: NFLX}
-    values: [Resistance 2, Resistance 1, Pivot Point, Support 1, Support 2]
 get_support_resistance_levels:
   question: Which support and resistance levels did Costco's share price establish during 2025?
   tool: overlap
@@ -434,11 +314,6 @@ get_support_resistance_levels:
     tickers: COST
     start_date: "2024-10-01"
     end_date: "2025-12-31"
-  chart:
-    last: 250
-    format: price
-    keep: {ticker: COST}
-    values: [Resistance, Support]
 get_kaufman_adaptive_moving_average:
   question: How did Tesla's Kaufman adaptive moving average move in 2025?
   tool: overlap
@@ -446,8 +321,6 @@ get_kaufman_adaptive_moving_average:
     tickers: TSLA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_fibonacci_retracement_levels:
   question: What were Broadcom's Fibonacci retracement levels over its rolling 14-day range in the fourth quarter of 2025?
   tool: overlap
@@ -455,11 +328,6 @@ get_fibonacci_retracement_levels:
     tickers: AVGO
     start_date: "2025-09-10"
     end_date: "2025-12-31"
-  chart:
-    format: price
-    last: 64
-    keep: {ticker: AVGO}
-    values: ["0.0%", "23.6%", "38.2%", "50.0%", "61.8%", "100.0%"]
 
 # Volatility indicators
 get_true_range:
@@ -469,8 +337,6 @@ get_true_range:
     tickers: TSLA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_average_true_range:
   question: How did the 14-day average true range of Nvidia and AMD compare in 2025?
   tool: volatility
@@ -478,8 +344,6 @@ get_average_true_range:
     tickers: NVDA,AMD
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_keltner_channels:
   question: Where were Amazon's Keltner Channels from July to December 2025?
   tool: volatility
@@ -487,11 +351,6 @@ get_keltner_channels:
     tickers: AMZN
     start_date: "2025-06-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
-    last: 128
-    keep: {ticker: AMZN}
-    values: [Upper Line, Middle Line, Lower Line]
 get_bollinger_bands:
   question: How did Microsoft's closing price move within its Bollinger Bands from July to December 2025?
   tool: volatility
@@ -499,11 +358,6 @@ get_bollinger_bands:
     tickers: MSFT
     start_date: "2025-06-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
-    last: 128
-    keep: {ticker: MSFT}
-    values: [Close, Upper Band, Middle Band, Lower Band]
 get_donchian_channels:
   question: What were ExxonMobil's 20-day Donchian Channels from July to December 2025?
   tool: volatility
@@ -511,11 +365,6 @@ get_donchian_channels:
     tickers: XOM
     start_date: "2025-06-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
-    last: 128
-    keep: {ticker: XOM}
-    values: [Upper Channel, Middle Channel, Lower Channel]
 get_volatility_cone:
   question: How did Apple's realized volatility at the end of 2025 compare with its range from 2021 to 2025, across windows of 10 to 120 trading days?
   tool: volatility
@@ -523,13 +372,6 @@ get_volatility_cone:
     tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    type: line
-    format: percent
-    x: Window
-    xname: Window (trading days)
-    keep: {ticker: AAPL}
-    values: [90th Percentile, 75th Percentile, Median, 25th Percentile, 10th Percentile, Current]
 get_supertrend:
   question: How did Shopify's Supertrend level move during 2025?
   tool: volatility
@@ -537,7 +379,3 @@ get_supertrend:
     tickers: SHOP
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
-    keep: {ticker: SHOP}
-    values: [Supertrend]

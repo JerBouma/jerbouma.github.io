@@ -1,1 +1,0 @@
-{"charts":{"get_cash_tax_rate":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"COST","data":[0.2286,0.2474,0.2632,0.2381,0.2696]},{"name":"PEP","data":[0.1968,0.2584,0.2218,0.2565,0.3012]},{"name":"PG","data":[0.217,0.2122,0.2331,0.2326,0.2258]}],"format":"percent","title":"Cash Tax Rate","period":false}}}

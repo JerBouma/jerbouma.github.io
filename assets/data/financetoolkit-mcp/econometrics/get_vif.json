@@ -1,1 +1,0 @@
-{"charts":{"get_vif":{"type":"bar","x":["GOOGL","META","AMZN"],"series":[{"name":"VIF","data":[1.4427,1.8234,2.08]}],"format":"ratio","title":"Variance Inflation Factor (VIF)","period":false}}}

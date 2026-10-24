@@ -1,1 +1,0 @@
-{"charts":{"get_dividend_yield":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"JNJ","data":[0.028,0.028,0.0324,0.0356,0.0252]},{"name":"KO","data":[0.0326,0.0309,0.0338,0.0327,0.0297]},{"name":"PEP","data":[0.0286,0.0285,0.0322,0.0376,0.0404]}],"format":"percent","title":"Dividend Yield","period":false}}}

@@ -5,8 +5,6 @@ get_beta:
     tickers: NVDA,TSLA,JPM
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_capital_asset_pricing_model:
   question: What return did the CAPM require of JPMorgan Chase, Goldman Sachs and Morgan Stanley in each year from 2021 to 2025?
   tool: performance
@@ -14,8 +12,6 @@ get_capital_asset_pricing_model:
     tickers: JPM,GS,MS
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_fama_and_french_model:
   question: What were the Fama and French five-factor loadings of Berkshire Hathaway, Visa and Netflix in 2025?
   tool: performance
@@ -23,11 +19,6 @@ get_fama_and_french_model:
     tickers: BRK-B,V,NFLX
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    x: ticker
-    values: [Mkt-RF Slope, SMB Slope, HML Slope, RMW Slope, CMA Slope]
-    title: Fama and French Factor Loadings
 get_carhart_four_factor_model:
   question: What were the Carhart four-factor loadings of ExxonMobil, Home Depot and Adobe in 2025?
   tool: performance
@@ -35,11 +26,6 @@ get_carhart_four_factor_model:
     tickers: XOM,HD,ADBE
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    x: ticker
-    values: [Mkt-RF Slope, SMB Slope, HML Slope, MOM Slope]
-    title: Carhart Factor Loadings
 get_factor_asset_correlations:
   question: How strongly did the daily returns of Caterpillar, Pfizer and Oracle correlate with each of the Fama and French factors in 2025?
   tool: performance
@@ -47,10 +33,6 @@ get_factor_asset_correlations:
     tickers: CAT,PFE,ORCL
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    x: ticker
-    values: [Mkt-RF, SMB, HML, RMW, CMA]
 get_factor_correlations:
   question: How did the daily returns of the five Fama and French factors correlate with each other in 2025?
   tool: performance
@@ -58,13 +40,6 @@ get_factor_correlations:
     tickers: SPY
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    type: heatmap
-    format: ratio
-    x: metric
-    values: [Mkt-RF, SMB, HML, RMW, CMA]
-    min: -1
-    max: 1
 get_alpha:
   question: By how much did Costco, Walmart and Target beat or trail the S&P 500 in each year from 2021 to 2025?
   tool: performance
@@ -72,8 +47,6 @@ get_alpha:
     tickers: COST,WMT,TGT
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_jensens_alpha:
   question: What was Jensen's alpha of UnitedHealth, Johnson & Johnson and Pfizer in each year from 2021 to 2025?
   tool: performance
@@ -81,8 +54,6 @@ get_jensens_alpha:
     tickers: UNH,JNJ,PFE
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_treynor_mazuy_model:
   question: What was the market timing coefficient (gamma) of the ARK Innovation ETF and the JPMorgan Chase Equity Premium Income ETF in the Treynor-Mazuy model in each year from 2021 to 2025?
   tool: performance
@@ -90,10 +61,6 @@ get_treynor_mazuy_model:
     tickers: ARKK,JEPI
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    values: [Gamma]
-    title: Market Timing Coefficient (Gamma)
 get_henriksson_merton_model:
   question: What was the up-market beta, the market timing coefficient of the Henriksson-Merton model, of Berkshire Hathaway and the Fidelity Blue Chip Growth ETF in each year from 2021 to 2025?
   tool: performance
@@ -101,10 +68,6 @@ get_henriksson_merton_model:
     tickers: BRK-B,FBCG
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    values: [Up Market Beta]
-    title: Up-Market Beta
 get_fama_decomposition:
   question: How much of the excess return of the Invesco QQQ Trust, the iShares Russell 2000 ETF and the Energy Select Sector SPDR came from selectivity and how much from diversification in each year from 2021 to 2025?
   tool: performance
@@ -112,8 +75,6 @@ get_fama_decomposition:
     tickers: QQQ,IWM,XLE
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_sharpe_ratio:
   question: What was the annualized Sharpe ratio of ExxonMobil, Chevron and ConocoPhillips in each year from 2021 to 2025?
   tool: performance
@@ -122,8 +83,6 @@ get_sharpe_ratio:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     annualize: true
-  chart:
-    format: ratio
 get_sortino_ratio:
   question: What was the Sortino ratio of Visa, Mastercard and American Express, measured on daily returns, in each year from 2021 to 2025?
   tool: performance
@@ -131,8 +90,6 @@ get_sortino_ratio:
     tickers: V,MA,AXP
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: decimal
 get_treynor_ratio:
   question: What was the Treynor ratio of Union Pacific, UPS and FedEx in each year from 2021 to 2025?
   tool: performance
@@ -140,8 +97,6 @@ get_treynor_ratio:
     tickers: UNP,UPS,FDX
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_m2_ratio:
   question: What was the M2 measure, the return at the S&P 500's volatility, of Home Depot and Lowe's in each year from 2021 to 2025?
   tool: performance
@@ -149,8 +104,6 @@ get_m2_ratio:
     tickers: HD,LOW
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_appraisal_ratio:
   question: What was the appraisal ratio of Adobe, Salesforce and Oracle in each year from 2021 to 2025?
   tool: performance
@@ -158,8 +111,6 @@ get_appraisal_ratio:
     tickers: ADBE,CRM,ORCL
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_kappa_ratio:
   question: What was the Kappa 3 ratio of Eli Lilly, Merck and AbbVie, measured on daily returns, in each year from 2021 to 2025?
   tool: performance
@@ -167,8 +118,6 @@ get_kappa_ratio:
     tickers: LLY,MRK,ABBV
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: decimal
 get_omega_ratio:
   question: What was the Omega ratio of BlackRock, Charles Schwab and Blackstone in each year from 2021 to 2025?
   tool: performance
@@ -176,8 +125,6 @@ get_omega_ratio:
     tickers: BLK,SCHW,BX
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_rachev_ratio:
   question: What was the Rachev ratio of Tesla, AMD and Palantir in each year from 2021 to 2025?
   tool: performance
@@ -185,8 +132,6 @@ get_rachev_ratio:
     tickers: TSLA,AMD,PLTR
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_starr_ratio:
   question: What was the STARR ratio, the excess return per unit of tail risk, of Caterpillar, Deere and Honeywell in each year from 2021 to 2025?
   tool: performance
@@ -194,8 +139,6 @@ get_starr_ratio:
     tickers: CAT,DE,HON
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_calmar_ratio:
   question: What was the Calmar ratio of the Vanguard Total Stock Market, FTSE Developed Markets and FTSE Emerging Markets ETFs in each year from 2021 to 2025?
   tool: performance
@@ -203,8 +146,6 @@ get_calmar_ratio:
     tickers: VTI,VEA,VWO
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_sterling_ratio:
   question: What was the Sterling ratio of NextEra Energy, Duke Energy and Southern Company in each year from 2021 to 2025?
   tool: performance
@@ -212,8 +153,6 @@ get_sterling_ratio:
     tickers: NEE,DUK,SO
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_burke_ratio:
   question: What was the Burke ratio of Boeing, Lockheed Martin and RTX in each year from 2021 to 2025?
   tool: performance
@@ -221,8 +160,6 @@ get_burke_ratio:
     tickers: BA,LMT,RTX
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_ulcer_performance_index:
   question: What was the Ulcer Performance Index of Verizon, AT&T and T-Mobile in each year from 2021 to 2025?
   tool: performance
@@ -230,8 +167,6 @@ get_ulcer_performance_index:
     tickers: VZ,T,TMUS
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_gain_to_pain_ratio:
   question: What was the gain-to-pain ratio of Goldman Sachs, Morgan Stanley and Charles Schwab in each year from 2021 to 2025?
   tool: performance
@@ -239,8 +174,6 @@ get_gain_to_pain_ratio:
     tickers: GS,MS,SCHW
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_tracking_error:
   question: How large was the daily tracking error against SPY of the Vanguard S&P 500 ETF, the Invesco S&P 500 Equal Weight ETF and the Invesco QQQ Trust in each year from 2021 to 2025?
   tool: performance
@@ -248,8 +181,6 @@ get_tracking_error:
     tickers: VOO,RSP,QQQ
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_information_ratio:
   question: What was the information ratio against the S&P 500 of the technology, energy and health care sector ETFs (XLK, XLE and XLV), measured on daily returns, in each year from 2021 to 2025?
   tool: performance
@@ -257,8 +188,6 @@ get_information_ratio:
     tickers: XLK,XLE,XLV
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: decimal
 get_upside_capture_ratio:
   question: How much of the S&P 500's gains on its up days did the Invesco QQQ Trust, the Schwab US Dividend Equity ETF and the iShares MSCI USA Min Vol Factor ETF capture in each year from 2021 to 2025?
   tool: performance
@@ -266,8 +195,6 @@ get_upside_capture_ratio:
     tickers: QQQ,SCHD,USMV
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_downside_capture_ratio:
   question: How much of the S&P 500's losses on its down days did the Utilities Select Sector SPDR, the Invesco S&P 500 Low Volatility ETF and the ARK Innovation ETF capture in each year from 2021 to 2025?
   tool: performance
@@ -275,8 +202,6 @@ get_downside_capture_ratio:
     tickers: XLU,SPLV,ARKK
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_win_rate:
   question: On what share of trading days did Apple, Microsoft and Alphabet beat the S&P 500 in each year from 2021 to 2025?
   tool: performance
@@ -284,8 +209,6 @@ get_win_rate:
     tickers: AAPL,MSFT,GOOGL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_returns:
   question: What were the yearly returns of ASML, SAP and LVMH in euros from 2021 to 2025?
   tool: performance
@@ -293,8 +216,6 @@ get_returns:
     tickers: ASML.AS,SAP.DE,MC.PA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_excess_return:
   question: How much did McDonald's, Starbucks and Chipotle return above the risk-free rate in each year from 2021 to 2025?
   tool: performance
@@ -302,8 +223,6 @@ get_excess_return:
     tickers: MCD,SBUX,CMG
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_compound_growth_rate:
   question: What was the compound annual growth rate of JPMorgan Chase, Bank of America and Citigroup compared with the S&P 500 over the five years to the end of 2025?
   tool: performance
@@ -311,15 +230,6 @@ get_compound_growth_rate:
     tickers: JPM,BAC,C
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    transpose: true
-    format: percent
-    keep:
-      metric: Compound Annual Growth Rate (CAGR)
-    keep_benchmark: true
-    rename:
-      Benchmark: S&P 500 (SPY)
-    title: Compound Annual Growth Rate (CAGR)
 get_correlation_matrix:
   question: How did the monthly returns of US long-term Treasuries, gold, developed-market equities and US real estate correlate with each other and with the S&P 500 from 2021 to 2025?
   tool: performance
@@ -328,14 +238,6 @@ get_correlation_matrix:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     period: monthly
-  chart:
-    rename: {Benchmark: "S&P 500"}
-    type: heatmap
-    format: ratio
-    x: ticker
-    values: [TLT, GLD, EFA, VNQ, Benchmark]
-    min: -1
-    max: 1
 get_covariance_matrix:
   question: What is the covariance matrix of the monthly returns of US long-term Treasuries, gold, emerging-market equities, US real estate and the S&P 500 from 2021 to 2025?
   tool: performance
@@ -344,12 +246,3 @@ get_covariance_matrix:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     period: monthly
-  chart:
-    rename: {Benchmark: "S&P 500"}
-    type: heatmap
-    format: ""
-    digits: 4
-    x: ticker
-    values: [TLT, GLD, EEM, VNQ, Benchmark]
-    min: -0.004
-    max: 0.004

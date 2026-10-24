@@ -1,1 +1,0 @@
-{"charts":{"get_returns":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ASML.AS","data":[0.748,-0.2789,0.3664,0.0035,0.3709]},{"name":"SAP.DE","data":[0.2018,-0.2049,0.4709,0.7229,-0.115]},{"name":"MC.PA","data":[0.4345,-0.0478,0.0958,-0.1179,0.0393]}],"format":"percent","title":"Returns","period":false}}}

@@ -1,1 +1,0 @@
-{"charts":{"get_granger_causality":{"type":"bar","x":["TSM","NVDA"],"series":[{"name":"P-Value","data":[0.399357,0.166821]}],"format":"ratio","title":"Granger Causality P-Value","period":false,"xname":"Predicted ticker"}}}

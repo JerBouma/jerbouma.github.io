@@ -1,1 +1,0 @@
-{"charts":{"get_economic_value_added":{"type":"bar","x":["2023","2024","2025"],"series":[{"name":"HD","data":[4220402065.64,5650630149.5,8092622081.06]},{"name":"MA","data":[6756072586.85,9345915976.57,11953337000.9]},{"name":"V","data":[5950123984.46,10530088916.3,11824171133.4]}],"format":"usd","title":"Economic Value Added (EVA)","period":false}}}

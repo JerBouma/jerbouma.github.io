@@ -1,1 +1,0 @@
-{"charts":{"get_kappa_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"LLY","data":[0.1248,0.0844,0.1351,0.0652,0.0513]},{"name":"MRK","data":[0.0091,0.1426,-0.004,-0.0191,0.0193]},{"name":"ABBV","data":[0.0811,0.0552,-0.0059,0.0298,0.064]}],"format":"decimal","title":"Kappa Ratio","period":false}}}

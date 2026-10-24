@@ -1,1 +1,0 @@
-{"charts":{"get_return_on_invested_capital":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CAT","data":[0.1215,0.1251,0.1875,0.1872,0.1448]},{"name":"CMI","data":[0.1543,0.132,0.0412,0.2191,0.1406]},{"name":"DE","data":[0.0943,0.1021,0.1286,0.0816,0.0564]}],"format":"percent","title":"Return on Invested Capital (RoIC)","period":false}}}

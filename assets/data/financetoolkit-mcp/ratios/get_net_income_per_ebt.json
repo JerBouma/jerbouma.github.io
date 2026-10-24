@@ -1,1 +1,0 @@
-{"charts":{"get_net_income_per_ebt":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ASML.AS","data":[0.8521,0.8529,0.8452,0.8184,0.8268]},{"name":"SAP.DE","data":[0.7576,0.6123,0.7791,0.6593,0.7087]},{"name":"SIE.DE","data":[0.7387,0.576,0.7535,0.7816,0.7935]}],"format":"percent","title":"Net Income per EBT","period":false}}}

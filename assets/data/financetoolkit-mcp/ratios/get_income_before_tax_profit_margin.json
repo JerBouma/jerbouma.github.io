@@ -1,1 +1,0 @@
-{"charts":{"get_income_before_tax_profit_margin":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"GIS","data":[0.1749,0.1603,0.1568,0.1484,0.0179]},{"name":"HRL","data":[0.0989,0.1026,0.0837,0.0869,0.0548]},{"name":"HSY","data":[0.2003,0.184,0.1945,0.2208,0.1038]}],"format":"percent","title":"Income Before Tax Profit Margin","period":false}}}

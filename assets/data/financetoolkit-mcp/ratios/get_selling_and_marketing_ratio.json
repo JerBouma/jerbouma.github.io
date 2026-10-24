@@ -1,1 +1,0 @@
-{"charts":{"get_selling_and_marketing_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CRM","data":[0.4475,0.4314,0.3694,0.3498,0.3455]},{"name":"DDOG","data":[0.2911,0.2957,0.2863,0.2819,0.2791]},{"name":"HUBS","data":[0.4995,0.5119,0.4924,0.4639,0.4405]}],"format":"percent","title":"Selling and Marketing Ratio","period":false}}}

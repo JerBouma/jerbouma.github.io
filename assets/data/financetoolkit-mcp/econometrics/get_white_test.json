@@ -1,1 +1,0 @@
-{"charts":{"get_white_test":{"type":"table","columns":["Result","Value"],"rows":[["White Statistic",11.5102],["P-Value",0.0032],["Reject Homoskedasticity (5%)",1]],"title":"White Test"}}}

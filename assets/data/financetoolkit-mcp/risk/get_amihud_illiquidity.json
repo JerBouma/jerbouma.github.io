@@ -1,1 +1,0 @@
-{"charts":{"get_amihud_illiquidity":{"type":"bar","x":["SNAP","ETSY","LYFT"],"series":[{"name":"Amihud Illiquidity","data":[0.0634,0.0768,0.1277]}],"format":"percent","title":"Amihud Illiquidity","period":false}}}

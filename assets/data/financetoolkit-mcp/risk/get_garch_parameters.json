@@ -1,1 +1,0 @@
-{"charts":{"get_garch_parameters":{"type":"bar","x":["Alpha","Beta"],"series":[{"name":"LOW","data":[0.0301,0.8381]},{"name":"SBUX","data":[0.0513,0.7952]},{"name":"TSLA","data":[0.1056,0.8244]}],"format":"ratio","title":"GARCH Parameters","period":false}}}

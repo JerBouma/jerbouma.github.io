@@ -1,1 +1,0 @@
-{"charts":{"get_operating_cycle":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AMAT","data":[187.1854,213.516,227.8371,212.2914,209.1179]},{"name":"KLAC","data":[253.6646,250.8545,279.3337,341.3581,301.4268]},{"name":"LRCX","data":[171.0217,207.5971,240.81,275.3739,222.9197]}],"format":"number","title":"Operating Cycle","period":false}}}

@@ -1,1 +1,0 @@
-{"charts":{"get_hurst_exponent":{"type":"bar","x":["XOM","NEM","FCX"],"series":[{"name":"Hurst Exponent","data":[0.4212,0.4948,0.4663]}],"format":"ratio","title":"Hurst Exponent","period":false}}}

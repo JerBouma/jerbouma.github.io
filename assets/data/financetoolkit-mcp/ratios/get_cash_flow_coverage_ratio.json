@@ -1,1 +1,0 @@
-{"charts":{"get_cash_flow_coverage_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"MCD","data":[0.1852,0.1517,0.181,0.1819,0.1925]},{"name":"SBUX","data":[0.2537,0.1847,0.2443,0.2362,0.1784]},{"name":"YUM","data":[0.1407,0.1127,0.1332,0.1375,0.1688]}],"format":"ratio","title":"Cash Flow Coverage Ratio","period":false}}}

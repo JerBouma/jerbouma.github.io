@@ -1,1 +1,0 @@
-{"charts":{"get_difference_in_differences":{"type":"coef","x":["Intercept","Treated","Post","Treated x Post"],"coef":[-0.0126,0.067,0.0291,-0.0246],"low":[-0.063952,-0.005716,-0.041852,-0.124756],"high":[0.038752,0.139716,0.100052,0.075556],"p":[0.6325,0.0734,0.4228,0.6307],"format":"ratio","title":"Difference-in-Differences (DiD)","period":false}}}

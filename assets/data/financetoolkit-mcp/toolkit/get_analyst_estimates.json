@@ -1,1 +1,0 @@
-{"charts":{"get_analyst_estimates":{"type":"bar","x":["2026","2027","2028"],"series":[{"name":"NVDA","data":[213656385457.0,409929461412.0,695177860565.0]},{"name":"AMD","data":[51339463886.0,90410124203.0,125666009752.0]},{"name":"AVGO","data":[106000764022.0,174088887315.0,281369867547.0]}],"format":"usd","title":"Estimated Revenue (Average)","period":false}}}

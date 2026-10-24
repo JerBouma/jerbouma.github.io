@@ -1,1 +1,0 @@
-{"charts":{"get_tail_ratio":{"type":"bar","x":["V","MA","AXP"],"series":[{"name":"Tail Ratio","data":[0.8303,0.9885,1.0277]}],"format":"ratio","title":"Tail Ratio","period":false}}}

@@ -1,1 +1,0 @@
-{"charts":{"get_price_to_sales_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AMD","data":[10.7614,4.3114,10.5618,7.6685,10.1148]},{"name":"INTC","data":[2.4719,1.6668,3.8518,1.6161,3.3903]},{"name":"NVDA","data":[27.5597,13.5323,20.215,25.4584,21.1233]}],"format":"multiple","title":"Price to Sales Ratio (PS)","period":false}}}

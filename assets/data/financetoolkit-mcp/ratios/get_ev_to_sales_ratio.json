@@ -1,1 +1,0 @@
-{"charts":{"get_ev_to_sales_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CRM","data":[9.4899,4.3628,7.4073,8.5462,6.2946]},{"name":"NOW","data":[22.4494,11.0123,16.2342,20.1132,11.9797]},{"name":"WDAY","data":[13.6145,7.0788,10.2657,8.4397,6.1658]}],"format":"multiple","title":"EV to Sales Ratio","period":false}}}

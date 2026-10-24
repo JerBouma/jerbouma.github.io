@@ -1,1 +1,0 @@
-{"charts":{"get_diebold_mariano_test":{"type":"bar","x":["XOM","CVX","SHEL","BP"],"series":[{"name":"Diebold-Mariano Statistic","data":[-2.8128,-2.2451,-0.3298,-0.1563]}],"format":"ratio","title":"Diebold-Mariano Statistic","period":false}}}

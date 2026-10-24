@@ -1,1 +1,0 @@
-{"charts":{"get_ev_to_ebitda_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"A","data":[29.0997,23.4512,25.5751,23.3842,22.5931]},{"name":"DHR","data":[22.8564,19.2486,24.5481,24.1819,23.1547]},{"name":"TMO","data":[22.7176,20.3401,21.429,21.0624,22.7308]}],"format":"multiple","title":"EV to EBITDA  Ratio","period":false}}}

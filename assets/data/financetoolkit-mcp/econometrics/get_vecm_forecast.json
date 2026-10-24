@@ -1,1 +1,0 @@
-{"charts":{"get_vecm_forecast":{"type":"line","x":["1","2","3","4","5"],"series":[{"name":"GOOGL","data":[312.5655,312.7465,312.9257,313.1054,313.285]},{"name":"GOOG","data":[313.3507,313.5515,313.7451,313.9395,314.1333]}],"format":"price","title":"VECM Forecast","period":false,"xname":"Trading days ahead"}}}

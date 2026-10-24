@@ -1,1 +1,0 @@
-{"charts":{"get_return_on_equity":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"GS","data":[0.2055,0.0948,0.0676,0.1132,0.132]},{"name":"JPM","data":[0.1622,0.1224,0.154,0.1691,0.1575]},{"name":"MS","data":[0.1389,0.1014,0.0848,0.1246,0.149]}],"format":"percent","title":"Return on Equity (RoE)","period":false}}}

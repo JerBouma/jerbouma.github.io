@@ -1,1 +1,0 @@
-{"charts":{"get_calmar_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"VTI","data":[4.9482,-0.7709,2.4416,2.7771,0.8851]},{"name":"VEA","data":[1.643,-0.5338,1.483,0.3321,2.6195]},{"name":"VWO","data":[0.0948,-0.6106,0.7946,1.1734,1.7646]}],"format":"ratio","title":"Calmar Ratio","period":false}}}

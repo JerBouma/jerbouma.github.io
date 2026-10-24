@@ -1,1 +1,0 @@
-{"charts":{"get_stock_splits_calendar":{"type":"table","columns":["Symbol","Date","Numerator","Denominator"],"rows":[["NFLX","2025-11-17",10,1],["SDS","2025-11-20",1,5],["SQQQ","2025-11-20",1,5],["SSO","2025-11-20",2,1],["TQQQ","2025-11-20",2,1]],"title":"Stock Splits Calendar"}}}

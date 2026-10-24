@@ -1,1 +1,0 @@
-{"charts":{"get_maximum_drawdown_duration":{"type":"bar","x":["DIS","NKE","SBUX"],"series":[{"name":"Maximum Drawdown Duration","data":[666.0,857.0,201.0]}],"format":"amount","title":"Maximum Drawdown Duration","period":false}}}

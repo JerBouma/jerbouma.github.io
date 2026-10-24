@@ -1,1 +1,0 @@
-{"charts":{"get_esg_scores":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"XOM","data":[66.43,68.75,69.98,68.0,68.75]},{"name":"SHEL","data":[null,65.39,60.49,64.17,61.74]},{"name":"BP","data":[66.14,67.54,70.49,62.26,64.47]}],"format":"number","title":"ESG Score","period":false}}}

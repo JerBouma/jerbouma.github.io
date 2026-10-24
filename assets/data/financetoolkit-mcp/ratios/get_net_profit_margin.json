@@ -1,1 +1,0 @@
-{"charts":{"get_net_profit_margin":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AZN","data":[0.003,0.0741,0.13,0.1301,0.1746]},{"name":"LLY","data":[0.1971,0.2188,0.1536,0.2351,0.3167]},{"name":"NVO","data":[0.3392,0.3138,0.3603,0.3478,0.3314]}],"format":"percent","title":"Net Profit Margin","period":false}}}

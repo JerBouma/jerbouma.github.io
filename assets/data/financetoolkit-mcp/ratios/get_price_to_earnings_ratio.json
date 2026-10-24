@@ -1,1 +1,0 @@
-{"charts":{"get_price_to_earnings_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"COST","data":[47.8213,33.1976,45.9122,54.7881,47.1521]},{"name":"TGT","data":[14.0951,21.8424,14.4164,14.2209,11.6981]},{"name":"WMT","data":[27.9973,31.7907,26.7148,36.9714,40.5628]}],"format":"multiple","title":"Price to Earnings Ratio (PE)","period":false}}}

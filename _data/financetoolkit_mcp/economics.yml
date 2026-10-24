@@ -6,9 +6,6 @@ get_gross_domestic_product:
     usd: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Gross Domestic Product (USD millions)
 
 get_gross_domestic_product_growth:
   question: How did quarter-on-quarter real GDP growth in the United States, the euro area, the United Kingdom and Japan develop from 2022 to 2025?
@@ -17,8 +14,6 @@ get_gross_domestic_product_growth:
     countries: United States,Euro Area,United Kingdom,Japan
     start_date: "2022-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_gross_domestic_product_deflator:
   question: By how much did the GDP deflator of the United States, Germany, the United Kingdom and Japan rise each year from 2010 to 2025?
@@ -28,9 +23,6 @@ get_gross_domestic_product_deflator:
     growth: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    title: GDP Deflator Growth
 
 get_total_consumption:
   question: How fast did real consumption grow each year in the United States, Germany, France and Japan from 2010 to 2025?
@@ -41,9 +33,6 @@ get_total_consumption:
     growth: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    title: Real Consumption Growth
 
 get_total_consumption_to_gdp_ratio:
   question: What share of GDP did household consumption take in the United States, the United Kingdom, Germany and China from 2010 to 2025?
@@ -53,9 +42,6 @@ get_total_consumption_to_gdp_ratio:
     component: household
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    title: Household Consumption to GDP
 
 get_investment:
   question: How much did the United States, China, Japan and India invest, in US dollars, from 2010 to 2025?
@@ -65,9 +51,6 @@ get_investment:
     usd: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Total Investment (USD millions)
 
 get_investment_to_gdp_ratio:
   question: How did investment as a share of GDP compare in China, India, the United States and Germany from 2010 to 2025?
@@ -76,8 +59,6 @@ get_investment_to_gdp_ratio:
     countries: China,India,United States,Germany
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_fixed_investment:
   question: How much did Germany, France, the United Kingdom and Italy spend on fixed investment, in US dollars, from 2010 to 2025?
@@ -87,9 +68,6 @@ get_fixed_investment:
     usd: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Total Fixed Investment (USD millions)
 
 get_fixed_investment_to_gdp_ratio:
   question: How did fixed investment as a share of GDP compare in South Korea, Japan, Canada and Australia from 2010 to 2025?
@@ -98,8 +76,6 @@ get_fixed_investment_to_gdp_ratio:
     countries: South Korea,Japan,Canada,Australia
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_exports:
   question: How much did China, the United States, Germany and Japan export, in US dollars, from 2010 to 2025?
@@ -109,9 +85,6 @@ get_exports:
     usd: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Exports (USD millions)
 
 get_exports_to_gdp_ratio:
   question: How did exports as a share of GDP compare in the Netherlands, Germany, the United Kingdom and the United States from 2010 to 2025?
@@ -120,8 +93,6 @@ get_exports_to_gdp_ratio:
     countries: Netherlands,Germany,United Kingdom,United States
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_imports:
   question: How much did the United States, China, Germany and the United Kingdom import, in US dollars, from 2010 to 2025?
@@ -131,9 +102,6 @@ get_imports:
     usd: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Imports (USD millions)
 
 get_imports_to_gdp_ratio:
   question: How did imports as a share of GDP compare in Canada, Mexico, France and Japan from 2010 to 2025?
@@ -142,8 +110,6 @@ get_imports_to_gdp_ratio:
     countries: Canada,Mexico,France,Japan
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_current_account_balance:
   question: How large were the current account balances of the United States, China, Germany and Japan, in US dollars, from 2010 to 2025?
@@ -153,9 +119,6 @@ get_current_account_balance:
     usd: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Current Account Balance (USD millions)
 
 get_current_account_balance_to_gdp_ratio:
   question: How did the current account balance as a share of GDP compare in Germany, Switzerland, the United Kingdom and the United States from 2010 to 2025?
@@ -164,8 +127,6 @@ get_current_account_balance_to_gdp_ratio:
     countries: Germany,Switzerland,United Kingdom,United States
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_government_debt:
   question: How fast did government debt grow each year in the United States, the United Kingdom, Germany and Japan from 2010 to 2025?
@@ -175,9 +136,6 @@ get_government_debt:
     growth: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    title: Government Debt Growth
 
 get_government_debt_to_gdp_ratio:
   question: How did government debt as a share of GDP develop in Japan, Italy, the United States and Germany from 2000 to 2025?
@@ -186,8 +144,6 @@ get_government_debt_to_gdp_ratio:
     countries: Japan,Italy,United States,Germany
     start_date: "2000-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_government_revenue:
   question: How much revenue did the US government collect each year from 2010 to 2025?
@@ -196,9 +152,6 @@ get_government_revenue:
     countries: United States
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Government Revenue (USD millions)
 
 get_government_revenue_to_gdp_ratio:
   question: How did government revenue as a share of GDP compare in France, Germany, the United Kingdom and the United States from 2010 to 2025?
@@ -207,8 +160,6 @@ get_government_revenue_to_gdp_ratio:
     countries: France,Germany,United Kingdom,United States
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_government_tax_revenue:
   question: How fast did government tax revenue grow each year in Canada, Japan, Germany and the United Kingdom from 2010 to 2025?
@@ -218,9 +169,6 @@ get_government_tax_revenue:
     growth: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    title: Government Tax Revenue Growth
 
 get_government_tax_revenue_to_gdp_ratio:
   question: How did tax revenue as a share of GDP compare in Sweden, France, the United Kingdom and the United States from 2010 to 2025?
@@ -229,8 +177,6 @@ get_government_tax_revenue_to_gdp_ratio:
     countries: Sweden,France,United Kingdom,United States
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_government_expenditure:
   question: How much did the UK government spend each year, in pounds, from 2010 to 2025?
@@ -239,9 +185,6 @@ get_government_expenditure:
     countries: United Kingdom
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Government Expenditure (GBP millions)
 
 get_government_expenditure_to_gdp_ratio:
   question: How did government expenditure as a share of GDP compare in France, Italy, Germany and the United States from 2010 to 2025?
@@ -250,8 +193,6 @@ get_government_expenditure_to_gdp_ratio:
     countries: France,Italy,Germany,United States
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_government_deficit:
   question: How large was the US government's budget balance each year from 2010 to 2025?
@@ -260,9 +201,6 @@ get_government_deficit:
     countries: United States
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Government Deficit (USD millions)
 
 get_government_deficit_to_gdp_ratio:
   question: How did the government budget balance as a share of GDP compare in the United States, the United Kingdom, France and Germany from 2010 to 2025?
@@ -271,8 +209,6 @@ get_government_deficit_to_gdp_ratio:
     countries: United States,United Kingdom,France,Germany
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_trust_in_government:
   question: What share of people trusted their national government in Switzerland, Germany, France and the United States from 2010 to 2025?
@@ -281,8 +217,6 @@ get_trust_in_government:
     countries: Switzerland,Germany,France,United States
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_real_gross_domestic_product_usd:
   question: How did the real GDP of India, Japan, Germany and the United Kingdom, in US dollars, develop from 2010 to 2025?
@@ -291,9 +225,6 @@ get_real_gross_domestic_product_usd:
     countries: India,Japan,Germany,United Kingdom
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Real GDP (USD millions)
 
 get_real_gross_domestic_product_per_capita:
   question: How did real GDP per person, in US dollars, develop in the United States, Germany, Japan and South Korea from 2010 to 2025?
@@ -303,9 +234,6 @@ get_real_gross_domestic_product_per_capita:
     usd: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Real GDP per Capita (USD)
 
 get_output_gap:
   question: How large was the output gap in the United States, Germany, Japan and the United Kingdom from 2010 to 2025?
@@ -314,8 +242,6 @@ get_output_gap:
     countries: United States,Germany,Japan,United Kingdom
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_trade_balance:
   question: How large were the trade balances of China, Germany, Japan and the United States, in US dollars, from 2010 to 2025?
@@ -325,9 +251,6 @@ get_trade_balance:
     usd: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Trade Balance (USD millions)
 
 get_consumer_price_index:
   question: How did consumer prices in the United States, the United Kingdom, Germany and Japan rise from 2010 to 2025?
@@ -337,9 +260,6 @@ get_consumer_price_index:
     period: yearly
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
-    title: Consumer Price Index (2015 = 100)
 
 get_inflation_rate:
   question: How did annual consumer price inflation in the United States, the euro area, the United Kingdom and Canada develop from 2010 to 2025?
@@ -348,8 +268,6 @@ get_inflation_rate:
     countries: United States,Euro Area,United Kingdom,Canada
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_producer_price_index:
   question: How did producer prices in the United States, Germany, France and the United Kingdom develop from 2010 to 2022?
@@ -359,8 +277,6 @@ get_producer_price_index:
     period: yearly
     start_date: "2010-01-01"
     end_date: "2022-12-31"
-  chart:
-    format: number
 
 get_consumer_confidence_index:
   question: How did consumer confidence in the United States, Germany, the United Kingdom and Japan develop from 2010 to 2025?
@@ -369,8 +285,6 @@ get_consumer_confidence_index:
     countries: United States,Germany,United Kingdom,Japan
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 
 get_business_confidence_index:
   question: How did business confidence in Germany, France, Italy and the United States develop from 2010 to 2025?
@@ -379,8 +293,6 @@ get_business_confidence_index:
     countries: Germany,France,Italy,United States
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 
 get_composite_leading_indicator:
   question: How did the composite leading indicators of the United States, China, Germany and Japan move from 2010 to 2025?
@@ -389,8 +301,6 @@ get_composite_leading_indicator:
     countries: United States,China,Germany,Japan
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 
 get_house_prices:
   question: How did inflation-adjusted house prices in the United States, the United Kingdom, Canada and Germany develop from 2010 to 2025?
@@ -400,9 +310,6 @@ get_house_prices:
     inflation_adjusted: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
-    title: Real House Prices
 
 get_rent_prices:
   question: How did rents in the United States, the United Kingdom, Germany and Spain develop from 2010 to 2025?
@@ -412,8 +319,6 @@ get_rent_prices:
     quarterly: false
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 
 get_household_savings_rate:
   question: What share of their disposable income did households in the United States, Germany, France and Canada save from 2010 to 2025?
@@ -423,8 +328,6 @@ get_household_savings_rate:
     quarterly: false
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_household_debt_to_income_ratio:
   question: How did household debt relative to disposable income develop in Australia, Canada, the United Kingdom and the United States from 2010 to 2025?
@@ -434,8 +337,6 @@ get_household_debt_to_income_ratio:
     quarterly: false
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_share_prices:
   question: How did share prices in the United States, Japan, Germany and the United Kingdom develop each year from 2010 to 2025?
@@ -445,8 +346,6 @@ get_share_prices:
     period: yearly
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 
 get_exchange_rates:
   question: How many euros, pounds, Swiss francs and Canadian dollars did one US dollar buy at the end of each month from 2010 to 2025?
@@ -457,8 +356,6 @@ get_exchange_rates:
     end_of_period: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 
 get_real_effective_exchange_rate:
   question: How did the real effective exchange rates of the United States, Japan, the United Kingdom and Switzerland develop from 2010 to 2025?
@@ -467,8 +364,6 @@ get_real_effective_exchange_rate:
     countries: United States,Japan,United Kingdom,Switzerland
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 
 get_misery_index:
   question: How did the misery index, unemployment plus inflation, of the United States, the United Kingdom, Italy and Spain develop from 2000 to 2025?
@@ -477,8 +372,6 @@ get_misery_index:
     countries: United States,United Kingdom,Italy,Spain
     start_date: "2000-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_retail_sales:
   question: How did monthly US retail and food services sales develop from 2010 to 2025?
@@ -486,9 +379,6 @@ get_retail_sales:
   arguments:
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Retail Sales (USD millions)
 
 get_industrial_production_index:
   question: How did US industrial production develop from 2000 to 2025?
@@ -496,8 +386,6 @@ get_industrial_production_index:
   arguments:
     start_date: "2000-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 
 get_housing_starts:
   question: How many new homes were started in the United States, at an annual rate, from 2000 to 2025?
@@ -505,9 +393,6 @@ get_housing_starts:
   arguments:
     start_date: "2000-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Housing Starts (thousands of units, annual rate)
 
 get_real_personal_income:
   question: How did US real personal income excluding government transfers develop from 2000 to 2025?
@@ -515,9 +400,6 @@ get_real_personal_income:
   arguments:
     start_date: "2000-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: billions
-    title: Real Personal Income (chained 2017 dollars)
 
 get_commercial_real_estate_prices:
   question: How did commercial property prices in the United States, the euro area, Japan and Germany change year on year from 2010 to 2025?
@@ -526,8 +408,6 @@ get_commercial_real_estate_prices:
     countries: United States,Euro Area,Japan,Germany
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_commodity_forward_curve:
   question: How have the prices of the next six crude oil futures contracts moved since July 2026?
@@ -536,9 +416,6 @@ get_commodity_forward_curve:
     commodity: Crude Oil
     contracts: 8
     start_date: "2026-07-01"
-  chart:
-    format: price
-    title: Crude Oil Futures Prices by Contract
 
 get_recession_indicator:
   question: Which months from 2000 to 2025 did the NBER date as US recessions?
@@ -546,8 +423,6 @@ get_recession_indicator:
   arguments:
     start_date: "2000-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 
 get_economic_calendar:
   question: How did the US ISM, job openings, payrolls and unemployment releases in the first week of September 2025 compare with the consensus?
@@ -557,9 +432,6 @@ get_economic_calendar:
     end_date: "2025-09-05"
     countries: United States
     events: ISM,JOLTs,Non Farm Payrolls,Unemployment Rate
-  chart:
-    type: table
-    values: [Date, Event, Unit, Previous, Estimate, Actual]
 
 get_money_supply:
   question: How fast did the M2 money supply grow in the United States, Japan, Canada and Australia from 2010 to 2025?
@@ -570,9 +442,6 @@ get_money_supply:
     growth: true
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    title: M2 Money Supply Growth
 
 get_central_bank_policy_rate:
   question: How did the policy rates of the Federal Reserve, the European Central Bank, the Bank of England and the Bank of Japan move from 2010 to 2025?
@@ -582,8 +451,6 @@ get_central_bank_policy_rate:
     period: monthly
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_overnight_rate:
   question: How did the overnight rates SOFR, €STR, SONIA and TONA move from 2020 to 2025?
@@ -593,8 +460,6 @@ get_overnight_rate:
     period: monthly
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_short_term_interest_rate:
   question: How did 3-month interbank rates in the United States, Germany, the United Kingdom and Japan move from 2010 to 2025?
@@ -603,8 +468,6 @@ get_short_term_interest_rate:
     countries: United States,Germany,United Kingdom,Japan
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_long_term_interest_rate:
   question: How did 10-year government bond yields in the United States, Germany, Italy and Japan move each month from 2010 to 2025?
@@ -614,8 +477,6 @@ get_long_term_interest_rate:
     period: monthly
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_real_interest_rate:
   question: How did real 10-year interest rates, the bond yield minus inflation, develop in the United States, Germany, the United Kingdom and Japan from 2010 to 2025?
@@ -624,8 +485,6 @@ get_real_interest_rate:
     countries: United States,Germany,United Kingdom,Japan
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_yield_curve_slope:
   question: How did the gap between 10-year and 3-month interest rates in the United States, Germany, the United Kingdom and Canada develop from 2010 to 2025?
@@ -634,8 +493,6 @@ get_yield_curve_slope:
     countries: United States,Germany,United Kingdom,Canada
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_real_yield_curve:
   question: How did 10-year real yields on inflation-linked government bonds in the United States, the United Kingdom and Germany move from 2015 to 2025?
@@ -646,9 +503,6 @@ get_real_yield_curve:
     show_columns: 10Y
     start_date: "2015-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    title: 10-Year Real Yield
 
 get_breakeven_inflation_expectations:
   question: How did 10-year breakeven inflation in the United States, the United Kingdom and Germany move from 2015 to 2025?
@@ -659,9 +513,6 @@ get_breakeven_inflation_expectations:
     show_columns: 10Y
     start_date: "2015-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    title: 10-Year Breakeven Inflation
 
 get_inflation_expectations:
   question: What inflation did professional forecasters expect five years ahead for Germany and the euro area from 2010 to 2025?
@@ -671,9 +522,6 @@ get_inflation_expectations:
     show_columns: 5Y
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    title: 5-Year Survey Inflation Expectations
 
 get_mortgage_rate_30_year:
   question: How did the average 30-year fixed US mortgage rate move from 2010 to 2025?
@@ -681,18 +529,11 @@ get_mortgage_rate_30_year:
   arguments:
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_market_risk_premium:
   question: What equity risk premium do investors currently demand in the United States, Germany, Japan, Brazil and India?
   tool: market_data
   arguments: {}
-  chart:
-    format: percent
-    keep:
-      Country: [United States, Germany, Japan, Brazil, India]
-    values: [Total Equity Risk Premium, Country Risk Premium]
 
 get_implied_volatility:
   question: What implied volatility did S&P 500 options price at the end of each month in 2025, from 9 days to one year to expiry?
@@ -702,9 +543,6 @@ get_implied_volatility:
     period: monthly
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    title: S&P 500 Implied Volatility by Maturity
 
 get_asset_class_proxies:
   question: What monthly returns did the listed proxies for private equity, infrastructure, hedge funds and private credit earn in 2025?
@@ -712,10 +550,6 @@ get_asset_class_proxies:
   arguments:
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    values: [Private Equity, Infrastructure, Hedge Funds, Private Credit]
-    title: Asset Class Proxy Returns
 
 get_renewable_energy:
   question: What share of primary energy supply came from renewables in Sweden, Germany, the United States and Japan from 2010 to 2024?
@@ -724,8 +558,6 @@ get_renewable_energy:
     countries: Sweden,Germany,United States,Japan
     start_date: "2010-01-01"
     end_date: "2024-12-31"
-  chart:
-    format: percent
 
 get_carbon_footprint:
   question: How did greenhouse gas emissions per person in the United States, Germany, the United Kingdom and Japan develop from 2010 to 2020?
@@ -734,9 +566,6 @@ get_carbon_footprint:
     countries: United States,Germany,United Kingdom,Japan
     start_date: "2010-01-01"
     end_date: "2020-12-31"
-  chart:
-    format: number
-    title: Carbon Footprint (tonnes of CO2 equivalent per person)
 
 get_carbon_price:
   question: How did the price of an EU emission allowance develop in 2025?
@@ -744,9 +573,6 @@ get_carbon_price:
   arguments:
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
-    title: Carbon Price (EUR per tonne of CO2)
 
 get_climate_scenario:
   question: How would long-term interest rates in the United States, Germany, the United Kingdom and Japan develop to 2050 under the NGFS Net Zero 2050 scenario?
@@ -755,9 +581,6 @@ get_climate_scenario:
     variable: long_term_interest_rate
     scenario: Net Zero 2050
     countries: United States,Germany,United Kingdom,Japan
-  chart:
-    format: percent
-    title: Long-Term Interest Rate
 
 get_unemployment_rate:
   question: How did the unemployment rate in the United States, the euro area, the United Kingdom and Japan develop from 2010 to 2025?
@@ -766,8 +589,6 @@ get_unemployment_rate:
     countries: United States,Euro Area,United Kingdom,Japan
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 
 get_labour_productivity:
   question: How much GDP per hour worked did the United States, Germany, France and Japan produce from 2010 to 2025?
@@ -776,9 +597,6 @@ get_labour_productivity:
     countries: United States,Germany,France,Japan
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
-    title: Labour Productivity (USD per hour worked, PPP)
 
 get_income_inequality:
   question: How did income inequality, measured by the Gini coefficient, compare in the United States, the United Kingdom, Canada and Italy from 2010 to 2023?
@@ -787,8 +605,6 @@ get_income_inequality:
     countries: United States,United Kingdom,Canada,Italy
     start_date: "2010-01-01"
     end_date: "2023-12-31"
-  chart:
-    format: ratio
 
 get_population_statistics:
   question: How did the populations of Japan, Germany, Italy and South Korea develop from 2000 to 2025?
@@ -797,9 +613,6 @@ get_population_statistics:
     countries: Japan,Germany,Italy,South Korea
     start_date: "2000-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
-    title: Population (millions)
 
 get_life_table:
   question: How did life expectancy at age 65 in Germany, France, Italy and Spain develop from 2015 to 2024?
@@ -809,10 +622,6 @@ get_life_table:
     measure: life_expectancy
     start_date: "2015-01-01"
     end_date: "2024-12-31"
-  chart:
-    format: number
-    values: ["65"]
-    title: Life Expectancy at 65
 
 get_poverty_rate:
   question: What share of people lived in relative poverty in the United States, the United Kingdom, Canada and Italy from 2010 to 2023?
@@ -821,8 +630,6 @@ get_poverty_rate:
     countries: United States,United Kingdom,Canada,Italy
     start_date: "2010-01-01"
     end_date: "2023-12-31"
-  chart:
-    format: percent
 
 get_nonfarm_payrolls:
   question: How did total US nonfarm payroll employment develop from 2010 to 2025?
@@ -830,9 +637,6 @@ get_nonfarm_payrolls:
   arguments:
     start_date: "2010-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    title: Nonfarm Payrolls (thousands of jobs)
 
 get_initial_jobless_claims:
   question: How did weekly initial jobless claims in the United States develop from 2022 to 2025?
@@ -840,8 +644,6 @@ get_initial_jobless_claims:
   arguments:
     start_date: "2022-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
 
 get_banking_crisis:
   question: In which years from 1970 to 2020 did the United States, the United Kingdom, Spain and Japan go through a systemic banking crisis?
@@ -850,10 +652,6 @@ get_banking_crisis:
     countries: United States,United Kingdom,Spain,Japan
     start_date: "1970-01-01"
     end_date: "2020-12-31"
-  chart:
-    format: number
-    type: bar
-    stack: true
 
 get_currency_crisis:
   question: In which years from 1980 to 2017 did Argentina, Brazil, Mexico and Turkey go through a currency crisis?
@@ -862,10 +660,6 @@ get_currency_crisis:
     countries: Argentina,Brazil,Mexico,Turkey
     start_date: "1980-01-01"
     end_date: "2017-12-31"
-  chart:
-    format: number
-    type: bar
-    stack: true
 
 get_sovereign_debt_crisis:
   question: In which years from 1980 to 2017 did Argentina, Brazil, Ecuador and Russia go through a sovereign debt crisis?
@@ -874,10 +668,6 @@ get_sovereign_debt_crisis:
     countries: Argentina,Brazil,Ecuador,Russian Federation
     start_date: "1980-01-01"
     end_date: "2017-12-31"
-  chart:
-    format: number
-    type: bar
-    stack: true
 
 get_shiller_stock_market_data:
   question: How did Shiller's cyclically adjusted price-earnings ratio (CAPE) of the S&P Composite develop from 2000 to 2025?
@@ -886,9 +676,6 @@ get_shiller_stock_market_data:
     show_columns: CAPE
     start_date: "2000-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
-    title: CAPE Ratio
 
 get_millennium_of_macroeconomic_data:
   question: How did the yields on British government and corporate bonds move from 1703 to 2016?
@@ -897,9 +684,6 @@ get_millennium_of_macroeconomic_data:
     series: yields
     start_date: "1700-01-01"
     end_date: "2016-12-31"
-  chart:
-    format: percent
-    title: Government and Corporate Bond Yields
 
 get_stress_test_scenario:
   question: How do US real GDP growth and the unemployment rate develop in the severely adverse scenario of the Federal Reserve's 2026 stress test?
@@ -909,10 +693,6 @@ get_stress_test_scenario:
     authority: federal_reserve
     countries: United States
     year: 2026
-  chart:
-    format: percent
-    values: [Real GDP growth, Unemployment rate]
-    title: Real GDP Growth and Unemployment Rate
 
 get_scenario_set:
   question: What range of 10-year nominal interest rates does De Nederlandsche Bank's real-world scenario set project over its 100-year horizon?
@@ -921,11 +701,3 @@ get_scenario_set:
     authority: dnb
     measure: real_world
     variables: Nominal rate 10Y
-  chart:
-    format: percent
-    x: Horizon
-    series: Statistic
-    values: [Nominal rate 10Y]
-    keep:
-      Statistic: ["5%", "25%", "50%", "75%", "95%"]
-    title: 10-Year Nominal Rate by Percentile

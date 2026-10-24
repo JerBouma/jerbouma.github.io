@@ -1,1 +1,0 @@
-{"charts":{"get_days_of_sales_outstanding":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"EMR","data":[81.4702,69.1713,57.5119,56.8095,61.0629]},{"name":"ETN","data":[57.6565,64.8406,67.277,66.7118,66.5293]},{"name":"HON","data":[72.4704,73.4302,82.7661,80.6865,75.2577]}],"format":"number","title":"Days of Sales Outstanding","period":false}}}

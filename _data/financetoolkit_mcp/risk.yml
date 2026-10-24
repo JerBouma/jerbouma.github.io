@@ -5,8 +5,6 @@ get_value_at_risk:
     tickers: JPM,BAC,WFC
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_conditional_value_at_risk:
   question: What was the daily 95% conditional Value at Risk (expected shortfall) of ExxonMobil, Chevron and ConocoPhillips in 2025?
   tool: risk
@@ -14,8 +12,6 @@ get_conditional_value_at_risk:
     tickers: XOM,CVX,COP
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_entropic_value_at_risk:
   question: What was the daily 95% entropic Value at Risk of Nvidia, AMD and Intel in 2025?
   tool: risk
@@ -23,8 +19,6 @@ get_entropic_value_at_risk:
     tickers: NVDA,AMD,INTC
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_conditional_drawdown_at_risk:
   question: What was the 95% conditional drawdown at risk of Tesla, Ford and General Motors in 2025?
   tool: risk
@@ -32,8 +26,6 @@ get_conditional_drawdown_at_risk:
     tickers: TSLA,F,GM
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_marginal_value_at_risk:
   question: What is the marginal Value at Risk of each holding in a portfolio of 50% Apple, 30% Johnson & Johnson and 20% ExxonMobil, based on daily returns in 2025?
   tool: risk
@@ -42,8 +34,6 @@ get_marginal_value_at_risk:
     weights: {AAPL: 0.5, JNJ: 0.3, XOM: 0.2}
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_component_value_at_risk:
   question: How much does each holding contribute to the daily 95% Value at Risk of a portfolio of 40% Microsoft, 30% Procter & Gamble and 30% Caterpillar, based on 2025 returns?
   tool: risk
@@ -52,8 +42,6 @@ get_component_value_at_risk:
     weights: {MSFT: 0.4, PG: 0.3, CAT: 0.3}
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_covar:
   question: What is the daily 95% CoVaR and Delta-CoVaR of Goldman Sachs when JPMorgan Chase is in distress, based on returns from 2021 to 2025?
   tool: risk
@@ -63,10 +51,6 @@ get_covar:
     conditioning_ticker: JPM
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    keep: {metric: [CoVaR, Delta-CoVaR]}
-    rename: {Covar: Goldman Sachs}
 get_var_backtest:
   question: Does a rolling one-year 95% historical Value at Risk pass Kupiec's proportion of failures test for Amazon, Coca-Cola and ExxonMobil from 2021 to 2025?
   tool: risk
@@ -75,8 +59,6 @@ get_var_backtest:
     test: kupiec
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_acerbi_szekely_test:
   question: Does a rolling one-year 95% historical expected shortfall pass the Acerbi-Szekely test for Boeing, Delta Air Lines and Carnival from 2021 to 2025?
   tool: risk
@@ -84,9 +66,6 @@ get_acerbi_szekely_test:
     tickers: BA,DAL,CCL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    keep: {metric: [Acerbi-Szekely Statistic, P-Value]}
 get_tail_ratio:
   question: How did the right tail of daily returns compare with the left tail for Visa, Mastercard and American Express in 2025?
   tool: risk
@@ -94,8 +73,6 @@ get_tail_ratio:
     tickers: V,MA,AXP
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_hill_estimator:
   question: How heavy was the loss tail of Tesla, Nvidia and Johnson & Johnson from 2021 to 2025, measured by the Hill tail index over their 60 largest daily losses?
   tool: risk
@@ -104,11 +81,6 @@ get_hill_estimator:
     k: 60
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    transpose: true
-    format: ratio
-    keep: {metric: Hill Tail Index}
-    title: Hill Tail Index
 get_maximum_drawdown:
   question: What was the maximum drawdown of Meta, Netflix and Amazon in each year from 2021 to 2025?
   tool: risk
@@ -118,8 +90,6 @@ get_maximum_drawdown:
     within_period: true
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_maximum_drawdown_duration:
   question: How many trading days did the maximum drawdowns of Disney, Nike and Starbucks take from peak to trough between 2021 and 2025?
   tool: risk
@@ -127,8 +97,6 @@ get_maximum_drawdown_duration:
     tickers: DIS,NKE,SBUX
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
 get_maximum_drawdown_recovery_time:
   question: How many trading days did Microsoft, Alphabet and Nvidia take to recover from the trough of their maximum drawdowns between 2021 and 2025?
   tool: risk
@@ -136,8 +104,6 @@ get_maximum_drawdown_recovery_time:
     tickers: MSFT,GOOGL,NVDA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: amount
 get_ulcer_index:
   question: What was the Ulcer Index of Boeing and Airbus in each year from 2021 to 2025?
   tool: risk
@@ -145,8 +111,6 @@ get_ulcer_index:
     tickers: BA,AIR.PA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_variance:
   question: What was the annualized variance of returns of Walmart, Target and Costco in each year from 2021 to 2025?
   tool: risk
@@ -154,8 +118,6 @@ get_variance:
     tickers: WMT,TGT,COST
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: decimal
 get_volatility:
   question: What was the annualized volatility of Pfizer, Merck and Eli Lilly in each year from 2021 to 2025?
   tool: risk
@@ -163,8 +125,6 @@ get_volatility:
     tickers: PFE,MRK,LLY
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_excess_volatility:
   question: What was the annualized volatility of the returns of Adobe, Salesforce and Oracle in excess of the risk-free rate in each year from 2021 to 2025?
   tool: risk
@@ -172,8 +132,6 @@ get_excess_volatility:
     tickers: ADBE,CRM,ORCL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_downside_deviation:
   question: What was the downside deviation of daily returns of NextEra Energy, Duke Energy and Southern Company in 2025?
   tool: risk
@@ -181,8 +139,6 @@ get_downside_deviation:
     tickers: NEE,DUK,SO
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_ewma_volatility:
   question: How did the daily EWMA (RiskMetrics) volatility of UnitedHealth and CVS Health evolve through 2025?
   tool: risk
@@ -190,8 +146,6 @@ get_ewma_volatility:
     tickers: UNH,CVS
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_garch:
   question: How did the GARCH(1,1) conditional variance of AMD's daily returns move through 2025?
   tool: risk
@@ -199,9 +153,6 @@ get_garch:
     tickers: AMD
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: decimal
-    title: GARCH(1,1) Conditional Variance
 get_garch_forecast:
   question: What daily variance does a GARCH(1,1) model fitted to Netflix's daily returns from 2021 to 2025 forecast for the next 10 trading days?
   tool: risk
@@ -209,9 +160,6 @@ get_garch_forecast:
     tickers: NFLX
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: decimal
-    title: GARCH(1,1) Variance Forecast
 get_garch_parameters:
   question: What are the GARCH(1,1) parameters of the daily returns of Lowe's, Starbucks and Tesla in 2025?
   tool: risk
@@ -219,9 +167,6 @@ get_garch_parameters:
     tickers: LOW,SBUX,TSLA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    keep: {metric: [Alpha, Beta]}
 get_gjr_garch:
   question: How did the GJR-GARCH conditional variance of Nvidia's daily returns move through 2025?
   tool: risk
@@ -229,9 +174,6 @@ get_gjr_garch:
     tickers: NVDA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: decimal
-    title: GJR-GARCH Conditional Variance
 get_gjr_garch_forecast:
   question: What daily variance does a GJR-GARCH model fitted to Tesla's daily returns in 2025 forecast for the next 10 trading days?
   tool: risk
@@ -239,9 +181,6 @@ get_gjr_garch_forecast:
     tickers: TSLA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: decimal
-    title: GJR-GARCH Variance Forecast
 get_gjr_garch_parameters:
   question: How strongly did negative returns raise the volatility of JPMorgan Chase, Charles Schwab and the S&P 500 in 2025, judging by GJR-GARCH parameters fitted to their daily returns?
   tool: risk
@@ -249,11 +188,6 @@ get_gjr_garch_parameters:
     tickers: JPM,SCHW
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    keep: {metric: [Alpha, Gamma, Beta]}
-    keep_benchmark: true
-    rename: {Benchmark: S&P 500}
 get_har_rv_forecast:
   question: How did the HAR-RV forecast of the next-day realized variance of Tesla and Palantir move through 2025?
   tool: risk
@@ -261,9 +195,6 @@ get_har_rv_forecast:
     tickers: TSLA,PLTR
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: decimal
-    title: HAR-RV Realized Variance Forecast
 get_skewness:
   question: How skewed were the daily returns of Netflix, Disney and Warner Bros. Discovery in each year from 2021 to 2025?
   tool: risk
@@ -273,8 +204,6 @@ get_skewness:
     within_period: true
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_kurtosis:
   question: How fat-tailed were the daily returns of UnitedHealth, Humana and Cigna in 2025, measured by their excess kurtosis?
   tool: risk
@@ -283,8 +212,6 @@ get_kurtosis:
     fisher: true
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_mean_absolute_deviation:
   question: What was the mean absolute deviation of the daily returns of Coca-Cola, PepsiCo and Mondelez in each year from 2021 to 2025?
   tool: risk
@@ -292,8 +219,6 @@ get_mean_absolute_deviation:
     tickers: KO,PEP,MDLZ
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_coefficient_of_variation:
   question: How much volatility did Microsoft, Oracle and IBM carry per unit of average daily return in each year from 2023 to 2025, measured by the coefficient of variation?
   tool: risk
@@ -301,8 +226,6 @@ get_coefficient_of_variation:
     tickers: MSFT,ORCL,IBM
     start_date: "2023-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_autocorrelation:
   question: Were the daily returns of the SPDR S&P 500 ETF, the Invesco QQQ Trust and the iShares Russell 2000 ETF autocorrelated over the first ten lags from 2021 to 2025?
   tool: risk
@@ -310,11 +233,6 @@ get_autocorrelation:
     tickers: SPY,QQQ,IWM
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    x: Lag
-    keep_benchmark: true
-    rename: {Benchmark: SPY}
 get_hurst_exponent:
   question: Did the share prices of ExxonMobil, Newmont and Freeport-McMoRan trend or mean-revert from 2021 to 2025, judging by their Hurst exponent?
   tool: risk
@@ -322,8 +240,6 @@ get_hurst_exponent:
     tickers: XOM,NEM,FCX
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_best_fitting_copula:
   question: Which copula best describes the dependence between the daily returns of Visa and Mastercard from 2021 to 2025, judging by the AIC?
   tool: risk
@@ -333,10 +249,6 @@ get_best_fitting_copula:
     ticker_b: MA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    values: [AIC]
-    format: number
-    title: Copula AIC
 get_copula_parameters:
   question: What correlation and tail dependence does a Student-t copula fitted to the daily returns of Chevron and ExxonMobil from 2021 to 2025 imply?
   tool: risk
@@ -347,10 +259,6 @@ get_copula_parameters:
     copula: student-t
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    keep: {metric: [Rho, Lower Tail Dependence, Upper Tail Dependence]}
-    rename: {Copula Parameters: Chevron and ExxonMobil}
 get_copula_simulation:
   question: Simulate 30 joint daily returns of Home Depot and Lowe's from a Gaussian copula fitted to their returns from 2021 to 2025.
   tool: risk
@@ -361,11 +269,6 @@ get_copula_simulation:
     n_simulations: 30
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    x: index
-    type: bar
-    format: percent
-    title: Simulated Daily Returns
 get_tail_dependence_coefficient:
   question: How likely were Goldman Sachs and Morgan Stanley to suffer extreme daily losses, or post extreme gains, together from 2021 to 2025?
   tool: risk
@@ -375,10 +278,6 @@ get_tail_dependence_coefficient:
     ticker_b: MS
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
-    keep: {metric: [Lower Tail Dependence, Upper Tail Dependence]}
-    rename: {Tail Dependence Coefficient: Goldman Sachs and Morgan Stanley}
 get_amihud_illiquidity:
   question: How far did a billion dollars of trading move the share prices of Snap, Etsy and Lyft on average from 2021 to 2025, measured by Amihud illiquidity?
   tool: risk
@@ -386,8 +285,6 @@ get_amihud_illiquidity:
     tickers: SNAP,ETSY,LYFT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_roll_spread:
   question: What effective bid-ask spread in dollars does the Roll measure imply for Coca-Cola, PepsiCo and Procter & Gamble from 2021 to 2025?
   tool: risk
@@ -395,7 +292,3 @@ get_roll_spread:
     tickers: KO,PEP,PG
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    transpose: true
-    format: price
-    keep: {metric: Roll Spread}

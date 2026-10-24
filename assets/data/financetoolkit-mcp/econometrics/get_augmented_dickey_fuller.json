@@ -1,1 +1,0 @@
-{"charts":{"get_augmented_dickey_fuller":{"type":"bar","x":["KO","PEP","PG"],"series":[{"name":"P-Value","data":[0.614311,0.161429,0.228905]}],"format":"ratio","title":"ADF Test P-Value","period":false}}}

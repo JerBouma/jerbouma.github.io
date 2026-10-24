@@ -1,1 +1,0 @@
-{"charts":{"get_cash_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"GOOGL","data":[2.1734,1.6416,1.3557,1.0733,1.2345]},{"name":"META","data":[2.271,1.5074,2.0464,2.3162,1.9503]},{"name":"NFLX","data":[0.7101,0.7639,0.8056,0.8911,0.8253]}],"format":"ratio","title":"Cash Ratio","period":false}}}

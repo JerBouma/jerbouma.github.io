@@ -1,1 +1,0 @@
-{"charts":{"get_interest_burden_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CHTR","data":[0.5885,0.6095,0.5481,0.5664,0.5589]},{"name":"DIS","data":[0.6999,0.7806,0.5304,0.6353,0.8678]},{"name":"TMUS","data":[0.4862,0.4808,0.771,0.8169,0.7619]}],"format":"percent","title":"Interest Burden Ratio","period":false}}}

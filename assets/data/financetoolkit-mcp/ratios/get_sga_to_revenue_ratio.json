@@ -1,1 +1,0 @@
-{"charts":{"get_sga_to_revenue_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"KO","data":[0.3069,0.2945,0.3057,0.3069,0.3029]},{"name":"MDLZ","data":[0.2181,0.2344,0.2222,0.2041,0.1861]},{"name":"PEP","data":[0.393,0.3989,0.401,0.4049,0.3978]}],"format":"percent","title":"SGA to Revenue Ratio","period":false}}}

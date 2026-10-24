@@ -7,113 +7,67 @@ get_stock_screener:
     market_cap_higher: 500000000000
     primary_only: true
     limit: 10
-  chart:
-    values: [Market Cap (USD)]
-    format: usd
-    title: Market Capitalization
 get_stock_list:
   question: Show the first ten companies in the Finance Toolkit's list of stocks.
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    type: table
-    values: [Symbol, Name]
 get_stock_shares_float:
   question: What is the free float of the first ten companies in the Finance Toolkit's list of floating shares?
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    x: Symbol
-    values: [Free Float]
-    format: number
-    title: Free Float (%)
 get_sectors_performance:
   question: How did NASDAQ-listed technology, energy, healthcare and utilities stocks move each day in the first two weeks of April 2025?
   tool: discovery
   arguments:
     start_date: "2025-04-01"
     end_date: "2025-04-14"
-  chart:
-    values: [Technology, Energy, Healthcare, Utilities]
-    format: number
-    title: Average Daily Change (%)
 get_biggest_gainers:
   question: Which stocks are currently the biggest gainers of the day?
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    values: [Change %]
-    format: number
-    title: Change (%)
 get_biggest_losers:
   question: Which stocks are currently the biggest losers of the day?
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    values: [Change %]
-    format: number
-    title: Change (%)
 get_most_active_stocks:
   question: Which stocks are currently the most actively traded, and how far have their prices moved?
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    values: [Change %]
-    format: number
-    title: Change (%)
 get_delisted_stocks:
   question: Which companies were delisted most recently?
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    type: table
-    values: [Symbol, Name, Exchange, Delisted Date]
 get_crypto_list:
   question: Show the first ten cryptocurrencies in the Finance Toolkit's list of cryptocurrencies.
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    type: table
-    values: [Symbol, Name, ICO Date]
 get_forex_list:
   question: Show the first ten currency pairs in the Finance Toolkit's list of currency pairs.
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    type: table
-    values: [Symbol, From Name, To Name]
 get_commodity_list:
   question: Which commodities can I get prices for with the Finance Toolkit? Show the first twelve.
   tool: discovery
   arguments:
     limit: 12
-  chart:
-    type: table
-    values: [Symbol, Name, Trade Month, Currency]
 get_etf_list:
   question: Show the first ten ETFs in the Finance Toolkit's list of ETFs.
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    type: table
-    values: [Symbol, Name]
 get_index_list:
   question: Show the first ten indices in the Finance Toolkit's list of indices.
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    type: table
-    values: [Symbol, Name, Exchange, Currency]
 get_stock_news:
   question: Which stock market headlines were published on 1 December 2025?
   tool: discovery
@@ -121,17 +75,11 @@ get_stock_news:
     start_date: "2025-12-01"
     end_date: "2025-12-01"
     limit: 10
-  chart:
-    type: table
-    values: [Published Date, Symbol, Publisher, Title]
 get_general_news:
   question: What are the latest general market headlines?
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    type: table
-    values: [Published Date, Publisher, Title]
 get_press_releases:
   question: Which press releases did companies publish on 1 December 2025?
   tool: discovery
@@ -139,68 +87,40 @@ get_press_releases:
     start_date: "2025-12-01"
     end_date: "2025-12-01"
     limit: 10
-  chart:
-    type: table
-    values: [Published Date, Symbol, Title]
 get_crypto_news:
   question: What are the latest cryptocurrency headlines?
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    type: table
-    values: [Published Date, Symbol, Publisher, Title]
 get_forex_news:
   question: What are the latest forex headlines?
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    type: table
-    values: [Published Date, Symbol, Publisher, Title]
 get_ipo_calendar:
   question: Which IPOs were scheduled from 15 to 19 December 2025?
   tool: discovery
   arguments:
     start_date: "2025-12-15"
     end_date: "2025-12-19"
-  chart:
-    type: table
-    values: [Date, Symbol, Company, Exchange, Status]
-    rows: 12
 get_ipo_disclosures:
   question: Which IPO disclosure filings were made on 15 December 2025?
   tool: discovery
   arguments:
     start_date: "2025-12-15"
     end_date: "2025-12-15"
-  chart:
-    type: table
-    values: [Symbol, Filing Date, Effectiveness Date, Form]
-    rows: 12
 get_ipo_prospectuses:
   question: How much did the IPOs that filed their final prospectus from 15 to 19 December 2025 raise?
   tool: discovery
   arguments:
     start_date: "2025-12-15"
     end_date: "2025-12-19"
-  chart:
-    type: bar
-    keep: {Form: 424B4}
-    x: Symbol
-    values: [Public Price Total]
-    format: usd
-    title: Offering Size
 get_stock_splits_calendar:
   question: Which share splits did Netflix and the ProShares ETFs TQQQ, SQQQ, SSO and SDS carry out from 17 to 21 November 2025?
   tool: discovery
   arguments:
     start_date: "2025-11-17"
     end_date: "2025-11-21"
-  chart:
-    type: table
-    keep: {Symbol: [NFLX, TQQQ, SQQQ, SSO, SDS]}
-    values: [Symbol, Date, Numerator, Denominator]
 get_earnings_calendar:
   question: What earnings per share did Nike, FedEx, Accenture and Cintas report on 18 December 2025, compared with the estimates?
   tool: discovery
@@ -208,12 +128,6 @@ get_earnings_calendar:
     start_date: "2025-12-18"
     end_date: "2025-12-18"
     show_columns: Symbol,EPS,Estimated EPS
-  chart:
-    keep: {Symbol: [NKE, FDX, ACN, CTAS]}
-    x: Symbol
-    values: [EPS, Estimated EPS]
-    format: price
-    title: Earnings per Share
 get_sec_filings_8k:
   question: Which companies filed an 8-K with the SEC on 1 December 2025?
   tool: discovery
@@ -221,27 +135,16 @@ get_sec_filings_8k:
     start_date: "2025-12-01"
     end_date: "2025-12-01"
     limit: 10
-  chart:
-    type: table
-    values: [Symbol, Accepted Date, Form Type]
 get_insider_trading_latest:
   question: Which insider trades were reported most recently?
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    type: table
-    values: [Symbol, Reporting Name, Transaction Type, Securities Transacted, Price]
 get_sector_performance:
   question: How did each sector of NASDAQ-listed stocks perform on 9 April 2025?
   tool: discovery
   arguments:
     date: "2025-04-09"
-  chart:
-    x: Sector
-    values: [Average Change]
-    format: number
-    title: Average Change (%)
 get_industry_performance:
   question: How did NASDAQ-listed semiconductor stocks perform each day in the first two weeks of April 2025?
   tool: discovery
@@ -249,20 +152,11 @@ get_industry_performance:
     industry: Semiconductors
     start_date: "2025-04-01"
     end_date: "2025-04-14"
-  chart:
-    values: [Average Change]
-    format: number
-    title: Average Daily Change (%)
 get_sector_pe:
   question: What was the P/E ratio of each sector of NASDAQ-listed stocks on 31 December 2025?
   tool: discovery
   arguments:
     date: "2025-12-31"
-  chart:
-    x: Sector
-    values: [PE Ratio]
-    format: multiple
-    title: P/E Ratio
 get_industry_pe:
   question: How did the P/E ratio of NASDAQ-listed semiconductor stocks change through 2025?
   tool: discovery
@@ -270,15 +164,8 @@ get_industry_pe:
     industry: Semiconductors
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-  chart:
-    values: [PE Ratio]
-    format: multiple
-    title: P/E Ratio
 get_mergers_acquisitions_latest:
   question: Which mergers and acquisitions were announced most recently?
   tool: discovery
   arguments:
     limit: 10
-  chart:
-    type: table
-    values: [Company Name, Targeted Company Name, Transaction Date]

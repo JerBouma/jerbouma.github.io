@@ -1,1 +1,0 @@
-{"charts":{"get_fama_macbeth_regression":{"type":"coef","x":["Intercept","S&P 500"],"coef":[0.0066,0.0102],"low":[-0.004768,-0.00548],"high":[0.017968,0.02588],"p":[0.2578,0.2094],"format":"ratio","title":"Fama-MacBeth Regression","period":false}}}

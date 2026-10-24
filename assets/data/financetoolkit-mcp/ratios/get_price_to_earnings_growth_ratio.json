@@ -1,1 +1,0 @@
-{"charts":{"get_price_to_earnings_growth_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ADP","data":[5.632,2.0316,1.5442,2.8231,2.6064]},{"name":"COST","data":[1.9136,1.9987,5.9318,3.2228,4.7484]},{"name":"MA","data":[1.0646,1.9784,2.252,2.159,1.6998]}],"format":"multiple","title":"Price to Earnings Growth Ratio (PEG)","period":false}}}

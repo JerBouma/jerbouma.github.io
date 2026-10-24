@@ -1,1 +1,0 @@
-{"charts":{"get_altman_z_score":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"BA","data":[1.4374,1.3449,1.59,1.0277,1.5297]},{"name":"GD","data":[3.1667,3.3513,3.4048,3.5741,4.1826]},{"name":"LMT","data":[3.8834,3.8709,3.7403,3.4767,3.2559]}],"format":"ratio","title":"Altman Z-Score","period":false}}}
