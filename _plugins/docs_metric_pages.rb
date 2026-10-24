@@ -241,52 +241,34 @@ module DocsMetricPages
     HTML
   end
 
-  # The function through the Finance Toolkit MCP: a question an analyst might
-  # ask, the tool call an assistant makes to answer it and the answer as a
-  # chart. The specs are in _data/financetoolkit_mcp/<module>.yml and the chart
-  # data comes from _scripts/financetoolkit_mcp_examples.py.
-  def mcp_section(site, name, key, fn_name)
+  # The same through the Finance Toolkit MCP: a question an analyst might ask,
+  # from _data/financetoolkit_mcp/<module>.yml (with the tool call that
+  # answers it).
+  def mcp_question(site, key, fn_name)
     spec = site.data.dig("financetoolkit_mcp", key, fn_name)
-    chart = "/assets/data/financetoolkit-mcp/#{key}/#{fn_name}.json"
-    return "" unless spec && File.exist?(File.join(site.source, chart))
-    arguments = { "indicator" => fn_name }.merge(spec["arguments"] || {})
-    out = +"## #{name} with the Finance Toolkit MCP\n\n"
-    out << "Add the [Finance Toolkit MCP](/projects/financetoolkit/mcp) to Claude, ChatGPT or another AI assistant as a connector ([steps per client](/projects/financetoolkit/mcp#installation)); on first use it asks for your [FMP API key](/fmp){:target=\"_blank\"}. The connector URL is:\n{: .docs-boilerplate}\n\n"
-    out << "```\nhttps://financetoolkit.jeroenbouma.com/mcp\n```\n\n"
-    out << "Then ask in plain English, for example:\n{: .docs-boilerplate}\n\n"
+    return "" unless spec
+    out = +"Or, after setting up the [Finance Toolkit MCP](/projects/financetoolkit/mcp), ask:\n{: .docs-boilerplate}\n\n"
     out << %(<div class="ca-q docs-mcp-question"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>#{CGI.escapeHTML(spec['question'].to_s.strip)}</p></div>\n\n)
-    out << "The assistant answers it with one call of the `#{spec['tool']}` tool:\n\n"
-    out << "```json\n#{JSON.pretty_generate(arguments)}\n```\n\n"
-    answer = JSON.parse(File.read(File.join(site.source, chart)))["charts"].values.first
-    if answer["type"] == "table"
-      # text rather than numbers (a profile, a transcript): the answer as a table
-      out << "Which returns:\n\n"
-      cells = ->(row, tag) { row.map { |v| "<#{tag}>#{CGI.escapeHTML(v.to_s)}</#{tag}>" }.join }
-      out << %(<div class="docs-params__table"><table>\n<thead><tr>#{cells.call(answer['columns'], 'th')}</tr></thead>\n<tbody>\n)
-      out << answer["rows"].map { |row| "<tr>#{cells.call(row, 'td')}</tr>" }.join("\n")
-      out << "\n</tbody>\n</table></div>\n\n"
-    else
-      out << "Which returns, when plotted:\n\n"
-      label = CGI.escapeHTML(spec.dig("chart", "title") || name).gsub('"', "&quot;")
-      out << %({% include ft-chart.html id="#{fn_name}" src="#{chart}" label="#{label} from the Finance Toolkit MCP" %}\n\n)
-    end
-    out
   end
 
   def content_for(site, name, key, fn_name, parts, related)
     cls = CLASSES[key]
     out = +""
     out << parts[:description] << "\n\n"
-    # the MCP first, for readers who do not program; then Python
-    mcp = mcp_section(site, name, key, fn_name)
-    out << mcp
+    # Python, or the same question through the Finance Toolkit MCP: the
+    # question asks for exactly what the example's first table shows, so it
+    # sits between the code and "Which returns:"
+    mcp = mcp_question(site, key, fn_name)
     parameters = parameters_for(parts[:arguments])
-    unless parts[:example].empty? && parameters.empty?
-      out << "## #{name} in Python\n\n"
+    unless parts[:example].empty? && parameters.empty? && mcp.empty?
+      out << "## #{name} in Python#{' or via the MCP' unless mcp.empty?}\n\n"
       out << "Install the [Finance Toolkit](/projects/financetoolkit) with:\n{: .docs-boilerplate}\n\n"
       out << "```python\npip install financetoolkit -U\n```\n\n"
       out << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n" unless parts[:example].empty?
-      out << parts[:example] << "\n\n" unless parts[:example].empty?
+      code, returns, rest = parts[:example].partition(/^Which returns:/)
+      out << code.rstrip << "\n\n" unless code.strip.empty?
+      out << mcp
+      out << returns << rest << "\n\n" unless returns.empty?
       out << parameters_table(site, fn_name, parameters) << "\n" unless parameters.empty?
     end
     unless related.empty?
@@ -297,7 +279,6 @@ module DocsMetricPages
       out << "## #{related_heading(key, related.first[:group])}\n\n"
       out << %(<div class="ft-module-switcher docs-related">\n  #{pills.join("\n  ")}\n</div>\n\n)
     end
-    out << "{% include ft-charts-script.html %}\n" if mcp.include?("ft-chart.html")
     out
   end
 

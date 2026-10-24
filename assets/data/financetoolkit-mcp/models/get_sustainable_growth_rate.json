@@ -1,1 +1,0 @@
-{"charts":{"get_sustainable_growth_rate":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"DECK","data":[0.303,0.3128,0.3922,0.4182,0.4086]},{"name":"LULU","data":[0.3681,0.2903,0.4201,0.4242,0.3401]},{"name":"NKE","data":[0.3001,0.2088,0.2484,0.0665,0.0499]}],"format":"percent","title":"Sustainable Growth Rate (SGR)","period":false}}}

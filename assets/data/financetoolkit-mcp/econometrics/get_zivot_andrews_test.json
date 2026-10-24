@@ -1,1 +1,0 @@
-{"charts":{"get_zivot_andrews_test":{"type":"bar","x":["Zivot-Andrews Statistic","Critical Value 5%"],"series":[{"name":"META","data":[-4.012,-4.8107]},{"name":"NFLX","data":[-4.0833,-4.8107]}],"format":"ratio","title":"Zivot-Andrews Statistic and 5% Critical Value","period":false}}}

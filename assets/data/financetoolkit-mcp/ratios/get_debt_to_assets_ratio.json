@@ -1,1 +1,0 @@
-{"charts":{"get_debt_to_assets_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"DUK","data":[0.4025,0.4206,0.4548,0.4574,0.4642]},{"name":"NEE","data":[0.3891,0.4088,0.4125,0.433,0.4495]},{"name":"SO","data":[0.4349,0.4384,0.4557,0.4565,0.4757]}],"format":"percent","title":"Debt to Assets Ratio","period":false}}}

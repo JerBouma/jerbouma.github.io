@@ -1,1 +1,0 @@
-{"charts":{"get_book_value_per_share":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ALL","data":[77.5961,57.2198,60.0724,72.5952,108.0808]},{"name":"CB","data":[134.7338,119.2817,143.6664,155.4263,186.0202]},{"name":"TRV","data":[115.1794,89.9458,107.3256,120.5712,144.5255]}],"format":"price","title":"Book Value per Share","period":false}}}

@@ -1,1 +1,0 @@
-{"charts":{"get_receivables_turnover":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ABT","data":[6.6778,6.8718,6.2754,6.2194,5.9685]},{"name":"MDT","data":[5.7543,5.4077,5.338,5.3052,5.5273]},{"name":"SYK","data":[5.9787,5.6016,5.5929,5.8295,6.2587]}],"format":"ratio","title":"Receivables Turnover","period":false}}}

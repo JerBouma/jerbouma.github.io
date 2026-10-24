@@ -1,1 +1,0 @@
-{"charts":{"get_employee_count":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"WMT","data":[2300000.0,2300000.0,2100000.0,2100000.0,2100000.0]},{"name":"AMZN","data":[1608000.0,1541000.0,1525000.0,1556000.0,1576000.0]}],"format":"amount","title":"Employee Count","period":false}}}

@@ -1,398 +1,362 @@
-# Bond valuations
 get_present_value:
-  question: At a 4.5% yield, what is a bond worth per 100 of face value with an annual coupon from 2% to 7%, for maturities of 2, 5, 10 and 30 years?
+  question: At an 8% yield, what is a bond worth per 100 of face value with an annual coupon of 3%, 5% or 7%, for maturities of 5, 10 and 15 years?
   tool: fixed_income
   arguments:
-    coupon_rate: [0.02, 0.03, 0.04, 0.045, 0.05, 0.06, 0.07]
-    years_to_maturity: [2, 5, 10, 30]
-    yield_to_maturity: 0.045
-  chart:
-    format: price
-    x: Coupon Rate
-    xname: Coupon rate
-    rename: {"Years to Maturity 2": 2 years, "Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 30": 30 years, "0.02": 2%, "0.03": 3%, "0.04": 4%, "0.045": 4.5%, "0.05": 5%, "0.06": 6%, "0.07": 7%}
+    coupon_rate:
+    - 0.03
+    - 0.05
+    - 0.07
+    years_to_maturity:
+    - 5
+    - 10
+    - 15
+    yield_to_maturity: 0.08
 get_duration:
-  question: What is the modified duration of 2, 5, 10 and 30-year bonds with annual coupons from 0% to 8% at a 4.5% yield?
+  question: What is the modified duration of 5, 10 and 15-year bonds with annual coupons of 3%, 5% and 7% at an 8% yield?
   tool: fixed_income
   arguments:
     duration_type: modified
-    coupon_rate: [0.0, 0.02, 0.04, 0.06, 0.08]
-    years_to_maturity: [2, 5, 10, 30]
-    yield_to_maturity: 0.045
-  chart:
-    format: ratio
-    title: Modified Duration
-    x: Coupon Rate
-    xname: Coupon rate
-    rename: {"Years to Maturity 2": 2 years, "Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 30": 30 years, "0.0": 0%, "0.02": 2%, "0.04": 4%, "0.06": 6%, "0.08": 8%}
+    coupon_rate:
+    - 0.03
+    - 0.05
+    - 0.07
+    years_to_maturity:
+    - 5
+    - 10
+    - 15
+    yield_to_maturity: 0.08
 get_yield_to_maturity:
-  question: What yield to maturity does a bond with a 4% annual coupon offer at prices from 90 to 110, for maturities of 2, 5, 10 and 30 years?
-  tool: fixed_income
-  arguments:
-    coupon_rate: 0.04
-    bond_price: [90, 95, 100, 105, 110]
-    years_to_maturity: [2, 5, 10, 30]
-  chart:
-    format: percent
-    x: Bond Price
-    xname: Bond price
-    xdigits: 0
-    rename: {"Years to Maturity 2": 2 years, "Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 30": 30 years}
-get_par_yield:
-  question: What par yields does the Bank of England's nominal spot curve of 31 December 2025 imply for gilts of 1 to 30 years, with semi-annual coupons?
-  tool: fixed_income
-  arguments:
-    spot_rates: {"1": 0.0355, "2": 0.0363, "3": 0.0371, "5": 0.0394, "7": 0.042, "10": 0.0457, "15": 0.0502, "20": 0.0524, "25": 0.0532, "30": 0.0531}
-    years_to_maturity: [1, 2, 3, 5, 7, 10, 15, 20, 25, 30]
-    frequency: 2
-  chart:
-    format: percent
-    x: Years to Maturity
-    xname: Years to maturity
-    xdigits: 0
-get_forward_rate:
-  question: Using EIOPA's euro risk-free spot curve for December 2025, which forward rates are implied from 1, 2, 5 and 10 years ahead out to 20 and 30 years?
-  tool: fixed_income
-  arguments:
-    spot_rates: {"1": 0.0208, "2": 0.0216, "5": 0.0248, "10": 0.0286, "20": 0.0321, "30": 0.0328}
-    near_maturity: [1, 2, 5, 10]
-    far_maturity: [20, 30]
-  chart:
-    format: percent
-    x: Near Maturity
-    xdigits: 0
-    xname: Start of the forward period (years ahead)
-    rename: {"Far Maturity 20": To year 20, "Far Maturity 30": To year 30}
-get_key_rate_duration:
-  question: Which points of the US Treasury curve of 31 December 2025 drive the interest rate risk of 4% annual coupon bonds of 5, 10 and 30 years?
-  tool: fixed_income
-  arguments:
-    coupon_rate: 0.04
-    years_to_maturity: [5, 10, 30]
-    spot_rates: {"1": 0.0348, "2": 0.0347, "5": 0.0373, "10": 0.0418, "20": 0.0479, "30": 0.0484}
-  chart:
-    format: ratio
-    x: Years to Maturity
-    xname: Bond maturity (years)
-    xdigits: 0
-    rename: {"Key Rate Maturity 1": 1-year rate, "Key Rate Maturity 2": 2-year rate, "Key Rate Maturity 5": 5-year rate, "Key Rate Maturity 10": 10-year rate, "Key Rate Maturity 20": 20-year rate, "Key Rate Maturity 30": 30-year rate}
-get_yield_curve_spread:
-  question: How steep was the US Treasury curve on 31 December 2025, measured by the spreads of the 5, 10, 20 and 30-year yields over the 3-month and 2-year yields?
-  tool: fixed_income
-  arguments:
-    spot_rates: {"0.25": 0.0367, "0.5": 0.0359, "1": 0.0348, "2": 0.0347, "3": 0.0355, "5": 0.0373, "7": 0.0394, "10": 0.0418, "20": 0.0479, "30": 0.0484}
-    long_maturity: [5, 10, 20, 30]
-    short_maturity: [0.25, 2]
-  chart:
-    format: percent
-    x: Long Maturity
-    xdigits: 0
-    xname: Long maturity (years)
-    rename: {"Short Maturity 0.25": Over the 3-month yield, "Short Maturity 2": Over the 2-year yield}
-get_z_spread:
-  question: A 5% annual coupon corporate bond trades between 96 and 104. What Z-spread over the US Treasury curve of 31 December 2025 does that imply for maturities of 5, 10 and 20 years?
+  question: What yield to maturity does a bond with a 5% annual coupon offer at prices of 95, 100 and 105, for maturities of 5, 10 and 15 years?
   tool: fixed_income
   arguments:
     coupon_rate: 0.05
-    bond_price: [96, 98, 100, 102, 104]
-    years_to_maturity: [5, 10, 20]
-    spot_rates: {"0.25": 0.0367, "0.5": 0.0359, "1": 0.0348, "2": 0.0347, "3": 0.0355, "5": 0.0373, "7": 0.0394, "10": 0.0418, "20": 0.0479, "30": 0.0484}
-  chart:
-    format: percent
-    x: Bond Price
-    xname: Bond price
-    xdigits: 0
-    rename: {"Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 20": 20 years}
+    bond_price:
+    - 95
+    - 100
+    - 105
+    years_to_maturity:
+    - 5
+    - 10
+    - 15
+get_par_yield:
+  question: What par yields does a spot curve rising from 3% at 1 year to 4.4% at 10 years imply for maturities of 1 to 10 years?
+  tool: fixed_income
+  arguments:
+    spot_rates:
+      "1": 0.03
+      "2": 0.032
+      "3": 0.034
+      "5": 0.038
+      "7": 0.041
+      "10": 0.044
+    years_to_maturity:
+    - 1
+    - 2
+    - 3
+    - 5
+    - 10
+    frequency: 1
+get_forward_rate:
+  question: Which forward rates does a spot curve rising from 3% at 1 year to 4.4% at 10 years imply?
+  tool: fixed_income
+  arguments:
+    spot_rates:
+      "1": 0.03
+      "2": 0.032
+      "3": 0.034
+      "5": 0.038
+      "10": 0.044
+    near_maturity:
+    - 1
+    - 2
+    - 3
+    far_maturity:
+    - 5
+    - 10
+get_key_rate_duration:
+  question: On a spot curve rising from 3% at 1 year to 4.4% at 10 years, what are the key rate durations of 5 and 10-year bonds with a 5% coupon?
+  tool: fixed_income
+  arguments:
+    coupon_rate: 0.05
+    years_to_maturity:
+    - 5
+    - 10
+    key_rate_maturity:
+    - 2
+    - 5
+    - 10
+    spot_rates:
+      "1": 0.03
+      "2": 0.032
+      "3": 0.034
+      "5": 0.038
+      "7": 0.041
+      "10": 0.044
+get_yield_curve_spread:
+  question: On a yield curve rising from 3% at 1 year to 5% at 30 years, how wide are the spreads between its short and long end?
+  tool: fixed_income
+  arguments:
+    spot_rates:
+      "1": 0.03
+      "2": 0.032
+      "10": 0.044
+      "30": 0.05
+    long_maturity:
+    - 10
+    - 30
+    short_maturity:
+    - 1
+    - 2
+get_z_spread:
+  question: On a spot curve rising from 3% to 4.8%, what Z-spread does a 5% coupon bond have at prices of 95, 100 and 105, for maturities of 5, 10 and 15 years?
+  tool: fixed_income
+  arguments:
+    coupon_rate: 0.05
+    bond_price:
+    - 95
+    - 100
+    - 105
+    years_to_maturity:
+    - 5
+    - 10
+    - 15
+    spot_rates:
+      "1": 0.03
+      "2": 0.032
+      "3": 0.034
+      "5": 0.038
+      "7": 0.041
+      "10": 0.044
+      "20": 0.048
 get_breakeven_inflation_rate:
-  question: What inflation rate did US Treasury and TIPS yields on 31 December 2025 price in over the next 5, 7, 10, 20 and 30 years?
+  question: What inflation rate do nominal spot rates of 3%, 3.8%, 4.4% and 5% and real spot rates of 0.8%, 1.2%, 1.6% and 2% at 1, 5, 10 and 30 years price in?
   tool: fixed_income
   arguments:
-    nominal_rates: {"5": 0.0373, "7": 0.0394, "10": 0.0418, "20": 0.0479, "30": 0.0484}
-    real_rates: {"5": 0.0147, "7": 0.0169, "10": 0.0193, "20": 0.0239, "30": 0.0262}
-    maturity: [5, 7, 10, 20, 30]
-  chart:
-    format: percent
-    x: Maturity
-    xname: Maturity (years)
-    xdigits: 0
+    nominal_rates:
+      "1": 0.03
+      "5": 0.038
+      "10": 0.044
+      "30": 0.05
+    real_rates:
+      "1": 0.008
+      "5": 0.012
+      "10": 0.016
+      "30": 0.02
+    maturity:
+    - 1
+    - 5
+    - 10
+    - 30
 get_bond_equivalent_yield:
-  question: What bond-equivalent yield do Treasury bills of 4, 13, 26 and 52 weeks offer at discount yields from 2% to 6%?
+  question: What bond-equivalent yield do Treasury bills of 90, 180 and 360 days offer at discount yields of 3%, 5% and 7%?
   tool: fixed_income
   arguments:
-    discount_yield: [0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05, 0.055, 0.06]
-    days_to_maturity: [28, 91, 182, 364]
-  chart:
-    type: line
-    format: percent
-    x: Discount Yield
-    xname: Discount yield
-    rename: {"Days to Maturity 28": 4 weeks, "Days to Maturity 91": 13 weeks, "Days to Maturity 182": 26 weeks, "Days to Maturity 364": 52 weeks, "0.02": 2%, "0.025": 2.5%, "0.03": 3%, "0.035": 3.5%, "0.04": 4%, "0.045": 4.5%, "0.05": 5%, "0.055": 5.5%, "0.06": 6%}
+    discount_yield:
+    - 0.03
+    - 0.05
+    - 0.07
+    days_to_maturity:
+    - 90
+    - 180
+    - 360
 get_taylor_price_change:
-  question: If yields rise by 100 basis points from 4.5%, how much would bonds with 2%, 4% and 6% annual coupons lose for maturities of 2, 5, 10 and 30 years, estimated with duration and convexity?
+  question: If yields rise by 100 basis points from 8%, how much would bonds with 3% to 7% coupons and maturities of 5 to 15 years lose?
   tool: fixed_income
   arguments:
-    coupon_rate: [0.02, 0.04, 0.06]
-    years_to_maturity: [2, 5, 10, 30]
-    yield_to_maturity: 0.045
+    coupon_rate:
+    - 0.03
+    - 0.05
+    - 0.07
+    years_to_maturity:
+    - 5
+    - 10
+    - 15
+    yield_to_maturity: 0.08
     yield_change: 0.01
-  chart:
-    format: percent
-    x: Coupon Rate
-    xname: Coupon rate
-    rename: {"Years to Maturity 2": 2 years, "Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 30": 30 years, "0.02": 2%, "0.04": 4%, "0.06": 6%}
-
-# Derivative valuations
 get_derivative_price:
-  question: Under the Black model, what is a receiver swaption on a 5-year swap worth on $10 million, at strikes from 3% to 4.5% and expiries of 1, 2 and 5 years, with a 3.75% forward swap rate and 25% volatility?
+  question: What is a receiver swaption on $10 million worth under the Black model, across strikes from 2.75% to 4.25% and expiries of 1 to 10 years?
   tool: fixed_income
   arguments:
     model: black
-    forward_rate: 0.0375
-    strike_rate: [0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045]
-    years_to_maturity: [1, 2, 5]
-    tenor: 5
-    volatility: 0.25
+    forward_rate: 0.0325
+    strike_rate:
+    - 0.0275
+    - 0.0325
+    - 0.0375
+    - 0.0425
+    years_to_maturity:
+    - 1
+    - 2
+    - 5
+    - 10
+    volatility: 0.01
     notional: 10000000
     end_date: "2025-12-31"
-  chart:
-    format: amount
-    x: Strike Rate
-    xname: Strike rate
-    rename: {"2026-12-31": 1-year expiry, "2027-12-31": 2-year expiry, "2030-12-30": 5-year expiry, "0.03": 3%, "0.0325": 3.25%, "0.035": 3.5%, "0.0375": 3.75%, "0.04": 4%, "0.0425": 4.25%, "0.045": 4.5%}
-
-# Government bonds
 get_government_bond_yield:
-  question: How did 3-month interest rates in the United States, the United Kingdom, Japan and Germany move from 2010 to 2025?
+  question: How did long-term government bond yields in Japan, the United States and Brazil move in each month from May to December 2023?
   tool: rates
   arguments:
-    countries: United States,United Kingdom,Japan,Germany
-    short_term: true
+    countries: Japan,United States,Brazil
+    short_term: false
     period: monthly
-    start_date: "2010-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
+    start_date: "2023-05-01"
+    end_date: "2023-12-31"
 get_treasury_rates:
-  question: How did the 3-month, 2-year, 10-year and 30-year US Treasury par yields move through 2025?
+  question: What were the US Treasury par yields from 1 month to 30 years on each trading day from 1 to 15 January 2024?
   tool: rates
   arguments:
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    show_columns: 3 Month,2 Year,10 Year,30 Year
-  chart:
-    format: percent
+    start_date: "2024-01-01"
+    end_date: "2024-01-15"
 get_government_bond_yield_curve:
-  question: What did the government bond yield curves of the United States, Germany and Japan look like in December 2025, from 1 to 30 years?
+  question: What were Germany's government bond yields at 1, 2, 5, 10, 20 and 30 years on each day from 28 September to 1 October 2026?
   tool: rates
   arguments:
-    countries: United States,Germany,Japan
-    period: monthly
-    start_date: "2025-12-01"
-    end_date: "2025-12-31"
-    show_columns: 1Y,2Y,3Y,5Y,7Y,10Y,20Y,30Y
-  chart:
-    type: line
-    format: percent
-    x: Country
-    values: [1Y, 2Y, 3Y, 5Y, 7Y, 10Y, 20Y, 30Y]
-    transpose: true
-    xname: Maturity
+    countries: Germany
+    period: daily
+    start_date: "2026-09-28"
+    end_date: "2026-10-01"
+    show_columns: 1Y,2Y,5Y,10Y,20Y,30Y
 get_bank_of_england_yield_curve:
-  question: How did the Bank of England's nominal zero-coupon gilt yields at 2, 5, 10 and 30 years move through 2025?
+  question: How did the Bank of England's nominal zero-coupon gilt yields at 1, 3, 5, 10, 20 and 30 years move in each month from April to September 2026?
   tool: rates
   arguments:
     curve: nominal
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    show_columns: 2Y,5Y,10Y,30Y
-  chart:
-    format: percent
-
-# Corporate bonds
+    period: monthly
+    start_date: "2026-04-01"
+    end_date: "2026-09-30"
+    show_columns: 1Y,3Y,5Y,10Y,20Y,30Y
 get_ice_bofa_option_adjusted_spread:
-  question: How did the option-adjusted spreads of investment grade US corporate bonds, rated AAA to BBB, move through 2025?
-  tool: rates
-  arguments:
-    maturity: false
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: number
-    values: [AAA, AA, A, BBB]
-    title: Option-adjusted spread (basis points)
-get_ice_bofa_effective_yield:
-  question: How did the effective yields of US corporate bonds by maturity bucket move through 2025?
+  question: How did the option-adjusted spreads of US corporate bonds by maturity, from 1-3 years to 15+ years, move from 1 to 15 January 2024?
   tool: rates
   arguments:
     maturity: true
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
+    start_date: "2024-01-01"
+    end_date: "2024-01-15"
+get_ice_bofa_effective_yield:
+  question: How did the effective yields of US corporate bonds by rating, from AAA to CCC, move from 1 to 15 January 2024?
+  tool: rates
+  arguments:
+    maturity: false
+    start_date: "2024-01-01"
+    end_date: "2024-01-15"
 get_ice_bofa_total_return:
-  question: How did the total return index of BBB-rated US corporate bonds develop through 2025?
+  question: How did the total return indices of US corporate bonds by maturity, from 1-3 years to 15+ years, develop from 1 to 15 January 2024?
   tool: rates
   arguments:
-    maturity: false
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    show_columns: BBB
-  chart:
-    format: number
-    title: ICE BofA BBB US Corporate Index (total return)
+    maturity: true
+    start_date: "2024-01-01"
+    end_date: "2024-01-15"
 get_ice_bofa_yield_to_worst:
-  question: How did the yield to worst of US corporate bonds rated AAA to B move through 2025?
+  question: How did the yield to worst of US corporate bonds by rating, from AAA to CCC, move from 1 to 15 January 2024?
   tool: rates
   arguments:
     maturity: false
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
-    values: [AAA, AA, A, BBB, BB, B]
+    start_date: "2024-01-01"
+    end_date: "2024-01-15"
 get_corporate_bond_yields:
-  question: How did corporate bond yields in Germany, Australia and the United States compare from 2010 to 2025?
+  question: How did corporate bond spreads over government bonds in Germany and Australia move from March to August 2026?
   tool: rates
   arguments:
-    countries: Germany,Australia,United States
-    start_date: "2010-01-01"
-    end_date: "2025-12-31"
-    show_columns: All ratings,BBB 10Y,Baa
-  chart:
-    format: percent
-    drop: [Germany BBB 10Y, Germany Baa, Australia All ratings, Australia Baa, United States All ratings, United States BBB 10Y]
-    rename: {Germany All ratings: Germany (all ratings), Australia BBB 10Y: "Australia (BBB, 10 years)", United States Baa: "United States (Moody's Baa)"}
+    countries: Germany,Australia
+    spread: true
+    start_date: "2026-03-01"
+    end_date: "2026-08-31"
+    show_columns: All ratings,A 5Y,BBB 5Y,BBB 10Y
 get_moodys_corporate_bond_yields:
-  question: How did Moody's Aaa and Baa US corporate bond yields move from 2000 to 2025?
+  question: How did the spreads of Moody's Aaa and Baa US corporate bonds over the 10-year Treasury move from March to August 2026?
   tool: rates
   arguments:
     period: monthly
-    start_date: "2000-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
+    spread: true
+    start_date: "2026-03-01"
+    end_date: "2026-08-31"
 get_hqm_corporate_bond_yield_curve:
-  question: How did the yields on the US Treasury's high quality market corporate bond spot curve at 1, 5, 10 and 30 years move from 2015 to 2025?
+  question: How did the US Treasury's high quality market corporate bond yield curve move from March to August 2026?
   tool: rates
   arguments:
     rate: spot
-    start_date: "2015-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
-    values: [1Y, 5Y, 10Y, 30Y]
+    start_date: "2026-03-01"
+    end_date: "2026-08-31"
+    show_columns: 1Y,5Y,10Y,30Y,100Y
 get_hqm_corporate_bond_spread:
-  question: How did the spread of high quality US corporate bonds over Treasuries at 2, 5, 10 and 30 years move from 2015 to 2025?
+  question: How did the spread of high quality US corporate bonds over Treasuries at 2, 5, 10 and 30 years move in each month from March to August 2026?
   tool: rates
   arguments:
-    start_date: "2015-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
+    start_date: "2026-03-01"
+    end_date: "2026-08-31"
 get_corporate_borrowing_cost:
-  question: How did the cost of bank borrowing for companies in Germany, France, Italy, Spain and the Netherlands compare from 2010 to 2025?
+  question: How did the cost of bank borrowing for companies in the euro area, Germany, France, Italy and Spain compare in each month from March to August 2026?
   tool: rates
   arguments:
-    countries: Germany,France,Italy,Spain,Netherlands
-    start_date: "2010-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
-
-# Credit risk and stress
+    countries: Euro Area,Germany,France,Italy,Spain
+    start_date: "2026-03-01"
+    end_date: "2026-08-31"
 get_rating_transition_matrix:
-  question: How likely were S&P-rated corporates to keep, raise or lose their rating, or to default, during 2024?
+  question: How likely were S&P-rated corporates from AAA to CCC to keep, raise or lose their rating, or to default, during 2025?
   tool: rates
   arguments:
     agency: S&P
     rating_type: corporate
-    year: 2024
+    year: 2025
     horizon: 1
-  chart:
-    type: heatmap
-    format: percent
-    x: From Rating
-    keep: {From Rating: [AAA, AA, A, BBB, BB, B, CCC]}
-    values: [AAA, AA, A, BBB, BB, B, CCC, SD, D]
+    show_columns: AAA,AA,A,BBB,BB,B,CCC,D
+    limit: 7
 get_default_rates:
-  question: What share of S&P-rated BB, B and CCC corporates defaulted each year from 2015 to 2025?
+  question: What share of S&P-rated BBB, BB, B and CCC corporates defaulted each year from 2018 to 2025?
   tool: rates
   arguments:
     agency: S&P
     rating_type: corporate
-    start_date: "2015-01-01"
+    start_date: "2018-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    values: [BB, B, CCC]
+    show_columns: BBB,BB,B,CCC
 get_excess_bond_premium:
-  question: How did the Gilchrist-Zakrajšek credit spread and excess bond premium move from 2000 to 2025?
+  question: How did the Gilchrist-Zakrajšek credit spread and the excess bond premium move from February to July 2026?
   tool: rates
   arguments:
-    start_date: "2000-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
-    values: [GZ Credit Spread, Excess Bond Premium]
+    start_date: "2026-02-01"
+    end_date: "2026-07-31"
 get_financial_stress_index:
-  question: How did systemic financial stress in the euro area, the United States and the United Kingdom compare from 2007 to 2025, measured by the ECB's CISS?
+  question: How did financial stress in the euro area, the United States, the United Kingdom and China compare from April to September 2026?
   tool: rates
   arguments:
-    countries: Euro Area,United States,United Kingdom
+    countries: Euro Area,United States,United Kingdom,China
     period: monthly
-    start_date: "2007-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: ratio
-
-# Regulatory curves
+    start_date: "2026-04-01"
+    end_date: "2026-09-30"
 get_eiopa_risk_free_rate:
-  question: How did EIOPA's euro risk-free spot rates at 1, 5, 10 and 30 years move from 2023 to 2025?
+  question: How did EIOPA's euro and UK risk-free spot rates at 1, 10, 30, 60 and 150 years move in each month from July to September 2026?
   tool: rates
   arguments:
-    countries: Euro Area
+    countries: Euro Area,United Kingdom
     curve: spot_no_va
-    start_date: "2023-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
-    values: [1Y, 5Y, 10Y, 30Y]
+    maturity_years: 1,10,30,60,150
+    start_date: "2026-07-01"
+    end_date: "2026-09-30"
 get_eiopa_symmetric_adjustment:
-  question: How did the Solvency II symmetric adjustment to the equity capital charge move from 2015 to 2025?
+  question: How did the Solvency II symmetric adjustment and the type 1 and type 2 equity charges move in each month from April to September 2026?
   tool: rates
   arguments:
     period: monthly
-    start_date: "2015-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
-    values: [Symmetric Adjustment]
-
-# Central banks
+    start_date: "2026-04-01"
+    end_date: "2026-09-30"
 get_euribor_rates:
-  question: How did the 1, 3, 6 and 12-month Euribor rates move from 2021 to 2025?
+  question: How did the 1, 3, 6 and 12-month Euribor rates move in each month from December 2023 to December 2025?
   tool: rates
   arguments:
-    start_date: "2021-01-01"
+    start_date: "2023-12-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_federal_reserve_rates:
-  question: How did the Secured Overnight Financing Rate (SOFR) and its 1st and 99th percentiles move through 2025?
+  question: What were the effective federal funds rate and its 1st, 25th, 75th and 99th percentiles on each trading day from 17 to 31 December 2025?
   tool: rates
   arguments:
-    rate: SOFR
-    start_date: "2025-01-01"
+    rate: EFFR
+    start_date: "2025-12-17"
     end_date: "2025-12-31"
-  chart:
-    format: percent
-    values: [Rate, 1st Percentile, 99th Percentile]
+    show_columns: Rate,1st Percentile,25th Percentile,75th Percentile,99th Percentile
 get_european_central_bank_rates:
-  question: How did the ECB's main refinancing rate change from July 2022 to December 2025?
+  question: What were the ECB's main refinancing, marginal lending and deposit facility rates on each day from 22 to 31 December 2025?
   tool: rates
   arguments:
-    rate: refinancing
-    start_date: "2022-07-01"
+    start_date: "2025-12-22"
     end_date: "2025-12-31"
-  chart:
-    format: percent

@@ -1,1 +1,0 @@
-{"charts":{"get_treynor_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"UNP","data":[0.2337,-0.2925,0.2013,-0.1693,-0.0045]},{"name":"UPS","data":[0.3668,-0.2237,-0.089,-0.3447,-0.2631]},{"name":"FDX","data":[-0.0084,-0.3517,0.4288,0.151,0.0092]}],"format":"ratio","title":"Treynor Ratio","period":false}}}

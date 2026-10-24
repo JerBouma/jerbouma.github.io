@@ -1,1 +1,0 @@
-{"charts":{"get_income_quality_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"DIS","data":[2.7905,1.911,4.1912,2.8099,1.4593]},{"name":"NFLX","data":[0.0767,0.4511,1.3451,0.845,0.9242]}],"format":"ratio","title":"Income Quality Ratio","period":false}}}

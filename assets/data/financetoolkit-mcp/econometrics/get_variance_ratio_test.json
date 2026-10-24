@@ -1,1 +1,0 @@
-{"charts":{"get_variance_ratio_test":{"type":"bar","x":["Variance Ratio","P-Value"],"series":[{"name":"XLE","data":[1.0241,0.3939]},{"name":"XLF","data":[1.024,0.3945]},{"name":"XLK","data":[0.9603,0.1601]}],"format":"ratio","title":"Variance Ratio and P-Value","period":false}}}

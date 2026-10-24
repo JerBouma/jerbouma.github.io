@@ -1,1 +1,0 @@
-{"charts":{"get_kurtosis":{"type":"bar","x":["UNH","HUM","CI"],"series":[{"name":"Kurtosis","data":[17.968,4.275,20.741]}],"format":"ratio","title":"Kurtosis","period":false}}}

@@ -1,846 +1,642 @@
 get_asset_turnover_ratio:
-  question: How much revenue did Target, Best Buy and Dollar General generate per dollar of assets from 2021 to 2025?
+  question: How much revenue did Apple and Tesla generate per dollar of assets from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: TGT,BBY,DG
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_inventory_turnover_ratio:
-  question: How many times a year did Home Depot, Lowe's and Tractor Supply turn over their inventory from 2021 to 2025?
+  question: How many times a year did Apple and Tesla turn over their inventory from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: HD,LOW,TSCO
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_days_of_inventory_outstanding:
-  question: How many days of inventory did Nike, Lululemon and Deckers hold from 2021 to 2025?
+  question: How many days of inventory did Apple and Tesla hold from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: NKE,LULU,DECK
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_days_of_sales_outstanding:
-  question: How many days did Honeywell, Emerson and Eaton take to collect payment from their customers from 2021 to 2025?
+  question: How many days did Apple and Tesla take to collect payment from their customers from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: HON,EMR,ETN
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_operating_cycle:
-  question: How long was the operating cycle of Applied Materials, Lam Research and KLA, from buying inventory to collecting cash, from 2021 to 2025?
+  question: How long was the operating cycle of Apple and Tesla, from buying inventory to collecting cash, from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: AMAT,LRCX,KLAC
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_accounts_payables_turnover_ratio:
-  question: How many times a year did Procter & Gamble, Colgate-Palmolive and Kimberly-Clark pay off their suppliers from 2021 to 2025?
+  question: How many times a year did Apple and Tesla pay off their suppliers from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: PG,CL,KMB
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_days_of_accounts_payable_outstanding:
-  question: How many days did General Motors, Ford and Tesla take to pay their suppliers from 2021 to 2025?
+  question: How many days did Apple and Tesla take to pay their suppliers from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: GM,F,TSLA
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_cash_conversion_cycle:
-  question: What was the cash conversion cycle of Amazon, Costco and Walmart from 2021 to 2025?
+  question: What was the cash conversion cycle of Apple and Tesla from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: AMZN,COST,WMT
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: number
 get_cash_conversion_efficiency:
-  question: What share of revenue did Adobe, Salesforce and ServiceNow turn into operating cash flow from 2021 to 2025?
+  question: What share of revenue did Apple and Tesla turn into operating cash flow from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: ADBE,CRM,NOW
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_receivables_turnover:
-  question: How many times a year did Medtronic, Abbott and Stryker collect their receivables from 2021 to 2025?
+  question: How many times a year did Apple and Tesla collect their receivables from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: MDT,ABT,SYK
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_sga_to_revenue_ratio:
-  question: How much of their revenue did Coca-Cola, PepsiCo and Mondelez spend on selling, general and administrative expenses from 2021 to 2025?
+  question: How much of their revenue did Apple and Tesla spend on selling, general and administrative expenses from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: KO,PEP,MDLZ
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_fixed_asset_turnover:
-  question: How much revenue did Delta, United and Southwest generate per dollar of fixed assets from 2021 to 2025?
+  question: How much revenue did Apple and Tesla generate per dollar of fixed assets from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: DAL,UAL,LUV
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_operating_ratio:
-  question: What was the operating ratio of Union Pacific, CSX and Norfolk Southern from 2021 to 2025?
+  question: What was the operating ratio of Apple and Tesla from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: UNP,CSX,NSC
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_research_and_development_ratio:
-  question: How much of their revenue did Nvidia, AMD and Intel spend on research and development from 2021 to 2025?
+  question: How much of their revenue did Apple and Tesla spend on research and development from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: NVDA,AMD,INTC
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_selling_and_marketing_ratio:
-  question: How much of their revenue did Salesforce, HubSpot and Datadog spend on sales and marketing from 2021 to 2025?
+  question: How much of their revenue did Apple and Tesla spend on sales and marketing from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: CRM,HUBS,DDOG
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_general_and_administrative_ratio:
-  question: How much of their revenue did Workday, Snowflake and Intuit spend on general and administrative expenses from 2021 to 2025?
+  question: How much of their revenue did Apple and Tesla spend on general and administrative expenses from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: WDAY,SNOW,INTU
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_stock_based_compensation_ratio:
-  question: How much of their revenue did Uber, Lyft and DoorDash pay out as stock-based compensation from 2021 to 2025?
+  question: How much of their revenue did Apple and Tesla pay out as stock-based compensation from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: UBER,LYFT,DASH
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_deferred_revenue_ratio:
-  question: How large was the deferred revenue of Oracle, Adobe and Workday relative to their revenue from 2021 to 2025?
+  question: How large was the deferred revenue of Apple and Tesla relative to their revenue from 2021 to 2025?
   tool: efficiency
   arguments:
-    tickers: ORCL,ADBE,WDAY
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_working_capital_turnover_ratio:
-  question: How much revenue did Fastenal, Grainger and MSC Industrial generate per dollar of working capital from 2021 to 2025?
+  question: How much revenue did Apple and Tesla generate per dollar of working capital over the last five years?
   tool: efficiency
   arguments:
-    tickers: FAST,GWW,MSM
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: ratio
+    tickers: AAPL,TSLA
 get_current_ratio:
-  question: How did the current ratios of Pfizer, Merck and Bristol-Myers Squibb develop from 2021 to 2025?
+  question: How did the current ratios of Apple and Tesla develop from 2021 to 2025?
   tool: liquidity
   arguments:
-    tickers: PFE,MRK,BMY
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_quick_ratio:
-  question: Leaving inventory aside, how well could Boeing, Lockheed Martin and RTX cover their current liabilities from 2021 to 2025?
+  question: Leaving inventory aside, how well could Apple and Tesla cover their current liabilities from 2021 to 2025?
   tool: liquidity
   arguments:
-    tickers: BA,LMT,RTX
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_cash_ratio:
-  question: How much of their current liabilities could Alphabet, Meta and Netflix cover with cash and short-term investments alone from 2021 to 2025?
+  question: How much of their current liabilities could Apple and Tesla cover with cash and short-term investments alone from 2021 to 2025?
   tool: liquidity
   arguments:
-    tickers: GOOGL,META,NFLX
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_working_capital:
-  question: How much working capital did Texas Instruments, Qualcomm and Analog Devices hold from 2021 to 2025?
+  question: How much working capital did Apple and Tesla hold from 2021 to 2025?
   tool: liquidity
   arguments:
-    tickers: TXN,QCOM,ADI
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: usd
 get_operating_cash_flow_ratio:
-  question: How well did the operating cash flow of UnitedHealth, CVS Health and Cigna cover their current liabilities from 2021 to 2025?
+  question: How well did the operating cash flow of Apple and Tesla cover their current liabilities from 2021 to 2025?
   tool: liquidity
   arguments:
-    tickers: UNH,CVS,CI
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_operating_cash_flow_sales_ratio:
-  question: How much operating cash flow did Visa, Mastercard and PayPal generate per dollar of revenue from 2021 to 2025?
+  question: How much operating cash flow did Apple and Tesla generate per dollar of revenue from 2021 to 2025?
   tool: liquidity
   arguments:
-    tickers: V,MA,PYPL
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_short_term_coverage_ratio:
-  question: How many times could the operating cash flow of Exelon, American Electric Power and Dominion Energy cover their short-term debt from 2021 to 2025?
+  question: How many times could the operating cash flow of Apple and Tesla cover their short-term debt from 2021 to 2025?
   tool: liquidity
   arguments:
-    tickers: EXC,AEP,D
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_defensive_interval_ratio:
-  question: For how many days could Amgen, Gilead and Biogen have covered their operating expenses with their cash, short-term investments and receivables from 2021 to 2025?
+  question: For how many days could Apple and Tesla cover their operating expenses from their liquid assets over the last five years?
   tool: liquidity
   arguments:
-    tickers: AMGN,GILD,BIIB
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: number
+    tickers: AAPL,TSLA
 get_gross_margin:
-  question: How did the gross margins of LVMH, Hermès and Richemont develop from 2021 to 2025?
+  question: How did the gross margins of Apple and Tesla develop from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: MC.PA,RMS.PA,CFR.SW
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_operating_margin:
-  question: What were the operating margins of Booking Holdings, Expedia and Airbnb from 2021 to 2025?
+  question: What were the operating margins of Apple and Tesla from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: BKNG,EXPE,ABNB
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_net_profit_margin:
-  question: How much of each dollar of revenue did Eli Lilly, Novo Nordisk and AstraZeneca keep as net income from 2021 to 2025?
+  question: How much of each dollar of revenue did Apple and Tesla keep as net income from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: LLY,NVO,AZN
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_interest_burden_ratio:
-  question: How much of their operating income did Charter, T-Mobile and Disney keep after interest from 2021 to 2025?
+  question: How much of its operating income did Tesla keep after interest from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: CHTR,TMUS,DIS
+    tickers: TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_income_before_tax_profit_margin:
-  question: What were the pretax profit margins of Hershey, General Mills and Hormel Foods from 2021 to 2025?
+  question: What were the pretax profit margins of Apple and Tesla from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: HSY,GIS,HRL
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_effective_tax_rate:
-  question: What effective tax rates did Alphabet, Meta and Microsoft report from 2021 to 2025?
+  question: What effective tax rates did Apple and Tesla report from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: GOOGL,META,MSFT
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_return_on_assets:
-  question: What return on assets did Bank of America, Wells Fargo, Citigroup and U.S. Bancorp earn from 2021 to 2025?
+  question: What return on assets did Apple and Tesla earn from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: BAC,WFC,C,USB
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_return_on_equity:
-  question: How did the return on equity of JPMorgan Chase, Goldman Sachs and Morgan Stanley compare from 2021 to 2025?
+  question: How did the return on equity of Apple and Tesla compare from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: JPM,GS,MS
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_return_on_invested_capital:
-  question: What return on invested capital did Caterpillar, Deere and Cummins earn from 2021 to 2025, without deducting dividends from net income?
+  question: What return on invested capital did Apple and Tesla earn from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: CAT,DE,CMI
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    dividend_adjusted: false
-  chart:
-    format: percent
 get_income_quality_ratio:
-  question: How much operating cash flow did Netflix and Disney generate per dollar of net income from 2021 to 2025?
+  question: How much operating cash flow did Apple and Tesla generate per dollar of net income from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: NFLX,DIS
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_return_on_tangible_assets:
-  question: What return on tangible assets did Nucor, Steel Dynamics and Reliance earn from 2021 to 2025?
+  question: What return on tangible assets did Apple and Tesla earn from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: NUE,STLD,RS
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_return_on_capital_employed:
-  question: How did the return on capital employed of ExxonMobil, Chevron, Shell and BP compare from 2021 to 2025?
+  question: How did the return on capital employed of Apple and Tesla compare from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: XOM,CVX,SHEL,BP
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_net_income_per_ebt:
-  question: How much of their pretax earnings did SAP, Siemens and ASML keep as net income from 2021 to 2025?
+  question: How much of their pretax earnings did Apple and Tesla keep as net income from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: SAP.DE,SIE.DE,ASML.AS
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_free_cash_flow_operating_cash_flow_ratio:
-  question: How much of their operating cash flow did Amazon, Meta, Alphabet and Microsoft keep as free cash flow after capital expenditure from 2021 to 2025?
+  question: How much of their operating cash flow did Apple and Tesla keep as free cash flow after capital expenditure from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: AMZN,META,GOOGL,MSFT
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_tax_burden_ratio:
-  question: What share of their income before tax did Accenture, Oracle and Cisco retain after taxes from 2021 to 2025?
+  question: What share of their income before tax did Apple and Tesla retain after taxes from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: ACN,ORCL,CSCO
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_EBT_to_EBIT:
-  question: How much of their earnings before interest and taxes did Hilton, Marriott and Choice Hotels keep after interest expense from 2021 to 2025?
+  question: How much of their earnings before interest and taxes did Apple and Tesla keep after interest expense from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: HLT,MAR,CHH
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_EBIT_to_revenue:
-  question: What were the EBIT margins of Lockheed Martin, General Dynamics and Northrop Grumman from 2021 to 2025?
+  question: What were the EBIT margins of Apple and Tesla from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: LMT,GD,NOC
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_cash_tax_rate:
-  question: What share of their pretax income did Procter & Gamble, PepsiCo and Costco pay in cash taxes from 2021 to 2025?
+  question: What share of their pretax income did Apple and Tesla pay in cash taxes from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: PG,PEP,COST
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_tax_rate_divergence:
-  question: How far did the cash tax rates of Apple, Home Depot and Visa diverge from their effective tax rates from 2021 to 2025?
+  question: How far did the cash tax rates of Apple and Tesla diverge from their effective tax rates from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: AAPL,HD,V
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_ebitda_margin:
-  question: What were the EBITDA margins of Linde and Air Liquide from 2021 to 2025?
+  question: What were the EBITDA margins of Apple and Tesla over the last five years?
   tool: profitability
   arguments:
-    tickers: LIN,AI.PA
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
+    tickers: AAPL,TSLA
 get_free_cash_flow_margin:
-  question: How much of their revenue did Moody's, S&P Global and MSCI convert into free cash flow from 2021 to 2025?
+  question: How much of their revenue did Apple and Tesla convert into free cash flow over the last five years?
   tool: profitability
   arguments:
-    tickers: MCO,SPGI,MSCI
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
+    tickers: AAPL,TSLA
 get_cash_return_on_assets:
-  question: How much operating cash flow did UPS and FedEx generate per dollar of assets from 2021 to 2025?
+  question: How much operating cash flow did Apple and Tesla generate per dollar of assets over the last five years?
   tool: profitability
   arguments:
-    tickers: UPS,FDX
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: percent
+    tickers: AAPL,TSLA
 get_interest_coverage_ratio:
-  question: How many times could McCormick, Campbell's and Hershey cover their interest expense from 2021 to 2025?
+  question: How many times could Apple and Tesla cover their interest expense from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: MKC,CPB,HSY
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_debt_to_assets_ratio:
-  question: What share of their assets did NextEra Energy, Duke Energy and Southern Company finance with debt from 2021 to 2025?
+  question: What share of their assets did Apple and Tesla finance with debt from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: NEE,DUK,SO
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_debt_to_equity_ratio:
-  question: How much debt did Caterpillar, Deere and CNH Industrial carry per dollar of equity from 2021 to 2025?
+  question: How much debt did Apple and Tesla carry per dollar of equity from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: CAT,DE,CNH
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_equity_multiplier:
-  question: How large were the balance sheets of HSBC, BNP Paribas and Santander relative to their equity from 2021 to 2025?
+  question: How large were the balance sheets of Apple and Tesla relative to their equity from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: HSBA.L,BNP.PA,SAN.MC
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_debt_service_coverage_ratio:
-  question: How did the operating income of Waste Management, Republic Services and Waste Connections compare with their current liabilities from 2021 to 2025?
+  question: What were the debt service coverage ratios of Apple and Tesla from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: WM,RSG,WCN
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_free_cash_flow_yield:
-  question: What free cash flow yield did Altria, Philip Morris and British American Tobacco offer from 2021 to 2025?
+  question: What free cash flow yield did Apple and Tesla offer from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: MO,PM,BTI
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_net_debt_to_ebitda_ratio:
-  question: What was the net debt to EBITDA ratio of Verizon, T-Mobile and Charter from 2021 to 2025?
+  question: What was the net debt to EBITDA ratio of Apple and Tesla from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: VZ,TMUS,CHTR
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_cash_flow_coverage_ratio:
-  question: How much of their total debt could McDonald's, Starbucks and Yum! Brands cover with one year of operating cash flow from 2021 to 2025?
+  question: How much of their total debt could Apple and Tesla cover with one year of operating cash flow from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: MCD,SBUX,YUM
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_capex_coverage_ratio:
-  question: How many times did the operating cash flow of TSMC, Intel and Micron cover their capital expenditure from 2021 to 2025?
+  question: How many times did the operating cash flow of Apple and Tesla cover their capital expenditure from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: TSM,INTC,MU
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_capex_dividend_coverage_ratio:
-  question: Did the operating cash flow of ExxonMobil, Chevron and ConocoPhillips cover both their capital expenditure and their dividends from 2021 to 2025?
+  question: How well did the operating cash flow of Apple and Tesla cover both their capital expenditure and their dividends from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: XOM,CVX,COP
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_debt_to_capital_ratio:
-  question: What share of their capital did Bristol-Myers Squibb, Amgen and Gilead finance with debt from 2021 to 2025?
+  question: What share of their capital did Apple and Tesla finance with debt from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: BMY,AMGN,GILD
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_preferred_dividend_coverage_ratio:
-  question: How many times did the net income of PNC, U.S. Bancorp and Capital One cover their preferred dividends from 2021 to 2025?
+  question: How many times did the net income of Wells Fargo cover its preferred dividends from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: PNC,USB,COF
+    tickers: WFC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_interest_paid_to_expense_ratio:
-  question: How did the interest that Intel, Micron and Home Depot paid in cash compare with the interest expense they reported from 2021 to 2025?
+  question: How did the interest that Apple and Tesla paid in cash compare with the interest expense they reported from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: INTC,MU,HD
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: ratio
 get_asset_coverage_ratio:
-  question: How many times did the tangible assets of Kinder Morgan, Williams and ONEOK, net of their non-debt current liabilities, cover their debt from 2021 to 2025?
+  question: How many times did the tangible assets of Apple and Tesla, net of their non-debt current liabilities, cover their debt over the last five years?
   tool: solvency
   arguments:
-    tickers: KMI,WMB,OKE
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: ratio
+    tickers: AAPL,TSLA
 get_gross_debt_to_ebitda_ratio:
-  question: How did the total debt of Oracle, IBM and Broadcom compare with their EBITDA from 2021 to 2025?
+  question: How did the total debt of Apple and Tesla compare with their EBITDA over the last five years?
   tool: solvency
   arguments:
-    tickers: ORCL,IBM,AVGO
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: ratio
+    tickers: AAPL,TSLA
 get_earnings_per_share:
-  question: What were the diluted earnings per share of Visa, Mastercard and American Express from 2021 to 2025?
+  question: What were the diluted earnings per share of Apple and Tesla from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: V,MA,AXP
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_revenue_per_share:
-  question: How much revenue per share did McKesson, Cencora and Cardinal Health generate from 2021 to 2025?
+  question: How much revenue per share did Apple and Tesla generate from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: MCK,COR,CAH
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_price_to_earnings_ratio:
-  question: How did the price-to-earnings ratios of Costco, Walmart and Target compare from 2021 to 2025?
+  question: How did the price-to-earnings ratios of Apple and Tesla compare from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: COST,WMT,TGT
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: multiple
 get_price_to_earnings_growth_ratio:
-  question: What were the PEG ratios of Mastercard, ADP and Costco from 2021 to 2025?
+  question: What were the PEG ratios of Apple and Tesla from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: MA,ADP,COST
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: multiple
 get_forward_price_earnings_ratio:
-  question: At their current share prices, what forward price-to-earnings ratios do the analyst EPS estimates for 2026 to 2030 imply for Eli Lilly, Johnson & Johnson and AbbVie?
+  question: What forward P/E ratios do analyst EPS estimates imply for Apple and Microsoft at their share prices at the end of 2025?
   tool: valuation
   arguments:
-    tickers: LLY,JNJ,ABBV
-  chart:
-    format: multiple
-    values: ["2026", "2027", "2028", "2029", "2030"]
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
 get_forward_price_earnings_growth_ratio:
-  question: At their current share prices, what forward PEG ratios do the analyst EPS estimates for 2026 imply for Mastercard, American Express and JPMorgan Chase?
+  question: At their share prices at the end of 2025, what forward PEG ratios do the analyst EPS estimates for 2021 to 2031 imply for Apple and Microsoft?
   tool: valuation
   arguments:
-    tickers: MA,AXP,JPM
-  chart:
-    transpose: true
-    format: multiple
-    values: ["2026"]
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
 get_book_value_per_share:
-  question: How did the book value per share of Chubb, Travelers and Allstate develop from 2021 to 2025?
+  question: How did the book value per share of Apple and Tesla develop from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: CB,TRV,ALL
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_price_to_book_ratio:
-  question: At what price-to-book ratios did JPMorgan Chase, Bank of America, Citigroup and Wells Fargo trade from 2021 to 2025?
+  question: At what price-to-book ratios did Apple and Tesla trade from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: JPM,BAC,C,WFC
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: multiple
 get_interest_debt_per_share:
-  question: How much debt and interest expense per share did AT&T, Verizon and Comcast carry from 2021 to 2025?
+  question: How much debt and interest expense per share did Apple and Tesla carry from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: T,VZ,CMCSA
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_capex_per_share:
-  question: How much capital expenditure per share did Union Pacific, CSX and Norfolk Southern report from 2021 to 2025?
+  question: How much capital expenditure per share did Apple and Tesla report from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: UNP,CSX,NSC
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: price
 get_dividend_yield:
-  question: What dividend yields did Coca-Cola, PepsiCo and Johnson & Johnson offer from 2021 to 2025?
+  question: What dividend yields did Apple and Tesla offer from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: KO,PEP,JNJ
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_weighted_dividend_yield:
-  question: Based on the dividends paid in their cash flow statements, what dividend yields did Texas Instruments, Qualcomm and Analog Devices offer from 2021 to 2025?
+  question: Based on the dividends paid in their cash flow statements, what dividend yields did Apple and Tesla offer from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: TXN,QCOM,ADI
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_price_to_cash_flow_ratio:
-  question: At what multiple of operating cash flow did Shell, BP and TotalEnergies trade from 2021 to 2025?
+  question: At what multiple of operating cash flow did Apple and Tesla trade from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: SHEL,BP,TTE
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: multiple
 get_price_to_free_cash_flow_ratio:
-  question: At what multiple of free cash flow did Adobe, Salesforce and Intuit trade from 2021 to 2025?
+  question: At what multiple of free cash flow did Apple and Tesla trade from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: ADBE,CRM,INTU
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: multiple
 get_market_cap:
-  question: How did the market capitalization of Nvidia, Apple and Microsoft develop from 2021 to 2025?
+  question: How did the market capitalization of Apple and Tesla develop from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: NVDA,AAPL,MSFT
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: usd
 get_enterprise_value:
-  question: What were the enterprise values of Netflix, Disney and Warner Bros. Discovery from 2021 to 2025?
+  question: What were the enterprise values of Apple and Tesla from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: NFLX,DIS,WBD
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: usd
 get_ev_to_sales_ratio:
-  question: What EV-to-sales multiples did ServiceNow, Workday and Salesforce trade at from 2021 to 2025?
+  question: What EV-to-sales multiples did Apple and Tesla trade at from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: NOW,WDAY,CRM
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: multiple
 get_ev_to_ebitda_ratio:
-  question: What EV/EBITDA multiples did Thermo Fisher, Danaher and Agilent trade at from 2021 to 2025?
+  question: What EV/EBITDA multiples did Apple and Tesla trade at from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: TMO,DHR,A
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: multiple
 get_ev_to_operating_cashflow_ratio:
-  question: How did the enterprise values of UnitedHealth, Elevance Health and Cigna compare with their operating cash flow from 2021 to 2025?
+  question: How did the enterprise values of Apple and Tesla compare with their operating cash flow from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: UNH,ELV,CI
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: multiple
 get_earnings_yield:
-  question: What earnings yields did Ford, General Motors and Toyota offer from 2021 to 2025?
+  question: What earnings yields did Apple and Tesla offer from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: F,GM,TM
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_dividend_payout_ratio:
-  question: What share of their net income did Johnson & Johnson, McDonald's and Texas Instruments pay out as dividends from 2021 to 2025?
+  question: What share of their net income did Apple and Tesla pay out as dividends from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: JNJ,MCD,TXN
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_reinvestment_rate:
-  question: What share of their net income did Costco, Visa and Nike retain rather than pay out as dividends from 2021 to 2025?
+  question: What share of their net income did Apple and Tesla retain rather than pay out as dividends from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: COST,V,NKE
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_tangible_asset_value:
-  question: How much tangible asset value, net of liabilities and goodwill, did Pfizer, AbbVie and Merck have from 2021 to 2025?
+  question: How much tangible asset value, net of liabilities and goodwill, did Apple and Tesla have from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: PFE,ABBV,MRK
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: usd
 get_net_current_asset_value:
-  question: What was the net current asset value of Nvidia, Alphabet and Meta from 2021 to 2025?
+  question: What was the net current asset value of Apple and Tesla from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: NVDA,GOOGL,META
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: usd
 get_ev_to_ebit:
-  question: What were the EV-to-EBIT multiples of Sherwin-Williams, PPG and Ecolab from 2021 to 2025?
+  question: What were the EV-to-EBIT multiples of Apple and Tesla from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: SHW,PPG,ECL
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: multiple
 get_ev_to_free_cash_flow_ratio:
-  question: How did the enterprise values of Visa and Mastercard compare with their free cash flow from 2021 to 2025?
+  question: How did the enterprise values of Apple and Tesla compare with their free cash flow from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: V,MA
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: multiple
 get_buyback_yield:
-  question: How much of their market value did AutoZone, O'Reilly Automotive and Apple return through net share buybacks from 2021 to 2025?
+  question: How much of their market value did Apple and Tesla return through net share buybacks from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: AZO,ORLY,AAPL
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_shareholder_yield:
-  question: What shareholder yield, dividends plus net buybacks, did Home Depot and Lowe's offer from 2021 to 2025?
+  question: What shareholder yield, dividends plus net buybacks, did Apple and Tesla offer from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: HD,LOW
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: percent
 get_sbc_adjusted_free_cash_flow:
-  question: How much free cash flow did Salesforce, Adobe and ServiceNow generate after deducting stock-based compensation from 2021 to 2025?
+  question: How much free cash flow did Apple and Tesla generate after deducting stock-based compensation from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: CRM,ADBE,NOW
+    tickers: AAPL,TSLA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-  chart:
-    format: usd
 get_price_to_sales_ratio:
-  question: How did the price-to-sales ratios of Nvidia, AMD and Intel compare from 2021 to 2025?
+  question: How did the price-to-sales ratios of Apple and Tesla compare over the last five years?
   tool: valuation
   arguments:
-    tickers: NVDA,AMD,INTC
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-  chart:
-    format: multiple
+    tickers: AAPL,TSLA

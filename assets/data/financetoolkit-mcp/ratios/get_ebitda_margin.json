@@ -1,1 +1,0 @@
-{"charts":{"get_ebitda_margin":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AI.PA","data":[0.2649,0.2257,0.2555,0.2754,0.3023]},{"name":"LIN","data":[0.3221,0.3196,0.3628,0.3749,0.383]}],"format":"percent","title":"EBITDA Margin","period":false}}}

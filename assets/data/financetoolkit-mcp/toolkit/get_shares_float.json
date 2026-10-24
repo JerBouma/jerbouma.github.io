@@ -1,1 +1,0 @@
-{"charts":{"get_shares_float":{"type":"bar","x":["META","GOOGL","BRK-B"],"series":[{"name":"Free Float","data":[0.863739,0.893911,0.656007]}],"format":"percent","title":"Free Float","period":false}}}

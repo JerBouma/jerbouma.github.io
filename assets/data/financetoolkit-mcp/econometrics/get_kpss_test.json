@@ -1,1 +1,0 @@
-{"charts":{"get_kpss_test":{"type":"bar","x":["KPSS Statistic","Critical Value 5%"],"series":[{"name":"JPM","data":[4.7665,0.463]},{"name":"BAC","data":[2.3192,0.463]},{"name":"WFC","data":[4.565,0.463]}],"format":"ratio","title":"KPSS Statistic and 5% Critical Value","period":false}}}

@@ -1,1 +1,0 @@
-{"charts":{"get_coefficient_of_variation":{"type":"bar","x":["2023","2024","2025"],"series":[{"name":"MSFT","data":[8.0203,22.3965,21.9345]},{"name":"ORCL","data":[16.2298,9.8256,28.2432]},{"name":"IBM","data":[12.0942,10.3503,12.934]}],"format":"ratio","title":"Coefficient of Variation (CV)","period":false}}}

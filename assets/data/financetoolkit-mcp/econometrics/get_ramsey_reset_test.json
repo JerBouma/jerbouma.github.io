@@ -1,1 +1,0 @@
-{"charts":{"get_ramsey_reset_test":{"type":"table","columns":["Result","Value"],"rows":[["RESET F-Statistic",1.4847],["P-Value",0.2285],["Reject Correct Specification (5%)",0]],"title":"Ramsey RESET Test"}}}

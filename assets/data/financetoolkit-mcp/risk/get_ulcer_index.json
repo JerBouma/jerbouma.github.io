@@ -1,1 +1,0 @@
-{"charts":{"get_ulcer_index":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"BA","data":[0.0568,0.0924,0.0443,0.0616,0.0646]},{"name":"AIR.PA","data":[0.0418,0.0619,0.0294,0.0433,0.051]}],"format":"percent","title":"Ulcer Index (UI)","period":false}}}

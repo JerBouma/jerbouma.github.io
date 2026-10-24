@@ -1,1 +1,0 @@
-{"charts":{"get_capex_coverage_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"INTC","data":[1.449,0.6161,0.4455,0.3461,0.6621]},{"name":"MU","data":[1.2431,1.2581,0.2031,1.0144,1.1052]},{"name":"TSM","data":[1.3093,1.4781,1.2999,1.9102,1.7738]}],"format":"ratio","title":"CAPEX Coverage Ratio","period":false}}}

@@ -1,1 +1,0 @@
-{"charts":{"get_arch_lm_test":{"type":"bar","x":["TSLA","JNJ","COIN"],"series":[{"name":"P-Value","data":[0.256,0.0904,0.0]}],"format":"ratio","title":"ARCH-LM Test P-Value","period":false}}}

@@ -1,1 +1,0 @@
-{"charts":{"get_most_active_stocks":{"type":"bar","x":["GPUS","XXII","SHFS","NVD","LUCD","SPCX","T","SOXL","NU","NOK"],"series":[{"name":"Change %","data":[34.0476,-8.3449,-61.3882,0.96386,25.4196,1.8929,-7.9595,1.7659,2.9192,3.2995]}],"format":"number","title":"Change (%)","period":false}}}

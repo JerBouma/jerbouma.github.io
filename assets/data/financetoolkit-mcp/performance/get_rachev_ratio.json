@@ -1,1 +1,0 @@
-{"charts":{"get_rachev_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"TSLA","data":[1.2069,0.9469,1.1169,1.3081,1.0925]},{"name":"AMD","data":[1.1556,0.9396,1.3483,0.8908,1.4024]},{"name":"PLTR","data":[1.2789,0.9301,1.6236,2.0305,1.0683]}],"format":"ratio","title":"Rachev Ratio","period":false}}}

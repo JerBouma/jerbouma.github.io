@@ -1,1 +1,0 @@
-{"charts":{"get_durbin_watson_test":{"type":"table","columns":["Result","Value"],"rows":[["Durbin-Watson Statistic",1.8584],["Interpretation","No Strong Evidence"]],"title":"Durbin-Watson Test"}}}

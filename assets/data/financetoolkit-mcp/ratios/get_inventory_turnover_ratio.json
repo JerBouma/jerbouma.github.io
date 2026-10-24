@@ -1,1 +1,0 @@
-{"charts":{"get_inventory_turnover_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"HD","data":[5.1854,4.4565,4.4354,4.7811,4.458]},{"name":"LOW","data":[3.7987,3.5865,3.2481,3.2532,3.3076]},{"name":"TSCO","data":[4.1535,3.7678,3.4834,3.4585,3.4987]}],"format":"ratio","title":"Inventory Turnover Ratio","period":false}}}

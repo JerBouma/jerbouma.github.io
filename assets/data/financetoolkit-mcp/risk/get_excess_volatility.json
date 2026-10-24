@@ -1,1 +1,0 @@
-{"charts":{"get_excess_volatility":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ADBE","data":[0.2924,0.4506,0.3178,0.3663,0.3062]},{"name":"CRM","data":[0.282,0.4722,0.2958,0.3594,0.319]},{"name":"ORCL","data":[0.2927,0.3053,0.302,0.3226,0.6169]}],"format":"percent","title":"Excess Volatility","period":false}}}

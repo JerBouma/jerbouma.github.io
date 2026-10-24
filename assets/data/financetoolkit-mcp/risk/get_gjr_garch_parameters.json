@@ -1,1 +1,0 @@
-{"charts":{"get_gjr_garch_parameters":{"type":"bar","x":["Alpha","Gamma","Beta"],"series":[{"name":"JPM","data":[0.0,0.2531,0.5943]},{"name":"SCHW","data":[0.039,0.2974,0.6246]},{"name":"S&P 500","data":[0.0402,0.3272,0.6685]}],"format":"ratio","title":"GJR-GARCH Parameters","period":false}}}

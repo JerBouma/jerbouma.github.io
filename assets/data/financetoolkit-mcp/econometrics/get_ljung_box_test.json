@@ -1,1 +1,0 @@
-{"charts":{"get_ljung_box_test":{"type":"bar","x":["WMT","COST","TGT"],"series":[{"name":"P-Value","data":[0.2272,0.3586,0.2858]}],"format":"ratio","title":"Ljung-Box Test P-Value","period":false}}}

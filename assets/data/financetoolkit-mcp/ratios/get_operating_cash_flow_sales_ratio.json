@@ -1,1 +1,0 @@
-{"charts":{"get_operating_cash_flow_sales_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"MA","data":[0.5011,0.5034,0.4773,0.5247,0.5382]},{"name":"PYPL","data":[0.2285,0.2112,0.1627,0.2343,0.1934]},{"name":"V","data":[0.6317,0.6431,0.6356,0.5553,0.5765]}],"format":"ratio","title":"Operating Cash Flow Sales Ratio","period":false}}}

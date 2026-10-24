@@ -1,1 +1,0 @@
-{"charts":{"get_var_backtest":{"type":"bar","x":["Kupiec Statistic","P-Value"],"series":[{"name":"AMZN","data":[2.3413,0.126]},{"name":"KO","data":[0.075,0.7843]},{"name":"XOM","data":[0.0256,0.8729]}],"format":"ratio","title":"Value at Risk Backtest","period":false}}}

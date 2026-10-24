@@ -1,1 +1,0 @@
-{"charts":{"get_effective_tax_rate":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"GOOGL","data":[0.162,0.1592,0.1391,0.1644,0.1678]},{"name":"META","data":[0.1674,0.195,0.1756,0.1175,0.2964]},{"name":"MSFT","data":[0.1383,0.1311,0.1898,0.1823,0.1763]}],"format":"percent","title":"Effective Tax Rate","period":false}}}

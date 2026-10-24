@@ -1,1 +1,0 @@
-{"charts":{"get_downside_deviation":{"type":"bar","x":["NEE","DUK","SO"],"series":[{"name":"Downside Deviation","data":[0.0124,0.0074,0.0079]}],"format":"percent","title":"Downside Deviation","period":false}}}

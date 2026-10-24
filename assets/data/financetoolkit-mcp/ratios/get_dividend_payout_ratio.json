@@ -1,1 +1,0 @@
-{"charts":{"get_dividend_payout_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"JNJ","data":[0.5284,0.6511,0.3348,0.8405,0.4619]},{"name":"MCD","data":[0.5194,0.6747,0.5352,0.5922,0.5973]},{"name":"TXN","data":[0.5023,0.4933,0.7036,1.0042,1.0052]}],"format":"percent","title":"Dividend Payout Ratio","period":false}}}

@@ -1,1 +1,0 @@
-{"charts":{"get_asset_coverage_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"KMI","data":[1.9926,2.0029,2.0193,2.0582,2.1545]},{"name":"OKE","data":[1.5362,1.6077,1.8371,1.7765,1.8112]},{"name":"WMB","data":[1.5739,1.6223,1.6147,1.649,1.6245]}],"format":"ratio","title":"Asset Coverage Ratio","period":false}}}

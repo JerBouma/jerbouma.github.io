@@ -1,1 +1,0 @@
-{"charts":{"get_downside_capture_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"XLU","data":[0.3842,0.4655,0.6931,0.1969,0.3412]},{"name":"SPLV","data":[0.5339,0.4978,0.6156,0.311,0.3195]},{"name":"ARKK","data":[2.0094,2.4712,2.2991,2.5265,2.0692]}],"format":"ratio","title":"Downside Capture Ratio","period":false}}}

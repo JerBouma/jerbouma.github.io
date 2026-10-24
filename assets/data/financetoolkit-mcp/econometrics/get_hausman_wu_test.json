@@ -1,1 +1,0 @@
-{"charts":{"get_hausman_wu_test":{"type":"table","columns":["Result","Value"],"rows":[["V-Hat Coefficient",-0.4016],["T-Statistic",-2.3352],["Degrees of Freedom",246],["P-Value",0.0203],["Endogenous (5%)",1]],"title":"Hausman-Wu Test"}}}

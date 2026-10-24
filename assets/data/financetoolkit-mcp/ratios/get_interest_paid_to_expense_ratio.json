@@ -1,1 +1,0 @@
-{"charts":{"get_interest_paid_to_expense_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"HD","data":[0.9421,0.8961,0.931,0.9474,0.9971]},{"name":"INTC","data":[0.9129,0.9254,0.6982,1.1978,1.0137]},{"name":"MU","data":[0.9344,0.8148,0.8325,0.895,0.8763]}],"format":"ratio","title":"Interest Paid to Interest Expense Ratio","period":false}}}

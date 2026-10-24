@@ -1,1 +1,0 @@
-{"charts":{"get_beneish_m_score":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CMCSA","data":[-2.6609,-2.8625,-2.661,-2.6852,-2.734]},{"name":"DIS","data":[-2.5143,-2.5357,-2.6392,-2.6963,-2.595]},{"name":"NFLX","data":[-1.6697,-1.3345,-2.5628,-2.3319,-2.1611]}],"format":"ratio","title":"Beneish M-Score","period":false}}}

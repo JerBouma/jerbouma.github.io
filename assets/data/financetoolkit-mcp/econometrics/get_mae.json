@@ -1,1 +1,0 @@
-{"charts":{"get_mae":{"type":"bar","x":["IAU","GLDM"],"series":[{"name":"MAE","data":[0.0002,0.0003]}],"format":"percent","title":"Mean Absolute Error (MAE)","period":false}}}

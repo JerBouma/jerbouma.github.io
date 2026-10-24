@@ -1,1 +1,0 @@
-{"charts":{"get_variance":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"WMT","data":[0.0278,0.0714,0.0244,0.0313,0.063]},{"name":"TGT","data":[0.0559,0.2131,0.0965,0.1377,0.1166]},{"name":"COST","data":[0.0359,0.0984,0.0365,0.0355,0.0467]}],"format":"decimal","title":"Variance","period":false}}}

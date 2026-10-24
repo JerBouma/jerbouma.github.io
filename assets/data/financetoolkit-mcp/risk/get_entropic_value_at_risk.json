@@ -1,1 +1,0 @@
-{"charts":{"get_entropic_value_at_risk":{"type":"bar","x":["NVDA","AMD","INTC"],"series":[{"name":"Entropic Value at Risk","data":[-0.0747,-0.0904,-0.0954]}],"format":"percent","title":"Entropic Value at Risk (eVaR)","period":false}}}

@@ -1,1 +1,0 @@
-{"charts":{"get_treynor_mazuy_model":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ARKK","data":[12.4818,6.9512,-14.8849,-3.1566,-1.3437]},{"name":"JEPI","data":[-0.2577,-2.3992,-3.2955,-3.0056,0.0426]}],"format":"ratio","title":"Market Timing Coefficient (Gamma)","period":false}}}

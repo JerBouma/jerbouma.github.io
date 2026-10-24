@@ -1,1 +1,0 @@
-{"charts":{"get_stock_screener":{"type":"bar","x":["NVDA","AAPL","MSFT","AVGO","MU","AMD"],"series":[{"name":"Market Cap (USD)","data":[5084136000000.0,5074761240500.0,3894775230500.0,1535581254970.0,992877621000.0,843646776955.0]}],"format":"usd","title":"Market Capitalization","period":false}}}

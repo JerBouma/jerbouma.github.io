@@ -1,1 +1,0 @@
-{"charts":{"get_probit_regression":{"type":"coef","x":["Intercept","QQQ"],"coef":[-0.0848,78.1324],"low":[-0.263748,56.289376],"high":[0.094148,99.975424],"p":[0.3527,0.0],"format":"ratio","title":"Probit Regression","period":false}}}

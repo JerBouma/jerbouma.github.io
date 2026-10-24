@@ -1,1 +1,0 @@
-{"charts":{"get_hausman_test":{"type":"table","columns":["Result","Value"],"rows":[["Hausman Statistic",1.6066],["Degrees of Freedom",1],["P-Value",0.205],["Prefer Fixed Effects (5%)",0]],"title":"Hausman Test"}}}

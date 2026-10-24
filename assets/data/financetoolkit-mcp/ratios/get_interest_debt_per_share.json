@@ -1,1 +1,0 @@
-{"charts":{"get_interest_debt_per_share":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CMCSA","data":[22.411,23.449,27.3869,26.4143,31.5875]},{"name":"T","data":[26.9929,21.1965,22.2638,20.4981,25.1832]},{"name":"VZ","data":[43.7176,42.7957,42.8154,41.4912,48.9927]}],"format":"price","title":"Interest Debt per Share","period":false}}}

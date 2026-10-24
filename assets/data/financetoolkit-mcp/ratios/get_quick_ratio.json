@@ -1,1 +1,0 @@
-{"charts":{"get_quick_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"BA","data":[0.2303,0.2191,0.194,0.2978,0.2969]},{"name":"LMT","data":[0.3977,0.318,0.211,0.2489,0.3438]},{"name":"RTX","data":[0.4935,0.3919,0.3726,0.3214,0.3766]}],"format":"ratio","title":"Quick Ratio","period":false}}}

@@ -1,1 +1,0 @@
-{"charts":{"get_debt_to_equity_ratio":{"type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CAT","data":[2.288,2.3279,1.9422,1.9703,2.0326]},{"name":"CNH","data":[4.5462,3.3243,3.3897,3.4969,3.4548]},{"name":"DE","data":[2.6435,2.5643,2.9102,2.8555,2.4584]}],"format":"ratio","title":"Debt to Equity Ratio","period":false}}}
