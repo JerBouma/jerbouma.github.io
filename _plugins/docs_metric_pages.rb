@@ -242,21 +242,17 @@ module DocsMetricPages
   end
 
   # The function through the Finance Toolkit MCP: a question an analyst might
-  # ask, the tool call an assistant makes to answer it and the answer as a
-  # chart. The specs are in _data/financetoolkit_mcp/<module>.yml and the chart
+  # ask and the answer as a chart. The specs are in _data/financetoolkit_mcp/<module>.yml and the chart
   # data comes from _scripts/financetoolkit_mcp_examples.py.
   def mcp_section(site, name, key, fn_name)
     spec = site.data.dig("financetoolkit_mcp", key, fn_name)
     chart = "/assets/data/financetoolkit-mcp/#{key}/#{fn_name}.json"
     return "" unless spec && File.exist?(File.join(site.source, chart))
-    arguments = { "indicator" => fn_name }.merge(spec["arguments"] || {})
-    out = +"## #{name} with the Finance Toolkit MCP\n\n"
-    out << "Add the [Finance Toolkit MCP](/projects/financetoolkit/mcp) to Claude, ChatGPT or another AI assistant as a connector ([steps per client](/projects/financetoolkit/mcp#installation)); on first use it asks for your [FMP API key](/fmp){:target=\"_blank\"}. The connector URL is:\n{: .docs-boilerplate}\n\n"
+    out = +"## #{name} via the MCP\n\n"
+    out << "Add the [Finance Toolkit MCP](/projects/financetoolkit/mcp) to Claude, ChatGPT or another AI assistant via:\n{: .docs-boilerplate}\n\n"
     out << "```\nhttps://financetoolkit.jeroenbouma.com/mcp\n```\n\n"
     out << "Then ask in plain English, for example:\n{: .docs-boilerplate}\n\n"
     out << %(<div class="ca-q docs-mcp-question"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>#{CGI.escapeHTML(spec['question'].to_s.strip)}</p></div>\n\n)
-    out << "The assistant answers it with one call of the `#{spec['tool']}` tool:\n\n"
-    out << "```json\n#{JSON.pretty_generate(arguments)}\n```\n\n"
     answer = JSON.parse(File.read(File.join(site.source, chart)))["charts"].values.first
     if answer["type"] == "table"
       # text rather than numbers (a profile, a transcript): the answer as a table
