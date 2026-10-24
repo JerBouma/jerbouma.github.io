@@ -46,7 +46,7 @@ Thirty-nine regimes ship with the package: historical episodes such as Black Mon
 | `credit_crunch` | Bank stocks collapse and the market follows (needs the `broad` set) | Both |
 | `oil_crisis` | The 1973 embargo replayed: inflation to 12% in a year and 5.5% by year three, the bill to 9% and back, unemployment to 9%, US stocks down 43% and the world's markets following | Beliefs |
 | `oil_shock` | A rise of about three points in US inflation over the half year to year two, then business as usual | Beliefs |
-| `soft_landing` | Inflation's median eases to 2% by year five and stays there | Beliefs |
+| `soft_landing` | No recession after a Fed tightening, as in 1966, 1984 and 1995 ([Blinder 2023](https://doi.org/10.1257/jep.37.1.101){:target="_blank"}): unemployment holds at today's level for three years and short rates are cut 0.7 points within a year, then the policy rule takes over; inflation eases as in the baseline | Beliefs |
 | `rate_cut_cycle` | Short rates cut 5 points over two and a half years, the median of the Fed's six easing cycles from 1984 to 2020, then the policy rule again | Beliefs |
 | `yield_curve_inversion` | The curve inverts within six months, short yields about one and a half points above the ten-year, then slowly rights itself | Beliefs |
 | `real_estate_crash` | House-price growth falls to -8% within a year and back to zero over the four years after | Beliefs |
@@ -72,7 +72,7 @@ The search returns the best matches first:
 | persistent_inflation | Persistent High Inflation | inflation | US inflation climbs towards 6.6% and stays high instead of r… |
 | oil_crisis | Oil Crisis | inflation | US inflation climbs to 12% within a year and eases to 5.5% b… |
 | stagflation_1970s | 1970s Stagflation | inflation | Inflation climbs towards 9% and unemployment towards 7.3% wh… |
-| volcker_shock | Volcker Shock | rates | Short rates replay 1979-82's climb to 16% while inflation ri… |
+| volcker_shock | Volcker Shock | rates | Short rates rise about seven points from today's level, to n… |
 | inflation_shock_2022 | 2022 Inflation and Rate Hikes | inflation | Inflation climbs to 9% and falls back to 3% within a year, s… |
 
 ## Beliefs as a Path
@@ -171,7 +171,7 @@ Every run below uses the calibration of the [overview](/projects/financescenario
 
 ### Beliefs Only: A Soft Landing
 
-Soft Landing walks the median of US inflation in a straight line to 2% by year five and holds it there, and filters nothing out. To run it next to the baseline and compare the averages after five years:
+Soft Landing is a Federal Reserve tightening that ends without a recession, the way [Blinder (2023, p. 101)](https://doi.org/10.1257/jep.37.1.101){:target="_blank"} defines a soft landing: inflation held or brought down with no recession, or a negligible one. Of the Fed's eleven tightening cycles since 1965, his Table 1 (p. 119) finds three followed by no recession at all, after the peaks of November 1966, August 1984 and April 1995. Unemployment did not rise after any of them, and the 3-month bill was cut a little: by a median 0.70 points after one year, 0.49 after two and 0.70 after three. The regime replays those moves from today's levels: unemployment's median holds at its starting level for three years, the short rate's walks to the episodes' cuts, and after year three the policy rule takes over. Inflation and stocks are left to the model, and nothing is filtered out. To run it next to the baseline over its three years and compare the averages at the end:
 
 ```python
 from financescenarios import Scenarios, compare_runs
@@ -179,12 +179,14 @@ from financescenarios import Scenarios, compare_runs
 scenarios = Scenarios.from_profiles(
     settings="default", factor_set="default", api_key="FINANCIAL_MODELING_PREP_KEY"
 )
-result = scenarios.simulate(n_simulations=2000, seed=42)
-soft_landing = scenarios.simulate(regime="soft_landing", n_simulations=2000, seed=42)
+result = scenarios.simulate(n_simulations=2000, seed=42)  # the five-year run of the examples below
+
+baseline = scenarios.simulate(n_simulations=2000, seed=42, years=3)
+soft_landing = scenarios.simulate(regime="soft_landing", n_simulations=2000, seed=42, years=3)
 
 compare_runs(
-    {"baseline": result, "soft_landing": soft_landing},
-    factors=["united_states_inflation", "united_states_short_rate", "us_broad"],
+    {"baseline": baseline, "soft_landing": soft_landing},
+    factors=["united_states_inflation", "united_states_unemployment", "united_states_short_rate", "us_broad"],
 )
 ```
 
@@ -192,13 +194,14 @@ Which returns:
 
 | factor | baseline | soft_landing |
 |:-------|---------:|-------------:|
-| united_states_inflation | 0.0234 | 0.0253 |
-| united_states_short_rate | 0.0459 | 0.0510 |
-| us_broad | 0.0849 | 0.0822 |
+| united_states_inflation | 0.0243 | 0.0243 |
+| united_states_unemployment | 0.0508 | 0.0456 |
+| united_states_short_rate | 0.0453 | 0.0367 |
+| us_broad | 0.0874 | 0.0792 |
 
-The median lands on 2.00% after five years, but on this calibration the baseline's own median falls faster, to 1.81%, so the landing runs a little hotter than the baseline: inflation averages 2.53% after five years instead of 2.34%, and the short rate follows it through the policy rule, to 5.10% from 4.59%. A belief moves the center of the range rather than its width. When plotted:
+Inflation is the baseline's, 2.43% on average after three years. Unemployment's median stays at 4.20% to year three, against the baseline's 4.72%, which averages in the recessions this story leaves out, and unemployment averages 4.56% instead of 5.08%. The short rate's median is 3.38% after one year and after three, against 4.31% at both in the baseline, and it averages 3.67% instead of 4.53%. US stocks return 7.92% a year instead of 8.74%: expected stock returns are the short rate plus a premium, so lower rates give a smaller gain, not a crash. Run for five years, as in the chart, the policy rule is back in charge after year three and sets the rate above the baseline's, a median of 4.73% against 4.39% after five years, while unemployment is still lower, 4.82% against 5.15%. When plotted over five years, one variable per tab:
 
-{% include ft-chart.html id="regimes-soft-landing" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of US inflation in the baseline and under Soft Landing over five years" %}
+{% include ft-chart.html id="regimes-soft-landing" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of the US short rate and US unemployment in the baseline and under Soft Landing over five years" %}
 
 ### A Replay: The Financial Crisis
 
@@ -253,8 +256,9 @@ Oil Crisis puts the median of US inflation at 12.00% after one year and 5.50% af
 ## References
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-book"></i> <b>Papers cited on this page</b> <span class="ft-details__meta">4</span></summary>
+<summary><i class="fas fa-book"></i> <b>Papers cited on this page</b> <span class="ft-details__meta">5</span></summary>
 
+- Blinder, A.S. (2023). "Landings, Soft and Hard: The Federal Reserve, 1965-2022." Journal of Economic Perspectives, 37(1), 101-120. [doi.org](https://doi.org/10.1257/jep.37.1.101){:target="_blank"}
 - Boyle, P., Broadie, M., Glasserman, P. (1997). "Monte Carlo Methods for Security Pricing." Journal of Economic Dynamics and Control, 21(8-9), 1267-1321. [doi.org](https://doi.org/10.1016/S0165-1889(97)00028-6){:target="_blank"}
 - Brigo, D., Mercurio, F. (2001). "A Deterministic-Shift Extension of Analytically-Tractable and Time-Homogeneous Short-Rate Models." Finance and Stochastics, 5(3), 369-387. [doi.org](https://doi.org/10.1007/pl00013541){:target="_blank"}
 - Kupiec, P.H. (1998). "Stress Testing in a Value at Risk Framework." The Journal of Derivatives, 6(1), 7-24. [doi.org](https://doi.org/10.3905/jod.1998.408008){:target="_blank"}

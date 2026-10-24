@@ -132,19 +132,19 @@ A single crisis is an anecdote. Every year end from 2000 to 2022 serves as an or
 | Gold | 18 | 0.41 | 0.86 | ok | 0.65 | 0.38 |
 | Crude oil | 11 | 0.67 | 0.93 | ok | 0.46 | 0.33 |
 | US house prices | 23 | 0.38 | 0.63 | too narrow | 0.56 | 0.24 |
-| Yield-curve level | 23 | 0.58 | 0.90 | ok | 0.42 | 0.19 |
-| Yield-curve slope | 23 | 0.43 | 0.91 | ok | 0.56 | 0.44 |
+| Yield-curve level | 23 | 0.57 | 0.86 | ok | 0.42 | 0.23 |
+| Yield-curve slope | 23 | 0.32 | 0.75 | ok | 0.45 | 0.47 |
 | Yield-curve curvature | 23 | 0.49 | 0.84 | ok | 0.38 | 0.29 |
 | Leading indicator | 22 | 0.39 | 0.79 | too narrow | 0.51 | 0.30 |
 
-Every factor beats a no-change forecast on CRPS except UK unemployment, which ties it. Inflation and the US rates hold their bands best: US inflation and the US short rate keep 90% and 93% of their years inside the 90% band. Where the model falls short, the bands are too narrow, and clearly so for unemployment in all three economies (58% to 63%), the euro-area short rate (66%), US house prices (63%) and the leading indicator (79%). UK inflation's band holds only 67%, the cost of its 1993 sample, though the test, with its few independent outcomes, does not call it. The rates lean low: PIT means of 0.37 to 0.43 for five of the six rates say they ended below the scenarios' middle more often than above it, as they did through the long years near zero.
+Every factor beats a no-change forecast on CRPS except UK unemployment, which ties it. Inflation and the US rates hold their bands best: US inflation and the US short rate keep 90% and 93% of their years inside the 90% band. Where the model falls short, the bands are too narrow, and clearly so for unemployment in all three economies (58% to 63%), the euro-area short rate (66%), US house prices (63%) and the leading indicator (79%). The yield curve's slope holds 75%, which the test does not flag: drawn through the simulated short and long rate, it moves with their spread, which swings less than the slope did on its own process (91%), though it scores better ([Yield Curve](/projects/financescenarios/docs/interest-rates/yield-curve#through-the-short-and-the-long-rate)). UK inflation's band holds only 67%, the cost of its 1993 sample, though the test, with its few independent outcomes, does not call it. The rates lean low: PIT means of 0.37 to 0.43 for five of the six rates say they ended below the scenarios' middle more often than above it, as they did through the long years near zero.
 
 The model's choices were tested on the five origins four years apart (2003, 2007, 2011, 2015 and 2019). The other eighteen are a holdout, though four of them informed a later choice, so fourteen were never used for any choice. The scores barely move between these groups, a sign that the choices were not overfitted to the origins used to make them:
 
 | Origins | All 27 factors, 90% coverage | All 27 factors, CRPS skill | Six rates, 90% coverage | Six rates, CRPS skill |
 |:--|--:|--:|--:|--:|
-| The five used for choices | 0.81 | 0.31 | 0.78 | 0.29 |
-| The eighteen others | 0.83 | 0.29 | 0.82 | 0.27 |
+| The five used for choices | 0.80 | 0.31 | 0.78 | 0.29 |
+| The eighteen others | 0.82 | 0.29 | 0.82 | 0.27 |
 | The fourteen never used | 0.83 | 0.29 | 0.81 | 0.27 |
 
 ### Example

@@ -360,9 +360,9 @@
   items:
   - name: Nelson-Siegel dynamic curve
     status: available
-    summary: Describes the yield curve by three factors, its level, slope and curvature, and lets each drift back toward its own average over time (Diebold & Li, 2006). You get whole curves per path, not just single rates.
-    location: 'Factor set: the `yield_curve` section, `enabled: true`'
-    details: 'Diebold & Li (2006): per-date cross-sectional level/slope/curvature factors, each simulated as its own OU process.'
+    summary: Describes the yield curve by three factors, its level, slope and curvature. In the default factor set the curve passes through the simulated short rate (3 months) and long rate (10 years), so it moves with them and only the curvature drifts on its own (Rudebusch & Wu, 2008; Diebold, Rudebusch & Aruoba, 2006); otherwise each factor drifts back toward its own average over time (Diebold & Li, 2006). You get whole curves per path, not just single rates.
+    location: 'Factor set: the `yield_curve` section, `enabled: true`, `link_to_rates`'
+    details: 'Diebold & Li (2006): per-date cross-sectional level/slope/curvature factors. With `link_to_rates` (the default set) the level and slope are solved each period from the measurement equation at the two rates'' maturities (Diebold, Rudebusch & Aruoba 2006, eq. 2), so the curve equals `short_rate_name` and `long_rate_name` there, and only the curvature is its own OU process; a level or slope belief runs the curve unlinked. Without it each factor is its own OU process.'
     setup: In your factor set, switch on the `yield_curve` section. It adds three factors (`rate_level`, `rate_slope`, `rate_curvature`) from which every maturity is rebuilt.
     setup_lang: yaml
     setup_code: |-
@@ -371,6 +371,7 @@
         enabled: true
         period: daily    # the history it is fitted on
         decay: 0.7308    # Nelson-Siegel lambda, Diebold and Li's value (the default)
+        link_to_rates: true   # through the short and long rate; false keeps three processes of their own
   - name: Official 12-tenor Treasury par curve as the fit's cross-section
     status: available
     summary: Fits the curve to the official US Treasury curve with 12 maturities, from 1 month to 30 years, giving a much better short end than the default four market tickers. It falls back to those tickers if the download fails.

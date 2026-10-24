@@ -10,7 +10,7 @@ from common import NUMBERS, default_run, growth_of_100, runs_fan, tabs, write
 from financescenarios import compare_runs, list_presets, load_regime, search_regimes
 
 TITLES = {
-    "regimes-soft-landing": "US Inflation in the Baseline and under Soft Landing",
+    "regimes-soft-landing": "US Short Rate and Unemployment in the Baseline and under Soft Landing",
     "regimes-financial-crisis": "US Stocks, Unemployment and Short Rate under Financial Crisis",
     "regimes-inflation": "US Inflation under Oil Shock, Oil Crisis and 2022 Inflation and Rate Hikes",
     "regimes-fed": "US Unemployment, Stocks and Rates under the Fed's Severely Adverse Scenario",
@@ -33,12 +33,23 @@ print(search_regimes("high inflation").head(5))
 scenarios, calibration, result = default_run()
 print(load_regime("oil_crisis"))
 
+# the page compares three-year runs (the regime's own span); the chart shows five years, the rule back after year three
+SOFT = ["united_states_inflation", "united_states_unemployment", "united_states_short_rate", "us_broad"]
+baseline_3 = scenarios.simulate(n_simulations=2000, seed=42, years=3, calibration=calibration)
+soft_landing_3 = scenarios.simulate(regime="soft_landing", n_simulations=2000, seed=42, years=3, calibration=calibration)
+print(compare_runs({"baseline": baseline_3, "soft_landing": soft_landing_3}, factors=SOFT))
+for name, run in {"baseline": baseline_3, "soft_landing": soft_landing_3}.items():
+    print(name, run.horizon_summary([1, 2, 3], factors=SOFT).select("factor", "horizon", "q0.5", "mean"))
+del baseline_3, soft_landing_3
 soft_landing = scenarios.simulate(regime="soft_landing", n_simulations=2000, seed=42, calibration=calibration)
-print(compare_runs({"baseline": result, "soft_landing": soft_landing},
-                   factors=["united_states_inflation", "united_states_short_rate", "us_broad"]))
-print(soft_landing.horizon_summary([1, 3, 5], factors=["united_states_inflation"]))
-charts["regimes-soft-landing"] = runs_fan({"Baseline": result, "Soft Landing": soft_landing},
-                                          "united_states_inflation")
+for name, run in {"baseline": result, "soft_landing": soft_landing}.items():
+    print(name, run.horizon_summary([1, 2, 3, 5], factors=SOFT).select("factor", "horizon", "q0.05", "q0.5", "q0.95"))
+soft_runs = {"Baseline": result, "Soft Landing": soft_landing}
+charts["regimes-soft-landing"] = tabs({
+    "Short rate": runs_fan(soft_runs, "united_states_short_rate"),
+    "Unemployment": runs_fan(soft_runs, "united_states_unemployment"),
+})
+del soft_landing, soft_runs
 
 financial_crisis = scenarios.simulate(regime="financial_crisis", n_simulations=2000, seed=42, calibration=calibration)
 print(compare_runs({"baseline": result, "financial_crisis": financial_crisis},

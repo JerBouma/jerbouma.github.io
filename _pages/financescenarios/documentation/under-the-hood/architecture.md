@@ -66,12 +66,13 @@ A factor whose fit fails, for example because a short window shows no mean rever
 
 Fitted one by one, the factors would move independently, and a scenario could combine an equity crash with tightening credit spreads. Two mechanisms link them, following [Wilkie (1986)](https://doi.org/10.1017/S0071368600009009){:target="_blank"} and [Ahlgrim, D'Arcy and Gorvett (2005)](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}.
 
-**The economic cascade.** Where economic theory says one variable drives another, the driver's simulated path enters the other's equation directly. The default factor set uses the first eight links; the rest are options:
+**The economic cascade.** Where economic theory says one variable drives another, the driver's simulated path enters the other's equation directly. The default factor set uses the first nine links; the rest are options:
 
 | Driver | Follower | Link |
 |:-------|:---------|:-----|
 | Inflation and unemployment | Short rates | The policy rule ([Short Rate](/projects/financescenarios/docs/interest-rates)) |
 | The short rate | Long rates | The expected path plus a term premium ([Long Rate](/projects/financescenarios/docs/interest-rates/long-rate)) |
+| The short and long rate | The yield curve's level and slope | The curve drawn through both ([Yield Curve](/projects/financescenarios/docs/interest-rates/yield-curve)) |
 | The short rate and inflation | Equities | The short rate plus a premium, with turbulence likelier when inflation is high ([Equities](/projects/financescenarios/docs/markets)) |
 | Equities | US unemployment | A recession likelier after a stock-market fall ([Unemployment](/projects/financescenarios/docs/economy/unemployment)) |
 | Changes in inflation | Unemployment | The Phillips-curve term of Ahlgrim, D'Arcy and Gorvett |
@@ -85,7 +86,7 @@ Fitted one by one, the factors would move independently, and a scenario could co
 
 **The correlation matrix.** Everything else is linked through the correlation of the factors' random shocks, estimated from each factor's historical changes: changes in a rate, log returns of a price, and step-to-step changes for year-over-year rates and credit spreads, whatever form the factor is fitted in. Each pair uses the dates those two factors share, so a short series only weakens its own correlations. Because sample correlations between dozens of factors are noisy, they are shrunk toward zero by an amount chosen from the data ([Schäfer and Strimmer, 2005](https://doi.org/10.2202/1544-6115.1175){:target="_blank"}) and then repaired into a valid correlation matrix ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}); [Dependence](/projects/financescenarios/docs/dependence) has the details.
 
-Factors with no theoretical driver, such as the yield-curve factors, oil, credit spreads and mortality, are linked only through correlations. That follows their source papers: [Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"} specify the curve factors as their own system, and [Cairns, Blake and Dowd (2006)](https://doi.org/10.1111/j.1539-6975.2006.00195.x){:target="_blank"} model mortality improvement independently of markets.
+Factors with no theoretical driver, such as oil, credit spreads, mortality and the yield curve's curvature, are linked only through correlations. That follows their source papers: [Diebold and Li (2006)](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"} specify the curve factors as their own system, and [Cairns, Blake and Dowd (2006)](https://doi.org/10.1111/j.1539-6975.2006.00195.x){:target="_blank"} model mortality improvement independently of markets. The curve's level and slope do have a driver in the macro-finance literature, where the short rate is the level plus the slope [Rudebusch and Wu (2008)](https://doi.org/10.1111/j.1468-0297.2008.02155.x){:target="_blank"} and the federal funds rate and the curve's factors move as one system [Diebold, Rudebusch and Aruoba (2006)](https://doi.org/10.1016/j.jeconom.2005.01.011){:target="_blank"}, so the default factor set reads them off the simulated short and long rate.
 
 <div class="fs-callout" markdown="1">
 <p class="fs-callout__title">The tails</p>
@@ -147,13 +148,15 @@ result.describe()                                                            # s
 ## References
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">7</span></summary>
+<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">9</span></summary>
 
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the Casualty Actuarial Society, 92. [casact.org](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}
 - Cairns, A.J.G., Blake, D., Dowd, K. (2006). "A Two-Factor Model for Stochastic Mortality with Parameter Uncertainty: Theory and Calibration." Journal of Risk and Insurance, 73(4), 687-718. [doi.org](https://doi.org/10.1111/j.1539-6975.2006.00195.x){:target="_blank"}
 - Diebold, F.X., Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364. [doi.org](https://doi.org/10.1016/j.jeconom.2005.03.005){:target="_blank"}
+- Diebold, F.X., Rudebusch, G.D., Aruoba, S.B. (2006). "The Macroeconomy and the Yield Curve: A Dynamic Latent Factor Approach." Journal of Econometrics, 131(1-2), 309-338. [doi.org](https://doi.org/10.1016/j.jeconom.2005.01.011){:target="_blank"}
 - Hardy, M.R. (2001). "A Regime-Switching Model of Long-Term Stock Returns." North American Actuarial Journal, 5(2), 41-53. [doi.org](https://doi.org/10.1080/10920277.2001.10595984){:target="_blank"}
 - Higham, N.J. (2002). "Computing the Nearest Correlation Matrix: A Problem from Finance." IMA Journal of Numerical Analysis, 22(3), 329-343. [doi.org](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}
+- Rudebusch, G.D., Wu, T. (2008). "A Macro-Finance Model of the Term Structure, Monetary Policy and the Economy." The Economic Journal, 118(530), 906-926. [doi.org](https://doi.org/10.1111/j.1468-0297.2008.02155.x){:target="_blank"}
 - Schafer, J., Strimmer, K. (2005). "A Shrinkage Approach to Large-Scale Covariance Matrix Estimation and Implications for Functional Genomics." Statistical Applications in Genetics and Molecular Biology, 4(1). [doi.org](https://doi.org/10.2202/1544-6115.1175){:target="_blank"}
 - Wilkie, A.D. (1986). "A Stochastic Investment Model for Actuarial Use." Transactions of the Faculty of Actuaries, 39, 341-403. [doi.org](https://doi.org/10.1017/S0071368600009009){:target="_blank"}
 
