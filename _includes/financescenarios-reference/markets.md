@@ -62,8 +62,8 @@ returns, dividends and the compensation for the risk-free rate included. The def
 the providers' own: Barrie & Hibbert's results use a one-month step in Hibbert, Mowbray and Turnbull (2001, section
 5.2.1), and Ahlgrim, D'Arcy and Gorvett (2005, section 3) fit monthly excess returns.
 
-The `equities[i]` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `equities[i]` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 Beliefs cannot be combined with `measure: risk_neutral` or `wilkie_derived`; in a regime YAML, address one entry as
 `"equities.<name>"`.
@@ -850,8 +850,8 @@ end-of-period series, so there the volatility is scaled up by Working's factor i
 fits the averages as they are. Use `EA20` for the euro area, as `Germany` has no exchange rate of its own there.
 Volatility is always historical, as there is no FX options data.
 
-The `fx[i]` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `fx[i]` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 `beliefs.drift` cannot be combined with `drift_mode: irp` or `ppp`, and no belief with `measure: risk_neutral`, which
 also takes no `ppp`. In a regime YAML, address one entry with a dotted `"fx.<name>"` key.
@@ -1143,8 +1143,8 @@ Data: the "Adj Close" of any commodity or futures ticker in the `Toolkit` (Yahoo
 `CL=F` (WTI crude oil) or `GC=F` (gold). The two-factor model also reads today's futures curve, available for crude
 oil, natural gas, gold, silver, copper, corn, wheat and soybeans.
 
-The `commodities[i]` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `commodities[i]` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 A belief's `long_run_mean` is a log price: for 70 USD, set `log(70)`, about 4.25.
 
@@ -1564,8 +1564,8 @@ Two data sources (`source`), both through the Finance Toolkit and both as year-o
 
 Neither is the appraisal-based NCREIF index the paper was calibrated on, which has no open equivalent.
 
-The `real_estate` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `real_estate` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 **References:**
 
@@ -1957,8 +1957,8 @@ Data: the dividends paid over the trailing `window` trading days divided by the 
 Finance Toolkit. A ticker that pays no dividends raises an error. Use Yahoo Finance (no API key): the Financial
 Modeling Prep Free plan returns only the last five payments, too few for a trailing-year yield.
 
-The `dividend_yield[i]` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `dividend_yield[i]` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 A belief's `long_run_mean` is a log yield: a 2% target is `log(0.02)`, about -3.9.
 
@@ -2208,8 +2208,8 @@ Data: the Finance Toolkit has no dividend index series, so the `Dividends` paid 
 days are summed, the numerator `DividendYield` divides by the price. An entry runs at its paired inflation entry's
 period, and the paired dividend yield must use the plain fit (no `garch` or business-cycle option).
 
-The `dividend_growth[i]` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `dividend_growth[i]` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 **References:**
 
@@ -2423,8 +2423,8 @@ The data come through the Finance Toolkit, chosen with `dimension`:
 Set `toolkit.start_date` back for the longer histories. For ratings that move and default see `CreditMigration`,
 for a whole spread curve `CreditTermStructure`.
 
-The `credit[i]` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `credit[i]` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 A belief about the normal level of a log-fitted spread is a log too: a 2% target is `log(0.02)`, about `-3.9`.
 
@@ -2634,8 +2634,8 @@ Two data sources are available through `source`:
 
 Like `yield_curve`, it is fitted to history, with no guarantee against arbitrage between maturities.
 
-The `credit_term_structure` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `credit_term_structure` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 **References:**
 
@@ -2835,8 +2835,8 @@ simulated matrix averages back to the through-the-cycle one.
 It does not derive spreads from the ratings (use `credit` for spreads by rating), recovery rates are a fixed input of
 `rating_migration`, and the cycle is one index for all sectors and regions.
 
-The `credit_migration` keys of a factor set and their defaults are listed on the reference page
-[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/reference/configuration-classes).
+The `credit_migration` keys of a factor set and their defaults are listed under
+[Configuration Classes](https://www.jeroenbouma.com/projects/financescenarios/docs/configuration#configuration-classes).
 
 **References:**
 
