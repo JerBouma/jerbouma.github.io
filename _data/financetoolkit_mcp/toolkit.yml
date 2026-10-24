@@ -6,6 +6,7 @@ get_profile:
     show_columns: Company Name,Industry,Exchange,Currency,ISIN,Beta
   chart:
     type: table
+    rename: {metric: ""}
 get_quote:
   question: Where do the share prices of Visa, Mastercard and American Express currently stand against their 52-week highs and lows?
   tool: market_data
@@ -13,6 +14,7 @@ get_quote:
     tickers: V,MA,AXP
     show_columns: Price,Year High,Year Low
   chart:
+    transpose: true
     format: price
     title: Price, Year High and Year Low
 get_rating:
@@ -28,7 +30,7 @@ get_rating:
     format: amount
     title: Rating Scores
 get_analyst_estimates:
-  question: What revenue do analysts expect for Nvidia, AMD and Broadcom in 2026, 2027 and 2028?
+  question: What revenue do analysts expect for Nvidia, AMD and Broadcom in fiscal 2026, 2027 and 2028?
   tool: market_data
   arguments:
     tickers: NVDA,AMD,AVGO
@@ -88,6 +90,7 @@ get_stock_splits:
   chart:
     type: table
     values: [ticker, Date, Numerator, Denominator]
+    rename: {ticker: Ticker}
 get_mergers_acquisitions:
   question: Which mergers and acquisitions did Chevron take part in from 2021 to 2025, according to its merger filings with the SEC?
   tool: market_data
@@ -119,7 +122,7 @@ get_revenue_product_segmentation:
     format: usd
     stack: true
 get_esg_scores:
-  question: How did the ESG scores of Exxon Mobil, Shell and BP develop from 2021 to 2025?
+  question: How did the ESG scores of ExxonMobil, Shell and BP develop from 2021 to 2025?
   tool: environment
   arguments:
     tickers: XOM,SHEL,BP
@@ -148,7 +151,7 @@ get_company_notes:
     type: table
     values: [Title, Exchange]
 get_executives:
-  question: Who are JPMorgan's key executives?
+  question: Who are JPMorgan Chase's key executives?
   tool: market_data
   arguments:
     tickers: JPM
@@ -157,7 +160,7 @@ get_executives:
     type: table
     values: [Name, Title, Year Born]
 get_executive_compensation:
-  question: How was the 2025 pay of JPMorgan's named executive officers split between salary and incentive compensation?
+  question: How was the 2025 pay of JPMorgan Chase's named executive officers split between salary and incentive compensation?
   tool: market_data
   arguments:
     tickers: JPM
@@ -167,11 +170,17 @@ get_executive_compensation:
   chart:
     x: Name and Position
     values: [Salary, Incentive Plan Compensation]
+    rename:
+      "Douglas Petno Co-CEO, Commercial & Investment Bank": Douglas Petno
+      James Dimon Chairman and CEO: James Dimon
+      Jeremy Barnum CFO: Jeremy Barnum
+      "Mary Callahan Erdoes CEO, Asset & Wealth Management": Mary Callahan Erdoes
+      "Troy Rohrbaugh Co-CEO, Commercial & Investment Bank": Troy Rohrbaugh
     stack: true
     format: usd
     title: Executive Compensation
 get_insider_trade_statistics:
-  question: How many insider transactions acquired and disposed of Meta shares in each quarter of 2024 and 2025?
+  question: How many insider acquisitions and disposals of Meta shares were reported in each quarter of 2024 and 2025?
   tool: market_data
   arguments:
     tickers: META
@@ -234,6 +243,7 @@ get_statistics_statement:
   chart:
     type: table
     values: [ticker, "2021", "2022", "2023", "2024", "2025"]
+    rename: {ticker: Ticker}
 get_historical_data:
   question: How did the share prices of Caterpillar, Deere and United Rentals move in 2025?
   tool: market_data
@@ -244,7 +254,7 @@ get_historical_data:
     show_columns: Close
   chart:
     format: price
-    title: Close
+    title: Closing Price
 get_intraday_data:
   question: How did Nvidia's share price move hour by hour from 29 to 31 December 2025?
   tool: market_data
@@ -267,15 +277,17 @@ get_historical_statistics:
     type: table
     keep:
       metric: [Currency, Exchange Name, Instrument Type, First Trade Date, Exchange Timezone Name]
+    rename: {metric: ""}
 get_treasury_data:
-  question: How did US Treasury yields from three months to thirty years move week by week in 2025?
+  question: How did US Treasury yields from three months to thirty years move month by month in 2025?
   tool: market_data
   arguments:
-    period: weekly
+    period: monthly
     start_date: "2025-01-01"
     end_date: "2025-12-31"
     show_columns: Close
   chart:
+    type: line
     format: percent
     title: Treasury Yields
 get_market_risk_premium:
@@ -307,6 +319,7 @@ get_etf_information:
     show_columns: Name,ETF Company,Inception Date,Expense Ratio,Holdings Count
   chart:
     type: table
+    rename: {metric: ""}
 get_etf_holdings:
   question: What are the ten largest holdings of the Invesco QQQ Trust and their current weights?
   tool: market_data
@@ -317,7 +330,7 @@ get_etf_holdings:
     x: Asset
     values: [Weight]
     format: percent
-    title: Weight
+    title: Holding Weight
 get_etf_country_weightings:
   question: Which ten countries currently weigh most in the Vanguard FTSE Developed Markets ETF (VEA)?
   tool: market_data

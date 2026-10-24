@@ -128,17 +128,23 @@ def special_chart(frame: pd.DataFrame, options: dict, title: str) -> dict:
                 value = number(value)
                 # a flag or a count reads as 1 or 250, not 1.0 or 250.0
                 return int(value) if value is not None and value.is_integer() and abs(value) < 1e15 else value
-            if value is None or (not isinstance(value, (list, dict)) and pd.isna(value)):
+            if value is None or (not isinstance(value, (list, dict)) and pd.isna(value)) or value in ("None", "nan", "NaN"):
                 return ""
             # long text (a transcript) is cut, so the page shows how the answer starts
             return value if not isinstance(value, str) or len(value) <= limit else value[:limit].rsplit(" ", 1)[0] + " ..."
 
         rows = [[cell(v) for v in row] for row in frame[columns].itertuples(index=False)]
+        rows = [row for row in rows if row[0] != ""]  # a row without its name says nothing
+        rows = [row for i, row in enumerate(rows) if row not in rows[:i]]  # nor does the same row twice
         names = options.get("rename") or {}
         return {"type": "table", "columns": [str(names.get(c, c)) for c in columns], "rows": rows,
                 "title": options.get("title") or title}
     else:
         raise ValueError(f"unknown chart type {kind}")
+    names = options.get("rename") or {}
+    for key in ("x", "y"):
+        if key in chart:
+            chart[key] = [names.get(v, v) for v in chart[key]]
     chart.update({"format": options.get("format", "ratio"), "title": options.get("title") or title, "period": False})
     return chart
 

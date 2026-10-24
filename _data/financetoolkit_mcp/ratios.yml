@@ -206,10 +206,10 @@ get_working_capital:
   chart:
     format: usd
 get_operating_cash_flow_ratio:
-  question: How well did the operating cash flow of UnitedHealth, Elevance Health and Cigna cover their current liabilities from 2021 to 2025?
+  question: How well did the operating cash flow of UnitedHealth, CVS Health and Cigna cover their current liabilities from 2021 to 2025?
   tool: liquidity
   arguments:
-    tickers: UNH,ELV,CI
+    tickers: UNH,CVS,CI
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
@@ -276,7 +276,7 @@ get_interest_burden_ratio:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
-    format: ratio
+    format: percent
 get_income_before_tax_profit_margin:
   question: What were the pretax profit margins of Hershey, General Mills and Hormel Foods from 2021 to 2025?
   tool: profitability
@@ -369,10 +369,10 @@ get_free_cash_flow_operating_cash_flow_ratio:
   chart:
     format: percent
 get_tax_burden_ratio:
-  question: What share of their income before tax did Accenture, IBM and Cisco retain after taxes from 2021 to 2025?
+  question: What share of their income before tax did Accenture, Oracle and Cisco retain after taxes from 2021 to 2025?
   tool: profitability
   arguments:
-    tickers: ACN,IBM,CSCO
+    tickers: ACN,ORCL,CSCO
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
@@ -385,7 +385,7 @@ get_EBT_to_EBIT:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
-    format: ratio
+    format: percent
 get_EBIT_to_revenue:
   question: What were the EBIT margins of Lockheed Martin, General Dynamics and Northrop Grumman from 2021 to 2025?
   tool: profitability
@@ -531,10 +531,10 @@ get_capex_dividend_coverage_ratio:
   chart:
     format: ratio
 get_debt_to_capital_ratio:
-  question: What share of their capital did AbbVie, Amgen and Gilead finance with debt from 2021 to 2025?
+  question: What share of their capital did Bristol-Myers Squibb, Amgen and Gilead finance with debt from 2021 to 2025?
   tool: solvency
   arguments:
-    tickers: ABBV,AMGN,GILD
+    tickers: BMY,AMGN,GILD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:

@@ -27,7 +27,7 @@ get_enterprise_value_breakdown:
     format: usd
     keep: {metric: [Market Capitalization, Total Debt, Cash and Cash Equivalents, Enterprise Value]}
 get_weighted_average_cost_of_capital:
-  question: What was the weighted average cost of capital of Verizon, AT&T and T-Mobile US from 2023 to 2025?
+  question: What was the weighted average cost of capital of Verizon, AT&T and T-Mobile from 2023 to 2025?
   tool: models
   arguments:
     tickers: VZ,T,TMUS

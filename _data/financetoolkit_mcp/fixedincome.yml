@@ -10,7 +10,7 @@ get_present_value:
     format: price
     x: Coupon Rate
     xname: Coupon rate
-    rename: {"Years to Maturity 2": 2 years, "Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 30": 30 years}
+    rename: {"Years to Maturity 2": 2 years, "Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 30": 30 years, "0.02": 2%, "0.03": 3%, "0.04": 4%, "0.045": 4.5%, "0.05": 5%, "0.06": 6%, "0.07": 7%}
 get_duration:
   question: What is the modified duration of 2, 5, 10 and 30-year bonds with annual coupons from 0% to 8% at a 4.5% yield?
   tool: fixed_income
@@ -21,9 +21,10 @@ get_duration:
     yield_to_maturity: 0.045
   chart:
     format: ratio
+    title: Modified Duration
     x: Coupon Rate
     xname: Coupon rate
-    rename: {"Years to Maturity 2": 2 years, "Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 30": 30 years}
+    rename: {"Years to Maturity 2": 2 years, "Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 30": 30 years, "0.0": 0%, "0.02": 2%, "0.04": 4%, "0.06": 6%, "0.08": 8%}
 get_yield_to_maturity:
   question: What yield to maturity does a bond with a 4% annual coupon offer at prices from 90 to 110, for maturities of 2, 5, 10 and 30 years?
   tool: fixed_income
@@ -35,6 +36,7 @@ get_yield_to_maturity:
     format: percent
     x: Bond Price
     xname: Bond price
+    xdigits: 0
     rename: {"Years to Maturity 2": 2 years, "Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 30": 30 years}
 get_par_yield:
   question: What par yields does the Bank of England's nominal spot curve of 31 December 2025 imply for gilts of 1 to 30 years, with semi-annual coupons?
@@ -47,6 +49,7 @@ get_par_yield:
     format: percent
     x: Years to Maturity
     xname: Years to maturity
+    xdigits: 0
 get_forward_rate:
   question: Using EIOPA's euro risk-free spot curve for December 2025, which forward rates are implied from 1, 2, 5 and 10 years ahead out to 20 and 30 years?
   tool: fixed_income
@@ -57,6 +60,7 @@ get_forward_rate:
   chart:
     format: percent
     x: Near Maturity
+    xdigits: 0
     xname: Start of the forward period (years ahead)
     rename: {"Far Maturity 20": To year 20, "Far Maturity 30": To year 30}
 get_key_rate_duration:
@@ -70,6 +74,7 @@ get_key_rate_duration:
     format: ratio
     x: Years to Maturity
     xname: Bond maturity (years)
+    xdigits: 0
     rename: {"Key Rate Maturity 1": 1-year rate, "Key Rate Maturity 2": 2-year rate, "Key Rate Maturity 5": 5-year rate, "Key Rate Maturity 10": 10-year rate, "Key Rate Maturity 20": 20-year rate, "Key Rate Maturity 30": 30-year rate}
 get_yield_curve_spread:
   question: How steep was the US Treasury curve on 31 December 2025, measured by the spreads of the 5, 10, 20 and 30-year yields over the 3-month and 2-year yields?
@@ -81,6 +86,7 @@ get_yield_curve_spread:
   chart:
     format: percent
     x: Long Maturity
+    xdigits: 0
     xname: Long maturity (years)
     rename: {"Short Maturity 0.25": Over the 3-month yield, "Short Maturity 2": Over the 2-year yield}
 get_z_spread:
@@ -95,6 +101,7 @@ get_z_spread:
     format: percent
     x: Bond Price
     xname: Bond price
+    xdigits: 0
     rename: {"Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 20": 20 years}
 get_breakeven_inflation_rate:
   question: What inflation rate did US Treasury and TIPS yields on 31 December 2025 price in over the next 5, 7, 10, 20 and 30 years?
@@ -107,6 +114,7 @@ get_breakeven_inflation_rate:
     format: percent
     x: Maturity
     xname: Maturity (years)
+    xdigits: 0
 get_bond_equivalent_yield:
   question: What bond-equivalent yield do Treasury bills of 4, 13, 26 and 52 weeks offer at discount yields from 2% to 6%?
   tool: fixed_income
@@ -118,7 +126,7 @@ get_bond_equivalent_yield:
     format: percent
     x: Discount Yield
     xname: Discount yield
-    rename: {"Days to Maturity 28": 4 weeks, "Days to Maturity 91": 13 weeks, "Days to Maturity 182": 26 weeks, "Days to Maturity 364": 52 weeks}
+    rename: {"Days to Maturity 28": 4 weeks, "Days to Maturity 91": 13 weeks, "Days to Maturity 182": 26 weeks, "Days to Maturity 364": 52 weeks, "0.02": 2%, "0.025": 2.5%, "0.03": 3%, "0.035": 3.5%, "0.04": 4%, "0.045": 4.5%, "0.05": 5%, "0.055": 5.5%, "0.06": 6%}
 get_taylor_price_change:
   question: If yields rise by 100 basis points from 4.5%, how much would bonds with 2%, 4% and 6% annual coupons lose for maturities of 2, 5, 10 and 30 years, estimated with duration and convexity?
   tool: fixed_income
@@ -131,7 +139,7 @@ get_taylor_price_change:
     format: percent
     x: Coupon Rate
     xname: Coupon rate
-    rename: {"Years to Maturity 2": 2 years, "Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 30": 30 years}
+    rename: {"Years to Maturity 2": 2 years, "Years to Maturity 5": 5 years, "Years to Maturity 10": 10 years, "Years to Maturity 30": 30 years, "0.02": 2%, "0.04": 4%, "0.06": 6%}
 
 # Derivative valuations
 get_derivative_price:
@@ -150,7 +158,7 @@ get_derivative_price:
     format: amount
     x: Strike Rate
     xname: Strike rate
-    rename: {"2026-12-31": 1-year expiry, "2027-12-31": 2-year expiry, "2030-12-30": 5-year expiry}
+    rename: {"2026-12-31": 1-year expiry, "2027-12-31": 2-year expiry, "2030-12-30": 5-year expiry, "0.03": 3%, "0.0325": 3.25%, "0.035": 3.5%, "0.0375": 3.75%, "0.04": 4%, "0.0425": 4.25%, "0.045": 4.5%}
 
 # Government bonds
 get_government_bond_yield:
@@ -174,16 +182,21 @@ get_treasury_rates:
   chart:
     format: percent
 get_government_bond_yield_curve:
-  question: How did 10-year government bond yields in the United States, Germany, the United Kingdom and Japan move from 2015 to 2025?
+  question: What did the government bond yield curves of the United States, Germany and Japan look like in December 2025, from 1 to 30 years?
   tool: rates
   arguments:
-    countries: United States,Germany,United Kingdom,Japan
+    countries: United States,Germany,Japan
     period: monthly
-    start_date: "2015-01-01"
+    start_date: "2025-12-01"
     end_date: "2025-12-31"
-    show_columns: 10Y
+    show_columns: 1Y,2Y,3Y,5Y,7Y,10Y,20Y,30Y
   chart:
+    type: line
     format: percent
+    x: Country
+    values: [1Y, 2Y, 3Y, 5Y, 7Y, 10Y, 20Y, 30Y]
+    transpose: true
+    xname: Maturity
 get_bank_of_england_yield_curve:
   question: How did the Bank of England's nominal zero-coupon gilt yields at 2, 5, 10 and 30 years move through 2025?
   tool: rates

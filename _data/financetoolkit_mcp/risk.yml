@@ -155,7 +155,7 @@ get_variance:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
-    format: ratio
+    format: decimal
 get_volatility:
   question: What was the annualized volatility of Pfizer, Merck and Eli Lilly in each year from 2021 to 2025?
   tool: risk
@@ -184,7 +184,7 @@ get_downside_deviation:
   chart:
     format: percent
 get_ewma_volatility:
-  question: How did the EWMA (RiskMetrics) volatility of UnitedHealth and CVS Health evolve through 2025?
+  question: How did the daily EWMA (RiskMetrics) volatility of UnitedHealth and CVS Health evolve through 2025?
   tool: risk
   arguments:
     tickers: UNH,CVS
@@ -286,7 +286,7 @@ get_kurtosis:
   chart:
     format: ratio
 get_mean_absolute_deviation:
-  question: What was the mean absolute deviation of the returns of Coca-Cola, PepsiCo and Mondelez in each year from 2021 to 2025?
+  question: What was the mean absolute deviation of the daily returns of Coca-Cola, PepsiCo and Mondelez in each year from 2021 to 2025?
   tool: risk
   arguments:
     tickers: KO,PEP,MDLZ

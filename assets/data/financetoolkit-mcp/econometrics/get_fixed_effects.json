@@ -1,1 +1,1 @@
-{"charts":{"get_fixed_effects":{"type":"coef","x":["Benchmark"],"coef":[0.5795],"low":[0.543632],"high":[0.615368],"p":[0.0],"format":"ratio","title":"Fixed Effects","period":false}}}
+{"charts":{"get_fixed_effects":{"type":"coef","x":["S&P 500"],"coef":[0.5795],"low":[0.543632],"high":[0.615368],"p":[0.0],"format":"ratio","title":"Fixed Effects","period":false}}}

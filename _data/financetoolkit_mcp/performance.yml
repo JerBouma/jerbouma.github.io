@@ -1,5 +1,5 @@
 get_beta:
-  question: How did the beta of Nvidia, Tesla and JPMorgan against the S&P 500 change each year from 2021 to 2025?
+  question: How did the beta of Nvidia, Tesla and JPMorgan Chase against the S&P 500 change each year from 2021 to 2025?
   tool: performance
   arguments:
     tickers: NVDA,TSLA,JPM
@@ -8,7 +8,7 @@ get_beta:
   chart:
     format: ratio
 get_capital_asset_pricing_model:
-  question: What return did the CAPM require of JPMorgan, Goldman Sachs and Morgan Stanley in each year from 2021 to 2025?
+  question: What return did the CAPM require of JPMorgan Chase, Goldman Sachs and Morgan Stanley in each year from 2021 to 2025?
   tool: performance
   arguments:
     tickers: JPM,GS,MS
@@ -29,7 +29,7 @@ get_fama_and_french_model:
     values: [Mkt-RF Slope, SMB Slope, HML Slope, RMW Slope, CMA Slope]
     title: Fama and French Factor Loadings
 get_carhart_four_factor_model:
-  question: What were the Carhart four-factor loadings of Exxon Mobil, Home Depot and Adobe in 2025?
+  question: What were the Carhart four-factor loadings of ExxonMobil, Home Depot and Adobe in 2025?
   tool: performance
   arguments:
     tickers: XOM,HD,ADBE
@@ -84,7 +84,7 @@ get_jensens_alpha:
   chart:
     format: percent
 get_treynor_mazuy_model:
-  question: What was the market timing coefficient (gamma) of the ARK Innovation ETF and the JPMorgan Equity Premium Income ETF in the Treynor-Mazuy model in each year from 2021 to 2025?
+  question: What was the market timing coefficient (gamma) of the ARK Innovation ETF and the JPMorgan Chase Equity Premium Income ETF in the Treynor-Mazuy model in each year from 2021 to 2025?
   tool: performance
   arguments:
     tickers: ARKK,JEPI
@@ -115,7 +115,7 @@ get_fama_decomposition:
   chart:
     format: percent
 get_sharpe_ratio:
-  question: What was the annualized Sharpe ratio of Exxon Mobil, Chevron and ConocoPhillips in each year from 2021 to 2025?
+  question: What was the annualized Sharpe ratio of ExxonMobil, Chevron and ConocoPhillips in each year from 2021 to 2025?
   tool: performance
   arguments:
     tickers: XOM,CVX,COP
@@ -132,7 +132,7 @@ get_sortino_ratio:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
-    format: ratio
+    format: decimal
 get_treynor_ratio:
   question: What was the Treynor ratio of Union Pacific, UPS and FedEx in each year from 2021 to 2025?
   tool: performance
@@ -168,7 +168,7 @@ get_kappa_ratio:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
-    format: ratio
+    format: decimal
 get_omega_ratio:
   question: What was the Omega ratio of BlackRock, Charles Schwab and Blackstone in each year from 2021 to 2025?
   tool: performance
@@ -224,7 +224,7 @@ get_burke_ratio:
   chart:
     format: ratio
 get_ulcer_performance_index:
-  question: What was the Ulcer Performance Index of Verizon, AT&T and T-Mobile US in each year from 2021 to 2025?
+  question: What was the Ulcer Performance Index of Verizon, AT&T and T-Mobile in each year from 2021 to 2025?
   tool: performance
   arguments:
     tickers: VZ,T,TMUS
@@ -258,7 +258,7 @@ get_information_ratio:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
-    format: ratio
+    format: decimal
 get_upside_capture_ratio:
   question: How much of the S&P 500's gains on its up days did the Invesco QQQ Trust, the Schwab US Dividend Equity ETF and the iShares MSCI USA Min Vol Factor ETF capture in each year from 2021 to 2025?
   tool: performance
@@ -305,7 +305,7 @@ get_excess_return:
   chart:
     format: percent
 get_compound_growth_rate:
-  question: What was the compound annual growth rate of JPMorgan, Bank of America and Citigroup compared with the S&P 500 over the five years to the end of 2025?
+  question: What was the compound annual growth rate of JPMorgan Chase, Bank of America and Citigroup compared with the S&P 500 over the five years to the end of 2025?
   tool: performance
   arguments:
     tickers: JPM,BAC,C
@@ -329,6 +329,7 @@ get_correlation_matrix:
     end_date: "2025-12-31"
     period: monthly
   chart:
+    rename: {Benchmark: "S&P 500"}
     type: heatmap
     format: ratio
     x: ticker
@@ -344,6 +345,7 @@ get_covariance_matrix:
     end_date: "2025-12-31"
     period: monthly
   chart:
+    rename: {Benchmark: "S&P 500"}
     type: heatmap
     format: ""
     digits: 4

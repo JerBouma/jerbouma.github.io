@@ -1,1 +1,1 @@
-{"charts":{"get_quantile_regression":{"type":"bar","x":["KRE","Benchmark"],"series":[{"name":"Coefficient","data":[0.5329,0.3881]}],"format":"ratio","title":"Coefficient at the 5% Quantile","period":false}}}
+{"charts":{"get_quantile_regression":{"type":"bar","x":["KRE","S&P 500"],"series":[{"name":"Coefficient","data":[0.5329,0.3881]}],"format":"ratio","title":"Coefficient at the 5% Quantile","period":false}}}

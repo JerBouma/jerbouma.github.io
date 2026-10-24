@@ -233,7 +233,7 @@ get_government_tax_revenue_to_gdp_ratio:
     format: percent
 
 get_government_expenditure:
-  question: How did UK government expenditure develop from 2010 to 2025?
+  question: How much did the UK government spend each year, in pounds, from 2010 to 2025?
   tool: government
   arguments:
     countries: United Kingdom
@@ -383,7 +383,7 @@ get_business_confidence_index:
     format: number
 
 get_composite_leading_indicator:
-  question: What did the composite leading indicators of the United States, China, Germany and Japan signal from 2010 to 2025?
+  question: How did the composite leading indicators of the United States, China, Germany and Japan move from 2010 to 2025?
   tool: macroeconomics
   arguments:
     countries: United States,China,Germany,Japan
@@ -520,7 +520,7 @@ get_real_personal_income:
     title: Real Personal Income (chained 2017 dollars)
 
 get_commercial_real_estate_prices:
-  question: How did commercial property prices change on a year earlier in the United States, the euro area, Japan and Germany from 2010 to 2025?
+  question: How did commercial property prices in the United States, the euro area, Japan and Germany change year on year from 2010 to 2025?
   tool: macroeconomics
   arguments:
     countries: United States,Euro Area,Japan,Germany
@@ -538,6 +538,7 @@ get_commodity_forward_curve:
     start_date: "2026-07-01"
   chart:
     format: price
+    title: Crude Oil Futures Prices by Contract
 
 get_recession_indicator:
   question: Which months from 2000 to 2025 did the NBER date as US recessions?
@@ -714,6 +715,7 @@ get_asset_class_proxies:
   chart:
     format: percent
     values: [Private Equity, Infrastructure, Hedge Funds, Private Credit]
+    title: Asset Class Proxy Returns
 
 get_renewable_energy:
   question: What share of primary energy supply came from renewables in Sweden, Germany, the United States and Japan from 2010 to 2024?
@@ -755,6 +757,7 @@ get_climate_scenario:
     countries: United States,Germany,United Kingdom,Japan
   chart:
     format: percent
+    title: Long-Term Interest Rate
 
 get_unemployment_rate:
   question: How did the unemployment rate in the United States, the euro area, the United Kingdom and Japan develop from 2010 to 2025?
@@ -888,7 +891,7 @@ get_shiller_stock_market_data:
     title: CAPE Ratio
 
 get_millennium_of_macroeconomic_data:
-  question: How did the yields on British government and corporate bonds move from 1700 to 2016?
+  question: How did the yields on British government and corporate bonds move from 1703 to 2016?
   tool: macroeconomics
   arguments:
     series: yields
@@ -896,6 +899,7 @@ get_millennium_of_macroeconomic_data:
     end_date: "2016-12-31"
   chart:
     format: percent
+    title: Government and Corporate Bond Yields
 
 get_stress_test_scenario:
   question: How do US real GDP growth and the unemployment rate develop in the severely adverse scenario of the Federal Reserve's 2026 stress test?
@@ -908,6 +912,7 @@ get_stress_test_scenario:
   chart:
     format: percent
     values: [Real GDP growth, Unemployment rate]
+    title: Real GDP Growth and Unemployment Rate
 
 get_scenario_set:
   question: What range of 10-year nominal interest rates does De Nederlandsche Bank's real-world scenario set project over its 100-year horizon?

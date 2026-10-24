@@ -12,7 +12,7 @@ get_augmented_dickey_fuller:
     format: ratio
     title: ADF Test P-Value
 get_kpss_test:
-  question: Were the share prices of JPMorgan, Bank of America and Wells Fargo stationary from 2021 to 2025, according to the KPSS test?
+  question: Were the share prices of JPMorgan Chase, Bank of America and Wells Fargo stationary from 2021 to 2025, according to the KPSS test?
   tool: econometrics
   arguments:
     tickers: JPM,BAC,WFC
@@ -24,7 +24,7 @@ get_kpss_test:
     format: ratio
     title: KPSS Statistic and 5% Critical Value
 get_phillips_perron_test:
-  question: Did the share prices of Exxon Mobil, Chevron and ConocoPhillips have a unit root from 2021 to 2025, according to the Phillips-Perron test?
+  question: Did the share prices of ExxonMobil, Chevron and ConocoPhillips have a unit root from 2021 to 2025, according to the Phillips-Perron test?
   tool: econometrics
   arguments:
     tickers: XOM,CVX,COP
@@ -48,7 +48,7 @@ get_zivot_andrews_test:
     format: ratio
     title: Zivot-Andrews Statistic and 5% Critical Value
 get_variance_ratio_test:
-  question: Did the daily returns of the energy (XLE), financials (XLF) and technology (XLK) sector ETFs follow a random walk from 2021 to 2025?
+  question: Did the energy (XLE), financials (XLF) and technology (XLK) sector ETFs follow a random walk from 2021 to 2025, according to the variance ratio test?
   tool: econometrics
   arguments:
     tickers: XLE,XLF,XLK
@@ -99,7 +99,7 @@ get_granger_causality:
     title: Granger Causality P-Value
     xname: Predicted ticker
 get_ols:
-  question: How sensitive were Exxon Mobil's daily returns to oil (the USO fund) and the S&P 500 from 2021 to 2025?
+  question: How sensitive were ExxonMobil's daily returns to oil (the USO fund) and the S&P 500 from 2021 to 2025?
   tool: econometrics
   arguments:
     tickers: XOM,USO
@@ -107,6 +107,7 @@ get_ols:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
+    rename: {Benchmark: "S&P 500"}
     type: coef
     error: Std. Error
     x: metric
@@ -119,6 +120,7 @@ get_logistic_regression:
     start_date: "2025-01-01"
     end_date: "2025-12-31"
   chart:
+    rename: {Benchmark: "S&P 500"}
     type: coef
     error: Std. Error
     x: metric
@@ -148,6 +150,7 @@ get_quantile_regression:
       metric: [KRE, Benchmark]
     values: [Coefficient]
     keep_benchmark: true
+    rename: {Benchmark: S&P 500}
     format: ratio
     title: Coefficient at the 5% Quantile
 get_fama_macbeth_regression:
@@ -159,12 +162,13 @@ get_fama_macbeth_regression:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
+    rename: {Benchmark: "S&P 500"}
     type: coef
     error: Std. Error
     x: metric
     coef: Risk Premium
 get_fixed_effects:
-  question: How sensitive were the daily returns of Exxon Mobil, Chevron, Shell, BP and TotalEnergies to the S&P 500 from 2021 to 2025, controlling for company fixed effects?
+  question: How sensitive were the daily returns of ExxonMobil, Chevron, Shell, BP and TotalEnergies to the S&P 500 from 2021 to 2025, controlling for company fixed effects?
   tool: econometrics
   arguments:
     tickers: XOM,CVX,SHEL,BP,TTE
@@ -172,13 +176,14 @@ get_fixed_effects:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
+    rename: {Benchmark: "S&P 500"}
     type: coef
     error: Std. Error
     x: metric
     keep:
       metric: Benchmark
 get_random_effects:
-  question: What was the common S&P 500 sensitivity of JPMorgan, Bank of America, Citigroup and Wells Fargo from 2021 to 2025 in a random effects panel of their daily returns?
+  question: What was the common S&P 500 sensitivity of JPMorgan Chase, Bank of America, Citigroup and Wells Fargo from 2021 to 2025 in a random effects panel of their daily returns?
   tool: econometrics
   arguments:
     tickers: JPM,BAC,C,WFC
@@ -186,6 +191,7 @@ get_random_effects:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
   chart:
+    rename: {Benchmark: "S&P 500"}
     type: coef
     error: Std. Error
     x: metric
@@ -261,7 +267,7 @@ get_regression_discontinuity:
     format: percent
     title: Discontinuity and Standard Error
 get_propensity_score_matching:
-  question: On days when oil (the USO fund) rose more than 2%, how much more did Exxon Mobil return than on comparable days with the same S&P 500 move, from 2021 to 2025?
+  question: On days when oil (the USO fund) rose more than 2%, how much more did ExxonMobil return than on comparable days with the same S&P 500 move, from 2021 to 2025?
   tool: econometrics
   arguments:
     tickers: XOM,USO
@@ -539,7 +545,7 @@ get_out_of_sample_validation:
     format: price
     title: Out-of-Sample Forecast Errors
 get_diebold_mariano_test:
-  question: Did an EWMA volatility forecast beat a 22-day rolling-window forecast for Exxon Mobil, Chevron, Shell and BP from 2021 to 2025?
+  question: Did an EWMA volatility forecast beat a 22-day rolling-window forecast for ExxonMobil, Chevron, Shell and BP from 2021 to 2025?
   tool: econometrics
   arguments:
     tickers: XOM,CVX,SHEL,BP

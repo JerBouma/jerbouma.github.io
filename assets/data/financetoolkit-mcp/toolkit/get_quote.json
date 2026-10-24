@@ -1,1 +1,1 @@
-{"charts":{"get_quote":{"type":"bar","x":["Price","Year High","Year Low"],"series":[{"name":"V","data":[407.92,414.6,293.89]},{"name":"MA","data":[623.6,633.29,464.52]},{"name":"AXP","data":[313.03,387.49,290.97]}],"format":"price","title":"Price, Year High and Year Low","period":false}}}
+{"charts":{"get_quote":{"type":"bar","x":["V","MA","AXP"],"series":[{"name":"Price","data":[407.92,623.6,313.03]},{"name":"Year High","data":[414.6,633.29,387.49]},{"name":"Year Low","data":[293.89,464.52,290.97]}],"format":"price","title":"Price, Year High and Year Low","period":false}}}

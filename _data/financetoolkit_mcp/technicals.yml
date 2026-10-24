@@ -4,9 +4,10 @@ get_mcclellan_oscillator:
   tool: breadth
   arguments:
     tickers: JPM
-    start_date: "2025-01-01"
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
   chart:
+    last: 250
     format: ratio
 get_advancers_decliners:
   question: On which trading days from 1 to 12 December 2025 did Tesla and Ford close higher or lower than the day before?
@@ -42,9 +43,10 @@ get_chaikin_oscillator:
   tool: breadth
   arguments:
     tickers: ABNB
-    start_date: "2025-01-01"
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
   chart:
+    last: 250
     format: amount
 get_trin:
   question: Measured across the eleven S&P 500 sector ETFs, how did the Arms Index (TRIN) move day by day in 2025?
@@ -62,10 +64,11 @@ get_new_highs_new_lows:
   tool: breadth
   arguments:
     tickers: XLK,XLF,XLE,XLV,XLY,XLP,XLI,XLB,XLU,XLRE,XLC
-    start_date: "2025-01-01"
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
     window: 20
   chart:
+    last: 250
     format: number
     values: [XLK]
     rename: {XLK: New highs minus new lows}
@@ -168,18 +171,20 @@ get_ultimate_oscillator:
   tool: momentum
   arguments:
     tickers: ANET
-    start_date: "2025-01-01"
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
   chart:
+    last: 250
     format: number
 get_percentage_price_oscillator:
   question: How did the Percentage Price Oscillator of Nvidia compare with AMD's in 2025?
   tool: momentum
   arguments:
     tickers: NVDA,AMD
-    start_date: "2025-01-01"
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
   chart:
+    last: 250
     format: number
 get_detrended_price_oscillator:
   question: How did Home Depot's share price cycle around its trend in 2025, measured by the Detrended Price Oscillator?
@@ -195,9 +200,10 @@ get_average_directional_index:
   tool: momentum
   arguments:
     tickers: TSLA
-    start_date: "2025-01-01"
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
   chart:
+    last: 250
     format: number
 get_chande_momentum_oscillator:
   question: How did Oracle's momentum swing in 2025, measured by the Chande Momentum Oscillator?
@@ -236,9 +242,10 @@ get_moving_average_convergence_divergence:
   tool: momentum
   arguments:
     tickers: MSFT
-    start_date: "2025-01-01"
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
   chart:
+    last: 250
     format: ratio
     keep: {ticker: MSFT}
     values: [MACD Line, Signal Line]
@@ -265,9 +272,10 @@ get_awesome_oscillator:
   tool: momentum
   arguments:
     tickers: LLY
-    start_date: "2025-01-01"
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
   chart:
+    last: 250
     format: ratio
 get_rate_of_change:
   question: How did the 12-day rate of change of ExxonMobil and Chevron shares compare in 2025?
@@ -283,9 +291,10 @@ get_know_sure_thing:
   tool: momentum
   arguments:
     tickers: UNH
-    start_date: "2025-01-01"
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
   chart:
+    last: 250
     format: number
     keep: {ticker: UNH}
     values: [KST, Signal Line]
@@ -357,9 +366,10 @@ get_trix:
   tool: overlap
   arguments:
     tickers: AMZN
-    start_date: "2025-01-01"
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
   chart:
+    last: 250
     format: ratio
 get_triangular_moving_average:
   question: How did JPMorgan Chase's 14-day triangular moving average move through 2025?
@@ -422,9 +432,10 @@ get_support_resistance_levels:
   tool: overlap
   arguments:
     tickers: COST
-    start_date: "2025-01-01"
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
   chart:
+    last: 250
     format: price
     keep: {ticker: COST}
     values: [Resistance, Support]

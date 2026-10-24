@@ -66,7 +66,7 @@ get_stock_price_simulation:
     type: line
     rename: {UUUUU: 5 up, DUUUU: 1 down then 4 up, DDUUU: 2 down then 3 up, DDDUU: 3 down then 2 up, DDDDU: 4 down then 1 up, DDDDD: 5 down}
 get_garman_kohlhagen:
-  question: What is a call on the dollar against the yen (USD/JPY) worth under the Garman-Kohlhagen model with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025 with a yen interest rate of 0.75% and a dollar interest rate of 3.75%?
+  question: What is a call on the dollar against the yen (USD/JPY) worth under the Garman-Kohlhagen model, across strikes within 5% of the exchange rate and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025 with a yen interest rate of 0.75% and a dollar interest rate of 3.75%?
   tool: options
   arguments:
     tickers: USDJPY
@@ -154,7 +154,7 @@ get_barrier_option:
     rename: {"2026-01-30": "30 days", "2026-03-01": "60 days", "2026-03-31": "90 days"}
     xname: Strike price
 get_asian_option:
-  question: What is a geometric-average Asian call on Exxon Mobil worth across strikes within 10% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
+  question: What is a geometric-average Asian call on ExxonMobil worth across strikes within 10% of the share price and with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
   tool: options
   arguments:
     tickers: XOM
@@ -184,7 +184,7 @@ get_put_call_parity:
     values: ["Strike Price", "2026-01-07", "2026-01-14", "2026-01-28"]
     rename: {"2026-01-07": "7 days", "2026-01-14": "14 days", "2026-01-28": "28 days"}
 get_volatility_surface:
-  question: What does the implied volatility surface of JPMorgan's call options look like around the money for its next four expirations currently?
+  question: What does the implied volatility surface of JPMorgan Chase's call options look like around the money for its next four expirations currently?
   tool: options
   arguments:
     tickers: JPM
@@ -244,7 +244,7 @@ get_delta:
     rename: {"2026-01-30": "30 days", "2026-03-01": "60 days", "2026-03-31": "90 days"}
     xname: Strike price
 get_dual_delta:
-  question: How much value does a call option on JPMorgan lose per $1 increase in the strike price (its dual delta), across strikes within 15% of the share price, with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
+  question: How much value does a call option on JPMorgan Chase lose per $1 increase in the strike price (its dual delta), across strikes within 15% of the share price, with 30, 60 and 90 days to expiry, priced at the close of 31 December 2025?
   tool: options
   arguments:
     tickers: JPM
@@ -271,7 +271,7 @@ get_vega:
     strike_step_size: 2
     expiration_time_range: 91
   chart:
-    format: ratio
+    format: decimal
     type: line
     x: Strike Price
     values: ["2026-01-30", "2026-03-01", "2026-03-31"]
@@ -354,7 +354,7 @@ get_gamma:
     strike_price_range: 0.2
     strike_step_size: 1
   chart:
-    format: ratio
+    format: decimal
     type: line
     x: Strike Price
     values: ["2026-01-07", "2026-01-14", "2026-01-28"]
@@ -370,7 +370,7 @@ get_dual_gamma:
     strike_price_range: 0.2
     strike_step_size: 1
   chart:
-    format: ratio
+    format: decimal
     type: line
     x: Strike Price
     values: ["2026-01-07", "2026-01-14", "2026-01-28"]
@@ -453,7 +453,7 @@ get_veta:
     strike_price_range: 0.1
     strike_step_size: 50
   chart:
-    format: ratio
+    format: decimal
     type: line
     x: Strike Price
     values: ["2026-01-07", "2026-01-14", "2026-01-28"]
@@ -469,7 +469,7 @@ get_partial_derivative:
     strike_price_range: 0.2
     strike_step_size: 1
   chart:
-    format: ratio
+    format: decimal
     type: line
     x: Strike Price
     values: ["2026-01-07", "2026-01-14", "2026-01-28"]

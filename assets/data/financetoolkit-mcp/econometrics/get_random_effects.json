@@ -1,1 +1,1 @@
-{"charts":{"get_random_effects":{"type":"coef","x":["Intercept","Benchmark"],"coef":[0.0003,0.9788],"low":[-9.2e-05,0.942932],"high":[0.000692,1.014668],"p":[0.0859,0.0],"format":"ratio","title":"Random Effects","period":false}}}
+{"charts":{"get_random_effects":{"type":"coef","x":["Intercept","S&P 500"],"coef":[0.0003,0.9788],"low":[-9.2e-05,0.942932],"high":[0.000692,1.014668],"p":[0.0859,0.0],"format":"ratio","title":"Random Effects","period":false}}}
