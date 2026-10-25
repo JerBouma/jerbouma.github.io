@@ -92,7 +92,7 @@ from financetoolkit import Toolkit
 
 from financescenarios.factors.credit.credit_controller import Credit
 
-toolkit = Toolkit(["SPY"], api_key="FINANCIAL_MODELING_PREP_KEY")  # the FRED key comes from the FRED_API_KEY variable
+toolkit = Toolkit(["SPY"], api_key="FINANCIAL_MODELING_PREP_KEY", benchmark_ticker=None)  # the FRED key comes from the FRED_API_KEY variable
 credit = Credit(toolkit)
 
 credit.calibrate("ig_7_10y", maturity_bucket="7-10 Years", period="monthly")

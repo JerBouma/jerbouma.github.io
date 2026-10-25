@@ -105,7 +105,9 @@ Against a benchmark, another mix or an index, `benchmark` measures how far a por
 | Relative Sharpe ratio | The difference of $$\overline{r}/\operatorname{sd}(r)\,\sqrt{P}$$, the return per unit of risk of [Sharpe (1966)](https://doi.org/10.1086/294846){:target="_blank"}, here without subtracting a risk-free rate |
 | Active share | $$\tfrac{1}{2}\sum_k \lvert w_{p,k} - w_{b,k}\rvert$$, half the sum of the absolute weight differences ([Cremers and Petajisto, 2009](https://doi.org/10.1093/rfs/hhp057){:target="_blank"}), for mixes with constant weights |
 
-On a backtest every measure reads the one realized path. On simulated runs that share their scenarios and seed, tracking error is measured within each scenario, the deviation a manager actually lives through, and the median is reported with its spread across scenarios; averaging the scenarios first would cancel most of the deviations. The other measures compare the two mean paths, so they describe the average scenario rather than any single one; read them on a backtest. To compare the three mixes with holding US stocks only:
+On a backtest every measure reads the one realized path. On simulated runs that share their scenarios and seed, every measure is taken within each scenario, the way an investor lives through it, and the median is reported, with the tracking error's spread across scenarios; averaging the scenarios first would cancel most of the deviations. Two different runs compare their mean paths. Deposits and withdrawals are taken out of each period's return, $$r_t = (V_t - C_t)/V_{t-1} - 1$$, and the CAGR is the time-weighted one, as in `risk_metrics`, so a saver's deposits don't read as outperformance.
+
+To compare the three mixes with holding US stocks only:
 
 ```python
 stocks_only = backtest.compute({"us_broad": 1.0}, initial_value=100_000, rebalance_every=12)
