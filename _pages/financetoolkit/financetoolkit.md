@@ -167,7 +167,7 @@ For example, the highest weekly RSI of each year is shown below.
 |   2024 | 91.0702 | 82.1403 | 67.6949 |     80.0566 |
 |   2025 | 73.3514 | 82.5281 | 79.7429 |     71.6939 |
 
-And below the cumulative returns of all three are plotted against the S&P 500, with the RSI in the second tab.
+And below the cumulative returns of all three are plotted against the S&P 500, with the RSI underneath.
 
 {% include ft-chart.html id="historical" label="Cumulative returns and 14-week RSI of Nvidia, AMD, Intel and the S&P 500" %}
 
@@ -401,13 +401,9 @@ For example, the overlap between every pair of funds is shown below: the share o
 | SMHC |   0.00 |  0.00 |  0.00 |  0.00 |   1.08 |   0.00 |
 | KCHP |   0.00 |  0.00 |  0.00 |  0.00 |   0.00 |   1.00 |
 
-The three US funds and SMH largely hold the same companies, with SOXX and SMH sharing 70% of their portfolios. SMH holds the most outside the United States, 9% in Taiwan and 6% in the Netherlands. The China and Korea funds share nothing with any other fund, which is what diversification within one sector looks like. And below the country weights of each fund are plotted.
+The three US funds and SMH largely hold the same companies, with SOXX and SMH sharing 70% of their portfolios. SMH holds the most outside the United States, 9% in Taiwan and 6% in the Netherlands. The China and Korea funds share nothing with any other fund, which is what diversification within one sector looks like. And below the country weights of each fund are plotted, with the overlap of every pair of funds underneath.
 
-{% include ft-chart.html id="etf-countries" label="Country weights of six semiconductor funds" %}
-
-The overlap of every pair of funds is plotted as well.
-
-{% include ft-chart.html id="etf-overlap" label="Overlap between six semiconductor funds" %}
+{% include ft-chart.html id="etf" label="Country weights of six semiconductor funds and the overlap between them" %}
 
 ### Building a Diversified Portfolio
 
@@ -444,13 +440,9 @@ For example, the risk parity portfolio is shown below. Returns and volatilities 
 | GLD       |   0.2403 |            0.1681 |       0.1562 |         0.8603 |              0.2000 |
 | Portfolio |   1.0000 |            0.1084 |       0.1085 |         0.6888 |              1.0000 |
 
-And below the efficient frontier is plotted with both portfolios and each asset on its own.
+And below the efficient frontier is plotted with both portfolios and each asset on its own, with the weights of both portfolios underneath.
 
-{% include ft-chart.html id="optimization-frontier" label="Efficient frontier with the maximum Sharpe ratio and risk parity portfolios" %}
-
-The weights of both portfolios are plotted next to each other.
-
-{% include ft-chart.html id="optimization-weights" label="Weights of the maximum Sharpe ratio and risk parity portfolios" %}
+{% include ft-chart.html id="optimization" label="Efficient frontier and the weights of the maximum Sharpe ratio and risk parity portfolios" %}
 
 ### Following the Portfolio
 

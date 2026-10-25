@@ -6003,6 +6003,18 @@ body.ft-overview .page__content {
 
   &__canvas { width: 100%; height: 440px; }
 
+  // a panel of a combined chart: no frame of its own, a smaller title, a line between panels
+  &--panel {
+    margin: 0;
+    padding: 14px 0 0;
+    border: 0;
+    border-top: 1px solid var(--card-border);
+    border-radius: 0;
+    background: none;
+  }
+  &--panels > &__head { margin-bottom: 12px; }
+  .page__content &--panel &__title { font-size: 14px !important; font-weight: 600; color: var(--text-secondary) !important; }
+
   &__loading {
     height: 440px;
     border-radius: 10px;
