@@ -253,7 +253,7 @@ module DocsMetricPages
   # `changes` setting how its changes are calculated.
   def own_data(fn_name, parameters)
     required = parameters.reject { |_, _, description| description.include?("Defaults to") }
-    out = +"### Using Your Own Data\n\n"
+    out = +"## Using Your Own Data\n\n"
     out << "`#{fn_name}` runs on any data, not only prices: ratios, economic indicators, yield curves or your own dataset. "
     out << "Pass a DataFrame, a Series or a dictionary of them to `Econometrics` as `data`, with the dates in the rows or the columns, "
     out << "and set `changes` to how its changes are calculated: `\"percentage\"`, `\"log\"`, `\"difference\"` for rates and ratios, or `\"none\"`. "
