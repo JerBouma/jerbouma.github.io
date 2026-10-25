@@ -541,7 +541,9 @@ def _clean_description(text: str) -> str:
         if not starts_as_bullet or i == 0:
             continue
         intro = paragraphs[i - 1][0].rstrip()
-        if not _RE_FORMULA_INTRO.search(intro):
+        # any introduction ending in a colon counts when every bullet is an equation
+        equations = all(" = " in line and _looks_like_formula(line) for line in paragraph.split("\n"))
+        if not (_RE_FORMULA_INTRO.search(intro) or (intro.endswith(":") and equations)):
             continue
         blocks = []
         for line in paragraph.split("\n"):
@@ -940,6 +942,48 @@ sidebar:
 ---
 
 The Economics module provides insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and government interest rates. It can also be used as a standalone module.
+
+{_INSTALL_SNIPPET}""",
+    },
+    {
+        "url": f"{_BASE}/etf/etf_controller.py",
+        "location": "_pages/financetoolkit/documentation/etf.md",
+        "header": f"""---
+title: ETF
+seo_title: "ETF Module | Finance Toolkit"
+seo_title_suffix: false
+excerpt: The ETF module analyzes exchange-traded funds, from their holdings, sector and country weightings to their tracking, concentration, overlap, valuation and liquidity.
+description: The ETF module analyzes exchange-traded funds, from their holdings, sector and country weightings to their tracking, concentration, overlap, valuation and liquidity.
+author_profile: false
+permalink: /projects/financetoolkit/docs/etf
+classes: wide-sidebar
+layout: single
+sidebar:
+    nav: "financetoolkit-docs-etf"
+---
+
+The ETF module analyzes exchange-traded funds: their holdings, sector and country weightings, tracking against what they follow, concentration, the overlap between funds, valuation and liquidity.
+
+{_INSTALL_SNIPPET}""",
+    },
+    {
+        "url": f"{_BASE}/portfolio/construction_controller.py",
+        "location": "_pages/financetoolkit/documentation/portfolio-optimization.md",
+        "header": f"""---
+title: Portfolio Optimization
+seo_title: "Portfolio Optimization | Finance Toolkit"
+seo_title_suffix: false
+excerpt: The Portfolio Optimization module builds portfolios from the tickers of a Toolkit, from minimum variance, maximum Sharpe ratio and risk parity weights to the efficient frontier, risk contributions, stress tests and attribution.
+description: The Portfolio Optimization module builds portfolios from the tickers of a Toolkit, from minimum variance, maximum Sharpe ratio and risk parity weights to the efficient frontier, risk contributions, stress tests and attribution.
+author_profile: false
+permalink: /projects/financetoolkit/docs/portfolio-optimization
+classes: wide-sidebar
+layout: single
+sidebar:
+    nav: "financetoolkit-docs-portfolio-optimization"
+---
+
+The Portfolio Optimization module builds portfolios from the tickers of a Toolkit: minimum variance, maximum Sharpe ratio, mean-variance, risk parity, Hierarchical Risk Parity, minimum CVaR and Black-Litterman weights, the efficient frontier, risk contributions, stress tests and attribution.
 
 {_INSTALL_SNIPPET}""",
     },
