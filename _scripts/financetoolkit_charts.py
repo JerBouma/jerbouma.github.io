@@ -259,10 +259,10 @@ def main() -> None:
             print(frame.round(4).to_markdown() if hasattr(frame, "to_markdown") else frame)
 
 
-def panel(chart: dict, title: str, **extra) -> dict:
-    """A chart as one panel of a combined chart, with its own title."""
-    chart = {k: v for k, v in chart.items() if k != "label"}
-    return {**chart, "title": title, **extra}
+def panel(chart: dict, label: str, **extra) -> dict:
+    """A chart as one tab of a combined chart."""
+    chart = {k: v for k, v in chart.items() if k != "title"}
+    return {**chart, "label": label, **extra}
 
 
 def combine(charts: dict) -> None:
@@ -272,12 +272,12 @@ def combine(charts: dict) -> None:
     for level in (70, 30):
         rsi["series"].append({"name": f"RSI {level}", "data": [level] * len(rsi["x"]), "reference": True})
     charts["historical"] = {"type": "panels", "title": "Cumulative Returns and Relative Strength Index", "panels": [
-        panel(cumulative, "Cumulative return (1 = start, log scale)", log=True),
-        panel(rsi, "Relative Strength Index (14 weeks)", height=260, format="amount"),
+        panel(cumulative, "Cumulative return", log=True),
+        panel(rsi, "RSI (14 weeks)", height=260, format="amount"),
     ]}
     sharpe, drawdown = charts["risk"]["tabs"]
     charts["risk"] = {"type": "panels", "title": "Sharpe Ratio and Maximum Drawdown", "panels": [
-        panel(sharpe, "Sharpe Ratio", height=340),
+        panel(sharpe, "Sharpe ratio", height=340),
         panel(drawdown, "Maximum drawdown", height=340),
     ]}
     # one panel per regressor, the companies as rows
@@ -285,7 +285,7 @@ def combine(charts: dict) -> None:
     panels = []
     for regressor in ("Real Yield", "Inflation Expectations"):
         rows = [i for i, name in enumerate(coef["x"]) if name.endswith(f"· {regressor}")]
-        panels.append({"type": "coef", "title": f"10-year {regressor.lower()}", "height": 240,
+        panels.append({"type": "coef", "label": regressor.capitalize(), "height": 240,
                        "x": [coef["x"][i].split(" · ")[0] for i in rows],
                        **{key: [coef[key][i] for i in rows] for key in ("coef", "low", "high", "p")}})
     charts["econometrics"] = {"type": "panels", "title": "Coefficients with 95% Confidence Intervals", "panels": panels}
@@ -293,11 +293,11 @@ def combine(charts: dict) -> None:
     overlap = charts.pop("etf-overlap")
     overlap["values"] = [[None if i == j else v for j, v in enumerate(row)] for i, row in enumerate(overlap["values"])]
     charts["etf"] = {"type": "panels", "title": "Country Weights and Overlap of the Funds", "panels": [
-        panel(charts.pop("etf-countries"), "Weight by country", height=340),
-        panel(overlap, "Overlap of the holdings"),
+        panel(charts.pop("etf-countries"), "Country weights", height=340),
+        panel(overlap, "Overlap"),
     ]}
     charts["optimization"] = {"type": "panels", "title": "Efficient Frontier and Portfolio Weights", "panels": [
-        panel(charts.pop("optimization-frontier"), "Efficient frontier (at most 40% per asset)"),
+        panel(charts.pop("optimization-frontier"), "Efficient frontier"),
         panel(charts.pop("optimization-weights"), "Weights", height=320),
     ]}
 

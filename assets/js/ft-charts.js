@@ -805,25 +805,44 @@
     else window.addEventListener('resize', fit);
   }
 
-  // Several charts in one frame, one below the other, each with its own title
-  // and legend (e.g. the returns with the RSI underneath, or a fund's countries
-  // next to the overlap of the funds)
+  // Several charts of one section in one frame, one tab each (like `tabs`, but
+  // each tab can be any kind of chart: a heatmap, a scatter, coefficients...).
+  // A tab is drawn the first time it is shown, so it gets its real width.
   function renderPanels(box, chart) {
     box.innerHTML = '';
-    box.classList.add('ft-chart--panels');
     var head = document.createElement('div');
     head.className = 'ft-chart__head';
     var title = document.createElement('p');
     title.className = 'ft-chart__title';
     title.textContent = chart.title;
     head.appendChild(title);
+    var tabs = document.createElement('div');
+    tabs.className = 'ft-chart__tabs';
+    tabs.setAttribute('role', 'tablist');
+    head.appendChild(tabs);
     box.appendChild(head);
-    chart.panels.forEach(function (panel) {
+    var subs = chart.panels.map(function (panel, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'ft-chart__tab' + (i === 0 ? ' is-active' : '');
+      b.textContent = panel.label;
+      b.setAttribute('role', 'tab');
+      tabs.appendChild(b);
       var sub = document.createElement('div');
       sub.className = 'ft-chart ft-chart--panel';
+      if (i > 0) sub.hidden = true;
       box.appendChild(sub);
-      render(sub, panel);
+      return sub;
     });
+    compactTabs(tabs);
+    var drawn = [];
+    function show(i) {
+      subs.forEach(function (sub, j) { sub.hidden = j !== i; });
+      Array.prototype.forEach.call(tabs.children, function (x, j) { x.classList.toggle('is-active', j === i); });
+      if (!drawn[i]) { drawn[i] = true; render(subs[i], Object.assign({}, chart.panels[i], { title: '' })); }
+    }
+    Array.prototype.forEach.call(tabs.children, function (b, i) { b.addEventListener('click', function () { show(i); }); });
+    show(0);
   }
 
   function render(box, chart) {
